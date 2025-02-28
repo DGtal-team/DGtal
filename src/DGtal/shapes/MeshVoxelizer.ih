@@ -32,7 +32,7 @@
 // ----------------------- Standard services --------------------------------
 
 // ---------------------------------------------------------
-template <typename TDigitalSet, int Separation>
+template <DGtal::concepts::CDigitalSet TDigitalSet, int Separation>
 inline
 double
 DGtal::MeshVoxelizer<TDigitalSet,Separation>::distance(const PointR3& M,
@@ -54,7 +54,7 @@ DGtal::MeshVoxelizer<TDigitalSet,Separation>::distance(const PointR3& M,
 }
 
 // ---------------------------------------------------------
-template <typename TDigitalSet, int Separation>
+template <DGtal::concepts::CDigitalSet TDigitalSet, int Separation>
 inline
 typename DGtal::MeshVoxelizer<TDigitalSet,Separation>::TriangleOrientation
 DGtal::MeshVoxelizer<TDigitalSet, Separation>::pointIsInside2DTriangle(const PointR2& A,
@@ -86,7 +86,7 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::pointIsInside2DTriangle(const Poi
 }
 
 // ---------------------------------------------------------
-template <typename TDigitalSet, int Separation>
+template <DGtal::concepts::CDigitalSet TDigitalSet, int Separation>
 inline
 bool
 DGtal::MeshVoxelizer<TDigitalSet, Separation>::pointIsInsideVoxel(const PointR3& P,
@@ -102,7 +102,7 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::pointIsInsideVoxel(const PointR3&
 }
 
 // ---------------------------------------------------------
-template <typename TDigitalSet, int Separation>
+template <DGtal::concepts::CDigitalSet TDigitalSet, int Separation>
 inline
 void
 DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelizeTriangle(DigitalSet &outputSet,
@@ -166,7 +166,7 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelizeTriangle(DigitalSet &outp
 }
 
 // ---------------------------------------------------------
-template <typename TDigitalSet, int Separation>
+template <DGtal::concepts::CDigitalSet TDigitalSet, int Separation>
 template <typename MeshPoint>
 inline
 void
@@ -211,7 +211,7 @@ DGtal::MeshVoxelizer<TDigitalSet,Separation>::voxelize(DigitalSet &outputSet,
 }
 
 // ---------------------------------------------------------
-template <typename TDigitalSet, int Separation>
+template <DGtal::concepts::CDigitalSet TDigitalSet, int Separation>
 template <typename MeshPoint>
 inline
 void

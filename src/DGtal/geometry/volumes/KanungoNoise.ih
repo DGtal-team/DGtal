@@ -38,7 +38,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 // -----------------------------------------------------
-template <DGtal::concepts::CPointPredicate TP, DGtal::concepts::CDomain TD, typename TS>
+template <DGtal::concepts::CPointPredicate TP, DGtal::concepts::CDomain TD, DGtal::concepts::CDigitalSet TS>
 inline
 DGtal::KanungoNoise<TP,TD, TS>::KanungoNoise(ConstAlias<TP> aPredicate, ConstAlias<Domain> aDomain, const double alpha):
   myPredicate(aPredicate), myDomain(aDomain), myAlpha(alpha)
@@ -80,14 +80,14 @@ DGtal::KanungoNoise<TP,TD, TS>::KanungoNoise(ConstAlias<TP> aPredicate, ConstAli
   }
 }
 // -----------------------------------------------------
-template <DGtal::concepts::CPointPredicate TP, DGtal::concepts::CDomain TD, typename TS>
+template <DGtal::concepts::CPointPredicate TP, DGtal::concepts::CDomain TD, DGtal::concepts::CDigitalSet TS>
 inline
 DGtal::KanungoNoise<TP,TD, TS>::~KanungoNoise()
 {
   delete mySet;
 }
 // -----------------------------------------------------
-template <DGtal::concepts::CPointPredicate TP, DGtal::concepts::CDomain TD, typename TS>
+template <DGtal::concepts::CPointPredicate TP, DGtal::concepts::CDomain TD, DGtal::concepts::CDigitalSet TS>
 inline
 DGtal::KanungoNoise<TP,TD, TS> &
 DGtal::KanungoNoise<TP,TD, TS>::operator=( const KanungoNoise<TP,TD,TS> &other)
@@ -104,7 +104,7 @@ DGtal::KanungoNoise<TP,TD, TS>::operator=( const KanungoNoise<TP,TD,TS> &other)
   return *this;
 }
 // ---------------------------------------------  --------
-template <DGtal::concepts::CPointPredicate TP, DGtal::concepts::CDomain TD, typename TS>
+template <DGtal::concepts::CPointPredicate TP, DGtal::concepts::CDomain TD, DGtal::concepts::CDigitalSet TS>
 inline
 bool
 DGtal::KanungoNoise<TP,TD, TS>::operator()(const Point &aPoint) const
@@ -112,7 +112,7 @@ DGtal::KanungoNoise<TP,TD, TS>::operator()(const Point &aPoint) const
   return mySet->operator()(aPoint);
 }
 // -----------------------------------------------------
-template <DGtal::concepts::CPointPredicate TP, DGtal::concepts::CDomain TD, typename TS>
+template <DGtal::concepts::CPointPredicate TP, DGtal::concepts::CDomain TD, DGtal::concepts::CDigitalSet TS>
 inline
 void
 DGtal::KanungoNoise<TP,TD, TS>::selfDisplay ( std::ostream & out ) const
@@ -120,7 +120,7 @@ DGtal::KanungoNoise<TP,TD, TS>::selfDisplay ( std::ostream & out ) const
   out << "[KanungoNoise] Alpha="<<myAlpha<<" Set  "<< *mySet;
 }
 // -----------------------------------------------------
-template <DGtal::concepts::CPointPredicate TP, DGtal::concepts::CDomain TD, typename TS>
+template <DGtal::concepts::CPointPredicate TP, DGtal::concepts::CDomain TD, DGtal::concepts::CDigitalSet TS>
 inline
 bool
 DGtal::KanungoNoise<TP,TD, TS>::isValid() const

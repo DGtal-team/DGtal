@@ -80,15 +80,11 @@ namespace DGtal
    *
    */
   template <concepts::CPointPredicate TPointPredicate, DGtal::concepts::CDomain TDomain,
-            typename TDigitalSetContainer=DigitalSetBySTLSet<TDomain> >
+            concepts::CDigitalSet TDigitalSetContainer=DigitalSetBySTLSet<TDomain> >
   class KanungoNoise
   {
     // ----------------------- Standard services ------------------------------
   public:
-
-    ///Concept checks
-    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TDigitalSetContainer> ));
-    
     ///Object type
     typedef TPointPredicate PointPredicate;
     

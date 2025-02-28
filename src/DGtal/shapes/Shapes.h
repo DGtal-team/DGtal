@@ -139,7 +139,7 @@ namespace DGtal
        @tparam PointPredicate a model of concepts::CPointPredicate such that
        PointPredicate::Point is Point.
      */
-    template < typename DigitalSet, typename PointPredicate >
+    template < concepts::CDigitalSet DigitalSet, typename PointPredicate >
     requires concepts::CPointPredicate<PointPredicate>
     static
     void makeSetFromPointPredicate( DigitalSet & aSet,

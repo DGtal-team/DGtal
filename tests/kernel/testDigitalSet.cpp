@@ -105,7 +105,7 @@ bool testDigitalSetBoardSnippet()
   Domain domain( p1, p2 );
   typedef DigitalSetSelector < Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet;
 
-  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet< SpecificSet > ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CDigitalSet< SpecificSet > );
 
   SpecificSet mySet( domain );
 
@@ -145,11 +145,9 @@ bool testDigitalSetBoardSnippet()
   return true;
 }
 
-template < typename DigitalSetType >
+template < concepts::CDigitalSet DigitalSetType >
 bool testDigitalSet( const DigitalSetType& aSet1, const DigitalSetType& aSet2 )
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet< DigitalSetType > ));
-
   typedef typename DigitalSetType::Domain Domain;
   typedef typename Domain::Point Point;
   typedef typename Point::Coordinate Coordinate;
@@ -287,7 +285,7 @@ bool testDigitalSetDraw()
   typedef DigitalSetSelector
   < Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet;
 
-  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet< SpecificSet > ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CDigitalSet< SpecificSet > );
   SpecificSet disk( domain );
   Point c(  0, 0  );
 
@@ -327,7 +325,7 @@ bool testDigitalSetDomain()
   Domain domain( p1, p2 );
   typedef DigitalSetSelector
   < Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet;
-  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet< SpecificSet > ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CDigitalSet< SpecificSet > );
 
   SpecificSet disk( domain );
   Point c(  0, 0  );
@@ -369,13 +367,13 @@ bool testDigitalSetDomain()
 
 bool testDigitalSetConcept()
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<Z2i::DigitalSet> ));
-  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<Z3i::DigitalSet> ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CDigitalSet<Z2i::DigitalSet> );
+  DGTAL_CONCEPT_CHECK(requires concepts::CDigitalSet<Z3i::DigitalSet> );
 
   typedef Z2i::Space Space;
   DGTAL_CONCEPT_CHECK(requires concepts::CDomain< concepts::CDomainArchetype< Space > > );
   typedef concepts::CDigitalSetArchetype<Z2i::Domain> DigitalSetArchetype;
-  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<DigitalSetArchetype> ));
+  DGTAL_CONCEPT_CHECK(requires concepts::CDigitalSet<DigitalSetArchetype> );
 
   return true;
 }

@@ -59,13 +59,11 @@ namespace DGtal
    *
    * @tparam TSet an model of CImageContainer concept.
    */
-  template <typename TSet>
+  template <concepts::CDigitalSet TSet>
   struct SetFromImage
   {
     typedef TSet Set;
    
-    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<Set> ));
-         
     /** 
      * Append an Image value set  to an existing Set (maybe empty).
      * @pre the ForegroundPredicate instance must have been created on the image aImage.

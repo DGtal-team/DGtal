@@ -246,7 +246,7 @@ namespace DGtal
    * @see ImageContainerBySTLMap DigitalSetFromMap 
    * @see insertAndAlwaysSetValue
    */
-  template<concepts::CImage I, typename S>
+  template<concepts::CImage I, DGtal::concepts::CDigitalSet S>
   bool insertAndSetValue(I& aImg, S& aSet, 
 			 const typename I::Point& aPoint, 
 			 const typename I::Value& aValue ); 
@@ -294,7 +294,7 @@ namespace DGtal
    * @see ImageContainerBySTLMap DigitalSetFromMap 
    * @see insertAndSetValue
    */
-  template<concepts::CImage I, typename S>
+  template<concepts::CImage I, DGtal::concepts::CDigitalSet S>
   bool insertAndAlwaysSetValue(I& aImg, S& aSet, 
 			       const typename I::Point& aPoint, 
 			       const typename I::Value& aValue ); 
@@ -327,7 +327,7 @@ namespace DGtal
    * @see ImageContainerBySTLMap DigitalSetFromMap 
    * @see insertAndSetValue
    */
-  template<DGtal::concepts::CConstImage I, typename S>
+  template<DGtal::concepts::CConstImage I, DGtal::concepts::CDigitalSet S>
   bool findAndGetValue(const I& aImg, const S& aSet, 
 		       const typename I::Point& aPoint, 
 		       typename I::Value& aValue ); 

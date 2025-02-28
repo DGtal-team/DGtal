@@ -38,7 +38,7 @@
 
 
 
-template<typename Set>
+template<DGtal::concepts::CDigitalSet Set>
 template<typename Image, typename ForegroundPredicate>
 inline
 void 

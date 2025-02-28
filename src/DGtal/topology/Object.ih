@@ -54,7 +54,7 @@
  * Constructor.
  *
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 DGtal::Object<TDigitalTopology, TDigitalSet>::Object()
   : myTopo( nullptr ),
@@ -75,7 +75,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::Object()
  * @param aPointSet the set of points of the object. It is copied
  * in the object.
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 DGtal::Object<TDigitalTopology, TDigitalSet>::Object
 ( Clone<DigitalTopology> aTopology,
@@ -97,7 +97,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::Object
  * The copy is smart in the sense that the digital set is
  * referenced, and will be copied only if the set is changed.
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 DGtal::Object<TDigitalTopology, TDigitalSet>::Object
 ( const Object & other )
@@ -118,7 +118,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::Object
  *
  * @param aDomain any domain related to the given topology.
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 DGtal::Object<TDigitalTopology, TDigitalSet>::Object
 ( Clone<DigitalTopology> aTopology,
@@ -136,7 +136,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::Object
 /**
  * Destructor.
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 DGtal::Object<TDigitalTopology, TDigitalSet>::~Object()
 {
@@ -147,7 +147,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::~Object()
  * @param other the object to copy.
  * @return a reference on 'this'.
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 DGtal::Object<TDigitalTopology, TDigitalSet> &
 DGtal::Object<TDigitalTopology, TDigitalSet>::operator=
@@ -168,7 +168,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::operator=
 /**
  * @return the number of elements in the set.
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::Size
 DGtal::Object<TDigitalTopology, TDigitalSet>::size() const
@@ -177,7 +177,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::size() const
 }
 
 
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 void
 DGtal::Object<TDigitalTopology, TDigitalSet>::setTable( Alias<boost::dynamic_bitset<> > input_table)
@@ -187,7 +187,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::setTable( Alias<boost::dynamic_bit
   myTableIsLoaded = true;
 }
 
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 DGtal::NeighborhoodConfiguration
 DGtal::Object<TDigitalTopology, TDigitalSet>::
@@ -213,7 +213,7 @@ getNeighborhoodConfigurationOccupancy(const Point & center,
 /**
  * A const reference to the embedding domain.
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 const typename DGtal::Object<TDigitalTopology, TDigitalSet>::Domain &
 DGtal::Object<TDigitalTopology, TDigitalSet>::domain() const
@@ -221,7 +221,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::domain() const
   return myPointSet->domain();
 }
 
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 DGtal::CowPtr<typename DGtal::Object<TDigitalTopology, TDigitalSet>::Domain>
 DGtal::Object<TDigitalTopology, TDigitalSet>::domainPointer() const
@@ -234,7 +234,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::domainPointer() const
  * A const reference on the point set defining the points of the
  * digital object.
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 const TDigitalSet &
 DGtal::Object<TDigitalTopology, TDigitalSet>::pointSet() const
@@ -246,7 +246,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::pointSet() const
  * A reference on the point set defining the points of the
  * digital object (may duplicate the set).
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 TDigitalSet &
 DGtal::Object<TDigitalTopology, TDigitalSet>::pointSet()
@@ -258,7 +258,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::pointSet()
 /**
  * @return a const reference to the topology of this object.
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 const TDigitalTopology &
 DGtal::Object<TDigitalTopology, TDigitalSet>::topology() const
@@ -269,7 +269,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::topology() const
 /**
  * @return a const reference to the adjacency of this object.
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 const typename TDigitalTopology::ForegroundAdjacency &
 DGtal::Object<TDigitalTopology, TDigitalSet>::adjacency() const
@@ -290,7 +290,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::adjacency() const
  *
  * @return the kappa-neighborhood of [p] in this object.
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::SmallObject
 DGtal::Object<TDigitalTopology, TDigitalSet>::neighborhood
@@ -329,7 +329,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::neighborhood
  *
  * NB: faster than computing the neighborhood then computing its cardinal.
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::Size
 DGtal::Object<TDigitalTopology, TDigitalSet>
@@ -368,7 +368,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
  *
  * @return the kappa-neighborhood of [p] in this object, without p.
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::SmallObject
 DGtal::Object<TDigitalTopology, TDigitalSet>::properNeighborhood
@@ -407,7 +407,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::properNeighborhood
  * NB: faster than computing the proper neighborhood then
  * computing its cardinal.
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::Size
 DGtal::Object<TDigitalTopology, TDigitalSet>
@@ -441,7 +441,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
  * @return the border of this object (the set of points of this
  * which is lambda()-adjacent with some point of the background).
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 DGtal::Object<TDigitalTopology, TDigitalSet>
 DGtal::Object<TDigitalTopology, TDigitalSet>::border() const
@@ -493,7 +493,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::border() const
  *
  * @param it the output iterator. *it is an Object.
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 template <typename OutputObjectIterator>
 inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::Size
@@ -570,7 +570,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
  *
  * @see computeConnectedness
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 DGtal::Connectedness
 DGtal::Object<TDigitalTopology, TDigitalSet>::connectedness() const
 {
@@ -587,7 +587,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::connectedness() const
  *
  * @see connectedness
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 DGtal::Connectedness
 DGtal::Object<TDigitalTopology, TDigitalSet>::computeConnectedness() const
 {
@@ -624,7 +624,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::computeConnectedness() const
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Graph services ------------------------------
 
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::ConstIterator
 DGtal::Object<TDigitalTopology, TDigitalSet>::begin() const
@@ -632,7 +632,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::begin() const
   return myPointSet->begin();
 }
 
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::ConstIterator
 DGtal::Object<TDigitalTopology, TDigitalSet>::end() const
@@ -645,7 +645,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::end() const
  *
  * @return the number of neighbors of this vertex
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::Size
 DGtal::Object<TDigitalTopology, TDigitalSet>::degree
@@ -657,7 +657,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::degree
 /**
  * @return the maximum number of neighbors for a vertex of this object
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::Size
 DGtal::Object<TDigitalTopology, TDigitalSet>::bestCapacity() const
@@ -676,7 +676,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::bestCapacity() const
  *
  * @param v the vertex whose neighbors will be writeNeighbors
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 template <typename OutputIterator>
 inline
 void
@@ -719,7 +719,7 @@ writeNeighbors( OutputIterator & it,
  *
  * @param pred the predicate that must be satisfied
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 template <typename OutputIterator, typename VertexPredicate>
 inline
 void
@@ -750,7 +750,7 @@ writeNeighbors( OutputIterator & it,
 /**
  * @note For this to work with graph algorithms, the source of the edge must be the input vertex, even on undirected graphs.
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::EdgeRange
 DGtal::Object<TDigitalTopology, TDigitalSet>::
@@ -770,7 +770,7 @@ outEdges( const Vertex & v) const
   return out_edges;
 }
 
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::Vertex
 DGtal::Object<TDigitalTopology, TDigitalSet>::
@@ -779,7 +779,7 @@ head( const Edge & e ) const
   return e.vertices[1];
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::Vertex
 DGtal::Object<TDigitalTopology, TDigitalSet>::
@@ -788,7 +788,7 @@ tail( const Edge & e ) const
   return e.vertices[0];
 }
 //-----------------------------------------------------------------------------
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::Edge
 DGtal::Object<TDigitalTopology, TDigitalSet>::
@@ -804,7 +804,7 @@ opposite( const Edge & v) const
  * Geodesic neighborhood of point [p] and order [k] in the object
  * for the given metric adjacency.
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 template <typename TAdjacency>
 inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::SmallObject
@@ -872,7 +872,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
  * Geodesic neighborhood of point [p] and order [k] in the
  * complemented object for the given metric adjacency.
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 template <typename TAdjacency>
 inline
 typename DGtal::Object<TDigitalTopology, TDigitalSet>::SmallComplementObject
@@ -939,7 +939,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
   return geodesicN;
 }
 
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 bool
 DGtal::Object<TDigitalTopology, TDigitalSet>
@@ -962,7 +962,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
  *
  * @return 'true' if this point is simple.
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 bool
 DGtal::Object<TDigitalTopology, TDigitalSet>
@@ -1001,7 +1001,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 void
 DGtal::Object<TDigitalTopology, TDigitalSet>
@@ -1019,7 +1019,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 bool
 DGtal::Object<TDigitalTopology, TDigitalSet>::isValid() const
@@ -1036,7 +1036,7 @@ DGtal::Object<TDigitalTopology, TDigitalSet>::isValid() const
 /**
  * @return the style name used for drawing this object.
  */
-template <typename TDigitalTopology, typename TDigitalSet>
+template <typename TDigitalTopology, DGtal::concepts::CDigitalSet TDigitalSet>
 inline
 std::string
 DGtal::Object<TDigitalTopology, TDigitalSet>::className() const

@@ -115,12 +115,10 @@ struct HodgeTester<Calculus, -1>
   }
 };
 
-template <typename DigitalSet, typename LinearAlgebraBackend>
+template <concepts::CDigitalSet DigitalSet, typename LinearAlgebraBackend>
 void
 test_hodge(int domain_size)
 {
-    BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDigitalSet<DigitalSet> ));
-
     typedef typename DigitalSet::Domain Domain;
     typedef typename DigitalSet::Point Point;
     DGtal::trace.info() << "dimension=" << Point::dimension << std::endl;
@@ -259,12 +257,10 @@ struct DerivativeTester<Calculus, -1>
     }
 };
 
-template <typename DigitalSet, typename LinearAlgebraBackend>
+template <concepts::CDigitalSet DigitalSet, typename LinearAlgebraBackend>
 void
 test_derivative(int domain_size)
 {
-    BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDigitalSet<DigitalSet> ));
-
     typedef typename DigitalSet::Domain Domain;
     typedef typename DigitalSet::Point Point;
     DGtal::trace.info() << "dimension=" << Point::dimension << std::endl;

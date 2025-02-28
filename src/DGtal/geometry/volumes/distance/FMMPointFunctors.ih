@@ -61,7 +61,7 @@ namespace
 
 ///////////////////////////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 DGtal::L2FirstOrderLocalDistance<TImage,TSet>::L2FirstOrderLocalDistance
   (Image& aImg, TSet& aSet): myImgPtr(&aImg), mySetPtr(&aSet)
@@ -71,7 +71,7 @@ DGtal::L2FirstOrderLocalDistance<TImage,TSet>::L2FirstOrderLocalDistance
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 DGtal::L2FirstOrderLocalDistance<TImage,TSet>::L2FirstOrderLocalDistance
   (const L2FirstOrderLocalDistance& other): myImgPtr(other.myImgPtr), mySetPtr(other.mySetPtr)
@@ -81,7 +81,7 @@ DGtal::L2FirstOrderLocalDistance<TImage,TSet>::L2FirstOrderLocalDistance
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 DGtal::L2FirstOrderLocalDistance<TImage,TSet>&
 DGtal::L2FirstOrderLocalDistance<TImage,TSet>::operator=
@@ -98,7 +98,7 @@ DGtal::L2FirstOrderLocalDistance<TImage,TSet>::operator=
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 DGtal::L2FirstOrderLocalDistance<TImage,TSet>::~L2FirstOrderLocalDistance
   ()
@@ -106,7 +106,7 @@ DGtal::L2FirstOrderLocalDistance<TImage,TSet>::~L2FirstOrderLocalDistance
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 typename DGtal::L2FirstOrderLocalDistance<TImage, TSet>::Value
 DGtal::L2FirstOrderLocalDistance<TImage, TSet>::operator()
@@ -163,7 +163,7 @@ DGtal::L2FirstOrderLocalDistance<TImage, TSet>::operator()
 
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 typename DGtal::L2FirstOrderLocalDistance<TImage, TSet>::Value
 DGtal::L2FirstOrderLocalDistance<TImage, TSet>::compute
@@ -217,7 +217,7 @@ DGtal::L2FirstOrderLocalDistance<TImage, TSet>::compute
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 typename DGtal::L2FirstOrderLocalDistance<TImage, TSet>::Value
 DGtal::L2FirstOrderLocalDistance<TImage, TSet>
@@ -234,7 +234,7 @@ DGtal::L2FirstOrderLocalDistance<TImage, TSet>
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 void
 DGtal::L2FirstOrderLocalDistance<TImage, TSet>
@@ -245,7 +245,7 @@ DGtal::L2FirstOrderLocalDistance<TImage, TSet>
 
 ///////////////////////////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 DGtal::L2SecondOrderLocalDistance<TImage,TSet>::L2SecondOrderLocalDistance
   (Image& aImg, TSet& aSet): myImgPtr(&aImg), mySetPtr(&aSet)
@@ -255,7 +255,7 @@ DGtal::L2SecondOrderLocalDistance<TImage,TSet>::L2SecondOrderLocalDistance
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 DGtal::L2SecondOrderLocalDistance<TImage,TSet>::L2SecondOrderLocalDistance
   (const L2SecondOrderLocalDistance& other): myImgPtr(other.myImgPtr), mySetPtr(other.mySetPtr)
@@ -265,7 +265,7 @@ DGtal::L2SecondOrderLocalDistance<TImage,TSet>::L2SecondOrderLocalDistance
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 DGtal::L2SecondOrderLocalDistance<TImage,TSet>&
 DGtal::L2SecondOrderLocalDistance<TImage,TSet>::operator=
@@ -282,7 +282,7 @@ DGtal::L2SecondOrderLocalDistance<TImage,TSet>::operator=
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 DGtal::L2SecondOrderLocalDistance<TImage,TSet>::~L2SecondOrderLocalDistance
   ()
@@ -290,7 +290,7 @@ DGtal::L2SecondOrderLocalDistance<TImage,TSet>::~L2SecondOrderLocalDistance
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 typename DGtal::L2SecondOrderLocalDistance<TImage, TSet>::Value
 DGtal::L2SecondOrderLocalDistance<TImage, TSet>::operator()
@@ -393,7 +393,7 @@ DGtal::L2SecondOrderLocalDistance<TImage, TSet>::operator()
 
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 typename DGtal::L2SecondOrderLocalDistance<TImage, TSet>::Value
 DGtal::L2SecondOrderLocalDistance<TImage, TSet>::compute
@@ -438,7 +438,7 @@ DGtal::L2SecondOrderLocalDistance<TImage, TSet>::compute
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 typename DGtal::L2SecondOrderLocalDistance<TImage, TSet>::Value
 DGtal::L2SecondOrderLocalDistance<TImage, TSet>
@@ -448,7 +448,7 @@ DGtal::L2SecondOrderLocalDistance<TImage, TSet>
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 void
 DGtal::L2SecondOrderLocalDistance<TImage, TSet>
@@ -459,7 +459,7 @@ DGtal::L2SecondOrderLocalDistance<TImage, TSet>
 
 ///////////////////////////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 DGtal::LInfLocalDistance<TImage,TSet>::LInfLocalDistance
   (Image& aImg, TSet& aSet): myImgPtr(&aImg), mySetPtr(&aSet)
@@ -469,7 +469,7 @@ DGtal::LInfLocalDistance<TImage,TSet>::LInfLocalDistance
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 DGtal::LInfLocalDistance<TImage,TSet>::LInfLocalDistance
   (const LInfLocalDistance& other): myImgPtr(other.myImgPtr), mySetPtr(other.mySetPtr)
@@ -479,7 +479,7 @@ DGtal::LInfLocalDistance<TImage,TSet>::LInfLocalDistance
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 DGtal::LInfLocalDistance<TImage,TSet>&
 DGtal::LInfLocalDistance<TImage,TSet>::operator=
@@ -496,14 +496,14 @@ DGtal::LInfLocalDistance<TImage,TSet>::operator=
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 DGtal::LInfLocalDistance<TImage,TSet>::~LInfLocalDistance
   ()
 {
 }
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 typename DGtal::LInfLocalDistance<TImage, TSet>::Value
 DGtal::LInfLocalDistance<TImage, TSet>::operator()
@@ -561,7 +561,7 @@ DGtal::LInfLocalDistance<TImage, TSet>::operator()
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 typename DGtal::LInfLocalDistance<TImage, TSet>::Value
 DGtal::LInfLocalDistance<TImage, TSet>::compute
@@ -586,7 +586,7 @@ DGtal::LInfLocalDistance<TImage, TSet>::compute
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 void
 DGtal::LInfLocalDistance<TImage, TSet>
@@ -597,7 +597,7 @@ DGtal::LInfLocalDistance<TImage, TSet>
 
 ///////////////////////////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 DGtal::L1LocalDistance<TImage,TSet>::L1LocalDistance
   (Image& aImg, TSet& aSet): myImgPtr(&aImg), mySetPtr(&aSet)
@@ -607,7 +607,7 @@ DGtal::L1LocalDistance<TImage,TSet>::L1LocalDistance
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 DGtal::L1LocalDistance<TImage,TSet>::L1LocalDistance
   (const L1LocalDistance& other): myImgPtr(other.myImgPtr), mySetPtr(other.mySetPtr)
@@ -617,7 +617,7 @@ DGtal::L1LocalDistance<TImage,TSet>::L1LocalDistance
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 DGtal::L1LocalDistance<TImage,TSet>&
 DGtal::L1LocalDistance<TImage,TSet>::operator=
@@ -634,14 +634,14 @@ DGtal::L1LocalDistance<TImage,TSet>::operator=
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 DGtal::L1LocalDistance<TImage,TSet>::~L1LocalDistance
   ()
 {
 }
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 typename DGtal::L1LocalDistance<TImage, TSet>::Value
 DGtal::L1LocalDistance<TImage, TSet>::operator()
@@ -684,7 +684,7 @@ DGtal::L1LocalDistance<TImage, TSet>::operator()
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 typename DGtal::L1LocalDistance<TImage, TSet>::Value
 DGtal::L1LocalDistance<TImage, TSet>::compute
@@ -705,7 +705,7 @@ DGtal::L1LocalDistance<TImage, TSet>::compute
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TImage, typename TSet>
+template <DGtal::concepts::CImage TImage, DGtal::concepts::CDigitalSet TSet>
 inline
 void
 DGtal::L1LocalDistance<TImage, TSet>
@@ -903,7 +903,7 @@ DGtal::L2FirstOrderLocalDistanceFromCells<TKSpace,TMap, isIndirect>
 
 ///////////////////////////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TDistanceImage, typename TSet, DGtal::concepts::CPointFunctor TSpeedFunctor>
+template <DGtal::concepts::CImage TDistanceImage, DGtal::concepts::CDigitalSet TSet, DGtal::concepts::CPointFunctor TSpeedFunctor>
 inline
 DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::SpeedExtrapolator
 (const DistanceImage& aDistImg, const Set& aSet, SpeedFunctor& aSpeedFunc)
@@ -915,7 +915,7 @@ DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::SpeedExtrapolator
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TDistanceImage, typename TSet, DGtal::concepts::CPointFunctor TSpeedFunctor>
+template <DGtal::concepts::CImage TDistanceImage, DGtal::concepts::CDigitalSet TSet, DGtal::concepts::CPointFunctor TSpeedFunctor>
 inline
 DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::SpeedExtrapolator
   (const SpeedExtrapolator& other)
@@ -927,7 +927,7 @@ DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::SpeedExtrapolator
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TDistanceImage, typename TSet, DGtal::concepts::CPointFunctor TSpeedFunctor>
+template <DGtal::concepts::CImage TDistanceImage, DGtal::concepts::CDigitalSet TSet, DGtal::concepts::CPointFunctor TSpeedFunctor>
 inline
 DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>&
 DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::operator=
@@ -946,7 +946,7 @@ DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::operator=
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TDistanceImage, typename TSet, DGtal::concepts::CPointFunctor TSpeedFunctor>
+template <DGtal::concepts::CImage TDistanceImage, DGtal::concepts::CDigitalSet TSet, DGtal::concepts::CPointFunctor TSpeedFunctor>
 inline
 DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::~SpeedExtrapolator
   ()
@@ -954,7 +954,7 @@ DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::~SpeedExtrapolator
 }
 
 //-----------------------------------------------------------------------------
-template <DGtal::concepts::CImage TDistanceImage, typename TSet, DGtal::concepts::CPointFunctor TSpeedFunctor>
+template <DGtal::concepts::CImage TDistanceImage, DGtal::concepts::CDigitalSet TSet, DGtal::concepts::CPointFunctor TSpeedFunctor>
 inline
 typename DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::Value
 DGtal::SpeedExtrapolator<TDistanceImage,TSet,TSpeedFunctor>::operator()

@@ -82,7 +82,7 @@ public:
      * @param set the set from which to build to DEC structure.
      * @param add_border add border to the computed structure. For a precise definition see section \ref sectDECBorderDefinition.
      */
-    template <typename TDigitalSet>
+    template <concepts::CDigitalSet TDigitalSet>
     static
     DiscreteExteriorCalculus<TDigitalSet::Point::dimension, TDigitalSet::Point::dimension, TLinearAlgebraBackend, TInteger>
     createFromDigitalSet(const TDigitalSet& set, const bool add_border = true);

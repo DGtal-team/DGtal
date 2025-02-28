@@ -60,7 +60,7 @@ digraph GTOPOLOGY {
                  node [style=filled,color=white];
                  label="kernel";
 
-                 CDigitalSet [ label="CDigitalSet" URL="\ref concepts::CDigitalSet" ]; 
+                 CDigitalSet [ label="CDigitalSet" URL="\ref DGtal::concepts::CDigitalSet" ]; 
         }
         subgraph cluster_5 {
                  style=filled;

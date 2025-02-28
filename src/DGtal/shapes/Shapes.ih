@@ -237,15 +237,13 @@ DGtal::Shapes<TDomain>::euclideanShaper( TDigitalSet & aSet,
 }
 
 template <DGtal::concepts::CDomain TDomain>
-template <typename DigitalSet, typename PointPredicate>
+template <DGtal::concepts::CDigitalSet DigitalSet, typename PointPredicate>
 requires DGtal::concepts::CPointPredicate< PointPredicate >
 void
 DGtal::Shapes<TDomain>::makeSetFromPointPredicate
 ( DigitalSet & aSet,
   const PointPredicate & aPP )
 {
-  
-  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet< DigitalSet > ));
   BOOST_STATIC_ASSERT
     (( concepts::ConceptUtils::SameType< Domain, typename DigitalSet::Domain >::value ));
   BOOST_STATIC_ASSERT

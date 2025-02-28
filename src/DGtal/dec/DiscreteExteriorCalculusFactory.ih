@@ -37,12 +37,10 @@ requires DGtal::concepts::CDynamicVector<typename TLinearAlgebraBackend::DenseVe
                                          typename TLinearAlgebraBackend::DenseMatrix> &&
          DGtal::concepts::CLinearAlgebra<typename TLinearAlgebraBackend::DenseVector, 
                                          typename TLinearAlgebraBackend::SparseMatrix>
-template <typename TDigitalSet>
+template <DGtal::concepts::CDigitalSet TDigitalSet>
 DGtal::DiscreteExteriorCalculus<TDigitalSet::Point::dimension, TDigitalSet::Point::dimension, TLinearAlgebraBackend, TInteger>
 DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createFromDigitalSet(const TDigitalSet& _set, const bool add_border)
 {
-    BOOST_CONCEPT_ASSERT(( DGtal::concepts::CDigitalSet<TDigitalSet> ));
-
     typedef DGtal::DiscreteExteriorCalculus<TDigitalSet::Point::dimension, TDigitalSet::Point::dimension, TLinearAlgebraBackend, TInteger> Calculus;
     typedef typename Calculus::Cell Cell;
     typedef typename Calculus::Scalar Scalar;

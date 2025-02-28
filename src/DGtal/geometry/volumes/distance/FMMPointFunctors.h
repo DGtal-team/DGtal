@@ -89,7 +89,7 @@ namespace DGtal
    *
    * @see FMM
    */
-  template <concepts::CImage TImage, typename TSet>
+  template <concepts::CImage TImage, concepts::CDigitalSet TSet>
   class L2FirstOrderLocalDistance
   {
 
@@ -102,8 +102,6 @@ namespace DGtal
     typedef typename Image::Point Point;
     typedef typename Image::Value Value; 
 
-    /// set
-    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TSet> ));
     typedef TSet Set;
     BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TSet::Point >::value ));
 
@@ -223,7 +221,7 @@ namespace DGtal
    *
    * @see FMM
    */
-  template <concepts::CImage TImage, typename TSet>
+  template <concepts::CImage TImage, concepts::CDigitalSet TSet>
   class L2SecondOrderLocalDistance
   {
 
@@ -233,8 +231,6 @@ namespace DGtal
     typedef typename Image::Point Point;
     typedef typename Image::Value Value; 
 
-    /// set
-    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TSet> ));
     typedef TSet Set;
     BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TSet::Point >::value ));
 
@@ -348,7 +344,7 @@ namespace DGtal
    *
    * @see FMM
    */
-  template <concepts::CImage TImage, typename TSet>
+  template <concepts::CImage TImage, concepts::CDigitalSet TSet>
   class LInfLocalDistance
   {
     // ----------------------- Types ------------------------------
@@ -357,8 +353,6 @@ namespace DGtal
     typedef typename Image::Point Point;
     typedef typename Image::Value Value; 
 
-    /// set
-    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TSet> ));
     typedef TSet Set;
     BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TSet::Point >::value ));
 
@@ -459,7 +453,7 @@ namespace DGtal
    *
    * @see FMM
    */
-  template <concepts::CImage TImage, typename TSet>
+  template <concepts::CImage TImage, concepts::CDigitalSet TSet>
   class L1LocalDistance
   {
     // ----------------------- Types ------------------------------
@@ -468,8 +462,6 @@ namespace DGtal
     typedef typename Image::Point Point;
     typedef typename Image::Value Value; 
 
-    /// set
-    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TSet> ));
     typedef TSet Set;
     BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TSet::Point >::value ));
 
@@ -687,7 +679,7 @@ namespace DGtal
    *
    * @see FMM
    */
-  template <concepts::CImage TDistanceImage, typename TSet, concepts::CPointFunctor TSpeedFunctor>
+  template <concepts::CImage TDistanceImage, concepts::CDigitalSet TSet, concepts::CPointFunctor TSpeedFunctor>
   class SpeedExtrapolator
   {
 
@@ -700,8 +692,6 @@ namespace DGtal
     BOOST_STATIC_ASSERT(( boost::is_same< Point, typename SpeedFunctor::Point >::value ));
     typedef typename SpeedFunctor::Value Value; 
 
-    /// set
-    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TSet> ));
     typedef TSet Set;
     BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TSet::Point >::value ));
   

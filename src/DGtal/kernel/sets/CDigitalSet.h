@@ -135,84 +135,35 @@ namespace DGtal
 @tparam T the type that should be a model of CDigitalSet.
    */
   template <typename T> 
-  requires concepts::CPointPredicate<T> &&
-           concepts::CDomain<typename T::Domain>
-  struct CDigitalSet :
-    boost::CopyConstructible< T >
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    // 1. define first provided types (i.e. inner types), like
-    typedef typename T::Domain Domain;
-    typedef typename T::Point Point;
-    typedef typename T::Size Size;
-    typedef typename T::Iterator Iterator;
-    typedef typename T::ConstIterator ConstIterator;
-
-    BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ConstIterator > ));
-    BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ConstIterator > ));
-    
-    // 2. then check the presence of data members, operators and methods with
-    BOOST_CONCEPT_USAGE( CDigitalSet )
+  concept CDigitalSet =  
+    std::is_copy_constructible_v<T> && 
+    CPointPredicate<T> &&
+    CDomain<typename T::Domain> &&
+    requires(T myX, const T cmyX, typename T::Point myPoint, typename T::Point* myOutputIt, typename T::Iterator myIterator) 
     {
-      checkConstConstraints();
-      checkNonConstConstraints();
-    }
-    /**
-       This method checks const methods when a non-const version exist.
-    */
-    void checkConstConstraints() const
-    {
-      ConceptUtils::sameType( myDomain, myX.domain() );
-      ConceptUtils::sameType( myDomainPtr, myX.domainPointer() );
-      ConceptUtils::sameType( mySize, myX.size() );
-      ConceptUtils::sameType( myBool, myX.empty() );
+      { cmyX.domain() } -> std::same_as<const typename T::Domain&>;
+      { cmyX.domainPointer() } -> std::same_as<CowPtr<typename T::Domain>>;
+      { cmyX.size() } -> std::same_as<typename T::Size>;
+      { cmyX.empty() } -> std::same_as<bool>;
+      { cmyX.find(myPoint) } -> std::same_as<typename T::ConstIterator>;
+      { cmyX.begin() } -> std::same_as<typename T::ConstIterator>;
+      { cmyX.end() } -> std::same_as<typename T::ConstIterator>;
 
-      ConceptUtils::sameType( myConstIterator, myX.find( myPoint ) );
-      ConceptUtils::sameType( myConstIterator, myX.begin() );
-      ConceptUtils::sameType( myConstIterator, myX.end() );
-    }
-
-    /**
-       This method checks non-const methods when a const version exist.
-    */
-    void checkNonConstConstraints()
-    {
-      myX.insert( myPoint );
-      // template <typename PointInputIterator>
-      //   BOOST_CONCEPT_REQUIRES
-      //   ( ((boost::InputIterator<PointInputIterator>)),
-      //     (void) )
-      //   myX.insert( PointInputIterator, PointInputIterator );
-      myX.insertNew( myPoint );
-      ConceptUtils::sameType( mySize, myX.erase( myPoint ) );
+      myX.insert(myPoint);
+      myX.insertNew(myPoint);
       myX.erase( myIterator );
       myX.erase( myIterator, myIterator );
       myX.clear();
-      ConceptUtils::sameType( myX, myX.operator+=( myX ) );
       myX.computeComplement( myOutputIt );
       myX.assignFromComplement( myX );
       myX.computeBoundingBox( myPoint, myPoint );
-      ConceptUtils::sameType( myIterator, myX.find( myPoint ) );
-      ConceptUtils::sameType( myIterator, myX.begin() );
-      ConceptUtils::sameType( myIterator, myX.end() );
-    }
 
-    // ------------------------- Private Datas --------------------------------
-  private:
-    T myX; // only if T is default constructible.
-    Domain myDomain;
-    CowPtr<Domain> myDomainPtr;
-    Size mySize;
-    bool myBool;
-    Point myPoint;
-    Iterator myIterator;
-    ConstIterator myConstIterator;
-    Point* myOutputIt; 
-    // ------------------------- Internals ------------------------------------
-  private:
-    
-  }; // end of concept CDigitalSet
+      { myX.erase(myPoint) } -> std::same_as<typename T::Size>;
+      { myX.find(myPoint) } -> std::same_as<typename T::Iterator>;
+      { myX.begin() } -> std::same_as<typename T::Iterator>;
+      { myX.end() } -> std::same_as<typename T::Iterator>;
+      { myX.operator+=(myX) } -> std::same_as<T&>;
+    };
   }  
 } // namespace DGtal
 

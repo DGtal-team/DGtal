@@ -37,7 +37,7 @@
 
 
 template <DGtal::concepts::CImage Image>
-template <typename Set>
+template <DGtal::concepts::CDigitalSet Set>
 inline
 Image 
 DGtal::ImageFromSet<Image>::create(const Set &aSet, const Value &defaultValue,
@@ -45,9 +45,7 @@ DGtal::ImageFromSet<Image>::create(const Set &aSet, const Value &defaultValue,
            typename Set::ConstIterator itBegin, 
            typename Set::ConstIterator itEnd,
            const bool keepSetDomain)
-{
-  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<Set> ));
- 
+{ 
   typename Set::Point lower,upper;
   typename Set::Point dec;
   
@@ -71,15 +69,13 @@ DGtal::ImageFromSet<Image>::create(const Set &aSet, const Value &defaultValue,
 
 
 template<DGtal::concepts::CImage Image>
-template<typename Set>
+template<DGtal::concepts::CDigitalSet Set>
 inline
 void 
 DGtal::ImageFromSet<Image>::append(Image &aImage, const Value &defaultValue,
            typename Set::ConstIterator itBegin, 
            typename Set::ConstIterator itEnd)
-{
-  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<Set> ));
- 
+{ 
   typename Image::Domain domain = aImage.domain();
 
   for( ; itBegin != itEnd;  ++itBegin)

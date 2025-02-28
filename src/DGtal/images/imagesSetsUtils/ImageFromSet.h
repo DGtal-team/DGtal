@@ -84,7 +84,7 @@ namespace DGtal
     
      * @return an image.
      */
-    template <typename Set>
+    template <concepts::CDigitalSet Set>
     static
     Image create(const Set &aSet, const Value &defaultValue,
                  const bool addBorder,
@@ -128,7 +128,7 @@ namespace DGtal
      * @param itEnd ConstIterator on the set to specify the last point
      * to copy of a Set.
      */
-    template<typename Set>
+    template<concepts::CDigitalSet Set>
     static
     void append(Image &aImage, const Value &defaultValue,
                 typename Set::ConstIterator itBegin, 

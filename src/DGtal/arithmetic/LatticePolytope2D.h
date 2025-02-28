@@ -48,6 +48,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/CSpace.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
+#include "DGtal/kernel/sets/CDigitalSet.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
 #include "DGtal/arithmetic/ClosedIntegerHalfPlane.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -396,7 +397,7 @@ namespace DGtal
        @todo this method is for now not efficient and is just for
        visualization purposes.
     */
-    template <typename DigitalSet>
+    template <concepts::CDigitalSet DigitalSet>
     void getIncludedDigitalPoints( DigitalSet & aSet ) const;
 
     // ----------------------- Helper methods ----------------------------------

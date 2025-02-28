@@ -75,15 +75,11 @@ namespace DGtal
    @tparam TDigitalSet a DigitalSet (model of concepts::CDigitalSet)
    @tparam Separation strategy of the voxelization (6 or 26)
    */
-  template <typename TDigitalSet, int Separation = 6>
+  template <DGtal::concepts::CDigitalSet TDigitalSet, int Separation = 6>
   class MeshVoxelizer
   {
 
   public:
-
-    ///Concept Checking
-    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TDigitalSet> ));
-
     ///Digital Set Type
     typedef TDigitalSet DigitalSet;
     BOOST_STATIC_ASSERT_MSG( DigitalSet::Space::dimension == 3, "DigitalSet dimension must be 3");

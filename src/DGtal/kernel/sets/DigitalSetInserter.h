@@ -61,12 +61,9 @@ namespace DGtal
    *
    * @tparam TDigitalSet any model of CDigitalSet
    */
-  template <typename TDigitalSet>
+  template <concepts::CDigitalSet TDigitalSet>
   class DigitalSetInserter
 {
-
-    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TDigitalSet> )); 
-
     // ----------------------- Standard services ------------------------------
   public:
 

@@ -32,7 +32,6 @@
 #include <cstdlib>
 #include <iterator>
 #include "DGtal/kernel/NumberTraits.h"
-#include "DGtal/kernel/sets/CDigitalSet.h"
 //////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -518,12 +517,11 @@ halfSpace( const Point & A, const Point & B, const Point & inP ) const
     */
 //-----------------------------------------------------------------------------
 template <DGtal::concepts::CSpace TSpace, typename TSequence>
-template <typename DigitalSet>
+template <DGtal::concepts::CDigitalSet DigitalSet>
 void
 DGtal::LatticePolytope2D<TSpace,TSequence>::
 getIncludedDigitalPoints( DigitalSet & aSet ) const
 {
-  BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet< DigitalSet > ));
   typedef typename DigitalSet::Domain DigitalSetDomain;
   BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType< DigitalSetDomain, Domain >::value ));
   typedef typename DigitalSetDomain::ConstIterator DomainConstIterator;
