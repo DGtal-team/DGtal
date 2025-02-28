@@ -90,29 +90,13 @@ Description of \b concept \b 'CColorMap' <p>
 # Notes
    */
   template <typename CMap>
-    requires concepts::CLabel<typename CMap::Value>
-  struct CColorMap
-  {
-    // ----------------------- Concept checks ------------------------------
-  public:
-    
-    typedef typename CMap::Value Value;
-        
-    BOOST_CONCEPT_USAGE( CColorMap )
+  concept CColorMap = 
+    CLabel<typename CMap::Value> &&
+    std::is_constructible_v<CMap, typename CMap::Value, typename CMap::Value> &&
+    requires(CMap myCMap, typename CMap::Value myValue)
     {
-      CMap myCMap( myMin, myMax );
-      // operator() exists, takes a Value, and returns a LibBoard::Color.
-      ConceptUtils::sameType( myColor, myCMap.operator()( myValue ) );
-    }
-    
-    // ------------------------- Private Datas --------------------------------
-  private:
-    
-    // ------------------------- Internals ------------------------------------
-  private:
-    Color myColor;
-    Value myMin, myMax, myValue;    
-  }; // end of concept CColorMap
+        { myCMap.operator()(myValue) } -> std::same_as<Color>;
+    };
   }//namespace concepts
 } // namespace DGtal
 

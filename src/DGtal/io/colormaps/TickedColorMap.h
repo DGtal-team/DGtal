@@ -74,7 +74,7 @@ namespace DGtal
    * @tparam TColorMap The type of colormap to Adapt (the value type of TColorMap must be TValue).
    *
    */
-  template <typename TValue, typename TColorMap>
+  template <typename TValue, concepts::CColorMap TColorMap>
   class TickedColorMap
   {
     
@@ -86,7 +86,6 @@ namespace DGtal
     ///Adapted colormap type.
     typedef TColorMap ColorMap;
     
-    BOOST_CONCEPT_ASSERT(( concepts::CColorMap<ColorMap> )) ;
     BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType<Value, typename ColorMap::Value>::value));
     
     // ----------------------- Standard services ------------------------------

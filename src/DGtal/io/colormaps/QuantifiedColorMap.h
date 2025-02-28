@@ -62,10 +62,9 @@ namespace DGtal
 
      @tparam TColorMap an arbitrary model of concepts::CColorMap.
   */
-  template < typename TColorMap >
+  template < concepts::CColorMap TColorMap >
   struct QuantifiedColorMap
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CColorMap< TColorMap > ));
     using ColorMap = TColorMap;
     using Self     = QuantifiedColorMap< ColorMap >;
     using Value    = typename ColorMap::Value;

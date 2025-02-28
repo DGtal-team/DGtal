@@ -49,14 +49,12 @@ using namespace LibBoard;
 ///////////////////////////////////////////////////////////////////////////////
 // Function template for testing ColorMap classes. 
 ///////////////////////////////////////////////////////////////////////////////
-template <typename TColorMap>
+template <concepts::CColorMap TColorMap>
 void addColorMapSample( const char * name,
       const TColorMap & aColorMap, 
       const typename TColorMap::Value step,
       Board & board )
 { 
-  BOOST_CONCEPT_ASSERT(( concepts::CColorMap<TColorMap> ));
-
   typedef typename TColorMap::Value Value;
   board.translate( 0, 15 );
   board.setPenColor(Color::Black);

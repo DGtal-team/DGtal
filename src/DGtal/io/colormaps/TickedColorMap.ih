@@ -39,7 +39,7 @@
 // ----------------------- Standard services ------------------------------
 
 
-template <typename Value, typename CMAP>
+template <typename Value, DGtal::concepts::CColorMap CMAP>
 inline
 DGtal::TickedColorMap<Value,CMAP>::TickedColorMap
 ( const Value & amin,
@@ -51,7 +51,7 @@ DGtal::TickedColorMap<Value,CMAP>::TickedColorMap
   myColorMap = new ColorMap(myMin,myMax);
 }
 
-template <typename Value, typename CMAP>
+template <typename Value, DGtal::concepts::CColorMap CMAP>
 inline
 DGtal::TickedColorMap<Value,CMAP>::TickedColorMap
 ( const ColorMap& other,
@@ -63,7 +63,7 @@ DGtal::TickedColorMap<Value,CMAP>::TickedColorMap
 }
 
 
-template <typename Value, typename CMAP>
+template <typename Value, DGtal::concepts::CColorMap CMAP>
 inline
 DGtal::TickedColorMap<Value,CMAP>::TickedColorMap
 ( const TickedColorMap<Value,CMAP> & other )
@@ -72,14 +72,14 @@ DGtal::TickedColorMap<Value,CMAP>::TickedColorMap
   ASSERT_MSG(myMin < myMax, "Max should be strictly greather than Min in a colormap.");
 }
 
-template <typename Value, typename CMAP>
+template <typename Value, DGtal::concepts::CColorMap CMAP>
 inline
 DGtal::TickedColorMap<Value,CMAP>::~TickedColorMap()
 {
   delete myColorMap;
 }
 
-template <typename Value, typename CMAP>
+template <typename Value, DGtal::concepts::CColorMap CMAP>
 DGtal::TickedColorMap<Value,CMAP> &
 DGtal::TickedColorMap<Value,CMAP>::operator=
 ( const TickedColorMap<Value,CMAP> & other )
@@ -97,7 +97,7 @@ DGtal::TickedColorMap<Value,CMAP>::operator=
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
-template<typename Value, typename CMAP>
+template<typename Value, DGtal::concepts::CColorMap CMAP>
 inline
 const Value &
 DGtal::TickedColorMap<Value,CMAP>::min() const
@@ -105,7 +105,7 @@ DGtal::TickedColorMap<Value,CMAP>::min() const
   return myMin;
 }
 
-template<typename Value, typename CMAP>
+template<typename Value, DGtal::concepts::CColorMap CMAP>
 inline
 const Value &
 DGtal::TickedColorMap<Value,CMAP>::max() const
@@ -113,7 +113,7 @@ DGtal::TickedColorMap<Value,CMAP>::max() const
   return myMax;
 }
 
-template<typename Value, typename CMAP>
+template<typename Value, DGtal::concepts::CColorMap CMAP>
 inline
 DGtal::Color
 DGtal::TickedColorMap<Value,CMAP>::operator()( const Value & value ) const
@@ -149,7 +149,7 @@ DGtal::TickedColorMap<Value,CMAP>::operator()( const Value & value ) const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename Value, typename CMAP>
+template <typename Value, DGtal::concepts::CColorMap CMAP>
 inline
 void
 DGtal::TickedColorMap<Value,CMAP>::selfDisplay ( std::ostream & out ) const
@@ -162,7 +162,7 @@ DGtal::TickedColorMap<Value,CMAP>::selfDisplay ( std::ostream & out ) const
       << " ]";
 }
 
-template<typename Value, typename CMAP>
+template<typename Value, DGtal::concepts::CColorMap CMAP>
 inline
 void DGtal::TickedColorMap<Value,CMAP>::addTick(const Value tick,
                                     const Value thickness)
@@ -173,7 +173,7 @@ void DGtal::TickedColorMap<Value,CMAP>::addTick(const Value tick,
   myTicks.push_back(std::make_pair(tick,thickness));
 }
 
-template<typename Value, typename CMAP>
+template<typename Value, DGtal::concepts::CColorMap CMAP>
 inline
 void DGtal::TickedColorMap<Value,CMAP>::addRegularTicks(const unsigned int nbTicks,
                                                         const Value thickness)
@@ -185,7 +185,7 @@ void DGtal::TickedColorMap<Value,CMAP>::addRegularTicks(const unsigned int nbTic
 }
 
 
-template<typename Value, typename CMAP>
+template<typename Value, DGtal::concepts::CColorMap CMAP>
 inline
 void DGtal::TickedColorMap<Value,CMAP>::finalize()
 {
@@ -197,7 +197,7 @@ void DGtal::TickedColorMap<Value,CMAP>::finalize()
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template <typename Value, typename CMAP>
+template <typename Value, DGtal::concepts::CColorMap CMAP>
 inline
 bool
 DGtal::TickedColorMap<Value,CMAP>::isValid() const
