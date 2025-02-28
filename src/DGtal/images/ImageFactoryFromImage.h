@@ -62,7 +62,7 @@ namespace DGtal
    * 
    * The update of the original image is done with the function 'flushImage'.
    */
-  template <typename TImageContainer>
+  template <DGtal::concepts::CImage TImageContainer>
   class ImageFactoryFromImage
   {
 
@@ -70,9 +70,6 @@ namespace DGtal
 
   public:
     typedef ImageFactoryFromImage<TImageContainer> Self; 
-    
-    ///Checking concepts
-    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImageContainer> ));
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;

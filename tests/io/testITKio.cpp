@@ -44,12 +44,10 @@ using std::string;
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing ITK io
 ///////////////////////////////////////////////////////////////////////////////
-template <typename Image>
+template <concepts::CImage Image>
 bool
 test_image(const string& filename)
 {
-    BOOST_CONCEPT_ASSERT(( concepts::CImage<Image> ));
-
     typedef typename Image::Domain::Point Point;
     Point point0;
     Point point1;

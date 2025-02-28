@@ -99,29 +99,15 @@ namespace concepts
  */
 
 template <typename I>
-requires CConstBidirectionalRangeFromPoint<typename I::Range> &&
-         CBidirectionalRangeWithWritableIteratorFromPoint<typename I::Range, typename I::Value> &&
-         CTrivialImage<I> &&
-         CConstImage<I>
-struct CImage
-{
-public:
-
-    typedef typename I::Range Range;
-
-public:
-
-    BOOST_CONCEPT_USAGE(CImage)
-    {
-        ConceptUtils::sameType( myI.range(), myR);
-    }
-
-private:
-
-    I myI;
-    Range myR;
-
-};
+concept CImage = 
+    CConstBidirectionalRangeFromPoint<typename I::Range> &&
+    CBidirectionalRangeWithWritableIteratorFromPoint<typename I::Range, typename I::Value> &&
+    CTrivialImage<I> &&
+    CConstImage<I> && 
+    requires(I myI)
+    { 
+        { myI.range() } -> std::same_as<typename I::Range>;
+    };
 }
 } // namespace DGtal
 

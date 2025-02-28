@@ -42,20 +42,20 @@
 // ----------------------- Standard services ------------------------------
 
 //-----------------------------------------------------------------------------
-template < typename TKSpace, typename TImage, typename TEmbedder >
+template < typename TKSpace, DGtal::concepts::CImage TImage, typename TEmbedder >
 inline
 DGtal::ImageLinearCellEmbedder<TKSpace, TImage, TEmbedder>::
 ~ImageLinearCellEmbedder()
 {}
 //-----------------------------------------------------------------------------
-template < typename TKSpace, typename TImage, typename TEmbedder >
+template < typename TKSpace, DGtal::concepts::CImage TImage, typename TEmbedder >
 inline
 DGtal::ImageLinearCellEmbedder<TKSpace, TImage, TEmbedder>::
 ImageLinearCellEmbedder()
   : myPtrK( 0 ), myPtrImage( 0 ), myPtrEmbedder( 0 )
 {}
 //-----------------------------------------------------------------------------
-template < typename TKSpace, typename TImage, typename TEmbedder >
+template < typename TKSpace, DGtal::concepts::CImage TImage, typename TEmbedder >
 inline
 DGtal::ImageLinearCellEmbedder<TKSpace, TImage, TEmbedder>::
 ImageLinearCellEmbedder( const ImageLinearCellEmbedder & other )
@@ -65,7 +65,7 @@ ImageLinearCellEmbedder( const ImageLinearCellEmbedder & other )
     myIsoValue( other.myIsoValue )
 {}
 //-----------------------------------------------------------------------------
-template < typename TKSpace, typename TImage, typename TEmbedder >
+template < typename TKSpace, DGtal::concepts::CImage TImage, typename TEmbedder >
 inline
 DGtal::ImageLinearCellEmbedder<TKSpace, TImage, TEmbedder> &
 DGtal::ImageLinearCellEmbedder<TKSpace, TImage, TEmbedder>::
@@ -81,7 +81,7 @@ operator=( const ImageLinearCellEmbedder & other )
   return *this;
 }
 //-----------------------------------------------------------------------------
-template < typename TKSpace, typename TImage, typename TEmbedder >
+template < typename TKSpace, DGtal::concepts::CImage TImage, typename TEmbedder >
 inline
 void
 DGtal::ImageLinearCellEmbedder<TKSpace, TImage, TEmbedder>::
@@ -94,7 +94,7 @@ init( ConstAlias<KSpace> K, ConstAlias<Image> f, ConstAlias<Embedder> e,
   myIsoValue = iso_value;
 }
 //-----------------------------------------------------------------------------
-template < typename TKSpace, typename TImage, typename TEmbedder >
+template < typename TKSpace, DGtal::concepts::CImage TImage, typename TEmbedder >
 inline
 typename DGtal::ImageLinearCellEmbedder<TKSpace, TImage, TEmbedder>::RealPoint
 DGtal::ImageLinearCellEmbedder<TKSpace, TImage, TEmbedder>::
@@ -104,7 +104,7 @@ embed( const Point & p ) const
   return myPtrEmbedder->embed( p );
 }
 //-----------------------------------------------------------------------------
-template < typename TKSpace, typename TImage, typename TEmbedder >
+template < typename TKSpace, DGtal::concepts::CImage TImage, typename TEmbedder >
 inline
 typename DGtal::ImageLinearCellEmbedder<TKSpace, TImage, TEmbedder>::RealPoint
 DGtal::ImageLinearCellEmbedder<TKSpace, TImage, TEmbedder>::
@@ -113,7 +113,7 @@ embedCell( const Cell & cell ) const
   return this->operator()( cell );
 }
 //-----------------------------------------------------------------------------
-template < typename TKSpace, typename TImage, typename TEmbedder >
+template < typename TKSpace, DGtal::concepts::CImage TImage, typename TEmbedder >
 inline
 typename DGtal::ImageLinearCellEmbedder<TKSpace, TImage, TEmbedder>::RealPoint
 DGtal::ImageLinearCellEmbedder<TKSpace, TImage, TEmbedder>::
@@ -139,7 +139,7 @@ operator()( const Cell & cell ) const
   return x1;
 }
 //-----------------------------------------------------------------------------
-template < typename TKSpace, typename TImage, typename TEmbedder >
+template < typename TKSpace, DGtal::concepts::CImage TImage, typename TEmbedder >
 inline
 typename DGtal::ImageLinearCellEmbedder<TKSpace, TImage, TEmbedder>::RealPoint
 DGtal::ImageLinearCellEmbedder<TKSpace, TImage, TEmbedder>::
@@ -173,7 +173,7 @@ embedSCell( const SCell & scell ) const
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template < typename TKSpace, typename TImage, typename TEmbedder >
+template < typename TKSpace, DGtal::concepts::CImage TImage, typename TEmbedder >
 inline
 void
 DGtal::ImageLinearCellEmbedder<TKSpace, TImage, TEmbedder>::
@@ -186,7 +186,7 @@ selfDisplay ( std::ostream & out ) const
  * Checks the validity/consistency of the object.
  * @return 'true' if the object is valid, 'false' otherwise.
  */
-template < typename TKSpace, typename TImage, typename TEmbedder >
+template < typename TKSpace, DGtal::concepts::CImage TImage, typename TEmbedder >
 inline
 bool
 DGtal::ImageLinearCellEmbedder<TKSpace, TImage, TEmbedder>::

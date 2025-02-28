@@ -51,7 +51,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators                 //
 
-template <typename TImageContainer, typename TFunctor>
+template <DGtal::concepts::CImage TImageContainer, typename TFunctor>
 requires DGtal::concepts::CUnaryFunctor<TFunctor, unsigned char, typename TImageContainer::Value>
 inline
 TImageContainer
@@ -150,7 +150,7 @@ DGtal::HDF5Reader<TImageContainer, TFunctor>::importHDF5(const std::string & aFi
   return image;
 }
 
-template <typename TImageContainer, typename TFunctor>
+template <DGtal::concepts::CImage TImageContainer, typename TFunctor>
 requires DGtal::concepts::CUnaryFunctor<TFunctor, unsigned char, typename TImageContainer::Value>
 inline
 TImageContainer

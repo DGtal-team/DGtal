@@ -130,7 +130,7 @@ void fastFillImageWithPointFn ( ArrayImageAdapter<TIterator, TDomain>& anImage, 
     }
 }
 
-template < typename TImage >
+template < concepts::CImage TImage >
 void checkImage( TImage& anImage )
 {
   using Image = TImage;
@@ -139,9 +139,6 @@ void checkImage( TImage& anImage )
   using Point = typename Image::Point;
   using Coordinate = typename Point::Coordinate;
   using RefImage = ImageContainerBySTLVector<Domain, Value>;
-
-  // Checks CImage concept.
-  BOOST_CONCEPT_ASSERT( (DGtal::concepts::CImage<TImage>) );
 
   // Full domain
   auto const domain = anImage.domain();

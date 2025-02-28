@@ -87,15 +87,13 @@ ImageFactoryFromImage ImageFactoryFromHDF5
 @tparam T the type that should be a model of CImageFactory.
  */
 template <typename T>
+requires CImage<typename T::OutputImage>
 struct CImageFactory
 {
     // ----------------------- Concept checks ------------------------------
 public:
 
     typedef typename T::OutputImage OutputImage;
-
-    BOOST_CONCEPT_ASSERT(( CImage< OutputImage > ));
-
     BOOST_CONCEPT_USAGE( CImageFactory )
     {
         ConceptUtils::sameType( myOI, myT.requestImage(myDomain) );

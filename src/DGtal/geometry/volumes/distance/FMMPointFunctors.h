@@ -89,7 +89,7 @@ namespace DGtal
    *
    * @see FMM
    */
-  template <typename TImage, typename TSet>
+  template <concepts::CImage TImage, typename TSet>
   class L2FirstOrderLocalDistance
   {
 
@@ -98,7 +98,6 @@ namespace DGtal
 
 
     /// image
-    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImage> ));
     typedef TImage Image;
     typedef typename Image::Point Point;
     typedef typename Image::Value Value; 
@@ -224,16 +223,12 @@ namespace DGtal
    *
    * @see FMM
    */
-  template <typename TImage, typename TSet>
+  template <concepts::CImage TImage, typename TSet>
   class L2SecondOrderLocalDistance
   {
 
     // ----------------------- Types ------------------------------
   public:
-
-
-    /// image
-    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImage> ));
     typedef TImage Image;
     typedef typename Image::Point Point;
     typedef typename Image::Value Value; 
@@ -353,15 +348,11 @@ namespace DGtal
    *
    * @see FMM
    */
-  template <typename TImage, typename TSet>
+  template <concepts::CImage TImage, typename TSet>
   class LInfLocalDistance
   {
     // ----------------------- Types ------------------------------
   public:
-
-
-    /// image
-    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImage> ));
     typedef TImage Image;
     typedef typename Image::Point Point;
     typedef typename Image::Value Value; 
@@ -468,15 +459,11 @@ namespace DGtal
    *
    * @see FMM
    */
-  template <typename TImage, typename TSet>
+  template <concepts::CImage TImage, typename TSet>
   class L1LocalDistance
   {
     // ----------------------- Types ------------------------------
   public:
-
-
-    /// image
-    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImage> ));
     typedef TImage Image;
     typedef typename Image::Point Point;
     typedef typename Image::Value Value; 
@@ -700,16 +687,12 @@ namespace DGtal
    *
    * @see FMM
    */
-  template <typename TDistanceImage, typename TSet, concepts::CPointFunctor TSpeedFunctor>
+  template <concepts::CImage TDistanceImage, typename TSet, concepts::CPointFunctor TSpeedFunctor>
   class SpeedExtrapolator
   {
 
     // ----------------------- Types ------------------------------
   public:
-
-
-    /// image
-    BOOST_CONCEPT_ASSERT(( concepts::CImage<TDistanceImage> ));
     typedef TDistanceImage DistanceImage;
     typedef typename DistanceImage::Point Point;
     typedef typename DistanceImage::Value DistanceValue;

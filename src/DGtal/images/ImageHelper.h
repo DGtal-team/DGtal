@@ -160,7 +160,7 @@ namespace DGtal
    * @tparam It any model of forward iterator
    * @tparam Im any model of CImage
    */
-  template<typename It, typename Im>
+  template<typename It, concepts::CImage Im>
   void imageFromRangeAndValue(const It& itb, const It& ite, Im& aImg, 
 			      const typename Im::Value& aValue = 0); 
 
@@ -175,7 +175,7 @@ namespace DGtal
    * @tparam R any model of CConstSinglePassRange
    * @tparam I any model of CImage
    */
-  template<concepts::CConstSinglePassRange R, typename I>
+  template<concepts::CConstSinglePassRange R, concepts::CImage I>
   void imageFromRangeAndValue(const R& aRange, I& aImg, 
 			      const typename I::Value& aValue = 0); 
 
@@ -189,7 +189,7 @@ namespace DGtal
    * @tparam I any model of CImage
    * @tparam F any model of CPointFunctor
    */
-  template<typename I, concepts::CPointFunctor F>
+  template<concepts::CImage I, concepts::CPointFunctor F>
   void imageFromFunctor(I& aImg, const F& aFun); 
 
   /**
@@ -201,7 +201,7 @@ namespace DGtal
    * @tparam I1 any model of CImage
    * @tparam I2 any model of CConstImage
    */
-  template<typename I1, concepts::CConstImage I2>
+  template<concepts::CImage I1, concepts::CConstImage I2>
   void imageFromImage(I1& aImg1, const I2& aImg2); 
 
   /**
@@ -246,7 +246,7 @@ namespace DGtal
    * @see ImageContainerBySTLMap DigitalSetFromMap 
    * @see insertAndAlwaysSetValue
    */
-  template<typename I, typename S>
+  template<concepts::CImage I, typename S>
   bool insertAndSetValue(I& aImg, S& aSet, 
 			 const typename I::Point& aPoint, 
 			 const typename I::Value& aValue ); 
@@ -294,7 +294,7 @@ namespace DGtal
    * @see ImageContainerBySTLMap DigitalSetFromMap 
    * @see insertAndSetValue
    */
-  template<typename I, typename S>
+  template<concepts::CImage I, typename S>
   bool insertAndAlwaysSetValue(I& aImg, S& aSet, 
 			       const typename I::Point& aPoint, 
 			       const typename I::Value& aValue ); 

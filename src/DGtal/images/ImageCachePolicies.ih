@@ -41,7 +41,7 @@
 
 // ----------------------- Specialization DGtal::CACHE_READ_POLICY_LAST ------------------------------
 
-template <typename TImageContainer, typename TImageFactory>
+template <DGtal::concepts::CImage TImageContainer, typename TImageFactory>
 inline
 TImageContainer *
 DGtal::ImageCacheReadPolicyLAST<TImageContainer, TImageFactory>::getPage(const Point & aPoint)
@@ -55,7 +55,7 @@ DGtal::ImageCacheReadPolicyLAST<TImageContainer, TImageFactory>::getPage(const P
   return NULL;
 }
 
-template <typename TImageContainer, typename TImageFactory>
+template <DGtal::concepts::CImage TImageContainer, typename TImageFactory>
 inline
 TImageContainer *
 DGtal::ImageCacheReadPolicyLAST<TImageContainer, TImageFactory>::getPage(const Domain & aDomain)
@@ -69,7 +69,7 @@ DGtal::ImageCacheReadPolicyLAST<TImageContainer, TImageFactory>::getPage(const D
   return NULL;
 }
 
-template <typename TImageContainer, typename TImageFactory>
+template <DGtal::concepts::CImage TImageContainer, typename TImageFactory>
 inline
 TImageContainer *
 DGtal::ImageCacheReadPolicyLAST<TImageContainer, TImageFactory>::getPageToDetach()
@@ -77,7 +77,7 @@ DGtal::ImageCacheReadPolicyLAST<TImageContainer, TImageFactory>::getPageToDetach
   return myCacheImagesPtr;
 }
 
-template <typename TImageContainer, typename TImageFactory>
+template <DGtal::concepts::CImage TImageContainer, typename TImageFactory>
 inline
 void 
 DGtal::ImageCacheReadPolicyLAST<TImageContainer, TImageFactory>::updateCache(const Domain &aDomain)
@@ -85,7 +85,7 @@ DGtal::ImageCacheReadPolicyLAST<TImageContainer, TImageFactory>::updateCache(con
   myCacheImagesPtr = myImageFactory->requestImage(aDomain);
 }
 
-template <typename TImageContainer, typename TImageFactory>
+template <DGtal::concepts::CImage TImageContainer, typename TImageFactory>
 inline
 void
 DGtal::ImageCacheReadPolicyLAST<TImageContainer, TImageFactory>::clearCache()
@@ -95,7 +95,7 @@ DGtal::ImageCacheReadPolicyLAST<TImageContainer, TImageFactory>::clearCache()
 
 // ----------------------- Specialization DGtal::CACHE_READ_POLICY_FIFO ------------------------------
 
-template <typename TImageContainer, typename TImageFactory>
+template <DGtal::concepts::CImage TImageContainer, typename TImageFactory>
 inline
 TImageContainer *
 DGtal::ImageCacheReadPolicyFIFO<TImageContainer, TImageFactory>::getPage(const Point & aPoint)
@@ -110,7 +110,7 @@ DGtal::ImageCacheReadPolicyFIFO<TImageContainer, TImageFactory>::getPage(const P
   return NULL;
 }
 
-template <typename TImageContainer, typename TImageFactory>
+template <DGtal::concepts::CImage TImageContainer, typename TImageFactory>
 inline
 TImageContainer *
 DGtal::ImageCacheReadPolicyFIFO<TImageContainer, TImageFactory>::getPage(const Domain & aDomain)
@@ -125,7 +125,7 @@ DGtal::ImageCacheReadPolicyFIFO<TImageContainer, TImageFactory>::getPage(const D
   return NULL;
 }
 
-template <typename TImageContainer, typename TImageFactory>
+template <DGtal::concepts::CImage TImageContainer, typename TImageFactory>
 inline
 TImageContainer *
 DGtal::ImageCacheReadPolicyFIFO<TImageContainer, TImageFactory>::getPageToDetach()
@@ -141,7 +141,7 @@ DGtal::ImageCacheReadPolicyFIFO<TImageContainer, TImageFactory>::getPageToDetach
   return pageToDetach;
 }
 
-template <typename TImageContainer, typename TImageFactory>
+template <DGtal::concepts::CImage TImageContainer, typename TImageFactory>
 inline
 void
 DGtal::ImageCacheReadPolicyFIFO<TImageContainer, TImageFactory>::updateCache(const Domain &aDomain)
@@ -149,7 +149,7 @@ DGtal::ImageCacheReadPolicyFIFO<TImageContainer, TImageFactory>::updateCache(con
   myFIFOCacheImages.push_back(myImageFactory->requestImage(aDomain));
 }
 
-template <typename TImageContainer, typename TImageFactory>
+template <DGtal::concepts::CImage TImageContainer, typename TImageFactory>
 inline
 void
 DGtal::ImageCacheReadPolicyFIFO<TImageContainer, TImageFactory>::clearCache()
@@ -159,7 +159,7 @@ DGtal::ImageCacheReadPolicyFIFO<TImageContainer, TImageFactory>::clearCache()
 
 // ----------------------- Specialization DGtal::CACHE_WRITE_POLICY_WT ------------------------------
 
-template <typename TImageContainer, typename TImageFactory>
+template <DGtal::concepts::CImage TImageContainer, typename TImageFactory>
 inline
 void
 DGtal::ImageCacheWritePolicyWT<TImageContainer, TImageFactory>::writeInPage(TImageContainer * anImageContainer, const Point & aPoint, const Value &aValue)
@@ -169,7 +169,7 @@ DGtal::ImageCacheWritePolicyWT<TImageContainer, TImageFactory>::writeInPage(TIma
   myImageFactory->flushImage(anImageContainer); // DGtal::CACHE_WRITE_POLICY_WT
 }
 
-template <typename TImageContainer, typename TImageFactory>
+template <DGtal::concepts::CImage TImageContainer, typename TImageFactory>
 inline
 void
 DGtal::ImageCacheWritePolicyWT<TImageContainer, TImageFactory>::flushPage(TImageContainer * anImageContainer)
@@ -179,7 +179,7 @@ DGtal::ImageCacheWritePolicyWT<TImageContainer, TImageFactory>::flushPage(TImage
 
 // ----------------------- Specialization DGtal::CACHE_WRITE_POLICY_WB ------------------------------
 
-template <typename TImageContainer, typename TImageFactory>
+template <DGtal::concepts::CImage TImageContainer, typename TImageFactory>
 inline
 void
 DGtal::ImageCacheWritePolicyWB<TImageContainer, TImageFactory>::writeInPage(TImageContainer * anImageContainer, const Point & aPoint, const Value &aValue)
@@ -187,7 +187,7 @@ DGtal::ImageCacheWritePolicyWB<TImageContainer, TImageFactory>::writeInPage(TIma
   anImageContainer->setValue(aPoint, aValue);
 }
 
-template <typename TImageContainer, typename TImageFactory>
+template <DGtal::concepts::CImage TImageContainer, typename TImageFactory>
 inline
 void
 DGtal::ImageCacheWritePolicyWB<TImageContainer, TImageFactory>::flushPage(TImageContainer * anImageContainer)

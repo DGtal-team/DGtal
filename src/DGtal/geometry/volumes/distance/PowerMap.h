@@ -104,16 +104,13 @@ namespace DGtal
     */
   template < concepts::CConstImage TWeightImage,
              concepts::CPowerSeparableMetric TPowerSeparableMetric,
-             typename TImageContainer =
+             concepts::CImage TImageContainer =
              ImageContainerBySTLVector<HyperRectDomain<typename TWeightImage::Domain::Space>,
                                        typename TWeightImage::Domain::Space::Vector> >
   class PowerMap
   {
 
   public:
-
-    BOOST_CONCEPT_ASSERT(( concepts::CImage< TImageContainer > ));
-
     ///Copy of the distance image types
     typedef TWeightImage WeightImage;
     typedef typename TWeightImage::Value Weight;

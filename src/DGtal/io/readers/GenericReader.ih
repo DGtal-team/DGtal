@@ -34,7 +34,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // IMPLEMENTATION of inline functions.
 
-template <typename TContainer, int TDim, typename TValue>
+template <DGtal::concepts::CImage TContainer, int TDim, typename TValue>
 inline
 TContainer
 DGtal::GenericReader<TContainer, TDim, TValue>::
@@ -62,7 +62,7 @@ import( const std::string &       filename,
 
 
 
-template <typename TContainer, typename TValue>
+template <DGtal::concepts::CImage TContainer, typename TValue>
 inline
 TContainer
 DGtal::GenericReader<TContainer, 3, TValue>::
@@ -114,7 +114,7 @@ import( const std::string & filename,
 
 
 
-template <typename TContainer>
+template <DGtal::concepts::CImage TContainer>
 inline
 TContainer
 DGtal::GenericReader<TContainer, 3, DGtal::uint32_t>::
@@ -145,7 +145,7 @@ import( const std::string & filename,
 
 
 
-template <typename TContainer>
+template <DGtal::concepts::CImage TContainer>
 inline
 TContainer
 DGtal::GenericReader<TContainer, 3, DGtal::uint64_t>::
@@ -165,7 +165,7 @@ import( const std::string & filename)
 
 
 
-template <typename TContainer, typename TValue>
+template <DGtal::concepts::CImage TContainer, typename TValue>
 inline
 TContainer
 DGtal::GenericReader<TContainer, 2, TValue>::
@@ -210,7 +210,7 @@ import( const std::string &filename,
 
 
 
-template <typename TContainer>
+template <DGtal::concepts::CImage TContainer>
 inline
 TContainer
 DGtal::GenericReader<TContainer, 2, DGtal::uint32_t>::

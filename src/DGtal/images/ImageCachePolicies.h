@@ -73,13 +73,12 @@ namespace DGtal
  *  - updateCache :             for updating the cache according to the cache policy
  *  - clearCache :              for clearing the cache
  */
-template <typename TImageContainer, typename TImageFactory>
+template <concepts::CImage TImageContainer, typename TImageFactory>
 class ImageCacheReadPolicyLAST
 {
 public:
   
     ///Checking concepts
-    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImageContainer> ));
     BOOST_CONCEPT_ASSERT(( concepts::CImageFactory<TImageFactory> ));    
     
     typedef TImageFactory ImageFactory;
@@ -178,13 +177,12 @@ protected:
  *  - updateCache :             for updating the cache according to the cache policy
  *  - clearCache :              for clearing the cache
  */
-template <typename TImageContainer, typename TImageFactory>
+template <concepts::CImage TImageContainer, typename TImageFactory>
 class ImageCacheReadPolicyFIFO
 {
 public:
   
     ///Checking concepts
-    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImageContainer> ));
     BOOST_CONCEPT_ASSERT(( concepts::CImageFactory<TImageFactory> ));    
     
     typedef TImageFactory ImageFactory;
@@ -282,13 +280,12 @@ protected:
  *  - writeInPage :     for setting a value on an image at a given position given by a point
  *  - flushPage :       for flushing the image on disk according to the cache policy
  */
-template <typename TImageContainer, typename TImageFactory>
+template <concepts::CImage TImageContainer, typename TImageFactory>
 class ImageCacheWritePolicyWT
 {
 public:
   
     ///Checking concepts
-    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImageContainer> ));
     BOOST_CONCEPT_ASSERT(( concepts::CImageFactory<TImageFactory> ));
   
     typedef TImageFactory ImageFactory;
@@ -358,13 +355,12 @@ protected:
  *  - writeInPage :     for setting a value on an image at a given position given by a point
  *  - flushPage :       for flushing the image on disk according to the cache policy
  */
-template <typename TImageContainer, typename TImageFactory>
+template <concepts::CImage TImageContainer, typename TImageFactory>
 class ImageCacheWritePolicyWB
 {
 public:
   
     ///Checking concepts
-    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImageContainer> ));
     BOOST_CONCEPT_ASSERT(( concepts::CImageFactory<TImageFactory> ));
   
     typedef TImageFactory ImageFactory;

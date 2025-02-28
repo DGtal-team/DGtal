@@ -59,15 +59,12 @@ namespace DGtal
    *
    * @tparam TImage an model of CImageContainer concept.
    */
-  template <typename TImage>
+  template <concepts::CImage TImage>
   struct ImageFromSet
   {
     typedef TImage Image;
     typedef typename TImage::Value Value;
   
-    
-    BOOST_CONCEPT_ASSERT(( concepts::CImage<Image> ));
-    
 
     /** 
      * Create an Image from a DigitalSet. The size of the output image

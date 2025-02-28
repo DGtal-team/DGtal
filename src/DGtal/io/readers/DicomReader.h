@@ -86,7 +86,7 @@ namespace DGtal
  */
 
 
-  template <typename TImageContainer,
+  template <concepts::CImage TImageContainer,
 	    typename TFunctor = functors::Cast< typename TImageContainer::Value > >
   requires concepts::CUnaryFunctor<TFunctor, int32_t /* PixelType */, typename TImageContainer::Value>
   struct DicomReader
@@ -99,7 +99,6 @@ namespace DGtal
     typedef TFunctor Functor;
     typedef int32_t PixelType;
     
-    BOOST_CONCEPT_ASSERT((  concepts::CImage<ImageContainer> )) ;
     BOOST_STATIC_ASSERT(( TImageContainer::Domain::dimension == 3 ));
     
     /**

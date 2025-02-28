@@ -46,7 +46,7 @@
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename T>
+template <DGtal::concepts::CImage T>
 requires DGtal::concepts::CVertexMap<T>
 inline
 void

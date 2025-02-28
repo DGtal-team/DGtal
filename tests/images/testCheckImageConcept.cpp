@@ -65,13 +65,13 @@ bool testCheckImageConcept()
   //HashTree is not (yet) a model of CImage
   typedef experimental::ImageContainerByHashTree<Domain, int>  ImageHash;
 
-  BOOST_CONCEPT_ASSERT(( concepts::CImage< ImageVector >));
-  BOOST_CONCEPT_ASSERT(( concepts::CImage< ImageMap >));
+  DGTAL_CONCEPT_CHECK(requires concepts::CImage< ImageVector >);
+  DGTAL_CONCEPT_CHECK(requires concepts::CImage< ImageMap >);
 #ifdef  DGTAL_WITH_ITK
-  BOOST_CONCEPT_ASSERT(( concepts::CImage< ImageITK >));
+  DGTAL_CONCEPT_CHECK(requires concepts::CImage< ImageITK >);
 #endif
 
-  BOOST_CONCEPT_ASSERT(( concepts::CImage< ImageHash >));
+  DGTAL_CONCEPT_CHECK(requires concepts::CImage< ImageHash >);
 
   trace.endBlock();
   

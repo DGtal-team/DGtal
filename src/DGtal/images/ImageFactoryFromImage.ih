@@ -46,7 +46,7 @@
  * Writes/Displays the object on an output stream.
  * @param out the output stream where the object is written.
  */
-template <typename TImageContainer>
+template <DGtal::concepts::CImage TImageContainer>
 inline
 void
 DGtal::ImageFactoryFromImage<TImageContainer>::selfDisplay ( std::ostream & out ) const

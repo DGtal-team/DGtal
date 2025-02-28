@@ -50,7 +50,7 @@
 
 namespace DGtal {
 
-  template <typename I>
+  template <DGtal::concepts::CImage I>
   I ITKReader<I>::importITK(
   const std::string & filename, bool shiftDomainUsingOrigin )
   {
@@ -58,7 +58,7 @@ namespace DGtal {
     return DGtal::ITKReader<I>::importITK(filename,def , shiftDomainUsingOrigin); 
   }
   
-  template <typename I>
+  template <DGtal::concepts::CImage I>
   template <typename TFunctor>
   requires concepts::CUnaryFunctor<TFunctor, typename ITKIOTrait<typename I::Value>::ValueOut, typename I::Value>
   I ITKReader<I>::importITK(
@@ -143,7 +143,7 @@ namespace DGtal {
     }
   }
 
-  template <typename I>
+  template <DGtal::concepts::CImage I>
   itk::ImageIOBase::IOComponentType
   ITKReader<I>::getITKComponentType( const std::string & filename )
   {
@@ -168,7 +168,7 @@ namespace DGtal {
     return componentType;
   }
 
-  template <typename I>
+  template <DGtal::concepts::CImage I>
   template <typename Domain, typename PixelType>
   inline
   ImageContainerByITKImage<Domain, PixelType>
@@ -210,7 +210,7 @@ namespace DGtal {
     return image;
   }
 
-  template <typename I>
+  template <DGtal::concepts::CImage I>
   template <typename Image, typename Domain, typename OrigValue,
 	    typename TFunctor, typename Value>
   Image
@@ -239,7 +239,7 @@ namespace DGtal {
 
 
   //specialization
-  template <typename I>
+  template <DGtal::concepts::CImage I>
   template <typename Domain, typename OrigValue, typename TFunctor,
 	    typename Value>
   ImageContainerByITKImage<Domain, Value>
@@ -280,7 +280,7 @@ namespace DGtal {
 
 
 
-  template <typename I>
+  template <DGtal::concepts::CImage I>
   template <typename TypeDGtalImage, typename TFunctor>
   typename ITKReader<I>::Image ITKReader<I>::
   readDGtalImageFromITKtypes( const std::string & filename,

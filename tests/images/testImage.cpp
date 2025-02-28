@@ -53,12 +53,9 @@ using namespace std;
  * Image tests.
  *
  **/
-template<typename Image>
+template<concepts::CImage Image>
 bool testImage(const Image& aImage)
 {
-
-    BOOST_CONCEPT_ASSERT(( concepts::CImage<Image> ));
-
     int nb = 0;
     int nbok = 0;
 

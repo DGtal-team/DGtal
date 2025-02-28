@@ -86,7 +86,7 @@ namespace DGtal
    */
   template < typename TWeightImage,
              typename TPSeparableMetric,
-             typename TImageContainer =
+             concepts::CImage TImageContainer =
                ImageContainerBySTLVector<HyperRectDomain<typename TWeightImage::Domain::Space>,
              typename TWeightImage::Domain::Space::Vector>
            >
@@ -104,7 +104,6 @@ namespace DGtal
 
     ///Image Container type
     typedef TImageContainer ImageContainer;
-    BOOST_CONCEPT_ASSERT(( concepts::CImage<ImageContainer> ));
 
     ///Separable Metric type value type
     typedef typename PowerSeparableMetric::Value Value;

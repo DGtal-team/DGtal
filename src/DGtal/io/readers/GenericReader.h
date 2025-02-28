@@ -95,11 +95,9 @@ namespace DGtal
    * @tparam Tdim the dimension of the container (by default given by the container).
    *
    */
-  template <typename TContainer, int Tdim=TContainer::Point::dimension,  typename TValue = typename TContainer::Value>
+  template <concepts::CImage TContainer, int Tdim=TContainer::Point::dimension,  typename TValue = typename TContainer::Value>
   struct GenericReader
   {
-    BOOST_CONCEPT_ASSERT((  concepts::CImage<TContainer> )) ;
-
     /**
      * Import a volume nd image file.  For the special format of raw
      * image, the default parameter of the image size must be given in
@@ -204,10 +202,9 @@ namespace DGtal
    * GenericReader
    * Template partial specialisation for volume images of dimension 3
    **/
-  template <typename TContainer, typename TValue>
+  template <concepts::CImage TContainer, typename TValue>
   struct GenericReader<TContainer, 3, TValue>
   {
-    BOOST_CONCEPT_ASSERT((  concepts::CImage<TContainer> )) ;
     /**
      * Import a volume image file.  For the special format of raw
      * image, the default parameter x,y, z need to be updated
@@ -293,10 +290,9 @@ namespace DGtal
    * GenericReader
    * Template partial specialisation for volume images with 32 bits values
    **/
-  template <typename TContainer>
+  template <concepts::CImage TContainer>
   struct GenericReader<TContainer, 3 , DGtal::uint32_t>
   {
-    BOOST_CONCEPT_ASSERT((  concepts::CImage<TContainer> )) ;
     /**
      * Import a volume image file.  For the special format of raw
      * image, the default parameter x,y, z need to be updated
@@ -370,10 +366,9 @@ namespace DGtal
    * GenericReader
    * Template partial specialisation for volume images with 32 bits values
    **/
-  template <typename TContainer>
+  template <concepts::CImage TContainer>
   struct GenericReader<TContainer, 3 , DGtal::uint64_t>
   {
-    BOOST_CONCEPT_ASSERT((  concepts::CImage<TContainer> )) ;
     /**
      * Import a volume image file.  
      *
@@ -390,11 +385,9 @@ namespace DGtal
    * GenericReader
    * Template partial specialisation for volume images of dimension 2
    **/
-  template <typename TContainer, typename TValue>
+  template <concepts::CImage TContainer, typename TValue>
   struct GenericReader<TContainer, 2, TValue>
   {
-    BOOST_CONCEPT_ASSERT((  concepts::CImage<TContainer> )) ;
-
     /**
      * Import a volume image file.  For the special format h5 (you need to set  DGTAL_WITH_HDF5 of cmake build),
      *  the default parameter datasetName needs to be updated
@@ -501,11 +494,9 @@ namespace DGtal
    * GenericReader
    * Template partial specialisation for volume images of dimension 2 with DGtal::uint32_t values
    **/
-  template <typename TContainer>
+  template <concepts::CImage TContainer>
   struct GenericReader<TContainer, 2, DGtal::uint32_t>
   {
-    BOOST_CONCEPT_ASSERT((  concepts::CImage<TContainer> )) ;
-
     /**
      * Import a volume image file.  For the special format h5 (you need to set  DGTAL_WITH_HDF5 of cmake build),
      *  the default parameter datasetName needs to be updated

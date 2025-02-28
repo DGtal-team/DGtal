@@ -77,14 +77,13 @@ namespace DGtal
    * @see ITKWriter
    * @see ITKIOTrait
    */
-  template <typename TImage>
+  template <concepts::CImage TImage>
   struct ITKDicomReader
   {
     typedef TImage Image;
     typedef typename TImage::Value Value;
     typedef typename ITKIOTrait<Value>::ValueOut ValueOut;
 
-    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImage> ));
     BOOST_STATIC_ASSERT(( (TImage::Domain::dimension == 3)
 			  || (TImage::Domain::dimension == 2) ));
 

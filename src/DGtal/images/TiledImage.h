@@ -74,7 +74,7 @@ namespace DGtal
    * so for example, if two TiledImage instances are successively created with the same read policy instance,
    * the state of the cache for a given time is therefore the same for the two TiledImage instances !
    */
-  template <typename TImageContainer, typename TImageFactory, typename TImageCacheReadPolicy, typename TImageCacheWritePolicy>
+  template <concepts::CImage TImageContainer, typename TImageFactory, typename TImageCacheReadPolicy, typename TImageCacheWritePolicy>
   class TiledImage
   {
 
@@ -84,7 +84,6 @@ namespace DGtal
     typedef TiledImage<TImageContainer, TImageFactory, TImageCacheReadPolicy, TImageCacheWritePolicy> Self;
 
     ///Checking concepts
-    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImageContainer> ));
     BOOST_CONCEPT_ASSERT(( concepts::CImageFactory<TImageFactory> ));
     BOOST_CONCEPT_ASSERT(( concepts::CImageCacheReadPolicy<TImageCacheReadPolicy> ));
     BOOST_CONCEPT_ASSERT(( concepts::CImageCacheWritePolicy<TImageCacheWritePolicy> ));

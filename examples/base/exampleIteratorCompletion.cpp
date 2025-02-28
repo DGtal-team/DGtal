@@ -201,7 +201,7 @@ int main()
   typedef My2DImage::Point    Point;
   
   // Checks CImage concept
-  BOOST_CONCEPT_ASSERT( (DGtal::concepts::CImage<My2DImage>) );
+  DGTAL_CONCEPT_CHECK(requires DGtal::concepts::CImage<My2DImage>);
 
   // Construction
   My2DImage image( Domain( Point(0,0), Point(2,3) ) );

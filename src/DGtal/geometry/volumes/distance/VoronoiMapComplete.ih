@@ -39,7 +39,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-template <DGtal::concepts::CSpace S, DGtal::concepts::CPointPredicate P, DGtal::concepts::CSeparableMetric TSep, typename TImage>
+template <DGtal::concepts::CSpace S, DGtal::concepts::CPointPredicate P, DGtal::concepts::CSeparableMetric TSep, DGtal::concepts::CImage TImage>
 inline void DGtal::VoronoiMapComplete<S, P, TSep, TImage>::compute()
 {
   // We copy the image extent
@@ -72,7 +72,7 @@ inline void DGtal::VoronoiMapComplete<S, P, TSep, TImage>::compute()
   }
 }
 
-template <DGtal::concepts::CSpace S, DGtal::concepts::CPointPredicate P, DGtal::concepts::CSeparableMetric TSep, typename TImage>
+template <DGtal::concepts::CSpace S, DGtal::concepts::CPointPredicate P, DGtal::concepts::CSeparableMetric TSep, DGtal::concepts::CImage TImage>
 inline void DGtal::VoronoiMapComplete<S, P, TSep, TImage>::computeOtherSteps(
 const Dimension dim ) const
 {
@@ -117,7 +117,7 @@ const Dimension dim ) const
 
 // //////////////////////////////////////////////////////////////////////:
 // ////////////////////////// Other Phases
-template <DGtal::concepts::CSpace S, DGtal::concepts::CPointPredicate P, DGtal::concepts::CSeparableMetric TSep, typename TImage>
+template <DGtal::concepts::CSpace S, DGtal::concepts::CPointPredicate P, DGtal::concepts::CSeparableMetric TSep, DGtal::concepts::CImage TImage>
 void DGtal::VoronoiMapComplete<S, P, TSep, TImage>::computeOtherStep1D(
 const Point & startingPoint, const Dimension dim ) const
 {
@@ -328,7 +328,7 @@ const Point & startingPoint, const Dimension dim ) const
 /**
  * Constructor.
  */
-template <DGtal::concepts::CSpace S, DGtal::concepts::CPointPredicate P, DGtal::concepts::CSeparableMetric TSep, typename TImage>
+template <DGtal::concepts::CSpace S, DGtal::concepts::CPointPredicate P, DGtal::concepts::CSeparableMetric TSep, DGtal::concepts::CImage TImage>
 inline DGtal::VoronoiMapComplete<S, P, TSep, TImage>::VoronoiMapComplete(ConstAlias<Domain> aDomain,
                                                                          ConstAlias<PointPredicate> aPredicate,
                                                                          ConstAlias<SeparableMetric> aMetric )
@@ -343,7 +343,7 @@ inline DGtal::VoronoiMapComplete<S, P, TSep, TImage>::VoronoiMapComplete(ConstAl
   compute();
 }
 
-template <DGtal::concepts::CSpace S, DGtal::concepts::CPointPredicate P, DGtal::concepts::CSeparableMetric TSep, typename TImage>
+template <DGtal::concepts::CSpace S, DGtal::concepts::CPointPredicate P, DGtal::concepts::CSeparableMetric TSep, DGtal::concepts::CImage TImage>
 inline DGtal::VoronoiMapComplete<S, P, TSep, TImage>::VoronoiMapComplete(ConstAlias<Domain> aDomain,
                                                                          ConstAlias<PointPredicate> aPredicate,
                                                                          ConstAlias<SeparableMetric> aMetric,
@@ -364,7 +364,7 @@ inline DGtal::VoronoiMapComplete<S, P, TSep, TImage>::VoronoiMapComplete(ConstAl
   compute();
 }
 
-template <DGtal::concepts::CSpace S, DGtal::concepts::CPointPredicate P, DGtal::concepts::CSeparableMetric TSep, typename TImage>
+template <DGtal::concepts::CSpace S, DGtal::concepts::CPointPredicate P, DGtal::concepts::CSeparableMetric TSep, DGtal::concepts::CImage TImage>
 inline typename DGtal::VoronoiMapComplete<S, P, TSep, TImage>::Point
 DGtal::VoronoiMapComplete<S, P, TSep, TImage>::projectPoint(
 Point aPoint ) const
@@ -375,7 +375,7 @@ Point aPoint ) const
   return aPoint;
 }
 
-template <DGtal::concepts::CSpace S, DGtal::concepts::CPointPredicate P, DGtal::concepts::CSeparableMetric TSep, typename TImage>
+template <DGtal::concepts::CSpace S, DGtal::concepts::CPointPredicate P, DGtal::concepts::CSeparableMetric TSep, DGtal::concepts::CImage TImage>
 inline typename DGtal::VoronoiMapComplete<S, P, TSep, TImage>::Point::Coordinate
 DGtal::VoronoiMapComplete<S, P, TSep, TImage>::projectCoordinate(typename Point::Coordinate aCoordinate,
                                                                  const Dimension aDim ) const
@@ -389,7 +389,7 @@ DGtal::VoronoiMapComplete<S, P, TSep, TImage>::projectCoordinate(typename Point:
          myDomainPtr->lowerBound()[ aDim ];
 }
 
-template <DGtal::concepts::CSpace S, DGtal::concepts::CPointPredicate P, DGtal::concepts::CSeparableMetric TSep, typename TImage>
+template <DGtal::concepts::CSpace S, DGtal::concepts::CPointPredicate P, DGtal::concepts::CSeparableMetric TSep, DGtal::concepts::CImage TImage>
 inline void DGtal::VoronoiMapComplete<S, P, TSep, TImage>::selfDisplay(
 std::ostream & out ) const
 {

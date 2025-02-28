@@ -58,7 +58,7 @@ namespace DGtal
  * @tparam TFunctor the type of functor used in the import (by default set to functors::Cast< TImageContainer::Value>). 
  *
  */
-  template <typename TImageContainer, typename TFunctor= functors::Cast< typename TImageContainer::Value > >
+  template <concepts::CImage TImageContainer, typename TFunctor= functors::Cast< typename TImageContainer::Value > >
   requires concepts::CUnaryFunctor<TFunctor, unsigned char, typename TImageContainer::Value>
   struct HDF5Reader
   {
@@ -71,8 +71,6 @@ namespace DGtal
     typedef typename TImageContainer::Domain::Vector Vector;
     typedef typename TImageContainer::Value Value;    
     typedef TFunctor Functor;
-    
-    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImageContainer> ));
     
     BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2) || 
                          (ImageContainer::Domain::dimension == 3));

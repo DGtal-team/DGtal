@@ -65,14 +65,11 @@ namespace DGtal
    *
    *
    */
-  template < typename TImageContainer >
+  template < concepts::CImage TImageContainer >
   requires concepts::CVertexMap<TImageContainer>
   class Image
   {
   public:
-
-    ///Checking concepts
-    BOOST_CONCEPT_ASSERT(( concepts::CImage<TImageContainer> ));
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;

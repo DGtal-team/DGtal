@@ -64,12 +64,10 @@ namespace DGtal
    */
   
   template < typename TKSpace,
-             typename TImage,
+             concepts::CImage TImage,
              typename TEmbedder >
   class ImageLinearCellEmbedder
   {
-    BOOST_CONCEPT_ASSERT(( concepts::CImage< TImage > ));
-
   public:
     typedef TKSpace KSpace;
     typedef TImage Image;
