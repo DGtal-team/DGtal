@@ -268,6 +268,12 @@ namespace DGtal
     Quantity eval(const SurfelConstIterator& it) const;
 
     /**
+     * @return the estimated quantity at scell
+     * @param [in] it the surfel iterator at which we evaluate the quantity.
+     */
+    Quantity eval(const Surfel& scell) const;
+
+    /**
      * @return the estimated quantity in the range [itb,ite)
      * @param [in] itb starting surfel iterator.
      * @param [in] ite end surfel iterator.
@@ -278,6 +284,15 @@ namespace DGtal
     OutputIterator eval(const SurfelConstIterator& itb,
                         const SurfelConstIterator& ite,
                         OutputIterator result) const;
+
+    /**
+       Writes on \e result the estimated quantity at all surfels of the digital surface.
+       @param result any model of boost::OutputIterator on Quantity.
+       @return the output iterator after the last write.
+     */
+    template<typename OutputIterator>
+    OutputIterator evalAll(OutputIterator result) const;
+
 
 
     /**
