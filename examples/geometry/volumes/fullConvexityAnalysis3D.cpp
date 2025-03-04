@@ -123,7 +123,7 @@ struct Analyzer {
   template < typename ImagePtr >
   static
   std::vector<int>
-  run( const KSpace& aK, std::vector<Point> pts, ImagePtr bimage )
+  run( const KSpace& aK, const std::vector<Point>& pts, ImagePtr bimage )
   {
     NCA nca( aK.lowerBound(), aK.upperBound(), 0 );
     // KSpace::dimension <= 2 ? 0 : 10000*KSpace::dimension*N );
@@ -161,7 +161,7 @@ struct Analyzer {
   static
   void
   run( std::vector<int> & to_update,
-       const KSpace& aK, std::vector<Point> pts, ImagePtr bimage )
+       const KSpace& aK, const std::vector<Point>& pts, ImagePtr bimage )
   {
     NCA nca( aK.lowerBound(), aK.upperBound() );
     // KSpace::dimension <= 2 ? 0 : 10000*KSpace::dimension*N );
@@ -202,11 +202,11 @@ struct MultiScaleAnalyzer {
   static
   std::vector< Geometry >
   multiscale_run( const KSpace& aK,
-                  std::vector<Point> pts,
+                  const std::vector<Point>& pts,
                   ImagePtr bimage )
   {
     auto prev_geometry
-      = MultiScaleAnalyzer< KSpace, N-1>::multiscale_run( ak, pts, bimage );
+      = MultiScaleAnalyzer< KSpace, N-1>::multiscale_run( aK, pts, bimage );
     trace.info() << "------- Analyzing scale " << N << " --------" << std::endl;
     std::vector< int > geom( prev_geometry.size() );
     for ( int i = 0; i < geom.size(); i++ )
@@ -231,7 +231,7 @@ struct MultiScaleAnalyzer< KSpace, 0 > {
   static
   std::vector< Geometry >
   multiscale_run( const KSpace& aK,
-                  std::vector<Point> pts,
+                  const std::vector<Point>& pts,
                   ImagePtr bimage )
   {
     ((void) aK);
