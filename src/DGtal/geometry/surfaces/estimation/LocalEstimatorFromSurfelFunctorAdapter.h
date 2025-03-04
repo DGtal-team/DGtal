@@ -269,7 +269,7 @@ namespace DGtal
 
     /**
      * @return the estimated quantity at scell
-     * @param [in] it the surfel iterator at which we evaluate the quantity.
+     * @param [in] scell the surfel at which we evaluate the quantity.
      */
     Quantity eval(const Surfel& scell) const;
 
