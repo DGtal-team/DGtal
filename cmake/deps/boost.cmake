@@ -142,3 +142,15 @@ if(NOT TARGET Boost::boost)
         add_library(Boost::boost ALIAS Boost::headers)
     endif()
 endif()
+
+# Install boost files when installing library
+install(DIRECTORY ${BOOST_INCLUDE_DIRS}/Boost DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/DGtal/3rdParties/)
+install(TARGETS boost_headers EXPORT boost_headers)
+install(EXPORT boost_headers DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/boost NAMESPACE Boost::)
+
+# Export target Boost::headers
+export(TARGETS
+    boost_headers
+    NAMESPACE Boost::
+    FILE BoostTargets.cmake
+)
