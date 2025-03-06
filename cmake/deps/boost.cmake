@@ -51,6 +51,7 @@ set(BOOST_INCLUDE_LIBRARIES
     polygon
     system
     thread
+    throw_exception
     timer
     uuid
     vmd

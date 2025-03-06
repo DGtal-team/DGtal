@@ -13,7 +13,7 @@ set(Boost_USE_STATIC_LIBS   ON)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
 include(boost)
-set(DGtalLibDependencies ${DGtalLibDependencies} Boost::headers)
+set(DGtalLibDependencies ${DGtalLibDependencies} Boost::headers )
 
 target_compile_definitions(DGTAL_BoostAddons PUBLIC ${BOOST_DEFINITIONS})
 #target_include_directories(DGTAL_BoostAddons SYSTEM PUBLIC ${Boost_INCLUDE_DIRS} )
