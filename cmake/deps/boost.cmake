@@ -21,40 +21,148 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 # Restrict the list of Boost targets to expose in the project (this should be the superset of all
 # Boost libraries directly depended on by any subproject).
 set(BOOST_INCLUDE_LIBRARIES
-    accumulators
     algorithm
     align
-    asio
-    assign
+    any
+    array
+    assert
     atomic
     bimap
-    callable_traits
+    bind
     chrono
-    compute
+    concept_check
+    config
     container
-    crc
+    container_hash
+    conversion
+    core
     date_time
-    filesystem
-    format
+    describe
+    detail
+    dynamic_bitset
+    endian
+    exception
+    foreach
+    function
+    function_types
     functional
+    fusion
     graph
-    heap
+    headers
     icl
-    interprocess
-    iostreams
-    lockfree
-    log
+    integer
+    intrusive
+    io
+    iostreams 
+    iterator
+    lambda
+    lexical_cast
     math
-    numeric/conversion
-    numeric/interval
-    numeric/ublas
-    polygon
+    move
+    mp11
+    mpl
+    multi_index
+    numeric_conversion
+    optional
+    parameter
+    phoenix
+    pool
+    predef
+    preprocessor   
+    property_map
+    property_tree
+    proto
+    random
+    range
+    ratio
+    rational
+    regex
+    serialization
+    smart_ptr
+    spirit
+    static_assert
     system
     thread
     throw_exception
-    timer
-    uuid
-    vmd
+    tokenizer
+    tti
+    tuple
+    type_index
+    type_traits
+    typeof
+    unordered
+    utility
+    variant
+    variant2
+    winapi
+    xpressive
+
+# Other boost header if needed
+    # accumulators
+    # asio
+    # assign
+    # beast
+    # callable_traits
+    # charconv
+    # circular_buffer
+    # compat
+    # compatibility
+    # compute
+    # context
+    # contract
+    # convert
+    # coroutine
+    # coroutine2
+    # crc
+    # dll
+    # fiber
+    # filesystem
+    # flyweight
+    # format
+    # geometry
+    # gil
+    # hana
+    # heap
+    # histogram
+    # hof
+    # interprocess
+    # json
+    # lambda2
+    # leaf
+    # locale
+    # local_function
+    # lockfree
+    # log
+    # logic
+    # metaparse
+    # msm
+    # multi_array
+    # multiprecision
+    # mysql
+    # nowide
+    # numeric_interval
+    # numeric_ublas
+    # outcome
+    # pfr
+    # poly_collection
+    # polygon
+    # process
+    # program_options
+    # ptr_container
+    # qvm
+    # redis
+    # safe_numerics
+    # scope
+    # scope_exit
+    # signals2
+    # sort
+    # statechart
+    # static_string
+    # stl_interfaces
+    # timer
+    # type_erasure
+    # uuid
+    # vmd
 )
 
 if(APPLE)
@@ -84,73 +192,34 @@ if(SKBUILD)
     set(BUILD_SHARED_LIBS ON)
 endif()
 
-# Modern CMake target support was added in Boost 1.82.0
-# CMake support for boost::numeric_ublas was added in Boost 1.84.0
 include(CPM)
 CPMAddPackage(
     NAME Boost
     VERSION 1.84.0
     GITHUB_REPOSITORY "boostorg/boost"
     GIT_TAG "boost-1.84.0"
-    EXCLUDE_FROM_ALL ON
 )
 
-if(SKBUILD)
-    set(BUILD_SHARED_LIBS ${OLD_BUILD_SHARED_LIBS})
-endif()
-
-# Due to MKL, we may require the release runtime (/MD) even when compiling in Debug mode.
-#
-# Boost::random will call <auto_link.hpp> in the following line:
-# https://github.com/boostorg/random/blob/3c1f0dbf634ad92fd2a2ffe2a46f5553e5a02de7/src/random_device.cpp#L52
-#
-# This causes a compilation error with MSVC in Debug mode, at the following line:
-# https://github.com/boostorg/config/blob/29c39d45858d40bee86bd3b58ca14499663f08b5/include/boost/config/auto_link.hpp#L122
-#
-# Since CMake already adds advapi32.lib as part of CMAKE_CXX_STANDARD_LIBRARIES_INIT, we can safely
-# spoof the <auto_link.hpp> header with a blank one and remove the problematic error message.
-if(TARGET Boost::random)
-    set(boost_dummy_autolink_dir "${Boost_BINARY_DIR}/dummy/boost/config/")
-    file(WRITE "${boost_dummy_autolink_dir}/auto_link.hpp.in" "")
-    configure_file(${boost_dummy_autolink_dir}/auto_link.hpp.in ${boost_dummy_autolink_dir}/auto_link.hpp COPYONLY)
-    target_include_directories(boost_random PRIVATE "${Boost_BINARY_DIR}/dummy")
-endif()
-
-set(CMAKE_POSITION_INDEPENDENT_CODE ${OLD_CMAKE_POSITION_INDEPENDENT_CODE})
-
-# Indirect deps pulled by other boost targets
-set(Boost_Deps
-    assert context core coroutine exception random serialization variant2
-)
-foreach(name IN ITEMS ${BOOST_INCLUDE_LIBRARIES} ${Boost_Deps})
-    if(TARGET boost_${name})
-        set_target_properties(boost_${name} PROPERTIES FOLDER third_party/boost)
-    endif()
+# Manually create a library. For some reason boost::headers seems empty
+add_library(boost INTERFACE)
+add_library(Boost::boost ALIAS boost)
+set(boost_export_list )
+foreach (name ${BOOST_INCLUDE_LIBRARIES})
+    message("Linking with: Boost::${name}")
+    target_link_libraries(boost INTERFACE Boost::${name})
+    list(APPEND boost_export_list boost_${name})
 endforeach()
 
-if(NOT TARGET Boost::headers)
-    message(FATAL_ERROR "Boost::headers target not found")
-endif()
-
-if(NOT TARGET Boost::boost)
-    # Forward ALIAS target for Boost::boost
-    get_target_property(_aliased Boost::headers ALIASED_TARGET)
-    if(_aliased)
-        message(STATUS "Creating 'Boost::boost' as a new ALIAS target for '${_aliased}'.")
-        add_library(Boost::boost ALIAS ${_aliased})
-    else()
-        add_library(Boost::boost ALIAS Boost::headers)
-    endif()
-endif()
-
 # Install boost files when installing library
+message("List: ${boost_export_list}")
 install(DIRECTORY ${BOOST_INCLUDE_DIRS}/Boost DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/DGtal/3rdParties/)
-install(TARGETS boost_headers EXPORT boost_headers)
-install(EXPORT boost_headers DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/boost NAMESPACE Boost::)
+install(TARGETS boost ${boost_export_list} EXPORT boost)
+install(EXPORT boost DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/boost NAMESPACE Boost::)
 
 # Export target Boost::headers
 export(TARGETS
-    boost_headers
+    boost
+    ${boost_export_list}
     NAMESPACE Boost::
     FILE BoostTargets.cmake
 )
