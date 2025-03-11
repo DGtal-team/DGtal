@@ -52,7 +52,7 @@
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/ElementaryConvolutionNormalVectorEstimator.h"
 
 
-#ifdef WITH_CGAL
+#ifdef  DGTAL_WITH_CGAL
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/MongeJetFittingGaussianCurvatureEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/MongeJetFittingMeanCurvatureEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/MongeJetFittingNormalVectorEstimator.h"
@@ -186,7 +186,7 @@ bool testConcepts()
   BOOST_CONCEPT_ASSERT(( concepts::CLocalEstimatorFromSurfelFunctor< functors::DummyEstimatorFromSurfels<Surfel,Embedder > >));
   BOOST_CONCEPT_ASSERT(( concepts::CLocalEstimatorFromSurfelFunctor< functors::ElementaryConvolutionNormalVectorEstimator<Surfel,Embedder > >));
 
-#ifdef WITH_CGAL
+#ifdef  DGTAL_WITH_CGAL
   BOOST_CONCEPT_ASSERT((  concepts::CLocalEstimatorFromSurfelFunctor< functors::MongeJetFittingNormalVectorEstimator<Surfel,Embedder > >));
   BOOST_CONCEPT_ASSERT((  concepts::CLocalEstimatorFromSurfelFunctor< functors::MongeJetFittingMeanCurvatureEstimator<Surfel,Embedder > >));
   BOOST_CONCEPT_ASSERT((  concepts::CLocalEstimatorFromSurfelFunctor< functors::MongeJetFittingGaussianCurvatureEstimator<Surfel,Embedder > >));

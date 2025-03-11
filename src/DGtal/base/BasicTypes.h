@@ -46,8 +46,9 @@
 #include <iostream>
 #include <boost/cstdint.hpp>
 #include <boost/multiprecision/cpp_int.hpp>
+#include <cstdint>
 
-#ifdef WITH_GMP
+#ifdef DGTAL_WITH_GMP
 #include <gmpxx.h>
 #endif
 //////////////////////////////////////////////////////////////////////////////
@@ -57,24 +58,24 @@
 namespace DGtal
 {
   ///unsigned 8-bit integer.
-  typedef boost::uint8_t uint8_t;
+  typedef std::uint8_t uint8_t;
   ///unsigned 16-bit integer.
-  typedef boost::uint16_t uint16_t;
+  typedef std::uint16_t uint16_t;
   ///unsigned 32-bit integer.
-  typedef boost::uint32_t uint32_t;
+  typedef std::uint32_t uint32_t;
   ///unsigned 64-bit integer.
-  typedef boost::uint64_t uint64_t;
+  typedef std::uint64_t uint64_t;
   
   ///signed 8-bit integer.  
-  typedef boost::int8_t int8_t;
+  typedef std::int8_t int8_t;
   ///signed 16-bit integer.
-  typedef boost::int16_t int16_t;
+  typedef std::int16_t int16_t;
   ///signed 32-bit integer.
-  typedef boost::int32_t int32_t;
+  typedef std::int32_t int32_t;
   ///signed 94-bit integer.
-  typedef boost::int64_t int64_t;
+  typedef std::int64_t int64_t;
   
-#ifdef WITH_GMP
+#ifdef DGTAL_WITH_GMP
   #define WITH_BIGINTEGER
   ///Multi-precision integer with GMP implementation.
   typedef mpz_class BigInteger;

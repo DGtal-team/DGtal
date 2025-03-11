@@ -40,7 +40,7 @@ RUN apt -y install doxygen
 
 RUN apt -y install libcgal-dev
 
-#RUN apt-get -y install libinsighttoolkit4-dev
+#RUN apt-get -y install libinsighttoolkit5-dev
 
 #RUN apt -y install libqglviewer-dev-qt5
 
@@ -62,9 +62,9 @@ RUN mkdir /home/digital/git/DGtal
 
 
 #### clone git and install 
-#RUN git clone https://github.com/DGtal-team/DGtal.git /home/digital/git/DGtal
+RUN git clone https://github.com/DGtal-team/DGtal.git /home/digital/git/DGtal
 
 #RUN mkdir /home/digital/git/DGtal/build 
-#RUN cd /home/digital/git/DGtal/build &&  cmake .. -DWITH_GMP=true -DWITH_EIGEN=true -DWITH_FFTW3=true -DWITH_CGAL=true -DWITH_ITK=true -DWITH_OPENMP=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true -DWITH_MAGICK=true && make install
+RUN cd /home/digital/git/DGtal/build &&  cmake .. -DDGTAL_WITH_GMP=true -DWITH_EIGEN=true -DDGTAL_WITH_FFTW3=true - DDGTAL_WITH_CGAL=true  -DDGTAL_WITH_ITK=true -DDGTAL_WITH_OPENMP=true  -DDGTAL_WITH_CAIRO=true -DWITH_QGLVIEWER=true -DWITH_MAGICK=true && make install
 
 

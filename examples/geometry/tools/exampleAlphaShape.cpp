@@ -176,7 +176,7 @@ void alphaShape()
     Board2D board;
     drawPolygon( res.begin(), res.end(), board ); 
     board.saveSVG( "AlphaShape0.svg" );  
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     board.saveCairo("AlphaShape0.png", Board2D::CairoPNG);
 #endif
 
@@ -198,7 +198,7 @@ void alphaShape()
     Board2D board;
     drawPolygon( res.begin(), res.end(), board ); 
     board.saveSVG( "AlphaShape0bis.svg" );  
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     board.saveCairo("AlphaShape0bis.png", Board2D::CairoPNG);
 #endif
 
@@ -223,7 +223,7 @@ void alphaShape()
     Board2D board;
     drawPolygon( res.begin(), res.end(), board ); 
     board.saveSVG( "AlphaShapeM1.svg" );  
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     board.saveCairo("AlphaShapeM1.png", Board2D::CairoPNG);
 #endif
 
@@ -247,7 +247,7 @@ void alphaShape()
     Board2D board;
     drawPolygon( res.begin(), res.end(), board ); 
     board.saveSVG( "AlphaShapeMSqrt5.svg" );  
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     board.saveCairo("AlphaShapeMSqrt5.png", Board2D::CairoPNG);
 #endif
 
@@ -271,7 +271,7 @@ void alphaShape()
     Board2D board;
     drawPolygon( res.begin(), res.end(), board ); 
     board.saveSVG( "AlphaShapeM5.svg" );  
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     board.saveCairo("AlphaShapeM5.png", Board2D::CairoPNG);
 #endif
 
@@ -296,7 +296,7 @@ void alphaShape()
     Board2D board;
     drawPolygon( res.begin(), res.end(), board ); 
     board.saveSVG( "AlphaShapeP8.svg" );  
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     board.saveCairo("AlphaShapeP8.png", Board2D::CairoPNG);
 #endif
 
@@ -321,7 +321,7 @@ void alphaShape()
     Board2D board;
     drawPolygon( res.begin(), res.end(), board ); 
     board.saveSVG( "AlphaShapeP9.svg" );  
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     board.saveCairo("AlphaShapeP9.png", Board2D::CairoPNG);
 #endif
 

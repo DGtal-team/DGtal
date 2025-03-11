@@ -87,7 +87,7 @@ struct RandomPointKeyExtension : public Viewer3D<Space, KSpace>::Extension
   // description in the help window.
   virtual void init( Viewer & viewer )
   {
-    viewer.setKeyDescription( Qt::ShiftModifier + Qt::Key_R,
+    viewer.setKeyDescription( (int)Qt::ShiftModifier + (int)Qt::Key_R,
                               "Creates a random digital point." );
   }
 

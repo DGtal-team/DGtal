@@ -38,7 +38,7 @@ INCLUDE(CPack)
 # -----------------------------------------------------------------------------
 # CTest/Debug options
 # -----------------------------------------------------------------------------
-if (BUILD_TESTING)
+if (DGTAL_BUILD_TESTS)
   message(STATUS "Build test files ENABLED")
   ENABLE_TESTING()
   include(CTest)
@@ -54,6 +54,6 @@ if (BUILD_TESTING)
   endif()
   add_subdirectory (${PROJECT_SOURCE_DIR}/tests)
 else()
-  message(STATUS "Build test files DISABLED (you can activate unit tests with '-DBUILD_TESTING=ON' cmake option)")
+  message(STATUS "Build test files DISABLED (you can activate unit tests with '-DDGTAL_BUILD_TESTS=ON' cmake option)")
 endif()
 message(STATUS "-------------------------------------------------------------------------------")

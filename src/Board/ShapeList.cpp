@@ -342,7 +342,7 @@ ShapeList::flushSVG( std::ostream & stream,
     //stream << "</g>\n";
 }
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
 void
 ShapeList::flushCairo( cairo_t *cr,
      const TransformCairo & transform ) const
@@ -656,7 +656,7 @@ Group::flushSVG( std::ostream & stream,
     }
 }
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
 void
 Group::flushCairo( cairo_t * /*cr*/,
 		   const TransformCairo & /*transform*/ ) const

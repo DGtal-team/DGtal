@@ -49,6 +49,7 @@
 #include "DGtal/base/CConstBidirectionalRangeFromPoint.h"
 #include "DGtal/base/ConstIteratorAdapter.h"
 #include "boost/concept_check.hpp"
+#include "boost/iterator/reverse_iterator.hpp"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal 
@@ -93,7 +94,7 @@ namespace DGtal
 
     typedef typename TRange::Point Point;   
     typedef ConstIteratorAdapter<typename TRange::ConstIterator,TFunctor,TReturnType> ConstIterator; 
-    typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
+    typedef boost::reverse_iterator<ConstIterator> ConstReverseIterator;
 
     // ------------------------- standard services --------------------------------
 

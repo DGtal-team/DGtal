@@ -28,9 +28,9 @@ endforeach()
 
 
 # -----------------------------------------------------------------------------
-# CPP17
+# CPP20
 # -----------------------------------------------------------------------------
-set(DGTAL_CMAKE_CXX_STANDARD_MIN_REQUIRED 17)
+set(DGTAL_CMAKE_CXX_STANDARD_MIN_REQUIRED 20)
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD ${DGTAL_CMAKE_CXX_STANDARD_MIN_REQUIRED})
 else()
@@ -43,6 +43,8 @@ endif()
 if(NOT CMAKE_CXX_STANDARD_REQUIRED)
   set(CMAKE_CXX_STANDARD_REQUIRED ON)
 endif()
+
+message(STATUS "C++ standard set to ${CMAKE_CXX_STANDARD}")
 
 # -----------------------------------------------------------------------------
 # Visual Studio : to distinguish between debug and release lib and /bigobj flag
@@ -99,7 +101,7 @@ if (MSVC)
 else()
   option(BUILD_SHARED_LIBS "Build shared libraries." OFF)
 endif()
-option(BUILD_TESTING "Build testing." OFF)
+option(DGTAL_BUILD_TESTS "Build testing." OFF)
 option(DEBUG_VERBOSE "Verbose debug messages." OFF)
 option(VERBOSE "Verbose messages." OFF)
 option(COLOR_WITH_ALPHA_ARITH "Consider alpha channel in color arithmetical operations." OFF)

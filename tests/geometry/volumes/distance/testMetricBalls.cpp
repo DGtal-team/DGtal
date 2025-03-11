@@ -76,7 +76,7 @@ bool testExactMetricBalls()
                                   32*sqrt(2)/2.0);
   
   std::string title = "image-ball-" +  boost::lexical_cast<string>( norm )+".png" ;
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   board.saveCairo(title.c_str(), Board2D::CairoPNG );
 #endif  
   return nbok == nb;
@@ -109,7 +109,7 @@ bool testInexactMetricBalls(double norm)
                                   32*sqrt(2)/2.0);
   
   std::string title = "image-ball-" +  boost::lexical_cast<string>( norm )+".png" ;
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   board.saveCairo(title.c_str(), Board2D::CairoPNG );
 #endif  
   return nbok == nb;

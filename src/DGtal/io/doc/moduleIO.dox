@@ -93,13 +93,13 @@ Hence, for image writers,  some  functors may return a DGtal::Color or a scalar 
 |         2D | PGM     | Grayscale  netpbm image format  | the functor should return an unsigned char  | PGMWriter     | http://netpbm.sourceforge.net/                           |
 |            | PPM     | Color netpbm image format       | the functor should return a DGtal::Color    | PPMWriter     | http://netpbm.sourceforge.net/                           |
 |            | any stb_image format  | Color image format (png,jpg, bmp,tga )      | the functor must return a DGtal::Color    | STBWriter     |                                   |
-|            | any 2D ITK format | Grayscale or 2D ITK image   | the functor should return a ITKIOTrait<Image::Value>::ValueOut | ITKWriter | with @a WITH_ITK build flag, http://www.itk.org/ |
+|            | any 2D ITK format | Grayscale or 2D ITK image   | the functor should return a ITKIOTrait<Image::Value>::ValueOut | ITKWriter | with @a  DGTAL_WITH_ITK build flag, http://www.itk.org/ |
 |         3D | PGM3D   | Grayscale  netpbm image format  | the functor should return an unsigned char  | PGMWriter     |                                                          |
 |            | PPM3D   | Color netpbm image format       | the functor should return a DGtal::Color    | PPMWriter     |                                                          |
 |            | Vol     | Volumetric file format          | the functor should return an unsigned char  | VolWriter     | Simplevol project, http://liris.cnrs.fr/david.coeurjolly |
 |            | Longvol | Volumetric file format  (long)  | the functor should return a DGtal::uint64_t | LongvolWriter | Simplevol project, http://liris.cnrs.fr/david.coeurjolly |
-|            | HDF5    | HDF5 file with 3D UInt8 image dataset(s)  | the functor should return a DGtal::uint8_t | HDF5Writer    | with @a WITH_HDF5 build flag, http://www.hdfgroup.org/HDF5/ |
-|            | any 3D ITK format | Any 3D ITK image   | the functor should return a ITKIOTrait<Image::Value>::ValueOut | ITKWriter | with @a WITH_ITK build flag, http://www.itk.org/ |
+|            | HDF5    | HDF5 file with 3D UInt8 image dataset(s)  | the functor should return a DGtal::uint8_t | HDF5Writer    | with @a  DGTAL_WITH_HDF5 build flag, http://www.hdfgroup.org/HDF5/ |
+|            | any 3D ITK format | Any 3D ITK image   | the functor should return a ITKIOTrait<Image::Value>::ValueOut | ITKWriter | with @a  DGTAL_WITH_ITK build flag, http://www.itk.org/ |
 |         nD | Raw8    | raw binary file format on 8bits     | the functor should return an unsigned char   | RawWriter     |                                                          |
 |            | Raw16   | raw binary file format on 16bits    | the functor should return an unsigned short  | RawWriter     |                                                          |
 |            | Raw32   | raw binary file format on 32bits    | the functor should return an unsigned int    | RawWriter     |                                                          |
@@ -174,15 +174,15 @@ DGtal::GenericWriter<Image2D, 2, double, DGtal::HueShadeColorMap<double> >::expo
 |------------|-------------------|-------------------------------------------------------------|---------------|----------------------------------------------------------------|
 |         2D | PGM               | Grayscale  netpbm image format                              | PGMReader     | http://netpbm.sourceforge.net/                                 |
 |            | any stb format    | Any file format in the stb_image library (bmp,png,jpg,tga, gif)  | STBReader     |                                                                |
-|            | HDF5              | HDF5 file with 2D image dataset(s)                          | HDF5Reader    | with @a WITH_HDF5 build flag, http://www.hdfgroup.org/HDF5/    |
-|            | any 2D ITK format | Any file format in the ITK library (png, jpg, mhd, mha, ...)| ITKReader     | with @a WITH_ITK build flag, http://www.itk.org/               |
+|            | HDF5              | HDF5 file with 2D image dataset(s)                          | HDF5Reader    | with @a  DGTAL_WITH_HDF5 build flag, http://www.hdfgroup.org/HDF5/    |
+|            | any 2D ITK format | Any file format in the ITK library (png, jpg, mhd, mha, ...)| ITKReader     | with @a  DGTAL_WITH_ITK build flag, http://www.itk.org/               |
 |         3D | PGM3D             | Grayscale  netpbm image format                              | PGMReader     |                                                                |
 |            | PGM               | Same as PGM3D but with same header as in 2D (P2 or P5)      | PGMReader     |                                                                |
 |            | DICOM             | Medical format (from scanners, with the use of ITK library) | DicomReader   | http://medical.nema.org/                                       |
 |            | Vol               | Volumetric file format                                      | VolReader     | Simplevol project, http://liris.cnrs.fr/david.coeurjolly       |
 |            | Longvol           | Volumetric file format (long)                               | LongvolReader | Simplevol project, http://liris.cnrs.fr/david.coeurjolly       |
-|            | HDF5              | HDF5 file with 3D UInt8 image dataset(s)                    | HDF5Reader    | with @a WITH_HDF5 build flag, http://www.hdfgroup.org/HDF5/    |
-|            | any 3D ITK format | Any file format in the ITK library (mhd, mha, ...)          | ITKReader     | with @a WITH_ITK build flag, http://www.itk.org/               |
+|            | HDF5              | HDF5 file with 3D UInt8 image dataset(s)                    | HDF5Reader    | with @a  DGTAL_WITH_HDF5 build flag, http://www.hdfgroup.org/HDF5/    |
+|            | any 3D ITK format | Any file format in the ITK library (mhd, mha, ...)          | ITKReader     | with @a  DGTAL_WITH_ITK build flag, http://www.itk.org/               |
 |         nD | Raw8              | raw binary file format on 8bits                             | RawReader     |                                                                |
 |            | Raw16             | raw binary file format on 16bits                            | RawReader     |                                                                |
 |            | Raw32             | raw binary file format on 32bits                            | RawReader     |                                                                |

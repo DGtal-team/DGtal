@@ -33,7 +33,7 @@ The image factory is necessary to keep control on the created
 images. As its responsibility is to create images according to a given
 domain. The factory can update (flush) the image on disk and also can
 free the image from memory.  Image factory models can associated with
-specific image formats such as [HDF5](http://www.hdfgroup.org/HDF5/) which can be activated using a @e WITH_HDF5 flag during DGtal build (please refer to @ref moduleBuildDGtal).
+specific image formats such as [HDF5](http://www.hdfgroup.org/HDF5/) which can be activated using a @e  DGTAL_WITH_HDF5 flag during DGtal build (please refer to @ref moduleBuildDGtal).
 This mechanism is a DGtal concept called CImageFactory which is
 detailed below.
 
@@ -119,7 +119,7 @@ in order to flush the image on disk according to the defined cache policy.
 
 
 - ImageFactoryFromImage model is a rather simple one. It implements a factory which produces images from a bigger original one. The bigger one is still in memory. This model is for debugging purposes.
-- ImageFactoryFromHDF5 (with @a WITH_HDF5 build flag) model is similar to ImageFactoryFromImage: it implements a factory which produces images from an HDF5 "dataset/file" according to a given domain. When requesting a "block" of an HDF5 image, the factory will perform disk I/O access to load the appropriate chunk.
+- ImageFactoryFromHDF5 (with @a  DGTAL_WITH_HDF5 build flag) model is similar to ImageFactoryFromImage: it implements a factory which produces images from an HDF5 "dataset/file" according to a given domain. When requesting a "block" of an HDF5 image, the factory will perform disk I/O access to load the appropriate chunk.
 
 \subsection dgtalBigImagesCachePoliciesModels Cache policies models
 

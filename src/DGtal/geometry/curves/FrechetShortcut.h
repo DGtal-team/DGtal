@@ -46,6 +46,7 @@
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
 #include <boost/icl/interval_set.hpp>
+#include <boost/iterator/reverse_iterator.hpp>
 #include <map>
 
 //////////////////////////////////////////////////////////////////////////////
@@ -122,7 +123,7 @@ namespace DGtal
     //required types
     typedef TIterator ConstIterator;
     typedef FrechetShortcut<ConstIterator,Integer> Self; 
-    typedef FrechetShortcut<std::reverse_iterator<ConstIterator>,Integer> Reverse;
+    typedef FrechetShortcut<boost::reverse_iterator<ConstIterator>,Integer> Reverse;
     
     //2D point and 2D vector
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point; 

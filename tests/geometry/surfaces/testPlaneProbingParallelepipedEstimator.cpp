@@ -166,7 +166,7 @@ TEST_CASE( "Testing PlaneProbingParallelepipedEstimator" )
         REQUIRE(nbNormals == nbOk);
     }    
 
-#ifdef WITH_GMP
+#ifdef DGTAL_WITH_GMP
     SECTION("H-algorithm should return the correct normal with BigInteger")
     {
         int nbNormals = 0;

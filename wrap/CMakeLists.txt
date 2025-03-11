@@ -37,14 +37,14 @@ target_include_directories(_dgtal PUBLIC
   )
 target_include_directories(_dgtal PRIVATE ${enabled_include_dirs_})
 target_include_directories(_dgtal SYSTEM PRIVATE ${enabled_include_system_dirs_})
-if(WITH_ITK)
-  target_compile_definitions(_dgtal PRIVATE WITH_ITK)
+if (DGTAL_WITH_ITK)
+  target_compile_definitions(_dgtal PRIVATE  DGTAL_WITH_ITK)
 endif()
-if(WITH_OPENMP)
-  target_compile_definitions(_dgtal PRIVATE WITH_OPENMP)
+if(DGTAL_WITH_OPENMP)
+  target_compile_definitions(_dgtal PRIVATE DGTAL_WITH_OPENMP)
 endif()
-if(WITH_FFTW3)
-  target_compile_definitions(_dgtal PRIVATE WITH_FFTW3)
+if(DGTAL_WITH_FFTW3)
+  target_compile_definitions(_dgtal PRIVATE DGTAL_WITH_FFTW3)
 endif()
 
 install(FILES ${wrap_header_common}
@@ -97,6 +97,6 @@ add_custom_target(dgtal-install-runtime
   DEPENDS DGtal _dgtal
   )
 
-if(DGTAL_BUILD_TESTING_PYTHON)
+if(DGTAL_BUILD_TESTS_PYTHON)
   add_subdirectory(tests)
 endif()
