@@ -492,7 +492,7 @@ namespace DGtal
     static inline
     DGtal::int64_t castToInt64_t(const DGtal::BigInteger & aT) noexcept
     {
-#ifdef WITH_GMP
+#ifdef DGTAL_WITH_GMP
       return aT.get_si();
 #else
       return static_cast<DGtal::int64_t>(aT);
@@ -506,7 +506,7 @@ namespace DGtal
     static inline
     DGtal::uint64_t castToUInt64_t(const DGtal::BigInteger & aT) noexcept
     {
-#ifdef WITH_GMP
+#ifdef DGTAL_WITH_GMP
       return aT.get_ui();
 #else
       return static_cast<DGtal::uint64_t>(aT);
@@ -521,7 +521,7 @@ namespace DGtal
     static inline
     double castToDouble(const DGtal::BigInteger & aT) noexcept
     {
-#ifdef WITH_GMP
+#ifdef DGTAL_WITH_GMP
       return aT.get_d();
 #else
       return static_cast<double>(aT);
@@ -536,7 +536,7 @@ namespace DGtal
     static inline
     bool even( ParamType aT ) noexcept
     {
-#ifdef WITH_GMP
+#ifdef DGTAL_WITH_GMP
       return mpz_even_p( aT.get_mpz_t() );
 #else
       return (boost::multiprecision::integer_modulus(aT, 2) == 0);
@@ -551,7 +551,7 @@ namespace DGtal
     static inline
     bool odd( ParamType aT ) noexcept
     {
-#ifdef WITH_GMP
+#ifdef DGTAL_WITH_GMP
       return mpz_odd_p( aT.get_mpz_t() );
 #else
       return (boost::multiprecision::integer_modulus(aT, 2) == 1);

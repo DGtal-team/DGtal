@@ -140,7 +140,7 @@ SCENARIO( "IntegerConverter< 1, BigInteger >", "[integer_conversions]" )
     DGtal::BigInteger b = Converter::cast( big_int64 );
     DGtal::BigInteger c = Converter::cast( big_bigint );
     DGtal::BigInteger b_prime;
-#ifdef WITH_GMP
+#ifdef DGTAL_WITH_GMP
     detail::mpz_set_sll( b_prime.get_mpz_t(), big_int64 );
 #else
     b_prime = big_int64;

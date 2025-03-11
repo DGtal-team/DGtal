@@ -52,7 +52,7 @@
 namespace DGtal
 {
 #ifdef WITH_BIGINTEGER
-#ifdef WITH_GMP
+#ifdef DGTAL_WITH_GMP
   namespace detail {
     /// ------------- GMP SPECIALIZED SERVICES ----------------------------
     
@@ -281,7 +281,7 @@ namespace DGtal
     /// @return the same integer
     static DGtal::int64_t cast( DGtal::BigInteger i ) 
     {
-#ifdef WITH_GMP
+#ifdef DGTAL_WITH_GMP
       DGtal::int64_t r = detail::mpz_get_sll( i.get_mpz_t() );
       DGtal::BigInteger tmp;
       detail::mpz_set_sll( tmp.get_mpz_t(), r );
@@ -353,7 +353,7 @@ namespace DGtal
     static DGtal::BigInteger cast( DGtal::int64_t i ) 
     {
       DGtal::BigInteger tmp;
-#ifdef WITH_GMP
+#ifdef DGTAL_WITH_GMP
       detail::mpz_set_sll( tmp.get_mpz_t(), i );
 #else
       tmp = i;
