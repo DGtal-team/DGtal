@@ -539,6 +539,57 @@ StarCells( const PointRange& C, const Dimension axis ) const
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
+template <typename TPolytope>
+typename  DGtal::DigitalConvexity<TKSpace>::LatticeSet
+DGtal::DigitalConvexity<TKSpace>::
+CoverPolytope( const TPolytope& P, Dimension axis ) const
+{
+  using StrictUnitSegment = typename Polytope::StrictUnitSegment;
+  LatticeSet LS;
+  if ( ! P.isValid() ) return LS;
+  if ( ! P.canBeSummed() ) {
+    trace.error() << "[DigitalConvexity::CoverPolytope] Polytope should be Minkowski summabel." << std::endl;
+    return LS;
+  }
+  Counter C( P );
+  if ( axis >= dimension ) axis = C.longestAxis();
+  auto V    = LatticeSet( C.getLatticeSet( axis ), axis ).toPointRange(); // << 0-cells
+  auto P0   = P + StrictUnitSegment( 0 );
+  auto P1   = P + StrictUnitSegment( 1 );
+  auto P2   = P + StrictUnitSegment( 2 );
+  Counter C0( P0 );
+  Counter C1( P1 );
+  Counter C2( P2 );
+  auto V0   = LatticeSet( C0.getLatticeSet( axis ), axis ).toPointRange(); // << 1-cells
+  auto V1   = LatticeSet( C1.getLatticeSet( axis ), axis ).toPointRange(); // << 1-cells
+  auto V2   = LatticeSet( C2.getLatticeSet( axis ), axis ).toPointRange(); // << 1-cells
+  auto P01  = P0 + StrictUnitSegment( 1 );
+  auto P02  = P0 + StrictUnitSegment( 2 );
+  auto P12  = P1 + StrictUnitSegment( 2 );
+  Counter C01( P01 );
+  Counter C02( P02 );
+  Counter C12( P12 );
+  auto V01  = LatticeSet( C01.getLatticeSet( axis ), axis ).toPointRange(); // << 2-cells
+  auto V02  = LatticeSet( C02.getLatticeSet( axis ), axis ).toPointRange(); // << 2-cells
+  auto V12  = LatticeSet( C12.getLatticeSet( axis ), axis ).toPointRange(); // << 2-cells
+  auto P012 = P01 + StrictUnitSegment( 2 );
+  Counter C012( P012 );
+  auto V012 = LatticeSet( C012.getLatticeSet( axis ), axis ).toPointRange(); // << 3-cells
+  // Convert points to Khalimsky coordinates and insert them in LatticeSet.
+  LS = LatticeSet( axis );
+  for ( const auto& p : V    ) LS.insert( Point( 2*p[0]  , 2*p[1]  , 2*p[2]   ) );
+  for ( const auto& p : V0   ) LS.insert( Point( 2*p[0]-1, 2*p[1]  , 2*p[2]   ) );      
+  for ( const auto& p : V1   ) LS.insert( Point( 2*p[0]  , 2*p[1]-1, 2*p[2]   ) );      
+  for ( const auto& p : V2   ) LS.insert( Point( 2*p[0]  , 2*p[1]  , 2*p[2]-1 ) );      
+  for ( const auto& p : V01  ) LS.insert( Point( 2*p[0]-1, 2*p[1]-1, 2*p[2]   ) );      
+  for ( const auto& p : V02  ) LS.insert( Point( 2*p[0]-1, 2*p[1]  , 2*p[2]-1 ) );      
+  for ( const auto& p : V12  ) LS.insert( Point( 2*p[0]  , 2*p[1]-1, 2*p[2]-1 ) );      
+  for ( const auto& p : V012 ) LS.insert( Point( 2*p[0]-1, 2*p[1]-1, 2*p[2]-1 ) );      
+  return LS;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
 typename  DGtal::DigitalConvexity<TKSpace>::LatticeSet
 DGtal::DigitalConvexity<TKSpace>::
 CoverCvxH( const Point& a, const Point& b, const Point& c,
@@ -550,88 +601,118 @@ CoverCvxH( const Point& a, const Point& b, const Point& c,
       using InternalInteger
 	= typename detail::ConvexityHelperInternalInteger< Integer, true >::Type;
       using Helper = ConvexityHelper< dimension, Integer, InternalInteger >;
-      using StrictUnitSegment = typename Helper::LatticePolytope::StrictUnitSegment;
+      // using StrictUnitSegment = typename Helper::LatticePolytope::StrictUnitSegment;
       auto P = Helper::compute3DTriangle( a, b, c, true );
-      if ( ! P.isValid() ) return LS;
-      Counter C( P );
-      if ( axis >= dimension ) axis = C.longestAxis();
-      auto V    = LatticeSet( C.getLatticeSet( axis ), axis ).toPointRange(); // << 0-cells
-      auto P0   = P + StrictUnitSegment( 0 );
-      auto P1   = P + StrictUnitSegment( 1 );
-      auto P2   = P + StrictUnitSegment( 2 );
-      Counter C0( P0 );
-      Counter C1( P1 );
-      Counter C2( P2 );
-      auto V0   = LatticeSet( C0.getLatticeSet( axis ), axis ).toPointRange(); // << 1-cells
-      auto V1   = LatticeSet( C1.getLatticeSet( axis ), axis ).toPointRange(); // << 1-cells
-      auto V2   = LatticeSet( C2.getLatticeSet( axis ), axis ).toPointRange(); // << 1-cells
-      auto P01  = P0 + StrictUnitSegment( 1 );
-      auto P02  = P0 + StrictUnitSegment( 2 );
-      auto P12  = P1 + StrictUnitSegment( 2 );
-      Counter C01( P01 );
-      Counter C02( P02 );
-      Counter C12( P12 );
-      auto V01  = LatticeSet( C01.getLatticeSet( axis ), axis ).toPointRange(); // << 2-cells
-      auto V02  = LatticeSet( C02.getLatticeSet( axis ), axis ).toPointRange(); // << 2-cells
-      auto V12  = LatticeSet( C12.getLatticeSet( axis ), axis ).toPointRange(); // << 2-cells
-      auto P012 = P01 + StrictUnitSegment( 2 );
-      Counter C012( P012 );
-      auto V012 = LatticeSet( C012.getLatticeSet( axis ), axis ).toPointRange(); // << 3-cells
-      // Convert points to Khalimsky coordinates and insert them in LatticeSet.
-      LS = LatticeSet( axis );
-      for ( const auto& p : V    ) LS.insert( Point( 2*p[0]  , 2*p[1]  , 2*p[2]   ) );
-      for ( const auto& p : V0   ) LS.insert( Point( 2*p[0]-1, 2*p[1]  , 2*p[2]   ) );      
-      for ( const auto& p : V1   ) LS.insert( Point( 2*p[0]  , 2*p[1]-1, 2*p[2]   ) );      
-      for ( const auto& p : V2   ) LS.insert( Point( 2*p[0]  , 2*p[1]  , 2*p[2]-1 ) );      
-      for ( const auto& p : V01  ) LS.insert( Point( 2*p[0]-1, 2*p[1]-1, 2*p[2]   ) );      
-      for ( const auto& p : V02  ) LS.insert( Point( 2*p[0]-1, 2*p[1]  , 2*p[2]-1 ) );      
-      for ( const auto& p : V12  ) LS.insert( Point( 2*p[0]  , 2*p[1]-1, 2*p[2]-1 ) );      
-      for ( const auto& p : V012 ) LS.insert( Point( 2*p[0]-1, 2*p[1]-1, 2*p[2]-1 ) );      
-      return LS;
+      return CoverPolytope( P, axis );
+    }
+    //   if ( ! P.isValid() ) return LS;
+    //   Counter C( P );
+    //   if ( axis >= dimension ) axis = C.longestAxis();
+    //   auto V    = LatticeSet( C.getLatticeSet( axis ), axis ).toPointRange(); // << 0-cells
+    //   auto P0   = P + StrictUnitSegment( 0 );
+    //   auto P1   = P + StrictUnitSegment( 1 );
+    //   auto P2   = P + StrictUnitSegment( 2 );
+    //   Counter C0( P0 );
+    //   Counter C1( P1 );
+    //   Counter C2( P2 );
+    //   auto V0   = LatticeSet( C0.getLatticeSet( axis ), axis ).toPointRange(); // << 1-cells
+    //   auto V1   = LatticeSet( C1.getLatticeSet( axis ), axis ).toPointRange(); // << 1-cells
+    //   auto V2   = LatticeSet( C2.getLatticeSet( axis ), axis ).toPointRange(); // << 1-cells
+    //   auto P01  = P0 + StrictUnitSegment( 1 );
+    //   auto P02  = P0 + StrictUnitSegment( 2 );
+    //   auto P12  = P1 + StrictUnitSegment( 2 );
+    //   Counter C01( P01 );
+    //   Counter C02( P02 );
+    //   Counter C12( P12 );
+    //   auto V01  = LatticeSet( C01.getLatticeSet( axis ), axis ).toPointRange(); // << 2-cells
+    //   auto V02  = LatticeSet( C02.getLatticeSet( axis ), axis ).toPointRange(); // << 2-cells
+    //   auto V12  = LatticeSet( C12.getLatticeSet( axis ), axis ).toPointRange(); // << 2-cells
+    //   auto P012 = P01 + StrictUnitSegment( 2 );
+    //   Counter C012( P012 );
+    //   auto V012 = LatticeSet( C012.getLatticeSet( axis ), axis ).toPointRange(); // << 3-cells
+    //   // Convert points to Khalimsky coordinates and insert them in LatticeSet.
+    //   LS = LatticeSet( axis );
+    //   for ( const auto& p : V    ) LS.insert( Point( 2*p[0]  , 2*p[1]  , 2*p[2]   ) );
+    //   for ( const auto& p : V0   ) LS.insert( Point( 2*p[0]-1, 2*p[1]  , 2*p[2]   ) );      
+    //   for ( const auto& p : V1   ) LS.insert( Point( 2*p[0]  , 2*p[1]-1, 2*p[2]   ) );      
+    //   for ( const auto& p : V2   ) LS.insert( Point( 2*p[0]  , 2*p[1]  , 2*p[2]-1 ) );      
+    //   for ( const auto& p : V01  ) LS.insert( Point( 2*p[0]-1, 2*p[1]-1, 2*p[2]   ) );      
+    //   for ( const auto& p : V02  ) LS.insert( Point( 2*p[0]-1, 2*p[1]  , 2*p[2]-1 ) );      
+    //   for ( const auto& p : V12  ) LS.insert( Point( 2*p[0]  , 2*p[1]-1, 2*p[2]-1 ) );      
+    //   for ( const auto& p : V012 ) LS.insert( Point( 2*p[0]-1, 2*p[1]-1, 2*p[2]-1 ) );      
+    //   return LS;
+    // }
+  else
+    {
+      using InternalInteger
+	= typename detail::ConvexityHelperInternalInteger< Integer, false >::Type;
+      using Helper = ConvexityHelper< dimension, Integer, InternalInteger >;
+      // using StrictUnitSegment = typename Helper::LatticePolytope::StrictUnitSegment;
+      auto P = Helper::compute3DTriangle( a, b, c, true );
+      return CoverPolytope( P, axis );
+    }
+    //   if ( ! P.isValid() ) return LS;
+    //   Counter C( P );
+    //   if ( axis >= dimension ) axis = C.longestAxis();
+    //   auto V    = LatticeSet( C.getLatticeSet( axis ), axis ).toPointRange(); // << 0-cells
+    //   auto P0   = P + StrictUnitSegment( 0 );
+    //   auto P1   = P + StrictUnitSegment( 1 );
+    //   auto P2   = P + StrictUnitSegment( 2 );
+    //   Counter C0( P0 );
+    //   Counter C1( P1 );
+    //   Counter C2( P2 );
+    //   auto V0   = LatticeSet( C0.getLatticeSet( axis ), axis ).toPointRange(); // << 1-cells
+    //   auto V1   = LatticeSet( C1.getLatticeSet( axis ), axis ).toPointRange(); // << 1-cells
+    //   auto V2   = LatticeSet( C2.getLatticeSet( axis ), axis ).toPointRange(); // << 1-cells
+    //   auto P01  = P0 + StrictUnitSegment( 1 );
+    //   auto P02  = P0 + StrictUnitSegment( 2 );
+    //   auto P12  = P1 + StrictUnitSegment( 2 );
+    //   Counter C01( P01 );
+    //   Counter C02( P02 );
+    //   Counter C12( P12 );
+    //   auto V01  = LatticeSet( C01.getLatticeSet( axis ), axis ).toPointRange(); // << 2-cells
+    //   auto V02  = LatticeSet( C02.getLatticeSet( axis ), axis ).toPointRange(); // << 2-cells
+    //   auto V12  = LatticeSet( C12.getLatticeSet( axis ), axis ).toPointRange(); // << 2-cells
+    //   auto P012 = P01 + StrictUnitSegment( 2 );
+    //   Counter C012( P012 );
+    //   auto V012 = LatticeSet( C012.getLatticeSet( axis ), axis ).toPointRange(); // << 3-cells
+    //   // Convert points to Khalimsky coordinates and insert them in LatticeSet.
+    //   LS = LatticeSet( axis );
+    //   for ( const auto& p : V    ) LS.insert( Point( 2*p[0]  , 2*p[1]  , 2*p[2]   ) );
+    //   for ( const auto& p : V0   ) LS.insert( Point( 2*p[0]-1, 2*p[1]  , 2*p[2]   ) );      
+    //   for ( const auto& p : V1   ) LS.insert( Point( 2*p[0]  , 2*p[1]-1, 2*p[2]   ) );      
+    //   for ( const auto& p : V2   ) LS.insert( Point( 2*p[0]  , 2*p[1]  , 2*p[2]-1 ) );      
+    //   for ( const auto& p : V01  ) LS.insert( Point( 2*p[0]-1, 2*p[1]-1, 2*p[2]   ) );      
+    //   for ( const auto& p : V02  ) LS.insert( Point( 2*p[0]-1, 2*p[1]  , 2*p[2]-1 ) );      
+    //   for ( const auto& p : V12  ) LS.insert( Point( 2*p[0]  , 2*p[1]-1, 2*p[2]-1 ) );      
+    //   for ( const auto& p : V012 ) LS.insert( Point( 2*p[0]-1, 2*p[1]-1, 2*p[2]-1 ) );      
+    //   return LS;
+    // }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename  DGtal::DigitalConvexity<TKSpace>::LatticeSet
+DGtal::DigitalConvexity<TKSpace>::
+CoverCvxH( const Point& a, const Point& b, 
+	  Dimension axis ) const
+{
+  LatticeSet LS;
+  if ( mySafe )
+    {
+      using InternalInteger
+	= typename detail::ConvexityHelperInternalInteger< Integer, true >::Type;
+      using Helper = ConvexityHelper< dimension, Integer, InternalInteger >;
+      auto P = Helper::computeSegment( a, b );
+      return CoverPolytope( P, axis );
     }
   else
     {
       using InternalInteger
 	= typename detail::ConvexityHelperInternalInteger< Integer, false >::Type;
       using Helper = ConvexityHelper< dimension, Integer, InternalInteger >;
-      using StrictUnitSegment = typename Helper::LatticePolytope::StrictUnitSegment;
-      auto P = Helper::compute3DTriangle( a, b, c, true );
-      if ( ! P.isValid() ) return LS;
-      Counter C( P );
-      if ( axis >= dimension ) axis = C.longestAxis();
-      auto V    = LatticeSet( C.getLatticeSet( axis ), axis ).toPointRange(); // << 0-cells
-      auto P0   = P + StrictUnitSegment( 0 );
-      auto P1   = P + StrictUnitSegment( 1 );
-      auto P2   = P + StrictUnitSegment( 2 );
-      Counter C0( P0 );
-      Counter C1( P1 );
-      Counter C2( P2 );
-      auto V0   = LatticeSet( C0.getLatticeSet( axis ), axis ).toPointRange(); // << 1-cells
-      auto V1   = LatticeSet( C1.getLatticeSet( axis ), axis ).toPointRange(); // << 1-cells
-      auto V2   = LatticeSet( C2.getLatticeSet( axis ), axis ).toPointRange(); // << 1-cells
-      auto P01  = P0 + StrictUnitSegment( 1 );
-      auto P02  = P0 + StrictUnitSegment( 2 );
-      auto P12  = P1 + StrictUnitSegment( 2 );
-      Counter C01( P01 );
-      Counter C02( P02 );
-      Counter C12( P12 );
-      auto V01  = LatticeSet( C01.getLatticeSet( axis ), axis ).toPointRange(); // << 2-cells
-      auto V02  = LatticeSet( C02.getLatticeSet( axis ), axis ).toPointRange(); // << 2-cells
-      auto V12  = LatticeSet( C12.getLatticeSet( axis ), axis ).toPointRange(); // << 2-cells
-      auto P012 = P01 + StrictUnitSegment( 2 );
-      Counter C012( P012 );
-      auto V012 = LatticeSet( C012.getLatticeSet( axis ), axis ).toPointRange(); // << 3-cells
-      // Convert points to Khalimsky coordinates and insert them in LatticeSet.
-      LS = LatticeSet( axis );
-      for ( const auto& p : V    ) LS.insert( Point( 2*p[0]  , 2*p[1]  , 2*p[2]   ) );
-      for ( const auto& p : V0   ) LS.insert( Point( 2*p[0]-1, 2*p[1]  , 2*p[2]   ) );      
-      for ( const auto& p : V1   ) LS.insert( Point( 2*p[0]  , 2*p[1]-1, 2*p[2]   ) );      
-      for ( const auto& p : V2   ) LS.insert( Point( 2*p[0]  , 2*p[1]  , 2*p[2]-1 ) );      
-      for ( const auto& p : V01  ) LS.insert( Point( 2*p[0]-1, 2*p[1]-1, 2*p[2]   ) );      
-      for ( const auto& p : V02  ) LS.insert( Point( 2*p[0]-1, 2*p[1]  , 2*p[2]-1 ) );      
-      for ( const auto& p : V12  ) LS.insert( Point( 2*p[0]  , 2*p[1]-1, 2*p[2]-1 ) );      
-      for ( const auto& p : V012 ) LS.insert( Point( 2*p[0]-1, 2*p[1]-1, 2*p[2]-1 ) );      
-      return LS;
+      auto P = Helper::computeSegment( a, b );
+      return CoverPolytope( P, axis );
     }
 }
 
@@ -1084,6 +1165,17 @@ isFullyCovered( const Point& a, const Point& b, const Point& c,
   ASSERT( dimension == 3 );
   const auto SCabc = CoverCvxH( a, b, c, cells.axis() );
   return cells.includes( SCabc );
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool
+DGtal::DigitalConvexity<TKSpace>::
+isFullyCovered( const Point& a, const Point& b,
+		const LatticeSet& cells ) const
+{
+  ASSERT( dimension == 3 );
+  const auto SCab = CoverCvxH( a, b, cells.axis() );
+  return cells.includes( SCab );
 }
 
 //-----------------------------------------------------------------------------

@@ -472,6 +472,22 @@ namespace DGtal
     bool isFullyCovered( const Point& a, const Point& b, const Point& c,
 			 const LatticeSet& cells ) const;
 
+    /// Tells if the non-degenerated 3D segment a,b is 
+    /// fully covered by some lattice set of cells \a cells.
+    ///
+    /// @param a any 3D point (distinct from the other)
+    /// @param b any 3D point (distinct from the other)
+    ///
+    /// @param cells any lattice set representing a set of cells.
+    ///
+    /// @return 'true' iff `Cvxh({a,b})` is fully covered by \a cells,
+    /// i.e. all the cells intersected by the triangle belong to \a
+    /// cells.
+    ///
+    /// @note This method is limited to 3D segments.
+    bool isFullyCovered( const Point& a, const Point& b,
+			 const LatticeSet& cells ) const;
+    
     
     /// Tells if the non-degenerated 3D open triangle a,b,c (ie
     /// without its edges and vertices) is digitally fully subconvex
@@ -708,6 +724,33 @@ namespace DGtal
     /// vertices to the skeleton of the cells in \a C.
     PointRange ExtrSkel( const LatticeSet& C ) const;
 
+    /// Builds the cell complex `Cover(CvxH({a,b}))` for `a,b` a
+    /// non-degenerate 3D segment, represented as a lattice set
+    /// (stacked row representation). The cover of a Euclidean set X
+    /// is the set of grid cells that have a non-empty intersection
+    /// with X. It is always included in the star of X, which is the
+    /// of cells whose closure has a non-empty intersection with
+    /// X. However the cover of X is not necessarily closed or open.
+    ///
+    /// @param a any 3D point (distinct from the other)
+    /// @param b any 3D point (distinct from the other)
+    ///
+    /// @param axis specifies the projection axis for the row
+    /// representation if below space dimension, otherwise chooses the
+    /// axis that minimizes memory/computations.
+    ///
+    /// @return the range of cells intersecting the segment `ab`,
+    /// represented as a lattice set (cells are represented with
+    /// Khalimsky coordinates). If the segment is degenerate (a,b
+    /// not distinct), then it returns an empty range of
+    /// cells.
+    ///
+    /// @note It is useful to specify an axis if you wish later to
+    /// compare or make operations with several lattice sets. They
+    /// must indeed have the same axis.
+    LatticeSet CoverCvxH( const Point& a, const Point& b,
+			  Dimension axis = dimension ) const;
+
     /// Builds the cell complex `Cover(CvxH({a,b,c}))` for `a,b,c` a
     /// non-degenerate 3D triangle, represented as a lattice set
     /// (stacked row representation). The cover of a Euclidean set X
@@ -735,7 +778,7 @@ namespace DGtal
     /// must indeed have the same axis.
     LatticeSet CoverCvxH( const Point& a, const Point& b, const Point& c,
 			  Dimension axis = dimension ) const;
-
+    
     
     /// Builds the lattice set (stacked row representation) associated
     /// to the given range of points.
@@ -1044,6 +1087,36 @@ namespace DGtal
     /// @return the subset of E whose elements satisfy the predicate \a Pred.
     template <typename Predicate>
     static PointRange filter( const PointRange& E, const Predicate& Pred );
+
+    /// Builds the cell complex `Cover(P))` for `P` a Minkowski
+    /// summable polytope, represented as a lattice set (stacked row
+    /// representation). The cover of a Euclidean set X is the set of
+    /// grid cells that have a non-empty intersection with X. It is
+    /// always included in the star of X, which is the of cells whose
+    /// closure has a non-empty intersection with X. However the cover
+    /// of X is not necessarily closed or open.
+    ///
+    /// @tparam TPolytope an instance of LatticePolytope.
+    /// @param P any Minkowski summable lattice polytope (see LatticePolytope).
+    ///
+    /// @param axis specifies the projection axis for the row
+    /// representation if below space dimension, otherwise chooses the
+    /// axis that minimizes memory/computations.
+    ///
+    /// @return the range of cells intersecting the polytope
+    /// represented as a lattice set (cells are represented with
+    /// Khalimsky coordinates). 
+    ///
+    /// @note Used by CoverCvxH.
+    ///
+    /// @note It is useful to specify an axis if you wish later to
+    /// compare or make operations with several lattice sets. They
+    /// must indeed have the same axis.
+    template <typename TPolytope>
+    LatticeSet CoverPolytope( const TPolytope& P,
+			      Dimension axis = dimension ) const;
+
+
     
   }; // end of class DigitalConvexity
 

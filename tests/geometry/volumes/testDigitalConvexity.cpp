@@ -1025,6 +1025,43 @@ SCENARIO( "DigitalConvexity< Z3 > full subconvexity of points and triangles", "[
   
 }
 
+SCENARIO( "DigitalConvexity< Z3 > full covering of segments", "[full_cover][3d]" )
+{
+  typedef KhalimskySpaceND<3,int>          KSpace;
+  typedef KSpace::Point                    Point;
+  typedef KSpace::Vector                   Vector;
+  typedef KSpace::Space                    Space;
+  typedef HyperRectDomain< Space >         Domain;
+  typedef DigitalConvexity< KSpace >       DConvexity;
+
+  Domain     domain( Point( -20, -20, -20 ), Point( 20, 20, 20 ) );
+  DConvexity dconv ( Point( -21, -21, -21 ), Point( 21, 21, 21 ) );
+  {
+    Point a( 0, 0, 0 );
+    Point b( 3, 2, 1 );
+    auto LS = dconv.CoverCvxH( a, b );
+    auto P  = LS.toPointRange();
+    CAPTURE( P );
+    REQUIRE( P.size() == 9 );
+  }
+  {
+    Point a( 0, 0, 3 );
+    Point b( 3, 0, 0 );
+    auto LS = dconv.CoverCvxH( a, b );
+    auto P  = LS.toPointRange();
+    CAPTURE( P );
+    REQUIRE( P.size() == 7 );
+  }
+  {
+    Point a( 3, 0, 0 );
+    Point b( 0, 2, 5 );
+    auto LS = dconv.CoverCvxH( a, b );
+    auto P  = LS.toPointRange();
+    CAPTURE( P );
+    REQUIRE( P.size() == 17 );
+  }
+}
+
 SCENARIO( "DigitalConvexity< Z3 > full covering of triangles", "[full_cover][3d]" )
 {
   typedef KhalimskySpaceND<3,int>          KSpace;
@@ -1066,6 +1103,7 @@ SCENARIO( "DigitalConvexity< Z3 > full covering of triangles", "[full_cover][3d]
 }
 
 
+
 SCENARIO( "DigitalConvexity< Z3 > full subconvexity and full covering of triangles", "[subconvexity][3d][full_cover]" )
 {
   typedef KhalimskySpaceND<3,int>          KSpace;
@@ -1082,6 +1120,8 @@ SCENARIO( "DigitalConvexity< Z3 > full subconvexity and full covering of triangl
     const unsigned int nb     = 50;
     unsigned int nb_total     = 0;
     unsigned int nb_ok_tri    = 0;
+    unsigned int nb_ok_seg    = 0;
+    unsigned int nb_ko_seg    = 0;
     unsigned int nb_subconvex = 0;
     unsigned int nb_covered   = 0;
     for ( unsigned int l = 0; l < nb; ++l )
@@ -1107,6 +1147,17 @@ SCENARIO( "DigitalConvexity< Z3 > full subconvexity and full covering of triangl
 	      auto tri1 = dconv.makeSimplex( { p, q, r } );
 	      bool ok1  = dconv.isFullySubconvex( p, q, r, ls );
 	      bool ok2  = dconv.isFullyCovered( p, q, r, ls );
+	      if ( ok2 )
+		{
+		  // check covering of segments
+		  if ( dconv.isFullyCovered( p, q, ls ) ) nb_ok_seg += 1;
+		  else nb_ko_seg += 1;
+		  if ( dconv.isFullyCovered( p, r, ls ) ) nb_ok_seg += 1;
+		  else nb_ko_seg += 1;
+		  if ( dconv.isFullyCovered( q, r, ls ) ) nb_ok_seg += 1;
+		  else nb_ko_seg += 1;
+		}
+	      
 	      nb_subconvex += ok1 ? 1 : 0;
 	      nb_covered   += ok2 ? 1 : 0;		  
 	      bool ok = ok1 == ok2;
@@ -1130,6 +1181,9 @@ SCENARIO( "DigitalConvexity< Z3 > full subconvexity and full covering of triangl
     }
     THEN( "Full subconvexity and covering should agree on every subset." ) {
       REQUIRE( nb_ok_tri == nb_total );
+    }
+    THEN( "When a triangle is fully covered, its edges are fully covered also." ) {
+      REQUIRE( nb_ko_seg == 0 );
     }
   }
   
