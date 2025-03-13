@@ -54,7 +54,7 @@ namespace DGtal
   /// because there was link error with gcc 4.8.4 for all variants
   /// within HalfEdgeDataStructure (e.g. BOOST_STATIC_CONSTANT, c++
   /// constexpr, c++ constexpr with const reference).
-  static std::size_t const HALF_EDGE_INVALID_INDEX = boost::integer_traits<std::size_t>::const_max;
+  static std::size_t const HALF_EDGE_INVALID_INDEX = std::numeric_limits<std::size_t>::max();
   
   /////////////////////////////////////////////////////////////////////////////
   // class HalfEdgeDataStructure

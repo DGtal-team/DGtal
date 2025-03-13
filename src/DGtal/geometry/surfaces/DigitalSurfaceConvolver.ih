@@ -1951,6 +1951,9 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
   std::cout << "#total cells = " << total << std::endl;
   std::cout << "#recount = " << recount << std::endl;
 #endif
+
+  delete[] lastOuterMoments;
+  delete[] lastInnerMoments;
 }
 
 
