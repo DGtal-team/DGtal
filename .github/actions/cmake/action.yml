@@ -24,6 +24,18 @@ inputs:
     type: boolean
     default: false
 
+  test-threshold:
+    description: "Randomize test threshold"
+    default: "10"
+
+  test-blacklist:
+    description: "Tests to blacklist"
+    default: ""
+
+  test-whitelist:
+    description: "Tests to whitelist"
+    default: ""
+
 runs:
   using: "composite"
   steps:
@@ -51,7 +63,7 @@ runs:
       shell: bash
       working-directory: ${{ inputs.build-dir }} 
       run: |
-        cmake $DGTAL_PATH -DCMAKE_BUILD_TYPE=${{ inputs.build-type }} ${{ inputs.build-config }}
+        cmake $DGTAL_PATH -DCMAKE_BUILD_TYPE=${{ inputs.build-type }} -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ inputs.test-whitelist }}" -DDGTAL_RANDOMIZED_TESTING_THRESHOLD="${{ inputs.test-threshold }}" ${{ inputs.build-config }}
 
     - name: Build
       shell: bash
@@ -63,5 +75,5 @@ runs:
       shell: bash
       working-directory: ${{runner.workspace}}/build
       run: |
-           echo ctest -C ${{ inputs.build-type }}  --output-on-failure -E $TESTBLACKLIST
-           ctest -C ${{ inputs.build-type }} --output-on-failure -E $TESTBLACKLIST   
+           echo ctest -C ${{ inputs.build-type }}  --output-on-failure -E ${{ inputs.test-blacklist }}
+           ctest -C ${{ inputs.build-type }} --output-on-failure -E ${{ inputs.test-blacklist }}
