@@ -4,6 +4,7 @@
 
 - *Geometry*
   - Implementation of the plane-probing L-algorithm (Tristan Roussillon, [#1744](https://github.com/DGtal-team/DGtal/pull/1744))
+  - Add covering for segments and triangles in 3D (Jacques-Olivier Lachaud, [#1747](https://github.com/DGtal-team/DGtal/pull/1747))
 
 ## Changes
 
