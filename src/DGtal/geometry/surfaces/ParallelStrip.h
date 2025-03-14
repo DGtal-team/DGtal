@@ -155,14 +155,14 @@ namespace DGtal
     Scalar mu() const;
 
     /**
-       Same as \ref width().
+       Same as width().
        @return the width of the strip, i.e. the parameter \f$\nu\f$
        such that \f$N \cdot X \le \mu + \nu\f$. 
     */
     Scalar nu() const;
 
     /**
-       Same as \ref nu().
+       Same as nu().
        @return the width of the strip, i.e. the parameter \f$\nu\f$
        such that \f$N \cdot X \le \mu + \nu\f$. 
     */
