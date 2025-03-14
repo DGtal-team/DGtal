@@ -78,7 +78,7 @@ intersectionIntervalAlongAxis( Point p, Dimension a ) const
   const Integer x_a = x_min;
   p[ a ] = x_a;
   bool empty = false;
-  for ( Dimension k = 0 /* 2*dimension */; k < A.size(); k++ )
+  for ( Dimension k = 0; k < A.size(); k++ )
     {
       const Integer c = A[ k ].dot( p );
       const Integer n = A[ k ][ a ];
@@ -103,7 +103,6 @@ intersectionIntervalAlongAxis( Point p, Dimension a ) const
           if ( d >= 0 )
             {
               x = I[ k ] ? ( (d-n-1) / -n ) : ( d / -n + 1 );
-              // x = I[ k ] ? ( (d-n-1) / -n ) : ( (d-n-1) / -n + 1 ); ?
               x_min = std::max( x_min, x_a + x );
             }
           // otherwise the constraint is true
