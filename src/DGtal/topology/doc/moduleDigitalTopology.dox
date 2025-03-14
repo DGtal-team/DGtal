@@ -190,8 +190,8 @@ namespace DGtal {
    DT6_18 dt6_18( adj6, adj18, JORDAN_DT );
    @endcode
   
-   The foreground adjacency is classically called \e kappa \f$ \kappa
-   \f$ while the background is called \e lambda \f$ \lambda \f$ . Any
+   The foreground adjacency is classically called <em> kappa </em> \f$ \kappa
+   \f$ while the background is called <em> lambda </em> \f$ \lambda \f$ . Any
    topology has a reversed topology which is the topology \f$
    (\lambda,\kappa) \f$. 
   

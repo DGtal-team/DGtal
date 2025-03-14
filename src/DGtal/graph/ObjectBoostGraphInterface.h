@@ -141,10 +141,10 @@ namespace boost
        other (potentially) iterators, through a DGtal::CountedPtr. When the
        last iterator pointing in this structure is deallocated, the
        container is automatically deallocated. This is for instance
-       used by function \ref adjacent_vertices, which returns a pair
+       used by function adjacent_vertices(), which returns a pair
        of adjacency_iterator, both points on the same
        container. Another problem is that the user may have called
-       twice \ref adjacent_vertices on the same vertex, and may wish
+       twice adjacent_vertices() on the same vertex, and may wish
        to compare iterators obtained by two different calls.
 
        @code
@@ -258,9 +258,9 @@ namespace boost
        (potentially) iterators, through a DGtal::CountedPtr. When the last
        iterator pointing in this structure is deallocated, the
        container is automatically deallocated. This is for instance
-       used by function \ref out_edges, which returns a pair of
+       used by function out_edges(), which returns a pair of
        out_edge_iterator, both points on the same container. Another
-       problem is that the user may have called twice \ref out_edges
+       problem is that the user may have called twice out_edges()
        on the same vertex, and may wish to compare iterators obtained
        by two different calls..
 
@@ -373,9 +373,9 @@ namespace boost
        provide a method that outputs them. Therefore, this iterator
        mixes a vertex_iterator (to visit all vertices) and a local
        out_edge_iterator (to visit all out edges of each vertex). This
-       is for instance used by function \ref edges, which returns a
+       is for instance used by function edges(), which returns a
        pair of edge_iterator. A potential problem is that the user may
-       have called twice \ref edges, and may wish to compare iterators
+       have called twice edges(), and may wish to compare iterators
        obtained by two different calls. Here, edges are constructed on
        the fly, hence iterators may not point on the same container
        even if the values are the same.
