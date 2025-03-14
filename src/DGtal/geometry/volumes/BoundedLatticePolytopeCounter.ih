@@ -158,7 +158,6 @@ interiorIntersectionIntervalAlongAxis( Point p, Dimension a ) const
             }
           // otherwise the constraint is true
         }
-      // std::cout << " (" << empty << ":" << x_min << "," << x_max << ")";
       if ( empty || ( x_max <= x_min ) ) return Interval( 0, 0 );
     }
   return Interval( x_min, x_max );
