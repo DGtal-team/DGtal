@@ -334,7 +334,7 @@ The do-while structure is the basic way of circulating over a range of elements:
         ...
         ++c; 
       } while( c != cEnd);   
-@encode
+@endcode
 
 The generic way of iterating over a range of elements whatever the type of iterators
 (either iterator or circulator) uses the generic function `isNotEmpty()`: 
