@@ -53,10 +53,6 @@ also illustrate a mechanism to use DGtal in your own project.
  - \subpage moduleHowToUseDGtal (David Coeurjolly)
 
 
- @b Related @b documentation @b pages
- - \subpage moduleHowToUseDGtal-qmake
-
-
 
 */
 
