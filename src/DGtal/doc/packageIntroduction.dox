@@ -33,7 +33,7 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page packageIntroduction Preliminaries
+@page packageIntroduction Getting started
    
 
 @managers David Coeurjolly, Jacques-Olivier Lachaud
@@ -51,6 +51,7 @@ also illustrate a mechanism to use DGtal in your own project.
  - \subpage moduleIntroduction (Tristan Roussillon)
  - \subpage moduleBuildDGtal (Martial Tola, David Coeurjolly)
  - \subpage moduleHowToUseDGtal (David Coeurjolly)
+ - \subpage packagePython (Pablo Hernandez-Cerdan, David Coeurjolly)
 
 
 
