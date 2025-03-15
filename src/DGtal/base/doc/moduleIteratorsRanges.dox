@@ -328,7 +328,7 @@ then as describing a whole range of elements, if a whole range is required.
 
 The do-while structure is the basic way of circulating over a range of elements: 
 
-@ode
+@code
     do 
       {
         ...
