@@ -205,34 +205,37 @@ the decrement operator instead of the increment operator and conversely.
 Bidirectional ranges provide reverse iterators that can be used 
 as follows: 
 
-    template<typename Range>
-    void anyProcedure(const Range& aRange)
-      {
-        BOOST_CONCEPT_ASSERT(( concepts::CBidirectionalRange<Range> )); 
-        ...
-        for (typename Range::ReverseIterator ri = r.rbegin(), 
-             typename Range::ReverseIterator riEnd = r.rend(); 
-             ri != riEnd; ++ri)
-          {
-             ...
-          }
-       }
-
+@code
+template<typename Range>
+void anyProcedure(const Range& aRange)
+  {
+    BOOST_CONCEPT_ASSERT(( concepts::CBidirectionalRange<Range> )); 
+    ...
+    for (typename Range::ReverseIterator ri = r.rbegin(), 
+         typename Range::ReverseIterator riEnd = r.rend(); 
+         ri != riEnd; ++ri)
+    {
+     ...
+    }
+  }
+@endcode
 
 In order to take profit of the whole DGtal framework, you should use
 DGtal::ReverseIterator instead of boost::reverse_iterator or
 even boost::reverse_iterator. 
 
-    #include "DGtal/base/ReverseIterator.h"
-    ...
-    template<typename Iterator>
-    void anyProcedure(const Iterator& anIterator)
-      {
-        ...
-        DGtal::ReverseIterator<Iterator> ri(anIterator); 
-        ASSERT( ri.base() == anIterator ); //ie. anIterator is the underlying iterator of ri
-        ...
-      }
+@code
+#include "DGtal/base/ReverseIterator.h"
+...
+template<typename Iterator>
+void anyProcedure(const Iterator& anIterator)
+  {
+  ...
+  DGtal::ReverseIterator<Iterator> ri(anIterator); 
+  ASSERT( ri.base() == anIterator ); //ie. anIterator is the underlying iterator of ri
+...
+  }
+@endcode
 
 @note Reverse iterators are a little tricky because `*ri == *--ri.base()`
 (or equivalently `*++ri == *ri.base()`), 
@@ -251,6 +254,7 @@ possibly of different type. The transformation is delegated to a *functor*.
 Dereferencing any adapted iterator consists in applying the functor on the
 data to which points the underlying iterator:    
 
+@code
     #include "DGtal/base/ConstIteratorAdapter.h"
     ...
     template<typename Iterator, typename Functor, typename ReturnType>
@@ -261,13 +265,14 @@ data to which points the underlying iterator:
         ASSERT( *a == f(*i) ); //ie. *a and f(*i) return equivalent instances of ReturnType  
         ...
       } 
+@endcode
 
 The class ConstIteratorAdapter adapts any (at least) readable and 
 (at least) incremental iterator with any functor, whereas the class
  IteratorAdapter adapts any readable, writable, Lvalue and (at least)
 incremental iterator. 
 
-<!-- TODO and outputIteratorAdapter ? --!> 
+<!-- TODO and outputIteratorAdapter ? --> 
  
 
 \subsection subsecIteratorRangesAdaptersCirculators  Circulators
@@ -323,15 +328,18 @@ then as describing a whole range of elements, if a whole range is required.
 
 The do-while structure is the basic way of circulating over a range of elements: 
 
+@ode
     do 
       {
         ...
         ++c; 
       } while( c != cEnd);   
+@encode
 
 The generic way of iterating over a range of elements whatever the type of iterators
 (either iterator or circulator) uses the generic function `isNotEmpty()`: 
 
+@code
     #include "DGtal/base/IteratorFunctions.h"
     ...
     template<typename IC>
@@ -347,6 +355,7 @@ The generic way of iterating over a range of elements whatever the type of itera
               } while( ic != ic2);   
           }
       }
+@endcode
 
 <!-- TODO range adapter, range factory (in geometry package) --!> 
 
@@ -391,6 +400,7 @@ this information thanks to the following nested types:
 
 For instance, redefining the value type is done as follows: 
 
+@code
     #include "DGtal/base/IteratorTraits.h" 
     ...
     template<typename IC>
@@ -399,7 +409,7 @@ For instance, redefining the value type is done as follows:
         typedef typename IteratorCirculatorTraits<IC>::Value ValueType; 
         ...
       }
-    
+@endcode
 
 \subsection subsecIteratorRangesUtilsTagsDispatching For developers: Tag dispatching 
 
@@ -441,7 +451,7 @@ The basic way of checking whether a given type is a model of a given concept or 
 is to use the BOOST_CONCEPT_ASSERT mechanism. In the following snippet, 
 type *I* is expected to be a model of readable iterator and forward iterator. 
 If it turns out that it is not a model of these concepts, a compilation error is raised. 
-
+@code
     template<typename I>
     void anyProcedure(const I& i)
       {
@@ -449,6 +459,7 @@ If it turns out that it is not a model of these concepts, a compilation error is
         BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<I> )); 
         ...
       }
+@endcode
 
 \section secIteratorRangesApps Applications
 
@@ -462,10 +473,10 @@ discrete structures. This is a (not exhaustive) list of such structures
  used in digital geometry: 
 
 - digital curves
-    - 2d, 3d, nd
-    - 4-connected, 8-connected, disconnected
-    - interpixels, pixels
-    - open, closed
+  - 2d, 3d, nd
+  - 4-connected, 8-connected, disconnected
+  - interpixels, pixels
+  - open, closed
 
 - chaincodes
 
