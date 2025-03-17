@@ -169,7 +169,7 @@ else()
   # Defaults to BOOST_BACKEND
   message(STATUS "Using BOOST_BACKEND for BigIntegers")
   target_compile_definitions(DGtal PUBLIC -DDGTAL_BIGINTEGER_BOOST_BACKEND)
-  target_compile_definitions(DGTAL_BoostAddons PUBLIC -DDGTAL_BIGINTEGER_GMP_BOOST_BACKEND)
+  target_compile_definitions(DGTAL_BoostAddons PUBLIC -DDGTAL_BIGINTEGER_BOOST_BACKEND)
 endif()
 
 
