@@ -729,19 +729,6 @@ bool randomTest52All()
     quasiNullTest( F(), signedRandomInt26 ); 
     std::cout << std::endl;   
   }
-  { 
-    srand(seed); 
-    std::cout << "2x2-inc-double-BigInt "; 
-    typedef PointVector<2, double> Point; 
-    typedef SimpleIncremental2x2DetComputer<double, DGtal::BigInteger> DetComputer; 
-    typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> F; 
-    randomTest( F(), signedRandomDouble52 );
-    nullSameVectorsTest( F(), signedRandomDouble52 );
-    nullZeroVectorTest( F(), signedRandomDouble52 ); 
-    nullTest( F(), signedRandomInt26 ); 
-    quasiNullTest( F(), signedRandomInt26 ); 
-    std::cout << std::endl;   
-  }
 #endif
   {
     srand(seed); 

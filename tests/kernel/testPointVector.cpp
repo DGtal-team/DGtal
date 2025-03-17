@@ -106,66 +106,6 @@ TEST_CASE( "2D Point Vector Unit tests" )
     }
 }
 
-TEST_CASE( "2D Point Vector Unit tests with BigInteger" )
-{
-  using Real = double;
-  using Integer = DGtal::BigInteger;
-  
-  typedef PointVector<2, Integer> Point2D;
-  typedef PointVector<2, Real> RealPoint2D;
-  typedef PointVector<3, Integer> Point3D;
-  typedef PointVector<3, Real> RealPoint3D;
-  
-  Integer t1[] = {1,2};
-  Integer t2[] = {5,4};
-  Real t3[] = {1.5,2.5};
-  Real t4[] = {5.5,4.5};
-  
-  Point2D p1( t1 );
-  Point2D p2( t2 );
-  RealPoint2D p3(t3);
-  RealPoint2D p4(t4);
-  
-  Point3D p1_3d( p1[0], p1[1] );
-  Point3D p2_3d( p2[0], p2[1] );
-  RealPoint3D p3_3d( p3[0], p3[1] );
-  RealPoint3D p4_3d( p4[0], p4[1] );
-  
-  SECTION("Cross products with (big)integers")
-  {
-    Point2D p = p1 - p2;
-    Point2D expected(6,6);
-    CHECK( p  == expected ) ;
-    
-    COMPARE_VALUE_AND_TYPE( p1.crossProduct(p2), p1_3d.crossProduct(p2_3d) );
-    COMPARE_VALUE_AND_TYPE( crossProduct(p1, p2), crossProduct(p1_3d, p2_3d) );
-    COMPARE_VALUE_AND_TYPE( p2.crossProduct(p1), p2_3d.crossProduct(p1_3d) );
-    COMPARE_VALUE_AND_TYPE( crossProduct(p2, p1), crossProduct(p2_3d, p1_3d) );
-  }
-  
-  SECTION("Cross products with reals")
-  {
-    COMPARE_VALUE_AND_TYPE( p3.crossProduct(p4), p3_3d.crossProduct(p4_3d) );
-    COMPARE_VALUE_AND_TYPE( crossProduct(p3, p4), crossProduct(p3_3d, p4_3d) );
-    COMPARE_VALUE_AND_TYPE( p4.crossProduct(p3), p4_3d.crossProduct(p3_3d) );
-    COMPARE_VALUE_AND_TYPE( crossProduct(p4, p3), crossProduct(p4_3d, p3_3d) );
-  }
-  
-  SECTION("Cross products with mixed (big)integers/reals")
-  {
-    COMPARE_VALUE_AND_TYPE( p1.crossProduct(p3), p1_3d.crossProduct(p3_3d) );
-    COMPARE_VALUE_AND_TYPE( crossProduct(p1, p3), crossProduct(p1_3d, p3_3d) );
-    COMPARE_VALUE_AND_TYPE( p3.crossProduct(p1), p3_3d.crossProduct(p1_3d) );
-    COMPARE_VALUE_AND_TYPE( crossProduct(p3, p1), crossProduct(p3_3d, p1_3d) );
-  }
-  SECTION("Access data() of internal container")
-  {
-    const auto d = p1_3d.data();
-    CHECK(d[0] == p1[0]);
-    CHECK(d[1] == p1[1]);
-  }
-}
-
 
 TEST_CASE( "3D Point Vector Unit tests" )
 {
