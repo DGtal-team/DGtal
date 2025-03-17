@@ -43,9 +43,8 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <cstdlib>
-#include <iostream>
-#include <boost/cstdint.hpp>
 #include <cstdint>
+#include <iostream>
 
 #ifdef DGTAL_BIGINTEGER_GMP_BOOST_BACKEND
   #include <boost/multiprecision/gmp.hpp>
