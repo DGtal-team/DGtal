@@ -24,6 +24,11 @@ option(WITH_PATATE "With Patate library for geometry processing." OFF)
 option(DGTAL_WITH_FFTW3 "With FFTW3 discrete Fourier Transform library." OFF)
 option(DGTAL_WITH_LIBIGL "With libIGL (with copyleft/CGAL included)." OFF)
 
+# Same names as CGAL
+set(DGTAL_BIGINTEGER_BACKEND_OPTIONS BOOST_GMP_BACKEND BOOST_BACKEND)
+set(DGTAL_BIGINTEGER_BACKEND "BOOST_BACKEND" CACHE STRING "BigInteger backend")
+set_property(CACHE DGTAL_BIGINTEGER_BACKEND PROPERTY STRINGS ${DGTAL_BIGINTEGER_BACKEND_OPTIONS})
+
 #----------------------------------
 # Removing -frounding-math compile flag for clang
 #----------------------------------
@@ -109,8 +114,6 @@ endif()
 message(STATUS "")
 message(STATUS "Checking the dependencies: ")
 
-
-
 # -----------------------------------------------------------------------------
 # Look for GMP (The GNU Multiple Precision Arithmetic Library)
 # (They are not compulsory).
@@ -149,6 +152,26 @@ if(DGTAL_WITH_GMP)
     message(FATAL_ERROR "GMP has been found but there is a link isuse with some g++ versions. Please check your system or disable the GMP dependency." )
   endif()
 endif()
+
+
+# -----------------------------------------------------------------------------
+# Multiple Precision Backend
+# -----------------------------------------------------------------------------
+if ("${DGTAL_BIGINTEGER_BACKEND}" STREQUAL "BOOST_GMP_BACKEND")
+  if (NOT GMP_FOUND)
+    message(FATAL_ERROR "BigInteger Backend set to ${BOOST_GMP_BACKEND} but GMP has not been found.")
+  endif()
+
+  message(STATUS "Using BOOST_GMP_BACKEND for BigIntegers")
+  target_compile_definitions(DGtal PUBLIC -DDGTAL_BIGINTEGER_GMP_BOOST_BACKEND)
+  target_compile_definitions(DGTAL_BoostAddons PUBLIC -DDGTAL_BIGINTEGER_GMP_BOOST_BACKEND)
+else() 
+  # Defaults to BOOST_BACKEND
+  message(STATUS "Using BOOST_BACKEND for BigIntegers")
+  target_compile_definitions(DGtal PUBLIC -DDGTAL_BIGINTEGER_BOOST_BACKEND)
+  target_compile_definitions(DGTAL_BoostAddons PUBLIC -DDGTAL_BIGINTEGER_GMP_BOOST_BACKEND)
+endif()
+
 
 # -----------------------------------------------------------------------------
 # Look for ITK
