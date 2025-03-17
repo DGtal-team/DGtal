@@ -64,9 +64,7 @@ For example, digital spaces can be defined as follows:
 typedef DGtal::SpaceND<3, DGtal::int32_t> MySpace32;
 typedef DGtal::SpaceND<1, DGtal::int64_t> MySpace64;
 
-#ifdef WITH_BIGINTEGER
 typedef DGtal::SpaceND<3, DGtal::Integer> MySpaceBigInteger;
-#endif
 @endcode
 
 In the latter example, we construct a digital space using

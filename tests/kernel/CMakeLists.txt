@@ -39,7 +39,7 @@ endforeach()
 #GMP based tests
 #----------------------
 if(GMP_FOUND)
-  set(DGTAL_TESTS_GMP_SRC testDGtalGMP)
+  set(DGTAL_TESTS_GMP_SRC testDGtalBigInteger)
 
   foreach(FILE ${DGTAL_TESTS_GMP_SRC})
     DGtal_add_test(${FILE})

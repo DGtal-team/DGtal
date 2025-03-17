@@ -329,7 +329,6 @@ TEST_CASE( "Iterator 4D", "[iterator][4D]" )
   trace.endBlock();
 }
 
-#ifdef WITH_BIGINTEGER
 TEST_CASE( "Iterator 4D GMP", "[iterator][4D][GMP]" )
 {
   using Space = SpaceND<4, BigInteger>;
@@ -343,7 +342,6 @@ TEST_CASE( "Iterator 4D GMP", "[iterator][4D][GMP]" )
   testIterator(a, b, c);
   trace.endBlock();
 }
-#endif
 
 TEST_CASE( "STL compatiblity", "[iterator][4D][STL]" )
 {

@@ -84,11 +84,7 @@ namespace DGtal
     typedef std::vector<Integer>            InequalityVector;
     typedef HyperRectDomain< Space >        Domain; 
     typedef ClosedIntegerHalfPlane< Space > HalfSpace;
-#ifdef WITH_BIGINTEGER
     typedef DGtal::BigInteger               BigInteger;
-#else
-    typedef DGtal::int64_t                  BigInteger;
-#endif
     static const Dimension dimension = Space::dimension;
 
     /**

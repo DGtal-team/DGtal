@@ -396,7 +396,6 @@ namespace DGtal
     using UnsignedVersion = T; ///< Alias to the unsigned version of a floating-point type (aka itself).
   }; // end of class NumberTraitsImpl
 
-#ifdef WITH_BIGINTEGER
   /** @brief Specialization of NumberTraitsImpl for DGtal::BigInteger
    *
    * Note that DGtal::BigInteger represents
@@ -542,7 +541,6 @@ namespace DGtal
   // Definition of the static attributes in order to allow ODR-usage.
   template <typename Enable> const DGtal::BigInteger NumberTraitsImpl<DGtal::BigInteger, Enable>::ZERO = 0;
   template <typename Enable> const DGtal::BigInteger NumberTraitsImpl<DGtal::BigInteger, Enable>::ONE  = 1;
-#endif
 
   /**
    * Description of template class 'NumberTraits' <p>

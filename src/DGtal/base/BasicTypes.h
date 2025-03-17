@@ -77,10 +77,8 @@ namespace DGtal
   typedef std::int64_t int64_t;
   
   #ifdef DGTAL_WITH_GMP
-    #define WITH_BIGINTEGER
     typedef boost::multiprecision::number<boost::multiprecision::gmp_int, boost::multiprecision::et_off> BigInteger;
   #else
-    #define WITH_BIGINTEGER
     typedef boost::multiprecision::number<boost::multiprecision::cpp_int_backend<>, boost::multiprecision::et_off> BigInteger;
   #endif
 } // namespace DGtal

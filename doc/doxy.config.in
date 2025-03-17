@@ -2130,7 +2130,6 @@ INCLUDE_FILE_PATTERNS  =
 
 PREDEFINED             = "BOOST_FUSION_ADAPT_STRUCT(x,y)=" \
                          "DGTAL_WITH_GMP=" \
-                         "DGTAL_WITH_BIGINTEGER=" \
                          "DGTAL_WITH_CAIRO=" \
                          "DGTAL_WITH_CGAL=" \
                          "DGTAL_WITH_HDF5=" \

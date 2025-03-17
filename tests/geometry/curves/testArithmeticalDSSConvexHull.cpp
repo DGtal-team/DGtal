@@ -170,10 +170,8 @@ bool testWithoutLengthConstraint()
     && basicTest<NaiveDSL<DGtal::int32_t> >(109, 360)
     && basicTest<NaiveDSL<DGtal::int32_t> >(8, 73)
     && basicTest<NaiveDSL<DGtal::int32_t,DGtal::int64_t> >(30, 43)
-#ifdef WITH_BIGINTEGER
     && basicTest<NaiveDSL<DGtal::int32_t,DGtal::BigInteger> >(57, 520)
     && basicTest<NaiveDSL<DGtal::BigInteger,DGtal::BigInteger> >(157, 225)
-#endif
 
     ; 
 
@@ -475,11 +473,8 @@ bool testSubsegment()
     && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(8,-5)
     && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(-5,-8)
     && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(-8,-5)
-
-#ifdef WITH_BIGINTEGER
     && comparisonSubsegment<NaiveDSL<DGtal::int32_t,DGtal::BigInteger> >(5,8)
     && comparisonSubsegment<NaiveDSL<DGtal::BigInteger,DGtal::BigInteger> >(5,8)
-#endif
     ; 
 
   trace.endBlock();
@@ -607,11 +602,8 @@ bool testWithoutLengthConstraint2()
     && basicTest2<NaiveDSL<DGtal::int32_t> >(109, 360)
     && basicTest2<NaiveDSL<DGtal::int32_t> >(8, 73)
     && basicTest2<NaiveDSL<DGtal::int32_t,DGtal::int64_t> >(30, 43)
-#ifdef WITH_BIGINTEGER
     && basicTest2<NaiveDSL<DGtal::int32_t,DGtal::BigInteger> >(57, 520)
     && basicTest2<NaiveDSL<DGtal::BigInteger,DGtal::BigInteger> >(157, 225)
-#endif
-
     ; 
 
   trace.endBlock();
@@ -757,11 +749,8 @@ bool testSubsegment2()
     && comparisonSubsegment2<StandardDSL<DGtal::int32_t> >(8,-5)
     && comparisonSubsegment2<StandardDSL<DGtal::int32_t> >(-5,-8)
     && comparisonSubsegment2<StandardDSL<DGtal::int32_t> >(-8,-5)
-
-#ifdef WITH_BIGINTEGER
     && comparisonSubsegment2<NaiveDSL<DGtal::int32_t,DGtal::BigInteger> >(5,8)
     && comparisonSubsegment2<NaiveDSL<DGtal::BigInteger,DGtal::BigInteger> >(5,8)
-#endif
     ; 
 
   trace.endBlock();

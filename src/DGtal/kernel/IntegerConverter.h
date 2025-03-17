@@ -145,7 +145,6 @@ namespace DGtal
       return q;
     }
       
-#ifdef WITH_BIGINTEGER
     /// @param i any integer
     /// @return the same integer
     static DGtal::int32_t cast( DGtal::BigInteger i ) 
@@ -170,8 +169,6 @@ namespace DGtal
         q[ i ] = cast( p[ i ] );
       return q;
     }
-
-#endif
   };
     
 
@@ -227,7 +224,6 @@ namespace DGtal
       return p;
     }
       
-#ifdef WITH_BIGINTEGER
     /// @param i any integer
     /// @return the same integer
     static DGtal::int64_t cast( DGtal::BigInteger i ) 
@@ -253,12 +249,8 @@ namespace DGtal
         q[ i ] = cast( p[ i ] );
       return q;
     }
-      
-#endif
   };
     
-
-#ifdef WITH_BIGINTEGER
   /// Allows seamless conversion of integral types and lattice
   /// points, while checking for errors when going from a more
   /// precise to a less precise type.
@@ -334,8 +326,6 @@ namespace DGtal
     }
       
   };
-#endif
-
       
 } // namespace DGtal {
 

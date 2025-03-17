@@ -370,7 +370,6 @@ bool testIsInside()
   return (nb == nbok); 
 }
 
-#ifdef WITH_BIGINTEGER
 /**
  * Test for 4-connected points
  * with big coordinates
@@ -421,7 +420,6 @@ bool testBIGINTEGER()
   return flag;
 }
 
-#endif
 
 /**
  * Test for corners
@@ -484,9 +482,7 @@ int main(int argc, char **argv)
     && testDSS8drawing()
     && testExtendRetractFront()
     && testCorner()
-#ifdef WITH_BIGINTEGER
     && testBIGINTEGER()
-#endif
     && testIsInside()
     ;
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;

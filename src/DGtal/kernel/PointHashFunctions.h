@@ -67,7 +67,6 @@ namespace std {
   };
 }
 
-#ifdef WITH_BIGINTEGER
 namespace std
 {
   template <>
@@ -86,7 +85,6 @@ namespace boost
   struct hash< DGtal::BigInteger > : std::hash<DGtal::BigInteger>
   { };
 }
-#endif
 
 
 
