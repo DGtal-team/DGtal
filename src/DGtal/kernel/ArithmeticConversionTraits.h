@@ -182,51 +182,7 @@ namespace DGtal
     
     return ArithmeticConversionType<LHS, RHS>( std::forward<Args>(args)... );
   }
-  
-#ifdef DGTAL_WITH_GMP
-  /** @brief Specialization when first operand is a @ref BigInteger with GMP.
-   *
-   * @warning result type if set to BigInteger instead of the possible
-   *    more complex __gmp_expr.
-   *
-   * @see ArithmeticConversionTraits
-   */
-  template <typename T, typename GMP1, typename GMP2>
-  struct ArithmeticConversionTraits<T, __gmp_expr<GMP1, GMP2>,
-  typename std::enable_if< std::is_integral<T>::value >::type >
-  {
-    using type = BigInteger;
-  };
-  
-  /** @brief Specialization when second operand is a @ref BigInteger with GMP.
-   *
-   * @warning result type if set to BigInteger instead of the possible
-   *    more complex __gmp_expr.
-   *
-   * @see ArithmeticConversionTraits
-   */
-  template <typename GMP1, typename GMP2, typename U>
-  struct ArithmeticConversionTraits<__gmp_expr<GMP1, GMP2>, U,
-  typename std::enable_if< std::is_integral<U>::value >::type >
-  {
-    using type = BigInteger;
-  };
-  
-  /** @brief Specialization when both operands are @ref BigInteger with GMP.
-   *
-   * @warning result type if set to BigInteger instead of the possible
-   *    more complex __gmp_expr.
-   *
-   * @see ArithmeticConversionTraits
-   */
-  template <typename GMPL1, typename GMPL2, typename GMPR1, typename GMPR2>
-  struct ArithmeticConversionTraits<__gmp_expr<GMPL1, GMPL2>, __gmp_expr<GMPR1, GMPR2>>
-  {
-    using type = BigInteger;
-  };
-#endif
-  
-  
+
   /** @brief Specialization when first operand is a @ref BigInteger.
    *
    * @see ArithmeticConversionTraits

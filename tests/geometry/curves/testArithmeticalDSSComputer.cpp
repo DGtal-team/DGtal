@@ -406,8 +406,7 @@ bool testBIGINTEGER()
 
   trace.info() << theDSS4 << " " << theDSS4.isValid() << std::endl;
 
-  Coordinate mu;
-  mu = "-3000000000";
+  Coordinate mu("-3000000000");
   if( (theDSS4.a() == 2)
       &&(theDSS4.b() == 5)
       &&(theDSS4.mu() == mu)
