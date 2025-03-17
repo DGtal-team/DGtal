@@ -492,11 +492,7 @@ namespace DGtal
     static inline
     DGtal::int64_t castToInt64_t(const DGtal::BigInteger & aT) noexcept
     {
-#ifdef DGTAL_WITH_GMP
-      return aT.get_si();
-#else
       return static_cast<DGtal::int64_t>(aT);
-#endif
     }
 
     /** @brief
@@ -506,11 +502,7 @@ namespace DGtal
     static inline
     DGtal::uint64_t castToUInt64_t(const DGtal::BigInteger & aT) noexcept
     {
-#ifdef DGTAL_WITH_GMP
-      return aT.get_ui();
-#else
       return static_cast<DGtal::uint64_t>(aT);
-#endif
     }
 
     
@@ -521,11 +513,7 @@ namespace DGtal
     static inline
     double castToDouble(const DGtal::BigInteger & aT) noexcept
     {
-#ifdef DGTAL_WITH_GMP
-      return aT.get_d();
-#else
       return static_cast<double>(aT);
-#endif
     }
 
     /** @brief Check the parity of a number.
@@ -536,11 +524,7 @@ namespace DGtal
     static inline
     bool even( ParamType aT ) noexcept
     {
-#ifdef DGTAL_WITH_GMP
-      return mpz_even_p( aT.get_mpz_t() );
-#else
       return (boost::multiprecision::integer_modulus(aT, 2) == 0);
-#endif
     }
 
     /** @brief Check the parity of a number.
@@ -551,11 +535,7 @@ namespace DGtal
     static inline
     bool odd( ParamType aT ) noexcept
     {
-#ifdef DGTAL_WITH_GMP
-      return mpz_odd_p( aT.get_mpz_t() );
-#else
       return (boost::multiprecision::integer_modulus(aT, 2) == 1);
-#endif
     }
   }; // end of class NumberTraits<DGtal::BigInteger>.
 

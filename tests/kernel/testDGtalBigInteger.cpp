@@ -22,7 +22,7 @@
  *
  * @date 2010/12/13
  *
- * Functions for testing class DGtalGMP.
+ * Functions for testing class BigInteger.
  *
  * This file is part of the DGtal library.
  */
@@ -57,11 +57,10 @@ bool testDGtalBIGINTEGER()
   
   trace.beginBlock ( "BIGINTEGER linking test..." );
  
-  DGtal::BigInteger a, b, c;
-  
-  a = 1234;
-  b = "-5678";
-  c = a+b;
+  DGtal::BigInteger a(1234);
+  DGtal::BigInteger b("-5678");
+  DGtal::BigInteger c = a + b;
+
   trace.info() << "sum is " << c << "\n";
   trace.info() << "absolute value is " << abs(c) << "\n";
 
@@ -92,10 +91,8 @@ bool testBIGINTEGERSpace()
   typedef Space2::Point::Coordinate Coordinate;
   typedef HyperRectDomain<Space2> Domain;
 
-  DGtal::BigInteger a, b, c;
-  
-  a = 1234;
-  b = "-5678";
+  DGtal::BigInteger a(1234);
+  DGtal::BigInteger b("-5678");
   Point p(a,b);
 
   typedef FreemanChain<Coordinate> Contour;

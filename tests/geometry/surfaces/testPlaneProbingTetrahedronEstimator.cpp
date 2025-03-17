@@ -174,7 +174,7 @@ TEST_CASE("Testing PlaneProbingTetrahedronEstimator")
         REQUIRE(nbOk == 100);
     }
     
-#ifdef DGTAL_WITH_GMP
+#ifdef WITH_BIGINTEGER
     SECTION("H , R and L algorithms should return the correct normal, R and L algorithms a reduced basis with BigInteger")
     {
         using Point = PointVector<3, BigInteger>;
