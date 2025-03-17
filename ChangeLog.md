@@ -16,7 +16,7 @@
   - Add a cmake option to use the ITK EIGEN configuration to solve the issue [#347](https://github.com/DGtal-team/DGtalTools/issues/437) of DGTalTools. (Bertrand Kerautret, [#1759](https://github.com/DGtal-team/DGtal/pull/1759)
 
 - *Github* 
-  - Reusable jobs for Github actions [#1766](https://github.com/DGtal-team/DGtal/pull/1759)
+  - Reusable jobs for Github actions [#1766](https://github.com/DGtal-team/DGtal/pull/1766)
 
 # DGtal 1.4.2
 
