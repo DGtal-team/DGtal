@@ -5,6 +5,7 @@
   - C++20 support and new minimal standard (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
   - Library is now (almost) header only (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
   - Fix compilation warnings (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/))
+  - Remove GMP dependancy (Bastien Doignies, [#1769](https://github.com/DGtal-team/DGtal/pull/1769))
   - New Boost BigInteger Backend (Bastien Doignies, [#1769](https://github.com/DGtal-team/DGtal/pull/1769))
 
 - *CMake*
