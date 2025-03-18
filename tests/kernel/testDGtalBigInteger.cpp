@@ -113,7 +113,7 @@ bool testBIGINTEGERSpace()
    << domain
    << theContour;
 
-  aBoard.saveSVG("testgmpcontour.svg");
+  aBoard.saveSVG("testbigintcontour.svg");
 
 
   nbok += true ? 1 : 0; 

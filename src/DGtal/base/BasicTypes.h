@@ -46,11 +46,7 @@
 #include <cstdint>
 #include <iostream>
 
-#ifdef DGTAL_BIGINTEGER_GMP_BOOST_BACKEND
-  #include <boost/multiprecision/gmp.hpp>
-#else
-  #include <boost/multiprecision/cpp_int.hpp>
-#endif
+#include <boost/multiprecision/cpp_int.hpp>
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -60,6 +56,7 @@ namespace DGtal
   ///unsigned 8-bit integer.
   typedef std::uint8_t uint8_t;
   ///unsigned 16-bit integer.
+  typedef std::uint16_t uint16_t;
   typedef std::uint16_t uint16_t;
   ///unsigned 32-bit integer.
   typedef std::uint32_t uint32_t;
@@ -75,11 +72,7 @@ namespace DGtal
   ///signed 94-bit integer.
   typedef std::int64_t int64_t;
   
-  #ifdef DGTAL_BIGINTEGER_GMP_BOOST_BACKEND
-    typedef boost::multiprecision::number<boost::multiprecision::gmp_int, boost::multiprecision::et_off> BigInteger;
-  #else //elif defined(DDGTAL_BIGINTEGER_BOOST_BACKEND)
-    typedef boost::multiprecision::number<boost::multiprecision::cpp_int_backend<>, boost::multiprecision::et_off> BigInteger;
-  #endif
+  typedef boost::multiprecision::number<boost::multiprecision::cpp_int_backend<>, boost::multiprecision::et_off> BigInteger;
 } // namespace DGtal
 
 

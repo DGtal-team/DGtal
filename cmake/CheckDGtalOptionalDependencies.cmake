@@ -10,11 +10,10 @@ message(STATUS "----------------------------------------------------------------
 message(STATUS "DGtal Library optional configuration:")
 message(STATUS "   (to change these values, use ccmake, a graphical")
 message(STATUS "   cmake frontend, or define cmake commandline variables")
-message(STATUS "   -e.g. '-DDGTAL_WITH_GMP:string=true'-, cf documentation)")
+message(STATUS "   -e.g. '-DGTAL_WITH_OPENMP:string=true'-, cf documentation)")
 message(STATUS "")
 
 option(DGTAL_WITH_OPENMP "With OpenMP (compiler multithread programming) features." OFF)
-option(DGTAL_WITH_GMP "With Gnu Multiprecision Library (GMP)." OFF)
 option(DGTAL_WITH_CGAL "With CGAL." OFF)
 option(DGTAL_WITH_ITK "With Insight Toolkit ITK." OFF)
 option(DGTAL_WITH_CAIRO "With CairoGraphics." OFF)
@@ -23,11 +22,6 @@ option(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt5 required)." O
 option(WITH_PATATE "With Patate library for geometry processing." OFF)
 option(DGTAL_WITH_FFTW3 "With FFTW3 discrete Fourier Transform library." OFF)
 option(DGTAL_WITH_LIBIGL "With libIGL (with copyleft/CGAL included)." OFF)
-
-# Same names as CGAL
-set(DGTAL_BIGINTEGER_BACKEND_OPTIONS BOOST_GMP_BACKEND BOOST_BACKEND)
-set(DGTAL_BIGINTEGER_BACKEND "BOOST_BACKEND" CACHE STRING "BigInteger backend")
-set_property(CACHE DGTAL_BIGINTEGER_BACKEND PROPERTY STRINGS ${DGTAL_BIGINTEGER_BACKEND_OPTIONS})
 
 #----------------------------------
 # Removing -frounding-math compile flag for clang
@@ -44,13 +38,6 @@ if(DGTAL_WITH_OPENMP)
   message(STATUS "      DGTAL_WITH_OPENMP        true    (OpenMP multithread features)")
 else()
   message(STATUS "      DGTAL_WITH_OPENMP        false   (OpenMP multithread features)")
-endif()
-
-if(DGTAL_WITH_GMP)
-  set(LIST_OPTION ${LIST_OPTION} [GMP]\ )
-  message(STATUS "      DGTAL_WITH_GMP           true    (Gnu Multiprecision Library)")
-else()
-  message(STATUS "      DGTAL_WITH_GMP           false   (Gnu Multiprecision Library)")
 endif()
 
 if (DGTAL_WITH_CGAL)
@@ -113,65 +100,6 @@ endif()
 
 message(STATUS "")
 message(STATUS "Checking the dependencies: ")
-
-# -----------------------------------------------------------------------------
-# Look for GMP (The GNU Multiple Precision Arithmetic Library)
-# (They are not compulsory).
-# -----------------------------------------------------------------------------
-set(GMP_FOUND_DGTAL 0)
-if(DGTAL_WITH_GMP)
-  find_package(GMP REQUIRED)
-  if(GMP_FOUND)
-    target_include_directories(DGtal PUBLIC ${GMP_INCLUDE_DIR})
-    set(GMP_FOUND_DGTAL 1)
-    target_link_libraries(DGtal PUBLIC ${GMPXX_LIBRARIES} ${GMP_LIBRARIES})
-    set(DGtalLibDependencies ${DGtalLibDependencies} ${GMPXX_LIBRARIES} ${GMP_LIBRARIES})
-    message(STATUS "GMP and GMPXX found." )
-    target_compile_definitions(DGtal PUBLIC -DDGTAL_WITH_GMP)
-    target_include_directories(DGtal PUBLIC ${GMP_INCLUDE_DIR})
-  else()
-    message(FATAL_ERROR "GMP not found. Check the cmake variables associated to this package or disable it." )
-  endif()
-
-  try_compile(
-    GMP_HAS_IOSTREAM
-    ${CMAKE_BINARY_DIR}
-    ${PROJECT_SOURCE_DIR}/cmake/src/gmp/gmpstream.cpp
-    CMAKE_FLAGS
-    -DINCLUDE_DIRECTORIES:STRING=${GMP_INCLUDE_DIR}
-    -DLINK_LIBRARIES:STRING=${GMPXX_LIBRARIES}\;${GMP_LIBRARIES}
-    OUTPUT_VARIABLE OUTPUT
-    )
-
-  if ( GMP_HAS_IOSTREAM )
-    target_compile_definitions(DGtal PUBLIC -DGMP_HAS_IOSTREAM)
-    message(STATUS "   * GMPXX has iostream capabilities")
-  else()
-    message(STATUS ${OUTPUT})
-    message(STATUS "   * GMPXX does not have iostream capabilities")
-    message(FATAL_ERROR "GMP has been found but there is a link isuse with some g++ versions. Please check your system or disable the GMP dependency." )
-  endif()
-endif()
-
-
-# -----------------------------------------------------------------------------
-# Multiple Precision Backend
-# -----------------------------------------------------------------------------
-if ("${DGTAL_BIGINTEGER_BACKEND}" STREQUAL "BOOST_GMP_BACKEND")
-  if (NOT GMP_FOUND)
-    message(FATAL_ERROR "BigInteger Backend set to ${BOOST_GMP_BACKEND} but GMP has not been found.")
-  endif()
-
-  message(STATUS "Using BOOST_GMP_BACKEND for BigIntegers")
-  target_compile_definitions(DGtal PUBLIC -DDGTAL_BIGINTEGER_GMP_BOOST_BACKEND)
-  target_compile_definitions(DGTAL_BoostAddons PUBLIC -DDGTAL_BIGINTEGER_GMP_BOOST_BACKEND)
-else() 
-  # Defaults to BOOST_BACKEND
-  message(STATUS "Using BOOST_BACKEND for BigIntegers")
-  target_compile_definitions(DGtal PUBLIC -DDGTAL_BIGINTEGER_BOOST_BACKEND)
-  target_compile_definitions(DGTAL_BoostAddons PUBLIC -DDGTAL_BIGINTEGER_BOOST_BACKEND)
-endif()
-
 
 # -----------------------------------------------------------------------------
 # Look for ITK
@@ -348,12 +276,6 @@ endif()
 # -----------------------------------------------------------------------------
 set(CGAL_FOUND_DGTAL 0)
 if (DGTAL_WITH_CGAL)
-  if(DGTAL_WITH_GMP)
-    message(STATUS "GMP and Eigen3 detected for CGAL.")
-  else()
-    message(FATAL_ERROR "CGAL needs GMP. You must activate the DGTAL_WITH_GMP flag and have the associated package installed.")
-  endif()
-
   find_package(CGAL COMPONENTS Core)
   if(CGAL_FOUND)
     set(CGAL_FOUND_DGTAL 1)

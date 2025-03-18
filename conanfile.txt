@@ -2,7 +2,6 @@
 fmt/9.1.0
 zlib/1.2.13
 boost/1.81.0
-gmp/6.3.0
 fftw/3.3.9
 
 [generators]
@@ -11,4 +10,3 @@ CMakeToolchain
 
 [options] 
 boost*:header_only=True
-gmp*:enable_cxx=True

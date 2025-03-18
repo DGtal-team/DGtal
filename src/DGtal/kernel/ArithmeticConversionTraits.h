@@ -193,7 +193,7 @@ namespace DGtal
     using type = BigInteger;
   };
   
-  /** @brief Specialization when second operand is a @ref BigInteger with GMP.
+  /** @brief Specialization when second operand is a @ref BigInteger.
    *
    * @see ArithmeticConversionTraits
    */

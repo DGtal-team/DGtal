@@ -68,8 +68,8 @@ typedef DGtal::SpaceND<3, DGtal::Integer> MySpaceBigInteger;
 @endcode
 
 In the latter example, we construct a digital space using
-multiprecision intergers (implemented using the  GMP arbitrary
-precision library). For details, see the documentation page @ref moduleNumber.
+multiprecision intergers. For details, see the documentation 
+page @ref moduleNumber.
 
 
 Using the shortcuts provides in StdDefs.h, the types defined in the

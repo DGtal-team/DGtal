@@ -16,6 +16,7 @@ set(DGTAL_TESTS_SRC_KERNEL
    testIntegerConverter
    testIntegralIntervals
    testLatticeSetByIntervals
+   testDGtalBigInteger
    )
 
 
@@ -32,16 +33,5 @@ set(DGTAL_BENCH_SRC
 
 #Benchmark target
 foreach(FILE ${DGTAL_BENCH_SRC})
-  DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
+  DGtal_add_test(${FILE})
 endforeach()
-
-#-----------------------
-#GMP based tests
-#----------------------
-if(GMP_FOUND)
-  set(DGTAL_TESTS_GMP_SRC testDGtalBigInteger)
-
-  foreach(FILE ${DGTAL_TESTS_GMP_SRC})
-    DGtal_add_test(${FILE})
-  endforeach()
-endif()
