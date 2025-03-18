@@ -25,10 +25,6 @@ endif()
 #------------------------------------------------------------------------------
 if(MSVC)
   target_compile_definitions(DGtal PRIVATE -D_CRT_SECURE_NO_WARNINGS -D_CRT_NONSTDC_NO_DEPRECATE -D_SCL_SECURE_NO_WARNINGS)
-  #------------------------------------------------------------------------------
-  # for GMP / MPIR (MT)
-  #------------------------------------------------------------------------------
-  target_link_options(DGtal PRIVATE "/NODEFAULTLIB:\"libcmtd.lib;libcmt.lib\"")
 endif()
 
 
