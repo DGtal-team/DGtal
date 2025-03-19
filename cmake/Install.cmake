@@ -70,6 +70,7 @@ set(_find_cmake_files
   "${PROJECT_SOURCE_DIR}/cmake/deps/eigen.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/deps/libigl.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/deps/openmp.cmake"
+  "${PROJECT_SOURCE_DIR}/cmake/polyscope.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/CPM.cmake"
 )
 foreach(dep ${_dependencies_list})

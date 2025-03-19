@@ -19,6 +19,7 @@ option(DGTAL_WITH_CGAL "With CGAL." OFF)
 option(DGTAL_WITH_ITK "With Insight Toolkit ITK." OFF)
 option(DGTAL_WITH_CAIRO "With CairoGraphics." OFF)
 option(DGTAL_WITH_HDF5 "With HDF5." OFF)
+option(DGTAL_WITH_POLYSCOPE_VIEWER "With polyscope." OFF)
 option(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt5 required)." OFF)
 option(WITH_PATATE "With Patate library for geometry processing." OFF)
 option(DGTAL_WITH_FFTW3 "With FFTW3 discrete Fourier Transform library." OFF)
@@ -83,6 +84,12 @@ else()
   message(STATUS "      DGTAL_WITH_HDF5          false   (HDF5 image i/o)")
 endif()
 
+if(DGTAL_WITH_POLYSCOPE_VIEWER)
+  set(LIST_OPTION ${LIST_OPTION} [POLYSCOPE]\ )
+  message(STATUS "      DGTAL_WITH_POLYSCOPE_VIEWER     true    (QGLViewer based 3D Viewer -- Qt5 required)")
+else()
+  message(STATUS "      DGTAL_WITH_POLYSCOPE_VIEWER     false   (QGLViewer based 3D Viewer -- Qt5 required)")
+endif()
 
 if(WITH_QGLVIEWER)
   set(LIST_OPTION ${LIST_OPTION} [QGLVIEWER]\ )
@@ -251,6 +258,17 @@ if (DGTAL_WITH_HDF5)
 else()
   unset(HDF5_INCLUDE_DIRS)
   unset(HDF5_LIBRARIES)
+endif()
+
+# -----------------------------------------------------------------------------
+# Look for Polyscope.
+# -----------------------------------------------------------------------------
+set(POLYSCOPE_FOUND_DGTAL 0)
+if (DGTAL_WITH_POLYSCOPE_VIEWER)
+  include(polyscope)
+
+  target_link_libraries(DGtal PUBLIC polyscope)
+  set(POLYSCOPE_FOUND_DGTAL 1)
 endif()
 
 

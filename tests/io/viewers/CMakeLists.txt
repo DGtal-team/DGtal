@@ -19,3 +19,7 @@ if (  WITH_VISU3D_QGLVIEWER )
   endforeach()
 
 endif()
+
+if ( DGTAL_WITH_POLYSCOPE_VIEWER)
+  DGtal_add_test(testPolyscopeViewer)
+endif()
