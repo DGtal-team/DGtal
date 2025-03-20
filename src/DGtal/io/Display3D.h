@@ -429,7 +429,7 @@ namespace DGtal
      * @param drawPlane true if the plane should be draw
      **/
 
-    void addClippingPlane(double a, double b, double c, double d, bool drawPlane);
+    virtual void addClippingPlane(double a, double b, double c, double d, bool drawPlane);
 
 
 

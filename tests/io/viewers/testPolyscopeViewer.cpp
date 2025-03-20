@@ -15,24 +15,23 @@ int main( int argc, char** argv )
     MyViewer viewer;
     {
         Point p1( 0, 0, 0 );
-        Point p2( 10, 10 , 10 );
-        Domain domain( p1, p2 );
-
+        Point p2( 20, 20, 20 );
+        Domain domain(p1, p2);
         DigitalSet shape_set( domain );
-        Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
-        Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
-        viewer <<  CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 25));
+
+        Shapes<Domain>::addNorm2Ball( shape_set, Point( 10, 10, 10 ), 7 );
+
+        viewer << SetMode3D( shape_set.className(), "Both" );
         viewer << shape_set;
+        viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 20));
+        viewer <<  SetMode3D( p1.className(), "Paving" );
 
-        Object6_18 shape( dt6_18, shape_set );
-        viewer << SetMode3D( shape.className(), "DrawAdjacencies" );
-        viewer << shape;
+        viewer << ClippingPlane(1,0,0,-4.9);
+        viewer << ClippingPlane(0,1,0.3,-10);
 
-        Object18_6 shape2( dt18_6, shape_set );
-        viewer << SetMode3D( shape2.className(), "DrawAdjacencies" );
-        viewer << shape2;
+        viewer << MyViewer::updateDisplay;
     }
-    viewer << MyViewer::updateDisplay;
+    // viewer << MyViewer::updateDisplay;
     viewer.show();
     return 0;
 }

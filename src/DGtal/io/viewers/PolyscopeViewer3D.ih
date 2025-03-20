@@ -1,4 +1,3 @@
-
 namespace DGtal
 {
     template <typename TSpace, typename TKSpace>
@@ -57,9 +56,22 @@ namespace DGtal
         std::cout << "Polygones: " << this->myPolygonSetList.size() << std::endl;
         std::cout << "CubesMap: "  << this->myCubesMap.size() << std::endl;
 
-        registerCubeMaps();
         registerLines();
+        registerBalls();
+        registerCubeMaps();
+        registerClippingPlanes();
     }
+
+    template <typename TSpace, typename TKSpace>
+    void PolyscopeViewer3D<TSpace, TKSpace>::addClippingPlane(double a, double b, double c, double d, bool drawPlane)
+    {
+        std::cout << "Override call" << std::endl;
+        typename Display3D<TSpace, TKSpace>::ClippingPlaneD3D cp;
+        cp.a = a; cp.b = b; cp.c = c; cp.d = d;
+
+        this->myClippingPlaneList.push_back(cp);
+    }
+    
 
     template <typename TSpace, typename TKSpace>
     void PolyscopeViewer3D<TSpace, TKSpace>::registerCubeMaps() const
@@ -131,6 +143,57 @@ namespace DGtal
             plines->setTransparency(lines[0].color.a());
         }
     }
+
+    template <typename TSpace, typename TKSpace>
+    void PolyscopeViewer3D<TSpace, TKSpace>::registerBalls() const
+    {
+        static constexpr double DEFAULT_RADIUS_TO_POLYSCOPE_RATIO = 0.1;
+
+        unsigned int count = 0;
+        for (const auto& balls : this->myBallSetList)
+        {
+            if (balls.size() == 0) continue;
+
+            const std::string& default_name = "balls_" + std::to_string(count++);
+            std::vector<std::array<double, 3>> points(balls.size());
+
+            for (unsigned int i = 0; i < balls.size(); i++)
+            {
+                points[i][0] = balls[i].center[0];
+                points[i][1] = balls[i].center[1];
+                points[i][2] = balls[i].center[2];
+            }
+
+            auto plines = polyscope::registerPointCloud(default_name, points);
+            plines->setPointColor({ balls[0].color.r(), balls[0].color.g(), balls[0].color.b() });
+            plines->setPointRadius(balls[0].radius * DEFAULT_RADIUS_TO_POLYSCOPE_RATIO);
+            plines->setTransparency(balls[0].color.a());
+        }
+    }
+
+    template <typename TSpace, typename TKSpace>
+    void PolyscopeViewer3D<TSpace, TKSpace>::registerClippingPlanes() const
+    {
+        unsigned int count = 0;
+        for (const auto& cplane : this->myClippingPlaneList)
+        {
+            glm::vec3 normal{cplane.a, cplane.b, cplane.c};
+            glm::vec3 point {0, 0, 0};
+
+            if      (cplane.a != 0) point.x = -cplane.d / cplane.a;
+            else if (cplane.b != 0) point.y = -cplane.d / cplane.b;
+            else if (cplane.c != 0) point.z = -cplane.d / cplane.c;
+
+            auto plane = polyscope::addSceneSlicePlane();
+            plane->setDrawPlane(false);
+            plane->setDrawWidget(false);
+
+            plane->setPose(point, normal);
+            plane->setColor({ cplane.color.r(), cplane.color.g(), cplane.color.b() });
+            plane->setTransparency(cplane.color.a());
+        }
+    }
+
 
     template <typename TSpace, typename TKSpace>
     void PolyscopeViewer3D<TSpace, TKSpace>::selfDisplay(std::ostream & out) const

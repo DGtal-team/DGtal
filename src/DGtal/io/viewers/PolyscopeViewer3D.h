@@ -17,8 +17,10 @@
 
 #include <iostream>
 #include "polyscope/polyscope.h"
+
 #include "polyscope/curve_network.h"
 #include "polyscope/volume_mesh.h"
+#include "polyscope/point_cloud.h"
 
 #include "DGtal/io/Display3D.h"
 #include "DGtal/io/Display3DFactory.h"
@@ -46,20 +48,26 @@ namespace DGtal
 
         void show();
 
-
         PolyscopeViewer3D<TSpace, TKSpace> & operator<<(
             const typename PolyscopeViewer3D<TSpace, TKSpace>::StreamKey & key
         );
 
         template <typename TDrawableWithViewer3D>
         PolyscopeViewer3D<TSpace, TKSpace> & operator<<(const TDrawableWithViewer3D & object);
+    public: // Reimplement from Display3D
 
+        // Avoid adding quads
+        void addClippingPlane(double a, double b, double c, double d, bool drawPlane) override;
     public:
         void selfDisplay( std::ostream & out ) const;
+    
     private:
         void createPolyscopeObjects() const;
+
+        void registerClippingPlanes() const;
         void registerCubeMaps() const;
         void registerLines() const;
+        void registerBalls() const;
     };  
 
     template <typename TSpace, typename TKSpace>
