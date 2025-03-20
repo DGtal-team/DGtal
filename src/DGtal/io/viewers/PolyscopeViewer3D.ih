@@ -65,9 +65,9 @@ namespace DGtal
     template <typename TSpace, typename TKSpace>
     void PolyscopeViewer3D<TSpace, TKSpace>::addClippingPlane(double a, double b, double c, double d, bool drawPlane)
     {
-        std::cout << "Override call" << std::endl;
         typename Display3D<TSpace, TKSpace>::ClippingPlaneD3D cp;
         cp.a = a; cp.b = b; cp.c = c; cp.d = d;
+        cp.color = DGtal::Color(0, 0, 0, 128);
 
         this->myClippingPlaneList.push_back(cp);
     }
@@ -94,6 +94,7 @@ namespace DGtal
 
             const std::string& default_name = "cubes_" + std::to_string(count++);
             std::vector<std::array<double     , 3>> vertices(cubes.size() * 8);
+            std::vector<std::array<double     , 3>> colors  (cubes.size());
             std::vector<std::array<std::size_t, 8>> indices (cubes.size());
 
             for (unsigned int i = 0; i < cubes.size(); i++)
@@ -107,11 +108,16 @@ namespace DGtal
                             cubes[i].center[k] + cubePositions[v][k] * cubes[i].width;
                     }
                 }
+
+                colors[i][0] = cubes[i].color.r();
+                colors[i][1] = cubes[i].color.g();
+                colors[i][2] = cubes[i].color.b();
             }
 
             auto volume = polyscope::registerVolumeMesh(default_name, vertices, indices);
-            volume->setColor({ cubes[0].color.r(), cubes[0].color.g(), cubes[0].color.b() });
+            volume->setColor({ 1, 1, 1 }); // White color so that no color is missinterpreted
             volume->setTransparency(cubes[0].color.a());
+            volume->addCellColorQuantity("Colors", colors)->setEnabled(true);
         }
     }
     
@@ -125,6 +131,7 @@ namespace DGtal
 
             const std::string& default_name = "lines_" + std::to_string(count++);
             std::vector<std::array<double     , 3>> vertices(lines.size() * 2);
+            std::vector<std::array<double     , 3>> colors  (lines.size());
             std::vector<std::array<std::size_t, 2>> indices (lines.size());
 
             for (unsigned int i = 0; i < lines.size(); i++)
@@ -136,11 +143,16 @@ namespace DGtal
                     vertices[i * 2 + 0][k] = lines[i].point1[k]; 
                     vertices[i * 2 + 1][k] = lines[i].point2[k]; 
                 }
+
+                colors[i][0] = lines[i].color.r();
+                colors[i][1] = lines[i].color.g();
+                colors[i][2] = lines[i].color.b();
             }
 
             auto plines = polyscope::registerCurveNetwork(default_name, vertices, indices);
-            plines->setColor({ lines[0].color.r(), lines[0].color.g(), lines[0].color.b() });
+            plines->setColor({ 1, 1, 1 }); // White color so that no color is missinterpreted
             plines->setTransparency(lines[0].color.a());
+            plines->addEdgeColorQuantity("Colors", colors)->setEnabled(true);
         }
     }
 
@@ -156,18 +168,25 @@ namespace DGtal
 
             const std::string& default_name = "balls_" + std::to_string(count++);
             std::vector<std::array<double, 3>> points(balls.size());
+            std::vector<std::array<double, 3>> colors(balls.size());
+            // TODO: radius and transparency ? 
 
             for (unsigned int i = 0; i < balls.size(); i++)
             {
                 points[i][0] = balls[i].center[0];
                 points[i][1] = balls[i].center[1];
                 points[i][2] = balls[i].center[2];
+
+                colors[i][0] = balls[i].color.r();
+                colors[i][1] = balls[i].color.g();
+                colors[i][2] = balls[i].color.b();
             }
 
-            auto plines = polyscope::registerPointCloud(default_name, points);
-            plines->setPointColor({ balls[0].color.r(), balls[0].color.g(), balls[0].color.b() });
-            plines->setPointRadius(balls[0].radius * DEFAULT_RADIUS_TO_POLYSCOPE_RATIO);
-            plines->setTransparency(balls[0].color.a());
+            auto cloud = polyscope::registerPointCloud(default_name, points);
+            cloud->setPointColor({ 1, 1, 1 }); // White color so that no color is missinterpreted
+            cloud->setPointRadius(balls[0].radius * DEFAULT_RADIUS_TO_POLYSCOPE_RATIO);
+            cloud->setTransparency(balls[0].color.a());
+            cloud->addColorQuantity("Colors", colors)->setEnabled(true);
         }
     }
 
@@ -185,7 +204,7 @@ namespace DGtal
             else if (cplane.c != 0) point.z = -cplane.d / cplane.c;
 
             auto plane = polyscope::addSceneSlicePlane();
-            plane->setDrawPlane(false);
+            plane->setDrawPlane(true);
             plane->setDrawWidget(false);
 
             plane->setPose(point, normal);
