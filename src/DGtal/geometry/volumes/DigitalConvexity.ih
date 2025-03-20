@@ -339,6 +339,7 @@ bool
 DGtal::DigitalConvexity<TKSpace>::
 isFullyConvex( const PointRange& Z, bool convex0 ) const
 {
+  if ( Z.size() <= 1 ) return true;
   ASSERT( dimension <= 64 );
   typedef DGtal::int64_t Direction;
   typedef std::vector< Direction > Directions;
@@ -374,7 +375,8 @@ template <typename TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
 isFullyConvexFast( const PointRange& Z  ) const
-{ 
+{
+  if ( Z.size() <= 1 ) return true;
   LatticeSet C_Z( Z.cbegin(), Z.cend(), 0 );
   const auto nb_cells = C_Z.starOfPoints().size();
   const auto s = sizeStarCvxH( Z );
@@ -1014,6 +1016,7 @@ DGtal::DigitalConvexity<TKSpace>::
 isFullyConvex( const LatticePolytope& P ) const
 {
   auto S = insidePoints( P );
+  if ( S.size() <= 1 ) return true;
   for ( Dimension k = 1; k < KSpace::dimension; ++ k )
     {
       auto touched_cells     = makeCellCover( S.begin(), S.end(), k, k );
@@ -1200,6 +1203,7 @@ DGtal::DigitalConvexity<TKSpace>::
 isFullyConvex( const RationalPolytope& P ) const
 {
   auto S = insidePoints( P );
+  if ( S.size() <= 1 ) return true;
   for ( Dimension k = 1; k < KSpace::dimension; ++ k )
     {
       auto touched_cells     = makeCellCover( S.begin(), S.end(), k, k );
