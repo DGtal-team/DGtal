@@ -1453,6 +1453,7 @@ void DGtal::Display3DFactory<Space,KSpace>::drawWithAdjacencies( Display & displ
   typedef Object<TDigitalTopology, SmallSet> SmallObject;
 
   Point p;
+  display.createNewLineList();
   for (typename TDigitalSet::ConstIterator it = o.pointSet().begin();
        it != o.pointSet().end();
        ++it)

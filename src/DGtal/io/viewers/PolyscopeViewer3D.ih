@@ -1,0 +1,147 @@
+
+namespace DGtal
+{
+    template <typename TSpace, typename TKSpace>
+    PolyscopeViewer3D<TSpace, TKSpace>::PolyscopeViewer3D()
+    {
+        polyscope::init();  
+    }
+
+    template <typename TSpace, typename TKSpace>
+    void PolyscopeViewer3D<TSpace, TKSpace>::show()
+    {
+        polyscope::show();
+    }
+
+    template <typename TSpace, typename TKSpace>
+    PolyscopeViewer3D<TSpace, TKSpace>& 
+    PolyscopeViewer3D<TSpace, TKSpace>::operator<<(
+        const typename PolyscopeViewer3D<TSpace, TKSpace>::StreamKey & key
+    )
+    {
+        switch (key)
+        {
+        case PolyscopeViewer3D<TSpace, TKSpace>::updateDisplay:
+            createPolyscopeObjects();
+            break;
+        case PolyscopeViewer3D<TSpace, TKSpace>::addNewList:
+            break;    
+        case PolyscopeViewer3D<TSpace, TKSpace>::shiftSurfelVisu:
+            break;
+        default:
+            break;
+        };
+        return *this;
+    }
+
+    template <typename TSpace, typename TKSpace>
+    template <typename TDrawableWithViewer3D>
+    PolyscopeViewer3D<TSpace, TKSpace>& 
+    PolyscopeViewer3D<TSpace, TKSpace>::operator<<(const TDrawableWithViewer3D & object)
+    {
+        Display3DFactory<TSpace, TKSpace>::draw(*this, object);
+        return *this;
+    }
+
+    template <typename TSpace, typename TKSpace>
+    void PolyscopeViewer3D<TSpace, TKSpace>::createPolyscopeObjects() const
+    {
+        // This is debug for now, to be removed !
+        std::cout << "[Creating polyscope objects]" << std::endl;
+        std::cout << "Lines: "     << this->myLineSetList.size() << std::endl;
+        std::cout << "Balls: "     << this->myBallSetList.size() << std::endl;
+        std::cout << "Planes: "    << this->myClippingPlaneList.size() << std::endl;
+        std::cout << "Prism: "     << this->myPrismList.size() << std::endl;
+        std::cout << "QuadsMap: "  << this->myQuadsMap.size() << std::endl;
+        std::cout << "Triangles: " << this->myTriangleSetList.size() << std::endl;
+        std::cout << "Polygones: " << this->myPolygonSetList.size() << std::endl;
+        std::cout << "CubesMap: "  << this->myCubesMap.size() << std::endl;
+
+        registerCubeMaps();
+        registerLines();
+    }
+
+    template <typename TSpace, typename TKSpace>
+    void PolyscopeViewer3D<TSpace, TKSpace>::registerCubeMaps() const
+    {
+        static constexpr int cubePositions[8][3] = {
+            {-1, -1, -1}, 
+            { 1, -1, -1},
+            { 1,  1, -1},
+            {-1,  1, -1},
+            {-1, -1,  1}, 
+            { 1, -1,  1},
+            { 1,  1,  1},
+            {-1,  1,  1}
+        };
+
+        unsigned int count = 0;
+        for (const auto& [id, cubes] : this->myCubesMap)
+        {
+            if (cubes.size() == 0) continue;
+
+            const std::string& default_name = "cubes_" + std::to_string(count++);
+            std::vector<std::array<double     , 3>> vertices(cubes.size() * 8);
+            std::vector<std::array<std::size_t, 8>> indices (cubes.size());
+
+            for (unsigned int i = 0; i < cubes.size(); i++)
+            {
+                for (unsigned int v = 0; v < 8; v++)
+                {
+                    indices[i][v] = i * 8 + v;
+                    for (unsigned int k = 0; k < 3; k++)
+                    {
+                        vertices[i * 8 + v][k] = 
+                            cubes[i].center[k] + cubePositions[v][k] * cubes[i].width;
+                    }
+                }
+            }
+
+            auto volume = polyscope::registerVolumeMesh(default_name, vertices, indices);
+            volume->setColor({ cubes[0].color.r(), cubes[0].color.g(), cubes[0].color.b() });
+            volume->setTransparency(cubes[0].color.a());
+        }
+    }
+    
+    template <typename TSpace, typename TKSpace>
+    void PolyscopeViewer3D<TSpace, TKSpace>::registerLines() const
+    {
+        unsigned int count = 0;
+        for (const auto& lines : this->myLineSetList)
+        {
+            if (lines.size() == 0) continue;
+
+            const std::string& default_name = "lines_" + std::to_string(count++);
+            std::vector<std::array<double     , 3>> vertices(lines.size() * 2);
+            std::vector<std::array<std::size_t, 2>> indices (lines.size());
+
+            for (unsigned int i = 0; i < lines.size(); i++)
+            {
+                indices[i][0] = i * 2 + 0;
+                indices[i][1] = i * 2 + 1;
+                for (unsigned int k = 0; k < 3; k++)
+                {
+                    vertices[i * 2 + 0][k] = lines[i].point1[k]; 
+                    vertices[i * 2 + 1][k] = lines[i].point2[k]; 
+                }
+            }
+
+            auto plines = polyscope::registerCurveNetwork(default_name, vertices, indices);
+            plines->setColor({ lines[0].color.r(), lines[0].color.g(), lines[0].color.b() });
+            plines->setTransparency(lines[0].color.a());
+        }
+    }
+
+    template <typename TSpace, typename TKSpace>
+    void PolyscopeViewer3D<TSpace, TKSpace>::selfDisplay(std::ostream & out) const
+    {
+        out << "[PolyscopeViewer3D]";       
+    }
+
+    template <typename TSpace, typename TKSpace>
+    std::ostream & operator<<(std::ostream & out, const PolyscopeViewer3D<TSpace, TKSpace> & object)
+    {
+        object.selfDisplay(out);
+        return out;
+    }
+}
