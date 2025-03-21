@@ -96,6 +96,7 @@ namespace DGtal
 
         void registerClippingPlanes() const;
         void registerCubeMaps() const;
+        void registerPolygons() const;
         void registerLines() const;
         void registerBalls() const;
         void registerQuads() const;

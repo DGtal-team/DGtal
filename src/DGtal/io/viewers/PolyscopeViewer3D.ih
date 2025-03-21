@@ -155,6 +155,8 @@ namespace DGtal
                 [](const auto& pair) { return pair.first != -1; }
             );
         }
+
+        clear();
     }
 
 
@@ -176,6 +178,7 @@ namespace DGtal
         registerBalls();
         registerQuads();
         registerCubeMaps();
+        registerPolygons();
         registerClippingPlanes();
     }
 
@@ -263,6 +266,70 @@ namespace DGtal
         }
     }
     
+    template <typename TSpace, typename TKSpace>
+    void PolyscopeViewer3D<TSpace, TKSpace>::registerPolygons() const
+    {
+        // Assumes that this is a convex polygon (with coplanar vertices)
+
+        unsigned int count = 0;
+        for (const auto& polygons : this->myPolygonSetList)
+        {
+            if (polygons.size() == 0) continue;
+
+            uint32_t triangle_count = 0;
+            for (unsigned int i = 0; i < polygons.size(); i++)
+                triangle_count += polygons[i].vertices.size();
+
+            const std::string& default_name = "polygons_" + std::to_string(count++);
+            std::vector<std::array<double     , 3>> vertices(triangle_count + polygons.size());
+            std::vector<std::array<double     , 3>> colors  (triangle_count);
+            std::vector<std::array<std::size_t, 3>> indices (triangle_count);
+            std::map<DGtal::int32_t, DGtal::int32_t> indexToName;
+
+            unsigned tindex = 0;
+            unsigned vindex = 0;
+            for (unsigned int i = 0; i < polygons.size(); i++)
+            {
+                const size_t pSize = polygons[i].vertices.size();
+                std::array<double, 3> barycenter = {0, 0, 0};
+
+                for (unsigned int j = 0; j < pSize; j++)
+                {
+                    indices[tindex + j] = {vindex + pSize, vindex + j, vindex + ((j + 1) % pSize) };
+                        
+                    colors [tindex + j][0] = polygons[i].color.r();
+                    colors [tindex + j][1] = polygons[i].color.g();
+                    colors [tindex + j][2] = polygons[i].color.b();
+
+                    for (unsigned int k = 0; k < 3; k++)
+                    {
+                        vertices[vindex + j][k] = polygons[i].vertices[j][k];
+                        barycenter[k]          += polygons[i].vertices[j][k];
+                    } 
+                }
+                for (unsigned int k = 0; k < 3; k++)
+                    vertices[vindex + pSize][k] = barycenter[k] / (float)pSize;
+
+                vindex += pSize + 1;
+                tindex += pSize;
+
+                if (polygons[i].name != -1)
+                    indexToName[i] = polygons[i].name;
+            }
+
+            indexToName[-1] = -1;
+            namesMap[default_name] = { false, indexToName };
+
+
+            auto ppolygons = polyscope::registerSurfaceMesh(default_name, vertices, indices);
+            ppolygons->setTransparency(polygons[0].color.a());
+            ppolygons->addFaceColorQuantity("Colors", colors)->setEnabled(true);
+            // Draw triangle in both directions to avoid computing the proper 
+            // order from the normal
+            ppolygons->setBackFacePolicy(polyscope::BackFacePolicy::Identical);
+        }
+    }
+
     template <typename TSpace, typename TKSpace>
     void PolyscopeViewer3D<TSpace, TKSpace>::registerLines() const
     {
