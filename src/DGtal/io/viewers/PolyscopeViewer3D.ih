@@ -271,11 +271,17 @@ namespace DGtal
         // Assumes that this is a convex polygon (with coplanar vertices)
 
         unsigned int count = 0;
-        for (const auto& triangles : this->myTriangleSetList)
+        for (unsigned int id = 0; id < this->myTriangleSetList.size(); id++)
         {
+            const auto& triangles = this->myTriangleSetList[id];
             if (triangles.size() == 0) continue;
-            
-            const std::string& default_name = "triangles_" + std::to_string(count++);
+
+            std::string default_name = this->myTriangleSetNameList[id];
+            if (default_name.empty()) 
+                default_name = "polygons_" + std::to_string(count++);
+            else if (namesMap.find(default_name) != namesMap.end())
+                default_name += "_" + std::to_string(count++);            
+
             std::vector<std::array<double     , 3>> vertices(triangles.size() * 3);
             std::vector<std::array<double     , 3>> colors  (triangles.size());
             std::vector<std::array<std::size_t, 3>> indices (triangles.size());
@@ -318,15 +324,22 @@ namespace DGtal
         // Assumes that this is a convex polygon (with coplanar vertices)
 
         unsigned int count = 0;
-        for (const auto& polygons : this->myPolygonSetList)
+
+        for (unsigned int id = 0; id < this->myPolygonSetList.size(); id++)
         {
+            const auto& polygons = this->myPolygonSetList[id];
             if (polygons.size() == 0) continue;
 
             uint32_t triangle_count = 0;
             for (unsigned int i = 0; i < polygons.size(); i++)
                 triangle_count += polygons[i].vertices.size();
             
-            const std::string& default_name = "polygons_" + std::to_string(count++);
+            std::string default_name = this->myPolygonSetNameList[id];
+            if (default_name.empty()) 
+                default_name = "polygons_" + std::to_string(count++);
+            else if (namesMap.find(default_name) != namesMap.end())
+                default_name += "_" + std::to_string(count++);
+
             std::vector<std::array<double     , 3>> vertices(triangle_count + polygons.size());
             std::vector<std::array<double     , 3>> colors  (triangle_count);
             std::vector<std::array<std::size_t, 3>> indices (triangle_count);
@@ -380,11 +393,18 @@ namespace DGtal
     void PolyscopeViewer3D<TSpace, TKSpace>::registerLines() const
     {
         unsigned int count = 0;
-        for (const auto& lines : this->myLineSetList)
+
+        for (unsigned int id = 0; id < this->myLineSetList.size(); id++)
         {
+            const auto& lines = this->myLineSetList[id];
             if (lines.size() == 0) continue;
 
-            const std::string& default_name = "lines_" + std::to_string(count++);
+            std::string default_name = this->myLineSetNameList[id];
+            if (default_name.empty()) 
+                default_name = "polygons_" + std::to_string(count++);
+            else if (namesMap.find(default_name) != namesMap.end())
+                default_name += "_" + std::to_string(count++);
+  
             std::vector<std::array<double     , 3>> vertices(lines.size() * 2);
             std::vector<std::array<double     , 3>> colors  (lines.size());
             std::vector<std::array<std::size_t, 2>> indices (lines.size());
@@ -424,11 +444,17 @@ namespace DGtal
         static constexpr double DEFAULT_RADIUS_TO_POLYSCOPE_RATIO = 0.1;
 
         unsigned int count = 0;
-        for (const auto& balls : this->myBallSetList)
+        for (unsigned int id = 0; id < this->myBallSetList.size(); id++)
         {
+            const auto& balls = this->myBallSetList[id];
             if (balls.size() == 0) continue;
 
-            const std::string& default_name = "balls_" + std::to_string(count++);
+            std::string default_name = this->myBallSetNameList[id];
+            if (default_name.empty()) 
+                default_name = "polygons_" + std::to_string(count++);
+            else if (namesMap.find(default_name) != namesMap.end())
+                default_name += "_" + std::to_string(count++);
+            
             std::vector<std::array<double, 3>> points(balls.size());
             std::vector<std::array<double, 3>> colors(balls.size());
             std::map<DGtal::int32_t, DGtal::int32_t> indexToName;
@@ -521,7 +547,6 @@ namespace DGtal
             mesh->setBackFacePolicy(polyscope::BackFacePolicy::Identical);
         }
     }
-
 
     template <typename TSpace, typename TKSpace>
     void PolyscopeViewer3D<TSpace, TKSpace>::registerClippingPlanes() const
