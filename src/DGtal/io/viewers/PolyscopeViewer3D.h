@@ -49,6 +49,19 @@ namespace DGtal
     class PolyscopeViewer3D : public Display3D<TSpace, TKSpace>
     {
     public:
+        struct Extension 
+        {
+        public:
+            virtual void UICallback() {};
+            virtual void OnSelect(
+                PolyscopeViewer3D<TSpace, TKSpace>* viewer,
+
+                polyscope::Structure* structure, 
+                uint32_t structureIndex, 
+                DGtal::int32_t voxelName
+            ) {};
+        };
+
         PolyscopeViewer3D();
 
 
@@ -65,6 +78,9 @@ namespace DGtal
         void show() const;
         void displayMessage(const std::string& message);
         void selfDisplay( std::ostream & out ) const;
+
+        void setExtension(Extension* ext);
+        void setExtension(CountedPtr<Extension> ext);
 
     public: // Reimplement from Display3D
 
@@ -86,6 +102,8 @@ namespace DGtal
 
 
     private:
+        DGtal::CountedPtr<Extension> extension;
+
         std::vector<std::string> messageQueue;
 
         // Necessary to bind callback to appropriate data

@@ -53,9 +53,31 @@ int reaction4( void* viewer, DGtal::int32_t name, void* data )
   return 0;
 }
 
+class Ext : public MyViewer::Extension
+{
+public:
+    virtual void UICallback()
+    {
+
+    }
+
+    virtual void OnSelect(
+        MyViewer* viewer,
+
+        polyscope::Structure* structure, 
+        uint32_t structureIndex, 
+        DGtal::int32_t voxelName
+    )
+    {
+        std::cout << voxelName << ": selected" << std::endl;
+    }
+private:
+};
+
 int main( int argc, char** argv )
 {
     MyViewer viewer;
+        viewer.setExtension(new Ext);
     
         BigDataCells data;
         BigDataVoxels dataV;
@@ -81,9 +103,9 @@ int main( int argc, char** argv )
         data.cells[ 10002 ] = surfel2;
         data.cells[ 10003 ] = surfel3;
         viewer << SetMode3D( surfel1.className(), "Basic" );
-        viewer << SetName3D( 10001 ) << CustomColors3D( Color::Red, Color::Red ) << surfel1;
-        viewer << SetName3D( 10002 ) << CustomColors3D( Color::Green, Color::Green ) << surfel2;
-        viewer << SetName3D( 10003 ) << CustomColors3D( Color::Blue, Color::Blue ) << surfel3;
+        viewer << SetName3D( 10001, "Toto 1" ) << CustomColors3D( Color::Red, Color::Red ) << surfel1;
+        viewer << SetName3D( 10002, "Toto 2" ) << CustomColors3D( Color::Green, Color::Green ) << surfel2;
+        viewer << SetName3D( 10003, "Toto 3" ) << CustomColors3D( Color::Blue, Color::Blue ) << surfel3;
         viewer << SetSelectCallback3D( reaction1,  &data, 10001, 10001 );
         viewer << SetSelectCallback3D( reaction23, &data, 10002, 10003 );
 

@@ -20,6 +20,18 @@ namespace DGtal
     }
 
     template <typename TSpace, typename TKSpace>
+    void PolyscopeViewer3D<TSpace, TKSpace>::setExtension(Extension* ext)
+    {
+        setExtension(CountedPtr<Extension>(ext));
+    }
+
+    template <typename TSpace, typename TKSpace>
+    void PolyscopeViewer3D<TSpace, TKSpace>::setExtension(CountedPtr<Extension> ext)
+    {
+        extension = ext;
+    }
+
+    template <typename TSpace, typename TKSpace>
     void PolyscopeViewer3D<TSpace, TKSpace>::poyscopeCallback()
     {
         ImGuiTreeNodeFlags flag = ImGuiTreeNodeFlags_DefaultOpen;
@@ -29,6 +41,9 @@ namespace DGtal
                 ImGui::Text("[%d]: %s", i + 1, messageQueue[i].c_str());
             ImGui::TreePop();
         }
+
+        if (extension.get())
+            extension->UICallback();
 
         // Handles selections
         ImGuiIO& io = ImGui::GetIO();
@@ -43,36 +58,40 @@ namespace DGtal
             // Selection
             if (pickPair.first != nullptr)
             {
+                DGtal::int32_t idx = -1;
+
                 const std::string name = pickPair.first->getName();
                 auto it = namesMap.find(name);
                 if (it != namesMap.end())
                 {
-                    for (auto& callback : this->mySelectCallBackFcts)
+                    // Index of a subelement
+                    auto itIdx1 = it->second.indexMap.find(pickPair.second);
+                    if (itIdx1 == it->second.indexMap.end())
                     {
-                        DGtal::int32_t idx = -1;
-                        
-                        // Index of a subelement
-                        auto itIdx1 = it->second.indexMap.find(pickPair.second);
-                        if (itIdx1 == it->second.indexMap.end())
+                        // Index of the global structure
+                        auto itIdx2 = it->second.indexMap.find(-1);
+                        if (itIdx2 != it->second.indexMap.end())
                         {
-                            // Index of the global structure
-                            auto itIdx2 = it->second.indexMap.find(-1);
-                            if (itIdx2 != it->second.indexMap.end())
-                            {
-                                idx = itIdx2->second;
-                            }
+                            idx = itIdx2->second;
                         }
-                        else
-                        {
-                            idx = itIdx1->second;
-                        }
+                    }
+                    else
+                    {
+                        idx = itIdx1->second;
+                    }
 
+
+                    for (auto& callback : this->mySelectCallBackFcts)
+                    {                        
                         if (callback.fct && callback.isSelected(idx))
                         {
                             callback.fct(this, idx, callback.data);
                         }
                     }
                 }
+
+                if (extension.get())
+                    extension->OnSelect(this, pickPair.first, pickPair.second, idx);
             }
         }
     }
@@ -144,14 +163,14 @@ namespace DGtal
     {
         // This is debug for now, to be removed !
         std::cout << "[Creating polyscope objects]" << std::endl;
-        std::cout << "Lines: "     << this->myLineSetList.size() << std::endl;
-        std::cout << "Balls: "     << this->myBallSetList.size() << std::endl;
-        std::cout << "Planes: "    << this->myClippingPlaneList.size() << std::endl;
-        std::cout << "Prism: "     << this->myPrismList.size() << std::endl;
-        std::cout << "QuadsMap: "  << this->myQuadsMap.size() << std::endl;
-        std::cout << "Triangles: " << this->myTriangleSetList.size() << std::endl;
-        std::cout << "Polygones: " << this->myPolygonSetList.size() << std::endl;
-        std::cout << "CubesMap: "  << this->myCubesMap.size() << std::endl;
+        std::cout << "Lines: "     << this->myLineSetList.size() << std::endl;       // Ok
+        std::cout << "Balls: "     << this->myBallSetList.size() << std::endl;       // Ok
+        std::cout << "Planes: "    << this->myClippingPlaneList.size() << std::endl; // Ok
+        std::cout << "Prism: "     << this->myPrismList.size() << std::endl;         // TODO
+        std::cout << "QuadsMap: "  << this->myQuadsMap.size() << std::endl;          // Ok
+        std::cout << "Triangles: " << this->myTriangleSetList.size() << std::endl;   // TODO
+        std::cout << "Polygones: " << this->myPolygonSetList.size() << std::endl;    // TODO
+        std::cout << "CubesMap: "  << this->myCubesMap.size() << std::endl;          // Ok
 
         registerLines();
         registerBalls();
