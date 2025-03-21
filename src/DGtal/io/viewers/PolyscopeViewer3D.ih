@@ -52,12 +52,12 @@ namespace DGtal
                         DGtal::int32_t idx = -1;
                         
                         // Index of a subelement
-                        auto itIdx1 = it->second.find(pickPair.second);
-                        if (itIdx1 == it->second.end())
+                        auto itIdx1 = it->second.indexMap.find(pickPair.second);
+                        if (itIdx1 == it->second.indexMap.end())
                         {
                             // Index of the global structure
-                            auto itIdx2 = it->second.find(-1);
-                            if (itIdx2 != it->second.end())
+                            auto itIdx2 = it->second.indexMap.find(-1);
+                            if (itIdx2 != it->second.indexMap.end())
                             {
                                 idx = itIdx2->second;
                             }
@@ -77,8 +77,6 @@ namespace DGtal
         }
     }
     
-
-
     template <typename TSpace, typename TKSpace>
     PolyscopeViewer3D<TSpace, TKSpace>& 
     PolyscopeViewer3D<TSpace, TKSpace>::operator<<(
@@ -88,7 +86,7 @@ namespace DGtal
         switch (key)
         {
         case PolyscopeViewer3D<TSpace, TKSpace>::updateDisplay:
-            polyscope::removeAllStructures();
+            clearAll();
             createPolyscopeObjects();
             break;
         case PolyscopeViewer3D<TSpace, TKSpace>::addNewList:
@@ -114,11 +112,32 @@ namespace DGtal
     PolyscopeViewer3D<TSpace, TKSpace>& 
     PolyscopeViewer3D<TSpace, TKSpace>::operator<<(const SetName3D& name)
     {
-        namesMap[name.strName] = { {-1, name.name } };
+        IndexMapper mapper = { true, { {-1, name.name } }};
+        namesMap[name.strName] = mapper;
         Display3DFactory<TSpace, TKSpace>::draw(*this, name);
         return *this;
     }
     
+    template <typename TSpace, typename TKSpace>
+    void PolyscopeViewer3D<TSpace, TKSpace>::clearAll()
+    {
+        polyscope::removeAllStructures();
+
+        // First filter all values that were not specified by the user
+        std::erase_if(namesMap, 
+            [](const auto& pair) { return !pair.second.userSpecified; }
+        );
+
+        // For the one remaining, remove all content except the one 
+        // that was specified
+        for (auto it = namesMap.begin(); it != namesMap.end(); ++it)
+        {
+            std::erase_if(it->second.indexMap, 
+                [](const auto& pair) { return pair.first != -1; }
+            );
+        }
+    }
+
 
     template <typename TSpace, typename TKSpace>
     void PolyscopeViewer3D<TSpace, TKSpace>::createPolyscopeObjects() const
@@ -136,6 +155,7 @@ namespace DGtal
 
         registerLines();
         registerBalls();
+        registerQuads();
         registerCubeMaps();
         registerClippingPlanes();
     }
@@ -201,20 +221,20 @@ namespace DGtal
             auto it = std::find_if(namesMap.begin(), namesMap.end(), 
                 [&](const auto& pair) 
                 { 
-                    auto it = pair.second.find(-1);
-                    if (it == pair.second.end()) return false;
+                    auto it = pair.second.indexMap.find(-1);
+                    if (it == pair.second.indexMap.end()) return false;
                     return it->second == id; 
                 });
             if (it == namesMap.end() || it->first.empty())
             {
                 indexToName[-1] = id;
-                namesMap[default_name] = indexToName;
+                namesMap[default_name] = { false, indexToName};
                 name = default_name;
             }
             else
             {
                 name = it->first;
-                it->second.insert(indexToName.begin(), indexToName.end());
+                it->second.indexMap.insert(indexToName.begin(), indexToName.end());
             }
 
             auto volume = polyscope::registerVolumeMesh(name, vertices, indices);
@@ -257,7 +277,7 @@ namespace DGtal
             }
 
             indexToName[-1] = -1;
-            namesMap[default_name] = indexToName;
+            namesMap[default_name] = { false, indexToName};
 
             auto plines = polyscope::registerCurveNetwork(default_name, vertices, indices);
             plines->setColor({ 1, 1, 1 }); // White color so that no color is missinterpreted
@@ -296,7 +316,7 @@ namespace DGtal
             }
 
             indexToName[-1] = -1;
-            namesMap[default_name] = indexToName;
+            namesMap[default_name] = { false, indexToName};
 
             auto cloud = polyscope::registerPointCloud(default_name, points);
             cloud->setPointColor({ 1, 1, 1 }); // White color so that no color is missinterpreted
@@ -305,6 +325,71 @@ namespace DGtal
             cloud->addColorQuantity("Colors", colors)->setEnabled(true);
         }
     }
+
+    template <typename TSpace, typename TKSpace>
+    void PolyscopeViewer3D<TSpace, TKSpace>::registerQuads() const
+    {
+        unsigned int count = 0;
+        for (const auto& [id, quads] : this->myQuadsMap)
+        {
+            if (quads.size() == 0) continue;
+
+            const std::string& default_name = "quads_" + std::to_string(count++);
+            std::vector<std::array<double,      3>> points (quads.size() * 4);
+            std::vector<std::array<std::size_t, 3>> indices(quads.size() * 2);
+            std::vector<std::array<double,      3>> colors (quads.size() * 2);
+            std::map<DGtal::int32_t, DGtal::int32_t> indexToName;
+
+            for (unsigned int i = 0; i < quads.size(); i++)
+            {
+                for (unsigned int k = 0; k < 3; k++)
+                {
+                    points[i * 4 + 0][k] = quads[i].point1[k];
+                    points[i * 4 + 1][k] = quads[i].point2[k];
+                    points[i * 4 + 2][k] = quads[i].point3[k];
+                    points[i * 4 + 3][k] = quads[i].point4[k];
+                }
+
+                indices[i * 2 + 0] = {i * 4 + 0, i * 4 + 1, i * 4 + 3};
+                indices[i * 2 + 1] = {i * 4 + 3, i * 4 + 1, i * 4 + 2};
+
+                colors[i * 2 + 0][0] = colors[i * 2 + 1][0] = quads[i].color.r();
+                colors[i * 2 + 0][1] = colors[i * 2 + 1][1] = quads[i].color.g();
+                colors[i * 2 + 0][2] = colors[i * 2 + 1][2] = quads[i].color.b();
+
+                if (quads[i].name != -1)
+                    indexToName[i] = quads[i].name;
+            }
+
+            std::string name;
+            auto it = std::find_if(namesMap.begin(), namesMap.end(), 
+                [&](const auto& pair) 
+                { 
+                    auto it = pair.second.indexMap.find(-1);
+                    if (it == pair.second.indexMap.end()) return false;
+                    return it->second == id; 
+                });
+            if (it == namesMap.end() || it->first.empty())
+            {
+                indexToName[-1] = id;
+                namesMap[default_name] = { false, indexToName};
+                name = default_name;
+            }
+            else
+            {
+                name = it->first;
+                it->second.indexMap.insert(indexToName.begin(), indexToName.end());
+            }
+
+            auto mesh = polyscope::registerSurfaceMesh(name, points, indices);
+            mesh->setTransparency(quads[0].color.a());
+            mesh->addFaceColorQuantity("Colors", colors)->setEnabled(true);
+            // Draw triangle in both directions to avoid computing the proper 
+            // order from the normal
+            mesh->setBackFacePolicy(polyscope::BackFacePolicy::Identical);
+        }
+    }
+
 
     template <typename TSpace, typename TKSpace>
     void PolyscopeViewer3D<TSpace, TKSpace>::registerClippingPlanes() const

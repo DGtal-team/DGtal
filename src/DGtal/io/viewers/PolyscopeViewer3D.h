@@ -22,6 +22,7 @@
 #include "polyscope/polyscope.h"
 
 #include "polyscope/curve_network.h"
+#include "polyscope/surface_mesh.h"
 #include "polyscope/volume_mesh.h"
 #include "polyscope/point_cloud.h"
 #include "polyscope/pick.h"
@@ -73,6 +74,7 @@ namespace DGtal
         virtual void poyscopeCallback();
 
     private:
+        void clearAll();
 
         void createPolyscopeObjects() const;
 
@@ -80,6 +82,7 @@ namespace DGtal
         void registerCubeMaps() const;
         void registerLines() const;
         void registerBalls() const;
+        void registerQuads() const;
 
 
     private:
@@ -87,7 +90,15 @@ namespace DGtal
 
         // Necessary to bind callback to appropriate data
         // Names are unique but not indices, hence we can't use a bimap...
-        mutable std::map<std::string, std::map<DGtal::int32_t, DGtal::int32_t>> namesMap;
+        
+        struct IndexMapper
+        {
+            // Track if user has specified the name or if it was
+            // implictely given by the balls.
+            bool userSpecified = false;
+            std::map<DGtal::int32_t, DGtal::int32_t> indexMap;
+        };
+        mutable std::map<std::string, IndexMapper> namesMap;
     };  
 
     template <typename TSpace, typename TKSpace>
