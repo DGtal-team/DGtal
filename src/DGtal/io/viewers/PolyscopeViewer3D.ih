@@ -155,8 +155,6 @@ namespace DGtal
                 [](const auto& pair) { return pair.first != -1; }
             );
         }
-
-        clear();
     }
 
 
@@ -179,6 +177,7 @@ namespace DGtal
         registerQuads();
         registerCubeMaps();
         registerPolygons();
+        registerTriangles();
         registerClippingPlanes();
     }
 
@@ -267,6 +266,53 @@ namespace DGtal
     }
     
     template <typename TSpace, typename TKSpace>
+    void PolyscopeViewer3D<TSpace, TKSpace>::registerTriangles() const
+    {
+        // Assumes that this is a convex polygon (with coplanar vertices)
+
+        unsigned int count = 0;
+        for (const auto& triangles : this->myTriangleSetList)
+        {
+            if (triangles.size() == 0) continue;
+            
+            const std::string& default_name = "triangles_" + std::to_string(count++);
+            std::vector<std::array<double     , 3>> vertices(triangles.size() * 3);
+            std::vector<std::array<double     , 3>> colors  (triangles.size());
+            std::vector<std::array<std::size_t, 3>> indices (triangles.size());
+            std::map<DGtal::int32_t, DGtal::int32_t> indexToName;
+
+            for (unsigned int i = 0; i < triangles.size(); i++)
+            {
+                for (unsigned int k = 0; k < 3; k++)
+                {
+                    vertices[i * 3 + 0][k] = triangles[i].point1[k];
+                    vertices[i * 3 + 1][k] = triangles[i].point2[k];
+                    vertices[i * 3 + 2][k] = triangles[i].point3[k];
+                }
+
+                indices[i] = {i * 3 + 0, i * 3 + 1, i * 3 + 2};
+                colors[i][0] = colors[i * 2 + 1][0] = triangles[i].color.r();
+                colors[i][1] = colors[i * 2 + 1][1] = triangles[i].color.g();
+                colors[i][2] = colors[i * 2 + 1][2] = triangles[i].color.b();
+
+                if (triangles[i].name != -1)
+                    indexToName[i] = triangles[i].name;
+            }
+
+            indexToName[-1] = -1;
+            namesMap[default_name] = { false, indexToName };
+
+
+            auto ppolygons = polyscope::registerSurfaceMesh(default_name, vertices, indices);
+            ppolygons->setTransparency(triangles[0].color.a());
+            ppolygons->addFaceColorQuantity("Colors", colors)->setEnabled(true);
+            // Draw triangle in both directions to avoid computing the proper 
+            // order from the normal
+            ppolygons->setBackFacePolicy(polyscope::BackFacePolicy::Identical);
+        }
+    }
+
+    template <typename TSpace, typename TKSpace>
     void PolyscopeViewer3D<TSpace, TKSpace>::registerPolygons() const
     {
         // Assumes that this is a convex polygon (with coplanar vertices)
@@ -279,7 +325,7 @@ namespace DGtal
             uint32_t triangle_count = 0;
             for (unsigned int i = 0; i < polygons.size(); i++)
                 triangle_count += polygons[i].vertices.size();
-
+            
             const std::string& default_name = "polygons_" + std::to_string(count++);
             std::vector<std::array<double     , 3>> vertices(triangle_count + polygons.size());
             std::vector<std::array<double     , 3>> colors  (triangle_count);

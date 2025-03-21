@@ -95,6 +95,7 @@ namespace DGtal
         void createPolyscopeObjects() const;
 
         void registerClippingPlanes() const;
+        void registerTriangles() const;
         void registerCubeMaps() const;
         void registerPolygons() const;
         void registerLines() const;
