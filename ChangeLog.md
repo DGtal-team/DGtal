@@ -4,7 +4,7 @@
   - Upgrade of ITK to version 5 and above (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
   - C++20 support and new minimal standard (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
   - Library is now (almost) header only (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
-  - Fix compilation warnings (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
+  - Fix compilation warnings (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757)) 
 
 - *CMake*
   - Updated to version 3.20 minimum (contemporary version of C++20's new minimal standard) (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
@@ -15,6 +15,8 @@
   - Prefixing main cmake variables with `DGTAL_` (David Coeurjolly, [#1753](https://github.com/DGtal-team/DGtal/pull/1753))
   - Add a cmake option to use the ITK EIGEN configuration to solve the issue [#347](https://github.com/DGtal-team/DGtalTools/issues/437) of DGTalTools. (Bertrand Kerautret, [#1759](https://github.com/DGtal-team/DGtal/pull/1759)
 
+- *Github* 
+  - Reusable jobs for Github actions [#1766](https://github.com/DGtal-team/DGtal/pull/1766)
 
 # DGtal 1.4.2
 

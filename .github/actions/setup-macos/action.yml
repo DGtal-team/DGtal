@@ -1,0 +1,19 @@
+name: "Setup-MacOs"
+description: "Set up a macos environment"
+inputs:
+  python-version:
+    description: "Version of python to use"
+    required: true
+    default: "3.9"
+
+runs:
+  using: "composite"
+  steps:
+     - name: Set up Python ${{ inputs.python-version }}
+       uses: actions/setup-python@v4
+       with: 
+          python-version: ${{ inputs.python-version }}
+
+     - name: Install macOS deps
+       shell: bash
+       run: brew install boost ninja gmp libomp ccache cgal
