@@ -858,7 +858,7 @@ namespace DGtal
       {
         ASSERT( (aInput <= static_cast<DGtal::BigInteger>(std::numeric_limits<TOutput>::max())) &&
                (aInput >= static_cast<DGtal::BigInteger>(std::numeric_limits<TOutput>::min())) );
-        return static_cast<TOutput>(DGtal::NumberTraits<DGtal::BigInteger>::castToInt64_t(aInput));
+        return static_cast<TOutput>(aInput);
       }
     };
     template <>

@@ -1041,13 +1041,7 @@ inline
 typename DGtal::PointVector<dim, double, std::array<double,dim> >
 DGtal::PointVector<dim, TComponent, TContainer>::getNormalized() const
 {
-  // Orginal:   PointVector<dim,double,std::array<double,dim> > normalized(*this);
-  // Not workling too: PointVector<dim,double,std::array<double,dim> > normalized(*this,  [](const auto v){return NumberTraits<TComponent>::castToDouble(v);}););
-  PointVector<dim,double,std::array<double,dim> > normalized;
-  for ( DGtal::Dimension i = 0; i < dim; ++i )
-    normalized[i] = NumberTraits<TComponent>::castToDouble( this->operator[](i));
-  ///FIXME: HERE
-  ///TODO: HERE
+  PointVector<dim,double,std::array<double,dim> > normalized(*this);
   normalized /= normalized.norm();
   return normalized;
 }
