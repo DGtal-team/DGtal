@@ -97,10 +97,11 @@ endif()
 # Parsing cmake options
 # -----------------------------------------------------------------------------
 if (MSVC)
-  option(BUILD_SHARED_LIBS "Build shared libraries." OFF)
+  option(DGTAL_BUILD_SHARED_LIBS "Build shared libraries." OFF)
 else()
-  option(BUILD_SHARED_LIBS "Build shared libraries." OFF)
+  option(DGTAL_BUILD_SHARED_LIBS "Build shared libraries." OFF)
 endif()
+
 option(DEBUG_VERBOSE "Verbose debug messages." OFF)
 option(VERBOSE "Verbose messages." OFF)
 option(COLOR_WITH_ALPHA_ARITH "Consider alpha channel in color arithmetical operations." OFF)
