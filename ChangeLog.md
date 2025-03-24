@@ -16,7 +16,6 @@
 - *Build*
   - Prefixing main cmake variables with `DGTAL_` (David Coeurjolly, [#1753](https://github.com/DGtal-team/DGtal/pull/1753))
   - Add a cmake option to use the ITK EIGEN configuration to solve the issue [#347](https://github.com/DGtal-team/DGtalTools/issues/437) of DGTalTools. (Bertrand Kerautret, [#1759](https://github.com/DGtal-team/DGtal/pull/1759)
-  - Add new variable to set BigInteger backend (Bastien Doignies, [#1769](https://github.com/DGtal-team/DGtal/pull/1769))
 
 - *Github* 
   - Reusable jobs for Github actions [#1766](https://github.com/DGtal-team/DGtal/pull/1766)
