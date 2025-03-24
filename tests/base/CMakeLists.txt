@@ -16,8 +16,6 @@ set(DGTAL_TESTS_SRC
    testIndexedListWithBlocks
    testLabels
    testLabelledMap
-   testLabelledMap-benchmark
-   testMultiMap-benchmark
    testOpenMP
    testIteratorFunctions
    testIteratorCirculatorTraits
@@ -33,13 +31,3 @@ set(DGTAL_TESTS_SRC
 foreach(FILE ${DGTAL_TESTS_SRC})
   DGtal_add_test(${FILE})
 endforeach()
-
-
-#--- Benchmark specific
-set(DGTAL_TESTS_SRC_BENCHMARK
-    testBenchmark)
- 
-foreach(FILE ${DGTAL_TESTS_SRC_BENCHMARK})
-  DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
-endforeach()
-
