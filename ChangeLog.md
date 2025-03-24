@@ -5,7 +5,7 @@
   - C++20 support and new minimal standard (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
   - Library is now (almost) header only (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
   - Fix compilation warnings (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/))
-  - Remove GMP dependancy (Bastien Doignies, [#1769](https://github.com/DGtal-team/DGtal/pull/1769))
+  - Remove GMP dependency (Bastien Doignies, [#1769](https://github.com/DGtal-team/DGtal/pull/1769))
   - New Boost BigInteger Backend (Bastien Doignies, [#1769](https://github.com/DGtal-team/DGtal/pull/1769))
 
 - *CMake*
@@ -18,6 +18,8 @@
   - Add a cmake option to use the ITK EIGEN configuration to solve the issue [#347](https://github.com/DGtal-team/DGtalTools/issues/437) of DGTalTools. (Bertrand Kerautret, [#1759](https://github.com/DGtal-team/DGtal/pull/1759)
   - Add new variable to set BigInteger backend (Bastien Doignies, [#1769](https://github.com/DGtal-team/DGtal/pull/1769))
 
+- *Github* 
+  - Reusable jobs for Github actions [#1766](https://github.com/DGtal-team/DGtal/pull/1766)
 
 # DGtal 1.4.2
 
