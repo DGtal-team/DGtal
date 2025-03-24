@@ -57,7 +57,6 @@ jobs:
           cmake .. -DCMAKE_MODULE_PATH=${{ runner.workspace }}/DGtal/cmake/deps -DDGtal_DIR=${{ runner.workspace }}/build  -DDGTALTOOLS_RANDOMIZED_BUILD_THRESHOLD=25 -G Ninja
           ninja
 
-
   # Documentatin (build, check and deploy)
   Documentation:
     runs-on: ubuntu-latest
