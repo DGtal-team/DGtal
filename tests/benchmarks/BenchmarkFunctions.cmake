@@ -5,6 +5,6 @@ function(DGtal_add_benchmark test_file)
     target_include_directories(${test_file} PRIVATE ${PROJECT_SOURCE_DIR}/tests/)
     target_include_directories(${test_file} PRIVATE ${PROJECT_BINARY_DIR}/tests/)
 
-    list(APPEND DGtal_benchmark_exe_list ${test_file})
-    set(DGtal_benchmark_exe_list ${DGtal_benchmark_exe_list} CACHE STRING "" FORCE)
+    list(APPEND DGTAL_benchmark_exe_list ${test_file})
+    set(DGTAL_benchmark_exe_list ${DGtal_benchmark_exe_list} CACHE STRING "" FORCE)
 endfunction()

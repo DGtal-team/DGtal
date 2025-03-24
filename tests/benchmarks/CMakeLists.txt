@@ -2,7 +2,7 @@
 #Bastien Doignies <bastien.doignies@liris.cnrs.fr>
 
 # List of commands to run
-set(DGtal_benchmark_exe_list "" CACHE STRING "List of benchmarks target")
+set(DGTAL_benchmark_exe_list "" CACHE STRING "List of benchmarks target")
 include(BenchmarkFunctions.cmake)
 
 
@@ -23,7 +23,7 @@ add_subdirectory(images)
 # Run all benchmarks. Can not be called 'benchmarks' 
 # because it conflicts with the library
 add_custom_target(dgtal_benchmark
-    COMMAND ${DGtal_benchmark_exe_list}
-    DEPENDS ${DGtal_benchmark_exe_list}
+    COMMAND ${DGTAL_benchmark_exe_list}
+    DEPENDS ${DGTAL_benchmark_exe_list}
     WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
