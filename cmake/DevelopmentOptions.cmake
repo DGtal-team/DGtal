@@ -44,8 +44,8 @@ CPMAddPackage(
 # -----------------------------------------------------------------------------
 # Debug specific options
 # -----------------------------------------------------------------------------
-option(WARNING_AS_ERROR "Transform compiler warnings as errors (in Debug build type)." OFF)
-if (WARNING_AS_ERROR)
+option(DGTAL_WARNING_AS_ERROR "Transform compiler warnings as errors (in Debug build type)." OFF)
+if (DGTAL_WARNING_AS_ERROR)
   set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wno-dangling-reference -Wno-sign-compare -Werror -Wno-unknown-pragmas -Wshadow -Wunused-variable -Wunused-parameter -Wunused-function -Wno-deprecated-copy  -Werror=type-limits -Wno-nonnull -Wno-unused-function -Wunused  -Wno-long-long -Wno-system-headers -Wno-deprecated -Woverloaded-virtual -Wwrite-strings")
   message(STATUS "Warnings as Errors ENABLED.")
 endif()
