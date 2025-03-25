@@ -59,8 +59,8 @@ Description of template class 'IntegerComputer' <p> \brief Aim:
 This class gathers several types and methods to make computation
 with integers.
 
-This class is especially useful with using big integers (like
-GMP), since a substantial part of the execution time cames from
+This class is especially useful with using big integers, since
+a substantial part of the execution time cames from
 the allocation/desallocation of integers. The idea is that the
 user instantiate once this object and computes gcd, bezout,
 continued fractions with it.
@@ -75,7 +75,7 @@ boost::DefaultConstructible, boost::Assignable. All its member data are
 It is a backport of \e ImaGene.
 
 @tparam TInteger any model of integer (CInteger), like \c int, \c long int,
-\c int64_t, \c BigInteger (when GMP is installed).
+\c int64_t, \c BigInteger.
    
    */
   template <typename TInteger>
@@ -219,8 +219,7 @@ It is a backport of \e ImaGene.
        remainder. May be faster than computing separately quotient and
        remainder, depending on the integral type in use.
 
-       @todo Specialize it for GMP as mpz_fdiv_qr (q.get_mpz_t(),
-       r.get_mpz_t(), a.get_mpz_t(), b.get_mpz_t());
+       @todo Specialize it for BigIntegers
 
        @param q (returns) the quotient of a/b.
        @param r (returns) the remainder of a/b.

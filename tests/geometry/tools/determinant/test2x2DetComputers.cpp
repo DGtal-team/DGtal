@@ -256,24 +256,18 @@ int main( int argc, char** argv )
   res = res 
     && simpleTest2x2DetComputer( Simple2x2DetComputer<DGtal::int16_t, DGtal::int32_t>() )
     && simpleTest2x2DetComputer( Simple2x2DetComputer<DGtal::int32_t, DGtal::int64_t>() )
-#ifdef WITH_BIGINTEGER
     && simpleTest2x2DetComputer( Simple2x2DetComputer<DGtal::int32_t, DGtal::BigInteger>() )
-#endif
     && simpleTest2x2DetComputer( SimpleIncremental2x2DetComputer<DGtal::int16_t, DGtal::int32_t>() )
     && simpleTest2x2DetComputer( SimpleIncremental2x2DetComputer<DGtal::int32_t, DGtal::int64_t>() )
-#ifdef WITH_BIGINTEGER
     && simpleTest2x2DetComputer( SimpleIncremental2x2DetComputer<DGtal::int32_t, DGtal::BigInteger>() )
-#endif
     && simpleTest2x2DetComputer( AvnaimEtAl2x2DetSignComputer<DGtal::int16_t>() )
     && simpleTest2x2DetComputer( AvnaimEtAl2x2DetSignComputer<DGtal::int32_t>() )
     && simpleTest2x2DetComputer( AvnaimEtAl2x2DetSignComputer<float>() )
     && simpleTest2x2DetComputer( AvnaimEtAl2x2DetSignComputer<double>() )
     && simpleTest2x2DetComputer( Filtered2x2DetComputer<AvnaimEtAl2x2DetSignComputer<double> >() )
 
-#ifdef WITH_BIGINTEGER
     && randomTest2x2DetComputer( Simple2x2DetComputer<DGtal::int32_t, DGtal::BigInteger>() )
     && randomTest2x2DetComputer( SimpleIncremental2x2DetComputer<DGtal::int32_t, DGtal::BigInteger>() )
-#endif
     && randomTest2x2DetComputer( AvnaimEtAl2x2DetSignComputer<DGtal::int32_t>() )
     && randomTest2x2DetComputer( Filtered2x2DetComputer<AvnaimEtAl2x2DetSignComputer<double> >() )
     ;   

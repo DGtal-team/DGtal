@@ -50,54 +50,7 @@
 #include "DGtal/kernel/PointVector.h"
 
 namespace DGtal
-{
-#ifdef WITH_BIGINTEGER
-  namespace detail {
-    /// ------------- GMP SPECIALIZED SERVICES ----------------------------
-    
-    /// @param[inout] n the (initialized) big integer to set
-    /// @param[in] sll a signed long long integer to assign to \a n.
-    static inline void mpz_set_sll(mpz_t n, long long sll)
-    {
-      mpz_set_si(n, (int)(sll >> 32));     /* n = (int)sll >> 32 */
-      mpz_mul_2exp(n, n, 32 );             /* n <<= 32 */
-      mpz_add_ui(n, n, (unsigned int)sll); /* n += (unsigned int)sll */
-    }
-    
-    /// @param[inout] n the (initialized) big integer to set
-    /// @param[in] ull an unsigned long long integer to assign to \a n.
-    static inline void mpz_set_ull(mpz_t n, unsigned long long ull)
-    {
-      mpz_set_ui(n, (unsigned int)(ull >> 32)); /* n = (unsigned int)(ull >> 32) */
-      mpz_mul_2exp(n, n, 32);                   /* n <<= 32 */
-      mpz_add_ui(n, n, (unsigned int)ull);      /* n += (unsigned int)ull */
-    }      
-
-    /// Conversion to uint64 is tricky and not native for GMP.
-    /// @param n any number
-    /// @return its uint64 representation.
-    static inline unsigned long long mpz_get_ull(mpz_t n)
-    {
-      mpz_t tmp;
-      mpz_init( tmp );
-      mpz_mod_2exp( tmp, n, 64 );   /* tmp = (lower 64 bits of n) */
-      auto lo = mpz_get_ui( tmp );       /* lo = tmp & 0xffffffff */
-      mpz_div_2exp( tmp, tmp, 32 ); /* tmp >>= 32 */
-      auto hi = mpz_get_ui( tmp );       /* hi = tmp & 0xffffffff */
-      mpz_clear( tmp );
-      return (((unsigned long long)hi) << 32) + lo;
-    }
-    
-    /// Conversion to int64 is tricky and not native for GMP.
-    /// @param n any number
-    /// @return its int64 representation.
-    static inline long long mpz_get_sll(mpz_t n)
-    {
-      return (long long)mpz_get_ull(n); /* just use unsigned version */
-    }
-  }
-#endif
-    
+{   
   /// ------------- INTEGER/POINT CONVERSION SERVICES --------------------
     
   /// Allows seamless conversion of integral types and lattice
@@ -192,12 +145,11 @@ namespace DGtal
       return q;
     }
       
-#ifdef WITH_BIGINTEGER
     /// @param i any integer
     /// @return the same integer
     static DGtal::int32_t cast( DGtal::BigInteger i ) 
     {
-      auto r = i.get_si();
+      auto r = NumberTraits<DGtal::BigInteger>::castToInt64_t(i);
       if ( DGtal::BigInteger( r ) != i )
         trace.warning() << "Bad integer conversion: " << i << " -> " << r
                         << std::endl;
@@ -217,8 +169,6 @@ namespace DGtal
         q[ i ] = cast( p[ i ] );
       return q;
     }
-
-#endif
   };
     
 
@@ -274,14 +224,12 @@ namespace DGtal
       return p;
     }
       
-#ifdef WITH_BIGINTEGER
     /// @param i any integer
     /// @return the same integer
     static DGtal::int64_t cast( DGtal::BigInteger i ) 
     {
-      DGtal::int64_t r = detail::mpz_get_sll( i.get_mpz_t() );
-      DGtal::BigInteger tmp;
-      detail::mpz_set_sll( tmp.get_mpz_t(), r );
+      DGtal::int64_t r = NumberTraits<DGtal::BigInteger>::castToInt64_t(i);
+      DGtal::BigInteger tmp(r);
       if ( tmp != i )
         trace.warning() << "Bad integer conversion: " << i << " -> " << r
                         << std::endl;
@@ -301,12 +249,8 @@ namespace DGtal
         q[ i ] = cast( p[ i ] );
       return q;
     }
-      
-#endif
   };
     
-
-#ifdef WITH_BIGINTEGER
   /// Allows seamless conversion of integral types and lattice
   /// points, while checking for errors when going from a more
   /// precise to a less precise type.
@@ -345,8 +289,7 @@ namespace DGtal
     /// @return the same integer
     static DGtal::BigInteger cast( DGtal::int64_t i ) 
     {
-      DGtal::BigInteger tmp;
-      detail::mpz_set_sll( tmp.get_mpz_t(), i );
+      DGtal::BigInteger tmp = i;
       return tmp;
     }
 
@@ -383,8 +326,6 @@ namespace DGtal
     }
       
   };
-#endif
-
       
 } // namespace DGtal {
 

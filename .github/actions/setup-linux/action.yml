@@ -1,0 +1,21 @@
+name: "Setup-linux"
+description: "Set up a linux environment"
+inputs:
+  python-version:
+    description: "Version of python to use"
+    required: true
+    default: "3.9"
+
+runs:
+  using: "composite"
+  steps:
+     - name: Set up Python ${{ inputs.python-version }}
+       uses: actions/setup-python@v4
+       with: 
+          python-version: ${{ inputs.python-version }}
+       
+     - name: Install linux deps
+       shell: bash
+       run: |
+           sudo apt-get update  
+           sudo apt-get install ccache zsh libqglviewer-dev-qt5 libcgal-dev libboost-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libfftw3-dev libinsighttoolkit5-dev xorg-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev
