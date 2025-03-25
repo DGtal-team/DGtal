@@ -466,11 +466,7 @@ namespace DGtal
     void updateRenderingCoefficients(const RenderingMode aRenderMode, bool displayState=true);
     
     
-    /// the 3 possible axes for the image direction
-    enum ImageDirection {xDirection, yDirection, zDirection, undefDirection };
-    /// the modes of representation of an image
-    enum TextureMode {RGBMode, GrayScaleMode };
-
+    
     /// the default background color of the viewer
     DGtal::Color myDefaultBackgroundColor;
     /// the default color of the viewer
@@ -1236,14 +1232,14 @@ namespace DGtal
       RealPoint point3;
       RealPoint point4;
 
-      typename Viewer3D<Space, KSpace>::ImageDirection myDirection;
+      ImageDirection myDirection;
       unsigned int myImageWidth;
       unsigned int myImageHeight;
 
       unsigned int myBufferWidth;
       unsigned int myBufferHeight;
       GLuint myTextureName;
-      typename Viewer3D<Space, KSpace>::TextureMode myMode;
+      TextureMode myMode;
       unsigned char * myTextureImageBufferGS;
       unsigned char * myTextureImageBufferRGB;
       double vectNormal[3];
@@ -1262,7 +1258,7 @@ namespace DGtal
             if(myTextureImageBufferGS!=0)
               delete [] myTextureImageBufferGS;
           }
-        if(myMode== Viewer3D<Space, KSpace>::RGBMode)
+        if(myMode== RGBMode)
           {
             if(myTextureImageBufferRGB!=0)
               delete [] myTextureImageBufferRGB;
@@ -1296,7 +1292,7 @@ namespace DGtal
               {
                 myTextureImageBufferGS[i]=aGLImg.myTextureImageBufferGS[i];
               }
-          }else if(myMode==Viewer3D<Space, KSpace>::RGBMode)
+          }else if(myMode==RGBMode)
           {
             myTextureImageBufferRGB = new unsigned char [3*myBufferHeight*myBufferWidth];
             for(unsigned int i=0; i<3*myBufferHeight*myBufferWidth;i+=3)
@@ -1319,9 +1315,9 @@ namespace DGtal
         myImageWidth=aGSImage.myImageWidth; myImageHeight=aGSImage.myImageHeight;
         myDirection = aGSImage.myDirection;
         myMode= aGSImage.myMode;
-        vectNormal[0]= (myDirection == Viewer3D<Space, KSpace>::xDirection)? 1.0: 0.0;
-        vectNormal[1]= (myDirection == Viewer3D<Space, KSpace>::yDirection)? -1.0: 0.0;
-        vectNormal[2]= (myDirection == Viewer3D<Space, KSpace>::zDirection)? 1.0: 0.0;
+        vectNormal[0]= (myDirection == DGtal::xDirection)? 1.0: 0.0;
+        vectNormal[1]= (myDirection == DGtal::yDirection)? -1.0: 0.0;
+        vectNormal[2]= (myDirection == DGtal::zDirection)? 1.0: 0.0;
         if(myDirection==undefDirection){
           RealPoint v1 = point2-point1;
           RealPoint v2 = point4-point1;
@@ -1352,7 +1348,7 @@ namespace DGtal
                     pos++;
                   }
               }
-          }else if(myMode==Viewer3D<Space, KSpace>::RGBMode)
+          }else if(myMode==RGBMode)
           {
             myTextureImageBufferRGB = new unsigned char [3*myBufferHeight*myBufferWidth];
             unsigned int pos=0;

@@ -204,7 +204,12 @@ namespace DGtal
       double nx, ny, nz;
     };
 
-
+    struct ImageD3D : public CommonD3D {
+        RealPoint center;
+        std::array<size_t, 3> dims;
+          
+        std::vector<double> data;
+    };
   public:
 
 

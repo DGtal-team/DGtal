@@ -93,7 +93,7 @@ int main( int argc, char** argv )
     DGtal::functors::Projector<DGtal::Z3i::Space> aSliceFunctor(i); aSliceFunctor.initAddOneDim(2);
     SliceImageAdapter sliceImageZ(image, domain, aSliceFunctor, idV);
     viewer << sliceImageZ;
-    viewer << DGtal::UpdateImagePosition<Z3i::Space, Z3i::KSpace>(pos, Viewer3D<>::zDirection,  i*20, i*20, i*20 );
+    viewer << DGtal::UpdateImagePosition<Z3i::Space, Z3i::KSpace>(pos, zDirection,  i*20, i*20, i*20 );
     pos++;
   }
 

@@ -85,7 +85,7 @@ int main( int argc, char** argv )
  Image3D image3d =  VolReader<Image3D>::importVol(filename);
  viewer << SetMode3D(image3d.className(), "BoundingBox");
 
- viewer << DGtal::AddTextureImage3DWithFunctor<Image3D,  hueFct , Space, KSpace>(image3d, huefct, Viewer3D<>::RGBMode );
+ viewer << DGtal::AddTextureImage3DWithFunctor<Image3D,  hueFct , Space, KSpace>(image3d, huefct, DGtal::RGBMode );
  viewer.setFillTransparency(255);
  // Extract some slice images:
  // Get the 2D domain of the slice:
@@ -101,7 +101,7 @@ int main( int argc, char** argv )
  SliceImageAdapter sliceImageZ(image3d, domain2D, aSliceFunctorZ, idV);
 
   viewer << sliceImageZ;
-  viewer <<  DGtal::UpdateImagePosition<Space, KSpace>(6, Viewer3D<>::zDirection, 0.0, 0.0, -10.0);
+  viewer <<  DGtal::UpdateImagePosition<Space, KSpace>(6, DGtal::zDirection, 0.0, 0.0, -10.0);
 
  viewer << p1 << p2 << p3;
  viewer << Viewer3D<>::updateDisplay;

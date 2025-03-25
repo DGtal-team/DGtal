@@ -45,6 +45,8 @@
 #include "DGtal/base/Common.h"
 
 #include "DGtal/io/Display3DFactory.h"
+#include "DGtal/io/DrawWithDisplay3DModifier.h"
+
 #include "DGtal/io/viewers/DrawWithViewer3DModifier.h"
 #include "DGtal/geometry/curves/StandardDSS6Computer.h"
 #include "DGtal/geometry/curves/Naive3DDSSComputer.h"
@@ -710,7 +712,7 @@ namespace DGtal
     template < typename TImageType2D, typename TFunctor>
     static void
     drawImage2D( Viewer3D<Space,KSpace> & viewer, const TImageType2D & anImage, const TFunctor & aFunctor,
-                 typename Viewer3D<Space,KSpace>::TextureMode aTextureMode );
+                 TextureMode aTextureMode );
 
     /**
      * Method to draw an 2D Image.
@@ -722,7 +724,7 @@ namespace DGtal
     template < typename TImageType3D, typename TFunctor>
     static void
     drawImage3D( Viewer3D<Space,KSpace> & viewer, const TImageType3D & anImage3D, const TFunctor & aFunctor,
-                 typename Viewer3D<Space,KSpace>::TextureMode aTextureMode );
+                 TextureMode aTextureMode );
 
     /**
      * Method to set a custom mode for 3d object

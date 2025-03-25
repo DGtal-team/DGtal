@@ -1827,13 +1827,13 @@ const VectorTextureImage & aVectImage )
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-      if ( textureImg.myMode == Viewer3D<TSpace, TKSpace>::GrayScaleMode )
+      if ( textureImg.myMode == GrayScaleMode )
       {
         glTexImage2D( GL_TEXTURE_2D, 0, GL_LUMINANCE, textureImg.myBufferWidth,
                       textureImg.myBufferHeight, 0, GL_LUMINANCE,
                       GL_UNSIGNED_BYTE, textureImg.myTextureImageBufferGS );
       }
-      else if ( textureImg.myMode == Viewer3D<TSpace, TKSpace>::RGBMode )
+      else if ( textureImg.myMode == RGBMode )
       {
         glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, textureImg.myBufferWidth,
                       textureImg.myBufferHeight, 0, GL_RGB, GL_UNSIGNED_BYTE,

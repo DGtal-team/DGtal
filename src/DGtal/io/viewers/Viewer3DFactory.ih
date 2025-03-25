@@ -154,7 +154,7 @@ template < typename TImageType3D, typename TFunctor>
 inline
 void
 DGtal::Viewer3DFactory<Space,KSpace>::drawImage3D( Viewer3D<Space, KSpace> & viewer, const TImageType3D & anImage3D, const TFunctor & aFunctor,
-                                     typename Viewer3D<Space, KSpace>::TextureMode aTextureMode)
+                                     TextureMode aTextureMode)
 {
   std::string mode = viewer.getMode( anImage3D.className() );
   ASSERT( (mode=="BoundingBox" || mode=="InterGrid" || mode=="Grid"|| mode=="") ||
@@ -185,7 +185,7 @@ DGtal::Viewer3DFactory<Space,KSpace>::drawImage3D( Viewer3D<Space, KSpace> & vie
   viewer<< SetMode3D( sliceImageY.className(), mode );
   viewer << DGtal::AddTextureImage2DWithFunctor<SliceImageAdapter, TFunctor,Space, KSpace> (sliceImageY, aFunctor, aTextureMode );
 
-  viewer << DGtal::UpdateLastImagePosition<Space, KSpace>( Viewer3D<Space, KSpace>::yDirection,
+  viewer << DGtal::UpdateLastImagePosition<Space, KSpace>( DGtal::yDirection,
                                                            anImage3D.domain().lowerBound()[0],
                                                            anImage3D.domain().lowerBound()[1]-0.5,
                                                            anImage3D.domain().lowerBound()[2]);
@@ -194,7 +194,7 @@ DGtal::Viewer3DFactory<Space,KSpace>::drawImage3D( Viewer3D<Space, KSpace> & vie
   aSliceFunctorX.initAddOneDim(0);
   SliceImageAdapter sliceImageX(anImage3D, domainX, aSliceFunctorX, idV);
   viewer << DGtal::AddTextureImage2DWithFunctor<SliceImageAdapter, TFunctor , Space, KSpace> (sliceImageX, aFunctor, aTextureMode );
-  viewer << DGtal::UpdateLastImagePosition<Space, KSpace> ( Viewer3D<Space, KSpace>::xDirection,
+  viewer << DGtal::UpdateLastImagePosition<Space, KSpace> ( DGtal::xDirection,
                                                             anImage3D.domain().lowerBound()[0] -0.5,
                                                             anImage3D.domain().lowerBound()[1],
                                                             anImage3D.domain().lowerBound()[2]);
@@ -203,7 +203,7 @@ DGtal::Viewer3DFactory<Space,KSpace>::drawImage3D( Viewer3D<Space, KSpace> & vie
   aSliceFunctorZ.initAddOneDim(2);
   SliceImageAdapter sliceImageZ(anImage3D, domainZ, aSliceFunctorZ, idV);
   viewer << DGtal::AddTextureImage2DWithFunctor<SliceImageAdapter, TFunctor , Space, KSpace>(sliceImageZ, aFunctor, aTextureMode );
-  viewer << DGtal::UpdateLastImagePosition<Space, KSpace> ( Viewer3D<Space, KSpace>::zDirection,
+  viewer << DGtal::UpdateLastImagePosition<Space, KSpace> ( DGtal::zDirection,
                                                             anImage3D.domain().lowerBound()[0],
                                                             anImage3D.domain().lowerBound()[1],
                                                             anImage3D.domain().lowerBound()[2]-0.5);
@@ -214,7 +214,7 @@ DGtal::Viewer3DFactory<Space,KSpace>::drawImage3D( Viewer3D<Space, KSpace> & vie
   aSliceFunctorYl.initAddOneDim(1);
   SliceImageAdapter sliceImageYl(anImage3D, domainY, aSliceFunctorYl, idV);
   viewer << DGtal::AddTextureImage2DWithFunctor<SliceImageAdapter, TFunctor , Space, KSpace>(sliceImageYl, aFunctor , aTextureMode);
-  viewer << DGtal::UpdateLastImagePosition<Space, KSpace> ( Viewer3D<Space, KSpace>::yDirection,
+  viewer << DGtal::UpdateLastImagePosition<Space, KSpace> ( DGtal::yDirection,
                                                             anImage3D.domain().lowerBound()[0],
                                                             0.5+anImage3D.domain().upperBound()[1],
                                                             anImage3D.domain().lowerBound()[2]);
@@ -224,7 +224,7 @@ DGtal::Viewer3DFactory<Space,KSpace>::drawImage3D( Viewer3D<Space, KSpace> & vie
   aSliceFunctorXl.initAddOneDim(0);
   SliceImageAdapter sliceImageXl(anImage3D, domainX, aSliceFunctorXl, idV);
   viewer << DGtal::AddTextureImage2DWithFunctor<SliceImageAdapter, TFunctor, Space, KSpace>(sliceImageXl, aFunctor, aTextureMode );
-  viewer << DGtal::UpdateLastImagePosition<Space, KSpace> ( Viewer3D<Space, KSpace>::xDirection,
+  viewer << DGtal::UpdateLastImagePosition<Space, KSpace> ( DGtal::xDirection,
                                                             0.5+anImage3D.domain().upperBound()[0],
                                                             anImage3D.domain().lowerBound()[1],
                                                             anImage3D.domain().lowerBound()[2] );
@@ -233,7 +233,7 @@ DGtal::Viewer3DFactory<Space,KSpace>::drawImage3D( Viewer3D<Space, KSpace> & vie
   aSliceFunctorZl.initAddOneDim(2);
   SliceImageAdapter sliceImageZl(anImage3D, domainZ, aSliceFunctorZl, idV);
   viewer << DGtal::AddTextureImage2DWithFunctor<SliceImageAdapter, TFunctor, Space, KSpace>(sliceImageZl, aFunctor , aTextureMode);
-  viewer << DGtal::UpdateLastImagePosition<Space, KSpace>( Viewer3D<Space, KSpace>::zDirection,
+  viewer << DGtal::UpdateLastImagePosition<Space, KSpace>( DGtal::zDirection,
                                                            anImage3D.domain().lowerBound()[0],
                                                            anImage3D.domain().lowerBound()[1],
                                                            0.5+ anImage3D.domain().upperBound()[2] );
@@ -246,7 +246,7 @@ inline
 void
 DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, const ImageContainerBySTLVector<DGtal::Z2i::Domain, TValue> & anImage )
 {
-  drawImage2D(viewer, anImage, functors::Cast<unsigned int> (), Viewer3D<Space,KSpace>::GrayScaleMode);
+  drawImage2D(viewer, anImage, functors::Cast<unsigned int> (), DGtal::GrayScaleMode);
 }
 // ImageContainerBySTLVector (2D)
 
@@ -270,7 +270,7 @@ inline
 void
 DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, const ImageContainerBySTLVector<DGtal::Z3i::Domain, TValue> & anImage3D )
 {
-  drawImage3D(viewer, anImage3D, functors::Cast<unsigned int> (), Viewer3D<Space,KSpace>::GrayScaleMode);
+  drawImage3D(viewer, anImage3D, functors::Cast<unsigned int> (), GrayScaleMode);
 }
 // ImageContainerBySTLVector (3D)
 
@@ -293,7 +293,7 @@ inline
 void
 DGtal::Viewer3DFactory<Space,KSpace>::draw( Viewer3D<Space, KSpace> & viewer, const ConstImageAdapter<TImageContainer, DGtal::Z2i::Domain, TFunctorD, TNewValue, TFunctorValue> & anImage )
 {
-  drawImage2D(viewer, anImage, functors::Cast<unsigned int> (), Viewer3D<Space,KSpace>::GrayScaleMode );
+  drawImage2D(viewer, anImage, functors::Cast<unsigned int> (), GrayScaleMode );
 }
 // ConstImageAdapter (2D)
 
@@ -917,7 +917,7 @@ template < typename TImageType2D, typename TFunctor>
 inline
 void
 DGtal::Viewer3DFactory<Space,KSpace>::drawImage2D( Viewer3D<Space, KSpace> & viewer, const TImageType2D & anImage, const TFunctor & aFunctor,
-                                     typename Viewer3D<Space, KSpace>::TextureMode aTextureMode )
+                                     TextureMode aTextureMode )
 {
   std::string mode = viewer.getMode( anImage.className() );
   ASSERT( (mode=="BoundingBox" || mode=="InterGrid" || mode=="Grid"|| mode=="") ||
@@ -925,11 +925,11 @@ DGtal::Viewer3DFactory<Space,KSpace>::drawImage2D( Viewer3D<Space, KSpace> & vie
 
   if(mode=="")
     {
-      typename Viewer3D<Space, KSpace>::TextureImage aGSImage(anImage, aFunctor,Viewer3D<Space, KSpace>::zDirection, 0,0,0, aTextureMode);
+      typename Viewer3D<Space, KSpace>::TextureImage aGSImage(anImage, aFunctor, DGtal::zDirection, 0,0,0, aTextureMode);
       viewer.addTextureImage(aGSImage);
     }else if(mode=="BoundingBox" || mode == "InterGrid" || mode == "Grid")
     {
-      typename Viewer3D<Space, KSpace>::TextureImage aGSImage(anImage, aFunctor, Viewer3D<Space, KSpace>::zDirection, 0,0,0, aTextureMode);
+      typename Viewer3D<Space, KSpace>::TextureImage aGSImage(anImage, aFunctor, DGtal::zDirection, 0,0,0, aTextureMode);
       aGSImage.myDrawDomain = true;
       viewer << SetMode3D( anImage.domain().className(), mode );
       viewer << anImage.domain();

@@ -121,21 +121,21 @@ int main( int argc, char** argv )
 
   viewer << SetMode3D(aSliceImageZ.className(), "");
   //! [ExampleViewer3D2DImagesDisplayImagesColor]
-  viewer << AddTextureImage2DWithFunctor<MySliceImageAdapter, hueFct, Z3i::Space, Z3i::KSpace> (aSliceImageZ, hueFct(), Viewer3D<Z3i::Space, Z3i::KSpace>::RGBMode);
-  viewer << AddTextureImage2DWithFunctor<MySliceImageAdapter, hueFct, Z3i::Space, Z3i::KSpace> (aSliceImageY, hueFct(), Viewer3D<Z3i::Space, Z3i::KSpace>::RGBMode);
+  viewer << AddTextureImage2DWithFunctor<MySliceImageAdapter, hueFct, Z3i::Space, Z3i::KSpace> (aSliceImageZ, hueFct(), RGBMode);
+  viewer << AddTextureImage2DWithFunctor<MySliceImageAdapter, hueFct, Z3i::Space, Z3i::KSpace> (aSliceImageY, hueFct(), RGBMode);
   //! [ExampleViewer3D2DImagesDisplayImagesColor]
 
 
   //! [ExampleViewer3D2DModifImages]
-  viewer << DGtal::UpdateImagePosition<Z3i::Space, Z3i::KSpace>(1, MyViewer::yDirection, 0.0,  50.0, 0.0);
+  viewer << DGtal::UpdateImagePosition<Z3i::Space, Z3i::KSpace>(1, yDirection, 0.0,  50.0, 0.0);
   viewer << DGtal::UpdateImageData<MySliceImageAdapter>(0, aSliceImageZ,  0, 0, 10);
   viewer << MyViewer::updateDisplay;
  //! [ExampleViewer3D2DModifImages]
 
 
   //! [ExampleViewer3D2DModifImagesColor]
-  viewer << DGtal::UpdateImagePosition<Z3i::Space, Z3i::KSpace>(3, MyViewer::yDirection, 500.0,  50.0, 0.0);
-  viewer << DGtal::UpdateImageData<MySliceImageAdapter, hueFct>(2, aSliceImageZ, 500, 0, 10, 0.0, MyViewer::zDirection, hueFct());
+  viewer << DGtal::UpdateImagePosition<Z3i::Space, Z3i::KSpace>(3, yDirection, 500.0,  50.0, 0.0);
+  viewer << DGtal::UpdateImageData<MySliceImageAdapter, hueFct>(2, aSliceImageZ, 500, 0, 10, 0.0, zDirection, hueFct());
   viewer << MyViewer::updateDisplay;
   //! [ExampleViewer3D2DModifImagesColor]
 

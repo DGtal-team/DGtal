@@ -94,15 +94,15 @@ int main( int argc, char** argv )
  hueFct huefct;
   functors::Identity defaultfunctor;
 
- viewer << DGtal::AddTextureImage2DWithFunctor<imageNG,  hueFct , Z3i::Space, Z3i::KSpace>(image2, huefct, Viewer3D<>::RGBMode );
+ viewer << DGtal::AddTextureImage2DWithFunctor<imageNG,  hueFct , Z3i::Space, Z3i::KSpace>(image2, huefct, DGtal::RGBMode );
  viewer << image;
-  viewer << DGtal::AddTextureImage2DWithFunctor<imageCol,  functors::Identity, Z3i::Space, Z3i::KSpace>(image3, defaultfunctor, Viewer3D<>::RGBMode );
- viewer << DGtal::UpdateImagePosition<Z3i::Space, Z3i::KSpace>(0, Viewer3D<>::xDirection,  50, 50, 50 );
- viewer << DGtal::UpdateImagePosition<Z3i::Space, Z3i::KSpace>(2, Viewer3D<>::yDirection,  0, 0, 0);
+  viewer << DGtal::AddTextureImage2DWithFunctor<imageCol,  functors::Identity, Z3i::Space, Z3i::KSpace>(image3, defaultfunctor, DGtal::RGBMode );
+ viewer << DGtal::UpdateImagePosition<Z3i::Space, Z3i::KSpace>(0, DGtal::xDirection,  50, 50, 50 );
+ viewer << DGtal::UpdateImagePosition<Z3i::Space, Z3i::KSpace>(2, DGtal::yDirection,  0, 0, 0);
 
  viewer << SetMode3D( image.domain().className(), "BoundingBox" );
  viewer << image.domain();
- viewer << DGtal::Update2DDomainPosition<Z3i::Space, Z3i::KSpace>(0, Viewer3D<>::xDirection, 0, 0, 0);
+ viewer << DGtal::Update2DDomainPosition<Z3i::Space, Z3i::KSpace>(0, DGtal::xDirection, 0, 0, 0);
  for(unsigned int i= 0; i< 10; i++){
    if(i%4==0){
      viewer << SetMode3D( image.className(), "" );

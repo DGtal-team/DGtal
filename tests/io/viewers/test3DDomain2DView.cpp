@@ -85,17 +85,17 @@ int main( int argc, char** argv )
  viewer << SetMode3D( dom4.className(), "Grid" );
  viewer << dom7 << dom8 << dom9;
 
- viewer << Update2DDomainPosition<Space, KSpace>(0, Viewer3D<Space, KSpace>::xDirection, 0, 0, 0);
- viewer << Update2DDomainPosition<Space, KSpace>(1, Viewer3D<Space, KSpace>::yDirection, 0, 0, 0);
- viewer << Update2DDomainPosition<Space, KSpace>(2, Viewer3D<Space, KSpace>::zDirection, 0, 0, 0);
+ viewer << Update2DDomainPosition<Space, KSpace>(0, DGtal::xDirection, 0, 0, 0);
+ viewer << Update2DDomainPosition<Space, KSpace>(1, DGtal::yDirection, 0, 0, 0);
+ viewer << Update2DDomainPosition<Space, KSpace>(2, DGtal::zDirection, 0, 0, 0);
 
- viewer << Update2DDomainPosition<Space, KSpace>(3, Viewer3D<Space, KSpace>::xDirection, 0, 0, 0);
- viewer << Update2DDomainPosition<Space, KSpace>(4, Viewer3D<Space, KSpace>::yDirection, 0, 0, 0);
- viewer << Update2DDomainPosition<Space, KSpace>(5, Viewer3D<Space, KSpace>::zDirection, 0, 0, 0);
+ viewer << Update2DDomainPosition<Space, KSpace>(3, DGtal::xDirection, 0, 0, 0);
+ viewer << Update2DDomainPosition<Space, KSpace>(4, DGtal::yDirection, 0, 0, 0);
+ viewer << Update2DDomainPosition<Space, KSpace>(5, DGtal::zDirection, 0, 0, 0);
 
- viewer << Update2DDomainPosition<Space, KSpace>(6, Viewer3D<Space, KSpace>::xDirection, 0, 0, 0);
- viewer << Update2DDomainPosition<Space, KSpace>(7, Viewer3D<Space, KSpace>::yDirection, 0, 0, 0);
- viewer << Update2DDomainPosition<Space, KSpace>(8, Viewer3D<Space, KSpace>::zDirection, 0, 0, 0);
+ viewer << Update2DDomainPosition<Space, KSpace>(6, DGtal::xDirection, 0, 0, 0);
+ viewer << Update2DDomainPosition<Space, KSpace>(7, DGtal::yDirection, 0, 0, 0);
+ viewer << Update2DDomainPosition<Space, KSpace>(8, DGtal::zDirection, 0, 0, 0);
 
  viewer << DGtal::Translate2DDomain(3, 20, 20 ,20);
  viewer << DGtal::Translate2DDomain(4, 20, 20 ,20);
