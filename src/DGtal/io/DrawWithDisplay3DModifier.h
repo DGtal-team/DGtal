@@ -242,6 +242,7 @@ struct TransformedPrism : public DrawWithDisplay3DModifier
   struct SetName3D : public DrawWithDisplay3DModifier {
     /// Sets the "OpenGL name" of future display command(s).
     /// @param aName any integer: an identifier for later selection or -1 for none.
+    /// @param sName any string: a string identifier for the later selection or -1 to use a default name. 
     SetName3D( DGtal::int32_t aName = -1, const std::string& sName = "") : 
       name( aName ), strName(sName) 
     {}
