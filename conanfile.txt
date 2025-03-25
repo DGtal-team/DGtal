@@ -1,7 +1,7 @@
 [requires]
 fmt/9.1.0
 zlib/1.2.13
-ftw/3.3.9
+fftw/3.3.9
 
 [generators]
 CMakeDeps
