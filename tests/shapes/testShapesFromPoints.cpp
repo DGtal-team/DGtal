@@ -163,9 +163,7 @@ int main( int argc, char** argv )
 
   bool res = testCircleFrom3Points<int>()
   && testCircleFrom3Points<double>()
-#ifdef WITH_BIGINTEGER
   && testCircleFrom3Points<BigInteger>()
-#endif
   && testCircleFrom2Points<int>()
 ; 
 

@@ -4,7 +4,9 @@
   - Upgrade of ITK to version 5 and above (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
   - C++20 support and new minimal standard (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
   - Library is now (almost) header only (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
-  - Fix compilation warnings (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757)) 
+  - Fix compilation warnings (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/))
+  - Remove GMP dependency (Bastien Doignies, [#1769](https://github.com/DGtal-team/DGtal/pull/1769))
+  - New Boost BigInteger Backend (Bastien Doignies, [#1769](https://github.com/DGtal-team/DGtal/pull/1769))
 
 - *CMake*
   - Updated to version 3.20 minimum (contemporary version of C++20's new minimal standard) (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))

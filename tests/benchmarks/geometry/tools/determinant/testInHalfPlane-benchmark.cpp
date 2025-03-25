@@ -124,7 +124,6 @@ DGtal::int64_t randomInt62 ()
 }
 
 
-#ifdef WITH_BIGINTEGER
 /**
  * @return a random integer of type DGtal::BigInteger
  * lying in the range [0 ; 2^62[
@@ -138,7 +137,6 @@ DGtal::BigInteger randomBigInt62 ()
       * 1073741824 ) 
     * 4; 
 }
-#endif
 
 /**
  * @return a random (signed) integer of type DGtal::int32_t
@@ -200,7 +198,6 @@ DGtal::int64_t signedRandomInt62 ()
     return ((rand() % 2) ? x : -x);
 }
 
-#ifdef WITH_BIGINTEGER
 /**
  * @return a random (signed) integer of type DGtal::BigInteger
  * lying in the range [-2^62 ; 2^62[
@@ -213,7 +210,6 @@ DGtal::BigInteger signedRandomBigInt62 ()
   else 
     return -x;
 }
-#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 // Tests Functions 
@@ -535,7 +531,6 @@ bool incTestComparison()
     incTest( F() );
     std::cout << std::endl;   
   }
-#ifdef WITH_BIGINTEGER
   { 
     srand(seed); 
     std::cout << "2x2-int32-BigInt "; 
@@ -552,7 +547,6 @@ bool incTestComparison()
     incTest( F() );
     std::cout << std::endl;   
   }
-#endif
   return true; 
 }
 
@@ -583,7 +577,6 @@ bool randomTest30All()
     quasiNullTest( F(), signedRandomInt15 ); 
     std::cout << std::endl; 
   }
-#ifdef WITH_BIGINTEGER
   { 
     srand(seed); 
     std::cout << "3x3-int32-BigInt "; 
@@ -595,7 +588,6 @@ bool randomTest30All()
     quasiNullTest( F(), signedRandomInt15 ); 
     std::cout << std::endl;   
 }
-#endif
   { 
     srand(seed); 
     std::cout << "2x2-int32-int64 "; 
@@ -608,7 +600,6 @@ bool randomTest30All()
     quasiNullTest( F(), signedRandomInt15 ); 
     std::cout << std::endl; 
   }
-#ifdef WITH_BIGINTEGER
   {
     srand(seed); 
     std::cout << "2x2-int32-BigInt "; 
@@ -621,7 +612,6 @@ bool randomTest30All()
     quasiNullTest( F(), signedRandomInt15 ); 
     std::cout << std::endl;   
   }
-#endif 
   { 
     srand(seed); 
     std::cout << "2x2-inc-int32-int64 "; 
@@ -634,7 +624,6 @@ bool randomTest30All()
     quasiNullTest( F(), signedRandomInt15 ); 
     std::cout << std::endl;   
   }
-#ifdef WITH_BIGINTEGER
   { 
     srand(seed); 
     std::cout << "2x2-inc-int32-BigInt "; 
@@ -647,7 +636,6 @@ bool randomTest30All()
     quasiNullTest( F(), signedRandomInt15 ); 
     std::cout << std::endl;   
   }
-#endif
   {
     srand(seed); 
     std::cout << "2x2-avnaim-int32-int32 "; 
@@ -703,7 +691,6 @@ bool randomTest52All()
 
   long seed = time(NULL); 
 
-#ifdef WITH_BIGINTEGER
   { //! BigInt cannot be constructed from a DGtal::int64_t
     srand(seed); 
     std::cout << "3x3-double-BigInt ";  
@@ -729,20 +716,6 @@ bool randomTest52All()
     quasiNullTest( F(), signedRandomInt26 ); 
     std::cout << std::endl;   
   }
-  { 
-    srand(seed); 
-    std::cout << "2x2-inc-double-BigInt "; 
-    typedef PointVector<2, double> Point; 
-    typedef SimpleIncremental2x2DetComputer<double, DGtal::BigInteger> DetComputer; 
-    typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> F; 
-    randomTest( F(), signedRandomDouble52 );
-    nullSameVectorsTest( F(), signedRandomDouble52 );
-    nullZeroVectorTest( F(), signedRandomDouble52 ); 
-    nullTest( F(), signedRandomInt26 ); 
-    quasiNullTest( F(), signedRandomInt26 ); 
-    std::cout << std::endl;   
-  }
-#endif
   {
     srand(seed); 
     std::cout << "2x2-avnaim-int64-int64 "; 
@@ -841,7 +814,6 @@ bool randomTest62All()
 
   long seed = time(NULL); 
 
-#ifdef WITH_BIGINTEGER
   { //! BigInt cannot be constructed from a DGtal::int64_t
     srand(seed); 
     std::cout << "3x3-BigInt-BigInt ";  
@@ -880,7 +852,6 @@ bool randomTest62All()
     quasiNullTest( F(), signedRandomInt30 ); 
     std::cout << std::endl;   
   }
-#endif
   { 
     srand(seed); 
     std::cout << "2x2-avnaim-int64-int64 "; 

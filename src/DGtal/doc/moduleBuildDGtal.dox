@@ -40,7 +40,6 @@ dependencies:
 
 To build DGtal in is full configuration, you may need these dependencies too:
 
-- \e gmp,
 - \e [CGAL](http://cgal.org) (build with Eigen enabled),
 - \e [libIGL](https://libigl.github.io),
 - \e cairo,
@@ -90,7 +89,7 @@ cmake ..
 
 For the full DGtal configuration, you have to set these options with cmake:
 @code
-cmake .. -DDGTAL_WITH_GMP=true  -DDGTAL_WITH_ITK=true  -DDGTAL_WITH_CAIRO=true -DWITH_QGLVIEWER=true 
+cmake .. -DDGTAL_WITH_ITK=true  -DDGTAL_WITH_CAIRO=true -DWITH_QGLVIEWER=true 
 @endcode
 
 If no error occurs, you can build the DGtal lib and install it:
@@ -146,7 +145,7 @@ compilers is not supported.
 To generate the Visual Studio project, use the cmake (or cmake-gui)
 tools with recent Visual Studio target. During the project generation,
 you would have to specify the path to @e boost headers (or paths
-needed for any optional dependency such as GMP, CGAL, Cairo...).
+needed for any optional dependency such as CGAL, Cairo...).
 
 
 @note Do not forget to set @e DGTAL_BUILD_SHARED_LIBS cmake to false (static

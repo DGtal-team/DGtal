@@ -58,17 +58,12 @@ if ( WITH_PATATE )
     endforeach()
 endif()
 
-#-----------------------
-#GMP based tests
-#----------------------
-set(DGTAL_TESTS_GMP_SRC
+set(DGTAL_TESTS_BIGINTEGERS
   testCOBANaivePlaneComputer
   testCOBAGenericStandardPlaneComputer
   testChordNaivePlaneComputer
-  )
+ )
 
-if(GMP_FOUND)
-  foreach(FILE ${DGTAL_TESTS_GMP_SRC})
-    DGtal_add_test(${FILE})
-  endforeach()
-endif()
+foreach(FILE ${DGTAL_TESTS_BIGINTEGERS})
+  DGtal_add_test(${FILE})
+endforeach()

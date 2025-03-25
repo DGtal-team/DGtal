@@ -145,11 +145,7 @@ namespace DGtal
         TPoint const,
         std::random_access_iterator_tag,
         TPoint const&,
-#ifdef WITH_BIGINTEGER
         typename std::conditional<std::is_same<typename TPoint::Component, BigInteger>::value, BigInteger, std::ptrdiff_t>::type
-#else
-        std::ptrdiff_t
-#endif
       >
   {
   public:
@@ -319,11 +315,7 @@ namespace DGtal
         const TPoint,
         std::random_access_iterator_tag,
         TPoint const&,
-#ifdef WITH_BIGINTEGER
         typename std::conditional<std::is_same<typename TPoint::Component, BigInteger>::value, BigInteger, std::ptrdiff_t>::type
-#else
-        std::ptrdiff_t
-#endif
       >
   {
   public:

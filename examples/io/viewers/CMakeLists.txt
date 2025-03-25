@@ -13,9 +13,6 @@ set(DGTAL_TESTS_SRC
    viewer3D-10-interaction
    viewer3D-11-extension
    demo-kernel-2
-)
-
-set(DGTAL_TESTS_GMP_SRC
    viewer3D-7-planes
    viewer3D-7-stdplane
    viewer3D-7bis-stdplane
@@ -24,10 +21,3 @@ set(DGTAL_TESTS_GMP_SRC
 foreach(FILE ${DGTAL_TESTS_SRC})
      DGtal_add_example(${FILE})
 endforeach()
-
-if(GMP_FOUND)
-  foreach(FILE ${DGTAL_TESTS_GMP_SRC})
-     DGtal_add_example(${FILE})
-  endforeach()
-endif()
-

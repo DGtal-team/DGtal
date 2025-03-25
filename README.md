@@ -39,7 +39,7 @@ DGtal can be compiled on Microsoft Windows system using Visual Studio 2014 (or n
 Docker
 ======
 
-A Docker file is included in the repository in order to allow the users to build a docker image with the DGtal library installed. Inside the docker container, the library is installed with many optional dependencies (gmp, eigen, cgal, itk, cairo, qglviewer, openmp, fftw3) so the user can start developing without the need to install DGtal on the system.
+A Docker file is included in the repository in order to allow the users to build a docker image with the DGtal library installed. Inside the docker container, the library is installed with many optional dependencies (eigen, cgal, itk, cairo, qglviewer, openmp, fftw3) so the user can start developing without the need to install DGtal on the system.
                                                                                                                                                                                                                         
 To build the Docker image, Docker should have been installed in the system (to [install Docker](https://docs.docker.com/engine/install/)) download the *Dockerfile* inside the [DGtal repository](https://github.com/DGtal-team/DGtal), in the same directory where the Dockerfile is located execute    
 
