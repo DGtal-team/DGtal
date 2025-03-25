@@ -342,35 +342,30 @@ namespace DGtal
 
             std::vector<std::array<double     , 3>> vertices(triangle_count + polygons.size());
             std::vector<std::array<double     , 3>> colors  (triangle_count);
-            std::vector<std::array<std::size_t, 3>> indices (triangle_count);
+            std::vector<std::vector<size_t>>        indices (triangle_count);
             std::map<DGtal::int32_t, DGtal::int32_t> indexToName;
 
-            unsigned tindex = 0;
             unsigned vindex = 0;
             for (unsigned int i = 0; i < polygons.size(); i++)
             {
                 const size_t pSize = polygons[i].vertices.size();
-                std::array<double, 3> barycenter = {0, 0, 0};
+                std::vector<size_t> subIndices(pSize);
 
                 for (unsigned int j = 0; j < pSize; j++)
                 {
-                    indices[tindex + j] = {vindex + pSize, vindex + j, vindex + ((j + 1) % pSize) };
+                    subIndices[j] = vindex + j;
                         
-                    colors [tindex + j][0] = polygons[i].color.r();
-                    colors [tindex + j][1] = polygons[i].color.g();
-                    colors [tindex + j][2] = polygons[i].color.b();
+                    colors [vindex + j][0] = polygons[i].color.r();
+                    colors [vindex + j][1] = polygons[i].color.g();
+                    colors [vindex + j][2] = polygons[i].color.b();
 
                     for (unsigned int k = 0; k < 3; k++)
                     {
                         vertices[vindex + j][k] = polygons[i].vertices[j][k];
-                        barycenter[k]          += polygons[i].vertices[j][k];
                     } 
                 }
-                for (unsigned int k = 0; k < 3; k++)
-                    vertices[vindex + pSize][k] = barycenter[k] / (float)pSize;
 
-                vindex += pSize + 1;
-                tindex += pSize;
+                vindex += pSize;
 
                 if (polygons[i].name != -1)
                     indexToName[i] = polygons[i].name;
