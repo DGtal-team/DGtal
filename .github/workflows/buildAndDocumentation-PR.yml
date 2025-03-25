@@ -13,7 +13,7 @@ env:
   CONFIG_WINDOWS: -DDGTAL_WITH_OPENMP=true   # -DDGTAL_WITH_FFTW3=true  -DDGTAL_WITH_CAIRO=true -DDGTAL_WITH_ITK=true 
 
 jobs:
- build:
+  build:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
