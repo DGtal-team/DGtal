@@ -2,16 +2,9 @@ name: CI (linux/macOS/windows), PR (2.0)
 
 on:
   push:
-    branches: [ main2.0 ]
+    branches: [ main2.0, GHActions ]
   pull_request:
-    branches: [ main2.0 ]
-
-env:
-  TESTBLACKLIST: "(testLinearStructure|testIntegerConverter|testArithmeticalDSSComputerOnSurfels)"
-  CONFIG_GLOBAL:  -DDGTAL_BUILD_EXAMPLES=true -DDGTAL_BUILD_TESTS=true -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=10
-  CONFIG_LINUX:   -DUSE_CCACHE=NO -DDGTAL_WITH_OPENMP=true -DDGTAL_WITH_GMP=true -DDGTAL_WITH_FFTW3=true -DDGTAL_WITH_CGAL=true  -DDGTAL_WITH_LIBIGL=true -DWARNING_AS_ERROR=ON -DDGTAL_WITH_HDF5=true -DWITH_QGLVIEWER=true  -DDGTAL_WITH_CAIRO=true -DDGTAL_WITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true -DDGTAL_BUILD_POLYSCOPE_EXAMPLES=true
-  CONFIG_MAC:     -DUSE_CCACHE=NO -DDGTAL_WITH_GMP=true -DDGTAL_BUILD_POLYSCOPE_EXAMPLES=true -DDGTAL_WITH_CGAL=true  -DDGTAL_WITH_LIBIGL=true
-  CONFIG_WINDOWS: -DDGTAL_WITH_OPENMP=true   #-DDGTAL_WITH_GMP=true -DDGTAL_WITH_FFTW3=true  -DDGTAL_WITH_CAIRO=true -DDGTAL_WITH_ITK=true 
+    branches: [ main2.0, GHActions ]
 
 jobs:
   build:
@@ -23,109 +16,53 @@ jobs:
         BUILD_TYPE: [Release]
         python-version: ["3.9"]
 
-    steps:
-     - uses: actions/checkout@v3
-       with:
-          fetch-depth: 5
+    steps: 
+      - uses: actions/checkout@v4
+        with:
+          # Note: at least (5 + 1) for the whitelist to work
+          fetch-depth: 6
+      
+      - name: Getting build config
+        id: "config"
+        uses: ./.github/actions/dgtal-config
+        with:
+          config-name: "Default"
 
-     - name: Set up Python ${{ matrix.python-version }}
-       uses: actions/setup-python@v4
-       with: 
+      - name: Setup OS 
+        uses: ./.github/actions/setup-os
+        with:
           python-version: ${{ matrix.python-version }}
 
-     - name: Install linux deps
-       if: matrix.os == 'ubuntu-latest'
-       run: |
-           sudo apt-get update
-           sudo apt-get install ccache zsh libqglviewer-dev-qt5 libcgal-dev ninja-build libhdf5-serial-dev libcairo2-dev libgmp-dev libfftw3-dev libinsighttoolkit5-dev xorg-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev
+      - name: Building and Testing
+        uses: ./.github/actions/cmake
+        with:
+          build-type: ${{ matrix.build_type }}
+          build-config: ${{ steps.config.outputs.cmake-config }}
+          test: true
+          test-threshold: "10"
+          test-blacklist: ${{ steps.config.outputs.cmake-test-blacklist }}
+          test-whitelist: ${{ steps.config.outputs.cmake-test-whitelist }}
 
-     - name: Install macOS deps
-       if: matrix.os == 'macOS-latest'
-       run: brew install boost ninja gmp libomp ccache cgal
-
-     - name: Install conan
-       if: matrix.os == 'windows-latest'
-       id: conan
-       uses: turtlebrowser/get-conan@main
-       with:
-         version: 2.4.0
-
-     - name: Create conan default profile
-       if: matrix.os == 'windows-latest'
-       run: |
-         conan profile detect --force
-
-
-     - uses: actions/cache@v4
-       if: matrix.os == 'windows-latest'
-       with:
-         path: ~/.conan2
-         key: ${{ runner.os }}-conan2-${{ matrix.BUILD_TYPE }}
-
-     - name: Get white list of tests
-       run: |
-           echo "::set-output name=WHITELIST::$(${{runner.workspace}}/DGtal/.github/workflows/create_whitelist.sh)"
-       id: whitelist
-
-     - name: Create Build Environment
-       run: cmake -E make_directory ${{runner.workspace}}/build
-
-     - name: Configure CMake (linux)
-       if: matrix.os == 'ubuntu-latest'
-       shell: bash
-       working-directory: ${{runner.workspace}}/build
-       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_GLOBAL $CONFIG_LINUX -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}" -G Ninja
-
-     - name: Configure CMake (macOS)
-       if: matrix.os == 'macOS-latest'
-       shell: bash
-       working-directory: ${{runner.workspace}}/build
-       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }}  $CONFIG_GLOBAL $CONFIG_MAC -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}" 
-
-
-     - name: Configure CMake (windows)
-       if: matrix.os == 'windows-latest'
-       shell: bash
-       working-directory: ${{runner.workspace}}/build
-       run: |
-          conan install $GITHUB_WORKSPACE --build=missing -s:a compiler.cppstd=20
-          cmake $GITHUB_WORKSPACE -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_POLICY_DEFAULT_CMP0091=NEW -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_GLOBAL $CONFIG_WINDOWS -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}"
-
-     - name: Build
-       working-directory: ${{runner.workspace}}/build
-       shell: bash
-       # Execute the build.  You can specify a specific target with "--target <NAME>"
-       run: cmake --build . --config ${{ matrix.BUILD_TYPE }} --parallel 3
-     
-     - name: Test
-       working-directory: ${{runner.workspace}}/build
-       if: matrix.os == 'ubuntu-latest' || matrix.os == 'macos-latest'
-       shell: bash
-       run: |
-           echo ctest -C ${{ matrix.BUILD_TYPE }}  --output-on-failure -E $TESTBLACKLIST
-           ctest -C $${{ matrix.BUILD_TYPE }}  --output-on-failure -E $TESTBLACKLIST
-
-     - name: DGtalTools (linux only, we check this PR against DGtalTools PR main2.0)
-       if: matrix.os == 'ubuntu-latest'
-       shell: bash
-       working-directory: ${{runner.workspace}}/build
-       run: |
-           git clone --depth 1 https://github.com/DGtal-team/DGtalTools.git
-           cd DGtalTools
-           git fetch origin pull/467/head:main2.0
-           git checkout main2.0
-           mkdir buildDGtalTools
-           cd buildDGtalTools
-           cmake .. -DCMAKE_MODULE_PATH=${{runner.workspace}}/DGtal/cmake/deps -DDGtal_DIR=${{runner.workspace}}/build  -DDGTALTOOLS_RANDOMIZED_BUILD_THRESHOLD=25 -G Ninja
-           ninja
-
+      - name: DGtalTools (linux only, we check this PR against DGtalTools PR main2.0)
+        if: matrix.os == 'ubuntu-latest'
+        shell: bash
+        working-directory: ${{ runner.workspace }}/build
+        run: |
+          git clone --depth 1 https://github.com/DGtal-team/DGtalTools.git
+          cd DGtalTools
+          git fetch origin pull/467/head:main2.0
+          git checkout main2.0
+          mkdir buildDGtalTools
+          cd buildDGtalTools
+          cmake .. -DCMAKE_MODULE_PATH=${{ runner.workspace }}/DGtal/cmake/deps -DDGtal_DIR=${{ runner.workspace }}/build  -DDGTALTOOLS_RANDOMIZED_BUILD_THRESHOLD=25 -G Ninja
+          ninja
 
   # Documentatin (build, check and deploy)
   Documentation:
     runs-on: ubuntu-latest
   
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
   
     - name: Set up
       run: |

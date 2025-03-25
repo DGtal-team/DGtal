@@ -1,12 +1,8 @@
 [requires]
 fmt/9.1.0
 zlib/1.2.13
-gmp/6.3.0
-fftw/3.3.9
+ftw/3.3.9
 
 [generators]
 CMakeDeps
 CMakeToolchain
-
-[options] 
-gmp*:enable_cxx=True

@@ -18,6 +18,9 @@ set(DGtalLibDependencies ${DGtalLibDependencies} Boost::headers )
 target_compile_definitions(DGTAL_BoostAddons PUBLIC ${BOOST_DEFINITIONS})
 #target_include_directories(DGTAL_BoostAddons SYSTEM PUBLIC ${Boost_INCLUDE_DIRS} )
 
+target_compile_definitions(DGTAL_LibBoard PUBLIC ${BOOST_DEFINITIONS} -DBOOST_ALL_NO_LIB)
+target_include_directories(DGTAL_LibBoard SYSTEM PUBLIC ${Boost_INCLUDE_DIRS} )
+
 # -----------------------------------------------------------------------------
 # Looking for zlib
 # -----------------------------------------------------------------------------
