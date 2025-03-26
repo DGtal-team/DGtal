@@ -17,7 +17,7 @@
 - *Build*
   - Prefixing main cmake variables with `DGTAL_` (David Coeurjolly, [#1753](https://github.com/DGtal-team/DGtal/pull/1753), Bastien Doignies, [#1772](https://github.com/DGtal-team/DGtal/pull/1772)
   - Add a cmake option to use the ITK EIGEN configuration to solve the issue [#347](https://github.com/DGtal-team/DGtalTools/issues/437) of DGTalTools. (Bertrand Kerautret, [#1759](https://github.com/DGtal-team/DGtal/pull/1759)
-  - Building tests do not build the benchmarks anymore (Bastien Doignies, [#1772](https://github.com/DGtal-team/DGtal/pull/1772)
+  - Building tests does not build the benchmarks anymore (Bastien Doignies, [#1772](https://github.com/DGtal-team/DGtal/pull/1772)
   - Add a cmake option to build benchmark (Bastien Doignies, [#1772](https://github.com/DGtal-team/DGtal/pull/1772)
 
 - *Github* 
