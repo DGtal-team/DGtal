@@ -1,4 +1,4 @@
-if (BUILD_SHARED_LIBS)
+if (DGTAL_BUILD_SHARED_LIBS)
   add_library(DGtal SHARED helpers/StdDefs.cpp)
 else()
   add_library(DGtal STATIC helpers/StdDefs.cpp)

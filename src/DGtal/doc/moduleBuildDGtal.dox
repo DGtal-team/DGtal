@@ -130,7 +130,7 @@ Beside these options, user can also specify these options:
 debug messages are traced out.
 
 
-- \e  BUILD_SHARED_LIBS (ON/OFF): to build the lib as a shared library (default: OFF) but \b must be \b OFF actually on \b Windows
+- \e  DGTAL_BUILD_SHARED_LIBS (ON/OFF): to build the lib as a shared library (default: OFF) but \b must be \b OFF actually on \b Windows
 
 
 
@@ -148,7 +148,7 @@ you would have to specify the path to @e boost headers (or paths
 needed for any optional dependency such as CGAL, Cairo...).
 
 
-@note Do not forget to set @e BUILD_SHARED_LIBS cmake to false (static
+@note Do not forget to set @e DGTAL_BUILD_SHARED_LIBS cmake to false (static
 DGtal lib target, default).
 
 
