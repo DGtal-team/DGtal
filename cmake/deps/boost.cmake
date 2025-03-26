@@ -62,6 +62,7 @@ set(BOOST_INCLUDE_LIBRARIES
     mp11
     mpl
     multi_index
+    multiprecision
     numeric_conversion
     optional
     parameter
@@ -137,7 +138,6 @@ set(BOOST_INCLUDE_LIBRARIES
     # metaparse
     # msm
     # multi_array
-    # multiprecision
     # mysql
     # nowide
     # numeric_interval
