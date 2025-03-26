@@ -341,11 +341,11 @@ namespace DGtal
                 default_name += "_" + std::to_string(count++);
 
             std::vector<std::array<double     , 3>> vertices(triangle_count + polygons.size());
-            std::vector<std::array<double     , 3>> colors  (triangle_count);
-            std::vector<std::vector<size_t>>        indices (triangle_count);
+            std::vector<std::array<double     , 3>> colors  (polygons.size());
+            std::vector<std::vector<size_t>>        indices (polygons.size());
             std::map<DGtal::int32_t, DGtal::int32_t> indexToName;
 
-            unsigned vindex = 0;
+            unsigned int vindex = 0;
             for (unsigned int i = 0; i < polygons.size(); i++)
             {
                 const size_t pSize = polygons[i].vertices.size();
@@ -354,11 +354,6 @@ namespace DGtal
                 for (unsigned int j = 0; j < pSize; j++)
                 {
                     subIndices[j] = vindex + j;
-                        
-                    colors [vindex + j][0] = polygons[i].color.r();
-                    colors [vindex + j][1] = polygons[i].color.g();
-                    colors [vindex + j][2] = polygons[i].color.b();
-
                     for (unsigned int k = 0; k < 3; k++)
                     {
                         vertices[vindex + j][k] = polygons[i].vertices[j][k];
@@ -366,14 +361,18 @@ namespace DGtal
                 }
 
                 vindex += pSize;
-
+                indices[i] = subIndices;
+                
+                colors [i][0] = polygons[i].color.r();
+                colors [i][1] = polygons[i].color.g();
+                colors [i][2] = polygons[i].color.b();
+            
                 if (polygons[i].name != -1)
                     indexToName[i] = polygons[i].name;
             }
 
             indexToName[-1] = -1;
             namesMap[default_name] = { false, indexToName };
-
 
             auto ppolygons = polyscope::registerSurfaceMesh(default_name, vertices, indices);
             ppolygons->setTransparency(polygons[0].color.a());
