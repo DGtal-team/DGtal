@@ -969,10 +969,8 @@ TEST_CASE("3D test interior/exterior voxels to a digital surface")
   
 }
 
-#ifdef WITH_BIGINTEGER
 TEST_CASE("with BigInteger")
 {
   KhalimskySpaceND<3,BigInteger> K( {0,0,0}, {1000,1000,1000}, true );
   REQUIRE(true); 
 }
-#endif

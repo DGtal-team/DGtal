@@ -24,23 +24,3 @@ endif()
 foreach(FILE ${DGTAL_TESTS_SRC})
   DGtal_add_test(${FILE})
 endforeach()
-set(DGTAL_BENCH_SRC
-    benchmarkImageContainer)
-
-#Benchmark target
-foreach(FILE ${DGTAL_BENCH_SRC})
-  DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
-endforeach()
-
-#-----------------------
-#ITK based tests
-#----------------------
-if(ITK_FOUND)
-  set(DGTAL_TESTS_ITK_SRC testITKImage)
-else()
-  set(DGTAL_TESTS_ITK_SRC "")
-endif()
-
-foreach(FILE ${DGTAL_TESTS_ITK_SRC})
-  DGtal_add_test(${FILE})
-endforeach()

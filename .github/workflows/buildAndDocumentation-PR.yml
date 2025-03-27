@@ -8,9 +8,9 @@ env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   TESTBLACKLIST: "(testLinearStructure|testIntegerConverter|testArithmeticalDSSComputerOnSurfels)"
   CONFIG_GLOBAL:  -DDGTAL_BUILD_EXAMPLES=true -DDGTAL_BUILD_TESTS=true -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=10
-  CONFIG_LINUX:   -DUSE_CCACHE=NO -DDGTAL_WITH_OPENMP=true -DDGTAL_WITH_GMP=true -DDGTAL_WITH_CGAL=true  -DDGTAL_WITH_LIBIGL=true -DDGTAL_WITH_FFTW3=true -DWARNING_AS_ERROR=ON -DDGTAL_WITH_HDF5=true -DWITH_QGLVIEWER=true  -DDGTAL_WITH_CAIRO=true -DDGTAL_WITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true -DDGTAL_BUILD_POLYSCOPE_EXAMPLES=true
-  CONFIG_MAC:     -DUSE_CCACHE=NO -DDGTAL_WITH_GMP=true -DDGTAL_BUILD_POLYSCOPE_EXAMPLES=true -DDGTAL_WITH_CGAL=true  -DDGTAL_WITH_LIBIGL=true
-  CONFIG_WINDOWS: -DDGTAL_WITH_OPENMP=true   #-DDGTAL_WITH_GMP=true -DDGTAL_WITH_FFTW3=true  -DDGTAL_WITH_CAIRO=true -DDGTAL_WITH_ITK=true 
+  CONFIG_LINUX:   -DUSE_CCACHE=NO -DDGTAL_WITH_OPENMP=true -DDGTAL_WITH_CGAL=true  -DDGTAL_WITH_LIBIGL=true -DDGTAL_WITH_FFTW3=true -DDGTAL_WARNING_AS_ERROR=ON -DDGTAL_WITH_HDF5=true -DWITH_QGLVIEWER=true  -DDGTAL_WITH_CAIRO=true -DDGTAL_WITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true -DDGTAL_BUILD_POLYSCOPE_EXAMPLES=true
+  CONFIG_MAC:     -DGTAL_USE_CCACHE=NO -DDGTAL_BUILD_POLYSCOPE_EXAMPLES=true -DDGTAL_WITH_CGAL=true  -DDGTAL_WITH_LIBIGL=true
+  CONFIG_WINDOWS: -DDGTAL_WITH_OPENMP=true   # -DDGTAL_WITH_FFTW3=true  -DDGTAL_WITH_CAIRO=true -DDGTAL_WITH_ITK=true 
 
 jobs:
   build:
@@ -33,11 +33,11 @@ jobs:
        if: matrix.os == 'ubuntu-latest'
        run: |
            sudo apt-get update
-           sudo apt-get install ccache zsh libqglviewer-dev-qt5 libcgal-dev libboost-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libfftw3-dev libinsighttoolkit5-dev xorg-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev
+           sudo apt-get install ccache zsh libqglviewer-dev-qt5 libcgal-dev libboost-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libfftw3-dev libinsighttoolkit5-dev xorg-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev
 
      - name: Install macOS deps
        if: matrix.os == 'macOS-latest'
-       run: brew install boost ninja gmp libomp ccache cgal
+       run: brew install boost ninja libomp ccache cgal
 
      - name: Install conan
        if: matrix.os == 'windows-latest'

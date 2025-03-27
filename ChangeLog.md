@@ -4,21 +4,29 @@
   - Upgrade of ITK to version 5 and above (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
   - C++20 support and new minimal standard (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
   - Library is now (almost) header only (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
-  - Fix compilation warnings (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
+  - Fix compilation warnings (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/))
+  - Remove GMP dependency (Bastien Doignies, [#1769](https://github.com/DGtal-team/DGtal/pull/1769))
+  - New Boost BigInteger Backend (Bastien Doignies, [#1769](https://github.com/DGtal-team/DGtal/pull/1769))
   - Remove deprecated classes and functions (Bastien DOIGNIES, [#1765](https://github.com/DGtal-team/DGtal/pull/1765))
 
 - *CMake*
   - Updated to version 3.20 minimum (contemporary version of C++20's new minimal standard) (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
   - Updated export and install commands to more modern cmake (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
   - Dependancies of DGTal are now build as separate targets (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
+  - Add a new command `make dgtal_benchmark` to run all benchmarks (Bastien Doignies, [#1772](https://github.com/DGtal-team/DGtal/pull/1772))
 
 - *Build*
-  - Prefixing main cmake variables with `DGTAL_` (David Coeurjolly, [#1753](https://github.com/DGtal-team/DGtal/pull/1753))
+  - Prefixing main cmake variables with `DGTAL_` (David Coeurjolly, [#1753](https://github.com/DGtal-team/DGtal/pull/1753), Bastien Doignies, [#1772](https://github.com/DGtal-team/DGtal/pull/1772)
   - Add a cmake option to use the ITK EIGEN configuration to solve the issue [#347](https://github.com/DGtal-team/DGtalTools/issues/437) of DGTalTools. (Bertrand Kerautret, [#1759](https://github.com/DGtal-team/DGtal/pull/1759)
+  - Building tests does not build the benchmarks anymore (Bastien Doignies, [#1772](https://github.com/DGtal-team/DGtal/pull/1772)
+  - Add a cmake option to build benchmark (Bastien Doignies, [#1772](https://github.com/DGtal-team/DGtal/pull/1772)
 
 - *Geometry* 
   - Add method to evaluate normal to `LocalEstimatorFromSurfelFunctorAdapter` from Surfel as a replacement for removed `LocalConvolutionNormalVectorEstimator` (Bastien DOIGNIES, [#1765](https://github.com/DGtal-team/DGtal/pull/1765))
   - Add method to evaluate all normals to `LocalEstimatorFromSurfelFunctorAdapter` as a replacement for removed `LocalConvolutionNormalVectorEstimator` (Bastien DOIGNIES, [#1765](https://github.com/DGtal-team/DGtal/pull/1765))
+
+- *Github* 
+  - Reusable jobs for Github actions [#1766](https://github.com/DGtal-team/DGtal/pull/1766)
 
 # DGtal 1.4.2
 

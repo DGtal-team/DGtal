@@ -1366,9 +1366,7 @@ int main( int argc, char** argv )
 
   //main operators
   bool res = mainTest<DGtal::ArithmeticalDSS<DGtal::int32_t> >()
-#ifdef WITH_BIGINTEGER
     && mainTest<DGtal::ArithmeticalDSS<DGtal::int32_t, DGtal::BigInteger, 4> >()
-#endif
     && mainTest<DGtal::NaiveDSS8<DGtal::int32_t> >()
     && mainTest<DGtal::StandardDSS4<DGtal::int32_t> >()
     ;
@@ -1451,16 +1449,12 @@ int main( int argc, char** argv )
   
   res = res
     && updateTest<DGtal::ArithmeticalDSS<DGtal::int32_t> >()
-#ifdef WITH_BIGINTEGER
     && updateTest<DGtal::ArithmeticalDSS<DGtal::int32_t, DGtal::BigInteger, 4> >()
-#endif
     ;
 
   res = res
     && constructorsTest<DGtal::ArithmeticalDSS<DGtal::int32_t> >()
-#ifdef WITH_BIGINTEGER
     && constructorsTest<DGtal::ArithmeticalDSS<DGtal::int32_t, DGtal::BigInteger, 4> >()
-#endif
     && constructorsTest<DGtal::NaiveDSS8<DGtal::int32_t> >()
     && constructorsTest<DGtal::StandardDSS4<DGtal::int32_t> >()
     ;
@@ -1486,9 +1480,7 @@ int main( int argc, char** argv )
     && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(8,-5)
     && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(-5,-8)
     && comparisonSubsegment<StandardDSL<DGtal::int32_t> >(-8,-5)
-#ifdef WITH_BIGINTEGER
     && comparisonSubsegment<StandardDSL<DGtal::int32_t, DGtal::BigInteger> >(5,8)
-#endif
       ;
   }
   

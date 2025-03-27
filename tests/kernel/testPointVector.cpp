@@ -106,6 +106,7 @@ TEST_CASE( "2D Point Vector Unit tests" )
     }
 }
 
+
 TEST_CASE( "3D Point Vector Unit tests" )
 {
   using Real = double;

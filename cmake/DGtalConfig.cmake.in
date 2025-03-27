@@ -30,14 +30,6 @@ endif()
 
 #### Optionnal dependencies  ####
 
-if(@GMP_FOUND_DGTAL@) #if GMP_FOUND_DGTAL
-  find_package(GMP REQUIRED
-    @GMP_HINTS@
-    )
-  set(DGTAL_WITH_GMP 1)
-endif()
-
-
 if(@ITK_FOUND_DGTAL@) #if ITK_FOUND_DGTAL
   set (DGTAL_WITH_ITK 1)
   find_dependency(ITK REQUIRED

@@ -35,7 +35,6 @@
 #include <cstdlib>
 #include <cmath>
 #include <DGtal/base/BasicFunctors.h>
-#include "DGtal/io/Color.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -1031,7 +1030,7 @@ DGtal::PointVector<dim, TComponent, TContainer>::normInfinity() const
     {
       tmp =  ( myArray[ i ] >= 0 ) ? myArray[ i ] : -myArray[ i ] ;
       if ( tmp > val )
-  val = tmp;
+        val = tmp;
     }
   return val;
 }
@@ -1042,7 +1041,7 @@ inline
 typename DGtal::PointVector<dim, double, std::array<double,dim> >
 DGtal::PointVector<dim, TComponent, TContainer>::getNormalized() const
 {
-  PointVector<dim,double,std::array<double,dim> > normalized =(*this);
+  PointVector<dim,double,std::array<double,dim> > normalized(*this);
   normalized /= normalized.norm();
   return normalized;
 }

@@ -33,13 +33,13 @@ make install
 
 Minimum system requirements: C++11 enabled compiler, [cmake](http://cmake.org), [boost](http://boost.org) (>= 1.50).
 
-DGtal can be compiled on Microsoft Windows system using Visual Studio 2014 (or newer): Generate the Visual Studio project using windows [cmake](http://cmake.org) tool and compile the DGtal solution (you may also need to set the cmake variable ```BUILD_SHARED_LIBS``` to false).
+DGtal can be compiled on Microsoft Windows system using Visual Studio 2014 (or newer): Generate the Visual Studio project using windows [cmake](http://cmake.org) tool and compile the DGtal solution (you may also need to set the cmake variable ```DGTAL_BUILD_SHARED_LIBS``` to false).
 
 
 Docker
 ======
 
-A Docker file is included in the repository in order to allow the users to build a docker image with the DGtal library installed. Inside the docker container, the library is installed with many optional dependencies (gmp, eigen, cgal, itk, cairo, qglviewer, openmp, fftw3) so the user can start developing without the need to install DGtal on the system.
+A Docker file is included in the repository in order to allow the users to build a docker image with the DGtal library installed. Inside the docker container, the library is installed with many optional dependencies (eigen, cgal, itk, cairo, qglviewer, openmp, fftw3) so the user can start developing without the need to install DGtal on the system.
                                                                                                                                                                                                                         
 To build the Docker image, Docker should have been installed in the system (to [install Docker](https://docs.docker.com/engine/install/)) download the *Dockerfile* inside the [DGtal repository](https://github.com/DGtal-team/DGtal), in the same directory where the Dockerfile is located execute    
 
