@@ -1,3 +1,13 @@
+/**
+ * @file PolyscopeViewer3D.ih
+ * @author Bastien Doignies
+ *
+ * @date 2025/03/20
+ *
+ * This file is part of the DGtal library.
+ */
+
+
 namespace DGtal
 {
     template <typename TSpace, typename TKSpace>

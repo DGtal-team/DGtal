@@ -207,21 +207,46 @@ namespace DGtal
       RealPoint point3;
       double nx, ny, nz;
     };
-
-   struct ImageD3D : public CommonD3D {
+    
+    /**
+     * Information to display an image into the scene
+     * 
+     * It can handle both 2D and 3D images, but both 
+     * are rendered as voxel grids. 
+     *
+     * @see Display3D
+     */
+    struct ImageD3D : public CommonD3D {
+        /// Transform
         Eigen::Affine3d transform;
-
-        double voxelWidth = 1.0;
+        /// Width of each pixel
+        float voxelWidth = 1.d;
         
+        /// Data of the image
         std::vector<float> data;
+        /// Size of the image
         std::array<size_t, 3> dims;
 
         ImageD3D(); 
         
+        /** 
+         * Modify the image data from an arbitrary image and a functor
+         *
+         * @tparam TImage The image type
+         * @tparam TFunctor The functor type
+         *
+         * @param img The image
+         * @param func The functor
+         */
         template<typename TImage, typename TFunctor>
         void setData(const TImage& img, const TFunctor& func);
        
         // TODO: As external function
+        /**
+         *  Convert a direction into a rotation
+         *
+         *  @param axis The principal direction
+         */
         Eigen::AngleAxisd directionToRotation(ImageDirection axis) const; 
         ~ImageD3D(); 
     };
@@ -718,7 +743,8 @@ public:
      * @tparam TImage Image type
      * @tparam TFunctor Functor type
      *
-     * @param im The image to render
+     * @param image The image to render
+     * @param functor The functor to apply to the image
      */
     template<typename TImage, typename TFunctor>
     void addImage(const TImage& image, const TFunctor& functor);
