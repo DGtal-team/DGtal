@@ -125,9 +125,22 @@ namespace DGtal
                 DGtal::int32_t dgtalName
             ) {};
         };
-
+        
+        /**
+        * Default constructor
+        *
+        * Intializes polyscope
+        */
         PolyscopeViewer3D();
-        PolyscopeViewer3D(const KSpace& emb);
+
+        /**
+         * Constructor from Khalimsky space
+         *
+         * Initializes polyscope
+         *
+         * @param emb The khalimsky space
+         */
+        PolyscopeViewer3D(const TKSpace& emb);
 
         /**
          * Main function to control the viewer

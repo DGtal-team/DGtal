@@ -16,6 +16,13 @@ namespace DGtal
         polyscope::init();  
         polyscope::state::userCallback = [this](){ this->poyscopeCallback(); };
     }
+    
+    template <typename TSpace, typename TKSpace>
+    PolyscopeViewer3D<TSpace, TKSpace>::PolyscopeViewer3D(const TKSpace& embd) : Display3D<TSpace, TKSpace>(embd)
+    {
+        polyscope::init();  
+        polyscope::state::userCallback = [this](){ this->poyscopeCallback(); };
+    }
 
     template <typename TSpace, typename TKSpace>
     void PolyscopeViewer3D<TSpace, TKSpace>::show() const
@@ -119,10 +126,10 @@ namespace DGtal
             createPolyscopeObjects();
             break;
         case PolyscopeViewer3D<TSpace, TKSpace>::addNewList:
-             PolyscopeViewer<TSpace, TKSpace>::createNewCubeList();
+             PolyscopeViewer3D<TSpace, TKSpace>::createNewCubeList();
              break;    
         case PolyscopeViewer3D<TSpace, TKSpace>::shiftSurfelVisu:
-             PolyscopeViewer3D<TSpace, TKSpace::myCurrentfShiftVisuPrisms += 0.3;
+             PolyscopeViewer3D<TSpace, TKSpace>::myCurrentfShiftVisuPrisms += 0.3;
              break;
         default:
             break;
