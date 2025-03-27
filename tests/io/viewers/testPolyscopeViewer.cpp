@@ -32,7 +32,7 @@ int main( int argc, char** argv )
  
     typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain,  unsigned char > Image3D;
     
-    std::string inputFilename = "/home/bdoignies/Documents/DGtal/examples/samples/lobster.vol";
+    std::string inputFilename = "examples/samples/lobster.vol";
     Image3D imageVol = VolReader<Image3D>::importVol(inputFilename);
 
     Z3i::Point ptLow (100, 100, 20);
