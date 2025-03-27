@@ -62,10 +62,7 @@ set(DGTAL_TESTS_BIGINTEGERS
   testCOBANaivePlaneComputer
   testCOBAGenericStandardPlaneComputer
   testChordNaivePlaneComputer
-  testCOBANaivePlaneComputer-benchmark
-  testCOBAGenericNaivePlaneComputer-benchmark
-  testChordNaivePlaneComputer-benchmark
-  )
+ )
 
 foreach(FILE ${DGTAL_TESTS_BIGINTEGERS})
   DGtal_add_test(${FILE})

@@ -24,14 +24,3 @@ foreach(FILE ${DGTAL_TESTS_SRC_KERNEL})
   DGtal_add_test(${FILE})
 endforeach()
 
-set(DGTAL_BENCH_SRC
-    benchmarkHyperRectDomain
-    benchmarkHyperRectDomain-catch
-    benchmarkSetContainer
-    benchmarkHyperRectDomain-google
-   )
-
-#Benchmark target
-foreach(FILE ${DGTAL_BENCH_SRC})
-  DGtal_add_test(${FILE})
-endforeach()

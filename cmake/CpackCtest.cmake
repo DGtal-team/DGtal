@@ -34,26 +34,3 @@ else()
 endif()
 
 INCLUDE(CPack)
-
-# -----------------------------------------------------------------------------
-# CTest/Debug options
-# -----------------------------------------------------------------------------
-if (DGTAL_BUILD_TESTS)
-  message(STATUS "Build test files ENABLED")
-  ENABLE_TESTING()
-  include(CTest)
-  if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang"  OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0 -Wall \
-        -Wno-unknown-pragmas -W -Wshadow -Wunused-variable  \
-       -Wunused-parameter -Wunused-function -Wno-deprecated-copy  -Werror=type-limits -Wno-nonnull -Wno-unneeded-internal-declaration -Wno-unused-function  -Wno-delete-non-abstract-non-virtual-dtor   -Wunused  -Wno-long-long\
-        -Wno-system-headers -Wno-deprecated -Wno-dtor-name -Woverloaded-virtual -Wwrite-strings")
-    endif()
-    if (CMAKE_C_COMPILER_ID STREQUAL "Clang"  OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-      set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} -g -O0 -Wall  -W  -Wno-delete-non-abstract-non-virtual-dtor -Wno-unknown-pragmas\
-      -Wno-long-long -pedantic")
-  endif()
-  add_subdirectory (${PROJECT_SOURCE_DIR}/tests)
-else()
-  message(STATUS "Build test files DISABLED (you can activate unit tests with '-DDGTAL_BUILD_TESTS=ON' cmake option)")
-endif()
-message(STATUS "-------------------------------------------------------------------------------")
