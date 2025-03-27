@@ -195,6 +195,7 @@ namespace DGtal
         registerLines();
         registerBalls();
         registerQuads();
+        registerPrisms();
         registerCubeMaps();
         registerPolygons();
         registerTriangles();
@@ -335,7 +336,7 @@ namespace DGtal
             ppolygons->setTransparency(triangles[0].color.a());
             ppolygons->addFaceColorQuantity("Colors", colors)->setEnabled(true);
             // Draw triangle in both directions to avoid computing the proper 
-            // order from the normal
+            // orientation from the normal
             ppolygons->setBackFacePolicy(polyscope::BackFacePolicy::Identical);
         }
     }
@@ -343,8 +344,6 @@ namespace DGtal
     template <typename TSpace, typename TKSpace>
     void PolyscopeViewer3D<TSpace, TKSpace>::registerPolygons() const
     {
-        // Assumes that this is a convex polygon (with coplanar vertices)
-
         unsigned int count = 0;
 
         for (unsigned int id = 0; id < this->myPolygonSetList.size(); id++)
@@ -488,7 +487,7 @@ namespace DGtal
                 if (balls[i].name != -1)
                     indexToName[i] = balls[i].name;
             }
-
+            
             indexToName[-1] = -1;
             namesMap[default_name] = { false, indexToName};
 
@@ -510,8 +509,8 @@ namespace DGtal
 
             const std::string& default_name = "quads_" + std::to_string(count++);
             std::vector<std::array<double,      3>> points (quads.size() * 4);
-            std::vector<std::array<std::size_t, 3>> indices(quads.size() * 2);
-            std::vector<std::array<double,      3>> colors (quads.size() * 2);
+            std::vector<std::array<std::size_t, 4>> indices(quads.size());
+            std::vector<std::array<double,      3>> colors (quads.size());
             std::map<DGtal::int32_t, DGtal::int32_t> indexToName;
 
             for (unsigned int i = 0; i < quads.size(); i++)
@@ -524,12 +523,11 @@ namespace DGtal
                     points[i * 4 + 3][k] = quads[i].point4[k];
                 }
 
-                indices[i * 2 + 0] = {i * 4 + 0, i * 4 + 1, i * 4 + 3};
-                indices[i * 2 + 1] = {i * 4 + 3, i * 4 + 1, i * 4 + 2};
+                indices[i] = {i * 4 + 0, i * 4 + 1, i * 4 + 2, i * 4 + 3};
 
-                colors[i * 2 + 0][0] = colors[i * 2 + 1][0] = quads[i].color.r();
-                colors[i * 2 + 0][1] = colors[i * 2 + 1][1] = quads[i].color.g();
-                colors[i * 2 + 0][2] = colors[i * 2 + 1][2] = quads[i].color.b();
+                colors[i][0] = colors[i * 2 + 1][0] = quads[i].color.r();
+                colors[i][1] = colors[i * 2 + 1][1] = quads[i].color.g();
+                colors[i][2] = colors[i * 2 + 1][2] = quads[i].color.b();
 
                 if (quads[i].name != -1)
                     indexToName[i] = quads[i].name;
@@ -559,7 +557,44 @@ namespace DGtal
             mesh->setTransparency(quads[0].color.a());
             mesh->addFaceColorQuantity("Colors", colors)->setEnabled(true);
             // Draw triangle in both directions to avoid computing the proper 
-            // order from the normal
+            // orientation from the normal
+            mesh->setBackFacePolicy(polyscope::BackFacePolicy::Identical);
+        }
+    }
+    
+    template <typename TSpace, typename TKSpace>
+    void PolyscopeViewer3D<TSpace, TKSpace>::registerPrisms() const
+    {
+        unsigned int count = 0;
+        for (unsigned int id = 0; id < this->myPrismList.size(); ++id)
+        {
+            const auto& quad = this->myPrismList[id];
+            std::string default_name = this->myPrismNameList[id];
+            if (default_name.empty()) 
+                default_name = "prism_" + std::to_string(count++);
+            else if (namesMap.find(default_name) != namesMap.end())
+                default_name += "_" + std::to_string(count++);
+            
+            std::vector<std::array<double, 3>> points = {
+                { quad.point1[0], quad.point1[1], quad.point1[2] },  
+                { quad.point2[0], quad.point2[1], quad.point2[2] },  
+                { quad.point3[0], quad.point3[1], quad.point3[2] },  
+                { quad.point4[0], quad.point4[1], quad.point4[2] }  
+            };
+            std::vector<std::array<std::size_t, 4>> indices = {
+                { 0, 1, 2, 3 }
+            };
+            std::vector<std::array<double, 3>> colors = {
+                { quad.color.r(), quad.color.g(), quad.color.b() }
+            };
+           
+            std::map<DGtal::int32_t, DGtal::int32_t> idxMap = {{-1, -1}};
+            namesMap[default_name] = {false, idxMap}; 
+            auto mesh = polyscope::registerSurfaceMesh(default_name, points, indices);
+            mesh->setTransparency(quad.color.a());
+            mesh->addFaceColorQuantity("Colors", colors)->setEnabled(true);
+            // Draw triangle in both directions to avoid computing the proper 
+            // orientation from the normal
             mesh->setBackFacePolicy(polyscope::BackFacePolicy::Identical);
         }
     }

@@ -251,6 +251,8 @@ namespace DGtal
         void registerBalls() const;
         /** Register quads */
         void registerQuads() const;
+        /** Register Prism */
+        void registerPrisms() const;
 
         /** Register images */
         void registerImages() const;
