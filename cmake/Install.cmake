@@ -61,17 +61,7 @@ set(_dependencies_list
   LibBoard
    ITK Cairo HDF5 QGLVIEWER Qt5 OpenMP Eigen3::Eigen CGAL FFTW3 OpenMP::OpenMPCXX
   )
-set(_find_cmake_files
-  "${PROJECT_SOURCE_DIR}/cmake/deps/eigen.cmake"
-  "${PROJECT_SOURCE_DIR}/cmake/deps/FindCairo.cmake"
-  "${PROJECT_SOURCE_DIR}/cmake/deps/FindFFTW3.cmake"
-  "${PROJECT_SOURCE_DIR}/cmake/deps/FindQGLVIEWER.cmake"
-  "${PROJECT_SOURCE_DIR}/cmake/deps/eigen.cmake"
-  "${PROJECT_SOURCE_DIR}/cmake/deps/libigl.cmake"
-  "${PROJECT_SOURCE_DIR}/cmake/deps/openmp.cmake"
-  "${PROJECT_SOURCE_DIR}/cmake/deps/boost.cmake"
-  "${PROJECT_SOURCE_DIR}/cmake/CPM.cmake"
-)
+
 foreach(dep ${_dependencies_list})
   if(DGTAL_CONFIG_HINTS)
     if("${${dep}_DIR}" STREQUAL "" OR
@@ -98,9 +88,28 @@ configure_package_config_file(
   NO_CHECK_REQUIRED_COMPONENTS_MACRO
 )
 
+#------------------------------------------------------------------------------
+# find_package for DGtalConfig.cmake
+#------------------------------------------------------------------------------
+set(_find_cmake_files
+  "${PROJECT_SOURCE_DIR}/cmake/deps/eigen.cmake"
+  "${PROJECT_SOURCE_DIR}/cmake/deps/FindCairo.cmake"
+  "${PROJECT_SOURCE_DIR}/cmake/deps/FindFFTW3.cmake"
+  "${PROJECT_SOURCE_DIR}/cmake/deps/FindQGLVIEWER.cmake"
+  "${PROJECT_SOURCE_DIR}/cmake/deps/eigen.cmake"
+  "${PROJECT_SOURCE_DIR}/cmake/deps/libigl.cmake"
+  "${PROJECT_SOURCE_DIR}/cmake/deps/openmp.cmake"
+  "${PROJECT_SOURCE_DIR}/cmake/CPM.cmake"
+)
+
 install(FILES
           "${CMAKE_CURRENT_BINARY_DIR}/DGtalConfig.cmake"
           "${CMAKE_CURRENT_BINARY_DIR}/DGtalConfigVersion.cmake"
            ${_find_cmake_files}
         DESTINATION ${DGTAL_INSTALL_DESTINATION}
 )
+
+# Also export find dependency files (no export commands for this) 
+foreach(file IN LISTS _find_cmake_files)
+  file(COPY ${file} DESTINATION ${CMAKE_BINARY_DIR})
+endforeach()

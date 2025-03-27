@@ -2,7 +2,7 @@
 # Fetching Catch2 and googlebenchmark
 # (only if the DGTAL_BUILD_TESTS variable has been set to true)
 # -----------------------------------------------------------------------------
-if (DGTAL_BUILD_TESTS)
+if (DGTAL_BUILD_TESTS OR DGTAL_BUILD_BENCHMARKS)
 
   message(STATUS "    Catch2 (v2.13.7)")
   include(catch2)
