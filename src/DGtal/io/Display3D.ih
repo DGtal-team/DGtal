@@ -77,7 +77,7 @@ DGtal::Display3D<TSpace, TKSpace>::ImageD3D::setData(
     for (unsigned int i = 0; i < dim; i++)
     {
         dims[i] = 1 + image.domain().upperBound()[i] - image.domain().lowerBound()[i];
-        lowerBound[i] = image.domain().lowerBound()[i];
+        lowerBound[i] = image.domain().lowerBound()[i] * voxelWidth;
     }
     // For 2D images, we also render the back-side
     if (dim == 2)
