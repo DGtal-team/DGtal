@@ -168,9 +168,10 @@ namespace DGtal
         std::cout << "Planes: "    << this->myClippingPlaneList.size() << std::endl; // Ok
         std::cout << "Prism: "     << this->myPrismList.size() << std::endl;         // TODO
         std::cout << "QuadsMap: "  << this->myQuadsMap.size() << std::endl;          // Ok
-        std::cout << "Triangles: " << this->myTriangleSetList.size() << std::endl;   // TODO
-        std::cout << "Polygones: " << this->myPolygonSetList.size() << std::endl;    // TODO
+        std::cout << "Triangles: " << this->myTriangleSetList.size() << std::endl;   // Ok
+        std::cout << "Polygones: " << this->myPolygonSetList.size() << std::endl;    // Ok
         std::cout << "CubesMap: "  << this->myCubesMap.size() << std::endl;          // Ok
+        std::cout << "Images: " << this->myImageSetList.size() << std::endl;
 
         registerLines();
         registerBalls();
@@ -179,6 +180,8 @@ namespace DGtal
         registerPolygons();
         registerTriangles();
         registerClippingPlanes();
+
+        registerImages();
     }
 
     template <typename TSpace, typename TKSpace>
@@ -563,6 +566,37 @@ namespace DGtal
             plane->setColor({ cplane.color.r(), cplane.color.g(), cplane.color.b() });
             plane->setTransparency(cplane.color.a());
         }
+    }
+
+    template<typename TSpace, typename TKSpace>
+    void PolyscopeViewer3D<TSpace, TKSpace>::registerImages() const
+    {
+        unsigned int count = 0;
+        for (unsigned int id = 0; id < this->myImageSetList.size(); id++)
+        {
+            const auto& image = this->myImageSetList[id];
+
+            std::string default_name;
+            if (default_name.empty()) 
+                default_name = "image_" + std::to_string(count++);
+            else if (namesMap.find(default_name) != namesMap.end())
+                default_name += "_" + std::to_string(count++);
+            
+            glm::uvec3 dims = {image.dims[0], image.dims[1], image.dims[2]};
+            glm::vec3 bound_low  = { 0, 0, 0};
+            glm::vec3 bound_high = { image.dims[0] * image.voxelWidth, 
+                                     image.dims[1] * image.voxelWidth, 
+                                     image.dims[2] * image.voxelWidth };
+            
+            glm::mat4 gTransform;
+            for (unsigned int i = 0; i < 16; i++)
+                gTransform[i / 4][i % 4] = (float)image.transform.data()[i];
+    
+            auto grid = polyscope::registerVolumeGrid(default_name, dims, bound_low, bound_high);
+            grid->setTransform(gTransform);
+            auto scalar = grid->addNodeScalarQuantity("value", image.data);
+            scalar->setEnabled(true);
+        }  
     }
 
     template <typename TSpace, typename TKSpace>

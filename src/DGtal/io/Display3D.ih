@@ -51,6 +51,87 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline Image methods //
+template<typename TSpace, typename TKSpace>
+inline 
+DGtal::Display3D<TSpace, TKSpace>::ImageD3D::ImageD3D()
+{ 
+    transform.setIdentity();
+}
+
+template<typename TSpace, typename TKSpace>
+inline 
+DGtal::Display3D<TSpace, TKSpace>::ImageD3D::~ImageD3D()
+{ }
+
+template<typename TSpace, typename TKSpace>
+template<typename TImage, typename TFunctor>
+inline
+void 
+DGtal::Display3D<TSpace, TKSpace>::ImageD3D::setData(
+    const TImage& image,
+    const TFunctor& func)
+{
+    const unsigned int dim = TImage::Domain::Space::dimension; 
+    RealPoint lowerBound;
+    for (unsigned int i = 0; i < dim; i++)
+    {
+        dims[i] = 1 + image.domain().upperBound()[i] - image.domain().lowerBound()[i];
+        lowerBound[i] = image.domain().lowerBound()[i];
+    }
+    // For 2D images, we also render the back-side
+    if (dim == 2)
+        dims[2] = 2;
+    
+    const size_t total = dims[0] * dims[1] * dims[2]; 
+    data.resize(total);
+    
+    using It = typename TImage::Domain::ConstIterator;
+    It it = image.domain().begin();
+    It itend = image.domain().end();
+   
+    size_t pos = 0;
+    for (; pos < total && it != itend; ++it)
+    {
+        data[pos] = func(image(*it)); 
+        pos++;
+    }
+    
+    transform.translate(Eigen::Vector3d(lowerBound[0], lowerBound[1], lowerBound[2]));
+
+    
+    // Also render the back-side of the image
+    // Image with dim of 1 may not be rendered 
+    // depending on how the geometry will be computed. 
+    // If not needed, this can be stripped easyly
+    // by recreating the appropriate dimension
+    const size_t start_back = dims[0] * dims[1];
+    for (size_t i = start_back; i < total; ++i)
+        data[i] = data[i - start_back];
+}
+
+template<typename TSpace, typename TKSpace>
+Eigen::AngleAxisd DGtal::Display3D<TSpace, TKSpace>::ImageD3D::directionToRotation(DGtal::ImageDirection dir) const
+{
+    switch(dir)
+    {
+    case DGtal::yDirection:
+        return Eigen::AngleAxisd(-M_PI / 2, Eigen::Vector3d::UnitX());
+    case DGtal::zDirection:
+        return Eigen::AngleAxisd(-M_PI / 2, Eigen::Vector3d::UnitY());
+    case DGtal::xDirection:
+    case DGtal::undefDirection:
+    default:
+        return Eigen::AngleAxisd(0, Eigen::Vector3d::UnitX());
+    }
+}
+
+// //
+///////////////////////////////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions and external operators //
 
 
@@ -475,7 +556,7 @@ DGtal::Display3D< Space ,KSpace >::addTriangle(const RealPoint &p1, const RealPo
 }
 
 
-template < typename Space ,typename KSpace >
+template < typename Space ,typename KSpace>
 inline
 void
 DGtal::Display3D< Space ,KSpace >::addPolygon(const std::vector<RealPoint> &vertices)
@@ -1056,7 +1137,7 @@ DGtal::Display3D< Space ,KSpace >::addCylinder(const RealPoint &p1, const RealPo
       ya2 = p1[1] + width * yn;
       za2 = p1[2] + width * zn;
 
-      //adding the triangles and the quad associated with those points
+      //adding the triangles and the quad associated with those poins
       addTriangle(p1,
 		  RealPoint(xa1, ya1, za1),
 		  RealPoint(xa2, ya2, za2));
@@ -1089,6 +1170,70 @@ DGtal::Display3D< Space ,KSpace >::addCylinder(const RealPoint &p1, const RealPo
 	  RealPoint(xbf, ybf, zbf),
 	  RealPoint(xaf, yaf, zaf),
 	  RealPoint(xa1, ya1, za1));
+}
+
+template<typename Space, typename KSpace>
+template<typename TImage, typename TFunctor>
+inline
+void 
+DGtal::Display3D<Space, KSpace>::addImage(const TImage& image, const TFunctor& functor)
+{
+    ImageD3D im;
+    im.setData(image, functor);
+
+    im.color = getFillColor();
+    im.name = name3d();
+
+    myImageSetList.push_back(std::move(im));
+}
+
+template<typename Space, typename KSpace>
+inline
+void 
+DGtal::Display3D<Space, KSpace>::updateImagePosition(size_t index, RealPoint p, DGtal::ImageDirection dir)
+{
+    myImageSetList[index].transform.setIdentity();
+
+    myImageSetList[index].transform.translate(Eigen::Vector3d(p[0], p[1], p[2]));
+    myImageSetList[index].transform.rotate(myImageSetList[index].directionToRotation(dir));
+}
+
+template<typename Space, typename KSpace>
+inline
+void 
+DGtal::Display3D<Space, KSpace>::updateLastImagePosition(RealPoint p, DGtal::ImageDirection dir)
+{
+    updateImagePosition(myImageSetList.size() - 1, p, dir);
+}
+
+template<typename Space, typename KSpace>
+template<typename TImage, typename TFunctor>
+inline
+void 
+DGtal::Display3D<Space, KSpace>::updateImage(size_t index, const TImage& newImage, const TFunctor& myFunctor, RealPoint translate, double rotate, DGtal::ImageDirection dir)
+{
+    myImageSetList[index].setData(newImage, functors::Cast<typename TImage::Value>());
+    
+    auto& transform = myImageSetList[index].transform;
+    transform.translate(Eigen::Vector3d(translate[0], translate[1], translate[2]));
+    
+    Eigen::Vector3d center = transform.translation();
+    Eigen::Matrix3d rotation;
+    switch(dir)
+    {
+    case DGtal::yDirection:
+        rotation = Eigen::AngleAxisd(rotate, Eigen::Vector3d::UnitY()).toRotationMatrix();
+    case DGtal::zDirection:
+        rotation = Eigen::AngleAxisd(rotate, Eigen::Vector3d::UnitZ()).toRotationMatrix();
+    case DGtal::xDirection:
+    case DGtal::undefDirection:
+    default:
+        rotation = Eigen::AngleAxisd(rotate, Eigen::Vector3d::UnitX()).toRotationMatrix();
+    }
+    
+    transform.linear() = rotation * transform.linear();
+    transform.translation() = center + rotation * (transform.translation() - center);
+    return; 
 }
 
 

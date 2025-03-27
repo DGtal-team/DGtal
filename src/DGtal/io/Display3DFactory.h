@@ -718,7 +718,67 @@ namespace DGtal
     static void 
     draw( Display & display, const DGtal::SetSelectCallback3D& aFct );
     
-  }; // end of struct Display3DFactory
+    static void
+    draw (Display& display, const DGtal::UpdateImagePosition<TSpace, TKSpace>& updatePosition);
+
+    template<typename TImage, typename TFunctor>
+    static void
+    draw (Display& display, const DGtal::AddTextureImage2DWithFunctor<TImage, TFunctor, TSpace, TKSpace>& updatePosition);
+    
+
+    template<typename TImage, typename TFunctor>
+    static void
+    draw (Display& display, const DGtal::AddTextureImage3DWithFunctor<TImage, TFunctor, TSpace, TKSpace>& updatePosition);
+
+    static void
+    draw (Display& display, const DGtal::UpdateLastImagePosition<TSpace, TKSpace>& updatePosition);
+
+    template<typename TImage, typename TFunctor>
+    static void
+    draw (Display& display, const DGtal::UpdateImageData<TImage, TFunctor>& updatePosition);
+
+    // ImageContainerBySTLVector (2D)
+    /**
+     * Method to draw an 2D Image (ImageContainerBySTLVector).
+     * @param viewer the viewer where to draw
+     * @param anImage the image to draw
+     */
+    template <typename TValue>
+    static void draw( Display3D<Space,KSpace> & viewer, const ImageContainerBySTLVector<DGtal::Z2i::Domain, TValue> & anImage );
+    // ImageContainerBySTLVector (2D)
+
+    // ConstImageAdapter (2D)
+    /**
+     * Method to draw an 2D Image (ConstImageAdapter).
+     * @param viewer the viewer where to draw
+     * @param anImage the image to draw
+     */
+    template <typename TImageContainer, typename TFunctorD, typename TNewValue, typename TFunctorValue>
+    static void draw( Display3D<Space,KSpace> & viewer, const ConstImageAdapter<TImageContainer, DGtal::Z2i::Domain, TFunctorD, TNewValue, TFunctorValue> & anImage );
+    // ConstImageAdapter (2D)
+ 
+    // ImageContainerBySTLVector (3D)
+    /**
+     * Method to draw an 3D Image (ImageContainerBySTLVector).
+     * @param viewer the viewer where to draw
+     * @param anImage the image to draw
+     */
+    template <typename TValue>
+    static void draw( Display3D<Space,KSpace> & viewer, const ImageContainerBySTLVector<DGtal::Z3i::Domain, TValue> & anImage );
+    // ImageContainerBySTLVector (3D)
+
+    // ConstImageAdapter (3D)
+    /**
+     * Method to draw an 3D Image (ConstImageAdapter).
+     * @param viewer the viewer where to draw
+     * @param anImage the image to draw
+     */
+    template <typename TImageContainer, typename TFunctorD, typename TNewValue, typename TFunctorValue>
+    static void draw( Display3D<Space,KSpace> & viewer, const ConstImageAdapter<TImageContainer, DGtal::Z3i::Domain, TFunctorD,
+                      TNewValue, TFunctorValue> & anImage );
+    // ConstImageAdapter (3D)
+   
+}; // end of struct Display3DFactory
 
 } // namespace DGtal
 

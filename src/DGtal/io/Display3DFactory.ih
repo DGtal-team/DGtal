@@ -1871,5 +1871,110 @@ draw( Display & display, const DGtal::SetSelectCallback3D& aFct )
   display.setSelectCallback3D( aFct.myFct, aFct.myData, aFct.myMin, aFct.myMax );
 }
 
+template< typename Space, typename KSpace>
+inline
+void 
+DGtal::Display3DFactory<Space,KSpace>::
+draw (Display& display, const DGtal::UpdateImagePosition<Space, KSpace>& updatePosition)
+{
+    RealPoint p;
+    p[0] = updatePosition.myPosXBottomLeft;
+    p[1] = updatePosition.myPosYBottomLeft;
+    p[2] = updatePosition.myPosZBottomLeft;
+    display.updateImagePosition(updatePosition.myIndex, p, updatePosition.myNewDirection);
+}   
+
+template< typename Space, typename KSpace>
+template<typename TImage, typename TFunctor>
+inline
+void 
+DGtal::Display3DFactory<Space,KSpace>::
+draw (Display& display, const DGtal::AddTextureImage2DWithFunctor<TImage, TFunctor, Space, KSpace>& updatePosition)
+{
+    display.addImage(*updatePosition.my2DImage, updatePosition.myFunctor);
+}
+
+template< typename Space, typename KSpace>
+template<typename TImage, typename TFunctor>
+inline
+void 
+DGtal::Display3DFactory<Space,KSpace>::
+draw (Display& display, const DGtal::AddTextureImage3DWithFunctor<TImage, TFunctor, Space, KSpace>& updatePosition)
+{
+    display.addImage(*updatePosition.my3DImage, updatePosition.myFunctor);
+}
+
+template<typename Space, typename KSpace>
+inline
+void 
+DGtal::Display3DFactory<Space,KSpace>::
+draw (Display& display, const DGtal::UpdateLastImagePosition<Space, KSpace>& updatePosition)
+{
+    RealPoint p;
+    p[0] = updatePosition.myPosXBottomLeft;
+    p[1] = updatePosition.myPosyBottomLeft;
+    p[2] = updatePosition.myPosZBottomLeft;
+    display.updateLastImagePosition(p, updatePosition.myNewDirection);
+}
+
+// ImageContainerBySTLVector (2D)
+template <typename Space, typename KSpace>
+template <typename TValue>
+inline
+void
+DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & viewer, const ImageContainerBySTLVector<DGtal::Z2i::Domain, TValue> & anImage )
+{
+  viewer.addImage(anImage, functors::Cast<TValue>());
+}
+// ImageContainerBySTLVector (2D)
+
+// ImageContainerBySTLVector (3D)
+template <typename Space, typename KSpace>
+template <typename TValue>
+inline
+void
+DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & viewer, const ImageContainerBySTLVector<DGtal::Z3i::Domain, TValue> & anImage3D )
+{
+  viewer.addImage(anImage3D, functors::Cast<TValue>());
+}
+// ImageContainerBySTLVector (3D)
+
+// ConstImageAdapter (2D)
+template <typename Space, typename KSpace>
+template <typename TImageContainer, typename TFunctorD, typename TNewValue, typename TFunctorValue>
+inline
+void
+DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & viewer, const ConstImageAdapter<TImageContainer, DGtal::Z2i::Domain, TFunctorD, TNewValue, TFunctorValue> & anImage )
+{
+    viewer.addImage(anImage, functors::Cast<typename TImageContainer::Value>());
+}
+// ConstImageAdapter (2D)
+
+// ConstImageAdapter (3D)
+template <typename Space, typename KSpace>
+template <typename TImageContainer, typename TFunctorD, typename TNewValue, typename TFunctorValue>
+inline
+void
+DGtal::Display3DFactory<Space,KSpace>::draw( Display3D<Space, KSpace> & viewer, const ConstImageAdapter<TImageContainer, DGtal::Z3i::Domain, TFunctorD,
+                              TNewValue, TFunctorValue> & anImage )
+{
+    viewer.addImage(anImage, functors::Cast<typename TImageContainer::Value>());
+}
+// ConstImageAdapter (3D)
+
+template<typename Space, typename KSpace>
+template<typename TImage, typename TFunctor>
+inline
+void 
+DGtal::Display3DFactory<Space,KSpace>::
+draw (Display& display, const DGtal::UpdateImageData<TImage, TFunctor>& updatePosition)
+{
+    RealPoint translate = {
+        (double)updatePosition.myTranslateX,
+        (double)updatePosition.myTranslateY,
+        (double)updatePosition.myTranslateZ,
+    };
+    display.updateImage(updatePosition.myIndex, *updatePosition.myImage, updatePosition.myFunctor, translate, updatePosition.myRotationAngle, updatePosition.myRotationDir);
+}
 // //
 ///////////////////////////////////////////////////////////////////////////////

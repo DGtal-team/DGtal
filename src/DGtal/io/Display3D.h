@@ -52,6 +52,10 @@
 #include "DGtal/images/CConstImage.h"
 #include "DGtal/shapes/Mesh.h"
 
+// For transforms
+#include <Eigen/Dense>
+#include <Eigen/Geometry>
+
 /// for embedding
 #include "DGtal/topology/CanonicCellEmbedder.h"
 #include "DGtal/topology/CanonicSCellEmbedder.h"
@@ -204,13 +208,26 @@ namespace DGtal
       double nx, ny, nz;
     };
 
-    struct ImageD3D : public CommonD3D {
-        RealPoint center;
+   struct ImageD3D : public CommonD3D {
+        Eigen::Affine3d transform;
+
+        double voxelWidth = 1.0;
+        
+        std::vector<float> data;
         std::array<size_t, 3> dims;
-          
-        std::vector<double> data;
+
+        ImageD3D(); 
+        
+        template<typename TImage, typename TFunctor>
+        void setData(const TImage& img, const TFunctor& func);
+       
+        // TODO: As external function
+        Eigen::AngleAxisd directionToRotation(ImageDirection axis) const; 
+        ~ImageD3D(); 
     };
-  public:
+
+
+public:
 
 
 
@@ -695,6 +712,33 @@ namespace DGtal
     void addCylinder(const RealPoint  &p1, const RealPoint &p2,
                      const double width=0.02);
 
+    /**
+     * Add an image to be rendred
+     *
+     * @tparam TImage Image type
+     * @tparam TFunctor Functor type
+     *
+     * @param im The image to render
+     */
+    template<typename TImage, typename TFunctor>
+    void addImage(const TImage& image, const TFunctor& functor);
+
+    /*
+     * Update the position of an image
+     *
+     * @param index The index of the image
+     * @param pos The new position
+     * @param dir The image drawing direction
+     */
+    void updateImagePosition(size_t index, RealPoint pos,  ImageDirection dir);
+    
+    /*
+     * Update the position of the last image
+     *
+     * @param pos The new position
+     * @param dir The image drawing direction
+     */
+    void updateLastImagePosition(RealPoint pos, ImageDirection dir);
 
     /**
      * Used to update the scene bounding box when objects are added.
@@ -702,9 +746,22 @@ namespace DGtal
      * @param point the point to be taken into accounts.
      */
     void updateBoundingBox(const RealPoint &point);
-
-
-
+    
+    /**
+     * Update an image
+     *
+     * @tparam TImage The type of image
+     * @tparam TFunctor The type of functo to apply
+     *
+     * @param index The index of the image to modify
+     * @param newImage The new image data
+     * @param functor The functor to apply to the image
+     * @param translate The translation to apply
+     * @param rotate The new rotation angle
+     * @param dir The image main direction
+     */
+    template<typename TImage, typename TFunctor>
+    void updateImage(size_t index, const TImage& newImage, const TFunctor& functor, RealPoint translate, double rotate, ImageDirection dir);
 
     /**
      * Export as Mesh the current displayed elements.
@@ -855,12 +912,13 @@ namespace DGtal
     /// Represents all the polygon drawn in the Display3D
     std::vector<std::vector<PolygonD3D> > myPolygonSetList;
 
+    /// Represents all the images drawn in the Display3D
+    std::vector<ImageD3D> myImageSetList;
 
     /// Represents all the cubes drawn in the Display3D.  The map int
     /// --> vector<CubeD3D> associates  a vector of cubes to an
     /// integer identifier (OpenGL name)
     CubesMap myCubesMap;
-
 
     /// names of the lists in myCubeSetList
     ///

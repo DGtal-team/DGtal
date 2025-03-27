@@ -24,6 +24,7 @@
 #include "polyscope/curve_network.h"
 #include "polyscope/surface_mesh.h"
 #include "polyscope/volume_mesh.h"
+#include "polyscope/volume_grid.h"
 #include "polyscope/point_cloud.h"
 #include "polyscope/pick.h"
 
@@ -102,6 +103,7 @@ namespace DGtal
         void registerBalls() const;
         void registerQuads() const;
 
+        void registerImages() const;
 
     private:
         DGtal::CountedPtr<Extension> extension;
