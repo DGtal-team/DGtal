@@ -1207,6 +1207,26 @@ DGtal::Display3D<Space, KSpace>::updateLastImagePosition(RealPoint p, DGtal::Ima
 }
 
 template<typename Space, typename KSpace>
+inline
+void 
+DGtal::Display3D<Space, KSpace>::update2DImage3DEmbedding(size_t index, RealPoint lowerLeft, RealPoint upperLeft, RealPoint lowerRight)
+{
+    Eigen::Vector3d a = { upperLeft[0]  - lowerLeft[0], upperLeft[1]  - lowerLeft[1], upperLeft[2]  - lowerLeft[2] };
+    Eigen::Vector3d b = { lowerRight[0] - lowerLeft[0], lowerRight[1] - lowerLeft[1], lowerRight[2] - lowerLeft[2] };
+
+    // Images are supposed to be defaulted at the x-direction
+    Eigen::Vector3d x = {1, 0, 0};
+    Eigen::Vector3d n = a.cross(b.normalized());
+    
+    auto& image = myImageSetList[index];
+    image.linear() = Eigen::Quaterniond().setFromTwoVectors(x, n).toRotationMatrix();
+    image.translation() = Eigen::Vector3d{lowerLeft[0], lowerLeft[1], lowerLeft[2]};
+    
+    // TODO: Allow for different values in x/y/z directions ?
+    image.voxelWidth = std::min(a.norm(), b.norm());
+}
+
+template<typename Space, typename KSpace>
 template<typename TImage, typename TFunctor>
 inline
 void 

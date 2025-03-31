@@ -53,7 +53,7 @@ $ ./examples/io/viewers/viewer3D-7bis-planes
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/geometry/surfaces/ChordNaivePlaneComputer.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer3D.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -78,8 +78,6 @@ displayPredicate( Viewer3D & viewer,
 int main( int argc, char** argv )
 {
   using namespace Z3i;
-
-  QApplication application(argc,argv);
   trace.beginBlock ( "Testing class ChordNaivePlaneComputer" );
 
   unsigned int nbok = 0;
@@ -145,9 +143,8 @@ int main( int argc, char** argv )
   trace.emphase() << ( nbok == nb ? "Passed." : "Error." ) << endl;
   trace.endBlock();
 
-  typedef Viewer3D<> MyViewer;
+  typedef PolyscopeViewer3D<> MyViewer;
   MyViewer viewer;
-  viewer.show();
   Color red( 255, 0, 0 );
   Color green( 0, 255, 0 );
   Color grey( 200, 200, 200 );
@@ -165,7 +162,8 @@ int main( int argc, char** argv )
   viewer << MyViewer::updateDisplay;
 
 
-  return application.exec();
+  viewer.show();
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

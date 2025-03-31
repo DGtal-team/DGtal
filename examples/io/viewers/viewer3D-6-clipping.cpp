@@ -42,7 +42,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Shapes.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer3D.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/Color.h"
 
@@ -58,11 +58,8 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
-
- QApplication application(argc,argv);
- typedef Viewer3D<> MyViewer;
+ typedef PolyscopeViewer3D<> MyViewer;
  MyViewer viewer;
- viewer.show();
 
  Point p1( 0, 0, 0 );
  Point p2( 20, 20, 20 );
@@ -80,7 +77,8 @@ int main( int argc, char** argv )
  viewer << ClippingPlane(0,1,0.3,-10);
 
  viewer << MyViewer::updateDisplay;
- return application.exec();
+ viewer.show();
+ return 0; 
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

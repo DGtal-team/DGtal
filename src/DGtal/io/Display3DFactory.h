@@ -721,7 +721,10 @@ namespace DGtal
     static void
     draw (Display& display, const DGtal::UpdateImagePosition<TSpace, TKSpace>& updatePosition);
 
-    template<typename TImage, typename TFunctor>
+    static void
+    draw (Display& display, const DGtal::UpdateImage3DEmbedding<TSpace, TKSpace>& updatePosition);
+
+template<typename TImage, typename TFunctor>
     static void
     draw (Display& display, const DGtal::AddTextureImage2DWithFunctor<TImage, TFunctor, TSpace, TKSpace>& updatePosition);
     

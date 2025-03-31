@@ -26,7 +26,6 @@ foreach(p LIB BIN INCLUDE DATA)
 endforeach()
 
 
-
 # -----------------------------------------------------------------------------
 # CPP20
 # -----------------------------------------------------------------------------
@@ -43,6 +42,7 @@ endif()
 if(NOT CMAKE_CXX_STANDARD_REQUIRED)
   set(CMAKE_CXX_STANDARD_REQUIRED ON)
 endif()
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 message(STATUS "C++ standard set to ${CMAKE_CXX_STANDARD}")
 

@@ -43,7 +43,7 @@
 #include "DGtal/io/Color.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Shapes.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer3D.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -57,12 +57,8 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
-
- QApplication application(argc,argv);
-
- typedef Viewer3D<> MyViewer;
+ typedef PolyscopeViewer3D<> MyViewer;
  MyViewer viewer;
- viewer.show();
 
  Point p1( 0, 0, 0 );
  Point p2( 10, 10 , 10 );
@@ -81,10 +77,11 @@ int main( int argc, char** argv )
 
  Object18_6 shape2( dt18_6, shape_set );
  viewer << SetMode3D( shape2.className(), "DrawAdjacencies" );
- //viewer << shape2;
+ viewer << shape2;
 
  viewer<< MyViewer::updateDisplay;
- return application.exec();
+ viewer.show();
+ return 0; 
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

@@ -767,6 +767,15 @@ public:
     void updateLastImagePosition(RealPoint pos, ImageDirection dir);
 
     /**
+     * Update the position and width of an image
+     * 
+     * @param index The index of the image
+     * @param lowerLeft The lower left position of the image
+     * @param upperLeft The width of the image
+     * @param lowerRight The lower
+     */
+    void update2DImage3DEmbedding(size_t index, RealPoint lowerLeft, RealPoint upperLeft, RealPoint lowerRight);
+    /**
      * Used to update the scene bounding box when objects are added.
      *
      * @param point the point to be taken into accounts.

@@ -41,7 +41,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Shapes.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer3D.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -56,13 +56,9 @@ using namespace Z3i;
 int main( int argc, char** argv )
 {
 
- QApplication application(argc,argv);
- typedef Viewer3D<> MyViewer;
+ typedef PolyscopeViewer3D<> MyViewer;
 
  MyViewer viewer;
- viewer.show();
-
-
 
  Point p1( -1, -1, -2 );
  Point p2( 2, 2, 3 );
@@ -79,9 +75,9 @@ int main( int argc, char** argv )
 
  viewer << SetMode3D(domain.className(), "Grid");
  viewer << domain << MyViewer::updateDisplay;
-
-
- return application.exec();
+ 
+ viewer.show();
+ return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

@@ -52,7 +52,7 @@ $ ./examples/io/viewers/viewer3D-7bis-stdplane
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/geometry/surfaces/ChordGenericStandardPlaneComputer.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer3D.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -123,8 +123,6 @@ int main( int argc, char** argv )
   unsigned int nb = 0;
   unsigned int nbok = 0;
 
-  QApplication application(argc,argv);
-
   unsigned int diameter = argc > 1 ? atoi( argv[ 1 ] ) : 10;
   int a = argc > 2 ? atoi( argv[ 2 ] ) : 2;
   int b = argc > 3 ? atoi( argv[ 3 ] ) : 3;
@@ -164,9 +162,8 @@ int main( int argc, char** argv )
   trace.emphase() << ( (nb == nbok) ? "Passed." : "Error." ) << endl;
   trace.endBlock();
 
-  typedef Viewer3D<> MyViewer;
+  typedef PolyscopeViewer3D<> MyViewer;
   MyViewer viewer;
-  viewer.show();
   Color red( 255, 0, 0 );
   Color green( 0, 255, 0 );
   Color grey( 200, 200, 200 );
@@ -185,7 +182,8 @@ int main( int argc, char** argv )
   trace.info() << "- Points in grey belongs also to the parallel strip of the recognized standard plane." << std::endl;
   trace.info() << "- Points in red belongs to the parallel strip of the recognized standard plane but not to the input standard plane: NONE should be red." << std::endl;
 
-  return application.exec();
+  viewer.show();
+  return 0; 
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

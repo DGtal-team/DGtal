@@ -497,6 +497,41 @@ struct TransformedPrism : public DrawWithDisplay3DModifier
     ImageDirection  myRotationDir;
    };
 
+  /**
+   *
+   * @brief class to modify the 3d embedding  of the image (useful to display not only 2D slice images).
+   * The embdding can be explicitly given from the 3D position of the four bounding points. 
+   */
+  template < typename Space, typename KSpace>
+  struct UpdateImage3DEmbedding : public DrawWithDisplay3DModifier 
+  {
+    std::string className() const { return "UpdateImage3DEmbedding"; }
+    /**
+     * Constructor given from the four embedded 3D points.
+     * The first (resp. third) point correspondts to the lower (res. upper) point according the 3 directions and the order should be given CCW. 
+     *
+     * @param anIndex the index of the image to be modified (should be less than the number of image added in the current Viewer3D).
+     * @param aPoint1 the new first point position embedded in 3D associated the lower point of the 2D image.  
+     * @param aPoint2 the new second point position embedded in 3D (in CCW order).
+     * @param aPoint3 the new third point position embedded in 3D  associated the upper point of the 2D image.  
+     * @param aPoint4 the new fourth point position  embedded in 3D (in CCW order).
+     *
+     **/
+    UpdateImage3DEmbedding(unsigned int anIndex, 
+                           typename Space::Point aPoint1, typename Space::Point aPoint2,
+                           typename Space::Point aPoint3, typename Space::Point aPoint4): myIndex(anIndex),
+                                                                                          myNewPoint1(aPoint1),
+                                                                                          myNewPoint2(aPoint2),
+                                                                                          myNewPoint3(aPoint3),
+                                                                                          myNewPoint4(aPoint4)
+    {
+    }
+    unsigned int myIndex;
+    typename Space::Point myNewPoint1;
+    typename Space::Point myNewPoint2;
+    typename Space::Point myNewPoint3;
+    typename Space::Point myNewPoint4;
+  };
 
 } // namespace DGtal
 

@@ -42,7 +42,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Shapes.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer3D.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -58,10 +58,8 @@ int main( int argc, char** argv )
 {
 
   //! [ExampleViewer3DSets]
- QApplication application(argc,argv);
- typedef  Viewer3D<>  MyViewer;
+ typedef  PolyscopeViewer3D<>  MyViewer;
  MyViewer viewer;
- viewer.show();
 
  Point p1( 0, 0, 0 );
  Point p2( 10, 10 , 10 );
@@ -76,7 +74,8 @@ int main( int argc, char** argv )
  shape_set.erase(Point(6,6,6));
  viewer << shape_set << MyViewer::updateDisplay;
  //! [ExampleViewer3DSets]
- return application.exec();
+ viewer.show();
+ return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

@@ -40,7 +40,7 @@
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/images/ImageHelper.h"
 #include "ConfigExamples.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer3D.h"
 //! [ExampleViewer3D2DImagesExtractImagesNonSliceHeader]
 #include "DGtal/kernel/BasicPointFunctors.h"
 //! [ExampleViewer3D2DImagesExtractImagesNonSliceHeader]
@@ -61,10 +61,8 @@ int main( int argc, char** argv )
                                    Image3D::Value,  DGtal::functors::Identity >  ImageAdapterExtractor;
 
   //! [ExampleViewer3D2DImagesExtractImagesNonSliceType]
-  QApplication application(argc,argv);
-  typedef Viewer3D<> MyViewer;
+  typedef PolyscopeViewer3D<> MyViewer;
   MyViewer viewer;
-  viewer.show();
   std::string inputFilename = examplesPath + "samples/lobster.vol";
   Image3D imageVol = VolReader<Image3D>::importVol(inputFilename);
   DGtal::functors::Identity idV;
@@ -95,11 +93,11 @@ int main( int argc, char** argv )
     //! [ExampleViewer3D2DImagesExtractImagesNonSliceDisplay]
     //Display image and update its position with embeder
     viewer << extractedImage;
-    viewer << DGtal::UpdateImage3DEmbedding<Z3i::Space, Z3i::KSpace>(pos,
-                                                                     embedder(Z2i::RealPoint(0,0)),
-                                                                     embedder(Z2i::RealPoint(IMAGE_PATCH_WIDTH,0)),
-                                                                     embedder(domainImage2D.upperBound()),
-                                                                     embedder(Z2i::RealPoint(0, IMAGE_PATCH_WIDTH)));
+    // viewer << DGtal::UpdateImage3DEmbedding<Z3i::Space, Z3i::KSpace>(pos,
+    //                                                                  embedder(Z2i::RealPoint(0,0)),
+    //                                                                  embedder(Z2i::RealPoint(IMAGE_PATCH_WIDTH,0)),
+    //                                                                  embedder(domainImage2D.upperBound()),
+    //                                                                  embedder(Z2i::RealPoint(0, IMAGE_PATCH_WIDTH)));
     //! [ExampleViewer3D2DImagesExtractImagesNonSliceDisplay]
     pos++;
   }
@@ -108,7 +106,8 @@ int main( int argc, char** argv )
   viewer << MyViewer::updateDisplay;
 
 
-  return application.exec();
+  viewer.show();
+  return 0; 
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

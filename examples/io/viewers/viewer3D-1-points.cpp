@@ -39,7 +39,8 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+
+#include "DGtal/io/viewers/PolyscopeViewer3D.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -53,21 +54,19 @@ using namespace Z3i;
 int main( int argc, char** argv )
 {
 
- QApplication application(argc,argv);
-
  Point p1( 0, 0, 0 );
  Point p2( 5, 5 ,5 );
  Point p3( 2, 3, 4 );
  Domain domain( p1, p2 );
 
- typedef Viewer3D<> MyViewer;
+ typedef PolyscopeViewer3D<> MyViewer;
  MyViewer viewer;
- viewer.show();
  viewer << domain;
  viewer << p1 << p2 << p3;
 
  viewer<< MyViewer::updateDisplay;
- return application.exec();
+ viewer.show();
+ return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

@@ -1917,6 +1917,15 @@ draw (Display& display, const DGtal::UpdateLastImagePosition<Space, KSpace>& upd
     display.updateLastImagePosition(p, updatePosition.myNewDirection);
 }
 
+template<typename Space, typename KSpace>
+inline
+void 
+DGtal::Display3DFactory<Space,KSpace>::
+draw (Display& display, const DGtal::UpdateImage3DEmbedding<Space, KSpace>& updateEmbd)
+{
+    display.updateImagePositionAndWidth(updateEmbd.myIndex, updateEmbd.myNewPoint1, updateEmbd.myNewPoint2, updateEmbd.myNewPoint4);
+}
+
 // ImageContainerBySTLVector (2D)
 template <typename Space, typename KSpace>
 template <typename TValue>
@@ -1972,7 +1981,7 @@ draw (Display& display, const DGtal::UpdateImageData<TImage, TFunctor>& updatePo
     RealPoint translate = {
         (double)updatePosition.myTranslateX,
         (double)updatePosition.myTranslateY,
-        (double)updatePosition.myTranslateZ,
+        (double)updatePosition.myTranslateZ
     };
     display.updateImage(updatePosition.myIndex, *updatePosition.myImage, updatePosition.myFunctor, translate, updatePosition.myRotationAngle, updatePosition.myRotationDir);
 }

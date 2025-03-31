@@ -416,7 +416,7 @@ namespace DGtal
 
             std::string default_name = this->myLineSetNameList[id];
             if (default_name.empty()) 
-                default_name = "polygons_" + std::to_string(count++);
+                default_name = "lines_" + std::to_string(count++);
             else if (namesMap.find(default_name) != namesMap.end())
                 default_name += "_" + std::to_string(count++);
   
@@ -525,9 +525,9 @@ namespace DGtal
 
                 indices[i] = {i * 4 + 0, i * 4 + 1, i * 4 + 2, i * 4 + 3};
 
-                colors[i][0] = colors[i * 2 + 1][0] = quads[i].color.r();
-                colors[i][1] = colors[i * 2 + 1][1] = quads[i].color.g();
-                colors[i][2] = colors[i * 2 + 1][2] = quads[i].color.b();
+                colors[i][0] = quads[i].color.r();
+                colors[i][1] = quads[i].color.g();
+                colors[i][2] = quads[i].color.b();
 
                 if (quads[i].name != -1)
                     indexToName[i] = quads[i].name;
@@ -565,16 +565,22 @@ namespace DGtal
     template <typename TSpace, typename TKSpace>
     void PolyscopeViewer3D<TSpace, TKSpace>::registerPrisms() const
     {
+        return ;
         unsigned int count = 0;
         for (unsigned int id = 0; id < this->myPrismList.size(); ++id)
         {
             const auto& quad = this->myPrismList[id];
-            std::string default_name = this->myPrismNameList[id];
+            std::string default_name = "";
+
+            if (id < this->myPrismNameList.size())
+                default_name = this->myPrismNameList[id];
+
             if (default_name.empty()) 
                 default_name = "prism_" + std::to_string(count++);
             else if (namesMap.find(default_name) != namesMap.end())
                 default_name += "_" + std::to_string(count++);
             
+            std::cout << "Prism name: " << default_name;
             std::vector<std::array<double, 3>> points = {
                 { quad.point1[0], quad.point1[1], quad.point1[2] },  
                 { quad.point2[0], quad.point2[1], quad.point2[2] },  

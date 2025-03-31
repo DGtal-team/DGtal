@@ -47,7 +47,7 @@
 
 #include "DGtal/helpers/StdDefs.h"
 
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer3D.h"
 #include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/Color.h"
@@ -74,13 +74,10 @@ struct hueFct{
 
 int main( int argc, char** argv )
 {
-
   typedef ImageContainerBySTLVector<Z3i::Domain,  unsigned char > Image3D;
-  QApplication application(argc,argv);
-  typedef Viewer3D<> MyViewer ;
+  typedef PolyscopeViewer3D<> MyViewer ;
   MyViewer viewer;
 
-  viewer.show();
   std::string inputFilename = examplesPath + "samples/lobster.vol";
   Image3D imageVol = GenericReader<Image3D>::import(inputFilename);
 
@@ -116,7 +113,8 @@ int main( int argc, char** argv )
   viewer << MyViewer::updateDisplay;
   //! [ExampleViewer3D3DImagesDisplayImagesColor]
 
-  return application.exec();
+  viewer.show();
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
