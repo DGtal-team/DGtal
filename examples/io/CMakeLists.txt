@@ -18,8 +18,8 @@ if (  WITH_VISU3D_QGLVIEWER )
      DGtal_add_example(${FILE})
   endforeach()
 
-  add_subdirectory(viewers)
 endif()
 
+add_subdirectory(viewers)
 add_subdirectory(boards)
 
