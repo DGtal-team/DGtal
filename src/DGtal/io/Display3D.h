@@ -220,7 +220,7 @@ namespace DGtal
         /// Transform
         Eigen::Affine3d transform;
         /// Width of each pixel
-        float voxelWidth = 1.d;
+        float voxelWidth = 1.f;
         
         /// Data of the image
         std::vector<float> data;
