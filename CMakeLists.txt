@@ -4,6 +4,8 @@
 cmake_minimum_required (VERSION 3.20)
 project (DGtal VERSION 2.0.0)
 
+# Allow for cmake 3.5. This is required indirectly by polyscope (via glad)
+set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 # -----------------------------------------------------------------------------
 # By default, do not warn when built on machines using only VS Express:
 # -----------------------------------------------------------------------------
