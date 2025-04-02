@@ -16,7 +16,7 @@
 
 /**
  * @file io/viewers/viewer3D-2-sets.cpp
- * @ingroup examples/3dViewer
+ * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
