@@ -1103,8 +1103,40 @@ isFullyCovered( const Point& a, const Point& b,
 		const LatticeSet& cells ) const
 {
   ASSERT( dimension == 3 );
-  const auto SCab = CoverCvxH( a, b, cells.axis() );
-  return cells.includes( SCab );
+  LatticeSet L_ab( cells.axis() );
+  const auto    V = b - a;
+  L_ab.insert( 2*a );
+  for ( Dimension k = 0; k < dimension; k++ )
+    {
+      const Integer n = ( V[ k ] >= 0 ) ? V[ k ] : -V[ k ];
+      const Integer d = ( V[ k ] >= 0 ) ? 1 : -1;
+      if ( n == 0 ) continue;
+      Point kc;
+      for ( Integer i = 1; i < n; i++ )
+        {
+          for ( Dimension j = 0; j < dimension; j++ )
+            {
+              if ( j == k ) kc[ k ] = 2 * ( a[ k ] + d * i );
+              else
+                {
+                  const auto v = V[ j ];
+                  const auto q = ( v * i ) / n;
+                  const auto r = ( v * i ) % n; // might be negative
+                  kc[ j ] = 2 * ( a[ j ] + q );
+                  if ( r < 0 )      kc[ j ] -= 1;
+                  else if ( r > 0 ) kc[ j ] += 1;
+                }
+            }
+          L_ab.insert( kc );
+        }
+    }
+  if ( a != b ) L_ab.insert( 2*b );
+  // LatticeSet Star_ab = L_ab.starOfCells();
+  return cells.includes( L_ab );
+  
+  // ASSERT( dimension == 3 );
+  // const auto SCab = CoverCvxH( a, b, cells.axis() );
+  // return cells.includes( SCab );
 }
 
 //-----------------------------------------------------------------------------
