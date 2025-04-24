@@ -779,36 +779,6 @@ DGtal::FreemanChain<TInteger>::movePointFromFC(Point & aPoint, char aCode ){
     }
 }
 
-// Depreciated
-//
-//template <typename TInteger>
-//void 
-//DGtal::FreemanChain<TInteger>::alphabet( char & aZero, char & aOne, char aQuadrant )
-//{
-//  switch ( aQuadrant )
-//    {
-//      case '0':
-//        aZero = '0';
-//        aOne = '1';
-//        break;
-//      case '1':
-//        aZero = '1';
-//        aOne = '2';
-//        break;
-//      case '2':
-//        aZero = '2';
-//        aOne = '3';
-//        break;
-//      case '3':
-//        aZero = '3';
-//        aOne = '0';
-//        break;
-//    }
-//
-//};
-
-
-
 template <typename TInteger>
 inline
 char DGtal::FreemanChain<TInteger>::movement( char aCode1,

@@ -132,15 +132,6 @@ DGtal::GridCurve<TKSpace>::isInside(const SCell& aSCell) const
 
 //////////////////////////////////////////////////////////////////////////////
 
-//deprecated
-template <typename TKSpace>
-inline
-bool
-DGtal::GridCurve<TKSpace>::initFromVector( const std::vector<Point>& aVectorOfPoints ) 
-{
-  return initFromPointsVector( aVectorOfPoints ); 
-}
-
 template <typename TKSpace>
 inline
 bool

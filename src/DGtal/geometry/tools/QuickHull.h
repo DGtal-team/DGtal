@@ -896,31 +896,6 @@ namespace DGtal
       }
     }
 
-    /// Removes infinite facets and renumber the facets in a consecutive way.
-    /// @deprecated
-    void cleanInfiniteFacets()
-    {
-      if ( ! kernel.hasInfiniteFacets()  ) return;
-      IndexRange renumbering( facets.size() );
-      Index i = 0;
-      Index j = 0;
-      for ( auto& l : renumbering ) {
-        if ( ! kernel.isHalfSpaceFacetInfinite( facets[ j ].H ) ) l = i++;
-        else l = UNASSIGNED;
-        j++;
-      }
-      const Index nf = i;
-      for ( Index f = 0; f < facets.size(); f++ )
-        if ( ( renumbering[ f ] != UNASSIGNED ) && ( f != renumbering[ f ] ) )
-          facets[ renumbering[ f ] ] = facets[ f ];
-      facets.resize( nf );
-      for ( auto& F : facets ) {
-        for ( auto& N : F.neighbors ) {
-          N = renumbering[ N ];
-        }
-      }
-    }
-
     /// Determine infinite facets and renumber them so that finite
     /// facets come first and infinite facets come after.
     void renumberInfiniteFacets()

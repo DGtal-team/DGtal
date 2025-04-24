@@ -928,17 +928,6 @@ public:
     //static void movePointFromFC(Point & aPoint, unsigned int aCode );
     static void movePointFromFC(Point & aPoint, char aCode );
 
-
-    // Deprecated
-    //
-    // /**
-    //  * @param aZero (returns) the '0' or 'x' letter for quadrant [quadrant].
-    //  * @param aOne (returns) the '1' or 'y' letter for quadrant [quadrant].
-    //  * @param aQuadrant the quadrant as any of '0', '1', '2', or '3'.
-    //  */
-    // static void alphabet( char & aZero, char & aOne, char aQuadrant )
-
-
     /**
      * Given two consecutive moves on a Freeman chain code, this
      * method returns the type of movement: 0: return move, 1: turning
