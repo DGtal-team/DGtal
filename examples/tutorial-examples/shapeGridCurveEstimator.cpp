@@ -102,7 +102,7 @@ int main()
 
   //! [shapeGridCurveEstimator-instantiation]
   Z2i::Curve c;
-  c.initFromVector( boundaryPoints );  
+  c.initFromPointsVector( boundaryPoints );  
   //! [shapeGridCurveEstimator-instantiation]
   
   DGtal::Board2D aBoard;
@@ -147,7 +147,7 @@ int main()
   Surfaces<Z2i::KSpace>
     ::track2DBoundaryPoints( boundaryPoints, ks, sAdj, dig, bel );
   //reset grid curve and its points range
-  c.initFromVector( boundaryPoints );
+  c.initFromPointsVector( boundaryPoints );
   Range r2 = c.getPointsRange(); 
   //estimate length
   double length2 = DSSlength.eval(r2.c(), r2.c(), h);

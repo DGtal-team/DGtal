@@ -99,7 +99,7 @@ estimatorOnShapeDigitization( const string& name,
       Surfaces<KSpace>::track2DBoundaryPoints( points, K, SAdj, dig, bel );
       // Create GridCurve
       GridCurve<KSpace> gridcurve( K );
-      gridcurve.initFromVector( points );
+      gridcurve.initFromPointsVector( points );
       // Create range of incident points
       typedef GridCurve<KSpace>::IncidentPointsRange Range;
       typedef Range::ConstIterator ClassicIterator;

@@ -1,4 +1,4 @@
-/**
+    /**
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as
  *  published by the Free Software Foundation, either version 3 of the
@@ -51,9 +51,9 @@
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 
-
-#include "DGtal/geometry/surfaces/estimation/BasicConvolutionWeights.h"
-#include "DGtal/geometry/surfaces/estimation/LocalConvolutionNormalVectorEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/LocalEstimatorFromSurfelFunctorAdapter.h"
+#include "DGtal/geometry/surfaces/estimation/estimationFunctors/ElementaryConvolutionNormalVectorEstimator.h"
+#include "DGtal/geometry/volumes/distance/LpMetric.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -108,15 +108,23 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
 
 
     //Convolution kernel
-    deprecated::ConstantConvolutionWeights< MyDigitalSurface::Size > kernel;
+    typedef MyDigitalSurface::Surfel Surfel;
+    typedef DGtal::functors::ConstValue< double > ConvFunctor;
 
-    //Estimator definition
-    typedef deprecated::LocalConvolutionNormalVectorEstimator<MyDigitalSurface,
-                                                  deprecated::ConstantConvolutionWeights< MyDigitalSurface::Size > > MyEstimator;
-    MyEstimator myNormalEstimator ( digSurf, kernel );
+    LpMetric<Z3i::Space> l1(1.0);
+    CanonicSCellEmbedder<KSpace> embedder(digSurf.container().space());
+    
+    typedef DGtal::functors::ElementaryConvolutionNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace>> Functor;
+    typedef LocalEstimatorFromSurfelFunctorAdapter<MyDigitalSurfaceContainer, LpMetric<Z3i::Space>,
+                                                   Functor, ConvFunctor> MyEstimator;
+    ConvFunctor kernel(1.0);
+    Functor estimator(embedder, 1.0);
 
-    myNormalEstimator.init ( 1.0, 5 );
-
+    MyEstimator myNormalEstimator;
+    myNormalEstimator.attach(digSurf);
+    myNormalEstimator.setParams(l1, estimator, kernel, 5.0); 
+    myNormalEstimator.init(1.0, digSurf.begin(), digSurf.end());
+    
     MyEstimator::Quantity res = myNormalEstimator.eval ( it );
     trace.info() << "Normal vector at begin() : "<< res << std::endl;
 
@@ -142,14 +150,17 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
     viewer<< Viewer3D<>::updateDisplay;
 
     //Convolution kernel
-    deprecated::GaussianConvolutionWeights< MyDigitalSurface::Size > Gkernel ( 14.0 );
+    typedef DGtal::functors::GaussianKernel ConvFunctorGaussian;
+    typedef LocalEstimatorFromSurfelFunctorAdapter<MyDigitalSurfaceContainer, LpMetric<Z3i::Space>,
+                                                   Functor, ConvFunctorGaussian> MyEstimatorGaussian;
+    
+    ConvFunctorGaussian kernelGaussian(14.0);
+    Functor estimatorGaussian(embedder, 1.0); // Passed by alias, can't reuse previous
 
-    //Estimator definition
-    typedef deprecated::LocalConvolutionNormalVectorEstimator<MyDigitalSurface,
-                                                              deprecated::GaussianConvolutionWeights< MyDigitalSurface::Size > > MyEstimatorGaussian;
-    MyEstimatorGaussian myNormalEstimatorG ( digSurf, Gkernel );
-
-    myNormalEstimatorG.init ( 1.0, 15 );
+    MyEstimatorGaussian myNormalEstimatorG;
+    myNormalEstimatorG.attach(digSurf);
+    myNormalEstimatorG.setParams(l1, estimatorGaussian, kernelGaussian, 15.0); 
+    myNormalEstimatorG.init(1.0, digSurf.begin(), digSurf.end());
 
     MyEstimatorGaussian::Quantity res2 = myNormalEstimatorG.eval ( it );
     trace.info() << "Normal vector at begin() : "<< res2 << std::endl;
