@@ -244,6 +244,16 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::extendFront()
         myEnd++;
         return true;
     }
+
+    /**
+    * Ensure that the last segment is maximal in 2D,
+    * so that the corresponding 3D segment results from
+    * the intersection of two maximal 2D segments.
+    */
+    while (extendFront ( myXYalgo, blockXY ) );;
+    while (extendFront ( myXZalgo, blockXZ ) );;
+    while (extendFront ( myYZalgo, blockYZ ) );;
+
     return test == 1;
 }
 
