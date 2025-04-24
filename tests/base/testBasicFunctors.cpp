@@ -108,10 +108,8 @@ bool testBasicFunctors()
 
   //composer quantizer
   {
-    //need to explicitely specialized std::ptr_fun because there are several
-    //overloaded versions of std::floor if used intead ctor of 
-    //std::pointer_to_unary_function<double, double>
-    // JOL: pointer_to_unary_function is deprecated as of C++11
+    //need to explicitely specialized because there are several
+    // overloaded versions of std::floor 
     double (*pF)(double) = &floor;
     double (*pC)(double) = &ceil;
     std::function<double(double)> f = pF;

@@ -160,7 +160,7 @@ bool testSegmentation()
   typedef FrechetShortcut<Iterator,int> SegmentComputer;
 
   Curve aCurve; //grid curve
-  aCurve.initFromVector(contour);
+  aCurve.initFromPointsVector(contour);
 
   typedef Curve::PointsRange Range; //range
   Range r = aCurve.getPointsRange(); //range

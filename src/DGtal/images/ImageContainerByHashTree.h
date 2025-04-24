@@ -338,16 +338,6 @@ namespace DGtal
      */
     Value get(const Point & aPoint) const;
 
-
-    /**
-     * Returns the value corresponding to a key making the assumption
-     * that the key is at same depth or deeper than the leaf we are
-     * looking for.
-     * @param key The key.
-     * @return the value.
-     */
-    Value upwardGet(const HashKey key) const ;
-
     /**
      * A attempt to do the same thing as get(HashKey) but looking for
      * deeper leafs in the first place instead of doing this in the

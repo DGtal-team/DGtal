@@ -1950,7 +1950,7 @@ template <typename TSpace, typename TKSpace>
 void DGtal::Viewer3D<TSpace, TKSpace>::setGLMaterialShininessCoefficient(
 const GLfloat matShininessCoeff )
 {
-  myMaterialShininessCoeff = matShininessCoeff;  
+  myMaterialShininessCoeff[0] = matShininessCoeff;  
   update();
 }
 
