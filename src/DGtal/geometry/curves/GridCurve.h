@@ -251,14 +251,6 @@ namespace DGtal
     // ----------------------- Initializations ------------------------------
 
     /**
-     * Deprecated name, use initFromPointsVector instead
-     * Init.
-     * @param aVectorOfPoints the vector containing a sequence of grid points (digital coordinates).
-     * @see initFromPointsRange
-     */
-    bool initFromVector( const std::vector<Point>& aVectorOfPoints );
-
-    /**
      * Init from a STL vector of points.
      * @param aVectorOfPoints the vector containing a sequence of grid points (digital coordinates).
      * @see initFromPointsRange

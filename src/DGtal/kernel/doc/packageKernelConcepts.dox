@@ -119,7 +119,6 @@ digraph GKERNEL {
         DigitalSetBySTLSet [ label="DigitalSetBySTLSet" URL="\ref DigitalSetBySTLSet" ] ;
         DigitalSetBySTLVector [ label="DigitalSetBySTLVector" URL="\ref DigitalSetBySTLVector" ] ;
         DigitalSetFromMap [ label="DigitalSetFromMap" URL="\ref DigitalSetFromMap" ] ;
-	SetPredicate [ label="SetPredicate" URL="\ref deprecated::SetPredicate" ] ;
 	DomainPredicate [ label="DomainPredicate" URL="\ref functors::DomainPredicate" ] ;
         DigitalSetByAssociativeContainer [ label="DigitalSetByAssociativeContainer" URL="\ref DigitalSetByAssociativeContainer" ] ;
      }
