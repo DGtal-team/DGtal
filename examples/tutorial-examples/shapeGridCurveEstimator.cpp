@@ -16,7 +16,7 @@
 
 /**
  * @file tutorial-examples/shapeGridCurveEstimator.cpp
- * @ingroup tutorial-examples
+ * @ingroup Examples
  * @author Tristan Roussillon (tristan.roussillon@liris.cnrs.fr)
  *
  *
