@@ -48,7 +48,7 @@ at the [DGtalTools online
 documentation](https://dgtal-team.github.io/doctools-nightly) for additional 
 information.
 
-@note From release 1.2, DGtal has a (partial) python binding. For more information, cf \subpage packagePython
+@note From release 1.2, DGtal has a (partial) python binding. For more information, cf \subpage packageIntroduction
 
 ## Helpers and Tutorials
 
@@ -71,10 +71,10 @@ information.
   - \subpage packageImage
   - \subpage packageIO
 
+## Contributing
+  - \subpage packageDev
 
-## Contributing
-  - \subpage moduleFAQGit
-  - \subpage moduleCatch
+
 
 
 ## Links

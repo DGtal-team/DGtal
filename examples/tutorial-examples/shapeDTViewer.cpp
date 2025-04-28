@@ -16,7 +16,7 @@
 
 /**
  * @file tutorial-examples/shapeDTViewer.cpp
- * @ingroup tutorial-examples
+ * @ingroup Examples
  * @author David Coeurjolly (david.coeurjolly@liris.cnrs.fr)
  *
  *
