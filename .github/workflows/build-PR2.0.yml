@@ -75,7 +75,8 @@ jobs:
          mkdir build
          cd build
          cmake ..
-         wget --no-check-certificate -O "${{runner.workspace}}/DGtal/build/DGtalTools-tagfile" http://dgtal.org/doc/tags/DGtalTools-tagfile;
+         # Removing the DGtalTools tag file for now. It creates extra pages in the doc (@dcoeurjo)
+         # wget --no-check-certificate -O "${{runner.workspace}}/DGtal/build/DGtalTools-tagfile" http://dgtal.org/doc/tags/wget 
          make doc > buildDoc.log
   
     - name: Checking doc
