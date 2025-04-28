@@ -140,6 +140,7 @@ jobs:
          cmake .. $CONFIG_GLOBAL $CONFIG_LINUX -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=1000
          # Removing the DGtalTools tag file for now. It creates extra pages in the doc (@dcoeurjo)
          # wget --no-check-certificate -O "${{runner.workspace}}/DGtal/build/DGtalTools-tagfile" http://dgtal.org/doc/tags/
+         DGtalTools-tagfile
          make doc > buildDoc.log
 
     - name: Checking doc
