@@ -183,7 +183,7 @@ namespace DGtal
     return ArithmeticConversionType<LHS, RHS>( std::forward<Args>(args)... );
   }
 
-  /** @brief Specialization when first operand is a @ref BigInteger.
+  /** @brief Specialization when first operand is a  BigInteger.
    *
    * @see ArithmeticConversionTraits
    */
@@ -193,7 +193,7 @@ namespace DGtal
     using type = BigInteger;
   };
   
-  /** @brief Specialization when second operand is a @ref BigInteger.
+  /** @brief Specialization when second operand is a  BigInteger.
    *
    * @see ArithmeticConversionTraits
    */
@@ -203,7 +203,7 @@ namespace DGtal
     using type = BigInteger;
   };
   
-  /** @brief Specialization when both operands are @ref BigInteger.
+  /** @brief Specialization when both operands are  BigInteger.
    *
    *
    * @see ArithmeticConversionTraits

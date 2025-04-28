@@ -86,11 +86,9 @@ namespace DGtal {
        Constructor from a pointer to a valid instance of T. The object is referenced in
        'this' and is generally immediately duplicated by the user to
        instantiate a data member.
-       @param ptrT any valid pointer to a object of type T.
-       @pre ptrT != 0
+       @param ptr any valid pointer to a object of type T.
+       @pre ptr != 0
     */
-    // NClone( const T* ptrT );
-
     inline NClone( CountedPtr<T> ptr ) : myCowPtr( ptr ) {}
     inline NClone( CowPtr<T> ptr ) : myCowPtr( ptr ) {}
 
