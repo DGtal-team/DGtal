@@ -19,4 +19,4 @@ target_include_directories(DGtal PUBLIC
   $<INSTALL_INTERFACE:${INSTALL_INCLUDE_DIR_RELATIVE}>
 )
 
-target_link_libraries(DGtal PUBLIC DGtal_STB DGTAL_LibBoard DGTAL_BoostAddons)
+target_link_libraries(DGtal PUBLIC DGtal_STB DGTAL_LibBoard DGTAL_BoostAddons Boost::boost)

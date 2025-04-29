@@ -8,12 +8,14 @@
   - Remove GMP dependency (Bastien Doignies, [#1769](https://github.com/DGtal-team/DGtal/pull/1769))
   - New Boost BigInteger Backend (Bastien Doignies, [#1769](https://github.com/DGtal-team/DGtal/pull/1769))
   - Remove deprecated classes and functions (Bastien DOIGNIES, [#1765](https://github.com/DGtal-team/DGtal/pull/1765))
+  - Boost is not longer required when build DGtal (fetched using CPM at cmake step) (Bastien Doignies, David Coeurjolly,  [#1763](https://github.com/DGtal-team/DGtal/pull/1763))
 
 - *CMake*
   - Updated to version 3.20 minimum (contemporary version of C++20's new minimal standard) (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
   - Updated export and install commands to more modern cmake (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
   - Dependancies of DGTal are now build as separate targets (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
   - Add a new command `make dgtal_benchmark` to run all benchmarks (Bastien Doignies, [#1772](https://github.com/DGtal-team/DGtal/pull/1772))
+  - Boost is now fetched by CPM ([#1763](https://github.com/DGtal-team/DGtal/pull/1763))
 
 - *Build*
   - Prefixing main cmake variables with `DGTAL_` (David Coeurjolly, [#1753](https://github.com/DGtal-team/DGtal/pull/1753), Bastien Doignies, [#1772](https://github.com/DGtal-team/DGtal/pull/1772)
