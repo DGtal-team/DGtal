@@ -57,7 +57,7 @@ install(EXPORT DGtalTargets
 # DGtalConfig.cmake variables
 #------------------------------------------------------------------------------
 set(_dependencies_list
-  Boost ZLIB
+  Boost::headers ZLIB
   LibBoard
    ITK Cairo HDF5 QGLVIEWER Qt5 OpenMP Eigen3::Eigen CGAL FFTW3 OpenMP::OpenMPCXX
   )

@@ -46,7 +46,6 @@ wrap/deploy/dgtal.egg-info/
 CMakeCache.txt
 CMakeFiles/
 b2/
-cmake/deps/boost.cmake
 examples/samples/bunny-512.vol
 src/DGtal/dec/doc/images/poly/paf.png
 src/cppclean.log

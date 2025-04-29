@@ -16,7 +16,7 @@
 
 /**
  * @file testPolynomial.cpp
- * @ingroup tests
+ * @ingroup Tests
  * @author Anis Benyoub (anis.benyoub@insa-lyon.fr)
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
