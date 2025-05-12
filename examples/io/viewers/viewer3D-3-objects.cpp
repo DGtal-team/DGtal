@@ -39,11 +39,10 @@
 #include <iostream>
 
 #include "DGtal/base/Common.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Shapes.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/Display3D.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -57,34 +56,27 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
+  Display d;
 
- QApplication application(argc,argv);
+  Point p1( 0, 0, 0 );
+  Point p2( 10, 10 , 10 );
+  Domain domain( p1, p2 );
 
- typedef Viewer3D<> MyViewer;
- MyViewer viewer;
- viewer.show();
+  DigitalSet shape_set( domain );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
+  Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
+  d.draw(shape_set);
 
- Point p1( 0, 0, 0 );
- Point p2( 10, 10 , 10 );
- Domain domain( p1, p2 );
+  d.currentStyle.mode |= DGtal::DisplayStyle::DrawMode::ADJACENCIES;
 
+  Object6_18 shape( dt6_18, shape_set );
 
- DigitalSet shape_set( domain );
- Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
- Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
- viewer <<  CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 25));
- viewer << shape_set;
-
- Object6_18 shape( dt6_18, shape_set );
- viewer << SetMode3D( shape.className(), "DrawAdjacencies" );
- viewer << shape;
-
- Object18_6 shape2( dt18_6, shape_set );
- viewer << SetMode3D( shape2.className(), "DrawAdjacencies" );
- //viewer << shape2;
-
- viewer<< MyViewer::updateDisplay;
- return application.exec();
+  Object18_6 shape2( dt18_6, shape_set );
+  d.draw(shape);
+  d.draw(shape2);
+  d.setCurrentGroup("Toot");
+  d.debug();
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
