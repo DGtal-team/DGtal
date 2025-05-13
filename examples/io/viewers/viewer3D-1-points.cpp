@@ -40,6 +40,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/io/Display3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -52,7 +53,7 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
-  Display d;
+  PolyscopeViewer d;
 
   Point p1( 0, 0, 0 );
   Point p2( 5, 5 ,5 );
@@ -65,6 +66,7 @@ int main( int argc, char** argv )
   d.draw(domain);
 
   d.debug();
+  d.show();
 
   return 0;
 }

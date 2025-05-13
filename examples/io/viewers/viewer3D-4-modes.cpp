@@ -41,7 +41,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Shapes.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -55,33 +55,26 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
+  PolyscopeViewer viewer;
 
- QApplication application(argc,argv);
- typedef Viewer3D<> MyViewer;
+  Point p1( -1, -1, -2 );
+  Point p2( 2, 2, 3 );
+  Domain domain( p1, p2 );
+  Point p3( 1, 1, 1 );
+  Point p4( 2, -1, 3 );
+  Point p5( -1, 2, 3 );
+  Point p6( 0, 0, 0 );
+  Point p0( 0, 2, 1 );
 
- MyViewer viewer;
- viewer.show();
+  // viewer <<  SetMode3D( p1.className(), "Paving" );
+  // viewer.drawAsPaving();
+  viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
 
-
-
- Point p1( -1, -1, -2 );
- Point p2( 2, 2, 3 );
- Domain domain( p1, p2 );
- Point p3( 1, 1, 1 );
- Point p4( 2, -1, 3 );
- Point p5( -1, 2, 3 );
- Point p6( 0, 0, 0 );
- Point p0( 0, 2, 1 );
-
- viewer <<  SetMode3D( p1.className(), "Paving" );
-
- viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
-
- viewer << SetMode3D(domain.className(), "Grid");
- viewer << domain << MyViewer::updateDisplay;
-
-
- return application.exec();
+  // viewer << SetMode3D(domain.className(), "Grid");
+  viewer.drawAsGrid();
+  viewer << domain;
+  viewer.show();
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

@@ -46,6 +46,90 @@
 #include "DGtal/io/Color.h"
 
 namespace DGtal {
+    namespace drawutils {
+      template<size_t I>
+      std::vector<std::array<size_t, I>> makeIndices(size_t N) {
+        std::vector<std::array<size_t, I>> indices(N);
+      
+        for (size_t i = 0; i < N; ++i) {
+          for (size_t j = 0; j < I; ++j) {
+            indices[i][j] = j + i * I;
+          }
+        }
+        return indices;
+      }
+
+      template<typename T> 
+      std::array<T, 8> getCubeVertices(T center, double size) {
+        return {
+          center + 0.5 * size * T(-1, -1, -1), 
+          center + 0.5 * size * T( 1, -1, -1),
+          center + 0.5 * size * T( 1,  1, -1), 
+          center + 0.5 * size * T(-1,  1, -1),
+          center + 0.5 * size * T(-1, -1,  1), 
+          center + 0.5 * size * T( 1, -1,  1),
+          center + 0.5 * size * T( 1,  1,  1), 
+          center + 0.5 * size * T(-1,  1,  1)
+        };
+      }
+
+      template<typename T, typename U>
+      void insertCubeVertices(U& dest, T center, double scale) {
+        auto vertices = getCubeVertices(center, scale);
+        dest.insert(dest.end(), vertices.begin(), vertices.end());
+      }
+
+      template <typename T>
+      std::array<T, 4> getAAQuadVertices(T center, int orientation, double size) {
+        switch(orientation) {
+        case 0: // Normal in x direction
+          return {
+            center + 0.5 * size * T(0, -1, -1), 
+            center + 0.5 * size * T(0, -1,  1),
+            center + 0.5 * size * T(0,  1,  1),
+            center + 0.5 * size * T(0,  1, -1)
+          };
+        case 1: // Normal in y direction
+          return {
+            center + 0.5 * size * T(-1, 0, -1), 
+            center + 0.5 * size * T(-1, 0,  1),
+            center + 0.5 * size * T( 1, 0,  1),
+            center + 0.5 * size * T( 1, 0, -1)
+          };
+        case 2: // Normal in z direction
+        default:
+          return {
+            center + 0.5 * size * T(-1, -1, 0), 
+            center + 0.5 * size * T(-1,  1, 0),
+            center + 0.5 * size * T( 1,  1, 0),
+            center + 0.5 * size * T( 1, -1, 0)
+          };
+        }
+      }
+
+      template<typename T>
+      std::array<T, 8> getPrism(
+          T center, int orientation, 
+          double size1, double size2, double shift1, double shift2
+      ) {
+        T dir(0, 0, 0); dir[orientation] = 1; 
+
+        std::array<T, 8> vertices;
+        auto fQuad = getAAQuadVertices(center + shift1 * dir, orientation, size1);
+        auto sQuad = getAAQuadVertices(center + shift2 * dir, orientation, size2);
+
+        std::copy(fQuad.begin(), fQuad.end(), vertices.begin());
+        std::copy(sQuad.begin(), sQuad.end(), vertices.begin() + fQuad.size());
+        return vertices;
+      }
+
+      template<typename T, typename U>
+      void insertPrism(U& dest, T center, int orientation, 
+                       float scale1, float scale2, float shift1, float shift2) {
+        auto vertices = getPrism(center, orientation, scale1, scale2, shift1, shift2);
+        dest.insert(dest.end(), vertices.begin(), vertices.end());
+      }
+    };
     /**
      * @brief Style of display of an element
      */
@@ -102,6 +186,7 @@ namespace DGtal {
 
       using Point = typename Space::Point;
       using KCell = typename KSpace::Cell;
+      using SCell = typename KSpace::SCell;
       using Vertex = typename Space::RealPoint ;
 
       using Embedder = CanonicEmbedder<Space>;
@@ -121,97 +206,52 @@ namespace DGtal {
         }
       }
     public:
+
       template<typename Obj>
       Display& operator<<(const Obj& obj) {
         draw(obj);
+        return *this;
       }
      
       void draw(const Point& p) {
-        if (shouldCreateNewGroup(1 /* size of each element */)) {
-          newCubeGroup("Point_{i}");
-        }
+        const auto rp = embedder.embed(p);
 
-        currentData->vertices.push_back(embedder.embed(p));
+        if (currentStyle.mode &= DisplayStyle::BALLS) {
+          if (shouldCreateNewGroup(1)) {
+            newBallGroup("Point_{i}");
+          }
+          
+          currentData->vertices.push_back(rp);
+        }
+        else {
+          if (shouldCreateNewGroup(8)) {
+            newCubeGroup("Point_{i}");
+          }
+          
+          drawutils::insertCubeVertices(currentData->vertices, rp, currentData->style.width);
+        }
       }
       
       void draw(const KCell& cell) {
         const Vertex rp = cellEmbedder.embed(cell);
         
-        // TODO: Is this necessary (waring with BigIntegers)?
+        // TODO: Is this necessary (warning with BigIntegers)?
         const bool xodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[0]) & 1);
         const bool yodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[1]) & 1);
         const bool zodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[2]) & 1);
           
-        addCell(rp, xodd, yodd, zodd, false, false);
-     }
-
-      void addCell(const Vertex& rp, bool xodd, bool yodd, bool zodd, bool hasSign, bool sign) {
-        const double scale = 0.9;
-        const static std::array<std::array<Vertex, 4>, 3> prismShifts {
-            { 
-              Vertex(-1, -1, -1),
-              Vertex(-1, -1,  1),
-              Vertex(-1,  1,  1),
-              Vertex(-1,  1, -1)
-            }, 
-            {
-              Vertex(-1, -1, -1),
-              Vertex(-1, -1,  1),
-              Vertex( 1, -1,  1),
-              Vertex( 1, -1, -1)
-            }, 
-            {
-              Vertex(-1, -1, -1),
-              Vertex(-1,  1, -1),
-              Vertex( 1,  1, -1),
-              Vertex( 1, -1, -1)
-            }
-        };
-        const unsigned int dim = xodd + yodd + zodd;
-        const unsigned int index = (xodd ? 0 : (yodd ? 1 : 2));
+        addKCell(rp, xodd, yodd, zodd, false, false);
+      }
+      
+      void draw(const SCell& cell) {
+        const Vertex rp = sCellEmbedder.embed(cell);
         
-        switch(dim) {
-          case 0: {
-            if (shouldCreateNewGroup(1)) {
-              newBallGroup("KCell_{i}_d0");
-              currentData->style.width *= scale;
-            }
-
-            currentData->vertices.push_back(rp);
-          }
-          break;
-          case 1: {
-            if (shouldCreateNewGroup(2)) {
-              newLineGroup("KCell_{i}_d1");
-              currentData->style.width *= scale;
-            }
-
-            const Vertex shift(xodd, yodd, zodd);
-            currentData->vertices.push_back(rp - 0.5 * shift);
-            currentData->vertices.push_back(rp + 0.5 * shift);
-          }
-          break;
-          case 2: {
-            if (shouldCreateNewGroup(8)) {
-              newVolumetricGroup("KCell_{i}_d2");
-              currentData->style.width *= scale;
-            }
-            
-
-            const auto& shifts = prismSHifts[index];
-            const Vertex x(rp - xodd * 
-            
-          };
-          case 3: {
-            if (shouldCreateNewGroup(1)) {
-              newCubeGroup("KCell_{i}_d3");
-              currentData->style.width *= scale;
-            }
-
-            currentData->vertices.push_back(rp);
-          };
-          break;
-        };
+        // TODO: Is this necessary (warning with BigIntegers)?
+        const bool xodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[0]) & 1);
+        const bool yodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[1]) & 1);
+        const bool zodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[2]) & 1);
+        
+        addKCell(rp, xodd, yodd, zodd, true, cell.precell().positive);
       }
 
       void draw(const HyperRectDomain<Space>& domain) {
@@ -235,31 +275,129 @@ namespace DGtal {
           for (auto it = obj.begin(); it != obj.end(); ++it) {
               auto neig = obj.properNeighborhood(*it);
 
-              const Vertex pIt = embedder.embed(*it);
+              const Vertex p = embedder.embed(*it);
               for (auto it2 = neig.begin(); it2 != neig.end(); ++it2) {
-                auto p = embedder.embed((*it2) - (*it));
+                auto p2 = embedder.embed(*it2);
 
                 currentData->vertices.push_back(p);
-                currentData->vertices.push_back(pIt);
+                currentData->vertices.push_back(p2);
               }
           }
 
           currentData = nullptr;
         }
       }
+
+      void draw(const DGtal::Color& color) {
+        *currentStyle.color = color;
+      }
+      
+      void drawAdjacencies(bool toggle = true) {
+        if (toggle) currentStyle.mode |=  DisplayStyle::ADJACENCIES;
+        else        currentStyle.mode &= ~DisplayStyle::ADJACENCIES;
+      }
+
+      void drawAsPaving() {
+        currentStyle.mode &= ~DisplayStyle::GRID;
+        currentStyle.mode |= DisplayStyle::PAVING;
+      }
+
+      void drawAsGrid() {
+        currentStyle.mode &= ~DisplayStyle::PAVING;
+        currentStyle.mode |=  DisplayStyle::GRID;
+      }
+
+
     private:
       template<typename Obj>
       std::string drawGenericObject(const std::string& name, const Obj& obj) {
-        std::string newName = newCubeGroup(name);
-      
-        currentData->vertices.reserve(obj.size());
-        for (auto it = obj.begin(); it != obj.end(); ++it) {
-          currentData->vertices.push_back(*it);
+        std::string newName; 
+        if ((currentStyle.mode & DisplayStyle::GRID) || (currentStyle.mode & DisplayStyle::BALLS)) {
+          newName = newBallGroup(name);
+
+          currentData->vertices.reserve(obj.size());
+          for (auto it = obj.begin(); it != obj.end(); ++it) {
+            const auto rp = embedder.embed(*it);
+            currentData->vertices.push_back(rp);
+          }
+        }
+        else {
+          newName = newCubeGroup(name);
+        
+          currentData->vertices.reserve(obj.size() * 8);
+          for (auto it = obj.begin(); it != obj.end(); ++it) {
+            const auto rp = embedder.embed(*it);
+            const auto vertices = drawutils::getCubeVertices(rp, currentData->style.width);
+
+            currentData->vertices.insert(
+                currentData->vertices.end(), vertices.begin(), vertices.end()
+            );
+          }
         }
 
         currentData = nullptr;
         return newName;
       }
+
+      void addKCell(const Vertex& rp, bool xodd, bool yodd, bool zodd, bool hasSign, bool sign) {
+        static const double scale = 0.9;
+        static const double shift = 0.2;
+        static const double smallScale = scale * scale;
+        static const double smallShift = 2 * shift;
+
+        const unsigned int dim = xodd + yodd + zodd;
+        
+        switch(dim) {
+          case 0: {
+            if (shouldCreateNewGroup(1)) {
+              newBallGroup("KCell_{i}_d0");
+              currentData->style.width *= scale;
+            }
+
+            currentData->vertices.push_back(rp);
+          }
+          break;
+          case 1: {
+            if (shouldCreateNewGroup(2)) {
+              newLineGroup("KCell_{i}_d1");
+              currentData->style.width *= scale;
+            }
+
+            const Vertex shift(xodd, yodd, zodd);
+            currentData->vertices.push_back(rp - 0.5 * shift);
+            currentData->vertices.push_back(rp + 0.5 * shift);
+          }
+          break;
+          case 2: {
+            const unsigned int orientation = (!xodd ? 0 : (!yodd ? 1 : 2));
+            if (shouldCreateNewGroup(8)) {
+              newVolumetricGroup("KCell_{i}_d2");
+              currentData->style.width *= scale;
+            }
+            
+            double scale1 = scale      * currentData->style.width;
+            double scale2 = smallScale * currentData->style.width;
+            double shift1 = shift;
+            double shift2 = smallShift;
+            if (hasSign && sign) 
+              std::swap(shift1, shift2);
+
+            drawutils::insertPrism(currentData->vertices, orientation, scale, smallScale, shift1, shift2);
+          }
+          break;
+          case 3: {
+            if (shouldCreateNewGroup(1)) {
+              newCubeGroup("KCell_{i}_d3");
+              currentData->style.width *= scale;
+            }
+
+            drawutils::insertCubeVertices(currentData->vertices, rp, currentData->style.width);
+          };
+          break;
+        };
+      }
+
+
     public:
       /**
        * @brief Set the current group for further updates
@@ -273,7 +411,7 @@ namespace DGtal {
         return true;
       }
       
-      std::string newCubeGroup(const std::string& name)       { return newGroup(name, 1); }
+      std::string newCubeGroup(const std::string& name)       { return newGroup(name, 8); }
       std::string newBallGroup(const std::string& name)       { return newGroup(name, 1); }
       std::string newLineGroup(const std::string& name)       { return newGroup(name, 2); }
       std::string newQuadGroup(const std::string& name)       { return newGroup(name, 4); }
@@ -285,7 +423,7 @@ namespace DGtal {
       bool shouldCreateNewGroup(size_t expectedSize) const {
         if (!currentData) return true;
         if (currentData->elementSize != expectedSize) return true;
-        return allowReuseGroup;
+        return !allowReuseGroup;
       }
 
       /**
@@ -335,20 +473,20 @@ namespace DGtal {
         currentData = &data.emplace(newName, std::move(newData)).first->second;
         return newName;
       }
-
+    
     public:
       KSpace kspace;
       Embedder embedder;
       CellEmbedder cellEmbedder;
       SCellEmbedder sCellEmbedder;
 
+      DisplayStyle currentStyle;
+    protected:
       /** For elements that can be manipulated independantly, adds a small shortcuts to allow to build groups iteratively. */
       bool allowReuseGroup = false;
 
-      DisplayStyle currentStyle;
       std::map<std::string, DisplayData<Vertex>> data;
       DisplayData<Vertex>* currentData = nullptr;
     };
-
 }
 
