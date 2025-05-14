@@ -42,8 +42,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Shapes.h"
-#include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/io/Color.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -58,29 +57,23 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
+   PolyscopeViewer viewer;
 
- QApplication application(argc,argv);
- typedef Viewer3D<> MyViewer;
- MyViewer viewer;
- viewer.show();
+   Point p1( 0, 0, 0 );
+   Point p2( 20, 20, 20 );
+   Domain domain(p1, p2);
+   DigitalSet shape_set( domain );
 
- Point p1( 0, 0, 0 );
- Point p2( 20, 20, 20 );
- Domain domain(p1, p2);
- DigitalSet shape_set( domain );
+   Shapes<Domain>::addNorm2Ball( shape_set, Point( 10, 10, 10 ), 7 );
 
- Shapes<Domain>::addNorm2Ball( shape_set, Point( 10, 10, 10 ), 7 );
+   viewer << shape_set;
 
- viewer << SetMode3D( shape_set.className(), "Both" );
- viewer << shape_set;
- viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 20));
- viewer <<  SetMode3D( p1.className(), "Paving" );
+   viewer << Color(250, 200,0, 100);
+   viewer << ClippingPlane(1,0,0,-4.9);
+   viewer << ClippingPlane(0,1,0.3,-10);
 
- viewer << ClippingPlane(1,0,0,-4.9);
- viewer << ClippingPlane(0,1,0.3,-10);
-
- viewer << MyViewer::updateDisplay;
- return application.exec();
+   viewer.show();
+   return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

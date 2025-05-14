@@ -48,6 +48,16 @@ namespace DGtal {
       }
       return colors;
     }
+
+    glm::mat4 toglm(const Eigen::Affine3d& transform) {
+      glm::mat4 glmmat(1.f);
+      Eigen::Matrix4d mat = transform.matrix();
+
+      for (int i = 0; i < 4; ++i) 
+        for (int j = 0; j < 4; ++j)
+          glmmat[i][j] = static_cast<float>(mat(j, i));
+      return glmmat;
+    }
   }
 
   template < typename Space = Z3i::Space, typename KSpace = Z3i::KSpace>
@@ -100,116 +110,133 @@ namespace DGtal {
           case 1: {
               auto* pCloud = polyscope::registerPointCloud(name, vertices);
 
-              if (!data.style.useDefaultColors)
+              pCloud->setTransform(toglm(data.transform));
+              if (!data.style.useDefaultColors) {
                 pCloud->setPointColor(toglm(data.style.color));
+                pCloud->setTransparency(data.style.color.a());
+              }
 
               // Apply properties
               for (const auto& [name, vals] : data.scalarProperties) {
-                pCloud->addScalarQuantity(name, vals);
+                pCloud->addScalarQuantity(name, vals)->setEnabled(true);
               }
               for (const auto& [name, vals] : data.vectorProperties) {
-                pCloud->addVectorQuantity(name, vals);
+                pCloud->addVectorQuantity(name, vals)->setEnabled(true);
               }
               for (const auto& [name, vals] : data.colorProperties) {
-                pCloud->addColorQuantity(name, toglm(vals));
+                pCloud->addColorQuantity(name, toglm(vals))->setEnabled(true);
               }
               pCloud->setPointRadius(data.style.width * BallToCubeRatio);
             }
             break;
           case 2: {
-              auto* cNetwork = polyscope::registerCurveNetwork(name, vertices, drawutils::makeIndices<2>(vertices.size() / 2));
+              auto* cNetwork = polyscope::registerCurveNetwork(name, vertices, makeIndices<2>(vertices.size() / 2));
 
-              if (!data.style.useDefaultColors)
-                cNetwork->setColor(drawutils::toglm(data.style.color));
+              cNetwork->setTransform(toglm(data.transform));
+              if (!data.style.useDefaultColors) {
+                cNetwork->setColor(toglm(data.style.color));
+                cNetwork->setTransparency(data.style.color.a());
+              }
 
               // Apply properties
               for (const auto& [name, vals] : data.scalarProperties) {
-                cNetwork->addEdgeScalarQuantity(name, vals);
+                cNetwork->addEdgeScalarQuantity(name, vals)->setEnabled(true);
               }
               for (const auto& [name, vals] : data.vectorProperties) {
-                cNetwork->addEdgeVectorQuantity(name, vals);
+                cNetwork->addEdgeVectorQuantity(name, vals)->setEnabled(true);
               }
               for (const auto& [name, vals] : data.colorProperties) {
-                cNetwork->addEdgeColorQuantity(name, toglm(vals));
+                cNetwork->addEdgeColorQuantity(name, toglm(vals))->setEnabled(true);
               }
             }
             break;
           case 0: {
               auto* mesh = polyscope::registerSurfaceMesh(name, vertices, data.indices);
 
-              if (!data.style.useDefaultColors)
+              mesh->setTransform(toglm(data.transform));
+              if (!data.style.useDefaultColors) {
                 mesh->setSurfaceColor(toglm(data.style.color));
+                mesh->setTransparency(data.style.color.a());
+              }
 
               // Apply properties
               for (const auto& [name, vals] : data.scalarProperties) {
-                mesh->addFaceScalarQuantity(name, vals);
+                mesh->addFaceScalarQuantity(name, vals)->setEnabled(true);
               }
               for (const auto& [name, vals] : data.vectorProperties) {
-                mesh->addFaceVectorQuantity(name, vals);
+                mesh->addFaceVectorQuantity(name, vals)->setEnabled(true);
               }
               for (const auto& [name, vals] : data.colorProperties) {
-                mesh->addFaceColorQuantity(name, toglm(vals));
+                mesh->addFaceColorQuantity(name, toglm(vals))->setEnabled(true);
               }
             }
             break;
           case 3: {
               auto* mesh = polyscope::registerSurfaceMesh(name, vertices, makeIndices<3>(vertices.size() / 3));
 
-              if (!data.style.useDefaultColors)
+              mesh->setTransform(toglm(data.transform));
+              if (!data.style.useDefaultColors) {
                 mesh->setSurfaceColor(toglm(data.style.color));
+                mesh->setTransparency(data.style.color.a());
+              }
 
               // Apply properties
               for (const auto& [name, vals] : data.scalarProperties) {
-                mesh->addFaceScalarQuantity(name, vals);
+                mesh->addFaceScalarQuantity(name, vals)->setEnabled(true);
               }
               for (const auto& [name, vals] : data.vectorProperties) {
-                mesh->addFaceVectorQuantity(name, vals);
+                mesh->addFaceVectorQuantity(name, vals)->setEnabled(true);
               }
               for (const auto& [name, vals] : data.colorProperties) {
-                mesh->addFaceColorQuantity(name, toglm(vals));
+                mesh->addFaceColorQuantity(name, toglm(vals))->setEnabled(true);
               }
             }
           break;
           case 4: {
               auto* mesh = polyscope::registerSurfaceMesh(name, vertices, makeIndices<4>(vertices.size() / 4));
 
-              if (!data.style.useDefaultColors)
+              mesh->setTransform(toglm(data.transform));
+              if (!data.style.useDefaultColors) {
                 mesh->setSurfaceColor(toglm(data.style.color));
+                mesh->setTransparency(data.style.color.a());
+              }
 
               // Apply properties
               for (const auto& [name, vals] : data.scalarProperties) {
-                mesh->addFaceScalarQuantity(name, vals);
+                mesh->addFaceScalarQuantity(name, vals)->setEnabled(true);
               }
               for (const auto& [name, vals] : data.vectorProperties) {
-                mesh->addFaceVectorQuantity(name, vals);
+                mesh->addFaceVectorQuantity(name, vals)->setEnabled(true);
               }
               for (const auto& [name, vals] : data.colorProperties) {
-                mesh->addFaceColorQuantity(name, toglm(vals));
+                mesh->addFaceColorQuantity(name, toglm(vals))->setEnabled(true);
               }
             }
             break;
           case 8: {
               auto* mesh = polyscope::registerVolumeMesh(name, vertices, makeIndices<8>(vertices.size() / 8));
               
-              if (!data.style.useDefaultColors)
+              mesh->setTransform(toglm(data.transform));
+              if (!data.style.useDefaultColors) {
                 mesh->setColor(toglm(data.style.color));
+                mesh->setTransparency(data.style.color.a());
+              }
 
               // Apply properties
               for (const auto& [name, vals] : data.scalarProperties) {
-                mesh->addCellScalarQuantity(name, vals);
+                mesh->addCellScalarQuantity(name, vals)->setEnabled(true);
               }
               for (const auto& [name, vals] : data.vectorProperties) {
-                mesh->addCellVectorQuantity(name, vals);
+                mesh->addCellVectorQuantity(name, vals)->setEnabled(true);
               }
               for (const auto& [name, vals] : data.colorProperties) {
-                mesh->addCellColorQuantity(name, toglm(vals));
+                mesh->addCellColorQuantity(name, toglm(vals))->setEnabled(true);
               }
             }
             break;
           default:
             break;
           };
-          // Apply general parameters
         }
 
         // Draw clipping planes
@@ -223,6 +250,10 @@ namespace DGtal {
           else continue;
 
           polyscope::SlicePlane* ps = polyscope::addSceneSlicePlane();
+          if (!plane.style.useDefaultColors)
+            ps->setColor(toglm(plane.style.color));
+
+          //TODO: Keep this as default ?  
           ps->setDrawPlane(true);
           ps->setPose(pos, normal);
         }

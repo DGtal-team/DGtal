@@ -35,12 +35,15 @@
 #include <array>
 #include <map>
 
+#include <Eigen/Geometry>
+
 #include "DGtal/topology/CanonicCellEmbedder.h"
 #include "DGtal/topology/CanonicSCellEmbedder.h"
 #include "DGtal/topology/Object.h"
 
 #include "DGtal/images/ImageAdapter.h"
 #include "DGtal/images/ConstImageAdapter.h"
+#include "DGtal/images/ImageContainerBySTLVector.h"
 
 #include "DGtal/kernel/CanonicEmbedder.h" 
 #include "DGtal/topology/CanonicCellEmbedder.h"
@@ -142,7 +145,6 @@ namespace DGtal {
       bool useDefaultColors = true;                            //< When set, color is ignored and the viewer is free to choose
       
       double width = 1.0;                                      //< Maintains uniform scale of the object independently for easy access
-      Eigen::Affine3d transform = Eigen::Affine3d::Identity(); //< Transform (includes scale)
 
       /**
        * @brief List available draw modes.
@@ -173,6 +175,7 @@ namespace DGtal {
       std::vector<std::vector<uint32_t>> indices;     //< Indices for each elements. Only used if elementSize is 0.
       std::vector<Vector>   vertices;    //< Vertices of the object
 
+      Eigen::Affine3d transform = Eigen::Affine3d::Identity(); //< Transform (includes scale)
 
       DisplayStyle style;
       std::map<std::string, std::vector<Vector>> vectorProperties;
@@ -183,6 +186,8 @@ namespace DGtal {
     struct ClippingPlane {
       double a, b, c; //< Normal components
       double d;       //< Offset
+                      //
+      DisplayStyle style;
     };
     
     template<typename T, typename Type>
@@ -362,6 +367,11 @@ namespace DGtal {
       std::string draw(const DigitalSetByAssociativeContainer<Obj, Cont>& set) {
         return drawGenericObject("Set_{i}", set);
       }
+
+      template<typename D, typename T>
+      std::string draw(const ImageContainerBySTLVector<D, T>& image) {
+        return drawImage(image);
+      }
       
       template <typename TImageContainer,
                 typename TNewDomain,
@@ -432,6 +442,7 @@ namespace DGtal {
       
       std::string draw(const ClippingPlane& plane) {
         planes.push_back(plane);
+        planes.back().style = currentStyle;
         return "";
       }
 
@@ -439,10 +450,14 @@ namespace DGtal {
         drawColor(color);
         return "";
       }
-
+      
       void drawColor(const DGtal::Color& color) {
         currentStyle.color = color;
         currentStyle.useDefaultColors = false;
+      }
+
+      void setDefaultColors() {
+        currentStyle.useDefaultColors = true;
       }
       
       void drawAdjacencies(bool toggle = true) {
@@ -508,9 +523,15 @@ namespace DGtal {
         currentData->vertices.reserve(8 * total);
         currentData->scalarProperties["value"].reserve(total);
         for(; it != itend; ++it) {
-          auto rp = embedder.embed(*it);
-          currentData->scalarProperties["value"].push_back(image(*it));
-          drawutils::insertCubeVertices(currentData->vertices, rp, currentData->style.width);
+          if constexpr (false) {
+            auto rp = embedder.embed(*it);
+            currentData->scalarProperties["value"].push_back(image(*it));
+            drawutils::insertCubeVertices(currentData->vertices, rp, currentData->style.width);
+          } else {
+            auto rp = embedder.embed(Point((*it)[0], (*it)[1], 0)); 
+            currentData->scalarProperties["value"].push_back(image(*it));
+            drawutils::insertCubeVertices(currentData->vertices, rp, currentData->style.width);
+          }
         }
         return name;
       }
@@ -654,18 +675,19 @@ namespace DGtal {
       }
     
     public:
+      // The use is responsible for not using these wrong...
+      DisplayStyle currentStyle;
+      bool allowReuseList = false;
+
+      std::vector<ClippingPlane> planes;
+      std::map<std::string, DisplayData<Vector>> data;
+    protected:
       KSpace kspace;
       Embedder embedder;
       CellEmbedder cellEmbedder;
       SCellEmbedder sCellEmbedder;
 
-      DisplayStyle currentStyle;
-      bool allowReuseList = false;
-    protected:
       Callback* callback = nullptr;
-
-      std::vector<ClippingPlane> planes;
-      std::map<std::string, DisplayData<Vector>> data;
 
       std::string currentName = "";
       DisplayData<Vector>* currentData = nullptr;

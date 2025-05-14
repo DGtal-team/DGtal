@@ -141,8 +141,7 @@ int main( int argc, char** argv )
   trace.emphase() << ( nbok == nb ? "Passed." : "Error." ) << endl;
   trace.endBlock();
 
-  typedef PolyscopeViewer<> MyViewer;
-  MyViewer viewer;
+  PolyscopeViewer viewer;
   Color red( 255, 0, 0 );
   Color green( 0, 255, 0 );
   Color grey( 200, 200, 200 );

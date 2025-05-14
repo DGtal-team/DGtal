@@ -47,9 +47,7 @@
 
 #include "DGtal/helpers/StdDefs.h"
 
-#include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
-#include "DGtal/io/colormaps/HueShadeColorMap.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/io/Color.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -57,30 +55,12 @@
 using namespace std;
 using namespace DGtal;
 
-
-
-struct hueFct{
- inline
- unsigned int operator() (unsigned int aVal) const
-  {
-    HueShadeColorMap<unsigned int>  hueShade(0,255);
-    Color col = hueShade((unsigned int)aVal);
-    return  (((unsigned int) col.red()) <<  16)| (((unsigned int) col.green()) << 8)|((unsigned int) col.blue());
-  }
-};
-
-
-///////////////////////////////////////////////////////////////////////////////
-
 int main( int argc, char** argv )
 {
+  PolyscopeViewer viewer;
 
   typedef ImageContainerBySTLVector<Z3i::Domain,  unsigned char > Image3D;
-  QApplication application(argc,argv);
-  typedef Viewer3D<> MyViewer ;
-  MyViewer viewer;
 
-  viewer.show();
   std::string inputFilename = examplesPath + "samples/lobster.vol";
   Image3D imageVol = GenericReader<Image3D>::import(inputFilename);
 
@@ -94,6 +74,13 @@ int main( int argc, char** argv )
 
   Image3D imageCrop(subDomain);
   Image3D imageCrop2(subDomain2);
+  
+  // Adding too many single point is slow and will 
+  // makke the view laggy
+  // This parameter allows to reuse some list if 
+  // possible (but it won't work if multiples types are 
+  // inserted)
+  viewer.allowReuseList = true;
 
   for(Z3i::Domain::ConstIterator it= imageVol.domain().begin(), itend = imageVol.domain().end(); it != itend; ++it){
     if(imageVol(*it)>140)
@@ -110,13 +97,9 @@ int main( int argc, char** argv )
     }
   }
   viewer << imageCrop;
-  viewer << SetMode3D(imageCrop.className(), "BoundingBox");
-    //! [ExampleViewer3D3DImagesDisplayImagesColor]
-  viewer << AddTextureImage3DWithFunctor<Image3D, hueFct, Z3i::Space, Z3i::KSpace> (imageCrop2, hueFct(), MyViewer::RGBMode);
-  viewer << MyViewer::updateDisplay;
-  //! [ExampleViewer3D3DImagesDisplayImagesColor]
 
-  return application.exec();
+  viewer.show();
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

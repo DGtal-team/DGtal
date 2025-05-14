@@ -59,20 +59,21 @@ int main( int argc, char** argv )
 
   Point p1( -1, -1, -2 );
   Point p2( 2, 2, 3 );
-  Domain domain( p1, p2 );
   Point p3( 1, 1, 1 );
   Point p4( 2, -1, 3 );
   Point p5( -1, 2, 3 );
   Point p6( 0, 0, 0 );
   Point p0( 0, 2, 1 );
 
-  // viewer <<  SetMode3D( p1.className(), "Paving" );
-  // viewer.drawAsPaving();
+  Domain domain( p1, p2 );
+  // Draws point as balls instead of cubes
+  viewer.drawAsPaving();
   viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
-
-  // viewer << SetMode3D(domain.className(), "Grid");
+  
+  // Draws a grid instead of cubes
   viewer.drawAsGrid();
   viewer << domain;
+
   viewer.debug();
   viewer.show();
   return 0;

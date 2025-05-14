@@ -57,16 +57,13 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
-  PolyscopeViewer d;
+  PolyscopeViewer v;
 
   Point p1( 0, 0, 0 );
   Point p2( 10, 10 , 10 );
   Domain domain( p1, p2 );
   
-  d.draw(p1);
-  d.draw(p2);
-
-  d.draw(domain);
+  v << p1 << p2 << domain;
 
   DigitalSet shape_set( domain );
   Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
@@ -75,9 +72,8 @@ int main( int argc, char** argv )
   shape_set.erase(Point(3,3,3));
   shape_set.erase(Point(6,6,6));
   
-  d.draw(shape_set);
+  v << shape_set;
 
-  d.debug();
   d.show();
   return 0;
 }

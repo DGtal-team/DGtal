@@ -42,9 +42,8 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/io/Color.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/shapes/Shapes.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -58,41 +57,32 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
+  PolyscopeViewer viewer; 
 
- QApplication application(argc,argv);
+  Point p1( -1, -1, -2 );
+  Point p2( 2, 2, 3 );
+  Domain domain( p1, p2 );
+  Point p3( 1, 1, 1 );
+  Point p4( 2, -1, 3 );
+  Point p5( -1, 2, 3 );
+  Point p6( 0, 0, 0 );
+  Point p0( 0, 2, 1 );
 
- typedef Viewer3D<> MyViewer;
- MyViewer viewer;
- viewer.show();
+  // By default, objects are rendered with different colors
+  viewer << p1 << p2 << p3;
 
-
- Point p1( -1, -1, -2 );
- Point p2( 2, 2, 3 );
- Domain domain( p1, p2 );
- Point p3( 1, 1, 1 );
- Point p4( 2, -1, 3 );
- Point p5( -1, 2, 3 );
- Point p6( 0, 0, 0 );
- Point p0( 0, 2, 1 );
- viewer <<  SetMode3D( p1.className(), "PavingWired" );
- viewer << p1 << p2 << p3;
-
-
- //viewer <<  SetMode3D( p1.className(), "Grid" );
-  viewer << CustomColors3D(Color(250, 0,0),Color(250, 0,0));
-  viewer << p4 << p5 ;
-  viewer <<  SetMode3D( p1.className(), "Both" );
-  viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 0,0, 100));
+  // Drawing color can be changed by inserting it in the stream
+  viewer << Color(255, 0, 0) << p4 << p5 ;
+  viewer << Color(250, 200,0);
   viewer << p6;
-  viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 20));
+  viewer << Color(250, 200,0, 20);
   viewer << p0;
+  
+  viewer.setDefaultColors();
+  viewer << domain;
 
-
-  viewer << SetMode3D(domain.className(), "Paving");
-  viewer << domain << MyViewer::updateDisplay;
-
-
- return application.exec();
+  viewer.show();
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
