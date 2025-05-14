@@ -62,55 +62,169 @@ namespace DGtal {
         polyscope::show();
       }
     private:
+      void polyscopeCallback() {
+        if (this->callback)
+            this->callback->OnUI();
+
+        ImGuiIO& io = ImGui::GetIO();
+        if (io.MouseClicked[0])
+        {
+            glm::vec2 screenCoords{io.MousePos.x, io.MousePos.y};
+            glm::vec3 worldRay = polyscope::view::screenCoordsToWorldRay(screenCoords);
+            glm::vec3 worldPos = polyscope::view::screenCoordsToWorldPosition(screenCoords);
+            auto [structure, index] = 
+                polyscope::pick::pickAtScreenCoords(screenCoords);
+
+            if (structure != nullptr) {
+              void* viewerData = structure;
+              std::string name = structure->getName();
+              auto& data = this->data[name];
+
+              if (this->callback) {
+                this->callback->OnClick(name, index, data, viewerData);
+              }
+            }
+        }
+      }
+
       void registerData() {
+        using namespace drawutils;
+
         const double BallToCubeRatio = 0.05;
 
         for (const auto& [name, data] : this->data) {
           const auto& vertices = data.vertices;
+          if (vertices.size() == 0) continue;
+
           switch(data.elementSize) {
           case 1: {
               auto* pCloud = polyscope::registerPointCloud(name, vertices);
 
-              if (data.style.color.has_value())
-                pCloud->setPointColor(drawutils::toglm(*data.style.color));
+              if (!data.style.useDefaultColors)
+                pCloud->setPointColor(toglm(data.style.color));
 
+              // Apply properties
+              for (const auto& [name, vals] : data.scalarProperties) {
+                pCloud->addScalarQuantity(name, vals);
+              }
+              for (const auto& [name, vals] : data.vectorProperties) {
+                pCloud->addVectorQuantity(name, vals);
+              }
+              for (const auto& [name, vals] : data.colorProperties) {
+                pCloud->addColorQuantity(name, toglm(vals));
+              }
               pCloud->setPointRadius(data.style.width * BallToCubeRatio);
             }
             break;
           case 2: {
               auto* cNetwork = polyscope::registerCurveNetwork(name, vertices, drawutils::makeIndices<2>(vertices.size() / 2));
 
-              if (data.style.color.has_value())
-                cNetwork->setColor(drawutils::toglm(*data.style.color));
+              if (!data.style.useDefaultColors)
+                cNetwork->setColor(drawutils::toglm(data.style.color));
+
+              // Apply properties
+              for (const auto& [name, vals] : data.scalarProperties) {
+                cNetwork->addEdgeScalarQuantity(name, vals);
+              }
+              for (const auto& [name, vals] : data.vectorProperties) {
+                cNetwork->addEdgeVectorQuantity(name, vals);
+              }
+              for (const auto& [name, vals] : data.colorProperties) {
+                cNetwork->addEdgeColorQuantity(name, toglm(vals));
+              }
             }
+            break;
           case 0: {
               auto* mesh = polyscope::registerSurfaceMesh(name, vertices, data.indices);
 
-              if (data.style.color.has_value())
-                mesh->setSurfaceColor(drawutils::toglm(*data.style.color));
+              if (!data.style.useDefaultColors)
+                mesh->setSurfaceColor(toglm(data.style.color));
+
+              // Apply properties
+              for (const auto& [name, vals] : data.scalarProperties) {
+                mesh->addFaceScalarQuantity(name, vals);
+              }
+              for (const auto& [name, vals] : data.vectorProperties) {
+                mesh->addFaceVectorQuantity(name, vals);
+              }
+              for (const auto& [name, vals] : data.colorProperties) {
+                mesh->addFaceColorQuantity(name, toglm(vals));
+              }
             }
             break;
           case 3: {
-              auto* mesh = polyscope::registerSurfaceMesh(name, vertices, drawutils::makeIndices<3>(vertices.size() / 3));
-              if (data.style.color.has_value())
-                mesh->setSurfaceColor(drawutils::toglm(*data.style.color));
+              auto* mesh = polyscope::registerSurfaceMesh(name, vertices, makeIndices<3>(vertices.size() / 3));
+
+              if (!data.style.useDefaultColors)
+                mesh->setSurfaceColor(toglm(data.style.color));
+
+              // Apply properties
+              for (const auto& [name, vals] : data.scalarProperties) {
+                mesh->addFaceScalarQuantity(name, vals);
+              }
+              for (const auto& [name, vals] : data.vectorProperties) {
+                mesh->addFaceVectorQuantity(name, vals);
+              }
+              for (const auto& [name, vals] : data.colorProperties) {
+                mesh->addFaceColorQuantity(name, toglm(vals));
+              }
             }
           break;
           case 4: {
-              auto* mesh = polyscope::registerSurfaceMesh(name, vertices, drawutils::makeIndices<4>(vertices.size() / 4));
-              if (data.style.color.has_value())
-                mesh->setSurfaceColor(drawutils::toglm(*data.style.color));
+              auto* mesh = polyscope::registerSurfaceMesh(name, vertices, makeIndices<4>(vertices.size() / 4));
+
+              if (!data.style.useDefaultColors)
+                mesh->setSurfaceColor(toglm(data.style.color));
+
+              // Apply properties
+              for (const auto& [name, vals] : data.scalarProperties) {
+                mesh->addFaceScalarQuantity(name, vals);
+              }
+              for (const auto& [name, vals] : data.vectorProperties) {
+                mesh->addFaceVectorQuantity(name, vals);
+              }
+              for (const auto& [name, vals] : data.colorProperties) {
+                mesh->addFaceColorQuantity(name, toglm(vals));
+              }
             }
             break;
           case 8: {
-              auto* mesh = polyscope::registerVolumeMesh(name, vertices, drawutils::makeIndices<8>(vertices.size() / 8));
+              auto* mesh = polyscope::registerVolumeMesh(name, vertices, makeIndices<8>(vertices.size() / 8));
+              
+              if (!data.style.useDefaultColors)
+                mesh->setColor(toglm(data.style.color));
 
-              if (data.style.color.has_value())
-                mesh->setColor(drawutils::toglm(*data.style.color));
+              // Apply properties
+              for (const auto& [name, vals] : data.scalarProperties) {
+                mesh->addCellScalarQuantity(name, vals);
+              }
+              for (const auto& [name, vals] : data.vectorProperties) {
+                mesh->addCellVectorQuantity(name, vals);
+              }
+              for (const auto& [name, vals] : data.colorProperties) {
+                mesh->addCellColorQuantity(name, toglm(vals));
+              }
             }
+            break;
+          default:
             break;
           };
           // Apply general parameters
+        }
+
+        // Draw clipping planes
+        for (const auto& plane : this->planes) {
+          const glm::vec3 normal { plane.a, plane.b, plane.c }; 
+          glm::vec3 pos {0, 0, 0};
+
+               if (plane.a != 0) { pos.x = -plane.d / plane.a; }
+          else if (plane.b != 0) { pos.y = -plane.d / plane.b; }
+          else if (plane.c != 0) { pos.z = -plane.d / plane.c; }
+          else continue;
+
+          polyscope::SlicePlane* ps = polyscope::addSceneSlicePlane();
+          ps->setDrawPlane(true);
+          ps->setPose(pos, normal);
         }
       }
   };

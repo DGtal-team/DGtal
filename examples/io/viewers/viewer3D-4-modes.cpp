@@ -73,6 +73,7 @@ int main( int argc, char** argv )
   // viewer << SetMode3D(domain.className(), "Grid");
   viewer.drawAsGrid();
   viewer << domain;
+  viewer.debug();
   viewer.show();
   return 0;
 }
