@@ -259,20 +259,20 @@ namespace DGtal {
         this->callback = callback;
       }
      
-      std::string draw(const Point& p) {
+      std::string draw(const Point& p, const std::string& uname = "Point_{i}") {
         std::string name = currentName;
         const auto rp = embedder.embed(p);
 
         if (currentStyle.mode &= DisplayStyle::BALLS) {
           if (shouldCreateNewList(1)) {
-            name = newBallList("Point_{i}");
+            name = newBallList(uname);
           }
           
           currentData->vertices.push_back(rp);
         }
         else {
           if (shouldCreateNewList(8)) {
-            name = newCubeList("Point_{i}");
+            name = newCubeList(uname);
           }
           
           drawutils::insertCubeVertices(currentData->vertices, rp, currentData->style.width);
@@ -280,31 +280,31 @@ namespace DGtal {
         return name;
       }
       
-      std::string draw(const KCell& cell) {
+      std::string draw(const KCell& cell, const std::string& name = "KCell_{i}_{d}d") {
         const Vector rp = cellEmbedder.embed(cell);
         
         const bool xodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[0]) & 1);
         const bool yodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[1]) & 1);
         const bool zodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[2]) & 1);
           
-        return addKCell(rp, xodd, yodd, zodd, false, false);
+        return addKCell(name, rp, xodd, yodd, zodd, false, false);
       }
       
-      std::string draw(const SCell& cell) {
+      std::string draw(const SCell& cell, const std::string& name = "SCell_{i}_{d}d") {
         const Vector rp = sCellEmbedder.embed(cell);
         
         const bool xodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[0]) & 1);
         const bool yodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[1]) & 1);
         const bool zodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[2]) & 1);
         
-        return addKCell(rp, xodd, yodd, zodd, true, cell.precell().positive);
+        return addKCell(name, rp, xodd, yodd, zodd, true, cell.preCell().positive);
       }
 
-      std::string draw(const HyperRectDomain<Space>& domain) {
-        std::string name = drawGenericObject("Domain_{i}", domain);
+      std::string draw(const HyperRectDomain<Space>& domain, const std::string& uname = "Domain_{i}") {
+        std::string name = drawGenericObject(uname, domain);
 
         if (currentStyle.mode & DisplayStyle::GRID) {
-          newLineList("Domain_{i}");
+          newLineList(name + "_grid");
           
           // Faces YX
           for (auto z = domain.myLowerBound[2]; z <= domain.myUpperBound[2]; z++) {
@@ -364,13 +364,13 @@ namespace DGtal {
       }
       
       template<typename Obj, typename Cont>
-      std::string draw(const DigitalSetByAssociativeContainer<Obj, Cont>& set) {
-        return drawGenericObject("Set_{i}", set);
+      std::string draw(const DigitalSetByAssociativeContainer<Obj, Cont>& set, const std::string& name = "Set_{i}") {
+        return drawGenericObject(name, set);
       }
 
       template<typename D, typename T>
-      std::string draw(const ImageContainerBySTLVector<D, T>& image) {
-        return drawImage(image);
+      std::string draw(const ImageContainerBySTLVector<D, T>& image, const std::string& name = "Image_{i}") {
+        return drawImage(name, image);
       }
       
       template <typename TImageContainer,
@@ -379,7 +379,7 @@ namespace DGtal {
                 typename TNewValue,
                 typename TFunctorV,
                 typename TFunctorVm1>
-      std::string draw(const ImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV, TFunctorVm1>& adapter) {
+      std::string draw(const ImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV, TFunctorVm1>& adapter, const std::string& name = "Image_{i}") {
         return drawImage(adapter);
       }
             
@@ -388,13 +388,13 @@ namespace DGtal {
                 typename TFunctorD,
                 typename TNewValue,
                 typename TFunctorV>
-      std::string draw(const ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV>& adapter) {
+      std::string draw(const ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV>& adapter, const std::string& name = "Image_{i}") {
         return drawImage(adapter);
       }
 
       template<typename Adj, typename Set>
-      std::string draw(const DGtal::Object<Adj, Set>& obj) {
-        std::string name = drawGenericObject("Object_{i}", obj);
+      std::string draw(const DGtal::Object<Adj, Set>& obj, const std::string& uname = "Object_{i}") {
+        std::string name = drawGenericObject(uname, obj);
 
         // Draw adjacency if needed
         if (currentStyle.mode & DisplayStyle::DrawMode::ADJACENCIES) {
@@ -418,9 +418,12 @@ namespace DGtal {
       }
       
       template<typename T, typename Type>
-      std::string draw(const WithProperty<T, Type>& props) {
-        std::string name = draw(props.object);
-        std::cout << name << std::endl;
+      std::string draw(const WithProperty<T, Type>& props, const std::string& uname = "") {
+        std::string name;
+        if (uname.empty())
+          name = draw(props.object);
+        else
+          name = draw(props.object, uname);
 
         if constexpr (std::is_scalar_v<Type>) {
           auto& loc = data[name].scalarProperties[props.name];
@@ -440,13 +443,13 @@ namespace DGtal {
         return name;
       }
       
-      std::string draw(const ClippingPlane& plane) {
+      std::string draw(const ClippingPlane& plane, const std::string& name = "") {
         planes.push_back(plane);
         planes.back().style = currentStyle;
         return "";
       }
 
-      std::string draw(const DGtal::Color& color) {
+      std::string draw(const DGtal::Color& color, const std::string& name = "") {
         drawColor(color);
         return "";
       }
@@ -512,8 +515,8 @@ namespace DGtal {
       }
 
       template<typename T>
-      std::string drawImage(const T& image) {
-        std::string name = newCubeList("Image_{i}");
+      std::string drawImage(const std::string& uname, const T& image) {
+        std::string name = newCubeList(uname);
 
         size_t total = image.domain().size();
 
@@ -536,19 +539,24 @@ namespace DGtal {
         return name;
       }
 
-      std::string addKCell(const Vector& rp, bool xodd, bool yodd, bool zodd, bool hasSign, bool sign) {
+      std::string addKCell(std::string uname, const Vector& rp, bool xodd, bool yodd, bool zodd, bool hasSign, bool sign) {
         std::string name = currentName;
+        static const std::string TOKEN = "{d}";
         static const double scale = 0.9;
         static const double shift = 0.2;
-        static const double smallScale = scale * scale;
+        static const double smallScale = 0.3;
         static const double smallShift = 2 * shift;
 
         const unsigned int dim = xodd + yodd + zodd;
-        
+
+        auto tokenPos = uname.find(TOKEN);
+        if (tokenPos != std::string::npos) 
+          uname.replace(uname.find(TOKEN), TOKEN.size() - 1, std::to_string(dim));
+
         switch(dim) {
           case 0: {
             if (shouldCreateNewList(1)) {
-              name = newBallList("KCell_{i}_d0");
+              name = newBallList(uname);
               currentData->style.width *= scale;
             }
 
@@ -557,7 +565,7 @@ namespace DGtal {
           break;
           case 1: {
             if (shouldCreateNewList(2)) {
-              name = newLineList("KCell_{i}_d1");
+              name = newLineList(uname);
               currentData->style.width *= scale;
             }
 
@@ -569,7 +577,7 @@ namespace DGtal {
           case 2: {
             const unsigned int orientation = (!xodd ? 0 : (!yodd ? 1 : 2));
             if (shouldCreateNewList(8)) {
-              name = newVolumetricList("KCell_{i}_d2");
+              name = newVolumetricList(uname);
               currentData->style.width *= scale;
             }
             
@@ -580,12 +588,12 @@ namespace DGtal {
             if (hasSign && sign) 
               std::swap(shift1, shift2);
 
-            drawutils::insertPrism(currentData->vertices, orientation, scale, smallScale, shift1, shift2);
+            drawutils::insertPrism(currentData->vertices, rp, orientation, scale, smallScale, shift1, shift2);
           }
           break;
           case 3: {
-            if (shouldCreateNewList(1)) {
-              name = newCubeList("KCell_{i}_d3");
+            if (shouldCreateNewList(8)) {
+              name = newCubeList(uname);
               currentData->style.width *= scale;
             }
 
@@ -607,6 +615,7 @@ namespace DGtal {
           return false;
         
         currentData = &it->second;
+        currentName = name;
         return true;
       }
       

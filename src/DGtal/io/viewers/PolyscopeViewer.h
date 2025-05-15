@@ -65,6 +65,12 @@ namespace DGtal {
     public:
       PolyscopeViewer() : Display<Space, KSpace>() {
         polyscope::init();
+        polyscope::state::userCallback = [this]() { this->polyscopeCallback(); };
+      }
+
+      PolyscopeViewer(const KSpace& k) : Display<Space, KSpace>(k) {
+        polyscope::init();
+        polyscope::state::userCallback = [this]() { this->polyscopeCallback(); };
       }
       
       void show() {
