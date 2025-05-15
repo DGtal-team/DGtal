@@ -211,15 +211,15 @@ namespace DGtal {
 
 
     template < typename Space = Z3i::Space, typename KSpace = Z3i::KSpace>
-    class Display {
+    class Display3D {
     public:
-      Display(const KSpace& space) :
+      Display3D(const KSpace& space) :
         kspace(space), 
         cellEmbedder(kspace),
         sCellEmbedder(kspace)
       { }
 
-      Display() : Display(KSpace()) {}
+      Display3D() : Display3D(KSpace()) {}
 
       using Point = typename Space::Point;
       using KCell = typename KSpace::Cell;
@@ -231,23 +231,26 @@ namespace DGtal {
       using SCellEmbedder = CanonicSCellEmbedder<KSpace>;
 
       struct Callback{
+        virtual void OnAttach(void* viewer) {};
         virtual void OnUI() {};
         virtual void OnClick(const std::string& name, size_t index, const DisplayData<Vector>& data, void* viewerData) {};
+
+        Display3D<Space, KSpace>* viewer;
       };
+
     public:
-      void debug() {
-        for (const auto& [name, ddata] : data) {
-          std::cout << name << std::endl;
-          std::cout << "\tVertices: " << ddata.vertices.size() << std::endl;
-          std::cout << "\tSize: " << ddata.elementSize << std::endl;
-          std::cout << "\tMode: " << ddata.style.mode << std::endl;
-          std::cout << "\tProperties:" << std::endl;
-          std::cout << "\t\tScalar: " << ddata.scalarProperties.size() << std::endl;
-          std::cout << "\t\tVector: " << ddata.vectorProperties.size() << std::endl;
-          std::cout << "\t\tColor: " << ddata.colorProperties.size() << std::endl;
-        }
+      virtual void renderNewData() = 0;
+      virtual void clearView() = 0;
+      virtual void show() = 0;
+
+      virtual void clear() {
+        toRender.clear();
+        planes.clear();
+        data.clear();
+
+        currentData = nullptr;
+        currentName = "";
       }
-    public:
 
       template<typename Obj>
       Display& operator<<(const Obj& obj) {
@@ -257,6 +260,7 @@ namespace DGtal {
 
       void setCallback(Callback* callback) {
         this->callback = callback;
+        this->callback->viewer = this;
       }
      
       std::string draw(const Point& p, const std::string& uname = "Point_{i}") {
@@ -543,9 +547,9 @@ namespace DGtal {
         std::string name = currentName;
         static const std::string TOKEN = "{d}";
         static const double scale = 0.9;
-        static const double shift = 0.2;
+        static const double shift = 0.05;
         static const double smallScale = 0.3;
-        static const double smallShift = 2 * shift;
+        static const double smallShift = 0.15;
 
         const unsigned int dim = xodd + yodd + zodd;
 
@@ -680,6 +684,7 @@ namespace DGtal {
 
         currentData = &data.emplace(newName, std::move(newData)).first->second;
         currentName = newName;
+        toRender.push_back(currentName);
         return newName;
       }
     
@@ -697,6 +702,7 @@ namespace DGtal {
       SCellEmbedder sCellEmbedder;
 
       Callback* callback = nullptr;
+      std::vector<std::string> toRender;
 
       std::string currentName = "";
       DisplayData<Vector>* currentData = nullptr;

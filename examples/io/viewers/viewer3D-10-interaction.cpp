@@ -106,7 +106,7 @@ int main( int argc, char** argv )
 
   std::string s1name = viewer.draw(surfel1, "Surfel 1");
   std::string s2name = viewer.draw(surfel2, "Surfel 2");
-  std::string s3name = viewer.draw(surfel3, "Surfel 3");
+  viewer << Point(0, 0, 1) << Point(1, 1, 2);
  
   viewer.show();
   return 0;
