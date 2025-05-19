@@ -71,8 +71,7 @@ fullConvexityAnalysis3D 2 ${DGTAL}/examples/samples/Al.100.vol
 #include <iostream>
 #include <queue>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -206,7 +205,7 @@ struct MultiScaleAnalyzer {
                   ImagePtr bimage )
   {
     auto prev_geometry
-      = MultiScaleAnalyzer< KSpace, N-1>::multiscale_run( pts );
+      = MultiScaleAnalyzer< KSpace, N-1>::multiscale_run( aK, pts, bimage );
     trace.info() << "------- Analyzing scale " << N << " --------" << std::endl;
     std::vector< int > geom( prev_geometry.size() );
     for ( int i = 0; i < geom.size(); i++ )
@@ -230,7 +229,9 @@ struct MultiScaleAnalyzer< KSpace, 0 > {
   template < typename ImagePtr >
   static
   std::vector< Geometry >
-  multiscale_run( const std::vector<Point>& pts )
+  multiscale_run( const KSpace& aK,
+                  std::vector<Point> pts,
+                  ImagePtr bimage )
   {
     return std::vector< Geometry >( pts.size(), std::make_pair( 0, 0 ) );
   }
@@ -252,8 +253,6 @@ int main( int argc, char** argv )
   std::string fn= argv[ 2 ];
   int         m = argc > 3 ? atoi( argv[ 3 ] ) : 0;
   int         M = argc > 4 ? atoi( argv[ 4 ] ) : 255;
-
-  QApplication application(argc,argv);
 
   auto   params  = SH3::defaultParameters();
   
@@ -315,25 +314,21 @@ int main( int argc, char** argv )
           all_colors[ i ] = colors[ result[ j ] ];
         }
       SH3::saveOBJ( surface, SH3::RealVectors(), all_colors, "geom-cvx.obj" );
-      Viewer3D<> viewer;
-      viewer.setWindowTitle("fullConvexityAnalysis3D");
-      viewer.show();  
+      PolyscopeViewer viewer;
       int i = 0;
-      viewer << SetMode3D( dummy.className(), "Basic" );
       for ( auto s : (*surface) )
         {
-          viewer << CustomColors3D( all_colors[ i ], all_colors[ i ] )
+          viewer << all_colors[ i ]
                  << s;
           i++;
         }
-      viewer<< Viewer3D<>::updateDisplay;
-      application.exec();
+      viewer.show();  
     }
   else
     {
       trace.beginBlock ( "Multiscale analysis" );
       auto geometry =
-        MultiScaleAnalyzer< KSpace, 5 >::multiscale_run( points );
+        MultiScaleAnalyzer< KSpace, 5 >::multiscale_run( K, points, bimage );
       trace.endBlock();
       Color colors_planar[ 6 ] =
         { Color( 0, 255, 255, 255),
@@ -365,18 +360,14 @@ int main( int argc, char** argv )
       SH3::saveOBJ( surface, SH3::RealVectors(), all_colors, "geom-scale-cvx.obj" );
       SCell dummy;
       int i = 0;
-      Viewer3D<> viewer;
-      viewer.setWindowTitle("fullConvexityAnalysis3D");
-      viewer.show();  
-      viewer << SetMode3D( dummy.className(), "Basic" );
+      PolyscopeViewer<> viewer;
       for ( auto s : (*surface) )
         {
-          viewer << CustomColors3D( all_colors[ i ], all_colors[ i ] )
+          viewer << all_colors[ i ]
                  << s;
           i++;
         }
-      viewer<< Viewer3D<>::updateDisplay;
-      application.exec();
+      viewer.show();  
     }      
   return 0;
 }

@@ -47,8 +47,7 @@ This program outputs this image:
 
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
@@ -103,10 +102,7 @@ int main( int argc, char** argv )
   std::string inputFilename = examplesPath + "samples/Al.100.vol";
 
   //------------
-  QApplication application(argc,argv);
-  Viewer3D<> viewer;
-  viewer.setWindowTitle("simpleViewer");
-  viewer.show();
+  PolyscopeViewer<> viewer;
 
 
 
@@ -154,29 +150,25 @@ int main( int argc, char** argv )
   gradient.addColor(Color::Magenta);
   gradient.addColor(Color::Red);
 
-
-  viewer << SetMode3D( (*(domain.begin())).className(), "Paving" );
-
   for(Z3i::Domain::ConstIterator it = domain.begin(), itend=domain.end();
       it!=itend;
       ++it){
 
+    // Could be better with "WithProperty", but there is a filter that is 
+    // not easy to emulate with colormaps
     double valDist= dtL2( (*it) );
     Color c= gradient(valDist);
 
     if(dtL2(*it)<=30 && image(*it)>0){
-      viewer << CustomColors3D(Color((float)(c.red()),
-                                     (float)(c.green()),
-                                     (float)(c.blue(),205)),
-                               Color((float)(c.red()),
-                                     (float)(c.green()),
-                                     (float)(c.blue()),205));
+      viewer << Color((float)(c.red()),
+                      (float)(c.green()),
+                      (float)(c.blue(),205));
       viewer << *it ;
     }
   }
-  viewer<< Viewer3D<>::updateDisplay;
 
-  return application.exec();
+  viewer.show();
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

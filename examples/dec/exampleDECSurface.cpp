@@ -21,7 +21,7 @@
    \example dec/exampleDECSurface.cpp
 **/
 #include "DGtal/io/readers/VolReader.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/topology/SurfelAdjacency.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/topology/DigitalSurface.h"
@@ -32,8 +32,7 @@
 
 #include "ConfigExamples.h"
 
-typedef DGtal::Viewer3D<DGtal::Z3i::Space, DGtal::Z3i::KSpace> Viewer;
-typedef DGtal::Display3DFactory<DGtal::Z3i::Space, DGtal::Z3i::KSpace> DisplayFactory;
+typedef DGtal::PolyscopeViewer<DGtal::Z3i::Space, DGtal::Z3i::KSpace> Viewer;
 
 template <typename Predicate, typename Domain>
 struct FalseOutsideDomain
@@ -101,14 +100,12 @@ alcapone_3d()
 
     {
         Viewer* viewer = new Viewer(kspace);
-        viewer->show();
-        viewer->setWindowTitle("alcapone surface");
         for (DigitalSurface::ConstIterator si=digital_surface.begin(), se=digital_surface.end(); si!=se; si++)
         {
             const DGtal::Z3i::KSpace::SCell cell = *si;
             (*viewer) << cell;
         }
-        (*viewer) << Viewer::updateDisplay;
+        viewer->show();
     }
 
     trace.endBlock();
@@ -124,10 +121,9 @@ alcapone_3d()
 
     {
         Viewer* viewer = new Viewer(kspace);
-        viewer->show();
         viewer->setWindowTitle("alcapone calculus");
-        DisplayFactory::draw(*viewer, calculus);
-        (*viewer) << Viewer::updateDisplay;
+        (*viewer) << calculus;
+        viewer->show();
     }
 
     using DGtal::PRIMAL;
@@ -151,10 +147,9 @@ alcapone_3d()
 
     {
         Viewer* viewer = new Viewer(kspace);
-        viewer->show();
         viewer->setWindowTitle("alcapone poisson rho");
-        DisplayFactory::draw(*viewer, rho);
-        (*viewer) << Viewer::updateDisplay;
+        (*viewer) << rho;
+        viewer->show();
     }
 
     //! [alcapone_phi]
@@ -170,10 +165,8 @@ alcapone_3d()
 
     {
         Viewer* viewer = new Viewer(kspace);
+        (*viewer) << phi;
         viewer->show();
-        viewer->setWindowTitle("alcapone poisson phi");
-        DisplayFactory::draw(*viewer, phi);
-        (*viewer) << Viewer::updateDisplay;
     }
 
     trace.endBlock();
@@ -209,10 +202,8 @@ pyramid_3d()
 
     {
         Viewer* viewer = new Viewer(kspace);
-        viewer->show();
-        viewer->setWindowTitle("input set");
         (*viewer) << input_set;
-        (*viewer) << Viewer::updateDisplay;
+        viewer->show();
     }
 
     //! [surface_digital_surface]
@@ -243,14 +234,12 @@ pyramid_3d()
 
     {
         Viewer* viewer = new Viewer(kspace);
-        viewer->show();
-        viewer->setWindowTitle("digital surface");
         for (DigitalSurface::ConstIterator si=digital_surface.begin(), se=digital_surface.end(); si!=se; si++)
         {
             const DGtal::Z3i::KSpace::SCell cell = *si;
             (*viewer) << cell;
         }
-        (*viewer) << Viewer::updateDisplay;
+        viewer->show();
     }
 
     trace.endBlock();
@@ -266,10 +255,8 @@ pyramid_3d()
 
     {
         Viewer* viewer = new Viewer(kspace);
+        (*viewer) << calculus;
         viewer->show();
-        viewer->setWindowTitle("discrete exterior calculus");
-        DisplayFactory::draw(*viewer, calculus);
-        (*viewer) << Viewer::updateDisplay;
     }
 
     using DGtal::PRIMAL;
@@ -315,10 +302,8 @@ pyramid_3d()
 
 int main(int argc, char* argv[])
 {
-    QApplication app(argc, argv);
-
     //pyramid_3d();
     alcapone_3d();
 
-    return app.exec();
+    return 0;
 }

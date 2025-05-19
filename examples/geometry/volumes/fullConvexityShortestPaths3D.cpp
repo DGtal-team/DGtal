@@ -60,8 +60,7 @@ fullConvexityShortestPaths3D cps.vol 0 255 0.0
 #include <iostream>
 #include <queue>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/SimpleDistanceColorMap.h"
 #include "DGtal/shapes/Shapes.h"
@@ -110,10 +109,7 @@ int main( int argc, char** argv )
   int         M = argc > 3 ? atoi( argv[ 3 ] ) : 255; //< up for thresholding
   double    opt = argc > 4 ? atof( argv[ 4 ] ) : sqrt(3.0); //< exact (sqrt(3)) or inexact (0) computations
 
-  QApplication application(argc,argv);
-  Viewer3D<> viewer;
-  viewer.setWindowTitle("fullConvexityShortestPaths3D");
-  viewer.show();  
+  PolyscopeViewer<> viewer;
 
   // Set up shortcuts parameters.
   auto   params  = SH3::defaultParameters();
@@ -156,23 +152,18 @@ int main( int argc, char** argv )
                << std::endl;
 
   // Select a starting point.
-  typedef Viewer3D<> MViewer3D;
   DGtal::int32_t selected_surfels[ 2 ] = { 0, 0 };
+  typedef PolyscopeViewer<> MViewer3D;
   auto surfels = SH3::getSurfelRange ( surface );
   for ( int i = 0;  i < 2; i++ )
     {
       MViewer3D viewerCore( K );
-      viewerCore.show();
       Color colSurfel( 200, 200, 255, 255 );
       Color colStart( 255, 0, 0, 255 );
-      DGtal::int32_t name = 0;
-      viewerCore << SetMode3D( surfels[ 0 ].className(), "Basic");
-      viewerCore.setFillColor( colSurfel );
-      for ( auto && s : surfels ) viewerCore << SetName3D( name++ ) << s;
-      viewerCore << SetSelectCallback3D( reaction, &selected_surfels[ i ],
-                                         0, surfels.size() - 1 );
-      viewerCore << MViewer3D::updateDisplay;
-      application.exec();
+      viewerCore.drawColor( colSurfel );
+      for ( auto && s : surfels ) viewerCore << s;
+
+      viewerCore.show();
     }
   
   // Get selected surfel/point
@@ -211,42 +202,37 @@ int main( int argc, char** argv )
     const double      period = last_distance / nb_repetitions;
     SimpleDistanceColorMap< double > cmap( 0.0, period, false );
     MViewer3D viewerCore;
-    viewerCore.show();
     Color colSurfel( 200, 200, 255, 128 );
     Color colStart( 255, 0, 0, 128 );
 
-    viewerCore.setUseGLPointForBalls(true);
     for ( auto i = 0; i < points.size(); ++i )
       {
         const double d_s = SP.distance( i );
         Color c_s        = cmap( fmod( d_s, period ) );
-        viewerCore.setFillColor( c_s );
-        viewerCore.addBall( RealPoint( points[ i ][ 0 ],
+        viewerCore.drawColor( c_s );
+        viewerCore.drawBall( RealPoint( points[ i ][ 0 ],
                                        points[ i ][ 1 ],
-                                       points[ i ][ 2 ] ), 12.0 );
+                                       points[ i ][ 2 ] ) );
       }
 
     // JOL: Left if you wish to display it as a surface, and to display paths.
     
-    // auto surfels = SH3::getSurfelRange ( surface );
-    // viewerCore << SetMode3D( surfels[ 0 ].className(), "Basic");
-    // for ( auto && s : surfels )
-    //   {
-    //     const double d_s = SP.distance( surfel2idx[ s ] );
-    //     Color c_s        = cmap( fmod( d_s, period ) );
-    //     viewerCore.setFillColor( c_s );
-    //     viewerCore << s;
-    //   }
-    // viewerCore.setFillColor( colStart );
-    // viewerCore.setLineColor( Color::Green );
-    // viewerCore << s;
-    // for ( Index i = 0; i < SP.size(); i++ ) {
-    //   Point p1 = SP.point( i );
-    //   Point p2 = SP.point( SP.ancestor( i ) );
-    //   viewerCore.addLine( p1, p2, 1.0 );
-    // }
-    viewerCore << MViewer3D::updateDisplay;
-    application.exec();
+    auto surfels = SH3::getSurfelRange ( surface );
+    for ( auto && s : surfels )
+      {
+        const double d_s = SP.distance( surfel2idx[ s ] );
+        Color c_s        = cmap( fmod( d_s, period ) );
+        viewerCore.drawColor( c_s );
+        viewerCore << s;
+      }
+    viewerCore.drawColor( colStart );
+    viewerCore.drawColor( Color::Green );
+    for ( Index i = 0; i < SP.size(); i++ ) {
+      Point p1 = SP.point( i );
+      Point p2 = SP.point( SP.ancestor( i ) );
+      viewerCore.drawLine( p1, p2 );
+    }
+    viewerCore.show();
   }
 
   // (II) Extracts a shortest path between two points.
@@ -284,10 +270,8 @@ int main( int argc, char** argv )
     const double      period = last_distance / nb_repetitions;
     SimpleDistanceColorMap< double > cmap( 0.0, period, false );
     MViewer3D viewerCore;
-    viewerCore.show();
     Color colSurfel( 200, 200, 255, 128 );
     Color colStart( 255, 0, 0, 128 );
-    viewerCore.setUseGLPointForBalls(true);
     for ( auto i = 0; i < points.size(); ++i )
       {
         const double d_s0 = SP0.isVisited( i ) ? SP0.distance( i ) : SP0.infinity();
@@ -296,20 +280,20 @@ int main( int argc, char** argv )
         Color c_s        = ( d_s != SP0.infinity() )
           ? cmap( fmod( d_s, period ) )
           : Color::Black;
-        viewerCore.setFillColor( c_s );
-        viewerCore.addBall( RealPoint( points[ i ][ 0 ],
+        viewerCore.drawColor( c_s );
+        viewerCore.drawBall( RealPoint( points[ i ][ 0 ],
                                        points[ i ][ 1 ],
-                                       points[ i ][ 2 ] ), 12 );
+                                       points[ i ][ 2 ] ) );
       }
-    viewerCore.setLineColor( Color::Green );
+
+    viewerCore.drawColor( Color::Green );
     for ( auto i = 1; i < Q.size(); i++ )
       {
         Point p1_ = TC.point( Q[ i-1 ] );
         Point p2_ = TC.point( Q[ i   ] );
-        viewerCore.addLine( p1_, p2_, 18.0 );
+        viewerCore.drawLine( p1_, p2_ );
       }
-    viewerCore << MViewer3D::updateDisplay;
-    application.exec();
+    viewerCore.show();
   }
 
   // (III) Extracts multiple shortest paths between many sources and two targets.
@@ -325,30 +309,27 @@ int main( int argc, char** argv )
   // Display them.
   {
     MViewer3D viewerCore;
-    viewerCore.show();
     Color colSurfel( 200, 200, 255, 128 );
     Color colStart( 255, 0, 0, 128 );
-    viewerCore.setUseGLPointForBalls(true);
     for ( auto i = 0; i < points.size(); ++i )
       {
-        viewerCore.setFillColor( Color( 150, 150, 150, 255 ) );
-        viewerCore.addBall( RealPoint( points[ i ][ 0 ],
+        viewerCore.drawColor( Color( 150, 150, 150, 255 ) );
+        viewerCore.drawBall( RealPoint( points[ i ][ 0 ],
                                        points[ i ][ 1 ],
-                                       points[ i ][ 2 ] ), 12 );
+                                       points[ i ][ 2 ] ) );
       }
-    viewerCore.setLineColor( Color::Green );
+    viewerCore.drawColor( Color::Green );
     for ( auto path : paths )
       {
         for ( auto i = 1; i < path.size(); i++ )
           {
             Point p1_ = TC.point( path[ i-1 ] );
             Point p2_ = TC.point( path[ i   ] );
-            viewerCore.addLine( p1_, p2_, 18.0 );
+            viewerCore.drawLine( p1_, p2_ );
           }
         trace.info() << "length=" << TC.length( path ) << std::endl;
       }
-    viewerCore << MViewer3D::updateDisplay;
-    application.exec();
+    viewerCore.show();
   }
   
   return 0;

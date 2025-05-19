@@ -28,12 +28,12 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
+///#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/geometry/tools/SphericalAccumulator.h"
-#include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/io/boards/Board3D.h"
 /////////////////////ddzad//////////////////////////////////////////////////////////
 
 using namespace std;
@@ -45,8 +45,6 @@ using namespace Z3i;
 ///////////////////////////////////////////////////////////////////////////////
 bool testSphericalViewer(int argc, char **argv)
 {
-  QApplication application(argc,argv);
-
   trace.beginBlock ( "Testing Spherical Accumulator Viewer..." );
 
   typedef Z3i::RealVector Vector;
@@ -59,17 +57,10 @@ bool testSphericalViewer(int argc, char **argv)
               (1+10.0*(rand()-RAND_MAX/2))/(double)RAND_MAX,
               (1+10.0*(rand()-RAND_MAX/2))/(double)RAND_MAX));
 
-  Viewer3D<> viewer;
-  Board3D<> board;
-  viewer.show();
+  PolyscopeViewer<> viewer;
   Vector a,b,c,d;
   viewer << accumulator;
   
-  
-  board << accumulator;
-  board.saveOBJ("testSpherical.obj");
-  
-
   trace.info() << "Bin values: ";
   for(SphericalAccumulator<Vector>::ConstIterator it=accumulator.begin(), itend=accumulator.end();
       it != itend;
@@ -78,16 +69,13 @@ bool testSphericalViewer(int argc, char **argv)
   trace.info() << std::endl;
   trace.info() << accumulator<<std::endl;
 
-  viewer << Viewer3D<>::updateDisplay;
-  bool res = application.exec();
-  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+  trace.emphase() << "APassed." << endl;
   trace.endBlock();
-  return res ? 0 : 1;
+  viewer.show();
+  return 1;
 }
 bool testSphericalViewerInteger(int argc, char **argv)
 {
-  QApplication application(argc,argv);
-
   trace.beginBlock ( "Testing Spherical Accumulator Viewer  with Integer numbers..." );
 
   typedef Z3i::Vector Vector;
@@ -100,10 +88,9 @@ bool testSphericalViewerInteger(int argc, char **argv)
                                       (1+(rand()-RAND_MAX/2)),
                                       (1+(rand()-RAND_MAX/2))));
 
-  Viewer3D<> viewer;
-  viewer.show();
-  Vector a,b,c,d;
-  Display3DFactory<Space,KSpace>::draw(viewer,accumulator, Z3i::RealVector(1.0,1.0,1.0), 3.0);
+  PolyscopeViewer<> viewer;
+  viewer << accumulator;
+  // Display3DFactory<Space,KSpace>::draw(viewer,accumulator, Z3i::RealVector(1.0,1.0,1.0), 3.0);
 
     trace.info() << "Bin values: ";
   for(SphericalAccumulator<Vector>::ConstIterator it=accumulator.begin(), itend=accumulator.end();
@@ -113,11 +100,10 @@ bool testSphericalViewerInteger(int argc, char **argv)
   trace.info() << std::endl;
   trace.info() << accumulator<<std::endl;
 
-  viewer << Viewer3D<>::updateDisplay;
-  bool res = application.exec();
-  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+  trace.emphase() << "Passed." << endl;
   trace.endBlock();
-  return res ? 0 : 1;
+  viewer.show();
+  return 1;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

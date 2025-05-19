@@ -33,8 +33,7 @@
 
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/io/readers/VolReader.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/images/ImageSelector.h"
@@ -136,29 +135,27 @@ int main( int argc, char** argv )
 
   //! [volBreadthFirstTraversal-DisplayingSurface]
   trace.beginBlock( "Displaying surface in Viewer3D." );
-  QApplication application(argc,argv);
-  Viewer3D<> viewer;
-  viewer.show();
-  viewer << SetMode3D( domain.className(), "BoundingBox" )
-         << domain;
+  PolyscopeViewer<> viewer;
+  viewer << domain;
+
   Cell dummy;
   // Display frontier between 1 and 0.
   unsigned int nbSurfels10 = 0;
-  viewer << CustomColors3D( Color::Red, Color::Red );
+  viewer << Color::Red;
   for ( Frontier::ConstIterator
           it = frontier10.begin(), it_end = frontier10.end();
         it != it_end; ++it, ++nbSurfels10 )
     viewer << *it;
   // Display frontier between 2 and 0.
   unsigned int nbSurfels20 = 0;
-  viewer << CustomColors3D( Color::Yellow, Color::Yellow );
+  viewer << Color::Yellow;
   for ( Frontier::ConstIterator
           it = frontier20.begin(), it_end = frontier20.end();
         it != it_end; ++it, ++nbSurfels20 )
     viewer << *it;
   // Display boundary of 3.
   unsigned int nbSurfels3 = 0;
-  viewer << CustomColors3D( Color( 255, 130, 15 ), Color( 255, 130, 15 ) );
+  viewer << Color( 255, 130, 15 );
   for ( Boundary::ConstIterator
           it = boundary3.begin(), it_end = boundary3.end();
         it != it_end; ++it, ++nbSurfels3 )
@@ -166,8 +163,8 @@ int main( int argc, char** argv )
   trace.info() << "nbSurfels10 = " << nbSurfels10
                << ", nbSurfels20 = " << nbSurfels20
                << ", nbSurfels3 = " << nbSurfels3 << std::endl;
-  viewer << Viewer3D<>::updateDisplay;
   trace.endBlock();
-  return application.exec();
+  viewer.show();
+  return 0;
   //! [volBreadthFirstTraversal-DisplayingSurface]
 }

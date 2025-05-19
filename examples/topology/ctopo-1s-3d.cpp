@@ -42,9 +42,8 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -56,17 +55,14 @@ using namespace DGtal::Z3i;
 int main( int argc, char** argv )
 {
   // for 3D display with Viewer3D
-  QApplication application(argc,argv);
-
   KSpace K;
   Point plow(0,0,0);
   Point pup(3,3,2);
   Domain domain( plow, pup );
   K.init( plow, pup, true );
 
-  typedef Viewer3D<Space, KSpace> MyViewer;
+  typedef PolyscopeViewer<Space, KSpace> MyViewer;
   MyViewer viewer(K);
-  viewer.show();
   //viewer << SetMode3D( domain.className(), "Paving" );
 
   SCell ptlow = K.sPointel( plow ); // pointel (0*2,0*2, 0*2)
@@ -121,14 +117,7 @@ int main( int argc, char** argv )
   SCell vox2 = K.sCell( Point( 1, 1, 3 ) ,false ); // voxel (2*1+1,2*1+1,2*3+1)
   viewer << vox1 << vox2;
 
-
-  viewer << CameraPosition(-2.9, 2.96, 2.64)
-   << CameraDirection(0.6, -0.43, 0.65)
-   << CameraUpVector(0.32, 0.900, 0.29);
-
-  viewer<< MyViewer::updateDisplay;
-  return application.exec();
-
+  viewer.show();
   return 0;
 }
 ///////////////////////////////////////////////////////////////////////////////

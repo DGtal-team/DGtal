@@ -43,7 +43,6 @@
 //! [MeshVoxelizerInc]
 #include "DGtal/shapes/MeshVoxelizer.h"
 //! [MeshVoxelizerInc]
-#include "DGtal/io/boards/Board3D.h"
 #include "DGtal/io/writers/MeshWriter.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -93,15 +92,6 @@ int main( )
   trace.info()<<"Got "<< outputSet.size() << " voxels."<<std::endl;
   //! [MeshVoxelizerDig]
 
-  //! [MeshVoxelizerExport]
-  Board3D<> board;
-  for(auto voxel : outputSet)
-    board << voxel;
-  board.saveOBJ("voxelizedCube.obj");
-  //! [MeshVoxelizerExport]
-  
-  
-  
   trace.endBlock();
   return 0;
 }

@@ -49,7 +49,7 @@
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantVolumeEstimator.h"
 
 // Drawing
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -153,11 +153,8 @@ int main( int argc, char** argv )
         }
     }
 
-    QApplication application( argc, argv );
-    typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
+    typedef PolyscopeViewer<Z3i::Space, Z3i::KSpace> Viewer;
     Viewer viewer( KSpaceShape );
-    viewer.setWindowTitle("example Integral Invariant 3D");
-    viewer.show();
 
     typedef GradientColorMap< Value > Gradient;
     Gradient cmap_grad( min, max );
@@ -169,19 +166,17 @@ int main( int argc, char** argv )
     abegin = range2.begin();
 
     Z3i::KSpace::Cell dummy_cell;
-    viewer << SetMode3D( dummy_cell.className(), "Basic" );
 
+    viewer.allowReuseList = true;
     for ( unsigned int i = 0; i < results.size(); ++i )
-    {
-        viewer << CustomColors3D( Color::Black, cmap_grad( results[ i ] ))
-               << KSpaceShape.unsigns( *abegin );
+    {   
+        viewer << WithProperty(KSpaceShape.unsigns(*abegin), "Curvature", results[i]);
         ++abegin;
     }
 
-    viewer << Viewer3D<>::updateDisplay;
-
     trace.endBlock();
-    return application.exec();
+    viewer.show();
+    return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

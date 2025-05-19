@@ -37,19 +37,30 @@
 
 #include <Eigen/Geometry>
 
+#include "DGtal/helpers/StdDefs.h"
+
+#include "DGtal/io/Color.h"
+#include "DGtal/kernel/CanonicEmbedder.h" 
+
+#include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/CanonicCellEmbedder.h"
 #include "DGtal/topology/CanonicSCellEmbedder.h"
+
+// Objects to draw
+#include "DGtal/base/ConstRangeAdapter.h"
+
+#include "DGtal/shapes/Mesh.h"
+
 #include "DGtal/topology/Object.h"
 
 #include "DGtal/images/ImageAdapter.h"
 #include "DGtal/images/ConstImageAdapter.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 
-#include "DGtal/kernel/CanonicEmbedder.h" 
-#include "DGtal/topology/CanonicCellEmbedder.h"
-#include "DGtal/topology/CanonicSCellEmbedder.h"
-#include "DGtal/helpers/StdDefs.h"
-#include "DGtal/io/Color.h"
+#include "DGtal/geometry/tools/SphericalAccumulator.h"
+
+#include "DGtal/geometry/curves/StandardDSS6Computer.h"
+#include "DGtal/geometry/curves/GridCurve.h"
 
 namespace DGtal {
     namespace drawutils {
@@ -113,6 +124,12 @@ namespace DGtal {
         }
       }
 
+      template<typename U, typename T>
+      void insertQuad(U& dest, T center, int orientation, double size) {
+        auto vertices = getAAQuadVertices(center, orientation, size);
+        dest.insert(dest.end(), vertices.begin(), vertices.end());
+      }
+
       template<typename T>
       std::array<T, 8> getPrism(
           T center, int orientation, 
@@ -165,7 +182,7 @@ namespace DGtal {
       size_t mode = static_cast<size_t>(DrawMode::DEFAULT);
     };
 
-    template<typename Vector>
+    template<typename RealPoint>
     struct DisplayData {
       std::size_t           elementSize; //< Size for each elements. If 0, elements may have variable size (ie. polygonal faces).
                                          // 1 -> Ball or Cube depending on DrawMode
@@ -173,12 +190,12 @@ namespace DGtal {
                                          // 0, 3, 4 -> Polygonal / Triangular / Quad mesh
                                          // 8 -> Volumetric mesh
       std::vector<std::vector<uint32_t>> indices;     //< Indices for each elements. Only used if elementSize is 0.
-      std::vector<Vector>   vertices;    //< Vertices of the object
+      std::vector<RealPoint>   vertices;    //< Vertices of the object
 
       Eigen::Affine3d transform = Eigen::Affine3d::Identity(); //< Transform (includes scale)
 
       DisplayStyle style;
-      std::map<std::string, std::vector<Vector>> vectorProperties;
+      std::map<std::string, std::vector<RealPoint>> vectorProperties;
       std::map<std::string, std::vector<double>> scalarProperties;
       std::map<std::string, std::vector<Color>>  colorProperties;
     };
@@ -224,7 +241,7 @@ namespace DGtal {
       using Point = typename Space::Point;
       using KCell = typename KSpace::Cell;
       using SCell = typename KSpace::SCell;
-      using Vector = typename Space::RealPoint ;
+      using RealPoint = typename Space::RealPoint ;
 
       using Embedder = CanonicEmbedder<Space>;
       using CellEmbedder = CanonicCellEmbedder<KSpace>;
@@ -233,7 +250,7 @@ namespace DGtal {
       struct Callback{
         virtual void OnAttach(void* viewer) {};
         virtual void OnUI() {};
-        virtual void OnClick(const std::string& name, size_t index, const DisplayData<Vector>& data, void* viewerData) {};
+        virtual void OnClick(const std::string& name, size_t index, const DisplayData<RealPoint>& data, void* viewerData) {};
 
         Display3D<Space, KSpace>* viewer;
       };
@@ -247,13 +264,12 @@ namespace DGtal {
         toRender.clear();
         planes.clear();
         data.clear();
-
-        currentData = nullptr;
-        currentName = "";
+        
+        noCurrentGroup();
       }
 
       template<typename Obj>
-      Display& operator<<(const Obj& obj) {
+      Display3D& operator<<(const Obj& obj) {
         draw(obj);
         return *this;
       }
@@ -262,10 +278,13 @@ namespace DGtal {
         this->callback = callback;
         this->callback->viewer = this;
       }
-     
+
       std::string draw(const Point& p, const std::string& uname = "Point_{i}") {
+        return draw(embedder.embed(p), uname);
+      }
+
+      std::string draw(const RealPoint& rp, const std::string& uname = "Point_{i}") {
         std::string name = currentName;
-        const auto rp = embedder.embed(p);
 
         if (currentStyle.mode &= DisplayStyle::BALLS) {
           if (shouldCreateNewList(1)) {
@@ -273,8 +292,7 @@ namespace DGtal {
           }
           
           currentData->vertices.push_back(rp);
-        }
-        else {
+        } else {
           if (shouldCreateNewList(8)) {
             name = newCubeList(uname);
           }
@@ -284,8 +302,68 @@ namespace DGtal {
         return name;
       }
       
+      std::string draw(const std::pair<RealPoint, RealPoint>& arrow, const std::string& uname = "Arrow_{i}") {
+        // Warning, this function draw arrows, not lines !
+        std::string name = currentName;
+        if (shouldCreateNewList(1)) {
+          name = newBallList(uname);
+          currentData->style.width = 0;
+        }
+        currentData->vertices.push_back(arrow.first);
+        currentData->vectorProperties["data"].push_back(arrow.second);
+        return "";
+      }
+
+      template<typename Range> 
+      std::string drawGenericRange(const Range& range, const std::string& uname) {
+        bool save = allowReuseList;
+
+        auto it = range.begin();
+
+        std::string name = currentName; 
+        allowReuseList = false; // Force new group !
+        if (uname.empty()) {
+          name = draw(*it);
+        } else {
+          name = draw(*it, uname);
+        }
+        allowReuseList = true; // Reuse group
+
+        for (++it; it != range.end(); ++it) {
+          draw(*it, name);
+        }
+
+        noCurrentGroup();
+        allowReuseList = save; 
+        return name;
+      }
+
+      template<typename A, typename B, typename C>
+      std::string draw(const ConstRangeAdapter<A, B, C> range, const std::string& uname = "") {
+        return drawGenericRange(range, uname);
+      }
+
+      template<typename A, typename B, typename C>
+      std::string draw(const ConstIteratorAdapter<A, B, C>& adapter, const std::string& uname = "") {
+        if (uname.empty()) {
+          return draw(*adapter);
+        }
+        // Use default value of draw
+        return draw(*adapter, uname);
+      }
+      
+      std::string draw(const GridCurve<KSpace>& curve, const std::string& uname = "GridCurve_{i}") {
+        return draw(curve.getSCellsRange(), uname);
+      }
+      std::string draw(const typename GridCurve<KSpace>::MidPointsRange& range, const std::string& uname = "MidPoints_{i}") {
+        return drawGenericRange(range, uname);
+      }
+      std::string draw(const typename GridCurve<KSpace>::ArrowsRange& range, const std::string& uname = "Arrows_{i}") {
+        return drawGenericRange(range, uname);
+      }
+
       std::string draw(const KCell& cell, const std::string& name = "KCell_{i}_{d}d") {
-        const Vector rp = cellEmbedder.embed(cell);
+        const RealPoint rp = cellEmbedder.embed(cell);
         
         const bool xodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[0]) & 1);
         const bool yodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[1]) & 1);
@@ -295,7 +373,7 @@ namespace DGtal {
       }
       
       std::string draw(const SCell& cell, const std::string& name = "SCell_{i}_{d}d") {
-        const Vector rp = sCellEmbedder.embed(cell);
+        const RealPoint rp = sCellEmbedder.embed(cell);
         
         const bool xodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[0]) & 1);
         const bool yodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[1]) & 1);
@@ -362,8 +440,64 @@ namespace DGtal {
               currentData->vertices.push_back(rp2);
             }
           }
-          currentData = nullptr;
         }
+
+        noCurrentGroup();
+        return name;
+      }
+    
+      template<typename Vec>
+      std::string drawPolygon(const std::vector<Vec>& vertices, const std::string& uname = "Polygon_{i}") {
+        std::string name = currentName;
+        if (shouldCreateNewList(0) /* means variable number of vertices */) {
+          name = newPolygonList(uname);
+        }
+        
+        std::vector<unsigned> indices;
+        indices.reserve(vertices.size());
+
+        size_t count = currentData->vertices.size();
+        for (const auto& vert : vertices) {
+          currentData->vertices.push_back(vert);
+          indices.push_back(count++);
+        }
+        currentData->indices.push_back(std::move(indices));
+        return name;
+      }
+
+      std::string drawBall(const RealPoint& c, const std::string& uname = "Ball_{i}") {
+        std::string name = currentName;
+        if (shouldCreateNewList(1)) {
+          name = newBallList(uname);
+        }
+        currentData->vertices.push_back(c);
+        return name;
+      }
+      
+      std::string drawLine(const RealPoint& a, const RealPoint& b, const std::string& uname = "Line_{i}") {
+        std::string name = currentName;
+        if (shouldCreateNewList(2)) {
+          name = newLineList(uname);
+        }
+
+        currentData->vertices.push_back(a);
+        currentData->vertices.push_back(b);
+        return name;
+      }
+
+      std::string drawQuad(const RealPoint& a, const RealPoint& b, const RealPoint& c, const RealPoint& d, const std::string& uname = "Quad_{i}") {
+        // Not a draw specialization as it would be confusing with a drawing call of
+        // an array of points, or other primitives
+        std::string name = currentName;
+        if (shouldCreateNewList(4)) {
+          name = newQuadList(uname);
+        }
+
+        currentData->vertices.push_back(a);
+        currentData->vertices.push_back(b);
+        currentData->vertices.push_back(c);
+        currentData->vertices.push_back(d);
+
         return name;
       }
       
@@ -384,7 +518,7 @@ namespace DGtal {
                 typename TFunctorV,
                 typename TFunctorVm1>
       std::string draw(const ImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV, TFunctorVm1>& adapter, const std::string& name = "Image_{i}") {
-        return drawImage(adapter);
+        return drawImage(name, adapter);
       }
             
       template <typename TImageContainer,
@@ -393,7 +527,7 @@ namespace DGtal {
                 typename TNewValue,
                 typename TFunctorV>
       std::string draw(const ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV>& adapter, const std::string& name = "Image_{i}") {
-        return drawImage(adapter);
+        return drawImage(name, adapter);
       }
 
       template<typename Adj, typename Set>
@@ -407,7 +541,7 @@ namespace DGtal {
           for (auto it = obj.begin(); it != obj.end(); ++it) {
               auto neig = obj.properNeighborhood(*it);
 
-              const Vector p = embedder.embed(*it);
+              const RealPoint p = embedder.embed(*it);
               for (auto it2 = neig.begin(); it2 != neig.end(); ++it2) {
                 auto p2 = embedder.embed(*it2);
 
@@ -415,9 +549,8 @@ namespace DGtal {
                 currentData->vertices.push_back(p2);
               }
           }
-
-          currentData = nullptr;
         }
+        noCurrentGroup();
         return name;
       }
       
@@ -433,7 +566,7 @@ namespace DGtal {
           auto& loc = data[name].scalarProperties[props.name];
           loc.insert(loc.end(), props.values.begin(), props.values.end());
         }
-        else if constexpr(std::is_same_v<Vector, Type>) {
+        else if constexpr(std::is_same_v<RealPoint, Type>) {
           auto& loc = data[name].vectorProperties[props.name];
           loc.insert(loc.end(), props.values.begin(), props.values.end());
         }
@@ -447,10 +580,94 @@ namespace DGtal {
         return name;
       }
       
+      template <typename Pt>
+      std::string draw(const Mesh<Pt>& mesh, const std::string& uname = "Mesh_{i}") {
+        // A mesh may have quad faces, therefore we render it as a polygonal mesh
+        std::string name = newPolygonList(uname);
+
+        currentData->vertices.reserve(mesh.nbVertex());
+
+        currentData->indices.reserve(mesh.nbFaces());
+        currentData->colorProperties["color"].reserve(mesh.nbFaces());
+
+        // Can not insert directly vectors because of type mismatch
+        for (auto it = mesh.vertexBegin(); it != mesh.vertexEnd(); ++it) {
+          currentData->vertices.push_back(*it);
+        }
+        for (size_t i = 0; i < mesh.nbFaces(); ++i) {
+          const auto& face = mesh.getFace(i);
+          std::vector<unsigned int> fIdx;
+          fIdx.reserve(face.size());
+          for (auto i : face) {
+            fIdx.push_back(i);
+          }
+          currentData->indices.push_back(std::move(fIdx));
+          currentData->colorProperties["color"].push_back(mesh.getFaceColor(i));
+        }
+        noCurrentGroup();
+        return name;
+      }
+
+      template<typename It, typename Int, int Con>
+      std::string draw(const StandardDSS6Computer<It, Int, Con>& computer, const std::string& uname = "Computer_{i}") {
+        std::string name;
+        if (currentStyle.mode & DisplayStyle::BALLS) {
+          name = newBallList(uname);
+
+          for (auto it = computer.begin(); it != computer.end(); ++it) {
+            const auto rp = embedder.embed(*it);
+            currentData->vertices.push_back(rp);
+          }
+        } else { // Default mode
+          name = newLineList(uname);
+
+          auto it = computer.begin();
+          RealPoint a = embedder.embed(*it);
+          RealPoint b = a;
+
+          for (++it; it != computer.end(); ++it) {
+            b = embedder.embed(*it);
+            currentData->vertices.push_back(a);
+            currentData->vertices.push_back(b);
+
+            std::swap(a, b);
+          }
+        }
+        
+        noCurrentGroup();
+        return name;
+      }
+      
       std::string draw(const ClippingPlane& plane, const std::string& name = "") {
         planes.push_back(plane);
         planes.back().style = currentStyle;
         return "";
+      }
+
+    
+      template<typename T>
+      std::string draw(const SphericalAccumulator<T> accumulator, const std::string& uname = "SphericalAccumulator_{i}") {
+        std::string name = newQuadList(uname);
+
+        typedef typename SphericalAccumulator<T>::Size Size;
+        typedef typename SphericalAccumulator<T>::RealVector Vec;
+
+        Size i, j;
+        Vec a, b, c, d;
+        for (auto it = accumulator.begin(); it != accumulator.end(); ++it) {
+          accumulator.binCoordinates(it, i, j);
+
+          if (accumulator.isValidBin(i, j)) {
+            accumulator.getBinGeometry(i, j, a, b, c, d);
+
+            currentData->vertices.push_back(a);
+            currentData->vertices.push_back(b);
+            currentData->vertices.push_back(c);
+            currentData->vertices.push_back(d);
+            currentData->scalarProperties["value"].push_back(accumulator.count(i, j));
+          }
+        }
+        return name;
       }
 
       std::string draw(const DGtal::Color& color, const std::string& name = "") {
@@ -476,6 +693,10 @@ namespace DGtal {
         if (toggle) currentStyle.mode |=  DisplayStyle::GRID;
         else        currentStyle.mode &= ~DisplayStyle::GRID;
       }
+      
+      void defaultStyle() {
+        currentStyle.mode = DisplayStyle::DEFAULT;
+      }
 
       void drawAsPaving() {
         currentStyle.mode &= ~DisplayStyle::BALLS;
@@ -484,7 +705,7 @@ namespace DGtal {
 
       void drawAsBalls() {
         currentStyle.mode &= ~DisplayStyle::PAVING;
-        currentStyle.mode |=  DisplayStyle::GRID;
+        currentStyle.mode |=  DisplayStyle::BALLS;
       }
 
     private:
@@ -499,8 +720,7 @@ namespace DGtal {
             const auto rp = embedder.embed(*it);
             currentData->vertices.push_back(rp);
           }
-        }
-        else {
+        } else {
           newName = newCubeList(name);
         
           currentData->vertices.reserve(obj.size() * 8);
@@ -514,7 +734,7 @@ namespace DGtal {
           }
         }
 
-        currentData = nullptr;
+        noCurrentGroup();
         return newName;
       }
 
@@ -526,15 +746,17 @@ namespace DGtal {
 
         auto it = image.domain().begin();
         auto itend = image.domain().end();
+        constexpr size_t dim = T::Domain::Space::dimension;
         
         currentData->vertices.reserve(8 * total);
         currentData->scalarProperties["value"].reserve(total);
         for(; it != itend; ++it) {
-          if constexpr (false) {
+          if constexpr (dim == 3) {
             auto rp = embedder.embed(*it);
             currentData->scalarProperties["value"].push_back(image(*it));
             drawutils::insertCubeVertices(currentData->vertices, rp, currentData->style.width);
           } else {
+            // We accept to draw theses 2D image, do ask to parametrize to also the embedder...
             auto rp = embedder.embed(Point((*it)[0], (*it)[1], 0)); 
             currentData->scalarProperties["value"].push_back(image(*it));
             drawutils::insertCubeVertices(currentData->vertices, rp, currentData->style.width);
@@ -543,19 +765,24 @@ namespace DGtal {
         return name;
       }
 
-      std::string addKCell(std::string uname, const Vector& rp, bool xodd, bool yodd, bool zodd, bool hasSign, bool sign) {
+      std::string addKCell(std::string uname, const RealPoint& rp, bool xodd, bool yodd, bool zodd, bool hasSign, bool sign) {
         std::string name = currentName;
         static const std::string TOKEN = "{d}";
         static const double scale = 0.9;
         static const double shift = 0.05;
         static const double smallScale = 0.3;
         static const double smallShift = 0.15;
+        // For 2D cell, this indicates if the big quad is 
+        // inside the cell or outside
+        static const int orientationPermut[3][2] = {
+          {1, 0}, {0, 1}, {1, 0}
+        };
 
         const unsigned int dim = xodd + yodd + zodd;
 
         auto tokenPos = uname.find(TOKEN);
         if (tokenPos != std::string::npos) 
-          uname.replace(uname.find(TOKEN), TOKEN.size() - 1, std::to_string(dim));
+          uname.replace(uname.find(TOKEN), TOKEN.size(), std::to_string(dim));
 
         switch(dim) {
           case 0: {
@@ -573,26 +800,42 @@ namespace DGtal {
               currentData->style.width *= scale;
             }
 
-            const Vector shift(xodd, yodd, zodd);
+            const RealPoint shift(xodd, yodd, zodd);
             currentData->vertices.push_back(rp - 0.5 * shift);
             currentData->vertices.push_back(rp + 0.5 * shift);
           }
           break;
           case 2: {
             const unsigned int orientation = (!xodd ? 0 : (!yodd ? 1 : 2));
-            if (shouldCreateNewList(8)) {
-              name = newVolumetricList(uname);
-              currentData->style.width *= scale;
-            }
-            
-            double scale1 = scale      * currentData->style.width;
-            double scale2 = smallScale * currentData->style.width;
-            double shift1 = shift;
-            double shift2 = smallShift;
-            if (hasSign && sign) 
-              std::swap(shift1, shift2);
+            if (currentStyle.mode & DisplayStyle::SIMPLIFIED || !hasSign) {
+              if (shouldCreateNewList(4)) {
+                name = newQuadList(uname);
+                currentData->style.width *= scale;
+              }
+              
+              double scale1 = currentData->style.width;
+              drawutils::insertQuad(currentData->vertices, rp, orientation, scale1);
+            } else {
+              if (shouldCreateNewList(8)) {
+                name = newVolumetricList(uname);
+                currentData->style.width *= scale;
+              }
+              
+              const double scales[2] = {
+                scale      * currentData->style.width, 
+                smallScale * currentData->style.width
+              };
+              
+              // Decide where the big quad goes, in the interior or the exterior
+              // of the cell depending on sign and the orientation
+              int permut = orientationPermut[orientation][sign];
+              double scale1 = scales[    permut];
+              double scale2 = scales[1 - permut];
+              double shift1 = shift;
+              double shift2 = smallShift;
 
-            drawutils::insertPrism(currentData->vertices, rp, orientation, scale, smallScale, shift1, shift2);
+              drawutils::insertPrism(currentData->vertices, rp, orientation, scale1, scale2, shift1, shift2);
+            }
           }
           break;
           case 3: {
@@ -638,6 +881,11 @@ namespace DGtal {
         return !allowReuseList;
       }
 
+      void noCurrentGroup() {
+        currentData = nullptr;
+        currentName = "";
+      }
+
       /**
        * @brief Create a new group
        *
@@ -678,7 +926,7 @@ namespace DGtal {
         }
         
         // Insert a new empty container
-        DisplayData<Vector> newData;
+        DisplayData<RealPoint> newData;
         newData.style = currentStyle;
         newData.elementSize = eSize;
 
@@ -694,7 +942,7 @@ namespace DGtal {
       bool allowReuseList = false;
 
       std::vector<ClippingPlane> planes;
-      std::map<std::string, DisplayData<Vector>> data;
+      std::map<std::string, DisplayData<RealPoint>> data;
     protected:
       KSpace kspace;
       Embedder embedder;
@@ -705,7 +953,7 @@ namespace DGtal {
       std::vector<std::string> toRender;
 
       std::string currentName = "";
-      DisplayData<Vector>* currentData = nullptr;
+      DisplayData<RealPoint>* currentData = nullptr;
     };
 }
 

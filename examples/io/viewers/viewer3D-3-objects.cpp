@@ -75,10 +75,10 @@ int main( int argc, char** argv )
   Object18_6 shape2( dt18_6, shape_set );
   
   // Draws both the object the adjacencies
-  d.draw(shape);
-  d.draw(shape2);
+  v.draw(shape);
+  v.draw(shape2);
 
-  d.show();
+  v.show();
   return 0;
 }
 //                                                                           //

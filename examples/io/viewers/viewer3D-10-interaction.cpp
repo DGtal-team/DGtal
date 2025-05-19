@@ -78,7 +78,7 @@ typedef KSpace::SCell SCell;
 struct MyCallback : public Callback {
   void OnClick(
       const std::string& name, size_t index, 
-      const DisplayData<MyViewer::Vector>& data, 
+      const DisplayData<MyViewer::RealPoint>& data, 
       void* polyscopeStructure
   ) {
     std::cout << "Item name: " << name << std::endl;

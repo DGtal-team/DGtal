@@ -41,8 +41,7 @@
 
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/shapes/ShapeFactory.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 
 #include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
@@ -58,9 +57,8 @@ using namespace DGtal;
 
 int main(int argc, char **argv)
 {
-  QApplication application(argc,argv);
-
-  DGtal::Viewer3D<> viewer;
+  DGtal::PolyscopeViewer<> viewer;
+  viewer.allowReuseList = true;
 
   DGtal::Z3i::Point center(0,0,0);
   DGtal::ImplicitRoundedHyperCube<Z3i::Space> myCube( center, 20, 2.8);
@@ -72,7 +70,6 @@ int main(int argc, char **argv)
   DGtal::Shapes<DGtal::Z3i::Domain>::euclideanShaper( mySet, myCube);
 
 
-  viewer.show();
   // viewer << mySet << DGtal::Display3D::updateDisplay;
 
 
@@ -91,27 +88,17 @@ int main(int argc, char **argv)
   gradient.addColor(DGtal::Color::Yellow);
   gradient.addColor(DGtal::Color::Red);
 
-
   for(Z3i::Domain::ConstIterator it = domain.begin(),
   itend = domain.end(); it != itend;
       ++it)
     if (dt(*it) != 0)
       {
-  DTL2::Value  val= dt( *it );
-  DGtal::Color c= gradient(val);
-
-  viewer <<  DGtal::CustomColors3D(c,c) << *it    ;
-
+        viewer << DGtal::WithProperty(*it, "value", dt(*it));
       }
-
-
   viewer << DGtal::ClippingPlane(1,0,0,0);
-  //@todo updateDisplay is in Display3D or Viewer3D (cf doc)?
-  viewer << DGtal::Viewer3D<>::updateDisplay;
 
-  return application.exec();
-
-
+  viewer.show();
+  return 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

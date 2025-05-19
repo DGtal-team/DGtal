@@ -33,7 +33,7 @@
 #include "ConfigTest.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/topology/ImplicitDigitalSurface.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -70,8 +70,6 @@ bool testBallQuad(int argc, char **argv)
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
-  QApplication application(argc, argv);
-
   trace.beginBlock ( "Testing... Ball with quadnormal");
   using namespace Z3i;
   typedef ImplicitDigitalBall3<Point> ImplicitDigitalBall;
@@ -91,27 +89,20 @@ bool testBallQuad(int argc, char **argv)
                      SurfelAdjacency<KSpace::dimension>( true ), bel );
   unsigned int nbsurfels = 0;
 
-  Viewer3D<Space,KSpace> viewer(K);
-  viewer.setWindowTitle("simpleViewer");
-  viewer.show();
-
+  PolyscopeViewer<Space,KSpace> viewer(K);
+  viewer.allowReuseList = true;
 
   for ( ConstIterator it = boundary.begin(), it_end = boundary.end();
         it != it_end; ++it )
-    {
-      ++nbsurfels;
-
-      Display3DFactory<>::drawOrientedSurfelWithNormal(viewer,
-                                                       *it,
-                                                       viewer.embedKS(*it).getNormalized());
-    }
+  {
+    ++nbsurfels;
+    viewer << *it;
+  }
 
   trace.info() << nbsurfels << " surfels found." << std::endl;
-  viewer  << Display3D<Space, KSpace>::updateDisplay;
 
-  bool res = application.exec();
-
-  return res;
+  viewer.show();
+  return 1;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

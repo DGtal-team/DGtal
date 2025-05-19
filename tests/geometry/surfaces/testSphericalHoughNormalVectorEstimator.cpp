@@ -45,9 +45,8 @@
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/SphericalHoughNormalVectorEstimator.h"
 
 #ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/io/viewers/Viewer3D.h"
+  #include "DGtal/io/viewers/PolyscopeViewer.h"
 #endif
-#include "DGtal/io/boards/Board3D.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -116,28 +115,19 @@ TEST_CASE( "Testing SphericalHoughNormalVectorEstimator" )
   
   
 #ifdef WITH_VISU3D_QGLVIEWER_TESTS
-  int argc=0;
-  char **argv;
-  QApplication application(argc,argv);
-  Viewer3D<Z3i::Space, KSpace> viewer(K);
-  viewer.show();
+  PolyscopeViewer<Z3i::Space, KSpace> viewer(K);
   for(Surface::ConstIterator it = surface.begin(), itend=surface.end(); it != itend ;
       ++it)
   {
     Quantity normal = reporter.eval( it );
-    viewer << CustomColors3D( DGtal::Color(static_cast<unsigned char>(255*abs(normal[0])),
-                                           static_cast<unsigned char>(255*abs(normal[1])),
-                                           static_cast<unsigned char>(255*abs(normal[2]))),
-                              DGtal::Color(static_cast<unsigned char>(255*abs(normal[0])),
-                                           static_cast<unsigned char>(255*abs(normal[1])),
-                                           static_cast<unsigned char>(255*abs(normal[2]))));
-
+    viewer <<  DGtal::Color(static_cast<unsigned char>(255*abs(normal[0])),
+                            static_cast<unsigned char>(255*abs(normal[1])),
+                            static_cast<unsigned char>(255*abs(normal[2])));
     viewer << K.unsigns(*it) ;
     
     Point center = K.sCoords ( *it );
     }
-  viewer<< Viewer3D<>::updateDisplay;
-  application.exec();
+  viewer.show();
 #endif
 }
 

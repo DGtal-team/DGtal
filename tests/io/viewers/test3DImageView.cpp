@@ -30,17 +30,14 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/io/viewers/DrawWithViewer3DModifier.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/io/readers/PGMReader.h"
 #include "DGtal/io/readers/GenericReader.h"
 #include "DGtal/io/writers/GenericWriter.h"
-#include "DGtal/io/colormaps/BasicColorToScalarFunctors.h"
 #include "DGtal/math/BasicMathFunctions.h"
-#include "DGtal/io/colormaps/HueShadeColorMap.h"
 
 #include "ConfigTest.h"
 
@@ -51,23 +48,7 @@ using namespace std;
 using namespace DGtal;
 using namespace Z3i;
 
-
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class Viewer3D.
-///////////////////////////////////////////////////////////////////////////////
-struct hueFct{
- inline
- unsigned int operator() (unsigned char aVal) const
-  {
-    HueShadeColorMap<unsigned int>  hueShade(0,255);
-    Color col = hueShade((unsigned int)aVal);
-    return  col.getRGB();
-  }
-};
-
-///////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
 int main( int argc, char** argv )
@@ -75,59 +56,34 @@ int main( int argc, char** argv )
   typedef DGtal::ImageContainerBySTLVector< DGtal::Z2i::Domain, unsigned char>  imageNG;
   typedef DGtal::ImageContainerBySTLVector< DGtal::Z2i::Domain, unsigned int>  imageCol;
 
- QApplication application(argc,argv);
- Viewer3D<> viewer;
- viewer.setWindowTitle("simpleViewer");
- viewer.show();
- trace.beginBlock("Testing Viewer with 3D Image View ");
+  PolyscopeViewer<> viewer;
 
- Point p1( 0, 0, 0 );
- Point p2( 125, 188, 0 );
- Point p3( 30, 30, 30 );
+  trace.beginBlock("Testing Viewer with 3D Image View ");
 
- std::string filename =  testPath + "samples/church-small.pgm";
- std::string filename3 =  testPath + "samples/color64.ppm";
+  Point p1( 0, 0, 0 );
+  Point p2( 125, 188, 0 );
+  Point p3( 30, 30, 30 );
 
- imageNG image = DGtal::PGMReader<imageNG>::importPGM(filename);
- imageNG image2 = DGtal::GenericReader<imageNG>::import(filename);
- imageCol image3 = DGtal::GenericReader<imageCol>::import(filename3);
- hueFct huefct;
-  functors::Identity defaultfunctor;
+  std::string filename =  testPath + "samples/church-small.pgm";
+  std::string filename3 =  testPath + "samples/color64.ppm";
 
- viewer << DGtal::AddTextureImage2DWithFunctor<imageNG,  hueFct , Z3i::Space, Z3i::KSpace>(image2, huefct, Viewer3D<>::RGBMode );
- viewer << image;
-  viewer << DGtal::AddTextureImage2DWithFunctor<imageCol,  functors::Identity, Z3i::Space, Z3i::KSpace>(image3, defaultfunctor, Viewer3D<>::RGBMode );
- viewer << DGtal::UpdateImagePosition<Z3i::Space, Z3i::KSpace>(0, Viewer3D<>::xDirection,  50, 50, 50 );
- viewer << DGtal::UpdateImagePosition<Z3i::Space, Z3i::KSpace>(2, Viewer3D<>::yDirection,  0, 0, 0);
+  imageNG image = DGtal::PGMReader<imageNG>::importPGM(filename);
+  imageNG image2 = DGtal::GenericReader<imageNG>::import(filename);
+  imageCol image3 = DGtal::GenericReader<imageCol>::import(filename3);
 
- viewer << SetMode3D( image.domain().className(), "BoundingBox" );
- viewer << image.domain();
- viewer << DGtal::Update2DDomainPosition<Z3i::Space, Z3i::KSpace>(0, Viewer3D<>::xDirection, 0, 0, 0);
- for(unsigned int i= 0; i< 10; i++){
-   if(i%4==0){
-     viewer << SetMode3D( image.className(), "" );
-   }else if(i%4==1){
-     viewer << SetMode3D( image.className(), "BoundingBox" );
-   }else if(i%4==2){
-     viewer << SetMode3D( image.className(), "Grid" );
-   }else if(i%4==3){
-     viewer << SetMode3D( image.className(), "InterGrid" );
-   }
-   viewer << image;
-   viewer << DGtal::UpdateImageData<imageNG>(i+3, image,  i*50, i*50, i*50);
- }
+  viewer.draw(image2, "Image 2");
+  viewer.draw(image, "Image");
+  viewer.draw(image3, "Image 3");
 
+  viewer.data["Image 2"].transform.translate(Eigen::Vector3d{50, 50, 50});
+  viewer.data["Image 3"].transform.rotate(Eigen::AngleAxisd(M_PI/2, Eigen::Vector3d{0, 1, 0}));
 
- viewer << p1 << p2 << p3;
- viewer << Viewer3D<>::updateDisplay;
+  viewer << p1 << p2 << p3;
 
-
- bool res = application.exec();
- trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
- trace.endBlock();
- return res ? 0 : 1;
-
-
+  trace.emphase() << "Passed." << endl;
+  trace.endBlock();
+  viewer.show();
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

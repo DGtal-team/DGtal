@@ -47,7 +47,7 @@
 #include "DGtal/shapes/implicit/ImplicitBall.h"
 #include "DGtal/base/BasicFunctors.h"
 
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 
 #include <boost/algorithm/minmax_element.hpp>
@@ -63,18 +63,15 @@ int main(int argc, char ** argv)
   trace.info() << image << std::endl;
 
   //Viewer
-  QApplication application(argc,argv);
-  Viewer3D<> viewer;
-  viewer.show();
+  PolyscopeViewer<> viewer;
 
   for(Image::Domain::ConstIterator it = image.domain().begin(),
         itend = image.domain().end(); it != itend; ++it)
     if (image(*it) != 0)
       viewer << *it;
 
-  viewer << DGtal::Viewer3D<>::updateDisplay;
   trace.info() << "viewer launched..."<<std::endl;
-  bool res = application.exec();
+  viewer.show();
 
 
   //DT
@@ -87,17 +84,10 @@ int main(int argc, char ** argv)
   DT distancemap(image.domain(), binaryshape, l2);
 
   //Viewer
-  QApplication application2(argc,argv);
-  Viewer3D<> viewer2;
-  viewer2.show();
+  PolyscopeViewer<> viewer2;
   DT::Value maxDT = (*boost::first_max_element(distancemap.constRange().begin(),
                                        distancemap.constRange().end()));
-  GradientColorMap<DT::Value> gradient( 0, maxDT);
-  gradient.addColor(DGtal::Color::Blue);
-  gradient.addColor(DGtal::Color::Green);
-  gradient.addColor(DGtal::Color::Yellow);
-  gradient.addColor(DGtal::Color::Red);
-  trace.info() << "we display the dt map"<<std::endl;
+ trace.info() << "we display the dt map"<<std::endl;
   int cpt=0;
   viewer2 << DGtal::ClippingPlane(1,0,0,-10.1);
 
@@ -106,16 +96,12 @@ int main(int argc, char ** argv)
       ++it)
     if (distancemap(*it) > 0)
       {
-  DT::Value  val= distancemap( *it );
-  DGtal::Color c= gradient(val);
-
-  viewer2 <<  DGtal::CustomColors3D(c,c) << *it    ;
+        viewer2 << DGtal::WithProperty(*it, "value", distancemap(*it));
         cpt++;
       }
   trace.info() << "Got "<<cpt<<" points."<<std::endl;
-  viewer2 << DGtal::Viewer3D<>::updateDisplay;
   trace.info() << "viewer2  launched..."<<std::endl;
-  res = res && application2.exec();
+  viewer2.show();
 
   //Granulo
   Image imageGranulo ( image.domain() );
@@ -156,16 +142,10 @@ int main(int argc, char ** argv)
 
 
   //Viewer
-  QApplication application3(argc,argv);
-  Viewer3D<> viewer3;
-  viewer3.show();
+  PolyscopeViewer<> viewer3;
   Image::Value maxG = (*boost::first_max_element(imageGranulo.constRange().begin(),
                                          imageGranulo.constRange().end()));
-  GradientColorMap<Image::Value> gradient2( 0, maxG);
-  gradient2.addColor(DGtal::Color::Blue);
-  gradient2.addColor(DGtal::Color::Green);
-  gradient2.addColor(DGtal::Color::Yellow);
-  gradient2.addColor(DGtal::Color::Red);
+
   viewer3 << DGtal::ClippingPlane(1,0,0,-10.1);
   cpt=0;
   for(Image::Domain::ConstIterator it = imageGranulo.domain().begin(),
@@ -173,14 +153,12 @@ int main(int argc, char ** argv)
       ++it)
     if (imageGranulo(*it) > 0)
       {
-  Image::Value  val= imageGranulo( *it );
-  DGtal::Color c = gradient2(val);
-  viewer3 <<  DGtal::CustomColors3D(c,c) << *it    ;
+        viewer3 << DGtal::WithProperty(*it, "value", imageGranulo(*it));
         cpt++;
       }
   trace.info() << "Got "<<cpt<<" points."<<std::endl;
-  viewer3 << DGtal::Viewer3D<>::updateDisplay;
   trace.info() << "viewer3  launched..."<<std::endl;
- return res && application3.exec();
+  viewer3.show();
+ return 0;
 
 }

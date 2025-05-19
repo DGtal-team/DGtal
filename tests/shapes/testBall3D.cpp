@@ -27,9 +27,9 @@
 */
 
 ///////////////////////////////////////////////////////////////////////////////
+#include <iostream>
 #include "DGtal/shapes/parametric/Ball3D.h"
 #include "DGtal/helpers/StdDefs.h"
-#include <iostream>
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/topology/SurfelAdjacency.h"
@@ -38,7 +38,7 @@
 #include "DGtal/topology/SetOfSurfels.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "DGtal/topology/SCellsFunctors.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 ///////////////////////////////////////////////////////////////////////////////
 
  using namespace std;
@@ -51,14 +51,10 @@
 
  int main(int argc, char** argv)
  {
-
-
-
    // -------------------------------------------------------------------------- Type declaring
    typedef Space::RealPoint RealPoint;
    typedef Ball3D<Space> EuclideanShape;
    typedef GaussDigitizer<Space,EuclideanShape> DigitalShape;
-
 
    // -------------------------------------------------------------------------- Creating the shape
     RealPoint c1(0, 0, 0 );
@@ -97,15 +93,7 @@
 
 
 
-    QApplication application(argc,argv);
-    Viewer3D<> viewer;
-    viewer.show();
-    viewer << SetMode3D( domain.className(), "BoundingBox" ) << domain;
-
-
-
-
-
+    PolyscopeViewer<> viewer;
 //-----------------------------------------------------------------------
 // Looking for the min and max values
 
@@ -130,23 +118,13 @@
   minCurv=a;
     }
   }
-
-//-----------------------------------------------------------------------
-//Specifing a color map
-
-  GradientColorMap<double> cmap_grad( minCurv, maxCurv+1	 );
-  cmap_grad.addColor( Color( 50, 50, 255 ) );
-  cmap_grad.addColor( Color( 255, 0, 0 ) );
-  cmap_grad.addColor( Color( 255, 255, 10 ) );
-
-
 //-----------------------------------------------------------------------
 //Drawing the ball && giving a color to the surfels( depending on the
 //curvature)
 
   unsigned int nbSurfels = 0;
 
-
+  viewer.allowReuseList = true;
   for ( std::set<SCell>::iterator it = theSetOfSurfels.begin(), it_end = theSetOfSurfels.end();
 it != it_end; ++it, ++nbSurfels )
   {
@@ -154,16 +132,11 @@ it != it_end; ++it, ++nbSurfels )
 
     DGtal::StarShaped3D<Space>::AngularCoordinates Angles= ball1.parameter(A);
     double curvature =ball1.meanCurvature(Angles);
-//    double curvature =ball1.gaussianCurvature(Angles);
-    viewer << CustomColors3D( Color::Black, cmap_grad( curvature));
-    viewer << *it;
+    viewer << WithProperty(*it, "Curvature", curvature);
   }
 
-
-
-  viewer << Viewer3D<>::updateDisplay;
-
-  return application.exec();
+  viewer.show();
+  return 0;
 }
 // //
 ///////////////////////////////////////////////////////////////////////////////

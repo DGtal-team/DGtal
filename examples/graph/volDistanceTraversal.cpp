@@ -32,7 +32,6 @@ $ ./examples/graph/volDistanceTraversal ../examples/samples/cat10.vol 0 255 100
 //! [volDistanceTraversal-basicIncludes]
 #include <iostream>
 #include <queue>
-#include <QImageReader>
 
 #include "DGtal/base/BasicFunctors.h"
 #include "DGtal/topology/CanonicSCellEmbedder.h"
@@ -42,7 +41,7 @@ $ ./examples/graph/volDistanceTraversal ../examples/samples/cat10.vol 0 255 100
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
 #include "DGtal/geometry/volumes/distance/LpMetric.h"
 #include "DGtal/io/readers/VolReader.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
@@ -58,8 +57,7 @@ using namespace Z3i;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void usage( int, char** argv )
-{
+void usage( int, char** argv ) {
   std::cerr << "Usage: " << argv[ 0 ] << " <fileName.vol> <minT> <maxT> <idxP>" << std::endl;
   std::cerr << "\t - displays the Euclidean distance to the specified surfel on the boundary of the shape stored in vol file <fileName.vol>." << std::endl;
   std::cerr << "\t - the shape is defined implicitly: voxel v belongs to the shape iff its value I(v) follows minT < I(v) <= maxT." << std::endl;
@@ -156,28 +154,23 @@ int main( int argc, char** argv )
 
   //! [volDistanceTraversal-DisplayingSurface]
   trace.beginBlock( "Displaying surface in Viewer3D." );
-  QApplication application(argc,argv);
-  Viewer3D<> viewer( ks );
-  viewer.show();
+  PolyscopeViewer<> viewer( ks );
   HueShadeColorMap<MySize,1> hueShade( 0, maxDist );
   MyDistanceVisitor visitor2( digSurf, vfunctor, bel );
-  viewer << SetMode3D( bel.className(), "Basic" );
-  viewer << CustomColors3D( Color::Black, Color::White )
-         << bel;
+  viewer << Color::White << bel;
   visitor2.expand();
   std::vector< MyDistanceVisitor::Node > layer;
   while ( ! visitor2.finished() )
     {
       MyNode n = visitor2.current();
       Color c = hueShade( n.second );
-      viewer << CustomColors3D( Color::Red, c )
-             << n.first;
+      viewer << c << n.first;
       visitor2.expand();
     }
-  viewer << Viewer3D<>::updateDisplay;
   trace.info() << "nb surfels = " << nbSurfels << std::endl;
   trace.endBlock();
-  return application.exec();
+  viewer.show();
+  return 0;
   //! [volDistanceTraversal-DisplayingSurface]
 }
 

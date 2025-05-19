@@ -74,7 +74,7 @@ int main( int argc, char** argv )
   
   v << shape_set;
 
-  d.show();
+  v.show();
   return 0;
 }
 //                                                                           //

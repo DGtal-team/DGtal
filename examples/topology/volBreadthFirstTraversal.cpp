@@ -32,16 +32,15 @@
 #include <QImageReader>
 
 #include "DGtal/io/readers/VolReader.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/topology/DigitalSurface.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
-#include "DGtal/io/viewers/Viewer3D.h"
 
 //! [volBreadthFirstTraversal-basicIncludes]
 
@@ -132,26 +131,21 @@ int main( int argc, char** argv )
 
   //! [volBreadthFirstTraversal-DisplayingSurface]
   trace.beginBlock( "Displaying surface in Viewer3D." );
-  QApplication application(argc,argv);
-  Viewer3D<> viewer;
-  viewer.show();
-  HueShadeColorMap<MySize,1> hueShade( 0, maxDist );
+  PolyscopeViewer<> viewer;
   MyBreadthFirstVisitor visitor2( digSurf, bel );
-  viewer << CustomColors3D( Color::Black, Color::White )
+  viewer << Color::White
          << ks.unsigns( bel );
   visitor2.expand();
   while ( ! visitor2.finished() )
     {
       node = visitor2.current();
-      Color c = hueShade( node.second );
-      viewer << CustomColors3D( Color::Red, c )
-             << ks.unsigns( node.first );
+      viewer << WithProperty(ks.unsigns(node.first), "value", node.second);
       visitor2.expand();
     }
-  viewer << Viewer3D<>::updateDisplay;
   trace.info() << "nb surfels = " << nbSurfels << std::endl;
   trace.endBlock();
-  return application.exec();
+  viewer.show();
+  return 0;
   //! [volBreadthFirstTraversal-DisplayingSurface]
 }
 

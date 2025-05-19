@@ -39,13 +39,12 @@
 #include <queue>
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/io/readers/VolReader.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/topology/helpers/Surfaces.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 //! [volScanBoundary-basicIncludes]
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -109,20 +108,18 @@ int main( int argc, char** argv )
 
   //! [volScanBoundary-DisplayingSurface]
   trace.beginBlock( "Displaying surface in Viewer3D." );
-  QApplication application(argc,argv);
-  Viewer3D<> viewer( ks );
-  viewer.show();
+  PolyscopeViewer<> viewer( ks );
   KSpace::SCell dummy_scell;
-  viewer << SetMode3D( dummy_scell.className(), "Basic" );
-  viewer << CustomColors3D(Color(250, 0, 0 ), Color( 128, 128, 128 ) );
+  viewer.currentStyle.mode |= DisplayStyle::SIMPLIFIED;
+  viewer << Color( 128, 128, 128 );
   unsigned long nbSurfels = 0;
   for ( KSpace::SCellSet::const_iterator it = boundary.begin(),
           it_end = boundary.end(); it != it_end; ++it, ++nbSurfels )
     viewer << *it;
-  viewer << Viewer3D<>::updateDisplay;
   trace.info() << "nb surfels = " << nbSurfels << std::endl;
   trace.endBlock();
-  return application.exec();
+  viewer.show();
+  return 0;
   //! [volScanBoundary-DisplayingSurface]
 }
 

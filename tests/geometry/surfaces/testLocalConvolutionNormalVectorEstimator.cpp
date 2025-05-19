@@ -46,7 +46,7 @@
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -71,8 +71,6 @@ using namespace Z3i;
 bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
 {
     trace.beginBlock ( "Testing convolution neighborhood ..." );
-
-    QApplication application ( argc,argv );
 
     std::string filename = testPath + "samples/cat10.vol";
 
@@ -119,27 +117,19 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
 
     MyEstimator::Quantity res = myNormalEstimator.eval ( it );
     trace.info() << "Normal vector at begin() : "<< res << std::endl;
-
-    DGtal::Viewer3D<Space,KSpace> viewer(ks);
-    viewer.show();
-
-    DGtal::Color lineColorSave = viewer.getLineColor();
-    viewer.setLineColor( DGtal::Color ( 20,200,20 ));
+    
+    DGtal::PolyscopeViewer<Space,KSpace> viewer(ks);
+    viewer.allowReuseList = true; // Enable auto grouping, which is to some extend, way better
+    
+    // KCell will be rendered as quads (not signed)
+    viewer.newQuadList("Constant estimator");
     for ( MyDigitalSurface::ConstIterator itbis = digSurf.begin(),itend=digSurf.end();
             itbis!=itend; ++itbis )
     {
-        viewer << ks.unsigns ( *itbis );
-
         Point center = ks.sCoords ( *itbis );
         MyEstimator::Quantity normal = myNormalEstimator.eval ( itbis );
-
-        viewer.addLine ( center,
-                         DGtal::Z3i::RealPoint(center[0]-3*normal[0],
-                 center[1]-3*normal[1],
-                 center[2]-3*normal[2]) );
+        viewer << Color(200, 0, 0) << WithProperty(ks.unsigns( *itbis ), "normal", -normal);
     }
-    viewer.setLineColor( lineColorSave);
-    viewer<< Viewer3D<>::updateDisplay;
 
     //Convolution kernel
     deprecated::GaussianConvolutionWeights< MyDigitalSurface::Size > Gkernel ( 14.0 );
@@ -154,25 +144,18 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
     MyEstimatorGaussian::Quantity res2 = myNormalEstimatorG.eval ( it );
     trace.info() << "Normal vector at begin() : "<< res2 << std::endl;
 
-    viewer<< CustomColors3D ( Color ( 200, 0, 0 ),Color ( 200, 0,0 ) );
-    lineColorSave = viewer.getLineColor();
-    viewer.setLineColor( DGtal::Color ( 200,20,20 ));
+    // KCell will be rendered as quads (not signed)
+    viewer.newQuadList("Gaussian estimator");
     for ( MyDigitalSurface::ConstIterator itbis = digSurf.begin(),itend=digSurf.end();
             itbis!=itend; ++itbis )
     {
-        viewer << ks.unsigns ( *itbis );
-
         Point center = ks.sCoords ( *itbis );
         MyEstimatorGaussian::Quantity normal = myNormalEstimatorG.eval ( itbis );
-        viewer.addLine ( center,
-                         DGtal::Z3i::RealPoint(center[0]-3*normal[0],
-                 center[1]-3*normal[1],
-                 center[2]-3*normal[2]) );
+        viewer << Color(200, 0, 0) << WithProperty(ks.unsigns( *itbis ), "normal", -normal);
     }
-    viewer.setLineColor( lineColorSave);
-    viewer<< Viewer3D<>::updateDisplay;
 
-  return application.exec();
+    viewer.show();
+    return 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

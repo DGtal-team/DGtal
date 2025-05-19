@@ -61,14 +61,14 @@ namespace DGtal {
   }
 
   template < typename Space = Z3i::Space, typename KSpace = Z3i::KSpace>
-  class PolyscopeViewer : public Display<Space, KSpace> {
+  class PolyscopeViewer : public Display3D<Space, KSpace> {
     public:
-      PolyscopeViewer() : Display<Space, KSpace>() {
+      PolyscopeViewer() : Display3D<Space, KSpace>() {
         polyscope::init();
         polyscope::state::userCallback = [this]() { this->polyscopeCallback(); };
       }
 
-      PolyscopeViewer(const KSpace& k) : Display<Space, KSpace>(k) {
+      PolyscopeViewer(const KSpace& k) : Display3D<Space, KSpace>(k) {
         polyscope::init();
         polyscope::state::userCallback = [this]() { this->polyscopeCallback(); };
       }
@@ -109,7 +109,8 @@ namespace DGtal {
       void renderNewData() override {
         using namespace drawutils;
 
-        const double BallToCubeRatio = 0.05;
+        const double BallToCubeRatio = 0.025;
+        const double VectorScale = 1. / 30.;
 
         for (const std::string& name : this->toRender) {
           auto it = this->data.find(name);
@@ -135,7 +136,9 @@ namespace DGtal {
                         pCloud->addScalarQuantity(name, vals)->setEnabled(true);
                       }
                       for (const auto& [name, vals] : data.vectorProperties) {
-                        pCloud->addVectorQuantity(name, vals)->setEnabled(true);
+                        auto* q = pCloud->addVectorQuantity(name, vals);
+                        q->setEnabled(true);
+                        q->setVectorLengthScale(VectorScale);
                       }
                       for (const auto& [name, vals] : data.colorProperties) {
                         pCloud->addColorQuantity(name, toglm(vals))->setEnabled(true);
@@ -157,7 +160,9 @@ namespace DGtal {
                         cNetwork->addEdgeScalarQuantity(name, vals)->setEnabled(true);
                       }
                       for (const auto& [name, vals] : data.vectorProperties) {
-                        cNetwork->addEdgeVectorQuantity(name, vals)->setEnabled(true);
+                        auto* q = cNetwork->addEdgeVectorQuantity(name, vals);
+                        q->setEnabled(true);
+                        q->setVectorLengthScale(VectorScale);
                       }
                       for (const auto& [name, vals] : data.colorProperties) {
                         cNetwork->addEdgeColorQuantity(name, toglm(vals))->setEnabled(true);
@@ -178,7 +183,9 @@ namespace DGtal {
                         mesh->addFaceScalarQuantity(name, vals)->setEnabled(true);
                       }
                       for (const auto& [name, vals] : data.vectorProperties) {
-                        mesh->addFaceVectorQuantity(name, vals)->setEnabled(true);
+                        auto* q = mesh->addFaceVectorQuantity(name, vals);
+                        q->setEnabled(true);
+                        q->setVectorLengthScale(VectorScale);
                       }
                       for (const auto& [name, vals] : data.colorProperties) {
                         mesh->addFaceColorQuantity(name, toglm(vals))->setEnabled(true);
@@ -199,7 +206,9 @@ namespace DGtal {
                         mesh->addFaceScalarQuantity(name, vals)->setEnabled(true);
                       }
                       for (const auto& [name, vals] : data.vectorProperties) {
-                        mesh->addFaceVectorQuantity(name, vals)->setEnabled(true);
+                        auto* q = mesh->addFaceVectorQuantity(name, vals);
+                        q->setEnabled(true);
+                        q->setVectorLengthScale(VectorScale);
                       }
                       for (const auto& [name, vals] : data.colorProperties) {
                         mesh->addFaceColorQuantity(name, toglm(vals))->setEnabled(true);
@@ -220,7 +229,9 @@ namespace DGtal {
                         mesh->addFaceScalarQuantity(name, vals)->setEnabled(true);
                       }
                       for (const auto& [name, vals] : data.vectorProperties) {
-                        mesh->addFaceVectorQuantity(name, vals)->setEnabled(true);
+                        auto* q = mesh->addFaceVectorQuantity(name, vals);
+                        q->setEnabled(true);
+                        q->setVectorLengthScale(VectorScale);
                       }
                       for (const auto& [name, vals] : data.colorProperties) {
                         mesh->addFaceColorQuantity(name, toglm(vals))->setEnabled(true);
@@ -241,7 +252,9 @@ namespace DGtal {
                         mesh->addCellScalarQuantity(name, vals)->setEnabled(true);
                       }
                       for (const auto& [name, vals] : data.vectorProperties) {
-                        mesh->addCellVectorQuantity(name, vals)->setEnabled(true);
+                        auto* q = mesh->addCellVectorQuantity(name, vals);
+                        q->setEnabled(true);
+                        q->setVectorLengthScale(VectorScale);
                       }
                       for (const auto& [name, vals] : data.colorProperties) {
                         mesh->addCellColorQuantity(name, toglm(vals))->setEnabled(true);
@@ -256,7 +269,6 @@ namespace DGtal {
 
     private:
       void polyscopeCallback() {
-        std::cout << "Callback: " << this->callback << std::endl;
         if (this->callback)
             this->callback->OnUI();
 

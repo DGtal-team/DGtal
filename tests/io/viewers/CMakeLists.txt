@@ -7,10 +7,8 @@ set(QGLVIEWER_TESTS_SRC
   testBallQuadViewer
   testPolygon3D
   test3DImageView
-  test3DImageViewEmbedder
   test3DImage3DView
   testDisplayKSCell
-  test3DDomain2DView
   )
 
 if (  WITH_VISU3D_QGLVIEWER )
