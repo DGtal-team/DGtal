@@ -38,26 +38,14 @@
 
 namespace DGtal {
   namespace drawutils {
-    glm::vec3 toglm(const DGtal::Color& col) {
-      return glm::vec3{col.r(), col.g(), col.b()};
-    }
-    std::vector<glm::vec3> toglm(const std::vector<DGtal::Color>& col) {
-      std::vector<glm::vec3> colors(col.size());
-      for (size_t i = 0; i < colors.size(); ++i) {
-        colors[i] = toglm(col[i]);
-      }
-      return colors;
-    }
+    // @brief Convert a DGtal color to a glm color
+    glm::vec3 toglm(const DGtal::Color& col);
 
-    glm::mat4 toglm(const Eigen::Affine3d& transform) {
-      glm::mat4 glmmat(1.f);
-      Eigen::Matrix4d mat = transform.matrix();
+    // @brief Convert a vector of DGtal color to a vector of glm color
+    std::vector<glm::vec3> toglm(const std::vector<DGtal::Color>& col);
 
-      for (int i = 0; i < 4; ++i) 
-        for (int j = 0; j < 4; ++j)
-          glmmat[i][j] = static_cast<float>(mat(j, i));
-      return glmmat;
-    }
+    // @brief Convert an Eigen transform to glm matrix
+    glm::mat4 toglm(const Eigen::Affine3d& transform);
   }
 
   template < typename Space = Z3i::Space, typename KSpace = Z3i::KSpace>
@@ -73,10 +61,12 @@ namespace DGtal {
         polyscope::state::userCallback = [this]() { this->polyscopeCallback(); };
       }
 
+      // @brief Clear the view (ie. remove all polyscope structures)
       void clearView() override {
         polyscope::removeAllStructures();
       }
 
+      // @brief Starts event loop (first render data)
       void show() override {
         renderNewData();
         renderClippingPlanes();
@@ -84,219 +74,20 @@ namespace DGtal {
         polyscope::show();
       }
 
-      void renderClippingPlanes() {
-        using namespace drawutils;
+      // @brief Render new data
+      void renderNewData() override;
 
-        // Draw clipping planes
-        for (const auto& plane : this->planes) {
-          const glm::vec3 normal { plane.a, plane.b, plane.c }; 
-          glm::vec3 pos {0, 0, 0};
-
-          if (plane.a != 0) { pos.x = -plane.d / plane.a; }
-          else if (plane.b != 0) { pos.y = -plane.d / plane.b; }
-          else if (plane.c != 0) { pos.z = -plane.d / plane.c; }
-          else continue;
-
-          polyscope::SlicePlane* ps = polyscope::addSceneSlicePlane();
-          if (!plane.style.useDefaultColors)
-            ps->setColor(toglm(plane.style.color));
-
-          //TODO: Keep this as default ?  
-          ps->setDrawPlane(true);
-          ps->setPose(pos, normal);
-        }
-      }
-
-      void renderNewData() override {
-        using namespace drawutils;
-
-        const double BallToCubeRatio = 0.025;
-        const double VectorScale = 1. / 30.;
-
-        for (const std::string& name : this->toRender) {
-          auto it = this->data.find(name);
-          if (it == this->data.end()) continue;
-
-          const auto& data = it->second;
-          const auto& vertices = data.vertices;
-
-          if (vertices.size() == 0) continue;
-
-          switch(data.elementSize) {
-            case 1: {
-                      auto* pCloud = polyscope::registerPointCloud(name, vertices);
-
-                      pCloud->setTransform(toglm(data.transform));
-                      if (!data.style.useDefaultColors) {
-                        pCloud->setPointColor(toglm(data.style.color));
-                        pCloud->setTransparency(data.style.color.a());
-                      }
-
-                      // Apply properties
-                      for (const auto& [name, vals] : data.scalarProperties) {
-                        pCloud->addScalarQuantity(name, vals)->setEnabled(true);
-                      }
-                      for (const auto& [name, vals] : data.vectorProperties) {
-                        auto* q = pCloud->addVectorQuantity(name, vals);
-                        q->setEnabled(true);
-                        q->setVectorLengthScale(VectorScale);
-                      }
-                      for (const auto& [name, vals] : data.colorProperties) {
-                        pCloud->addColorQuantity(name, toglm(vals))->setEnabled(true);
-                      }
-                      pCloud->setPointRadius(data.style.width * BallToCubeRatio);
-                    }
-                    break;
-            case 2: {
-                      auto* cNetwork = polyscope::registerCurveNetwork(name, vertices, makeIndices<2>(vertices.size() / 2));
-
-                      cNetwork->setTransform(toglm(data.transform));
-                      if (!data.style.useDefaultColors) {
-                        cNetwork->setColor(toglm(data.style.color));
-                        cNetwork->setTransparency(data.style.color.a());
-                      }
-
-                      // Apply properties
-                      for (const auto& [name, vals] : data.scalarProperties) {
-                        cNetwork->addEdgeScalarQuantity(name, vals)->setEnabled(true);
-                      }
-                      for (const auto& [name, vals] : data.vectorProperties) {
-                        auto* q = cNetwork->addEdgeVectorQuantity(name, vals);
-                        q->setEnabled(true);
-                        q->setVectorLengthScale(VectorScale);
-                      }
-                      for (const auto& [name, vals] : data.colorProperties) {
-                        cNetwork->addEdgeColorQuantity(name, toglm(vals))->setEnabled(true);
-                      }
-                    }
-                    break;
-            case 0: {
-                      auto* mesh = polyscope::registerSurfaceMesh(name, vertices, data.indices);
-
-                      mesh->setTransform(toglm(data.transform));
-                      if (!data.style.useDefaultColors) {
-                        mesh->setSurfaceColor(toglm(data.style.color));
-                        mesh->setTransparency(data.style.color.a());
-                      }
-
-                      // Apply properties
-                      for (const auto& [name, vals] : data.scalarProperties) {
-                        mesh->addFaceScalarQuantity(name, vals)->setEnabled(true);
-                      }
-                      for (const auto& [name, vals] : data.vectorProperties) {
-                        auto* q = mesh->addFaceVectorQuantity(name, vals);
-                        q->setEnabled(true);
-                        q->setVectorLengthScale(VectorScale);
-                      }
-                      for (const auto& [name, vals] : data.colorProperties) {
-                        mesh->addFaceColorQuantity(name, toglm(vals))->setEnabled(true);
-                      }
-                    }
-                    break;
-            case 3: {
-                      auto* mesh = polyscope::registerSurfaceMesh(name, vertices, makeIndices<3>(vertices.size() / 3));
-
-                      mesh->setTransform(toglm(data.transform));
-                      if (!data.style.useDefaultColors) {
-                        mesh->setSurfaceColor(toglm(data.style.color));
-                        mesh->setTransparency(data.style.color.a());
-                      }
-
-                      // Apply properties
-                      for (const auto& [name, vals] : data.scalarProperties) {
-                        mesh->addFaceScalarQuantity(name, vals)->setEnabled(true);
-                      }
-                      for (const auto& [name, vals] : data.vectorProperties) {
-                        auto* q = mesh->addFaceVectorQuantity(name, vals);
-                        q->setEnabled(true);
-                        q->setVectorLengthScale(VectorScale);
-                      }
-                      for (const auto& [name, vals] : data.colorProperties) {
-                        mesh->addFaceColorQuantity(name, toglm(vals))->setEnabled(true);
-                      }
-                    }
-                    break;
-            case 4: {
-                      auto* mesh = polyscope::registerSurfaceMesh(name, vertices, makeIndices<4>(vertices.size() / 4));
-
-                      mesh->setTransform(toglm(data.transform));
-                      if (!data.style.useDefaultColors) {
-                        mesh->setSurfaceColor(toglm(data.style.color));
-                        mesh->setTransparency(data.style.color.a());
-                      }
-
-                      // Apply properties
-                      for (const auto& [name, vals] : data.scalarProperties) {
-                        mesh->addFaceScalarQuantity(name, vals)->setEnabled(true);
-                      }
-                      for (const auto& [name, vals] : data.vectorProperties) {
-                        auto* q = mesh->addFaceVectorQuantity(name, vals);
-                        q->setEnabled(true);
-                        q->setVectorLengthScale(VectorScale);
-                      }
-                      for (const auto& [name, vals] : data.colorProperties) {
-                        mesh->addFaceColorQuantity(name, toglm(vals))->setEnabled(true);
-                      }
-                    }
-                    break;
-            case 8: {
-                      auto* mesh = polyscope::registerVolumeMesh(name, vertices, makeIndices<8>(vertices.size() / 8));
-
-                      mesh->setTransform(toglm(data.transform));
-                      if (!data.style.useDefaultColors) {
-                        mesh->setColor(toglm(data.style.color));
-                        mesh->setTransparency(data.style.color.a());
-                      }
-
-                      // Apply properties
-                      for (const auto& [name, vals] : data.scalarProperties) {
-                        mesh->addCellScalarQuantity(name, vals)->setEnabled(true);
-                      }
-                      for (const auto& [name, vals] : data.vectorProperties) {
-                        auto* q = mesh->addCellVectorQuantity(name, vals);
-                        q->setEnabled(true);
-                        q->setVectorLengthScale(VectorScale);
-                      }
-                      for (const auto& [name, vals] : data.colorProperties) {
-                        mesh->addCellColorQuantity(name, toglm(vals))->setEnabled(true);
-                      }
-                    }
-                    break;
-            default:
-                    break;
-          };
-        }
-      }
+      // @brief Renders the clipping planes
+      void renderClippingPlanes();
 
       ~PolyscopeViewer() {
         this->clear();
       }
 
     private:
-      void polyscopeCallback() {
-        if (this->callback)
-            this->callback->OnUI();
-
-        ImGuiIO& io = ImGui::GetIO();
-        if (io.MouseClicked[0])
-        {
-            glm::vec2 screenCoords{io.MousePos.x, io.MousePos.y};
-            glm::vec3 worldRay = polyscope::view::screenCoordsToWorldRay(screenCoords);
-            glm::vec3 worldPos = polyscope::view::screenCoordsToWorldPosition(screenCoords);
-            auto [structure, index] = 
-                polyscope::pick::pickAtScreenCoords(screenCoords);
-
-            if (structure != nullptr) {
-              void* viewerData = structure;
-              std::string name = structure->getName();
-              auto& data = this->data[name];
-
-              if (this->callback) {
-                this->callback->OnClick(name, index, data, viewerData);
-              }
-            }
-        }
-      }
+      // @brief Global callback handling UI, click and callback calls
+      void polyscopeCallback();
   };
 }
 
+#include "PolyscopeViewer.ih"
