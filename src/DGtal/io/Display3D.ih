@@ -444,7 +444,7 @@ namespace DGtal {
 
   template <typename Space, typename KSpace>
   std::string Display3D<Space, KSpace>::draw(const HyperRectDomain<Space>& domain, const std::string& uname) {
-    std::string name = drawGenericObject(uname, domain);
+    std::string name = drawGenericRange(domain, uname);
 
     if (currentStyle.mode & DisplayStyle::GRID) {
       newLineList(name + "_grid");
@@ -557,7 +557,7 @@ namespace DGtal {
   template <typename Space, typename KSpace>
   template <typename Obj, typename Cont>
   std::string Display3D<Space, KSpace>::draw(const DigitalSetByAssociativeContainer<Obj, Cont>& set, const std::string& name) {
-    return drawGenericObject(name, set);
+    return drawGenericRange(set, name);
   }
 
   template <typename Space, typename KSpace>
@@ -590,7 +590,7 @@ namespace DGtal {
   template <typename Space, typename KSpace>
   template <typename Adj, typename Set>
   std::string Display3D<Space, KSpace>::draw(const DGtal::Object<Adj, Set>& obj, const std::string& uname) {
-    std::string name = drawGenericObject(uname, obj);
+    std::string name = drawGenericRange(obj, uname);
 
     // Draw adjacency if needed
     if (currentStyle.mode & DisplayStyle::DrawMode::ADJACENCIES) {
@@ -733,52 +733,27 @@ namespace DGtal {
   }      
 
   // Generic functions
-
-  template <typename Space, typename KSpace>
-  template <typename Obj>
-  std::string Display3D<Space, KSpace>::drawGenericObject(const std::string& name, const Obj& obj) {
-    std::string newName; 
-    if (currentStyle.mode & DisplayStyle::BALLS) {
-      newName = newBallList(name);
-
-      currentData->vertices.reserve(obj.size());
-      for (auto it = obj.begin(); it != obj.end(); ++it) {
-        const auto rp = embedder.embed(*it);
-        currentData->vertices.push_back(rp);
-      }
-    } else {
-      newName = newCubeList(name);
-    
-      currentData->vertices.reserve(obj.size() * 8);
-      for (auto it = obj.begin(); it != obj.end(); ++it) {
-        const auto rp = embedder.embed(*it);
-        const auto vertices = drawutils::getCubeVertices(rp, currentData->style.width);
-
-        currentData->vertices.insert(
-            currentData->vertices.end(), vertices.begin(), vertices.end()
-        );
-      }
-    }
-
-    noCurrentGroup();
-    return newName;
-  }
-
   template <typename Space, typename KSpace>
   template <typename Range> 
   std::string Display3D<Space, KSpace>::drawGenericRange(const Range& range, const std::string& uname) {
     bool save = allowReuseList;
 
+    noCurrentGroup();
+    allowReuseList = true;
+
     auto it = range.begin();
 
     std::string name = currentName; 
-    allowReuseList = false; // Force new group !
     if (uname.empty()) {
       name = draw(*it);
     } else {
       name = draw(*it, uname);
     }
-    allowReuseList = true; // Reuse group
+
+    currentData->vertices.reserve(
+      currentData->vertices.size() +
+      currentData->elementSize * std::distance(range.begin(), range.end())
+    );
 
     for (++it; it != range.end(); ++it) {
       draw(*it, name);

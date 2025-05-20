@@ -618,11 +618,7 @@ namespace DGtal {
 
       // @brief Draws an /!\ arrow (NOT A LINE)
       std::string draw(const std::pair<RealPoint, RealPoint>& arrow, const std::string& uname = "Arrow_{i}");
-
-      // @brief Draws an object through an iterator
-      template<typename Obj>
-      std::string drawGenericObject(const std::string& name, const Obj& obj);
-
+      
       /**
        * @brief Draws a range of object to the screen
        */
