@@ -430,7 +430,7 @@ namespace DGtal {
        * 
        * @param elementSize The size of each elements
        */
-      bool shouldCreateNewList(size_t elementSize) const;
+      bool canCreateNewList(size_t elementSize) const;
 
       /**
        * @brief Reuse a list if possible, otherwise create a new one

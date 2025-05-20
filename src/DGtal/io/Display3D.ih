@@ -171,7 +171,7 @@ namespace DGtal {
   }
 
   template <typename Space, typename KSpace>
-  bool Display3D<Space, KSpace>::shouldCreateNewList(size_t elementSize) const {
+  bool Display3D<Space, KSpace>::canCreateNewList(size_t elementSize) const {
     if (!currentData) return true;
     if (currentData->elementSize != elementSize) return true;
     return !allowReuseList;
@@ -179,7 +179,7 @@ namespace DGtal {
 
   template <typename Space, typename KSpace>
   std::string Display3D<Space, KSpace>::createOrReuseList(const std::string& name, size_t elementSize) {
-    if (shouldCreateNewList(elementSize)) {
+    if (canCreateNewList(elementSize)) {
       return newList(name, elementSize);
     }
     return currentName;
