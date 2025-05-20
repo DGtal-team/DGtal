@@ -74,6 +74,7 @@ namespace DGtal {
       }
 
       void clearView() override {
+        polyscope::removeAllStructures();
       }
 
       void show() override {
@@ -265,6 +266,10 @@ namespace DGtal {
                     break;
           };
         }
+      }
+
+      ~PolyscopeViewer() {
+        this->clear();
       }
 
     private:

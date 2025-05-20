@@ -100,12 +100,14 @@ alcapone_3d()
 
     {
         Viewer* viewer = new Viewer(kspace);
+        viewer->allowReuseList = true;
         for (DigitalSurface::ConstIterator si=digital_surface.begin(), se=digital_surface.end(); si!=se; si++)
         {
             const DGtal::Z3i::KSpace::SCell cell = *si;
             (*viewer) << cell;
         }
         viewer->show();
+        delete viewer;
     }
 
     trace.endBlock();
@@ -121,9 +123,9 @@ alcapone_3d()
 
     {
         Viewer* viewer = new Viewer(kspace);
-        viewer->setWindowTitle("alcapone calculus");
         (*viewer) << calculus;
         viewer->show();
+        delete viewer;
     }
 
     using DGtal::PRIMAL;
@@ -147,9 +149,9 @@ alcapone_3d()
 
     {
         Viewer* viewer = new Viewer(kspace);
-        viewer->setWindowTitle("alcapone poisson rho");
         (*viewer) << rho;
         viewer->show();
+        delete viewer;
     }
 
     //! [alcapone_phi]
@@ -167,6 +169,7 @@ alcapone_3d()
         Viewer* viewer = new Viewer(kspace);
         (*viewer) << phi;
         viewer->show();
+        delete viewer;
     }
 
     trace.endBlock();
@@ -204,6 +207,7 @@ pyramid_3d()
         Viewer* viewer = new Viewer(kspace);
         (*viewer) << input_set;
         viewer->show();
+        delete viewer;
     }
 
     //! [surface_digital_surface]
@@ -240,6 +244,7 @@ pyramid_3d()
             (*viewer) << cell;
         }
         viewer->show();
+        delete viewer;
     }
 
     trace.endBlock();
@@ -257,6 +262,7 @@ pyramid_3d()
         Viewer* viewer = new Viewer(kspace);
         (*viewer) << calculus;
         viewer->show();
+        delete viewer;
     }
 
     using DGtal::PRIMAL;

@@ -33,7 +33,9 @@
 #include <vector>
 #include <string>
 #include <array>
+
 #include <map>
+#include "DGtal/dec/DiscreteExteriorCalculus.h"
 
 #include <Eigen/Geometry>
 
@@ -51,6 +53,8 @@
 
 #include "DGtal/shapes/Mesh.h"
 
+#include "DGtal/dec/DiscreteExteriorCalculus.h"
+
 #include "DGtal/topology/Object.h"
 
 #include "DGtal/images/ImageAdapter.h"
@@ -58,7 +62,6 @@
 #include "DGtal/images/ImageContainerBySTLVector.h"
 
 #include "DGtal/geometry/tools/SphericalAccumulator.h"
-
 #include "DGtal/geometry/curves/StandardDSS6Computer.h"
 #include "DGtal/geometry/curves/GridCurve.h"
 
@@ -266,6 +269,7 @@ namespace DGtal {
         data.clear();
         
         noCurrentGroup();
+        clearView();
       }
 
       template<typename Obj>
@@ -360,6 +364,106 @@ namespace DGtal {
       }
       std::string draw(const typename GridCurve<KSpace>::ArrowsRange& range, const std::string& uname = "Arrows_{i}") {
         return drawGenericRange(range, uname);
+      }
+
+      template<DGtal::Dimension emb, DGtal::Dimension amb, typename Algebra, typename Int>
+      std::string draw(const DiscreteExteriorCalculus<emb, amb, Algebra, Int>& calc, const std::string& uname = "Calculus_{i}") {
+        bool save = allowReuseList;
+        allowReuseList = true;
+
+        std::string list0 = newBallList(uname + "_0d");
+        std::string list1 = newLineList(uname + "_1d");
+        std::string list2_1 = newQuadList(uname + "_2d");
+        std::string list2_2 = newVolumetricList(uname + "_2d_signed");
+        std::string list3   = newCubeList(uname + "_3d");
+
+        std::string* lists[4] = { &list0, &list1, &list2_2, &list3 };
+
+        for (auto it = calc.begin(); it != calc.end(); ++it) {
+          const auto& cell = it->first;
+          const bool& flip = it->second.flipped;
+
+          const SCell displayed = calc.myKSpace.signs(cell, flip ? KSpace::NEG : KSpace::POS);
+
+          const bool xodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(displayed.preCell().coordinates[0]) & 1);
+          const bool yodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(displayed.preCell().coordinates[1]) & 1);
+          const bool zodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(displayed.preCell().coordinates[2]) & 1);
+          
+          const int dim = xodd + yodd + zodd;
+
+          setCurrentList(*lists[dim]);
+
+          const auto rp = sCellEmbedder.embed(displayed);
+          addKCell(*lists[dim], rp, xodd, yodd, zodd, true, displayed.preCell().positive);
+        }
+        std::cout << "Done: " << toRender.size() << std::endl;
+        for (size_t i = 0; i < toRender.size(); ++i) {
+          std::cout << toRender[i] << std::endl;
+        }
+
+        allowReuseList = save;
+        noCurrentGroup();
+        return list2_2;
+      }
+
+      template<typename Calculus, DGtal::Order order, DGtal::Duality duality>
+      std::string draw(const KForm<Calculus, order, duality>& kform, const std::string& uname = "KForm_{i}") {
+        using CSCell = Calculus::SCell;
+        using Scalar = Calculus::Scalar;
+
+        std::string name = ""; 
+        bool save = allowReuseList;
+
+        noCurrentGroup();
+        allowReuseList = true;
+
+        std::string list0 = newBallList(uname + "_0d");
+        std::string list1 = newLineList(uname + "_1d");
+        std::string list2_1 = newQuadList(uname + "_2d");
+        std::string list2_2 = newVolumetricList(uname + "_2d_signed");
+        std::string list3   = newCubeList(uname + "_3d");
+
+        const std::string* lists[4] = { &list0, &list1, &list2_2, &list3 };
+
+        for (typename Calculus::Index i = 0; i < kform.length(); ++i) {
+          const SCell cell = kform.getSCell(i);
+          const Scalar val = kform.myContainer(i);
+ 
+          const bool xodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[0]) & 1);
+          const bool zodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[2]) & 1);
+          const bool yodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[1]) & 1);
+          
+          const int dim = xodd + yodd + zodd;
+          if (!std::isfinite(val)) continue;
+
+          setCurrentList(*lists[dim]);
+          draw(cell);
+        }
+        allowReuseList = save;
+        noCurrentGroup();
+        return name;
+      }
+
+      template<typename Calculus, DGtal::Duality dual> 
+      std::string draw(const VectorField<Calculus, dual>& field, const std::string& uname = "Field_{i}") {
+        std::string name = newBallList(uname);
+        
+        currentData->style.width = 0.; // Make ball diseapear
+        currentData->vertices.reserve(field.length());
+        currentData->vectorProperties["value"].reserve(field.length());
+
+        for (typename Calculus::Index i = 0; i < field.length(); ++i) {
+          const auto& origin = sCellEmbedder.embed(field.getSCell(i));
+          const auto vector = field.getVector(i);
+
+          if (std::isfinite(vector[0]) && std::isfinite(vector[1]) && std::isfinite(vector[2])) {
+            currentData->vertices.push_back(origin);
+            currentData->vectorProperties["value"].push_back(vector);
+          }
+        }
+
+        noCurrentGroup();
+        return name;
       }
 
       std::string draw(const KCell& cell, const std::string& name = "KCell_{i}_{d}d") {
