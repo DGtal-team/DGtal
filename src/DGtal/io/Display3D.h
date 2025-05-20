@@ -66,105 +66,120 @@
 #include "DGtal/geometry/curves/GridCurve.h"
 
 namespace DGtal {
-    namespace drawutils {
+    namespace drawutils { // Namespace for some utilities
+      /**
+       * @brief Create a list of indices for a vertex array with independent elements
+       * 
+       * @tparam I The size of individual elements
+       * @param N The number of elements
+       */
       template<size_t I>
-      std::vector<std::array<size_t, I>> makeIndices(size_t N) {
-        std::vector<std::array<size_t, I>> indices(N);
+      std::vector<std::array<size_t, I>> makeIndices(size_t N);
       
-        for (size_t i = 0; i < N; ++i) {
-          for (size_t j = 0; j < I; ++j) {
-            indices[i][j] = j + i * I;
-          }
-        }
-        return indices;
-      }
-
+      /**
+       * @brief Return the vertices of a cube
+       *
+       * @tparam T The type of vertex
+       * @param center The center of the cube
+       * @param size The size of the cube
+       *
+       * @see DGtal::drawutils::insertCubeVertices
+       */
       template<typename T> 
-      std::array<T, 8> getCubeVertices(T center, double size) {
-        return {
-          center + 0.5 * size * T(-1, -1, -1), 
-          center + 0.5 * size * T( 1, -1, -1),
-          center + 0.5 * size * T( 1,  1, -1), 
-          center + 0.5 * size * T(-1,  1, -1),
-          center + 0.5 * size * T(-1, -1,  1), 
-          center + 0.5 * size * T( 1, -1,  1),
-          center + 0.5 * size * T( 1,  1,  1), 
-          center + 0.5 * size * T(-1,  1,  1)
-        };
-      }
-
+      std::array<T, 8> getCubeVertices(T center, double size);
+      
+      /**
+       * @brief Insert cube vertices into an array
+       *
+       * @tparam T The type of vertex
+       * @tparam U The container to insert vertices into
+       * 
+       * @param center The center of the cube
+       * @param scale The size of the cube
+       *
+       * @see DGtal::drawutils::getCubeVertices
+       */
       template<typename T, typename U>
-      void insertCubeVertices(U& dest, T center, double scale) {
-        auto vertices = getCubeVertices(center, scale);
-        dest.insert(dest.end(), vertices.begin(), vertices.end());
-      }
-
+      void insertCubeVertices(U& dest, T center, double scale);
+      
+      /**
+       * @brief Return the vertices of an axis aligned square 
+       *
+       * @tparam T The type of vertex
+       * 
+       * @param center The center of the quad
+       * @param orientation 0 means normal in x direction, 1 in y-direction, 2 in z-direction
+       *
+       * @see DGtal::drawutils::insertAASquare
+       */
       template <typename T>
-      std::array<T, 4> getAAQuadVertices(T center, int orientation, double size) {
-        switch(orientation) {
-        case 0: // Normal in x direction
-          return {
-            center + 0.5 * size * T(0, -1, -1), 
-            center + 0.5 * size * T(0, -1,  1),
-            center + 0.5 * size * T(0,  1,  1),
-            center + 0.5 * size * T(0,  1, -1)
-          };
-        case 1: // Normal in y direction
-          return {
-            center + 0.5 * size * T(-1, 0, -1), 
-            center + 0.5 * size * T(-1, 0,  1),
-            center + 0.5 * size * T( 1, 0,  1),
-            center + 0.5 * size * T( 1, 0, -1)
-          };
-        case 2: // Normal in z direction
-        default:
-          return {
-            center + 0.5 * size * T(-1, -1, 0), 
-            center + 0.5 * size * T(-1,  1, 0),
-            center + 0.5 * size * T( 1,  1, 0),
-            center + 0.5 * size * T( 1, -1, 0)
-          };
-        }
-      }
-
+      std::array<T, 4> getAASquareVertices(T center, int orientation, double size);
+      
+      /**
+       * @brief Insert vertices of a square into a container
+       *
+       * @tparam U The container
+       * @tparam T The type of vertex
+       *
+       * @param center The center of the square
+       * @param size The size of the square
+       *
+       * @see DGtal::drawutils::getAASquareVertices
+       */
       template<typename U, typename T>
-      void insertQuad(U& dest, T center, int orientation, double size) {
-        auto vertices = getAAQuadVertices(center, orientation, size);
-        dest.insert(dest.end(), vertices.begin(), vertices.end());
-      }
-
+      void insertAASquare(U& dest, T center, int orientation, double size);
+      
+      /**
+       * @brief Return the vertices of a prism
+       *
+       * Here, a prism is meant to display a signed Khalimsky cell. 
+       * It is draw as two square, one of which is smaller than the other, 
+       * connected by 4 other rectular shapes. 
+       *
+       * @tparam T The vertex type
+       *
+       * @param center The center of the cell on which the prism should be drawn
+       * @param orientation The orientation of the cell (x, y, z)
+       * @param size1 Size of the first square
+       * @param size2 Size of the second square
+       * @param shift1 Shift (relative to center) of the first square
+       * @param shift2 Shift (relative to center) of the second square
+       */
       template<typename T>
       std::array<T, 8> getPrism(
           T center, int orientation, 
           double size1, double size2, double shift1, double shift2
-      ) {
-        T dir(0, 0, 0); dir[orientation] = 1; 
-
-        std::array<T, 8> vertices;
-        auto fQuad = getAAQuadVertices(center + shift1 * dir, orientation, size1);
-        auto sQuad = getAAQuadVertices(center + shift2 * dir, orientation, size2);
-
-        std::copy(fQuad.begin(), fQuad.end(), vertices.begin());
-        std::copy(sQuad.begin(), sQuad.end(), vertices.begin() + fQuad.size());
-        return vertices;
-      }
-
+      );
+      
+      /**
+       * @brief Insert the vertices of a prism into a container
+       *
+       * @see DGtal::drawutils::getPrism
+       *
+       * @tparam T The vertex type
+       *
+       * @param center The center of the cell on which the prism should be drawn
+       * @param orientation The orientation of the cell (x, y, z)
+       * @param size1 Size of the first square
+       * @param size2 Size of the second square
+       * @param shift1 Shift (relative to center) of the first square
+       * @param shift2 Shift (relative to center) of the second square
+       */ 
       template<typename T, typename U>
       void insertPrism(U& dest, T center, int orientation, 
-                       float scale1, float scale2, float shift1, float shift2) {
-        auto vertices = getPrism(center, orientation, scale1, scale2, shift1, shift2);
-        dest.insert(dest.end(), vertices.begin(), vertices.end());
-      }
-    };
+          double size1, double size2, double shift1, double shift2);
+    } // drawutils
 
     /**
      * @brief Style of display of an element
      */
     struct DisplayStyle {
-      Color color = Color(200, 200, 200, 255);                 //< Color of the object. 
-      bool useDefaultColors = true;                            //< When set, color is ignored and the viewer is free to choose
-      
-      double width = 1.0;                                      //< Maintains uniform scale of the object independently for easy access
+      // Color of an object
+      Color color = Color(200, 200, 200, 255);
+      // When set, color is ignored and the viewer is free to choose
+      bool useDefaultColors = true;            
+      // Maintains uniform scale of the object independently for easy access
+      double width = 1.0;                      
 
       /**
        * @brief List available draw modes.
@@ -185,31 +200,75 @@ namespace DGtal {
       size_t mode = static_cast<size_t>(DrawMode::DEFAULT);
     };
 
+    /**
+     * @brief Data required to display an object
+     * 
+     * @tparam RealPoint Vector type for points and vector
+     */
     template<typename RealPoint>
     struct DisplayData {
-      std::size_t           elementSize; //< Size for each elements. If 0, elements may have variable size (ie. polygonal faces).
-                                         // 1 -> Ball or Cube depending on DrawMode
-                                         // 2 -> Lines
-                                         // 0, 3, 4 -> Polygonal / Triangular / Quad mesh
-                                         // 8 -> Volumetric mesh
-      std::vector<std::vector<uint32_t>> indices;     //< Indices for each elements. Only used if elementSize is 0.
-      std::vector<RealPoint>   vertices;    //< Vertices of the object
+      /**
+       * Size of each elements. 
+       * 
+       * 0: elements may have variable size given by DisplayData::Indices (polygonal mesh)
+       * 1: elements are drawn as points (Ball)
+       * 2: elements are drawn as lines
+       * 3: elements are drawn as triangle (mesh)
+       * 4: elements are drawn as quads (mesh)
+       * 8: elements are drawn as cubes / prisms (volumetric mesh)
+       */
+      std::size_t           elementSize; 
+      
+      // Indices for elements when elementSize is 0
+      std::vector<std::vector<uint32_t>> indices;
+      
+      // List of vertices
+      std::vector<RealPoint>   vertices;
 
-      Eigen::Affine3d transform = Eigen::Affine3d::Identity(); //< Transform (includes scale)
-
+      // Transform of the object
+      Eigen::Affine3d transform = Eigen::Affine3d::Identity(); 
+      
+      // Draw style of the object (color, scale)
       DisplayStyle style;
-      std::map<std::string, std::vector<RealPoint>> vectorProperties;
-      std::map<std::string, std::vector<double>> scalarProperties;
+      
+      // Color to apply to each element
       std::map<std::string, std::vector<Color>>  colorProperties;
+      // Vector to attach to each element
+      std::map<std::string, std::vector<RealPoint>> vectorProperties;
+      // Values to attach to each element (may serve for coloring)
+      std::map<std::string, std::vector<double>> scalarProperties;
     };
     
+    /**
+     * @brief Clipping plane
+     */
     struct ClippingPlane {
       double a, b, c; //< Normal components
       double d;       //< Offset
-                      //
+      
+      // Some style for rendering (colors)
       DisplayStyle style;
     };
     
+    /**
+     * @brief Attach a property to an element
+     *
+     * This class can be used with singletons and composite elements; 
+     * as long as the correct number of values are provided.
+     * 
+     * This class can be nested to add multiple properties:
+     * ```code
+     *  WithProperty(
+     *    WithProperty(
+     *      obj, "value", scalar
+     *    ), 
+     *    "normal", normal
+     *  )
+     * ```
+     * 
+     * @tparam T The type of element
+     * @tparam Type the type of property
+     */
     template<typename T, typename Type>
     struct WithProperty{
       WithProperty(const T& object, const std::string& name, const Type& value) : 
@@ -224,12 +283,39 @@ namespace DGtal {
         this->values = values;
       }
 
+      // Copy of the object
       T object;
+      // Copy of the values to attach
       std::vector<Type> values;
+      // Name of the property
       std::string name;
     };
 
-
+    /**
+     * @brief Base class for viewing DGtal objects
+     *
+     * @tparam Space Space of draw objects
+     * @tparam KSpace Khalimsky space of drawn objects
+     * 
+     * Drawing:
+     * 
+     * Lists:
+     *  Lists are a key part of this class. A list is a collection of object
+     *  that are linked together. As such, they should be managed, updated 
+     *  with the same options.
+     *  
+     *  Each DisplayData elements corresponds to a list of elements. However
+     *  the intent behind subsequent drawcalls can be to groups elements 
+     *  together. For example, looping through a Digital surface doing a
+     *  computation and then display the current element. 
+     *  For this reason, the field "allowReuseList" can be set to true. This
+     *  will try, if possible to use reuse the current element if possible. 
+     *  This may not success (common cases are if elements of different size 
+     *  were inserted, or after drawing an object which always create its own
+     *  list). 
+     *  If this does not fit the need, use setCurrentList.
+     *  
+     */
     template < typename Space = Z3i::Space, typename KSpace = Z3i::KSpace>
     class Display3D {
     public:
@@ -241,6 +327,7 @@ namespace DGtal {
 
       Display3D() : Display3D(KSpace()) {}
 
+      // Usefull definitions
       using Point = typename Space::Point;
       using KCell = typename KSpace::Cell;
       using SCell = typename KSpace::SCell;
@@ -250,726 +337,121 @@ namespace DGtal {
       using CellEmbedder = CanonicCellEmbedder<KSpace>;
       using SCellEmbedder = CanonicSCellEmbedder<KSpace>;
 
+      /**
+       * @brief A general callback for the viewer to give control to the user
+       * 
+       * There are no guarentees on the thread-safeness of this class. 
+       */
       struct Callback{
+        /**
+         * @brief Called when setCallback is performed on the viewer
+         * 
+         * This is callback can be used to store the pointer to a particular
+         * instance of the viewer.
+         * 
+         * If only general properties are needed, use the Callback::viewer member
+         * which is set prior calling this function. 
+         * 
+         * @param viewer A pointer to the viewer on which this callback is attached
+         */
         virtual void OnAttach(void* viewer) {};
+        /**
+         * @brief Called to render or interact with some UI
+         */
         virtual void OnUI() {};
+        /**
+         * @brief Called when an element is clicked
+         * 
+         * @see DGtal::Display3D::renderNewData
+         * 
+         * @param name The name of the structure containing the element
+         * @param index The index within the clicked structure
+         * @param data The Display3D data associated with this structure
+         * @param viewerData Additionnal data that the viewer may pass to the user
+         */
         virtual void OnClick(const std::string& name, size_t index, const DisplayData<RealPoint>& data, void* viewerData) {};
 
-        Display3D<Space, KSpace>* viewer;
+        // Pointer to the Display3D instance the callback is attached to
+        Display3D<Space, KSpace>* viewer = nullptr;
       };
-
-    public:
-      virtual void renderNewData() = 0;
-      virtual void clearView() = 0;
+    public: // General commands
+      /**
+       * @brief Starts the event loop and display of elements
+       * 
+       * It is recommended that this functions calls renderNewData
+       */
       virtual void show() = 0;
+      /**
+       * @brief Renders newly added data
+       */
+      virtual void renderNewData() = 0;
+      /**
+       * @brief Clear the screen
+       */
+      virtual void clearView() = 0;
+      /**
+       * @brief Clear the viewer, including screen and internal data
+       */
+      virtual void clear();
+      /** 
+       * @brief Sets callback
+       */
+      void setCallback(Callback* callback);
+
+    public: // Group/Lists managements
+      /**
+       * @brief Create a new group
+       *
+       * If the name requested already exists; another one is
+       * computed as follows:
+       * - If the token {i} is present, replace the first occurence with 
+       *   the first available index, starting from one.
+       * - Otherwise, appends "_i" where i the first available index, 
+       *   starting from one.
+       *
+       * This function sets the current data.
+       * 
+       * @param name The name to insert
+       * @param eSize elementSize of the DisplayData 
+       *
+       * @return The computed name
+       */
+      std::string newList(const std::string& name, size_t eSize = 0);
 
-      virtual void clear() {
-        toRender.clear();
-        planes.clear();
-        data.clear();
-        
-        noCurrentGroup();
-        clearView();
-      }
-
-      template<typename Obj>
-      Display3D& operator<<(const Obj& obj) {
-        draw(obj);
-        return *this;
-      }
-
-      void setCallback(Callback* callback) {
-        this->callback = callback;
-        this->callback->viewer = this;
-      }
-
-      std::string draw(const Point& p, const std::string& uname = "Point_{i}") {
-        return draw(embedder.embed(p), uname);
-      }
-
-      std::string draw(const RealPoint& rp, const std::string& uname = "Point_{i}") {
-        std::string name = currentName;
-
-        if (currentStyle.mode &= DisplayStyle::BALLS) {
-          if (shouldCreateNewList(1)) {
-            name = newBallList(uname);
-          }
-          
-          currentData->vertices.push_back(rp);
-        } else {
-          if (shouldCreateNewList(8)) {
-            name = newCubeList(uname);
-          }
-          
-          drawutils::insertCubeVertices(currentData->vertices, rp, currentData->style.width);
-        }
-        return name;
-      }
-      
-      std::string draw(const std::pair<RealPoint, RealPoint>& arrow, const std::string& uname = "Arrow_{i}") {
-        // Warning, this function draw arrows, not lines !
-        std::string name = currentName;
-        if (shouldCreateNewList(1)) {
-          name = newBallList(uname);
-          currentData->style.width = 0;
-        }
-        currentData->vertices.push_back(arrow.first);
-        currentData->vectorProperties["data"].push_back(arrow.second);
-        return "";
-      }
-
-      template<typename Range> 
-      std::string drawGenericRange(const Range& range, const std::string& uname) {
-        bool save = allowReuseList;
-
-        auto it = range.begin();
-
-        std::string name = currentName; 
-        allowReuseList = false; // Force new group !
-        if (uname.empty()) {
-          name = draw(*it);
-        } else {
-          name = draw(*it, uname);
-        }
-        allowReuseList = true; // Reuse group
-
-        for (++it; it != range.end(); ++it) {
-          draw(*it, name);
-        }
-
-        noCurrentGroup();
-        allowReuseList = save; 
-        return name;
-      }
-
-      template<typename A, typename B, typename C>
-      std::string draw(const ConstRangeAdapter<A, B, C> range, const std::string& uname = "") {
-        return drawGenericRange(range, uname);
-      }
-
-      template<typename A, typename B, typename C>
-      std::string draw(const ConstIteratorAdapter<A, B, C>& adapter, const std::string& uname = "") {
-        if (uname.empty()) {
-          return draw(*adapter);
-        }
-        // Use default value of draw
-        return draw(*adapter, uname);
-      }
-      
-      std::string draw(const GridCurve<KSpace>& curve, const std::string& uname = "GridCurve_{i}") {
-        return draw(curve.getSCellsRange(), uname);
-      }
-      std::string draw(const typename GridCurve<KSpace>::MidPointsRange& range, const std::string& uname = "MidPoints_{i}") {
-        return drawGenericRange(range, uname);
-      }
-      std::string draw(const typename GridCurve<KSpace>::ArrowsRange& range, const std::string& uname = "Arrows_{i}") {
-        return drawGenericRange(range, uname);
-      }
-
-      template<DGtal::Dimension emb, DGtal::Dimension amb, typename Algebra, typename Int>
-      std::string draw(const DiscreteExteriorCalculus<emb, amb, Algebra, Int>& calc, const std::string& uname = "Calculus_{i}") {
-        bool save = allowReuseList;
-        allowReuseList = true;
-
-        std::string list0 = newBallList(uname + "_0d");
-        std::string list1 = newLineList(uname + "_1d");
-        std::string list2_1 = newQuadList(uname + "_2d");
-        std::string list2_2 = newVolumetricList(uname + "_2d_signed");
-        std::string list3   = newCubeList(uname + "_3d");
-
-        std::string* lists[4] = { &list0, &list1, &list2_2, &list3 };
-
-        for (auto it = calc.begin(); it != calc.end(); ++it) {
-          const auto& cell = it->first;
-          const bool& flip = it->second.flipped;
-
-          const SCell displayed = calc.myKSpace.signs(cell, flip ? KSpace::NEG : KSpace::POS);
-
-          const bool xodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(displayed.preCell().coordinates[0]) & 1);
-          const bool yodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(displayed.preCell().coordinates[1]) & 1);
-          const bool zodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(displayed.preCell().coordinates[2]) & 1);
-          
-          const int dim = xodd + yodd + zodd;
-
-          setCurrentList(*lists[dim]);
-
-          const auto rp = sCellEmbedder.embed(displayed);
-          addKCell(*lists[dim], rp, xodd, yodd, zodd, true, displayed.preCell().positive);
-        }
-        std::cout << "Done: " << toRender.size() << std::endl;
-        for (size_t i = 0; i < toRender.size(); ++i) {
-          std::cout << toRender[i] << std::endl;
-        }
-
-        allowReuseList = save;
-        noCurrentGroup();
-        return list2_2;
-      }
-
-      template<typename Calculus, DGtal::Order order, DGtal::Duality duality>
-      std::string draw(const KForm<Calculus, order, duality>& kform, const std::string& uname = "KForm_{i}") {
-        using CSCell = Calculus::SCell;
-        using Scalar = Calculus::Scalar;
-
-        std::string name = ""; 
-        bool save = allowReuseList;
-
-        noCurrentGroup();
-        allowReuseList = true;
-
-        std::string list0 = newBallList(uname + "_0d");
-        std::string list1 = newLineList(uname + "_1d");
-        std::string list2_1 = newQuadList(uname + "_2d");
-        std::string list2_2 = newVolumetricList(uname + "_2d_signed");
-        std::string list3   = newCubeList(uname + "_3d");
-
-        const std::string* lists[4] = { &list0, &list1, &list2_2, &list3 };
-
-        for (typename Calculus::Index i = 0; i < kform.length(); ++i) {
-          const SCell cell = kform.getSCell(i);
-          const Scalar val = kform.myContainer(i);
- 
-          const bool xodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[0]) & 1);
-          const bool zodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[2]) & 1);
-          const bool yodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[1]) & 1);
-          
-          const int dim = xodd + yodd + zodd;
-          if (!std::isfinite(val)) continue;
-
-          setCurrentList(*lists[dim]);
-          draw(cell);
-        }
-        allowReuseList = save;
-        noCurrentGroup();
-        return name;
-      }
-
-      template<typename Calculus, DGtal::Duality dual> 
-      std::string draw(const VectorField<Calculus, dual>& field, const std::string& uname = "Field_{i}") {
-        std::string name = newBallList(uname);
-        
-        currentData->style.width = 0.; // Make ball diseapear
-        currentData->vertices.reserve(field.length());
-        currentData->vectorProperties["value"].reserve(field.length());
-
-        for (typename Calculus::Index i = 0; i < field.length(); ++i) {
-          const auto& origin = sCellEmbedder.embed(field.getSCell(i));
-          const auto vector = field.getVector(i);
-
-          if (std::isfinite(vector[0]) && std::isfinite(vector[1]) && std::isfinite(vector[2])) {
-            currentData->vertices.push_back(origin);
-            currentData->vectorProperties["value"].push_back(vector);
-          }
-        }
-
-        noCurrentGroup();
-        return name;
-      }
-
-      std::string draw(const KCell& cell, const std::string& name = "KCell_{i}_{d}d") {
-        const RealPoint rp = cellEmbedder.embed(cell);
-        
-        const bool xodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[0]) & 1);
-        const bool yodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[1]) & 1);
-        const bool zodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[2]) & 1);
-          
-        return addKCell(name, rp, xodd, yodd, zodd, false, false);
-      }
-      
-      std::string draw(const SCell& cell, const std::string& name = "SCell_{i}_{d}d") {
-        const RealPoint rp = sCellEmbedder.embed(cell);
-        
-        const bool xodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[0]) & 1);
-        const bool yodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[1]) & 1);
-        const bool zodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[2]) & 1);
-        
-        return addKCell(name, rp, xodd, yodd, zodd, true, cell.preCell().positive);
-      }
-
-      std::string draw(const HyperRectDomain<Space>& domain, const std::string& uname = "Domain_{i}") {
-        std::string name = drawGenericObject(uname, domain);
-
-        if (currentStyle.mode & DisplayStyle::GRID) {
-          newLineList(name + "_grid");
-          
-          // Faces YX
-          for (auto z = domain.myLowerBound[2]; z <= domain.myUpperBound[2]; z++) {
-            for (auto x = domain.myLowerBound[0];  x <= domain.myUpperBound[0]; x++) {
-              DGtal::Z3i::RealPoint rp1 = embedder.embed( DGtal::Z3i::Point(x, domain.myLowerBound[1], z) );
-              DGtal::Z3i::RealPoint rp2 = embedder.embed( DGtal::Z3i::Point(x, domain.myUpperBound[1], z) );
-              currentData->vertices.push_back(rp1);
-              currentData->vertices.push_back(rp2);
-            }
-
-            for (auto y = domain.myLowerBound[1]; y <= domain.myUpperBound[1]; y++) {
-              DGtal::Z3i::RealPoint rp1 = embedder.embed( DGtal::Z3i::Point(domain.myLowerBound[0], y, z) );
-              DGtal::Z3i::RealPoint rp2 = embedder.embed( DGtal::Z3i::Point(domain.myUpperBound[0], y, z) );
-              currentData->vertices.push_back(rp1);
-              currentData->vertices.push_back(rp2);
-            }
-          }
-
-          // Faces XZ
-          for (auto y = domain.myLowerBound[1]; y <= domain.myUpperBound[1]; y++) {
-            for (auto x = domain.myLowerBound[0]; x <= domain.myUpperBound[0]; x++) {
-              DGtal::Z3i::RealPoint rp1 = embedder.embed( DGtal::Z3i::Point(x, y, domain.myLowerBound[2]) );
-              DGtal::Z3i::RealPoint rp2 = embedder.embed( DGtal::Z3i::Point(x, y, domain.myLowerBound[2]) );
-
-              currentData->vertices.push_back(rp1);
-              currentData->vertices.push_back(rp2);
-            }
-            for (auto z =  domain.myLowerBound[2]; z <= domain.myUpperBound[2]; z++) {
-              DGtal::Z3i::RealPoint rp1 = embedder.embed( DGtal::Z3i::Point(domain.myLowerBound[0], y, z) );
-              DGtal::Z3i::RealPoint rp2 = embedder.embed( DGtal::Z3i::Point(domain.myUpperBound[0], y, z) );
-
-              currentData->vertices.push_back(rp1);
-              currentData->vertices.push_back(rp2);
-            }
-          }
-
-          // Faces YZ
-          for (auto x = domain.myLowerBound[0]; x <= domain.myUpperBound[0]; x++) {
-            for (auto y = domain.myLowerBound[1];  y <= domain.myUpperBound[1]; y++) {
-              DGtal::Z3i::RealPoint rp1 = embedder.embed( DGtal::Z3i::Point(x, y, domain.myLowerBound[2]) );
-              DGtal::Z3i::RealPoint rp2 = embedder.embed( DGtal::Z3i::Point(x, y, domain.myUpperBound[2]) );
-
-              currentData->vertices.push_back(rp1);
-              currentData->vertices.push_back(rp2);
-            }
-            for (auto z = domain.myLowerBound[2]; z <= domain.myUpperBound[2]; z++) {
-              DGtal::Z3i::RealPoint rp1 = embedder.embed( DGtal::Z3i::Point(x, domain.myLowerBound[1], z) );
-              DGtal::Z3i::RealPoint rp2 = embedder.embed( DGtal::Z3i::Point(x, domain.myLowerBound[1], z) );
-
-              currentData->vertices.push_back(rp1);
-              currentData->vertices.push_back(rp2);
-            }
-          }
-        }
-
-        noCurrentGroup();
-        return name;
-      }
-    
-      template<typename Vec>
-      std::string drawPolygon(const std::vector<Vec>& vertices, const std::string& uname = "Polygon_{i}") {
-        std::string name = currentName;
-        if (shouldCreateNewList(0) /* means variable number of vertices */) {
-          name = newPolygonList(uname);
-        }
-        
-        std::vector<unsigned> indices;
-        indices.reserve(vertices.size());
-
-        size_t count = currentData->vertices.size();
-        for (const auto& vert : vertices) {
-          currentData->vertices.push_back(vert);
-          indices.push_back(count++);
-        }
-        currentData->indices.push_back(std::move(indices));
-        return name;
-      }
-
-      std::string drawBall(const RealPoint& c, const std::string& uname = "Ball_{i}") {
-        std::string name = currentName;
-        if (shouldCreateNewList(1)) {
-          name = newBallList(uname);
-        }
-        currentData->vertices.push_back(c);
-        return name;
-      }
-      
-      std::string drawLine(const RealPoint& a, const RealPoint& b, const std::string& uname = "Line_{i}") {
-        std::string name = currentName;
-        if (shouldCreateNewList(2)) {
-          name = newLineList(uname);
-        }
-
-        currentData->vertices.push_back(a);
-        currentData->vertices.push_back(b);
-        return name;
-      }
-
-      std::string drawQuad(const RealPoint& a, const RealPoint& b, const RealPoint& c, const RealPoint& d, const std::string& uname = "Quad_{i}") {
-        // Not a draw specialization as it would be confusing with a drawing call of
-        // an array of points, or other primitives
-        std::string name = currentName;
-        if (shouldCreateNewList(4)) {
-          name = newQuadList(uname);
-        }
-
-        currentData->vertices.push_back(a);
-        currentData->vertices.push_back(b);
-        currentData->vertices.push_back(c);
-        currentData->vertices.push_back(d);
-
-        return name;
-      }
-      
-      template<typename Obj, typename Cont>
-      std::string draw(const DigitalSetByAssociativeContainer<Obj, Cont>& set, const std::string& name = "Set_{i}") {
-        return drawGenericObject(name, set);
-      }
-
-      template<typename D, typename T>
-      std::string draw(const ImageContainerBySTLVector<D, T>& image, const std::string& name = "Image_{i}") {
-        return drawImage(name, image);
-      }
-      
-      template <typename TImageContainer,
-                typename TNewDomain,
-                typename TFunctorD,
-                typename TNewValue,
-                typename TFunctorV,
-                typename TFunctorVm1>
-      std::string draw(const ImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV, TFunctorVm1>& adapter, const std::string& name = "Image_{i}") {
-        return drawImage(name, adapter);
-      }
-            
-      template <typename TImageContainer,
-                typename TNewDomain,
-                typename TFunctorD,
-                typename TNewValue,
-                typename TFunctorV>
-      std::string draw(const ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV>& adapter, const std::string& name = "Image_{i}") {
-        return drawImage(name, adapter);
-      }
-
-      template<typename Adj, typename Set>
-      std::string draw(const DGtal::Object<Adj, Set>& obj, const std::string& uname = "Object_{i}") {
-        std::string name = drawGenericObject(uname, obj);
-
-        // Draw adjacency if needed
-        if (currentStyle.mode & DisplayStyle::DrawMode::ADJACENCIES) {
-          newLineList(name + "_adj");
-          
-          for (auto it = obj.begin(); it != obj.end(); ++it) {
-              auto neig = obj.properNeighborhood(*it);
-
-              const RealPoint p = embedder.embed(*it);
-              for (auto it2 = neig.begin(); it2 != neig.end(); ++it2) {
-                auto p2 = embedder.embed(*it2);
-
-                currentData->vertices.push_back(p);
-                currentData->vertices.push_back(p2);
-              }
-          }
-        }
-        noCurrentGroup();
-        return name;
-      }
-      
-      template<typename T, typename Type>
-      std::string draw(const WithProperty<T, Type>& props, const std::string& uname = "") {
-        std::string name;
-        if (uname.empty())
-          name = draw(props.object);
-        else
-          name = draw(props.object, uname);
-
-        if constexpr (std::is_scalar_v<Type>) {
-          auto& loc = data[name].scalarProperties[props.name];
-          loc.insert(loc.end(), props.values.begin(), props.values.end());
-        }
-        else if constexpr(std::is_same_v<RealPoint, Type>) {
-          auto& loc = data[name].vectorProperties[props.name];
-          loc.insert(loc.end(), props.values.begin(), props.values.end());
-        }
-        else if constexpr(std::is_same_v<Color , Type>) {
-          auto& loc = data[name].colorProperties[props.name];
-          loc.insert(loc.end(), props.values.begin(), props.values.end());
-        }
-        else {
-          trace.error() << "Unknown property type (for: '" << name << "')\n";
-        }
-        return name;
-      }
-      
-      template <typename Pt>
-      std::string draw(const Mesh<Pt>& mesh, const std::string& uname = "Mesh_{i}") {
-        // A mesh may have quad faces, therefore we render it as a polygonal mesh
-        std::string name = newPolygonList(uname);
-
-        currentData->vertices.reserve(mesh.nbVertex());
-
-        currentData->indices.reserve(mesh.nbFaces());
-        currentData->colorProperties["color"].reserve(mesh.nbFaces());
-
-        // Can not insert directly vectors because of type mismatch
-        for (auto it = mesh.vertexBegin(); it != mesh.vertexEnd(); ++it) {
-          currentData->vertices.push_back(*it);
-        }
-        for (size_t i = 0; i < mesh.nbFaces(); ++i) {
-          const auto& face = mesh.getFace(i);
-          std::vector<unsigned int> fIdx;
-          fIdx.reserve(face.size());
-          for (auto i : face) {
-            fIdx.push_back(i);
-          }
-          currentData->indices.push_back(std::move(fIdx));
-          currentData->colorProperties["color"].push_back(mesh.getFaceColor(i));
-        }
-        noCurrentGroup();
-        return name;
-      }
-
-      template<typename It, typename Int, int Con>
-      std::string draw(const StandardDSS6Computer<It, Int, Con>& computer, const std::string& uname = "Computer_{i}") {
-        std::string name;
-        if (currentStyle.mode & DisplayStyle::BALLS) {
-          name = newBallList(uname);
-
-          for (auto it = computer.begin(); it != computer.end(); ++it) {
-            const auto rp = embedder.embed(*it);
-            currentData->vertices.push_back(rp);
-          }
-        } else { // Default mode
-          name = newLineList(uname);
-
-          auto it = computer.begin();
-          RealPoint a = embedder.embed(*it);
-          RealPoint b = a;
-
-          for (++it; it != computer.end(); ++it) {
-            b = embedder.embed(*it);
-            currentData->vertices.push_back(a);
-            currentData->vertices.push_back(b);
-
-            std::swap(a, b);
-          }
-        }
-        
-        noCurrentGroup();
-        return name;
-      }
-      
-      std::string draw(const ClippingPlane& plane, const std::string& name = "") {
-        planes.push_back(plane);
-        planes.back().style = currentStyle;
-        return "";
-      }
-
-    
-      template<typename T>
-      std::string draw(const SphericalAccumulator<T> accumulator, const std::string& uname = "SphericalAccumulator_{i}") {
-        std::string name = newQuadList(uname);
-
-        typedef typename SphericalAccumulator<T>::Size Size;
-        typedef typename SphericalAccumulator<T>::RealVector Vec;
-
-        Size i, j;
-        Vec a, b, c, d;
-        for (auto it = accumulator.begin(); it != accumulator.end(); ++it) {
-          accumulator.binCoordinates(it, i, j);
-
-          if (accumulator.isValidBin(i, j)) {
-            accumulator.getBinGeometry(i, j, a, b, c, d);
-
-            currentData->vertices.push_back(a);
-            currentData->vertices.push_back(b);
-            currentData->vertices.push_back(c);
-            currentData->vertices.push_back(d);
-            currentData->scalarProperties["value"].push_back(accumulator.count(i, j));
-          }
-        }
-        return name;
-      }
-
-      std::string draw(const DGtal::Color& color, const std::string& name = "") {
-        drawColor(color);
-        return "";
-      }
-      
-      void drawColor(const DGtal::Color& color) {
-        currentStyle.color = color;
-        currentStyle.useDefaultColors = false;
-      }
-
-      void setDefaultColors() {
-        currentStyle.useDefaultColors = true;
-      }
-      
-      void drawAdjacencies(bool toggle = true) {
-        if (toggle) currentStyle.mode |=  DisplayStyle::ADJACENCIES;
-        else        currentStyle.mode &= ~DisplayStyle::ADJACENCIES;
-      }
-
-      void drawAsGrid(bool toggle = true) {
-        if (toggle) currentStyle.mode |=  DisplayStyle::GRID;
-        else        currentStyle.mode &= ~DisplayStyle::GRID;
-      }
-      
-      void defaultStyle() {
-        currentStyle.mode = DisplayStyle::DEFAULT;
-      }
-
-      void drawAsPaving() {
-        currentStyle.mode &= ~DisplayStyle::BALLS;
-        currentStyle.mode |= DisplayStyle::PAVING;
-      }
-
-      void drawAsBalls() {
-        currentStyle.mode &= ~DisplayStyle::PAVING;
-        currentStyle.mode |=  DisplayStyle::BALLS;
-      }
-
-    private:
-      template<typename Obj>
-      std::string drawGenericObject(const std::string& name, const Obj& obj) {
-        std::string newName; 
-        if (currentStyle.mode & DisplayStyle::BALLS) {
-          newName = newBallList(name);
-
-          currentData->vertices.reserve(obj.size());
-          for (auto it = obj.begin(); it != obj.end(); ++it) {
-            const auto rp = embedder.embed(*it);
-            currentData->vertices.push_back(rp);
-          }
-        } else {
-          newName = newCubeList(name);
-        
-          currentData->vertices.reserve(obj.size() * 8);
-          for (auto it = obj.begin(); it != obj.end(); ++it) {
-            const auto rp = embedder.embed(*it);
-            const auto vertices = drawutils::getCubeVertices(rp, currentData->style.width);
-
-            currentData->vertices.insert(
-                currentData->vertices.end(), vertices.begin(), vertices.end()
-            );
-          }
-        }
-
-        noCurrentGroup();
-        return newName;
-      }
-
-      template<typename T>
-      std::string drawImage(const std::string& uname, const T& image) {
-        std::string name = newCubeList(uname);
-
-        size_t total = image.domain().size();
-
-        auto it = image.domain().begin();
-        auto itend = image.domain().end();
-        constexpr size_t dim = T::Domain::Space::dimension;
-        
-        currentData->vertices.reserve(8 * total);
-        currentData->scalarProperties["value"].reserve(total);
-        for(; it != itend; ++it) {
-          if constexpr (dim == 3) {
-            auto rp = embedder.embed(*it);
-            currentData->scalarProperties["value"].push_back(image(*it));
-            drawutils::insertCubeVertices(currentData->vertices, rp, currentData->style.width);
-          } else {
-            // We accept to draw theses 2D image, do ask to parametrize to also the embedder...
-            auto rp = embedder.embed(Point((*it)[0], (*it)[1], 0)); 
-            currentData->scalarProperties["value"].push_back(image(*it));
-            drawutils::insertCubeVertices(currentData->vertices, rp, currentData->style.width);
-          }
-        }
-        return name;
-      }
-
-      std::string addKCell(std::string uname, const RealPoint& rp, bool xodd, bool yodd, bool zodd, bool hasSign, bool sign) {
-        std::string name = currentName;
-        static const std::string TOKEN = "{d}";
-        static const double scale = 0.9;
-        static const double shift = 0.05;
-        static const double smallScale = 0.3;
-        static const double smallShift = 0.15;
-        // For 2D cell, this indicates if the big quad is 
-        // inside the cell or outside
-        static const int orientationPermut[3][2] = {
-          {1, 0}, {0, 1}, {1, 0}
-        };
-
-        const unsigned int dim = xodd + yodd + zodd;
-
-        auto tokenPos = uname.find(TOKEN);
-        if (tokenPos != std::string::npos) 
-          uname.replace(uname.find(TOKEN), TOKEN.size(), std::to_string(dim));
-
-        switch(dim) {
-          case 0: {
-            if (shouldCreateNewList(1)) {
-              name = newBallList(uname);
-              currentData->style.width *= scale;
-            }
-
-            currentData->vertices.push_back(rp);
-          }
-          break;
-          case 1: {
-            if (shouldCreateNewList(2)) {
-              name = newLineList(uname);
-              currentData->style.width *= scale;
-            }
-
-            const RealPoint shift(xodd, yodd, zodd);
-            currentData->vertices.push_back(rp - 0.5 * shift);
-            currentData->vertices.push_back(rp + 0.5 * shift);
-          }
-          break;
-          case 2: {
-            const unsigned int orientation = (!xodd ? 0 : (!yodd ? 1 : 2));
-            if (currentStyle.mode & DisplayStyle::SIMPLIFIED || !hasSign) {
-              if (shouldCreateNewList(4)) {
-                name = newQuadList(uname);
-                currentData->style.width *= scale;
-              }
-              
-              double scale1 = currentData->style.width;
-              drawutils::insertQuad(currentData->vertices, rp, orientation, scale1);
-            } else {
-              if (shouldCreateNewList(8)) {
-                name = newVolumetricList(uname);
-                currentData->style.width *= scale;
-              }
-              
-              const double scales[2] = {
-                scale      * currentData->style.width, 
-                smallScale * currentData->style.width
-              };
-              
-              // Decide where the big quad goes, in the interior or the exterior
-              // of the cell depending on sign and the orientation
-              int permut = orientationPermut[orientation][sign];
-              double scale1 = scales[    permut];
-              double scale2 = scales[1 - permut];
-              double shift1 = shift;
-              double shift2 = smallShift;
-
-              drawutils::insertPrism(currentData->vertices, rp, orientation, scale1, scale2, shift1, shift2);
-            }
-          }
-          break;
-          case 3: {
-            if (shouldCreateNewList(8)) {
-              name = newCubeList(uname);
-              currentData->style.width *= scale;
-            }
-
-            drawutils::insertCubeVertices(currentData->vertices, rp, currentData->style.width);
-          };
-          break;
-        };
-
-        return name;
-      }
-
-    public:
       /**
        * @brief Set the current group for further updates
+       * 
+       * @param name The name of the group
        */
-      bool setCurrentList(const std::string& name) {
-        auto it = data.find(name);
-        if (it == data.end()) 
-          return false;
-        
-        currentData = &it->second;
-        currentName = name;
-        return true;
-      }
-      
+      bool setCurrentList(const std::string& name);
+
+      /**
+       * @brief Tells if a list of a given elementSize can be reused
+       * 
+       * @param elementSize The size of each elements
+       */
+      bool shouldCreateNewList(size_t elementSize) const;
+
+      /**
+       * @brief Reuse a list if possible, otherwise create a new one
+       * 
+       * @param name The name of the created list if needed
+       * @param elementSize The size of each element for the list 
+       * 
+       * @return The name of the list to use
+       */
+      std::string createOrReuseList(const std::string& name, size_t elementSize);
+
+      /**
+       * @brief Sets current group to be invalid
+       * 
+       * The purpose of this function is to disallow further
+       * automatic update on a group.
+       */
+      void noCurrentGroup();
+
+      // Some shortcuts for clearer code
+
       std::string newCubeList(const std::string& name)       { return newList(name, 8); }
       std::string newBallList(const std::string& name)       { return newList(name, 1); }
       std::string newLineList(const std::string& name)       { return newList(name, 2); }
@@ -978,74 +460,189 @@ namespace DGtal {
       std::string newTriangleList(const std::string& name)   { return newList(name, 3); }
       std::string newVolumetricList(const std::string& name) { return newList(name, 8); }
 
-    private:
-      bool shouldCreateNewList(size_t expectedSize) const {
-        if (!currentData) return true;
-        if (currentData->elementSize != expectedSize) return true;
-        return !allowReuseList;
-      }
-
-      void noCurrentGroup() {
-        currentData = nullptr;
-        currentName = "";
-      }
+      std::string createOrReuseCubeList(const std::string& name)       { return createOrReuseList(name, 8); }
+      std::string createOrReuseBallList(const std::string& name)       { return createOrReuseList(name, 1); }
+      std::string createOrReuseLineList(const std::string& name)       { return createOrReuseList(name, 2); }
+      std::string createOrReuseQuadList(const std::string& name)       { return createOrReuseList(name, 4); }
+      std::string createOrReusePolygonList(const std::string& name)    { return createOrReuseList(name, 0); }
+      std::string createOrReuseTriangleList(const std::string& name)   { return createOrReuseList(name, 3); }
+      std::string createOrReuseVolumetricList(const std::string& name) { return createOrReuseList(name, 8); }
+    
+    public: // Draw commands
 
       /**
-       * @brief Create a new group
-       *
-       * If the name requested already exists; another one is
-       * computed as follows:
-       * - If the token {i} is present, replace the first occurence with 
-       *   the first available index, starting from one.
-       * - Otherwise, appends "_i" is the first available index, 
-       *   starting from one.
-       *
-       * @param name The name to insert
-       * @param eSize elementSize of the DisplayData 
-       *
-       * @return The computed name
+       * @brief Draw object with stream API
+       * 
+       * @tparam Obj Any type of object
+       */ 
+      template<typename Obj>
+      Display3D& operator<<(const Obj& obj);
+
+      // @brief Draws a Point with integer coodinates
+      std::string draw(const Point& p, const std::string& uname = "Point_{i}");
+
+      // @brief Draws a RealPoint with real coodinates
+      std::string draw(const RealPoint& rp, const std::string& uname = "Point_{i}");
+
+
+      // @brief Draws a range of any object
+      template<typename A, typename B, typename C>
+      std::string draw(const ConstRangeAdapter<A, B, C> range, const std::string& uname = "");
+
+      // @brief Draws any object provided through a ConstIteratorAdapter
+      template<typename A, typename B, typename C>
+      std::string draw(const ConstIteratorAdapter<A, B, C>& adapter, const std::string& uname = "");
+      
+      // @brief Draws a grid curve
+      std::string draw(const GridCurve<KSpace>& curve, const std::string& uname = "GridCurve_{i}");
+      
+      // @brief Draws a grid curve as mid points 
+      std::string draw(const typename GridCurve<KSpace>::MidPointsRange& range, const std::string& uname = "MidPoints_{i}");
+      
+      // @brief Draws a grid curve as arrows
+      std::string draw(const typename GridCurve<KSpace>::ArrowsRange& range, const std::string& uname = "Arrows_{i}");
+
+      // @brief Draws a DiscreteExteriorCalculus
+      template<DGtal::Dimension emb, DGtal::Dimension amb, typename Algebra, typename Int>
+      std::string draw(const DiscreteExteriorCalculus<emb, amb, Algebra, Int>& calc, const std::string& uname = "Calculus_{i}");
+
+      // @brief Draws a KForm
+      template<typename Calculus, DGtal::Order order, DGtal::Duality duality>
+      std::string draw(const KForm<Calculus, order, duality>& kform, const std::string& uname = "KForm_{i}");
+
+      // @brief Draws a VectorField
+      template<typename Calculus, DGtal::Duality dual> 
+      std::string draw(const VectorField<Calculus, dual>& field, const std::string& uname = "Field_{i}");
+
+      // @brief Draws an unsigned KCell
+      std::string draw(const KCell& cell, const std::string& name = "KCell_{i}_{d}d");
+      
+      // @brief Draws a singed KCell
+      std::string draw(const SCell& cell, const std::string& name = "SCell_{i}_{d}d");
+
+      // @brief Draws a Domain
+      std::string draw(const HyperRectDomain<Space>& domain, const std::string& uname = "Domain_{i}");
+
+      /**
+       * @brief Draws a polygon
+       * 
+       * @tparam Vec Type of vertex
        */
-      std::string newList(const std::string& name, size_t eSize = 0) {
-        static const std::string token = "{i}";
+      template<typename Vec>
+      std::string drawPolygon(const std::vector<Vec>& vertices, const std::string& uname = "Polygon_{i}");
 
-        auto it = data.find(name);
-        std::string newName = name;
+      // @brief Draws a ball
+      std::string drawBall(const RealPoint& c, const std::string& uname = "Ball_{i}");
+      
+      // @brief Draws a line
+      std::string drawLine(const RealPoint& a, const RealPoint& b, const std::string& uname = "Line_{i}");
 
-        size_t idx = name.find(token);
-        if (it != data.end() || idx != std::string::npos) {
-          std::string prefix = name;
+      // @brief Draws a quad
+      std::string drawQuad(const RealPoint& a, const RealPoint& b, const RealPoint& c, const RealPoint& d, const std::string& uname = "Quad_{i}");
+      
+      // @brief Draws a DigitalSet
+      template<typename Obj, typename Cont>
+      std::string draw(const DigitalSetByAssociativeContainer<Obj, Cont>& set, const std::string& name = "Set_{i}");
 
-          if (idx == std::string::npos) {
-            idx = prefix.size() + 1;
-            prefix = prefix + "_" + token;
-          }
+      // @brief Draws an Object
+      template<typename Adj, typename Set>
+      std::string draw(const DGtal::Object<Adj, Set>& obj, const std::string& uname = "Object_{i}");
 
-          size_t i = 1;
-          do {
-            std::string tmpPrefix = prefix;
-            newName = tmpPrefix.replace(idx, token.size(), std::to_string(i));
+      // @brief Draws an Image
+      template<typename D, typename T>
+      std::string draw(const ImageContainerBySTLVector<D, T>& image, const std::string& name = "Image_{i}");
+            
+      // @brief Draws an Image
+      template <typename TImageContainer,
+                typename TNewDomain,
+                typename TFunctorD,
+                typename TNewValue,
+                typename TFunctorV,
+                typename TFunctorVm1>
+      std::string draw(const ImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV, TFunctorVm1>& adapter, const std::string& name = "Image_{i}");
+            
+      // @brief Draws an Image
+      template <typename TImageContainer,
+                typename TNewDomain,
+                typename TFunctorD,
+                typename TNewValue,
+                typename TFunctorV>
+      std::string draw(const ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV>& adapter, const std::string& name = "Image_{i}");
 
-            i += 1;
-          } while (data.find(newName) != data.end());
-        }
-        
-        // Insert a new empty container
-        DisplayData<RealPoint> newData;
-        newData.style = currentStyle;
-        newData.elementSize = eSize;
+      // @brief Draws a mesh
+      template <typename Pt>
+      std::string draw(const Mesh<Pt>& mesh, const std::string& uname = "Mesh_{i}");
 
-        currentData = &data.emplace(newName, std::move(newData)).first->second;
-        currentName = newName;
-        toRender.push_back(currentName);
-        return newName;
-      }
+      // @brief Draws 
+      template<typename It, typename Int, int Con>
+      std::string draw(const StandardDSS6Computer<It, Int, Con>& computer, const std::string& uname = "Computer_{i}");
+      
+
+      // @brief Draws any object with a property
+      template<typename T, typename Type>
+      std::string draw(const WithProperty<T, Type>& props, const std::string& uname = "");
+      
+      // @brief Adds a clipping plane
+      std::string draw(const ClippingPlane& plane, const std::string& name = "");
     
+      // @brief Draws a Spherical Accumulator
+      template<typename T>
+      std::string draw(const SphericalAccumulator<T> accumulator, const std::string& uname = "SphericalAccumulator_{i}");
+
+      // @brief Set the current draw color 
+      std::string draw(const DGtal::Color& color, const std::string& name = "");
+      
+      // @brief Set the current draw color 
+      void drawColor(const DGtal::Color& color);
+
+      // @brief Use default colors
+      void setDefaultColors();
+      
+      // @brief Draws adjacencies of further Object
+      void drawAdjacencies(bool toggle = true);
+
+      // @brief Draws grid of further domains
+      void drawAsGrid(bool toggle = true);
+
+      // @brief Reset style
+      void defaultStyle();
+
+      // @brief Draws voxels of further object, domains and points
+      void drawAsPaving();
+
+      // @brief Draws balls of further object, domains and points
+      void drawAsBalls();
+
+    private: // Draw commands
+      // To avoid confusion, keep this function as private: 
+
+      // @brief Draws an /!\ arrow (NOT A LINE)
+      std::string draw(const std::pair<RealPoint, RealPoint>& arrow, const std::string& uname = "Arrow_{i}");
+
+      // @brief Draws an object through an iterator
+      template<typename Obj>
+      std::string drawGenericObject(const std::string& name, const Obj& obj);
+
+      /**
+       * @brief Draws a range of object to the screen
+       */
+      template<typename Range> 
+      std::string drawGenericRange(const Range& range, const std::string& uname);
+
+      // @brief Draws an image through an iterator
+      template<typename T>
+      std::string drawImage(const std::string& uname, const T& image);
+
+      // @brief Draws a KCell (signed or not)
+      std::string drawKCell(std::string uname, const RealPoint& rp, bool xodd, bool yodd, bool zodd, bool hasSign, bool sign);
+
     public:
-      // The use is responsible for not using these wrong...
+      // The user is responsible for not using these wrong...
       DisplayStyle currentStyle;
       bool allowReuseList = false;
 
       std::vector<ClippingPlane> planes;
+      // Leave access to the user for thin modifications
       std::map<std::string, DisplayData<RealPoint>> data;
     protected:
       KSpace kspace;
@@ -1058,6 +655,8 @@ namespace DGtal {
 
       std::string currentName = "";
       DisplayData<RealPoint>* currentData = nullptr;
-    };
-}
+    }; // Display3D
+} // DGtal
+
+#include "Display3D.ih"
 

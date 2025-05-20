@@ -1,0 +1,895 @@
+namespace DGtal {
+  namespace drawutils {
+    template<size_t I>
+    std::vector<std::array<size_t, I>> makeIndices(size_t N) {
+      std::vector<std::array<size_t, I>> indices(N);
+    
+      for (size_t i = 0; i < N; ++i) {
+        for (size_t j = 0; j < I; ++j) {
+          indices[i][j] = j + i * I;
+        }
+      }
+      return indices;
+    }
+
+    template<typename T> 
+    std::array<T, 8> getCubeVertices(T center, double size) {
+      return {
+        center + 0.5 * size * T(-1, -1, -1), 
+        center + 0.5 * size * T( 1, -1, -1),
+        center + 0.5 * size * T( 1,  1, -1), 
+        center + 0.5 * size * T(-1,  1, -1),
+        center + 0.5 * size * T(-1, -1,  1), 
+        center + 0.5 * size * T( 1, -1,  1),
+        center + 0.5 * size * T( 1,  1,  1), 
+        center + 0.5 * size * T(-1,  1,  1)
+      };
+    }
+
+    template<typename T, typename U>
+    void insertCubeVertices(U& dest, T center, double scale) {
+      auto vertices = getCubeVertices(center, scale);
+      dest.insert(dest.end(), vertices.begin(), vertices.end());
+    }
+
+    template <typename T>
+    std::array<T, 4> getAASquareVertices(T center, int orientation, double size) {
+      switch(orientation) {
+      case 0: // Normal in x direction
+        return {
+          center + 0.5 * size * T(0, -1, -1), 
+          center + 0.5 * size * T(0, -1,  1),
+          center + 0.5 * size * T(0,  1,  1),
+          center + 0.5 * size * T(0,  1, -1)
+        };
+      case 1: // Normal in y direction
+        return {
+          center + 0.5 * size * T(-1, 0, -1), 
+          center + 0.5 * size * T(-1, 0,  1),
+          center + 0.5 * size * T( 1, 0,  1),
+          center + 0.5 * size * T( 1, 0, -1)
+        };
+      case 2: // Normal in z direction
+      default:
+        return {
+          center + 0.5 * size * T(-1, -1, 0), 
+          center + 0.5 * size * T(-1,  1, 0),
+          center + 0.5 * size * T( 1,  1, 0),
+          center + 0.5 * size * T( 1, -1, 0)
+        };
+      }
+    }
+
+    template<typename U, typename T>
+    void insertAASquare(U& dest, T center, int orientation, double size) {
+      auto vertices = getAASquareVertices(center, orientation, size);
+      dest.insert(dest.end(), vertices.begin(), vertices.end());
+    }
+
+    template<typename T>
+    std::array<T, 8> getPrism(
+        T center, int orientation, 
+        double size1, double size2, double shift1, double shift2
+    ) {
+      T dir(0, 0, 0); dir[orientation] = 1; 
+
+      std::array<T, 8> vertices;
+      auto fQuad = getAASquareVertices(center + shift1 * dir, orientation, size1);
+      auto sQuad = getAASquareVertices(center + shift2 * dir, orientation, size2);
+
+      std::copy(fQuad.begin(), fQuad.end(), vertices.begin());
+      std::copy(sQuad.begin(), sQuad.end(), vertices.begin() + fQuad.size());
+      return vertices;
+    }
+
+    template<typename T, typename U>
+    void insertPrism(U& dest, T center, int orientation, 
+                     double scale1, double scale2, double shift1, double shift2) {
+      auto vertices = getPrism(center, orientation, scale1, scale2, shift1, shift2);
+      dest.insert(dest.end(), vertices.begin(), vertices.end());
+    }
+  } // drawutils
+
+  ///////////////////////////////////////////////////////////////////////////
+  ///////////////////////////// GENERAL COMMANDS ////////////////////////////
+
+  template <typename Space, typename KSpace>
+  void Display3D<Space, KSpace>::clear() {
+    noCurrentGroup();
+  
+    toRender.clear();
+    planes.clear();
+    data.clear();
+
+    clearView();
+  }
+
+  template <typename Space, typename KSpace>
+  void Display3D<Space, KSpace>::setCallback(typename Display3D<Space, KSpace>::Callback* callback) {
+      this->callback = callback;
+      if (this->callback) {
+        this->callback->viewer = this;
+        this->callback->OnAttach(this);
+      }
+    }
+
+  ///////////////////////////// GENERAL COMMANDS ////////////////////////////
+  ///////////////////////////////////////////////////////////////////////////
+  
+  ///////////////////////////////////////////////////////////////////////////
+  ///////////////////////////// GROUP MANAGEMENT ////////////////////////////
+
+  template <typename Space, typename KSpace>
+  std::string Display3D<Space, KSpace>::newList(const std::string& name, size_t eSize) {
+    static const std::string token = "{i}";
+
+    auto it = data.find(name);
+    std::string newName = name;
+
+    size_t idx = name.find(token);
+    if (it != data.end() || idx != std::string::npos) {
+      std::string prefix = name;
+
+      if (idx == std::string::npos) {
+        idx = prefix.size() + 1;
+        prefix = prefix + "_" + token;
+      }
+
+      size_t i = 1;
+      do {
+        std::string tmpPrefix = prefix;
+        newName = tmpPrefix.replace(idx, token.size(), std::to_string(i));
+
+        i += 1;
+      } while (data.find(newName) != data.end());
+    }
+    
+    // Insert a new empty container
+    DisplayData<RealPoint> newData;
+
+    // Set properties
+    newData.style = currentStyle;
+    newData.elementSize = eSize;
+
+    currentData = &data.emplace(newName, std::move(newData)).first->second;
+    currentName = newName;
+    // Add to render queue
+    toRender.push_back(currentName);
+    // Return computed name 
+    return newName;
+  }
+
+  template <typename Space, typename KSpace>
+  bool Display3D<Space, KSpace>::setCurrentList(const std::string& name) {
+    auto it = data.find(name);
+    if (it == data.end()) 
+      return false;
+    
+    currentData = &it->second;
+    currentName = name;
+    return true;
+  }
+
+  template <typename Space, typename KSpace>
+  bool Display3D<Space, KSpace>::shouldCreateNewList(size_t elementSize) const {
+    if (!currentData) return true;
+    if (currentData->elementSize != elementSize) return true;
+    return !allowReuseList;
+  }
+
+  template <typename Space, typename KSpace>
+  std::string Display3D<Space, KSpace>::createOrReuseList(const std::string& name, size_t elementSize) {
+    if (shouldCreateNewList(elementSize)) {
+      return newList(name, elementSize);
+    }
+    return currentName;
+  }
+
+  template <typename Space, typename KSpace>
+  void Display3D<Space, KSpace>::noCurrentGroup() {
+    currentData = nullptr;
+    currentName = "";
+  }
+
+  ///////////////////////////// GROUP MANAGEMENT /////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////
+
+  ////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////// DRAW MODIFIERS //////////////////////////////
+
+  template <typename Space, typename KSpace>
+  std::string Display3D<Space, KSpace>::draw(const DGtal::Color& color, const std::string& name) {
+    drawColor(color);
+    return "";
+  }
+  
+  template <typename Space, typename KSpace>
+  void Display3D<Space, KSpace>::drawColor(const DGtal::Color& color) {
+    currentStyle.color = color;
+    currentStyle.useDefaultColors = false;
+  }
+
+  template <typename Space, typename KSpace>
+  void Display3D<Space, KSpace>::setDefaultColors() {
+    currentStyle.useDefaultColors = true;
+  }
+  
+  template <typename Space, typename KSpace>
+  void Display3D<Space, KSpace>::drawAdjacencies(bool toggle) {
+    if (toggle) currentStyle.mode |=  DisplayStyle::ADJACENCIES;
+    else        currentStyle.mode &= ~DisplayStyle::ADJACENCIES;
+  }
+
+  template <typename Space, typename KSpace>
+  void Display3D<Space, KSpace>::drawAsGrid(bool toggle) {
+    if (toggle) currentStyle.mode |=  DisplayStyle::GRID;
+    else        currentStyle.mode &= ~DisplayStyle::GRID;
+  }
+  
+  template <typename Space, typename KSpace>
+  void Display3D<Space, KSpace>::defaultStyle() {
+    currentStyle.mode = DisplayStyle::DEFAULT;
+  }
+
+  template <typename Space, typename KSpace>
+  void Display3D<Space, KSpace>::drawAsPaving() {
+    currentStyle.mode &= ~DisplayStyle::BALLS;
+    currentStyle.mode |= DisplayStyle::PAVING;
+  }
+
+  template <typename Space, typename KSpace>
+  void Display3D<Space, KSpace>::drawAsBalls() {
+    currentStyle.mode &= ~DisplayStyle::PAVING;
+    currentStyle.mode |=  DisplayStyle::BALLS;
+  }
+
+  ////////////////////////////// DRAW MODIFIERS //////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////
+  
+  ////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////// DRAW COMMANDS ///////////////////////////////
+
+  template <typename Space, typename KSpace>
+  template<typename Obj>
+  Display3D<Space, KSpace>& Display3D<Space, KSpace>::operator<<(const Obj& obj) {
+    draw(obj);
+    return *this;
+  }
+
+  template <typename Space, typename KSpace>
+  std::string Display3D<Space, KSpace>::draw(const Point& p, const std::string& uname) {
+    return draw(embedder.embed(p), uname);
+  }
+
+  template <typename Space, typename KSpace>
+  std::string Display3D<Space, KSpace>::draw(const RealPoint& rp, const std::string& uname) {
+    std::string name = currentName;
+
+    if (currentStyle.mode &= DisplayStyle::BALLS) {
+      name = createOrReuseBallList(uname);
+      currentData->vertices.push_back(rp);
+    } else {
+      name = createOrReuseCubeList(uname);
+      drawutils::insertCubeVertices(currentData->vertices, rp, currentData->style.width);
+    }
+    return name;
+  }
+
+  template <typename Space, typename KSpace>
+  std::string Display3D<Space, KSpace>::draw(const std::pair<RealPoint, RealPoint>& arrow, const std::string& uname) {
+    // Warning, this function draw arrows, not lines !
+    std::string name = createOrReuseBallList(uname);
+    currentData->vertices.push_back(arrow.first);
+    currentData->vectorProperties["value"].push_back(arrow.second);
+    return "";
+  }
+
+  template <typename Space, typename KSpace>
+  template<typename A, typename B, typename C>
+  std::string Display3D<Space, KSpace>::draw(const ConstRangeAdapter<A, B, C> range, const std::string& uname) {
+    return drawGenericRange(range, uname);
+  }
+
+  template <typename Space, typename KSpace>
+  template<typename A, typename B, typename C>
+  std::string Display3D<Space, KSpace>::draw(const ConstIteratorAdapter<A, B, C>& adapter, const std::string& uname) {
+    if (uname.empty()) {
+      // Use default value of draw
+      return draw(*adapter);
+    }
+    return draw(*adapter, uname);
+  }
+
+  template <typename Space, typename KSpace>
+  std::string Display3D<Space, KSpace>::draw(const GridCurve<KSpace>& curve, const std::string& uname) {
+    return draw(curve.getSCellsRange(), uname);
+  }
+
+  template <typename Space, typename KSpace>
+  std::string Display3D<Space, KSpace>::draw(const typename GridCurve<KSpace>::MidPointsRange& range, const std::string& uname) {
+    return drawGenericRange(range, uname);
+  }
+
+  template <typename Space, typename KSpace>
+  std::string Display3D<Space, KSpace>::draw(const typename GridCurve<KSpace>::ArrowsRange& range, const std::string& uname) {
+    return drawGenericRange(range, uname);
+  }
+
+  template <typename Space, typename KSpace>
+  template <DGtal::Dimension emb, DGtal::Dimension amb, typename Algebra, typename Int>
+  std::string Display3D<Space, KSpace>::draw(const DiscreteExteriorCalculus<emb, amb, Algebra, Int>& calc, const std::string& uname) {
+    bool save = allowReuseList;
+    allowReuseList = true;
+
+    // Maintains multiple names it contains any dimension type
+    std::string list0   = newBallList(uname + "_0d");
+    std::string list1   = newLineList(uname + "_1d");
+    std::string list2_1 = newQuadList(uname + "_2d");
+    std::string list2_2 = newVolumetricList(uname + "_2d_signed");
+    std::string list3   = newCubeList(uname + "_3d");
+
+    const std::string* const lists[4] = { &list0, &list1, &list2_2, &list3 };
+
+    for (auto it = calc.begin(); it != calc.end(); ++it) {
+      const auto& cell = it->first;
+      const bool& flip = it->second.flipped;
+
+      const SCell displayed = calc.myKSpace.signs(cell, flip ? KSpace::NEG : KSpace::POS);
+
+      const bool xodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(displayed.preCell().coordinates[0]) & 1);
+      const bool yodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(displayed.preCell().coordinates[1]) & 1);
+      const bool zodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(displayed.preCell().coordinates[2]) & 1);
+      
+      const int dim = xodd + yodd + zodd;
+
+      setCurrentList(*lists[dim]);
+      if ((dim == 2) && (currentStyle.mode & DisplayStyle::SIMPLIFIED))
+        setCurrentList(list2_1);
+
+      const auto rp = sCellEmbedder.embed(displayed);
+      drawKCell(*lists[dim], rp, xodd, yodd, zodd, true, displayed.preCell().positive);
+    }
+
+    allowReuseList = save;
+    noCurrentGroup();
+    return list2_2; // Return one of the name
+  }
+
+  template <typename Space, typename KSpace>
+  template <typename Calculus, DGtal::Order order, DGtal::Duality duality>
+  std::string Display3D<Space, KSpace>::draw(const KForm<Calculus, order, duality>& kform, const std::string& uname) {
+    bool save = allowReuseList;
+    allowReuseList = true;
+
+    using CSCell = Calculus::SCell;
+    using Scalar = Calculus::Scalar;
+    
+    std::string list0   = newBallList(uname + "_0d");
+    std::string list1   = newLineList(uname + "_1d");
+    std::string list2_1 = newQuadList(uname + "_2d");
+    std::string list2_2 = newVolumetricList(uname + "_2d_signed");
+    std::string list3   = newCubeList(uname + "_3d");
+
+    const std::string* lists[4] = { &list0, &list1, &list2_2, &list3 };
+
+    for (typename Calculus::Index i = 0; i < kform.length(); ++i) {
+      const SCell cell = kform.getSCell(i);
+      const Scalar val = kform.myContainer(i);
+
+      const bool xodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[0]) & 1);
+      const bool zodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[2]) & 1);
+      const bool yodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[1]) & 1);
+      
+      const int dim = xodd + yodd + zodd;
+      if (!std::isfinite(val)) continue;
+
+      setCurrentList(*lists[dim]);
+      if ((dim == 2) && (currentStyle.mode & DisplayStyle::SIMPLIFIED))
+        setCurrentList(list2_1);
+
+      draw(cell);
+      currentData->scalarProperties["value"].push_back(val);
+    }
+
+    allowReuseList = save;
+    noCurrentGroup();
+    return list2_2; // Return one of the name
+  }
+
+
+  template <typename Space, typename KSpace>
+  template <typename Calculus, DGtal::Duality dual> 
+  std::string Display3D<Space, KSpace>::draw(const VectorField<Calculus, dual>& field, const std::string& uname) {
+    std::string name = newBallList(uname);
+    
+    currentData->style.width = 0.; // Make ball diseapear
+    currentData->vertices.reserve(field.length());
+    currentData->vectorProperties["value"].reserve(field.length());
+
+    for (typename Calculus::Index i = 0; i < field.length(); ++i) {
+      const auto& origin = sCellEmbedder.embed(field.getSCell(i));
+      const auto vector = field.getVector(i);
+
+      if (std::isfinite(vector[0]) && std::isfinite(vector[1]) && std::isfinite(vector[2])) {
+        currentData->vertices.push_back(origin);
+        currentData->vectorProperties["value"].push_back(vector);
+      }
+    }
+
+    noCurrentGroup();
+    return name;
+  }
+
+  template <typename Space, typename KSpace>
+  std::string Display3D<Space, KSpace>::draw(const KCell& cell, const std::string& name) {
+    const RealPoint rp = cellEmbedder.embed(cell);
+    
+    const bool xodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[0]) & 1);
+    const bool yodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[1]) & 1);
+    const bool zodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[2]) & 1);
+      
+    return drawKCell(name, rp, xodd, yodd, zodd, false, false);
+  }
+
+  template <typename Space, typename KSpace>
+  std::string Display3D<Space, KSpace>::draw(const SCell& cell, const std::string& name) {
+    const RealPoint rp = sCellEmbedder.embed(cell);
+    
+    const bool xodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[0]) & 1);
+    const bool yodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[1]) & 1);
+    const bool zodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[2]) & 1);
+    
+    return drawKCell(name, rp, xodd, yodd, zodd, true, cell.preCell().positive);
+  }
+
+  template <typename Space, typename KSpace>
+  std::string Display3D<Space, KSpace>::draw(const HyperRectDomain<Space>& domain, const std::string& uname) {
+    std::string name = drawGenericObject(uname, domain);
+
+    if (currentStyle.mode & DisplayStyle::GRID) {
+      newLineList(name + "_grid");
+      
+      // Faces YX
+      for (auto z = domain.myLowerBound[2]; z <= domain.myUpperBound[2]; z++) {
+        for (auto x = domain.myLowerBound[0];  x <= domain.myUpperBound[0]; x++) {
+          DGtal::Z3i::RealPoint rp1 = embedder.embed( DGtal::Z3i::Point(x, domain.myLowerBound[1], z) );
+          DGtal::Z3i::RealPoint rp2 = embedder.embed( DGtal::Z3i::Point(x, domain.myUpperBound[1], z) );
+          currentData->vertices.push_back(rp1);
+          currentData->vertices.push_back(rp2);
+        }
+
+        for (auto y = domain.myLowerBound[1]; y <= domain.myUpperBound[1]; y++) {
+          DGtal::Z3i::RealPoint rp1 = embedder.embed( DGtal::Z3i::Point(domain.myLowerBound[0], y, z) );
+          DGtal::Z3i::RealPoint rp2 = embedder.embed( DGtal::Z3i::Point(domain.myUpperBound[0], y, z) );
+          currentData->vertices.push_back(rp1);
+          currentData->vertices.push_back(rp2);
+        }
+      }
+
+      // Faces XZ
+      for (auto y = domain.myLowerBound[1]; y <= domain.myUpperBound[1]; y++) {
+        for (auto x = domain.myLowerBound[0]; x <= domain.myUpperBound[0]; x++) {
+          DGtal::Z3i::RealPoint rp1 = embedder.embed( DGtal::Z3i::Point(x, y, domain.myLowerBound[2]) );
+          DGtal::Z3i::RealPoint rp2 = embedder.embed( DGtal::Z3i::Point(x, y, domain.myLowerBound[2]) );
+
+          currentData->vertices.push_back(rp1);
+          currentData->vertices.push_back(rp2);
+        }
+        for (auto z =  domain.myLowerBound[2]; z <= domain.myUpperBound[2]; z++) {
+          DGtal::Z3i::RealPoint rp1 = embedder.embed( DGtal::Z3i::Point(domain.myLowerBound[0], y, z) );
+          DGtal::Z3i::RealPoint rp2 = embedder.embed( DGtal::Z3i::Point(domain.myUpperBound[0], y, z) );
+
+          currentData->vertices.push_back(rp1);
+          currentData->vertices.push_back(rp2);
+        }
+      }
+
+      // Faces YZ
+      for (auto x = domain.myLowerBound[0]; x <= domain.myUpperBound[0]; x++) {
+        for (auto y = domain.myLowerBound[1];  y <= domain.myUpperBound[1]; y++) {
+          DGtal::Z3i::RealPoint rp1 = embedder.embed( DGtal::Z3i::Point(x, y, domain.myLowerBound[2]) );
+          DGtal::Z3i::RealPoint rp2 = embedder.embed( DGtal::Z3i::Point(x, y, domain.myUpperBound[2]) );
+
+          currentData->vertices.push_back(rp1);
+          currentData->vertices.push_back(rp2);
+        }
+        for (auto z = domain.myLowerBound[2]; z <= domain.myUpperBound[2]; z++) {
+          DGtal::Z3i::RealPoint rp1 = embedder.embed( DGtal::Z3i::Point(x, domain.myLowerBound[1], z) );
+          DGtal::Z3i::RealPoint rp2 = embedder.embed( DGtal::Z3i::Point(x, domain.myLowerBound[1], z) );
+
+          currentData->vertices.push_back(rp1);
+          currentData->vertices.push_back(rp2);
+        }
+      }
+    }
+
+    noCurrentGroup();
+    return name;
+  }
+
+  template <typename Space, typename KSpace>
+  template <typename Vec>
+  std::string Display3D<Space, KSpace>::drawPolygon(const std::vector<Vec>& vertices, const std::string& uname) {
+    std::string name = createOrReusePolygonList(uname);
+    
+    std::vector<unsigned> indices;
+    indices.reserve(vertices.size());
+
+    size_t count = currentData->vertices.size();
+    for (const auto& vert : vertices) {
+      currentData->vertices.push_back(vert);
+      indices.push_back(count++);
+    }
+    currentData->indices.push_back(std::move(indices));
+    return name;
+  }
+
+  template <typename Space, typename KSpace>
+  std::string Display3D<Space, KSpace>::drawBall(const RealPoint& c, const std::string& uname) {
+    std::string name = createOrReuseBallList(uname);
+    currentData->vertices.push_back(c);
+    return name;
+  }
+  
+  template <typename Space, typename KSpace>
+  std::string Display3D<Space, KSpace>::drawLine(const RealPoint& a, const RealPoint& b, const std::string& uname) {
+    std::string name = createOrReuseLineList(uname);
+
+    currentData->vertices.push_back(a);
+    currentData->vertices.push_back(b);
+    return name;
+  }
+
+  template <typename Space, typename KSpace>
+  std::string Display3D<Space, KSpace>::drawQuad(const RealPoint& a, const RealPoint& b, const RealPoint& c, const RealPoint& d, const std::string& uname) {
+    // Not a draw specialization as it would be confusing with a drawing call of
+    // an array of points, or other primitives
+    std::string name = createOrReuseQuadList(uname);
+
+    currentData->vertices.push_back(a);
+    currentData->vertices.push_back(b);
+    currentData->vertices.push_back(c);
+    currentData->vertices.push_back(d);
+
+    return name;
+  }
+
+  template <typename Space, typename KSpace>
+  template <typename Obj, typename Cont>
+  std::string Display3D<Space, KSpace>::draw(const DigitalSetByAssociativeContainer<Obj, Cont>& set, const std::string& name) {
+    return drawGenericObject(name, set);
+  }
+
+  template <typename Space, typename KSpace>
+  template <typename D, typename T>
+  std::string Display3D<Space, KSpace>::draw(const ImageContainerBySTLVector<D, T>& image, const std::string& name) {
+    return drawImage(name, image);
+  }
+  
+  template <typename Space, typename KSpace>
+  template <typename TImageContainer,
+            typename TNewDomain,
+            typename TFunctorD,
+            typename TNewValue,
+            typename TFunctorV,
+            typename TFunctorVm1>
+  std::string Display3D<Space, KSpace>::draw(const ImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV, TFunctorVm1>& adapter, const std::string& name) {
+    return drawImage(name, adapter);
+  }
+        
+  template <typename Space, typename KSpace>
+  template <typename TImageContainer,
+            typename TNewDomain,
+            typename TFunctorD,
+            typename TNewValue,
+            typename TFunctorV>
+  std::string Display3D<Space, KSpace>::draw(const ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV>& adapter, const std::string& name) {
+    return drawImage(name, adapter);
+  }
+
+  template <typename Space, typename KSpace>
+  template <typename Adj, typename Set>
+  std::string Display3D<Space, KSpace>::draw(const DGtal::Object<Adj, Set>& obj, const std::string& uname) {
+    std::string name = drawGenericObject(uname, obj);
+
+    // Draw adjacency if needed
+    if (currentStyle.mode & DisplayStyle::DrawMode::ADJACENCIES) {
+      newLineList(name + "_adj");
+      
+      for (auto it = obj.begin(); it != obj.end(); ++it) {
+          auto neig = obj.properNeighborhood(*it);
+
+          const RealPoint p = embedder.embed(*it);
+          for (auto it2 = neig.begin(); it2 != neig.end(); ++it2) {
+            auto p2 = embedder.embed(*it2);
+
+            currentData->vertices.push_back(p);
+            currentData->vertices.push_back(p2);
+          }
+      }
+    }
+    noCurrentGroup();
+    return name;
+  }
+  
+  template <typename Space, typename KSpace>
+  template <typename T, typename Type>
+  std::string Display3D<Space, KSpace>::draw(const WithProperty<T, Type>& props, const std::string& uname) {
+    std::string name;
+    if (uname.empty())
+      name = draw(props.object);
+    else
+      name = draw(props.object, uname);
+
+    if constexpr (std::is_scalar_v<Type>) {
+      auto& loc = data[name].scalarProperties[props.name];
+      loc.insert(loc.end(), props.values.begin(), props.values.end());
+    }
+    else if constexpr(std::is_same_v<RealPoint, Type>) {
+      auto& loc = data[name].vectorProperties[props.name];
+      loc.insert(loc.end(), props.values.begin(), props.values.end());
+    }
+    else if constexpr(std::is_same_v<Color , Type>) {
+      auto& loc = data[name].colorProperties[props.name];
+      loc.insert(loc.end(), props.values.begin(), props.values.end());
+    }
+    else {
+      trace.error() << "Unknown property type (for: '" << name << "')\n";
+    }
+    return name;
+  }
+  
+  template <typename Space, typename KSpace>
+  template <typename Pt>
+  std::string Display3D<Space, KSpace>::draw(const Mesh<Pt>& mesh, const std::string& uname) {
+    // A mesh may have quad faces, therefore we render it as a polygonal mesh
+    std::string name = newPolygonList(uname);
+
+    currentData->vertices.reserve(mesh.nbVertex());
+
+    currentData->indices.reserve(mesh.nbFaces());
+    currentData->colorProperties["color"].reserve(mesh.nbFaces());
+
+    // Can not insert directly vectors because of type mismatch
+    for (auto it = mesh.vertexBegin(); it != mesh.vertexEnd(); ++it) {
+      currentData->vertices.push_back(*it);
+    }
+    for (size_t i = 0; i < mesh.nbFaces(); ++i) {
+      const auto& face = mesh.getFace(i);
+      std::vector<unsigned int> fIdx;
+      fIdx.reserve(face.size());
+      for (auto i : face) {
+        fIdx.push_back(i);
+      }
+      currentData->indices.push_back(std::move(fIdx));
+      currentData->colorProperties["color"].push_back(mesh.getFaceColor(i));
+    }
+    noCurrentGroup();
+    return name;
+  }
+
+  template <typename Space, typename KSpace>
+  template <typename It, typename Int, int Con>
+  std::string Display3D<Space, KSpace>::draw(const StandardDSS6Computer<It, Int, Con>& computer, const std::string& uname) {
+    std::string name;
+    if (currentStyle.mode & DisplayStyle::BALLS) {
+      name = newBallList(uname);
+
+      for (auto it = computer.begin(); it != computer.end(); ++it) {
+        const auto rp = embedder.embed(*it);
+        currentData->vertices.push_back(rp);
+      }
+    } else { // Default mode
+      name = newLineList(uname);
+
+      auto it = computer.begin();
+      RealPoint a = embedder.embed(*it);
+      RealPoint b = a;
+
+      for (++it; it != computer.end(); ++it) {
+        b = embedder.embed(*it);
+        currentData->vertices.push_back(a);
+        currentData->vertices.push_back(b);
+
+        std::swap(a, b);
+      }
+    }
+    
+    noCurrentGroup();
+    return name;
+  }
+  
+  template <typename Space, typename KSpace>
+  std::string Display3D<Space, KSpace>::draw(const ClippingPlane& plane, const std::string& uname) {
+    planes.push_back(plane);
+    planes.back().style = currentStyle;
+    return "";
+  }
+
+  template <typename Space, typename KSpace>
+  template <typename T>
+  std::string Display3D<Space, KSpace>::draw(const SphericalAccumulator<T> accumulator, const std::string& uname) {
+    std::string name = newQuadList(uname);
+
+    typedef typename SphericalAccumulator<T>::Size Size;
+    typedef typename SphericalAccumulator<T>::RealVector Vec;
+
+    Size i, j;
+    Vec a, b, c, d;
+    for (auto it = accumulator.begin(); it != accumulator.end(); ++it) {
+      accumulator.binCoordinates(it, i, j);
+
+      if (accumulator.isValidBin(i, j)) {
+        accumulator.getBinGeometry(i, j, a, b, c, d);
+
+        currentData->vertices.push_back(a);
+        currentData->vertices.push_back(b);
+        currentData->vertices.push_back(c);
+        currentData->vertices.push_back(d);
+        currentData->scalarProperties["value"].push_back(accumulator.count(i, j));
+      }
+    }
+    return name;
+  }      
+
+  // Generic functions
+
+  template <typename Space, typename KSpace>
+  template <typename Obj>
+  std::string Display3D<Space, KSpace>::drawGenericObject(const std::string& name, const Obj& obj) {
+    std::string newName; 
+    if (currentStyle.mode & DisplayStyle::BALLS) {
+      newName = newBallList(name);
+
+      currentData->vertices.reserve(obj.size());
+      for (auto it = obj.begin(); it != obj.end(); ++it) {
+        const auto rp = embedder.embed(*it);
+        currentData->vertices.push_back(rp);
+      }
+    } else {
+      newName = newCubeList(name);
+    
+      currentData->vertices.reserve(obj.size() * 8);
+      for (auto it = obj.begin(); it != obj.end(); ++it) {
+        const auto rp = embedder.embed(*it);
+        const auto vertices = drawutils::getCubeVertices(rp, currentData->style.width);
+
+        currentData->vertices.insert(
+            currentData->vertices.end(), vertices.begin(), vertices.end()
+        );
+      }
+    }
+
+    noCurrentGroup();
+    return newName;
+  }
+
+  template <typename Space, typename KSpace>
+  template <typename Range> 
+  std::string Display3D<Space, KSpace>::drawGenericRange(const Range& range, const std::string& uname) {
+    bool save = allowReuseList;
+
+    auto it = range.begin();
+
+    std::string name = currentName; 
+    allowReuseList = false; // Force new group !
+    if (uname.empty()) {
+      name = draw(*it);
+    } else {
+      name = draw(*it, uname);
+    }
+    allowReuseList = true; // Reuse group
+
+    for (++it; it != range.end(); ++it) {
+      draw(*it, name);
+    }
+
+    noCurrentGroup();
+    allowReuseList = save; 
+    return name;
+  }
+
+  template <typename Space, typename KSpace>
+  template <typename T>
+  std::string Display3D<Space, KSpace>::drawImage(const std::string& uname, const T& image) {
+    std::string name = newCubeList(uname);
+
+    size_t total = image.domain().size();
+
+    auto it = image.domain().begin();
+    auto itend = image.domain().end();
+    constexpr size_t dim = T::Domain::Space::dimension;
+    
+    currentData->vertices.reserve(8 * total);
+    currentData->scalarProperties["value"].reserve(total);
+    for(; it != itend; ++it) {
+      if constexpr (dim == 3) {
+        auto rp = embedder.embed(*it);
+        currentData->scalarProperties["value"].push_back(image(*it));
+        drawutils::insertCubeVertices(currentData->vertices, rp, currentData->style.width);
+      } else {
+        // We accept to draw theses 2D image, do ask to parametrize to also the embedder...
+        auto rp = embedder.embed(Point((*it)[0], (*it)[1], 0)); 
+        currentData->scalarProperties["value"].push_back(image(*it));
+        drawutils::insertCubeVertices(currentData->vertices, rp, currentData->style.width);
+      }
+    }
+    return name;
+  }
+
+  template <typename Space, typename KSpace>
+  std::string Display3D<Space, KSpace>::drawKCell(std::string uname, const RealPoint& rp, bool xodd, bool yodd, bool zodd, bool hasSign, bool sign) {
+    std::string name = currentName;
+    static const std::string TOKEN = "{d}";
+    static const double scale = 0.9;
+    static const double shift = 0.05;
+    static const double smallScale = 0.3;
+    static const double smallShift = 0.15;
+    // For 2D cell, this indicates if the big quad is 
+    // inside the cell or outside
+    static const int orientationPermut[3][2] = {
+      {1, 0}, {0, 1}, {1, 0}
+    };
+
+    const unsigned int dim = xodd + yodd + zodd;
+
+    auto tokenPos = uname.find(TOKEN);
+    if (tokenPos != std::string::npos) 
+      uname.replace(uname.find(TOKEN), TOKEN.size(), std::to_string(dim));
+
+    switch(dim) {
+      case 0: {
+        name = createOrReuseBallList(uname);
+        if (currentData->vertices.size() == 0)
+            currentData->style.width *= scale;
+
+        currentData->vertices.push_back(rp);
+      }
+      break;
+      case 1: {
+        name = createOrReuseLineList(uname);
+
+        const RealPoint shift(xodd, yodd, zodd);
+        currentData->vertices.push_back(rp - 0.5 * shift);
+        currentData->vertices.push_back(rp + 0.5 * shift);
+      }
+      break;
+      case 2: {
+        const unsigned int orientation = (!xodd ? 0 : (!yodd ? 1 : 2));
+        if (currentStyle.mode & DisplayStyle::SIMPLIFIED || !hasSign) {
+          const double scale1 = currentData->style.width * scale;
+
+          name = createOrReuseQuadList(uname);
+          drawutils::insertAASquare(currentData->vertices, rp, orientation, scale1);
+        } else {
+          name = createOrReuseVolumetricList(uname);
+          
+          const double scales[2] = {
+            scale      * currentData->style.width, 
+            smallScale * currentData->style.width
+          };
+          
+          // Decide where the big quad goes, in the interior or the exterior
+          // of the cell depending on sign and the orientation
+          int permut = orientationPermut[orientation][sign];
+          double scale1 = scales[    permut];
+          double scale2 = scales[1 - permut];
+          double shift1 = shift;
+          double shift2 = smallShift;
+
+          drawutils::insertPrism(currentData->vertices, rp, orientation, scale1, scale2, shift1, shift2);
+        }
+      }
+      break;
+      case 3: {
+        name = createOrReuseCubeList(uname);
+        drawutils::insertCubeVertices(currentData->vertices, rp, currentData->style.width);
+      };
+      break;
+    };
+
+    return name;
+  }
+
+
+} // DGtal
