@@ -1,0 +1,115 @@
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+
+/**
+ * @page migratingViewer3D Migrating viewer from 1.4 to 2.0
+ *
+ * This part of the manual describes how to migrate from QGL viewer to Polyscope viewer
+ *
+
+@author Bastien Doignies
+
+[TOC]
+
+\section DGtalMigration_Intro Introduction and features changes
+
+With version 2.0 of DGtal, the internal and external structures of 3D visualisation have been completely changed. The aim is to take advantage of the advanced features of Polyscope, a geometric object viewer. 
+
+The major changes are:
+- No more QApplication class
+- A simpler API with fewer classes
+- More interaction with the simulation
+
+\section DGtalMigration_convert Converting code from QGLViewer to PolyscopeViewer
+
+The stream mecanism was kept, therefore most draw commands remains the same. Here are the few steps to migrate from DGtal 1.4 to DGtal 2.0 are:
+- Remove QApplication (and the .exec() file)
+- Move the .show() method to the end of the block.
+- CustomColor3D does not exist anymore. Instead use Display3D::drawColor (or Display3D::draw)
+- UpdateDisplay is not needed anymore. 
+- SetMode3D does not exist anymore. Use Display3D::drawAsGrid, Display3D::drawAsPaving, Display3D::drawAsBalls, Display3D::drawAdjacencies instead. 
+
+\subsection DGtalMigration_Ex Example
+
+Old 1.4 code: 
+
+@code
+ QApplication application(argc,argv); // To remove
+
+ typedef Viewer3D<> MyViewer;         // Change name
+ MyViewer viewer;                   
+ viewer.show();                       // To the end of the function
+
+
+ Point p1( -1, -1, -2 );
+ Point p2( 2, 2, 3 );
+ Domain domain( p1, p2 );
+ Point p3( 1, 1, 1 );
+ Point p4( 2, -1, 3 );
+ Point p5( -1, 2, 3 );
+ Point p6( 0, 0, 0 );
+ Point p0( 0, 2, 1 );
+ viewer <<  SetMode3D( p1.className(), "PavingWired" ); // viewer.drawAsPaving()
+ viewer << p1 << p2 << p3;
+
+
+ viewer <<  SetMode3D( p1.className(), "Grid" );                        // viewer.drawAsBalls()
+ viewer << CustomColors3D(Color(250, 0,0),Color(250, 0,0));             // viewer << Color(255, 0, 0);
+ viewer << p4 << p5 ; 
+ viewer <<  SetMode3D( p1.className(), "Both" );                        // Does not exist anymore
+ viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 0,0, 100)); // viewer << Color(250, 0, 0, 100);
+ viewer << p6;
+ viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 20)); // viewer << Color(250, 200, 0, 20)
+ viewer << p0;
+
+ viewer << SetMode3D(domain.className(), "Paving"); // viewer.drawAsPaving();
+ viewer << domain;
+ viewer << MyViewer::updateDisplay; // To remove
+
+ return application.exec();         // To remove
+@endcode
+
+New 2.0 code:
+
+@code
+ PolyscopeViewer viewer;                   
+
+
+ Point p1( -1, -1, -2 );
+ Point p2( 2, 2, 3 );
+ Domain domain( p1, p2 );
+ Point p3( 1, 1, 1 );
+ Point p4( 2, -1, 3 );
+ Point p5( -1, 2, 3 );
+ Point p6( 0, 0, 0 );
+ Point p0( 0, 2, 1 );
+
+ viewer.drawAsPaving();
+ viewer << p1 << p2 << p3;
+
+ viewer.drawAsGrid();
+ viewer << Color(250, 0,0) << p4 << p5; 
+ viewer << Color(250, 0, 0, 100)  << p6;
+ viewer << Color(250, 200, 0, 20) << p0;
+
+ viewer.drawAsPaving();
+ viewer << domain;
+
+ viewer.show();
+ return 0;         
+@endcode
+
+
+\section DGtalMigration_loss Feature losses
+
+As part of the simplification process, here are the old features that now have no direct equivalent: 
+
+- Most Draw Modes have been removed but can be emulated by manipulating the viewer interactively.
+- Image and Domains transform no longer have dedicated classes. To rotate and translate them use elements transform instead (DisplayData::transform).
+- Mesh exports and exports.  
+
+*/
+}
