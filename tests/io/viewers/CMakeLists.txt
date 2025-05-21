@@ -1,7 +1,7 @@
 
 ### Visu QGLViewer
 
-set(QGLVIEWER_TESTS_SRC
+set(VIEWER_BASED_TESTS_SRC
   testViewer3D
   testViewerQuad
   testBallQuadViewer
@@ -11,8 +11,8 @@ set(QGLVIEWER_TESTS_SRC
   testDisplayKSCell
   )
 
-if (  WITH_VISU3D_QGLVIEWER )
-  foreach(FILE ${QGLVIEWER_TESTS_SRC})
+if (  DGTAL_WITH_POLYSCOPE )
+  foreach(FILE ${VIEWER_BASED_TESTS_SRC})
     DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
   endforeach()
 

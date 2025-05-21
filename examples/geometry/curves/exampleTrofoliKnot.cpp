@@ -37,7 +37,7 @@
 #include "DGtal/geometry/curves/parametric/Knot_3_1.h"
 #include "DGtal/geometry/curves/parametric/NaiveParametricCurveDigitizer3D.h"
 
-#ifdef WITH_VISU3D_QGLVIEWER
+#ifdef DGTAL_WITH_POLYSCOPE
 #include "DGtal/io/viewers/PolyscopeViewer.h"
 #endif
 

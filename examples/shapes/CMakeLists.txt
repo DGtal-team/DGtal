@@ -8,7 +8,7 @@ foreach(FILE ${DGTAL_EXAMPLES_SRC})
 endforeach()
 
 ### with QGLViewer
-if (  WITH_VISU3D_QGLVIEWER )
+if (  DGTAL_WITH_POLYSCOPE_VIEWER )
   set(DGTAL_SHAPES_EXAMPLES_QGL_SRC
      mesh3DConstructionAndVisualisation
      viewMarchingCubes
@@ -21,7 +21,7 @@ if (  WITH_VISU3D_QGLVIEWER )
 
 endif()
 
-if (WITH_EIGEN AND WITH_QGLVIEWER)
+if (WITH_EIGEN AND DGTAL_WITH_POLYSCOPE_VIEWER)
 
     set(DGTAL_EXAMPLES_SRC_DEC
         sphereCotangentLaplaceOperator

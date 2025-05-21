@@ -28,7 +28,7 @@ foreach(FILE ${DGTAL_EXAMPLES_SRC})
 endforeach()
 
 ### Test with QGLViewer
-if (  WITH_VISU3D_QGLVIEWER )
+if (  DGTAL_WITH_POLYSCOPE )
    set(DGTAL_EXAMPLES_QGL_SRC
      exampleArithDSS3d
      exampleGridCurve3d

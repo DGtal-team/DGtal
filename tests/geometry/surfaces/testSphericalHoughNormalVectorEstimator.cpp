@@ -44,7 +44,7 @@
 #include "DGtal/geometry/surfaces/estimation/LocalEstimatorFromSurfelFunctorAdapter.h"
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/SphericalHoughNormalVectorEstimator.h"
 
-#ifdef WITH_VISU3D_QGLVIEWER
+#ifdef DGTAL_WITH_POLYSCOPE
   #include "DGtal/io/viewers/PolyscopeViewer.h"
 #endif
 
@@ -114,7 +114,7 @@ TEST_CASE( "Testing SphericalHoughNormalVectorEstimator" )
   REQUIRE( std::abs(result.dot(res)) > 0.9 );
   
   
-#ifdef WITH_VISU3D_QGLVIEWER_TESTS
+#ifdef DGTAL_WITH_POLYSCOPE_TESTS
   PolyscopeViewer<Z3i::Space, KSpace> viewer(K);
   for(Surface::ConstIterator it = surface.begin(), itend=surface.end(); it != itend ;
       ++it)

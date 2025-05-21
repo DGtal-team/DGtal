@@ -7,6 +7,8 @@
   - Fix compilation warnings (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/))
   - Remove GMP dependency (Bastien Doignies, [#1769](https://github.com/DGtal-team/DGtal/pull/1769))
   - New Boost BigInteger Backend (Bastien Doignies, [#1769](https://github.com/DGtal-team/DGtal/pull/1769))
+  - New Polyscope-based polyscope (Bastien Doignies, [#1775](https://github.com/DGtal-team/DGtal/pull/1775))
+  - Remove old QGLViewer and Qt dependancy (Bastien Doignies, [#1775](https://github.com/DGtal-team/DGtal/pull/1775))
 
 - *CMake*
   - Updated to version 3.20 minimum (contemporary version of C++20's new minimal standard) (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))

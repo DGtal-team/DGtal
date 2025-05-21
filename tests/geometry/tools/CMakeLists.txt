@@ -11,7 +11,7 @@ set(DGTAL_TESTS_SRC
   testConvexHull2DReverse
   testQuickHull)
 
-set(DGTAL_TESTS_QSRC
+set(DGTAL_TESTS_VSRC
   testSphericalAccumulatorViewer)
 
 foreach(FILE ${DGTAL_TESTS_SRC})
@@ -19,8 +19,8 @@ foreach(FILE ${DGTAL_TESTS_SRC})
 endforeach()
 
 
-if (WITH_VISU3D_QGLVIEWER)
-  foreach(FILE ${DGTAL_TESTS_QSRC})
+if (DGTAL_WITH_POLYSCOPE)
+  foreach(FILE ${DGTAL_TESTS_VSRC})
     DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
   endforeach()
 endif()

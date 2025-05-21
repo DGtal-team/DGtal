@@ -52,20 +52,12 @@ if(@HDF5_FOUND_DGTAL@) #if HDF5_FOUND_DGTAL
   set (DGTAL_WITH_HDF5 1)
 endif()
 
-if (@QGLVIEWER_FOUND_DGTAL@) #if QGLVIEWER_FOUND_DGTAL
-  find_package(QGLVIEWER REQUIRED
-    @QGLVIEWER_HINTS@
+if (@POLYSCOPE_FOUND_DGTAL@) #if QGLVIEWER_FOUND_DGTAL
+  find_package(polyscope REQUIRED
+    @POLYSCOPE_HINTS@
     )
-  set(WITH_VISU3D_QGLVIEWER 1)
-endif (@QGLVIEWER_FOUND_DGTAL@)
-
-#-- We force the Qt rediscovering
-if (@QT5_FOUND_DGTAL@) #if QT5_FOUND_DGTAL
-  find_dependency(Qt5 COMPONENTS Widgets OpenGL Xml REQUIRED
-    @Qt5_HINTS@
-    )
-  set(WITH_QT5 1)
-endif (@QT5_FOUND_DGTAL@)
+  set(DGTAL_WITH_POLYSCOPE_VIEWER 1)
+endif (@POLYSCOPE_FOUND_DGTAL@)
 
 if(@OPENMP_FOUND_DGTAL@) #if OPENMP_FOUND_DGTAL
    include(openmp)

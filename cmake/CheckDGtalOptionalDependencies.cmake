@@ -19,7 +19,6 @@ option(DGTAL_WITH_ITK "With Insight Toolkit ITK." OFF)
 option(DGTAL_WITH_CAIRO "With CairoGraphics." OFF)
 option(DGTAL_WITH_HDF5 "With HDF5." OFF)
 option(DGTAL_WITH_POLYSCOPE_VIEWER "With polyscope." OFF)
-option(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt5 required)." OFF)
 option(WITH_PATATE "With Patate library for geometry processing." OFF)
 option(DGTAL_WITH_FFTW3 "With FFTW3 discrete Fourier Transform library." OFF)
 option(DGTAL_WITH_LIBIGL "With libIGL (with copyleft/CGAL included)." OFF)
@@ -81,13 +80,6 @@ if(DGTAL_WITH_POLYSCOPE_VIEWER)
   message(STATUS "      DGTAL_WITH_POLYSCOPE_VIEWER     true    (QGLViewer based 3D Viewer -- Qt5 required)")
 else()
   message(STATUS "      DGTAL_WITH_POLYSCOPE_VIEWER     false   (QGLViewer based 3D Viewer -- Qt5 required)")
-endif()
-
-if(WITH_QGLVIEWER)
-  set(LIST_OPTION ${LIST_OPTION} [QGLVIEWER]\ )
-  message(STATUS "      WITH_QGLVIEWER     true    (QGLViewer based 3D Viewer -- Qt5 required)")
-else()
-  message(STATUS "      WITH_QGLVIEWER     false   (QGLViewer based 3D Viewer -- Qt5 required)")
 endif()
 
 if (DGTAL_WITH_FFTW3)
@@ -219,61 +211,10 @@ if (DGTAL_WITH_POLYSCOPE_VIEWER)
   include(polyscope)
 
   target_link_libraries(DGtal PUBLIC polyscope)
+  target_compile_definitions(DGtal PUBLIC -DDGTAL_WITH_POLYSCOPE)
   set(POLYSCOPE_FOUND_DGTAL 1)
-endif()
-
-
-# -----------------------------------------------------------------------------
-# Look for Qt (needed by libqglviewer visualization).
-# -----------------------------------------------------------------------------
-set(QT5_FOUND_DGTAL 0)
-if (WITH_QGLVIEWER)
-    find_package(Qt5 COMPONENTS Widgets OpenGL Xml REQUIRED)
-    if (Qt5Widgets_FOUND AND Qt5OpenGL_FOUND AND Qt5Xml_FOUND)
-      set(QT5_FOUND_DGTAL 1)
-      message(STATUS "Qt5 (Widgets, OpenGL and Xml modules) found (needed by QGLViewer compiled with Qt5).")
-
-      target_compile_definitions(DGtal PUBLIC -DWITH_QT5)
-      target_link_libraries(DGtal PUBLIC
-        ${Qt5Widgets_LIBRARIES}
-        ${Qt5OpenGL_LIBRARIES}
-        ${Qt5Xml_LIBRARIES})
-      target_include_directories(DGtal PUBLIC
-        ${Qt5Widgets_INCLUDES_DIRS}
-        ${Qt5OpenGL_INCLUDES_DIR}
-        ${Qt5Xml_INCLUDES_DIR})
-    else()
-      message(STATUS "One of Qt5's modules was not found (needed by QGLViewer).")
-    endif()
-endif()
-
-# -----------------------------------------------------------------------------
-# Look for QGLViewer for 3D display.
-# (They are not compulsory).
-# -----------------------------------------------------------------------------
-set(QGLVIEWER_FOUND_DGTAL 0)
-set(WITH_VISU3D 0)
-if (WITH_QGLVIEWER)
-  find_package(QGLVIEWER REQUIRED)
-  if (QGLVIEWER_FOUND)
-    find_package(OpenGL REQUIRED)
-    message(STATUS  "libQGLViewer found.")
-    if (OPENGL_GLU_FOUND)
-      message(STATUS  "  (OpenGL-GLU ok) " ${OPENGL_INCLUDE_DIR})
-    else (OPENGL_GLU_FOUND)
-      message(FATAL_ERROR  "  libQGLViewer found but your system does not have OpenGL/GLU modules." )
-    endif()
-
-    target_include_directories(DGtal PUBLIC ${QGLVIEWER_INCLUDE_DIR} ${OPENGL_INCLUDE_DIR})
-    set(WITH_VISU3D_QGLVIEWER 1)
-    set(QGLVIEWER_FOUND_DGTAL 1)
-    target_compile_definitions(DGtal PUBLIC -DWITH_VISU3D_QGLVIEWER)
-    target_link_libraries(DGtal PUBLIC ${QGLVIEWER_LIBRARIES} ${OPENGL_LIBRARIES})
-    set(DGtalLibDependencies ${DGtalLibDependencies} ${QGLVIEWER_LIBRARIES} ${OPENGL_LIBRARIES}  )
-    set(WITH_VISU3D 1)
-  else()
-    message(FATAL_ERROR  "libQGLViewer not found.  Check the cmake variables associated to this package or disable it." )
-  endif()
+  set(DGTAL_WITH_POLYSCOPE 1)
+  set(DGTAL_WITH_POLYSCOPE_VIEWER 1)
 endif()
 
 # -----------------------------------------------------------------------------

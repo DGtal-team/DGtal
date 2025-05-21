@@ -85,7 +85,7 @@ int main( int argc, char** argv )
   //display  
   Point p;
 
-#ifdef WITH_VISU3D_QGLVIEWER
+#ifdef DGTAL_WITH_POLYSCOPE
 
   PolyscopeViewer viewer;
   viewer.allowReuseList = true; // groups segments
@@ -96,7 +96,7 @@ int main( int argc, char** argv )
   Decomposition::SegmentComputerIterator i = theDecomposition.begin();
   for ( ; i != theDecomposition.end(); ++i) {
     SegmentComputer currentSegmentComputer(*i);
-     #ifdef WITH_VISU3D_QGLVIEWER
+     #ifdef DGTAL_WITH_POLYSCOPE
        viewer.drawAsBalls();
        viewer << currentSegmentComputer;  
        viewer.defaultStyle();
@@ -106,7 +106,7 @@ int main( int argc, char** argv )
   } 
   
   
-  #ifdef WITH_VISU3D_QGLVIEWER
+  #ifdef DGTAL_WITH_POLYSCOPE
     viewer.show();
   #endif
     

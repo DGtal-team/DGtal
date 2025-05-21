@@ -45,7 +45,7 @@ If you plane to use 3d-viewer features you have to specify it by
 adding a definition transmitted to the compiler:
 
 @code
-DEFINES += WITH_VISU3D_QGLVIEWER
+DEFINES += DGTAL_WITH_POLYSCOPE
 @endcode
 
 

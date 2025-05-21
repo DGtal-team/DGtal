@@ -29,7 +29,6 @@
 //! [volBreadthFirstTraversal-basicIncludes]
 #include <iostream>
 #include <queue>
-#include <QImageReader>
 
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/io/Color.h"
