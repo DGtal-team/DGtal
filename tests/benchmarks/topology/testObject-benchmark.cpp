@@ -38,7 +38,6 @@
 #include "DGtal/kernel/sets/DigitalSetSelector.h"
 #include "DGtal/kernel/sets/DigitalSetConverter.h"
 #include "DGtal/topology/MetricAdjacency.h"
-#include "DGtal/topology/DomainMetricAdjacency.h"
 #include "DGtal/topology/DomainAdjacency.h"
 #include "DGtal/topology/DigitalTopology.h"
 #include "DGtal/topology/Object.h"

@@ -116,7 +116,7 @@ testDigitization( const Shape & aShape, double h,
   std::vector<Point> points;
   Surfaces<KSpace>::track2DBoundaryPoints( points, K, SAdj, dig, bel );
   GridCurve<KSpace> gridcurve;
-  gridcurve.initFromVector( points );
+  gridcurve.initFromPointsVector( points );
 
   // Display all
   Board2D board;

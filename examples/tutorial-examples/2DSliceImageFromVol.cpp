@@ -16,7 +16,7 @@
 
 /**
  * @file 2DSliceImageFromVol.cpp
- * @ingroup tutorial-examples
+ * @ingroup Examples
  * @author Bertrand Kerautret (\c bertrand.kerautret@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Lorraine, France
  * 

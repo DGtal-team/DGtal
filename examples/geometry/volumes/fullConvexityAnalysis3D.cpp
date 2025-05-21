@@ -122,7 +122,7 @@ struct Analyzer {
   template < typename ImagePtr >
   static
   std::vector<int>
-  run( const KSpace& aK, std::vector<Point> pts, ImagePtr bimage )
+  run( const KSpace& aK, const std::vector<Point>& pts, ImagePtr bimage )
   {
     NCA nca( aK.lowerBound(), aK.upperBound(), 0 );
     // KSpace::dimension <= 2 ? 0 : 10000*KSpace::dimension*N );
@@ -160,7 +160,7 @@ struct Analyzer {
   static
   void
   run( std::vector<int> & to_update,
-       const KSpace& aK, std::vector<Point> pts, ImagePtr bimage )
+       const KSpace& aK, const std::vector<Point>& pts, ImagePtr bimage )
   {
     NCA nca( aK.lowerBound(), aK.upperBound() );
     // KSpace::dimension <= 2 ? 0 : 10000*KSpace::dimension*N );
@@ -201,7 +201,7 @@ struct MultiScaleAnalyzer {
   static
   std::vector< Geometry >
   multiscale_run( const KSpace& aK,
-                  std::vector<Point> pts,
+                  const std::vector<Point>& pts,
                   ImagePtr bimage )
   {
     auto prev_geometry
@@ -230,9 +230,11 @@ struct MultiScaleAnalyzer< KSpace, 0 > {
   static
   std::vector< Geometry >
   multiscale_run( const KSpace& aK,
-                  std::vector<Point> pts,
+                  const std::vector<Point>& pts,
                   ImagePtr bimage )
   {
+    ((void) aK);
+    ((void) bimage);
     return std::vector< Geometry >( pts.size(), std::make_pair( 0, 0 ) );
   }
 };

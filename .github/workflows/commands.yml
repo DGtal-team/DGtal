@@ -69,7 +69,7 @@ jobs:
         if: steps.get_round.outputs.result == 'builddoc'
         run: |
           set -x
-          sudo apt-get update && sudo apt-get install -y graphviz ssh doxygen libboost-dev texlive-latex-base
+          sudo apt-get update && sudo apt-get install -y graphviz ssh doxygen  texlive-latex-base
           git config --global user.email "dgtal@dgtal.org"
           git config --global user.name "DGtal"
 

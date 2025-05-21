@@ -133,14 +133,16 @@ jobs:
     - name: Set up
       run: |
          sudo apt-get update
-         sudo apt-get install libboost-dev graphviz texlive doxygen
+         sudo apt-get install  graphviz texlive doxygen
 
     - name: Building pages
       run: |
          mkdir build
          cd build
          cmake ..
-         wget --no-check-certificate -O "${{runner.workspace}}/DGtal/build/DGtalTools-tagfile" http://dgtal.org/doc/tags/DGtalTools-tagfile;
+         # Removing the DGtalTools tag file for now. It creates extra pages in the doc (@dcoeurjo)
+         # wget --no-check-certificate -O "${{runner.workspace}}/DGtal/build/DGtalTools-tagfile" http://dgtal.org/doc/tags/DGtalTools-tagfile;
+         touch DGtalTools-tagfile
          make doc > buildDoc.log
 
     - name: Checking doc

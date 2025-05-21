@@ -33,25 +33,21 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page packageIntroduction Getting started
+@page packageDev Details for developers 
    
 
 @managers David Coeurjolly, Jacques-Olivier Lachaud
-@since 0.4
+@since 2.0
 
 
 @b Package @b Overview
 
-In this chapter, we present the main DGtal philosophy, its design and
-several technical comments to download, compile and install DGtal. We
-also illustrate a mechanism to use DGtal in your own project.
+In this chapter, we detail some documentation pages for developers.
 
 
 @b Modules
- - \subpage moduleIntroduction (Tristan Roussillon)
- - \subpage moduleBuildDGtal (Martial Tola, David Coeurjolly)
- - \subpage moduleHowToUseDGtal (David Coeurjolly)
- - \subpage packagePython (Pablo Hernandez-Cerdan, David Coeurjolly)
+ - \subpage moduleFAQGit (David Coeurjolly)
+ - \subpage moduleCatch (David Coeurjolly)
 
 
 

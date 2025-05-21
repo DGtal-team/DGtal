@@ -91,11 +91,9 @@ namespace DGtal
     typedef typename KSpace::Space Space;
     typedef typename Space::RealVector RealVector;
     typedef typename NormalVectorEstimator::Quantity Quantity;
-    typedef typename NormalVectorEstimator::DigitalSurface NVESurface;
 
     BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType< RealVector, Quantity >::value ));
-    BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType< Surface, NVESurface >::value ));
-
+    
     typedef DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap<DigitalSurfaceEmbedder,NormalVectorEstimator> GradientMap;
 
 

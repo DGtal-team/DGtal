@@ -16,7 +16,7 @@
 
 /**
  * @file io/viewers/viewer3D-6-clipping.cpp
- * @ingroup examples/3dViewer
+ * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
@@ -26,7 +26,6 @@
  *
  * This file is part of the DGtal library.
  */
-
 
 /**
  * Example of visualization after adding two clipping planes
