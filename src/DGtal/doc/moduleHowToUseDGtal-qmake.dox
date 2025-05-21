@@ -48,16 +48,6 @@ adding a definition transmitted to the compiler:
 DEFINES += DGTAL_WITH_POLYSCOPE
 @endcode
 
-
-Moreover you also have to specify that you need to link the part of
-DGtal containing the 3D features (and add if needed the link with \em
-qglviewer ):
-
-@code
-LIBS += -lDGtal  -lDGtal-visu3d  -framework qglviewer 
-@endcode
-
-
 @warning If you want to use other optional  DGtal dependencies (ITK), you  have to add all associated DEFINES flags and
 LIBS variables.
 

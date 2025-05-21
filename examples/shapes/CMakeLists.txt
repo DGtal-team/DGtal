@@ -7,15 +7,15 @@ foreach(FILE ${DGTAL_EXAMPLES_SRC})
      DGtal_add_example(${FILE})
 endforeach()
 
-### with QGLViewer
+### with Polyscope viewer
 if (  DGTAL_WITH_POLYSCOPE_VIEWER )
-  set(DGTAL_SHAPES_EXAMPLES_QGL_SRC
+  set(DGTAL_SHAPES_EXAMPLES_POLYSCOPE_SRC
      mesh3DConstructionAndVisualisation
      viewMarchingCubes
      viewPolygonalMarchingCubes
      exampleSurfaceMesh
   )
-  foreach(FILE ${DGTAL_SHAPES_EXAMPLES_QGL_SRC})
+  foreach(FILE ${DGTAL_SHAPES_EXAMPLES_POLYSCOPE_SRC})
      DGtal_add_example(${FILE})
   endforeach()
 

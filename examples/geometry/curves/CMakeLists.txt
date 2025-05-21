@@ -27,9 +27,9 @@ foreach(FILE ${DGTAL_EXAMPLES_SRC})
      DGtal_add_example(${FILE})
 endforeach()
 
-### Test with QGLViewer
+### Test with Polyscope viewer
 if (  DGTAL_WITH_POLYSCOPE )
-   set(DGTAL_EXAMPLES_QGL_SRC
+   set(DGTAL_EXAMPLES_POLYSCOPE_SRC
      exampleArithDSS3d
      exampleGridCurve3d
      exampleGridCurve3d-2
@@ -38,7 +38,7 @@ if (  DGTAL_WITH_POLYSCOPE )
      exampleTrofoliKnot
      )
 
-  foreach(FILE ${DGTAL_EXAMPLES_QGL_SRC} )
+  foreach(FILE ${DGTAL_EXAMPLES_POLYSCOPE_SRC} )
       DGtal_add_example(${FILE})
   endforeach()
 

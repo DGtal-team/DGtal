@@ -22,20 +22,15 @@
  *
  * @date 2017/03/05
  *
- * Simple example of class Viewer3D.
+ * Simple example of class PolyscopeViewer.
  *
  * This file is part of the DGtal library.
  */
 
 /**
- * Example of extension of Viewer3D interface by deriving the class
- * Viewer3D::Extension.  Here we have added a callback to the
+ * Example of extension of PolyscopeViewer interface by deriving the class
+ * PolyscopeViewer<>::Callback.  Here we have added a callback to the
  * "Shift+R" keypressed event, which adds a point randomly in the domain.
- *
- * @see moduleQGLExtension
- * \example io/viewers/viewer3D-11-extension.cpp
- * \image html simple3dVisu1.png "Extending the Viewer3D interface: just press
- * Shift+R and you have new points added randomly in the scene."
  */
 
 ///////////////////////////////////////////////////////////////////////////////

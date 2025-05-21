@@ -12,7 +12,7 @@ foreach(FILE ${DGTAL_EXAMPLES_SRC})
 endforeach()
 
 
-### with QGLViewer
+### with polyscope viewer
 if (  DGTAL_WITH_POLYSCOPE )
    set(DGTAL_EXAMPLES_POLYSCOPE_SRC
 	greedy-plane-segmentation

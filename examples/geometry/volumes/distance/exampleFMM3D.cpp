@@ -25,7 +25,7 @@
  * is to use the FMM (fast marching method) class
  * in order to incrementally compute a signed distance
  * field from a digital surface. The resulting field
- * is visualized with QGLViewer
+ * is visualized with Polyscope Viewer
  *
  * This file is part of the DGtal library.
  */

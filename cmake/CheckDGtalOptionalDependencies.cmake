@@ -77,9 +77,9 @@ endif()
 
 if(DGTAL_WITH_POLYSCOPE_VIEWER)
   set(LIST_OPTION ${LIST_OPTION} [POLYSCOPE]\ )
-  message(STATUS "      DGTAL_WITH_POLYSCOPE_VIEWER     true    (QGLViewer based 3D Viewer -- Qt5 required)")
+  message(STATUS "      DGTAL_WITH_POLYSCOPE_VIEWER     true    (Polyscope based 3D Viewer)")
 else()
-  message(STATUS "      DGTAL_WITH_POLYSCOPE_VIEWER     false   (QGLViewer based 3D Viewer -- Qt5 required)")
+  message(STATUS "      DGTAL_WITH_POLYSCOPE_VIEWER     false   (Polyscope based 3D Viewer)")
 endif()
 
 if (DGTAL_WITH_FFTW3)

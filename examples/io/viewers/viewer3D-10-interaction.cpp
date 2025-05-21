@@ -32,17 +32,10 @@
 
 /** 
  * Simple selection of a surfel (with shift + left click) with the
- * QGLViewer proposed by DGtal (Viewer3D). You may associates \a names
+ * Polyscope Viewer proposed by DGtal. You may associates \a names
  * (i.e. integers) to surfels or to group of surfels. You may associate
  * reactions or callback functions to \a named graphical objects (surfels
  * in DGtal 0.9).
- *
- * The red surfel is given the name 10001, the green 10002 and the blue
- * 10003. A specific reaction is associated with surfel 10001, while a
- * common reaction is associated with surfels 10002 and 10003. The
- * reactions simply display the clicked surfel.
- *
- * @see \ref moduleQGLInteraction
  *
  * @verbatim
  * $ ./examples/io/viewers/viewer3D-10-interaction

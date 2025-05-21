@@ -1,5 +1,5 @@
 
-### Visu QGLViewer
+### Visu Polyscope Viewer
 
 set(VIEWER_BASED_TESTS_SRC
   testViewer3D

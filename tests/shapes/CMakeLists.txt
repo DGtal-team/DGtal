@@ -1,5 +1,5 @@
 
-### Visu QGLViewer
+### Visu Polyscope viewer
 
 set(VIEWER_BASED_TESTS_SRC
  testMeshDisplay
@@ -51,13 +51,13 @@ endforeach()
 
 ##### Shapes with viewer.
 
-set(QGLVIEWER_SHAPES_TESTS_SRC
+set(POLYSCOPE_SHAPES_TESTS_SRC
 #  testPolynomial
   testBall3D
   )
 
 if ( DGTAL_WITH_POLYSCOPE )
-  foreach(FILE ${QGLVIEWER_SHAPES_TESTS_SRC})
+  foreach(FILE ${POLYSCOPE_SHAPES_TESTS_SRC})
     DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
   endforeach()
 endif()

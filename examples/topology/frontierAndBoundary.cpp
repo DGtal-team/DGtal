@@ -6,7 +6,7 @@
  *
  * @date 2012/02/06
  *
- * An example file named qglViewer.
+ * An example file named frontierAndBoundary.
  *
  * This file is part of the DGtal library.
  */
