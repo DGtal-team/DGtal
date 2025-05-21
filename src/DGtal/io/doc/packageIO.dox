@@ -37,7 +37,7 @@ namespace DGtal {
 
 @managers David Coeurjolly, Bertrand Kerautret
 
-@b LICENSE: LGPL.  GPL if you use QGLViewer (Viewer3D)
+@b LICENSE: MIT.  MIT if you use PolyscopeViewer
 
 
 @b Package @b Overview
@@ -47,9 +47,7 @@ In this package, we present DGtal tools and utilities to import/export images an
 @b Modules
 
 - \subpage moduleBoard2D (Jacques-Olivier Lachaud, Nicolas Normand, David Coeurjolly, Martial Tola)
-- \subpage moduleDisplay3D (Bertrand Kerautret, Martial Tola, Aline Martin, David Coeurjolly)
-  - \subpage moduleQGLInteraction (Jacques-Olivier Lachaud, Bertrand Kerautret)
-  - \subpage moduleQGLExtension (Jacques-Olivier Lachaud)
+- \subpage moduleDisplay3D (Bertrand Kerautret, Martial Tola, Aline Martin, David Coeurjolly, Bastien Doignies)
 - \subpage moduleIO (David Coeurjolly, Bertrand Kerautret, Martial Tola, Pierre Gueth)
 
 @b Package @b Concepts @b Overview

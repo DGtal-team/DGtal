@@ -357,8 +357,10 @@ namespace DGtal {
         virtual void OnAttach(void* viewer) {};
         /**
          * @brief Called to render or interact with some UI
+         *
+         * @param viewerData Some viewer-dependent data to draw UI (context)
          */
-        virtual void OnUI() {};
+        virtual void OnUI(void* viewerData) {};
         /**
          * @brief Called when an element is clicked
          * 
@@ -367,7 +369,7 @@ namespace DGtal {
          * @param name The name of the structure containing the element
          * @param index The index within the clicked structure
          * @param data The Display3D data associated with this structure
-         * @param viewerData Additionnal data that the viewer may pass to the user
+         * @param viewerData Viewer-dependent data associated with the click
          */
         virtual void OnClick(const std::string& name, size_t index, const DisplayData<RealPoint>& data, void* viewerData) {};
 
@@ -443,12 +445,12 @@ namespace DGtal {
       std::string createOrReuseList(const std::string& name, size_t elementSize);
 
       /**
-       * @brief Sets current group to be invalid
+       * @brief End current group and sets an invalid current group
        * 
        * The purpose of this function is to disallow further
        * automatic update on a group.
        */
-      void noCurrentGroup();
+      void endCurrentGroup();
 
       // Some shortcuts for clearer code
 
@@ -519,9 +521,12 @@ namespace DGtal {
       
       // @brief Draws a singed KCell
       std::string draw(const SCell& cell, const std::string& name = "SCell_{i}_{d}d");
-
+ 
       // @brief Draws a Domain
-      std::string draw(const HyperRectDomain<Space>& domain, const std::string& uname = "Domain_{i}");
+      //
+      // Note: the default name has a special hex code in the begining
+      // so that string based view-order draws domain in the background
+      std::string draw(const HyperRectDomain<Space>& domain, const std::string& uname = "\xff Domain_{i}");
 
       /**
        * @brief Draws a polygon
@@ -600,6 +605,9 @@ namespace DGtal {
       
       // @brief Draws adjacencies of further Object
       void drawAdjacencies(bool toggle = true);
+      
+      // @brief Draws 2D KCell as simplifed mode
+      void drawAsSimplified(bool toggle = true);
 
       // @brief Draws grid of further domains
       void drawAsGrid(bool toggle = true);
@@ -618,7 +626,7 @@ namespace DGtal {
 
       // @brief Draws an /!\ arrow (NOT A LINE)
       std::string draw(const std::pair<RealPoint, RealPoint>& arrow, const std::string& uname = "Arrow_{i}");
-      
+
       /**
        * @brief Draws a range of object to the screen
        */

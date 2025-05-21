@@ -155,6 +155,7 @@ int main( int argc, char** argv )
 
     typedef PolyscopeViewer<Z3i::Space, Z3i::KSpace> Viewer;
     Viewer viewer( KSpaceShape );
+    viewer.allowReuseList = true;
 
     typedef GradientColorMap< Value > Gradient;
     Gradient cmap_grad( min, max );

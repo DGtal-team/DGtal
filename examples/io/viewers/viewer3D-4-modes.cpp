@@ -66,9 +66,14 @@ int main( int argc, char** argv )
   Point p0( 0, 2, 1 );
 
   Domain domain( p1, p2 );
-  // Draws point as balls instead of cubes
-  viewer.drawAsPaving();
+
   viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
+  viewer << domain;
+
+  // Draws point as balls instead of cubes
+  viewer.drawAsBalls();
+  viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
+  viewer << domain;
   
   // Draws a grid instead of cubes
   viewer.drawAsGrid();

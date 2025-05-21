@@ -95,7 +95,7 @@ namespace DGtal {
 
   template <typename Space, typename KSpace>
   void Display3D<Space, KSpace>::clear() {
-    noCurrentGroup();
+    endCurrentGroup();
   
     toRender.clear();
     planes.clear();
@@ -186,7 +186,7 @@ namespace DGtal {
   }
 
   template <typename Space, typename KSpace>
-  void Display3D<Space, KSpace>::noCurrentGroup() {
+  void Display3D<Space, KSpace>::endCurrentGroup() {
     currentData = nullptr;
     currentName = "";
   }
@@ -218,6 +218,12 @@ namespace DGtal {
   void Display3D<Space, KSpace>::drawAdjacencies(bool toggle) {
     if (toggle) currentStyle.mode |=  DisplayStyle::ADJACENCIES;
     else        currentStyle.mode &= ~DisplayStyle::ADJACENCIES;
+  }
+
+  template <typename Space, typename KSpace>
+  void Display3D<Space, KSpace>::drawAsSimplified(bool toggle) {
+    if (toggle) currentStyle.mode |=  DisplayStyle::SIMPLIFIED;
+    else        currentStyle.mode &= ~DisplayStyle::SIMPLIFIED;
   }
 
   template <typename Space, typename KSpace>
@@ -265,7 +271,7 @@ namespace DGtal {
   std::string Display3D<Space, KSpace>::draw(const RealPoint& rp, const std::string& uname) {
     std::string name = currentName;
 
-    if (currentStyle.mode &= DisplayStyle::BALLS) {
+    if (currentStyle.mode & DisplayStyle::BALLS) {
       name = createOrReuseBallList(uname);
       currentData->vertices.push_back(rp);
     } else {
@@ -351,7 +357,7 @@ namespace DGtal {
     }
 
     allowReuseList = save;
-    noCurrentGroup();
+    endCurrentGroup();
     return list2_2; // Return one of the name
   }
 
@@ -392,7 +398,7 @@ namespace DGtal {
     }
 
     allowReuseList = save;
-    noCurrentGroup();
+    endCurrentGroup();
     return list2_2; // Return one of the name
   }
 
@@ -416,7 +422,7 @@ namespace DGtal {
       }
     }
 
-    noCurrentGroup();
+    endCurrentGroup();
     return name;
   }
 
@@ -503,7 +509,7 @@ namespace DGtal {
       }
     }
 
-    noCurrentGroup();
+    endCurrentGroup();
     return name;
   }
 
@@ -593,7 +599,7 @@ namespace DGtal {
     std::string name = drawGenericRange(obj, uname);
 
     // Draw adjacency if needed
-    if (currentStyle.mode & DisplayStyle::DrawMode::ADJACENCIES) {
+    if (currentStyle.mode & DisplayStyle::ADJACENCIES) {
       newLineList(name + "_adj");
       
       for (auto it = obj.begin(); it != obj.end(); ++it) {
@@ -608,7 +614,7 @@ namespace DGtal {
           }
       }
     }
-    noCurrentGroup();
+    endCurrentGroup();
     return name;
   }
   
@@ -664,7 +670,7 @@ namespace DGtal {
       currentData->indices.push_back(std::move(fIdx));
       currentData->colorProperties["color"].push_back(mesh.getFaceColor(i));
     }
-    noCurrentGroup();
+    endCurrentGroup();
     return name;
   }
 
@@ -695,7 +701,7 @@ namespace DGtal {
       }
     }
     
-    noCurrentGroup();
+    endCurrentGroup();
     return name;
   }
   
@@ -738,7 +744,7 @@ namespace DGtal {
   std::string Display3D<Space, KSpace>::drawGenericRange(const Range& range, const std::string& uname) {
     bool save = allowReuseList;
 
-    noCurrentGroup();
+    endCurrentGroup();
     allowReuseList = true;
 
     auto it = range.begin();
@@ -759,7 +765,7 @@ namespace DGtal {
       draw(*it, name);
     }
 
-    noCurrentGroup();
+    endCurrentGroup();
     allowReuseList = save; 
     return name;
   }

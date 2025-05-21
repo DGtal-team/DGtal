@@ -213,7 +213,7 @@ namespace DGtal {
   template <typename Space, typename KSpace>
   void PolyscopeViewer<Space, KSpace>::polyscopeCallback() {
     if (this->callback)
-        this->callback->OnUI();
+        this->callback->OnUI(nullptr);
 
     ImGuiIO& io = ImGui::GetIO();
     if (io.MouseClicked[0])

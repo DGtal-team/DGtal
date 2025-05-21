@@ -57,6 +57,9 @@ using namespace Z3i;
 int main( int argc, char** argv )
 {
   PolyscopeViewer v;
+  
+  // Instructs the viewer to draw adjacencies relation whenever possible
+  v.drawAdjacencies(true /* false */);
 
   Point p1( 0, 0, 0 );
   Point p2( 10, 10 , 10 );
@@ -65,18 +68,15 @@ int main( int argc, char** argv )
   DigitalSet shape_set( domain );
   Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
   Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
-  v << shape_set;
-  
-  // Instructs the viewer to draw adjacencies relation whenever 
-  // possible
-  v.drawAdjacencies(true /* false */);
 
-  Object6_18 shape( dt6_18, shape_set );
+  v << shape_set;
+
+  Object6_18 shape1( dt6_18, shape_set );
   Object18_6 shape2( dt18_6, shape_set );
   
   // Draws both the object the adjacencies
-  v.draw(shape);
-  v.draw(shape2);
+  v << shape1;
+  v << shape2;
 
   v.show();
   return 0;
