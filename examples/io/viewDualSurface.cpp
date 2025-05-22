@@ -27,7 +27,7 @@
 
 
 /**
- *  Example of viewing dual surfaces in Viewer3D.  
+ *  Example of viewing dual surfaces in PolyscopeViewer.  
  *  \image html viewDualSurface.png " " 
  *  \example io/viewDualSurface.cpp
  **/

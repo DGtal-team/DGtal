@@ -69,7 +69,7 @@ using namespace DGtal::Z3i;
 
 int main( int argc, char** argv )
 {
-  // for 3D display with Viewer3D
+  // for 3D display with PolyscopeViewer
   KSpace K;
   Point plow(0,0,0);
   Point pup(3,3,2);

@@ -612,7 +612,7 @@ namespace DGtal
        @param forceOrientCellExterior if 'true', used to change the
        default cell orientation in order to get the direction of shape
        exterior (default =false). This is used only for displaying
-       cells with Viewer3D. This mechanism should evolve shortly.
+       cells with PolyscopeViewer. This mechanism should evolve shortly.
     */
     template <typename PointPredicate >
     static 
@@ -635,7 +635,7 @@ namespace DGtal
        This method is used to change the default cell orientation in
        order to get the direction of shape exterior (default
        =false). This is used only for displaying cells with
-       Viewer3D. This mechanism should evolve shortly.
+       PolyscopeViewer. This mechanism should evolve shortly.
 
        @tparam PointPredicate a model of concepts::CPointPredicate describing
        the inside of a digital shape, meaning a functor taking a Point

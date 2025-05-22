@@ -276,7 +276,7 @@ single point.
 
 \subsection mesh3D 3D Surface Mesh
 The static class \c MeshReader allows to import Mesh from OBJ, OFF or OFS file format.
-Actually this class can import surface mesh (Mesh) where faces are potentially represented by triangles, quadrilaters and polygons. Notes that Mesh can be directly displayed with Viewer3D.
+Actually this class can import surface mesh (Mesh) where faces are potentially represented by triangles, quadrilaters and polygons. Notes that Mesh can be directly displayed with PolyscopeViewer.
 
 The mesh importation can be done automatically from the extension file name by using the "<<" operator. For instance (see. \ref importMesh3D ):
 
@@ -315,10 +315,9 @@ Afterwards the set is thresholded in ]0,255[:
 @code
   Z3i::DigitalSet set3d (image.domain());
   SetFromImage<Z3i::DigitalSet>::append<Image>(set3d, image, 0,255);
-  Viewer3D<> viewer;
+  PolyscopeViewer<> viewer;
+  viewer << set3d << image.domain();
   viewer.show(); 
-  viewer << SetMode3D(image.domain().className(), "BoundingBox");
-  viewer << set3d << image.domain()  << Viewer3D<>::updateDisplay;
 @endcode
 
 
@@ -346,11 +345,10 @@ We can change the way to select the coordinate field:
   vPos.push_back(2);
   vPos.push_back(1);
   vectPoints=  PointListReader<Z3i::Point>::getPointsFromFile(inputFilename, vPos); 
-  viewer<< CustomColors3D(QColor(255,0,0), QColor(255,0,0)); 
+  viewer << Color(255,0,0); 
   for(unsigned int i=0; i<vectPoints.size();i++){
     viewer << vectPoints.at(i);
   }
- viewer   << Viewer3D<>::updateDisplay;
 @endcode
 
 You may obtain the following visualisation:
@@ -361,7 +359,7 @@ You may obtain the following visualisation:
 \subsection importMesh3D Import 3D mesh from OFF file
 
 The following example meshFromOFF.cpp shows in few lines how to import and display an OFF 3D mesh.
-Add the following headers to access to OFF reader and  Viewer3D:
+Add the following headers to access to OFF reader and PolyscopeViewer:
 
 
 @snippet io/meshFromOFF.cpp includeImportOFF

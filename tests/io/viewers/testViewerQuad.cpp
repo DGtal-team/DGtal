@@ -22,7 +22,7 @@
  *
  * @date 2011/01/03
  *
- * Functions for testing class Viewer3D.
+ * Functions for testing class PolyscopeViewer.
  *
  * This file is part of the DGtal library.
  */
@@ -42,7 +42,7 @@ using namespace DGtal;
 using namespace Z3i;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class Viewer3D.
+// Functions for testing class PolyscopeViewer.
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -54,7 +54,7 @@ int main( int argc, char** argv )
   k.init(Point(2,2,2), Point(4,4,4), true);
 
   PolyscopeViewer<Space,KSpace> viewer(k);
-  trace.beginBlock ( "Testing class for  Viewer3D" );
+  trace.beginBlock ( "Testing class for  PolyscopeViewer" );
 
   Point p1( 0, 0, 0 );
   Point p2( 0, 1 , 0);

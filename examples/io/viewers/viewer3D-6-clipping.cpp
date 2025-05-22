@@ -22,7 +22,7 @@
  *
  * @date 2011/19/03
  *
- * Simple example of class Viewer3D.
+ * Simple example of class PolyscopeViewer.
  *
  * This file is part of the DGtal library.
  */

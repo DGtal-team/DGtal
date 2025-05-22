@@ -47,7 +47,7 @@ First to use the PolyscopeViewer stream, you need to include the following heade
 @endcode
  *
 The following code snippet defines three points and a rectangular
-domain in Z3. It then displays them in a Viewer3D object. The
+domain in Z3. It then displays them in a PolyscopeViewer object. The
 full code is in <a  href="io_2viewers_2viewer3D-1-points_8cpp-example.html">viewer3D-1-points.cpp</a>.
  *
  *
@@ -75,8 +75,8 @@ Then we can display some 3D primitives:
 The show method starts the visualization and should be call after all object are 
 drawn with the viewer. You should obtain the following visualization:
 
-\image html simple3dVisu1.png "Digital point visualization  with Viewer3D."
-\image latex simple3dVisu1.png "Digital point visualization  with Viewer3D." width=5cm
+\image html simple3dVisu1.png "Digital point visualization  with PolyscopeViewer."
+\image latex simple3dVisu1.png "Digital point visualization  with PolyscopeViewer." width=5cm
 
 
 \subsection  DGtalGLV_PolyscopeViewer_Rendering Interactive change of rendering   
@@ -101,8 +101,8 @@ visibility such as scene extents or transparency mode.
 *
 * You should obtain the following visualization (see example: <a href="io_2viewers_2viewer3D-2-sets_8cpp-example.html">viewer3D-2-sets.cpp </a>):
 *
-* \image html simple3dVisu2.png "Digital point visualization  with Viewer3D."
-* \image latex simple3dVisu2.png "Digital point visualization  with Viewer3D." width=5cm
+* \image html simple3dVisu2.png "Digital point visualization  with PolyscopeViewer."
+* \image latex simple3dVisu2.png "Digital point visualization  with PolyscopeViewer." width=5cm
 *
 *
 *
@@ -126,10 +126,10 @@ visibility such as scene extents or transparency mode.
 
 * You should obtain the two following visualizations (see example: <a href="io_2viewers_2viewer3D-3-objects_8cpp-example.html">viewer3D-3-objects.cpp </a>):
 
- \image html visu6-18Adj.png " 6-18 digital Adjacencies visualization  with Viewer3D."
- \image latex visu6-18Adj.png " 6-18 digital Adjacencies visualization with Viewer3D." width=5cm
- \image html visu18-6Adj.png " 18-6 digital Adjacencies visualization  with Viewer3D."
- \image latex visu18-6Adj.png " 18-6 digital Adjacencies visualization  with Viewer3D."  width=5cm
+ \image html visu6-18Adj.png " 6-18 digital Adjacencies visualization  with PolyscopeViewer."
+ \image latex visu6-18Adj.png " 6-18 digital Adjacencies visualization with PolyscopeViewer." width=5cm
+ \image html visu18-6Adj.png " 18-6 digital Adjacencies visualization  with PolyscopeViewer."
+ \image latex visu18-6Adj.png " 18-6 digital Adjacencies visualization  with PolyscopeViewer."  width=5cm
 
 
 * Note that digital set was displayed with transparency by setting a custom colors within the viewer.
@@ -247,7 +247,6 @@ From displaying a digital set defined from a Norm2 ball,
 
  viewer << shape_set;
  viewer << Color(250, 200,0, 20);
- viewer <<  SetMode3D( p1.className(), "Paving" );
 @endcode
 
 we can add for instance two differents clipping planes:

@@ -115,7 +115,7 @@ int main( int argc, char** argv )
   //! [volTrackBoundary-ExtractingSurface]
 
   //! [volTrackBoundary-DisplayingSurface]
-  trace.beginBlock( "Displaying surface in Viewer3D." );
+  trace.beginBlock( "Displaying surface in PolyscopeViewer." );
   PolyscopeViewer<> viewer( ks );
   viewer << Color( 128, 128, 128 );
   unsigned long nbSurfels = 0;

@@ -22,16 +22,16 @@
  *
  * @date 2011/19/03
  *
- * Simple example of class Viewer3D.
+ * Simple example of class PolyscopeViewer.
  *
  * This file is part of the DGtal library.
  */
 
 /**
- * Example of 6-18 digital Adjacencies visualization  with Viewer3D.
+ * Example of 6-18 digital Adjacencies visualization  with PolyscopeViewer.
  * @see \ref DGtalGLV_ModeEx
  * \example io/viewers/viewer3D-3-objects.cpp
- * \image html visu6-18Adj.png " 6-18 digital Adjacencies visualization  with Viewer3D."
+ * \image html visu6-18Adj.png " 6-18 digital Adjacencies visualization  with PolyscopeViewer."
  */
 
 

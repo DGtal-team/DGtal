@@ -158,7 +158,7 @@ int main( int argc, char** argv )
   trace.info() << "After close: " << complex << std::endl;
   trace.endBlock();
 
-  // for 3D display with Viewer3D
+  // for 3D display with PolyscopeViewer
   typedef PolyscopeViewer<Space, KSpace> MyViewer;
 
   {

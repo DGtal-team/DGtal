@@ -146,7 +146,7 @@ int main( int argc, char** argv )
   trace.endBlock();
 
 
-  // for 3D display with Viewer3D
+  // for 3D display with PolyscopeViewer
   trace.beginBlock( "Display all with Viewer." );
   PolyscopeViewer<Space, KSpace> viewer(ks);
   // Displaying all the surfels in transparent mode

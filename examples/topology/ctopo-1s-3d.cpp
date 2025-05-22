@@ -54,7 +54,7 @@ using namespace DGtal::Z3i;
 
 int main( int argc, char** argv )
 {
-  // for 3D display with Viewer3D
+  // for 3D display with PolyscopeViewer
   KSpace K;
   Point plow(0,0,0);
   Point pup(3,3,2);
@@ -63,7 +63,6 @@ int main( int argc, char** argv )
 
   typedef PolyscopeViewer<Space, KSpace> MyViewer;
   MyViewer viewer(K);
-  //viewer << SetMode3D( domain.className(), "Paving" );
 
   SCell ptlow = K.sPointel( plow ); // pointel (0*2,0*2, 0*2)
   SCell ptup1 = K.sPointel( pup );  // pointel (3*2,3*2, 2*2)

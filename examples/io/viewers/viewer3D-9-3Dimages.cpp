@@ -22,7 +22,7 @@
  *
  * @date 2013/05/19
  *
- * An example file named viewer3D-8-2Dimages.
+ * An example file named viewer3D-9-3Dimages.
  *
  * This file is part of the DGtal library.
  */

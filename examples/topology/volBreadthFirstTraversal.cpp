@@ -129,7 +129,7 @@ int main( int argc, char** argv )
   //! [volBreadthFirstTraversal-ExtractingSurface]
 
   //! [volBreadthFirstTraversal-DisplayingSurface]
-  trace.beginBlock( "Displaying surface in Viewer3D." );
+  trace.beginBlock( "Displaying surface in PolyscopeViewer." );
   PolyscopeViewer<> viewer;
   MyBreadthFirstVisitor visitor2( digSurf, bel );
   viewer << Color::White

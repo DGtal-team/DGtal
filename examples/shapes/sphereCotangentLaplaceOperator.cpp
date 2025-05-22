@@ -53,7 +53,7 @@
 #include <DGtal/shapes/MeshHelpers.h>
 #include "DGtal/shapes/TriangulatedSurface.h"
 
-#include <DGtal/io/viewers/Viewer3D.h>
+#include <DGtal/io/viewers/PolyscopeViewer.h>
 
 #include <DGtal/math/linalg/EigenSupport.h>
 
@@ -263,12 +263,9 @@ void laplacian(Shape& shape, const Options& options,
   for(unsigned int k = 0; k < viewmesh.nbFaces(); k++)
     viewmesh.setFaceColor(k, colormap_error( error_faces(k) ));
 
-  QApplication application(argc,argv);
-  Viewer3D<> viewer;
-  viewer.show();
+  PolyscopeViewer<> viewer;
     viewer << viewmesh;
-  viewer << Viewer3D<>::updateDisplay;
-  application.exec();
+  viewer.show();
 
   trace.endBlock();
 }

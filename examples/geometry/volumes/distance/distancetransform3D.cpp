@@ -26,7 +26,7 @@
  */
 
 /**
-   Example of distance transformation in dimension 3 with DGtal Viewer3D.
+   Example of distance transformation in dimension 3 with DGtal PolyscopeViewer.
 This program outputs this image:
 @see \ref moduleVolumetric
 

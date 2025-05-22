@@ -28,7 +28,7 @@
 
 
 /**
- * Example of Domain and Point display in Viewer3D.
+ * Example of Domain and Point display in PolyscopeViewer.
  *  @see @ref moduleDisplay3D 
  * \image html demo-kernel-2.png " " 
  *  \example io/viewers/demo-kernel-2.cpp

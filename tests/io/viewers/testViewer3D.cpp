@@ -22,7 +22,7 @@
  *
  * @date 2011/01/03
  *
- * Functions for testing class Viewer3D.
+ * Functions for testing class PolyscopeViewer.
  *
  * This file is part of the DGtal library.
  */
@@ -41,7 +41,7 @@ using namespace DGtal;
 using namespace Z3i;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class Viewer3D.
+// Functions for testing class PolyscopeViewer.
 ///////////////////////////////////////////////////////////////////////////////
 
 
@@ -52,7 +52,7 @@ int main( int argc, char** argv )
 {
   PolyscopeViewer viewer;
 
-  trace.beginBlock ( "Testing class for  Viewer3D" );
+  trace.beginBlock ( "Testing class for  PolyscopeViewer" );
 
   Point p1( 14, 14, 14 );
   Point p2( 27, 27, 27 );
@@ -89,7 +89,7 @@ int main( int argc, char** argv )
   viewer.drawAsPaving();
   viewer << pp1 << pp2 << pp3;
 
-  //viewer <<  SetMode3D( pp1.className(), "Grid" );
+  viewer.drawAsGrid();
   viewer << Color(250, 0,0);
   viewer << pp4 << pp5 ;
   viewer << Color(250, 0,0, 100);

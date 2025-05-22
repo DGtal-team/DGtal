@@ -20,7 +20,7 @@
  * @author David Coeurjolly
  * @date 2013/09/06
  *
- * Functions for testing class Viewer3D.
+ * Functions for testing class PolyscopeViewer.
  *
  * This file is part of the DGtal library.
  */
@@ -44,7 +44,7 @@ using namespace Z3i;
 int main( int argc, char** argv )
 {
   PolyscopeViewer<> viewer;
-  trace.beginBlock ( "Testing Polygon 3D display in Viewer3D" );
+  trace.beginBlock ( "Testing Polygon 3D display in PolyscopeViewer" );
   std::vector<Z3i::RealPoint> polyg1;
 
   polyg1.push_back(Z3i::RealPoint(0,0,0));

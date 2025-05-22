@@ -25,7 +25,7 @@
  *
  * @date 2014/10/12
  *
- * Simple example of class Viewer3D.
+ * Simple example of class PolyscopeViewer.
  *
  * This file is part of the DGtal library.
  */
@@ -42,7 +42,7 @@
  * @endverbatim
  *
  *
- * @image html viewer3D-10-interaction.png   "Example of viewer3D interaction with the selection of surfels. "
+ * @image html viewer3D-10-interaction.png   "Example of PolyscopeViewer interaction with the selection of surfels. "
  *
  * \example io/viewers/viewer3D-10-interaction.cpp
  *

@@ -107,7 +107,7 @@ int main( int argc, char** argv )
   //! [volScanBoundary-ExtractingSurface]
 
   //! [volScanBoundary-DisplayingSurface]
-  trace.beginBlock( "Displaying surface in Viewer3D." );
+  trace.beginBlock( "Displaying surface in PolyscopeViewer." );
   PolyscopeViewer<> viewer( ks );
   KSpace::SCell dummy_scell;
   viewer.currentStyle.mode |= DisplayStyle::SIMPLIFIED;

@@ -52,7 +52,7 @@ using namespace DGtal;
 int main( int argc, char** argv )
 {
   trace.beginBlock ( "Example ctopo-2-3d" );
-  // for 3D display with Viewer3D
+  // for 3D display with PolyscopeViewer
 
   typedef ImageSelector < Z3i::Domain, int>::Type Image;
   std::string inputFilename = examplesPath + "samples/cat10.vol";

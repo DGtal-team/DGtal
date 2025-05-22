@@ -50,7 +50,7 @@
 //! [volGranulo-basicIncludes]
 
 //! [volGranulo-viewerIncludes]
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 //! [volGranulo-viewerIncludes]
 
@@ -72,16 +72,14 @@ int main(int argc, char ** argv)
 
   //! [volGranulo-viewer]
   //Create a new viewer instance
-  QApplication application(argc,argv);
-  Viewer3D<> viewer;
-  viewer.show();
+  PolyscopeViewer<> viewer;
   //! [volGranulo-viewer]
 
   // - iterate over the loaded image domain and send strictly positive
-  //values to the viewer
-  //
-  // Do not forget a  viewer2 << DGtal::Viewer3D<>::updateDisplay;
-  // when you're done.
+  // values to the viewer
+  // 
+  // If needed, to not forget to a viewer.allowReuseList to group values togethe
+  // Do not forget a viewer.show(); when you're done.
 
 
   ////////////////
@@ -104,7 +102,7 @@ int main(int argc, char ** argv)
   //Visualization 2
   //
 
-  // Create a new instance of Viewer3D
+  // Create a new instance of PolyscopeViewer
 
   //! [volGranulo-cmap]
   //Create the colormap from the maximal distance value

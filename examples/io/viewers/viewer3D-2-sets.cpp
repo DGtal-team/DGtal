@@ -22,17 +22,17 @@
  *
  * @date 2011/19/03
  *
- * Simple example of class Viewer3D.
+ * Simple example of class PolyscopeViewer.
  *
  * This file is part of the DGtal library.
  */
 
 
 /**
- * Example of digital point visualization with Viewer3D.
+ * Example of digital point visualization with PolyscopeViewer.
  * @see \ref DGtalGLV_VisualizationDigitalSet
  * \example io/viewers/viewer3D-2-sets.cpp
- * \image html simple3dVisu2.png "Digital point visualization  with Viewer3D."
+ * \image html simple3dVisu2.png "Digital point visualization  with PolyscopeViewer."
  */
 
 

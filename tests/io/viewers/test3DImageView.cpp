@@ -22,7 +22,7 @@
  *
  * @date 2011/01/03
  *
- * Functions for testing class Viewer3D.
+ * Functions for testing class PolyscopeViewer.
  *
  * This file is part of the DGtal library.
  */

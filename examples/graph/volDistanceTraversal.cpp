@@ -153,7 +153,7 @@ int main( int argc, char** argv )
   //! [volDistanceTraversal-ExtractingSurface]
 
   //! [volDistanceTraversal-DisplayingSurface]
-  trace.beginBlock( "Displaying surface in Viewer3D." );
+  trace.beginBlock( "Displaying surface in PolyscopeViewer." );
   PolyscopeViewer<> viewer( ks );
   HueShadeColorMap<MySize,1> hueShade( 0, maxDist );
   MyDistanceVisitor visitor2( digSurf, vfunctor, bel );

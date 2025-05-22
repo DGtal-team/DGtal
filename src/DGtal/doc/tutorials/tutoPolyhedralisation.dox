@@ -20,7 +20,7 @@ surface) from a digital object. It uses several ingredients of DGtal:
 - graph visitor: to define neighborhoods on the digital object boundary (class BreadthFirstVisitor)
 - digital plane computer: to recognize points of the boundary that belongs to the same plane (class ChordGenericNaivePlaneComputer)
 - umbrellas: to decompose the digital surface into cells 
-- viewers: to see intermediate and final results of our algorithm (class Viewer3D)
+- viewers: to see intermediate and final results of our algorithm (class PolyscopeViewer)
 
 [TOC]
 

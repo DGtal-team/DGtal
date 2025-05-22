@@ -65,7 +65,7 @@ struct ImplicitDigitalBall3 {
 };
 
 
-bool testBallQuad(int argc, char **argv)
+void testBallQuad()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -102,7 +102,6 @@ bool testBallQuad(int argc, char **argv)
   trace.info() << nbsurfels << " surfels found." << std::endl;
 
   viewer.show();
-  return 1;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -116,10 +115,10 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testBallQuad(argc,argv); // && ... other tests
-  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+  testBallQuad(argc,argv); // && ... other tests
+  trace.emphase() << "Passed." << endl;
   trace.endBlock();
-  return res ? 0 : 1;
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
