@@ -96,8 +96,7 @@ visibility such as scene extents or transparency mode.
 *
 *
 
-
-  @snippet io/viewers/viewer3D-2-sets.cpp ExampleViewer3DSets
+@snippet io/viewers/viewer3D-2-sets.cpp ExampleViewer2dSet
 
 *
 * You should obtain the following visualization (see example: <a href="io_2viewers_2viewer3D-2-sets_8cpp-example.html">viewer3D-2-sets.cpp </a>):

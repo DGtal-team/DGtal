@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file testBallQuad.cpp
+ * @file testBallQuadViewer.cpp
  * @ingroup Tests
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France

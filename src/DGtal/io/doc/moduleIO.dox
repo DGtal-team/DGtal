@@ -284,10 +284,7 @@ The mesh importation can be done automatically from the extension file name by u
 @snippet io/meshFromOFF.cpp ImportOFFfile
 
 You can also export a Mesh object by using the operator
-(">>"). Notes that the class Display3D permits also to generate a
-Mesh which can be exported (see. \ref exportMesh3D).
-
-
+(">>"). 
 
 \section io_examples Examples
 
@@ -387,59 +384,6 @@ You can also import large scale mesh, like the one of classic Angel scan ( avail
 
 \image html visuImportOFF.png  "Visualisation of the 3d angel "  width=5cm
 \image latex visuImportOFF.png  "Visualisation of the 3d  angel" width=5cm
-
-
-
-
-
-\subsection exportMesh3D Export 3D mesh in OFF and OBJ format
-
-The following example display3DToOFF.cpp   shows in few lines how to export in OFF format a
-DigitalSet object. This object will be exported with a Display3D
-object (see. display3DToOFF.cpp). 
-
-
-
-@snippet io/display3DToOFF.cpp ExampleDisplay3DToOFF
-
-
-
-
-Notes that the export can also be done in two steps:
-
-
-@code 
-// The parameter true is used to specify that we store the face colors.
-Mesh aMesh(true);
-viewer >> aMesh;
-aMesh >> "exporMeshToOFF.off"
-@endcode
-
-
-The resulting mesh can be visualized for instance by using meshlab;
-
-
-\image html  visuDisplay3DToOFF.png  "Visualization of the exported mesh "  width=5cm
-\image latex visuDisplay3DToOFF.png  "Visualization of the exported mesh" width=5cm
-
-
-
-
-This code can be useful if you want to generate illustrations in the
-U3D format. For instance by using the U3D/PDF export from MeshLab or
-JReality ( www3.math.tu-berlin.de/jreality/). You can for
-instance generate some exports in pdf like this example:
-
-
-\image html  visu3dKSSurfaceExtractionExportPDF.png  "Visualization in PDF of an exported Digital object." width=5cm
-\image latex visu3dKSSurfaceExtractionExportPDF.png  "Visualization in PDF of an exported Digital object." width=5cm
-
-
-
-
-
-(see this pdf file:  http://dgtal.org/wp/wp-content/uploads/2010/10/3dKSSurfaceExtractionExport.pdf )
-
 
 */
 

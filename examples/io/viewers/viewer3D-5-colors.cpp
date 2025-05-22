@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file io/viewers/viewer3D-5-custom.cpp
+ * @file io/viewers/viewer3D-5-colors.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
@@ -31,7 +31,7 @@
 /**
  * Example of a custom display
  * @see \ref DGtalGLV_Custom
- * \example io/viewers/viewer3D-5-custom.cpp
+ * \example io/viewers/viewer3D-5-colors.cpp
  * \image html visuModeCustom.png "Example of several custom display ." width=5cm
 */
 

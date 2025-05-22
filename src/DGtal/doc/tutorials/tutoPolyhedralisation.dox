@@ -29,7 +29,7 @@ surface) from a digital object. It uses several ingredients of DGtal:
 We will write a new C++ source file (say makePolyhedron.cpp) that uses
 the DGtal library. You can follow for instance \ref
 moduleHowToUseDGtal. Then you can already start with the following
-skeleton that includes the main required headers (Qt will be used for
+skeleton that includes the main required headers (Polyscope will be used for
 displaying results).
 
 \code
@@ -38,9 +38,10 @@ displaying results).
 #include <set>
 #include <map>
 #include <queue>
-#include <QtGui/qapplication.h>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
+
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 \endcode
 
 We will also play with some .vol file. There are a few in the
@@ -55,7 +56,6 @@ using namespace DGtal;
 using namespace Z3i;
 int main( int argc, char** argv )
 {
-  QApplication application(argc,argv);
   string inputFilename = argc > 1 ? argv[ 1 ] : "DGtal/examples/samples/Al.100.vol";
   int threshold = argc > 2 ? atoi( argv[ 2 ] ) : 0; // volume is (val > threshold)
   int wp = argc > 3 ? atoi( argv[ 3 ] ) : 1;
@@ -139,7 +139,7 @@ If everything is fine, you should have a non-null digital surface !
 \section tutoPolyhedralisation_sec4 Visualising the surface
 
 Just to check that everything is fine, we can visualize the surface
-with class \ref PolyscopeViewer, which is based on Polyscope (which in
+with class \ref DGtal::PolyscopeViewer, which is based on Polyscope (which in
 turn uses OpenGL). The principle is to instantiate the viewer
 and then to use output streams to feed the viewer with cells, colors,
 etc. The following piece of code displays the first surfel of your

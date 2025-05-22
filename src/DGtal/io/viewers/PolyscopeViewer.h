@@ -20,7 +20,7 @@
  *
  * @date 2025/05/11
  *
- * Header file for 3D Display
+ * Header file for 3D Polyscope Viewer
  *
  * This file is part of the DGtal library.
  */

@@ -16,7 +16,7 @@
 #pragma once
 
 /**
- * @file Display.h
+ * @file Display3D.h
  * @author Bastien Doignies <bastien.doignies@liris.cnrs.fr>
  *
  * @date 2025/05/11
@@ -94,6 +94,7 @@ namespace DGtal {
        * @tparam T The type of vertex
        * @tparam U The container to insert vertices into
        * 
+       * @param dest The container where the vertices shoudl be inserted
        * @param center The center of the cube
        * @param scale The size of the cube
        *
@@ -109,6 +110,7 @@ namespace DGtal {
        * 
        * @param center The center of the quad
        * @param orientation 0 means normal in x direction, 1 in y-direction, 2 in z-direction
+       * @param size The size of the square
        *
        * @see DGtal::drawutils::insertAASquare
        */
@@ -121,7 +123,9 @@ namespace DGtal {
        * @tparam U The container
        * @tparam T The type of vertex
        *
+       * @param dest The container where the vertices shoudl be inserted
        * @param center The center of the square
+       * @param orientation 0 means normal in x direction, 1 in y-direction, 2 in z-direction
        * @param size The size of the square
        *
        * @see DGtal::drawutils::getAASquareVertices
@@ -156,8 +160,10 @@ namespace DGtal {
        *
        * @see DGtal::drawutils::getPrism
        *
+       * @tparam U The container type
        * @tparam T The vertex type
        *
+       * @param dest The container where the vertices shoudl be inserted
        * @param center The center of the cell on which the prism should be drawn
        * @param orientation The orientation of the cell (x, y, z)
        * @param size1 Size of the first square

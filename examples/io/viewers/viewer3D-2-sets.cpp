@@ -57,8 +57,8 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
+  //! [ExampleViewer2dSet]
   PolyscopeViewer v;
-
   Point p1( 0, 0, 0 );
   Point p2( 10, 10 , 10 );
   Domain domain( p1, p2 );
@@ -75,6 +75,7 @@ int main( int argc, char** argv )
   v << shape_set;
 
   v.show();
+  //! [ExampleViewer2dSet]
   return 0;
 }
 //                                                                           //
