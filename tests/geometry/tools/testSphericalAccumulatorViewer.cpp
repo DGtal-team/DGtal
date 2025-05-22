@@ -43,7 +43,7 @@ using namespace Z3i;
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class SphericalAccumulator.
 ///////////////////////////////////////////////////////////////////////////////
-bool testSphericalViewer(int argc, char **argv)
+void testSphericalViewer()
 {
   trace.beginBlock ( "Testing Spherical Accumulator Viewer..." );
 
@@ -69,12 +69,12 @@ bool testSphericalViewer(int argc, char **argv)
   trace.info() << std::endl;
   trace.info() << accumulator<<std::endl;
 
-  trace.emphase() << "APassed." << endl;
+  trace.emphase() << "Passed." << endl;
   trace.endBlock();
   viewer.show();
-  return 1;
 }
-bool testSphericalViewerInteger(int argc, char **argv)
+
+void testSphericalViewerInteger()
 {
   trace.beginBlock ( "Testing Spherical Accumulator Viewer  with Integer numbers..." );
 
@@ -103,7 +103,6 @@ bool testSphericalViewerInteger(int argc, char **argv)
   trace.emphase() << "Passed." << endl;
   trace.endBlock();
   viewer.show();
-  return 1;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -117,11 +116,11 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res =  testSphericalViewer(argc,argv)
-    && testSphericalViewerInteger(argc,argv);
-  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+  testSphericalViewer();
+  testSphericalViewerInteger();
+  trace.emphase() << "Passed." << endl;
   trace.endBlock();
-  return res ? 0 : 1;
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

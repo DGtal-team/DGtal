@@ -97,8 +97,8 @@ int main( int argc, char** argv )
   Z3i::SCell surfel2 = K.sCell( Point( 3, 3, 4 ), KSpace::NEG );
   Z3i::SCell surfel3 = K.sCell( Point( 5, 6, 5 ), KSpace::POS );
 
-  std::string s1name = viewer.draw(surfel1, "Surfel 1");
-  std::string s2name = viewer.draw(surfel2, "Surfel 2");
+  viewer.draw(surfel1, "Surfel 1");
+  viewer.draw(surfel2, "Surfel 2");
   viewer << Point(0, 0, 1) << Point(1, 1, 2);
  
   viewer.show();

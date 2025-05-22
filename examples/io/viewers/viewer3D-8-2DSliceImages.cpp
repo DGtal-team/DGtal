@@ -88,7 +88,7 @@ int main( int argc, char** argv )
   //! [ExampleViewer3D2DImagesExtractImages]
 
   //! [ExampleViewer3D2DImagesDisplayImages]
-  std::string imageZ = viewer.draw(aSliceImageZ);
+  viewer.draw(aSliceImageZ);
   std::string imageY = viewer.draw(aSliceImageY);
   //! [ExampleViewer3D2DImagesDisplayImages]
   //

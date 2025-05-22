@@ -287,7 +287,7 @@ namespace DGtal {
     std::string name = createOrReuseBallList(uname);
     currentData->vertices.push_back(arrow.first);
     currentData->vectorProperties["value"].push_back(arrow.second);
-    return "";
+    return name;
   }
 
   template <typename Space, typename KSpace>

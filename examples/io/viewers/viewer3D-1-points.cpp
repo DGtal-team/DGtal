@@ -64,9 +64,9 @@ int main( int argc, char** argv )
   v.draw(p1);
   // Or stream operators that can be chained
   v << p2 << p3;
-  // Draw operator allows to retrieve the name (id)
-  // of an object 
+  // Draw operator allows to retrieve the name (id) of an object 
   std::string name = v.draw(domain);
+  trace.info() << name << std::endl;
 
   v.show();
   return 0;

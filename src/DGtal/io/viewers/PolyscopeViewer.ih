@@ -227,9 +227,9 @@ namespace DGtal {
         if (structure != nullptr) {
           void* viewerData = structure;
           std::string name = structure->getName();
-          auto& data = this->data[name];
 
           if (this->callback) {
+            auto& data = this->data[name];
             this->callback->OnClick(name, index, data, viewerData);
           }
         }
