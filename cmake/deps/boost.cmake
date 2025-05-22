@@ -205,13 +205,11 @@ add_library(boost INTERFACE)
 add_library(Boost::boost ALIAS boost)
 set(boost_export_list )
 foreach (name ${BOOST_INCLUDE_LIBRARIES})
-    message("Linking with: Boost::${name}")
     target_link_libraries(boost INTERFACE Boost::${name})
     list(APPEND boost_export_list boost_${name})
 endforeach()
 
 # Install boost files when installing library
-message("List: ${boost_export_list}")
 install(DIRECTORY ${BOOST_INCLUDE_DIRS}/Boost DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/DGtal/3rdParties/)
 install(TARGETS boost ${boost_export_list} EXPORT boost)
 install(EXPORT boost DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/boost NAMESPACE Boost::)

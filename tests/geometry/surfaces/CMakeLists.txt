@@ -50,10 +50,10 @@ endif()
 
 
 
-if ( WITH_PATATE )
-    set(PATATE_TESTS_SRC
+if ( DGTAL_WITH_PONCA )
+    set(PONCA_TESTS_SRC
       testSphereFitting )
-    foreach(FILE ${PATATE_TESTS_SRC})
+    foreach(FILE ${PONCA_TESTS_SRC})
       DGtal_add_test(${FILE})
     endforeach()
 endif()
