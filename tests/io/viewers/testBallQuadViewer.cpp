@@ -115,7 +115,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  testBallQuad(argc,argv); // && ... other tests
+  testBallQuad(); // && ... other tests
   trace.emphase() << "Passed." << endl;
   trace.endBlock();
   return 0;
