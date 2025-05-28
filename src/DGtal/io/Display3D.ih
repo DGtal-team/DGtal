@@ -476,10 +476,11 @@ namespace DGtal {
 
   template <typename Space, typename KSpace>
   std::string Display3D<Space, KSpace>::draw(const HyperRectDomain<Space>& domain, const std::string& uname) {
-    std::string name = drawGenericRange(domain, uname);
-
+   
+    std::string name;
+    
     if (currentStyle.mode & DisplayStyle::GRID) {
-      newLineList(name + "_grid");
+      name = newLineList(uname);
       
       // Faces YX
       for (auto z = domain.myLowerBound[2]; z <= domain.myUpperBound[2]; z++) {
@@ -532,6 +533,15 @@ namespace DGtal {
           currentData->vertices.push_back(rp1);
           currentData->vertices.push_back(rp2);
         }
+      }
+    }
+    else
+    {
+      name = drawGenericRange(domain, uname);
+      if (!(currentStyle.mode & DisplayStyle::BALLS))
+      {
+        data[name].style.useDefaultColors=false;
+        data[name].style.color.alpha(64);
       }
     }
 
