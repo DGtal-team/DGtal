@@ -21,6 +21,8 @@ install(EXPORT PoncaFitting DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/boost NAME
 export(TARGETS
     Ponca
     Fitting
+    Eigen3_Eigen
     NAMESPACE Ponca::
     FILE PoncaTargets.cmake
 )
+
