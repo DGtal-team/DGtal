@@ -700,8 +700,8 @@ namespace DGtal {
       const auto& face = mesh.getFace(i);
       std::vector<unsigned int> fIdx;
       fIdx.reserve(face.size());
-      for (auto i : face) {
-        fIdx.push_back(i);
+      for (auto j : face) {
+        fIdx.push_back(j);
       }
       currentData->indices.push_back(std::move(fIdx));
       currentData->colorProperties["color"].push_back(mesh.getFaceColor(i));
