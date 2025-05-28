@@ -26,18 +26,13 @@
  * This file is part of the DGtal library.
  */
 
-#include <iostream>
-
-#include <optional>
 #include <cstdint>
 #include <vector>
-#include <string>
-#include <array>
-
 #include <map>
+
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
 
-#include <Eigen/Geometry>
+#include "Eigen/Geometry"
 
 #include "DGtal/helpers/StdDefs.h"
 

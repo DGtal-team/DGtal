@@ -25,7 +25,7 @@
  * This file is part of the DGtal library.
  */
 
-#include <DGtal/io/Display3D.h>
+#include "DGtal/io/Display3D.h"
 
 #include "polyscope/polyscope.h"
 
