@@ -181,7 +181,7 @@ int main( int argc, char** argv )
        it != itEnd; ++it)
     {
       Point p = it->first;
-      viewer << WithProperty(p, "value", it->second);
+      viewer << WithQuantity(p, "value", it->second);
     }
   Point p = Point::diagonal(1);
   Vector extent =  (domain.upperBound() - domain.lowerBound()) + p;

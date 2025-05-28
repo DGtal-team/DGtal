@@ -29,6 +29,7 @@ namespace DGtal {
     glm::vec3 toglm(const DGtal::Color& col) {
       return glm::vec3{col.r(), col.g(), col.b()};
     }
+
     std::vector<glm::vec3> toglm(const std::vector<DGtal::Color>& col) {
       std::vector<glm::vec3> colors(col.size());
       for (size_t i = 0; i < colors.size(); ++i) {
@@ -48,6 +49,16 @@ namespace DGtal {
     }
   }
   
+  template <typename Space, typename KSpace>
+  void PolyscopeViewer<Space, KSpace>::setCallback(typename Display3D<Space, KSpace>::Callback* callback) {
+    Display3D<Space, KSpace>::setCallback(callback);
+    if (this->myCallback != nullptr) {
+        polyscope::state::userCallback = [this]() { this->polyscopeCallback(); };
+    } else {
+        polyscope::state::userCallback = nullptr; // Remove callback 
+    }
+  }
+
   template <typename Space, typename KSpace>
   void PolyscopeViewer<Space, KSpace>::renderClippingPlanes() {
     using namespace drawutils;
@@ -79,7 +90,7 @@ namespace DGtal {
     const double BallToCubeRatio = 0.025;
     const double VectorScale = 1. / 30.;
 
-    for (const std::string& name : this->toRender) {
+    for (const std::string& name : this->myToRender) {
       auto it = this->data.find(name);
       if (it == this->data.end()) continue;
 
@@ -95,20 +106,20 @@ namespace DGtal {
             pCloud->setTransform(toglm(data.transform));
             if (!data.style.useDefaultColors) {
               pCloud->setPointColor(toglm(data.style.color));
-              pCloud->setTransparency(data.style.color.a());
             }
+            pCloud->setTransparency(data.style.color.a());
     
             // Apply properties
-            for (const auto& [name, vals] : data.scalarProperties) {
+            for (const auto& [name, vals] : data.scalarQuantities) {
               pCloud->addScalarQuantity(name, vals)->setEnabled(true);
             }
-            for (const auto& [name, vals] : data.vectorProperties) {
+            for (const auto& [name, vals] : data.vectorQuantities) {
               auto* q = pCloud->addVectorQuantity(name, vals);
               q->setEnabled(true);
               q->setVectorLengthScale(VectorScale);
             }
   
-            for (const auto& [name, vals] : data.colorProperties) {
+            for (const auto& [name, vals] : data.colorQuantities) {
               pCloud->addColorQuantity(name, toglm(vals))->setEnabled(true);
             }
             pCloud->setPointRadius(data.style.width * BallToCubeRatio);
@@ -120,19 +131,19 @@ namespace DGtal {
             cNetwork->setTransform(toglm(data.transform));
             if (!data.style.useDefaultColors) {
               cNetwork->setColor(toglm(data.style.color));
-              cNetwork->setTransparency(data.style.color.a());
             }
+            cNetwork->setTransparency(data.style.color.a());
   
             // Apply properties
-            for (const auto& [name, vals] : data.scalarProperties) {
+            for (const auto& [name, vals] : data.scalarQuantities) {
               cNetwork->addEdgeScalarQuantity(name, vals)->setEnabled(true);
             }
-            for (const auto& [name, vals] : data.vectorProperties) {
+            for (const auto& [name, vals] : data.vectorQuantities) {
               auto* q = cNetwork->addEdgeVectorQuantity(name, vals);
               q->setEnabled(true);
               q->setVectorLengthScale(VectorScale);
             }
-            for (const auto& [name, vals] : data.colorProperties) {
+            for (const auto& [name, vals] : data.colorQuantities) {
               cNetwork->addEdgeColorQuantity(name, toglm(vals))->setEnabled(true);
             }
           }
@@ -143,19 +154,19 @@ namespace DGtal {
             mesh->setTransform(toglm(data.transform));
             if (!data.style.useDefaultColors) {
               mesh->setSurfaceColor(toglm(data.style.color));
-              mesh->setTransparency(data.style.color.a());
             }
+            mesh->setTransparency(data.style.color.a());
   
             // Apply properties
-            for (const auto& [name, vals] : data.scalarProperties) {
+            for (const auto& [name, vals] : data.scalarQuantities) {
               mesh->addFaceScalarQuantity(name, vals)->setEnabled(true);
             }
-            for (const auto& [name, vals] : data.vectorProperties) {
+            for (const auto& [name, vals] : data.vectorQuantities) {
               auto* q = mesh->addFaceVectorQuantity(name, vals);
               q->setEnabled(true);
               q->setVectorLengthScale(VectorScale);
             }
-            for (const auto& [name, vals] : data.colorProperties) {
+            for (const auto& [name, vals] : data.colorQuantities) {
               mesh->addFaceColorQuantity(name, toglm(vals))->setEnabled(true);
             }
           }
@@ -166,19 +177,19 @@ namespace DGtal {
             mesh->setTransform(toglm(data.transform));
             if (!data.style.useDefaultColors) {
               mesh->setSurfaceColor(toglm(data.style.color));
-              mesh->setTransparency(data.style.color.a());
             }
+            mesh->setTransparency(data.style.color.a());
   
             // Apply properties
-            for (const auto& [name, vals] : data.scalarProperties) {
+            for (const auto& [name, vals] : data.scalarQuantities) {
               mesh->addFaceScalarQuantity(name, vals)->setEnabled(true);
             }
-            for (const auto& [name, vals] : data.vectorProperties) {
+            for (const auto& [name, vals] : data.vectorQuantities) {
               auto* q = mesh->addFaceVectorQuantity(name, vals);
               q->setEnabled(true);
               q->setVectorLengthScale(VectorScale);
             }
-            for (const auto& [name, vals] : data.colorProperties) {
+            for (const auto& [name, vals] : data.colorQuantities) {
               mesh->addFaceColorQuantity(name, toglm(vals))->setEnabled(true);
             }
           }
@@ -189,19 +200,19 @@ namespace DGtal {
             mesh->setTransform(toglm(data.transform));
             if (!data.style.useDefaultColors) {
               mesh->setSurfaceColor(toglm(data.style.color));
-              mesh->setTransparency(data.style.color.a());
             }
+            mesh->setTransparency(data.style.color.a());
   
             // Apply properties
-            for (const auto& [name, vals] : data.scalarProperties) {
+            for (const auto& [name, vals] : data.scalarQuantities) {
               mesh->addFaceScalarQuantity(name, vals)->setEnabled(true);
             }
-            for (const auto& [name, vals] : data.vectorProperties) {
+            for (const auto& [name, vals] : data.vectorQuantities) {
               auto* q = mesh->addFaceVectorQuantity(name, vals);
               q->setEnabled(true);
               q->setVectorLengthScale(VectorScale);
             }
-            for (const auto& [name, vals] : data.colorProperties) {
+            for (const auto& [name, vals] : data.colorQuantities) {
               mesh->addFaceColorQuantity(name, toglm(vals))->setEnabled(true);
             }
           }
@@ -212,19 +223,19 @@ namespace DGtal {
             mesh->setTransform(toglm(data.transform));
             if (!data.style.useDefaultColors) {
               mesh->setColor(toglm(data.style.color));
-              mesh->setTransparency(data.style.color.a());
             }
+            mesh->setTransparency(data.style.color.a());
   
             // Apply properties
-            for (const auto& [name, vals] : data.scalarProperties) {
+            for (const auto& [name, vals] : data.scalarQuantities) {
               mesh->addCellScalarQuantity(name, vals)->setEnabled(true);
             }
-            for (const auto& [name, vals] : data.vectorProperties) {
+            for (const auto& [name, vals] : data.vectorQuantities) {
               auto* q = mesh->addCellVectorQuantity(name, vals);
               q->setEnabled(true);
               q->setVectorLengthScale(VectorScale);
             }
-            for (const auto& [name, vals] : data.colorProperties) {
+            for (const auto& [name, vals] : data.colorQuantities) {
               mesh->addCellColorQuantity(name, toglm(vals))->setEnabled(true);
             }
           }
@@ -238,15 +249,12 @@ namespace DGtal {
 
   template <typename Space, typename KSpace>
   void PolyscopeViewer<Space, KSpace>::polyscopeCallback() {
-    if (this->callback)
-        this->callback->OnUI(nullptr);
+    this->myCallback->OnUI(nullptr);
 
     ImGuiIO& io = ImGui::GetIO();
     if (io.MouseClicked[0])
     {
         glm::vec2 screenCoords{io.MousePos.x, io.MousePos.y};
-        glm::vec3 worldRay = polyscope::view::screenCoordsToWorldRay(screenCoords);
-        glm::vec3 worldPos = polyscope::view::screenCoordsToWorldPosition(screenCoords);
         auto [structure, index] = 
             polyscope::pick::pickAtScreenCoords(screenCoords);
 
@@ -254,10 +262,8 @@ namespace DGtal {
           void* viewerData = structure;
           std::string name = structure->getName();
 
-          if (this->callback) {
-            auto& data = this->data[name];
-            this->callback->OnClick(name, index, data, viewerData);
-          }
+          auto& data = this->data[name];
+          this->myCallback->OnClick(name, index, data, viewerData);
         }
     }
   }

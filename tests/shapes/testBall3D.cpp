@@ -132,7 +132,7 @@ it != it_end; ++it, ++nbSurfels )
 
     DGtal::StarShaped3D<Space>::AngularCoordinates Angles= ball1.parameter(A);
     double curvature =ball1.meanCurvature(Angles);
-    viewer << WithProperty(*it, "Curvature", curvature);
+    viewer << WithQuantity(*it, "Curvature", curvature);
   }
 
   viewer.show();

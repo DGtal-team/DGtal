@@ -128,3 +128,4 @@ if(PROJECT_BINARY_DIR STREQUAL ${PROJECT_SOURCE_DIR})
   message(STATUS "Building in the source tree is not a good idea ! Remove the file 'CMakeCache.txt' and the folder 'CMakeFiles' an
 d build outside the sources (for example 'mkdir build ; cmake <DGTAL_DIR>'.")
 endif()
+

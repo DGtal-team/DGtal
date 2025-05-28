@@ -9,6 +9,7 @@ if( CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" )
   set_target_properties(DGtal PROPERTIES POSITION_INDEPENDENT_CODE ON)
 endif()
 
+target_compile_definitions(DGtal PUBLIC -DBOOST_ALLOW_DEPRECATED_HEADERS)
 
 target_include_directories(DGtal PUBLIC
   # src/DGtal

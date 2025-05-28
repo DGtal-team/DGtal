@@ -238,11 +238,11 @@ namespace DGtal {
       DisplayStyle style;
       
       // Color to apply to each element
-      std::map<std::string, std::vector<Color>>  colorProperties;
+      std::map<std::string, std::vector<Color>>  colorQuantities;
       // Vector to attach to each element
-      std::map<std::string, std::vector<RealPoint>> vectorProperties;
+      std::map<std::string, std::vector<RealPoint>> vectorQuantities;
       // Values to attach to each element (may serve for coloring)
-      std::map<std::string, std::vector<double>> scalarProperties;
+      std::map<std::string, std::vector<double>> scalarQuantities;
     };
     
     /**
@@ -264,8 +264,8 @@ namespace DGtal {
      * 
      * This class can be nested to add multiple properties:
      * ```code
-     *  WithProperty(
-     *    WithProperty(
+     *  WithQuantity(
+     *    WithQuantity(
      *      obj, "value", scalar
      *    ), 
      *    "normal", normal
@@ -276,14 +276,14 @@ namespace DGtal {
      * @tparam Type the type of property
      */
     template<typename T, typename Type>
-    struct WithProperty{
-      WithProperty(const T& object, const std::string& name, const Type& value) : 
+    struct WithQuantity {
+      WithQuantity(const T& object, const std::string& name, const Type& value) : 
         object(object), name(name) 
       {
         values.push_back(value);
       }
       
-      WithProperty(const T& object, const std::string& name, const std::vector<Type>& values) : 
+      WithQuantity(const T& object, const std::string& name, const std::vector<Type>& values) : 
         object(object), name(name) 
       {
         this->values = values;
@@ -326,9 +326,9 @@ namespace DGtal {
     class Display3D {
     public:
       Display3D(const KSpace& space) :
-        kspace(space), 
-        cellEmbedder(kspace),
-        sCellEmbedder(kspace)
+        myKSpace(space), 
+        myCellEmbedder(myKSpace),
+        mySCellEmbedder(myKSpace)
       { }
 
       Display3D() : Display3D(KSpace()) {}
@@ -404,7 +404,7 @@ namespace DGtal {
       /** 
        * @brief Sets callback
        */
-      void setCallback(Callback* callback);
+      virtual void setCallback(Callback* callback);
 
     public: // Group/Lists managements
       /**
@@ -591,7 +591,7 @@ namespace DGtal {
 
       // @brief Draws any object with a property
       template<typename T, typename Type>
-      std::string draw(const WithProperty<T, Type>& props, const std::string& uname = "");
+      std::string draw(const WithQuantity<T, Type>& props, const std::string& uname = "");
       
       // @brief Adds a clipping plane
       std::string draw(const ClippingPlane& plane, const std::string& name = "");
@@ -647,24 +647,26 @@ namespace DGtal {
       std::string drawKCell(std::string uname, const RealPoint& rp, bool xodd, bool yodd, bool zodd, bool hasSign, bool sign);
 
     public:
-      // The user is responsible for not using these wrong...
+      // The user is responsible for using these wrong..
+      //
       DisplayStyle currentStyle;
       bool allowReuseList = false;
 
       std::vector<ClippingPlane> planes;
       // Leave access to the user for thin modifications
       std::map<std::string, DisplayData<RealPoint>> data;
+
     protected:
-      KSpace kspace;
-      Embedder embedder;
-      CellEmbedder cellEmbedder;
-      SCellEmbedder sCellEmbedder;
+      KSpace myKSpace;
+      Embedder myEmbedder;
+      CellEmbedder myCellEmbedder;
+      SCellEmbedder mySCellEmbedder;
 
-      Callback* callback = nullptr;
-      std::vector<std::string> toRender;
+      Callback* myCallback = nullptr;
+      std::vector<std::string> myToRender;
 
-      std::string currentName = "";
-      DisplayData<RealPoint>* currentData = nullptr;
+      std::string myCurrentName = "";
+      DisplayData<RealPoint>* myCurrentData = nullptr;
     }; // Display3D
 } // DGtal
 

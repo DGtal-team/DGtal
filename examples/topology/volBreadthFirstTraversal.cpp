@@ -138,7 +138,7 @@ int main( int argc, char** argv )
   while ( ! visitor2.finished() )
     {
       node = visitor2.current();
-      viewer << WithProperty(ks.unsigns(node.first), "value", node.second);
+      viewer << WithQuantity(ks.unsigns(node.first), "value", node.second);
       visitor2.expand();
     }
   trace.info() << "nb surfels = " << nbSurfels << std::endl;

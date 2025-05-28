@@ -288,10 +288,10 @@ See more details in  the example: io/viewers/viewer3D-9-3Dimages.cpp
 
 The class Display3D supports adding properties to objects. These properties can be colors, scalar 
 values or vector informations. These can be usefull to display curvature information and/or computed
-normals. To display such informations, use the stream mecanism with the "WithProperty" class: 
+normals. To display such informations, use the stream mecanism with the "WithQuantity" class: 
 
 @code
- viewer << WithProperty(object, "property name", value);
+ viewer << WithQuantity(object, "property name", value);
 @endcode
 
 Value can be either a single value or a std::vector of values. The number of values should match the 
@@ -300,7 +300,7 @@ number of elements within each objects (ie. for a digital surface with a thousan
 This class can also be nested to add multiple properties simultaneously:
 
 @code
- viewer << WithProperty(WithProperty(object, "normal", normal), "curvature", curvature);
+ viewer << WithQuantity(WithQuantity(object, "normal", normal), "curvature", curvature);
 @endcode
 
 These properties can be shown or hidden and their appearance modified directly in the graphical user interface. 

@@ -195,7 +195,7 @@ int main( int argc, char** argv )
       a = 0;
     }
 
-    viewer << WithProperty(*it, "Mean curvature", a);
+    viewer << WithQuantity(*it, "Mean curvature", a);
   }
 
   viewer.show();

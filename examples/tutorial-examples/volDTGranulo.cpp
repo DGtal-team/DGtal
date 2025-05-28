@@ -96,7 +96,7 @@ int main(int argc, char ** argv)
       ++it)
     if (distancemap(*it) > 0)
       {
-        viewer2 << DGtal::WithProperty(*it, "value", distancemap(*it));
+        viewer2 << DGtal::WithQuantity(*it, "value", distancemap(*it));
         cpt++;
       }
   trace.info() << "Got "<<cpt<<" points."<<std::endl;
@@ -153,7 +153,7 @@ int main(int argc, char ** argv)
       ++it)
     if (imageGranulo(*it) > 0)
       {
-        viewer3 << DGtal::WithProperty(*it, "value", imageGranulo(*it));
+        viewer3 << DGtal::WithQuantity(*it, "value", imageGranulo(*it));
         cpt++;
       }
   trace.info() << "Got "<<cpt<<" points."<<std::endl;

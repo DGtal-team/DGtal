@@ -136,7 +136,7 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
     {
         Point center = ks.sCoords ( *itbis );
         MyEstimator::Quantity normal = myNormalEstimator.eval ( itbis );
-        viewer << Color(200, 0, 0) << WithProperty(ks.unsigns( *itbis ), "normal", -normal);
+        viewer << Color(200, 0, 0) << WithQuantity(ks.unsigns( *itbis ), "normal", -normal);
     }
 
     //Convolution kernel
@@ -162,7 +162,7 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
     {
         Point center = ks.sCoords ( *itbis );
         MyEstimatorGaussian::Quantity normal = myNormalEstimatorG.eval ( itbis );
-        viewer << Color(200, 0, 0) << WithProperty(ks.unsigns( *itbis ), "normal", -normal);
+        viewer << Color(200, 0, 0) << WithQuantity(ks.unsigns( *itbis ), "normal", -normal);
     }
 
     viewer.show();

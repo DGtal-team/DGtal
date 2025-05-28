@@ -140,7 +140,7 @@ bool testLocalEstimatorFromFunctorAdapter(int argc, char **argv)
       it!= itend;
       ++it, ++i)
     {
-      viewer << WithProperty(*it, "value", values[i]);
+      viewer << WithQuantity(*it, "value", values[i]);
     }
   
   trace.endBlock();

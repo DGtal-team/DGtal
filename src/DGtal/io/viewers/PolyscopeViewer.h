@@ -53,12 +53,10 @@ namespace DGtal {
     public:
       PolyscopeViewer() : Display3D<Space, KSpace>() {
         polyscope::init();
-        polyscope::state::userCallback = [this]() { this->polyscopeCallback(); };
       }
 
       PolyscopeViewer(const KSpace& k) : Display3D<Space, KSpace>(k) {
         polyscope::init();
-        polyscope::state::userCallback = [this]() { this->polyscopeCallback(); };
       }
 
       // @brief Clear the view (ie. remove all polyscope structures)
@@ -76,6 +74,9 @@ namespace DGtal {
 
       // @brief Render new data
       void renderNewData() override;
+
+      // @brief setCallback
+      void setCallback(typename Display3D<Space, KSpace>::Callback* callback) override;
 
       // @brief Renders the clipping planes
       void renderClippingPlanes();

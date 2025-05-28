@@ -171,7 +171,7 @@ int main( int argc, char** argv )
     viewer.allowReuseList = true;
     for ( unsigned int i = 0; i < results.size(); ++i )
     {   
-        viewer << WithProperty(KSpaceShape.unsigns(*abegin), "Curvature", results[i]);
+        viewer << WithQuantity(KSpaceShape.unsigns(*abegin), "Curvature", results[i]);
         ++abegin;
     }
 

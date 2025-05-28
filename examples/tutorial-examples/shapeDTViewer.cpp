@@ -93,7 +93,7 @@ int main(int argc, char **argv)
       ++it)
     if (dt(*it) != 0)
       {
-        viewer << DGtal::WithProperty(*it, "value", dt(*it));
+        viewer << DGtal::WithQuantity(*it, "value", dt(*it));
       }
   viewer << DGtal::ClippingPlane(1,0,0,0);
 
