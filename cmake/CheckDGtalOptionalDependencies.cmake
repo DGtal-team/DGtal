@@ -19,7 +19,7 @@ option(DGTAL_WITH_ITK "With Insight Toolkit ITK." OFF)
 option(DGTAL_WITH_CAIRO "With CairoGraphics." OFF)
 option(DGTAL_WITH_HDF5 "With HDF5." OFF)
 option(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt5 required)." OFF)
-option(WITH_PATATE "With Patate library for geometry processing." OFF)
+option(DGTAL_WITH_PONCA "With Ponca library for geometry processing." OFF)
 option(DGTAL_WITH_FFTW3 "With FFTW3 discrete Fourier Transform library." OFF)
 option(DGTAL_WITH_LIBIGL "With libIGL (with copyleft/CGAL included)." OFF)
 
@@ -47,11 +47,11 @@ else()
   message(STATUS "      DGTAL_WITH_CGAL          false   (cgal)")
 endif()
 
-if(WITH_PATATE)
-  set(LIST_OPTION ${LIST_OPTION} [PATATE]\ )
-  message(STATUS "      WITH_PATATE        true    (Patate geometry library)")
+if(DGTAL_WITH_PONCA)
+  set(LIST_OPTION ${LIST_OPTION} [PONCA]\ )
+  message(STATUS "      DGTAL_WITH_PONCA         true    (Ponca geometry library)")
 else()
-  message(STATUS "      WITH_PATATE        false   (Patate geometry library)")
+  message(STATUS "      DGTAL_WITH_PONCA         false   (Ponca geometry library)")
 endif()
 
 if (DGTAL_WITH_ITK)
@@ -301,21 +301,16 @@ if (DGTAL_WITH_CGAL)
 endif()
 
 # -----------------------------------------------------------------------------
-# Look for Patate
-# http://patate.gforge.inria.fr/html/index.html
+# Look for ponca
+# https://poncateam.github.io/ponca/index.html
 # (they Are not compulsory).
 # -----------------------------------------------------------------------------
-set(PATATE_FOUND_DGTAL 0)
-if(WITH_PATATE)
-  find_package(Patate)
-  if(PATATE_FOUND)
-    target_include_directories(DGtal PUBLIC ${PATATE_INCLUDE_DIR})
-    set(PATATE_FOUND_DGTAL 1)
-    target_compile_definitions(DGtal PUBLIC -DWITH_PATATE)
-    message(STATUS "PATATE found. ${PATATE_INCLUDE_DIR} ")
- else()
-   message(FATAL_ERROR "Patate headers not found.")
- endif()
+set(PONCA_FOUND_DGTAL 0)
+if(DGTAL_WITH_PONCA)
+  include(ponca)
+  
+  target_link_libraries(DGtal PUBLIC Ponca::Ponca)
+  target_compile_definitions(DGtal PUBLIC -DDGTAL_WITH_PONCA)
 endif()
 
 # -----------------------------------------------------------------------------
