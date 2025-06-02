@@ -200,6 +200,21 @@ namespace DGtal {
 
       size_t mode = static_cast<size_t>(DrawMode::DEFAULT);
     };
+    
+    // Small trick to store scales. Enums is not convertible to int anymore. Using a map for quantities would work, but it does not create element, hence would add code to check if the scale alreay exists.
+    
+    namespace QuantityScale {
+      static constexpr int VERTEX = 0;
+      static constexpr int EDGES = 1;
+      static constexpr int FACES = 2;
+      static constexpr int CELL = 3;
+      static constexpr int UNKNOWN = 4;
+    }
+ 
+    template<typename T>
+    using Quantity = std::array<
+      std::map<std::string, std::vector<T>>, QuantityScale::UNKNOWN
+    >;
 
     /**
      * @brief Data required to display an object
@@ -220,6 +235,22 @@ namespace DGtal {
        */
       std::size_t           elementSize; 
       
+      // Return the default quantity level associated with 
+      // a given element size.
+      static constexpr auto getDefaultQuantityLevel = [](size_t eSize) {
+        switch(eSize) {
+          case 1: return QuantityScale::VERTEX;
+          case 2: return QuantityScale::EDGES;
+          case 0: // Polygonal meshes
+          case 3: // Triangle meshes
+          case 4: // Quad meshes
+                  return QuantityScale::FACES;
+          case 8: return QuantityScale::CELL;
+          default: 
+                  return QuantityScale::UNKNOWN;
+        };
+      };
+      
       // Indices for elements when elementSize is 0
       std::vector<std::vector<uint32_t>> indices;
       
@@ -233,11 +264,11 @@ namespace DGtal {
       DisplayStyle style;
       
       // Color to apply to each element
-      std::map<std::string, std::vector<Color>>  colorQuantities;
+      Quantity<Color>  colorQuantities;
       // Vector to attach to each element
-      std::map<std::string, std::vector<RealPoint>> vectorQuantities;
+      Quantity<RealPoint> vectorQuantities;
       // Values to attach to each element (may serve for coloring)
-      std::map<std::string, std::vector<double>> scalarQuantities;
+      Quantity<double> scalarQuantities;
     };
     
     /**
@@ -265,24 +296,26 @@ namespace DGtal {
      *    ), 
      *    "normal", normal
      *  )
-     * ```
      * 
      * @tparam T The type of element
      * @tparam Type the type of property
      */
     template<typename T, typename Type>
     struct WithQuantity {
-      WithQuantity(const T& object, const std::string& name, const Type& value) : 
-        object(object), name(name) 
+      WithQuantity(const T& object, const std::string& name, const Type& value, int s = QuantityScale::UNKNOWN) : 
+        scale(s), object(object), name(name) 
       {
         values.push_back(value);
       }
       
-      WithQuantity(const T& object, const std::string& name, const std::vector<Type>& values) : 
-        object(object), name(name) 
+      WithQuantity(const T& object, const std::string& name, const std::vector<Type>& values, int s = QuantityScale::UNKNOWN) : 
+        scale(s), object(object), name(name) 
       {
         this->values = values;
       }
+      
+      // Scale to apply the quantity at
+      int scale;
 
       // Copy of the object
       T object;
@@ -388,6 +421,21 @@ namespace DGtal {
        * @brief Renders newly added data
        */
       virtual void renderNewData() = 0;
+
+      /**
+       * @brief (Re)Render all data 
+       *
+       * If any modification were made within the viewer they can be lost
+       */
+      virtual void renderAll() {
+        myToRender.clear();
+        myToRender.reserve(data.size());
+
+        for (const auto& m : data) 
+          myToRender.push_back(m.first);
+
+        renderNewData();
+      }
       /**
        * @brief Clear the screen
        */
@@ -486,7 +534,10 @@ namespace DGtal {
 
       // @brief Draws a RealPoint with real coodinates
       std::string draw(const RealPoint& rp, const std::string& uname = "Point_{i}");
-
+      
+      // @brief Draws a vector of objects
+      template<typename T>
+      std::string draw(const std::vector<T>& vec, const std::string& uname = "");
 
       // @brief Draws a range of any object
       template<typename A, typename B, typename C>
@@ -587,6 +638,13 @@ namespace DGtal {
       // @brief Draws any object with a property
       template<typename T, typename Type>
       std::string draw(const WithQuantity<T, Type>& props, const std::string& uname = "");
+
+      template<typename Type>
+      void addQuantity(const std::string& oName, const std::string& qName, const Type& value, int scale = QuantityScale::UNKNOWN);
+
+      template<typename Type>
+      void addQuantity(const std::string& oName, const std::string& qName, const std::vector<Type>& value, int scale = QuantityScale::UNKNOWN);
+
       
       // @brief Adds a clipping plane
       std::string draw(const ClippingPlane& plane, const std::string& name = "");
@@ -621,7 +679,6 @@ namespace DGtal {
 
       // @brief Draws balls of further object, domains and points
       void drawAsBalls();
-
     private: // Draw commands
       // To avoid confusion, keep this function as private: 
 

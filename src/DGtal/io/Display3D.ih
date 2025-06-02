@@ -312,8 +312,14 @@ namespace DGtal {
     // Warning, this function draw arrows, not lines !
     std::string name = createOrReuseBallList(uname);
     myCurrentData->vertices.push_back(arrow.first);
-    myCurrentData->vectorQuantities["value"].push_back(arrow.second);
+    myCurrentData->vectorQuantities[QuantityScale::VERTEX]["value"].push_back(arrow.second);
     return name;
+  }
+
+  template <typename Space, typename KSpace>
+  template<typename T>
+  std::string Display3D<Space, KSpace>::draw(const std::vector<T>& range, const std::string& uname) {
+    return drawGenericRange(range, uname);
   }
 
   template <typename Space, typename KSpace>
@@ -418,9 +424,9 @@ namespace DGtal {
       setCurrentList(*lists[dim]);
       if ((dim == 2) && (currentStyle.mode & DisplayStyle::SIMPLIFIED))
         setCurrentList(list2_1);
-
-      draw(cell);
-      myCurrentData->scalarQuantities["value"].push_back(val);
+      
+      // Automatically decide the scalle of the quantity
+      draw(WithQuantity(cell, "value", val));
     }
 
     allowReuseList = save;
@@ -436,7 +442,7 @@ namespace DGtal {
     
     myCurrentData->style.width = 0.; // Make ball diseapear
     myCurrentData->vertices.reserve(field.length());
-    myCurrentData->vectorQuantities["value"].reserve(field.length());
+    myCurrentData->vectorQuantities[QuantityScale::VERTEX]["value"].reserve(field.length());
 
     for (typename Calculus::Index i = 0; i < field.length(); ++i) {
       const auto& origin = mySCellEmbedder.embed(field.getSCell(i));
@@ -444,7 +450,7 @@ namespace DGtal {
 
       if (std::isfinite(vector[0]) && std::isfinite(vector[1]) && std::isfinite(vector[2])) {
         myCurrentData->vertices.push_back(origin);
-        myCurrentData->vectorQuantities["value"].push_back(vector);
+        myCurrentData->vectorQuantities[QuantityScale::VERTEX]["value"].push_back(vector);
       }
     }
 
@@ -663,24 +669,58 @@ namespace DGtal {
     else
       name = draw(props.object, uname);
 
-    if constexpr (std::is_scalar_v<Type>) {
-      auto& loc = data[name].scalarQuantities[props.name];
-      loc.insert(loc.end(), props.values.begin(), props.values.end());
+    int sloc = props.scale;
+    
+    // Tries to find an appropriate scale
+    if (sloc == QuantityScale::UNKNOWN)
+      sloc = data[name].getDefaultQuantityLevel(data[name].elementSize);
+
+    if (sloc == QuantityScale::UNKNOWN) {
+      trace.error() << "Unable to find suitable quantity scale, defaulting to vertex (for: '" << name << "')\n";
+      sloc = QuantityScale::VERTEX;
     }
-    else if constexpr(std::is_same_v<RealPoint, Type>) {
-      auto& loc = data[name].vectorQuantities[props.name];
-      loc.insert(loc.end(), props.values.begin(), props.values.end());
-    }
-    else if constexpr(std::is_same_v<Color , Type>) {
-      auto& loc = data[name].colorQuantities[props.name];
-      loc.insert(loc.end(), props.values.begin(), props.values.end());
-    }
-    else {
-      trace.error() << "Unknown quantity type (for: '" << name << "')\n";
-    }
+
+    addQuantity(name, props.name, props.values, sloc);
     return name;
   }
   
+  template <typename Space, typename KSpace>
+  template <typename Type>
+  void Display3D<Space, KSpace>::addQuantity(const std::string& oName, const std::string& qName, const Type& value, int scale) {
+    std::vector<Type> values = {value};
+    addQuantity(oName, qName, values, scale);
+  }
+
+  template <typename Space, typename KSpace>
+  template <typename Type>
+  void Display3D<Space, KSpace>::addQuantity(const std::string& oName, const std::string& qName, const std::vector<Type>& values, int scale) {
+
+    if (scale == QuantityScale::UNKNOWN)
+      scale = data[oName].getDefaultQuantityLevel(data[oName].elementSize);
+
+    if (scale == QuantityScale::UNKNOWN) {
+      trace.error() << "Unable to find suitable quantity scale, defaulting to vertex (for: '" << oName << "')\n";
+      scale = QuantityScale::VERTEX;
+    }
+
+    if constexpr (std::is_scalar_v<Type>) {
+      auto& loc = data[oName].scalarQuantities[scale][qName];
+      loc.insert(loc.end(), values.begin(), values.end());
+    }
+    else if constexpr(std::is_same_v<RealPoint, Type>) {
+      auto& loc = data[oName].vectorQuantities[scale][qName];
+      loc.insert(loc.end(), values.begin(), values.end());
+    }  
+    else if constexpr(std::is_same_v<Color , Type>) {
+      auto& loc = data[oName].colorQuantities[scale][qName];
+      loc.insert(loc.end(), values.begin(), values.end());
+    }
+    else {
+      trace.error() << "Unknown quantity type (for: '" << oName << "')\n";
+    }
+
+  }
+
   template <typename Space, typename KSpace>
   template <typename Pt>
   std::string Display3D<Space, KSpace>::draw(const Mesh<Pt>& mesh, const std::string& uname) {
@@ -690,7 +730,7 @@ namespace DGtal {
     myCurrentData->vertices.reserve(mesh.nbVertex());
 
     myCurrentData->indices.reserve(mesh.nbFaces());
-    myCurrentData->colorQuantities["color"].reserve(mesh.nbFaces());
+    myCurrentData->colorQuantities[QuantityScale::FACES]["color"].reserve(mesh.nbFaces());
 
     // Can not insert directly vectors because of type mismatch
     for (auto it = mesh.vertexBegin(); it != mesh.vertexEnd(); ++it) {
@@ -704,7 +744,7 @@ namespace DGtal {
         fIdx.push_back(j);
       }
       myCurrentData->indices.push_back(std::move(fIdx));
-      myCurrentData->colorQuantities["color"].push_back(mesh.getFaceColor(i));
+      myCurrentData->colorQuantities[QuantityScale::FACES]["color"].push_back(mesh.getFaceColor(i));
     }
     endCurrentGroup();
     return name;
@@ -768,7 +808,7 @@ namespace DGtal {
         myCurrentData->vertices.push_back(b);
         myCurrentData->vertices.push_back(c);
         myCurrentData->vertices.push_back(d);
-        myCurrentData->scalarQuantities["value"].push_back(accumulator.count(i, j));
+        myCurrentData->scalarQuantities[QuantityScale::FACES]["value"].push_back(accumulator.count(i, j));
       }
     }
     return name;
@@ -818,18 +858,17 @@ namespace DGtal {
     constexpr size_t dim = T::Domain::Space::dimension;
     
     myCurrentData->vertices.reserve(8 * total);
-    myCurrentData->scalarQuantities["value"].reserve(total);
+    myCurrentData->scalarQuantities[QuantityScale::CELL]["value"].reserve(total);
     for(; it != itend; ++it) {
+      RealPoint rp;
       if constexpr (dim == 3) {
-        auto rp = myEmbedder.embed(*it);
-        myCurrentData->scalarQuantities["value"].push_back(image(*it));
-        drawutils::insertCubeVertices(myCurrentData->vertices, rp, myCurrentData->style.width);
+        rp = myEmbedder.embed(*it);
       } else {
         // We accept to draw theses 2D image, do ask to parametrize to also the myEmbedder...
-        auto rp = myEmbedder.embed(Point((*it)[0], (*it)[1], 0)); 
-        myCurrentData->scalarQuantities["value"].push_back(image(*it));
-        drawutils::insertCubeVertices(myCurrentData->vertices, rp, myCurrentData->style.width);
+        rp = myEmbedder.embed(Point((*it)[0], (*it)[1], 0)); 
       }
+      myCurrentData->scalarQuantities[QuantityScale::CELL]["value"].push_back(image(*it));
+      drawutils::insertCubeVertices(myCurrentData->vertices, rp, myCurrentData->style.width);
     }
     return name;
   }

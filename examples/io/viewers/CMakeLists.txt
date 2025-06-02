@@ -11,6 +11,7 @@ set(DGTAL_TESTS_SRC
    viewer3D-9-3Dimages
    viewer3D-10-interaction
    viewer3D-11-extension
+   viewer3D-12-quantities
    demo-kernel-2
 )
 

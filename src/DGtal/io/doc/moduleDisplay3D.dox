@@ -284,27 +284,6 @@ In the same way a 3D image can be displayed. By following the same stream operat
 
 See more details in  the example: io/viewers/viewer3D-9-3Dimages.cpp 
 
-\section DGtalGLV_Properties Adding properties to objects
-
-The class Display3D supports adding properties to objects. These properties can be colors, scalar 
-values or vector informations. These can be usefull to display curvature information and/or computed
-normals. To display such informations, use the stream mecanism with the "WithQuantity" class: 
-
-@code
- viewer << WithQuantity(object, "property name", value);
-@endcode
-
-Value can be either a single value or a std::vector of values. The number of values should match the 
-number of elements within each objects (ie. for a digital surface with a thousands of KCell, it should have a thousand of values). 
-
-This class can also be nested to add multiple properties simultaneously:
-
-@code
- viewer << WithQuantity(WithQuantity(object, "normal", normal), "curvature", curvature);
-@endcode
-
-These properties can be shown or hidden and their appearance modified directly in the graphical user interface. 
-
 \section DGtalGLV_Groups Object names and groups
 
 Every object that is drawn with the Display3D class is given a name as a string. This serves as a unique identifier and may also be used by viewers as user interface elements. It is possible to 
@@ -350,7 +329,35 @@ Therefore, the lists where the new objects should be pushed must be set manually
 viewer.setCurrentList(name);
 @endcode
 
-\section DGtalGLV_Ext Extending the viewer
+\section DGtalGLV_Properties Adding quantity to objects
+
+The class Display3D supports adding properties to objects. These properties can be colors, scalar values or vector informations. These can be usefull to display curvature information and/or computed normals. There are two ways to add these quantities. The first one is with the stream API, which is most usefull for quick display of a couple of quantities: 
+
+@snippet io/viewers/viewer3D-12-quantities.cpp ExampleViewer3DQuantitiesStream 
+
+The second approach, as powerfull as the first one, requires the name of the object, but is more confortable when the quantities are obtained after drawing.
+
+@snippet io/viewers/viewer3D-12-quantities.cpp ExampleViewer3DQuantitiesAddQuantity 
+
+Both methods can be used together, and within loops:
+
+@snippet io/viewers/viewer3D-12-quantities.cpp ExampleViewer3DQuantitiesLoop
+
+These properties can be shown or hidden and their appearance modified directly in the graphical user interface. 
+
+\image html  viewer3DQuantities.png  "Example of adding quantities to an object. Objects were shifted and quantities hidden to enhance visibility." 
+\image latex  viewer3DQuantities.png  "Example of adding quantities to an object. Objects were shifted and quantities hidden to enhance visibility." width=5cm
+
+It is also possible to add a last parameter to WithQuantity and addQuantity which is the element targeted by the quantity. For example, for a surface mesh, we may want to set the quantities at the vertices rather than on the faces when solving PDEs. However, the correct numbers of values should be supplied (eg. one per vertex and not one per face). Unfortunately, not every combination is supported (see table below). By default, it will use the scale corresponding to the dimension of the element (ie. right-most side in the "Supported Scale" column).
+
+| Geometric display | Supported Scale              | Name                                                                     | DGtal object examples                         |
+|-------------------|------------------------------|--------------------------------------------------------------------------|-----------------------------------------------|
+| Point             | VERTEX                       | QuantityScale::VERTEX                                                    | (Real)Points in BALL mode, dim 0 KCell        |
+| Lines             | VERTEX / EDGE                | QuantityScale::VERTEX, QuantityScale::EDGE                               | Adjacencies, dim 1 KCell                      |
+| Surface mesh      | VERTEX / EDGE (Scalar)/ FACE | QuantityScale::VERTEX, QuantityScale::EDGE (Scalar), QuantityScale::FACE | dim 2 KCell in simplified mode                |
+| Volume mesh       | VERTEX / CELL                | QuantityScale::VERTEX, QuantityScale::CELL                               | (Real)Points, Objects, Domains, dim 2/3 KCell |
+
+\section DGtalGLV_Ext E1xtending the viewer
 
 Viewers supports extension that allows to interact with the viewer at runtime. By default, 
 PolyscopeViewer shows what object is clicked; but one may want to add custom UI, or enhance 
@@ -371,7 +378,7 @@ class MyCustomCallback : public typename Display3D<Space, KSpace>::Callback {
 };
 @endcode
 
-A usefull method is Display3D::renderNewData that renders to the screen any newly added data .
+A usefull method is Display3D::renderNewData that renders to the screen any newly added data. Another method, Display3D::renderAll can be used to (re)render every object; but run-time settings might be lost.
 
 For PolyscopeViewer, user inputs and UI are managed with ImGUI. Also note that the viewer displays "by default", the name of the clicked polyscope structure.
 */

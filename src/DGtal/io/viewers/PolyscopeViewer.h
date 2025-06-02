@@ -85,7 +85,18 @@ namespace DGtal {
         this->clear();
       }
 
+    public:
+      static constexpr double BallToCubeRatio = 0.025;
+      static constexpr double VectorScale = 1. / 30.;
+
     private:
+      void setGeneralProperties(polyscope::Structure* s, const DisplayData<typename Space::RealPoint>& d);
+
+      void registerPointCloud (const std::string& n, const DisplayData<typename Space::RealPoint>& d);
+      void registerLineNetwork(const std::string& n, const DisplayData<typename Space::RealPoint>& d);
+      void registerSurfaceMesh(const std::string& n, const DisplayData<typename Space::RealPoint>& d);
+      void registerVolumeMesh (const std::string& n, const DisplayData<typename Space::RealPoint>& d);
+
       // @brief Global callback handling UI, click and callback calls
       void polyscopeCallback();
   };
