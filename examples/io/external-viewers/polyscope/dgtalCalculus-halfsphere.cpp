@@ -105,11 +105,11 @@ bool isPrecomputed=false;
 void myCallback()
 {
   // Select a vertex with the mouse
-  if (polyscope::pick::haveSelection()) {
+  if (polyscope::haveSelection()) {
     bool goodSelection = false;
-    auto selection = polyscope::pick::getSelection();
-    auto selectedSurface = static_cast<polyscope::SurfaceMesh*>(selection.first);
-    size_t idx = selection.second;
+    auto selection = polyscope::getSelection();
+    auto selectedSurface = static_cast<polyscope::SurfaceMesh*>(selection.structure);
+    size_t idx = selection.localIndex;
 
     // Only authorize selection on the input surface and the reconstruction
     auto surf = polyscope::getSurfaceMesh("digital surface");

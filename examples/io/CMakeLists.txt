@@ -13,4 +13,4 @@ if (  DGTAL_WITH_POLYSCOPE )
 endif()
 
 add_subdirectory(boards)
-
+add_subdirectory(external-viewers)
