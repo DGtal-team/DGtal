@@ -200,20 +200,30 @@ namespace DGtal {
       size_t mode = static_cast<size_t>(DrawMode::DEFAULT);
     };
     
+    /**
+     * @brief Enumerate where quantities can be applied
+     */
     enum class QuantityScale {
-      VERTEX = 0, 
-      EDGE = 1, 
-      FACE = 2, 
-      CELL = 3, 
-      UNKNOWN = 4
+      VERTEX  = 0, 
+      EDGE    = 1, 
+      FACE    = 2, 
+      CELL    = 3, 
+      UNKNOWN = 4 // Also used as a default to decide later
     };
 
+    /**
+     * @brief Wrapper for array of quantities
+     *
+     * Post C++23, enums are not convertible to int anymore.
+     * To avoid casts everytime, we wrap the operators inside
+     * this class. 
+     */
     template<typename T>
     struct Quantity {
       using QType = std::map<std::string, std::vector<T>>;
 
       QType& operator[](int idx) { return data[idx]; }
-      
+
       const QType& operator[](int idx) const { return data[idx]; }
 
       QType& operator[](const QuantityScale& scale) { 
@@ -300,14 +310,15 @@ namespace DGtal {
      * as long as the correct number of values are provided.
      * 
      * This class can be nested to add multiple properties:
-     * ```code
+     * @code
      *  WithQuantity(
      *    WithQuantity(
      *      obj, "value", scalar
      *    ), 
      *    "normal", normal
      *  )
-     * 
+     * @endcode
+     *
      * @tparam T The type of element
      * @tparam Type the type of property
      */
