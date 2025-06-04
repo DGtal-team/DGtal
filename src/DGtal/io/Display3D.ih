@@ -669,7 +669,7 @@ namespace DGtal {
     else
       name = draw(props.object, uname);
 
-    int sloc = props.scale;
+    QuantityScale sloc = props.scale;
     
     // Tries to find an appropriate scale
     if (sloc == QuantityScale::UNKNOWN)
@@ -686,15 +686,14 @@ namespace DGtal {
   
   template <typename Space, typename KSpace>
   template <typename Type>
-  void Display3D<Space, KSpace>::addQuantity(const std::string& oName, const std::string& qName, const Type& value, int scale) {
+  void Display3D<Space, KSpace>::addQuantity(const std::string& oName, const std::string& qName, const Type& value, QuantityScale scale) {
     std::vector<Type> values = {value};
     addQuantity(oName, qName, values, scale);
   }
 
   template <typename Space, typename KSpace>
   template <typename Type>
-  void Display3D<Space, KSpace>::addQuantity(const std::string& oName, const std::string& qName, const std::vector<Type>& values, int scale) {
-
+  void Display3D<Space, KSpace>::addQuantity(const std::string& oName, const std::string& qName, const std::vector<Type>& values, QuantityScale scale) {
     if (scale == QuantityScale::UNKNOWN)
       scale = data[oName].getDefaultQuantityLevel(data[oName].elementSize);
 
@@ -730,7 +729,7 @@ namespace DGtal {
     myCurrentData->vertices.reserve(mesh.nbVertex());
 
     myCurrentData->indices.reserve(mesh.nbFaces());
-    myCurrentData->colorQuantities[QuantityScale::FACES]["color"].reserve(mesh.nbFaces());
+    myCurrentData->colorQuantities[QuantityScale::FACE]["color"].reserve(mesh.nbFaces());
 
     // Can not insert directly vectors because of type mismatch
     for (auto it = mesh.vertexBegin(); it != mesh.vertexEnd(); ++it) {
@@ -744,7 +743,7 @@ namespace DGtal {
         fIdx.push_back(j);
       }
       myCurrentData->indices.push_back(std::move(fIdx));
-      myCurrentData->colorQuantities[QuantityScale::FACES]["color"].push_back(mesh.getFaceColor(i));
+      myCurrentData->colorQuantities[QuantityScale::FACE]["color"].push_back(mesh.getFaceColor(i));
     }
     endCurrentGroup();
     return name;
@@ -808,7 +807,7 @@ namespace DGtal {
         myCurrentData->vertices.push_back(b);
         myCurrentData->vertices.push_back(c);
         myCurrentData->vertices.push_back(d);
-        myCurrentData->scalarQuantities[QuantityScale::FACES]["value"].push_back(accumulator.count(i, j));
+        myCurrentData->scalarQuantities[QuantityScale::FACE]["value"].push_back(accumulator.count(i, j));
       }
     }
     return name;

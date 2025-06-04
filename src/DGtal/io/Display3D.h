@@ -200,21 +200,33 @@ namespace DGtal {
       size_t mode = static_cast<size_t>(DrawMode::DEFAULT);
     };
     
-    // Small trick to store scales. Enums is not convertible to int anymore. Using a map for quantities would work, but it does not create element, hence would add code to check if the scale alreay exists.
-    
-    namespace QuantityScale {
-      static constexpr int VERTEX = 0;
-      static constexpr int EDGES = 1;
-      static constexpr int FACES = 2;
-      static constexpr int CELL = 3;
-      static constexpr int UNKNOWN = 4;
-    }
- 
-    template<typename T>
-    using Quantity = std::array<
-      std::map<std::string, std::vector<T>>, QuantityScale::UNKNOWN
-    >;
+    enum class QuantityScale {
+      VERTEX = 0, 
+      EDGE = 1, 
+      FACE = 2, 
+      CELL = 3, 
+      UNKNOWN = 4
+    };
 
+    template<typename T>
+    struct Quantity {
+      using QType = std::map<std::string, std::vector<T>>;
+
+      QType& operator[](int idx) { return data[idx]; }
+      
+      const QType& operator[](int idx) const { return data[idx]; }
+
+      QType& operator[](const QuantityScale& scale) { 
+        return data[static_cast<size_t>(scale)]; 
+      };
+
+      const QType& operator[](const QuantityScale& scale) const {
+        return data[static_cast<size_t>(scale)];
+      };
+
+      std::array<QType, static_cast<size_t>(QuantityScale::UNKNOWN)> data;
+    };
+ 
     /**
      * @brief Data required to display an object
      * 
@@ -239,11 +251,11 @@ namespace DGtal {
       static constexpr auto getDefaultQuantityLevel = [](size_t eSize) {
         switch(eSize) {
           case 1: return QuantityScale::VERTEX;
-          case 2: return QuantityScale::EDGES;
+          case 2: return QuantityScale::EDGE;
           case 0: // Polygonal meshes
           case 3: // Triangle meshes
           case 4: // Quad meshes
-                  return QuantityScale::FACES;
+                  return QuantityScale::FACE;
           case 8: return QuantityScale::CELL;
           default: 
                   return QuantityScale::UNKNOWN;
@@ -301,20 +313,20 @@ namespace DGtal {
      */
     template<typename T, typename Type>
     struct WithQuantity {
-      WithQuantity(const T& object, const std::string& name, const Type& value, int s = QuantityScale::UNKNOWN) : 
+      WithQuantity(const T& object, const std::string& name, const Type& value, QuantityScale s = QuantityScale::UNKNOWN) : 
         scale(s), object(object), name(name) 
       {
         values.push_back(value);
       }
       
-      WithQuantity(const T& object, const std::string& name, const std::vector<Type>& values, int s = QuantityScale::UNKNOWN) : 
+      WithQuantity(const T& object, const std::string& name, const std::vector<Type>& values, QuantityScale s = QuantityScale::UNKNOWN) : 
         scale(s), object(object), name(name) 
       {
         this->values = values;
       }
       
       // Scale to apply the quantity at
-      int scale;
+      QuantityScale scale;
 
       // Copy of the object
       T object;
@@ -639,10 +651,10 @@ namespace DGtal {
       std::string draw(const WithQuantity<T, Type>& props, const std::string& uname = "");
 
       template<typename Type>
-      void addQuantity(const std::string& oName, const std::string& qName, const Type& value, int scale = QuantityScale::UNKNOWN);
+      void addQuantity(const std::string& oName, const std::string& qName, const Type& value, QuantityScale scale = QuantityScale::UNKNOWN);
 
       template<typename Type>
-      void addQuantity(const std::string& oName, const std::string& qName, const std::vector<Type>& value, int scale = QuantityScale::UNKNOWN);
+      void addQuantity(const std::string& oName, const std::string& qName, const std::vector<Type>& value, QuantityScale scale = QuantityScale::UNKNOWN);
 
       
       // @brief Adds a clipping plane

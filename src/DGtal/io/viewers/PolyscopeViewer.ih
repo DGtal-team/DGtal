@@ -132,7 +132,7 @@ namespace DGtal {
     for (const auto& [name, vals] : data.scalarQuantities[QuantityScale::VERTEX]) {
       cNetwork->addNodeScalarQuantity(name, vals)->setEnabled(true);
     }
-    for (const auto& [name, vals] : data.scalarQuantities[QuantityScale::EDGES]) {
+    for (const auto& [name, vals] : data.scalarQuantities[QuantityScale::EDGE]) {
       cNetwork->addEdgeScalarQuantity(name, vals)->setEnabled(true);
     }
 
@@ -141,7 +141,7 @@ namespace DGtal {
       q->setVectorLengthScale(VectorScale);
       q->setEnabled(true);
     }
-    for (const auto& [name, vals] : data.vectorQuantities[QuantityScale::EDGES]) {
+    for (const auto& [name, vals] : data.vectorQuantities[QuantityScale::EDGE]) {
       auto* q = cNetwork->addEdgeVectorQuantity(name, vals);
       q->setVectorLengthScale(VectorScale);
       q->setEnabled(true);
@@ -150,7 +150,7 @@ namespace DGtal {
     for (const auto& [name, vals] : data.colorQuantities[QuantityScale::VERTEX]) {
       cNetwork->addEdgeColorQuantity(name, toglm(vals))->setEnabled(true);
     }     
-    for (const auto& [name, vals] : data.colorQuantities[QuantityScale::EDGES]) {
+    for (const auto& [name, vals] : data.colorQuantities[QuantityScale::EDGE]) {
       cNetwork->addEdgeColorQuantity(name, toglm(vals))->setEnabled(true);
     }     
   }
@@ -176,10 +176,10 @@ namespace DGtal {
     for (const auto& [name, vals] : data.scalarQuantities[QuantityScale::VERTEX]) {
       mesh->addVertexScalarQuantity(name, vals)->setEnabled(true);
     }
-    for (const auto& [name, vals] : data.scalarQuantities[QuantityScale::EDGES]) {
+    for (const auto& [name, vals] : data.scalarQuantities[QuantityScale::EDGE]) {
       mesh->addEdgeScalarQuantity(name, vals)->setEnabled(true);
     }
-    for (const auto& [name, vals] : data.scalarQuantities[QuantityScale::FACES]) {
+    for (const auto& [name, vals] : data.scalarQuantities[QuantityScale::FACE]) {
       mesh->addFaceScalarQuantity(name, vals)->setEnabled(true);
     }
 
@@ -188,7 +188,7 @@ namespace DGtal {
       q->setVectorLengthScale(VectorScale);
       q->setEnabled(true);
     }
-    for (const auto& [name, vals] : data.vectorQuantities[QuantityScale::FACES]) {
+    for (const auto& [name, vals] : data.vectorQuantities[QuantityScale::FACE]) {
       auto* q = mesh->addFaceVectorQuantity(name, vals);
       q->setVectorLengthScale(VectorScale);
       q->setEnabled(true);
@@ -197,7 +197,7 @@ namespace DGtal {
     for (const auto& [name, vals] : data.colorQuantities[QuantityScale::VERTEX]) {
       mesh->addVertexColorQuantity(name, toglm(vals))->setEnabled(true);
     }
-    for (const auto& [name, vals] : data.colorQuantities[QuantityScale::FACES]) {
+    for (const auto& [name, vals] : data.colorQuantities[QuantityScale::FACE]) {
       mesh->addFaceColorQuantity(name, toglm(vals))->setEnabled(true);
     }
   }
