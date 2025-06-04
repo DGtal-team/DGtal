@@ -86,8 +86,8 @@ several functors:
   the accumulated tensor votes.
 
 - functors::SphereFittingEstimator: this functor requires the
-  WITH_PATATE flag and the Patate Library dependency. The functor
-  performs a sphere fitting on the neighborhood following
+  DGTAL_WITH_PONCA flag ([Ponca](https://poncateam.github.io/ponca/) is fetched automatically). 
+  The functor performs a sphere fitting on the neighborhood following
   @cite mellado2012growing . The output of the estimator is a structure
   containing the fitted sphere parameters (e.g. its center and
   radius). Please refer to @cite mellado2012growing for details on the
