@@ -26,7 +26,6 @@
  * This file is part of the DGtal library.
  */
 
-#include <cstdint>
 #include <vector>
 #include <map>
 
