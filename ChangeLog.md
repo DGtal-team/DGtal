@@ -9,6 +9,7 @@
   - New Boost BigInteger Backend (Bastien Doignies, [#1769](https://github.com/DGtal-team/DGtal/pull/1769))
   - Remove deprecated classes and functions (Bastien DOIGNIES, [#1765](https://github.com/DGtal-team/DGtal/pull/1765))
   - Boost is no longer required when building DGtal, boost is now fetched using CPM at cmake step) (Bastien Doignies, David Coeurjolly,  [#1763](https://github.com/DGtal-team/DGtal/pull/1763))
+  - Patate upgraded to ponca (Bastien Doignies, [1776](https://github.com/DGtal-team/DGtal/pull/1776))
 
 - *CMake*
   - Updated to version 3.20 minimum (contemporary version of C++20's new minimal standard) (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
