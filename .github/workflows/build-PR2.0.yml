@@ -75,8 +75,7 @@ jobs:
          mkdir build
          cd build
          cmake ..
-         # Removing the DGtalTools tag file for now. It creates extra pages in the doc (@dcoeurjo)
-         # wget --no-check-certificate -O "${{runner.workspace}}/DGtal/build/DGtalTools-tagfile" http://dgtal.org/doc/tags/wget 
+         wget --no-check-certificate -O "${{runner.workspace}}/DGtal/build/DGtalTools-tagfile" http://dgtal.org/doc/tags/DGtalTools-tagfile
          touch DGtalTools-tagfile
          make doc > buildDoc.log
   
