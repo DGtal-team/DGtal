@@ -53,7 +53,15 @@ if(@HDF5_FOUND_DGTAL@) #if HDF5_FOUND_DGTAL
 endif()
 
 if (@POLYSCOPE_FOUND_DGTAL@) #if POLYSCOPE_FOUND_DGTAL
-  find_package(polyscope REQUIRED
+  find_dependency(glfw REQUIRED)
+  find_dependency(glad REQUIRED)
+  find_dependency(glm-header-only REQUIRED)
+  find_dependency(glm REQUIRED)
+  find_dependency(imgui REQUIRED)
+  find_dependency(stb REQUIRED)
+  find_dependency(nlohmann_json REQUIRED)
+  find_dependency(MarchingCube REQUIRED)
+  find_dependency(polyscope REQUIRED
     @POLYSCOPE_HINTS@
     )
   set(DGTAL_WITH_POLYSCOPE_VIEWER 1)
