@@ -912,9 +912,10 @@ namespace DGtal {
       case 2: {
         const unsigned int orientation = (!xodd ? 0 : (!yodd ? 1 : 2));
         if (currentStyle.mode & DisplayStyle::SIMPLIFIED || !hasSign) {
+          name = createOrReuseQuadList(uname);
+
           const double scale1 = myCurrentData->style.width * scale;
 
-          name = createOrReuseQuadList(uname);
           drawutils::insertAASquare(myCurrentData->vertices, rp, orientation, scale1);
         } else {
           name = createOrReuseVolumetricList(uname);
