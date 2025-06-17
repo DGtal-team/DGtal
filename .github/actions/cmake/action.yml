@@ -71,7 +71,7 @@ runs:
       run: cmake --build . --config ${{ inputs.build-type }} --parallel 3
     
     - name: Perform tests
-      if: ${{ inputs.test }}
+      if: ${{ inputs.test == 'true'}}
       shell: bash
       working-directory: ${{runner.workspace}}/build
       run: |
