@@ -384,7 +384,7 @@ namespace DGtal
     ///   - unit_u: Whether the computed normals should be normalized or not
     /// @return The curvatures at each face of the mesh, in the same order as faces.
     static Scalars
-      getMeanCurvatures
+      getCNCMeanCurvatures
       ( CountedPtr<typename Base::SurfaceMesh> mesh, 
         const Parameters&                      params = parametersShapeGeometry() )
       {
@@ -454,7 +454,7 @@ namespace DGtal
     ///   - unit_u: Whether the computed normals should be normalized or not
     /// @return The curvatures at each face of the mesh, in the same order as faces.
     static Scalars
-      getGaussianCurvatures
+      getCNCGaussianCurvatures
       ( CountedPtr<typename Base::SurfaceMesh> mesh, 
         const Parameters&                      params = parametersShapeGeometry() )
       {
@@ -697,7 +697,7 @@ namespace DGtal
       ///   - unit_u: Whether the computed normals should be normalized or not
       /// @return The principal curvatures at each face of the mesh, in the same order as faces. The result is a 4-element tuples: [first curvatures, second curvatures, first directions, second directions].
       static std::tuple<Scalars, Scalars, RealVectors, RealVectors>
-        getPrincipalCurvaturesAndDirections
+        getCNCPrincipalCurvaturesAndDirections
         ( CountedPtr<typename Base::SurfaceMesh> mesh, 
           const Parameters&                      params = parametersShapeGeometry() )
         {

@@ -359,9 +359,9 @@ int main( int /* argc */, char** /* argv */ )
     auto params = SH3::defaultParameters() | SHG3::defaultParameters();
     auto mesh = SH3::loadSurfaceMesh(examplesPath + "samples/lion.obj");
 
-    auto mcurv = SHG3::getMeanCurvatures(mesh, params);
-    auto gcurv = SHG3::getGaussianCurvatures(mesh, params);
-    auto [k1, k2, d1, d2] = SHG3::getPrincipalCurvaturesAndDirections(mesh);
+    auto mcurv = SHG3::getCNCMeanCurvatures(mesh, params);
+    auto gcurv = SHG3::getCNCGaussianCurvatures(mesh, params);
+    auto [k1, k2, d1, d2] = SHG3::getCNCPrincipalCurvaturesAndDirections(mesh);
     auto cmap  = SH3::getColorMap( -0.5, 0.5, params );
 
     auto mcolors = SH3::Colors( mcurv.size() );
