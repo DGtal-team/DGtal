@@ -312,7 +312,7 @@ using CorrectedNormalCurrent approach.
 
 This example requires ShortcutsGeometry. You can easily get the expected principal curvatures and principal directions onto a digitized implicit shape. 
 
-\snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_2_14s
+\snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_1_14s
 
 
 <table>
