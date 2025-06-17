@@ -692,8 +692,8 @@ namespace DGtal
       ///
       /// Note: If no normals are provided for the faces; the normals will be computed (and set) using vertex normals if they exists and positions otherwise. 
       ///
-      /// @param mesh[in,out] The surface mesh. The mesh will be modified if no face normals are provided.
-      /// @param params
+      /// @param[in,out] mesh The surface mesh. The mesh will be modified if no face normals are provided.
+      /// @param[in] params
       ///   - unit_u: Whether the computed normals should be normalized or not
       /// @return The principal curvatures at each face of the mesh, in the same order as faces. The result is a 4-element tuples: [first curvatures, second curvatures, first directions, second directions].
       static std::tuple<Scalars, Scalars, RealVectors, RealVectors>

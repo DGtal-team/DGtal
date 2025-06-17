@@ -303,10 +303,10 @@ namespace DGtal
     /// (with topology) into the given output stream. It can also
     /// specifies normals per face and colors per face.
     ///
-    /// @tparam TTriangulatedOrPolygonalSurface either some TriangulatedSurface or some PolygonalSurface.
+    /// @tparam SurfaceMesh A model of a SurfaceMesh
     /// @param[in,out] output_obj an output stream where the OBJ file is written.
     /// @param[in]     mtl_filename the name of the material filename (stores colors).
-    /// @param[in]     polysurf the input triangulated or polygonal surface mesh.
+    /// @param[in]     surf the input triangulated or polygonal surface mesh.
     /// @param[in]     normals either empty or a vector of size `polysurf.nbFaces` specifying the normal vector for each face.
     /// @param[in]     diffuse_colors either empty or a vector of size `polysurf.nbFaces` specifying the diffuse color for each face.
     /// @param[in]     ambient_color the ambient color of all faces.

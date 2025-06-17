@@ -308,11 +308,11 @@ using CorrectedNormalCurrent approach.
 </tr>
 </table>
 
-@subsubsection dgtal_shortcuts_ssec2_2_13 -> digitize -> True principal curvatures
+@subsubsection dgtal_shortcuts_ssec2_2_14 -> digitize -> True principal curvatures
 
 This example requires ShortcutsGeometry. You can easily get the expected principal curvatures and principal directions onto a digitized implicit shape. 
 
-\snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_2_13s
+\snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_2_14s
 
 
 <table>
