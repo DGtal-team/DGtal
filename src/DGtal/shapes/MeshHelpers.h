@@ -299,6 +299,31 @@ namespace DGtal
       const PolygonalSurface<Point>& polysurf );
 
 
+    /// Exports a SurfaceMesh as an OBJ file
+    /// (with topology) into the given output stream. It can also
+    /// specifies normals per face and colors per face.
+    ///
+    /// @tparam TTriangulatedOrPolygonalSurface either some TriangulatedSurface or some PolygonalSurface.
+    /// @param[in,out] output_obj an output stream where the OBJ file is written.
+    /// @param[in]     mtl_filename the name of the material filename (stores colors).
+    /// @param[in]     polysurf the input triangulated or polygonal surface mesh.
+    /// @param[in]     normals either empty or a vector of size `polysurf.nbFaces` specifying the normal vector for each face.
+    /// @param[in]     diffuse_colors either empty or a vector of size `polysurf.nbFaces` specifying the diffuse color for each face.
+    /// @param[in]     ambient_color the ambient color of all faces.
+    /// @param[in]     diffuse_color the diffuse color of all faces if \a diffuse_colors was empty.
+    /// @param[in]     specular_color the specular color of all faces.
+    template <typename SurfaceMesh>
+    static
+    bool exportOBJwithFaceNormalAndColor
+    ( std::ostream& output_obj,
+      const std::string&             mtl_filename,
+      const SurfaceMesh& surf,
+      const std::vector< typename SurfaceMesh::RealPoint >&    normals,
+      const std::vector< Color >&    diffuse_colors,
+      const Color&                   ambient_color  = Color( 32, 32, 32 ),
+      const Color&                   diffuse_color  = Color( 200, 200, 255 ),
+      const Color&                   specular_color = Color::White );
+
     /// Exports a triangulated or polygonal surface as an OBJ file
     /// (with topology) into the given output stream. It can also
     /// specifies normals per face and colors per face.

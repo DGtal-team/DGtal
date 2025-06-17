@@ -77,6 +77,7 @@
 #include "DGtal/io/colormaps/TickedColorMap.h"
 #include "DGtal/io/readers/MPolynomialReader.h"
 #include "DGtal/io/readers/GenericReader.h"
+#include "DGtal/io/readers/SurfaceMeshReader.h"
 #include "DGtal/io/writers/GenericWriter.h"
 #include "DGtal/io/writers/MeshWriter.h"
 #include "DGtal/graph/BreadthFirstVisitor.h"
@@ -2408,6 +2409,45 @@ namespace DGtal
         return makePrimalSurfaceMesh( c2i, dsurf );
       }
 
+      /// Loads a surface mesh
+      ///
+      /// @param[in] path Path to file
+      /// @return A smart pointer to the loaded polygonal surface, that holds nullptr if loading failed. 
+      static CountedPtr<SurfaceMesh>
+      loadSurfaceMesh(const std::string& path) 
+      {
+        std::ifstream file(path);
+        if (file.is_open()) 
+        {
+          auto surf = CountedPtr<SurfaceMesh>( new SurfaceMesh );
+          bool ok = SurfaceMeshReader<RealPoint, RealVector>::readOBJ(file, *surf);
+
+          return ok ? surf : CountedPtr<SurfaceMesh>( nullptr );
+        }
+
+        return CountedPtr<SurfaceMesh>( nullptr );
+      }
+
+
+      /// Outputs a SurfaceMesh as an OBJ file (with its topology).
+      ///
+      /// @tparam TPoint any model of point
+      /// @tparam TVector any model of vector
+      /// @param[in] surf the surface to output as an OBJ file
+      /// @param[in] objfile the output filename.
+      /// @return 'true' if the output stream is good.
+      template <typename TPoint, typename TVector>
+        static bool
+        saveOBJ
+        ( CountedPtr< ::DGtal::SurfaceMesh<TPoint, TVector> > surf, 
+          const std::string& objfile )
+        {
+          std::ofstream output( objfile.c_str() );
+          bool ok = MeshHelpers::exportOBJ( output, *surf );
+          output.close();
+          return ok;
+        }
+
       /// Outputs a polygonal surface as an OBJ file (with its topology).
       ///
       /// @tparam TPoint any model of point
@@ -2550,6 +2590,49 @@ namespace DGtal
           std::ofstream output( objfile.c_str() );
           bool ok = MeshHelpers::exportOBJwithFaceNormalAndColor
             ( output, mtlfile, *trisurf, normals, diffuse_colors,
+              ambient_color, diffuse_color, specular_color );
+          output.close();
+          return ok;
+        }
+
+      /// Outputs a SurfaceMesh as an OBJ file (with its topology)
+      /// (and a material MTL file).
+      ///
+      /// @tparam TPoint any model of point
+      /// @tparam TVector any model of vector
+      /// @param[in] surf the surface to output as an OBJ file
+      /// @param[in] normals the normal vector per face.
+      /// @param[in] diffuse_colors either empty or a vector of size `trisurf.nbFaces` specifying the diffuse color for each face.
+      /// @param[in] objfile the output filename.
+      /// @param[in] ambient_color the ambient color of all faces.
+      /// @param[in] diffuse_color the diffuse color of all faces (if diffuse_colors is empty).
+      /// @param[in] specular_color the specular color of all faces.
+      /// @return 'true' if the output stream is good.
+      template <typename TPoint, typename TVector>
+        static bool
+        saveOBJ
+        ( CountedPtr< ::DGtal::SurfaceMesh<TPoint, TVector> > surf,
+          const RealVectors&                            normals,
+          const Colors&                                 diffuse_colors,
+          std::string                                   objfile,
+          const Color&                   ambient_color  = Color( 32, 32, 32 ),
+          const Color&                   diffuse_color  = Color( 200, 200, 255 ),
+          const Color&                   specular_color = Color::White )
+        {
+          std::string mtlfile;
+          auto lastindex = objfile.find_last_of(".");
+          if ( lastindex == std::string::npos )
+            {
+              mtlfile  = objfile + ".mtl";
+              objfile  = objfile + ".obj";
+            }
+          else
+            {
+              mtlfile  = objfile.substr(0, lastindex) + ".mtl"; 
+            }
+          std::ofstream output( objfile.c_str() );
+          bool ok = MeshHelpers::exportOBJwithFaceNormalAndColor
+            ( output, mtlfile, *surf, normals, diffuse_colors,
               ambient_color, diffuse_color, specular_color );
           output.close();
           return ok;

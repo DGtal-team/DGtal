@@ -48,6 +48,7 @@
 #include "DGtal/geometry/surfaces/estimation/IIGeometricFunctors.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantVolumeEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantCovarianceEstimator.h"
+#include "DGtal/geometry/meshes/CorrectedNormalCurrentComputer.h"
 
 #include "DGtal/dec/DiscreteExteriorCalculusFactory.h"
 #include "DGtal/dec/ATSolver2D.h"
@@ -169,6 +170,7 @@ namespace DGtal
       typedef typename functors::IIPrincipalCurvaturesAndDirectionsFunctor<Space>::Quantity   CurvatureTensorQuantity;
       typedef std::vector< CurvatureTensorQuantity >              CurvatureTensorQuantities;
 
+      typedef CorrectedNormalCurrentComputer<RealPoint, RealVector> CNCComputer;
 
       typedef TrueDigitalSurfaceLocalEstimator
         < KSpace, ImplicitShape3D, PositionFunctor >                TruePositionEstimator;
@@ -217,13 +219,15 @@ namespace DGtal
       ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
       ///   - projectionGamma   [   0.5]: the damping coefficient of the projection.
       ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
+      ///   - unit_u [0]: Use unit normals for (CNC) curvature computations.
       static Parameters parametersShapeGeometry()
       {
         return Parameters
           ( "projectionMaxIter", 20 )
           ( "projectionAccuracy", 0.0001 )
           ( "projectionGamma",    0.5 )
-          ( "gridstep",           1.0 );
+          ( "gridstep",           1.0 )
+          ( "unit_u",           0 );
       }
 
       /// Given a space \a K, an implicit \a shape, a sequence of \a
@@ -372,6 +376,36 @@ namespace DGtal
         return n_true_estimations;
       }
 
+    /// Given a SurfaceMesh, compute mean curvature at each face using 
+    /// CorrectedNormalCurrent method.
+    ///
+    /// @param mesh The surface mesh
+    /// @param params
+    ///   - unit_u: Whether the computed normals should be normalized or not
+    /// @return The curvatures at each face of the mesh, in the same order as faces.
+    static Scalars
+      getMeanCurvatures
+      ( CountedPtr<typename Base::SurfaceMesh> mesh, 
+        const Parameters&                      params = parametersShapeGeometry() )
+      {
+        bool unit_u = params["unit_u"].as<int>();
+        CNCComputer computer(*mesh, unit_u);
+        
+        const auto& mu0 = computer.computeMu0().face_measures;
+        const auto& mu1 = computer.computeMu1().face_measures;
+        
+        if (mu0.size() != mu1.size())
+        {
+          trace.error() << "Error mu0 and mu1 does not have same dimensions. \n";
+          return {};
+        }
+        
+        Scalars curvatures(mu0.size());
+        for (size_t i = 0; i < mu0.size(); ++i)
+          curvatures[i] = CNCComputer::meanCurvature(mu0[i], mu1[i]);
+        return curvatures;
+      }
+
       /// Given a space \a K, an implicit \a shape, a sequence of \a
       /// surfels, and a gridstep \a h, returns the gaussian curvatures at the
       /// specified surfels, in the same order.
@@ -410,6 +444,37 @@ namespace DGtal
         true_estimator.eval( surfels.begin(), surfels.end(),
                              std::back_inserter( n_true_estimations ) );
         return n_true_estimations;
+      }
+
+    /// Given a SurfaceMesh, compute gaussian curvature at each face using 
+    /// CorrectedNormalCurrent method.
+    ///
+    /// @param mesh The surface mesh
+    /// @param params
+    ///   - unit_u: Whether the computed normals should be normalized or not
+    /// @return The curvatures at each face of the mesh, in the same order as faces.
+    static Scalars
+      getGaussianCurvatures
+      ( CountedPtr<typename Base::SurfaceMesh> mesh, 
+        const Parameters&                      params = parametersShapeGeometry() )
+      {
+        bool unit_u = params["unit_u"].as<int>();
+        CNCComputer computer(*mesh, unit_u);
+        
+        const auto& mu0 = computer.computeMu0().face_measures;
+        const auto& mu1 = computer.computeMu1().face_measures;
+        
+        if (mu0.size() != mu1.size())
+        {
+          trace.error() << "Error mu0 and mu1 does not have same dimensions. \n";
+          return {};
+        }
+        
+        Scalars curvatures(mu0.size());
+        for (size_t i = 0; i < mu0.size(); ++i)
+          curvatures[i] = CNCComputer::GaussianCurvature(mu0[i], mu1[i]);
+
+        return curvatures;
       }
 
       /// Given a space \a K, an implicit \a shape, a sequence of \a
@@ -623,6 +688,55 @@ namespace DGtal
         return n_true_estimations;
       }
 
+      /// Given a SurfaceMesh, compute principal curvature at each face using CorrectedNormalCurrent method.
+      ///
+      /// Note: If no normals are provided for the faces; the normals will be computed (and set) using vertex normals if they exists and positions otherwise. 
+      ///
+      /// @param mesh[in,out] The surface mesh. The mesh will be modified if no face normals are provided.
+      /// @param params
+      ///   - unit_u: Whether the computed normals should be normalized or not
+      /// @return The principal curvatures at each face of the mesh, in the same order as faces. The result is a 4-element tuples: [first curvatures, second curvatures, first directions, second directions].
+      static std::tuple<Scalars, Scalars, RealVectors, RealVectors>
+        getPrincipalCurvaturesAndDirections
+        ( CountedPtr<typename Base::SurfaceMesh> mesh, 
+          const Parameters&                      params = parametersShapeGeometry() )
+        {
+          bool unit_u = params["unit_u"].as<int>();
+          CNCComputer computer(*mesh, unit_u);
+          
+          const auto& mu0  = computer.computeMu0().face_measures;
+          const auto& muxy = computer.computeMuXY().face_measures;
+          
+          if (mu0.size() != muxy.size())
+          {
+            trace.error() << "Error mu0 and muxy does not have same size. \n";
+            return {};
+          }
+          
+          if (mesh->faceNormals().size() == 0)
+          {
+            // Try to use vertex normals if any
+            if (mesh->vertexNormals().size() == 0)
+              mesh->computeFaceNormalsFromPositions();
+            else 
+              mesh->computeFaceNormalsFromVertexNormals();
+          }
+
+          if (mesh->faceNormals().size() != mu0.size())
+          {
+            trace.error() << "Error face normals does not have same size as mu0.\n";
+            return {};
+          }
+
+          Scalars k1(mu0.size()), k2(mu0.size());
+          RealVectors d1(mu0.size()), d2(mu0.size());
+          
+          const auto& normals = mesh->faceNormals();
+          for (size_t i = 0; i < mu0.size(); ++i)
+            std::tie(k1[i], k2[i], d1[i], d2[i]) = CNCComputer::principalCurvatures(mu0[i], muxy[i], normals[i]);
+
+          return std::make_tuple(k1, k2, d1, d2);
+        }
       /// @}
 
       // --------------------------- geometry estimation ------------------------------

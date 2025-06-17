@@ -287,6 +287,15 @@ to get a piecewise smooth approximation of the II normals.
 
 \snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_2_12s
 
+This example requires ShortcutsGeometry. It shows how tu use the Corrected Normal Current curvature estimator
+on a mesh model to estimate its mean, Gaussian or principals curvature.
+
+@subsubsection dgtal_shortcuts_ssec2_2_13 -> load mesh -> CNC curvatures -> export mesh
+
+This example requires ShortcutsGeometry. It computes curvatures (mean, gaussian, principals) 
+using CorrectedNormalCurrent approach. 
+
+\snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_2_13s
 
 <table>
 <tr>
