@@ -319,7 +319,7 @@ int main( int /* argc */, char** /* argv */ )
   trace.beginBlock ( "Build polynomial shape -> digitize -> extract ground-truth curvatures -> display in OBJ." );
   {
     auto params          = SH3::defaultParameters() | SHG3::defaultParameters();
-    //! [dgtal_shortcuts_ssec2_2_14s]
+    //! [dgtal_shortcuts_ssec2_2_13s]
     params( "polynomial", "goursat" )( "gridstep", 0.25 )( "colormap", "Tics" );
     auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
     auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
@@ -349,13 +349,13 @@ int main( int /* argc */, char** /* argv */ )
     bool ok_d2 = SH3::saveVectorFieldOBJ( positions, d2, 0.05, colors,
 					  "goursat-primal-d2.obj", SH3::Color::Black );
     ASSERT(ok_k1 && ok_d1 && ok_k2 && ok_d2);
-    //! [dgtal_shortcuts_ssec2_2_14s]
+    //! [dgtal_shortcuts_ssec2_2_13s]
   }
   trace.endBlock();
 
   trace.beginBlock( "Load mesh file -> estimate mean/gaussian/principal curvatures -> display in obj" );
   {
-    //! [dgtal_shortcuts_ssec2_1_13s]
+    //! [dgtal_shortcuts_ssec2_1_14s]
     auto params = SH3::defaultParameters() | SHG3::defaultParameters();
     auto mesh = SH3::loadSurfaceMesh(examplesPath + "samples/lion.obj");
 
@@ -380,7 +380,7 @@ int main( int /* argc */, char** /* argv */ )
     bool ok_g = SH3::saveOBJ( mesh, SH3::RealVectors(), gcolors, "lion-gaussianCurvature.obj" );
     bool ok_k1 = SH3::saveOBJ( mesh, SH3::RealVectors(), k1colors, "lion-firstPrincipalCurvature.obj" );
     bool ok_k2 = SH3::saveOBJ( mesh, SH3::RealVectors(), k2colors, "lion-secondPrincpalCurvature.obj" );
-    //! [dgtal_shortcuts_ssec2_1_13s]
+    //! [dgtal_shortcuts_ssec2_1_14s]
 
     ++nb; nbok += ok_m;
     ++nb; nbok += ok_g;
