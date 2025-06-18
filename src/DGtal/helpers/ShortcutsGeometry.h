@@ -223,11 +223,12 @@ namespace DGtal
       static Parameters parametersShapeGeometry()
       {
         return Parameters
-          ( "projectionMaxIter", 20 )
+          ( "projectionMaxIter",  20 )
           ( "projectionAccuracy", 0.0001 )
           ( "projectionGamma",    0.5 )
           ( "gridstep",           1.0 )
-          ( "unit_u",           0 );
+          ( "curvatureRadius",    2.0 )
+          ( "unit_u",             0 );
       }
 
       /// Given a space \a K, an implicit \a shape, a sequence of \a
@@ -379,31 +380,88 @@ namespace DGtal
     /// Given a SurfaceMesh, compute mean curvature at each face using 
     /// CorrectedNormalCurrent method.
     ///
+    /// @warning: in this code, only triangle strictly inside the sphere are 
+    /// considered.
+    ///
+    /// @param mesh The surface mesh
+    /// @param faces The faces to compute curvature at
+    /// @param params
+    ///   - unit_u: Whether the computed normals should be normalized or not
+    ///   - curvatureRadius: The ball radius to compute curvature in
+    /// @return The curvatures at each face of the mesh, in the same order `faces` 
+    static Scalars
+      getCNCMeanCurvatures
+      ( CountedPtr<typename Base::SurfaceMesh>  mesh, 
+        const typename Base::SurfaceMesh::Faces faces, 
+        const Parameters&                       params = parametersShapeGeometry() )
+      {
+        using Face = typename Base::SurfaceMesh::Face;
+
+        bool unit_u = params["unit_u"].as<int>();
+        double radius = params["curvatureRadius"].as<double>();
+
+        CNCComputer computer(*mesh, unit_u);
+        
+        const auto& mu0 = computer.computeMu0();
+        const auto& mu1 = computer.computeMu1();
+        
+        Scalars curvatures(faces.size());
+        for (size_t i = 0; i < faces.size(); ++i)
+        {
+          const auto center = mesh->faceCentroid(faces[i]);
+          const auto area = mu0.measure(center, radius, faces[i]);
+          const auto lmu1 = mu1.measure(center, radius, faces[i]);
+          curvatures[i] = CNCComputer::meanCurvature(area, lmu1);
+        }
+
+        return curvatures;
+      }
+
+    /// Given a SurfaceMesh, compute mean curvature at each face using 
+    /// CorrectedNormalCurrent method.
+    ///
+    /// This overloads compute curvature at each face of the mesh.
+    ///
+    /// @warning: in this code, only triangle strictly inside the sphere are 
+    /// considered.
+    ///
     /// @param mesh The surface mesh
     /// @param params
     ///   - unit_u: Whether the computed normals should be normalized or not
-    /// @return The curvatures at each face of the mesh, in the same order as faces.
+    ///   - curvatureRadius: The ball radius to compute curvature in
+    /// @return The curvatures at each face of mesh, in the the order given by the mesh
     static Scalars
       getCNCMeanCurvatures
-      ( CountedPtr<typename Base::SurfaceMesh> mesh, 
-        const Parameters&                      params = parametersShapeGeometry() )
+      ( CountedPtr<typename Base::SurfaceMesh>  mesh, 
+        const Parameters&                       params = parametersShapeGeometry() )
       {
-        bool unit_u = params["unit_u"].as<int>();
-        CNCComputer computer(*mesh, unit_u);
-        
-        const auto& mu0 = computer.computeMu0().face_measures;
-        const auto& mu1 = computer.computeMu1().face_measures;
-        
-        if (mu0.size() != mu1.size())
-        {
-          trace.error() << "Error mu0 and mu1 does not have same dimensions. \n";
-          return {};
-        }
-        
-        Scalars curvatures(mu0.size());
-        for (size_t i = 0; i < mu0.size(); ++i)
-          curvatures[i] = CNCComputer::meanCurvature(mu0[i], mu1[i]);
-        return curvatures;
+        std::vector<typename Base::SurfaceMesh::Face> allFaces(mesh->nbFaces());
+        std::iota(allFaces.begin(), allFaces.end(), 0);
+
+        return getCNCMeanCurvatures(mesh, allFaces, params);
+      }
+
+
+    /// Given a SurfaceMesh, compute mean curvature at each face using 
+    /// CorrectedNormalCurrent method.
+    ///
+    /// @warning: in this code, only triangle strictly inside the sphere are 
+    /// considered.
+    ///
+    /// @tparam Any digital object convertible to surface mesh via Shortcuts::makePrimalSurfaceMesh
+    /// @param digitalObject A digital object
+    /// @param params
+    ///   - unit_u: Whether the computed normals should be normalized or not
+    ///   - curvatureRadius: The ball radius to compute curvature in
+    /// @return The curvatures at each face of the triangulated surface object
+    template <typename T>
+    static Scalars
+      getCNCMeanCurvatures
+      ( T&                digitalObject, 
+        const Parameters& params = parametersShapeGeometry() )
+      {
+        CountedPtr<typename Base::SurfaceMesh> mesh = Base::makePrimalSurfaceMesh(digitalObject);
+        return getCNCMeanCurvatures(mesh, params);
       }
 
       /// Given a space \a K, an implicit \a shape, a sequence of \a
@@ -449,36 +507,91 @@ namespace DGtal
     /// Given a SurfaceMesh, compute gaussian curvature at each face using 
     /// CorrectedNormalCurrent method.
     ///
+    /// @warning: in this code, only triangle strictly inside the sphere are 
+    /// considered.
+    ///
     /// @param mesh The surface mesh
+    /// @param faces The faces to compute curvature at
     /// @param params
     ///   - unit_u: Whether the computed normals should be normalized or not
-    /// @return The curvatures at each face of the mesh, in the same order as faces.
+    ///   - curvatureRadius: The ball radius to compute curvature in
+    /// @return The curvatures at each face of the mesh, in the same order `faces` 
     static Scalars
       getCNCGaussianCurvatures
-      ( CountedPtr<typename Base::SurfaceMesh> mesh, 
-        const Parameters&                      params = parametersShapeGeometry() )
+      ( CountedPtr<typename Base::SurfaceMesh>   mesh, 
+        const typename Base::SurfaceMesh::Faces& faces, 
+        const Parameters&                        params = parametersShapeGeometry() )
       {
+        using Face = typename Base::SurfaceMesh::Face;
+
         bool unit_u = params["unit_u"].as<int>();
+        double radius = params["curvatureRadius"].as<double>();
+
         CNCComputer computer(*mesh, unit_u);
         
-        const auto& mu0 = computer.computeMu0().face_measures;
-        const auto& mu1 = computer.computeMu1().face_measures;
-        
-        if (mu0.size() != mu1.size())
+        const auto& mu0 = computer.computeMu0();
+        const auto& mu2 = computer.computeMu2();
+
+        Scalars curvatures(faces.size());
+        for (size_t i = 0; i < faces.size(); ++i)
         {
-          trace.error() << "Error mu0 and mu1 does not have same dimensions. \n";
-          return {};
+          const auto center = mesh->faceCentroid(faces[i]);
+          const auto area = mu0.measure(center, radius, faces[i]);
+          const auto lmu2 = mu2.measure(center, radius, faces[i]);
+          curvatures[i] = CNCComputer::GaussianCurvature(area, lmu2);
         }
         
-        Scalars curvatures(mu0.size());
-        for (size_t i = 0; i < mu0.size(); ++i)
-          curvatures[i] = CNCComputer::GaussianCurvature(mu0[i], mu1[i]);
-
         return curvatures;
       }
 
+    /// Given a SurfaceMesh, compute gaussian curvature at each face using 
+    /// CorrectedNormalCurrent method.
+    ///
+    /// This overloads compute curvature at each face of the mesh.
+    ///
+    /// @warning: in this code, only triangle strictly inside the sphere are 
+    /// considered.
+    ///
+    /// @param mesh The surface mesh
+    /// @param params
+    ///   - unit_u: Whether the computed normals should be normalized or not
+    ///   - curvatureRadius: The ball radius to compute curvature in
+    /// @return The curvatures at each face of the mesh, in thn the order given by the mesh
+    static Scalars
+      getCNCGaussianCurvatures
+      ( CountedPtr<typename Base::SurfaceMesh>   mesh, 
+        const Parameters&                        params = parametersShapeGeometry() )
+      {
+        std::vector<typename Base::SurfaceMesh::Face> allFaces(mesh->nbFaces());
+        std::iota(allFaces.begin(), allFaces.end(), 0);
+        
+        return getCNCGaussianCurvatures(mesh, allFaces, params);
+      }
+
+    /// Given a SurfaceMesh, compute mean curvature at each face using 
+    /// CorrectedNormalCurrent method.
+    ///
+    /// @warning: in this code, only triangle strictly inside the sphere are 
+    /// considered.
+    ///
+    /// @tparam T Any digital object convertible to surface mesh via Shortcuts::makePrimalSurfaceMesh
+    /// @param digitalObject A digital object
+    /// @param params
+    ///   - unit_u: Whether the computed normals should be normalized or not
+    ///   - curvatureRadius: The ball radius to compute curvature in
+    /// @return The curvatures at each face of the triangulated surface object
+    template <typename T>
+    static Scalars
+      getCNCGaussianCurvatures
+      ( T&                digitalObject, 
+        const Parameters& params = parametersShapeGeometry() )
+      {
+        CountedPtr<typename Base::SurfaceMesh> mesh = Base::makePrimalSurfaceMesh(digitalObject);
+        return getCNCGaussianCurvatures(mesh, params);
+      }
+
       /// Given a space \a K, an implicit \a shape, a sequence of \a
-      /// surfels, and a gridstep \a h, returns the first (smallest)
+
       /// principal curvatures at the specified surfels, in the same
       /// order.
       ///
@@ -690,28 +803,32 @@ namespace DGtal
 
       /// Given a SurfaceMesh, compute principal curvature at each face using CorrectedNormalCurrent method.
       ///
-      /// Note: If no normals are provided for the faces; the normals will be computed (and set) using vertex normals if they exists and positions otherwise. 
+      /// @note: If no normals are provided for the faces; the normals will be computed (and set) using vertex normals if they exists and positions otherwise. 
+      ///
+      /// @warning: in this code, only triangle strictly inside the sphere are 
+      /// considered.
       ///
       /// @param[in,out] mesh The surface mesh. The mesh will be modified if no face normals are provided.
+      /// @param[in] faces The faces to compute curvature at
       /// @param[in] params
       ///   - unit_u: Whether the computed normals should be normalized or not
+      ///   - curvatureRadius: The ball radius to compute curvature in
       /// @return The principal curvatures at each face of the mesh, in the same order as faces. The result is a 4-element tuples: [first curvatures, second curvatures, first directions, second directions].
       static std::tuple<Scalars, Scalars, RealVectors, RealVectors>
         getCNCPrincipalCurvaturesAndDirections
-        ( CountedPtr<typename Base::SurfaceMesh> mesh, 
-          const Parameters&                      params = parametersShapeGeometry() )
+        ( CountedPtr<typename Base::SurfaceMesh>   mesh, 
+          const typename Base::SurfaceMesh::Faces& faces, 
+          const Parameters&                        params = parametersShapeGeometry() )
         {
+          using Face = typename Base::SurfaceMesh::Face;
+
           bool unit_u = params["unit_u"].as<int>();
+          double radius = params["curvatureRadius"].as<double>();
+
           CNCComputer computer(*mesh, unit_u);
           
-          const auto& mu0  = computer.computeMu0().face_measures;
-          const auto& muxy = computer.computeMuXY().face_measures;
-          
-          if (mu0.size() != muxy.size())
-          {
-            trace.error() << "Error mu0 and muxy does not have same size. \n";
-            return {};
-          }
+          const auto& mu0  = computer.computeMu0();
+          const auto& muxy = computer.computeMuXY();
           
           if (mesh->faceNormals().size() == 0)
           {
@@ -721,23 +838,70 @@ namespace DGtal
             else 
               mesh->computeFaceNormalsFromVertexNormals();
           }
-
-          if (mesh->faceNormals().size() != mu0.size())
-          {
-            trace.error() << "Error face normals does not have same size as mu0.\n";
-            return {};
-          }
-
-          Scalars k1(mu0.size()), k2(mu0.size());
-          RealVectors d1(mu0.size()), d2(mu0.size());
           
           const auto& normals = mesh->faceNormals();
-          for (size_t i = 0; i < mu0.size(); ++i)
-            std::tie(k1[i], k2[i], d1[i], d2[i]) = CNCComputer::principalCurvatures(mu0[i], muxy[i], normals[i]);
+
+          Scalars k1(faces.size()), k2(faces.size());
+          RealVectors d1(faces.size()), d2(faces.size());
+
+          for (size_t i = 0; i < faces.size(); ++i)
+          {
+            const auto center = mesh->faceCentroid(faces[i]);
+            const auto area  = mu0 .measure(center, radius, faces[i]);
+            const auto lmuxy = muxy.measure(center, radius, faces[i]);
+            std::tie(k1[i], k2[i], d1[i], d2[i]) = 
+                CNCComputer::principalCurvatures(area, lmuxy, normals[faces[i]]);
+          }
 
           return std::make_tuple(k1, k2, d1, d2);
         }
-      /// @}
+
+      /// Given a SurfaceMesh, compute principal curvature at each face using CorrectedNormalCurrent method.
+      ///
+      /// This overloads compute curvature at each face of the mesh.
+      ///
+      /// @note: If no normals are provided for the faces; the normals will be computed (and set) using vertex normals if they exists and positions otherwise. 
+      ///
+      /// @warning: in this code, only triangle strictly inside the sphere are 
+      /// considered.
+      ///
+      /// @param[in,out] mesh The surface mesh. The mesh will be modified if no face normals are provided.
+      /// @param[in] params
+      ///   - unit_u: Whether the computed normals should be normalized or not
+      ///   - curvatureRadius: The ball radius to compute curvature in
+      /// @return The principal curvatures at each face of the mesh, in the same order as mesh faces. The result is a 4-element tuples: [first curvatures, second curvatures, first directions, second directions].
+      static std::tuple<Scalars, Scalars, RealVectors, RealVectors>
+        getCNCPrincipalCurvaturesAndDirections
+        ( CountedPtr<typename Base::SurfaceMesh>   mesh, 
+          const Parameters&                        params = parametersShapeGeometry() )
+        {
+          std::vector<typename Base::SurfaceMesh::Face> allFaces(mesh->nbFaces());
+          std::iota(allFaces.begin(), allFaces.end(), 0);
+
+          return getCNCPrincipalCurvaturesAndDirections(mesh, allFaces, params);
+        }
+
+    /// Given a SurfaceMesh, compute principal curvature at each face using CorrectedNormalCurrent method.
+    ///
+    /// @warning: in this code, only triangle strictly inside the sphere are 
+    /// considered.
+    ///
+    /// @tparam T Any digital object convertible to surface mesh via Shortcuts::makePrimalSurfaceMesh
+    /// @param digitalObject A digital object
+    /// @param params
+    ///   - unit_u: Whether the computed normals should be normalized or not
+    ///   - curvatureRadius: The ball radius to compute curvature in
+    /// @return The curvatures at each face of the triangulated surface object
+    template<typename T>
+    static std::tuple<Scalars, Scalars, RealVectors, RealVectors>
+      getCNCPrincipalCurvaturesAndDirections
+      ( T&                digitalObject, 
+        const Parameters& params = parametersShapeGeometry() )
+      {
+        CountedPtr<typename Base::SurfaceMesh> mesh = Base::makePrimalSurfaceMesh(digitalObject);
+        return getCNCPrincipalCurvaturesAndDirections(mesh, params);
+      }
+       /// @}
 
       // --------------------------- geometry estimation ------------------------------
       /// @name Geometry estimation services
