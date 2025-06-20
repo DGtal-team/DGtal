@@ -7,7 +7,7 @@ set(CMAKE_BUILD_PYTHONLIBDIR ${PROJECT_BINARY_DIR}/dgtal) # copy python libs at 
 # Python wrapping will be one single module with submodules
 set(CMAKE_INSTALL_PYTHONINCLUDEDIR
   ${CMAKE_INSTALL_PYTHONLIBDIR}/include)
-set(enabled_libs_ DGtal)
+set(enabled_libs_ DGtal Eigen3::Eigen)
 set(enabled_include_dirs_)
 set(enabled_include_system_dirs_)
 

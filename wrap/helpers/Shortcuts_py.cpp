@@ -28,11 +28,13 @@
 namespace py = pybind11;
 
 #include "DGtal/helpers/Shortcuts.h"
+#include "DGtal/helpers/ShortcutsGeometry.h"
 
 using namespace DGtal;
 using SH3 = Shortcuts<Z3i::KSpace>;
-template<typename T>
+using SHG3 = ShortcutsGeometry<Z3i::KSpace>;
 
+template<typename T>
 std::vector<Color> apply_colormap(const T* data, size_t count, const Parameters& params) {
     if (count == 0) return {};
 
@@ -52,6 +54,28 @@ std::vector<Color> apply_colormap(const T* data, size_t count, const Parameters&
     return colors;
 }
 
+// Named apply_colormapV to ease binding and not conflict with above declaration
+template<typename T>
+std::vector<Color> apply_colormapV(const std::vector<T>& data, const Parameters& params) { 
+    if (data.size() == 0) return {};
+
+    T min = data[0];
+    T max = data[0];
+    for (size_t i = 1; i < data.size(); ++i) {
+        min = std::min(min, data[i]);
+        max = std::max(max, data[i]);
+    }
+    
+    auto cmap = SH3::getColorMap(min, max, params);
+
+    std::vector<Color> colors(data.size());
+    for (size_t i = 0; i < data.size(); ++i) {
+        colors[i] = cmap(data[i]);
+    }
+    return colors;
+}
+
+
 void define_types(py::module& m) {
     // We define some "opaques" type that are only be meant to be returned to the user
     // and pass to other functions afterwards. These are not meant to be full binding 
@@ -61,9 +85,13 @@ void define_types(py::module& m) {
     // (this was checked by trial and error)
     //  SH3::KSpace
     //  Color
+    //  Points
+    //  CellEmbedder
+    //  SCellEmbedder
     
     // Ranges
     py::class_<SH3::SurfelRange>(m, "__SurfelRange"); // This is a vector, so len() is available !
+    py::class_<SH3::IdxRange>(m, "IdxRange");
 
     // Containers
     py::class_<CountedPtr<SH3::BinaryImage>>(m, "__PtrBinaryImage");
@@ -83,31 +111,83 @@ void define_types(py::module& m) {
         .def("nbVertex", [](const CountedPtr<SH3::Mesh>& mesh) {
             return mesh->nbVertex();
         });
+    py::class_<CountedPtr<SH3::ImplicitShape3D>>(m, "__PtrImplicitShape3D");
+    py::class_<CountedPtr<SH3::DigitizedImplicitShape3D>>(m, "__PtrDIgitizedImplicitShape3D");
+    py::class_<SH3::Cell2Index>(m, "Cell2Index")
+        .def(py::init<>());
 }
 
-void bind_shortcuts(py::module& m) {
+void defines_types_geometry(py::module& m) {
+    // TODO: Should probably be bound in math header instead (but it does not exist yet)
+    py::class_<SHG3::ScalarStatistic>(m, "ScalarStatistic")
+        .def(py::init<>())
+        .def("samples", &SHG3::ScalarStatistic::samples)
+        .def("size", &SHG3::ScalarStatistic::size)
+        .def("mean", &SHG3::ScalarStatistic::mean)
+        .def("variance", &SHG3::ScalarStatistic::variance)
+        .def("unbiasedVariance", &SHG3::ScalarStatistic::unbiasedVariance)
+        .def("min", &SHG3::ScalarStatistic::min)
+        .def("max", &SHG3::ScalarStatistic::max)
+        .def("values", [](const SHG3::ScalarStatistic& in) {
+            return std::vector(in.begin(), in.end());
+        })
+        .def("__str__", [](const SHG3::ScalarStatistic& in) {
+            std::stringstream ss;
+            in.selfDisplay(ss);
+            return ss.str();
+        });
+}
+
+void bind_shortcuts(py::module& m_helpers) {
+    auto m = m_helpers.def_submodule("SH3", "Shortcuts 3D"); 
     define_types(m);
 
-    m.def("defaultParameters", &SH3::defaultParameters);
+    // Create a reference for easy split between SH3 and SHG3 if needed
+    auto& mg = m;
+    defines_types_geometry(mg);
+
+    
+    // Returns both for now
+    m.def("defaultParameters", []() {
+            return SH3::defaultParameters() | SHG3::defaultParameters();
+        });
 
     // Note: We use lambda because default parameters or partial specialization results 
     // in multiple overloads that are not disambiguated with py::overload_cast...
     // Even when it could, we use lambda for consistency
     
     // Create objects
-    m.def("makeBinaryImage", [](const std::string& fname, Parameters params = SH3::defaultParameters()){
+    m.def("makeBinaryImage", [](const std::string& fname, Parameters params){
             return SH3::makeBinaryImage(fname, params);
+        });
+    m.def("makeBinaryImage", [](CountedPtr<SH3::DigitizedImplicitShape3D> shape, Parameters params) {
+            return SH3::makeBinaryImage(shape, params);
+        });
+    m.def("makeBinaryImage", [](CountedPtr<SH3::DigitizedImplicitShape3D> shape, const SH3::Domain& d, Parameters params) {
+            return SH3::makeBinaryImage(shape, d, params);
         });
     m.def("makeGrayScaleImage", [](const std::string& fname){
             return SH3::makeGrayScaleImage(fname);
         });
+    m.def("makeDigitalSurface", [](CountedPtr<SH3::BinaryImage> im, const SH3::KSpace& K, const Parameters& params) {
+            return SH3::makeDigitalSurface(im, K, params);
+        });
     m.def("makeLightDigitalSurface", &SH3::makeLightDigitalSurface);
-    m.def("makeTriangulatedSurface", [](CountedPtr<SH3::GrayScaleImage> im, Parameters params = SH3::defaultParameters()) {
+    m.def("makeLightDigitalSurfaces", [](CountedPtr<SH3::BinaryImage> im, const SH3::KSpace& K, const Parameters& params) {
+            return SH3::makeLightDigitalSurfaces(im, K, params);
+        });
+    m.def("makeTriangulatedSurface", [](CountedPtr<SH3::GrayScaleImage> im, Parameters params) {
             return SH3::makeTriangulatedSurface(im, params);
         });
     m.def("makeMesh", [](CountedPtr<SH3::TriangulatedSurface> surf, Color c) {
             return SH3::makeMesh(surf, c);
         });
+    m.def("makeImplicitShape3D", &SH3::makeImplicitShape3D);
+    m.def("makeDigitizedImplicitShape3D", &SH3::makeImplicitShape3D);
+    m.def("makeIdxDigitalSurface", [](CountedPtr<SH3::BinaryImage> im, const SH3::KSpace& K, Parameters params) {
+            return SH3::makeIdxDigitalSurface(im, K, params);
+        });
+
     // Save objects
     m.def("saveBinaryImage", &SH3::saveBinaryImage);
     m.def("saveOBJ", [](CountedPtr<SH3::TriangulatedSurface> mesh, const std::string& fName) {
@@ -122,49 +202,146 @@ void bind_shortcuts(py::module& m) {
     m.def("saveOBJ", [](CountedPtr<SH3::LightDigitalSurface> surf, const std::string& fName) {
             return SH3::saveOBJ(surf, fName);
         });
+    m.def("saveOBJ", [](CountedPtr<SH3::DigitalSurface> surf, const std::string& fName) {
+            return SH3::saveOBJ(surf, fName);
+        });
     m.def("saveOBJ", [](
         CountedPtr<SH3::LightDigitalSurface> surf, 
         const std::vector<SH3::RealPoint>& normals, const std::vector<Color>& colors, 
         const std::string& fName) { // TODO: Ambient, diffuse and specular
             return SH3::saveOBJ(surf, normals, colors, fName);
         });
-    // Getters
-    m.def("getKSpace", [](CountedPtr<SH3::BinaryImage> im, Parameters params = SH3::defaultParameters()) {
-                return SH3::getKSpace(im, params);
+    // With lambda to avoid setting all parameters for default colors to work
+    m.def("saveVectorFieldOBJ", [](
+        const SH3::RealPoints& positions, const SH3::RealVectors& vf, 
+        double thickness, const SH3::Colors& diffuse_colors, std::string path) {
+            return SH3::saveVectorFieldOBJ(positions, vf, thickness, diffuse_colors, path);
         });
-    m.def("getSurfelRange", [](CountedPtr<SH3::LightDigitalSurface> im, Parameters params = SH3::defaultParameters()) {
+    // Getters
+    m.def("getKSpace", [](CountedPtr<SH3::BinaryImage> im, Parameters params) {
+            return SH3::getKSpace(im, params);
+        });
+    m.def("getKSpace", [](const SH3::Point& lb, const SH3::Point& ub, Parameters params) {
+            return SH3::getKSpace(lb, ub, params);
+        });
+    m.def("getKSpace", [](const std::vector<int>& lb, const std::vector<int>& ub, Parameters params) {
+            if (lb.size() != 3) throw std::runtime_error("Expected a lower bound of dimension 3");
+            if (ub.size() != 3) throw std::runtime_error("Expected an upper bound of dimension 3");
+            
+            return SH3::getKSpace(SH3::Point(lb[0], lb[1], lb[2]), SH3::Point(ub[0], ub[1], ub[2]), params);
+        });
+    m.def("getCellEmbedder", [](const SH3::KSpace& space) {
+            return SH3::getCellEmbedder(space);
+        });
+    m.def("getSCellEmbedder", [](const SH3::KSpace& space) {
+            return SH3::getSCellEmbedder(space);
+        });
+    m.def("getSurfelRange", [](CountedPtr<SH3::LightDigitalSurface> im, Parameters params) {
             return SH3::getSurfelRange(im, params);
         });
+    m.def("getSurfelRange", [](CountedPtr<SH3::DigitalSurface> im, Parameters params) {
+            return SH3::getSurfelRange(im, params);
+        });
+    m.def("getPointelRange", [](SH3::Cell2Index& c2i, CountedPtr<SH3::LightDigitalSurface> surf) {
+            return SH3::getPointelRange(c2i, surf);
+        });
+    m.def("getCellRange", [](CountedPtr<SH3::LightDigitalSurface> surf, int dim) {
+        return SH3::getCellRange(surf, dim);
+        });
+    m.def("getCellRange", [](CountedPtr<SH3::DigitalSurface> surf, int dim) {
+        return SH3::getCellRange(surf, dim);
+        });
+    m.def("getRangeMatch", &SH3::getRangeMatch<SH3::Surfel>);
+    m.def("getMatchedRange", &SH3::getMatchedRange<SH3::RealVectors>);
 
     // Various helper functions
-    // TODO: Takes a std::vector instead (to be compatible with list)
-    m.def("applyColorMap", [](py::buffer array, Parameters params = SH3::defaultParameters()) {
-        py::buffer_info info = array.request();
+    m.def("applyColorMap", &apply_colormap<int>);
+    m.def("applyColorMap", &apply_colormap<float>);
+    m.def("applyColorMap", &apply_colormap<double>);
 
-        if (info.ndim != 1) 
-            throw std::runtime_error("Expected a linear buffer");
 
-        // Integral types
-        if (info.format == py::format_descriptor<char>::format())                  return apply_colormap<char>(static_cast<char*>(info.ptr), info.shape[0], params);
-        if (info.format == py::format_descriptor<short>::format())                 return apply_colormap<short>(static_cast<short*>(info.ptr), info.shape[0], params);
-        if (info.format == py::format_descriptor<int>::format())                   return apply_colormap<int> (static_cast<int*>(info.ptr), info.shape[0], params);
-        if (info.format == py::format_descriptor<long int>::format())              return apply_colormap<long int>(static_cast<long int*>(info.ptr), info.shape[0], params);
-        if (info.format == py::format_descriptor<long long int>::format())         return apply_colormap<long long int>(static_cast<long long int*>(info.ptr), info.shape[0], params);
-
-        // Integral unsigned types
-        if (info.format == py::format_descriptor<unsigned char>::format())          return apply_colormap<unsigned char>(static_cast<unsigned char*>(info.ptr), info.shape[0], params);
-        if (info.format == py::format_descriptor<unsigned short>::format())         return apply_colormap<unsigned short>(static_cast<unsigned short*>(info.ptr), info.shape[0], params);
-        if (info.format == py::format_descriptor<unsigned int>::format())           return apply_colormap<unsigned int> (static_cast<unsigned int*>(info.ptr), info.shape[0], params);
-        if (info.format == py::format_descriptor<unsigned long int>::format())      return apply_colormap<unsigned long int> (static_cast<unsigned long int*>(info.ptr), info.shape[0], params);
-        if (info.format == py::format_descriptor<unsigned long long int>::format()) return apply_colormap<unsigned long long int> (static_cast<unsigned long long int*>(info.ptr), info.shape[0], params);
-        
-        // Floating point types
-        if (info.format == py::format_descriptor<float>::format())  return apply_colormap<int>(static_cast<int*>(info.ptr), info.shape[0], params);
-        if (info.format == py::format_descriptor<double>::format()) return apply_colormap<int>(static_cast<int*>(info.ptr), info.shape[0], params);
-
-        throw std::runtime_error("Unknown format: expected (unsigned) char/short/int/long int/long long int or float/double arrays");
-        
-    });
-    
-
+    // SHG3 Shortcuts :
+    mg.def("getIIMeanCurvatures", [](
+        CountedPtr<SH3::BinaryImage> im, const SH3::SurfelRange& range, 
+        const Parameters& params) {
+            return SHG3::getIIMeanCurvatures(im, range, params);
+        });
+    mg.def("getIIMeanCurvatures", [](
+        CountedPtr<SH3::DigitizedImplicitShape3D> im, const SH3::SurfelRange& range, 
+        const Parameters& params) {
+            return SHG3::getIIMeanCurvatures(im, range, params);
+        });
+    mg.def("getIIGaussianCurvatures", [](
+        CountedPtr<SH3::BinaryImage> im, const SH3::SurfelRange& range, 
+        const Parameters& params) {
+            return SHG3::getIIGaussianCurvatures(im, range, params);
+        });
+    mg.def("getIIGaussianCurvatures", [](
+        CountedPtr<SH3::DigitizedImplicitShape3D> im, const SH3::SurfelRange& range, 
+        const Parameters& params) {
+            return SHG3::getIIGaussianCurvatures(im, range, params);
+        });
+    mg.def("getIINormalVectors", [](
+        CountedPtr<SH3::BinaryImage> im, const SH3::SurfelRange& range, 
+        const Parameters& params) {
+            return SHG3::getIINormalVectors(im, range, params);
+        });
+    mg.def("getIINormalVectors", [](
+        CountedPtr<SH3::DigitizedImplicitShape3D> im, const SH3::SurfelRange& range, 
+        const Parameters& params) {
+            return SHG3::getIINormalVectors(im, range, params);
+        });
+    mg.def("getPositions", [](
+        CountedPtr<SH3::ImplicitShape3D> shape, const SH3::KSpace& K, 
+        const SH3::SurfelRange& surfels, const Parameters& params) {
+            return SHG3::getPositions(shape, K, surfels, params);
+        });
+    mg.def("getNormalVectors", [](
+        CountedPtr<SH3::ImplicitShape3D> shape, const SH3::KSpace& K, 
+        const SH3::SurfelRange& surfels, const Parameters& params) {
+            return SHG3::getNormalVectors(shape, K, surfels, params);
+        });
+    mg.def("getMeanCurvatures", [](
+        CountedPtr<SH3::ImplicitShape3D> shape, const SH3::KSpace& K, 
+        const SH3::SurfelRange& surfels, const Parameters& params) {
+            return SHG3::getMeanCurvatures(shape, K, surfels, params);
+        });
+    mg.def("getGaussianCurvatures", [](
+        CountedPtr<SH3::ImplicitShape3D> shape, const SH3::KSpace& K, 
+        const SH3::SurfelRange& surfels, const Parameters& params) {
+            return SHG3::getGaussianCurvatures(shape, K, surfels, params);
+        });
+    mg.def("getFirstPrincipalCurvatures", &SHG3::getFirstPrincipalCurvatures);
+    mg.def("getSecondPrincipalCurvatures", &SHG3::getSecondPrincipalCurvatures);
+    mg.def("getFirstPrincipalDirections", &SHG3::getFirstPrincipalDirections);
+    mg.def("getSecondPrincipalDirections", &SHG3::getSecondPrincipalCurvatures);
+    mg.def("getVCMNormalVectors", 
+        [](CountedPtr<SH3::LightDigitalSurface> surf, 
+           const SH3::SurfelRange& range, const Parameters& params) {
+            return SHG3::getVCMNormalVectors(surf, range, params);
+        });
+    mg.def("getVCMNormalVectors", 
+        [](CountedPtr<SH3::DigitalSurface> surf, 
+           const SH3::SurfelRange& range, const Parameters& params) {
+            return SHG3::getVCMNormalVectors(surf, range, params);
+        });
+    mg.def("getATScalarFieldApproximation", [](
+        std::vector<double>& scalars, 
+        const SH3::CellRange& range, 
+        CountedPtr<SH3::LightDigitalSurface> surface, 
+        const SH3::SurfelRange& surfels, 
+        const std::vector<double>& input, 
+        const Parameters& params) {
+            return SHG3::getATScalarFieldApproximation(scalars, range.cbegin(), range.cend(), surface, surfels, input, params);
+        });
+    mg.def("getATScalarFieldApproximation", [](
+        std::vector<double>& scalars, 
+        const SH3::CellRange& range, 
+        CountedPtr<SH3::DigitalSurface> surface, 
+        const SH3::SurfelRange& surfels, 
+        const std::vector<double>& input, 
+        const Parameters& params) {
+            return SHG3::getATScalarFieldApproximation(scalars, range.cbegin(), range.cend(), surface, surfels, input, params);
+        });("getScalarsAbsoluteDifference", &SHG3::getScalarsAbsoluteDifference);
+    mg.def("getStatistics", &SHG3::getStatistic);
 }
