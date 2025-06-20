@@ -35,25 +35,13 @@ using SH3 = Shortcuts<Z3i::KSpace>;
 using SHG3 = ShortcutsGeometry<Z3i::KSpace>;
 
 template<typename T>
-std::vector<Color> apply_colormap(const T* data, size_t count, const Parameters& params) {
-    if (count == 0) return {};
-
-    T min = data[0];
-    T max = data[0];
-    for (size_t i = 1; i < count; ++i) {
-        min = std::min(min, data[i]);
-        max = std::max(max, data[i]);
-    }
-    
-    auto cmap = SH3::getColorMap(min, max, params);
-
-    std::vector<Color> colors(count);
-    for (size_t i = 0; i < count; ++i) {
+std::vector<Color> apply_colormap(const std::vector<T>& data, const SH3::ColorMap& cmap) { 
+    std::vector<Color> colors(data.size());
+    for (size_t i = 0; i < data.size(); ++i) {
         colors[i] = cmap(data[i]);
     }
     return colors;
 }
-
 // Named apply_colormapV to ease binding and not conflict with above declaration
 template<typename T>
 std::vector<Color> apply_colormapV(const std::vector<T>& data, const Parameters& params) { 
@@ -67,12 +55,7 @@ std::vector<Color> apply_colormapV(const std::vector<T>& data, const Parameters&
     }
     
     auto cmap = SH3::getColorMap(min, max, params);
-
-    std::vector<Color> colors(data.size());
-    for (size_t i = 0; i < data.size(); ++i) {
-        colors[i] = cmap(data[i]);
-    }
-    return colors;
+    return apply_colormap(data, cmap);
 }
 
 
@@ -89,6 +72,12 @@ void define_types(py::module& m) {
     //  CellEmbedder
     //  SCellEmbedder
     
+    // TODO: In IO module?
+    py::class_<SH3::ColorMap>(m, "ColorMap")
+        .def(py::init<double, double>())
+        .def("addColor", &SH3::ColorMap::addColor)
+        .def("__call__", &SH3::ColorMap::operator());
+
     // Ranges
     py::class_<SH3::SurfelRange>(m, "__SurfelRange"); // This is a vector, so len() is available !
     py::class_<SH3::IdxRange>(m, "IdxRange");
@@ -115,6 +104,7 @@ void define_types(py::module& m) {
     py::class_<CountedPtr<SH3::DigitizedImplicitShape3D>>(m, "__PtrDIgitizedImplicitShape3D");
     py::class_<SH3::Cell2Index>(m, "Cell2Index")
         .def(py::init<>());
+
 }
 
 void defines_types_geometry(py::module& m) {
@@ -255,9 +245,13 @@ void bind_shortcuts(py::module& m_helpers) {
     m.def("getMatchedRange", &SH3::getMatchedRange<SH3::RealVectors>);
 
     // Various helper functions
+    m.def("getColorMap", &SH3::getColorMap);
     m.def("applyColorMap", &apply_colormap<int>);
     m.def("applyColorMap", &apply_colormap<float>);
     m.def("applyColorMap", &apply_colormap<double>);
+    m.def("applyColorMap", &apply_colormapV<int>);
+    m.def("applyColorMap", &apply_colormapV<float>);
+    m.def("applyColorMap", &apply_colormapV<double>);
 
 
     // SHG3 Shortcuts :
