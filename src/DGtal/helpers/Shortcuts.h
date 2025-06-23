@@ -2414,7 +2414,7 @@ namespace DGtal
       /// @param[in] path Path to file
       /// @return A smart pointer to the loaded polygonal surface, that holds nullptr if loading failed. 
       static CountedPtr<SurfaceMesh>
-      loadSurfaceMesh(const std::string& path) 
+      makeSurfaceMesh(const std::string& path) 
       {
         std::ifstream file(path);
         if (file.is_open()) 

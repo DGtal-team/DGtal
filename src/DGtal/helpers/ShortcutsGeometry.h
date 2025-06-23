@@ -219,17 +219,13 @@ namespace DGtal
       ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
       ///   - projectionGamma   [   0.5]: the damping coefficient of the projection.
       ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
-      ///   - curvatureRadius[2.0]: Radius for curvature computation
-      ///   - unit_u [0]: Use unit normals for (CNC) curvature computations.
       static Parameters parametersShapeGeometry()
       {
         return Parameters
           ( "projectionMaxIter",  20 )
           ( "projectionAccuracy", 0.0001 )
           ( "projectionGamma",    0.5 )
-          ( "gridstep",           1.0 )
-          ( "curvatureRadius",    2.0 )
-          ( "unit_u",             0 );
+          ( "gridstep",           1.0 );
       }
 
       /// Given a space \a K, an implicit \a shape, a sequence of \a
@@ -388,7 +384,9 @@ namespace DGtal
     /// @param faces The faces to compute curvature at
     /// @param params
     ///   - unit_u: Whether the computed normals should be normalized or not
-    ///   - curvatureRadius: The ball radius to compute curvature in
+    ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
+    ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II, CNC)."
+    ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
     /// @return The curvatures at each face of the mesh, in the same order `faces` 
     static Scalars
       getCNCMeanCurvatures
@@ -399,7 +397,10 @@ namespace DGtal
         using Face = typename Base::SurfaceMesh::Face;
 
         bool unit_u = params["unit_u"].as<int>();
-        double radius = params["curvatureRadius"].as<double>();
+        double radius = params["r-radius"].as<double>();
+        double alpha  = params["alpha"].as<double>();
+        double h      = params["gridstep"].as<double>();
+        if ( alpha != 1.0 ) radius *= pow( h, alpha-1.0 );
 
         CNCComputer computer(*mesh, unit_u);
         
@@ -429,7 +430,9 @@ namespace DGtal
     /// @param mesh The surface mesh
     /// @param params
     ///   - unit_u: Whether the computed normals should be normalized or not
-    ///   - curvatureRadius: The ball radius to compute curvature in
+    ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
+    ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II, CNC)."
+    ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
     /// @return The curvatures at each face of mesh, in the the order given by the mesh
     static Scalars
       getCNCMeanCurvatures
@@ -453,7 +456,9 @@ namespace DGtal
     /// @param digitalObject A digital object
     /// @param params
     ///   - unit_u: Whether the computed normals should be normalized or not
-    ///   - curvatureRadius: The ball radius to compute curvature in
+    ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
+    ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II, CNC)."
+    ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
     /// @return The curvatures at each face of the triangulated surface object
     template <typename T>
     static Scalars
@@ -515,7 +520,9 @@ namespace DGtal
     /// @param faces The faces to compute curvature at
     /// @param params
     ///   - unit_u: Whether the computed normals should be normalized or not
-    ///   - curvatureRadius: The ball radius to compute curvature in
+    ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
+    ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II, CNC)."
+    ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
     /// @return The curvatures at each face of the mesh, in the same order `faces` 
     static Scalars
       getCNCGaussianCurvatures
@@ -526,7 +533,10 @@ namespace DGtal
         using Face = typename Base::SurfaceMesh::Face;
 
         bool unit_u = params["unit_u"].as<int>();
-        double radius = params["curvatureRadius"].as<double>();
+        double radius = params["r-radius"].as<double>();
+        double alpha  = params["alpha"].as<double>();
+        double h      = params["gridstep"].as<double>();
+        if ( alpha != 1.0 ) radius *= pow( h, alpha-1.0 );
 
         CNCComputer computer(*mesh, unit_u);
         
@@ -556,7 +566,9 @@ namespace DGtal
     /// @param mesh The surface mesh
     /// @param params
     ///   - unit_u: Whether the computed normals should be normalized or not
-    ///   - curvatureRadius: The ball radius to compute curvature in
+    ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
+    ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II, CNC)."
+    ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
     /// @return The curvatures at each face of the mesh, in thn the order given by the mesh
     static Scalars
       getCNCGaussianCurvatures
@@ -579,7 +591,9 @@ namespace DGtal
     /// @param digitalObject A digital object
     /// @param params
     ///   - unit_u: Whether the computed normals should be normalized or not
-    ///   - curvatureRadius: The ball radius to compute curvature in
+    ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
+    ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II, CNC)."
+    ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
     /// @return The curvatures at each face of the triangulated surface object
     template <typename T>
     static Scalars
@@ -813,7 +827,9 @@ namespace DGtal
       /// @param[in] faces The faces to compute curvature at
       /// @param[in] params
       ///   - unit_u: Whether the computed normals should be normalized or not
-      ///   - curvatureRadius: The ball radius to compute curvature in
+      ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
+      ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II, CNC)."
+      ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
       /// @return The principal curvatures at each face of the mesh, in the same order as faces. The result is a 4-element tuples: [first curvatures, second curvatures, first directions, second directions].
       static std::tuple<Scalars, Scalars, RealVectors, RealVectors>
         getCNCPrincipalCurvaturesAndDirections
@@ -824,7 +840,10 @@ namespace DGtal
           using Face = typename Base::SurfaceMesh::Face;
 
           bool unit_u = params["unit_u"].as<int>();
-          double radius = params["curvatureRadius"].as<double>();
+          double radius = params["r-radius"].as<double>();
+          double alpha  = params["alpha"].as<double>();
+          double h      = params["gridstep"].as<double>();
+          if ( alpha != 1.0 ) radius *= pow( h, alpha-1.0 );
 
           CNCComputer computer(*mesh, unit_u);
           
@@ -869,7 +888,9 @@ namespace DGtal
       /// @param[in,out] mesh The surface mesh. The mesh will be modified if no face normals are provided.
       /// @param[in] params
       ///   - unit_u: Whether the computed normals should be normalized or not
-      ///   - curvatureRadius: The ball radius to compute curvature in
+      ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
+      ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II, CNC)."
+      ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
       /// @return The principal curvatures at each face of the mesh, in the same order as mesh faces. The result is a 4-element tuples: [first curvatures, second curvatures, first directions, second directions].
       static std::tuple<Scalars, Scalars, RealVectors, RealVectors>
         getCNCPrincipalCurvaturesAndDirections
@@ -882,27 +903,29 @@ namespace DGtal
           return getCNCPrincipalCurvaturesAndDirections(mesh, allFaces, params);
         }
 
-    /// Given a SurfaceMesh, compute principal curvature at each face using CorrectedNormalCurrent method.
-    ///
-    /// @warning in this code, only triangle strictly inside the sphere are 
-    /// considered.
-    ///
-    /// @tparam T Any digital object convertible to surface mesh via Shortcuts::makePrimalSurfaceMesh
-    /// @param digitalObject A digital object
-    /// @param params
-    ///   - unit_u: Whether the computed normals should be normalized or not
-    ///   - curvatureRadius: The ball radius to compute curvature in
-    /// @return The curvatures at each face of the triangulated surface object
-    template<typename T>
-    static std::tuple<Scalars, Scalars, RealVectors, RealVectors>
-      getCNCPrincipalCurvaturesAndDirections
-      ( T&                digitalObject, 
-        const Parameters& params = parametersShapeGeometry() )
-      {
-        CountedPtr<typename Base::SurfaceMesh> mesh = Base::makePrimalSurfaceMesh(digitalObject);
-        return getCNCPrincipalCurvaturesAndDirections(mesh, params);
-      }
-       /// @}
+      /// Given a SurfaceMesh, compute principal curvature at each face using CorrectedNormalCurrent method.
+      ///
+      /// @warning in this code, only triangle strictly inside the sphere are 
+      /// considered.
+      ///
+      /// @tparam T Any digital object convertible to surface mesh via Shortcuts::makePrimalSurfaceMesh
+      /// @param digitalObject A digital object
+      /// @param params
+      ///   - unit_u: Whether the computed normals should be normalized or not
+      ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
+      ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II, CNC)."
+      ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
+      /// @return The curvatures at each face of the triangulated surface object
+      template<typename T>
+      static std::tuple<Scalars, Scalars, RealVectors, RealVectors>
+        getCNCPrincipalCurvaturesAndDirections
+        ( T&                digitalObject, 
+          const Parameters& params = parametersShapeGeometry() )
+        {
+          CountedPtr<typename Base::SurfaceMesh> mesh = Base::makePrimalSurfaceMesh(digitalObject);
+          return getCNCPrincipalCurvaturesAndDirections(mesh, params);
+        }
+         /// @}
 
       // --------------------------- geometry estimation ------------------------------
       /// @name Geometry estimation services
@@ -918,6 +941,7 @@ namespace DGtal
       ///   - kernel          [ "hat"]: the kernel integration function chi_r, either "hat" or "ball". )
       ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
       ///   - surfelEmbedding [     0]: the surfel -> point embedding for VCM estimator: 0: Pointels, 1: InnerSpel, 2: OuterSpel.
+      ///   - unit_u [0]: Use unit normals for (CNC) curvature computations.
       static Parameters parametersGeometryEstimation()
       {
         return Parameters
@@ -927,7 +951,8 @@ namespace DGtal
           ( "R-radius",       10.0 )
           ( "r-radius",        3.0 )
           ( "alpha",          0.33 )
-          ( "surfelEmbedding",   0 );
+          ( "surfelEmbedding",   0 )
+          ( "unit_u"         ,   0 );
       }
 
       /// Given a digital space \a K and a vector of \a surfels,
@@ -1565,7 +1590,7 @@ namespace DGtal
       /// @param[in] surfels the sequence of surfels at which we compute the Gaussian curvatures
       /// @param[in] params the parameters:
       ///   - verbose         [     1]: verbose trace mode 0: silent, 1: verbose.
-      ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
+      ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).;
       ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
       ///
