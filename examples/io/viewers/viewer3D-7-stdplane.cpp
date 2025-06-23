@@ -53,7 +53,7 @@ $ ./examples/io/viewers/viewer3D-7-stdplane
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/geometry/surfaces/COBAGenericStandardPlaneComputer.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -125,8 +125,6 @@ int main( int argc, char** argv )
   unsigned int nb = 0;
   unsigned int nbok = 0;
 
-  QApplication application(argc,argv);
-
   unsigned int diameter = argc > 1 ? atoi( argv[ 1 ] ) : 10;
   int a = argc > 2 ? atoi( argv[ 2 ] ) : 2;
   int b = argc > 3 ? atoi( argv[ 3 ] ) : 3;
@@ -165,28 +163,29 @@ int main( int argc, char** argv )
   trace.emphase() << ( (nb == nbok) ? "Passed." : "Error." ) << endl;
   trace.endBlock();
 
-  typedef Viewer3D<> MyViewer;
-  MyViewer viewer;
-  viewer.show();
+  PolyscopeViewer viewer;
   Color red( 255, 0, 0 );
   Color green( 0, 255, 0 );
   Color grey( 200, 200, 200 );
   Domain domain2( Point( -2*diameter, -2*diameter, -2*diameter ),
                   Point(  2*diameter,  2*diameter,  2*diameter ) );
-  viewer << CustomColors3D( red, red );
+  viewer << red;
   for ( std::vector<Point>::const_iterator it = recognized.begin(),
           itE = recognized.end(); it != itE; ++it )
     if ( ! strip( *it ) ) viewer << *it;
-  viewer << CustomColors3D( green, green );
+
+  viewer << green; 
   displayRange( viewer, plane.begin(), plane.end() );
-  viewer << CustomColors3D( grey, grey );
+
+  viewer << grey;
   displayPredicate( viewer, domain2, strip );
-  viewer << MyViewer::updateDisplay;
+
   trace.info() << "- Points in green have been recognized as belonging to this standard plane." << std::endl;
   trace.info() << "- Points in grey belongs also to the parallel strip of the recognized standard plane." << std::endl;
   trace.info() << "- Points in red belongs to the parallel strip of the recognized standard plane but not to the input standard plane: NONE should be red." << std::endl;
 
-  return application.exec();
+  viewer.show();
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

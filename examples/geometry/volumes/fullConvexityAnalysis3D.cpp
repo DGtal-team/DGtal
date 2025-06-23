@@ -71,8 +71,7 @@ fullConvexityAnalysis3D 2 ${DGTAL}/examples/samples/Al.100.vol
 #include <iostream>
 #include <queue>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -257,8 +256,6 @@ int main( int argc, char** argv )
   int         m = argc > 3 ? atoi( argv[ 3 ] ) : 0;
   int         M = argc > 4 ? atoi( argv[ 4 ] ) : 255;
 
-  QApplication application(argc,argv);
-
   auto   params  = SH3::defaultParameters();
   
   // Domain creation from two bounding points.
@@ -319,19 +316,15 @@ int main( int argc, char** argv )
           all_colors[ i ] = colors[ result[ j ] ];
         }
       SH3::saveOBJ( surface, SH3::RealVectors(), all_colors, "geom-cvx.obj" );
-      Viewer3D<> viewer;
-      viewer.setWindowTitle("fullConvexityAnalysis3D");
-      viewer.show();  
+      PolyscopeViewer viewer;
       int i = 0;
-      viewer << SetMode3D( dummy.className(), "Basic" );
       for ( auto s : (*surface) )
         {
-          viewer << CustomColors3D( all_colors[ i ], all_colors[ i ] )
+          viewer << all_colors[ i ]
                  << s;
           i++;
         }
-      viewer<< Viewer3D<>::updateDisplay;
-      application.exec();
+      viewer.show();  
     }
   else
     {
@@ -369,18 +362,14 @@ int main( int argc, char** argv )
       SH3::saveOBJ( surface, SH3::RealVectors(), all_colors, "geom-scale-cvx.obj" );
       SCell dummy;
       int i = 0;
-      Viewer3D<> viewer;
-      viewer.setWindowTitle("fullConvexityAnalysis3D");
-      viewer.show();  
-      viewer << SetMode3D( dummy.className(), "Basic" );
+      PolyscopeViewer<> viewer;
       for ( auto s : (*surface) )
         {
-          viewer << CustomColors3D( all_colors[ i ], all_colors[ i ] )
+          viewer << all_colors[ i ]
                  << s;
           i++;
         }
-      viewer<< Viewer3D<>::updateDisplay;
-      application.exec();
+      viewer.show();  
     }      
   return 0;
 }

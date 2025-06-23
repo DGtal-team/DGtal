@@ -1,20 +1,11 @@
-set(DGTAL_EXAMPLES_IO_SRC
-	display3DToOFF
-)
-
-foreach(FILE ${DGTAL_EXAMPLES_IO_SRC})
-   DGtal_add_example(${FILE})
-endforeach()
-
-
-if (  WITH_VISU3D_QGLVIEWER )
-  set(DGTAL_EXAMPLES_QGL_SRC
+if (  DGTAL_WITH_POLYSCOPE )
+  set(DGTAL_EXAMPLES_POLYSCOPE_SRC
     digitalSetFromVol
     digitalSetFromPointList
-    meshFromOFF
+    #    meshFromOFF
     viewDualSurface
     )
-  foreach(FILE ${DGTAL_EXAMPLES_QGL_SRC})
+  foreach(FILE ${DGTAL_EXAMPLES_POLYSCOPE_SRC})
      DGtal_add_example(${FILE})
   endforeach()
 
@@ -22,4 +13,4 @@ if (  WITH_VISU3D_QGLVIEWER )
 endif()
 
 add_subdirectory(boards)
-
+add_subdirectory(external-viewers)

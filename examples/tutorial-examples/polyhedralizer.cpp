@@ -70,9 +70,7 @@ Example of tutorial 2: making a polyhedron from a digital object
 #include "DGtal/images/SimpleThresholdForegroundPredicate.h"
 //! [polyhedralizer-includes-readvol]
 
-#include "DGtal/io/Display3D.h"
-#include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 
 #include "DGtal/topology/DigitalSurface.h"
@@ -158,7 +156,6 @@ double LSF( RealVector& N, ConstIterator itB, ConstIterator itE )
 
 int main( int argc, char** argv )
 {
-  QApplication application(argc,argv);
   string inputFilename = argc > 1 ? argv[ 1 ] : examplesPath+"/samples/Al.100.vol";
   int threshold = argc > 2 ? atoi( argv[ 2 ] ) : 0;
   int widthNum = argc > 3 ? atoi( argv[ 3 ] ) : 2;
@@ -415,14 +412,12 @@ int main( int argc, char** argv )
   //! [polyhedralizer-MakeMesh]
 
   //! [polyhedralizer-visualization]
-  typedef Viewer3D<Space,KSpace> MyViewer3D;
+  typedef PolyscopeViewer<Space,KSpace> MyViewer3D;
   MyViewer3D viewer( ks );
-  viewer.show();
-  bool isOK = polyhedron >> "test.off";
-  bool isOK2 = polyhedron >> "test.obj";
+  // bool isOK = polyhedron >> "test.off";
+  // bool isOK2 = polyhedron >> "test.obj";
   viewer << polyhedron;
-  viewer << MyViewer3D::updateDisplay;
-  application.exec();
+  viewer.show();
   //! [polyhedralizer-visualization]
 
   //! [polyhedralizer-freeMemory]
@@ -431,9 +426,5 @@ int main( int argc, char** argv )
         it != itE; ++it )
     delete *it;
   //! [polyhedralizer-freeMemory]
-
-  if (isOK && isOK2)
-    return 0;
-  else
-    return 1;
-}
+  return true;
+  }

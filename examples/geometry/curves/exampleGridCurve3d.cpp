@@ -54,13 +54,11 @@ This command line produces the following output (points are displayed as voxels)
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
-#include "DGtal/io/viewers/Viewer3D.h"
 #include "DGtal/geometry/curves/GridCurve.h"
 
-#ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
+#ifdef DGTAL_WITH_POLYSCOPE
+  #include "DGtal/io/viewers/PolyscopeViewer.h"
 #endif
-
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -79,7 +77,7 @@ int main( int argc, char** argv )
 	       << argv[0] << " scells" << endl; 
   trace.info() << "Available types are: gridcurve (default), scells, points, midpoints, arrows" << endl;
 
-  string type = (argc > 1) ? string(argv[1]) : "gridcurve";
+  string type = (argc > 1) ? string(argv[1]) : "arrows";
   trace.info() << "Chosen type: " << type << endl; 
 
   //curve
@@ -103,11 +101,8 @@ int main( int argc, char** argv )
   inputStream.close();
   //! [GridCurveFromDataFile]
 
-  bool flag = false;
-#ifdef WITH_VISU3D_QGLVIEWER
-  QApplication application(argc,argv);
-  Viewer3D<Space,K3> viewer(ks);
-  viewer.show();
+#ifdef DGTAL_WITH_POLYSCOPE
+  PolyscopeViewer<Space,K3> viewer(ks);
 
   if (type == "gridcurve")
     {
@@ -133,11 +128,10 @@ int main( int argc, char** argv )
     {
       trace.info() << "Display type not known." << std::endl;
     }
-  viewer << Viewer3D<Space,K3>::updateDisplay;
-  flag = application.exec();
+  viewer.show();
 #endif
 
-  return flag;
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

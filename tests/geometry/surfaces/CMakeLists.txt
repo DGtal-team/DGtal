@@ -38,12 +38,12 @@ if (   DGTAL_WITH_CGAL )
 endif()
 
 
-if (  WITH_VISU3D_QGLVIEWER )
-  set(QGLVIEWER_TESTS_SRC
+if (  DGTAL_WITH_POLYSCOPE )
+  set(POLYSCOPE_VIEWER_TESTS_SRC
     testLocalConvolutionNormalVectorEstimator
     testTensorVotingViewer)
 
-  foreach(FILE ${QGLVIEWER_TESTS_SRC})
+  foreach(FILE ${POLYSCOPE_VIEWER_TESTS_SRC})
     DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
   endforeach()
 endif()

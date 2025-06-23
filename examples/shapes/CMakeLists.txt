@@ -7,21 +7,21 @@ foreach(FILE ${DGTAL_EXAMPLES_SRC})
      DGtal_add_example(${FILE})
 endforeach()
 
-### with QGLViewer
-if (  WITH_VISU3D_QGLVIEWER )
-  set(DGTAL_SHAPES_EXAMPLES_QGL_SRC
+### with Polyscope viewer
+if (  DGTAL_WITH_POLYSCOPE_VIEWER )
+  set(DGTAL_SHAPES_EXAMPLES_POLYSCOPE_SRC
      mesh3DConstructionAndVisualisation
      viewMarchingCubes
      viewPolygonalMarchingCubes
      exampleSurfaceMesh
   )
-  foreach(FILE ${DGTAL_SHAPES_EXAMPLES_QGL_SRC})
+  foreach(FILE ${DGTAL_SHAPES_EXAMPLES_POLYSCOPE_SRC})
      DGtal_add_example(${FILE})
   endforeach()
 
 endif()
 
-if (WITH_EIGEN AND WITH_QGLVIEWER)
+if (WITH_EIGEN AND DGTAL_WITH_POLYSCOPE_VIEWER)
 
     set(DGTAL_EXAMPLES_SRC_DEC
         sphereCotangentLaplaceOperator

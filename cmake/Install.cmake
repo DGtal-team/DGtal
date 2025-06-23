@@ -59,7 +59,7 @@ install(EXPORT DGtalTargets
 set(_dependencies_list
   Boost::headers ZLIB
   LibBoard
-   ITK Cairo HDF5 QGLVIEWER Qt5 OpenMP Eigen3::Eigen CGAL FFTW3 OpenMP::OpenMPCXX
+   ITK Cairo HDF5 OpenMP Eigen3::Eigen CGAL FFTW3 OpenMP::OpenMPCXX
   )
 
 foreach(dep ${_dependencies_list})
@@ -95,7 +95,7 @@ set(_find_cmake_files
   "${PROJECT_SOURCE_DIR}/cmake/deps/eigen.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/deps/FindCairo.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/deps/FindFFTW3.cmake"
-  "${PROJECT_SOURCE_DIR}/cmake/deps/FindQGLVIEWER.cmake"
+  "${PROJECT_SOURCE_DIR}/cmake/deps/polyscope.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/deps/eigen.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/deps/libigl.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/deps/openmp.cmake"

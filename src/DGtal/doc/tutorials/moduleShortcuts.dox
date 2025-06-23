@@ -126,13 +126,10 @@ surface does not touch the boundary of the domain).
 
 If you wish to display them with two different colors, you may write:
 \code
-    QApplication application(argc,argv);
-    Viewer3D<> viewer;
+    PolyscopeViewer<> viewer;
+    viewer << Color::Red  << *mesh40;
+    viewer << Color::Blue << *mesh200;
     viewer.show();
-    viewer << CustomColors3D( Color::Black, Color::Red  ) << *mesh40;
-    viewer << CustomColors3D( Color::Black, Color::Blue ) << *mesh200;
-    viewer << Viewer3D<>::updateDisplay;
-    application.exec();
 \endcode
 
 @subsubsection dgtal_shortcuts_ssec2_1_4 -> extract 2 triangulated isosurfaces -> save as OBJ
