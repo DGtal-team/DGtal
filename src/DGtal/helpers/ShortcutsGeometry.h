@@ -219,6 +219,7 @@ namespace DGtal
       ///   - projectionAccuracy[0.0001]: the zero-proximity stop criterion during projection.
       ///   - projectionGamma   [   0.5]: the damping coefficient of the projection.
       ///   - gridstep [  1.0]: the gridstep that defines the digitization (often called h).
+      ///   - curvatureRadius[2.0]: Radius for curvature computation
       ///   - unit_u [0]: Use unit normals for (CNC) curvature computations.
       static Parameters parametersShapeGeometry()
       {
@@ -380,7 +381,7 @@ namespace DGtal
     /// Given a SurfaceMesh, compute mean curvature at each face using 
     /// CorrectedNormalCurrent method.
     ///
-    /// @warning: in this code, only triangle strictly inside the sphere are 
+    /// @warning In this code, only triangle strictly inside the sphere are 
     /// considered.
     ///
     /// @param mesh The surface mesh
@@ -422,7 +423,7 @@ namespace DGtal
     ///
     /// This overloads compute curvature at each face of the mesh.
     ///
-    /// @warning: in this code, only triangle strictly inside the sphere are 
+    /// @warning in this code, only triangle strictly inside the sphere are 
     /// considered.
     ///
     /// @param mesh The surface mesh
@@ -445,7 +446,7 @@ namespace DGtal
     /// Given a SurfaceMesh, compute mean curvature at each face using 
     /// CorrectedNormalCurrent method.
     ///
-    /// @warning: in this code, only triangle strictly inside the sphere are 
+    /// @warning in this code, only triangle strictly inside the sphere are 
     /// considered.
     ///
     /// @tparam Any digital object convertible to surface mesh via Shortcuts::makePrimalSurfaceMesh
@@ -507,7 +508,7 @@ namespace DGtal
     /// Given a SurfaceMesh, compute gaussian curvature at each face using 
     /// CorrectedNormalCurrent method.
     ///
-    /// @warning: in this code, only triangle strictly inside the sphere are 
+    /// @warning in this code, only triangle strictly inside the sphere are 
     /// considered.
     ///
     /// @param mesh The surface mesh
@@ -549,7 +550,7 @@ namespace DGtal
     ///
     /// This overloads compute curvature at each face of the mesh.
     ///
-    /// @warning: in this code, only triangle strictly inside the sphere are 
+    /// @warning in this code, only triangle strictly inside the sphere are 
     /// considered.
     ///
     /// @param mesh The surface mesh
@@ -571,7 +572,7 @@ namespace DGtal
     /// Given a SurfaceMesh, compute mean curvature at each face using 
     /// CorrectedNormalCurrent method.
     ///
-    /// @warning: in this code, only triangle strictly inside the sphere are 
+    /// @warning in this code, only triangle strictly inside the sphere are 
     /// considered.
     ///
     /// @tparam T Any digital object convertible to surface mesh via Shortcuts::makePrimalSurfaceMesh
@@ -805,7 +806,7 @@ namespace DGtal
       ///
       /// @note: If no normals are provided for the faces; the normals will be computed (and set) using vertex normals if they exists and positions otherwise. 
       ///
-      /// @warning: in this code, only triangle strictly inside the sphere are 
+      /// @warning in this code, only triangle strictly inside the sphere are 
       /// considered.
       ///
       /// @param[in,out] mesh The surface mesh. The mesh will be modified if no face normals are provided.
@@ -862,7 +863,7 @@ namespace DGtal
       ///
       /// @note: If no normals are provided for the faces; the normals will be computed (and set) using vertex normals if they exists and positions otherwise. 
       ///
-      /// @warning: in this code, only triangle strictly inside the sphere are 
+      /// @warning in this code, only triangle strictly inside the sphere are 
       /// considered.
       ///
       /// @param[in,out] mesh The surface mesh. The mesh will be modified if no face normals are provided.
@@ -883,7 +884,7 @@ namespace DGtal
 
     /// Given a SurfaceMesh, compute principal curvature at each face using CorrectedNormalCurrent method.
     ///
-    /// @warning: in this code, only triangle strictly inside the sphere are 
+    /// @warning in this code, only triangle strictly inside the sphere are 
     /// considered.
     ///
     /// @tparam T Any digital object convertible to surface mesh via Shortcuts::makePrimalSurfaceMesh
