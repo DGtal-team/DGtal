@@ -16,7 +16,7 @@ namespace DGtal {
 
 \section DGtalMigration_Intro Introduction and features changes
 
-With version 2.0 of DGtal, the internal and external structures of 3D visualisation have been completely changed. The aim is to take advantage of the advanced features of Polyscope, a geometric object viewer. 
+With version 2.0 of DGtal, the internal and external structures of 3D visualization have been completely changed. The aim is to take advantage of the advanced features of Polyscope, a geometric object viewer. 
 
 The major changes are:
 - No more QApplication class
@@ -25,7 +25,7 @@ The major changes are:
 
 \section DGtalMigration_convert Converting code from QGLViewer to PolyscopeViewer
 
-The stream mecanism was kept, therefore most draw commands remains the same. Here are the few steps to migrate from DGtal 1.4 to DGtal 2.0 are:
+The stream mechanism was kept, therefore, most draw commands remain the same. Here are the few steps to migrate from DGtal 1.4 to DGtal 2.0 are:
 - Remove QApplication (and the .exec() file)
 - Move the .show() method to the end of the block.
 - CustomColor3D does not exist anymore. Instead use Display3D::drawColor (or Display3D::draw)
@@ -108,7 +108,7 @@ New 2.0 code:
 As part of the simplification process, here are the old features that now have no direct equivalent: 
 
 - Most Draw Modes have been removed but can be emulated by manipulating the viewer interactively.
-- Image and Domains transform no longer have dedicated classes. To rotate and translate them use elements transform instead (DisplayData::transform).
+- Image and Domain transform no longer have dedicated classes. To rotate and translate them, use elements transform instead (DisplayData::transform).
 - Mesh exports and exports.  
 
 */
