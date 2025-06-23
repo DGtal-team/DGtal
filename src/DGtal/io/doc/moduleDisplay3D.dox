@@ -286,8 +286,8 @@ See more details in  the example: io/viewers/viewer3D-9-3Dimages.cpp
 
 \section DGtalGLV_Groups Object names and groups
 
-Every object that is drawn with the Display3D class is given a name as a string. This serves as a unique identifier and may also be used by viewers as user interface elements. It is possible to 
-specify the name of an object with the draw function (internally, the stream operator will call 
+Each object that is drawn with the Display3D class is given a name as a string. This serves as a unique identifier and may also be used by viewers as user interface elements. It is possible to 
+specify the name of an object with the *draw* function (internally, the stream operator will call 
 this function).
 
 @code
