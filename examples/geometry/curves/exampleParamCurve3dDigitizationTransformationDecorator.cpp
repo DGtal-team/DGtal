@@ -32,7 +32,6 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
-#include "DGtal/io/viewers/Viewer3D.h"
 
 #include "DGtal/geometry/curves/parametric/EllipticHelix.h"
 #include "DGtal/geometry/curves/parametric/NaiveParametricCurveDigitizer3D.h"
@@ -41,8 +40,8 @@
 #include "DGtal/images/RigidTransformation3D.h"
 //! [DigiRotHelixHeader]
 
-#ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
+#ifdef DGTAL_WITH_POLYSCOPE
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -72,7 +71,6 @@ unsigned char findMainAxis ( const T & curve, const long double & t )
 ///////////////////////////////////////////////////////////////////////////////
 int main( int argc, char** argv )
 {
- QApplication application(argc,argv);
  //! [DigiRotHelixConstr]
  typedef EllipticHelix < Space > MyHelix;
  typedef ForwardRigidTransformation3D < Space, RealPoint, RealPoint, Identity > ForwardTrans;
@@ -83,7 +81,7 @@ int main( int argc, char** argv )
  typedef NaiveParametricCurveDigitizer3D < MyRotatedCurve >::MetaData MyMetaData;
  trace.info() << "exampleParamCurve3dDigitizationTransformationDecorator" << endl;
 
- Viewer3D<> viewer;
+ PolyscopeViewer<> viewer;
 
  MyMetaData metaData;
 
@@ -108,20 +106,19 @@ int main( int argc, char** argv )
 
  trace.info() << "Number of points: " << digitalCurve.size () << " number of metadata: " << metaData.size () << endl;
 
- viewer.show();
  for ( unsigned int i = 0; i < digitalCurve.size ( ); i++ )
  {
   if ( findMainAxis ( rotCurve, metaData.at ( i ).first ) == 0 )
-   viewer.setFillColor ( Color ( 255, 0, 0, 128 ) );
+   viewer.drawColor ( Color ( 255, 0, 0, 128 ) );
   if ( findMainAxis ( rotCurve, metaData.at ( i ).first ) == 1 )
-   viewer.setFillColor ( Color ( 0, 255, 0, 128 ) );
+   viewer.drawColor ( Color ( 0, 255, 0, 128 ) );
   if ( findMainAxis ( rotCurve, metaData.at ( i ).first ) == 2 )
-   viewer.setFillColor ( Color ( 0, 0, 255, 128 ) );
-  viewer << SetMode3D ( digitalCurve.at ( i ).className ( ), "PavingWired" ) << digitalCurve.at ( i );
+   viewer.drawColor ( Color ( 0, 0, 255, 128 ) );
+  viewer << digitalCurve.at ( i );
  }
- viewer << Viewer3D<>::updateDisplay;
-
- return application.exec();
+ 
+ viewer.show();
+ return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

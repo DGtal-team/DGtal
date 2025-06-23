@@ -13,11 +13,11 @@ if (DGTAL_BUILD_TESTS)
 endif()
 
 
-if( WITH_VISU3D_QGLVIEWER  )
-  set(DGTAL_DOC_EX_SRC_QGL
+if( DGTAL_WITH_POLYSCOPE  )
+  set(DGTAL_EXAMPLES_POLYSCOPE_SRC
      )
 
-foreach(FILE ${DGTAL_DOC_EX_SRC_QGL})
+foreach(FILE ${DGTAL_EXAMPLES_POLYSCOPE_SRC})
    DGtal_add_example(${FILE})
 endforeach()
 

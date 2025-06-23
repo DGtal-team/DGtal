@@ -63,6 +63,5 @@ RUN mkdir /home/digital/git/DGtal
 RUN git clone https://github.com/DGtal-team/DGtal.git /home/digital/git/DGtal
 
 #RUN mkdir /home/digital/git/DGtal/build 
-RUN cd /home/digital/git/DGtal/build &&  cmake .. -DDGTAL_WITH_GMP=true -DDGTAL_WITH_FFTW3=true - DDGTAL_WITH_CGAL=true  -DDGTAL_WITH_ITK=true -DDGTAL_WITH_OPENMP=true  -DDGTAL_WITH_CAIRO=true -DWITH_QGLVIEWER=true -DDGTAL_WITH_MAGICK=true && make install
 
-
+RUN cd /home/digital/git/DGtal/build &&  cmake .. -DDGTAL_WITH_FFTW3=true - DDGTAL_WITH_CGAL=true  -DDGTAL_WITH_ITK=true -DDGTAL_WITH_OPENMP=true  -DDGTAL_WITH_CAIRO=true -DDGTAL_WITH_POLYSCOPE_VIEWER=true -DDGTAL_WITH_MAGICK=true && make install

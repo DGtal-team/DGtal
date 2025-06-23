@@ -22,7 +22,7 @@
  *
  * @date 2011/01/04
  *
- * An example file named qglViewer.
+ * An example file named Viewer.
  *
  * This file is part of the DGtal library.
  */
@@ -45,8 +45,7 @@
 #include <iostream>
 #include <queue>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -66,10 +65,7 @@ int main( int argc, char** argv )
 
   trace.beginBlock ( "Example simple example of 3DViewer" );
   
-  QApplication application(argc,argv);
-  Viewer3D<> viewer;
-  viewer.setWindowTitle("simpleExample3DViewer");
-  viewer.show();  
+  PolyscopeViewer<> viewer;
   
   // Domain cretation from two bounding points.
   Point c( 0, 0, 0 );
@@ -132,19 +128,16 @@ int main( int argc, char** argv )
 
   // Display by using two different list to manage OpenGL transparency.
 
-  viewer << SetMode3D( shape_set.className(), "Paving" );
-  viewer << CustomColors3D(Color(25,25,255, 255), Color(25,25,255, 255));
+  viewer << Color(25,25,255, 255);
   viewer << S ; 
 
-  viewer << SetMode3D( shape_set.className(), "PavingTransp" );
-  viewer << CustomColors3D(Color(250, 0,0, 25), Color(250, 0,0, 5));
+  viewer << Color(250, 0,0, 25);
   viewer << shape_set;
 
-  viewer<< Viewer3D<>::updateDisplay;
-   
   
   trace.endBlock();
-  return application.exec();
+  viewer.show();  
+  return 0;
 
 }
 //                                                                           //

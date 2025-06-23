@@ -15,38 +15,35 @@
  **/
 
 /**
- * @file io/boards/dgtalBoard3D-6-clipping.cpp
+ * @file io/viewers/viewer3D-5-colors.cpp
  * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2011/19/03
  *
- * Simple example of class Board3D.
+ * Simple example of class PolyscopeViewer.
  *
  * This file is part of the DGtal library.
  */
 
 
-
 /**
- *  Example of clipped object export with Display3D.
- *  @see \ref DGtalGLV_OBJExport
- *  \image html  dgtalBoard3D-6-clipping.png  "Illustration of the resulting exported file (OBJ format visualized with blender)."
- $  \example io/boards/dgtalBoard3D-6-clipping.cpp
- *
- */
-
+ * Example of a custom display
+ * @see \ref DGtalGLV_Custom
+ * \example io/viewers/viewer3D-5-colors.cpp
+ * \image html visuModeCustom.png "Example of several custom display ." width=5cm
+*/
 
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include "DGtal/io/boards/Board3D.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
-#include "DGtal/io/Color.h"
+
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
+#include "DGtal/io/Color.h"
 #include "DGtal/shapes/Shapes.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -58,33 +55,34 @@ using namespace Z3i;
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int /*argc*/, char** /*argv*/ )
+int main( int argc, char** argv )
 {
+  PolyscopeViewer viewer; 
 
- Board3D<> board;
+  Point p1( -1, -1, -2 );
+  Point p2( 2, 2, 3 );
+  Domain domain( p1, p2 );
+  Point p3( 1, 1, 1 );
+  Point p4( 2, -1, 3 );
+  Point p5( -1, 2, 3 );
+  Point p6( 0, 0, 0 );
+  Point p0( 0, 2, 1 );
 
- Point p1( 0, 0, 0 );
- Point p2( 20, 20, 20 );
- Domain domain(p1, p2);
- DigitalSet shape_set( domain );
- 
- Shapes<Domain>::addNorm2Ball( shape_set, Point( 10, 10, 10 ), 7 );
- 
- board << SetMode3D( shape_set.className(), "Both" );
- board << shape_set;
- board << CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 20));
- board <<  SetMode3D( p1.className(), "Paving" );
- 
- board << ClippingPlane(1,0,0,-4.9);
- board << ClippingPlane(0,1,0.3,-10); 
+  // By default, objects are rendered with different colors
+  viewer << p1 << p2 << p3;
 
- board.saveOBJ("board3D-6-clipping.obj");
+  // Drawing color can be changed by inserting it in the stream
+  viewer << Color(255, 0, 0) << p4 << p5 ;
+  viewer << Color(250, 200,0);
+  viewer << p6;
+  viewer << Color(250, 200,0, 20);
+  viewer << p0;
+  
+  viewer.setDefaultColors();
+  viewer << domain;
 
+  viewer.show();
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-
-
-
-

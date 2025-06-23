@@ -42,7 +42,7 @@ To build DGtal in is full configuration, you may need these dependencies too:
 - \e [CGAL](http://cgal.org),
 - \e [libIGL](https://libigl.github.io),
 - \e cairo,
-- \e qglviewer,
+- \e polyscope,
 - \e insighttoolkit, itk >= 5.0
 - \e [HDF5](http://www.hdfgroup.org/HDF5/)
 
@@ -88,7 +88,7 @@ cmake ..
 
 For the full DGtal configuration, you have to set these options with cmake:
 @code
-cmake .. -DDGTAL_WITH_ITK=true  -DDGTAL_WITH_CAIRO=true -DWITH_QGLVIEWER=true 
+cmake .. -DDGTAL_WITH_ITK=true  -DDGTAL_WITH_CAIRO=true -DDGTAL_WITH_POLYSCOPE_VIEWER=true 
 @endcode
 
 If no error occurs, you can build the DGtal lib and install it:

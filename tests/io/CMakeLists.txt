@@ -15,7 +15,6 @@ endforeach()
 
 
 add_subdirectory(viewers)
-add_subdirectory(boards)
 add_subdirectory(colormaps)
 add_subdirectory(readers)
 add_subdirectory(writers)

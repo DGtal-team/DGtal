@@ -28,7 +28,7 @@
 
 
 /**
- * Example of Domain and Point display in Viewer3D.
+ * Example of Domain and Point display in PolyscopeViewer.
  *  @see @ref moduleDisplay3D 
  * \image html demo-kernel-2.png " " 
  *  \example io/viewers/demo-kernel-2.cpp
@@ -44,7 +44,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/io/boards/Board2D.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -55,7 +55,6 @@ using namespace DGtal;
 
 int main( int argc, char** argv )
 {
-  QApplication application(argc,argv);
   typedef DGtal::SpaceND<3, DGtal::int32_t> MySpace;
   typedef MySpace::Point MyPoint;
   typedef HyperRectDomain<MySpace> MyDomain;
@@ -63,12 +62,11 @@ int main( int argc, char** argv )
   MyPoint p2( 5, 5 ,5 );
   MyPoint p3( 2, 3, 4 );
   MyDomain domain( p1, p2 );
-  Viewer3D<> viewer; // for 3D visualization
-  viewer.show();
+  PolyscopeViewer<> viewer; // for 3D visualization
   viewer << domain;
   viewer << p1 << p2 << p3;
-  viewer<< Viewer3D<>::updateDisplay;
-  return application.exec();
+  viewer.show();
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

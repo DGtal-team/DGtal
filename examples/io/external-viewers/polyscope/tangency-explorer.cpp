@@ -442,11 +442,10 @@ void computeGreatTriangle()
 void myCallback()
 {
   // Select a vertex with the mouse
-  if (polyscope::pick::haveSelection()) {
+  if (polyscope::haveSelection()) {
     bool goodSelection = false;
-    auto selection = polyscope::pick::getSelection();
-    auto selectedSurface = static_cast<polyscope::SurfaceMesh*>(selection.first);
-    int idx = selection.second;
+    auto selection = polyscope::getSelection();
+    auto selectedSurface = static_cast<polyscope::SurfaceMesh*>(selection.structure);
 
     // Only authorize selection on the input surface and the reconstruction
     auto surf = polyscope::getSurfaceMesh("Input surface");
@@ -457,6 +456,7 @@ void myCallback()
     // Validate that it its a face index
     if ( goodSelection )
       {
+        int idx = selection.localIndex;
         if ( idx < nv )
           {
             vertex_idx = idx;

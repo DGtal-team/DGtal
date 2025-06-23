@@ -70,8 +70,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/CubicalComplex.h"
 
@@ -159,25 +158,22 @@ int main( int argc, char** argv )
   trace.info() << "After close: " << complex << std::endl;
   trace.endBlock();
 
-  // for 3D display with Viewer3D
-  QApplication application(argc,argv);
-  typedef Viewer3D<Space, KSpace> MyViewer;
+  // for 3D display with PolyscopeViewer
+  typedef PolyscopeViewer<Space, KSpace> MyViewer;
 
   {
     MyViewer viewer(K);
-    viewer.show();
     typedef CC::CellMapConstIterator CellMapConstIterator;
     for ( Dimension d = 0; d <= 3; ++d )
       for ( CellMapConstIterator it = complex.begin( d ), itE = complex.end( d );
             it != itE; ++it )
         {
           bool fixed = (it->second.data == CC::FIXED);
-          if ( fixed ) viewer.setFillColor( Color::Red );
-          else         viewer.setFillColor( Color::White );
+          if ( fixed ) viewer.drawColor( Color::Red );
+          else         viewer.drawColor( Color::White );
           viewer << it->first;
         }
-    viewer<< MyViewer::updateDisplay;
-    application.exec();
+    viewer.show();
   }
   
   trace.beginBlock( "Collapsing complex" );
@@ -190,19 +186,18 @@ int main( int argc, char** argv )
 
   {
     MyViewer viewer(K);
-    viewer.show();
     typedef CC::CellMapConstIterator CellMapConstIterator;
     for ( Dimension d = 0; d <= 3; ++d )
       for ( CellMapConstIterator it = complex.begin( d ), itE = complex.end( d );
             it != itE; ++it )
         {
           bool fixed = (it->second.data == CC::FIXED);
-          if ( fixed ) viewer.setFillColor( Color::Red );
-          else         viewer.setFillColor( Color::White );
+          if ( fixed ) viewer.drawColor( Color::Red );
+          else         viewer.drawColor( Color::White );
           viewer << it->first;
         }
-    viewer<< MyViewer::updateDisplay;
-    return application.exec();
+    viewer.show();
+    return 0;
   }
 }
 ///////////////////////////////////////////////////////////////////////////////

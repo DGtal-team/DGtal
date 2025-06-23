@@ -52,8 +52,7 @@
 #include "DGtal/topology/helpers/Surfaces.h"
 
 #include "DGtal/io/readers/VolReader.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/io/Color.h"
@@ -69,9 +68,6 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
-  // for 3D display with Viewer3D
-  QApplication application(argc,argv);
-
   //! [digitalSurfaceSlice-readVol]
   trace.beginBlock( "Reading vol file into an image." );
   typedef ImageSelector < Domain, int>::Type Image;
@@ -80,8 +76,7 @@ int main( int argc, char** argv )
   DigitalSet set3d (image.domain());
   SetFromImage<DigitalSet>::append<Image>(set3d, image,
                                           0, 1 );
-  Viewer3D<> viewer;
-  viewer.show();
+  PolyscopeViewer<> viewer;
   trace.endBlock();
   //! [digitalSurfaceSlice-readVol]
 
@@ -152,9 +147,8 @@ int main( int argc, char** argv )
   ASSERT( *(slice1.rc()+1) == *(slice1.rbegin()) );
 
   //! [digitalSurfaceSlice-displayingAll]
-  trace.beginBlock( "Display all with QGLViewer." );
+  trace.beginBlock( "Display all with Viewer." );
   // Displaying all the surfels in transparent mode
-  viewer << SetMode3D( surf.className(), "Transparent");
   for( MyDigitalSurface::ConstIterator it = theSetOfSurfels.begin(),
          it_end = theSetOfSurfels.end(); it != it_end; ++it )
     viewer<< *it;
@@ -166,16 +160,14 @@ int main( int argc, char** argv )
   cmap_grad.addColor( Color( 255, 255, 10 ) );
 
   // Need to avoid surfel superposition (the surfel size in increased)
-  viewer << Viewer3D<>::shiftSurfelVisu;
-  viewer << SetMode3D( surf.className(), "");
-  viewer.setFillColor(Color(180, 200, 25, 255));
+  viewer.drawColor(Color(180, 200, 25, 255));
 
   int d=0;
   for ( My2DSlice::ConstIterator it = slice1.begin(),
           it_end = slice1.end(); it != it_end; ++it )
     {
       Color col= cmap_grad(d);
-      viewer.setFillColor(Color(col.red(),col.green() ,col.blue(), 255));
+      viewer.drawColor(Color(col.red(),col.green() ,col.blue(), 255));
       viewer<< *it;
       d++;
     }
@@ -190,19 +182,18 @@ int main( int argc, char** argv )
           it_end = slice2.end(); it != it_end; ++it )
     {
       Color col= cmap_grad2(d);
-      viewer.setFillColor(Color(col.red(),col.green() ,col.blue(), 255));
+      viewer.drawColor(Color(col.red(),col.green() ,col.blue(), 255));
       viewer<< *it;
       d++;
     }
 
   // One need once again to avoid superposition.
-  viewer << Viewer3D<>::shiftSurfelVisu;
-  viewer.setFillColor(Color(18, 200, 25, 255));
+  viewer.drawColor(Color(18, 200, 25, 255));
   viewer << surf ;
-  viewer << Viewer3D<>::updateDisplay;
   trace.endBlock();
 
-  return application.exec();
+  viewer.show();
+  return 0;
   //! [digitalSurfaceSlice-displayingAll]
 }
 //                                                                           //

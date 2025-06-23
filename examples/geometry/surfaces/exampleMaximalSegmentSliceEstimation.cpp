@@ -34,7 +34,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/surfaces/estimation/MaximalSegmentSliceEstimation.h"
 #include "DGtal/helpers/Shortcuts.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -64,8 +64,6 @@ RealPoint centerSurfel (KSpace const& K, SH3::SCell const& s)
 
 int main(int argc, char** argv)
 {
-    QApplication application(argc, argv);
-
     auto params = SH3::defaultParameters();
     params("polynomial", "ellipsoid")("gridstep", "1.0");
     auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
@@ -77,9 +75,7 @@ int main(int argc, char** argv)
 
     double gridstep = params["gridstep"].as<double>();
 
-    Viewer3D<> viewer(K);
-    viewer << SetMode3D(Surfel().className(), "Basic");
-    viewer.show();
+    PolyscopeViewer<> viewer(K);
 
     //! [MaximalSegmentSliceEstimationConstructionUsage]
     // Instantiation
@@ -93,7 +89,7 @@ int main(int argc, char** argv)
     estimator.eval(surfels.begin(), surfels.end(), std::back_inserter(quantities));
     //! [MaximalSegmentSliceEstimationConstructionUsage]
 
-    Color fillColor = viewer.getFillColor();
+    Color fillColor = Color::White;
 
     for (std::size_t i = 0; i < surfels.size(); ++i)
     {
@@ -103,16 +99,14 @@ int main(int argc, char** argv)
         const RealPoint& n = normal.getNormalized();
         RealPoint origin = centerSurfel(K, s);
 
-        viewer.setFillColor(fillColor);
+        viewer.drawColor(fillColor);
         viewer << s;
 
-        viewer.setLineColor(Color::Green);
-        viewer.addLine(origin, origin + 1.5 * n, 0.3);
+        viewer.drawColor(Color::Green);
+        viewer.drawLine(origin, origin + 1.5 * n);
     }
 
-    viewer << Viewer3D<>::updateDisplay;
-    application.exec();
-
+    viewer.show();
     return 0;
 }
 //                                                                           //

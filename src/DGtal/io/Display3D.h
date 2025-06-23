@@ -1,971 +1,748 @@
 /**
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  **/
 
 #pragma once
 
 /**
  * @file Display3D.h
- * @author Bertrand Kerautret (\c kerautre@loria.fr )
- * LORIA (CNRS, UMR 7503), University of Nancy, France
+ * @author Bastien Doignies <bastien.doignies@liris.cnrs.fr>
  *
- * @date 2011/08/08
+ * @date 2025/05/11
  *
- * Header file for module Display3D.cpp
+ * Header file for 3D Display
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(Display3D_RECURSES)
-#error Recursive header files inclusion detected in Display3D.h
-#else // defined(Display3D_RECURSES)
-/** Prevents recursive inclusion of headers. */
-#define Display3D_RECURSES
-
-#if !defined Display3D_h
-/** Prevents repeated inclusion of headers. */
-#define Display3D_h
-
-//////////////////////////////////////////////////////////////////////////////
-// Inclusions
-#include <iostream>
 #include <vector>
-#include <algorithm>
 #include <map>
-#include "DGtal/kernel/domains/CDomain.h"
-#include "DGtal/base/Common.h"
-#include "DGtal/base/CountedPtr.h"
-#include "DGtal/io/Color.h"
-#include "DGtal/images/CImage.h"
-#include "DGtal/images/CConstImage.h"
-#include "DGtal/shapes/Mesh.h"
 
-/// for embedding
+#include "DGtal/dec/DiscreteExteriorCalculus.h"
+
+#include "Eigen/Geometry"
+
+#include "DGtal/helpers/StdDefs.h"
+
+#include "DGtal/io/Color.h"
+#include "DGtal/kernel/CanonicEmbedder.h" 
+
+#include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/CanonicCellEmbedder.h"
 #include "DGtal/topology/CanonicSCellEmbedder.h"
-#include "DGtal/kernel/CanonicEmbedder.h"
-#include "DGtal/helpers/StdDefs.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
-#include "DGtal/kernel/CSpace.h"
 
+// Objects to draw
+#include "DGtal/base/ConstRangeAdapter.h"
 
-//////////////////////////////////////////////////////////////////////////////
+#include "DGtal/shapes/Mesh.h"
 
+#include "DGtal/dec/DiscreteExteriorCalculus.h"
 
-namespace DGtal
-{
+#include "DGtal/topology/Object.h"
 
-  /////////////////////////////////////////////////////////////////////////////
-  // class Display3D
-  /**
-   * Description of class 'Display3D' <p>
-   * \brief Aim: This semi abstract class defines the stream mechanism to
-   display 3d primitive (like BallVector, DigitalSetBySTLSet, Object
-   ...). The class Viewer3D and Board3DTo2D implement two different
-   ways to display 3D objects. The first one (Viewer3D), permits an
-   interactive visualisation (based on @a OpenGL ) and the second one
-   (Board3dto2d) provides 3D visualisation from 2D vectorial display
-   (based on the CAIRO library)
-   @see Viewer3D, Board3DTo2D
-   *
-   * This class is parametrized by both the Digital and Khalimsky
-   * space used to display object. More precisely, embed methods are
-   * used to compute the Euclidean coordinate of digital
-   * objects/khalimksy cells.
-   *
-   * @tparam Space any model of Digital 3D Space
-   * @tparam KSpace any mode of Khalimksky 3D space
-   */
-  template < typename Space = Z3i::Space, typename KSpace = Z3i::KSpace>
-  class Display3D
-  {
-  public:
+#include "DGtal/images/ImageAdapter.h"
+#include "DGtal/images/ConstImageAdapter.h"
+#include "DGtal/images/ImageContainerBySTLVector.h"
 
-    BOOST_CONCEPT_ASSERT((concepts::CSpace<Space>));
-  public:
+#include "DGtal/geometry/tools/SphericalAccumulator.h"
+#include "DGtal/geometry/curves/StandardDSS6Computer.h"
+#include "DGtal/geometry/curves/GridCurve.h"
 
-    typedef Display3D<Space,KSpace> Self;
-    /// RealPoint type
-    typedef typename Space::RealPoint RealPoint;
-    /// RealVector type
-    typedef typename Space::RealVector RealVector;
-    typedef CanonicEmbedder<Space> Embedder;
-    typedef CanonicCellEmbedder<KSpace> CellEmbedder;
-    typedef CanonicSCellEmbedder<KSpace> SCellEmbedder;
+namespace DGtal {
+    namespace drawutils { // Namespace for some utilities
+      /**
+       * @brief Create a list of indices for a vertex array with independent elements
+       * 
+       * @tparam I The size of individual elements
+       * @param N The number of elements
+       */
+      template<size_t I>
+      std::vector<std::array<size_t, I>> makeIndices(size_t N);
+      
+      /**
+       * @brief Return the vertices of a cube
+       *
+       * @tparam T The type of vertex
+       * @param center The center of the cube
+       * @param size The size of the cube
+       *
+       * @see DGtal::drawutils::insertCubeVertices
+       */
+      template<typename T> 
+      std::array<T, 8> getCubeVertices(T center, double size);
+      
+      /**
+       * @brief Insert cube vertices into an array
+       *
+       * @tparam T The type of vertex
+       * @tparam U The container to insert vertices into
+       * 
+       * @param dest The container where the vertices shoudl be inserted
+       * @param center The center of the cube
+       * @param scale The size of the cube
+       *
+       * @see DGtal::drawutils::getCubeVertices
+       */
+      template<typename T, typename U>
+      void insertCubeVertices(U& dest, T center, double scale);
+      
+      /**
+       * @brief Return the vertices of an axis aligned square 
+       *
+       * @tparam T The type of vertex
+       * 
+       * @param center The center of the quad
+       * @param orientation 0 means normal in x direction, 1 in y-direction, 2 in z-direction
+       * @param size The size of the square
+       *
+       * @see DGtal::drawutils::insertAASquare
+       */
+      template <typename T>
+      std::array<T, 4> getAASquareVertices(T center, int orientation, double size);
+      
+      /**
+       * @brief Insert vertices of a square into a container
+       *
+       * @tparam U The container
+       * @tparam T The type of vertex
+       *
+       * @param dest The container where the vertices shoudl be inserted
+       * @param center The center of the square
+       * @param orientation 0 means normal in x direction, 1 in y-direction, 2 in z-direction
+       * @param size The size of the square
+       *
+       * @see DGtal::drawutils::getAASquareVertices
+       */
+      template<typename U, typename T>
+      void insertAASquare(U& dest, T center, int orientation, double size);
+      
+      /**
+       * @brief Return the vertices of a prism
+       *
+       * Here, a prism is meant to display a signed Khalimsky cell. 
+       * It is draw as two square, one of which is smaller than the other, 
+       * connected by 4 other rectular shapes. 
+       *
+       * @tparam T The vertex type
+       *
+       * @param center The center of the cell on which the prism should be drawn
+       * @param orientation The orientation of the cell (x, y, z)
+       * @param size1 Size of the first square
+       * @param size2 Size of the second square
+       * @param shift1 Shift (relative to center) of the first square
+       * @param shift2 Shift (relative to center) of the second square
+       */
+      template<typename T>
+      std::array<T, 8> getPrism(
+          T center, int orientation, 
+          double size1, double size2, double shift1, double shift2
+      );
+      
+      /**
+       * @brief Insert the vertices of a prism into a container
+       *
+       * @see DGtal::drawutils::getPrism
+       *
+       * @tparam U The container type
+       * @tparam T The vertex type
+       *
+       * @param dest The container where the vertices shoudl be inserted
+       * @param center The center of the cell on which the prism should be drawn
+       * @param orientation The orientation of the cell (x, y, z)
+       * @param size1 Size of the first square
+       * @param size2 Size of the second square
+       * @param shift1 Shift (relative to center) of the first square
+       * @param shift2 Shift (relative to center) of the second square
+       */ 
+      template<typename T, typename U>
+      void insertPrism(U& dest, T center, int orientation, 
+          double size1, double size2, double shift1, double shift2);
+    } // drawutils
 
-    /// Select callback function type.
-    typedef int (*SelectCallbackFct)( void* viewer, DGtal::int32_t name, void* data );
+    /**
+     * @brief Style of display of an element
+     */
+    struct DisplayStyle {
+      // Color of an object
+      Color color = Color(200, 200, 200, 255);
+      // When set, color is ignored and the viewer is free to choose
+      bool useDefaultColors = true;            
+      // Maintains uniform scale of the object independently for easy access
+      double width = 1.0;                      
 
-  protected:
+      /**
+       * @brief List available draw modes.
+       *
+       * Draw mode are meant as a shortcut to change how objects
+       * are displayed. 
+       * Not all draw modes are supported for every objects. 
+       */
+      enum DrawMode : size_t {
+        DEFAULT      = (1 << 0), //< Default mode
+        PAVING       = (1 << 1), //< For voxels, render them as cubes
+        BALLS        = (1 << 2), //< For voxels, render them as balls
+        ADJACENCIES  = (1 << 3), //< For objects, draws adjacencies
+        GRID         = (1 << 4), //< For domains, draws a grid
+        SIMPLIFIED   = (1 << 5)  //< For KCell, draws quads instead of prisms
+      };
 
-    /// Structure for storing select callback functions. The select
-    /// callback function is called whenever the user select a
-    /// graphical object with "OpenGL name" in [min,max]. The order
-    /// relation is used to find quickly the correct function.
-    struct SelectCallbackFctStore {
-      SelectCallbackFctStore( SelectCallbackFct _fct, 
-                              void* _data,
-                              DGtal::int32_t _min, DGtal::int32_t _max )
-        : fct( _fct ), data( _data ), min( _min ), max( _max ) {}
-      bool operator<( const SelectCallbackFctStore& other ) const
-      { 
-        return ( min < other.min ); // simple since there is no overlap.
-      }
-      bool isSelected( DGtal::int32_t name ) const
-      { return ( min <= name ) && ( name <= max ); }
-
-      SelectCallbackFct fct;
-      void*             data;
-      DGtal::int32_t    min;
-      DGtal::int32_t    max;
+      size_t mode = static_cast<size_t>(DrawMode::DEFAULT);
+    };
+    
+    /**
+     * @brief Enumerate where quantities can be applied
+     */
+    enum class QuantityScale {
+      VERTEX  = 0, 
+      EDGE    = 1, 
+      FACE    = 2, 
+      CELL    = 3, 
+      UNKNOWN = 4 // Also used as a default to decide later
     };
 
     /**
-     * Common data to most graphical structures used in Display3D.
+     * @brief Wrapper for array of quantities
+     *
+     * Post C++23, enums are not convertible to int anymore.
+     * To avoid casts everytime, we wrap the operators inside
+     * this class. 
      */
-    struct CommonD3D {
-      DGtal::Color   color; ///< Color used for displaying the graphical structure 
-      DGtal::int32_t name;  ///< The "OpenGL name" associated with the graphical structure, used for selecting it (-1 is none).
+    template<typename T>
+    struct Quantity {
+      using QType = std::map<std::string, std::vector<T>>;
+
+      QType& operator[](int idx) { return data[idx]; }
+
+      const QType& operator[](int idx) const { return data[idx]; }
+
+      QType& operator[](const QuantityScale& scale) { 
+        return data[static_cast<size_t>(scale)]; 
+      };
+
+      const QType& operator[](const QuantityScale& scale) const {
+        return data[static_cast<size_t>(scale)];
+      };
+
+      std::array<QType, static_cast<size_t>(QuantityScale::UNKNOWN)> data;
+    };
+ 
+    /**
+     * @brief Data required to display an object
+     * 
+     * @tparam RealPoint Vector type for points and vector
+     */
+    template<typename RealPoint>
+    struct DisplayData {
+      /**
+       * Size of each elements. 
+       * 
+       * 0: elements may have variable size given by DisplayData::Indices (polygonal mesh)
+       * 1: elements are drawn as points (Ball)
+       * 2: elements are drawn as lines
+       * 3: elements are drawn as triangle (mesh)
+       * 4: elements are drawn as quads (mesh)
+       * 8: elements are drawn as cubes / prisms (volumetric mesh)
+       */
+      std::size_t           elementSize; 
+      
+      // Return the default quantity level associated with 
+      // a given element size.
+      static constexpr auto getDefaultQuantityLevel = [](size_t eSize) {
+        switch(eSize) {
+          case 1: return QuantityScale::VERTEX;
+          case 2: return QuantityScale::EDGE;
+          case 0: // Polygonal meshes
+          case 3: // Triangle meshes
+          case 4: // Quad meshes
+                  return QuantityScale::FACE;
+          case 8: return QuantityScale::CELL;
+          default: 
+                  return QuantityScale::UNKNOWN;
+        };
+      };
+      
+      // Indices for elements when elementSize is 0
+      std::vector<std::vector<uint32_t>> indices;
+      
+      // List of vertices
+      std::vector<RealPoint>   vertices;
+
+      // Transform of the object
+      Eigen::Affine3d transform = Eigen::Affine3d::Identity(); 
+      
+      // Draw style of the object (color, scale)
+      DisplayStyle style;
+      
+      // Color to apply to each element
+      Quantity<Color>  colorQuantities;
+      // Vector to attach to each element
+      Quantity<RealPoint> vectorQuantities;
+      // Values to attach to each element (may serve for coloring)
+      Quantity<double> scalarQuantities;
+    };
+    
+    /**
+     * @brief Clipping plane
+     */
+    struct ClippingPlane {
+      double a, b, c; //< Normal components
+      double d;       //< Offset
+      
+      // Some style for rendering (colors)
+      DisplayStyle style;
+    };
+    
+    /**
+     * @brief Attach a property to an element
+     *
+     * This class can be used with singletons and composite elements; 
+     * as long as the correct number of values are provided.
+     * 
+     * This class can be nested to add multiple properties:
+     * @code
+     *  WithQuantity(
+     *    WithQuantity(
+     *      obj, "value", scalar
+     *    ), 
+     *    "normal", normal
+     *  )
+     * @endcode
+     *
+     * @tparam T The type of element
+     * @tparam Type the type of property
+     */
+    template<typename T, typename Type>
+    struct WithQuantity {
+      WithQuantity(const T& object, const std::string& name, const Type& value, QuantityScale s = QuantityScale::UNKNOWN) : 
+        scale(s), object(object), name(name) 
+      {
+        values.push_back(value);
+      }
+      
+      WithQuantity(const T& object, const std::string& name, const std::vector<Type>& values, QuantityScale s = QuantityScale::UNKNOWN) : 
+        scale(s), object(object), name(name) 
+      {
+        this->values = values;
+      }
+      
+      // Scale to apply the quantity at
+      QuantityScale scale;
+
+      // Copy of the object
+      T object;
+      // Copy of the values to attach
+      std::vector<Type> values;
+      // Name of the property
+      std::string name;
+    };
+
+    /**
+     * @brief Base class for viewing DGtal objects
+     *
+     * @tparam Space Space of draw objects
+     * @tparam KSpace Khalimsky space of drawn objects
+     * 
+     * Drawing:
+     * 
+     * Lists:
+     *  Lists are a key part of this class. A list is a collection of object
+     *  that are linked together. As such, they should be managed, updated 
+     *  with the same options.
+     *  
+     *  Each DisplayData elements corresponds to a list of elements. However
+     *  the intent behind subsequent drawcalls can be to groups elements 
+     *  together. For example, looping through a Digital surface doing a
+     *  computation and then display the current element. 
+     *  For this reason, the field "allowReuseList" can be set to true. This
+     *  will try, if possible to use reuse the current element if possible. 
+     *  This may not success (common cases are if elements of different size 
+     *  were inserted, or after drawing an object which always create its own
+     *  list). 
+     *  If this does not fit the need, use setCurrentList.
+     *  
+     */
+    template < typename Space = Z3i::Space, typename KSpace = Z3i::KSpace>
+    class Display3D {
+    public:
+      Display3D(const KSpace& space) :
+        myKSpace(space), 
+        myCellEmbedder(myKSpace),
+        mySCellEmbedder(myKSpace)
+      { }
+
+      Display3D() : Display3D(KSpace()) {}
+
+      // Usefull definitions
+      using Point = typename Space::Point;
+      using KCell = typename KSpace::Cell;
+      using SCell = typename KSpace::SCell;
+      using RealPoint = typename Space::RealPoint ;
+
+      using Embedder = CanonicEmbedder<Space>;
+      using CellEmbedder = CanonicCellEmbedder<KSpace>;
+      using SCellEmbedder = CanonicSCellEmbedder<KSpace>;
+
+      /**
+       * @brief A general callback for the viewer to give control to the user
+       * 
+       * There are no guarentees on the thread-safeness of this class. 
+       */
+      struct Callback{
+        /**
+         * @brief Called when setCallback is performed on the viewer
+         * 
+         * This is callback can be used to store the pointer to a particular
+         * instance of the viewer.
+         * 
+         * If only general properties are needed, use the Callback::viewer member
+         * which is set prior calling this function. 
+         * 
+         * @param viewer A pointer to the viewer on which this callback is attached
+         */
+        virtual void OnAttach(void* viewer) {};
+        /**
+         * @brief Called to render or interact with some UI
+         *
+         * @param viewerData Some viewer-dependent data to draw UI (context)
+         */
+        virtual void OnUI(void* viewerData) {};
+        /**
+         * @brief Called when an element is clicked
+         * 
+         * @see DGtal::Display3D::renderNewData
+         * 
+         * @param name The name of the structure containing the element
+         * @param index The index within the clicked structure
+         * @param data The Display3D data associated with this structure
+         * @param viewerData Viewer-dependent data associated with the click
+         */
+        virtual void OnClick(const std::string& name, size_t index, const DisplayData<RealPoint>& data, void* viewerData) {};
+
+        // Pointer to the Display3D instance the callback is attached to
+        Display3D<Space, KSpace>* viewer = nullptr;
+      };
+    public: // General commands
+      /**
+       * @brief Starts the event loop and display of elements
+       * 
+       * It is recommended that this functions calls renderNewData
+       */
+      virtual void show() = 0;
+      /**
+       * @brief Renders newly added data
+       */
+      virtual void renderNewData() = 0;
+
+      /**
+       * @brief (Re)Render all data 
+       *
+       * If any modification were made within the viewer they can be lost
+       */
+      virtual void renderAll() {
+        myToRender.clear();
+        myToRender.reserve(data.size());
+
+        for (const auto& m : data) 
+          myToRender.push_back(m.first);
+
+        renderNewData();
+      }
+      /**
+       * @brief Clear the screen
+       */
+      virtual void clearView() = 0;
+      /**
+       * @brief Clear the viewer, including screen and internal data
+       */
+      virtual void clear();
+      /** 
+       * @brief Sets callback
+       */
+      virtual void setCallback(Callback* callback);
+
+    public: // Group/Lists managements
+      /**
+       * @brief Create a new group
+       *
+       * If the name requested already exists; another one is
+       * computed as follows:
+       * - If the token {i} is present, replace the first occurence with 
+       *   the first available index, starting from one.
+       * - Otherwise, appends "_i" where i the first available index, 
+       *   starting from one.
+       *
+       * This function sets the current data.
+       * 
+       * @param name The name to insert
+       * @param eSize elementSize of the DisplayData 
+       *
+       * @return The computed name
+       */
+      std::string newList(const std::string& name, size_t eSize = 0);
+
+      /**
+       * @brief Set the current group for further updates
+       * 
+       * @param name The name of the group
+       */
+      bool setCurrentList(const std::string& name);
+
+      /**
+       * @brief Tells if a list of a given elementSize can be reused
+       * 
+       * @param elementSize The size of each elements
+       */
+      bool canCreateNewList(size_t elementSize) const;
+
+      /**
+       * @brief Reuse a list if possible, otherwise create a new one
+       * 
+       * @param name The name of the created list if needed
+       * @param elementSize The size of each element for the list 
+       * 
+       * @return The name of the list to use
+       */
+      std::string createOrReuseList(const std::string& name, size_t elementSize);
+
+      /**
+       * @brief End current group and sets an invalid current group
+       * 
+       * The purpose of this function is to disallow further
+       * automatic update on a group.
+       */
+      void endCurrentGroup();
+
+      // Some shortcuts for clearer code
+
+      std::string newCubeList(const std::string& name)       { return newList(name, 8); }
+      std::string newBallList(const std::string& name)       { return newList(name, 1); }
+      std::string newLineList(const std::string& name)       { return newList(name, 2); }
+      std::string newQuadList(const std::string& name)       { return newList(name, 4); }
+      std::string newPolygonList(const std::string& name)    { return newList(name, 0); }
+      std::string newTriangleList(const std::string& name)   { return newList(name, 3); }
+      std::string newVolumetricList(const std::string& name) { return newList(name, 8); }
+
+      std::string createOrReuseCubeList(const std::string& name)       { return createOrReuseList(name, 8); }
+      std::string createOrReuseBallList(const std::string& name)       { return createOrReuseList(name, 1); }
+      std::string createOrReuseLineList(const std::string& name)       { return createOrReuseList(name, 2); }
+      std::string createOrReuseQuadList(const std::string& name)       { return createOrReuseList(name, 4); }
+      std::string createOrReusePolygonList(const std::string& name)    { return createOrReuseList(name, 0); }
+      std::string createOrReuseTriangleList(const std::string& name)   { return createOrReuseList(name, 3); }
+      std::string createOrReuseVolumetricList(const std::string& name) { return createOrReuseList(name, 8); }
+    
+    public: // Draw commands
+
+      /**
+       * @brief Draw object with stream API
+       * 
+       * @tparam Obj Any type of object
+       */ 
+      template<typename Obj>
+      Display3D& operator<<(const Obj& obj);
+
+      // @brief Draws a Point with integer coodinates
+      std::string draw(const Point& p, const std::string& uname = "Point_{i}");
+
+      // @brief Draws a RealPoint with real coodinates
+      std::string draw(const RealPoint& rp, const std::string& uname = "Point_{i}");
+      
+      // @brief Draws a vector of objects
+      template<typename T>
+      std::string draw(const std::vector<T>& vec, const std::string& uname = "");
+
+      // @brief Draws a range of any object
+      template<typename A, typename B, typename C>
+      std::string draw(const ConstRangeAdapter<A, B, C> range, const std::string& uname = "");
+
+      // @brief Draws any object provided through a ConstIteratorAdapter
+      template<typename A, typename B, typename C>
+      std::string draw(const ConstIteratorAdapter<A, B, C>& adapter, const std::string& uname = "");
+      
+      // @brief Draws a grid curve
+      std::string draw(const GridCurve<KSpace>& curve, const std::string& uname = "GridCurve_{i}");
+      
+      // @brief Draws a grid curve as mid points 
+      std::string draw(const typename GridCurve<KSpace>::MidPointsRange& range, const std::string& uname = "MidPoints_{i}");
+      
+      // @brief Draws a grid curve as arrows
+      std::string draw(const typename GridCurve<KSpace>::ArrowsRange& range, const std::string& uname = "Arrows_{i}");
+
+      // @brief Draws a DiscreteExteriorCalculus
+      template<DGtal::Dimension emb, DGtal::Dimension amb, typename Algebra, typename Int>
+      std::string draw(const DiscreteExteriorCalculus<emb, amb, Algebra, Int>& calc, const std::string& uname = "Calculus_{i}");
+
+      // @brief Draws a KForm
+      template<typename Calculus, DGtal::Order order, DGtal::Duality duality>
+      std::string draw(const KForm<Calculus, order, duality>& kform, const std::string& uname = "KForm_{i}");
+
+      // @brief Draws a VectorField
+      template<typename Calculus, DGtal::Duality dual> 
+      std::string draw(const VectorField<Calculus, dual>& field, const std::string& uname = "Field_{i}");
+
+      // @brief Draws an unsigned KCell
+      std::string draw(const KCell& cell, const std::string& name = "KCell_{i}_{d}d");
+      
+      // @brief Draws a singed KCell
+      std::string draw(const SCell& cell, const std::string& name = "SCell_{i}_{d}d");
+ 
+      // @brief Draws a Domain
+      //
+      // Note: the default name has a special hex code in the begining
+      // so that string based view-order draws domain in the background
+      std::string draw(const HyperRectDomain<Space>& domain, const std::string& uname = "\xff Domain_{i}");
+
+      /**
+       * @brief Draws a polygon
+       * 
+       * @tparam Vec Type of vertex
+       */
+      template<typename Vec>
+      std::string drawPolygon(const std::vector<Vec>& vertices, const std::string& uname = "Polygon_{i}");
+
+      // @brief Draws a ball
+      std::string drawBall(const RealPoint& c, const std::string& uname = "Ball_{i}");
+      
+      // @brief Draws a line
+      std::string drawLine(const RealPoint& a, const RealPoint& b, const std::string& uname = "Line_{i}");
+
+      // @brief Draws a quad
+      std::string drawQuad(const RealPoint& a, const RealPoint& b, const RealPoint& c, const RealPoint& d, const std::string& uname = "Quad_{i}");
+      
+      // @brief Draws a DigitalSet
+      template<typename Obj, typename Cont>
+      std::string draw(const DigitalSetByAssociativeContainer<Obj, Cont>& set, const std::string& name = "Set_{i}");
+
+      // @brief Draws an Object
+      template<typename Adj, typename Set>
+      std::string draw(const DGtal::Object<Adj, Set>& obj, const std::string& uname = "Object_{i}");
+
+      // @brief Draws an Image
+      template<typename D, typename T>
+      std::string draw(const ImageContainerBySTLVector<D, T>& image, const std::string& name = "Image_{i}");
+            
+      // @brief Draws an Image
+      template <typename TImageContainer,
+                typename TNewDomain,
+                typename TFunctorD,
+                typename TNewValue,
+                typename TFunctorV,
+                typename TFunctorVm1>
+      std::string draw(const ImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV, TFunctorVm1>& adapter, const std::string& name = "Image_{i}");
+            
+      // @brief Draws an Image
+      template <typename TImageContainer,
+                typename TNewDomain,
+                typename TFunctorD,
+                typename TNewValue,
+                typename TFunctorV>
+      std::string draw(const ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV>& adapter, const std::string& name = "Image_{i}");
+
+      // @brief Draws a mesh
+      template <typename Pt>
+      std::string draw(const Mesh<Pt>& mesh, const std::string& uname = "Mesh_{i}");
+
+      // @brief Draws 
+      template<typename It, typename Int, int Con>
+      std::string draw(const StandardDSS6Computer<It, Int, Con>& computer, const std::string& uname = "Computer_{i}");
+      
+
+      // @brief Draws any object with a property
+      template<typename T, typename Type>
+      std::string draw(const WithQuantity<T, Type>& props, const std::string& uname = "");
+
+      template<typename Type>
+      void addQuantity(const std::string& oName, const std::string& qName, const Type& value, QuantityScale scale = QuantityScale::UNKNOWN);
+
+      template<typename Type>
+      void addQuantity(const std::string& oName, const std::string& qName, const std::vector<Type>& value, QuantityScale scale = QuantityScale::UNKNOWN);
+
+      
+      // @brief Adds a clipping plane
+      std::string draw(const ClippingPlane& plane, const std::string& name = "");
+    
+      // @brief Draws a Spherical Accumulator
+      template<typename T>
+      std::string draw(const SphericalAccumulator<T> accumulator, const std::string& uname = "SphericalAccumulator_{i}");
+
+      // @brief Set the current draw color 
+      std::string draw(const DGtal::Color& color, const std::string& name = "");
+      
+      // @brief Set the current draw color 
+      void drawColor(const DGtal::Color& color);
+
+      // @brief Use default colors
+      void setDefaultColors();
+      
+      // @brief Draws adjacencies of further Object
+      void drawAdjacencies(bool toggle = true);
+      
+      // @brief Draws 2D KCell as simplifed mode
+      void drawAsSimplified(bool toggle = true);
+
+      // @brief Draws grid of further domains
+      void drawAsGrid(bool toggle = true);
+
+      // @brief Reset style
+      void defaultStyle();
+
+      // @brief Draws voxels of further object, domains and points
+      void drawAsPaving();
+
+      // @brief Draws balls of further object, domains and points
+      void drawAsBalls();
+    private: // Draw commands
+      // To avoid confusion, keep this function as private: 
+
+      // @brief Draws an /!\ arrow (NOT A LINE)
+      std::string draw(const std::pair<RealPoint, RealPoint>& arrow, const std::string& uname = "Arrow_{i}");
+
+      /**
+       * @brief Draws a range of object to the screen
+       */
+      template<typename Range> 
+      std::string drawGenericRange(const Range& range, const std::string& uname);
+
+      // @brief Draws an image through an iterator
+      template<typename T>
+      std::string drawImage(const std::string& uname, const T& image);
+
+      // @brief Draws a KCell (signed or not)
+      std::string drawKCell(std::string uname, const RealPoint& rp, bool xodd, bool yodd, bool zodd, bool hasSign, bool sign);
+
+    public:
+      // The user is responsible for using these wrong..
+      //
+      DisplayStyle currentStyle;
+      bool allowReuseList = false;
+
+      std::vector<ClippingPlane> planes;
+      // Leave access to the user for thin modifications
+      std::map<std::string, DisplayData<RealPoint>> data;
 
     protected:
-      ~CommonD3D() = default; ///< Protected destructor to disallow polymorphism.
-    };
+      KSpace myKSpace;
+      Embedder myEmbedder;
+      CellEmbedder myCellEmbedder;
+      SCellEmbedder mySCellEmbedder;
 
-    /**
-     * The graphical structure that represents a 3D line segment in Display3D.
-     */
-    struct LineD3D : public CommonD3D {
-      RealPoint point1;
-      RealPoint point2;
-      double width;
-      bool isSigned;
-      bool signPos;
-    };
+      Callback* myCallback = nullptr;
+      std::vector<std::string> myToRender;
 
-    /**
-     * The graphical structure that represents a 3D cube in Display3D.
-     */
-    struct CubeD3D : public CommonD3D {
-      /// The center coordinate of the cube.
-      RealPoint center;
-      /// The width of a cube face
-      double width;
-    };
+      std::string myCurrentName = "";
+      DisplayData<RealPoint>* myCurrentData = nullptr;
+    }; // Display3D
+} // DGtal
 
-    /**
-     * The graphical structure that represents a clipping plane (it
-     * uses the quadD3D structure)
-     *
-     * @see Display3D, Viewer3D, Board3DTo2D, quadD3D
-     */
-    struct ClippingPlaneD3D : public CommonD3D {
-      double a,b,c,d;
-    };
+#include "Display3D.ih"
 
-
-    /**
-     * The graphical structure that represents a quadrilateral in the
-     * space. It is used to display clipping planes and the components
-     * of the myPrismList (allowing to set normal and color).
-     *
-     * @see Display3D, Viewer3D, Board3DTo2D
-     */
-    struct QuadD3D : public CommonD3D {
-      RealPoint point1;
-      RealPoint point2;
-      RealPoint point3;
-      RealPoint point4;
-      double nx, ny, nz;
-    };
-
-
-
-    /**
-     * The graphical structure that represents a triangle in the space.
-     *
-     * @see Display3D, Viewer3D, Board3DTo2D
-     */
-    struct TriangleD3D : public CommonD3D {
-      RealPoint point1;
-      RealPoint point2;
-      RealPoint point3;
-      double nx, ny, nz;
-    };
-
-
-  public:
-
-
-
-    /// Structure used to display point in 3D
-    /// @see addBall
-    ///
-    //have to be public because of external functions
-    struct BallD3D : public CommonD3D
-    {
-      static const typename RealPoint::Dimension dimension = RealPoint::dimension;
-      const double & operator[]( unsigned int i ) const
-      {
-        assert(i<3);
-        return center[i];
-      };
-      double & operator[]( unsigned int i )
-      {
-        assert(i<3);
-        return center[i];
-      };
-      RealPoint center;
-      bool isSigned;
-      bool signPos;
-      double radius;
-      unsigned int resolution;
-    };
-
-
-    /**
-     * This structure is used to display polygonal faces in 3d.
-     * @see Display3D, Viewer3D, Board3DTo2D
-     **/
-    struct PolygonD3D : public CommonD3D
-    {
-      std::vector<RealPoint> vertices;
-      double nx, ny, nz;
-      DGtal::Color color;
-    };
-
-
-    enum StreamKey {addNewList, updateDisplay, shiftSurfelVisu};
-
-
-  public:
-    /// The type that maps identifier name -> vector of QuadD3D.
-    typedef std::map<DGtal::int32_t, std::vector< QuadD3D > > QuadsMap;
-    
-    /// The type that maps identifier name -> vector of CubeD3D.
-    typedef std::map<DGtal::int32_t, std::vector< CubeD3D > > CubesMap;
-
-
-  protected:
-    /// The Khalimsky space
-    KSpace myKSpace;
-    /// an embeder from a dgtal space point to a real space point
-    Embedder *myEmbedder;
-    /// an embeder from a unsigned khalimsky space point to a real space point
-    CellEmbedder *myCellEmbedder;
-    /// an embeder from a signed khalimsky space point to a real space point
-    SCellEmbedder *mySCellEmbedder;
-
-
-
-
-    //----end of private data
-
-    // ----------------------- Standard services ------------------------------
-  public:
-
-    /**
-     * Destructor.
-     */
-    virtual ~Display3D()
-    {
-      delete myEmbedder;
-      delete mySCellEmbedder;
-      delete myCellEmbedder;
-    }
-
-    /**
-     * Constructor with the Khalimsky Space
-     * @param KSEmb the khalimsky space for embedding
-     */
-    Display3D( const KSpace & KSEmb )
-      : myKSpace( KSEmb )
-      , myEmbedder( new Embedder() )
-      , myCellEmbedder( new CellEmbedder( myKSpace ) )
-      , mySCellEmbedder( new SCellEmbedder( myKSpace )  )
-      , myBoundingPtEmptyTag( true )
-      , myCurrentFillColor( 220, 220, 220 )
-      , myCurrentLineColor( 22, 22, 222, 50 )
-    {
-    }
-    
-    /**
-     * Default constructor
-     * Display3D
-     */
-    Display3D()
-      : Display3D( KSpace() )
-    {
-    }
-
-    /// Copy constructor. Deleted.
-    Display3D( const Display3D & ) = delete;
-
-    /// Move constructor. Deleted.
-    Display3D( Display3D && ) = delete;
-
-    /// Assignment operator. Deleted.
-    Display3D & operator= ( const Display3D & ) = delete;
-
-    /// Move operator. Deleted.
-    Display3D & operator= ( Display3D && ) = delete;
-
-    // ----------------------- Interface --------------------------------------
-  public:
-
-    /// @return the embedder Point -> RealPoint
-    const Embedder& embedder() const 
-    { return *myEmbedder; }
-
-    /// @return the embedder Cell -> RealPoint
-    const CellEmbedder& cellEmbedder() const 
-    { return *myCellEmbedder; }
-
-    /// @return the embedder SCell -> RealPoint
-    const SCellEmbedder& sCellEmbedder() const 
-    { return *mySCellEmbedder; }
-
-    /// @return the cellular grid space.
-    const KSpace& space() const 
-    { return myKSpace; }
-
-    /**
-     * Used to set the current fill color
-     * @param aColor the fill color.
-     **/
-    virtual void setFillColor(DGtal::Color aColor);
-
-    /**
-     * Used to set the alpha value of the current fill color.
-     * @param alpha the transparency value (from 0 to 255).
-     **/
-    virtual void setFillTransparency(unsigned char alpha);
-
-
-    /**
-     * Used to set the line fill color
-     * @param aColor the line color.
-     **/
-    virtual void setLineColor(DGtal::Color aColor);
-
-
-    /**
-     * Used to get the fill color
-     * @return the current fill color.
-     **/
-
-    virtual DGtal::Color getFillColor();
-
-    /**
-     * Used to get the line color
-     * @return the current line color.
-     **/
-
-    virtual DGtal::Color getLineColor();
-
-    /**
-     *  Used to change the Khalimsky 3D Space.
-     * @param aKSpace the new Khalimsky space.
-     **/
-    virtual void  setKSpace( const KSpace & aKSpace );
-
-
-    /**
-     * Sets the "OpenGL name" for next graphical directives.
-     * @param name the "OpenGL name", an integer identifier or -1 for none.
-     */
-    void setName3d( DGtal::int32_t name = -1 );
-
-    /**
-     * @return the current "OpenGL name", an integer identifier or -1 if none was set.
-     */
-    DGtal::int32_t name3d() const;
-
-    /**
-     * Sets the callback function called when selecting a graphical
-     * object with "OpenGL name" between \a min_name and \a max_name.
-     * Note that ranges should not overlap. If several functions can
-     * be called, behavior is undefined afterwards.
-     *
-     * @param fct any function.
-     * @param data an arbitrary pointer that is given when calling the callback function.
-     * @param min_name the first "OpenGL name" for which \a fct should be called.
-     * @param max_name the last "OpenGL name" for which \a fct should be called.
-     */
-    void setSelectCallback3D( SelectCallbackFct fct, void* data,
-                              DGtal::int32_t min_name, DGtal::int32_t max_name );
-
-    /**
-     * @param[in]  aName the "OpenGL name" that was selected.
-     * @param[out] data a pointer that was given setting the callback function.
-     * @return the select callback function that match the given \a
-     * name, or 0 if none is associated to this name.
-     */
-    SelectCallbackFct getSelectCallback3D( DGtal::int32_t aName, void*& data ) const;
-
-    // ----------------------- Graphical directives ----------------------------------
-  public:
-
-
-    /**
-     * Add a new 3D Clipping plane represented by ax+by+cz+d = 0
-     * A maximal of five clipping plane can be added.
-     *
-     * @param a a
-     * @param b b
-     * @param c c
-     * @param d d plane equation.
-     * @param drawPlane true if the plane should be draw
-     **/
-
-    void addClippingPlane(double a, double b, double c, double d, bool drawPlane);
-
-
-
-
-    /**
-     * @param objectName the name of the object (generally obtained
-     * with a 'object.className()').
-     *
-     * @return the current mode for the given object name or "" if no
-     * specific mode has been set.
-     */
-    std::string getMode( const std::string & objectName ) const;
-
-    /**
-     * Used to create a new list containing new 3D objects
-     * (useful to use transparency between different objects).
-     * @param s name of the new list
-     **/
-    void createNewLineList(std::string s= "");
-
-
-    /**
-     * Used to create a new list containing new 3D objects
-     * (useful to use transparency between different objects).
-     * @param s name of the new list
-     **/
-    void createNewBallList(std::string s= "");
-
-
-    /**
-     * Used to create a new list containing new 3D objects
-     * (useful to use transparency between different objects).
-     * @return the new key of the map associated to the new list.
-     **/
-
-    DGtal::int32_t createNewCubeList();
-
-    
-    /**
-     * Delete the cube list identified by a its name.
-     * @param[in] name the name of the cube list.
-     * @return true if the list was found and removed.
-     *
-     **/
-    bool deleteCubeList(const DGtal::int32_t name);
-
-     /**
-      * Used to create a new list containing new 3D objects
-      * (useful to use transparency between different objects).
-      * @return the new key of the map associated to the new list.
-      **/
-    DGtal::int32_t createNewQuadList();
-
-
-    /**
-     * Delete the quad list identified by a its name.
-     * @param[in] name the name of the quad list.
-     * @return true if the list was found and removed.
-     *
-     **/
-    bool deleteQuadList(const DGtal::int32_t name);
-
-    /**
-     * Used to create a new list containing new 3D objects
-     * (useful to use transparency between different objects).
-     * @param s name of the new list
-     **/
-    void createNewTriangleList(std::string s= "");
-
-    /**
-     * Used to create a new list containing new 3D objects
-     * (useful to use transparency between different objects).
-     * @param s name of the new list
-     **/
-    void createNewPolygonList(std::string s= "");
-
-
-    /**
-     * Method to add a specific quad (used by @a addClippingPlane or
-     * to represent basic surfels from Khalimsky space). The normal is
-     * computed from the vertex order.
-     *
-     * @param p1 the 1st point
-     * @param p2 the 2nd point
-     * @param p3 the 3rd point
-     * @param p4  the 4th point
-     *
-     */
-    void addQuad(const RealPoint &p1, const RealPoint &p2,
-                 const RealPoint &p3, const RealPoint &p4);
-
-    /**
-     * Method to add a specific quad. The normal vector is specified
-     * by the user. Depending on @a enableReorientation, Quad points
-     * can be reordered to make its orientation constistant with the
-     * normal direction.
-     *
-     * @param p1 the 1st point
-     * @param p2 the 2nd point
-     * @param p3 the 3rd point
-     * @param p4  the 4th point
-     * @param n the normal vector
-     * @param enableReorientation if true,  the quad orientation will
-     * match with prescribed normal vector (dot product between the
-     * normal and the canonical one is >0).
-     * @param enableDoubleFace if true, two quad (with opposite normal
-     * vector) will be drawn.
-     *
-     */
-    void addQuadWithNormal(const RealPoint &p1, const RealPoint &p2,
-                           const RealPoint &p3, const RealPoint &p4,
-                           const RealPoint &n,
-                           const bool enableReorientation,
-                           const bool enableDoubleFace = false);
-
-    /**
-     * Method to add a quad representing a surfel given from its center and its orientation.
-     *
-     * @param baseQuadCenter the surfel center.
-     * @param xSurfel indicates that the sufel is in the x axis direction
-     * @param ySurfel indicates that the sufel is in the y axis direction
-     * @param zSurfel indicates that the sufel is in the z axis direction
-     *
-     **/
-    void addQuadFromSurfelCenter(const RealPoint &baseQuadCenter, 
-                                 bool xSurfel, bool ySurfel, bool zSurfel);
-
-
-
-    /**
-     * Method to add a quad representing a surfel given from its
-     * center and its orientation, and attach a unitary normal vector
-     * to it.  Depending on @a enableReorientation, Quad points can be
-     * reordered to make its orientation constistant with the normal
-     * direction.
-     *
-     * @param baseQuadCenter the surfel center.
-     * @param xSurfel indicates that the sufel is in the x axis direction
-     * @param ySurfel indicates that the sufel is in the y axis direction
-     * @param zSurfel indicates that the sufel is in the z axis
-     * direction
-     * @param aNormal a unitary normal vector to attach to the quad.
-     * @param enableReorientation if true,  the quad orientation will
-     * match with prescribed normal vector (dot product between the
-     * normal and the canonical one is >0).
-     * @param sign if enableReorientation is true, we use this bool to
-     * get the surfel sign
-     * @param enableDoubleFace if true, two quad (with opposite normal
-     * vector) will be drawn.
-     *
-     **/
-    void addQuadFromSurfelCenterWithNormal(const RealPoint &baseQuadCenter, bool xSurfel, bool ySurfel, bool zSurfel,
-                                           const RealVector &aNormal,
-                                           const bool enableReorientation,
-                                           const bool sign,
-                                           const bool enableDoubleFace = false);
-
-
-    /**
-     * Method to add a specific quad (used by @a addClippingPlane). The normal is computed from the vertex order.
-     * @param p1 the 1st point
-     * @param p2 the 2nd point
-     * @param p3 the 3rd point
-     */
-    void addTriangle(const RealPoint &p1, const RealPoint &p2, const RealPoint &p3);
-
-
-    /**
-     * Method to add a specific polygon.
-     * @param vertices a vector containing the polygon vertices.
-     */
-    void addPolygon(const std::vector<RealPoint> &vertices);
-
-
-    /**
-     * Method to add a line to the current display.
-     * x1, y1, z1, x2, y2, z2 the two extremty line points.
-     * @param p1 the 1st point
-     * @param p2  the 2nd point
-     * @param width the line width
-     *
-     */
-
-    void addLine(const RealPoint &p1, const RealPoint &p2, const double width=0.03);
-
-
-    /**
-     * Method to add specific cube. It includes several modes to
-     * display the cube with and without the wire visualisation.
-     *
-     * @param center cube center
-     * @param width the cube width.
-     */
-    void addCube(const RealPoint &center, double width=1.0);
-
-
-    /**
-     * Method to add a point to the current display.
-     * @param center ball center x
-     * @param radius the ball radius (default 0.5)
-     * @param resolution ball resolution (default 30)
-     *
-     */
-    void addBall(const RealPoint &center ,
-                 const double radius=0.5,
-                 const unsigned int resolution = 30);
-
-
-
-    /**
-     * Specific to display a surfel from Kahlimsky space. The display can
-     * take into accounts the sign of the cell.
-     * @param baseQuadCenter  base quad center point
-     * @param xSurfel true if the surfel has its main face in the direction of the x-axis
-     * @param ySurfel true if the surfel has its main face in the direction of the y-axis
-     * @param zSurfel true if the surfel has its main face in the direction of the z-axis
-     * @param sizeShiftFactor set the distance between the display of the surfel and potential Cube.
-     * @param sizeFactor set the difference between the upper face of the prism and the down face
-     * @param isSigned to specify if we want to display an signed or unsigned Cell.
-     * @param aSign if @a isSigned is true it will be used to apply a different displays
-     * according this boolean parameter (if @a aSign=true oriented in the direct axis orientation)
-     */
-    void addPrism(const RealPoint &baseQuadCenter,
-                        bool xSurfel, bool ySurfel, bool zSurfel, double sizeShiftFactor,
-                        double sizeFactor=1.0, bool isSigned= false, bool aSign=true);
-
-
-
-    /**
-     * Specific to display a surfel from Kahlimsky space from a basic way.
-     *
-     * @param baseQuadCenter  base quad center point
-     * @param xSurfel true if the surfel has its main face in the direction of the x-axis
-     * @param ySurfel true if the surfel has its main face in the direction of the y-axis
-     * @param zSurfel true if the surfel has its main face in the direction of the z-axis
-     */
-    void addBasicSurfel(const RealPoint &baseQuadCenter,
-                        bool xSurfel, bool ySurfel, bool zSurfel);
-
-
-    /**
-     * Add a signed KSLinel from the Kahlimsky space. Display it as a cone.
-     *
-     * @param p1  the cone apex
-     * @param p2  the cone base
-     * @param width the width of the cone (default= 0.08)
-     */
-    void addCone(const RealPoint &p1, const RealPoint &p2,
-                 double width=0.08);
-
-
-    /**
-     * Add a non signed KSLinel from the Kahlimsky space. Display it as a simple cylinder.
-     * @param p1  the 1st point
-     * @param p2  the 2nd point
-     * @param width the width of the cylinder (default= 0.02)
-     */
-    void addCylinder(const RealPoint  &p1, const RealPoint &p2,
-                     const double width=0.02);
-
-
-    /**
-     * Used to update the scene bounding box when objects are added.
-     *
-     * @param point the point to be taken into accounts.
-     */
-    void updateBoundingBox(const RealPoint &point);
-
-
-
-
-    /**
-     * Export as Mesh the current displayed elements.
-     *
-     * @param aMesh : (return) the mesh containing the elements of the display.
-     *
-     **/
-    void exportToMesh(Mesh<RealPoint> & aMesh ) const;
-
-
-    /**
-     * Draws the drawable [object] in this board. It should satisfy
-     * the concept CDrawableWithViewer3D, which requires for instance a
-     * method setStyle( Viewer3D & ).
-     *
-     * @param object any drawable object.
-     * @return a reference on 'this'.
-     */
-    template <typename TDrawableWithDisplay3D>
-    Display3D & operator<<( const TDrawableWithDisplay3D & object );
-
-
-
-    /**
-     * Writes/Displays the object on an output stream.
-     * @param out the output stream where the object is written.
-     */
-    void selfDisplay ( std::ostream & out ) const;
-
-
-    /**
-     * Checks the validity/consistency of the object.
-     * @return 'true' if the object is valid, 'false' otherwise.
-     */
-    bool isValid() const;
-
-
-    /**
-     * Removes all sent data.
-     */
-    void clear();
-
-
-
-    /**
-     * Use to embed a DGtal point into space
-     * @param dp a DGtal Point
-     * @return the point embeded in real space
-     */
-    RealPoint embed(const typename Space::Point & dp) const ;
-
-    /**
-     * Use to embed a signed DGtal kahlimsky cell into space
-     * @param cell a kahlimsky cell
-     * @return the cell embeded in real space
-     */
-    RealPoint embedKS( const typename KSpace::SCell & cell ) const;
-
-
-    /**
-     * Use to embed a signed DGtal kahlimsky cell into space
-     * @param aTrans a transformed surfel prism
-     * @return the cell embeded in real space
-     */
-    RealPoint embedKS( const DGtal::TransformedPrism& aTrans ) const;
-
-
-    /**
-     * Use to embed an unsigned DGtal kahlimsky cell into space
-     * @param cell kahlimsky cell
-     * @return the point embeded in real space
-     */
-    RealPoint embedK( const typename KSpace::Cell & cell ) const;
-
-    //---end interface
-
-    // ------------------------- Protected Datas ------------------------------
-  public:
-
-    /**
-     * The associated map type for storing possible modes used for
-     * displaying for digital objects.
-     */
-    typedef std::map< std::string, std::string > ModeMapping;
-
-    /**
-     * The associated map type for storing the default styles of
-     * digital objects.
-     */
-    typedef std::map< std::string,CountedPtr<DrawableWithDisplay3D> > StyleMapping;
-
-
-    ModeMapping myModes;
-    /**
-     * For instance, may associate a new style object T1 to the class
-     * "HyperRectDomain": myStyles[ "HyperRectDomain" ] = T1.
-     *
-     * One can also store a new style T2 for a specific mode used for
-     * drawing a class: myStyles[ "HyperRectDomain/Paving" ] = T2.
-     *
-     * Modes may only be used in objects implementing the concept
-     * CDrawableWithBoard2D.
-     */
-    StyleMapping myStyles;
-
-    /// True if the bounding box is empty (no objects added)
-    bool myBoundingPtEmptyTag;
-    ///upper point of the bounding box
-    double myBoundingPtUp [3];
-    /// lower point of the bouding box
-    double myBoundingPtLow [3];
-
-  protected:
-    //the current fill color of the display
-    DGtal::Color myCurrentFillColor;
-    //the current line color of the display
-    DGtal::Color myCurrentLineColor;
-
-    /// Used to specialized visualisation with KSpace surfels/cubes.
-    ///
-    double myCurrentfShiftVisuPrisms;
-
-    /// Used to represent all the list of line primitive
-    ///
-    std::vector< std::vector<LineD3D> > myLineSetList;
-
-    /// Used to represent all the list of point primitive
-    ///
-    std::vector< std::vector<BallD3D> > myBallSetList;
-
-    /// Represent all the clipping planes added to the scene (of maxSize=5).
-    ///
-    std::vector< ClippingPlaneD3D > myClippingPlaneList;
-
-    /// Represent truncated prism object to represent surfels of Khalimsky space (used to display Khalimsky Space Cell)
-    ///
-    std::vector< QuadD3D > myPrismList;
-
-    /// Represents all the planes drawn in the Display3D or to display
-    /// Khalimsky Space Cell.  The map int --> vector< QuadD3D>
-    /// associates a vector of quads to an integer identifier
-    /// (OpenGL name)
-    QuadsMap myQuadsMap;
-
-    /// Represents all the triangles drawn in the Display3D
-    std::vector<std::vector< TriangleD3D > > myTriangleSetList;
-
-    /// Represents all the polygon drawn in the Display3D
-    std::vector<std::vector<PolygonD3D> > myPolygonSetList;
-
-
-    /// Represents all the cubes drawn in the Display3D.  The map int
-    /// --> vector<CubeD3D> associates  a vector of cubes to an
-    /// integer identifier (OpenGL name)
-    CubesMap myCubesMap;
-
-
-    /// names of the lists in myCubeSetList
-    ///
-    std::vector<std::string> myCubeSetNameList;
-
-    /// names of the lists in myLineSetList
-    ///
-    std::vector<std::string> myLineSetNameList;
-
-    /// names of the lists in myBallSetList
-    ///
-    std::vector<std::string> myBallSetNameList;
-    /// names of the lists in myClippingPlaneList
-    ///
-    std::vector<std::string> myClippingPlaneNameList;
-
-    /// names of the lists in myPrismList
-    ///
-    std::vector<std::string> myPrismNameList;
-
-    /// names of the lists in myQuadList
-    ///
-    std::vector<std::string> myQuadSetNameList;
-
-    /// names of the lists in myTriangleList
-    ///
-    std::vector<std::string> myTriangleSetNameList;
-
-    /// names of the lists in myPolygonList
-    ///
-    std::vector<std::string> myPolygonSetNameList;
-
-    /// the "OpenGL name", used for instance by QGLViewer for selecting objects.
-    ///
-    DGtal::int32_t myName3d;
-
-    /// Stores the callback functions called when selecting a graphical object.
-    ///
-    std::set<SelectCallbackFctStore> mySelectCallBackFcts;
-
-    bool myBoundingPtChangedTag = false;
-
-    //----end of protected datas
-
-    // ------------------------- Internals ------------------------------------
-  protected:
-
-    /**
-     * Calculate the cross product of two 3d vectors and return it.
-     * @param dst destination vector.
-     * @param srcA source vector A.
-     * @param srcB source vector B.
-     */
-    static void cross (double dst[3], double srcA[3], double srcB[3]);
-
-    /**
-     * Normalize the input 3d vector.
-     * @param vec source & destination vector.
-     */
-    static void normalize (double vec[3]);
-
-
-  }; // end of class Display3D
-
-  /**
-   * Overloads 'operator<<' for displaying objects of class 'Display3D'.
-   * @param out the output stream where the object is written.
-   * @param object the object of class 'Display3D' to write.
-   * @return the output stream after the writing.
-   */
-  template <typename Space , typename KSpace >
-  std::ostream&
-  operator<< ( std::ostream & out, const DGtal::Display3D<Space , KSpace > & object );
-
-
-  template <typename Space , typename KSpace >
-  /**
-   * Operator ">>" to export a Display3D into a Mesh
-   * @param aDisplay3D the Display3D to be exported.
-   * @param aMesh (return) the resulting mesh.
-   *
-   **/
-  void
-  operator>> ( const Display3D<Space , KSpace > &aDisplay3D,
-               DGtal::Mesh< typename Display3D<Space , KSpace >::RealPoint > &aMesh);
-
-
-  /**
-   * Operator ">>" to export a Display3D directly a file
-   * @param aDisplay3D the Display3D to be exported.
-   * @param aFilename (return) the resulting mesh.
-   *
-   **/
-  template < typename Space , typename KSpace >
-  void
-  operator>> ( const Display3D< Space , KSpace > &aDisplay3D, std::string aFilename);
-
-
-} // namespace DGtal
-
-
-///////////////////////////////////////////////////////////////////////////////
-// Includes inline functions.
-#include "DGtal/io/Display3D.ih"
-
-
-// //
-///////////////////////////////////////////////////////////////////////////////
-
-#endif // !defined Display3D_h
-
-#undef Display3D_RECURSES
-#endif // else defined(Display3D_RECURSES)

@@ -18,7 +18,7 @@ option(DGTAL_WITH_CGAL "With CGAL." OFF)
 option(DGTAL_WITH_ITK "With Insight Toolkit ITK." OFF)
 option(DGTAL_WITH_CAIRO "With CairoGraphics." OFF)
 option(DGTAL_WITH_HDF5 "With HDF5." OFF)
-option(WITH_QGLVIEWER "With LibQGLViewer for 3D visualization (Qt5 required)." OFF)
+option(DGTAL_WITH_POLYSCOPE_VIEWER "With polyscope." OFF)
 option(DGTAL_WITH_PONCA "With Ponca library for geometry processing." OFF)
 option(DGTAL_WITH_FFTW3 "With FFTW3 discrete Fourier Transform library." OFF)
 option(DGTAL_WITH_LIBIGL "With libIGL (with copyleft/CGAL included)." OFF)
@@ -35,67 +35,66 @@ endif()
 
 if(DGTAL_WITH_OPENMP)
   set(LIST_OPTION ${LIST_OPTION} [OpenMP]\ )
-  message(STATUS "      DGTAL_WITH_OPENMP        true    (OpenMP multithread features)")
+  message(STATUS "      DGTAL_WITH_OPENMP              true    (OpenMP multithread features)")
 else()
-  message(STATUS "      DGTAL_WITH_OPENMP        false   (OpenMP multithread features)")
+  message(STATUS "      DGTAL_WITH_OPENMP              false   (OpenMP multithread features)")
 endif()
 
 if (DGTAL_WITH_CGAL)
   set(LIST_OPTION ${LIST_OPTION} [CGAL]\ )
-  message(STATUS "      DGTAL_WITH_CGAL          true    (cgal)")
+  message(STATUS "      DGTAL_WITH_CGAL                true    (cgal)")
 else()
-  message(STATUS "      DGTAL_WITH_CGAL          false   (cgal)")
+  message(STATUS "      DGTAL_WITH_CGAL                false   (cgal)")
 endif()
 
 if(DGTAL_WITH_PONCA)
   set(LIST_OPTION ${LIST_OPTION} [PONCA]\ )
-  message(STATUS "      DGTAL_WITH_PONCA         true    (Ponca geometry library)")
+  message(STATUS "      DGTAL_WITH_PONCA               true    (Ponca geometry library)")
 else()
-  message(STATUS "      DGTAL_WITH_PONCA         false   (Ponca geometry library)")
+  message(STATUS "      DGTAL_WITH_PONCA               false   (Ponca geometry library)")
 endif()
 
 if (DGTAL_WITH_ITK)
   set(LIST_OPTION ${LIST_OPTION} [ITK]\ )
-  message(STATUS "      DGTAL_WITH_ITK           true    (Insight Toolkit ITK image wrapper)")
+  message(STATUS "      DGTAL_WITH_ITK                 true    (Insight Toolkit ITK image wrapper)")
 else()
-  message(STATUS "      DGTAL_WITH_ITK           false   (Insight Toolkit ITK image wrapper)")
+  message(STATUS "      DGTAL_WITH_ITK                 false   (Insight Toolkit ITK image wrapper)")
 endif()
 
 if(DGTAL_WITH_CAIRO)
   set(LIST_OPTION ${LIST_OPTION} [CAIRO]\ )
-  message(STATUS "      DGTAL_WITH_CAIRO         true    (CairoGraphics drawing features)")
+  message(STATUS "      DGTAL_WITH_CAIRO               true    (CairoGraphics drawing features)")
 else()
-  message(STATUS "      DGTAL_WITH_CAIRO         false   (CairoGraphics drawing features)")
+  message(STATUS "      DGTAL_WITH_CAIRO               false   (CairoGraphics drawing features)")
 endif()
 
 if (DGTAL_WITH_HDF5)
   set(LIST_OPTION ${LIST_OPTION} [HDF5]\ )
-  message(STATUS "      DGTAL_WITH_HDF5          true    (HDF5 image i/o)")
+  message(STATUS "      DGTAL_WITH_HDF5                true    (HDF5 image i/o)")
 else()
-  message(STATUS "      DGTAL_WITH_HDF5          false   (HDF5 image i/o)")
+  message(STATUS "      DGTAL_WITH_HDF5                false   (HDF5 image i/o)")
 endif()
 
-
-if(WITH_QGLVIEWER)
-  set(LIST_OPTION ${LIST_OPTION} [QGLVIEWER]\ )
-  message(STATUS "      WITH_QGLVIEWER     true    (QGLViewer based 3D Viewer -- Qt5 required)")
+if(DGTAL_WITH_POLYSCOPE_VIEWER)
+  set(LIST_OPTION ${LIST_OPTION} [POLYSCOPE]\ )
+  message(STATUS "      DGTAL_WITH_POLYSCOPE_VIEWER    true    (Polyscope based 3D Viewer)")
 else()
-  message(STATUS "      WITH_QGLVIEWER     false   (QGLViewer based 3D Viewer -- Qt5 required)")
+  message(STATUS "      DGTAL_WITH_POLYSCOPE_VIEWER    false   (Polyscope based 3D Viewer)")
 endif()
 
 if (DGTAL_WITH_FFTW3)
   set(LIST_OPTION ${LIST_OPTION} [FFTW3]\ )
-  message(STATUS "      DGTAL_WITH_FFTW3         true    (FFTW3 discrete Fourier transform library)")
+  message(STATUS "      DGTAL_WITH_FFTW3               true    (FFTW3 discrete Fourier transform library)")
 else (DGTAL_WITH_FFTW3)
-  message(STATUS "      DGTAL_WITH_FFTW3         false   (FFTW3 discrete Fourier transform library)")
+  message(STATUS "      DGTAL_WITH_FFTW3               false   (FFTW3 discrete Fourier transform library)")
 endif()
 
 
 if (DGTAL_WITH_LIBIGL)
   set(LIST_OPTION ${LIST_OPTION} [LIBIGL]\ )
-  message(STATUS "      DGTAL_WITH_LIBIGL        true    (libIGL)")
+  message(STATUS "      DGTAL_WITH_LIBIGL              true    (libIGL)")
 else (DGTAL_WITH_LIBIGL)
-  message(STATUS "      DGTAL_WITH_LIBIGL        false   (libIGL)")
+  message(STATUS "      DGTAL_WITH_LIBIGL              false   (libIGL)")
 endif()
 
 message(STATUS "")
@@ -204,58 +203,18 @@ else()
   unset(HDF5_LIBRARIES)
 endif()
 
-
 # -----------------------------------------------------------------------------
-# Look for Qt (needed by libqglviewer visualization).
+# Look for Polyscope.
 # -----------------------------------------------------------------------------
-set(QT5_FOUND_DGTAL 0)
-if (WITH_QGLVIEWER)
-    find_package(Qt5 COMPONENTS Widgets OpenGL Xml REQUIRED)
-    if (Qt5Widgets_FOUND AND Qt5OpenGL_FOUND AND Qt5Xml_FOUND)
-      set(QT5_FOUND_DGTAL 1)
-      message(STATUS "Qt5 (Widgets, OpenGL and Xml modules) found (needed by QGLViewer compiled with Qt5).")
+set(POLYSCOPE_FOUND_DGTAL 0)
+if (DGTAL_WITH_POLYSCOPE_VIEWER OR DGTAL_BUILD_POLYSCOPE_EXAMPLES)
+  include(polyscope)
 
-      target_compile_definitions(DGtal PUBLIC -DWITH_QT5)
-      target_link_libraries(DGtal PUBLIC
-        ${Qt5Widgets_LIBRARIES}
-        ${Qt5OpenGL_LIBRARIES}
-        ${Qt5Xml_LIBRARIES})
-      target_include_directories(DGtal PUBLIC
-        ${Qt5Widgets_INCLUDES_DIRS}
-        ${Qt5OpenGL_INCLUDES_DIR}
-        ${Qt5Xml_INCLUDES_DIR})
-    else()
-      message(STATUS "One of Qt5's modules was not found (needed by QGLViewer).")
-    endif()
-endif()
-
-# -----------------------------------------------------------------------------
-# Look for QGLViewer for 3D display.
-# (They are not compulsory).
-# -----------------------------------------------------------------------------
-set(QGLVIEWER_FOUND_DGTAL 0)
-set(WITH_VISU3D 0)
-if (WITH_QGLVIEWER)
-  find_package(QGLVIEWER REQUIRED)
-  if (QGLVIEWER_FOUND)
-    find_package(OpenGL REQUIRED)
-    message(STATUS  "libQGLViewer found.")
-    if (OPENGL_GLU_FOUND)
-      message(STATUS  "  (OpenGL-GLU ok) " ${OPENGL_INCLUDE_DIR})
-    else (OPENGL_GLU_FOUND)
-      message(FATAL_ERROR  "  libQGLViewer found but your system does not have OpenGL/GLU modules." )
-    endif()
-
-    target_include_directories(DGtal PUBLIC ${QGLVIEWER_INCLUDE_DIR} ${OPENGL_INCLUDE_DIR})
-    set(WITH_VISU3D_QGLVIEWER 1)
-    set(QGLVIEWER_FOUND_DGTAL 1)
-    target_compile_definitions(DGtal PUBLIC -DWITH_VISU3D_QGLVIEWER)
-    target_link_libraries(DGtal PUBLIC ${QGLVIEWER_LIBRARIES} ${OPENGL_LIBRARIES})
-    set(DGtalLibDependencies ${DGtalLibDependencies} ${QGLVIEWER_LIBRARIES} ${OPENGL_LIBRARIES}  )
-    set(WITH_VISU3D 1)
-  else()
-    message(FATAL_ERROR  "libQGLViewer not found.  Check the cmake variables associated to this package or disable it." )
-  endif()
+  target_link_libraries(DGtal PUBLIC polyscope)
+  target_compile_definitions(DGtal PUBLIC -DDGTAL_WITH_POLYSCOPE)
+  set(POLYSCOPE_FOUND_DGTAL 1)
+  set(DGTAL_WITH_POLYSCOPE 1)
+  set(DGTAL_WITH_POLYSCOPE_VIEWER 1)
 endif()
 
 # -----------------------------------------------------------------------------
@@ -366,3 +325,4 @@ if(DGTAL_WITH_LIBIGL)
 endif()
 
 message(STATUS "-------------------------------------------------------------------------------")
+

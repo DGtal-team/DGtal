@@ -276,7 +276,7 @@ single point.
 
 \subsection mesh3D 3D Surface Mesh
 The static class \c MeshReader allows to import Mesh from OBJ, OFF or OFS file format.
-Actually this class can import surface mesh (Mesh) where faces are potentially represented by triangles, quadrilaters and polygons. Notes that Mesh can be directly displayed with Viewer3D.
+Actually this class can import surface mesh (Mesh) where faces are potentially represented by triangles, quadrilaters and polygons. Notes that Mesh can be directly displayed with PolyscopeViewer.
 
 The mesh importation can be done automatically from the extension file name by using the "<<" operator. For instance (see. \ref importMesh3D ):
 
@@ -284,10 +284,7 @@ The mesh importation can be done automatically from the extension file name by u
 @snippet io/meshFromOFF.cpp ImportOFFfile
 
 You can also export a Mesh object by using the operator
-(">>"). Notes that the class Display3D permits also to generate a
-Mesh which can be exported (see. \ref exportMesh3D).
-
-
+(">>"). 
 
 \section io_examples Examples
 
@@ -318,10 +315,9 @@ Afterwards the set is thresholded in ]0,255[:
 @code
   Z3i::DigitalSet set3d (image.domain());
   SetFromImage<Z3i::DigitalSet>::append<Image>(set3d, image, 0,255);
-  Viewer3D<> viewer;
+  PolyscopeViewer<> viewer;
+  viewer << set3d << image.domain();
   viewer.show(); 
-  viewer << SetMode3D(image.domain().className(), "BoundingBox");
-  viewer << set3d << image.domain()  << Viewer3D<>::updateDisplay;
 @endcode
 
 
@@ -349,11 +345,10 @@ We can change the way to select the coordinate field:
   vPos.push_back(2);
   vPos.push_back(1);
   vectPoints=  PointListReader<Z3i::Point>::getPointsFromFile(inputFilename, vPos); 
-  viewer<< CustomColors3D(QColor(255,0,0), QColor(255,0,0)); 
+  viewer << Color(255,0,0); 
   for(unsigned int i=0; i<vectPoints.size();i++){
     viewer << vectPoints.at(i);
   }
- viewer   << Viewer3D<>::updateDisplay;
 @endcode
 
 You may obtain the following visualisation:
@@ -364,7 +359,7 @@ You may obtain the following visualisation:
 \subsection importMesh3D Import 3D mesh from OFF file
 
 The following example meshFromOFF.cpp shows in few lines how to import and display an OFF 3D mesh.
-Add the following headers to access to OFF reader and  Viewer3D:
+Add the following headers to access to OFF reader and PolyscopeViewer:
 
 
 @snippet io/meshFromOFF.cpp includeImportOFF
@@ -387,59 +382,6 @@ You can also import large scale mesh, like the one of classic Angel scan ( avail
 
 \image html visuImportOFF.png  "Visualisation of the 3d angel "  width=5cm
 \image latex visuImportOFF.png  "Visualisation of the 3d  angel" width=5cm
-
-
-
-
-
-\subsection exportMesh3D Export 3D mesh in OFF and OBJ format
-
-The following example display3DToOFF.cpp   shows in few lines how to export in OFF format a
-DigitalSet object. This object will be exported with a Display3D
-object (see. display3DToOFF.cpp). 
-
-
-
-@snippet io/display3DToOFF.cpp ExampleDisplay3DToOFF
-
-
-
-
-Notes that the export can also be done in two steps:
-
-
-@code 
-// The parameter true is used to specify that we store the face colors.
-Mesh aMesh(true);
-viewer >> aMesh;
-aMesh >> "exporMeshToOFF.off"
-@endcode
-
-
-The resulting mesh can be visualized for instance by using meshlab;
-
-
-\image html  visuDisplay3DToOFF.png  "Visualization of the exported mesh "  width=5cm
-\image latex visuDisplay3DToOFF.png  "Visualization of the exported mesh" width=5cm
-
-
-
-
-This code can be useful if you want to generate illustrations in the
-U3D format. For instance by using the U3D/PDF export from MeshLab or
-JReality ( www3.math.tu-berlin.de/jreality/). You can for
-instance generate some exports in pdf like this example:
-
-
-\image html  visu3dKSSurfaceExtractionExportPDF.png  "Visualization in PDF of an exported Digital object." width=5cm
-\image latex visu3dKSSurfaceExtractionExportPDF.png  "Visualization in PDF of an exported Digital object." width=5cm
-
-
-
-
-
-(see this pdf file:  http://dgtal.org/wp/wp-content/uploads/2010/10/3dKSSurfaceExtractionExport.pdf )
-
 
 */
 
