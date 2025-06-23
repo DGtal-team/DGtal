@@ -25,6 +25,7 @@
  */
 
 #include "dgtal_pybind11_common.h"
+#include <pybind11/numpy.h>
 namespace py = pybind11;
 
 #include "DGtal/helpers/Shortcuts.h"
@@ -58,6 +59,24 @@ std::vector<Color> apply_colormapV(const std::vector<T>& data, const Parameters&
     return apply_colormap(data, cmap);
 }
 
+template<typename It, typename Embd>
+py::array_t<double> getEmbeddedPosition(Embd& embedder, size_t size, It it, It end) {
+    constexpr size_t eSize  = sizeof(double);
+    const size_t shape[2]   = {size, 3};
+    const size_t strides[2] = {3 * eSize, eSize};
+    auto array = py::array_t<double>(shape, strides);
+    auto view  = array.mutable_unchecked<2>();
+
+    for (size_t i = 0; it != end; ++it, ++i) {
+        auto pos = embedder(*it);
+        
+        view(i, 0) = pos[0];
+        view(i, 1) = pos[1];
+        view(i, 2) = pos[2];
+    }
+
+    return array;
+}
 
 void define_types(py::module& m) {
     // We define some "opaques" type that are only be meant to be returned to the user
@@ -252,6 +271,12 @@ void bind_shortcuts(py::module& m_helpers) {
     m.def("applyColorMap", &apply_colormapV<int>);
     m.def("applyColorMap", &apply_colormapV<float>);
     m.def("applyColorMap", &apply_colormapV<double>);
+
+    m.def("getEmbeddedPositions", [](const SH3::KSpace& space, const SH3::SurfelRange& range) {
+            auto embedder = SH3::getSCellEmbedder(space);
+            return getEmbeddedPosition(embedder, range.size(), range.begin(), range.end());
+        }); 
+
 
 
     // SHG3 Shortcuts :
