@@ -175,8 +175,20 @@ void bind_shortcuts(py::module& m_helpers) {
     m.def("makeBinaryImage", [](CountedPtr<SH3::DigitizedImplicitShape3D> shape, const SH3::Domain& d, Parameters params) {
             return SH3::makeBinaryImage(shape, d, params);
         });
+    m.def("makeBinaryImage", [](const std::vector<SH3::Point>& positions) {
+            return SH3::makeBinaryImage(positions);
+        });
+    m.def("makeBinaryImage", [](const std::vector<float>& positions, const SH3::Domain& d) {
+            return SH3::makeBinaryImage(positions, d);
+        });
     m.def("makeGrayScaleImage", [](const std::string& fname){
             return SH3::makeGrayScaleImage(fname);
+        });
+    m.def("makeGrayScaleImage", [](const std::vector<float>& positions, const SH3::Domain& d) {
+            return SH3::makeGrayScaleImage(positions, d);
+        });
+    m.def("makeBinaryImage", [](const std::vector<SH3::Point>& positions, const std::vector<float>& values) {
+            return SH3::makeGrayScaleImage(positions, values);
         });
     m.def("makeDigitalSurface", [](CountedPtr<SH3::BinaryImage> im, const SH3::KSpace& K, const Parameters& params) {
             return SH3::makeDigitalSurface(im, K, params);

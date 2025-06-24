@@ -1075,10 +1075,11 @@ namespace DGtal
       /// @param[in] Domain ovveride_domain
       ///
       /// @return a smart pointer on a gray scale image
-      template<typename T, std::enable_if_t<!is_double_nested_container<T>::value, int> = 0>
+      template<typename T, typename U, std::enable_if_t<!is_double_nested_container<T>::value, int> = 0>
       static CountedPtr<GrayScaleImage>
         makeGrayScaleImage
         ( const std::vector<T>& positions, 
+          const std::vector<U>& values, 
           std::optional<Domain> override_domain = std::nullopt)
       {
         Domain d;
@@ -1110,7 +1111,7 @@ namespace DGtal
         {
           // Builds a points for generality, T may not be a PointVector instance
           Point p({positions[i][0], positions[i][1], positions[i][2]});
-          image->setValue(p, true);
+          image->setValue(p, static_cast<GrayScale>(values[i]));
         }
         return image;
       }
