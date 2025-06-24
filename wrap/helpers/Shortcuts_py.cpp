@@ -98,7 +98,7 @@ void define_types(py::module& m) {
         .def("__call__", &SH3::ColorMap::operator());
 
     // Ranges
-    py::class_<SH3::SurfelRange>(m, "__SurfelRange"); // This is a vector, so len() is available !
+    py::class_<SH3::SurfelRange>(m, "SurfelRange"); // This is a vector, so len() is available !
     py::class_<SH3::IdxRange>(m, "IdxRange");
 
     // Containers
@@ -120,7 +120,7 @@ void define_types(py::module& m) {
             return mesh->nbVertex();
         });
     py::class_<CountedPtr<SH3::ImplicitShape3D>>(m, "__PtrImplicitShape3D");
-    py::class_<CountedPtr<SH3::DigitizedImplicitShape3D>>(m, "__PtrDIgitizedImplicitShape3D");
+    py::class_<CountedPtr<SH3::DigitizedImplicitShape3D>>(m, "__PtrDigitizedImplicitShape3D");
     py::class_<SH3::Cell2Index>(m, "Cell2Index")
         .def(py::init<>());
 
