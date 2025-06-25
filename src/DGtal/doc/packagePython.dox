@@ -49,7 +49,7 @@ package, just use:
 pip install dgtal
 @endcode
 
-@subsection install_and_build Installing and building the library
+@section install_and_build Installing and building the library
 
 For most use case, it is sufficient to install the library from its pypy repository.
 
@@ -75,9 +75,9 @@ import dgtal
 ....
 @endcode
 
-@subsection code_example Examples
+@section code_example Examples
 
-@subsubsection topology_example Topology example (Euler characteristics)
+@subsection topology_example Topology example (Euler characteristics)
 
 @code{.py}
 import dgtal
@@ -119,7 +119,7 @@ ccomplex.construct(mySet)
 print("Euler characteristic: "+str(ccomplex.euler()))
 @endcode
 
-@subsubsection shortcuts_examples Geometrical Estimators (Curvature and normals)
+@subsection shortcuts_examples Geometrical Estimators (Curvature and normals)
 
 This examples loads a binary image and compute integral invariants estimators and displays them within an interactive viewer. It mostly follows Shortcuts examples with a one-to-one mapping. A few other utilities are provided not to loop over elements in python.
 
@@ -180,9 +180,9 @@ ps.show()
 # SH3.saveOBJ(surface, [], colors, "al.obj")
 @endcode
 
-@subsection documentation Documentation
+@section documentation Documentation
 
-@subsubsection base_topology_kernel Base, Topology and Kernel 
+@subsection base_topology_kernel Base, Topology and Kernel 
 
 In this section, we provide a list of functions classes that can be used in python. You may find more documentation and example usage by calling the help function on these classes (eg. help(dgtal.Object4_8)). The python constructor columns shows how object can be infered through their parameter (for example point dimention and type from the data parameter). Often, this is done through factories that are written in python. 
 
@@ -196,7 +196,7 @@ In this section, we provide a list of functions classes that can be used in pyth
 | DT4_8, DT8_4, DT6_16, DT18_6, DT6_26, DT26_6                            | DGtal::DigitalTopology                             | DigitalTopology(foreground, background)                          |
 | Object4_8, Object8_4,  Object6_18, Object18_6, Object6_26, Object26_6   | DGtal::Object                                      | Object(topology, domain, points, connectedness)                  |
 
-@subsubsection shortcuts Shortcuts
+@subsection shortcuts Shortcuts
 
 Most shortcuts (see. \subpage moduleShortcuts) also have their binding. These are available under:
 
@@ -205,7 +205,9 @@ from dgtal import SH3 #Import both shortcuts and geometry shortcuts
 SH3.a_function_or_classes..
 @endcode
 
-Objects within this module are not expected to manipulated by the user. They are meant to be passed around to next functions and are prefixed by two underscores. We reference them for complitness
+@subsubsection shortcuts_classes Classes
+
+Objects within this module are not expected to manipulated by the user. They are meant to be passed around to next functions and are prefixed by two underscores. We reference them for completeness
 
 | Python class(es)              | C++ class(es)                                                 | Available methods (if any)                                                                                                                                                                       | Comments                                                       |
 |-------------------------------|---------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------|
@@ -219,8 +221,9 @@ Objects within this module are not expected to manipulated by the user. They are
 | Cell2Index                    | DGtal::Shortcuts::Cell2Index                                  | None                                                                                                                                                                                             | Not to be used (except to be created and passed to funtions)   |
 | ColorMap                      | DGtal::Shortcuts::ColorMap                                    | ColorMap(min, max) / object.addColor(dgtal.Color): adds a color / object(value): convert value to color /                                                                                        | See: applyColorMap                                             |
 | SurfelRange                   | DGtal::Shortcuts::SurfelRange                                 |                                                                                                                                                                                                  | std::vector<SCell>. See documentation of kernel binding above. |
-| ScalarStatistic               | DGtal::Shortcuts::ScalarStatistics                            | samples(): number of samples / size(): number of samples / mean(): mean / variance(): biased variance / unbiasedVariance(): unbiased variance / min(): min / max(): max / values: list of values | Not to be created.                                             |
-|                               |                                                               |                                                                                                                                                                                                  |                                                                |
+| ScalarStatistic               | DGtal::Shortcuts::ScalarStatistic                             | samples(): number of samples / size(): number of samples / mean(): mean / variance(): biased variance / unbiasedVariance(): unbiased variance / min(): min / max(): max / values: list of values | Not to be created.                                             |
+
+@subsubsection shortcuts_functions Functions
 
 Static functions are also bound. For overloads, we only indicate the main parameters, not the whole signature. Refer to the C++ functions for complete signature (1 to 1 match).
 
@@ -238,8 +241,8 @@ Static functions are also bound. For overloads, we only indicate the main parame
 | SH3.makeIdxDigitalSurface         | Shortcuts::makeIdxDigitalSurface                 | Shortcuts::BinaryImage                                                                                                                                                                                                           |
 | SH3.saveBinaryImage               | Shortcuts::saveBinaryImage                       | All.                                                                                                                                                                                                                             |
 | SH3.saveOBJ                       | Shortcuts::saveOBJ                               | (Shortcuts::TriangulatedSurface or Shortcuts::LightDigitalSurface, std::string) / (Shortcuts::TriangulatedSurface or Shortcuts::LightDigitalSurface, Shortcuts::RealVectors, Shortcuts::Colors, std::string) / (Shortcuts::DigitalSurface, std::string) |
-| SH3.saveVectorFieldOBJ            | Shortcuts::saveVectorFieldOBJ                    | (Shortcuts::RealPoints, Shortcuts::RealVectors, double, Shortcuts::Colors, std::string)                                                                                                                                          |
-| SH3.getKSpace                     | Shortcuts::getKSpace                             | Shortcuts::BinaryImage, (Shortcuts::Point, Shortcuts::Point), (std::vector, std::vector)*                                                                                                                                        |
+| SH3.saveVectorFieldOBJ            | Shortcuts::saveVectorFieldOBJ                    | (Shortcuts::RealPoints, Shortcuts::RealVectors, double, Shortcuts::Colors, std::string)                                                                                                                                |
+| SH3.getKSpace                     | Shortcuts::getKSpace                             | Shortcuts::BinaryImage, (Shortcuts::Point, Shortcuts::Point), (std::vector, std::vector)*                                                                                                                               |
 | SH3.getCellEmbedder               | Shortcuts::getCellEmbedder                       | Shortcuts::KSpace                                                                                                                                                                                                                |
 | SH3.getSCellEmbedder              | Shortcuts::getSCellEmbedder                      | Shortcuts::KSpace                                                                                                                                                                                                                |
 | SH3.getSurfelRange                | Shortcuts::getSurfelRange                        | Shortcuts::LightDigitalSurface / Shortcuts::DigitalSurface                                                                                                                                                                       |
@@ -264,6 +267,14 @@ Static functions are also bound. For overloads, we only indicate the main parame
 | SH3.getScalarsAbsoluteDifference  | ShortcutsGeometry::getScalarsAbsoluteDifference  | All.                                                                                                                                                                                                                             |
 | SH3.getStatistic                  | ShortcutsGeometry::getStatistic                  | All.                                                                                                                                                                                                                             |
 
+@subsubsection shortcuts_helpers Helpers functions
+
+Looping through object is slow in python and digital object may be large. For this reason, we also provide a few helper functions for ease of usage and faster code:
+
+| Python function         | Description                                 | Example usage                                                                                                                                                                                            |
+|-------------------------|---------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| SH3.applyColorMap       | Applies a colormap to a list of values      | @code{.py} cmap = SH3.getColorMap(params); colors = SH3.applyColorMap([0, 1, 2], cmap) @endcode                                                                                                          |
+| SH3.getEmbeddedPosition | Returns the position of a list of surfels.  | @code{.py} K = SH3.getKSpace(image, params); surface = SH3.makeLightDigitalSurface(image, K, params); surfels = SH3.getSurfelRange(surface, params); pos = SH3.getEmbeddedPositions(K, surfels) @endcode |
 
 */
 }

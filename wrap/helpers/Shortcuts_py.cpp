@@ -25,7 +25,7 @@
  */
 
 #include "dgtal_pybind11_common.h"
-#include <pybind11/numpy.h>
+#include "pybind11/numpy.h"
 namespace py = pybind11;
 
 #include "DGtal/helpers/Shortcuts.h"
@@ -359,11 +359,11 @@ void bind_shortcuts(py::module& m_helpers) {
     mg.def("getATScalarFieldApproximation", [](
         std::vector<double>& scalars, 
         const SH3::CellRange& range, 
-        CountedPtr<SH3::LightDigitalSurface> surface, 
+        CountedPtr<SH3::LightDigitalSurface> lsurface, 
         const SH3::SurfelRange& surfels, 
         const std::vector<double>& input, 
         const Parameters& params) {
-            return SHG3::getATScalarFieldApproximation(scalars, range.cbegin(), range.cend(), surface, surfels, input, params);
+            return SHG3::getATScalarFieldApproximation(scalars, range.cbegin(), range.cend(), lsurface, surfels, input, params);
         });
     mg.def("getATScalarFieldApproximation", [](
         std::vector<double>& scalars, 

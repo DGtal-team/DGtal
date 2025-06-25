@@ -40,13 +40,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
-#include <cstdlib>
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <tuple>
 #include <iterator>
-#include <string>
 #include <optional>
 
 #include "DGtal/base/Common.h"
@@ -57,7 +51,7 @@
 #include "DGtal/math/Statistic.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/IntervalForegroundPredicate.h"
-#include <DGtal/images/ImageLinearCellEmbedder.h>
+#include "DGtal/images/ImageLinearCellEmbedder.h"
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/shapes/ShapeGeometricFunctors.h"
@@ -687,7 +681,7 @@ namespace DGtal
       /// from the domain. The order must be the same
       ///
       /// @param[in] values A vector where non-zero values indicates voxels
-      /// @param[in] Domain d The domain of the image
+      /// @param[in] d The domain of the image
       ///
       /// @return a smart pointer on a binary image 
       template<typename T, typename __U = std::enable_if_t<std::is_arithmetic_v<T>>>
