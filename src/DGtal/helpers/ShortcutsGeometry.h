@@ -605,10 +605,8 @@ namespace DGtal
         return getCNCGaussianCurvatures(mesh, params);
       }
 
-      /// Given a space \a K, an implicit \a shape, a sequence of \a
-
-      /// principal curvatures at the specified surfels, in the same
-      /// order.
+      /// Given a space \a K, an implicit \a shape, a sequence of \a principal curvatures 
+      /// at the specified surfels, in the same order.
       ///
       /// @note that the first principal curvature is approximated by projecting the
       /// surfel centroid onto the implicit 3D shape.
