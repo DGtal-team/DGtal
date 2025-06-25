@@ -70,7 +70,7 @@ need to be further installed depending on your installation.
 
 To import the module and access its functionnalities:
 
-@code
+@code{.py}
 import dgtal
 ....
 @endcode
@@ -79,7 +79,7 @@ import dgtal
 
 @subsubsection topology_example Topology example (Euler characteristics)
 
-@code
+@code{.py}
 import dgtal
 import random
 
@@ -125,7 +125,7 @@ This examples loads a binary image and compute integral invariants estimators an
 
 This examples requires [polyscope](https://polyscope.run/py/) to be installed 
 
-@code
+@code{.py}
 from dgtal import *
 from dgtal import SH3
 import polyscope as ps
@@ -221,6 +221,49 @@ Objects within this module are not expected to manipulated by the user. They are
 | SurfelRange                   | DGtal::Shortcuts::SurfelRange                                 |                                                                                                                                                                                                  | std::vector<SCell>. See documentation of kernel binding above. |
 | ScalarStatistic               | DGtal::Shortcuts::ScalarStatistics                            | samples(): number of samples / size(): number of samples / mean(): mean / variance(): biased variance / unbiasedVariance(): unbiased variance / min(): min / max(): max / values: list of values | Not to be created.                                             |
 |                               |                                                               |                                                                                                                                                                                                  |                                                                |
+
+Static functions are also bound. For overloads, we only indicate the main parameters, not the whole signature. Refer to the C++ functions for complete signature (1 to 1 match).
+
+| Python method                     | C++ method                                       | Overloads (see C++ methods for more details)                                                                                                                                                                                     |
+|-----------------------------------|--------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| SH3.makeBinaryImage               | Shortcuts::makeBinaryImage                       | std::string / Shortcuts::DigitizedImplicitShape3D / std::vector                                                                                                                                                                  |
+| SH3.makeGrayScaleImage            | Shortcuts::makeGrayScaleImage                    | std::string / std::vector                                                                                                                                                                                                        |
+| SH3.makeDigitalSurface            | Shortcuts::makeDigitalSurface                    | Shortcuts::BinaryImage                                                                                                                                                                                                           |
+| SH3.makeLightDigitalSurface       | Shortcuts::makeLightDigitalSurface               | All.                                                                                                                                                                                                                             |
+| SH3.makeLightDigitalSurfaces      | Shortcuts::makeLightDigitalSurfaces              | Shortcuts::BinaryImage                                                                                                                                                                                                           |
+| SH3.makeTriangulatedSurface       | Shortcuts::makeTriangulatedSurface               | Shortcuts::GraysScaleImage                                                                                                                                                                                                       |
+| SH3.makeMesh                      | Shortcuts::makeMesh                              | Shortcuts::TriangulatedSurface                                                                                                                                                                                                   |
+| SH3.makeImplicitShape3D           | Shortcuts::makeImplicitShape3D                   | All.                                                                                                                                                                                                                             |
+| SH3.makeDigitizedImplicitShape3D  | Shortcuts::makeDigitizedImplicitShape3D          | All.                                                                                                                                                                                                                             |
+| SH3.makeIdxDigitalSurface         | Shortcuts::makeIdxDigitalSurface                 | Shortcuts::BinaryImage                                                                                                                                                                                                           |
+| SH3.saveBinaryImage               | Shortcuts::saveBinaryImage                       | All.                                                                                                                                                                                                                             |
+| SH3.saveOBJ                       | Shortcuts::saveOBJ                               | (Shortcuts::TriangulatedSurface or Shortcuts::LightDigitalSurface, std::string) / (Shortcuts::TriangulatedSurface or Shortcuts::LightDigitalSurface, Shortcuts::RealVectors, Shortcuts::Colors, std::string) / (Shortcuts::DigitalSurface, std::string) |
+| SH3.saveVectorFieldOBJ            | Shortcuts::saveVectorFieldOBJ                    | (Shortcuts::RealPoints, Shortcuts::RealVectors, double, Shortcuts::Colors, std::string)                                                                                                                                          |
+| SH3.getKSpace                     | Shortcuts::getKSpace                             | Shortcuts::BinaryImage, (Shortcuts::Point, Shortcuts::Point), (std::vector, std::vector)*                                                                                                                                        |
+| SH3.getCellEmbedder               | Shortcuts::getCellEmbedder                       | Shortcuts::KSpace                                                                                                                                                                                                                |
+| SH3.getSCellEmbedder              | Shortcuts::getSCellEmbedder                      | Shortcuts::KSpace                                                                                                                                                                                                                |
+| SH3.getSurfelRange                | Shortcuts::getSurfelRange                        | Shortcuts::LightDigitalSurface / Shortcuts::DigitalSurface                                                                                                                                                                       |
+| SH3.getPointelRange               | Shortcuts::getPointelRange                       | Shortcuts::LightDigitalSurface                                                                                                                                                                                                   |
+| SH3.getCellRange                  | Shortcuts::getCellRange                          | Shortcuts::LightDigitalSurface / Shortcuts::DigitalSurface                                                                                                                                                                       |
+| SH3.getRangeMatch                 | Shortcuts::getRangeMatch                         | Shortcuts::Surfel                                                                                                                                                                                                                |
+| SH3.getMatchedRange               | Shortcuts::getMatchedRange                       | Shortcuts::RealVectors                                                                                                                                                                                                           |
+| SH3.getColorMap                   | Shortcuts::getColorMap                           | All.                                                                                                                                                                                                                             |
+| SH3.getIIMeanCurvatures           | ShortcutsGeometry::getIIMeanCurvatures           | Shortcuts::BinaryImage / Shortcuts::DigitizedImplicitShape3D                                                                                                                                                                     |
+| SH3.getIIGaussianCurvatures       | ShortcutsGeometry::getIIGaussianCurvatures       | Shortcuts::BinaryImage / Shortcuts::DigitizedImplicitShape3D                                                                                                                                                                     |
+| SH3.getIINormalVectors            | ShortcutsGeometry::getIINormalVectors            | Shortcuts::BinaryImage / Shortcuts::DigitizedImplicitShape3D                                                                                                                                                                     |
+| SH3.getPositions                  | ShortcutsGeometry::getPositions                  | Shortcuts::ImplicitShape3D                                                                                                                                                                                                       |
+| SH3.getNormalVectors              | ShortcutsGeometry::getNormalVectors              | Shortcuts::ImplicitShape3D                                                                                                                                                                                                       |
+| SH3.getMeanCurvatures             | ShortcutsGeometry::getMeanCurvatures             | Shortcuts::ImplicitShape3D                                                                                                                                                                                                       |
+| SH3.getGaussianCurvatures         | ShortcutsGeometry::getGaussianCurvatures         | Shortcuts::ImplicitShape3D                                                                                                                                                                                                       |
+| SH3.getFirstPrincipalCurvatures   | ShortcutsGeometry::getFirstPrincipalCurvatures   | All.                                                                                                                                                                                                                             |
+| SH3.getSecondPrincipalCurvatures  | ShortcutsGeometry::getSecondPrincipalCurvatures  | All.                                                                                                                                                                                                                             |
+| SH3.getFirstPrincipalDirections   | ShortcutsGeometry::getFirstPrincipalDirections   | All.                                                                                                                                                                                                                             |
+| SH3.getSecondPrincipalDirections  | ShortcutsGeometry::getSecondPrincipalDirections  | All.                                                                                                                                                                                                                             |
+| SH3.getVCMNormalVectors           | ShortcutsGeometry::getVCMNormalVectors           | Shortcuts::LightDigitalSurface / Shortcuts::DigitalSurface                                                                                                                                                                       |
+| SH3.getATScalarFieldApproximation | ShortcutsGeometry::getATScalarFieldApproximation | Shortcuts::LightDigitalSurface / Shortcuts::DigitalSurface                                                                                                                                                                       |
+| SH3.getScalarsAbsoluteDifference  | ShortcutsGeometry::getScalarsAbsoluteDifference  | All.                                                                                                                                                                                                                             |
+| SH3.getStatistic                  | ShortcutsGeometry::getStatistic                  | All.                                                                                                                                                                                                                             |
+
 
 */
 }

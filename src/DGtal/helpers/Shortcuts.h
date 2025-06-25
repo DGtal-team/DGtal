@@ -687,7 +687,7 @@ namespace DGtal
       /// from the domain. The order must be the same
       ///
       /// @param[in] values A vector where non-zero values indicates voxels
-      /// @param[in] Domain d
+      /// @param[in] Domain d The domain of the image
       ///
       /// @return a smart pointer on a binary image 
       template<typename T, typename __U = std::enable_if_t<std::is_arithmetic_v<T>>>
@@ -713,7 +713,7 @@ namespace DGtal
       /// @note This overloads expect consistent size of subarrays. This is not checked.
       ///
       /// @param[in] values A vector (of vector of vector) where non-zero values indicates a voxel
-      /// @param[in] Domain ovveride_domain
+      /// @param[in] override_domain Overrides computed domain if needed
       ///
       /// @return a smart pointer on a binary image
       template<
@@ -763,8 +763,8 @@ namespace DGtal
       ///
       /// @note This overloads expect consistent size of subarrays. This is not checked.
       ///
-      /// @param[in] values A vector of positions to indicates locations of voxels
-      /// @param[in] Domain ovveride_domain
+      /// @param[in] positions A vector of positions to indicates locations of voxels
+      /// @param[in] override_domain Overrides computed domain if needed
       ///
       /// @return a smart pointer on a binary image
       template<typename T, std::enable_if_t<!is_double_nested_container<T>::value, int> = 0>
@@ -996,7 +996,7 @@ namespace DGtal
       /// from the domain. The order must be the same
       ///
       /// @param[in] values A vector where non-zero values indicates voxels
-      /// @param[in] Domain d
+      /// @param[in] d The domain of the image
       ///
       /// @return a smart pointer on a gray scale image
       template<typename T, typename __U = std::enable_if_t<std::is_arithmetic_v<T>>>
@@ -1021,7 +1021,7 @@ namespace DGtal
       /// @note This overloads expect consistent size of subarrays. This is not checked.
       ///
       /// @param[in] values A vector (of vector of vector) where non-zero values indicates a voxel
-      /// @param[in] Domain ovveride_domain
+      /// @param[in] override_domain Overrides infered domain if needed
       ///
       /// @return a smart pointer on a gray scale image
       template<
@@ -1071,8 +1071,9 @@ namespace DGtal
       ///
       /// @note This overloads expect consistent size of subarrays. This is not checked.
       ///
-      /// @param[in] values A vector of positions to indicates locations of voxels
-      /// @param[in] Domain ovveride_domain
+      /// @param[in] positions A vector of positions to indicates locations of voxels
+      /// @param[in] values A vector of values for each voxel
+      /// @param[in] override_domain Overrides infered domain if needed
       ///
       /// @return a smart pointer on a gray scale image
       template<typename T, typename U, std::enable_if_t<!is_double_nested_container<T>::value, int> = 0>

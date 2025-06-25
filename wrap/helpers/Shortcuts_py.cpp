@@ -187,7 +187,7 @@ void bind_shortcuts(py::module& m_helpers) {
     m.def("makeGrayScaleImage", [](const std::vector<float>& positions, const SH3::Domain& d) {
             return SH3::makeGrayScaleImage(positions, d);
         });
-    m.def("makeBinaryImage", [](const std::vector<SH3::Point>& positions, const std::vector<float>& values) {
+    m.def("makeGrayScaleImage", [](const std::vector<SH3::Point>& positions, const std::vector<float>& values) {
             return SH3::makeGrayScaleImage(positions, values);
         });
     m.def("makeDigitalSurface", [](CountedPtr<SH3::BinaryImage> im, const SH3::KSpace& K, const Parameters& params) {
@@ -373,6 +373,7 @@ void bind_shortcuts(py::module& m_helpers) {
         const std::vector<double>& input, 
         const Parameters& params) {
             return SHG3::getATScalarFieldApproximation(scalars, range.cbegin(), range.cend(), surface, surfels, input, params);
-        });("getScalarsAbsoluteDifference", &SHG3::getScalarsAbsoluteDifference);
-    mg.def("getStatistics", &SHG3::getStatistic);
+        });
+    mg.def("getScalarsAbsoluteDifference", &SHG3::getScalarsAbsoluteDifference);
+    mg.def("getStatistic", &SHG3::getStatistic);
 }
