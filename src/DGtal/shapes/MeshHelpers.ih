@@ -434,6 +434,82 @@ DGtal::MeshHelpers::exportMTLNewMaterial
   return output_mtl.good();
 }
 
+template <typename SurfaceMesh>
+bool
+DGtal::MeshHelpers::exportOBJwithFaceNormalAndColor
+( std::ostream& output_obj,
+  const std::string&             mtl_filename,
+  const SurfaceMesh& surf,
+  const std::vector< typename SurfaceMesh::RealPoint >&    normals,
+  const std::vector< Color >&    diffuse_colors,
+  const Color&                   ambient_color,
+  const Color&                   diffuse_color,
+  const Color&                   specular_color )
+{
+  output_obj << "#  OBJ format" << std::endl;
+  output_obj << "# DGtal::MeshHelpers::exportOBJwithFaceNormalAndColor" << std::endl;
+  output_obj << "o anObject" << std::endl;
+  output_obj << "mtllib " << mtl_filename << std::endl;
+  std::ofstream output_mtl( mtl_filename.c_str() );
+  output_mtl << "#  MTL format"<< std::endl;
+  output_mtl << "# generated from MeshWriter from the DGTal library"<< std::endl;
+  // Outputing vertices
+  for ( auto p : surf.positions() ) {
+    output_obj << "v " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
+  }
+  // Outputing faces
+  // Taking care of normals
+  bool has_normals = ( surf.nbFaces() == normals.size() );
+  if ( has_normals ) {
+    // Overrides mesh normal 
+    for (typename SurfaceMesh::Face f = 0; f < surf.nbFaces(); ++f) {
+      const auto& p = normals[ f ];
+      output_obj << "vn " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
+    }
+  } else {
+    // Surface mesh may have its own normals
+    if ( !surf.vertexNormals().empty()) {
+      for (auto vn : surf.vertexNormals()) {
+	output_obj << "vn " << vn[0] << " " << vn[1] << " " << vn[2] << std::endl;
+      }
+    }
+  }
+
+  // Taking care of materials
+  bool has_material = ( surf.nbFaces() == diffuse_colors.size() );
+  std::map<Color, unsigned int > mapMaterial;
+  unsigned int idxMaterial = 0;
+  if ( has_material ) {
+    for (typename SurfaceMesh::Face f = 0; f < surf.nbFaces(); ++f ) {
+      Color c = diffuse_colors[ f ];
+      if ( mapMaterial.count( c ) == 0 ) {
+	exportMTLNewMaterial( output_mtl, idxMaterial,
+                              ambient_color, c, specular_color );
+	mapMaterial[ c ] = idxMaterial++;
+      }
+    }
+  } else {
+    exportMTLNewMaterial( output_mtl, idxMaterial,
+                          ambient_color, diffuse_color, specular_color );
+  }
+  // Taking care of faces
+  for (typename SurfaceMesh::Face f = 0; f < surf.nbFaces(); ++f) {
+    output_obj << "usemtl material_"
+	       << ( has_material ? mapMaterial[ diffuse_colors[ f ] ] : idxMaterial )
+	       << std::endl; 
+    output_obj << "f";
+    auto vertices = surf.incidentVertices(f);
+    if ( has_normals ) {
+      for ( auto i : vertices ) output_obj << " " << (i+1) << "//" << (f+1);
+    } else {
+      for ( auto i : vertices ) output_obj << " " << (i+1);
+    }
+    output_obj << std::endl;
+  }
+  output_mtl.close();
+  return output_obj.good();
+}
+
 template <typename TTriangulatedOrPolygonalSurface>
 bool
 DGtal::MeshHelpers::exportOBJwithFaceNormalAndColor
