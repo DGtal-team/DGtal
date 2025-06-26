@@ -387,7 +387,7 @@ namespace DGtal
     ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
     ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II, CNC)."
     ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
-    /// @return The curvatures at each face of the mesh, in the same order `faces` 
+    /// @return The curvatures for each face of the mesh, in the same order `faces` 
     static Scalars
       getCNCMeanCurvatures
       ( CountedPtr<typename Base::SurfaceMesh>  mesh, 
@@ -422,7 +422,7 @@ namespace DGtal
       /// Given a SurfaceMesh, compute mean curvature at each face using
       /// CorrectedNormalCurrent method.
       ///
-      /// This overloads compute curvature at each face of the mesh.
+      /// This overloads compute curvature for each face of the mesh.
       ///
       /// @warning In this code, only triangles with barycenters
       /// strictly inside the sphere are considered.
@@ -436,7 +436,7 @@ namespace DGtal
       ///   (VCM, II, CNC)."
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted
       ///   by h).
-      /// @return The curvatures at each face of mesh, in the the order given by
+      /// @return The curvatures for each face of mesh, in the the order given by
       /// the mesh
       static Scalars getCNCMeanCurvatures(
       CountedPtr<typename Base::SurfaceMesh> mesh,
@@ -465,7 +465,7 @@ namespace DGtal
       ///   (VCM, II, CNC)."
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted
       ///   by h).
-      /// @return The curvatures at each face of the triangulated surface object
+      /// @return The curvatures for each face of the triangulated surface object
       template <typename T>
       static Scalars getCNCMeanCurvatures(
       T & digitalObject, const Parameters & params = parametersShapeGeometry() )
@@ -530,7 +530,7 @@ namespace DGtal
       ///   (VCM, II, CNC)."
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted
       ///   by h).
-      /// @return The curvatures at each face of the mesh, in the same order
+      /// @return The curvatures for each face of the mesh, in the same order
       /// `faces`
       static Scalars getCNCGaussianCurvatures(
       CountedPtr<typename Base::SurfaceMesh> mesh,
@@ -565,7 +565,7 @@ namespace DGtal
       /// Given a SurfaceMesh, compute gaussian curvature at each face using
       /// CorrectedNormalCurrent method.
       ///
-      /// This overloads compute curvature at each face of the mesh.
+      /// This overloads compute curvature for each face of the mesh.
       ///
       /// @warning  In this code, only triangles with barycenters strictly
       /// inside the sphere are considered.
@@ -579,7 +579,7 @@ namespace DGtal
       ///   (VCM, II, CNC)."
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted
       ///   by h).
-      /// @return The curvatures at each face of the mesh, in thn the order
+      /// @return The curvatures for each face of the mesh, in thn the order
       /// given by the mesh
       static Scalars getCNCGaussianCurvatures(
       CountedPtr<typename Base::SurfaceMesh> mesh,
@@ -608,7 +608,7 @@ namespace DGtal
       ///   (VCM, II, CNC)."
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted
       ///   by h).
-      /// @return The curvatures at each face of the triangulated surface object
+      /// @return The curvatures for each face of the triangulated surface object
       template <typename T>
       static Scalars getCNCGaussianCurvatures(
       T & digitalObject, const Parameters & params = parametersShapeGeometry() )
@@ -829,8 +829,8 @@ namespace DGtal
       /// Given a SurfaceMesh, compute principal curvature at each face using
       /// CorrectedNormalCurrent method.
       ///
-      /// @note: If no normals are provided for the faces; the normals will be
-      /// computed (and set) using vertex normals if they exists and positions
+      /// @note If no normals are provided for the faces, the normals will be
+      /// computed (and set) using vertex normals if they exist and positions
       /// otherwise.
       ///
       /// @warning  In this code, only triangles with barycenters strictly
@@ -847,7 +847,7 @@ namespace DGtal
       ///   (VCM, II, CNC)."
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted
       ///   by h).
-      /// @return The principal curvatures at each face of the mesh, in the same
+      /// @return The principal curvatures for each face of the mesh, in the same
       /// order as faces. The result is a 4-element tuples: [first curvatures,
       /// second curvatures, first directions, second directions].
       static std::tuple<Scalars, Scalars, RealVectors, RealVectors>
@@ -898,10 +898,10 @@ namespace DGtal
         /// Given a SurfaceMesh, compute principal curvature at each face using
         /// CorrectedNormalCurrent method.
         ///
-        /// This overloads compute curvature at each face of the mesh.
+        /// This overloads compute curvature for each face of the mesh.
         ///
-        /// @note: If no normals are provided for the faces; the normals will be
-        /// computed (and set) using vertex normals if they exists and positions
+        /// @note If no normals are provided for the faces, the normals will be
+        /// computed (and set) using vertex normals if they exist and positions
         /// otherwise.
         ///
         /// @warning  In this code, only triangles with barycenters strictly
@@ -917,7 +917,7 @@ namespace DGtal
         ///   (VCM, II, CNC)."
         ///   - gridstep        [   1.0]: the digitization gridstep (often
         ///   denoted by h).
-        /// @return The principal curvatures at each face of the mesh, in the
+        /// @return The principal curvatures for each face of the mesh, in the
         /// same order as mesh faces. The result is a 4-element tuples: [first
         /// curvatures, second curvatures, first directions, second directions].
         static std::tuple<Scalars, Scalars, RealVectors, RealVectors>
@@ -948,7 +948,7 @@ namespace DGtal
         ///   (VCM, II, CNC)."
         ///   - gridstep        [   1.0]: the digitization gridstep (often
         ///   denoted by h).
-        /// @return The curvatures at each face of the triangulated surface
+        /// @return The curvatures for each face of the triangulated surface
         /// object
         template <typename T>
         static std::tuple<Scalars, Scalars, RealVectors, RealVectors>
