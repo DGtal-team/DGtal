@@ -357,12 +357,14 @@ int main( int /* argc */, char** /* argv */ )
   {
     //! [dgtal_shortcuts_ssec2_1_14s]
     auto params = SH3::defaultParameters() | SHG3::defaultParameters();
-    auto mesh = SH3::loadSurfaceMesh(examplesPath + "samples/lion.obj");
+    params("r-radius", 0.1);
+
+    auto mesh = SH3::makeSurfaceMesh(examplesPath + "samples/bunnyhead2.obj");
 
     auto mcurv = SHG3::getCNCMeanCurvatures(mesh, params);
     auto gcurv = SHG3::getCNCGaussianCurvatures(mesh, params);
     auto [k1, k2, d1, d2] = SHG3::getCNCPrincipalCurvaturesAndDirections(mesh);
-    auto cmap  = SH3::getColorMap( -0.5, 0.5, params );
+    auto cmap  = SH3::getColorMap( -1, 1, params );
 
     auto mcolors = SH3::Colors( mcurv.size() );
     std::transform( mcurv.cbegin(), mcurv.cend(), mcolors.begin(), cmap );
@@ -376,10 +378,10 @@ int main( int /* argc */, char** /* argv */ )
     auto k2colors = SH3::Colors( k2.size() );
     std::transform( k2.begin(), k2.end(), k2colors.begin(), cmap);
 
-    bool ok_m = SH3::saveOBJ( mesh, SH3::RealVectors(), mcolors, "lion-meanCurvature.obj" );
-    bool ok_g = SH3::saveOBJ( mesh, SH3::RealVectors(), gcolors, "lion-gaussianCurvature.obj" );
-    bool ok_k1 = SH3::saveOBJ( mesh, SH3::RealVectors(), k1colors, "lion-firstPrincipalCurvature.obj" );
-    bool ok_k2 = SH3::saveOBJ( mesh, SH3::RealVectors(), k2colors, "lion-secondPrincpalCurvature.obj" );
+    bool ok_m = SH3::saveOBJ( mesh, SH3::RealVectors(), mcolors,   "bunnyhead2-meanCurvature.obj" );
+    bool ok_g = SH3::saveOBJ( mesh, SH3::RealVectors(), gcolors,   "bunnyhead2-gaussianCurvature.obj" );
+    bool ok_k1 = SH3::saveOBJ( mesh, SH3::RealVectors(), k1colors, "bunnyhead2-firstPrincipalCurvature.obj" );
+    bool ok_k2 = SH3::saveOBJ( mesh, SH3::RealVectors(), k2colors, "bunnyhead2-secondPrincpalCurvature.obj" );
     //! [dgtal_shortcuts_ssec2_1_14s]
 
     ++nb; nbok += ok_m;
