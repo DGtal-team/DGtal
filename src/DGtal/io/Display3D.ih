@@ -781,6 +781,31 @@ namespace DGtal {
   }
   
   template <typename Space, typename KSpace>
+  template<typename It, typename Int, int Con>
+  std::string Display3D<Space, KSpace>::draw(const Naive3DDSSComputer<It, Int, Con>& computer, const std::string& uname) {
+    std::string name = drawGenericRange(computer, uname);
+    endCurrentGroup();
+
+    if (currentStyle.mode & DisplayStyle::ADJACENCIES) {
+      newLineList(uname + "_links");
+
+      auto it = computer.begin();
+      auto prev = myEmbedder(*it);
+      ++it;
+
+      for (; it != computer.end(); ++it) {
+        auto p = myEmbedder(*it);
+        myCurrentData->vertices.push_back(prev);
+        myCurrentData->vertices.push_back(p);
+        prev = p;
+      }
+
+      endCurrentGroup();
+    }
+    return name;
+  }
+      
+  template <typename Space, typename KSpace>
   std::string Display3D<Space, KSpace>::draw(const ClippingPlane& plane, const std::string& uname) {
     planes.push_back(plane);
     planes.back().style = currentStyle;

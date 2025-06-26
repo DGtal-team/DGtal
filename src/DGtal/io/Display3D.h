@@ -57,6 +57,7 @@
 
 #include "DGtal/geometry/tools/SphericalAccumulator.h"
 #include "DGtal/geometry/curves/StandardDSS6Computer.h"
+#include "DGtal/geometry/curves/Naive3DDSSComputer.h"
 #include "DGtal/geometry/curves/GridCurve.h"
 
 namespace DGtal {
@@ -652,11 +653,13 @@ namespace DGtal {
       template <typename Pt>
       std::string draw(const Mesh<Pt>& mesh, const std::string& uname = "Mesh_{i}");
 
-      // @brief Draws 
+      // @brief Draws a DSS6Computer
       template<typename It, typename Int, int Con>
       std::string draw(const StandardDSS6Computer<It, Int, Con>& computer, const std::string& uname = "Computer_{i}");
       
-
+      template<typename It, typename Int, int Con>
+      std::string draw(const Naive3DDSSComputer<It, Int, Con>& computer, const std::string& uname = "Computer_{i}");
+      
       // @brief Draws any object with a property
       template<typename T, typename Type>
       std::string draw(const WithQuantity<T, Type>& props, const std::string& uname = "");
