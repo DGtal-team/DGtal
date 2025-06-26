@@ -35,48 +35,26 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
-#include "DGtal/base/Common.h"
 #include "DGtal/io/readers/VolReader.h"
+#include "DGtal/base/Common.h"
 #include "DGtal/images/ImageHelper.h"
+#include "DGtal/images/ImageContainerBySTLVector.h"
+#include "DGtal/kernel/BasicPointFunctors.h"
 #include "ConfigExamples.h"
-#include "DGtal/io/viewers/Viewer3D.h"
 
-//! [ExampleViewer3D2DImagesExtractImagesColorHeader]
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
-#include "DGtal/io/viewers/DrawWithViewer3DModifier.h"
-#include "DGtal/io/colormaps/HueShadeColorMap.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/io/Color.h"
-//! [ExampleViewer3D2DImagesExtractImagesColorHeader]
-
-///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
 
-//! [ExampleViewer3D2DImagesExtractImagesColorFct]
-struct hueFct{
- inline
- unsigned int operator() (unsigned char aVal) const
-  {
-    HueShadeColorMap<unsigned char>  hueShade(0,255);
-    Color col = hueShade((unsigned char)aVal);
-    return  (((unsigned int) col.red()) <<  16)| (((unsigned int) col.green()) << 8)|((unsigned int) col.blue());
-  }
-};
-//! [ExampleViewer3D2DImagesExtractImagesColorFct]
-///////////////////////////////////////////////////////////////////////////////
-
 int main( int argc, char** argv )
 {
+  PolyscopeViewer viewer;
 
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain,  unsigned char > Image3D;
-  QApplication application(argc,argv);
-  typedef Viewer3D<> MyViewer;
-  MyViewer viewer;
-  viewer.show();
   std::string inputFilename = examplesPath + "samples/lobster.vol";
   Image3D imageVol = VolReader<Image3D>::importVol(inputFilename);
-
 
   //! [ExampleViewer3D2DImagesExtractImages]
   // Extracting the 2D images from the 3D one and from a given dimension.
@@ -109,38 +87,20 @@ int main( int argc, char** argv )
   MySliceImageAdapter aSliceImageY(imageVol, domain2DY, aSliceFunctorY, identityFunctor );
   //! [ExampleViewer3D2DImagesExtractImages]
 
- //! [ExampleViewer3D2DChangeMode]
-  viewer << SetMode3D(aSliceImageZ.className(), "BoundingBox");
-  viewer << MyViewer::updateDisplay;
-  //! [ExampleViewer3D2DChangeMode]
-
   //! [ExampleViewer3D2DImagesDisplayImages]
-  viewer <<  aSliceImageZ;
-  viewer <<  aSliceImageY;
+  viewer.draw(aSliceImageZ);
+  std::string imageY = viewer.draw(aSliceImageY);
   //! [ExampleViewer3D2DImagesDisplayImages]
-
-  viewer << SetMode3D(aSliceImageZ.className(), "");
-  //! [ExampleViewer3D2DImagesDisplayImagesColor]
-  viewer << AddTextureImage2DWithFunctor<MySliceImageAdapter, hueFct, Z3i::Space, Z3i::KSpace> (aSliceImageZ, hueFct(), Viewer3D<Z3i::Space, Z3i::KSpace>::RGBMode);
-  viewer << AddTextureImage2DWithFunctor<MySliceImageAdapter, hueFct, Z3i::Space, Z3i::KSpace> (aSliceImageY, hueFct(), Viewer3D<Z3i::Space, Z3i::KSpace>::RGBMode);
-  //! [ExampleViewer3D2DImagesDisplayImagesColor]
-
+  //
 
   //! [ExampleViewer3D2DModifImages]
-  viewer << DGtal::UpdateImagePosition<Z3i::Space, Z3i::KSpace>(1, MyViewer::yDirection, 0.0,  50.0, 0.0);
-  viewer << DGtal::UpdateImageData<MySliceImageAdapter>(0, aSliceImageZ,  0, 0, 10);
-  viewer << MyViewer::updateDisplay;
- //! [ExampleViewer3D2DModifImages]
-
-
-  //! [ExampleViewer3D2DModifImagesColor]
-  viewer << DGtal::UpdateImagePosition<Z3i::Space, Z3i::KSpace>(3, MyViewer::yDirection, 500.0,  50.0, 0.0);
-  viewer << DGtal::UpdateImageData<MySliceImageAdapter, hueFct>(2, aSliceImageZ, 500, 0, 10, 0.0, MyViewer::zDirection, hueFct());
-  viewer << MyViewer::updateDisplay;
-  //! [ExampleViewer3D2DModifImagesColor]
-
-return application.exec();
-
+  // Update image position by accessing the transform
+  viewer.data[imageY].transform.rotate(Eigen::AngleAxisd(M_PI / 2, Eigen::Vector3d::UnitX()));
+  viewer.data[imageY].transform.translate(Eigen::Vector3d(0, 50, -50));
+  // //! [ExampleViewer3D2DModifImages]
+ 
+  viewer.show();
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

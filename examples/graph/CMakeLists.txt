@@ -7,11 +7,11 @@ foreach(FILE ${DGTAL_EXAMPLES_TOPO_SRC})
 endforeach()
 
 
-if ( WITH_VISU3D_QGLVIEWER )
-   set(DGTAL_EXAMPLES_QGL_SRC
+if ( DGTAL_WITH_POLYSCOPE )
+   set(DGTAL_EXAMPLES_POLYSCOPE_SRC
      volDistanceTraversal
    )
-   foreach(FILE ${DGTAL_EXAMPLES_QGL_SRC})
+   foreach(FILE ${DGTAL_EXAMPLES_POLYSCOPE_SRC})
      DGtal_add_example(${FILE})
    endforeach()
 endif()

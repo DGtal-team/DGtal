@@ -22,20 +22,15 @@
  *
  * @date 2017/03/05
  *
- * Simple example of class Viewer3D.
+ * Simple example of class PolyscopeViewer.
  *
  * This file is part of the DGtal library.
  */
 
 /**
- * Example of extension of Viewer3D interface by deriving the class
- * Viewer3D::Extension.  Here we have added a callback to the
+ * Example of extension of PolyscopeViewer interface by deriving the class
+ * PolyscopeViewer<>::Callback.  Here we have added a callback to the
  * "Shift+R" keypressed event, which adds a point randomly in the domain.
- *
- * @see moduleQGLExtension
- * \example io/viewers/viewer3D-11-extension.cpp
- * \image html simple3dVisu1.png "Extending the Viewer3D interface: just press
- * Shift+R and you have new points added randomly in the scene."
  */
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -43,7 +38,7 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -54,77 +49,44 @@ using namespace Z3i;
 // Standard services - public :
 
 //! [viewer3D-extension-derivation]
-// Deriving from Viewer3D::Extension to add new callbacks to events.
-struct RandomPointKeyExtension : public Viewer3D<Space, KSpace>::Extension
-{
-  RandomPointKeyExtension()
-  {
-  }
-
-  // Here we override the "key pressed" event, and a point randomly in
-  // the scene if the key "Shift+R" is pressed.
-  virtual bool keyPressEvent( Viewer & viewer, QKeyEvent * event )
-  {
-    bool handled = false;
-    // Get event modifiers key
-    const Qt::KeyboardModifiers modifiers = event->modifiers();
-    if ( ( event->key() == Qt::Key_R ) && ( modifiers == Qt::ShiftModifier ) )
-    {
-      Point p = viewer.space().lowerBound();
-      Point q = viewer.space().upperBound();
-      Point d = q - p;
-      Point a( ( rand() % d[ 0 ] ) + p[ 0 ], ( rand() % d[ 1 ] ) + p[ 1 ],
-               ( rand() % d[ 2 ] ) + p[ 2 ] );
-      viewer << a;
-      viewer << Viewer::updateDisplay;
-      trace.info() << "Adding point " << a << std::endl;
-      handled = true;
+struct RandomPointExtension : public PolyscopeViewer<>::Callback {
+  void OnUI() {
+    static int count = 16;
+    // Depending on the viewer, this may change
+    ImGui::SliderInt("Number of points to draw", &count, 0, 32);
+    if (ImGui::Button("Create points")) {
+      for (int i = 0; i < count; ++i) {
+        // Rand values from -10 to 10
+        // Viewer is pointer to the viewer this extension is attached to
+        *viewer << Point(rand() % 21 - 10, rand() % 21 - 10, rand() % 21 - 10);
+      }
+      // Ask viewer to render all data that were added
+      viewer->renderNewData();
     }
-    return handled;
-  }
-
-  // We also override the Viewer3D::init method to add a key
-  // description in the help window.
-  virtual void init( Viewer & viewer )
-  {
-    viewer.setKeyDescription( (int)Qt::ShiftModifier + (int)Qt::Key_R,
-                              "Creates a random digital point." );
-  }
-
-  // We also override the Viewer3D::helpString method to add a
-  // description to the viewer.
-  virtual QString helpString( const Viewer & /*viewer*/ ) const
-  {
-    QString text( "<h2> Random point Viewer3D </h2>" );
-    text += "Press Shift+R to add points.";
-    return text;
   }
 };
 //! [viewer3D-extension-derivation]
 
 int main( int argc, char ** argv )
 {
-
-  QApplication application( argc, argv );
-
   Point p1( 0, 0, 0 );
   Point p2( 5, 5, 5 );
   Point p3( 2, 3, 4 );
+
   Domain domain( p1, p2 );
 
-  typedef Viewer3D<> MyViewer;
   KSpace K;
   K.init( p1, p2, true );
+
+  PolyscopeViewer viewer(K);
   //! [viewer3D-extension-set-extension]
-  MyViewer viewer( K );
-  viewer.setExtension( new RandomPointKeyExtension );
+  viewer.setCallback( new RandomPointExtension );
   //! [viewer3D-extension-set-extension]
-  viewer.show();
   viewer << domain;
   viewer << p1 << p2 << p3;
 
-  viewer << MyViewer::updateDisplay;
-  return application.exec();
+  viewer.show();
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

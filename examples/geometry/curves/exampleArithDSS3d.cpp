@@ -47,14 +47,9 @@ $ ./examples/geometry/curves/exampleArithDSS3d
 
 #include <iostream>
 
-#include "DGtal/io/viewers/Viewer3D.h"
-#ifdef DGTAL_WITH_CAIRO
-#include "DGtal/io/boards/Board3DTo2D.h"
-#endif
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/readers/PointListReader.h"
-#include "DGtal/io/CDrawableWithDisplay3D.h"
 
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -74,7 +69,6 @@ using namespace Z3i;
 int main( int argc, char** argv )
 {
 
-
   typedef PointVector<3,int> Point;
   typedef std::vector<Point>::iterator Iterator;
   typedef StandardDSS6Computer<Iterator,int,4> SegmentComputer;  
@@ -89,57 +83,32 @@ int main( int argc, char** argv )
   
   ///////////////////////////////////
   //display  
-  bool flag = true;    
   Point p;
 
-#ifdef WITH_VISU3D_QGLVIEWER
+#ifdef DGTAL_WITH_POLYSCOPE
 
-  QApplication application(argc,argv);
-  Viewer3D<> viewer;
-  viewer.show();
-  viewer  << SetMode3D(p.className(), "Grid");
-
+  PolyscopeViewer viewer;
+  viewer.allowReuseList = true; // groups segments
+  viewer.drawAsGrid();
 #endif
-#ifdef DGTAL_WITH_CAIRO
-  Board3DTo2D<> boardViewer;
-  boardViewer  << SetMode3D(p.className(), "Grid"); 
-  boardViewer << CameraPosition(-23.500000, 12.500000, 42.078199)
-       << CameraDirection(0.7200000, -0.280000, -0.620000)
-       << CameraUpVector(0.1900000, 0.950000, -0.200000);
-  boardViewer << CameraZNearFar(21.578200, 105.578199);
-#endif
-
-
 
   unsigned int c = 0;
   Decomposition::SegmentComputerIterator i = theDecomposition.begin();
   for ( ; i != theDecomposition.end(); ++i) {
     SegmentComputer currentSegmentComputer(*i);
-     #ifdef WITH_VISU3D_QGLVIEWER
-       viewer << SetMode3D(currentSegmentComputer.className(), "Points"); 
+     #ifdef DGTAL_WITH_POLYSCOPE
+       viewer.drawAsBalls();
        viewer << currentSegmentComputer;  
-       viewer << SetMode3D(currentSegmentComputer.className(), "BoundingBox"); 
+       viewer.defaultStyle();
        viewer << currentSegmentComputer;  
-    #endif
-    #ifdef DGTAL_WITH_CAIRO   
-       boardViewer << SetMode3D(currentSegmentComputer.className(), "Points"); 
-       boardViewer << currentSegmentComputer;  
-       boardViewer << SetMode3D(currentSegmentComputer.className(), "BoundingBox"); 
-       boardViewer << currentSegmentComputer;  
     #endif
     c++;
   } 
   
   
-  #ifdef WITH_VISU3D_QGLVIEWER
-    viewer << Viewer3D<>::updateDisplay;
-    flag = application.exec();
+  #ifdef DGTAL_WITH_POLYSCOPE
+    viewer.show();
   #endif
-
-  #ifdef DGTAL_WITH_CAIRO
-    boardViewer.saveCairo("exampleArithDSS3d.pdf", Board3DTo2D<>::CairoPDF, 600*2, 400*2);
-  #endif
-
-  return flag;
+    
 }
 

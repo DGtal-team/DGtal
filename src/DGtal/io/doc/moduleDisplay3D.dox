@@ -12,21 +12,16 @@ namespace DGtal {
  * import them from binary file (.obj or pgm3d)
  *
 
-@author Bertrand Kerautret, Martial Tola, Aline Martin, David Coeurjolly
+@author Bertrand Kerautret, Martial Tola, Aline Martin, David Coeurjolly, Bastien Doignies
 
 [TOC]
 
   \section DGtalGLV_Display3D Display3D: a stream mechanism from abstract class Display3D
 
-  The semi abstract template class Display3D defines the stream
+  The semi-abstract template class Display3D defines the stream
   mechanism to display 3d primitive (like PointVector,
-  DigitalSetBySTLSet, Object ...). The class Viewer3D, Board3D and
-  Board3DTo2D implement two different ways to display 3D objects. The
-  first one (Viewer3D), permits an interactive visualization (based on
-  OpenGL). The second (Board3D) provides mechanism to export the 3D
-  objects to and Wavefront OBJ format. The last one (Board3DTo2D)
-  provides 3D visualization to 2D vector format (using a projection
-  mechanism based on the CAIRO library).
+  DigitalSetBySTLSet, Object ...). The PolyscopeViewer class permits 
+  an interactive visualization (based on Polyscope (OpenGL backend)).
 
   Display3D have two template parameters which correspond to the
   digital space and the Khalimsky space used to put the figures. From
@@ -35,43 +30,34 @@ namespace DGtal {
   \mathbb{R}^n@f$.
 
 
-  Viewer3D and Board3DTo2D allow to set and change the camera point of
-  view for the visualization.
+\section DGtalGLV_PolyscopeViewer Interactive visualization from PolyscopeViewer
 
-
-
-\section DGtalGLV_Viewer3D Interactive visualization from Viewer3D
-
-The class Viewer3D inherits from the base class QGLViewer (which is
- based on QGLwidget).  It permits to display simple 3D shapes.
- LibQGLViewer ( http://www.libqglviewer.com ) is a C++ library based
- on QT allowing to access to simple 3D features like camera moving,
- mouse, keyboard interaction, clipping plane .... etc.
-
-It possess the additional functionality to display 2D slice image from a volume one.
+The class PolyscopeViewer is a wrapper around the Polyscope library ( https://polyscope.run/ ).  
+It permits displaying geometrical data such as Point, Lines and (volumetric) meshes. 
+The library handles 3D scenes movement and allows to attributes of displayed objects 
+(such as colors and colormaps). The graphical interface is based on ImGUI 
+( https://github.com/ocornut/imgui )which can be  further extended.
 
  *
 
-First to use the Viewer3D stream, you need to include the following headers:
+First to use the PolyscopeViewer stream, you need to include the following headers:
  *
 @code
- #include "DGtal/io/3dViewers/Viewer3D.h"
+ #include "DGtal/io/3dViewers/PolyscopeViewer.h"A
 @endcode
  *
 The following code snippet defines three points and a rectangular
-domain in Z3. It then displays them in a Viewer3D object. The
+domain in Z3. It then displays them in a PolyscopeViewer object. The
 full code is in <a  href="io_2viewers_2viewer3D-1-points_8cpp-example.html">viewer3D-1-points.cpp</a>.
  *
  *
 
-The first step to visualize 3D object with Viewer3D is to create a QApplication from the main():
+The first step to draw objects is to create an instance of the PolyscopeViewer class:
  @code
 using namespace DGtal;
 using namespace Z3i;
 
-QApplication application(argc,argv);
-Viewer3D<> viewer;
-viewer.show();
+PolyscopeViewer<> viewer;
 @endcode
 
 Then we can display some 3D primitives:
@@ -83,206 +69,87 @@ Then we can display some 3D primitives:
 
  viewer << domain;
  viewer << p1 << p2 << p3;
- viewer << Viewer3D<>::updateDisplay;
+ viewer.show();
 @endcode
 
+The *show()* method enters the visualization loop and should be call after all object are 
+drawn with the viewer. You should obtain the following visualization:
 
-You should obtain the following visualization:
-
-\image html simple3dVisu1.png "Digital point visualization  with Viewer3D."
-\image latex simple3dVisu1.png "Digital point visualization  with Viewer3D." width=5cm
-
-
-
-\subsection  DGtalGLV_Viewer3D_Rendering Interactive change of rendering mode   
-
-By default the rendering mode of the Viewer3D is defined by melange of
-diffuse (Lambertian) and specular parts. The user can swith to the following mode by using the key P : 
+\image html simple3dVisu1.png "Digital point visualization  with PolyscopeViewer."
+\image latex simple3dVisu1.png "Digital point visualization  with PolyscopeViewer." width=5cm
 
 
-|  type            | default mixte                             | metallic | plastic| lambertian |
-|:--------------- :|:------------------:                       |:--------:|:------:|:---------: |
-| mode             | 0                                         | 1        |  2     | 3          |
-| Ex:              |  ![ ] (defaultRenderingViewer3Dmode0.png) | ![ ] (metallicRenderingViewer3Dmode1.png)|  ![ ] (plasticRenderingViewer3Dmode2.png) | ![ ] (lambertianRenderingViewer3Dmode3.png)|
+\subsection  DGtalGLV_PolyscopeViewer_Rendering Interactive change of rendering   
 
+Polyscope has its own default rendering settings. Many parameters can be changed either
+programatically or at runtime directly within the viewer. This includes camera parameters
+(up direction, far/near plane, ...), materials of objects, lighting and many more. See 
+polyscope documentation for available options ( https://polyscope.run/ ). 
 
-
-\subsection  DGtalGLV_Viewer3D_Light Light source position modes
-
-The light source position is by default defined according to the
-camera position and its position will not change even after camera
-moves (default mode). By this way, if you move the camera, the object
-will be always illuminated (see images of mode 0 of the following
-tabular). This default light position could be changed interactively
-by a mouse move in the Viewer3D (with the key SHIFT+CTRL (SHIFT+CMD on
-mac)).
-
-There exists a second mode where the light source position will be fixed
-according the main scene axis. In this case, even if the camera move,
-the light source will have the same position towards the object of the
-scene (see for instance images of mode 1 of the following tabular). As for the
-previous mode, the default light position could be changed
-interactively by a mouse move in the Viewer3D (with the key
-SHIFT+CTRL (SHIFT+CMD on mac)).
-
-
-
-__To change between the two light position mode you can use the Key P in the
-viewer3D.__
-
-
-
-|  Light position mode  |    default position                    |         after camera move            |
-| :-------------------: | :------------------------------------: | :----------------------------------: |
-|         0             |  ![ ](lightPositionRef.png)             |  ![ ](lightPositionMode0.png)       |
-|         1             |  ![ ](lightPositionRef.png)             |  ![ ](lightPositionMode1.png)       |
-
-
-
-
-@note Note that you can display the camera settings in the console
-(key C) which can be used in Board2Dto3D described in the following.
-
-
-\subsection  DGtalGLV_Viewer3D_Ball Ball display modes
-
-The Viewer3D class has a special mode to display balls (added from the
-Display3D method \c addBall() ). By default, the balls are constructed
-with OpenGl quadrangulated sphere which can be slow if the number of ball is
-huge. In the latter case, it is possible to use OpenGL points to
-increase display performance. To use this mode, you have just to
-activate it with the method \c setUseGLPointForBalls() when needed:
-
-@code
-viewer.setUseGLPointForBalls(true);
-viewer.addBall(Z3i::RealPoint(10.3, 11.3, 4.0);
-@endcode
-
-By changing the mode you will obtain such display:
-
- |    ball display default mode            |  ball display with OpenGL point mode |
- | :------------------------------------ : | :----------------------------------: |
- |  ![ ](viewer3DBallDefaultQuads.png)     |  ![ ](viewer3DBallPtOpenGL.png)      |
-
-
-You can also change the ball display mode interactively by using the key O. 
-
-\section DGtalGLV_Boas3DTo2D Alternative visualization without QGLViewer dependency
-
-
-There are two ways to obtain an alternative visualization without the dependency of the 3D interactive viewer:
-      - Static display by using Board2Dto3D.
-      - Export the 3d objects into 3d files (OBJ format) with Board3D.
-
-\subsection DGtalGLV_StaticDisplay Static display
-
- The same visualization can be obtain with the Board2Dto3D class. You just need to adapt the camera settings (see example io/boards/dgtalBoard3DTo2D-1-points.cpp).
-
-@snippet io/boards/dgtalBoard3DTo2D-1-points.cpp ExampleBoard3DTo2D
-
-This example should provides a comparable visualization.
-
-
-
-\subsection DGtalGLV_OBJExport Export objects with Board3D
-
-To export 3d objects into OBJ format you need simply to use the Board3D class which inherits to the Display3D class. You can for instance follow these steps:
-
-
-@snippet io/boards/dgtalBoard3D-1-points.cpp ExampleBoard3DExport
-
-And then visualize the resulting obj and mtl file by using for instance blender:
-
-\image html   dgtalBoard3D-1-points.png "Visualisation of exported OBJ file with blender."
-
-@advanced By setting a second parameter to true when calling the saveOBJ, the geometrical objects will be scaled so that they fit in a [-1/2, 1/2]^3 domain.
-
-@note You do not need a Board3D to export an OBJ file. There are
-custom methods to export OBJ files for some classes:
-    - Mesh: use MeshWriter::export2OBJ
-    - TriangulatedSurface: use MeshHelpers::exportOBJ, and MeshHelpers::exportOBJwithFaceNormalAndColor 
-    - PolygonalSurface: use MeshHelpers::exportOBJ, and MeshHelpers::exportOBJwithFaceNormalAndColor 
-    - you may also use class \ref Shortcuts, see \ref moduleShortcuts
+@note Some rendered image of this documentation may have altered parameters to improve
+visibility such as scene extents or transparency mode.  
 
 * \section DGtalGLV_VisualizationDigitalSet Visualization of DigitalSet and digital objects
 *
 *
-* The Viewer3D class allows also to display directly a \c DigitalSet. The first step is to create a \c DigitalSet for example from the Shape class.
+* The PolyscopeViewer class also allows to display directly a \c DigitalSet. The first step is to create a \c DigitalSet for example from the Shape class.
 *
 *
 
-
-  @snippet io/viewers/viewer3D-2-sets.cpp ExampleViewer3DSets
+@snippet io/viewers/viewer3D-2-sets.cpp ExampleViewer2dSet
 
 *
 * You should obtain the following visualization (see example: <a href="io_2viewers_2viewer3D-2-sets_8cpp-example.html">viewer3D-2-sets.cpp </a>):
 *
-* \image html simple3dVisu2.png "Digital point visualization  with Viewer3D."
-* \image latex simple3dVisu2.png "Digital point visualization  with Viewer3D." width=5cm
+* \image html simple3dVisu2.png "Digital point visualization  with PolyscopeViewer."
+* \image latex simple3dVisu2.png "Digital point visualization  with PolyscopeViewer." width=5cm
 *
 *
 *
-* \section  DGtalGLV_ModeEx  Mode selection: the example of digital objects in 3D
+* \section  DGtalGLV_ModeEx  Drawmode selection: the example of digital objects in 3D
 *
-*  As for Board2D, a mode can be choosen to display elements (\c
-*  SetMode3D). You just have to specify the classname (the easiest way
-*  is to call the method \c className() on an instance of the correct
-*  type and the desired mode (a string).
-*
+*  As for Board2D, a mode can be chosen to display elements. The viewer has several 
+*  methods to adjust how objects are drawn.
 *
 *@code
- Object6_18 shape( dt6_18, shape_set );
- viewer << SetMode3D( shape.className(), "DrawAdjacencies" );
- viewer << shape;
+ viewer.drawAdjacencies(true /* or false to disable*/);
 @endcode
 *
-*or change the couple of adjacency
+*or change the pair of adjacencies
 *
 @code
+ Object6_18 shape1( dt6_18, shape_set );
  Object18_6 shape2( dt18_6, shape_set );
- viewer << SetMode3D( shape2.className(), "DrawAdjacencies" );
+ viewer << shape1;
  viewer << shape2;
 @endcode
 
 * You should obtain the two following visualizations (see example: <a href="io_2viewers_2viewer3D-3-objects_8cpp-example.html">viewer3D-3-objects.cpp </a>):
 
- \image html visu6-18Adj.png " 6-18 digital Adjacencies visualization  with Viewer3D."
- \image latex visu6-18Adj.png " 6-18 digital Adjacencies visualization with Viewer3D." width=5cm
- \image html visu18-6Adj.png " 18-6 digital Adjacencies visualization  with Viewer3D."
- \image latex visu18-6Adj.png " 18-6 digital Adjacencies visualization  with Viewer3D."  width=5cm
+ \image html visu6-18Adj.png " 6-18 digital Adjacencies visualization  with PolyscopeViewer."
+ \image latex visu6-18Adj.png " 6-18 digital Adjacencies visualization with PolyscopeViewer." width=5cm
+ \image html visu18-6Adj.png " 18-6 digital Adjacencies visualization  with PolyscopeViewer."
+ \image latex visu18-6Adj.png " 18-6 digital Adjacencies visualization  with PolyscopeViewer."  width=5cm
 
 
-* Note that digital set was displayed with transparency by setting a custom colors.
-
-
+* Note that digital set was displayed with transparency by setting a custom color within the viewer.
 
 
 * \section  DGtalGLV_Mode Useful modes for several 3D drawable elements
-
 
 \subsection DGtalGLV_ModeListing Listing of different modes
 
 As for \c Board2D the object can be displayed with different possible mode:
 
-  - class PointVector, modes: "" / "Both", "Paving" (default), "Grid"
-  - class DigitalSetBySTLSet and DigitalSetBySTLVector : "",  "" / "Both", "Paving" (default), "PavingTransp", "Grid".
-  - class Object, modes: "" /"Basic" (default), "DrawAdjacencies", "PavingTransp".
-  - class HyperRectDomain 3D, modes: "" / "Grid" (default), "Paving", "PavingPoints", "PavingGrids", "BoundingBox".
-  - class HyperRectDomain 2D, modes: "" / "BoundingBox"  (default), "Grid", "InterGrid" **.
-  - class KhalimskyCell  ,  modes: ""(default) /  "Highlighted" ,  "Transparent", "Basic", "Illustration",  "IllustrationCustomColor".
-  - class SignedKhalimskyCell  ,  modes: "" (default) /  "Highlighted" , "Basic", "Transparent", "Illustration", "IllustrationCustomColor".
-  - class StandardDSS6Computer  ,  modes: "" (default) /  "Points", "BoundingBox *".
-  - class Mesh, modes:  "" (default) /  "Faces *".
-  - class ImageContainerBySTLVector, ImageContainerBySTLMap 2D/3D modes:  "", (default), "BoundingBox", "Grid", "InterGrid"  . **
-  - class ImageAdapter, ConstImageAdapter 2D/3D modes:  "", (default), "BoundingBox", "Grid", "InterGrid"  . **
 
-
-Note that for KhalimskyCell and SignedKhalimskyCell the default colors
-(with CustomColors3D objects) can be changed only with the empty mode
-("") and the "IllustrationCustomColor" mode.
-
-"*": partially for (Board3DTo2D), see issue <a href="https://github.com/DGtal-team/DGtal/issues/582"> 582</a>.
-"**":  only for Viewer3D.
+| Available modes | Description                 | Supported objects                                            | Method                                 |
+|-----------------|-----------------------------|--------------------------------------------------------------|----------------------------------------|
+| DEFAULT         | Default rendering           | Any                                                          | viewer.defaultStyle()                  |
+| PAVING          | Draws points as cubes       | Point-based objects (Point, Domain, Object, DigitalSet, ...) | viewer.drawAsPaving()                  |
+| BALL            | Draws points as spheres     | Point-based objects (Point, Domain, Object, DigitalSet, ...) | viewer.drawAsBalls()                   |
+| GRID            | Draws object with gridlines | Domains                                                      | viewer.drawAsGrid(true \| false)       |
+| ADJACENCIES     | Draws adjacencies relations | Objects                                                      | viewer.drawAdjacencies(true \| false)  |
+| SIMPLIFIED      | Draws quad instead of prism | 2D Signed KCells                                             | viewer.drawAsSimplified(true \| false) |
 
 \subsection DGtalGLV_ModeExamplesDomain Examples with Objet modes
 
@@ -311,123 +178,61 @@ without mode change (see image (a)):
 We can change the mode for displaying the domain (see image (b)):
 @code
  viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
- viewer << SetMode3D(domain.className(), "PavingGrids");
+ viewer.drawAsGrid();
  viewer << domain;
 @endcode
+
 (Note that to avoid transparency displaying artifacts, we need to
 display the domain after the voxel elements included in the domain)
 <BR>
 
 It is also possible to change the mode for displaying the voxels: (see image (c))
 @code
+// Domain AND points are drawn as balls
+// Grid mode was not removed, domain grid are also drawn
+viewer.drawAsBalls(); 
 viewer << domain;
-viewer <<  SetMode3D( p1.className(), "Grid" );
 viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
 @endcode
+
+
+(Note to enhance visibility, domain nodes are colored in black)
+<BR>
 *
 *
 * we obtain the following visualizations:
 *
 \image html visuModeDefault.png "(a) Default visualization of a digital point sets with the associated domain "
 \image latex visuModeDefault.png "(a) Default visualization of a digital point sets with the associated domain " width=5cm
- \image html  visuModePavingGridsDomain.png "(b) visualization using Paving mode for the domain."
- \image latex  visuModePavingGridsDomain.png "(b) visualization using Paving mode for the domain." width=5cm
- \image html  visuModeGridVoxel.png "(c) visualization using Paving mode for the voxels."
- \image latex  visuModeGridVoxel.png "(c) visualization using Paving mode for the voxels." width=5cm
-
-
-
-
-\subsection DGtalGLV_ModeOtherExamples Illustrating  KhalimskyCell  with the "Illustration" mode
-
-
-The "Illustration" mode is defined to construct illustrations composed
-of KhalimskyCell. In particular it permits to increase the space
-between cells and improve the display visibility. It can be used typically as
-follows:
-First you need to add the following header:
-
-@snippet io/viewers/viewer3D-4bis-illustrationMode.cpp SetKSIllustrationMode3DHeader
-
-
-From a SignedKhalimskyCell  (SCell in DGtal::Z3i) you have to select the "Illustration" mode :
-
- @snippet io/viewers/viewer3D-4bis-illustrationMode.cpp SetKSIllustrationMode3D
-
-Then, to display a surfel with its associated voxel, you need to
-transform the surfel by constructing a shifted and resized version (DGtal::TransformedKSSurfel) according to its associated voxel:
-
-
-@snippet io/viewers/viewer3D-4bis-illustrationMode.cpp KSIllustrationModeTransformed
-
-
-You will obtain such type of illustration (obtained from the example <a href="io_2viewers_2viewer3D-4bis-illustrationMode_8cpp-example.html">  viewer3D-4bis-illustrationMode.cpp </a>).
-
-
-
-
- \image html view3D-4bis-illustrationMode.png  "Illustration of the \"Illustration\" KhalimskyCell mode."
- \image latex  view3D-4bis-illustrationMode.png "Illustration of the \"Illustration\" KhalimskyCell mode."
-
-
-@advanced There exists a specific method to display surfels (Khalimsky
-cells of dimension 2 in a space of dimension 3) as quadrilaterals
-where the user can prescribe a unitary normal vector. In Viewer3D, the
-normal vector is used in the rendering process (useful to check the
-geometrical consistency of a normal vector field). Basic usage is:
-
-@code
- Display3DFactory<Space,KSpace>::drawOrientedSurfelWithNormal( aViewer, aSurfel, theSurfelSign, aNormalVector);
-@endcode
-or if the surfel is not oriented (unsigned khalimsky cell).
-@code
- Display3DFactory<Space,KSpace>::drawUnorientedSurfelWithNormal( aViewer, aSurfel, aNormalVector);
-@endcode
-
-In the later case, the quadrilateral vertices are oriented such that
-the dot product between the normal vector and the quad canonical
-normal vector is positive. Finally, these two methods accept a last
-boolean parameter such that if true, the quad is geometrically
-duplicated with opposite normal vector (double-quad rendering).
-
-
-
+ \image html  visuModePavingGridsDomain.png "(b) visualization using Paving and Grid mode for the domain."
+ \image latex  visuModePavingGridsDomain.png "(b) visualization using Paving and Grid mode for the domain." width=5cm
+ \image html  visuModeBalls.png "(c) visualization using Balls mode for the voxels."
+ \image latex  visuModeBalls.png "(c) visualization using Balls mode for the voxels." width=5cm
 
 
 \section  DGtalGLV_Custom Changing the style for displaying drawable elements.
 
-As for Board2D, it is possible to custom the way to display 3D elements by using an instance of the following classes:
-
-
--  CustomColors3D: to change the color used to display surface primitive (GL_QUADS) and the pen color (LINE/POINTS) ;
-
-
-
-The custom color can be applied by an instance of the CustomColors3D as follow:
+As for Board2D, it is possible to custom the way to display 3D elements. By default, the colors of elements are given by
+the viewer and can cycle through some of them. They can be changed directly in the user interface of the viewer. 
+Colors can also be set programatically; 
 
 @code
-  viewer << CustomColors3D(Color(250, 0,0),Color(250, 0,0));
+  viewer << Color(250, 0,0); // Alternatively: viewer.drawColor(color);
   viewer << p4 << p5 ;
+  viewer.setDefaultColors(); // Reset to default colors
 @endcode
-
-
 
 The example <a  href="io_2viewers_2viewer3D-5-custom_8cpp-example.html"> viewer3D-5-custom.cpp </a> illustrates some possible customs :
 
-
-
-
 \image html visuModeCustom.png "Example of several custom display ." width=5cm
 
-
-
-
+If colors depend on values, please see section about adding properties to object instead of manually setting colors. 
 
 \section DGtalGLV_CLipping Adding clipping planes
 
-It also possible through the stream mechanism to add clipping plane
-with the object \c ClippingPlane. We just have to add the real plane
-equation and adding as for displaying an element. The file <a
+It also possible through the stream mechanism to add a clipping plane
+thanks to the object \c ClippingPlane. We just have to add the real plane
+equation and add, as for displaying, an element. The file <a
 href="io_2viewers_2viewer3D-6-clipping_8cpp-example.html"
 >viewer3D-6-clipping.cpp</a> gives a simple example.
 
@@ -440,137 +245,141 @@ From displaying a digital set defined from a Norm2 ball,
 
  Shapes<Domain>::addNorm2Ball( shape_set, Point( 10, 10, 10 ), 7 );
 
- viewer << SetMode3D( shape_set.className(), "Both" );
  viewer << shape_set;
- viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 20));
- viewer <<  SetMode3D( p1.className(), "Paving" );
+ viewer << Color(250, 200,0, 20);
 @endcode
 
-we can add for instance two differents clipping planes:
+we can add, for instance, two different clipping planes:
 
 @code
  viewer << ClippingPlane(1,0,0,-4.9);
  viewer << ClippingPlane(0,1,0.3,-10);
 @endcode
 
-\image html visuClippingAll.png "(a) visualization of the initial set." width=5cm
-\image latex visuClippingAll.png "(a) visualization of the initial set."
+\image html visuClippingAll.png "(a) visualization of the initial set."  
+\image latex visuClippingAll.png "(a) visualization of the initial set." width=5cm
  \image html  visuClipping1.png "(b) visualization after adding the first clipping plane (0,1,0.3,-10)."
  \image latex  visuClipping1.png "(b) visualization after adding the first clipping plane (0,1,0.3,-10)."  width=5cm
  \image html  visuClipping2.png "(c) visualization after adding a second clipping plane (1,0,0,-4.9) ."
 \image latex  visuClipping2.png "(c) visualization after adding a second clipping plane (1,0,0,-4.9) ." width=5cm
 
 
-It also possible to remove the visualization of the transparent clipping plane by adding boolean option:
-
-@code
- viewer << ClippingPlane(0,1,0.3,-10, false);
-@endcode
+It also possible to edit the clipping plane directly in the viewer (under View/Slice Planes) which allows to
+change colors, positions and if they are drawn or not. 
 
 \section DGtalGLV_Images Adding 2D image visualization in 3D
 
-\subsection DGtalGLV_ImagesSlices Adding 2D slice images
-
-With the Viewer3D class it is possible to display 2D slice image from a volume one. It can be done in few steps (see example of io/viewers/viewer3D-8-2DSliceImages.cpp) :
+With the PolyscopeViewer class it is possible to display 2D slice image from a volume one. It can be done in a few steps (see example of io/viewers/viewer3D-8-2DSliceImages.cpp) :
 
 @snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DImagesExtractImages
 
-And the display them using the classic stream operator:
-
-@snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DImagesDisplayImages
-
-Finally you can adjust the image setting with the Display3DModifier UpdateImagePosition and UpdateImageData object:
-
-@snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DModifImages
-
-You will obtain such a visualization:
- \image html  viewer3D-8.png  "Illustration of the 2D image slice visualization." width=5cm
- \image latex  viewer3D-8.png  "Illustration of the 2D image slice visualization."
-
-You can also change the default mode by using:
-@snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DChangeMode
-and by changing the "BoundingBox" mode by "InterGrid" you will obtain the following visualization:
- \image html  viewer3D-8InterGrid.png  "Illustration of the 2D image slice visualization with InterGrid mode." width=5cm
- \image latex  viewer3D-8InterGrid.png  "Illustration of the 2D image slice visualization."
-
-
-
-See more details on this example io/viewers/viewer3D-8-2DSliceImages.cpp or from the DGtalTools repository with DGtalTools/visualization/3dImageViewer.cpp viewer.
-
-
-\subsection DGtalGLV_ImagesEmbedded Adding 2D images (from any embedding)
-
-The slice images are not the only way to display 2D images in 3D. A
-2D image can also be extracted and embedded in 3D by using a single
-embedding functor (Point2DEmbedderIn3D). The example
-io/viewers/viewer3D-8bis-2Dimages.cpp illustrates such a display.
-
-
-First we  need to add the header file associated with the  Point2DEmbedderIn3D:
-@snippet  io/viewers/viewer3D-8bis-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesNonSliceHeader
-
-Then, the type definition of ConstImageAdapter is added:
-@snippet  io/viewers/viewer3D-8bis-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesNonSliceType
-
-The resulting 2D domain can be deduced from the width used in the functor:
-@snippet  io/viewers/viewer3D-8bis-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesNonSliceParam
-
-The embedder then be used to extract the image:
-@snippet  io/viewers/viewer3D-8bis-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesNonSliceExtract
-
-and used to display the image with the correct coordinates:
-
-@snippet  io/viewers/viewer3D-8bis-2Dimages.cpp ExampleViewer3D2DImagesExtractImagesNonSliceDisplay
-
-
-This example will produce such a visualization:
- \image html  viewer3D-8bis.png  "Illustration of the 2D image  visualization." width=5cm
- \image latex  viewer3D-8bis.png  "Illustration of the 2D image visualization."
-
-
-
-
+\image html  viewer3D-8.png  "Example of 2D image visualization" 
+\image latex  viewer3D-8.png  "Example of 2D image visualization" width=5cm
 
 \section DGtalGLV_Images3D Adding 3D image visualization
 
-In the same way a 3D image can be displayed. By following the same stream operator you will obtain such example of display:
-\image html  viewer3D-9.png  "Example of 3D image visualization with also digital sets." width=5cm
-\image latex  viewer3D-9.png  "Example of 3D image visualization with also digital sets."
+In the same way a 3D image can be displayed. By following the same stream operator, you will obtain such examples of display:
+\image html  viewer3D-9.png  "Example of 3D image visualization with also digital sets." 
+\image latex  viewer3D-9.png  "Example of 3D image visualization with also digital sets." width=5cm
 
-See more details in  the example: io/viewers/viewer3D-9-3Dimages.cpp
+See more details in  the example: io/viewers/viewer3D-9-3Dimages.cpp 
 
+\section DGtalGLV_Groups Object names and groups
 
+Each object that is drawn with the Display3D class is given a name as a string. This serves as a unique identifier and may also be used by viewers as user interface elements. It is possible to 
+specify the name of an object with the *draw* function (internally, the stream operator will call 
+this function).
 
-\section DGtalGLV_Images3Dcustom Customizing Slice Image visualization
+@code
+Point p1( 0, 0, 0 );
+viewer.draw(p1, "Point name");
+@endcode 
 
-By default an image is displayed in gray scale levels from its scalar
-values. However it is possible to display color texture image by using
-the object AddTextureImage2DWithFunctor or AddTextureImage3DWithFunctor (of the
-DrawWithDisplay3DModifier class) with the RGBmode which allows to
-interpret the scalar as a color value. A color functor can also be
-specified to generate a given color.
+In order to ensure uniqueness, the given may be altered if necessary. For example: 
 
-For instance the previous examples can easily displayed with color map:
+@code
+Point p1( 0, 0, 0 );
+Point p2( 1, 1, 1 );
+std::string name1 = viewer.draw(p1, "Point name"); // name1 = "Point name"
+std::string name2 = viewer.draw(p2, "Point name"); // name2 = "Point name_1"
+@endcode 
 
+It is possible to specify where the counter will be placed with the "{i}" token (only first occurence is replaced). For KCell, the token "{d}" can also be used for dimension. 
 
-First we generate a color functor to generate unsigned integer interpreted as RGB color:
-- Adding the header to use  hueShadeMap:
-@snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DImagesExtractImagesColorHeader
+@code
+Point p1( 0, 0, 0 );
+Point p2( 1, 1, 1 );
+std::string name1 = viewer.draw(p1, "Point_{i}_name"); // name1 = "Point_1_name"
+std::string name2 = viewer.draw(p1, "Point_{i}_name"); // name2 = "Point_2_name"
+@endcode 
 
-with a functor to transform integer representing grayscale to integer representing color:
-@snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DImagesExtractImagesColorFct
+A common pattern when using the DGtal library is to iterate over a set of object, and then perform a computation and draw them (see tests/geometry/surfaces/testLocalConvolutionNormalVectorEstimator.cpp). 
+However, this would imply having one object for each draw command, which can bloat the user interface and would make the viewer slow. It also limits the ability to have colormaps, since each 
+value would be scattered across multiple objects. For this reason, a special variable can be set: 
 
+@code
+viewer.allowReuseList = true;
+@endcode
 
-- Instead to use directly the image and the stream operator we add the AddTextureImage2DWithFunctor object:
-@snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DImagesDisplayImagesColor
+This will group new objects into the current list. However, this might fail if
+rendered objects change types (eg. alternating drawing lines and points). 
+Therefore, the lists where the new objects should be pushed must be set manually with:
 
+@code
+viewer.setCurrentList(name);
+@endcode
 
-- Note that also can update the image position image data as in the previous example and we need to recall the functor function if we want to keep the same data interpretation :
-@snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DModifImagesColor
+\section DGtalGLV_Properties Adding quantities to objects
 
-You will obtain such a visualization:
- \image html  viewer3D-8Color.png  "Illustration of the 2D image slice visualization." width=5cm
- \image latex  viewer3D-8Color.png  "Illustration of the 2D image slice visualization."
- 
+The class Display3D supports adding properties to objects. These properties can be colors, scalar values or vector information. These can be useful to display curvature information and/or computed normals. There are two ways to add these quantities. The first one is with the stream API, which is most useful for quick display of a couple of quantities: 
+
+@snippet io/viewers/viewer3D-12-quantities.cpp ExampleViewer3DQuantitiesStream 
+
+The second approach, as powerful as the first one, requires the name of the object, but is more comfortable when the quantities are obtained after drawing.
+
+@snippet io/viewers/viewer3D-12-quantities.cpp ExampleViewer3DQuantitiesAddQuantity 
+
+Both methods can be used together and within loops:
+
+@snippet io/viewers/viewer3D-12-quantities.cpp ExampleViewer3DQuantitiesLoop
+
+These properties can be shown or hidden and their appearance modified directly in the graphical user interface. 
+
+\image html  viewer3DQuantities.png  "Example of adding quantities to an object. Objects were shifted and quantities hidden to enhance visibility." 
+\image latex  viewer3DQuantities.png  "Example of adding quantities to an object. Objects were shifted and quantities hidden to enhance visibility." width=5cm
+
+It is also possible to add a last parameter to WithQuantity and addQuantity which is the element targeted by the quantity. For example, for a surface mesh, we may want to set the quantities at the vertices rather than on the faces when solving PDEs. However, the correct numbers of values should be supplied (eg. one per vertex and not one per face). Unfortunately, not every combination is supported (see table below). By default, it will use the scale corresponding to the dimension of the element (ie. right-most side in the "Supported Scale" column).
+
+| Geometric display | Supported Scale              | Name                                                                     | DGtal object examples                         |
+|-------------------|------------------------------|--------------------------------------------------------------------------|-----------------------------------------------|
+| Point             | VERTEX                       | QuantityScale::VERTEX                                                    | (Real)Points in BALL mode, dim 0 KCell        |
+| Lines             | VERTEX / EDGE                | QuantityScale::VERTEX, QuantityScale::EDGE                               | Adjacencies, dim 1 KCell                      |
+| Surface mesh      | VERTEX / EDGE (Scalar)/ FACE | QuantityScale::VERTEX, QuantityScale::EDGE (Scalar), QuantityScale::FACE | dim 2 KCell in simplified mode                |
+| Volume mesh       | VERTEX / CELL                | QuantityScale::VERTEX, QuantityScale::CELL                               | (Real)Points, Objects, Domains, dim 2/3 KCell |
+
+\section DGtalGLV_Ext Extending the viewer
+
+The viewer supports extensions that allow us to interact with the viewer at runtime. By default, 
+PolyscopeViewer shows what object is clicked; but one may want to add custom UI, or enhance 
+displayed information when an element is clicked. For this purpose, it is possible to set a
+callback that will be triggered upon three events: attach (only once), UI and clicks. 
+
+@code
+class MyCustomCallback : public typename Display3D<Space, KSpace>::Callback {
+  void OnAttach(void* viewer) {
+    // Called when the callback is attached to the viewer
+  }
+  void OnUI(void* data) {
+    // Called within the event loop and allows to draw some UI
+  }
+  void OnClick(const std::string& name, size_t index, const DisplayData<RealPoint>& data, void* viewerData) {
+    // Called when an element is clicked
+  }
+};
+@endcode
+
+A useful method is Display3D::renderNewData that renders to the screen any newly added data. Another method, Display3D::renderAll can be used to (re)render every object; but run-time settings might be lost.
+
+For PolyscopeViewer, user inputs and UI are managed with ImGUI. Also note that the viewer displays "by default", the name of the clicked polyscope structure.
 */
 }

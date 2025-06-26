@@ -22,17 +22,17 @@
  *
  * @date 2011/19/03
  *
- * Simple example of class Viewer3D.
+ * Simple example of class PolyscopeViewer.
  *
  * This file is part of the DGtal library.
  */
 
 
 /**
- * Example of digital point visualization with Viewer3D.
+ * Example of digital point visualization with PolyscopeViewer.
  * @see \ref DGtalGLV_VisualizationDigitalSet
  * \example io/viewers/viewer3D-2-sets.cpp
- * \image html simple3dVisu2.png "Digital point visualization  with Viewer3D."
+ * \image html simple3dVisu2.png "Digital point visualization  with PolyscopeViewer."
  */
 
 
@@ -42,7 +42,8 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Shapes.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -56,27 +57,26 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
+  //! [ExampleViewer2dSet]
+  PolyscopeViewer v;
+  Point p1( 0, 0, 0 );
+  Point p2( 10, 10 , 10 );
+  Domain domain( p1, p2 );
+  
+  v << p1 << p2 << domain;
 
-  //! [ExampleViewer3DSets]
- QApplication application(argc,argv);
- typedef  Viewer3D<>  MyViewer;
- MyViewer viewer;
- viewer.show();
+  DigitalSet shape_set( domain );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
+  Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
 
- Point p1( 0, 0, 0 );
- Point p2( 10, 10 , 10 );
- Domain domain( p1, p2 );
- viewer << domain;
+  shape_set.erase(Point(3,3,3));
+  shape_set.erase(Point(6,6,6));
+  
+  v << shape_set;
 
- DigitalSet shape_set( domain );
- Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
- Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
-
- shape_set.erase(Point(3,3,3));
- shape_set.erase(Point(6,6,6));
- viewer << shape_set << MyViewer::updateDisplay;
- //! [ExampleViewer3DSets]
- return application.exec();
+  v.show();
+  //! [ExampleViewer2dSet]
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

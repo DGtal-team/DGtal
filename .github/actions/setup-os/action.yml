@@ -11,18 +11,18 @@ runs:
   steps:
     - name: "Setup Linux"
       if: ${{ runner.os == 'Linux'}}
-      uses: ./.github/actions/setup-linux
+      uses: DGtal-team/DGtal/.github/actions/setup-linux@main2.0
       with: 
         python-version: ${{ inputs.python-version }}
 
     - name: "Setup MacOS"
       if: ${{ runner.os == 'macOS'}}
-      uses: ./.github/actions/setup-macos
+      uses: DGtal-team/DGtal/.github/actions/setup-macos@main2.0
       with: 
         python-version: ${{ inputs.python-version }}
 
     - name: "Setup Windows"
       if: ${{ runner.os == 'Windows'}}
-      uses: ./.github/actions/setup-windows
+      uses: DGtal-team/DGtal/.github/actions/setup-windows@main2.0
       with: 
         python-version: ${{ inputs.python-version }}

@@ -2458,8 +2458,8 @@ PREDEFINED             = "BOOST_FUSION_ADAPT_STRUCT(x,y)=" \
                          "DGTAL_WITH_HDF5=" \
                          "DGTAL_WITH_ITK=" \
                          "DGTAL_WITH_MAGICK=" \
+                         "DGTAL_WITH_POLYSCOPE_VIEWER=" \
                          "DGTAL_WITH_PONCA=" \
-                         "DGTAL_WITH_QGLVIEWER=" \
                          "DGTAL_WITH_FFTW3=" \
                          "DGTAL_WITH_FFTW3_FLOAT=" \
                          "DGTAL_WITH_FFTW3_DOUBLE" \
@@ -2529,7 +2529,7 @@ EXTERNAL_GROUPS        = YES
 # be listed.
 # The default value is: YES.
 
-EXTERNAL_PAGES         = YES
+EXTERNAL_PAGES         = NO
 
 #---------------------------------------------------------------------------
 # Configuration options related to diagram generator tools

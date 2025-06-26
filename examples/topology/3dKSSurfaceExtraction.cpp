@@ -44,8 +44,7 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/VolReader.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/io/Color.h"
 
 #include "DGtal/images/ImageSelector.h"
@@ -111,9 +110,7 @@ int main( int argc, char** argv )
   Surfaces<KSpace>::extractAllConnectedSCell(vectConnectedSCell,K, SAdj, diamond_set, false);
 
 
-  QApplication application(argc,argv);
-  Viewer3D<> viewer (K);
-  viewer.show();
+  PolyscopeViewer<> viewer (K);
 
 
   // Each connected compoments are simply displayed with a specific color.
@@ -129,21 +126,18 @@ int main( int argc, char** argv )
 
   for(unsigned int i=0; i< vectConnectedSCell.size();i++){
     DGtal::Color col= gradient(i);
-    viewer << CustomColors3D(Color(250, 0,0), Color(col.red(),
-                col.green(),
-                col.blue()));
-
-    for(unsigned int j=0; j< vectConnectedSCell.at(i).size();j++){
+    viewer << col;
+      for(unsigned int j=0; j< vectConnectedSCell.at(i).size();j++){
       viewer << vectConnectedSCell.at(i).at(j);
     }
   }
 
 
-  viewer << CustomColors3D(Color(250, 0,0),Color(250, 200,200, 200));
+  viewer << Color(250, 200,200, 200);
   viewer << diamond_set;
   //viewer << ClippingPlane(0,1,0.0,-2);
-  viewer << Viewer3D<>::updateDisplay;
-  return application.exec();
+  viewer.show();
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

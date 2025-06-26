@@ -61,7 +61,7 @@ digitalPolyhedronBuilder3D ../examples/samples/spot.obj 0.005 7
 #include <queue>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/shapes/SurfaceMesh.h"
 #include "DGtal/io/readers/SurfaceMeshReader.h"
@@ -104,11 +104,8 @@ int main( int argc, char** argv )
       return 1;
     }
 
-  QApplication application(argc,argv);
-  typedef Viewer3D<Space,KSpace> MViewer;
+  typedef PolyscopeViewer<Space,KSpace> MViewer;
   MViewer viewer;
-  viewer.setWindowTitle("digitalPolyhedronBuilder3D");
-  viewer.show();  
 
   Point lo(-500,-500,-500);
   Point up(500,500,500);
@@ -165,24 +162,25 @@ int main( int argc, char** argv )
   Color colors[] = { Color::Black, Color( 100, 100, 100 ), Color( 200, 200, 200 ) };
   if ( view & 0x1 )
     {
-      viewer.setLineColor( colors[ 0 ] );
-      viewer.setFillColor( colors[ 0 ] );
+      viewer.drawColor( colors[ 0 ] );
+      viewer.drawColor( colors[ 0 ] );
       for ( auto p : vertices ) viewer << p;
     }
   if ( view & 0x2 )
     {
-      viewer.setLineColor( colors[ 1 ] );
-      viewer.setFillColor( colors[ 1 ] );
+      viewer.drawColor( colors[ 1 ] );
+      viewer.drawColor( colors[ 1 ] );
       for ( auto p : edge_points ) viewer << p;
     }
   if ( view & 0x4 )
     {
-      viewer.setLineColor( colors[ 2 ] );
-      viewer.setFillColor( colors[ 2 ] );
+      viewer.drawColor( colors[ 2 ] );
+      viewer.drawColor( colors[ 2 ] );
       for ( auto p : face_points ) viewer << p;
     }
-  viewer << MViewer::updateDisplay;
-  return application.exec();
+
+  viewer.show();  
+  return 0;
 
 }
 //                                                                           //

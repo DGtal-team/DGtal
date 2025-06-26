@@ -35,9 +35,8 @@
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/io/readers/VolReader.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/io/Color.h"
@@ -53,8 +52,7 @@ using namespace DGtal;
 int main( int argc, char** argv )
 {
   trace.beginBlock ( "Example ctopo-2-3d" );
-  // for 3D display with Viewer3D
-  QApplication application(argc,argv);
+  // for 3D display with PolyscopeViewer
 
   typedef ImageSelector < Z3i::Domain, int>::Type Image;
   std::string inputFilename = examplesPath + "samples/cat10.vol";
@@ -78,7 +76,6 @@ int main( int argc, char** argv )
   SurfelAdjacency<3> SAdj( true );
 
 
-
   //Extract an initial boundary cell
   Z3i::SCell aCell = Surfaces<Z3i::KSpace>::findABel(ks, set3d);
   trace.info() << "Tracking Boundary.."<<std::endl;
@@ -98,12 +95,10 @@ int main( int argc, char** argv )
 
 
   // Displaying all the surfels in transparent mode
-  typedef Viewer3D <Z3i::Space,Z3i::KSpace> MyViewer;
+  typedef PolyscopeViewer <Z3i::Space,Z3i::KSpace> MyViewer;
   MyViewer viewer(ks);
-  viewer.show();
 
   trace.info() << "Displaying the surfels.."<<std::endl;
-  viewer << SetMode3D((*(vectBdrySCellALL.begin())).className(), "Transparent");
   for( std::set<Z3i::SCell>::iterator it=vectBdrySCellALL.begin();
        it!= vectBdrySCellALL.end(); it++){
     viewer<< *it;
@@ -116,15 +111,13 @@ int main( int argc, char** argv )
   cmap_grad.addColor( Color( 255, 255, 10 ) );
 
   // Need to avoid surfel superposition (the surfel size in increased)
-  viewer << Viewer3D<Z3i::Space,Z3i::KSpace>::shiftSurfelVisu;
-  viewer << SetMode3D((*(vectBdrySCell2.begin())).className(), "");
-  viewer.setFillColor(Color(180, 200, 25, 255));
+  viewer.drawColor(Color(180, 200, 25, 255));
 
   int d=0;
   for( std::vector<Z3i::SCell>::iterator it=vectBdrySCell2.begin();
        it!= vectBdrySCell2.end(); it++){
     Color col= cmap_grad(d);
-    viewer.setFillColor(Color(col.red(),col.green() ,col.blue(), 255));
+    viewer.drawColor(Color(col.red(),col.green() ,col.blue(), 255));
     viewer<< *it;
     d++;
   }
@@ -133,24 +126,22 @@ int main( int argc, char** argv )
   cmap_grad2.addColor( Color( 50, 50, 255 ) );
   cmap_grad2.addColor( Color( 255, 0, 0 ) );
   cmap_grad2.addColor( Color( 255, 255, 10 ) );
-  viewer << Viewer3D<>::shiftSurfelVisu;
 
   d=0;
   for( std::vector<Z3i::SCell>::iterator it=vectBdrySCell.begin();
        it!= vectBdrySCell.end(); it++){
      Color col= cmap_grad2(d);
-     viewer.setFillColor(Color(col.red(),col.green() ,col.blue(), 255));
+     viewer.drawColor(Color(col.red(),col.green() ,col.blue(), 255));
      viewer<< *it;
     d++;
   }
 
   // On need once again to avoid superposition.
-  viewer << MyViewer::shiftSurfelVisu;
-  viewer.setFillColor(Color(18, 200, 25, 255));
+  viewer.drawColor(Color(18, 200, 25, 255));
   viewer << aCell ;
-  viewer << MyViewer::updateDisplay;
 
-  return application.exec();
+  viewer.show();
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

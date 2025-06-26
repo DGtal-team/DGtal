@@ -80,11 +80,9 @@ namespace DGtal
   bool importOK = a3DMesh << filenameOFF;
 @endcode
  
- Then you can also display the resulting with a Viewer3D:
+ Then you can also display the resulting with a PolyscopeViewer:
  @code
- viewer.setLineColor(DGtal::Color(150,0,0,254));
  viewer << a3DMesh;
- viewer << Viewer3D::updateDisplay;
  @endcode
  *
  *

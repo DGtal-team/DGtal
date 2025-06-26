@@ -73,7 +73,7 @@ namespace DGtal
    * First we have to include the following header files:
    @snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseInclude
    *
-   * Prepare display using QGLviewer: Viewer3D
+   * Prepare display using Polyscope viewer: PolyscopeViewer
    @snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseInitDisplay
    *
    * Construct a Mesh with various faces:
