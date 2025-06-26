@@ -377,7 +377,7 @@ namespace DGtal
     /// Given a SurfaceMesh, compute mean curvature at each face using 
     /// CorrectedNormalCurrent method.
     ///
-    /// @warning In this code, only triangle strictly inside the sphere are 
+    /// @warning In this code, only triangles with barycenters strictly inside the sphere are 
     /// considered.
     ///
     /// @param mesh The surface mesh
@@ -419,25 +419,28 @@ namespace DGtal
         return curvatures;
       }
 
-    /// Given a SurfaceMesh, compute mean curvature at each face using 
-    /// CorrectedNormalCurrent method.
-    ///
-    /// This overloads compute curvature at each face of the mesh.
-    ///
-    /// @warning in this code, only triangle strictly inside the sphere are 
-    /// considered.
-    ///
-    /// @param mesh The surface mesh
-    /// @param params
-    ///   - unit_u: Whether the computed normals should be normalized or not
-    ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
-    ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II, CNC)."
-    ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
-    /// @return The curvatures at each face of mesh, in the the order given by the mesh
-    static Scalars
-      getCNCMeanCurvatures
-      ( CountedPtr<typename Base::SurfaceMesh>  mesh, 
-        const Parameters&                       params = parametersShapeGeometry() )
+      /// Given a SurfaceMesh, compute mean curvature at each face using
+      /// CorrectedNormalCurrent method.
+      ///
+      /// This overloads compute curvature at each face of the mesh.
+      ///
+      /// @warning In this code, only triangles with barycenters
+      /// strictly inside the sphere are considered.
+      ///
+      /// @param mesh The surface mesh
+      /// @param params
+      ///   - unit_u: Whether the computed normals should be normalized or not
+      ///   - r-radius        [   3.0]: the constant for kernel radius parameter
+      ///   r in r(h)=r h^alpha (VCM,II,Trivial).
+      ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha
+      ///   (VCM, II, CNC)."
+      ///   - gridstep        [   1.0]: the digitization gridstep (often denoted
+      ///   by h).
+      /// @return The curvatures at each face of mesh, in the the order given by
+      /// the mesh
+      static Scalars getCNCMeanCurvatures(
+      CountedPtr<typename Base::SurfaceMesh> mesh,
+      const Parameters & params = parametersShapeGeometry() )
       {
         std::vector<typename Base::SurfaceMesh::Face> allFaces(mesh->nbFaces());
         std::iota(allFaces.begin(), allFaces.end(), 0);
@@ -445,26 +448,27 @@ namespace DGtal
         return getCNCMeanCurvatures(mesh, allFaces, params);
       }
 
-
-    /// Given a SurfaceMesh, compute mean curvature at each face using 
-    /// CorrectedNormalCurrent method.
-    ///
-    /// @warning in this code, only triangle strictly inside the sphere are 
-    /// considered.
-    ///
-    /// @tparam Any digital object convertible to surface mesh via Shortcuts::makePrimalSurfaceMesh
-    /// @param digitalObject A digital object
-    /// @param params
-    ///   - unit_u: Whether the computed normals should be normalized or not
-    ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
-    ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II, CNC)."
-    ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
-    /// @return The curvatures at each face of the triangulated surface object
-    template <typename T>
-    static Scalars
-      getCNCMeanCurvatures
-      ( T&                digitalObject, 
-        const Parameters& params = parametersShapeGeometry() )
+      /// Given a SurfaceMesh, compute mean curvature at each face using
+      /// CorrectedNormalCurrent method.
+      ///
+      /// @warning In this code, only triangles with barycenters strictly inside
+      /// the sphere are considered.
+      ///
+      /// @tparam Any digital object convertible to surface mesh via
+      /// Shortcuts::makePrimalSurfaceMesh
+      /// @param digitalObject A digital object
+      /// @param params
+      ///   - unit_u: Whether the computed normals should be normalized or not
+      ///   - r-radius        [   3.0]: the constant for kernel radius parameter
+      ///   r in r(h)=r h^alpha (VCM,II,Trivial).
+      ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha
+      ///   (VCM, II, CNC)."
+      ///   - gridstep        [   1.0]: the digitization gridstep (often denoted
+      ///   by h).
+      /// @return The curvatures at each face of the triangulated surface object
+      template <typename T>
+      static Scalars getCNCMeanCurvatures(
+      T & digitalObject, const Parameters & params = parametersShapeGeometry() )
       {
         CountedPtr<typename Base::SurfaceMesh> mesh = Base::makePrimalSurfaceMesh(digitalObject);
         return getCNCMeanCurvatures(mesh, params);
@@ -510,25 +514,28 @@ namespace DGtal
         return n_true_estimations;
       }
 
-    /// Given a SurfaceMesh, compute gaussian curvature at each face using 
-    /// CorrectedNormalCurrent method.
-    ///
-    /// @warning in this code, only triangle strictly inside the sphere are 
-    /// considered.
-    ///
-    /// @param mesh The surface mesh
-    /// @param faces The faces to compute curvature at
-    /// @param params
-    ///   - unit_u: Whether the computed normals should be normalized or not
-    ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
-    ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II, CNC)."
-    ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
-    /// @return The curvatures at each face of the mesh, in the same order `faces` 
-    static Scalars
-      getCNCGaussianCurvatures
-      ( CountedPtr<typename Base::SurfaceMesh>   mesh, 
-        const typename Base::SurfaceMesh::Faces& faces, 
-        const Parameters&                        params = parametersShapeGeometry() )
+      /// Given a SurfaceMesh, compute gaussian curvature at each face using
+      /// CorrectedNormalCurrent method.
+      ///
+      /// @warning  In this code, only triangles with barycenters strictly
+      /// inside the sphere are considered.
+      ///
+      /// @param mesh The surface mesh
+      /// @param faces The faces to compute curvature at
+      /// @param params
+      ///   - unit_u: Whether the computed normals should be normalized or not
+      ///   - r-radius        [   3.0]: the constant for kernel radius parameter
+      ///   r in r(h)=r h^alpha (VCM,II,Trivial).
+      ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha
+      ///   (VCM, II, CNC)."
+      ///   - gridstep        [   1.0]: the digitization gridstep (often denoted
+      ///   by h).
+      /// @return The curvatures at each face of the mesh, in the same order
+      /// `faces`
+      static Scalars getCNCGaussianCurvatures(
+      CountedPtr<typename Base::SurfaceMesh> mesh,
+      const typename Base::SurfaceMesh::Faces & faces,
+      const Parameters & params = parametersShapeGeometry() )
       {
         using Face = typename Base::SurfaceMesh::Face;
 
@@ -555,25 +562,28 @@ namespace DGtal
         return curvatures;
       }
 
-    /// Given a SurfaceMesh, compute gaussian curvature at each face using 
-    /// CorrectedNormalCurrent method.
-    ///
-    /// This overloads compute curvature at each face of the mesh.
-    ///
-    /// @warning in this code, only triangle strictly inside the sphere are 
-    /// considered.
-    ///
-    /// @param mesh The surface mesh
-    /// @param params
-    ///   - unit_u: Whether the computed normals should be normalized or not
-    ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
-    ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II, CNC)."
-    ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
-    /// @return The curvatures at each face of the mesh, in thn the order given by the mesh
-    static Scalars
-      getCNCGaussianCurvatures
-      ( CountedPtr<typename Base::SurfaceMesh>   mesh, 
-        const Parameters&                        params = parametersShapeGeometry() )
+      /// Given a SurfaceMesh, compute gaussian curvature at each face using
+      /// CorrectedNormalCurrent method.
+      ///
+      /// This overloads compute curvature at each face of the mesh.
+      ///
+      /// @warning  In this code, only triangles with barycenters strictly
+      /// inside the sphere are considered.
+      ///
+      /// @param mesh The surface mesh
+      /// @param params
+      ///   - unit_u: Whether the computed normals should be normalized or not
+      ///   - r-radius        [   3.0]: the constant for kernel radius parameter
+      ///   r in r(h)=r h^alpha (VCM,II,Trivial).
+      ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha
+      ///   (VCM, II, CNC)."
+      ///   - gridstep        [   1.0]: the digitization gridstep (often denoted
+      ///   by h).
+      /// @return The curvatures at each face of the mesh, in thn the order
+      /// given by the mesh
+      static Scalars getCNCGaussianCurvatures(
+      CountedPtr<typename Base::SurfaceMesh> mesh,
+      const Parameters & params = parametersShapeGeometry() )
       {
         std::vector<typename Base::SurfaceMesh::Face> allFaces(mesh->nbFaces());
         std::iota(allFaces.begin(), allFaces.end(), 0);
@@ -581,25 +591,27 @@ namespace DGtal
         return getCNCGaussianCurvatures(mesh, allFaces, params);
       }
 
-    /// Given a SurfaceMesh, compute mean curvature at each face using 
-    /// CorrectedNormalCurrent method.
-    ///
-    /// @warning in this code, only triangle strictly inside the sphere are 
-    /// considered.
-    ///
-    /// @tparam T Any digital object convertible to surface mesh via Shortcuts::makePrimalSurfaceMesh
-    /// @param digitalObject A digital object
-    /// @param params
-    ///   - unit_u: Whether the computed normals should be normalized or not
-    ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
-    ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II, CNC)."
-    ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
-    /// @return The curvatures at each face of the triangulated surface object
-    template <typename T>
-    static Scalars
-      getCNCGaussianCurvatures
-      ( T&                digitalObject, 
-        const Parameters& params = parametersShapeGeometry() )
+      /// Given a SurfaceMesh, compute mean curvature at each face using
+      /// CorrectedNormalCurrent method.
+      ///
+      /// @warning  In this code, only triangles with barycenters strictly
+      /// inside the sphere are considered.
+      ///
+      /// @tparam T Any digital object convertible to surface mesh via
+      /// Shortcuts::makePrimalSurfaceMesh
+      /// @param digitalObject A digital object
+      /// @param params
+      ///   - unit_u: Whether the computed normals should be normalized or not
+      ///   - r-radius        [   3.0]: the constant for kernel radius parameter
+      ///   r in r(h)=r h^alpha (VCM,II,Trivial).
+      ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha
+      ///   (VCM, II, CNC)."
+      ///   - gridstep        [   1.0]: the digitization gridstep (often denoted
+      ///   by h).
+      /// @return The curvatures at each face of the triangulated surface object
+      template <typename T>
+      static Scalars getCNCGaussianCurvatures(
+      T & digitalObject, const Parameters & params = parametersShapeGeometry() )
       {
         CountedPtr<typename Base::SurfaceMesh> mesh = Base::makePrimalSurfaceMesh(digitalObject);
         return getCNCGaussianCurvatures(mesh, params);
@@ -814,21 +826,30 @@ namespace DGtal
         return n_true_estimations;
       }
 
-      /// Given a SurfaceMesh, compute principal curvature at each face using CorrectedNormalCurrent method.
+      /// Given a SurfaceMesh, compute principal curvature at each face using
+      /// CorrectedNormalCurrent method.
       ///
-      /// @note: If no normals are provided for the faces; the normals will be computed (and set) using vertex normals if they exists and positions otherwise. 
+      /// @note: If no normals are provided for the faces; the normals will be
+      /// computed (and set) using vertex normals if they exists and positions
+      /// otherwise.
       ///
-      /// @warning in this code, only triangle strictly inside the sphere are 
-      /// considered.
+      /// @warning  In this code, only triangles with barycenters strictly
+      /// inside the sphere are considered.
       ///
-      /// @param[in,out] mesh The surface mesh. The mesh will be modified if no face normals are provided.
+      /// @param[in,out] mesh The surface mesh. The mesh will be modified if no
+      /// face normals are provided.
       /// @param[in] faces The faces to compute curvature at
       /// @param[in] params
       ///   - unit_u: Whether the computed normals should be normalized or not
-      ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
-      ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II, CNC)."
-      ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
-      /// @return The principal curvatures at each face of the mesh, in the same order as faces. The result is a 4-element tuples: [first curvatures, second curvatures, first directions, second directions].
+      ///   - r-radius        [   3.0]: the constant for kernel radius parameter
+      ///   r in r(h)=r h^alpha (VCM,II,Trivial).
+      ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha
+      ///   (VCM, II, CNC)."
+      ///   - gridstep        [   1.0]: the digitization gridstep (often denoted
+      ///   by h).
+      /// @return The principal curvatures at each face of the mesh, in the same
+      /// order as faces. The result is a 4-element tuples: [first curvatures,
+      /// second curvatures, first directions, second directions].
       static std::tuple<Scalars, Scalars, RealVectors, RealVectors>
         getCNCPrincipalCurvaturesAndDirections
         ( CountedPtr<typename Base::SurfaceMesh>   mesh, 
@@ -874,26 +895,35 @@ namespace DGtal
           return std::make_tuple(k1, k2, d1, d2);
         }
 
-      /// Given a SurfaceMesh, compute principal curvature at each face using CorrectedNormalCurrent method.
-      ///
-      /// This overloads compute curvature at each face of the mesh.
-      ///
-      /// @note: If no normals are provided for the faces; the normals will be computed (and set) using vertex normals if they exists and positions otherwise. 
-      ///
-      /// @warning in this code, only triangle strictly inside the sphere are 
-      /// considered.
-      ///
-      /// @param[in,out] mesh The surface mesh. The mesh will be modified if no face normals are provided.
-      /// @param[in] params
-      ///   - unit_u: Whether the computed normals should be normalized or not
-      ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
-      ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II, CNC)."
-      ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
-      /// @return The principal curvatures at each face of the mesh, in the same order as mesh faces. The result is a 4-element tuples: [first curvatures, second curvatures, first directions, second directions].
-      static std::tuple<Scalars, Scalars, RealVectors, RealVectors>
-        getCNCPrincipalCurvaturesAndDirections
-        ( CountedPtr<typename Base::SurfaceMesh>   mesh, 
-          const Parameters&                        params = parametersShapeGeometry() )
+        /// Given a SurfaceMesh, compute principal curvature at each face using
+        /// CorrectedNormalCurrent method.
+        ///
+        /// This overloads compute curvature at each face of the mesh.
+        ///
+        /// @note: If no normals are provided for the faces; the normals will be
+        /// computed (and set) using vertex normals if they exists and positions
+        /// otherwise.
+        ///
+        /// @warning  In this code, only triangles with barycenters strictly
+        /// inside the sphere are considered.
+        ///
+        /// @param[in,out] mesh The surface mesh. The mesh will be modified if
+        /// no face normals are provided.
+        /// @param[in] params
+        ///   - unit_u: Whether the computed normals should be normalized or not
+        ///   - r-radius        [   3.0]: the constant for kernel radius
+        ///   parameter r in r(h)=r h^alpha (VCM,II,Trivial).
+        ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha
+        ///   (VCM, II, CNC)."
+        ///   - gridstep        [   1.0]: the digitization gridstep (often
+        ///   denoted by h).
+        /// @return The principal curvatures at each face of the mesh, in the
+        /// same order as mesh faces. The result is a 4-element tuples: [first
+        /// curvatures, second curvatures, first directions, second directions].
+        static std::tuple<Scalars, Scalars, RealVectors, RealVectors>
+        getCNCPrincipalCurvaturesAndDirections(
+        CountedPtr<typename Base::SurfaceMesh> mesh,
+        const Parameters & params = parametersShapeGeometry() )
         {
           std::vector<typename Base::SurfaceMesh::Face> allFaces(mesh->nbFaces());
           std::iota(allFaces.begin(), allFaces.end(), 0);
@@ -901,24 +931,30 @@ namespace DGtal
           return getCNCPrincipalCurvaturesAndDirections(mesh, allFaces, params);
         }
 
-      /// Given a SurfaceMesh, compute principal curvature at each face using CorrectedNormalCurrent method.
-      ///
-      /// @warning in this code, only triangle strictly inside the sphere are 
-      /// considered.
-      ///
-      /// @tparam T Any digital object convertible to surface mesh via Shortcuts::makePrimalSurfaceMesh
-      /// @param digitalObject A digital object
-      /// @param params
-      ///   - unit_u: Whether the computed normals should be normalized or not
-      ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
-      ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II, CNC)."
-      ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
-      /// @return The curvatures at each face of the triangulated surface object
-      template<typename T>
-      static std::tuple<Scalars, Scalars, RealVectors, RealVectors>
-        getCNCPrincipalCurvaturesAndDirections
-        ( T&                digitalObject, 
-          const Parameters& params = parametersShapeGeometry() )
+        /// Given a SurfaceMesh, compute principal curvature at each face using
+        /// CorrectedNormalCurrent method.
+        ///
+        /// @warning In this code, only triangles with barycenters strictly
+        /// inside the sphere are considered.
+        ///
+        /// @tparam T Any digital object convertible to surface mesh via
+        /// Shortcuts::makePrimalSurfaceMesh
+        /// @param digitalObject A digital object
+        /// @param params
+        ///   - unit_u: Whether the computed normals should be normalized or not
+        ///   - r-radius        [   3.0]: the constant for kernel radius
+        ///   parameter r in r(h)=r h^alpha (VCM,II,Trivial).
+        ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha
+        ///   (VCM, II, CNC)."
+        ///   - gridstep        [   1.0]: the digitization gridstep (often
+        ///   denoted by h).
+        /// @return The curvatures at each face of the triangulated surface
+        /// object
+        template <typename T>
+        static std::tuple<Scalars, Scalars, RealVectors, RealVectors>
+        getCNCPrincipalCurvaturesAndDirections(
+        T & digitalObject,
+        const Parameters & params = parametersShapeGeometry() )
         {
           CountedPtr<typename Base::SurfaceMesh> mesh = Base::makePrimalSurfaceMesh(digitalObject);
           return getCNCPrincipalCurvaturesAndDirections(mesh, params);
