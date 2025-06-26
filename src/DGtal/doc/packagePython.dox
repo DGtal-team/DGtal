@@ -68,7 +68,7 @@ cmake .. -DDGTAL_WRAP_PYTHON=ON
 Which build the necessary shared library and copy the few plain python code; which may 
 need to be further installed depending on your installation. 
 
-To import the module and access its functionnalities:
+To import the module and access its functionalities:
 
 @code{.py}
 import dgtal
@@ -121,9 +121,9 @@ print("Euler characteristic: "+str(ccomplex.euler()))
 
 @subsection shortcuts_examples Geometrical Estimators (Curvature and normals)
 
-This examples loads a binary image and compute integral invariants estimators and displays them within an interactive viewer. It mostly follows Shortcuts examples with a one-to-one mapping. A few other utilities are provided not to loop over elements in python.
+This example loads a binary image and computes integral invariant estimators and displays them within an interactive viewer. It mostly follows Shortcuts examples with a one-to-one mapping. A few other utilities are provided not to loop over elements in python.
 
-This examples requires [polyscope](https://polyscope.run/py/) to be installed 
+This example requires [polyscope](https://polyscope.run/py/) to be installed 
 
 @code{.py}
 from dgtal import *
@@ -151,7 +151,7 @@ normals = SH3.getIINormalVectors(al_capone, surfels, params)
 meanCurvs  = SH3.getIIMeanCurvatures(al_capone, surfels, params)
 gaussCurvs = SH3.getIIGaussianCurvatures(al_capone, surfels, params)
 
-# Display informations
+# Display information
 
 # Define coordinates of the unit cube
 pos = SH3.getEmbeddedPositions(K, surfels)
@@ -184,7 +184,7 @@ ps.show()
 
 @subsection base_topology_kernel Base, Topology and Kernel 
 
-In this section, we provide a list of functions classes that can be used in python. You may find more documentation and example usage by calling the help function on these classes (eg. help(dgtal.Object4_8)). The python constructor columns shows how object can be infered through their parameter (for example point dimention and type from the data parameter). Often, this is done through factories that are written in python. 
+In this section, we provide a list of functions and classes that can be used in python. You may find more documentation and example usage by calling the help function on these classes (eg. help(dgtal.Object4_8)). The python constructor column shows how objects can be inferred through their parameters (for example, point dimension and type from the data parameter). Often, this is done through factories that are written in python. 
 
 | Python class(es)                                                        | C++ class(es)                                      | Python constructor                                               |
 |-------------------------------------------------------------------------|----------------------------------------------------|------------------------------------------------------------------|
@@ -207,7 +207,7 @@ SH3.a_function_or_classes..
 
 @subsubsection shortcuts_classes Classes
 
-Objects within this module are not expected to manipulated by the user. They are meant to be passed around to next functions and are prefixed by two underscores. We reference them for completeness
+Objects within this module are not expected to be manipulated by the user. They are meant to be passed around to the next functions and are prefixed by two underscores. We reference them for completeness
 
 | Python class(es)              | C++ class(es)                                                 | Available methods (if any)                                                                                                                                                                       | Comments                                                       |
 |-------------------------------|---------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------|
@@ -269,7 +269,7 @@ Static functions are also bound. For overloads, we only indicate the main parame
 
 @subsubsection shortcuts_helpers Helpers functions
 
-Looping through object is slow in python and digital object may be large. For this reason, we also provide a few helper functions for ease of usage and faster code:
+Looping through objects is slow in python and digital objects may be large. For this reason, we also provide a few helper functions for ease of usage and faster code:
 
 | Python function         | Description                                 | Example usage                                                                                                                                                                                            |
 |-------------------------|---------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
