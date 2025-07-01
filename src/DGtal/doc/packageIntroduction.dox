@@ -49,9 +49,9 @@ also illustrate a mechanism to use DGtal in your own project.
 
 @b Modules
  - \subpage moduleIntroduction (Tristan Roussillon)
+ - \subpage packagePython (Bastien DoigniesPablo Hernandez-Cerdan, David Coeurjolly)
  - \subpage moduleBuildDGtal (Martial Tola, David Coeurjolly)
  - \subpage moduleHowToUseDGtal (David Coeurjolly)
- - \subpage packagePython (Pablo Hernandez-Cerdan, David Coeurjolly)
 
 
 
