@@ -46,10 +46,7 @@ void init_dgtal_helpers(py::module& m) {
         .def("set", [](Parameters& params, const std::string& name, float value) {
             return params(name, ParameterValue(value));
         }, py::return_value_policy::reference)
-       .def("set", [](Parameters& params, const std::string& name, float value) {
-            return params(name, ParameterValue(value));
-        }, py::return_value_policy::reference)
-       .def("set", [](Parameters& params, const std::string& name, std::string value) {
+      .def("set", [](Parameters& params, const std::string& name, std::string value) {
             return params(name, ParameterValue(value));
         }, py::return_value_policy::reference)
        .def("__str__", [](const Parameters& params) {
