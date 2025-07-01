@@ -49,3 +49,4 @@ b2/
 examples/samples/bunny-512.vol
 src/DGtal/dec/doc/images/poly/paf.png
 src/cppclean.log
+.vscode/
