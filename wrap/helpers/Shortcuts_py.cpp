@@ -345,7 +345,7 @@ void bind_shortcuts(py::module& m_helpers) {
     mg.def("getFirstPrincipalCurvatures", &SHG3::getFirstPrincipalCurvatures);
     mg.def("getSecondPrincipalCurvatures", &SHG3::getSecondPrincipalCurvatures);
     mg.def("getFirstPrincipalDirections", &SHG3::getFirstPrincipalDirections);
-    mg.def("getSecondPrincipalDirections", &SHG3::getSecondPrincipalCurvatures);
+    mg.def("getSecondPrincipalDirections", &SHG3::getSecondPrincipalDirections);
     mg.def("getVCMNormalVectors", 
         [](CountedPtr<SH3::LightDigitalSurface> surf, 
            const SH3::SurfelRange& range, const Parameters& params) {
