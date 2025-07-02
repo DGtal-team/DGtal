@@ -23,7 +23,6 @@ set(DGTAL_EXAMPLES_POLYSCOPE_SRC
 
 foreach(FILE ${DGTAL_EXAMPLES_POLYSCOPE_SRC})
     DGtal_add_example(${FILE})
-  #  target_link_libraries(${FILE} PUBLIC polyscope)
 endforeach()
 
 
