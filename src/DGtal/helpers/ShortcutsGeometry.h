@@ -2131,10 +2131,13 @@ namespace DGtal
         Metric metric;
 
         typename Map::PeriodicitySpec specs;
-        if (params["toroidal-x"].as<bool>()) specs[0] = true;
-        if (params["toroidal-y"].as<bool>()) specs[1] = true;
-        if (params["toroidal-z"].as<bool>()) specs[2] = true;
+        if (params["toroidal-x"].as<int>()) specs[0] = true;
+        if (params["toroidal-y"].as<int>()) specs[1] = true;
+        if (params["toroidal-z"].as<int>()) specs[2] = true;
 
+        // Do not return a pointer here for two reasons:
+        //  - The distance transform will not be passed anywhere else
+        //  - The operator() is less accessible with pointers.
         return Map(domain, predicate, metric, specs);
       }
 
@@ -2164,10 +2167,13 @@ namespace DGtal
         Metric metric;
 
         typename Map::PeriodicitySpec specs;
-        if (params["toroidal-x"].as<bool>()) specs[0] = true;
-        if (params["toroidal-y"].as<bool>()) specs[1] = true;
-        if (params["toroidal-z"].as<bool>()) specs[2] = true;
+        if (params["toroidal-x"].as<int>()) specs[0] = true;
+        if (params["toroidal-y"].as<int>()) specs[1] = true;
+        if (params["toroidal-z"].as<int>()) specs[2] = true;
 
+        // Do not return a pointer here for two reasons:
+        //  - The distance transform will not be passed anywhere else
+        //  - The operator() is less accessible with pointers.
         return Map(*domain, predicate, metric, specs);
       }
 
@@ -2200,10 +2206,13 @@ namespace DGtal
         Metric metric;
 
         typename Map::PeriodicitySpec specs;
-        if (params["toroidal-x"].as<bool>()) specs[0] = true;
-        if (params["toroidal-y"].as<bool>()) specs[1] = true;
-        if (params["toroidal-z"].as<bool>()) specs[2] = true;
+        if (params["toroidal-x"].as<int>()) specs[0] = true;
+        if (params["toroidal-y"].as<int>()) specs[1] = true;
+        if (params["toroidal-z"].as<int>()) specs[2] = true;
 
+        // Do not return a pointer here for two reasons:
+        //  - The distance transform will not be passed anywhere else
+        //  - The operator() is less accessible with pointers.
         return Map(domain, predicate, metric, specs);
       }
 
@@ -2236,10 +2245,13 @@ namespace DGtal
         Metric metric;
 
         typename Map::PeriodicitySpec specs;
-        if (params["toroidal-x"].as<bool>()) specs[0] = true;
-        if (params["toroidal-y"].as<bool>()) specs[1] = true;
-        if (params["toroidal-z"].as<bool>()) specs[2] = true;
-
+        if (params["toroidal-x"].as<int>()) specs[0] = true;
+        if (params["toroidal-y"].as<int>()) specs[1] = true;
+        if (params["toroidal-z"].as<int>()) specs[2] = true;
+        
+        // Do not return a pointer here for two reasons:
+        //  - The distance transform will not be passed anywhere else
+        //  - The operator() is less accessible with pointers.
         return Map(*domain, predicate, metric, specs);
       }
 
@@ -2258,7 +2270,7 @@ namespace DGtal
       /// 
       /// @return A vector of direction to the closest in the same order as 'points'.
       template<uint32_t p, typename PointRangeSites, typename PointRange>
-      static std::vector<Vector> getDirectionToClosestSites(
+      static std::vector<Vector> getDirectionToClosestSite(
         const PointRange& points, 
         const PointRangeSites& sites,
         const Parameters& params = parametersVoronoiMap())
@@ -2298,9 +2310,9 @@ namespace DGtal
 
 
         typename Map::PeriodicitySpec specs;
-        if (params["toroidal-x"].as<bool>()) specs[0] = true;
-        if (params["toroidal-y"].as<bool>()) specs[1] = true;
-        if (params["toroidal-z"].as<bool>()) specs[2] = true;
+        if (params["toroidal-x"].as<int>()) specs[0] = true;
+        if (params["toroidal-y"].as<int>()) specs[1] = true;
+        if (params["toroidal-z"].as<int>()) specs[2] = true;
 
         auto map = Map(domain, predicate, metric, specs);
 
@@ -2328,7 +2340,7 @@ namespace DGtal
       /// 
       /// @return A vector of distances to the closest in the same order as 'points'.
       template<uint32_t p, typename PointRangeSites, typename PointRange>
-      static std::vector<typename ExactPredicateLpSeparableMetric<Space, p>::Value> getDistanceToClosestSites(
+      static std::vector<typename ExactPredicateLpSeparableMetric<Space, p>::Value> getDistanceToClosestSite(
         const PointRange& points, 
         const PointRangeSites& sites,
         const Parameters& params = parametersVoronoiMap())
@@ -2368,9 +2380,9 @@ namespace DGtal
 
 
         typename Map::PeriodicitySpec specs;
-        if (params["toroidal-x"].as<bool>()) specs[0] = true;
-        if (params["toroidal-y"].as<bool>()) specs[1] = true;
-        if (params["toroidal-z"].as<bool>()) specs[2] = true;
+        if (params["toroidal-x"].as<int>()) specs[0] = true;
+        if (params["toroidal-y"].as<int>()) specs[1] = true;
+        if (params["toroidal-z"].as<int>()) specs[2] = true;
 
         auto map = Map(domain, predicate, metric, specs);
 

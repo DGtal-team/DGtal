@@ -35,6 +35,12 @@ using namespace DGtal;
 using SH3 = Shortcuts<Z3i::KSpace>;
 using SHG3 = ShortcutsGeometry<Z3i::KSpace>;
 
+// Defines to avoid renaming types
+using L1Metric = ExactPredicateLpSeparableMetric<SHG3::Space, 1>;
+using L2Metric = ExactPredicateLpSeparableMetric<SHG3::Space, 2>;
+using L1DistanceTransform = DistanceTransformation<SHG3::Space, SHG3::VoronoiPointPredicate, L1Metric>;
+using L2DistanceTransform = DistanceTransformation<SHG3::Space, SHG3::VoronoiPointPredicate, L2Metric>;
+
 template<typename T>
 std::vector<Color> apply_colormap(const std::vector<T>& data, const SH3::ColorMap& cmap) { 
     std::vector<Color> colors(data.size());
@@ -145,7 +151,52 @@ void defines_types_geometry(py::module& m) {
             in.selfDisplay(ss);
             return ss.str();
         });
-}
+
+    // We map distance transformation and voronoi map under the same name. 
+    // We just "cheat" by binding functions under different names
+    py::class_<L1DistanceTransform>(m, "L1VoronoiMap")
+        // No constructor, we let the user build it with makeDistanceTransformation
+        .def("distanceToClosestSite", [](const L1DistanceTransform& vmap, const SHG3::Point& p){
+                return vmap(p);
+            })
+        .def("distanceToClosestSite", [](const L1DistanceTransform& vmap, const std::vector<int>& p){
+                return vmap(SHG3::Point(p[0], p[1], p[2]));
+            })
+        .def("distanceToClosestSite", [](const L1DistanceTransform& vmap, const std::vector<float>& p){
+                return vmap(SHG3::Point(p[0], p[1], p[2]));
+            })
+        .def("directionToClosestSite", [](const L1DistanceTransform& vmap, const SHG3::Point& p){
+                return vmap.getVoronoiSite(p);
+            })
+        .def("directionToClosestSite", [](const L1DistanceTransform& vmap, const std::vector<int>& p){
+                return vmap.getVoronoiSite(SHG3::Point(p[0], p[1], p[2]));
+            })
+        .def("directionToClosestSite", [](const L1DistanceTransform& vmap, const std::vector<float>& p){
+                return vmap.getVoronoiSite(SHG3::Point(p[0], p[1], p[2]));
+            });
+
+    py::class_<L2DistanceTransform>(m, "L2VoronoiMap")
+        // No constructor, we let the user build it with makeDistanceTransformation
+        .def("distanceToClosestSite", [](const L2DistanceTransform& vmap, const SHG3::Point& p){
+                return vmap(p);
+            })
+        .def("distanceToClosestSite", [](const L2DistanceTransform& vmap, const std::vector<int>& p){
+                return vmap(SHG3::Point(p[0], p[1], p[2]));
+            })
+        .def("distanceToClosestSite", [](const L2DistanceTransform& vmap, const std::vector<float>& p){
+                return vmap(SHG3::Point(p[0], p[1], p[2]));
+            })
+        .def("directionToClosestSite", [](const L2DistanceTransform& vmap, const SHG3::Point& p){
+                return vmap.getVoronoiSite(p);
+            })
+        .def("directionToClosestSite", [](const L2DistanceTransform& vmap, const std::vector<int>& p){
+                return vmap.getVoronoiSite(SHG3::Point(p[0], p[1], p[2]));
+            })
+        .def("directionToClosestSite", [](const L2DistanceTransform& vmap, const std::vector<float>& p){
+                return vmap.getVoronoiSite(SHG3::Point(p[0], p[1], p[2]));
+            });}
+
+void bind_voronoimap(py::module& mg);
 
 void bind_shortcuts(py::module& m_helpers) {
     auto m = m_helpers.def_submodule("SH3", "Shortcuts 3D"); 
@@ -376,4 +427,131 @@ void bind_shortcuts(py::module& m_helpers) {
         });
     mg.def("getScalarsAbsoluteDifference", &SHG3::getScalarsAbsoluteDifference);
     mg.def("getStatistic", &SHG3::getStatistic);
+
+    bind_voronoimap(mg);
+}
+
+void bind_voronoimap(py::module& mg) {
+    mg.def("makeL1VoronoiMap", [](const SH3::Domain& d, const std::vector<SHG3::Point>& points, const Parameters& params) {
+            return SHG3::makeDistanceTransformation<1>(d, points, params);
+        });
+    mg.def("makeL1VoronoiMap", [](const CountedPtr<SH3::Domain>& d, const std::vector<SHG3::Point>& points, const Parameters& params) {
+            return SHG3::makeDistanceTransformation<1>(d, points, params);
+        });
+    mg.def("makeL2VoronoiMap", [](const SH3::Domain& d, const std::vector<SHG3::Point>& points, const Parameters& params) {
+            return SHG3::makeDistanceTransformation<2>(d, points, params);
+        });
+    mg.def("makeL2VoronoiMap", [](const CountedPtr<SH3::Domain>& d, const std::vector<SHG3::Point>& points, const Parameters& params) {
+            return SHG3::makeDistanceTransformation<2>(d, points, params);
+        });
+    
+    mg.def("getL1DistanceToClosestSite", [](const SH3::Domain& points, const std::vector<SHG3::Point>& sites, const Parameters& params) {
+            return SHG3::getDistanceToClosestSite<1>(points, sites, params);
+        });
+    mg.def("getL1DistanceToClosestSite", [](const std::vector<SH3::Point>& points, const std::vector<SHG3::Point>& sites, const Parameters& params) {
+            return SHG3::getDistanceToClosestSite<1>(points, sites, params);
+        });
+    mg.def("getL1DistanceToClosestSite", [](py::buffer b, const std::vector<SHG3::Point>& sites, const Parameters& params) {
+            py::buffer_info info = b.request();
+
+            if (info.format != py::format_descriptor<int>::format())
+                throw std::runtime_error("Only arrays of int are supported");
+
+            if (info.ndim != 2)
+                throw std::runtime_error("Only (N, 3) sets are supported");
+
+            if (info.shape[1] != 3)
+                throw std::runtime_error("Only (N, 3) sets are supported");
+                
+            // TODO: check for contiguity
+            const int* data = static_cast<int*>(info.ptr);
+            std::vector<SHG3::Point> points(info.shape[0]);
+            for (size_t i = 0; i < info.shape[0]; ++i)
+                for (size_t j = 0; j < 3; ++j)
+                    points[i][j] = data[j + i * 3];
+
+            return SHG3::getDistanceToClosestSite<1>(points, sites, params);
+        });
+    mg.def("getL2DistanceToClosestSite", [](const SH3::Domain& points, const std::vector<SHG3::Point>& sites, const Parameters& params) {
+            return SHG3::getDistanceToClosestSite<2>(points, sites, params);
+        });
+    mg.def("getL2DistanceToClosestSite", [](const std::vector<SH3::Point>& points, const std::vector<SHG3::Point>& sites, const Parameters& params) {
+            return SHG3::getDistanceToClosestSite<2>(points, sites, params);
+        });
+    mg.def("getL2DistanceToClosestSite", [](py::buffer b, const std::vector<SHG3::Point>& sites, const Parameters& params) {
+            py::buffer_info info = b.request();
+
+            if (info.format != py::format_descriptor<int>::format())
+                throw std::runtime_error("Only arrays of int are supported");
+
+            if (info.ndim != 2)
+                throw std::runtime_error("Only (N, 3) sets are supported");
+
+            if (info.shape[1] != 3)
+                throw std::runtime_error("Only (N, 3) sets are supported");
+                
+            // TODO: check for contiguity
+            const int* data = static_cast<int*>(info.ptr);
+            std::vector<SHG3::Point> points(info.shape[0]);
+            for (size_t i = 0; i < info.shape[0]; ++i)
+                for (size_t j = 0; j < 3; ++j)
+                    points[i][j] = data[j + i * 3];
+
+            return SHG3::getDistanceToClosestSite<2>(points, sites, params);
+        });
+
+    mg.def("getL1DirectionToClosestSite", [](const SH3::Domain& points, const std::vector<SHG3::Point>& sites, const Parameters& params) {
+            return SHG3::getDirectionToClosestSite<1>(points, sites, params);
+        });
+    mg.def("getL1DirectionToClosestSite", [](const std::vector<SH3::Point>& points, const std::vector<SHG3::Point>& sites, const Parameters& params) {
+            return SHG3::getDirectionToClosestSite<1>(points, sites, params);
+        });
+    mg.def("getL1DirectionToClosestSite", [](py::buffer b, const std::vector<SHG3::Point>& sites, const Parameters& params) {
+            py::buffer_info info = b.request();
+
+            if (info.format != py::format_descriptor<int>::format())
+                throw std::runtime_error("Only arrays of int are supported");
+
+            if (info.ndim != 2)
+                throw std::runtime_error("Only (N, 3) sets are supported");
+
+            if (info.shape[1] != 3)
+                throw std::runtime_error("Only (N, 3) sets are supported");
+                
+            // TODO: check for contiguity
+            const int* data = static_cast<int*>(info.ptr);
+            std::vector<SHG3::Point> points(info.shape[0]);
+            for (size_t i = 0; i < info.shape[0]; ++i)
+                for (size_t j = 0; j < 3; ++j)
+                    points[i][j] = data[j + i * 3];
+
+            return SHG3::getDirectionToClosestSite<1>(points, sites, params);
+        });
+    mg.def("getL2DirectionToClosestSite", [](const SH3::Domain& points, const std::vector<SHG3::Point>& sites, const Parameters& params) {
+            return SHG3::getDirectionToClosestSite<2>(points, sites, params);
+        });
+    mg.def("getL2DirectionToClosestSite", [](const std::vector<SH3::Point>& points, const std::vector<SHG3::Point>& sites, const Parameters& params) {
+            return SHG3::getDirectionToClosestSite<2>(points, sites, params);
+        });
+    mg.def("getL2DirectionToClosestSite", [](py::buffer b, const std::vector<SHG3::Point>& sites, const Parameters& params) {
+            py::buffer_info info = b.request();
+
+            if (info.format != py::format_descriptor<int>::format())
+                throw std::runtime_error("Only arrays of int are supported");
+
+            if (info.ndim != 2)
+                throw std::runtime_error("Only (N, 3) sets are supported");
+
+            if (info.shape[1] != 3)
+                throw std::runtime_error("Only (N, 3) sets are supported");
+                
+            // TODO: check for contiguity
+            const int* data = static_cast<int*>(info.ptr);
+            std::vector<SHG3::Point> points(info.shape[0]);
+            for (size_t i = 0; i < info.shape[0]; ++i)
+                for (size_t j = 0; j < 3; ++j)
+                    points[i][j] = data[j + i * 3];
+
+            return SHG3::getDirectionToClosestSite<2>(points, sites, params);
+        });
 }
