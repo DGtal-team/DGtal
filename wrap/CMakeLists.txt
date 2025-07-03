@@ -7,7 +7,7 @@ set(CMAKE_BUILD_PYTHONLIBDIR ${PROJECT_BINARY_DIR}/dgtal) # copy python libs at 
 # Python wrapping will be one single module with submodules
 set(CMAKE_INSTALL_PYTHONINCLUDEDIR
   ${CMAKE_INSTALL_PYTHONLIBDIR}/include)
-set(enabled_libs_ DGtal)
+set(enabled_libs_ DGtal Eigen3::Eigen)
 set(enabled_include_dirs_)
 set(enabled_include_system_dirs_)
 
@@ -16,6 +16,7 @@ add_subdirectory(base)
 add_subdirectory(topology)
 add_subdirectory(images)
 add_subdirectory(io)
+add_subdirectory(helpers)
 
 set(wrap_header_common
   dgtal_pybind11_common.h)
@@ -37,6 +38,7 @@ target_include_directories(_dgtal PUBLIC
   )
 target_include_directories(_dgtal PRIVATE ${enabled_include_dirs_})
 target_include_directories(_dgtal SYSTEM PRIVATE ${enabled_include_system_dirs_})
+target_compile_definitions(_dgtal PRIVATE DGTAL_PATH="${PROJECT_SOURCE_DIR}")
 if (DGTAL_WITH_ITK)
   target_compile_definitions(_dgtal PRIVATE  DGTAL_WITH_ITK)
 endif()

@@ -1,4 +1,5 @@
 from ._dgtal import *
+from ._dgtal.helpers import SH3 # Forward inclusion
 
 # dgtal.tables_folder is used in Object and VoxelComplex.
 from pathlib import Path as _Path
