@@ -14,7 +14,7 @@
   - New Polyscope-based 3D viewer (Bastien Doignies, [#1775](https://github.com/DGtal-team/DGtal/pull/1775))
   - Remove old QGLViewer and Qt dependency (Bastien Doignies, [#1775](https://github.com/DGtal-team/DGtal/pull/1775))
 
-- *python*
+- *Python*
   - New python bindings for Shortcuts and ShortcutsGeometry (Bastien Doignies, [#1782](https://github.com/DGtal-team/DGtal/pull/1782))
 
 - *Geometry*
