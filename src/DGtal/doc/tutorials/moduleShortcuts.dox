@@ -329,6 +329,22 @@ This example requires ShortcutsGeometry. You can easily get the expected princip
 </tr>
 </table>
 
+@subsubsection dgtal_shortcuts_ssec2_1_15 Load vol file -> Compute VoronoiMap -> Display distances to shape in viewer
+
+This example requires ShortcutsGeometry and PolyscopeViewer. This shows how to compute distance to a shape using different metrics.
+
+\snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_1_15s
+
+<table>
+<tr>
+<td>
+\image html voronoimapl1.png "L1 distance to shape computed using VoronoiMap (image sliced within the viewer)"
+</td>
+<td>
+\image html voronoimapl2.png "L2 distance to shape computed using VoronoiMap (image sliced within the viewer)"
+</td>
+</tr>
+</table>
 
 @section dgtal_shortcuts_sec2b Few 2D examples
 
@@ -547,6 +563,10 @@ Shortcuts::Point is Z3i::KSpace::Point.
   - ShortcutsGeometry::getScalarsAbsoluteDifference: return the range of scalars that is the difference of two range of scalars
   - ShortcutsGeometry::getVectorsAngleDeviation: return the range of scalars that form the angle deviations between two range of vectors
   - ShortcutsGeometry::getStatistic: return the statistic of the given range of values.
+  - ShortcutsGeometry::getVoronoiMap: return the voronoi map on a domain from a list of sites
+  - ShortcutsGeometry::getDistanceTransformation: return the distance to the closest voronoi site on a domain from a list of sites
+  - ShortcutsGeometry::getDirectionToClosestSite: return the list of vector to the closest site
+  - ShortcutsGeometry::getDistanceToClosestSite: return the distance to the closest site
 
 -# ATApproximation services
   - ShortcutsGeometry::parametersATApproximation: parameters related to piecewise-smooth AT approximation.

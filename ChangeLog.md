@@ -28,6 +28,7 @@
 
 - *Geometry*
   - Add CNC computer to Shortcuts (Bastien Doignies, [#1781](https://github.com/DGtal-team/DGtal/pull/1781))
+  - Add VoronoiMap (and DistanceTransformation) to Shortcuts (Bastien, Doignies, [#1784](https://github.com/DGtal-team/DGtal/pull/1784))
   - Add method to evaluate normal to `LocalEstimatorFromSurfelFunctorAdapter` from Surfel as a replacement for removed `LocalConvolutionNormalVectorEstimator` (Bastien DOIGNIES, [#1765](https://github.com/DGtal-team/DGtal/pull/1765))
   - Add method to evaluate all normals to `LocalEstimatorFromSurfelFunctorAdapter` as a replacement for removed `LocalConvolutionNormalVectorEstimator` (Bastien DOIGNIES, [#1765](https://github.com/DGtal-team/DGtal/pull/1765))
   - Add covering for segments and triangles in 3D (Jacques-Olivier Lachaud, [#1786](https://github.com/DGtal-team/DGtal/pull/1786))
