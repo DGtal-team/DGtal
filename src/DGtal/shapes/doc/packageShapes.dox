@@ -59,19 +59,19 @@ non-manifold.
 
 @b Modules for digital shapes generation
 
-- \ref moduleShape (Jacques-Olivier Lachaud, David Coeurjolly, Adrien Krähenbühl)
-- \ref moduleMeshVoxelization (David Coeurjolly, Monir Hadji)
+- \subpage moduleShape (Jacques-Olivier Lachaud, David Coeurjolly, Adrien Krähenbühl)
+- \subpage moduleMeshVoxelization (David Coeurjolly, Monir Hadji)
 
 @b Modules for mesh representation
 
 There are several ways to represent surface meshes, depending on their genericity or property:
 
-- \ref moduleMesh (Bertrand Kerautret)
+- \subpage moduleMesh (Bertrand Kerautret)
 
   - represents soaps of triangles with traversal operations but
   without any link between vertices (class \ref Mesh).
 
-- \ref moduleHalfEdgeMesh (Jacques-Olivier Lachaud)
+- \subpage moduleHalfEdgeMesh (Jacques-Olivier Lachaud)
 
   - represents 2-manifold triangulated or polygonal meshes, possibly
   with boundaries, and provides traversal and neighborhood operations,
@@ -79,7 +79,7 @@ There are several ways to represent surface meshes, depending on their genericit
   TriangulatedSurface, \ref PolygonalSurface, \ref
   HalfEdgeDataStructure).
 
-- \ref moduleSurfaceMesh (Jacques-Olivier Lachaud)
+- \subpage moduleSurfaceMesh (Jacques-Olivier Lachaud)
 
   - represents arbitrary sets of faces with possible connexions
   between faces, edges and vertices, provides traversal and
@@ -87,17 +87,20 @@ There are several ways to represent surface meshes, depending on their genericit
   representation, and may represent non manifold meshes (class \ref
   SurfaceMesh).
 
-- \ref moduleDigitalSurfaces (Jacques-Olivier Lachaud)
+- \subpage moduleDigitalSurfaces (Jacques-Olivier Lachaud)
 
   - represents digital surfaces, i.e. boundaries of sets of voxels or
   interfaces between such sets, in arbitrary dimension, with a common
   framework (classes DigitalSurface and IndexedDigitalSurface).
 
-
+- \subpage moduleWinding (David Coeurjolly)
+   
+    - uses winding number from libIGL to construct a voxelized binary image from 
+    an set of oriented points (points with normal vectors).
 
 @b Package @b Concepts @b Overview
 
-  - \ref packageShapesConcepts
+  - \subpage packageShapesConcepts
 
 @b Related @b documentation @b pages
 

@@ -17,6 +17,11 @@
 #ifndef DGTAL_HYPERRECTDOMAIN_TYPES_PY_H
 #define DGTAL_HYPERRECTDOMAIN_TYPES_PY_H
 
+#if defined (_MSC_VER) and !defined(ssize_t)
+    // ssize_t is not standard, only posix which is not supported by MSVC
+    #define ssize_t ptrdiff_t
+#endif
+
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "base/Common_types_py.h"

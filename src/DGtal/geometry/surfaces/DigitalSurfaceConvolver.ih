@@ -445,6 +445,13 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
 ( const Quantity * aMomentMatrix,
   CovarianceMatrix & aCovarianceMatrix ) const
 {
+  /* Moment matrix:
+   *
+   * [ sum(1)
+   *   sum(y) sum (x)
+   *   sum(x*y) sum(y*y) sum(x*x)
+   * ]
+  */
   MatrixQuantity A;
   double B;
   MatrixQuantity C;

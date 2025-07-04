@@ -190,8 +190,7 @@ inline void
 DGtal::VoxelComplex<TKSpace, TCellContainer>::insertVoxelCell(
     const Cell &kcell, const bool &close_it, const Data &data)
 {
-    const auto &ks = this->space();
-    ASSERT(ks.uDim(kcell) == 3);
+    ASSERT(this->space().uDim(kcell) == 3);
     this->insertCell(3, kcell, data);
     if (close_it)
         voxelClose(kcell);
@@ -513,8 +512,7 @@ DGtal::VoxelComplex<TKSpace, TCellContainer>::K_2(const Cell &face2,
     ASSERT(ks.uIsSurfel(face2));
     using KPreSpace = typename TKSpace::PreCellularGridSpace;
     const auto co_faces = KPreSpace::uCoFaces(face2);
-    const auto nco_faces = co_faces.size();
-    ASSERT(nco_faces == 2);
+    ASSERT(co_faces.size() == 2);
     const auto &cf0 = co_faces[0];
     const auto &cf1 = co_faces[1];
     // spels must belong to complex.

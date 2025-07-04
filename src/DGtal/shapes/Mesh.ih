@@ -30,6 +30,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <limits>
 #include <cstdlib>
+#include <map>
 #include <DGtal/kernel/BasicPointPredicates.h>
 //////////////////////////////////////////////////////////////////////////////
 
@@ -122,7 +123,7 @@ inline
 bool
 DGtal::Mesh<TPoint>::isValid() const
 {
-    return true;
+  return true;
 }
 
 
@@ -143,9 +144,9 @@ DGtal::Mesh<TPoint>::Mesh(const VertexStorage &vertexSet)
 {
   mySaveFaceColor=false;
   for(int i =0; i< vertexSet.size(); i++)
-    {
-      myVertexList.push_back(vertexSet.at(i));
-    }
+  {
+    myVertexList.push_back(vertexSet.at(i));
+  }
 
 }
 
@@ -165,7 +166,7 @@ template<typename TPoint>
 inline
 void
 DGtal::Mesh<TPoint>::addTriangularFace(Index indexVertex1, Index indexVertex2,
-Index indexVertex3, const DGtal::Color &aColor)
+				       Index indexVertex3, const DGtal::Color &aColor)
 {
   MeshFace aFace;
   aFace.push_back(indexVertex1);
@@ -173,9 +174,9 @@ Index indexVertex3, const DGtal::Color &aColor)
   aFace.push_back(indexVertex3);
   myFaceList.push_back(aFace);
   if(mySaveFaceColor)
-    {
-      myFaceColorList.push_back(aColor);
-    }
+  {
+    myFaceColorList.push_back(aColor);
+  }
 }
 
 
@@ -185,7 +186,7 @@ template<typename TPoint>
 inline
 void
 DGtal::Mesh<TPoint>::addQuadFace(Index indexVertex1,Index indexVertex2,
-                                  Index indexVertex3, Index indexVertex4,
+				 Index indexVertex3, Index indexVertex4,
                                  const DGtal::Color &aColor)
 {
   MeshFace aFace;
@@ -195,9 +196,9 @@ DGtal::Mesh<TPoint>::addQuadFace(Index indexVertex1,Index indexVertex2,
   aFace.push_back(indexVertex4);
   myFaceList.push_back(aFace);
   if(mySaveFaceColor)
-    {
-      myFaceColorList.push_back(aColor);
-    }
+  {
+    myFaceColorList.push_back(aColor);
+  }
 }
 
 
@@ -208,9 +209,9 @@ void
 DGtal::Mesh<TPoint>::addFace(const MeshFace &aFace,  const DGtal::Color &aColor){
   myFaceList.push_back(aFace);
   if(mySaveFaceColor)
-    {
-      myFaceColorList.push_back(aColor);
-    }
+  {
+    myFaceColorList.push_back(aColor);
+  }
 }
 
 
@@ -220,6 +221,7 @@ inline
 void
 DGtal::Mesh<TPoint>::removeFaces(const std::vector<Index> &facesIndex){
   DGtal::Mesh<TPoint> newMesh(true);
+  
   std::vector<unsigned int> indexVertexFaceCard(nbVertex());
   std::vector<bool> indexFaceOK(nbFaces());
   std::fill(indexVertexFaceCard.begin(), indexVertexFaceCard.end(), 0);
@@ -347,21 +349,21 @@ const DGtal::Color &
 DGtal::Mesh<TPoint>::getFaceColor(Index i) const
 {
   if(mySaveFaceColor)
-    {
-      return myFaceColorList.at(i);
-    }
+  {
+    return myFaceColorList.at(i);
+  }
   else
-    {
-      return myDefaultColor;
-    }
+  {
+    return myDefaultColor;
+  }
 }
 
 template <typename TPoint>
 struct MeshBoundingBoxCompPoints
 {
-MeshBoundingBoxCompPoints(typename TPoint::Dimension d): myDim(d){};
-bool operator() (const TPoint &p1, const TPoint &p2){return p1[myDim]<p2[myDim];};
-typename TPoint::Dimension myDim;
+  MeshBoundingBoxCompPoints(typename TPoint::Dimension d): myDim(d){};
+  bool operator() (const TPoint &p1, const TPoint &p2){return p1[myDim]<p2[myDim];};
+  typename TPoint::Dimension myDim;
 };
 
 template<typename TPoint>
@@ -372,11 +374,11 @@ DGtal::Mesh<TPoint>::getBoundingBox() const
   std::pair<TPoint, TPoint> theResult;
   TPoint lowerBound, upperBound;
   for(unsigned int i=0; i< TPoint::size(); i++)
-    {
-      const MeshBoundingBoxCompPoints<TPoint> cmp_points(i);
-      upperBound[i] = (*(std::max_element(vertexBegin(), vertexEnd(), cmp_points)))[i];
-      lowerBound[i] = (*(std::min_element(vertexBegin(), vertexEnd(), cmp_points)))[i];
-    }
+  {
+    const MeshBoundingBoxCompPoints<TPoint> cmp_points(i);
+    upperBound[i] = (*(std::max_element(vertexBegin(), vertexEnd(), cmp_points)))[i];
+    lowerBound[i] = (*(std::min_element(vertexBegin(), vertexEnd(), cmp_points)))[i];
+  }
   theResult.first = lowerBound ;
   theResult.second = upperBound ;
   return theResult;
@@ -390,13 +392,13 @@ DGtal::Mesh<TPoint>::setFaceColor(const Index index,
                                   const DGtal::Color &aColor)
 {
   if (!mySaveFaceColor)
+  {
+    for(unsigned int i = 0; i<myFaceList.size(); i++)
     {
-      for(unsigned int i = 0; i<myFaceList.size(); i++)
-        {
-          myFaceColorList.push_back(myDefaultColor);
-        }
-      mySaveFaceColor=true;
+      myFaceColorList.push_back(myDefaultColor);
     }
+    mySaveFaceColor=true;
+  }
   myFaceColorList.at(index) = aColor;
 }
 
@@ -417,15 +419,15 @@ inline
 void
 DGtal::Mesh<TPoint>::invertVertexFaceOrder(){
   for(unsigned int i=0; i<myFaceList.size(); i++)
+  {
+    auto aFace =  myFaceList.at(i);
+    for(unsigned int j=0; j < aFace.size()/2; j++)
     {
-      auto aFace =  myFaceList.at(i);
-      for(unsigned int j=0; j < aFace.size()/2; j++)
-        {
-          const auto tmp=aFace.at(j);
-          aFace.at(j)=aFace.at(aFace.size()-1-j);
-          aFace.at(aFace.size()-1-j)=tmp;
-        }
+      const auto tmp=aFace.at(j);
+      aFace.at(j)=aFace.at(aFace.size()-1-j);
+      aFace.at(aFace.size()-1-j)=tmp;
     }
+  }
 }
 
 template<typename TPoint>
@@ -435,14 +437,63 @@ DGtal::Mesh<TPoint>::clearFaces(){
   myFaceList.clear();
 }
 
+
 template<typename TPoint>
 inline
 void
-DGtal::Mesh<TPoint>::changeScale(const typename TPoint::Component aScale){
-  for(typename VertexStorage::iterator it = vertexBegin(); it != vertexEnd(); it++)
+DGtal::Mesh<TPoint>::clearVertices(){
+  myVertexList.clear();
+}
+
+template <typename TPoint>
+void
+DGtal::Mesh<TPoint>::removeIsolatedVertices(){
+    typedef typename Mesh<TPoint>::Index MIndex;
+    DGtal::Mesh<TPoint>::VertexStorage vSt;
+    std::vector<bool> vertexUsed (nbVertex(), false);
+    for ( MIndex f = 0; f< nbFaces(); f++ )
     {
-      (*it) *= aScale;
+        auto face = getFace(f);
+        for (MIndex i = 0; i<face.size(); i++)
+        {
+            vertexUsed[face[i]] = true;
+        }
     }
+    std::vector<MIndex> translateIndexId;
+    MIndex currentIndex = 0;
+    MIndex nbV = nbVertex();
+    for(MIndex i = 0; i < nbV; i++ )
+    {
+        if (vertexUsed[i])
+        {
+            translateIndexId.push_back(currentIndex);
+            vSt.push_back(myVertexList[i]);
+            currentIndex++;
+        }
+        else
+        {
+            translateIndexId.push_back(0);
+        }
+    }
+    myVertexList = vSt;
+    for ( MIndex f = 0; f< nbFaces(); f++ )
+    {
+        auto &face = getFace(f);
+        for (MIndex i = 0; i<face.size(); i++)
+        {
+            face[i]=translateIndexId[face[i]];
+        }
+    }
+}
+
+template<typename TPoint>
+inline
+void
+DGtal::Mesh<TPoint>::rescale(const typename TPoint::Component aScale){
+  for(typename VertexStorage::iterator it = vertexBegin(); it != vertexEnd(); it++)
+  {
+    (*it) *= aScale;
+  }
 }
 
 
@@ -453,51 +504,51 @@ DGtal::Mesh<TPoint>::subDivideTriangularFaces(const double minArea){
   double maxArea = 0;
   std::vector<Mesh<TPoint>::MeshFace> facesToAdd;
   for(unsigned int i =0; i< nbFaces(); i++)
+  {
+    typename Mesh<TPoint>::MeshFace aFace = getFace(i);
+    if(aFace.size()==3)
     {
-      typename Mesh<TPoint>::MeshFace aFace = getFace(i);
-      if(aFace.size()==3)
-        {
-          TPoint p1 = getVertex(aFace[0]);
-          TPoint p2 = getVertex(aFace[1]);
-          TPoint p3 = getVertex(aFace[2]);
-          TPoint c = (p1+p2+p3)/3.0;
-          double a  = ((p2-p1).crossProduct(p3-p1)).norm()/2.0;
-          if (a>maxArea)
-            {
-              maxArea = a;
-            }
+      TPoint p1 = getVertex(aFace[0]);
+      TPoint p2 = getVertex(aFace[1]);
+      TPoint p3 = getVertex(aFace[2]);
+      TPoint c = (p1+p2+p3)/3.0;
+      double a  = ((p2-p1).crossProduct(p3-p1)).norm()/2.0;
+      if (a>maxArea)
+      {
+	maxArea = a;
+      }
         
-          if(a>=minArea)
-            {
-              addVertex(c);
-              MeshFace f1, f2, f3;
-              f1.push_back(aFace[0]);
-              f1.push_back(aFace[1]);
-              f1.push_back(nbVertex()-1);
-              facesToAdd.push_back(f1);
+      if(a>=minArea)
+      {
+	addVertex(c);
+	MeshFace f1, f2, f3;
+	f1.push_back(aFace[0]);
+	f1.push_back(aFace[1]);
+	f1.push_back(nbVertex()-1);
+	facesToAdd.push_back(f1);
 
-              f2.push_back(aFace[1]);
-              f2.push_back(aFace[2]);
-              f2.push_back(nbVertex()-1);
-              facesToAdd.push_back(f2);
+	f2.push_back(aFace[1]);
+	f2.push_back(aFace[2]);
+	f2.push_back(nbVertex()-1);
+	facesToAdd.push_back(f2);
 
-              f3.push_back(aFace[2]);
-              f3.push_back(aFace[0]);
-              f3.push_back(nbVertex()-1);
-              facesToAdd.push_back(f3);
-            }
-          else
-            {
-              facesToAdd.push_back(aFace);
-            }
+	f3.push_back(aFace[2]);
+	f3.push_back(aFace[0]);
+	f3.push_back(nbVertex()-1);
+	facesToAdd.push_back(f3);
+      }
+      else
+      {
+	facesToAdd.push_back(aFace);
+      }
 
-        }
     }
+  }
   clearFaces();
   for(unsigned i=0; i<facesToAdd.size(); i++)
-    {
-      addFace(facesToAdd[i]);
-    }
+  {
+    addFace(facesToAdd[i]);
+  }
   return maxArea;
 }
 
@@ -510,32 +561,32 @@ DGtal::Mesh<TPoint>::quadToTriangularFaces(){
   unsigned int nbQuadT=0;
   std::vector<Mesh<TPoint>::MeshFace> facesToAdd;
   for(unsigned int i =0; i< nbFaces(); i++)
+  {
+    typename Mesh<TPoint>::MeshFace aFace = getFace(i);
+    if(aFace.size()==4)
     {
-      typename Mesh<TPoint>::MeshFace aFace = getFace(i);
-      if(aFace.size()==4)
-        {
-          MeshFace f1, f2;
-          f1.push_back(aFace[0]);
-          f1.push_back(aFace[1]);
-          f1.push_back(aFace[2]);
-          facesToAdd.push_back(f1);
+      MeshFace f1, f2;
+      f1.push_back(aFace[0]);
+      f1.push_back(aFace[1]);
+      f1.push_back(aFace[2]);
+      facesToAdd.push_back(f1);
 
-          f2.push_back(aFace[2]);
-          f2.push_back(aFace[3]);
-          f2.push_back(aFace[0]);
-          facesToAdd.push_back(f2);
-          nbQuadT++;
-        }
-          else
-            {
-              facesToAdd.push_back(aFace);
-            }
+      f2.push_back(aFace[2]);
+      f2.push_back(aFace[3]);
+      f2.push_back(aFace[0]);
+      facesToAdd.push_back(f2);
+      nbQuadT++;
     }
+    else
+    {
+      facesToAdd.push_back(aFace);
+    }
+  }
   clearFaces();
   for(unsigned i=0; i<facesToAdd.size(); i++)
-    {
-      addFace(facesToAdd[i]);
-    }
+  {
+    addFace(facesToAdd[i]);
+  }
   return nbQuadT;
 }
 
@@ -582,73 +633,73 @@ DGtal::Mesh<TPoint>::createTubularMesh(DGtal::Mesh<TPoint> &aMesh, const std::ve
   ASSERT(aVectRadius.size() > 0);
   // Generating vertices..
   for(auto i = 0; i< (int)aSkeleton.size(); i++)
+  {
+    TPoint vectDir;
+    TPoint uDir1, uDirPrec;
+    TPoint uDir2;
+    TPoint firstPoint;
+
+    if(i != (int)aSkeleton.size()-1)
     {
-      TPoint vectDir;
-      TPoint uDir1, uDirPrec;
-      TPoint uDir2;
-      TPoint firstPoint;
-
-      if(i != (int)aSkeleton.size()-1)
-        {
-          vectDir = aSkeleton.at(i+1) - aSkeleton.at(i);
-        }
-      else
-        {
-          vectDir = aSkeleton.at(i) - aSkeleton.at(i-1);
-        }
-
-      double d = -vectDir[0]* aSkeleton.at(i)[0] - vectDir[1]*aSkeleton.at(i)[1]
-                 - vectDir[2]*aSkeleton.at(i)[2];
-      TPoint pRefOrigin;
-        if(vectDir[0]!=0)
-          {
-            pRefOrigin [0]= -d/vectDir[0];
-            pRefOrigin [1]= 0.0;
-            pRefOrigin [2]= 0.0;
-            if(aSkeleton.at(i) ==  pRefOrigin ||
-               (vectDir[1]==0 && vectDir[2]==0))
-              {
-                pRefOrigin[1]=-1.0;
-              }
-
-          }
-        else if (vectDir[1]!=0)
-          {
-            pRefOrigin [0]= 0.0;
-            pRefOrigin [1]= -d/vectDir[1];
-            pRefOrigin [2]= 0.0;
-            if(aSkeleton.at(i) ==  pRefOrigin ||
-               (vectDir[0]==0 && vectDir[2]==0))
-              {
-                pRefOrigin[0]=-1.0;
-              }
-          }else if (vectDir[2]!=0)
-          {
-            pRefOrigin [0]= 0.0;
-            pRefOrigin [1]= 0.0;
-            pRefOrigin [2]= -d/vectDir[2];
-            if(aSkeleton.at(i) ==  pRefOrigin ||
-               (vectDir[0]==0 && vectDir[1]==0))
-              {
-                pRefOrigin[0]=-1.0;
-              }
-          }
-        uDir1=(pRefOrigin-aSkeleton.at(i))/((pRefOrigin-aSkeleton.at(i)).norm());
-        uDir2[0] = uDir1[1]*vectDir[2]-uDir1[2]*vectDir[1];
-        uDir2[1] = uDir1[2]*vectDir[0]-uDir1[0]*vectDir[2];
-        uDir2[2] = uDir1[0]*vectDir[1]-uDir1[1]*vectDir[0];
-        uDir2/=uDir2.norm();
-        for(double a = 0.0; a < 2.0*M_PI; a += angleStep)
-          {
-            TPoint vMove = aVectRadius.at(i%aVectRadius.size())*(uDir1*cos(a) + uDir2*sin(a));
-            aMesh.addVertex(vMove + aSkeleton[i]);
-            if(a==0)
-              {
-                firstPoint = vMove + aSkeleton[i]+vectDir;
-              }
-
-          }
+      vectDir = aSkeleton.at(i+1) - aSkeleton.at(i);
     }
+    else
+    {
+      vectDir = aSkeleton.at(i) - aSkeleton.at(i-1);
+    }
+
+    double d = -vectDir[0]* aSkeleton.at(i)[0] - vectDir[1]*aSkeleton.at(i)[1]
+      - vectDir[2]*aSkeleton.at(i)[2];
+    TPoint pRefOrigin;
+    if(vectDir[0]!=0)
+    {
+      pRefOrigin [0]= -d/vectDir[0];
+      pRefOrigin [1]= 0.0;
+      pRefOrigin [2]= 0.0;
+      if(aSkeleton.at(i) ==  pRefOrigin ||
+	 (vectDir[1]==0 && vectDir[2]==0))
+      {
+	pRefOrigin[1]=-1.0;
+      }
+
+    }
+    else if (vectDir[1]!=0)
+    {
+      pRefOrigin [0]= 0.0;
+      pRefOrigin [1]= -d/vectDir[1];
+      pRefOrigin [2]= 0.0;
+      if(aSkeleton.at(i) ==  pRefOrigin ||
+	 (vectDir[0]==0 && vectDir[2]==0))
+      {
+	pRefOrigin[0]=-1.0;
+      }
+    }else if (vectDir[2]!=0)
+    {
+      pRefOrigin [0]= 0.0;
+      pRefOrigin [1]= 0.0;
+      pRefOrigin [2]= -d/vectDir[2];
+      if(aSkeleton.at(i) ==  pRefOrigin ||
+	 (vectDir[0]==0 && vectDir[1]==0))
+      {
+	pRefOrigin[0]=-1.0;
+      }
+    }
+    uDir1=(pRefOrigin-aSkeleton.at(i))/((pRefOrigin-aSkeleton.at(i)).norm());
+    uDir2[0] = uDir1[1]*vectDir[2]-uDir1[2]*vectDir[1];
+    uDir2[1] = uDir1[2]*vectDir[0]-uDir1[0]*vectDir[2];
+    uDir2[2] = uDir1[0]*vectDir[1]-uDir1[1]*vectDir[0];
+    uDir2/=uDir2.norm();
+    for(double a = 0.0; a < 2.0*M_PI; a += angleStep)
+    {
+      TPoint vMove = aVectRadius.at(i%aVectRadius.size())*(uDir1*cos(a) + uDir2*sin(a));
+      aMesh.addVertex(vMove + aSkeleton[i]);
+      if(a==0)
+      {
+	firstPoint = vMove + aSkeleton[i]+vectDir;
+      }
+
+    }
+  }
   unsigned int nbPtPerFaces = static_cast<unsigned int>((aMesh.nbVertex()-nbVertexInitial)/aSkeleton.size());
 
   // Generating faces...
@@ -681,13 +732,13 @@ DGtal::Mesh<TPoint>::createTubularMesh(DGtal::Mesh<TPoint> &aMesh, const std::ve
     {
       TPoint pScan1 = aMesh.getVertex(nbVertexInitial+(i+1)*nbPtPerFaces+k);
       TPoint pScan2 = aMesh.getVertex(nbVertexInitial+(i+1)*nbPtPerFaces+
-                                        (nbPtPerFaces/4+k)%nbPtPerFaces);
+				      (nbPtPerFaces/4+k)%nbPtPerFaces);
       TPoint pScan3 = aMesh.getVertex(nbVertexInitial+(i+1)*nbPtPerFaces+
-                                        (2*(nbPtPerFaces/4)+k)%nbPtPerFaces);
+				      (2*(nbPtPerFaces/4)+k)%nbPtPerFaces);
       TPoint pScan4 = aMesh.getVertex(nbVertexInitial+(i+1)*nbPtPerFaces+
-                                        (3*(nbPtPerFaces/4)+k)%nbPtPerFaces);
+				      (3*(nbPtPerFaces/4)+k)%nbPtPerFaces);
       double distance = (ptRefRing1 - pScan1).norm()+(ptRefRing2 - pScan2).norm()+
-                        (ptRefRing3 - pScan3).norm()+(ptRefRing4 - pScan4).norm();
+	(ptRefRing3 - pScan3).norm()+(ptRefRing4 - pScan4).norm();
       if(distance<minDistance){
         shift = k;
         minDistance = distance;

@@ -51,20 +51,21 @@ Basic operators, such as Hodge duality operator or exterior derivative, can be c
 
 @b Modules
 - Discrete Exterior Calculus approach
-  - \ref moduleDECIntroduction (Pierre Gueth)
-  - \ref moduleDECEmbedding (Pierre Gueth)
-  - \ref moduleDECPoisson (Pierre Gueth)
-  - \ref moduleDECHelmoltz (Pierre Gueth)
-  - \ref moduleDECPropagation (Pierre Gueth)
-  - \ref moduleHeatLaplaceOperator (Thomas Caissard)
-  - \ref moduleGenericAT (Jacques-Olivier Lachaud, Marion Foare, David Coeurjolly, Pierre Gueth)
+  - \subpage moduleDECIntroduction (Pierre Gueth)
+  - \subpage moduleDECEmbedding (Pierre Gueth)
+  - \subpage moduleDECPoisson (Pierre Gueth)
+  - \subpage moduleDECHelmoltz (Pierre Gueth)
+  - \subpage moduleDECPropagation (Pierre Gueth)
+  - \subpage moduleHeatLaplaceOperator (Thomas Caissard)
+  - \subpage moduleGenericAT (Jacques-Olivier Lachaud, Marion Foare, David Coeurjolly, Pierre Gueth)
 
-- \ref modulePolygonalCalculus (David Coeurjolly, Jacques-Olivier Lachaud, Baptiste Genest)
-- \ref moduleGeodesicsInHeat (David Coeurjolly, Jacques-Olivier Lachaud)
-- \ref moduleVectorsInHeat (Baptiste Genest, David Coeurjolly)
+- Discrete Corrected Polygonal Calculus 
+  - \subpage modulePolygonalCalculus (David Coeurjolly, Jacques-Olivier Lachaud, Baptiste Genest)
+  - \subpage moduleGeodesicsInHeat (David Coeurjolly, Jacques-Olivier Lachaud)
+  - \subpage moduleVectorsInHeat (Baptiste Genest, David Coeurjolly)
 
 @b Package @b Concepts @b Overview
-- \ref packageDECConcepts
+- \subpage packageDECConcepts
 
 @b Related @b examples
 - exampleDECSurface.cpp
@@ -75,8 +76,14 @@ Basic operators, such as Hodge duality operator or exterior derivative, can be c
 - exampleHarmonicParametrization.cpp
 - exampleVectorHeatMethod.cpp
 - dgtalCalculus-poisson.cpp
-- dgtalCalculus-laplace.cpp
+- dgtalCalculus.cpp
+- dgtalCalculus-single.cpp
+- dgtalCalculus-geodesic.cpp
+- dgtalCalculus-halfsphere.cpp
 - dgtalCalculus-bunny.cpp
+- exampleVectorHeatMethod.cpp
+- exampleHarmonicParametrization.cpp
+- exampleBunnyHead.cpp
 
 */
 

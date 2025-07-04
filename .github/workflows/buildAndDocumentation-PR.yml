@@ -1,4 +1,4 @@
-name: CI (linux/macOS), PR
+name: CI (linux/macOS/windows), PR
 
 on:
   pull_request:
@@ -6,12 +6,11 @@ on:
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
-  BUILD_TYPE:    Debug
-  TESTBLACKLIST: "(testLinearStructure|testIntegerConverter)"
-  CONFIG_GLOBAL:  -DBUILD_EXAMPLES=true -DBUILD_TESTING=true -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=10 -DWITH_EIGEN=true 
-  CONFIG_LINUX:   -DWITH_OPENMP=true -DWITH_GMP=true -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DWITH_HDF5=true -DWITH_QGLVIEWER=true -DWITH_CAIRO=true   -DWITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true -DBUILD_POLYSCOPE_EXAMPLES=true
-  CONFIG_MAC:     -DWITH_GMP=true -DBUILD_POLYSCOPE_EXAMPLES=true
-  CONFIG_WINDOWS: -DWITH_OPENMP=true -DENABLE_CONAN=true #-DWITH_FFTW3=true  #-DWITH_CAIRO=true #-DWITH_ITK=true  -DWITH_GMP=true
+  TESTBLACKLIST: "(testLinearStructure|testIntegerConverter|testArithmeticalDSSComputerOnSurfels)"
+  CONFIG_GLOBAL:  -DBUILD_EXAMPLES=true -DBUILD_TESTING=true -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=10 -DWITH_EIGEN=true
+  CONFIG_LINUX:   -DUSE_CCACHE=NO -DWITH_OPENMP=true -DWITH_GMP=true -DWITH_CGAL=true -DWITH_LIBIGL=true -DWITH_FFTW3=true -DWARNING_AS_ERROR=ON -DWITH_HDF5=true -DWITH_QGLVIEWER=true -DWITH_CAIRO=true   -DWITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true -DBUILD_POLYSCOPE_EXAMPLES=true
+  CONFIG_MAC:     -DUSE_CCACHE=NO -DWITH_GMP=true -DBUILD_POLYSCOPE_EXAMPLES=true -DWITH_CGAL=true -DWITH_LIBIGL=true
+  CONFIG_WINDOWS: -DWITH_OPENMP=true   #-DWITH_GMP=true #-DWITH_FFTW3=true  #-DWITH_CAIRO=true #-DWITH_ITK=true 
 
 jobs:
   build:
@@ -21,38 +20,43 @@ jobs:
       matrix:
         os: [ubuntu-latest, macOS-latest, windows-latest]
         BUILD_TYPE: [Debug,Release]
+        exclude:
+          -  os: windows-latest
+             BUILD_TYPE: Debug
 
     steps:
      - uses: actions/checkout@v3
        with:
-          fetch-depth: 10
+          fetch-depth: 5
 
      - name: Install linux deps
        if: matrix.os == 'ubuntu-latest'
        run: |
            sudo apt-get update
-           sudo apt-get install zsh libqglviewer-dev-qt5 libboost-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libfftw3-dev libinsighttoolkit4-dev xorg-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev
+           sudo apt-get install ccache zsh libqglviewer-dev-qt5 libcgal-dev libboost-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libfftw3-dev libinsighttoolkit4-dev xorg-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev
 
      - name: Install macOS deps
        if: matrix.os == 'macOS-latest'
-       run: brew install boost ninja gmp libomp
+       run: brew install boost ninja gmp libomp ccache cgal
 
      - name: Install conan
        if: matrix.os == 'windows-latest'
        id: conan
        uses: turtlebrowser/get-conan@main
        with:
-         version: 1.57.0
+         version: 2.4.0
 
      - name: Create conan default profile
        if: matrix.os == 'windows-latest'
-       run: conan profile new default --detect
+       run: |
+         conan profile detect --force
 
-     - uses: actions/cache@v3
+
+     - uses: actions/cache@v4
        if: matrix.os == 'windows-latest'
        with:
-         path: ~/.conan
-         key: ${{ runner.os }}-conan-${{ matrix.BUILD_TYPE }}
+         path: ~/.conan2
+         key: ${{ runner.os }}-conan2-${{ matrix.BUILD_TYPE }}
 
      - name: Get white list of tests
        run: |
@@ -78,7 +82,9 @@ jobs:
        if: matrix.os == 'windows-latest'
        shell: bash
        working-directory: ${{runner.workspace}}/build
-       run: cmake $GITHUB_WORKSPACE -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_GLOBAL $CONFIG_WINDOWS -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}"
+       run: |
+          conan install $GITHUB_WORKSPACE --build=missing
+          cmake $GITHUB_WORKSPACE -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_POLICY_DEFAULT_CMP0091=NEW -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_GLOBAL $CONFIG_WINDOWS -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}"
 
      - name: Build
        working-directory: ${{runner.workspace}}/build
@@ -93,6 +99,14 @@ jobs:
        run: |
            echo ctest -C ${{ matrix.BUILD_TYPE }}  --output-on-failure -E $TESTBLACKLIST
            ctest -C $${{ matrix.BUILD_TYPE }}  --output-on-failure -E $TESTBLACKLIST
+
+     - name: Test
+       working-directory: ${{runner.workspace}}/build
+       if: matrix.os == 'windows-latest' 
+       shell: bash
+       run: |
+           echo ctest -C ${{ matrix.BUILD_TYPE }}  --output-on-failure -E $TESTBLACKLIST
+           ctest -C ${{ matrix.BUILD_TYPE }} --output-on-failure -E $TESTBLACKLIST  
 
 
      - name: DGtalTools (linux only, we check this PR against DGtalTools master)

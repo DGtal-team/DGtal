@@ -53,15 +53,15 @@ tools.
 
 @b Modules
 
-- \ref moduleNumber (David Coeurjolly, Jacques-Olivier Lachaud)
-- \ref moduleSpacePointVectorDomain (David Coeurjolly, Jacques-Olivier Lachaud, Guillaume Damiand)
-- \ref moduleDigitalSets  (Jacques-Olivier Lachaud, Sebastien Fourey)
+- \subpage moduleNumber (David Coeurjolly, Jacques-Olivier Lachaud)
+- \subpage moduleSpacePointVectorDomain (David Coeurjolly, Jacques-Olivier Lachaud, Guillaume Damiand)
+- \subpage moduleDigitalSets  (Jacques-Olivier Lachaud, Sebastien Fourey)
 
 
 
 @b Package @b Concepts @b Overview
 
-- \ref packageKernelConcepts
+- \subpage packageKernelConcepts
 
 
 

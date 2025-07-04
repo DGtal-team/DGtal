@@ -46,14 +46,14 @@ This package gathers many concepts and stand-alone classes that are used in othe
 
 @b Modules
 
-- \ref moduleIteratorsRanges (Tristan Roussillon)
+- \subpage moduleIteratorsRanges (Tristan Roussillon)
 -      Smart pointers --- coming soon ---
-- \ref moduleCloneAndReference (Jacques-Olivier Lachaud)
-- \ref moduleSetFunctions (Jacques-Olivier Lachaud)
-- \ref moduleFunctors (Roland Denis)
+- \subpage moduleCloneAndReference (Jacques-Olivier Lachaud)
+- \subpage moduleSetFunctions (Jacques-Olivier Lachaud)
+- \subpage moduleFunctors (Roland Denis)
 
 @b Package @b Concepts @b Overview
-- \ref packageBaseConcepts
+- \subpage packageBaseConcepts
 
 
 @b Related @b documentation @b pages

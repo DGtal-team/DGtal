@@ -17,6 +17,11 @@
 #ifndef DGTAL_IMAGECONTAINERBYSTLVECTOR_TYPES_PY_H
 #define DGTAL_IMAGECONTAINERBYSTLVECTOR_TYPES_PY_H
 
+#if defined (_MSC_VER) and !defined(ssize_t)
+    // ssize_t is not standard, only posix which is not supported by MSVC
+    #define ssize_t ptrdiff_t
+#endif
+
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "kernel/HyperRectDomain_types_py.h"
 #include "kernel/PointVector_types_py.h"

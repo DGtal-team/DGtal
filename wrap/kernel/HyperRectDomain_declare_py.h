@@ -17,6 +17,11 @@
 #ifndef DGTAL_HYPERRECTDOMAIN_DECLARE_PY_H
 #define DGTAL_HYPERRECTDOMAIN_DECLARE_PY_H
 
+#if defined (_MSC_VER) and !defined(ssize_t)
+    // ssize_t is not standard, only posix which is not supported by MSVC
+    #define ssize_t ptrdiff_t
+#endif
+
 #include "dgtal_pybind11_common.h"
 #include <pybind11/pytypes.h>
 
@@ -45,7 +50,7 @@ The following code snippet demonstrates how to use \p HyperRectDomain
 )";
     auto py_class = py::class_<TT>(m, typestr.c_str(), docs.c_str());
 
-    py_class.def("dtype", [](const TT &self) {
+    py_class.def("dtype", [](const TT &) {
             return DGtal::Python::Integer_str;
             });
     // ----------------------- Constructors -----------------------------------

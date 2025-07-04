@@ -23,7 +23,7 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/deps)
 
 
 set(DGtal_VERSION_MAJOR 1)
-set(DGtal_VERSION_MINOR 4)
+set(DGtal_VERSION_MINOR 5)
 set(DGtal_VERSION_PATCH beta)
 set(DGTAL_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
 set(PROJECT_VERSION "${DGtal_VERSION_MAJOR}.${DGtal_VERSION_MINOR}.${DGtal_VERSION_PATCH}")
@@ -53,7 +53,6 @@ message(STATUS "Done.")
 # each subdir can contain a ModuleSRC.txt file
 # with a set command on the variable ${DGTAL_SRC}
 #
-include(src/DGtal/kernel/ModuleSRC.cmake)
 include(src/DGtal/base/ModuleSRC.cmake)
 include(src/DGtal/io/ModuleSRC.cmake)
 include(src/DGtal/helpers/ModuleSRC.cmake)

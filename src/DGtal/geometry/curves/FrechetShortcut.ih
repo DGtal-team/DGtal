@@ -39,7 +39,7 @@
 // Class backpath
 ////////////////////////////////////////////////////////////////
 
-#define PRECISION 0.00001
+//#define PRECISION 0.00001
 
 
 //creation of a backPath
@@ -146,6 +146,7 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::updateOcculters()
   double angle_min=0;
   double angle_max=M_PI_4;
   bool occ = false;
+  bool ok = true;
   
   IntegerComputer<TInteger> ic;
 
@@ -157,16 +158,14 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::updateOcculters()
     }
   else
     {
-      typename occulter_list::iterator iter, next;
-      bool ok = true;
+      typename occulter_list::iterator iter=myOcculters.begin();
+    
       iter = myOcculters.begin();
-      while(iter!=myOcculters.end() && ok)
+      for(typename occulter_list::size_type  i=0; i < myOcculters.size() && ok ; ++i)
       	{
 	  pi = Point(*(iter->first));
 	  v = p-pi;
 	  
-	  next = iter;
-	  next++;
 	  // pi is after p for all directions -> p is not an occulter
 	  if(ic.dotProduct(v,u1) < 0 && ic.dotProduct(v,u2) <0)
 	  {
@@ -178,7 +177,7 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::updateOcculters()
 	    // anymore, p is a new occulter.
 	    if(ic.dotProduct(v,u1) > 0 && ic.dotProduct(v,u2) > 0)
 	      {
-		myOcculters.erase(iter);
+		iter = myOcculters.erase(iter);
 		occ = true;
 		angle_min = 0;
 		angle_max = M_PI_4;
@@ -198,12 +197,13 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::updateOcculters()
 		      angle_max = alpha;
 		      // pi's angle_min is updated
 		      iter->second.angle_min = alpha;
+		      iter++;
 		    }
 		  else
 		    if(alpha > iter->second.angle_max)
 		      {
 			//pi is not an occulter anymore 
-			myOcculters.erase(iter);
+			iter = myOcculters.erase(iter);
 			occ=true;
 			angle_min = 0;
 			angle_max = M_PI_4;
@@ -225,21 +225,23 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::updateOcculters()
 		      angle_max = M_PI_4;
 		      // pi's angle_max is updated
 		      iter->second.angle_max = alpha;
+		      iter++;
 		    }
 		  else
 		    if(alpha < iter->second.angle_min)
 		      {
 			//pi is not an occulter anymore 
-			myOcculters.erase(iter);
+			iter = myOcculters.erase(iter);
 			occ=true;
 			angle_min = 0;
 			angle_max = M_PI_4;
 		      }
+		    else
+		      iter++;
 		  // if(alpha > iter->second.angle_max), pi does not
 		  // change, p may be an occulter -> do nothing
 		  
 		}
-	  iter = next;
 	}
     }
   
@@ -369,7 +371,7 @@ DGtal::FrechetShortcut<TIterator,TInteger>::Cone::Cone()
 {
   myInf = true;
   myMin = 0;
-  myMax = 0;
+  myMax = 2*M_PI;
 }
 
 
@@ -441,7 +443,8 @@ bool DGtal::FrechetShortcut<TIterator,TInteger>::Cone::isEmpty() const
   if(myInf)
     return false;
   else
-    if(myMin==myMax)
+    // Fix 05/2024 to enable error = 0: a cone may be defined by two values myMin=myMax --> check for empty cone by setting myMin=myMax= -1 instead
+    if(myMin==-1) // and then myMax = -1 too: way to represent the empty intersection of two cones.
       return true;
     else
       return false;
@@ -509,7 +512,7 @@ typename DGtal::FrechetShortcut<TIterator,TInteger>::Cone DGtal::FrechetShortcut
 	// first possibility: the cones are disjoint
 	if(!Tools::isBetween(myMin, c.myMin, c.myMax, 2*M_PI) && !Tools::isBetween(myMax, c.myMin,
 							       c.myMax, 2*M_PI))
-	  res = Cone(0,0);
+	  res = Cone(-1,-1); // empty cone: both angles are set to -1
 	else
 	  // or the new cone includes the old one, nothing changes, the cone remains the same.
 	  res = *this;
@@ -523,6 +526,7 @@ typename DGtal::FrechetShortcut<TIterator,TInteger>::Cone DGtal::FrechetShortcut
 	  res = Cone(c.myMin, myMax);
       else
 	res = Cone(myMin,c.myMax);
+
   
   return res;
 }
@@ -568,6 +572,7 @@ template <typename TIterator, typename TInteger>
 inline
 DGtal::FrechetShortcut<TIterator,TInteger>::FrechetShortcut(double error)
 {
+
   myError = error;
   myCone = Cone();
   
@@ -688,14 +693,18 @@ DGtal::FrechetShortcut<TIterator,TInteger>::computeNewCone()
   Point firstP = Point(*myBegin);
   Point newP = Point(*(myEnd+1));
 
-  
   Cone newCone=myCone;
+
+  if(firstP == newP)
+    return newCone;
   
   // compute the tangent points defined by the first point and the
   // circle C(newP,error)
+
+  
   bool intersect = Tools::circleTangentPoints(firstP[0],firstP[1], newP[0], newP[1], myError/(sqrt(2.0F)), &x0, &y0,
                                               &x1, &y1);
-  
+
   if(intersect)
     {
       // define a cone according to the new tangent points
@@ -704,20 +713,16 @@ DGtal::FrechetShortcut<TIterator,TInteger>::computeNewCone()
       if(fabs(x0-x1) < PRECISION && fabs(y0-y1) < PRECISION)
 	{
 	  double angle = Tools::computeAngle(firstP[0],firstP[1],newP[0],newP[1]);
-	  assert(angle != -1);
-	  double angle0 = angle - M_PI_2;
-	  if(angle0<0)
-	    angle0 = angle0+2*M_PI;
-	  double angle1 = angle + M_PI_2;
-	  if(angle1>2*M_PI)
-	    angle1 = angle1-2*M_PI;
-	  c = Cone(angle0,angle1);
+	  
+	  // the cone is reduced to a line
+	  c = Cone(angle,angle);
 	}
       else
 	c = Cone(firstP[0],firstP[1],x0,y0,x1,y1);
-      
+
       newCone.intersectCones(c); 
     }
+
   
   return newCone;
 
@@ -873,7 +878,7 @@ inline
 void DGtal::FrechetShortcut<TIterator,TInteger>::resetCone()
 {
   myCone.myMin = 0;
-  myCone.myMax = 0;
+  myCone.myMax = 2*M_PI; // default cone is the whole space
   myCone.myInf = true;  
 }
 

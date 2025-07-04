@@ -45,6 +45,7 @@
 #include "DGtal/base/IteratorCirculatorTraits.h"
 #include <boost/iterator.hpp>
 #include <boost/utility.hpp>
+#include <boost/next_prior.hpp>
 #include <boost/iterator/iterator_adaptor.hpp>
 //////////////////////////////////////////////////////////////////////////////
 

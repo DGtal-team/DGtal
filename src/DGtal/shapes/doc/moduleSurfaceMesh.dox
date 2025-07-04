@@ -235,5 +235,109 @@ corresponding to relative distances 0.25, 0.5 and 0.75.
 
 @image html spot-bft-isolines.png "SurfaceMesh faces colored according to distance to bluest vertex and three isodistance lines"
 
+\section SurfMesh_sec8 Flipping edges 
+
+Since 1.4, you may modify a SurfaceMesh through flips. Only (oriented)
+edges that are incident to a triangle on the right and a triangle on
+the left are (topologically) flippable. These two triangles form then
+a quadrilateral, and the edge is one diagonal of this
+quadrilateral. Flipping the edge means that the quadrilateral is now
+split only the other diagonal. Flipping twice the same edge restores
+the original mesh. Flipping edges has meaning only on orientable parts
+of a surface.
+
+The following methods are useful for flipping an edge:
+- SurfaceMesh::isFlippable indicates if a given edge is flippable.
+  An edge is (topologically) flippable iff:
+  1. it does not lie on the boundary,
+  2. it is bordered by two triangles, one that to its right, one to its left,
+  3. the two other vertices of the quad are not already neighbors,
+  4. the edge is not bordered by the same two triangles, in opposite orientation.
+
+- SurfaceMesh::flip performs the flip on a flippable edge `e=(i,j)`. The flipped
+  edge keeps the same index as the original edge. You may choose
+  whether or not you update locally the face normals.
+
+  \verbatim
+           l                   l
+          / \                 /|\
+         /   \               / | \
+        /     \             /  |  \
+       /   lf  \           /   |   \
+      /         \         /    |    \
+     i --- e --- j  ==>  i  lf e  rf j    if k < l otherwise rf and lf are swapped
+      \         /         \    |    /
+       \   rf  /           \   |   /
+        \     /             \  |  /
+         \   /               \ | /
+          \ /                 \|/
+           k                   k
+  \endverbatim
+  
+  @note Almost all information is recomputed locally. Only vertex
+  normals are not updated after a flip, as well as neighbor faces of
+  faces are not recomputed. You may recompute face neighborhoods at
+  the end of a sequence of flips by calling
+  SurfaceMesh::computeNeighbors. You may for instance recompute vertex
+  normals from face normals by a call to
+  SurfaceMesh::computeVertexNormalsFromFaceNormals.
+
+- SurfaceMesh::otherDiagonal returns, given a flippable edge, the two
+  other vertices of the quadrilateral. So in the flip example above,
+  it returns (k,l) if k < l or (l,k) otherwise.
+
+  
+The following code builds a Schwarz lantern, and then flips all
+flippable edges that are longer than their flipped edge.
+
+@code
+  typedef PointVector<3,double>                      RealPoint;
+  typedef PointVector<3,double>                      RealVector;
+  typedef SurfaceMesh< RealPoint, RealVector >       PolygonMesh;
+  typedef SurfaceMeshHelper< RealPoint, RealVector > PolygonMeshHelper;
+  typedef SurfaceMeshWriter< RealPoint, RealVector > PolygonMeshWriter;
+  typedef PolygonMeshHelper::NormalsType             NormalsType;
+  auto meshLantern = PolygonMeshHelper::makeLantern( 3.0, 3.0, RealPoint::zero,
+                                                     10, 10, NormalsType::NO_NORMALS );
+  {
+    std::ofstream output( "lantern.obj" );
+    bool okw = PolygonMeshWriter::writeOBJ( output, meshLantern );
+    output.close();
+  }
+  auto nb_flipped = 0;
+  const auto&   X = meshLantern.positions();
+  for ( auto e = 0; e < meshLantern.nbEdges(); e++ )
+    {
+      if ( meshLantern.isFlippable( e ) )
+	{
+	  auto   ij    = meshLantern.edgeVertices ( e );
+	  auto   kl    = meshLantern.otherDiagonal( e );
+	  double l2_ij = ( X[ ij.first ] - X[ ij.second ] ).squaredNorm();
+	  double l2_kl = ( X[ kl.first ] - X[ kl.second ] ).squaredNorm();
+	  if ( l2_kl < l2_ij )
+	    {
+	      meshLantern.flip( e, false );
+	      nb_flipped++;
+	    }
+	}
+    }
+  {
+    std::ofstream output( "flipped-lantern.obj" );
+    bool okw = PolygonMeshWriter::writeOBJ( output, meshLantern );
+    output.close();
+  }
+@endcode
+
+<table>
+<tr>
+<td>
+@image html lantern.jpg "Schwarz lantern before flip"
+</td>
+<td>
+@image html lantern-flipped.jpg "Schwarz lantern after flip: a nicer cylinder"
+</td>
+</tr>
+</table>
+
 */
 } // namespace DGtal {

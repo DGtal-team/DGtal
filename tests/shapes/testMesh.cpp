@@ -149,7 +149,7 @@ bool testMesh()
   trace.endBlock();
 
   trace.beginBlock ( "Testing Mesh Bouding box and scale change  ..." );
-  aMesh.changeScale(2);
+  aMesh.rescale(2);
   std::pair<Point, Point> bb = aMesh.getBoundingBox();
   bool boundingBoxOK = (bb.first == Point(20,10)) && (bb.second == Point(26,18));
   trace.info() << "bouding box=" << bb.first <<  " " << bb.second << "(should be (20,10) (26,18)" <<std::endl;
@@ -205,10 +205,34 @@ bool testMesh()
   aMesh4.removeFaces(f);
   bool okRemoveFace = (aMesh4.nbFaces() == aMesh.nbFaces()-1) && (aMesh4.nbVertex() == aMesh.nbVertex()-3);
   trace.info() << (okRemoveFace ? "[face remove ok]":"[face remove fail]" ) << std::endl;
-
-  ok = ok & okMeshConstruct &&  okMeshIterators && okMeshColor && okMeshCopy && boundingBoxOK &&
-       okSubDivide && okQuadToTrans && okRemoveFace;
   trace.endBlock();
+
+  trace.beginBlock ( "Testing mesh cleaning  ..." );
+  Mesh<RealPoint> aMeshClean;
+  RealPoint pc0 (0,0);
+  RealPoint pc1 (1,0);
+  RealPoint pc2 (1,1);
+  RealPoint pc3 (0,1);
+  RealPoint pc4 (1,-1);
+  aMeshClean.addVertex(pc3);aMeshClean.addVertex(pc0);   aMeshClean.addVertex(pc1);   aMeshClean.addVertex(pc2);
+  aMeshClean.addVertex(pc4);
+  
+  aMeshClean.addTriangularFace(1,2,3);
+  aMeshClean.addTriangularFace(4,1,2);
+  aMeshClean.removeIsolatedVertices();
+
+  trace.info() << "nb vertex after clean: " << aMeshClean.nbVertex() ;
+  bool okClean =  aMeshClean.nbVertex() == 4;
+  trace.info() << "get firt vertex index of second face : " << aMeshClean.nbVertex() ;
+  bool okClean2 =  aMeshClean.getFace(1)[0] == 3;
+  trace.info() << "(should be 3) "<< (okClean2? "[ok]": "[error]") << std::endl;
+  trace.endBlock();
+
+  
+  ok = ok & okMeshConstruct &&  okMeshIterators && okMeshColor && okMeshCopy && boundingBoxOK &&
+       okSubDivide && okQuadToTrans && okRemoveFace && okClean && okClean2;
+
+
   return ok;
 
 }

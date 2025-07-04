@@ -107,8 +107,8 @@ jobs:
         run: |
           mkdir pr${{ steps.get_pr_number.outputs.result }}
           mv ${{runner.workspace}}/DGtal/build_doc/html/* pr${{ steps.get_pr_number.outputs.result }}/
-          git clone --depth 2 https://github.com/DGtal-team/doc-nightly.git
-          cd doc-nightly
+          git clone --depth 2 https://github.com/DGtal-team/doc-pr.git
+          cd doc-pr
           rm -rf pr${{ steps.get_pr_number.outputs.result }}
           mv ../pr${{ steps.get_pr_number.outputs.result }} .
 
@@ -117,9 +117,9 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4.4.1
         with:
           token: ${{ secrets.DEPLOYACTION }}
-          repository-name: DGtal-team/doc-nightly
-          folder: doc-nightly
-          branch: master
+          repository-name: DGtal-team/doc-pr
+          folder: doc-pr
+          branch: main
           single-commit: true
           clean: true
 
@@ -131,7 +131,7 @@ jobs:
             const tmp_round = "${{ steps.get_round.outputs.result }}";
             const id = tmp_round.indexOf(":");
             const round = tmp_round.substring(0,id);
-            const address = "The documentation is built. It will be available, after a few minutes, here: https://dgtal-team.github.io/doc-nightly/pr${{ steps.get_pr_number.outputs.result }}/index.html"
+            const address = "The documentation is built. It will be available, after a few minutes, here: https://dgtal-team.github.io/doc-pr/pr${{ steps.get_pr_number.outputs.result }}/index.html"
             github.rest.issues.createComment({
               owner: "DGtal-team",
               repo: "DGtal",

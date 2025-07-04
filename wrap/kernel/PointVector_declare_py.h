@@ -18,9 +18,22 @@
 #ifndef DGTAL_POINTVECTOR_DECLARE_PY_H
 #define DGTAL_POINTVECTOR_DECLARE_PY_H
 
+#if defined (_MSC_VER) and !defined(ssize_t)
+    // ssize_t is not standard, only posix which is not supported by MSVC
+    #define ssize_t ptrdiff_t
+#endif
+
 #include "dgtal_pybind11_common.h"
 
 #include "DGtal/kernel/PointVector.h"
+
+
+#ifdef _MSC_VER
+#include <BaseTsd.h>
+typedef SSIZE_T ssize_t;
+#else
+#include <unistd.h>
+#endif
 
 /**
  * Arithmetic operators between types,

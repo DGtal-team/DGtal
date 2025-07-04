@@ -120,7 +120,11 @@ PolygonalCalculus<SurfMesh>::setEmbedder for an example.
 can have different embeddings for all its incident faces.
 
 
+ 
 \subsection susub1 Basic operators
+ 
+ 
+ 
 
 We first describe some standard per face operators. Note that for all
 extrinsic operators that require the vertex position in @f$
@@ -177,7 +181,7 @@ Operator  | Output | Description
 `calculus.P(f)`|  \f$ n_f \times n_f\f$  | Projection operator acting on a discrete 1-form that removes the associated non-tangential part of the vector reconstructed using the sharp operator
 
 Discrete flat and sharp operators match with the DEC operators (see \ref moduleDECIntroduction). For short, the flat operator embeds  an ambient vector as a discrete 1-form (roughly values on the face edges) while the sharp operator pull-back a 1-form to reconstruct a vector in @f$\mathbb{R}^3@f$. These operators are rank 2 and @f$ sharp_f flat_f s = s\f$ for any vector @f$s@f$ in the face tangent plane, but  @f$ flat_f sharp_f v = v@f$ for any vector v does not hold  (due to rank deficiencies of the matrices).
-This is quantified by the projection operator @f$P@f$ (see @cite degoes2020discrete for structural lemmas, e.g. @f$ normal_f\cdot (sharp_f flat_f s)=0\quad \forall s\in$\mathbb{R}^3@f$...).
+This is quantified by the projection operator @f$P@f$ (see @cite degoes2020discrete for structural lemmas, e.g. @f$ normal_f\cdot (sharp_f flat_f s)=0\quad \forall s\in \mathbb{R}^3@f$...).
 
 
 For interested readers, @cite degoes2020discrete has a discussion about the relationship between these operators and the classical DEC or FEM ones.
@@ -253,40 +257,75 @@ used when one solves a weak problem and wishes to get a pointwise
 per-vertex solution.
 
 
-\section secLap Example: Solving a Laplace problem
+ 
+\section sectCorrected Corrected Calculus using Estimated Normal Vectors
+ 
+On digital surfaces, solving PDE on original embedding with axis aligned quad surfaces may fail to correctly capture the surface metric.
+ As discussed in @cite coeurjolly2022simple, given an estimation of the tangent bundle of the discrete surface (for instance using
+ estimated normal vectors from @ref moduleIntegralInvariant, or @ref moduleVCM, cf @ref moduleShortcuts),
+ one can implicitly project each face to a prescribed tangent plane and perform the computations on this  new embedding of the geometry.
 
-Let suppose we want to solve the following Laplace problem for data interpolation:
-\f{eqnarray*}{
-        \Delta_\Omega u& = 0  \\ 
-        & s.t. u = g \text{ on } \partial\Omega
-\f}
+Geodesic distances without correction | Geodesic distances with correction
+ --|--
+@image html images/poly/corrected-without.png "" | @image html images/poly/corrected-with.png ""
 
-We want to solve that problem on a polygonal mesh @f$\Omega@f$
-(digital surface here) with a boundary and some scalar values attached
-to boundary vertices, or sampled on the object surface.
+ 
+The functor functors::EmbedderFromNormalVectors can be used to implicitly project Face vertices onto the prescribed tangent plane. A classical usage is the following one:
+ 
+ @code
+ //A surface mesh. Eg. primal surface of a digital surface
+ SurfaceMesh< Z3i::RealPoint, Z3i::RealVector > surfmesh(...);
 
-Furthermore, the discrete version of the Laplace problem boils down to
-a simple linear problem using on the discrete Laplace-Beltrami sparse
-matrix.
+ //Per face normal vector estimation
+ std::vector<Z3i::RealVector> ii_normals = ....
+ 
+ //New embedder using tangent plane projection of face vertices
+ functors::EmbedderFromNormalVectors<Z3i::RealPoint, Z3i::RealVector> embedderFromNormals(ii_normals,surfmesh);
 
-We also use class DirichletConditions to enforce Dirichlet boundary
-conditions on the system.
-
-The overall code is:
-\snippet dgtalCalculus-poisson.cpp PolyDEC-init
-
-Leading to the following results (see \ref dgtalCalculus-poisson.cpp):
-
-Surface  | Boundary condition @f$ g@f$ | Solution @f$ u @f$
---|--|--
-@image html images/poly/poisson-surf.png "" | @image html images/poly/poisson-g.png "" | @image html images/poly/poisson-u.png "" 
-@image html images/poly/bunny-init.png "" | @image html images/poly/bunny-g.png "" | @image html images/poly/bunny-u.png "" 
-@image html images/poly/cat-init.png "" | @image html images/poly/cat-g.png "" | @image html images/poly/cat-u.png "" 
-
-\subsection Global Vector Calculus
-
-Global Vector Laplace/Poisson problems can also be solved by the same way, using instead PolygonalCalculus<SurfMesh>::globalConnectionLaplace() and PolygonalCalculus<SurfMesh>::doubledGlobalLumpedMassMatrix(). One can find examples of such use in the \ref VectorsInHeat class.
-
+ //The calculus instance with the new embedder
+ PolygonalCalculus<Z3i::RealPoint,23i::RealVector> calculus(surfmesh);
+ calculus->setEmbedder( embedderFromNormals );
+ @endcode
+ A complete code is given in the @ref dgtalCalculus-geodesic.cpp example.
+ 
+ \section secLap Example: Solving a Laplace problem
+ 
+ Let suppose we want to solve the following Laplace problem for data interpolation:
+ \f{eqnarray*}{
+ \Delta_\Omega u& = 0  \\
+ & s.t. u = g \text{ on } \partial\Omega
+ \f}
+ 
+ We want to solve that problem on a polygonal mesh @f$\Omega@f$
+ (digital surface here) with a boundary and some scalar values attached
+ to boundary vertices, or sampled on the object surface.
+ 
+ Furthermore, the discrete version of the Laplace problem boils down to
+ a simple linear problem using on the discrete Laplace-Beltrami sparse
+ matrix.
+ 
+ We also use class DirichletConditions to enforce Dirichlet boundary
+ conditions on the system.
+ 
+ The overall code is:
+ \snippet dgtalCalculus-poisson.cpp PolyDEC-init
+ 
+ Leading to the following results (see \ref dgtalCalculus-poisson.cpp):
+ 
+ Surface  | Boundary condition @f$ g@f$ | Solution @f$ u @f$
+ --|--|--
+ @image html images/poly/poisson-surf.png "" | @image html images/poly/poisson-g.png "" | @image html images/poly/poisson-u.png ""
+ @image html images/poly/bunny-init.png "" | @image html images/poly/bunny-g.png "" | @image html images/poly/bunny-u.png ""
+ @image html images/poly/cat-init.png "" | @image html images/poly/cat-g.png "" | @image html images/poly/cat-u.png ""
+ 
+ \subsection Global Vector Calculus
+ 
+ Global Vector Laplace/Poisson problems can also be solved by the same way, using instead PolygonalCalculus<SurfMesh>::globalConnectionLaplace() and PolygonalCalculus<SurfMesh>::doubledGlobalLumpedMassMatrix(). One can find examples of such use in the \ref VectorsInHeat class.
+ 
+ 
+ 
+ 
+ 
 \section sectMisc Miscellaneous
 
 \subsection sectPolygonalCalculusHP Cache mechanisms and high-performance computing
@@ -325,7 +364,7 @@ Then, cached operators can be accessed and combined:
 auto Mf =   cachefaceArea[f] * cacheU[f].transpose()*cacheU[f] + lambda * cacheP[f].transpose() * cacheP[f];
 @endcode 
 
-
+ 
 
 */
 

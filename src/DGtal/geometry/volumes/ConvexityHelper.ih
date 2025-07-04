@@ -185,6 +185,129 @@ computeDegeneratedLatticePolytope
 
 //-----------------------------------------------------------------------------
 template < int dim, typename TInteger, typename TInternalInteger >
+typename DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::LatticePolytope
+DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::compute3DTriangle
+( const Point& a, const Point& b, const Point& c,
+  bool make_minkowski_summable )
+{
+  if constexpr( dim != 3 ) return LatticePolytope();
+  using Op = detail::BoundedRationalPolytopeSpecializer< dimension, Integer>;
+  typedef typename LatticePolytope::Domain     Domain;
+  typedef typename LatticePolytope::HalfSpace  PolytopeHalfSpace;
+  // Compute domain
+  const Vector ab   = b - a;
+  const Vector bc   = c - b;
+  const Vector ca   = a - c;
+  const Vector n    = Op::crossProduct( ab, bc );
+  if ( n == Vector::zero )
+    return computeDegeneratedTriangle( a, b, c );
+  const Point  low  = a.inf( b ).inf( c );
+  const Point  high = a.sup( b ).sup( c );
+  // Initialize polytope
+  std::vector< PolytopeHalfSpace >   PHS;
+  PHS.reserve( make_minkowski_summable ? 11 : 5 );
+  const Integer n_a = n.dot( a );
+  const Vector  u   = Op::crossProduct( ab, n );
+  const Vector  v   = Op::crossProduct( bc, n );
+  const Vector  w   = Op::crossProduct( ca, n );
+  PHS.emplace_back(  n,  n_a  );
+  PHS.emplace_back( -n, -n_a );
+  if ( ! make_minkowski_summable )
+    { // It is enough to have one constraint per edge.
+      PHS.emplace_back(  u, u.dot( a ) );
+      PHS.emplace_back(  v, v.dot( b ) );
+      PHS.emplace_back(  w, w.dot( c ) );
+    }
+  else
+    { // Compute additionnal constraints on edges so that the
+      // Minkowski sum with axis-aligned edges is valid.
+      for ( Integer d = -1; d <= 1; d += 2 )
+	for ( Dimension k = 0; k < dim; k++ )
+	  {
+	    const Vector  i     = Vector::base( k, d );
+	    const Vector  eab   = Op::crossProduct( ab, i );
+	    const Integer eab_a = eab.dot( a );
+	    if ( eab.dot( c ) < eab_a ) // c must be below plane (a,eab)
+	      PHS.emplace_back( eab, eab_a );
+	    const Vector  ebc   = Op::crossProduct( bc, i );
+	    const Integer ebc_b = ebc.dot( b );
+	    if ( ebc.dot( a ) < ebc_b ) // a must be below plane (b,ebc)
+	      PHS.emplace_back( ebc, ebc_b );
+	    const Vector  eca   = Op::crossProduct( ca, i );
+	    const Integer eca_c = eca.dot( c );
+	    if ( eca.dot( b ) < eca_c ) // b must be below plane (c,eca)
+	      PHS.emplace_back( eca, eca_c );
+	  }
+    }
+  return LatticePolytope( Domain( low, high ),
+			  PHS.cbegin(), PHS.cend(),
+                          make_minkowski_summable, false );
+}
+
+//-----------------------------------------------------------------------------
+template < int dim, typename TInteger, typename TInternalInteger >
+typename DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::LatticePolytope
+DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::
+computeDegeneratedTriangle
+( const Point& a, const Point& b, const Point& c )
+{
+  if ( a == b ) return computeSegment( a, c );
+  if ( ( a == c ) || ( b == c ) ) return computeSegment( a, b );
+  // The three points are distinct, hence aligned. One is in-between the two others.
+  const Point  low  = a.inf( b ).inf( c );
+  const Point  high = a.sup( b ).sup( c );
+  for ( Dimension k = 0; k < dim; k++ )
+    {
+      const auto lk = low [ k ];
+      const auto hk = high[ k ];      
+      if ( ( a[ k ] != lk ) && ( a[ k ] != hk ) ) return computeSegment( b, c );
+      if ( ( b[ k ] != lk ) && ( b[ k ] != hk ) ) return computeSegment( a, c );
+      if ( ( c[ k ] != lk ) && ( c[ k ] != hk ) ) return computeSegment( a, b );
+    }
+  trace.error() << "[ConvexityHelper::computeSegmentFromDegeneratedTriangle] "
+		<< "Should never arrive here." << std::endl;
+  return computeSegment( a, a );
+}
+
+//-----------------------------------------------------------------------------
+template < int dim, typename TInteger, typename TInternalInteger >
+typename DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::LatticePolytope
+DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeSegment
+( const Point& a, const Point& b )
+{
+  if constexpr( dim != 3 ) return LatticePolytope();
+  using Op = detail::BoundedRationalPolytopeSpecializer< dimension, Integer>;
+  typedef typename LatticePolytope::Domain     Domain;
+  typedef typename LatticePolytope::HalfSpace  PolytopeHalfSpace;
+  // Compute domain
+  const Point  low  = a.inf( b );
+  const Point  high = a.sup( b );
+  const Vector ab   = b - a;
+  bool  degenerate  = ( ab == Vector::zero );
+  // Initialize polytope
+  std::vector< PolytopeHalfSpace >   PHS;
+  if ( degenerate ) 
+    return LatticePolytope( Domain( low, high ), PHS.cbegin(), PHS.cend(), true, false );
+  PHS.reserve( 2*dim );
+  // Compute additionnal constraints on edges so that the
+  // Minkowski sum with axis-aligned edges is valid.
+  for ( Integer d = -1; d <= 1; d += 2 )
+    for ( Dimension k = 0; k < dim; k++ )
+      {
+	const Vector  i   = Vector::base( k, d );
+	const Vector  e   = Op::crossProduct( ab, i );
+	if ( e != Vector::zero )
+	  {
+	    const Integer e_a = e.dot( a );
+	    PHS.emplace_back( e, e_a );
+	  }
+      }
+  return LatticePolytope( Domain( low, high ), PHS.cbegin(), PHS.cend(), true, false );
+}
+
+
+//-----------------------------------------------------------------------------
+template < int dim, typename TInteger, typename TInternalInteger >
 typename DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::PointRange
 DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::
 computeDegeneratedConvexHullVertices
@@ -306,10 +429,12 @@ computeLatticePolytope
   // Compute domain
   Point l = input_points[ 0 ];
   Point u = input_points[ 0 ];
-  for ( const auto& p : input_points ) {
-    l = l.inf( p );
-    u = u.sup( p );
-  }
+  for ( std::size_t i = 1; i < input_points.size(); i++ )
+    {
+      const auto& p = input_points[ i ];
+      l = l.inf( p );
+      u = u.sup( p );
+    }
   Domain domain( l, u );
   // Compute convex hull
   ConvexHull hull;

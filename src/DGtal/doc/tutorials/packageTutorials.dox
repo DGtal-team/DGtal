@@ -24,21 +24,21 @@ namespace DGtal {
 
 @section secttuto1 Basic guides
 
-1. \ref tutoFileGridCurveRanges
-2. \ref tutoImageRegionDT
-3. \ref tutoImageGridCurveEstimator
-4. \ref tutoShapeGridCurveEstimator
-5. \ref tutoImageGridCurveExtraction
-6. \ref tutoImageGridVolume3dVolViewer
+1. \subpage tutoFileGridCurveRanges
+2. \subpage tutoImageRegionDT
+3. \subpage tutoImageGridCurveEstimator
+4. \subpage tutoShapeGridCurveEstimator
+5. \subpage tutoImageGridCurveExtraction
+6. \subpage tutoImageGridVolume3dVolViewer
 
 
 @section secttuto2 Tutorials
 
-1. \ref tutoFMMErosion
-2. \ref tutoPolyhedralisation
-3. \ref tutoVolDTGranulometry
-4. \ref tutoAreaSurface
-5. \ref tutoImageManipulations
+1. \subpage tutoFMMErosion
+2. \subpage tutoPolyhedralisation
+3. \subpage tutoVolDTGranulometry
+4. \subpage tutoAreaSurface
+5. \subpage tutoImageManipulations
 
 @section secttuto3 Helpers, quick development with DGtal
 

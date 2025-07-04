@@ -4,7 +4,8 @@
  * @image  html logo_DGtal_small.png
  *
  *
- * @section intro_sec_dgtal Introduction
+
+# Overview
 
 DGtal is a generic open source library for Digital Geometry
 programming whose primary objective is to gather and structure different
@@ -38,6 +39,8 @@ geometry community. It is still a work in progress but shows already
 many promises to be the common basis for future developments made by
 the digital geometry community.
 
+DGtal received the [Symposium on Geometry Processing Software Award in 2016](http://awards.geometryprocessing.org/).
+
 
 DGtal is associated with the projects [DGtalTools](http://dgtal.org/dgtaltools/)
 and [DGtalTools-contrib](http://dgtal.org/dgtaltools/). Please have a look
@@ -45,43 +48,41 @@ at the [DGtalTools online
 documentation](https://dgtal-team.github.io/doctools-nightly) for additional 
 information.
 
-@note From release 1.2, DGtal has a (partial) python binding. For more information, cf \ref packagePython
+@note From release 1.2, DGtal has a (partial) python binding. For more information, cf \subpage packagePython
+
+## Helpers and Tutorials
+
+  - \subpage packageTutorials
+  - \subpage moduleShortcuts
 
 
-@section package_description DGtal Packages
+## DGtal Packages 
 
-  - \ref packageIntroduction
-  - \ref packageBase
-  - \ref packageKernel
-  - \ref packageArithmetic
-  - \ref packageGeometry
-  - \ref packageShapes
-  - \ref packageTopology
-  - \ref packageDEC
-  - \ref packageGraph
-  - \ref packageMath
-  - \ref packageImage
-  - \ref packageIO
-
-
-@section manuals_tutorials Helpers and Tutorials
-
-  - \ref packageTutorials
-  - \ref moduleShortcuts
-
-@section manueldev Manual pages for DGtal developers
-  - \ref moduleFAQGit
-  - \ref moduleCatch
+  - \subpage packageIntroduction
+  - \subpage packageBase
+  - \subpage packageKernel
+  - \subpage packageArithmetic
+  - \subpage packageGeometry
+  - \subpage packageShapes
+  - \subpage packageTopology
+  - \subpage packageDEC
+  - \subpage packageGraph
+  - \subpage packageMath
+  - \subpage packageImage
+  - \subpage packageIO
 
 
-@section links_sec_dgtal Links
+## Contributing
+  - \subpage moduleFAQGit
+  - \subpage moduleCatch
 
-   <ul>
-    <li> Documentation of the associated [DGtalTools project](https://dgtal-team.github.io/doctools-nightly)</li>
-    <li> Visit the [DGtal homepage](http://dgtal.org/)</li>
-    <li> LibBoard section page   </li>
-   </ul>
 
+## Links
+
+* Documentation of the associated [DGtalTools project](https://dgtal-team.github.io/doctools-nightly) 
+* Visit the [DGtal homepage](http://dgtal.org/) 
+* LibBoard section page    
+  
    @defgroup Concepts DGtal Concepts
    @defgroup Archetypes DGtal Archetypes
    @defgroup Tests DGtal Test Files

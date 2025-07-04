@@ -69,18 +69,18 @@ structure.
 
 
 @b Modules
- - \ref moduleDigitalTopology (Jacques-Olivier Lachaud, Bertrand Kerautret)
- - \ref moduleCellularTopology (Jacques-Olivier Lachaud)
- - \ref moduleDigitalSurfaces (Jacques-Olivier Lachaud)
- - \ref moduleDigitalSurfaceHelpers (Jacques-Olivier Lachaud, Bertrand Kerautret)
- - \ref moduleCubicalComplex (Jacques-Olivier Lachaud)
- - \ref moduleVoxelComplex (Pablo Hernandez-Cerdan)
- - \ref moduleHalfEdgeMesh (Jacques-Olivier Lachaud)
+ - \subpage moduleDigitalTopology (Jacques-Olivier Lachaud, Bertrand Kerautret)
+ - \subpage moduleCellularTopology (Jacques-Olivier Lachaud)
+ - \subpage moduleDigitalSurfaces (Jacques-Olivier Lachaud)
+ - \subpage moduleDigitalSurfaceHelpers (Jacques-Olivier Lachaud, Bertrand Kerautret)
+ - \subpage moduleCubicalComplex (Jacques-Olivier Lachaud)
+ - \subpage moduleVoxelComplex (Pablo Hernandez-Cerdan)
+ - \subpage moduleHalfEdgeMesh (Jacques-Olivier Lachaud)
 
 
  @b Package @b Concepts @b Overview
- - \ref packageTopologyConcepts1
- - \ref packageTopologyConcepts2
+ - \subpage packageTopologyConcepts1
+ - \subpage packageTopologyConcepts2
 
 
  @b Related @b documentation @b pages

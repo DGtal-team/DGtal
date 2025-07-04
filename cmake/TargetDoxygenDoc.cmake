@@ -20,7 +20,7 @@ if (DOXYGEN_FOUND)
   if    (NOT DVIPS_CONVERTER)
     MESSAGE(STATUS "dvips command DVIPS_CONVERTER not found but usually required.")
   endif()
-  MESSAGE(STATUS "CHecking path: ${CMAKE_CURRENT_SOURCE_DIR}")
+  MESSAGE(STATUS "Checking path: ${CMAKE_CURRENT_SOURCE_DIR}")
   if   (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.in")
     MESSAGE(STATUS "configured ${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.in --> ${CMAKE_CURRENT_BINARY_DIR}/doxy.config")
     CONFIGURE_FILE(${CMAKE_CURRENT_SOURCE_DIR}/doc/doxy.config.in

@@ -6,7 +6,6 @@ set(QGLVIEWER_BASED_TESTS_SRC
    )
 
 if (  WITH_VISU3D_QGLVIEWER )
-
   foreach(FILE ${QGLVIEWER_BASED_TESTS_SRC})
     DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
     #not a test since IHM
@@ -34,6 +33,16 @@ set(DGTAL_TESTS_SRC
   testAstroid2D
   testLemniscate2D
   )
+
+if (WITH_LIBIGL)
+   set(DGTAL_TESTS_SRC_LIBIGL 
+       testlibigl
+       testWindingNumbersShape
+      )
+    foreach(test_file ${DGTAL_TESTS_SRC_LIBIGL})
+      DGtal_add_test(${test_file})
+    endforeach()      
+endif()
 
 foreach(FILE ${DGTAL_TESTS_SRC})
   DGtal_add_test(${FILE})

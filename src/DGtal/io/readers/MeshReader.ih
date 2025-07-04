@@ -54,7 +54,7 @@ inline
 bool
 DGtal::MeshReader<TPoint>::importOFFFile(const std::string & aFilename, 
 					 DGtal::Mesh<TPoint> & aMesh, 
-					 bool invertVertexOrder)
+					 bool invertVertexOrder, bool onlyFaceVertex)
 {
   std::ifstream infile;
   DGtal::IOException dgtalio;
@@ -199,10 +199,12 @@ DGtal::MeshReader<TPoint>::importOFFFile(const std::string & aFilename,
       aMesh.addFace(aFace);
     }
     getline(infile, str);
-    str_in = std::istringstream ( str );
-    
-    
+    str_in = std::istringstream ( str );    
   }
+  if (onlyFaceVertex)
+  {
+    aMesh.removeIsolatedVertices();
+  }  
   
   return true;
 }
@@ -312,7 +314,8 @@ template <typename TPoint>
 inline
 bool
 DGtal::MeshReader<TPoint>::
-importOBJFile( const std::string & filename, DGtal::Mesh<TPoint> & mesh )
+importOBJFile( const std::string & filename, DGtal::Mesh<TPoint> & mesh,
+	       bool onlyFaceVertex )
 {
   typedef typename Mesh<TPoint>::Index Index;
   std::vector<TPoint>  vertices;
@@ -396,6 +399,21 @@ importOBJFile( const std::string & filename, DGtal::Mesh<TPoint> & mesh )
         if (is.good()){
           material = MeshReader<TPoint>::readMaterial(is);
           useMtllib = true;
+          is.close();
+        }else {
+            // Path of material is probably outdated, trying to open same directroy as source mesh.
+            iSep = name.find_last_of('/');
+            if ((int)iSep == -1)
+            { // special for windows.
+              iSep = name.find_last_of('\\');
+            }
+            std::string pathMesh = name.substr(iSep+1,name.size());
+            std::ifstream is2 (path+pathMesh);
+            if (is2.good()){
+               material = MeshReader<TPoint>::readMaterial(is2);
+               useMtllib = true;
+            }
+            is2.close();
         }
       }
       else if (keyword ==  "usemtl")
@@ -432,6 +450,9 @@ importOBJFile( const std::string & filename, DGtal::Mesh<TPoint> & mesh )
       mesh.setFaceColor(i, colors[i]);
     }
   }
+  if (onlyFaceVertex && ! input.bad()){
+     mesh.removeIsolatedVertices();
+  }
   return ( ! input.bad() );
 }
 
@@ -450,12 +471,11 @@ DGtal::operator<< (   Mesh<TPoint> & mesh, const std::string &filename )
     DGtal::MeshReader< TPoint >::importOFSFile(filename, mesh);
     return true;
   }
-  else if(extension== "obj")
+  else if(extension == "obj")
   {
     DGtal::MeshReader< TPoint >::importOBJFile(filename, mesh);
     return true;
   }
-  
   return false;
 }
 

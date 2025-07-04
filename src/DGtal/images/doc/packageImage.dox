@@ -47,16 +47,16 @@ namespace DGtal {
 This package aims to implement Image models and data-structures.
 
 @b Modules
- - \ref moduleImages (Tristan Roussillon, David Coeurjolly, Martial Tola)
- - \ref moduleBigImages (Martial Tola, David Coeurjolly)
- - \ref moduleGeometricTransform (Kacper Pluta)
+ - \subpage moduleImages (Tristan Roussillon, David Coeurjolly, Martial Tola)
+ - \subpage moduleBigImages (Martial Tola, David Coeurjolly)
+ - \subpage moduleGeometricTransform (Kacper Pluta)
 
  @b Package @b Concepts @b Overview
- - \ref packageImageConcepts
+ - \subpage packageImageConcepts
 
 
  @b Related @b documentation @b pages
- - \ref ImageContainerByITKImage
+ - \subpage ImageContainerByITKImage
 
 
 

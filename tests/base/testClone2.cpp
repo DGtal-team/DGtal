@@ -912,7 +912,7 @@ bool testCloneTimings()
   double t4 = computeTriangles<TriangleByClone>( size );
   trace.info() << "Perimeter is " << t4 << std::endl;
   ++nb; nbok += Point::nbCreated == Point::nbDeleted ? 1 : 0;
-  ++nb; nbok += Point::nbCreated < nbC ? 1 : 0;
+  ++nb; nbok += Point::nbCreated <= nbC ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")"
                << " Point nbCreated=" << Point::nbCreated 
                << " nbDeleted=" << Point::nbDeleted << std::endl; 

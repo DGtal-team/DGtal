@@ -19,6 +19,7 @@
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2021/09/02
+ * @ingroup Examples
  *
  * This file is part of the DGtal library.
  */

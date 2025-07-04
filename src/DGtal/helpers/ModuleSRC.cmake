@@ -1,4 +1,4 @@
 
 set(DGTAL_SRC ${DGTAL_SRC} 
-    DGtal/helpers/StdDefs)
+    DGtal/helpers/StdDefs.cpp)
 

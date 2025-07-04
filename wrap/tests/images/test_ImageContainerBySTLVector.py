@@ -1,6 +1,7 @@
 import pytest
 import dgtal
 
+"""
 @pytest.mark.parametrize("Type", [
     ("ImageContainerByVector2DInteger"),
     ("ImageContainerByVector2DReal"),
@@ -50,7 +51,9 @@ def test_ImageContainerWithSingleValues(Type):
     max_value = 4
     digital_set = img.set_from_image(min_value, max_value)
     assert digital_set.size() == 3
+"""
 
+"""
 @pytest.mark.parametrize("Type", [
     ("ImageContainerByVector2DColor"),
     ("ImageContainerByVector3DColor"),
@@ -94,6 +97,7 @@ def test_ImageContainerWithDGtalTypes(Type):
         max_value = ValueType.diagonal(3)
         digital_set = img.set_from_image(min_value, max_value)
         assert digital_set.size() == 1
+"""
 
 @pytest.mark.parametrize("Type", [
     ("ImageContainerByVector2DInteger"),

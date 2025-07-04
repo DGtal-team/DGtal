@@ -9,4 +9,4 @@
 - [ ] Documentation module page added or updated.
 - [ ] New entry in the [ChangeLog.md](https://github.com/DGtal-team/DGtal/blob/master/ChangeLog.md) added.
 - [ ] No warning raised in Debug mode.
-- [ ] All continuous integration tests pass (Github Actions & appveyor)
+- [ ] All continuous integration tests pass (Github Actions)

@@ -35,9 +35,9 @@ configure_file(${PROJECT_SOURCE_DIR}/cmake/DGtalConfigVersion.cmake.in
 
 # Install the export set for use with the install-tree
 set(DGTAL_CMAKE_DIR_INSTALL "${INSTALL_DATA_DIR}")
-install(EXPORT DGtalLibraryDepends DESTINATION
-  ${DGTAL_CMAKE_DIR_INSTALL}
-  COMPONENT dev)
+install(EXPORT DGtalLibraryDepends 
+    DESTINATION  ${DGTAL_CMAKE_DIR_INSTALL}
+    COMPONENT dev)
 
 # Create a DGtalConfig.cmake file for the use from the install tree
 # and install it
@@ -46,6 +46,7 @@ configure_file(${PROJECT_SOURCE_DIR}/cmake/DGtalConfig.cmake.in
 
 configure_file(${PROJECT_SOURCE_DIR}/cmake/DGtalConfigVersion.cmake.in
   "${PROJECT_BINARY_DIR}/InstallFiles/DGtalConfigVersion.cmake" @ONLY)
+
 install(FILES
   "${PROJECT_BINARY_DIR}/InstallFiles/DGtalConfig.cmake"
   "${PROJECT_BINARY_DIR}/InstallFiles/DGtalConfigVersion.cmake"
@@ -58,6 +59,8 @@ set(_find_cmake_files
   "${PROJECT_SOURCE_DIR}/cmake/FindQGLVIEWER.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/FindGMP.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/deps/eigen.cmake"
+  "${PROJECT_SOURCE_DIR}/cmake/deps/libigl.cmake"
+  "${PROJECT_SOURCE_DIR}/cmake/CPM.cmake"
   )
 file(COPY ${_find_cmake_files}
   DESTINATION "${PROJECT_BINARY_DIR}/Modules")

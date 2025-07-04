@@ -44,6 +44,64 @@
 namespace DGtal
 {
 
+  namespace functors {
+    /**
+     *
+     * \brief Functor that projects a face vertex of a surface mesh onto the tangent plane
+     * given by a per-face normal vector.
+     * This functor can be used in PolygonalCalculus to correct the embedding of
+     * digital surfaces using an estimated normal vector field (see @cite coeurjolly2022simple).
+     *
+     * @note when used in PolygonalCalculus, all operators being invariant by translation, all
+     * tangent planes pass through the origin (0,0,0) (no offest).
+     *
+     * @tparam TRealPoint a model of points @f$\mathbb{R}^3@f$ (e.g. PointVector).
+     * @tparam TRealVector a model of vectors in @f$\mathbb{R}^3@f$ (e.g. PointVector).
+     */    template <typename TRealPoint, typename TRealVector>
+    struct EmbedderFromNormalVectors
+    {
+      ///Type of SurfaceMesh
+      typedef SurfaceMesh<TRealPoint, TRealVector> MySurfaceMesh;
+      ///Vertex type
+      typedef typename MySurfaceMesh::Vertex Vertex;
+      ///Face type
+      typedef typename MySurfaceMesh::Face Face;
+      ///Position type
+      typedef typename MySurfaceMesh::RealPoint Real3dPoint;
+      
+      EmbedderFromNormalVectors() = delete;
+      
+      /// Constructor from an array of normal vectors and a surface mesh instance.
+      /// @param normals a vector of per face normal vectors (same ordering as the SurfaceMesh face indicies).
+      /// @param surfmesh an instance of SurfaceMesh
+      EmbedderFromNormalVectors(ConstAlias<std::vector<Real3dPoint>> normals,
+                                ConstAlias<MySurfaceMesh> surfmesh)
+      {
+        myNormals     = &normals;
+        mySurfaceMesh = &surfmesh;
+      }
+      
+      /// Project a face vertex onto its tangent plane (given by the per-face estimated
+      /// normal vector).
+      ///
+      /// @param f the face that contains the vertex
+      /// @param v the vertex to project
+      Real3dPoint operator()(const Face &f,const Vertex &v)
+      {
+        const auto nn = (*myNormals)[f];
+        Real3dPoint p = mySurfaceMesh->position(v);
+        return p - nn.dot(p)*nn;
+      }
+      
+      ///Alias to the normal vectors
+      const std::vector<Real3dPoint> *myNormals;
+      ///Alias to the surface mesh
+      const MySurfaceMesh *mySurfaceMesh;
+    };
+  }
+  
+  
+  
 /////////////////////////////////////////////////////////////////////////////
 // template class PolygonalCalculus
 /**
@@ -223,7 +281,7 @@ public:
   {
     myEmbedder = externalFunctor;
   }
-  
+  /// @}
 
   // ----------------------- Per face operators --------------------------------------
   //MARK: Per face operator on scalars

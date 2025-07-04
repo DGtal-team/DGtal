@@ -7,49 +7,6 @@ message(STATUS "DGtal required dependencies: ")
 
 
 # -----------------------------------------------------------------------------
-# Mandatory and optional deps via conan
-# -----------------------------------------------------------------------------
-option(ENABLE_CONAN "Enable conan for deps discovery (used for windows CI for instance) features." OFF)
-
-
-if (ENABLE_CONAN)
-  message(STATUS  "Conan enabled for deps")
-
-  if(NOT EXISTS "${CMAKE_BINARY_DIR}/conan.cmake")
-    message(STATUS "Downloading conan.cmake from https://github.com/conan-io/cmake-conan")
-    file(DOWNLOAD "https://raw.githubusercontent.com/conan-io/cmake-conan/0.18.1/conan.cmake"
-                "${CMAKE_BINARY_DIR}/conan.cmake"
-                TLS_VERIFY ON)
-  endif()
-
-  include(${CMAKE_BINARY_DIR}/conan.cmake)
-
-  conan_cmake_configure(REQUIRES zlib/1.2.13
-                                 boost/1.81.0
-                                 gmp/6.2.1
-                                 fftw/3.3.9
-                                 cairo/1.17.6
-                                 libpng/1.6.39 #Explicit fix deps (compat issues)
-                                 expat/2.5.0
-                                 openssl/1.1.1s
-                                 libiconv/1.17
-                      OPTIONS boost:header_only=True
-                              gmp:enable_cxx=True
-                      GENERATORS cmake_find_package)
-
-  conan_cmake_autodetect(settings)
-  conan_cmake_install(PATH_OR_REFERENCE .
-                    BUILD missing
-                    REMOTE conancenter
-                    SETTINGS ${settings})
-
-  set(FFTW3_DIR ${CONAN_FFTW_ROOT})
-  message(STATUS "Setting FFTW3_DIR to ${CONAN_FFTW_ROOT}")
-else()
-  message(STATUS "Conan disabled")
-endif()
-
-# -----------------------------------------------------------------------------
 # Looking for boost
 # -----------------------------------------------------------------------------
 set(Boost_USE_STATIC_LIBS   ON)

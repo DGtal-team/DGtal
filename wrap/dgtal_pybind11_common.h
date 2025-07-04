@@ -20,6 +20,11 @@
 #ifndef DGTAL_PYBIND11_COMMON_H
 #define DGTAL_PYBIND11_COMMON_H
 
+#if defined (_MSC_VER) and !defined(ssize_t)
+    // ssize_t is not standard, only posix which is not supported by MSVC
+    #define ssize_t ptrdiff_t
+#endif
+
 #include <pybind11/pybind11.h>
 #include <pybind11/functional.h>
 #include <pybind11/stl_bind.h>

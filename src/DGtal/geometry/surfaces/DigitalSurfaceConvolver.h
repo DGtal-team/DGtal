@@ -13,7 +13,6 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  **/
-
 #pragma once
 
 /**
@@ -64,7 +63,7 @@ namespace DGtal
 /**
    * Description of class 'DigitalSurfaceConvolver' <p>
    *
-   * Aim: Compute a convolution between a border on a nD-shape and a convolution kernel : (f*g)(t).
+   * Aim: Compute a convolution between a point on the boundary of a nD-shape and a convolution kernel : (f*g)(t).
    * An optimization is available when you convolve your shape on adjacent cells using eval(itbegin, itend, output)
    *
    * @tparam TFunctor a model of a functor for the shape to convolve ( f(x) ).

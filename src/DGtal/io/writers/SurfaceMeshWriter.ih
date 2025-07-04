@@ -326,7 +326,7 @@ writeIsoLinesOBJ( std::string            objfile,
                                 << " Weird iso-line on face " << f << std::endl;
               else {
                 for ( Size ii = 0; ii < crossings.size(); ++ii )
-                  for ( Size j = i+1; j < crossings.size(); ++j )
+                  for ( Size j = ii+1; j < crossings.size(); ++j )
                     {
                       RealVector pq = crossings[ j ] - crossings[ ii ];
                       if ( pq.squaredNorm() < 1e-8 ) continue;

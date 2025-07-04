@@ -104,6 +104,7 @@ clear()
   myNeighborFaces.clear();
   myNeighborVertices.clear();
   myEdgeVertices.clear();
+  myVertexPairEdge.clear();
   myEdgeFaces.clear();
   myEdgeRightFaces.clear();
   myEdgeLeftFaces.clear();
@@ -138,25 +139,31 @@ DGtal::SurfaceMesh<TRealPoint, TRealVector>::
 computeFaceNormalsFromPositions()
 {
   myFaceNormals.resize( myIncidentVertices.size() );
-  Index f = 0;
-  for ( auto face : myIncidentVertices )
+  for ( Face f = 0; f < myFaceNormals.size(); f++ )
+    computeFaceNormalFromPositions( f );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+void
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+computeFaceNormalFromPositions( const Face f )
+{
+  RealPoint  p; // barycenter
+  RealVector n; // normal
+  const Vertices& vtcs = incidentVertices( f );
+  // compute barycenter
+  for ( auto idx : vtcs ) p += myPositions[ idx ];
+  p /= vtcs.size();
+  // compute normal as sum of triangle normal vectors.
+  for ( Index i = 0; i < vtcs.size(); ++i )
     {
-      RealPoint  p; // barycenter
-      RealVector n; // normal
-      // compute barycenter
-      for ( auto idx : face ) p += myPositions[ idx ];
-      p /= face.size();
-      // compute normal as sum of triangle normal vectors.
-      for ( Index i = 0; i < face.size(); ++i )
-        {
-          const Index  j = face[ i ];
-          const Index nj = face[ (i+1) % face.size() ];
-          n += ( myPositions[ j ] - p ).crossProduct( myPositions[ nj ] - p );
-        }
-      auto n_norm = n.norm();
-      myFaceNormals[ f ] = n_norm != 0.0 ? n / n_norm : n;
-      f++;
+      const Index  j = vtcs[ i ];
+      const Index nj = vtcs[ (i+1) % vtcs.size() ];
+      n += ( myPositions[ j ] - p ).crossProduct( myPositions[ nj ] - p );
     }
+  auto n_norm = n.norm();
+  myFaceNormals[ f ] = n_norm != 0.0 ? n / n_norm : n;
 }
 
 //-----------------------------------------------------------------------------
@@ -340,9 +347,9 @@ DGtal::SurfaceMesh<TRealPoint, TRealVector>::
 makeEdge( Vertex i, Vertex j ) const
 {
   VertexPair vp = i < j ? std::make_pair( i,j ) : std::make_pair( j,i );
-  auto it = std::lower_bound( myEdgeVertices.cbegin(), myEdgeVertices.cend(), vp );
-  if ( it == myEdgeVertices.cend() || *it != vp ) return nbEdges();
-  return it - myEdgeVertices.cbegin();
+  const auto it = myVertexPairEdge.find( vp );
+  if ( it == myVertexPairEdge.cend()  ) return nbEdges();
+  return it->second;
 }
 
 //-----------------------------------------------------------------------------
@@ -433,7 +440,7 @@ typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::RealPoint
 DGtal::SurfaceMesh<TRealPoint, TRealVector>::
 edgeCentroid( Index e ) const
 {
-  const auto& vtcs = myEdgeVertices[ e ];
+  const auto& vtcs = edgeVertices( e );
   RealPoint c = myPositions[ vtcs.first ] + myPositions[ vtcs.second ];
   return c / 2.0;
 }
@@ -600,7 +607,7 @@ typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::Scalar
 DGtal::SurfaceMesh<TRealPoint, TRealVector>::
 edgeInclusionRatio( RealPoint p, Scalar r, Index e ) const
 {
-  const auto vertices = myEdgeVertices[ e ];
+  const auto vertices = edgeVertices( e );
   const RealPoint   b = edgeCentroid( e );
   const Scalar     d0 = ( myPositions[ vertices.first ] - p ).norm();
   const Scalar     d1 = ( myPositions[ vertices.second ] - p ).norm();
@@ -745,7 +752,8 @@ computeEdges()
       idx_f++;
     }
   const Size nbe = edges.size();
-  myEdgeVertices.resize  ( nbe );
+  myVertexPairEdge.clear();
+  myEdgeVertices.resize  ( nbe );  
   myEdgeFaces.resize     ( nbe );
   myEdgeRightFaces.resize( nbe );
   myEdgeLeftFaces.resize ( nbe );
@@ -753,6 +761,7 @@ computeEdges()
   for ( auto e : edges )
     {
       myEdgeVertices  [ idx_e ] = e;
+      myVertexPairEdge[ e     ] = idx_e;
       myEdgeLeftFaces [ idx_e ] = edge2face_left [ e ];
       myEdgeRightFaces[ idx_e ] = edge2face_right[ e ];
       myEdgeFaces     [ idx_e ] = myEdgeRightFaces[ idx_e ];
@@ -838,6 +847,223 @@ computeNonManifoldEdges() const
         edges.push_back( e );
     }
   return edges;
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+bool
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+isFlippable( const Edge e ) const
+{
+  /// An edge is (topologically) flippable iff: (1) it does not lie
+  /// on the boundary, (2) it is bordered by two triangles, one that
+  /// to its right, one to its left, (3) the two other vertices of
+  /// the quad are not already neighbors.
+
+  // edge is (i,j) with i<j
+  
+  // (1) the edge must be bordered by two faces, one on its left, one on its right.
+  const Faces& rfaces = edgeRightFaces( e );
+  if ( rfaces.size() != 1 ) return false; //< not one face to the right
+  const Faces& lfaces = edgeLeftFaces ( e );
+  if ( lfaces.size() != 1 ) return false; //< not one face to the left 
+
+  // (2) both faces must be triangles
+  const Face      rf   = rfaces.front();  //< some `(..., j, i, ... )` since faces are ccw.
+  const Face      lf   = lfaces.front();  //< some `(..., i, j, ... )` since faces are ccw.
+  const Vertices& rvtx = incidentVertices( rf );
+  if ( rvtx.size() != 3 ) return false;   //< right face is not a triangle
+  const Vertices& lvtx = incidentVertices( lf );
+  if ( lvtx.size() != 3 ) return false;   //< left  face is not a triangle
+
+  // (3) the two other vertices of the quad are not already neighbors.
+  Vertex i, j;
+  std::tie( i, j ) = edgeVertices( e );
+  const auto    ir = ( rvtx[ 0 ] == i ) ? 0 : ( ( rvtx[ 1 ] == i ) ? 1 : 2 );
+  const auto    il = ( lvtx[ 0 ] == i ) ? 0 : ( ( lvtx[ 1 ] == i ) ? 1 : 2 );
+  const Vertex   k = rvtx[ (ir + 1) % 3 ]; // right triangle is (j,i,k)
+  const Vertex   l = lvtx[ (il + 2) % 3 ]; // left  triangle is (i,j,l). 
+  if ( ! ( k != i && k != j && l != i && l != j && k != l ) )
+    {
+      /// May happen if we have identical triangles (i,j,k) and (j,i,k)
+      if ( k == l ) return false;
+      /// Otherwise there is a problem.
+      trace.error() << "[SurfaceMesh::isFlippable] Invalid neighbors to edge: "
+		    << "(i,j,k,l) == (" << i << "," << j << "," << k << "," << l << ")"
+		    << std::endl
+		    << "right=(" << rvtx[ 0 ] << "," << rvtx[ 1 ] << "," << rvtx[ 2 ] << ")" << std::endl
+		    << "left =(" << lvtx[ 0 ] << "," << lvtx[ 1 ] << "," << lvtx[ 2 ] << ")" << std::endl;
+      return false;
+    }
+  const Vertices& Nk = neighborVertices( k );
+  const auto     itl = std::find( Nk.cbegin(), Nk.cend(), l );
+  return itl == Nk.cend();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::VertexPair
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+otherDiagonal( const Edge e ) const
+{
+  // only valid if `isFlippable( e )` is true.
+  const Faces&  rfaces = edgeRightFaces( e );
+  const Faces&  lfaces = edgeLeftFaces ( e );
+  const Face      rf   = rfaces.front();  //< some `(..., j, i, ... )` since faces are ccw.
+  const Face      lf   = lfaces.front();  //< some `(..., i, j, ... )` since faces are ccw.
+  const Vertices& rvtx = incidentVertices( rf );
+  const Vertices& lvtx = incidentVertices( lf );
+  Vertex i, j;
+  std::tie( i, j ) = edgeVertices( e );
+  const auto    ir = ( rvtx[ 0 ] == i ) ? 0 : ( ( rvtx[ 1 ] == i ) ? 1 : 2 );
+  const auto    il = ( lvtx[ 0 ] == i ) ? 0 : ( ( lvtx[ 1 ] == i ) ? 1 : 2 );
+  const Vertex   k = rvtx[ (ir + 1) % 3 ]; // right triangle is (j,i,k)
+  const Vertex   l = lvtx[ (il + 2) % 3 ]; // left  triangle is (i,j,l).
+  return ( k < l ) ? std::make_pair( k, l ) : std::make_pair( l, k );
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+void
+DGtal::SurfaceMesh<TRealPoint, TRealVector>::
+flip( const Edge e, bool recompute_face_normals )
+{
+  /*
+           l                   l
+          / \                 /|\
+         /   \               / | \
+        /     \             /  |  \
+       /   lf  \           /   |   \
+      /         \         /    |    \
+     i --- e --- j  ==>  i  lf e  rf j    if k < l otherwise rf and lf are swapped     
+      \         /         \    |    /
+       \   rf  /           \   |   /
+        \     /             \  |  /
+         \   /               \ | /
+          \ /                 \|/
+           k                   k
+  */
+  
+  // (1) We must collect all information: right and left face, vertices k and l
+  const Face  rf    = edgeRightFaces( e ).front();  //< some `(..., j, i, ... )` since faces are ccw.
+  const Face  lf    = edgeLeftFaces ( e ).front();  //< some `(..., i, j, ... )` since faces are ccw.
+  Vertices&   rvtx  = myIncidentVertices[ rf ];
+  Vertices&   lvtx  = myIncidentVertices[ lf ];
+  Vertex i, j;
+  std::tie( i, j ) = edgeVertices( e );
+  const auto    ir = ( rvtx[ 0 ] == i ) ? 0 : ( ( rvtx[ 1 ] == i ) ? 1 : 2 );
+  const auto    il = ( lvtx[ 0 ] == i ) ? 0 : ( ( lvtx[ 1 ] == i ) ? 1 : 2 );
+  const Vertex   k = rvtx[ (ir + 1) % 3 ]; // right triangle is (j,i,k)
+  const Vertex   l = lvtx[ (il + 2) % 3 ]; // left  triangle is (i,j,l).
+
+  // (2) we must update all arrays.
+  // std::vector< Faces >        myNeighborFaces; //< not done
+  if ( k < l )
+    {
+      /*
+               l                   l
+              / \                 /|\
+             /   \               / | \
+            /     \             /  |  \
+           /   lf  \           /   |   \
+          /         \         /    |    \
+         i --- e --- j  ==>  i  lf e  rf j    ( k < l )
+          \         /         \    |    /
+           \   rf  /           \   |   /
+            \     /             \  |  /
+             \   /               \ | /
+              \ /                 \|/
+               k                   k
+      */
+      // e=(k,l) with rf as right face et lf as left face
+      rvtx[ 0 ] = l; rvtx[ 1 ] = k; rvtx[ 2 ] = j;
+      lvtx[ 0 ] = k; lvtx[ 1 ] = l; lvtx[ 2 ] = i;
+      VertexPair kl = std::make_pair( k, l );
+      myEdgeVertices  [ e  ] = kl;
+      myVertexPairEdge[ kl ] = e;
+      removeIndex ( myIncidentFaces[ i ], rf );
+      removeIndex ( myIncidentFaces[ j ], lf );      
+      addIndex    ( myIncidentFaces[ k ], lf );
+      addIndex    ( myIncidentFaces[ l ], rf );
+      removeIndex ( myNeighborVertices[ i ], j );
+      removeIndex ( myNeighborVertices[ j ], i );      
+      addIndex    ( myNeighborVertices[ k ], l );
+      addIndex    ( myNeighborVertices[ l ], k );
+      // No need to update myEdgeFaces, myEdgeRightFaces and myEdgeLeftFaces for edge e.
+      const auto e_ik      = makeEdge( i, k );
+      const bool e_ik_left = i < k;
+      replaceIndex( myEdgeFaces[ e_ik ], rf, lf );
+      if ( e_ik_left ) myEdgeLeftFaces [ e_ik ][ 0 ] = lf;
+      else             myEdgeRightFaces[ e_ik ][ 0 ] = lf;
+      // nothing to change for e_kj (rf is still the incident face)
+      const auto e_jl      = makeEdge( j, l );
+      const bool e_jl_left = j < l;
+      replaceIndex( myEdgeFaces[ e_jl ], lf, rf );
+      if ( e_jl_left ) myEdgeLeftFaces [ e_jl ][ 0 ] = rf;
+      else             myEdgeRightFaces[ e_jl ][ 0 ] = rf;
+      // nothing to change for e_li (lf is still the incident face)      
+      // vertex normals are not updated.
+      // face normals are recomputed if asked for.
+      if ( recompute_face_normals )
+	{
+	  computeFaceNormalFromPositions( rf );
+	  computeFaceNormalFromPositions( lf );
+	}
+    }
+  else // k > l
+    {
+      /*
+               l                   l
+              / \                 /|\
+             /   \               / | \
+            /     \             /  |  \
+           /   lf  \           /   |   \
+          /         \         /    |    \
+         i --- e --- j  ==>  i  rf e  lf j    (k > l)
+          \         /         \    |    /
+           \   rf  /           \   |   /
+            \     /             \  |  /
+             \   /               \ | /
+              \ /                 \|/
+               k                   k
+      */
+      // e=(l,k) with rf as right face et lf as left face
+      rvtx[ 0 ] = i; rvtx[ 1 ] = k; rvtx[ 2 ] = l;
+      lvtx[ 0 ] = j; lvtx[ 1 ] = l; lvtx[ 2 ] = k;
+      VertexPair lk = std::make_pair( l, k );
+      myEdgeVertices  [ e  ] = lk;
+      myVertexPairEdge[ lk ] = e;
+      removeIndex ( myIncidentFaces[ i ], lf );
+      removeIndex ( myIncidentFaces[ j ], rf );      
+      addIndex    ( myIncidentFaces[ k ], lf );
+      addIndex    ( myIncidentFaces[ l ], rf );
+      removeIndex ( myNeighborVertices[ i ], j );
+      removeIndex ( myNeighborVertices[ j ], i );      
+      addIndex    ( myNeighborVertices[ k ], l );
+      addIndex    ( myNeighborVertices[ l ], k );
+      // No need to update myEdgeFaces, myEdgeRightFaces and myEdgeLeftFaces for edge e.
+      const auto e_kj      = makeEdge( k, j );
+      const bool e_kj_left = k < j;
+      replaceIndex( myEdgeFaces[ e_kj ], rf, lf );
+      if ( e_kj_left ) myEdgeLeftFaces [ e_kj ][ 0 ] = lf;
+      else             myEdgeRightFaces[ e_kj ][ 0 ] = lf;
+      // nothing to change for e_jl (lf is still the incident face)
+      const auto e_li      = makeEdge( l, i );
+      const bool e_li_left = l < i;
+      replaceIndex( myEdgeFaces[ e_li ], lf, rf );
+      if ( e_li_left ) myEdgeLeftFaces [ e_li ][ 0 ] = rf;
+      else             myEdgeRightFaces[ e_li ][ 0 ] = rf;
+      // nothing to change for e_ik (rf is still the incident face)      
+      // vertex normals are not updated.
+      // face normals are recomputed if asked for.
+      if ( recompute_face_normals )
+	{
+	  computeFaceNormalFromPositions( rf );
+	  computeFaceNormalFromPositions( lf );
+	}
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////

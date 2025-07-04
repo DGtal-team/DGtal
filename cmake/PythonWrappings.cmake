@@ -1,3 +1,4 @@
+option(DGTAL_WRAP_PYTHON "Compile python wrappings" OFF)
 if(DGTAL_WRAP_PYTHON)
   # Fetch pybind11
   include(FetchContent)

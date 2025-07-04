@@ -36,8 +36,6 @@
 #include "DGtal/geometry/tools/Hull2DHelpers.h"
 #include "DGtal/geometry/tools/MelkmanConvexHull.h"
 #include "DGtal/geometry/tools/determinant/InHalfPlaneBySimple3x3Matrix.h"
-
-
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;

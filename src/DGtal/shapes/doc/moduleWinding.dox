@@ -1,0 +1,97 @@
+/**
+* @file moduleWinding.dox
+* @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
+* Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+*
+* @date 2011/11/26
+*
+* Documentation file for feature moduleShape
+*
+* This file is part of the DGtal library.
+*/
+
+/*
+* Useful to avoid writing DGtal:: in front of every class.
+* Do not forget to add an entry in src/DGtal/base/Config.h.in !
+*/
+namespace DGtal {
+//----------------------------------------
+/*!
+@page moduleWinding Voxelization from an oriented point cloud
+@author David Coeurjolly
+
+@since 1.4
+
+Part of \ref packageShapes
+
+[TOC]
+
+@see examples/polyscope_examples/windingNumberShape.cpp, tests/shapes/testWindingNumberShape.cpp
+
+This documentation describes the tool to construct a binary image from a set of oriented point clouds in @f$\mathbb{R}^3@f$ using 
+the generalized winding number framework of @cite barill2018fast.
+For short, from a collection of oriented points, the generalized [winding number](https://en.wikipedia.org/wiki/Winding_number) implicit function returns a scalar value at each point accounting
+for the number of turns of  the (unknown) underling surface around that point.
+From @cite barill2018fast, the implicit function for a point cloud @f$ \{(p_i,n_i)\}_{1..m}@f$ is approximated by
+@f[
+ w(q) = \sum_i^m a_i \frac{(p_i-q)\cdot n_i}{4\pi\|p_i -q\|^3}
+@f]
+where @f$ a_i@f$ is some area contribution of the point @f$ p_i@f$ to the surface (computed from the projection of the k-nearest neighbors to @f$ p_i@f$ onto the 
+tangent plane at @f$ p_i @f$).
+By thresholding the winding function with some values in @f$[0,1]@f$, we can define an iso-surface that approximates the exterior envelope of the shape
+defined by the oriented point cloud. For fast computations, we rely on the [libigl](https://libigl.github.io) of the generalized winding numbers.
+
+
+@warning This class requires to have LIBIGL, CGAL and GMP cmake flags set to true (e.g. `cmake .. -DWITH_LIBIGL!true -DWITH_CGAL=true -DWITH_GMP=true`)
+
+
+\section sectmoduleWinding1 Basic usage
+
+The core of the method is defined in the WindingNumberShape<Space> class. This class is a model of concepts::CEuclideanBoundedShape is the sense that
+once constructed, an object has an `orientation( q )` method that returns the orientation (inside, outside or on) of q to the implicit surface (DGtal::Orientation).
+
+@code
+#include <DGtal/helpers/StdDefs.h>
+#include <DGtal/shapes/WindingNumberShape.h>
+
+....
+
+Eigen::MatrixXd &points  = { .... };  //mx3 matrix to encode the position of the m points
+Eigen::MatrixXd &normals = { .... };  //mx3 matrix to encode the normal vector for each point
+
+WindingNumbersShape<Z3i::Space> winding(points, normals);
+
+Z3i::RealPoint q(0.3,0.4,0.0); //a single query point
+
+DGtal::Orientation orientation = winding.orientation(q); //returns DGtal::INSIDE, DGtal::ON or DGtal::OUTSIDE
+@endcode
+
+As the WindingNumberShape class is a model of concepts::CEuclideanBoundedShape, the GaussDigitizer could be used (see @ref moduleShape).
+
+@note Note that for each query, we have to traverse a hierarchical data structure containing the input points (roughly @f$O(\log m)@f$
+expected time for balanced trees).
+
+Example:
+
+Input point cloud  | Reconstruction h=2 | Reconstruction h=1 | Reconstruction h=0.2
+------------- | ------------- | ---- | ---
+@image html images/winding-pcl.png "" | @image html images/winding-res1.png "" | @image html images/winding-res2.png "" | @image html images/winding-res3.png ""
+
+
+
+\section sectmoduleWinding2 Advanced usages: batched queries and modified area measures
+
+First, for multiple queries and to take advantage of the multithreading of the winding number backend:
+@code
+Eigen::MatrixXd &queries = { .... };  //Qx3 matrix to encode the query points location
+std::vector<Orientation> orientations = winding.orientationBatch(queries);
+@endcode
+The output vector contains the orientation of the query points in the same order.
+
+At this point, we completely rely on libIGL and CGAL to estimate the @f$ a_i @f$ area measures. If the user
+wants to provide these quantities, the @f$\{a_i\}@f$ can be prescribed at the constructor, or using the `setAreaMeasure()` method (with a `skipPointAreas` to `true` at the constructor). 
+
+@note The orientation methods have a default thresholding parameter set to 0.3. Please check the class documentation for details. 
+
+*/
+}
