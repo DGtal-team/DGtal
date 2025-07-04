@@ -1,0 +1,88 @@
+name: CI (linux/macOS/windows), PR (2.0)
+
+on:
+  push:
+    branches: [ main2.0, GHActions ]
+  pull_request:
+    branches: [ main2.0, GHActions ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macOS-latest, windows-latest]
+        BUILD_TYPE: [Release]
+        python-version: ["3.9"]
+
+    steps: 
+      - uses: actions/checkout@v4
+        with:
+          # Note: at least (5 + 1) for the whitelist to work
+          fetch-depth: 6
+      
+      - name: Getting build config
+        id: "config"
+        uses: ./.github/actions/dgtal-config
+        with:
+          config-name: "Default"
+
+      - name: Setup OS 
+        uses: ./.github/actions/setup-os
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Building and Testing
+        uses: ./.github/actions/cmake
+        with:
+          build-type: ${{ matrix.build_type }}
+          build-config: ${{ steps.config.outputs.cmake-config }}
+          test: true
+          test-threshold: "10"
+          test-blacklist: ${{ steps.config.outputs.cmake-test-blacklist }}
+          test-whitelist: ${{ steps.config.outputs.cmake-test-whitelist }}
+
+      - name: DGtalTools (linux only, we check this PR against DGtalTools PR main2.0)
+        if: matrix.os == 'ubuntu-latest'
+        shell: bash
+        working-directory: ${{ runner.workspace }}/build
+        run: |
+          git clone --depth 1 https://github.com/DGtal-team/DGtalTools.git
+          cd DGtalTools
+          git fetch origin pull/467/head:main2.0
+          git checkout main2.0
+          mkdir buildDGtalTools
+          cd buildDGtalTools
+          cmake .. -DCMAKE_MODULE_PATH=${{ runner.workspace }}/DGtal/cmake/deps -DDGtal_DIR=${{ runner.workspace }}/build  -DDGTALTOOLS_RANDOMIZED_BUILD_THRESHOLD=25 -G Ninja
+          ninja
+
+
+  # Documentatin (build, check and deploy)
+  Documentation:
+    runs-on: ubuntu-latest
+  
+    steps:
+    - uses: actions/checkout@v4
+  
+    - name: Set up
+      run: |
+         sudo apt-get update
+         sudo apt-get install graphviz texlive doxygen
+  
+    - name: Building pages
+      run: |
+         mkdir build
+         cd build
+         cmake ..
+         wget --no-check-certificate -O "${{runner.workspace}}/DGtal/build/DGtalTools-tagfile" http://dgtal.org/doc/tags/DGtalTools-tagfile
+         touch DGtalTools-tagfile
+         make doc > buildDoc.log
+  
+    - name: Checking doc
+      run: |
+          pwd
+          export BUILD_DIR=${{runner.workspace}}/DGtal/build
+          export SRC_DIR=${{runner.workspace}}/DGtal/
+          .github/workflows/checkDoxygenDocumentation.sh
+      #&& .github/workflows/check_src_file_tag.sh

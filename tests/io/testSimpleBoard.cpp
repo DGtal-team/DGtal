@@ -138,7 +138,7 @@ bool testImage()
   board.saveFIG("boardTestDisplayImage.fig");
   board.saveSVG("boardTestDisplayImage.svg");
   board.saveTikZ("boardTestDisplayImage.tikz" );
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   board.saveCairo("boardTestDisplayImageCAIRO.eps", Board2D::CairoEPS );
   board.saveCairo("boardTestDisplayImageCAIRO.pdf", Board2D::CairoPDF );
   board.saveCairo("boardTestDisplayImageCAIRO.png", Board2D::CairoPNG );

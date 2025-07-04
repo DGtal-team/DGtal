@@ -352,7 +352,44 @@ int main( int /* argc */, char** /* argv */ )
     //! [dgtal_shortcuts_ssec2_2_13s]
   }
   trace.endBlock();
-  
+
+  trace.beginBlock( "Load mesh file -> estimate mean/gaussian/principal curvatures -> display in obj" );
+  {
+    //! [dgtal_shortcuts_ssec2_1_14s]
+    auto params = SH3::defaultParameters() | SHG3::defaultParameters();
+    params("r-radius", 0.1);
+
+    auto mesh = SH3::makeSurfaceMesh(examplesPath + "samples/bunnyhead2.obj");
+
+    auto mcurv = SHG3::getCNCMeanCurvatures(mesh, params);
+    auto gcurv = SHG3::getCNCGaussianCurvatures(mesh, params);
+    auto [k1, k2, d1, d2] = SHG3::getCNCPrincipalCurvaturesAndDirections(mesh);
+    auto cmap  = SH3::getColorMap( -1, 1, params );
+
+    auto mcolors = SH3::Colors( mcurv.size() );
+    std::transform( mcurv.cbegin(), mcurv.cend(), mcolors.begin(), cmap );
+
+    auto gcolors = SH3::Colors( gcurv.size() );
+    std::transform( gcurv.cbegin(), gcurv.cend(), gcolors.begin(), cmap );
+
+    auto k1colors = SH3::Colors( k1.size() );
+    std::transform( k1.begin(), k1.end(), k1colors.begin(), cmap);
+
+    auto k2colors = SH3::Colors( k2.size() );
+    std::transform( k2.begin(), k2.end(), k2colors.begin(), cmap);
+
+    bool ok_m = SH3::saveOBJ( mesh, SH3::RealVectors(), mcolors,   "bunnyhead2-meanCurvature.obj" );
+    bool ok_g = SH3::saveOBJ( mesh, SH3::RealVectors(), gcolors,   "bunnyhead2-gaussianCurvature.obj" );
+    bool ok_k1 = SH3::saveOBJ( mesh, SH3::RealVectors(), k1colors, "bunnyhead2-firstPrincipalCurvature.obj" );
+    bool ok_k2 = SH3::saveOBJ( mesh, SH3::RealVectors(), k2colors, "bunnyhead2-secondPrincpalCurvature.obj" );
+    //! [dgtal_shortcuts_ssec2_1_14s]
+
+    ++nb; nbok += ok_m;
+    ++nb; nbok += ok_g;
+    ++nb; nbok += ok_k1;
+    ++nb; nbok += ok_k2;
+  }
+  trace.endBlock();
   
 #if defined(WITH_EIGEN)
   

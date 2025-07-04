@@ -41,23 +41,6 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
-
-#ifdef WITH_VISU3D_QGLVIEWER
-#ifdef APPLE
-/* Defined before OpenGL and GLUT includes to avoid deprecation messages */
-#define GL_SILENCE_DEPRECATION
-#endif
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-#include <QGLViewer/qglviewer.h>
-#include <QGLWidget>
-#include <QKeyEvent>
-#pragma clang diagnostic pop
-#pragma GCC diagnostic pop
-#endif
-
 #include <iostream>
 #include <exception>
 #include <boost/version.hpp>
@@ -149,70 +132,18 @@ namespace DGtal
   /** DGtal Global variables
    *
    **/
-  extern TraceWriterTerm traceWriterTerm;
-  extern Trace trace;
+  inline TraceWriterTerm traceWriterTerm(std::cerr);
+  inline Trace trace(traceWriterTerm);
 
   class Board2D;
 
   template < class Space, class KSpace>  class Display3D;
 
-
-#if defined( WITH_CAIRO )
-  template < class Space, class KSpace> class Board3DTo2D;
-#endif
-#if defined( WITH_VISU3D_QGLVIEWER )
-  template < class Space, class KSpace> class Viewer3D;
+#if defined( DGTAL_WITH_POLYSCOPE )
+  template < class Space, class KSpace> class PolyscopeViewer;
 #endif
 
-
-#if defined( WITH_CAIRO )
-  /**
-   * Interface that specifies that an object can draw itself on a
-   *  3Dto2D Board
-   * (BK)
-   */
-  struct DrawableWithBoard3DTo2D {
-    /**
-     * Operation to override. Does nothing by default.
-     */
-    template < typename S, typename KS>
-
-void setStyle( Board3DTo2D< S, KS> &  ) const {}
-    virtual ~DrawableWithBoard3DTo2D() {}
-  };
-#endif
-
-#if defined( WITH_VISU3D_QGLVIEWER )
-  /**
-   * Interface that specifies that an object can draw itself on a
-   *  3D Viewer
-   * (BK)
-   */
-  struct DrawableWithViewer3D {
-    /**
-     * Operation to override. Does nothing by default.
-     */
-    template < typename S, typename KS>
-    void setStyle( Viewer3D< S, KS> &  ) const {}
-    virtual ~DrawableWithViewer3D() {}
-  };
-#endif
-
-  /**
-   * Interface that specifies that an object can draw itself on a
-   *  3DDisplay
-   * (BK)
-   */
-  struct DrawableWithDisplay3D {
-    /**
-     * Operation to override. Does nothing by default.
-     */
-    template < typename Sp, typename KSp>
-    void setStyle( Display3D< Sp, KSp> &  ) const {}
-    virtual ~DrawableWithDisplay3D() {}
-  };
-
-  /**
+ /**
    * Interface that specifies that an object can draw itself on a
    * board.
    * @todo (JOL) Put this class elsewhere.
@@ -225,7 +156,6 @@ void setStyle( Board3DTo2D< S, KS> &  ) const {}
     virtual void setStyle( Board2D &  ) const {}
     virtual ~DrawableWithBoard2D() {}
   };
-
 } // namespace DGtal
 
 

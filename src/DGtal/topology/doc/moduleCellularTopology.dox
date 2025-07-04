@@ -301,7 +301,7 @@ methods concerning signed cells are prefixed by \c s.
 
 
  Note that the sign of the signed and unsigned are well taked into
-  account in the display with  \ref Viewer3D .
+  account in the display with  \ref DGtal::PolyscopeViewer .
 
 
   <CENTER>

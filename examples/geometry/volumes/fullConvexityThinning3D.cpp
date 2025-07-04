@@ -39,8 +39,7 @@
 #include <iostream>
 #include <queue>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -71,10 +70,7 @@ int main( int argc, char** argv )
   int         M = argc > 5 ? atoi( argv[ 5 ] ) : 255;
   trace.beginBlock ( "Example of 3D shape thinning with full convexity properties" );
   
-  QApplication application(argc,argv);
-  Viewer3D<> viewer;
-  viewer.setWindowTitle("fullConvexityThinning3D");
-  viewer.show();  
+  PolyscopeViewer<> viewer;
 
   auto   params  = SH3::defaultParameters();
   
@@ -122,7 +118,7 @@ int main( int argc, char** argv )
   {
     params( "surfaceComponents" , "All" );
     auto surface = SH3::makeDigitalSurface( bimage, K, params );
-    bool ok      = SH3::saveOBJ( surface, "source.obj" );
+    SH3::saveOBJ( surface, "source.obj" );
   }
   
   trace.beginBlock ( "Thinning" );
@@ -137,7 +133,7 @@ int main( int argc, char** argv )
       nb_simple = 0;
       trace.info() << "Pass #S=" << shape_set.size()
                    << " #Q=" << to_process.size() << std::endl; 
-      for ( auto it  = to_process.begin(), itE = to_process.end(); it != itE; ++it )
+      for ( it  = to_process.begin(), itE = to_process.end(); it != itE; ++it )
         {
           Point p = *it;
           if ( ! image( p ) ) continue; // already removed
@@ -172,19 +168,16 @@ int main( int argc, char** argv )
   DigitalSet output( domain );
   for ( auto p : origin_set ) origin.insert( p );
   for ( auto p : shape_set ) output.insert( p );
-  viewer << SetMode3D( output.className(), "Paving" );
-  viewer << CustomColors3D(Color(25,25,255, 255), Color(25,25,255, 255));
+
+  viewer << Color(25,25,255, 255);
   viewer << output;
 
-  viewer << SetMode3D( origin.className(), "PavingTransp" );
-  viewer << CustomColors3D(Color(250, 0,0, 25), Color(250, 0,0, 5));
+  viewer << Color(250, 0,0, 25);
   viewer << origin;
-
-  viewer<< Viewer3D<>::updateDisplay;
    
-  
   trace.endBlock();
-  return application.exec();
+  viewer.show();  
+  return 0;
 
 }
 //                                                                           //

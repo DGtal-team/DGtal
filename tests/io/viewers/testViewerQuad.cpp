@@ -22,7 +22,7 @@
  *
  * @date 2011/01/03
  *
- * Functions for testing class Viewer3D.
+ * Functions for testing class PolyscopeViewer.
  *
  * This file is part of the DGtal library.
  */
@@ -30,8 +30,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
+
 #include "DGtal/io/Color.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Shapes.h"
@@ -42,7 +42,7 @@ using namespace DGtal;
 using namespace Z3i;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class Viewer3D.
+// Functions for testing class PolyscopeViewer.
 ///////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -50,17 +50,11 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
+  KSpace k;
+  k.init(Point(2,2,2), Point(4,4,4), true);
 
- QApplication application(argc,argv);
- KSpace k;
-
- k.init(Point(2,2,2), Point(4,4,4), true);
- Viewer3D<Space,KSpace> viewer(k);
- viewer.setWindowTitle("simpleViewer");
- viewer.show();
-
-
- trace.beginBlock ( "Testing class for  Viewer3D" );
+  PolyscopeViewer<Space,KSpace> viewer(k);
+  trace.beginBlock ( "Testing class for  PolyscopeViewer" );
 
   Point p1( 0, 0, 0 );
   Point p2( 0, 1 , 0);
@@ -71,37 +65,20 @@ int main( int argc, char** argv )
   RealVector n(1,1,1);
   RealVector n2(0,1,1);
 
-  viewer.addQuadWithNormal(p1,p2,p3,p4, n.getNormalized(), true);
-  viewer.addQuadWithNormal(p4,p5,p6,p3, n2.getNormalized(), true);
+  // Either is possible
+  viewer.drawQuad(p1, p2, p3, p4);
+  viewer.drawQuad(p4, p5, p6, p3);
 
   Cell surfel = k.uCell( Point( 2,3,3) );
   SCell surfel2 = k.sCell( Point( 6,3,3), KSpace::POS);
   SCell surfel3 = k.sCell( Point( 8,3,3), KSpace::NEG  );
 
-  viewer << SetMode3D( surfel.className(), "Basic" );
+  viewer << surfel << surfel2 << surfel3;
 
-  Display3DFactory<Space,KSpace>::drawUnorientedSurfelWithNormal( viewer, surfel, n2.getNormalized());
-
-  Display3DFactory<Space,KSpace>::drawOrientedSurfelWithNormal( viewer, surfel2, n2.getNormalized());
-
-  Display3DFactory<Space,KSpace>::drawOrientedSurfelWithNormal( viewer, surfel3, n2.getNormalized());
-
-
-
-
-
-  viewer  << Display3D<Space, KSpace>::updateDisplay;
-
-  bool res = application.exec();
-
-
-
-
-
-
-  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+  trace.emphase() << "Passed." << endl;
   trace.endBlock();
-  return res ? 0 : 1;
+  viewer.show();
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

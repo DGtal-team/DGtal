@@ -78,11 +78,7 @@ namespace DGtal
     /// Specialization for integer coordinate int32_t and safe computations.
     template < >
     struct ConvexityHelperInternalInteger< DGtal::int32_t, true > {
-#ifdef WITH_BIGINTEGER
       typedef DGtal::BigInteger Type;
-#else
-      typedef DGtal::int64_t Type;
-#endif
     };
 
     /// Indicates which integer type should be used by ConvexityHelper,
@@ -102,11 +98,7 @@ namespace DGtal
     /// Specialization for integer coordinate int64_t and safe computations.
     template < >
     struct ConvexityHelperInternalInteger< DGtal::int64_t, true > {
-#ifdef WITH_BIGINTEGER
       typedef DGtal::BigInteger Type;
-#else
-      typedef DGtal::int64_t Type;
-#endif
     };
 
     /// Indicates which integer type should be used by ConvexityHelper,
@@ -119,7 +111,6 @@ namespace DGtal
       typedef DGtal::int64_t Type;
     };
 
-#ifdef WITH_BIGINTEGER
     /// Indicates which integer type should be used by ConvexityHelper,
     /// depending on the integral type of each point coordinate and if
     /// computations should be guaranteed or not.
@@ -132,7 +123,6 @@ namespace DGtal
     struct ConvexityHelperInternalInteger< DGtal::BigInteger, safe > {
       typedef DGtal::BigInteger Type;
     };
-#endif
 
     }  // namespace detail
   

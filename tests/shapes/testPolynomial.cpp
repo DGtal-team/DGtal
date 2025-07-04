@@ -16,7 +16,7 @@
 
 /**
  * @file testPolynomial.cpp
- * @ingroup tests
+ * @ingroup Tests
  * @author Anis Benyoub (anis.benyoub@insa-lyon.fr)
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
@@ -42,7 +42,7 @@
 #include "DGtal/topology/SCellsFunctors.h"
 #include "DGtal/topology/helpers/BoundaryPredicate.h"
 #include "DGtal/topology/SetOfSurfels.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include <boost/math/special_functions/fpclassify.hpp>
 
@@ -141,13 +141,9 @@ int main( int argc, char** argv )
 
 
 
-  QApplication application( argc, argv );
-  Viewer3D<> viewer;
-  viewer.show();
-  viewer << SetMode3D( domain.className(), "BoundingBox" ) << domain;
-
-
-
+  PolyscopeViewer<> viewer;
+  viewer.allowReuseList = true;
+  viewer << domain;
 
   //-----------------------------------------------------------------------
   // Looking for the min and max values
@@ -180,15 +176,6 @@ int main( int argc, char** argv )
   trace.info() << " Min = " << minCurv << std::endl;
   trace.info() << " Max = " << maxCurv << std::endl;
 
-
-  //-----------------------------------------------------------------------
-  //Specifing a color map
-
-  GradientColorMap< double > cmap_grad( minCurv, maxCurv );
-  cmap_grad.addColor( Color( 50, 50, 255 ) );
-  cmap_grad.addColor( Color( 255, 0, 0 ) );
-  cmap_grad.addColor( Color( 255, 255, 10 ) );
-
   //------------------------------------------------------------------------------------
   //drawing
   unsigned int nbSurfels = 0;
@@ -208,11 +195,10 @@ int main( int argc, char** argv )
       a = 0;
     }
 
-    viewer << CustomColors3D( Color::Black, cmap_grad( a ));
-    viewer << *it;
+    viewer << WithQuantity(*it, "Mean curvature", a);
   }
 
-  viewer << Viewer3D<>::updateDisplay;
+  viewer.show();
 
-  return application.exec();
+  return 0;
 }

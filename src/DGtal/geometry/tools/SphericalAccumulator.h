@@ -83,11 +83,11 @@ namespace DGtal
    * the representative direction for each bin and the bin with
    * maximal number of samples.
    *
-   * Furthermore, you can send the accumulator to a Viewer3D to see
+   * Furthermore, you can send the accumulator to a PolyscopeViewer to see
    * the bin geometry and values:
    * @code
    * ...
-   * Viewer3D viewer;
+   * PolyscopeViewer viewer;
    * viewer << accumulator;
    * ...
    * @endcode

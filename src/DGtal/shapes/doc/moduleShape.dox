@@ -23,7 +23,7 @@ namespace DGtal {
 [TOC]
 @see shapes/exampleEuclideanShapesDecorator.cpp
 
-@seeDGtalTools @ref shapeGenerator
+@seeDGtalTools shapeGenerator
 
    \section sectmoduleShape1 Introduction of Concepts
 

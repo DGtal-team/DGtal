@@ -156,3 +156,87 @@ DGtal::operator<< ( std::ostream & out,
 ///////////////////////////////////////////////////////////////////////////////
 
 
+///////////////////////////////////////////////////////////////////////////////
+// class Board2D
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// Standard services - public :
+
+/**
+ * Destructor.
+ */
+DGtal::Board2D::~Board2D()
+{
+}
+
+/** 
+ * Constructs a new board and sets the background color, if any.
+ * 
+ * @param aBackgroundColor A color for the drawing's background.
+ */
+DGtal::Board2D::Board2D( const Color & aBackgroundColor )
+  : LibBoard::Board( aBackgroundColor ),
+    myStyles()
+{
+  this->setUnit(LibBoard::Board::UCentimeter);
+}
+
+/** 
+ * Copy constructor.
+ * 
+ * @param other The object to be copied.
+ */
+DGtal::Board2D::Board2D( const Board2D & other )
+  : LibBoard::Board( other ),
+    myStyles( other.myStyles )
+{
+}
+
+/**
+ * Assignment.
+ * @param other the object to copy.
+ * @return a reference on 'this'.
+ */
+DGtal::Board2D & 
+DGtal::Board2D::operator= ( const Board2D & other )
+{
+  if ( this != &other )
+    {
+      LibBoard::Board::operator=( other );
+      myStyles = other.myStyles;
+    }
+  return *this;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Interface - public :
+
+/**
+ * Writes/Displays the object on an output stream.
+ * @param out the output stream where the object is written.
+ */
+void
+DGtal::Board2D::selfDisplay ( std::ostream & out ) const
+{
+    out << "[Board2D]";
+}
+
+/**
+ * Checks the validity/consistency of the object.
+ * @return 'true' if the object is valid, 'false' otherwise.
+ */
+bool
+DGtal::Board2D::isValid() const
+{
+    return true;
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Internals - private :
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////

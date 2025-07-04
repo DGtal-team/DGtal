@@ -155,7 +155,7 @@ namespace DGtal
     Scalar mu() const;
 
     /**
-       Same as width().
+       Same as \ref ParallelStrip::width().
        @return the width of the strip, i.e. the parameter \f$\nu\f$
        such that \f$N \cdot X \le \mu + \nu\f$. 
     */

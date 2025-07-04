@@ -48,6 +48,7 @@
 #include "DGtal/images/CTrivialConstImage.h"
 #include "DGtal/images/SetValueIterator.h"
 #include "boost/concept_check.hpp"
+#include "boost/iterator/reverse_iterator.hpp"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal 
@@ -88,7 +89,7 @@ namespace DGtal
     /// constant iterator types 
     BOOST_CONCEPT_ASSERT(( concepts::CDomain<Domain> )); 
     typedef ConstIteratorAdapter<typename Domain::ConstIterator,TImage,Value> ConstIterator; 
-    typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
+    typedef boost::reverse_iterator<ConstIterator> ConstReverseIterator;
 
     // ------------------------- standard services --------------------------------
 

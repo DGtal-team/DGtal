@@ -29,7 +29,7 @@
 #include "DGtal/shapes/Mesh.h"
 #include "DGtal/shapes/TriangulatedSurface.h"
 #include "DGtal/shapes/MeshHelpers.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 //! [viewMarchingCubes-basicIncludes]
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -136,13 +136,10 @@ int main( int argc, char** argv )
   trace.endBlock();
   //! [viewMarchingCubes-makingMesh]
 
-  QApplication application(argc,argv);
-  Viewer3D<> viewer;
-  viewer.show();
-  viewer.setLineColor(Color(150,0,0,254));
+  PolyscopeViewer<> viewer;
+  viewer.drawColor(Color(150,0,0,254));
   viewer << viewmesh;
-  viewer << Viewer3D<>::updateDisplay;
-  application.exec();
+  viewer.show();
   
 }
 

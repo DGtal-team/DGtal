@@ -219,7 +219,7 @@ int main( int argc, char** argv )
 
   //save the drawing
   aBoard.saveSVG("convex-and-concave-parts.svg");
-  #ifdef WITH_CAIRO
+  #ifdef DGTAL_WITH_CAIRO
     aBoard.saveCairo("convex-and-concave-parts.png"); 
   #endif
 

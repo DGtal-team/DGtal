@@ -379,30 +379,6 @@ namespace DGtal
     return get ( getKey ( aPoint ) );
   }
 
-  //Deprecated
-  template < typename Domain, typename Value, typename HashKey >
-  inline
-  Value
-  ImageContainerByHashTree<Domain, Value, HashKey  >::upwardGet ( const HashKey key ) const
-  {
-    //cerr << "ImageContainerByHashTree::upWardGet" << std::endl;
-    HashKey aKey = key;
-
-    while ( aKey )
-      {
-        HashKey key2 = getIntermediateKey ( aKey );
-        Node* iter = myData[key2];
-
-        while ( iter != 0 )
-          {
-            if ( iter->getKey() == aKey )
-              return iter->getObject();
-            iter = iter->getNext();
-          }
-        aKey >>= dim; // transorm the key to search in an upper level
-      }
-  }
-
   template < typename Domain, typename Value, typename HashKey  >
   inline
   HashKey

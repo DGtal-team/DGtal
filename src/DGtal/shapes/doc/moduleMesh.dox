@@ -71,7 +71,7 @@ An example of mesh construction is given here:  mesh3DConstructionAndVisualisati
 \subsection subsect2moduleMeshIO Mesh IO
 
 The Mesh object is integrated in the main IO framework of DGtal. You
-can for instance display a Mesh object directly through a Viewer3d object:
+can for instance display a Mesh object directly through a PolyscopeViewer object:
 
 @snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseDisplay
 

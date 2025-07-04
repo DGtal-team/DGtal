@@ -57,11 +57,19 @@ namespace DGtal
 {
 
   // ----------------------- Related enumerations -----------------------------
-  enum DigitalSetSize { SMALL_DS = 0, MEDIUM_DS = 1, BIG_DS = 2, WHOLE_DS = 3 };
-  enum DigitalSetVariability { LOW_VAR_DS = 0, HIGH_VAR_DS = 4 };
-  enum DigitalSetIterability { LOW_ITER_DS = 0, HIGH_ITER_DS = 8 };
-  enum DigitalSetBelongTestability { LOW_BEL_DS = 0, HIGH_BEL_DS = 16 };
-
+  // Since c++20, arithmetic between different enums types are disabled
+  // (https://eel.is/c++draft/diff.iso#diff.expr-2)
+  inline constexpr int SMALL_DS = 0;
+  inline constexpr int MEDIUM_DS = 1;
+  inline constexpr int BIG_DS = 2;
+  inline constexpr int WHOLE_DS = 3;
+  inline constexpr int LOW_VAR_DS = 0;
+  inline constexpr int HIGH_VAR_DS = 4;
+  inline constexpr int LOW_ITER_DS = 0;
+  inline constexpr int HIGH_ITER_DS = 8;
+  inline constexpr int LOW_BEL_DS = 0;
+  inline constexpr int HIGH_BEL_DS = 16;
+  
   /////////////////////////////////////////////////////////////////////////////
   // template class DigitalSetSelector
   /**

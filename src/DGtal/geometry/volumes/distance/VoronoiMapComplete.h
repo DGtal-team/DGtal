@@ -108,7 +108,7 @@ namespace DGtal
    * l_2@f$ metric, the overall computation is in @f$ O(f.d.n^d)@f$,
    * which is optimal.
    *
-   * If DGtal has been built with OpenMP support (WITH_OPENMP flag set
+   * If DGtal has been built with OpenMP support (DGTAL_WITH_OPENMP flag set
    * to "true"), the computation is done in parallel (multithreaded)
    * in an optimal way: on @a p processors, expected runtime is in
    * @f$ O(f.h.d.n^d / p)@f$.

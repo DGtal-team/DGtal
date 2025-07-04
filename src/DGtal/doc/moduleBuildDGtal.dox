@@ -33,19 +33,17 @@ manage the project build on various systems.
 To build DGtal in is minimal configuration, you need at least these
 dependencies:
 
-- \e c++ compiler (g++, clang++, ...) with C++17 features
-- \e [cmake](http://cmake.org) (>3.1, optionally cmake-gui),
-- \e |boost](http://www.boost.org) boost >= 1.50.0  (no need to have the libraries installed)
+- \e c++ compiler (g++, clang++, ...) with C++20 features
+- \e [cmake](http://cmake.org) (>3.2, optionally cmake-gui),
 - \e zlib (already available in most OS)
 
 To build DGtal in is full configuration, you may need these dependencies too:
 
-- \e gmp,
-- \e [CGAL](http://cgal.org) (build with Eigen enabled),
+- \e [CGAL](http://cgal.org),
 - \e [libIGL](https://libigl.github.io),
 - \e cairo,
-- \e qglviewer,
-- \e insighttoolkit (ITK),
+- \e polyscope,
+- \e insighttoolkit, itk >= 5.0
 - \e [HDF5](http://www.hdfgroup.org/HDF5/)
 
 If you want to generate the documentation, you would need:
@@ -59,7 +57,7 @@ cmake will install all libraries (which may take some time for the first build).
 ```
 conan profile detect --force ##Conan profile
 cd build
-conan install .. --build=missing
+conan install .. --build=missing -s:a compiler.cppstd=20 
 cmake .. -G "Visual Studio 15 2017" -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_POLICY_DEFAULT_CMP0091=NEW 
 ```
 
@@ -90,7 +88,7 @@ cmake ..
 
 For the full DGtal configuration, you have to set these options with cmake:
 @code
-cmake .. -DWITH_GMP=true -DWITH_ITK=true -DWITH_CAIRO=true -DWITH_QGLVIEWER=true 
+cmake .. -DDGTAL_WITH_ITK=true  -DDGTAL_WITH_CAIRO=true -DDGTAL_WITH_POLYSCOPE_VIEWER=true 
 @endcode
 
 If no error occurs, you can build the DGtal lib and install it:
@@ -119,8 +117,8 @@ library build. First, cmake has predefined build options (\e CMAKE_BUILD_TYPE) s
 
 Beside these options, user can also specify these options:
 
-- \e BUILD_EXAMPLES (ON/OFF): to build DGtal examples (default: OFF)
-- \e BUILD_TESTING (ON/OFF): to build the test suite (default: OFF)
+- \e DGTAL_BUILD_EXAMPLES (ON/OFF): to build DGtal examples (default: OFF)
+- \e DGTAL_BUILD_TESTS (ON/OFF): to build the test suite (default: OFF)
 
 - \e VERBOSE (ON/OFF): to define the \e VERBOSE variable
  (default: OFF). If set to ON, verbose
@@ -131,7 +129,7 @@ Beside these options, user can also specify these options:
 debug messages are traced out.
 
 
-- \e  BUILD_SHARED_LIBS (ON/OFF): to build the lib as a shared library (default: OFF) but \b must be \b OFF actually on \b Windows
+- \e  DGTAL_BUILD_SHARED_LIBS (ON/OFF): to build the lib as a shared library (default: OFF) but \b must be \b OFF actually on \b Windows
 
 
 
@@ -146,10 +144,10 @@ compilers is not supported.
 To generate the Visual Studio project, use the cmake (or cmake-gui)
 tools with recent Visual Studio target. During the project generation,
 you would have to specify the path to @e boost headers (or paths
-needed for any optional dependency such as GMP, CGAL, Cairo...).
+needed for any optional dependency such as CGAL, Cairo...).
 
 
-@note Do not forget to set @e BUILD_SHARED_LIBS cmake to false (static
+@note Do not forget to set @e DGTAL_BUILD_SHARED_LIBS cmake to false (static
 DGtal lib target, default).
 
 

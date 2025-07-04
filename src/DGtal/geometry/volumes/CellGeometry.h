@@ -84,11 +84,7 @@ namespace DGtal
     typedef typename KSpace::Cell           Cell;
     typedef typename KSpace::Space          Space;
     typedef typename KSpace::Size           Size;
-#ifdef WITH_BIGINTEGER
     typedef DGtal::BigInteger               BigInteger;
-#else
-    typedef DGtal::int64_t                  BigInteger;
-#endif
     typedef DGtal::BoundedLatticePolytope< Space >  Polytope;
     typedef DGtal::BoundedLatticePolytope< Space >  LatticePolytope;
     typedef DGtal::BoundedRationalPolytope< Space > RationalPolytope;

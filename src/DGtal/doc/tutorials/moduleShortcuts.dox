@@ -126,13 +126,10 @@ surface does not touch the boundary of the domain).
 
 If you wish to display them with two different colors, you may write:
 \code
-    QApplication application(argc,argv);
-    Viewer3D<> viewer;
+    PolyscopeViewer<> viewer;
+    viewer << Color::Red  << *mesh40;
+    viewer << Color::Blue << *mesh200;
     viewer.show();
-    viewer << CustomColors3D( Color::Black, Color::Red  ) << *mesh40;
-    viewer << CustomColors3D( Color::Black, Color::Blue ) << *mesh200;
-    viewer << Viewer3D<>::updateDisplay;
-    application.exec();
 \endcode
 
 @subsubsection dgtal_shortcuts_ssec2_1_4 -> extract 2 triangulated isosurfaces -> save as OBJ
@@ -299,12 +296,27 @@ to get a piecewise smooth approximation of the II normals.
 </tr>
 </table>
 
+@subsubsection dgtal_shortcuts_ssec2_1_14 -> load mesh -> CNC curvatures -> export mesh
+
+This example requires ShortcutsGeometry. It shows how tu use the Corrected Normal Current curvature estimator
+on a mesh model to estimate its mean, Gaussian or principals curvature.
+
+\snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_1_14s
+
+
+<table>
+<tr><td>
+\image html bunnyhead2-cncgauss.png "Rendering of Bunny Head with estimated Gauss curvatures"
+</td><td>
+\image html bunnyhead2-cncmean.png "Rendering of Bunny Head with estimated Mean curvatures"
+</td></tr>
+</table>
+
 @subsubsection dgtal_shortcuts_ssec2_2_13 -> digitize -> True principal curvatures
 
 This example requires ShortcutsGeometry. You can easily get the expected principal curvatures and principal directions onto a digitized implicit shape. 
 
 \snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_2_13s
-
 
 <table>
 <tr>
@@ -492,7 +504,8 @@ Shortcuts::Point is Z3i::KSpace::Point.
   - Shortcuts::makePrimalPolygonalSurface: builds the primal polygonal surface of a (manifold) digital surface
   - Shortcuts::makePrimalSurfaceMesh: builds the primal polygonal surface of a digital surface (which may contain non-manifold edges)
   - Shortcuts::makeDualPolygonalSurface: builds the dual polygonal surface of a  digital surface
-  - Shortcuts::saveOBJ: saves a triangulated or polygonal surface as an OBJ file, with optionnaly normals and colors information.
+  - Shortcuts::makeSurfaceMesh: load a surface mesh from file
+  - Shortcuts::saveOBJ: saves a triangulated or polygonal surface or a mesh as an OBJ file, with optionnaly normals and colors information.
 
 -# Utilities
   - Shortcuts::parametersUtilities: parameters related to colormaps.
@@ -527,6 +540,9 @@ Shortcuts::Point is Z3i::KSpace::Point.
   - ShortcutsGeometry::getIIMeanCurvatures: returns the Integral Invariant (II) mean curvatures onto the given surfel range (embedded in a binary image or a digitized implicit shape)
   - ShortcutsGeometry::getIIGaussianCurvatures: returns the Integral Invariant (II) Gaussian curvatures onto the given surfel range (embedded in a binary image or a digitized implicit shape)
   - ShortcutsGeometry::getIIPrincipalCurvaturesAndDirections: returns the Integral Invariant (II) principal curvatures values and directions for the given surfel range (embedded in a binary image or a digitized implicit shape)
+  - ShortcutsGeometry::getCNCMeanCurvatures: returns the Corrected Normal Current (CNC) mean curvatures onto the given faces (as ids of the mesh).
+  - ShortcutsGeometry::getCNCGaussianCurvatures: returns the Corrected Normal Current (CNC) gaussian curvatures onto the given faces (as ids of the mesh).
+  - ShortcutsGeometry::getCNCPrincipalCurvaturesAndDirections: returns the Corrected Normal Current (CNC) principal curvatures values and directions for the given face range (as ids of the mesh).
   - ShortcutsGeometry::orientVectors: reorient a range of vectors so as to point in the same half-space as another range of vectors.
   - ShortcutsGeometry::getScalarsAbsoluteDifference: return the range of scalars that is the difference of two range of scalars
   - ShortcutsGeometry::getVectorsAngleDeviation: return the range of scalars that form the angle deviations between two range of vectors

@@ -60,7 +60,7 @@ namespace DGtal {
     /**
      * Adequate digital set representation for the given preferences.
      */
-#ifdef WITH_ITK
+#ifdef  DGTAL_WITH_ITK
     typedef ImageContainerByITKImage<Domain, Value> Type;
 #else
     typedef ImageContainerBySTLVector<Domain,Value> Type;

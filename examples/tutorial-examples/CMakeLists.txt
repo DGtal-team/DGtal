@@ -19,13 +19,13 @@ foreach(FILE ${DGTAL_TUTO_EXAMPLES_SRC})
    endif()
 endforeach()
 
-if (WITH_VISU3D_QGLVIEWER)
-  set(DGTAL_TUTO_EXAMPLES_QGL_SRC
+if (DGTAL_WITH_POLYSCOPE)
+  set(DGTAL_TUTO_EXAMPLES_POLYSCOPE_SRC
     shapeDTViewer
     volDTGranulo
     polyhedralizer
   )
-  foreach(FILE ${DGTAL_TUTO_EXAMPLES_QGL_SRC})
+  foreach(FILE ${DGTAL_TUTO_EXAMPLES_POLYSCOPE_SRC})
      DGtal_add_example(${FILE})
   endforeach()
 

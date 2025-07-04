@@ -47,6 +47,7 @@
 #include "DGtal/base/ConstIteratorAdapter.h"
 #include "DGtal/base/CConstBidirectionalRangeFromPoint.h"
 #include "boost/concept_check.hpp"
+#include "boost/iterator/reverse_iterator.hpp"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -84,10 +85,10 @@ namespace DGtal
       typedef typename DistanceFunctor::Point Point;
 
       typedef TConstIterator ConstIterator;
-      typedef std::reverse_iterator<ConstIterator> ConstReverseIterator;
+      typedef boost::reverse_iterator<ConstIterator> ConstReverseIterator;
 
       typedef Circulator<ConstIterator> ConstCirculator;
-      typedef std::reverse_iterator<ConstCirculator> ConstReverseCirculator;
+      typedef boost::reverse_iterator<ConstCirculator> ConstReverseCirculator;
 
       // ------------------------- standard services --------------------------------
 
