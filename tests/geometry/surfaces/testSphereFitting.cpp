@@ -43,7 +43,7 @@
 
 #include "DGtal/topology/CanonicSCellEmbedder.h"
 #include "DGtal/graph/DistanceBreadthFirstVisitor.h"
-#include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
+#include "DGtal/geometry/volumes/distance/LpMetric.h"
 #include "DGtal/geometry/surfaces/estimation/LocalEstimatorFromSurfelFunctorAdapter.h"
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/BasicEstimatorFromSurfelsFunctors.h"
 #include "DGtal/topology/LightImplicitDigitalSurface.h"
@@ -101,7 +101,7 @@ bool testFitting()
 
   trace.beginBlock("Normal vector field computation");
   typedef functors::ElementaryConvolutionNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace> > FunctorNormal;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric,
+  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, LpMetric<Z3i::Space>,
                                                  FunctorNormal,
                                                  DGtal::functors::GaussianKernel> ReporterNormal;
   typedef EstimatorCache<ReporterNormal> NormalCache;
@@ -111,7 +111,8 @@ bool testFitting()
   FunctorNormal functorNormal(embedder, 1.0);
   ReporterNormal reporterNormal;
   reporterNormal.attach(surface);
-  reporterNormal.setParams(l2Metric, functorNormal, gaussKernelFunc, 5.0);
+  LpMetric<Z3i::Space> l2(2.0);
+  reporterNormal.setParams(l2, functorNormal, gaussKernelFunc, 5.0);
 
   //caching normal field
   NormalCache normalCache(reporterNormal);
@@ -122,13 +123,13 @@ bool testFitting()
   trace.beginBlock("Creating  sphere fitting adapter from normal vector field");
   typedef functors::SphereFittingEstimator<Surfel, CanonicSCellEmbedder<KSpace> , NormalCache> Functor;
   typedef functors::ConstValue< double > ConvFunctor;
-  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, Z3i::L2Metric, Functor, ConvFunctor> Reporter;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, LpMetric<Z3i::Space>, Functor, ConvFunctor> Reporter;
 
   Functor fitter(embedder,1.0, 5.0, normalCache);
   ConvFunctor convFunc(1.0);
   Reporter reporter;
   reporter.attach(surface);
-  reporter.setParams(l2Metric, fitter , convFunc, 15.0);
+  reporter.setParams(l2, fitter , convFunc, 15.0);
   
   reporter.init(1, surface.begin(), surface.end());
   for(Surface::ConstIterator it = surface.begin(), ite=surface.end(); it!=ite; ++it)

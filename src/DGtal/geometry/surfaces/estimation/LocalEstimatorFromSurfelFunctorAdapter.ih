@@ -187,6 +187,35 @@ eval( const SurfelConstIterator& it ) const
 ///////////////////////////////////////////////////////////////////////////////
 template <typename TDigitalSurfaceContainer, typename TMetric, 
           typename TFunctorOnSurfel, typename TConvolutionFunctor>
+inline
+typename DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric, 
+                                                       TFunctorOnSurfel, TConvolutionFunctor>::Quantity
+DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric, 
+                                              TFunctorOnSurfel, TConvolutionFunctor>::
+eval( const Surfel& scell ) const
+{
+  ASSERT_MSG( isValid(), "Missing init() before evaluation" );
+  const MetricToPoint metricToPoint = std::bind( *myMetric, myEmbedder( scell ), std::placeholders::_1 );
+  const VertexFunctor vfunctor( myEmbedder, metricToPoint);
+  Visitor visitor( *mySurface, vfunctor, scell);
+  ASSERT( ! visitor.finished() );
+  double currentDistance = 0.0;
+  while ( (! visitor.finished() ) && (currentDistance < myRadius) )
+   {
+     typename Visitor::Node node = visitor.current();
+     currentDistance = node.second;
+     if ( currentDistance < myRadius )
+       myFunctor->pushSurfel( node.first , myConvFunctor->operator()((myRadius - currentDistance)/myRadius));
+     else break;
+     visitor.expand();
+  }
+  Quantity val = myFunctor->eval();
+  myFunctor->reset();
+  return val;
+}
+///////////////////////////////////////////////////////////////////////////////
+template <typename TDigitalSurfaceContainer, typename TMetric, 
+          typename TFunctorOnSurfel, typename TConvolutionFunctor>
 template <typename SurfelConstIterator, typename OutputIterator>
 inline
 OutputIterator
@@ -203,6 +232,26 @@ eval ( const SurfelConstIterator& itb,
     }
   return result;
 }
+///////////////////////////////////////////////////////////////////////////////
+template <typename TDigitalSurfaceContainer, typename TMetric, 
+          typename TFunctorOnSurfel, typename TConvolutionFunctor>
+template <typename OutputIterator>
+inline
+OutputIterator
+DGtal::LocalEstimatorFromSurfelFunctorAdapter<TDigitalSurfaceContainer, TMetric, 
+                                              TFunctorOnSurfel, TConvolutionFunctor>::
+evalAll ( OutputIterator result ) const
+{
+    for ( auto it = mySurface->begin(), it_end = mySurface->end();
+          it != it_end; ++it )
+    {
+        *result++ = eval ( *it );
+    }
+
+    return result;
+}
+
+
 ///////////////////////////////////////////////////////////////////////////////
 template <typename TDigitalSurfaceContainer, typename TMetric, 
           typename TFunctorOnSurfel, typename TConvolutionFunctor>

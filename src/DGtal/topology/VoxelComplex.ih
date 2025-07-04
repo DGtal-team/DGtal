@@ -35,7 +35,7 @@
 #include <boost/graph/filtered_graph.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <iostream>
-#ifdef WITH_OPENMP
+#ifdef DGTAL_WITH_OPENMP
 #include <omp.h>
 #endif
 //////////////////////////////////////////////////////////////////////////////
@@ -811,7 +811,7 @@ typename DGtal::VoxelComplex<TKSpace, TCellContainer>::CliqueContainer
 DGtal::VoxelComplex<TKSpace, TCellContainer>::criticalCliquesForD(
     const Dimension d, const Parent &cubical, bool verbose) const
 {
-#if defined(WITH_OPENMP) && !defined(WIN32) 
+#if defined(DGTAL_WITH_OPENMP) && !defined(WIN32) 
     ASSERT(dimension >= 0 && dimension <= 3);
     CliqueContainer critical;
 

@@ -23,8 +23,7 @@ but also data to perform computations efficiently.
 \section dgtal_integer_computations_sec1 Integer types and standard arithmetic operations
 
 We use integer types DGtal::int32_t, DGtal::int64_t, and
-DGtal::BigInteger (integers of arbitrary size). The last type is
-available only if DGtal was compiled with \c cmake \c -DWITH_GMP=true
+DGtal::BigInteger (integers of arbitrary size).
 \c ...
 
 You may use any of these types or new ones, provided they satisfy the
@@ -41,7 +40,7 @@ The templated class IntegerComputer is parameterized by a type that is
 a model of CInteger. Most -- but not all -- of the methods of this
 class require the class to be instantiated. Indeed, it allows the
 instantiation of mutable integer data members, which are then used in
-all intermediate computations. This is especially useful with GMP big
+all intermediate computations. This is especially useful with big
 integers, where memory management takes a lot of time. The idea is
 thus to allocate once and for all these variables.
 

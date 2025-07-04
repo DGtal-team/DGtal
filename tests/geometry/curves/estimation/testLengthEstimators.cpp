@@ -134,7 +134,7 @@ bool testLengthEstimatorsOnBall(double radius, double h)
     trace.info() << "#tracking..." << endl;
     // Create GridCurve
     GridCurve<KSpace> gridcurve;
-    gridcurve.initFromVector( points );
+    gridcurve.initFromPointsVector( points );
     trace.info() << "#grid curve created, h=" << h << endl;
 
     //ranges
@@ -218,7 +218,7 @@ bool testDisplay(double radius, double h)
     trace.info() << "# tracking..." << endl;
     // Create GridCurve
     GridCurve<KSpace> gridcurve;
-    gridcurve.initFromVector( points );
+    gridcurve.initFromPointsVector( points );
     trace.info() << "#grid curve created, h=" << h << endl;
     
     //ranges

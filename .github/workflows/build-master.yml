@@ -7,10 +7,10 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   TESTBLACKLIST: "(testLinearStructure|testIntegerConverter|testArithmeticalDSSComputerOnSurfels)"
-  CONFIG_GLOBAL:  -DBUILD_EXAMPLES=true -DBUILD_TESTING=true -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=10 -DWITH_EIGEN=true 
-  CONFIG_LINUX:   -DWITH_OPENMP=true -DWITH_GMP=true -DWITH_FFTW3=true -DWITH_CGAL=true -DWITH_LIBIGL=true  -DWARNING_AS_ERROR=ON -DWITH_HDF5=true -DWITH_QGLVIEWER=true -DWITH_CAIRO=true   -DWITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true -DBUILD_POLYSCOPE_EXAMPLES=true
-  CONFIG_MAC:     -DWITH_GMP=true -DBUILD_POLYSCOPE_EXAMPLES=true -DWITH_CGAL=true -DWITH_LIBIGL=true 
-  CONFIG_WINDOWS: -DWITH_OPENMP=true  #-DWITH_GMP=true #-DWITH_FFTW3=true  #-DWITH_CAIRO=true #-DWITH_ITK=true  
+  CONFIG_GLOBAL:  -DDGTAL_BUILD_EXAMPLES=true -DDGTAL_BUILD_TESTS=true -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=10  
+  CONFIG_LINUX:   -DDGTAL_WITH_OPENMP=true -DDGTAL_WITH_FFTW3=true -DDGTAL_WITH_CGAL=true -DDGTAL_WITH_LIBIGL=true  -DDGTAL_WARNING_AS_ERROR=ON -DDGTAL_WITH_HDF5=true -DDGTAL_WITH_POLYSCOPE_VIEWER=true  -DDGTAL_WITH_CAIRO=true    -DDGTAL_WITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true -DDGTAL_BUILD_POLYSCOPE_EXAMPLES=true
+  DGTAL_CONFIG_MAC:     -DDGTAL_BUILD_POLYSCOPE_EXAMPLES=true -DDGTAL_WITH_CGAL=true  -DDGTAL_WITH_LIBIGL=true 
+  CONFIG_WINDOWS: -DDGTAL_WITH_OPENMP=true  #-DDGTAL_WITH_FFTW3=true  # -DDGTAL_WITH_CAIRO=true # -DDGTAL_WITH_ITK=true  
 
 jobs:
   build:
@@ -33,11 +33,11 @@ jobs:
        if: matrix.os == 'ubuntu-latest'
        run: |
            sudo apt-get update
-           sudo apt-get install zsh libqglviewer-dev-qt5 libboost-dev libcgal-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libfftw3-dev libinsighttoolkit4-dev xorg-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev
+           sudo apt-get install zsh libqglviewer-dev-qt5 libcgal-dev ninja-build libhdf5-serial-dev  libcairo2-dev libfftw3-dev libinsighttoolkit5-dev xorg-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev
 
      - name: Install macOS deps
        if: matrix.os == 'macOS-latest'
-       run: brew install boost ninja gmp libomp cgal
+       run: brew install ninja libomp cgal
 
      - name: Install conan
        if: matrix.os == 'windows-latest'
@@ -82,7 +82,7 @@ jobs:
        shell: bash
        working-directory: ${{runner.workspace}}/build
        run: |
-            conan install $GITHUB_WORKSPACE --build=missing
+            conan install $GITHUB_WORKSPACE --build=missing -s:a compiler.cppstd=20
             cmake $GITHUB_WORKSPACE -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_POLICY_DEFAULT_CMP0091=NEW -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_GLOBAL $CONFIG_WINDOWS -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ steps.whitelist.outputs.WHITELIST }}"
 
      - name: Build
@@ -131,14 +131,16 @@ jobs:
     - name: Set up
       run: |
          sudo apt-get update
-         sudo apt-get install  zsh libqglviewer-dev-qt5 libboost-dev libcgal-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libfftw3-dev libinsighttoolkit4-dev xorg-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev  graphviz texlive doxygen
+         sudo apt-get install  zsh libqglviewer-dev-qt5 libboost-dev libcgal-dev ninja-build libhdf5-serial-dev libcairo2-dev libfftw3-dev  libinsighttoolkit5-dev xorg-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev  graphviz texlive doxygen
 
     - name: Building pages
       run: |
          mkdir build
          cd build
          cmake .. $CONFIG_GLOBAL $CONFIG_LINUX -DDGTAL_RANDOMIZED_TESTING_THRESHOLD=1000
-         wget --no-check-certificate -O "${{runner.workspace}}/DGtal/build/DGtalTools-tagfile" http://dgtal.org/doc/tags/DGtalTools-tagfile;
+         # Removing the DGtalTools tag file for now. It creates extra pages in the doc (@dcoeurjo)
+         # wget --no-check-certificate -O "${{runner.workspace}}/DGtal/build/DGtalTools-tagfile" http://dgtal.org/doc/tags/
+         touch DGtalTools-tagfile
          make doc > buildDoc.log
 
     - name: Checking doc

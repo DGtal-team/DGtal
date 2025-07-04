@@ -27,7 +27,7 @@
 
 
 /**
- *  Example of viewing dual surfaces in Viewer3D.  
+ *  Example of viewing dual surfaces in PolyscopeViewer.  
  *  \image html viewDualSurface.png " " 
  *  \example io/viewDualSurface.cpp
  **/
@@ -41,7 +41,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 #include "ConfigExamples.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 
 
 using namespace std;
@@ -152,7 +152,7 @@ void viewPolygons
 {
   typedef typename Viewer::RealPoint RealPoint;
   std::vector<RealPoint> pts3d;
-  DGtal::Color fillColorSave = viewer.getFillColor();
+
   for ( unsigned int f = 0; f < indices.size(); ++f )
     {
       pts3d.clear();
@@ -165,8 +165,8 @@ void viewPolygons
           P[2] = rescale( points[ i ][ 2 ] );
           pts3d.push_back( P );
         }
-      viewer.setFillColor(color);
-      viewer.addPolygon( pts3d );
+      
+      viewer.drawPolygon( pts3d );
     }
 }
 
@@ -392,15 +392,22 @@ struct ConfigPointPredicate
 int main( int argc, char** argv )
 {
   typedef KSpace::CellSet CellSet;
-  QApplication application(argc,argv);
 
   KSpace KS;
 
-  Viewer3D<Z3i::Space,Z3i::KSpace> viewer(KS);
-  viewer.show();
+  PolyscopeViewer<Z3i::Space,Z3i::KSpace> viewer(KS);
+  viewer.allowReuseList = true;
+
   DGtal::Color fillColor( 200, 200, 220, 255 );
   DGtal::Color surfelColor( 255, 0, 0, 150 );
   DGtal::Color voxelColor( 150, 150, 0, 150 );
+  
+  // Create lists for display:
+  // List will inherit current parameters of viewer
+  viewer << surfelColor;
+  std::string surfels = viewer.newQuadList("Surfels");
+  viewer << voxelColor;
+  std::string polys = viewer.newPolygonList("Polygons");
 
   std::vector<Vector> pts;
 
@@ -418,10 +425,12 @@ int main( int argc, char** argv )
         ConfigPointPredicate<Vector> cpp( f, offset );
         CellSet aBoundary;
         Surfaces<KSpace>::uMakeBoundary( aBoundary, K, cpp, Vector( 0, 0, 0), Vector( 1, 1, 1 ) );
+
+        viewer.setCurrentList(surfels);
         for ( CellSet::const_iterator it = aBoundary.begin(), itE = aBoundary.end();
               it != itE; ++it )
           {
-            viewer << CustomColors3D( surfelColor, surfelColor );
+            viewer << surfelColor;
             viewer << KS.uTranslation( *it, offset/2 );
           }
         for ( Domain::ConstIterator it = domain.begin(), itE = domain.end();
@@ -430,10 +439,12 @@ int main( int argc, char** argv )
             // lightEpsilon( f, *it, 5 ); // {1,-1,1}=5 // interesting
             f[ *it ] = lightBetween( f, *it );
           }
-        viewer << CustomColors3D( DGtal::Color( 255, 0, 0, 255 ), fillColor );
+
+        viewer << fillColor;
         std::vector< std::vector< unsigned int > > indices;
         Domain domain2( offset + Vector( 0, 0, 0), offset + Vector( 1, 1, 1 ) );
 
+        viewer.setCurrentList(polys);
         for ( Domain::ConstIterator it = domain.begin(), itE = domain.end();
               it != itE; ++it )
           {
@@ -441,9 +452,8 @@ int main( int argc, char** argv )
             indices.clear();
             naiveConvexHull( indices, pts, false ); // right_handed
             viewPolygons( viewer, fillColor, indices, pts );
-            }
+          }
       }
-  viewer << Viewer3D<>::updateDisplay;
-
-  return application.exec();
+  viewer.show();
+  return 0;
 }

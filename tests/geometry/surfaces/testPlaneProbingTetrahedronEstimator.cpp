@@ -174,7 +174,6 @@ TEST_CASE("Testing PlaneProbingTetrahedronEstimator")
         REQUIRE(nbOk == 100);
     }
     
-#ifdef WITH_GMP
     SECTION("H , R and L algorithms should return the correct normal, R and L algorithms a reduced basis with BigInteger")
     {
         using Point = PointVector<3, BigInteger>;
@@ -214,7 +213,6 @@ TEST_CASE("Testing PlaneProbingTetrahedronEstimator")
 
         REQUIRE(nbOk == 2);
     }
-#endif
 }
 
 /** @ingroup Tests **/

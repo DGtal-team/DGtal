@@ -1,4 +1,4 @@
-/**
+    /**
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU Lesser General Public License as
  *  published by the Free Software Foundation, either version 3 of the
@@ -46,14 +46,14 @@
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/shapes/Shapes.h"
 #include "DGtal/helpers/StdDefs.h"
 
-
-#include "DGtal/geometry/surfaces/estimation/BasicConvolutionWeights.h"
-#include "DGtal/geometry/surfaces/estimation/LocalConvolutionNormalVectorEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/LocalEstimatorFromSurfelFunctorAdapter.h"
+#include "DGtal/geometry/surfaces/estimation/estimationFunctors/ElementaryConvolutionNormalVectorEstimator.h"
+#include "DGtal/geometry/volumes/distance/LpMetric.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -71,8 +71,6 @@ using namespace Z3i;
 bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
 {
     trace.beginBlock ( "Testing convolution neighborhood ..." );
-
-    QApplication application ( argc,argv );
 
     std::string filename = testPath + "samples/cat10.vol";
 
@@ -108,71 +106,67 @@ bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
 
 
     //Convolution kernel
-    deprecated::ConstantConvolutionWeights< MyDigitalSurface::Size > kernel;
+    typedef MyDigitalSurface::Surfel Surfel;
+    typedef DGtal::functors::ConstValue< double > ConvFunctor;
 
-    //Estimator definition
-    typedef deprecated::LocalConvolutionNormalVectorEstimator<MyDigitalSurface,
-                                                  deprecated::ConstantConvolutionWeights< MyDigitalSurface::Size > > MyEstimator;
-    MyEstimator myNormalEstimator ( digSurf, kernel );
+    LpMetric<Z3i::Space> l1(1.0);
+    CanonicSCellEmbedder<KSpace> embedder(digSurf.container().space());
+    
+    typedef DGtal::functors::ElementaryConvolutionNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace>> Functor;
+    typedef LocalEstimatorFromSurfelFunctorAdapter<MyDigitalSurfaceContainer, LpMetric<Z3i::Space>,
+                                                   Functor, ConvFunctor> MyEstimator;
+    ConvFunctor kernel(1.0);
+    Functor estimator(embedder, 1.0);
 
-    myNormalEstimator.init ( 1.0, 5 );
-
+    MyEstimator myNormalEstimator;
+    myNormalEstimator.attach(digSurf);
+    myNormalEstimator.setParams(l1, estimator, kernel, 5.0); 
+    myNormalEstimator.init(1.0, digSurf.begin(), digSurf.end());
+    
     MyEstimator::Quantity res = myNormalEstimator.eval ( it );
     trace.info() << "Normal vector at begin() : "<< res << std::endl;
-
-    DGtal::Viewer3D<Space,KSpace> viewer(ks);
-    viewer.show();
-
-    DGtal::Color lineColorSave = viewer.getLineColor();
-    viewer.setLineColor( DGtal::Color ( 20,200,20 ));
+    
+    DGtal::PolyscopeViewer<Space,KSpace> viewer(ks);
+    viewer.allowReuseList = true; // Enable auto grouping, which is to some extend, way better
+    
+    // KCell will be rendered as quads (not signed)
+    viewer.newQuadList("Constant estimator");
     for ( MyDigitalSurface::ConstIterator itbis = digSurf.begin(),itend=digSurf.end();
             itbis!=itend; ++itbis )
     {
-        viewer << ks.unsigns ( *itbis );
-
         Point center = ks.sCoords ( *itbis );
         MyEstimator::Quantity normal = myNormalEstimator.eval ( itbis );
-
-        viewer.addLine ( center,
-                         DGtal::Z3i::RealPoint(center[0]-3*normal[0],
-                 center[1]-3*normal[1],
-                 center[2]-3*normal[2]) );
+        viewer << Color(200, 0, 0) << WithQuantity(ks.unsigns( *itbis ), "normal", -normal);
     }
-    viewer.setLineColor( lineColorSave);
-    viewer<< Viewer3D<>::updateDisplay;
 
     //Convolution kernel
-    deprecated::GaussianConvolutionWeights< MyDigitalSurface::Size > Gkernel ( 14.0 );
+    typedef DGtal::functors::GaussianKernel ConvFunctorGaussian;
+    typedef LocalEstimatorFromSurfelFunctorAdapter<MyDigitalSurfaceContainer, LpMetric<Z3i::Space>,
+                                                   Functor, ConvFunctorGaussian> MyEstimatorGaussian;
+    
+    ConvFunctorGaussian kernelGaussian(14.0);
+    Functor estimatorGaussian(embedder, 1.0); // Passed by alias, can't reuse previous
 
-    //Estimator definition
-    typedef deprecated::LocalConvolutionNormalVectorEstimator<MyDigitalSurface,
-                                                              deprecated::GaussianConvolutionWeights< MyDigitalSurface::Size > > MyEstimatorGaussian;
-    MyEstimatorGaussian myNormalEstimatorG ( digSurf, Gkernel );
-
-    myNormalEstimatorG.init ( 1.0, 15 );
+    MyEstimatorGaussian myNormalEstimatorG;
+    myNormalEstimatorG.attach(digSurf);
+    myNormalEstimatorG.setParams(l1, estimatorGaussian, kernelGaussian, 15.0); 
+    myNormalEstimatorG.init(1.0, digSurf.begin(), digSurf.end());
 
     MyEstimatorGaussian::Quantity res2 = myNormalEstimatorG.eval ( it );
     trace.info() << "Normal vector at begin() : "<< res2 << std::endl;
 
-    viewer<< CustomColors3D ( Color ( 200, 0, 0 ),Color ( 200, 0,0 ) );
-    lineColorSave = viewer.getLineColor();
-    viewer.setLineColor( DGtal::Color ( 200,20,20 ));
+    // KCell will be rendered as quads (not signed)
+    viewer.newQuadList("Gaussian estimator");
     for ( MyDigitalSurface::ConstIterator itbis = digSurf.begin(),itend=digSurf.end();
             itbis!=itend; ++itbis )
     {
-        viewer << ks.unsigns ( *itbis );
-
         Point center = ks.sCoords ( *itbis );
         MyEstimatorGaussian::Quantity normal = myNormalEstimatorG.eval ( itbis );
-        viewer.addLine ( center,
-                         DGtal::Z3i::RealPoint(center[0]-3*normal[0],
-                 center[1]-3*normal[1],
-                 center[2]-3*normal[2]) );
+        viewer << Color(200, 0, 0) << WithQuantity(ks.unsigns( *itbis ), "normal", -normal);
     }
-    viewer.setLineColor( lineColorSave);
-    viewer<< Viewer3D<>::updateDisplay;
 
-  return application.exec();
+    viewer.show();
+    return 0;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -114,7 +114,7 @@ we use VolWriter as follows:
   
 @snippet tutorial-examples/FMMErosion.cpp FMMErosionImageWriting
 
-\note In order to visualize a vol file with QGLViewer, you can 
+\note In order to visualize a vol file with PolyscopeViewer, you can 
 use the tool @e 3dVolViewer of the DGtalTools project 
 (https://github.com/DGtal-team/DGtalTools).
 

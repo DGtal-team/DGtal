@@ -61,7 +61,7 @@
 #include "DGtal/graph/BreadthFirstVisitor.h"
 #include "DGtal/io/readers/SurfaceMeshReader.h"
 #include "DGtal/io/writers/SurfaceMeshWriter.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 
@@ -156,12 +156,9 @@ int main( int argc, char** argv )
   MeshHelpers::surfaceMesh2Mesh( torus_mesh, viewmesh2 );
   MeshHelpers::surfaceMesh2Mesh( pyramid_mesh, viewmesh3 );
 
-  QApplication application(argc,argv);
-  Viewer3D<> viewer;
-  viewer.show();
+  PolyscopeViewer<> viewer;
   viewer << viewmesh << viewmesh2 << viewmesh3;
-  viewer << Viewer3D<>::updateDisplay;
-  application.exec();
+  viewer.show();
   
   return 0;
 }

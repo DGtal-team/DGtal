@@ -99,11 +99,11 @@ void ballGenerator(const TKSpace& aKSpace, GridCurve<TKSpace>& aGC, const Intege
       if (aFlagIsCW)
 	{
 	  points2.assign( points.rbegin(), points.rend() );
-	  aGC.initFromVector(points2); 
+	  aGC.initFromPointsVector(points2); 
 	} 
       else 
 	{
-	  aGC.initFromVector(points); 
+	  aGC.initFromPointsVector(points); 
 	}
     }
   catch ( InputException& e )

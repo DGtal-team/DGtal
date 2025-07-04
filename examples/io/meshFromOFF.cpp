@@ -47,7 +47,7 @@
 //! [includeImportOFF]
 
 #include "DGtal/io/Display3D.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 
 #include "DGtal/base/Common.h"
 #include "DGtal/io/Color.h"
@@ -59,10 +59,7 @@ using namespace DGtal;
 
 int main( int argc, char** argv )
 {
-  QApplication application(argc,argv);
-  Viewer3D<> viewer;
-  viewer.show();
-  //! [ImportOFFfile]
+  PolyscopeViewer<> viewer;
   std::string inputFilename = examplesPath + "samples/tref.off";
   // Since the input points are not necessary integers we use the PointD3D from Display3D.
   Mesh<Viewer3D<>::RealPoint> anImportedMesh;
@@ -70,10 +67,10 @@ int main( int argc, char** argv )
   //! [ImportOFFfile]
   trace.info()<< "importating done..."<< endl;
   //! [displayOFFfile]
-  viewer.setLineColor(DGtal::Color(150,0,0,254));
   viewer << anImportedMesh;
-  viewer << Viewer3D<>::updateDisplay;
   //! [displayOFFfile]
-  return application.exec();
+  //! [ImportOFFfile]
+  viewer.show();
+  return 0;
 }
 ///////////////////////////////////////////////////////////////////////////////

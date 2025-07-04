@@ -219,14 +219,14 @@ int main( int argc, char** argv )
     }
   
   // Extracts shortest paths to a target
-  typedef TangencyComputer< KSpace >::Index Index;
+  typedef TangencyComputer< KSpace >::Index tcIndex;
   trace.beginBlock( "Compute geodesics" );
   TangencyComputer< KSpace > TC( K );
   TC.init( lattice_points.cbegin(), lattice_points.cend() );
   auto SP = TC.makeShortestPaths( opt );
   SP.init( lowest ); //< set source
   double last_distance = 0.0;
-  Index  last = 0;
+  tcIndex  last = 0;
   while ( ! SP.finished() )
     {
       last = std::get<0>( SP.current() );
@@ -241,7 +241,7 @@ int main( int argc, char** argv )
 
   // Export surface for display
   std::vector<double> distances = SP.distances();
-  for ( Index i = 0; i < distances.size(); i++ )
+  for ( tcIndex i = 0; i < distances.size(); i++ )
     distances[ i ] *= h;
   saveToObj( "sphere1-geodesics", smesh, distances, 10, 0.1 );
   return 0;

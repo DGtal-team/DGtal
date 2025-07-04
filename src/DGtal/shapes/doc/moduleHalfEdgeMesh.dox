@@ -390,7 +390,7 @@ subsect2moduleMeshIO.  More precisely, class MeshWriter allows you to
 output a Mesh as an OFF/OFS/OBJ file while class MeshReader can input
 an OFF/OFS file into a Mesh.
 
-For visualization, you may also directly stream a Mesh into a Viewer3D.
+For visualization, you may also directly stream a Mesh into a PolyscopeViewer.
 
 \code
 #include "DGtal/shapes/TriangulatedSurface.h"
@@ -415,12 +415,9 @@ For visualization, you may also directly stream a Mesh into a Viewer3D.
   MeshHelpers::triangulatedSurface2Mesh( tmesh, mesh );
 
   // View it
-  Viewer3D<> viewer;
-  viewer.show();
-  viewer.setLineColor(Color(150,0,0,254));
+  PolyscopeViewer<> viewer;
   viewer << mesh;
-  viewer << Viewer3D<>::updateDisplay;
-  application.exec();
+  viewer.show();
 \endcode
 
 
@@ -655,7 +652,7 @@ subsect2moduleMeshIO.  More precisely, class MeshWriter allows you to
 output a Mesh as an OFF/OFS/OBJ file while class MeshReader can input
 an OFF/OFS file into a Mesh.
 
-For visualization, you may also directly stream a Mesh into a Viewer3D.
+For visualization, you may also directly stream a Mesh into a PolyscopeViewer.
 
 \code
 #include "DGtal/shapes/PolygonalSurface.h"
@@ -680,12 +677,9 @@ For visualization, you may also directly stream a Mesh into a Viewer3D.
   MeshHelpers::polygonalSurface2Mesh( tmesh, mesh );
 
   // View it
-  Viewer3D<> viewer;
-  viewer.show();
-  viewer.setLineColor(Color(150,0,0,254));
+  PolyscopeViewer<> viewer;
   viewer << mesh;
-  viewer << Viewer3D<>::updateDisplay;
-  application.exec();
+  viewer.show();
 \endcode
 
 */

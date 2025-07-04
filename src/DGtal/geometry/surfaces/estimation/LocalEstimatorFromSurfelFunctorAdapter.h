@@ -93,7 +93,7 @@ namespace DGtal
    * canonical embedding of surfel elements (cf CanonicSCellEmbedder).
    *
    *  @tparam TDigitalSurfaceContainer any model of digital surface container concept (CDigitalSurfaceContainer)
-   *  @tparam TMetric any model of CMetricSpace to be used in the neighborhood construction (e.g. LpMetric)
+   *  @tparam TMetric any model of CMetricSpace to be used in the neighborhood construction on RealPoint (e.g. LpMetric)
    *  @tparam TFunctorOnSurfel an estimator on surfel set (model of CLocalEstimatorFromSurfelFunctor)
    *  @tparam TConvolutionFunctor type of  functor on double
    *  [0,1]->[0,1] to implement the response of a symmetric convolution kernel.
@@ -122,7 +122,9 @@ namespace DGtal
 
     ///Metric point type
     typedef typename Metric::Point Point;
-    
+    ///The point must be a real point
+    BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType<typename Point::Component,double>::value ));
+
     ///Functor on surfels type
     typedef TFunctorOnSurfel FunctorOnSurfel;
 
@@ -268,6 +270,12 @@ namespace DGtal
     Quantity eval(const SurfelConstIterator& it) const;
 
     /**
+     * @return the estimated quantity at scell
+     * @param [in] scell the surfel at which we evaluate the quantity.
+     */
+    Quantity eval(const Surfel& scell) const;
+
+    /**
      * @return the estimated quantity in the range [itb,ite)
      * @param [in] itb starting surfel iterator.
      * @param [in] ite end surfel iterator.
@@ -278,6 +286,15 @@ namespace DGtal
     OutputIterator eval(const SurfelConstIterator& itb,
                         const SurfelConstIterator& ite,
                         OutputIterator result) const;
+
+    /**
+       Writes on \e result the estimated quantity at all surfels of the digital surface.
+       @param result any model of boost::OutputIterator on Quantity.
+       @return the output iterator after the last write.
+     */
+    template<typename OutputIterator>
+    OutputIterator evalAll(OutputIterator result) const;
+
 
 
     /**

@@ -62,7 +62,7 @@ namespace DGtal
 
        # Associated types
        - Self, its own type
-       - Reverse, same as Self but using std::reverse_iterator<Self::ConstIterator>
+       - Reverse, same as Self but using boost::reverse_iterator<Self::ConstIterator>
        instead of Self::ConstIterator as the underlying iterator
 
        # Notation

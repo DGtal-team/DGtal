@@ -25,7 +25,7 @@
  * is to use the FMM (fast marching method) class
  * in order to incrementally compute a signed distance
  * field from a digital surface. The resulting field
- * is visualized with QGLViewer
+ * is visualized with Polyscope Viewer
  *
  * This file is part of the DGtal library.
  */
@@ -44,7 +44,6 @@ This program outputs this image:
 
 #include <iostream>
 
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -52,7 +51,7 @@ This program outputs this image:
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
 #include "ConfigExamples.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 
 
 using namespace std;
@@ -127,7 +126,7 @@ int main( int argc, char** argv )
      << bel
      << std::endl;
 
-  } catch (DGtal::InputException i) {
+  } catch (const DGtal::InputException& i) {
     trace.emphase() << "starting bel not found" << std::endl;
     return 0;
   }
@@ -174,20 +173,15 @@ int main( int argc, char** argv )
 
   //////////////////////////////////////////////////////////////////////////////////
   //visualisation
-  QApplication application(argc,argv);
-  Viewer3D<> viewer;
-  viewer.show();
+  PolyscopeViewer<> viewer;
+  viewer.allowReuseList = true;
 
   //
-  GradientColorMap<double> colorMap( 0, 2*maximalDistance );
-  colorMap.addColor( Color( 255, 0, 0 ) );
-  colorMap.addColor( Color( 0, 250, 0 ) );
   for (DistanceImage::const_iterator it = imageDistance.begin(), itEnd = imageDistance.end();
        it != itEnd; ++it)
     {
       Point p = it->first;
-      viewer << CustomColors3D( colorMap(it->second), colorMap(it->second) ) ;
-      viewer << p;
+      viewer << WithQuantity(p, "value", it->second);
     }
   Point p = Point::diagonal(1);
   Vector extent =  (domain.upperBound() - domain.lowerBound()) + p;
@@ -196,10 +190,9 @@ int main( int argc, char** argv )
   trace.info() << "clipping plane ("
          << a << ", " << b << ", " << c << ", " << mu << ")"
          << std::endl;
-  viewer << CustomColors3D(Color(200, 200, 200, 100),Color(200, 200,200, 20));
   viewer << ClippingPlane(a,b,c,mu);
 
-  viewer << Viewer3D<>::updateDisplay;
-  return application.exec();
+  viewer.show();
+  return 0;
 }
 //                                                                           //

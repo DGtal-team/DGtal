@@ -45,6 +45,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Exceptions.h"
 #include "DGtal/base/ReverseIterator.h"
+#include "DGtal/kernel/NumberTraits.h"
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/kernel/CSignedNumber.h"
 #include "DGtal/kernel/SpaceND.h"
@@ -844,33 +845,32 @@ namespace DGtal
 	return static_cast<TOutput>(aInput);
       }
     };
-#ifdef WITH_BIGINTEGER
+
     //specialized versions for DGtal::BigInteger
     template <typename TOutput>
     struct toCoordinateImpl<DGtal::BigInteger, TOutput>
     {
       BOOST_CONCEPT_ASSERT(( concepts::CSignedNumber<TOutput> ));
       BOOST_CONCEPT_ASSERT(( concepts::CInteger<TOutput> ));
-
+      
       inline
       static TOutput cast(const DGtal::BigInteger& aInput)
       {
-	ASSERT( (aInput <= static_cast<DGtal::BigInteger>(std::numeric_limits<TOutput>::max())) &&
-		(aInput >= static_cast<DGtal::BigInteger>(std::numeric_limits<TOutput>::min())) ); 
-	return static_cast<TOutput>(aInput.get_si()); 
+        ASSERT( (aInput <= static_cast<DGtal::BigInteger>(std::numeric_limits<TOutput>::max())) &&
+               (aInput >= static_cast<DGtal::BigInteger>(std::numeric_limits<TOutput>::min())) );
+        return static_cast<TOutput>(aInput);
       }
     };
     template <>
     struct toCoordinateImpl<DGtal::BigInteger, DGtal::BigInteger>
     {
-
+      
       inline
       static DGtal::BigInteger cast(const DGtal::BigInteger& aInput)
       {
-	return aInput; 
+        return aInput;
       }
     };
-#endif
 
   } //namespace detail
 

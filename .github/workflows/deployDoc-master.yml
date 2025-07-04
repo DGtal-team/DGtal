@@ -18,7 +18,7 @@ jobs:
     - name: Set up
       run: |
           sudo apt update 
-          sudo apt-get install libboost-dev graphviz texlive-base doxygen
+          sudo apt-get install  graphviz texlive-base doxygen
 
     - name: Create Build Environment
       run: cmake -E make_directory ${{runner.workspace}}/build
@@ -28,7 +28,8 @@ jobs:
          mkdir build
          cd build
          cmake ..
-         wget --no-check-certificate -O "${{runner.workspace}}/DGtal/build/DGtalTools-tagfile" http://dgtal.org/doc/tags/DGtalTools-tagfile;
+         #wget --no-check-certificate -O "${{runner.workspace}}/DGtal/build/DGtalTools-tagfile" http://dgtal.org/doc/tags/DGtalTools-tagfile;
+         touch DGtalTools-tagfile
          make doc > buildDoc.log
 
     - name: Checking doc

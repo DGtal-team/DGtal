@@ -30,6 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/BasicFunctors.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/CPointEmbedder.h"
 #include "DGtal/kernel/CWithGradientMap.h"
@@ -46,9 +47,10 @@
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
 #include "DGtal/shapes/implicit/ImplicitFunctionLinearCellEmbedder.h"
 #include "DGtal/shapes/implicit/ImplicitFunctionDiff1LinearCellEmbedder.h"
-#include "DGtal/geometry/surfaces/estimation/BasicConvolutionWeights.h"
-#include "DGtal/geometry/surfaces/estimation/LocalConvolutionNormalVectorEstimator.h"
+#include "DGtal/geometry/volumes/distance/LpMetric.h"
+#include "DGtal/geometry/surfaces/estimation/LocalEstimatorFromSurfelFunctorAdapter.h"
 #include "DGtal/geometry/surfaces/estimation/DigitalSurfaceEmbedderWithNormalVectorEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/estimationFunctors/ElementaryConvolutionNormalVectorEstimator.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -94,9 +96,13 @@ bool testEmbedder()
   typedef DigitalSurface<DigitalSurfaceContainer> MyDigitalSurface;
   typedef CanonicDigitalSurfaceEmbedder<MyDigitalSurface> MyDSEmbedder1;
   BOOST_CONCEPT_ASSERT(( CDigitalSurfaceEmbedder< MyDSEmbedder1 > ));
-  typedef deprecated::ConstantConvolutionWeights< MyDigitalSurface::Size > Kernel;
-  typedef deprecated::LocalConvolutionNormalVectorEstimator
-    < MyDigitalSurface, Kernel > MyEstimator;
+
+  typedef MyDigitalSurface::Surfel Surfel;
+  typedef DGtal::functors::ConstValue< double > ConvFunctor;
+  typedef DGtal::functors::ElementaryConvolutionNormalVectorEstimator<Surfel, MySCellEmbedder1> Functor;
+  typedef LocalEstimatorFromSurfelFunctorAdapter<DigitalSurfaceContainer, LpMetric<Z3i::Space>,
+                                                   Functor, ConvFunctor> MyEstimator;
+
   typedef DigitalSurfaceEmbedderWithNormalVectorEstimator
     < MyDSEmbedder1, MyEstimator > MyDSEmbedder2;
   BOOST_CONCEPT_ASSERT(( CDigitalSurfaceEmbedder< MyDSEmbedder2 > ));

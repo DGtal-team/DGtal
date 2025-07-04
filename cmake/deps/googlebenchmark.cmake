@@ -1,5 +1,5 @@
 # -----------------------------------------------------------------------------
-# Fetching google benchmark (only if the BUILD_TESTING variable has been set to true)
+# Fetching google benchmark (only if the DGTAL_BUILD_TESTS variable has been set to true)
 # -----------------------------------------------------------------------------
 
 if (TARGET benchmark)
