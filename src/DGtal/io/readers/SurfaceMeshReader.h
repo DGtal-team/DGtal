@@ -102,9 +102,9 @@ namespace DGtal
     /// Reads an input file as an OBJ file format and outputs the
     /// corresponding surface mesh.
     ///
-    /// @param[in,out] input the input stream where the OBJ file is read.
+    /// @param[in,out] input the input stream from which the OBJ file is read.
     /// @param[out] smesh the output surface mesh.
-    /// @param[out] materials a vector containing the material of each face (an index).
+    /// @param[out] materials a vector containing the material of each face (an index), or an empty vector if there is no material in the OBJ file.
     ///
     /// @return 'true' if both reading the input stream was ok and the
     /// created mesh is ok.
