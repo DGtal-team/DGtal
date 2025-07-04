@@ -2130,10 +2130,11 @@ namespace DGtal
         VoronoiPointPredicate predicate(set);
         Metric metric;
 
-        typename Map::PeriodicitySpec specs;
+        typename Map::PeriodicitySpec specs = {false, false, false};
         if (params["toroidal-x"].as<int>()) specs[0] = true;
         if (params["toroidal-y"].as<int>()) specs[1] = true;
         if (params["toroidal-z"].as<int>()) specs[2] = true;
+
 
         // Do not return a pointer here for two reasons:
         //  - The distance transform will not be passed anywhere else
@@ -2166,7 +2167,7 @@ namespace DGtal
         VoronoiPointPredicate predicate(set);
         Metric metric;
 
-        typename Map::PeriodicitySpec specs;
+        typename Map::PeriodicitySpec specs = {false, false, false};
         if (params["toroidal-x"].as<int>()) specs[0] = true;
         if (params["toroidal-y"].as<int>()) specs[1] = true;
         if (params["toroidal-z"].as<int>()) specs[2] = true;
@@ -2205,7 +2206,7 @@ namespace DGtal
         VoronoiPointPredicate predicate(set);
         Metric metric;
 
-        typename Map::PeriodicitySpec specs;
+        typename Map::PeriodicitySpec specs = {false, false, false};
         if (params["toroidal-x"].as<int>()) specs[0] = true;
         if (params["toroidal-y"].as<int>()) specs[1] = true;
         if (params["toroidal-z"].as<int>()) specs[2] = true;
@@ -2244,7 +2245,7 @@ namespace DGtal
         VoronoiPointPredicate predicate(set);
         Metric metric;
 
-        typename Map::PeriodicitySpec specs;
+        typename Map::PeriodicitySpec specs = {false, false, false};
         if (params["toroidal-x"].as<int>()) specs[0] = true;
         if (params["toroidal-y"].as<int>()) specs[1] = true;
         if (params["toroidal-z"].as<int>()) specs[2] = true;
@@ -2288,8 +2289,8 @@ namespace DGtal
           pCount ++;
           for (size_t i = 0; i < Space::dimension; ++i)
           {
-            pmin[i] = std::min(pmin[i], (*it)[i]);
-            pmax[i] = std::max(pmax[i], (*it)[i]);
+            pmin[i] = std::min(pmin[i], (*it)[i] - 1);
+            pmax[i] = std::max(pmax[i], (*it)[i] + 1);
           }
         }
 
@@ -2297,8 +2298,8 @@ namespace DGtal
         {
           for (size_t i = 0; i < Space::dimension; ++i)
           {
-            pmin[i] = std::min(pmin[i], (*it)[i]);
-            pmax[i] = std::max(pmax[i], (*it)[i]);
+            pmin[i] = std::min(pmin[i], (*it)[i] - 1);
+            pmax[i] = std::max(pmax[i], (*it)[i] + 1);
           }
         }
 
@@ -2309,7 +2310,7 @@ namespace DGtal
         Metric metric;
 
 
-        typename Map::PeriodicitySpec specs;
+        typename Map::PeriodicitySpec specs = {false, false, false};
         if (params["toroidal-x"].as<int>()) specs[0] = true;
         if (params["toroidal-y"].as<int>()) specs[1] = true;
         if (params["toroidal-z"].as<int>()) specs[2] = true;
@@ -2358,8 +2359,8 @@ namespace DGtal
           pCount ++;
           for (size_t i = 0; i < Space::dimension; ++i)
           {
-            pmin[i] = std::min(pmin[i], (*it)[i]);
-            pmax[i] = std::max(pmax[i], (*it)[i]);
+            pmin[i] = std::min(pmin[i], (*it)[i] - 1);
+            pmax[i] = std::max(pmax[i], (*it)[i] + 1);
           }
         }
 
@@ -2367,8 +2368,8 @@ namespace DGtal
         {
           for (size_t i = 0; i < Space::dimension; ++i)
           {
-            pmin[i] = std::min(pmin[i], (*it)[i]);
-            pmax[i] = std::max(pmax[i], (*it)[i]);
+            pmin[i] = std::min(pmin[i], (*it)[i] - 1);
+            pmax[i] = std::max(pmax[i], (*it)[i] + 1);
           }
         }
 
@@ -2378,8 +2379,7 @@ namespace DGtal
         VoronoiPointPredicate predicate(set);
         Metric metric;
 
-
-        typename Map::PeriodicitySpec specs;
+        typename Map::PeriodicitySpec specs = {false, false, false};
         if (params["toroidal-x"].as<int>()) specs[0] = true;
         if (params["toroidal-y"].as<int>()) specs[1] = true;
         if (params["toroidal-z"].as<int>()) specs[2] = true;

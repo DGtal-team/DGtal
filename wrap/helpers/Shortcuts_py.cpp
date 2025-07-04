@@ -155,7 +155,7 @@ void defines_types_geometry(py::module& m) {
     // We map distance transformation and voronoi map under the same name. 
     // We just "cheat" by binding functions under different names
     py::class_<L1DistanceTransform>(m, "L1VoronoiMap")
-        // No constructor, we let the user build it with makeDistanceTransformation
+        // No constructor, we let the user build it with getDistanceTransformation
         .def("distanceToClosestSite", [](const L1DistanceTransform& vmap, const SHG3::Point& p){
                 return vmap(p);
             })
@@ -176,7 +176,7 @@ void defines_types_geometry(py::module& m) {
             });
 
     py::class_<L2DistanceTransform>(m, "L2VoronoiMap")
-        // No constructor, we let the user build it with makeDistanceTransformation
+        // No constructor, we let the user build it with getDistanceTransformation
         .def("distanceToClosestSite", [](const L2DistanceTransform& vmap, const SHG3::Point& p){
                 return vmap(p);
             })
@@ -433,16 +433,16 @@ void bind_shortcuts(py::module& m_helpers) {
 
 void bind_voronoimap(py::module& mg) {
     mg.def("makeL1VoronoiMap", [](const SH3::Domain& d, const std::vector<SHG3::Point>& points, const Parameters& params) {
-            return SHG3::makeDistanceTransformation<1>(d, points, params);
+            return SHG3::getDistanceTransformation<1>(d, points, params);
         });
     mg.def("makeL1VoronoiMap", [](const CountedPtr<SH3::Domain>& d, const std::vector<SHG3::Point>& points, const Parameters& params) {
-            return SHG3::makeDistanceTransformation<1>(d, points, params);
+            return SHG3::getDistanceTransformation<1>(d, points, params);
         });
     mg.def("makeL2VoronoiMap", [](const SH3::Domain& d, const std::vector<SHG3::Point>& points, const Parameters& params) {
-            return SHG3::makeDistanceTransformation<2>(d, points, params);
+            return SHG3::getDistanceTransformation<2>(d, points, params);
         });
     mg.def("makeL2VoronoiMap", [](const CountedPtr<SH3::Domain>& d, const std::vector<SHG3::Point>& points, const Parameters& params) {
-            return SHG3::makeDistanceTransformation<2>(d, points, params);
+            return SHG3::getDistanceTransformation<2>(d, points, params);
         });
     
     mg.def("getL1DistanceToClosestSite", [](const SH3::Domain& points, const std::vector<SHG3::Point>& sites, const Parameters& params) {
