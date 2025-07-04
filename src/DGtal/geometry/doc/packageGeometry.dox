@@ -71,7 +71,7 @@ of arbitrary dimension, by the means of separable and incremental distance trans
   - \subpage moduleIntegralInvariant <!--Integral invariant curvature estimator 2D/3D--> (Jérémy Levallois, David Coeurjolly, Jacques-Olivier Lachaud)
   - \subpage LocalEstimatorsFromSurfel (David Coeurjolly)
   - \subpage moduleVCM (Louis Cuel, Jacques-Olivier Lachaud, Quentin Mérigot, Boris Thibert)
-  - \subpage modulePlaneProbing (Jacques-Olivier Lachaud, Jocelyn Meyron, Tristan Roussillon)
+  - \subpage modulePlaneProbing (Jacques-Olivier Lachaud, Jui-Ting Lu, Jocelyn Meyron, Tristan Roussillon)
   - \subpage moduleMaximalSegmentSliceEstimation (Jocelyn Meyron, Tristan Roussillon)
 
 - Mesh geometric estimators

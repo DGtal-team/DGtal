@@ -119,107 +119,115 @@ DGtal::detail::isBasisReduced (Point const& aU, Point const& aV)
 // ----------------------- Standard services ------------------------------
 
 // ------------------------------------------------------------------------
-template < typename Integer >
+template < typename Integer, typename Index >
 inline
-DGtal::detail::PointOnProbingRay<Integer>::
-PointOnProbingRay (Permutation const& aSigma, Integer const& aIndex)
-    : mySigma(aSigma), myIndex(aIndex)
+DGtal::detail::PointOnProbingRay<Integer,Index>::
+PointOnProbingRay (Permutation const& aSigma, Integer const& aPosition)
+    : mySigma(aSigma), myPosition(aPosition)
 {
 }
 
 
 // ------------------------------------------------------------------------
-template < typename Integer >
+template < typename Integer, typename Index >
 inline
-DGtal::detail::PointOnProbingRay<Integer>
-DGtal::detail::PointOnProbingRay<Integer>::getBase () const
+DGtal::detail::PointOnProbingRay<Integer,Index>
+DGtal::detail::PointOnProbingRay<Integer,Index>::getBase () const
 {
     return PointOnProbingRay(mySigma, 0);
 }
 
 // ------------------------------------------------------------------------
-template < typename Integer >
+template < typename Integer, typename Index >
 inline
-typename DGtal::detail::PointOnProbingRay<Integer>::Permutation const&
-DGtal::detail::PointOnProbingRay<Integer>::sigma () const
+typename DGtal::detail::PointOnProbingRay<Integer,Index>::Permutation const&
+DGtal::detail::PointOnProbingRay<Integer,Index>::sigma () const
 {
     return mySigma;
 }
 
 // ------------------------------------------------------------------------
-template < typename Integer >
+template < typename Integer, typename Index >
 inline
-int
-DGtal::detail::PointOnProbingRay<Integer>::sigma (int aIndex) const
+Index
+DGtal::detail::PointOnProbingRay<Integer,Index>::sigma (Index const& aIndex) const
 {
     assert(aIndex >= 0 && aIndex <= 2);
     return mySigma[aIndex];
 }
 
 // ------------------------------------------------------------------------
-template < typename Integer >
+template < typename Integer, typename Index >
 inline
 Integer const&
-DGtal::detail::PointOnProbingRay<Integer>::index () const
+DGtal::detail::PointOnProbingRay<Integer,Index>::position () const
 {
-    return myIndex;
+    return myPosition;
 }
 
 // ------------------------------------------------------------------------
-template < typename Integer >
+template < typename Integer, typename Index >
+template < typename Point >
 inline
-bool
-DGtal::detail::PointOnProbingRay<Integer>::operator== (PointOnProbingRay const& aRay) const
-{
-    return (mySigma == aRay.mySigma) && (myIndex == aRay.index());
+Point
+DGtal::detail::PointOnProbingRay<Integer,Index>::relativePoint (std::array<Point, 3> const& aM) const {
+  return -aM[mySigma[0]] + aM[mySigma[1]] + aM[mySigma[2]] * myPosition;
 }
 
-
 // ------------------------------------------------------------------------
-template < typename Integer >
+template < typename Integer, typename Index >
 inline
 bool
-DGtal::detail::PointOnProbingRay<Integer>::operator!= (PointOnProbingRay const& aRay) const
+DGtal::detail::PointOnProbingRay<Integer,Index>::operator== (PointOnProbingRay const& aRay) const
+{
+    return (mySigma == aRay.mySigma) && (myPosition == aRay.position());
+}
+
+// ------------------------------------------------------------------------
+template < typename Integer, typename Index >
+inline
+bool
+DGtal::detail::PointOnProbingRay<Integer,Index>::operator!= (PointOnProbingRay const& aRay) const
 {
     return !(*this == aRay);
 }
 
 // ------------------------------------------------------------------------
-template < typename Integer >
+template < typename Integer, typename Index >
 inline
 bool
-DGtal::detail::PointOnProbingRay<Integer>::operator<= (PointOnProbingRay const& aRay) const
+DGtal::detail::PointOnProbingRay<Integer,Index>::operator<= (PointOnProbingRay const& aRay) const
 {
-    return (mySigma == aRay.mySigma) && (myIndex <= aRay.index());
+    return (mySigma == aRay.mySigma) && (myPosition <= aRay.position());
 }
 
 // ------------------------------------------------------------------------
-template < typename Integer >
+template < typename Integer, typename Index >
 inline
-DGtal::detail::PointOnProbingRay<Integer>
-DGtal::detail::PointOnProbingRay<Integer>::next (Integer const& aInc) const
+DGtal::detail::PointOnProbingRay<Integer,Index>
+DGtal::detail::PointOnProbingRay<Integer,Index>::next (Integer const& aInc) const
 {
-    return PointOnProbingRay(mySigma, myIndex + aInc);
+    return PointOnProbingRay(mySigma, myPosition + aInc);
 }
 
 // ------------------------------------------------------------------------
-template < typename Integer >
+template < typename Integer, typename Index >
 inline
-DGtal::detail::PointOnProbingRay<Integer>
-DGtal::detail::PointOnProbingRay<Integer>::previous (Integer const& aDec) const
+DGtal::detail::PointOnProbingRay<Integer,Index>
+DGtal::detail::PointOnProbingRay<Integer,Index>::previous (Integer const& aDec) const
 {
-    return PointOnProbingRay(mySigma, myIndex - aDec);
+    return PointOnProbingRay(mySigma, myPosition - aDec);
 }
 
 // ------------------------------------------------------------------------
-template < typename Integer >
+template < typename Integer, typename Index >
 inline
 std::ostream&
-DGtal::detail::operator<< (std::ostream& aOs, PointOnProbingRay<Integer> const& aRay)
+DGtal::detail::operator<< (std::ostream& aOs, PointOnProbingRay<Integer,Index> const& aRay)
 {
     aOs << "sigma=(" <<
         aRay.sigma(0) << ", " <<
         aRay.sigma(1) << ", " <<
-        aRay.sigma(2) << "); i=" << aRay.index();
+        aRay.sigma(2) << "); i=" << aRay.position();
     return aOs;
 }

@@ -70,23 +70,22 @@ DGtal::PlaneProbingNeighborhood<TPredicate>::~PlaneProbingNeighborhood()
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+template < typename TPointAdapter >
 inline
-typename DGtal::PlaneProbingNeighborhood<TPredicate>::PointOnProbingRay
-DGtal::PlaneProbingNeighborhood<TPredicate>::closestPointInList (std::vector<PointOnProbingRay> const& aPoints) const
+TPointAdapter
+DGtal::PlaneProbingNeighborhood<TPredicate>::closestPointInList (std::vector<TPointAdapter> const& aPoints) const
 {
-    const auto N = aPoints.size();
-    if (N == 1) {
-        return aPoints[0];
-    }
+  auto b = aPoints.begin();
+  auto e = aPoints.end();
+  ASSERT(b != e);
+  auto minPoint = *b;
 
-    PointOnProbingRay minPoint = aPoints[N-1];
-    for (Dimension k = 0; k < (Dimension)((int)N-1); ++k) {
-        if (isSmallest(relativePoint(minPoint), relativePoint(aPoints[k]))) {
-            minPoint = aPoints[k];
-        }
+  for (auto it = ++b; it != e; ++it) {
+    if (isSmallest(relativePoint(minPoint), relativePoint(*it))) {
+      minPoint = *it;
     }
-
-    return minPoint;
+  }
+  return minPoint;
 }
 
 // ------------------------------------------------------------------------
@@ -177,7 +176,7 @@ getOperation (PointOnProbingRay const& aClosest) const
 {
     return  {
         aClosest.sigma(),
-        { 1, -1, -aClosest.index() },
+        { 1, -1, -aClosest.position() },
     };
 }
 
@@ -224,22 +223,24 @@ isSmallest (Point const& aX, Point const& aY) const
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+template < typename TPointAdapter >
 inline
 typename DGtal::PlaneProbingNeighborhood<TPredicate>::Point
 DGtal::PlaneProbingNeighborhood<TPredicate>::
-relativePoint (PointOnProbingRay const& aRay) const
+relativePoint (TPointAdapter const& aPoint) const
 {
-    return -myM[aRay.sigma(0)] + myM[aRay.sigma(1)] + myM[aRay.sigma(2)] * aRay.index();
+  return aPoint.relativePoint(myM); 
 }
 
 // ------------------------------------------------------------------------
 template < typename TPredicate >
+template < typename TPointAdapter >
 inline
 typename DGtal::PlaneProbingNeighborhood<TPredicate>::Point
 DGtal::PlaneProbingNeighborhood<TPredicate>::
-absolutePoint (PointOnProbingRay const& aRay) const
+absolutePoint (TPointAdapter const& aPoint) const
 {
-    return myQ + relativePoint(aRay);
+    return myQ + relativePoint(aPoint);
 }
 
 
