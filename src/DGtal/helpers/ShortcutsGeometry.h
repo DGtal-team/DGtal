@@ -2111,7 +2111,7 @@ namespace DGtal
       /// @tparam PointRange An iterable of points (std::vector, DGtal::DigitalSet*, ...)
       ///
       /// @param domain The associated space to compute VoronoiMap on
-      /// @param PointRange The list of sites
+      /// @param sites The list of sites
       /// @param params the parameters
       //    - toroidal-x [false]: If the domain is toroidal in the first  dimension
       //    - toroidal-y [false]: If the domain is toroidal in the second dimension
@@ -2120,13 +2120,13 @@ namespace DGtal
       /// @return The VoronoiMap within a domain with prescribed sites
       template<uint32_t p, typename PointRange>
       static VoronoiMap<Space, VoronoiPointPredicate, ExactPredicateLpSeparableMetric<Space, p>>
-        makeVoronoiMap(Domain domain, 
-                      const PointRange& range,
+        getVoronoiMap(Domain domain, 
+                      const PointRange& sites,
                       const Parameters& params = parametersVoronoiMap())
       {
         using Metric = ExactPredicateLpSeparableMetric<Space, p>;
         using Map = VoronoiMap<Space, VoronoiPointPredicate, Metric>;
-        DigitalSet set(domain); set.insert(range.begin(), range.end());
+        DigitalSet set(domain); set.insert(sites.begin(), sites.end());
         VoronoiPointPredicate predicate(set);
         Metric metric;
 
@@ -2147,7 +2147,7 @@ namespace DGtal
       /// @tparam PointRange An iterable of points (std::vector, DGtal::DigitalSet*, ...)
       ///
       /// @param domain The associated space to compute VoronoiMap on
-      /// @param PointRange The list of sites
+      /// @param sites The list of sites
       /// @param params the parameters
       //    - toroidal-x [false]: If the domain is toroidal in the first  dimension
       //    - toroidal-y [false]: If the domain is toroidal in the second dimension
@@ -2156,13 +2156,13 @@ namespace DGtal
       /// @return The VoronoiMap within a domain with prescribed sites
       template<uint32_t p, typename PointRange>
       static VoronoiMap<Space, VoronoiPointPredicate, ExactPredicateLpSeparableMetric<Space, p>>
-        makeVoronoiMap(CountedPtr<Domain> domain, 
-                      const PointRange& range,
+        getVoronoiMap(CountedPtr<Domain> domain, 
+                      const PointRange& sites,
                       const Parameters& params = parametersVoronoiMap())
       {
         using Metric = ExactPredicateLpSeparableMetric<Space, p>;
         using Map = VoronoiMap<Space, VoronoiPointPredicate, Metric>;
-        DigitalSet set(*domain); set.insert(range.begin(), range.end());
+        DigitalSet set(*domain); set.insert(sites.begin(), sites.end());
         VoronoiPointPredicate predicate(set);
         Metric metric;
 
@@ -2186,7 +2186,7 @@ namespace DGtal
       /// @tparam PointRange An iterable of points (std::vector, DGtal::DigitalSet*, ...)
       ///
       /// @param domain The associated space to compute VoronoiMap on
-      /// @param PointRange The list of sites
+      /// @param sites The list of sites
       /// @param params the parameters
       //    - toroidal-x [false]: If the domain is toroidal in the first  dimension
       //    - toroidal-y [false]: If the domain is toroidal in the second dimension
@@ -2195,13 +2195,13 @@ namespace DGtal
       /// @return The DistanceTransformation within a domain with prescribed sites
       template<uint32_t p, typename PointRange>
       static DistanceTransformation<Space, VoronoiPointPredicate, ExactPredicateLpSeparableMetric<Space, p>>
-        makeDistanceTransformation(Domain domain, 
-                                   const PointRange& range,
+        getDistanceTransformation(Domain domain, 
+                                   const PointRange& sites,
                                    const Parameters& params = parametersVoronoiMap())
       {
         using Metric = ExactPredicateLpSeparableMetric<Space, p>;
         using Map = DistanceTransformation<Space, VoronoiPointPredicate, Metric>;
-        DigitalSet set(domain); set.insert(range.begin(), range.end());
+        DigitalSet set(domain); set.insert(sites.begin(), sites.end());
         VoronoiPointPredicate predicate(set);
         Metric metric;
 
@@ -2225,7 +2225,7 @@ namespace DGtal
       /// @tparam PointRange An iterable of points (std::vector, DGtal::DigitalSet*, ...)
       ///
       /// @param domain The associated space to compute VoronoiMap on
-      /// @param PointRange The list of sites
+      /// @param sites The list of sites
       /// @param params the parameters
       //    - toroidal-x [false]: If the domain is toroidal in the first  dimension
       //    - toroidal-y [false]: If the domain is toroidal in the second dimension
@@ -2234,13 +2234,13 @@ namespace DGtal
       /// @return The DistanceTransformation within a domain with prescribed sites
       template<uint32_t p, typename PointRange>
       static DistanceTransformation<Space, VoronoiPointPredicate, ExactPredicateLpSeparableMetric<Space, p>>
-        makeDistanceTransformation(CountedPtr<Domain> domain, 
-                              const PointRange& range,
+        getDistanceTransformation(CountedPtr<Domain> domain, 
+                              const PointRange& sites,
                               const Parameters& params = parametersVoronoiMap())
       {
         using Metric = ExactPredicateLpSeparableMetric<Space, p>;
         using Map = DistanceTransformation<Space, VoronoiPointPredicate, Metric>;
-        DigitalSet set(*domain); set.insert(range.begin(), range.end());
+        DigitalSet set(*domain); set.insert(sites.begin(), sites.end());
         VoronoiPointPredicate predicate(set);
         Metric metric;
 
