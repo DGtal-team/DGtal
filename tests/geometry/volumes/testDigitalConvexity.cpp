@@ -304,8 +304,6 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
   }
 }
 
-// JOL: 2025/07/07 temporary disabled
-//      class BoundedRationalPolytope must be refactored
 SCENARIO( "DigitalConvexity< Z3 > rational fully convex tetrahedra", "[convex_simplices][3d][rational]" )
 {
   typedef KhalimskySpaceND<3,int>          KSpace;
@@ -368,8 +366,6 @@ SCENARIO( "DigitalConvexity< Z3 > rational fully convex tetrahedra", "[convex_si
 }
 
 
-// JOL: 2025/07/07 temporary disabled
-//      class BoundedRationalPolytope must be refactored
 SCENARIO( "DigitalConvexity< Z2 > rational fully convex triangles", "[convex_simplices][2d][rational]" )
 {
   typedef KhalimskySpaceND<2,int>          KSpace;
@@ -402,26 +398,16 @@ SCENARIO( "DigitalConvexity< Z2 > rational fully convex triangles", "[convex_sim
         nb1       += cvx1 ? 1 : 0;
         nb2       += cvx2 ? 1 : 0;
         nbf       += cvxf ? 1 : 0;
-        std::cout << "Triangle " << a << b << c << " / "
-                  << "inside: ";
-        auto pts = dconv.insidePoints( triangle );
-        for ( auto p: pts ) std::cout << " " << p;
-        std::cout << std::endl;
-        if ( cvx0 && cvx1 && cvx2 )
-          std::cout << " => is 012-convex";
-        if ( cvxf )
-          std::cout << " => is fully convex";
-        std::cout << std::endl;
         nb012     += ( cvx0 && cvx1 && cvx2 ) ? 1 : 0;
         nb01_not2 += ( cvx0 && cvx1 && ! cvx2 ) ? 1 : 0;
       }
-    // THEN( "All valid tetrahedra are 0-convex." ) {
-    //   REQUIRE( nb0 == nbsimplex );
-    // }
-    // THEN( "There are less 1-convex, 2-convex than 0-convex." ) {
-    //   REQUIRE( nb1 < nb0 );
-    //   REQUIRE( nb2 < nb0 );
-    // }
+    THEN( "All valid tetrahedra are 0-convex." ) {
+      REQUIRE( nb0 == nbsimplex );
+    }
+    THEN( "There are less 1-convex, 2-convex than 0-convex." ) {
+      REQUIRE( nb1 <= nb0 );
+      REQUIRE( nb2 <= nb0 );
+    }
     THEN( "When the tetrahedron is 0-convex, and 1-convex, then it is 2-convex." ) {
       CAPTURE( nb0 );
       CAPTURE( nb1 );
