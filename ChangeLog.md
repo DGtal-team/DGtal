@@ -58,6 +58,9 @@
   - Add a new command `make dgtal_benchmark` to run all benchmarks (Bastien Doignies, [#1772](https://github.com/DGtal-team/DGtal/pull/1772))
   - Reusable jobs for Github actions [#1766](https://github.com/DGtal-team/DGtal/pull/1766)
 
+- *Geometry*
+  - Fix rational polytopes tests of digital-k-convexity and full convexity (Jacques-Olivier Lachaud, [#1790](https://github.com/DGtal-team/DGtal/pull/1790))
+	
 # DGtal 1.4.2
 
 ## New features
