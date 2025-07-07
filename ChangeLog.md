@@ -14,7 +14,7 @@
   - New Polyscope-based 3D viewer (Bastien Doignies, [#1775](https://github.com/DGtal-team/DGtal/pull/1775))
   - Remove old QGLViewer and Qt dependency (Bastien Doignies, [#1775](https://github.com/DGtal-team/DGtal/pull/1775))
   - Add reading material indices  (aka indicies to [MTL](https://fr.wikipedia.org/wiki/Material_Template_Library) entries) in SurfaceMeshReader::readOBJ
-    (Jacques-Olivier Lachaud, [#1677](https://github.com/DGtal-team/DGtal/pull/1785))
+    (Jacques-Olivier Lachaud, [#1788](https://github.com/DGtal-team/DGtal/pull/1788))
 
 
 - *Python*
