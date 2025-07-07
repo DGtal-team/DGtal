@@ -62,9 +62,8 @@ This command line produces the following output:
 #include "DGtal/topology/DigitalSurface2DSlice.h"
 #include "DGtal/topology/helpers/Surfaces.h"
 
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/io/readers/VolReader.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/ImageHelper.h"
 #include "DGtal/kernel/sets/DigitalSetInserter.h"
@@ -147,22 +146,17 @@ int main( int argc, char** argv )
   trace.endBlock();
 
 
-  // for 3D display with Viewer3D
-  QApplication application(argc,argv);
-  trace.beginBlock( "Display all with QGLViewer." );
-  Viewer3D<Space, KSpace> viewer(ks);
-  viewer.show();
+  // for 3D display with PolyscopeViewer
+  trace.beginBlock( "Display all with Viewer." );
+  PolyscopeViewer<Space, KSpace> viewer(ks);
   // Displaying all the surfels in transparent mode
-  viewer << SetMode3D( surf.className(), "Transparent");
+  viewer.allowReuseList = true;
   for( MyDigitalSurface::ConstIterator it = theSetOfSurfels.begin(),
          it_end = theSetOfSurfels.end(); it != it_end; ++it )
     viewer<< *it;
 
-
   // Displaying slice
-  viewer << Viewer3D<Space, KSpace>::shiftSurfelVisu;
-  viewer << SetMode3D( surf.className(), "");
-  viewer.setFillColor( Color( 50, 50, 255 ) );
+  viewer << Color( 50, 50, 255 );
 
   if (type == "gridcurve")
     {
@@ -185,10 +179,10 @@ int main( int argc, char** argv )
       trace.info() << "Display type not known." << std::endl;
     }
 
-  viewer << Viewer3D<Space, KSpace>::updateDisplay;
   trace.endBlock();
 
-  return application.exec();
+  viewer.show();
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

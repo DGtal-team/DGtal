@@ -12,9 +12,9 @@ foreach(FILE ${DGTAL_EXAMPLES_SRC})
 endforeach()
 
 
-### with QGLViewer
-if (  WITH_VISU3D_QGLVIEWER )
-   set(DGTAL_EXAMPLES_QGL_SRC
+### with polyscope viewer
+if (  DGTAL_WITH_POLYSCOPE )
+   set(DGTAL_EXAMPLES_POLYSCOPE_SRC
 	greedy-plane-segmentation
 	greedy-plane-segmentation-ex2
 	greedy-plane-segmentation-ex3
@@ -23,7 +23,7 @@ if (  WITH_VISU3D_QGLVIEWER )
     examplePlaneProbingSurfaceLocalEstimator
     exampleMaximalSegmentSliceEstimation
    )
-  foreach(FILE ${DGTAL_EXAMPLES_QGL_SRC})
+  foreach(FILE ${DGTAL_EXAMPLES_POLYSCOPE_SRC})
       DGtal_add_example(${FILE})
  endforeach()
 

@@ -160,7 +160,7 @@ testTrueLocalEstimatorOnShapeDigitization( const string & name,
       Surfaces<KSpace>::track2DBoundaryPoints( points, K, SAdj, dig, bel );
       // Create GridCurve
       GridCurve<KSpace> gridcurve;
-      gridcurve.initFromVector( points );
+      gridcurve.initFromPointsVector( points );
 
       typedef GridCurve<KhalimskySpaceND<2> >::PointsRange Range;
       typedef Range::ConstIterator ConstIteratorOnPoints;

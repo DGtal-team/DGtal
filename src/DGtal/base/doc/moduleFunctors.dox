@@ -710,7 +710,7 @@ public:
 
   // Ranges and iterators
   using ConstIterator = boost::transform_iterator< std::reference_wrapper<const Self>, typename Domain::ConstIterator >;
-  using ConstReverseIterator = std::reverse_iterator< ConstIterator >;
+  using ConstReverseIterator = boost::reverse_iterator< ConstIterator >;
   class ConstRange; // To be defined...
 
   // Constructor

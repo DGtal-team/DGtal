@@ -1,3 +1,66 @@
+# DGtal 2.0
+
+## New features
+
+- *General*
+  - Library is now (almost) header only (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
+  - Boost is no longer required when building DGtal (boost is now fetched using CPM at cmake step) (Bastien Doignies, David Coeurjolly,  [#1763](https://github.com/DGtal-team/DGtal/pull/1763))
+
+- *Base*
+  - Remove GMP dependency (Bastien Doignies, [#1769](https://github.com/DGtal-team/DGtal/pull/1769))
+  - New Boost BigInteger Backend (Bastien Doignies, [#1769](https://github.com/DGtal-team/DGtal/pull/1769))
+
+- *IO*  
+  - New Polyscope-based 3D viewer (Bastien Doignies, [#1775](https://github.com/DGtal-team/DGtal/pull/1775))
+  - Remove old QGLViewer and Qt dependency (Bastien Doignies, [#1775](https://github.com/DGtal-team/DGtal/pull/1775))
+  - Add reading material indices  (aka indicies to [MTL](https://fr.wikipedia.org/wiki/Material_Template_Library) entries) in SurfaceMeshReader::readOBJ
+    (Jacques-Olivier Lachaud, [#1788](https://github.com/DGtal-team/DGtal/pull/1788))
+
+
+- *Python*
+  - New python bindings for Shortcuts and ShortcutsGeometry (Bastien Doignies, [#1782](https://github.com/DGtal-team/DGtal/pull/1782))
+
+- *Geometry*
+  - Patate upgraded to ponca library for point cloud processing (Bastien Doignies, [#1776](https://github.com/DGtal-team/DGtal/pull/1776))
+
+## Changes
+
+- *General*
+  - C++20 support and new minimal standard (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
+  - Remove deprecated classes and functions (Bastien Doignies, [#1765](https://github.com/DGtal-team/DGtal/pull/1765))
+
+- *Geometry*
+  - Add CNC computer to Shortcuts (Bastien Doignies, [#1781](https://github.com/DGtal-team/DGtal/pull/1781))
+  - Add VoronoiMap (and DistanceTransformation) to Shortcuts (Bastien, Doignies, [#1784](https://github.com/DGtal-team/DGtal/pull/1784))
+  - Add method to evaluate normal to `LocalEstimatorFromSurfelFunctorAdapter` from Surfel as a replacement for removed `LocalConvolutionNormalVectorEstimator` (Bastien DOIGNIES, [#1765](https://github.com/DGtal-team/DGtal/pull/1765))
+  - Add method to evaluate all normals to `LocalEstimatorFromSurfelFunctorAdapter` as a replacement for removed `LocalConvolutionNormalVectorEstimator` (Bastien DOIGNIES, [#1765](https://github.com/DGtal-team/DGtal/pull/1765))
+  - Add covering for segments and triangles in 3D (Jacques-Olivier Lachaud, [#1786](https://github.com/DGtal-team/DGtal/pull/1786))
+
+- *Build*
+  - Prefixing main cmake variables with `DGTAL_` (David Coeurjolly, [#1753](https://github.com/DGtal-team/DGtal/pull/1753), Bastien Doignies, [#1772](https://github.com/DGtal-team/DGtal/pull/1772)
+  - Add a cmake option to use the ITK EIGEN configuration to solve the issue [#347](https://github.com/DGtal-team/DGtalTools/issues/437) of DGTalTools. (Bertrand Kerautret, [#1759](https://github.com/DGtal-team/DGtal/pull/1759)
+  - Building tests does not build the benchmarks anymore (Bastien Doignies, [#1772](https://github.com/DGtal-team/DGtal/pull/1772)
+  - Add a cmake option to build benchmark (Bastien Doignies, [#1772](https://github.com/DGtal-team/DGtal/pull/1772)
+  - Fix compilation typo in tutorial-examples (shortcuts-geometry)  (Bertrand Kerautret, [#1787] (https://github.com/DGtal-team/DGtal/pull/1787)) 
+
+- *Documentation*
+  - Refactoring of the documentation structure (David Coeurjolly, [#1762](https://github.com/DGtal-team/DGtal/pull/1762))
+
+## Bug fixes
+
+- *General*
+  - Upgrade of ITK to version 5 and above (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
+
+- *CMake*
+  - Updated to version 3.20 minimum (contemporary version of C++20's new minimal standard) (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
+  - Updated export and install commands to more modern cmake (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
+  - Dependencies of DGtal are now build as separate targets (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
+  - Add a new command `make dgtal_benchmark` to run all benchmarks (Bastien Doignies, [#1772](https://github.com/DGtal-team/DGtal/pull/1772))
+  - Reusable jobs for Github actions [#1766](https://github.com/DGtal-team/DGtal/pull/1766)
+
+- *Geometry*
+  - Fix rational polytopes tests of digital-k-convexity and full convexity (Jacques-Olivier Lachaud, [#1790](https://github.com/DGtal-team/DGtal/pull/1790))
+	
 # DGtal 1.4.2
 
 ## New features
@@ -117,6 +180,7 @@
   - Continuous integration on windows is now performed by Github
     Action instead of Appeveyor  (David Coeurjolly,
     [#1689](https://github.com/DGtal-team/DGtal/pull/1689))
+
 
 ## Bug fixes
 - *General*
@@ -474,7 +538,7 @@
     (Jocelyn Meyron, [#1553](https://github.com/DGtal-team/DGtal/pull/1553))
   - Fix issue
     [#1566](https://github.com/DGtal-team/DGtal/issues/1566): do not
-    compile example checkLatticeBallQuickHull if WITH_GMP is not set
+    compile example checkLatticeBallQuickHull if DGTAL_WITH_GMP is not set
     (Jacques-Olivier Lachaud,[#1567](https://github.com/DGtal-team/DGtal/pull/1567))
   - Fix AppVeyor issue on PlaneProbingParallelepipedEstimator and PlaneProbingRNeighborhood
     (Bertrand Kerautret, [#1568](https://github.com/DGtal-team/DGtal/pull/1568))

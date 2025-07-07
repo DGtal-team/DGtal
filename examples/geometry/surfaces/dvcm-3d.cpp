@@ -61,7 +61,7 @@ $ ./examples/geometry/surfaces/dvcm-3d
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
 #include "DGtal/geometry/surfaces/estimation/VoronoiCovarianceMeasureOnDigitalSurface.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/io/readers/GenericReader.h"
 #include "ConfigExamples.h"
 
@@ -74,8 +74,6 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 int main( int argc, char** argv )
 {
-  QApplication application(argc,argv);
-
   typedef Z3i::Space Space;
   typedef Z3i::KSpace KSpace;
   typedef Z3i::Point Point;
@@ -140,11 +138,8 @@ int main( int argc, char** argv )
   //! [DVCM3D-instantiation]
 
   trace.beginBlock( "Displaying VCM" );
-  Viewer3D<> viewer( ks );
+  PolyscopeViewer<> viewer( ks );
   Cell dummy;
-  viewer.setWindowTitle("3D VCM viewer");
-  viewer << SetMode3D( dummy.className(), "Basic" );
-  viewer.show();
 
   GradientColorMap<double> grad( 0, T );
   grad.addColor( Color( 128, 128, 255 ) );
@@ -161,15 +156,17 @@ int main( int argc, char** argv )
       RealVector n = it->second.vcmNormal;
       vcm_surface.getChiVCMEigenvalues( lambda, s );
       double ratio = lambda[ 1 ] / ( lambda[ 0 ] + lambda[ 1 ] + lambda[ 2 ] );
-      viewer.setFillColor( grad( ratio > T ? T : ratio ) );
+      viewer.drawColor( grad( ratio > T ? T : ratio ) );
       viewer << ks.unsigns( s );
+
       n *= size;
-      viewer.setLineColor( Color::Black );
-      viewer.addLine( rp + n, rp - n, 0.1 );
+
+      viewer.drawColor( Color::Black );
+      viewer.drawLine( rp + n, rp - n );
      }
-  viewer << Viewer3D<>::updateDisplay;
-  application.exec();
+
   trace.endBlock();
+  viewer.show();
   return 0;
 }
 //                                                                           //

@@ -40,13 +40,9 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
-#include <cstdlib>
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <tuple>
 #include <iterator>
-#include <string>
+#include <optional>
+
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CountedPtr.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
@@ -55,7 +51,7 @@
 #include "DGtal/math/Statistic.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/IntervalForegroundPredicate.h"
-#include <DGtal/images/ImageLinearCellEmbedder.h>
+#include "DGtal/images/ImageLinearCellEmbedder.h"
 #include "DGtal/shapes/implicit/ImplicitPolynomial3Shape.h"
 #include "DGtal/shapes/GaussDigitizer.h"
 #include "DGtal/shapes/ShapeGeometricFunctors.h"
@@ -77,6 +73,7 @@
 #include "DGtal/io/colormaps/TickedColorMap.h"
 #include "DGtal/io/readers/MPolynomialReader.h"
 #include "DGtal/io/readers/GenericReader.h"
+#include "DGtal/io/readers/SurfaceMeshReader.h"
 #include "DGtal/io/writers/GenericWriter.h"
 #include "DGtal/io/writers/MeshWriter.h"
 #include "DGtal/graph/BreadthFirstVisitor.h"
@@ -669,6 +666,142 @@ namespace DGtal
         return makeBinaryImage( img, params );
       }
 
+      // These types helps to disambiguate between makeBinaryImage with a simple 
+      // position vector and nested vectors. These are also used for makeGrayScaleImage
+
+      template<typename T>
+        struct is_double_nested_container : std::false_type {};
+
+      template<typename T, template<class...> class C, template<class...> class D>
+        struct is_double_nested_container<C<D<T>>> : std::true_type {};
+
+      /// Create an arbitrary image from a vector where non zero values
+      /// indicates voxels
+      ///
+      /// @note This overload expects a linearized array. Positions are infered 
+      /// from the domain. The order must be the same
+      ///
+      /// @param[in] values A vector where non-zero values indicates voxels
+      /// @param[in] d The domain of the image
+      ///
+      /// @return a smart pointer on a binary image 
+      template<typename T, typename __U = std::enable_if_t<std::is_arithmetic_v<T>>>
+      static CountedPtr<BinaryImage>
+        makeBinaryImage
+        ( const std::vector<T>& values, 
+          const Domain& d )
+        {
+            CountedPtr<BinaryImage> image(new BinaryImage(d));
+            
+            size_t i = 0;
+            for (auto it = d.begin(); it != d.end(); ++i, ++it)
+            {
+              image->setValue(*it, static_cast<bool>(values[i]));
+            }
+
+            return image;
+        }
+
+      /// Create an arbitrary image from a vector where non zero values
+      /// indicates voxels
+      ///
+      /// @note This overloads expect consistent size of subarrays. This is not checked.
+      ///
+      /// @param[in] values A vector (of vector of vector) where non-zero values indicates a voxel
+      /// @param[in] override_domain Overrides computed domain if needed
+      ///
+      /// @return a smart pointer on a binary image
+      template<
+        typename T, 
+        template<class...> class C1, // Allow for mix of array/vector/other contiguous arrays
+        template<class...> class C2, // Allow for mix of array/vector/other contiguous arrays
+        template<class...> class C3> // Allow for mix of array/vector/other contiguous arrays
+      static CountedPtr<BinaryImage>
+        makeBinaryImage
+        ( const C1<C2<C3<T>>>& values, 
+          std::optional<Domain> override_domain = std::nullopt)
+        {
+          Domain d;
+          if (override_domain.has_value()) 
+          {
+            d = override_domain.value();
+          }
+          else if (values.size() != 0) 
+          {
+            if (values[0].size() != 0)
+            {
+              if (values[0][0].size() != 0)
+              {
+                d = Domain(Point(0, 0, 0), Point(values.size(), values[0].size(), values[0][0].size()));
+              }
+            }
+          }
+
+          CountedPtr<BinaryImage> image(new BinaryImage(d));
+          Point begin = d.lowerBound();
+          for (size_t i = 0; i < values.size(); ++i)
+          {
+            for (size_t j = 0; j < values[i].size(); ++j)
+            {
+              for (size_t k = 0; k < values[i][j].size(); ++k)
+              {
+                Point p = begin + Point(i, j, k);
+                image->setValue(p, static_cast<bool>(values[i][j][k]));
+              }
+            }
+          }
+
+          return image;
+        }
+
+      /// Create an arbitrary image from a vector of positions
+      ///
+      /// @note This overloads expect consistent size of subarrays. This is not checked.
+      ///
+      /// @param[in] positions A vector of positions to indicates locations of voxels
+      /// @param[in] override_domain Overrides computed domain if needed
+      ///
+      /// @return a smart pointer on a binary image
+      template<typename T, std::enable_if_t<!is_double_nested_container<T>::value, int> = 0>
+      static CountedPtr<BinaryImage>
+        makeBinaryImage
+        ( const std::vector<T>& positions, 
+          std::optional<Domain> override_domain = std::nullopt)
+      {
+        Domain d;
+        if (override_domain.has_value())
+        {
+          d = override_domain.value();
+        }
+        else if (positions.size() != 0)
+        {
+            Point lb(positions[0][0], positions[0][1], positions[0][2]);
+            Point ub(positions[0][0], positions[0][1], positions[0][2]);
+
+            for (size_t i = 0; i < positions.size(); ++i) 
+            {
+              lb[0] = std::min(lb[0], static_cast<typename Point::Component>(positions[i][0]));
+              lb[1] = std::min(lb[1], static_cast<typename Point::Component>(positions[i][1]));
+              lb[2] = std::min(lb[2], static_cast<typename Point::Component>(positions[i][2]));
+
+              ub[0] = std::max(ub[0], static_cast<typename Point::Component>(positions[i][0]));
+              ub[1] = std::max(ub[1], static_cast<typename Point::Component>(positions[i][1]));
+              ub[2] = std::max(ub[2], static_cast<typename Point::Component>(positions[i][2]));
+            }
+
+            d = Domain(lb, ub);
+        }
+
+        CountedPtr<BinaryImage> image(new BinaryImage(d));
+        for (size_t i = 0; i < positions.size(); ++i) 
+        {
+          // Builds a points for generality, T may not be a PointVector instance
+          Point p({positions[i][0], positions[i][1], positions[i][2]});
+          image->setValue(p, true);
+        }
+        return image;
+      }
+
       /// Binarizes an arbitrary gray scale image file and returns
       /// the binary image corresponding to the threshold/noise parameters.
       ///
@@ -851,6 +984,134 @@ namespace DGtal
           }
         return gimage;
       }
+
+      /// Create an arbitrary image from a vector 
+      ///
+      /// @note This overload expects a linearized array. Positions are infered 
+      /// from the domain. The order must be the same
+      ///
+      /// @param[in] values A vector where non-zero values indicates voxels
+      /// @param[in] d The domain of the image
+      ///
+      /// @return a smart pointer on a gray scale image
+      template<typename T, typename __U = std::enable_if_t<std::is_arithmetic_v<T>>>
+      static CountedPtr<GrayScaleImage>
+        makeGrayScaleImage
+        ( const std::vector<T>& values, 
+          const Domain& d )
+        {
+            CountedPtr<GrayScaleImage> image(new GrayScaleImage(d));
+            
+            size_t i = 0;
+            for (auto it = d.begin(); it != d.end(); ++i, ++it)
+            {
+              image->setValue(*it, static_cast<GrayScale>(values[i]));
+            }
+
+            return image;
+        }
+
+      /// Create an arbitrary image from a vector
+      ///
+      /// @note This overloads expect consistent size of subarrays. This is not checked.
+      ///
+      /// @param[in] values A vector (of vector of vector) where non-zero values indicates a voxel
+      /// @param[in] override_domain Overrides infered domain if needed
+      ///
+      /// @return a smart pointer on a gray scale image
+      template<
+        typename T, 
+        template<class...> class C1, // Allow for mix of array/vector/other contiguous arrays
+        template<class...> class C2, // Allow for mix of array/vector/other contiguous arrays
+        template<class...> class C3> // Allow for mix of array/vector/other contiguous arrays
+      static CountedPtr<GrayScaleImage>
+        makeGrayScaleImage
+        ( const C1<C2<C3<T>>>& values, 
+          std::optional<Domain> override_domain = std::nullopt)
+        {
+          Domain d;
+          if (override_domain.has_value()) 
+          {
+            d = override_domain.value();
+          }
+          else if (values.size() != 0) 
+          {
+            if (values[0].size() != 0)
+            {
+              if (values[0][0].size() != 0)
+              {
+                d = Domain(Point(0, 0, 0), Point(values.size(), values[0].size(), values[0][0].size()));
+              }
+            }
+          }
+
+          CountedPtr<GrayScaleImage> image(new GrayScaleImage(d));
+          Point begin = d.lowerBound();
+          for (size_t i = 0; i < values.size(); ++i)
+          {
+            for (size_t j = 0; j < values[i].size(); ++j)
+            {
+              for (size_t k = 0; k < values[i][j].size(); ++k)
+              {
+                Point p = begin + Point(i, j, k);
+                image->setValue(p, static_cast<GrayScale>(values[i][j][k]));
+              }
+            }
+          }
+
+          return image;
+        }
+
+      /// Create an arbitrary image from a vector of positions
+      ///
+      /// @note This overloads expect consistent size of subarrays. This is not checked.
+      ///
+      /// @param[in] positions A vector of positions to indicates locations of voxels
+      /// @param[in] values A vector of values for each voxel
+      /// @param[in] override_domain Overrides infered domain if needed
+      ///
+      /// @return a smart pointer on a gray scale image
+      template<typename T, typename U, std::enable_if_t<!is_double_nested_container<T>::value, int> = 0>
+      static CountedPtr<GrayScaleImage>
+        makeGrayScaleImage
+        ( const std::vector<T>& positions, 
+          const std::vector<U>& values, 
+          std::optional<Domain> override_domain = std::nullopt)
+      {
+        Domain d;
+        if (override_domain.has_value())
+        {
+          d = override_domain.value();
+        }
+        else if (positions.size() != 0)
+        {
+            Point lb(positions[0][0], positions[0][1], positions[0][2]);
+            Point ub(positions[0][0], positions[0][1], positions[0][2]);
+
+            for (size_t i = 0; i < positions.size(); ++i) 
+            {
+              lb[0] = std::min(lb[0], static_cast<typename Point::Component>(positions[i][0]));
+              lb[1] = std::min(lb[1], static_cast<typename Point::Component>(positions[i][1]));
+              lb[2] = std::min(lb[2], static_cast<typename Point::Component>(positions[i][2]));
+
+              ub[0] = std::max(ub[0], static_cast<typename Point::Component>(positions[i][0]));
+              ub[1] = std::max(ub[1], static_cast<typename Point::Component>(positions[i][1]));
+              ub[2] = std::max(ub[2], static_cast<typename Point::Component>(positions[i][2]));
+            }
+
+            d = Domain(lb, ub);
+        }
+
+        CountedPtr<GrayScaleImage> image(new GrayScaleImage(d));
+        for (size_t i = 0; i < positions.size(); ++i) 
+        {
+          // Builds a points for generality, T may not be a PointVector instance
+          Point p({positions[i][0], positions[i][1], positions[i][2]});
+          image->setValue(p, static_cast<GrayScale>(values[i]));
+        }
+        return image;
+      }
+
 
       // ----------------------- FloatImage static services -------------------------
     public:
@@ -2408,6 +2669,45 @@ namespace DGtal
         return makePrimalSurfaceMesh( c2i, dsurf );
       }
 
+      /// Loads a surface mesh
+      ///
+      /// @param[in] path Path to file
+      /// @return A smart pointer to the loaded polygonal surface, that holds nullptr if loading failed. 
+      static CountedPtr<SurfaceMesh>
+      makeSurfaceMesh(const std::string& path) 
+      {
+        std::ifstream file(path);
+        if (file.is_open()) 
+        {
+          auto surf = CountedPtr<SurfaceMesh>( new SurfaceMesh );
+          bool ok = SurfaceMeshReader<RealPoint, RealVector>::readOBJ(file, *surf);
+
+          return ok ? surf : CountedPtr<SurfaceMesh>( nullptr );
+        }
+
+        return CountedPtr<SurfaceMesh>( nullptr );
+      }
+
+
+      /// Outputs a SurfaceMesh as an OBJ file (with its topology).
+      ///
+      /// @tparam TPoint any model of point
+      /// @tparam TVector any model of vector
+      /// @param[in] surf the surface to output as an OBJ file
+      /// @param[in] objfile the output filename.
+      /// @return 'true' if the output stream is good.
+      template <typename TPoint, typename TVector>
+        static bool
+        saveOBJ
+        ( CountedPtr< ::DGtal::SurfaceMesh<TPoint, TVector> > surf, 
+          const std::string& objfile )
+        {
+          std::ofstream output( objfile.c_str() );
+          bool ok = MeshHelpers::exportOBJ( output, *surf );
+          output.close();
+          return ok;
+        }
+
       /// Outputs a polygonal surface as an OBJ file (with its topology).
       ///
       /// @tparam TPoint any model of point
@@ -2550,6 +2850,49 @@ namespace DGtal
           std::ofstream output( objfile.c_str() );
           bool ok = MeshHelpers::exportOBJwithFaceNormalAndColor
             ( output, mtlfile, *trisurf, normals, diffuse_colors,
+              ambient_color, diffuse_color, specular_color );
+          output.close();
+          return ok;
+        }
+
+      /// Outputs a SurfaceMesh as an OBJ file (with its topology)
+      /// (and a material MTL file).
+      ///
+      /// @tparam TPoint any model of point
+      /// @tparam TVector any model of vector
+      /// @param[in] surf the surface to output as an OBJ file
+      /// @param[in] normals the normal vector per face.
+      /// @param[in] diffuse_colors either empty or a vector of size `trisurf.nbFaces` specifying the diffuse color for each face.
+      /// @param[in] objfile the output filename.
+      /// @param[in] ambient_color the ambient color of all faces.
+      /// @param[in] diffuse_color the diffuse color of all faces (if diffuse_colors is empty).
+      /// @param[in] specular_color the specular color of all faces.
+      /// @return 'true' if the output stream is good.
+      template <typename TPoint, typename TVector>
+        static bool
+        saveOBJ
+        ( CountedPtr< ::DGtal::SurfaceMesh<TPoint, TVector> > surf,
+          const RealVectors&                            normals,
+          const Colors&                                 diffuse_colors,
+          std::string                                   objfile,
+          const Color&                   ambient_color  = Color( 32, 32, 32 ),
+          const Color&                   diffuse_color  = Color( 200, 200, 255 ),
+          const Color&                   specular_color = Color::White )
+        {
+          std::string mtlfile;
+          auto lastindex = objfile.find_last_of(".");
+          if ( lastindex == std::string::npos )
+            {
+              mtlfile  = objfile + ".mtl";
+              objfile  = objfile + ".obj";
+            }
+          else
+            {
+              mtlfile  = objfile.substr(0, lastindex) + ".mtl"; 
+            }
+          std::ofstream output( objfile.c_str() );
+          bool ok = MeshHelpers::exportOBJwithFaceNormalAndColor
+            ( output, mtlfile, *surf, normals, diffuse_colors,
               ambient_color, diffuse_color, specular_color );
           output.close();
           return ok;

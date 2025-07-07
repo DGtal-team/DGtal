@@ -8,15 +8,14 @@ set( DGTAL_EXAMPLES_SRC
         exampleBoundedLatticePolytopeCount2D
         exampleBoundedLatticePolytopeCount3D
         exampleBoundedLatticePolytopeCount4D
-	pConvexity-benchmark
 )
 
 foreach(FILE ${DGTAL_EXAMPLES_SRC})
      DGtal_add_example(${FILE})
 endforeach()
 
-if (  WITH_VISU3D_QGLVIEWER )
-   set( DGTAL_EXAMPLES_QGL_SRC
+if (  DGTAL_WITH_POLYSCOPE )
+   set( DGTAL_EXAMPLES_POLYSCOPE_SRC
       fullConvexityAnalysis3D
       fullConvexityThinning3D
       fullConvexityShortestPaths3D
@@ -24,7 +23,7 @@ if (  WITH_VISU3D_QGLVIEWER )
       standardDigitalPolyhedronBuilder3D
       checkFullConvexityTheorems
    )
-  foreach(FILE ${DGTAL_EXAMPLES_QGL_SRC})
+  foreach(FILE ${DGTAL_EXAMPLES_POLYSCOPE_SRC})
       DGtal_add_example(${FILE})
   endforeach()
 

@@ -57,8 +57,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -70,20 +69,16 @@ using namespace DGtal::Z3i;
 
 int main( int argc, char** argv )
 {
-  // for 3D display with Viewer3D
-  QApplication application(argc,argv);
-
+  // for 3D display with PolyscopeViewer
   KSpace K;
   Point plow(0,0,0);
   Point pup(3,3,2);
   Domain domain( plow, pup );
   K.init( plow, pup, true );
   //
-  typedef Viewer3D<Space, KSpace> MyViewer;
-  MyViewer viewer(K);
-  viewer.show();
-  viewer << SetMode3D( domain.className(), "Paving" );
+  typedef PolyscopeViewer<Space, KSpace> MyViewer;
 
+  MyViewer viewer(K);
   Cell ptlow = K.uPointel( plow ); // pointel (0*2,0*2, 0*2)
   Cell ptup1 = K.uPointel( pup ); // pointel (3*2,3*2, 2*2)
   Cell ptup2 = K.uTranslation( ptup1, Point::diagonal() ); // pointel (4*2, 4*2, 3*2)
@@ -136,8 +131,8 @@ int main( int argc, char** argv )
   Cell vox2 = K.uCell( Point( 1, 1, 3 ) ); // voxel (2*1+1,2*1+1,2*3+1)
   viewer << vox1 << vox2;
 
-  viewer<< MyViewer::updateDisplay;
-  return application.exec();
+  viewer.show();
+  return 0;
 
 }
 ///////////////////////////////////////////////////////////////////////////////

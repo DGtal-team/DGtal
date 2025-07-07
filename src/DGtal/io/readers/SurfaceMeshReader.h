@@ -73,7 +73,8 @@ namespace DGtal
     typedef typename SurfaceMesh::Index          Index;
     typedef typename SurfaceMesh::Vertices       Vertices;
     typedef typename SurfaceMesh::Faces          Faces;
-
+    typedef std::vector<int>                     Materials;
+    
     /// Checks that every index in \a indices are different from the others.
     /// @param indices a vector of integer indices
     /// @return 'true' iff the integer indices are all pairwise different.
@@ -97,6 +98,18 @@ namespace DGtal
     /// created mesh is ok.
     static
     bool readOBJ( std::istream & input, SurfaceMesh & smesh );
+
+    /// Reads an input file as an OBJ file format and outputs the
+    /// corresponding surface mesh.
+    ///
+    /// @param[in,out] input the input stream from which the OBJ file is read.
+    /// @param[out] smesh the output surface mesh.
+    /// @param[out] materials a vector containing the material of each face (an index), or an empty vector if there is no material in the OBJ file.
+    ///
+    /// @return 'true' if both reading the input stream was ok and the
+    /// created mesh is ok.
+    static
+    bool readOBJ( std::istream & input, SurfaceMesh & smesh, Materials& materials );
   };
   
 } // namespace DGtal

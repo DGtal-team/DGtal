@@ -101,7 +101,7 @@ makeColorMap( double min_value, double max_value )
   return gradcmap;
 }
 
-void usage( int argc, char* argv[] )
+void usage( char* argv[] )
 {
   std::cout << "Usage: " << std::endl
             << "\t" << argv[ 0 ] << " <filename.vol> <R> <m> <M> <Kmax>" << std::endl
@@ -125,7 +125,7 @@ int main( int argc, char* argv[] )
 {
   if ( argc <= 1 )
     {
-      usage( argc, argv );
+      usage( argv );
       return 0;
     }
   //! [curvature-measures-Typedefs]
@@ -208,9 +208,9 @@ int main( int argc, char* argv[] )
       const auto b    = smesh.faceCentroid( f );
       const auto N    = smesh.faceNormals()[ f ];
       const auto area = mu0 .measure( b, R, f );
-      const auto M    = muXY.measure( b, R, f );
+      const auto M2   = muXY.measure( b, R, f );
       std::tie( K1[ f ], K2[ f ], D1[ f ], D2[ f ] )
-        = cnc.principalCurvatures( area, M, N );
+        = cnc.principalCurvatures( area, M2, N );
     }
   //! [curvature-measures-estimations]
 

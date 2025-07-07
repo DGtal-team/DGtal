@@ -1,0 +1,79 @@
+name: "DGtal-cmake"
+description: "Apply CMake to DGtal"
+inputs:
+  dgtal:
+    description: "CMakelists location"
+    default: ${{ runner.workspace }}/DGtal
+    required: true
+
+  build-dir:
+    description: "Directory to setup cmake in"
+    default: ${{ runner.workspace }}/build
+    required: true
+
+  build-type:
+    description: "Type of build Release or Debug"
+    default: "Release"
+
+  build-config: 
+    description: "Additionnal configuration to give to cmake"
+    default: ""
+
+  test:
+    description: "Wether to run tests or not. This requires the proper build-config and environment variable TESTBLACKLIST to be set."
+    type: boolean
+    default: false
+
+  test-threshold:
+    description: "Randomize test threshold"
+    default: "10"
+
+  test-blacklist:
+    description: "Tests to blacklist"
+    default: ""
+
+  test-whitelist:
+    description: "Tests to whitelist"
+    default: ""
+
+runs:
+  using: "composite"
+  steps:
+    - name: "Standardize to linux-style path"
+      shell: bash
+      # Mixed-path are sometimes not working with CMake and Conan in bash shell
+      # Avoid DGTAL_DIR for potential conflicts with CMake find_package
+      run: |
+        echo "DGTAL_PATH=$(echo '${{ inputs.dgtal }}' | sed s/\\\\/\\//g)" >> "$GITHUB_ENV"
+        echo "DGTAL_BUILD_PATH=$(echo '${{ inputs.build-dir }}' | sed s/\\\\/\\//g)" >> "$GITHUB_ENV"
+
+    - name: "Create build directory"
+      shell: bash
+      run: |
+        cmake -E make_directory $DGTAL_BUILD_PATH
+
+    - name: Install additionnal dependancies (windows)
+      if: ${{ runner.os == 'Windows' }}
+      shell: bash
+      working-directory: ${{ inputs.build-dir }}
+      run: |
+        conan install $DGTAL_PATH --build=missing -s:a compiler.cppstd=20
+
+    - name: Configure CMake
+      shell: bash
+      working-directory: ${{ inputs.build-dir }} 
+      run: |
+        cmake $DGTAL_PATH -DCMAKE_BUILD_TYPE=${{ inputs.build-type }} -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ inputs.test-whitelist }}" -DDGTAL_RANDOMIZED_TESTING_THRESHOLD="${{ inputs.test-threshold }}" ${{ inputs.build-config }}
+
+    - name: Build
+      shell: bash
+      working-directory: ${{ inputs.build-dir }} 
+      run: cmake --build . --config ${{ inputs.build-type }} --parallel 3
+    
+    - name: Perform tests
+      if: ${{ inputs.test == 'true'}}
+      shell: bash
+      working-directory: ${{runner.workspace}}/build
+      run: |
+           echo ctest -C ${{ inputs.build-type }}  --output-on-failure -E ${{ inputs.test-blacklist }}
+           ctest -C ${{ inputs.build-type }} --output-on-failure -E ${{ inputs.test-blacklist }}

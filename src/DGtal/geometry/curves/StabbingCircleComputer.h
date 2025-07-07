@@ -51,6 +51,7 @@
 #include "DGtal/geometry/tools/Preimage2D.h"
 #include "DGtal/shapes/fromPoints/CircleFrom3Points.h"
 #include "DGtal/shapes/fromPoints/Point2ShapePredicate.h"
+#include "boost/iterator/reverse_iterator.hpp"
 
 //////////////////////////////////////////////////////////////////////////////
 

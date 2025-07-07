@@ -24,7 +24,7 @@ int main(int /*argc*/, char** /*argv*/)
   board.saveEPS( "essai.eps" );
   board.saveSVG( "essai.svg" );  
   board.saveTikZ( "essai.tikz" );
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     board.saveCairo("essai.pdf", Board2D::CairoPDF);
 #endif
 ////////////////////////////////////////

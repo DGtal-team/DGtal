@@ -62,6 +62,8 @@
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/base/ConstAlias.h"
 
+#include "boost/iterator/reverse_iterator.hpp"
+
 
 //////////////////////////////////////////////////////////////////////////////
 
@@ -399,7 +401,7 @@ public:
   typedef std::string::const_iterator ConstIterator; 
   typedef std::string::const_reverse_iterator ConstReverseIterator;
   typedef Circulator<ConstIterator> ConstCirculator;
-  typedef std::reverse_iterator<ConstCirculator> ConstReverseCirculator;
+  typedef boost::reverse_iterator<ConstCirculator> ConstReverseCirculator;
 
   // ------------------------- standard services --------------------------------
 
@@ -925,17 +927,6 @@ public:
      */
     //static void movePointFromFC(Point & aPoint, unsigned int aCode );
     static void movePointFromFC(Point & aPoint, char aCode );
-
-
-    // Deprecated
-    //
-    // /**
-    //  * @param aZero (returns) the '0' or 'x' letter for quadrant [quadrant].
-    //  * @param aOne (returns) the '1' or 'y' letter for quadrant [quadrant].
-    //  * @param aQuadrant the quadrant as any of '0', '1', '2', or '3'.
-    //  */
-    // static void alphabet( char & aZero, char & aOne, char aQuadrant )
-
 
     /**
      * Given two consecutive moves on a Freeman chain code, this

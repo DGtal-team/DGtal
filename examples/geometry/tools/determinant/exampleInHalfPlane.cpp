@@ -163,7 +163,6 @@ advice()
   delete a;
   }
 
-#ifdef WITH_BIGINTEGER
   {
   //! [FunctorDefinition62plus]
   //for arbitrary coordinates
@@ -175,7 +174,6 @@ advice()
   //! [FunctorDefinition62plus]
   delete a;
   }
-#endif
 
 }
 

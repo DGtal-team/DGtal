@@ -42,7 +42,7 @@
 //! [MeshUseInclude]
 #include "DGtal/shapes/Mesh.h"
 //! [MeshUseInclude]
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -54,9 +54,7 @@ int main( int argc, char** argv )
 {
 
   //! [MeshUseInitDisplay]
-  QApplication application(argc,argv);
-  Viewer3D<> viewer;
-  viewer.show();
+  PolyscopeViewer<> viewer;
   //! [MeshUseInitDisplay]
 
 
@@ -101,12 +99,10 @@ int main( int argc, char** argv )
   //! [MeshUseMeshCreation]
 
   //! [MeshUseDisplay]
-  viewer.setLineColor(Color(150,0,0,254));
+  viewer.drawColor(Color(150,0,0,254));
   viewer << aMesh;
-  viewer << Viewer3D<>::updateDisplay;
   //! [MeshUseDisplay]
-  bool res = application.exec();
-  FATAL_ERROR(res);
+  viewer.show();
   return 0;
 }
 //                                                                           //

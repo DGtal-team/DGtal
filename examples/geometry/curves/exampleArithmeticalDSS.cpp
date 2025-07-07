@@ -111,7 +111,7 @@ void exampleNaiveDSS()
 
   // Save
   board.saveSVG("NaiveDSS8.svg");
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   board.saveCairo("NaiveDSS8.png", Board2D::CairoPNG);
 #endif
 
@@ -162,7 +162,7 @@ void exampleStandardDSS()
 
   // Save
   board.saveSVG("StandardDSS4.svg");
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   board.saveCairo("StandardDSS4.png", Board2D::CairoPNG);
 #endif
 
@@ -183,7 +183,7 @@ void exampleStandardDSS()
   //! [ArithmeticalDSSDrawingUsage]
 
   board.saveSVG("StandardDSS4bis.svg");
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   board.saveCairo("StandardDSS4bis.png", Board2D::CairoPNG);
 #endif
 
@@ -316,7 +316,7 @@ void exampleUpdate()
 
     // Save
     board.saveSVG("NaiveDSS8ExtInit.svg");
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     board.saveCairo("NaiveDSS8ExtInit.png", Board2D::CairoPNG);
 #endif
   }
@@ -350,7 +350,7 @@ void exampleUpdate()
 
     // Save
     board.saveSVG("NaiveDSS8ExtDone.svg");
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
     board.saveCairo("NaiveDSS8ExtDone.png", Board2D::CairoPNG);
 #endif
   }

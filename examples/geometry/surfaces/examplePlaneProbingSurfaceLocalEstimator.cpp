@@ -39,7 +39,7 @@
 #include "DGtal/geometry/surfaces/estimation/PlaneProbingDigitalSurfaceLocalEstimator.h"
 #include "DGtal/helpers/Shortcuts.h"
 #include "DGtal/helpers/ShortcutsGeometry.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -71,8 +71,6 @@ RealPoint centerSurfel (KSpace const& K, SH3::SCell const& s)
 
 int main( int argc, char** argv )
 {
-    QApplication application(argc, argv);
-
     std::string volfile = (argc > 1) ? argv[1] : (examplesPath + "samples/cat10.vol");
 
     auto params    = SH3::defaultParameters() | SHG3::defaultParameters();
@@ -84,9 +82,7 @@ int main( int argc, char** argv )
     Integer bound = params["maxAABB"].as<Integer>();
     double gridstep = params["gridstep"].as<double>();
 
-    Viewer3D<> viewer(K);
-    viewer << SetMode3D(Surfel().className(), "Basic");
-    viewer.show();
+    PolyscopeViewer<> viewer(K);
 
     //! [PlaneProbingDigitalSurfaceLocalEstimatorConstruction]
     using SurfacePredicate = DigitalSurfacePredicate<Surface>;
@@ -129,9 +125,7 @@ int main( int argc, char** argv )
     // Or on one surfel 's'
     // Estimator::Quantity q = estiamtor.eval(s);
     //! [PlaneProbingDigitalSurfaceLocalEstimatorUsage]
-
-    Color fillColor = viewer.getFillColor();
-
+    Color fillColor = Color::White;
     int i = 0;
     for (auto it = surfels.begin(); it != surfels.end(); ++it, ++i)
     {
@@ -140,22 +134,20 @@ int main( int argc, char** argv )
 
         RealPoint origin = centerSurfel(K, s);
 
-        viewer.setFillColor(fillColor);
+        viewer.drawColor(fillColor);
         viewer << s;
 
         // Pre-estimation in red
         RealPoint const& preEstimation = estimator.getPreEstimation(it);
-        viewer.setLineColor(Color::Red);
-        viewer.addLine(origin, origin + 1.5 * preEstimation.getNormalized(), 0.3);
+        viewer.drawColor(Color::Red);
+        viewer.drawLine(origin, origin + 1.5 * preEstimation.getNormalized());
 
         // Estimated normal in green;
-        viewer.setLineColor(Color::Green);
-        viewer.addLine(origin, origin + 1.5 * n.getNormalized(), 0.3);
+        viewer.drawColor(Color::Green);
+        viewer.drawLine(origin, origin + 1.5 * n.getNormalized());
     }
 
-    viewer << Viewer3D<>::updateDisplay;
-    application.exec();
-
+    viewer.show();
     return 0;
 }
 //                                                                           //

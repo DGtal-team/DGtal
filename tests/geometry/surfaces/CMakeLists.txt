@@ -29,7 +29,7 @@ foreach(FILE ${TESTS_SURFACES_SRC})
 endforeach()
 
 
-if (  WITH_CGAL )
+if (   DGTAL_WITH_CGAL )
   set(CGAL_TESTS_SRC
     testMonge )
   foreach(FILE ${CGAL_TESTS_SRC})
@@ -38,50 +38,32 @@ if (  WITH_CGAL )
 endif()
 
 
-if (  WITH_VISU3D_QGLVIEWER )
-  set(QGLVIEWER_TESTS_SRC
+if (  DGTAL_WITH_POLYSCOPE )
+  set(POLYSCOPE_VIEWER_TESTS_SRC
     testLocalConvolutionNormalVectorEstimator
     testTensorVotingViewer)
 
-  foreach(FILE ${QGLVIEWER_TESTS_SRC})
+  foreach(FILE ${POLYSCOPE_VIEWER_TESTS_SRC})
     DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
   endforeach()
 endif()
 
 
 
-if ( WITH_PATATE )
-    set(PATATE_TESTS_SRC
+if ( DGTAL_WITH_PONCA )
+    set(PONCA_TESTS_SRC
       testSphereFitting )
-    foreach(FILE ${PATATE_TESTS_SRC})
+    foreach(FILE ${PONCA_TESTS_SRC})
       DGtal_add_test(${FILE})
     endforeach()
 endif()
 
-#-----------------------
-#GMP based tests
-#----------------------
-set(DGTAL_TESTS_GMP_SRC
+set(DGTAL_TESTS_BIGINTEGERS
   testCOBANaivePlaneComputer
   testCOBAGenericStandardPlaneComputer
   testChordNaivePlaneComputer
-  )
+ )
 
-if(GMP_FOUND)
-  foreach(FILE ${DGTAL_TESTS_GMP_SRC})
-    DGtal_add_test(${FILE})
-  endforeach()
-endif()
-
-set(DGTAL_BENCH_GMP_SRC
-  testCOBANaivePlaneComputer-benchmark
-  testCOBAGenericNaivePlaneComputer-benchmark
-  testChordNaivePlaneComputer-benchmark
-  )
-
-#Benchmark target
-if(GMP_FOUND)
-    foreach(FILE ${DGTAL_BENCH_GMP_SRC})
-      DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
-    endforeach()
-endif()
+foreach(FILE ${DGTAL_TESTS_BIGINTEGERS})
+  DGtal_add_test(${FILE})
+endforeach()

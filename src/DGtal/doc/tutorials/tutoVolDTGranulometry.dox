@@ -28,7 +28,7 @@ experiment the following DGtal features
 
 - Distance transformation computation (DistanceTransformation)
 
-- Visualization of volumetric data  (Viewer3D)
+- Visualization of volumetric data  (PolyscopeViewer)
  
 - Implicit/parametric shape construction  (ImplicitBall)
  
@@ -98,7 +98,7 @@ previously defined image type.
 
 
 Once you have imported the volumetric file, you can check its geometry
-with the internal Viewer3D visualization tool. First of all, create a
+with the internal PolyscopeViewer visualization tool. First of all, create a
 new viewer instance using the following code:
 
 @snippet tutorial-examples/volDTGranulo-template.cpp volGranulo-viewer
@@ -125,7 +125,7 @@ image and a thresold.
 5. Now, create a distance map from this point predicate and an
 Eucildean @f$ l_2@f$ norm.
 
-6. Create a new Viewer3D instance and visualize the distance map
+6. Create a new PolyscopeViewer instance and visualize the distance map
 values. Two things would be helpful:
   - If you want to add a clipping plane to the viewer, a simple object
 has been defined in DGtal: 
@@ -169,7 +169,7 @@ operator() sign to decide if the point is inside or not.
 each point of the DT map, create a ball and check its interior point
 to update the function @f$ g @f$.
 
-10. Again, use a new Viewer3D object to visualize the granulometric function.
+10. Again, use a new PolyscopeViewer object to visualize the granulometric function.
 
 11. Export the final map to a vol file. In this case, consider the
 VolWriter class (@e granuloImage is the name of image structure

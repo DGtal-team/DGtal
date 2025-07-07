@@ -145,7 +145,7 @@ can be found in \ref moduleCOBANaivePlaneRecognition. The type should
 be able to hold integers of order \f$(2D^3)^2\f$ if \a D is the diameter of
 the set of digital points. In practice, diameter is limited to 20 for
 \ref int32_t, diameter is approximately 500 for \ref int64_t, and whatever with
-\ref BigInteger / GMP integers. For huge diameters, the slow-down is
+\ref BigInteger . For huge diameters, the slow-down is
 polylogarithmic with respect to the diameter.
 
 \subsection modulePlaneRecognition_sec22 Naive plane recognition (known axis) with Chord algorithm
@@ -184,7 +184,7 @@ input points are digital points, then this type should be integral and
 hold integers of order \f$(2D)^2\f$ if \a D is the diameter of the set
 of digital points. In practice, diameter is limited to 14000 for \ref
 int32_t, diameter is approximately 440000000 for \ref int64_t, and
-whatever with DGtal::BigInteger / GMP integers. For huge diameters, the
+whatever with DGtal::BigInteger. For huge diameters, the
 slow-down is polylogarithmic with respect to the diameter. If the
 input points are not digital, you should provide a scalar type for
 intermediate computations (e.g. double).

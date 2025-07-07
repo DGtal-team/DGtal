@@ -42,7 +42,7 @@ using namespace DGtal;
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Shapes.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -55,69 +55,61 @@ using namespace Z3i;
 int main( int argc, char** argv )
 {
 
- QApplication application(argc,argv);
+  KSpace K;
+  Point plow(0,0,0);
+  Point pup(3,3,2);
+  Domain domain( plow, pup );
+  K.init( plow, pup, true );
+
+  PolyscopeViewer<Space, KSpace> viewer(K);
+  trace.beginBlock ( "Testing display KSCell in Viewer 3D" );
+  // if the domain is visible can't see the cubes inside
+  // viewer << domain;
 
 
- KSpace K;
- Point plow(0,0,0);
- Point pup(3,3,2);
- Domain domain( plow, pup );
- K.init( plow, pup, true );
+  // Drawing cell of dimension 3
+  Cell voxelA = K.uCell(Point(1, 1, 1));
+  SCell voxelB = K.sCell(Point(1, 1, 3));
+  viewer << voxelB<< voxelA;//
 
- Viewer3D<Space, KSpace> viewer(K);
- viewer.show();
- trace.beginBlock ( "Testing display KSCell in Viewer 3D" );
- //viewer << SetMode3D( domain.className(), "Paving" );
- // if the domain is visible can't see the cubes inside
- // viewer << domain;
+  // drawing cells of dimension 2
+  SCell surfelA = K.sCell( Point( 2, 1, 3 ) );
+  SCell surfelB = K.sCell( Point( 1, 0, 1 ), false );
+  Cell surfelC = K.uCell( Point( 1, 2, 1 ) );
+  SCell surfelD = K.sCell( Point( 1, 1, 0 ) );
+  Cell surfelE = K.uCell( Point( 1, 1, 2 ) );
+  viewer << surfelA << surfelB << surfelC << surfelD << surfelE;
 
+  Cell linelA = K.uCell(Point(2, 1 ,2));
+  SCell linelB = K.sCell(Point(2, 2 ,1));
+  SCell linelC = K.sCell(Point(1, 2 ,2), false);
+  viewer << linelA << linelB << linelC;
 
- // Drawing cell of dimension 3
- Cell voxelA = K.uCell(Point(1, 1, 1));
- SCell voxelB = K.sCell(Point(1, 1, 3));
- viewer << voxelB<< voxelA;//
+  Cell center = K.uCell(Point(5,5,5));
+  // Testing display of oriented surfels:
+  SCell ssurfelXZ = K.sCell( Point( 5, 6, 5 ), false );
+  SCell ssurfelXY = K.sCell( Point( 5, 5, 6 ), false );
+  SCell ssurfelZY = K.sCell( Point( 6, 5, 5 ), false );
+  viewer<< center;
 
- // drawing cells of dimension 2
- SCell surfelA = K.sCell( Point( 2, 1, 3 ) );
- SCell surfelB = K.sCell( Point( 1, 0, 1 ), false );
- Cell surfelC = K.uCell( Point( 1, 2, 1 ) );
- SCell surfelD = K.sCell( Point( 1, 1, 0 ) );
- Cell surfelE = K.uCell( Point( 1, 1, 2 ) );
- viewer << surfelA << surfelB << surfelC << surfelD << surfelE;
+  SCell ssurfelXZo = K.sCell( Point( 5, 4, 5 ), false );
+  SCell ssurfelXYo = K.sCell( Point( 5, 5, 4 ), false );
+  SCell ssurfelZYo = K.sCell( Point( 4, 5, 5 ), false );
 
- Cell linelA = K.uCell(Point(2, 1 ,2));
- SCell linelB = K.sCell(Point(2, 2 ,1));
- SCell linelC = K.sCell(Point(1, 2 ,2), false);
- viewer << linelA << linelB << linelC;
+  viewer << ssurfelXZ << ssurfelXY << ssurfelZY;
+  viewer << ssurfelXZo << ssurfelXYo << ssurfelZYo;
 
+  // Testing display oriented pointels
+  Cell pointelA = K.uCell(Point(2, 2, 2));
+  SCell pointelB = K.sCell(Point(4, 4, 4), true);
+  SCell pointelC = K.sCell(Point(6, 4, 4), false);
+  SCell linelAC = K.sCell(Point(5, 4, 4), false);
+  viewer << pointelA << pointelB << pointelC << linelAC;
 
- Cell center = K.uCell(Point(5,5,5));
-// Testing display of oriented surfels:
- SCell ssurfelXZ = K.sCell( Point( 5, 6, 5 ), false );
- SCell ssurfelXY = K.sCell( Point( 5, 5, 6 ), false );
- SCell ssurfelZY = K.sCell( Point( 6, 5, 5 ), false );
- viewer<< center;
-
- SCell ssurfelXZo = K.sCell( Point( 5, 4, 5 ), false );
- SCell ssurfelXYo = K.sCell( Point( 5, 5, 4 ), false );
- SCell ssurfelZYo = K.sCell( Point( 4, 5, 5 ), false );
-
- viewer << ssurfelXZ << ssurfelXY << ssurfelZY;
- viewer << ssurfelXZo << ssurfelXYo << ssurfelZYo;
-
- // Testing display oriented pointels
- Cell pointelA = K.uCell(Point(2, 2, 2));
- SCell pointelB = K.sCell(Point(4, 4, 4), true);
- SCell pointelC = K.sCell(Point(6, 4, 4), false);
- SCell linelAC = K.sCell(Point(5, 4, 4), false);
- viewer << pointelA << pointelB << pointelC << linelAC;
-
- viewer <<  Viewer3D<>::updateDisplay;
-
- bool res =  application.exec();
- trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
- trace.endBlock();
- return res ? 0 : 1;
+  trace.emphase() << "Passed." << endl;
+  trace.endBlock();
+  viewer.show();
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

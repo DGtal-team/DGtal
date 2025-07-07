@@ -1,22 +1,23 @@
-option(BUILD_EXAMPLES "Build examples." OFF)
-if (BUILD_EXAMPLES)
+option(DGTAL_BUILD_EXAMPLES "Build examples." OFF)
+if (DGTAL_BUILD_EXAMPLES)
   message(STATUS "Build examples ENABLED")
   add_subdirectory (${PROJECT_SOURCE_DIR}/examples)
 else()
-  message(STATUS "Build examples DISABLED (you can activate the examples with '-DBUILD_EXAMPLES=ON' cmake option)")
+  message(STATUS "Build examples DISABLED (you can activate the examples with '-DDGTAL_BUILD_EXAMPLES=ON' cmake option)")
 endif()
 message(STATUS "-------------------------------------------------------------------------------")
 
-
-
 # -----------------------------------------------------------------------------
-# polyscope examples
+# Specific examples
 # -----------------------------------------------------------------------------
-option(BUILD_POLYSCOPE_EXAMPLES "Build polyscope examples." OFF)
-if (BUILD_POLYSCOPE_EXAMPLES )
-  message(STATUS "Build polyscope examples ENABLED (BUILD_POLYSCOPE_EXAMPLES)")
-  add_subdirectory (${PROJECT_SOURCE_DIR}/examples/polyscope-examples)
-else()
-  message(STATUS "Build polyscope examples DISABLED (BUILD_POLYSCOPE_EXAMPLES)")
+if (DGTAL_BUILD_EXAMPLES)
+  # -----------------------------------------------------------------------------
+  # polyscope examples
+  # -----------------------------------------------------------------------------
+  option(DGTAL_BUILD_POLYSCOPE_EXAMPLES "Build polyscope examples." OFF)
+  if (DGTAL_BUILD_POLYSCOPE_EXAMPLES )
+    message(STATUS "Build polyscope examples ENABLED (DGTAL_BUILD_POLYSCOPE_EXAMPLES)")
+  else()
+    message(STATUS "Build polyscope examples DISABLED (DGTAL_BUILD_POLYSCOPE_EXAMPLES)")
+  endif()
 endif()
-

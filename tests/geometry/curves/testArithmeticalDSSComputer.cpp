@@ -370,7 +370,6 @@ bool testIsInside()
   return (nb == nbok); 
 }
 
-#ifdef WITH_BIGINTEGER
 /**
  * Test for 4-connected points
  * with big coordinates
@@ -406,8 +405,7 @@ bool testBIGINTEGER()
 
   trace.info() << theDSS4 << " " << theDSS4.isValid() << std::endl;
 
-  Coordinate mu;
-  mu = "-3000000000";
+  Coordinate mu("-3000000000");
   if( (theDSS4.a() == 2)
       &&(theDSS4.b() == 5)
       &&(theDSS4.mu() == mu)
@@ -422,7 +420,6 @@ bool testBIGINTEGER()
   return flag;
 }
 
-#endif
 
 /**
  * Test for corners
@@ -485,9 +482,7 @@ int main(int argc, char **argv)
     && testDSS8drawing()
     && testExtendRetractFront()
     && testCorner()
-#ifdef WITH_BIGINTEGER
     && testBIGINTEGER()
-#endif
     && testIsInside()
     ;
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
