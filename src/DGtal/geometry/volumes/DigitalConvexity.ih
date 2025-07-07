@@ -1256,7 +1256,6 @@ DGtal::DigitalConvexity<TKSpace>::
 isKSubconvex( const RationalPolytope& P, const CellGeometry& C,
               const Dimension k ) const
 {
-  // TODO
   auto intersected_cells = makeCellCover( P, k, k );
   return intersected_cells.subset( C );
 }
