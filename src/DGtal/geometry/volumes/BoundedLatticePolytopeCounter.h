@@ -159,8 +159,11 @@ namespace DGtal
     /// @see longestAxis
     void getPointsAlongAxis( PointRange& pts, Dimension a ) const;
 
-    /// @param[out] pts the range of lattice points that are interior to this polytope.
-    /// @param a any axis with 0 <= a < d, where d is the dimension of the space.
+    /// @param[out] pts the range of lattice points that are interior
+    /// to this polytope (i.e. strictly inside).
+    ///
+    /// @param[in] a any axis with 0 <= a < d, where d is the
+    /// dimension of the space.
     ///
     /// @note The result does not depend on parameter \a a, but the
     /// speed of computation depends on this choice. The best choice

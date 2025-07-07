@@ -507,6 +507,28 @@ operator+=( UnitSegment s )
 template <typename TSpace>
 typename DGtal::BoundedLatticePolytope<TSpace>::Self&
 DGtal::BoundedLatticePolytope<TSpace>::
+operator+=( StrictUnitSegment s )
+{
+  for ( Dimension i = 0; i < A.size(); ++i )
+    {
+      if ( A[ i ][ s.k ] > NumberTraits<Integer>::ZERO )
+	{
+	  B[ i ] += A[ i ][ s.k ];
+	  I[ i ]  = false;
+	}
+      else if ( A[ i ][ s.k ] < NumberTraits<Integer>::ZERO )
+        I[ i ] = false;
+    }
+  Vector z = Vector::zero;
+  z[ s.k ] = NumberTraits<Integer>::ONE;
+  D = Domain( D.lowerBound(), D.upperBound() + z );
+  return *this;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+typename DGtal::BoundedLatticePolytope<TSpace>::Self&
+DGtal::BoundedLatticePolytope<TSpace>::
 operator+=( LeftStrictUnitSegment s )
 {
   I[ 2*s.k + 1 ] = false;
@@ -550,6 +572,17 @@ operator+=( UnitCell c )
 {
   for ( Dimension i = 0; i < c.dims.size(); ++i )
     *this += UnitSegment( c.dims[ i ] );
+  return *this;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+typename DGtal::BoundedLatticePolytope<TSpace>::Self&
+DGtal::BoundedLatticePolytope<TSpace>::
+operator+=( StrictUnitCell c )
+{
+  for ( Dimension i = 0; i < c.dims.size(); ++i )
+    *this += StrictUnitSegment( c.dims[ i ] );
   return *this;
 }
 
@@ -929,6 +962,25 @@ DGtal::BoundedLatticePolytope<TSpace>::isLarge( unsigned int i ) const
 
 //-----------------------------------------------------------------------------
 template <typename TSpace>
+void
+DGtal::BoundedLatticePolytope<TSpace>::setLarge( unsigned int i )
+{
+  ASSERT( i < nbHalfSpaces() );
+  I[ i ] = true;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+void
+DGtal::BoundedLatticePolytope<TSpace>::setStrict( unsigned int i )
+{
+  ASSERT( i < nbHalfSpaces() );
+  I[ i ] = false;
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename TSpace>
 const typename DGtal::BoundedLatticePolytope<TSpace>::InequalityMatrix&
 DGtal::BoundedLatticePolytope<TSpace>::getA() const
 {
@@ -979,7 +1031,7 @@ DGtal::BoundedLatticePolytope<TSpace>::selfDisplay ( std::ostream & out ) const
       out << "  [";
       for ( Dimension j = 0; j < dimension; ++j )
         out << " " << A[ i ][ j ];
-      out << " ] . x <= " << B[ i ] << std::endl;
+      out << " ] . x " << ( isLarge( i ) ? "<=" : "<" ) << " " << B[ i ] << std::endl;
     }
 }
 
@@ -1044,6 +1096,26 @@ template <typename TSpace>
 DGtal::BoundedLatticePolytope<TSpace>
 DGtal::operator+ ( const BoundedLatticePolytope<TSpace> & P,
                    typename BoundedLatticePolytope<TSpace>::UnitCell c )
+{
+  BoundedLatticePolytope<TSpace> Q = P;
+  Q += c;
+  return Q;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+DGtal::BoundedLatticePolytope<TSpace>
+DGtal::operator+ ( const BoundedLatticePolytope<TSpace> & P,
+                   typename BoundedLatticePolytope<TSpace>::StrictUnitSegment s )
+{
+  BoundedLatticePolytope<TSpace> Q = P;
+  Q += s;
+  return Q;
+}
+//-----------------------------------------------------------------------------
+template <typename TSpace>
+DGtal::BoundedLatticePolytope<TSpace>
+DGtal::operator+ ( const BoundedLatticePolytope<TSpace> & P,
+                   typename BoundedLatticePolytope<TSpace>::StrictUnitCell c )
 {
   BoundedLatticePolytope<TSpace> Q = P;
   Q += c;

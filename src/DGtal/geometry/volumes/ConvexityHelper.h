@@ -384,12 +384,37 @@ namespace DGtal
     /// moduleDigitalConvexity).
     ///
     /// @return the tightiest bounded lattice polytope
-    /// (i.e. H-representation) including the given range of points.
+    /// (i.e. H-representation) including the given triangle.
+    ///
+    /// @warning Implemented only in 3D.
     static
     LatticePolytope
     compute3DTriangle( const Point& a, const Point& b, const Point& c,
 		       bool make_minkowski_summable = false );
 
+    /// Computes the lattice polytope enclosing an open triangle in
+    /// dimension 3. Takes care of degeneracies (non distinct points
+    /// or alignment).
+    ///
+    /// @param a any point
+    /// @param b any point
+    /// @param c any point
+    ///
+    /// @param[in] make_minkowski_summable Other constraints are added
+    /// so that we can perform axis aligned Minkowski sums on this
+    /// polytope. Useful for checking full convexity (see
+    /// moduleDigitalConvexity).
+    ///
+    /// @return the tightiest bounded lattice polytope
+    /// (i.e. H-representation) including the given open triangle
+    /// (i.e. without edges and vertices).
+    ///
+    /// @warning Implemented only in 3D.
+    static
+    LatticePolytope
+    compute3DOpenTriangle( const Point& a, const Point& b, const Point& c,
+			   bool make_minkowski_summable = false );
+    
     /// Computes the lattice polytope enclosing a degenerated
     /// triangle. The points must be aligned (or non distinct).
     ///
@@ -403,17 +428,34 @@ namespace DGtal
     LatticePolytope
     computeDegeneratedTriangle( const Point& a, const Point& b, const Point& c );
 
+    
     /// Computes the lattice polytope enclosing a segment.
     ///
     /// @param a any point 
     /// @param b any point 
     ///
     /// @return the tightiest bounded lattice polytope
-    /// (i.e. H-representation) including the given range of
-    /// points. It is always Minkowski summable.
+    /// (i.e. H-representation) including the closed segment
+    /// `[a,b]`. It is always Minkowski summable.
+    ///
+    /// @warning Implemented only in 3D.
     static
     LatticePolytope
     computeSegment( const Point& a, const Point& b );
+
+    /// Computes the lattice polytope enclosing an open segment.
+    ///
+    /// @param a any point 
+    /// @param b any point 
+    ///
+    /// @return the tightiest bounded lattice polytope
+    /// (i.e. H-representation) including the open segment
+    /// `]a,b[`. It is always Minkowski summable.
+    ///
+    /// @warning Implemented only in 3D.
+    static
+    LatticePolytope
+    computeOpenSegment( const Point& a, const Point& b );
     
     /// @}
     

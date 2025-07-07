@@ -57,9 +57,10 @@ operator defined as:
 
 where:
 - \f$ \mathrm{CvxH} \f$ denotes the standard convex hull in Euclidean space,
-- \f$ \mathrm{Star} \f$ denotes the set of cells of the cubical grid complex induced by lattice points, whose closure intersects the given set,
+- \f$ \mathrm{Star} \f$ denotes the set of cells of the cubical grid complex whose closure intersects the given Euclidean set,
 - \f$ \mathrm{Skel} \f$ denotes the skeleton of a cell complex, i.e. the smallest cell complex whose star is equal to the input cell complex,
-- \f$ \mathrm{Extr} \f$ returns the set of lattice points that are vertices of cells of the given cell complex.
+- \f$ \mathrm{Extr} \f$ returns the set of lattice points that are vertices of cells of the given cell complex,
+- \f$ \mathrm{Cover} \f$ denotes the set of cells of the cubical grid complex which have a non empty intersection with the given Euclidean set.
 
 The envelope operator is the limit of the iterated repetition of
 operator \f$ \mathrm{FC} \f$. It is proven that this sequence achieves
@@ -105,6 +106,7 @@ intermediate steps, which can be useful in some contexts.
 - DigitalConvexity::Extr computes the extremal vertices of a range of cells.
 - DigitalConvexity::ExtrCvxH computes the extremal vertices of the convex hull of a range of lattice points.
 - DigitalConvexity::ExtrSkel computes the extremal vertices of the skeleton of a range of cells.
+- DigitalConvexity::CoverCvxH computes the set of lattice cells \f$ \mathrm{Cover}(\mathrm{CvxH}(a,b)) \f$ or \f$ \mathrm{Cover}(\mathrm{CvxH}(a,b,c)) \f$, i.e. the cells that have a non-empty intersection with the convex hull of the given triangle (limited to 3D at the moment).
 
 \b Representations and \b conversions
 

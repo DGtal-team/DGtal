@@ -339,6 +339,7 @@ bool
 DGtal::DigitalConvexity<TKSpace>::
 isFullyConvex( const PointRange& Z, bool convex0 ) const
 {
+  if ( Z.size() <= 1 ) return true;
   ASSERT( dimension <= 64 );
   typedef DGtal::int64_t Direction;
   typedef std::vector< Direction > Directions;
@@ -374,7 +375,8 @@ template <typename TKSpace>
 bool
 DGtal::DigitalConvexity<TKSpace>::
 isFullyConvexFast( const PointRange& Z  ) const
-{ 
+{
+  if ( Z.size() <= 1 ) return true;
   LatticeSet C_Z( Z.cbegin(), Z.cend(), 0 );
   const auto nb_cells = C_Z.starOfPoints().size();
   const auto s = sizeStarCvxH( Z );
@@ -472,6 +474,52 @@ StarCvxH( const Point& a, const Point& b, const Point& c,
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
+typename  DGtal::DigitalConvexity<TKSpace>::LatticeSet
+DGtal::DigitalConvexity<TKSpace>::
+StarOpenTriangle( const Point& a, const Point& b, const Point& c,
+		  Dimension axis ) const
+{
+  LatticeSet LS;
+  if ( mySafe )
+    {
+      using InternalInteger
+	= typename detail::ConvexityHelperInternalInteger< Integer, true >::Type;
+      using Helper = ConvexityHelper< dimension, Integer, InternalInteger >;
+      using UnitSegment = typename Helper::LatticePolytope::UnitSegment;
+      auto P = Helper::compute3DOpenTriangle( a, b, c, true );
+      if ( ! P.isValid() ) return LS;
+      P += UnitSegment( 0 );
+      P += UnitSegment( 1 );
+      P += UnitSegment( 2 );
+      // Extracts lattice points within polytope
+      // they correspond 1-1 to the d-cells intersected by Cvxh( Z )
+      Counter C( P );
+      if ( axis >= dimension ) axis = C.longestAxis();
+      const auto  cellP = C.getLatticeCells( axis );
+      return LatticeSet( cellP, axis );
+    }
+  else
+    {
+      using InternalInteger
+	= typename detail::ConvexityHelperInternalInteger< Integer, false >::Type;
+      using Helper = ConvexityHelper< dimension, Integer, InternalInteger >;
+      using UnitSegment = typename Helper::LatticePolytope::UnitSegment;
+      auto P = Helper::compute3DOpenTriangle( a, b, c, true );
+      if ( ! P.isValid() ) return LS;
+      P += UnitSegment( 0 );
+      P += UnitSegment( 1 );
+      P += UnitSegment( 2 );
+      // Extracts lattice points within polytope
+      // they correspond 1-1 to the d-cells intersected by Cvxh( Z )
+      Counter C( P );
+      if ( axis >= dimension ) axis = C.longestAxis();
+      const auto  cellP = C.getLatticeCells( axis );
+      return LatticeSet( cellP, axis );
+    }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
 typename DGtal::DigitalConvexity<TKSpace>::LatticeSet
 DGtal::DigitalConvexity<TKSpace>::
 Star( const PointRange& X, const Dimension axis ) const
@@ -490,6 +538,112 @@ StarCells( const PointRange& C, const Dimension axis ) const
   LatticeSet L( C.cbegin(), C.cend(), a );
   return L.starOfCells();
 }
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+template <typename TPolytope>
+typename  DGtal::DigitalConvexity<TKSpace>::LatticeSet
+DGtal::DigitalConvexity<TKSpace>::
+CoverPolytope( const TPolytope& P, Dimension axis ) const
+{
+  using StrictUnitSegment = typename Polytope::StrictUnitSegment;
+  LatticeSet LS;
+  if ( ! P.isValid() ) return LS;
+  if ( ! P.canBeSummed() ) {
+    trace.error() << "[DigitalConvexity::CoverPolytope] Polytope should be Minkowski summabel." << std::endl;
+    return LS;
+  }
+  Counter C( P );
+  if ( axis >= dimension ) axis = C.longestAxis();
+  auto V    = LatticeSet( C.getLatticeSet( axis ), axis ).toPointRange(); // << 0-cells
+  auto P0   = P + StrictUnitSegment( 0 );
+  auto P1   = P + StrictUnitSegment( 1 );
+  auto P2   = P + StrictUnitSegment( 2 );
+  Counter C0( P0 );
+  Counter C1( P1 );
+  Counter C2( P2 );
+  auto V0   = LatticeSet( C0.getLatticeSet( axis ), axis ).toPointRange(); // << 1-cells
+  auto V1   = LatticeSet( C1.getLatticeSet( axis ), axis ).toPointRange(); // << 1-cells
+  auto V2   = LatticeSet( C2.getLatticeSet( axis ), axis ).toPointRange(); // << 1-cells
+  auto P01  = P0 + StrictUnitSegment( 1 );
+  auto P02  = P0 + StrictUnitSegment( 2 );
+  auto P12  = P1 + StrictUnitSegment( 2 );
+  Counter C01( P01 );
+  Counter C02( P02 );
+  Counter C12( P12 );
+  auto V01  = LatticeSet( C01.getLatticeSet( axis ), axis ).toPointRange(); // << 2-cells
+  auto V02  = LatticeSet( C02.getLatticeSet( axis ), axis ).toPointRange(); // << 2-cells
+  auto V12  = LatticeSet( C12.getLatticeSet( axis ), axis ).toPointRange(); // << 2-cells
+  auto P012 = P01 + StrictUnitSegment( 2 );
+  Counter C012( P012 );
+  auto V012 = LatticeSet( C012.getLatticeSet( axis ), axis ).toPointRange(); // << 3-cells
+  // Convert points to Khalimsky coordinates and insert them in LatticeSet.
+  LS = LatticeSet( axis );
+  for ( const auto& p : V    ) LS.insert( Point( 2*p[0]  , 2*p[1]  , 2*p[2]   ) );
+  for ( const auto& p : V0   ) LS.insert( Point( 2*p[0]-1, 2*p[1]  , 2*p[2]   ) );      
+  for ( const auto& p : V1   ) LS.insert( Point( 2*p[0]  , 2*p[1]-1, 2*p[2]   ) );      
+  for ( const auto& p : V2   ) LS.insert( Point( 2*p[0]  , 2*p[1]  , 2*p[2]-1 ) );      
+  for ( const auto& p : V01  ) LS.insert( Point( 2*p[0]-1, 2*p[1]-1, 2*p[2]   ) );      
+  for ( const auto& p : V02  ) LS.insert( Point( 2*p[0]-1, 2*p[1]  , 2*p[2]-1 ) );      
+  for ( const auto& p : V12  ) LS.insert( Point( 2*p[0]  , 2*p[1]-1, 2*p[2]-1 ) );      
+  for ( const auto& p : V012 ) LS.insert( Point( 2*p[0]-1, 2*p[1]-1, 2*p[2]-1 ) );      
+  return LS;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename  DGtal::DigitalConvexity<TKSpace>::LatticeSet
+DGtal::DigitalConvexity<TKSpace>::
+CoverCvxH( const Point& a, const Point& b, const Point& c,
+	  Dimension axis ) const
+{
+  LatticeSet LS;
+  if ( mySafe )
+    {
+      using InternalInteger
+	= typename detail::ConvexityHelperInternalInteger< Integer, true >::Type;
+      using Helper = ConvexityHelper< dimension, Integer, InternalInteger >;
+      // using StrictUnitSegment = typename Helper::LatticePolytope::StrictUnitSegment;
+      auto P = Helper::compute3DTriangle( a, b, c, true );
+      return CoverPolytope( P, axis );
+    }
+  else
+    {
+      using InternalInteger
+	= typename detail::ConvexityHelperInternalInteger< Integer, false >::Type;
+      using Helper = ConvexityHelper< dimension, Integer, InternalInteger >;
+      // using StrictUnitSegment = typename Helper::LatticePolytope::StrictUnitSegment;
+      auto P = Helper::compute3DTriangle( a, b, c, true );
+      return CoverPolytope( P, axis );
+    }
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+typename  DGtal::DigitalConvexity<TKSpace>::LatticeSet
+DGtal::DigitalConvexity<TKSpace>::
+CoverCvxH( const Point& a, const Point& b, 
+	  Dimension axis ) const
+{
+  LatticeSet LS;
+  if ( mySafe )
+    {
+      using InternalInteger
+	= typename detail::ConvexityHelperInternalInteger< Integer, true >::Type;
+      using Helper = ConvexityHelper< dimension, Integer, InternalInteger >;
+      auto P = Helper::computeSegment( a, b );
+      return CoverPolytope( P, axis );
+    }
+  else
+    {
+      using InternalInteger
+	= typename detail::ConvexityHelperInternalInteger< Integer, false >::Type;
+      using Helper = ConvexityHelper< dimension, Integer, InternalInteger >;
+      auto P = Helper::computeSegment( a, b );
+      return CoverPolytope( P, axis );
+    }
+}
+
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
@@ -862,6 +1016,7 @@ DGtal::DigitalConvexity<TKSpace>::
 isFullyConvex( const LatticePolytope& P ) const
 {
   auto S = insidePoints( P );
+  if ( S.size() <= 1 ) return true;
   for ( Dimension k = 1; k < KSpace::dimension; ++ k )
     {
       auto touched_cells     = makeCellCover( S.begin(), S.end(), k, k );
@@ -927,6 +1082,72 @@ isFullySubconvex( const Point& a, const Point& b, const Point& c,
 {
   ASSERT( dimension == 3 );
   const auto SCabc = StarCvxH( a, b, c, StarX.axis() );
+  return StarX.includes( SCabc );
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool
+DGtal::DigitalConvexity<TKSpace>::
+isFullyCovered( const Point& a, const Point& b, const Point& c,
+		const LatticeSet& cells ) const
+{
+  ASSERT( dimension == 3 );
+  const auto SCabc = CoverCvxH( a, b, c, cells.axis() );
+  return cells.includes( SCabc );
+}
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool
+DGtal::DigitalConvexity<TKSpace>::
+isFullyCovered( const Point& a, const Point& b,
+		const LatticeSet& cells ) const
+{
+  ASSERT( dimension == 3 );
+  LatticeSet L_ab( cells.axis() );
+  const auto    V = b - a;
+  L_ab.insert( 2*a );
+  for ( Dimension k = 0; k < dimension; k++ )
+    {
+      const Integer n = ( V[ k ] >= 0 ) ? V[ k ] : -V[ k ];
+      const Integer d = ( V[ k ] >= 0 ) ? 1 : -1;
+      if ( n == 0 ) continue;
+      Point kc;
+      for ( Integer i = 1; i < n; i++ )
+        {
+          for ( Dimension j = 0; j < dimension; j++ )
+            {
+              if ( j == k ) kc[ k ] = 2 * ( a[ k ] + d * i );
+              else
+                {
+                  const auto v = V[ j ];
+                  const auto q = ( v * i ) / n;
+                  const auto r = ( v * i ) % n; // might be negative
+                  kc[ j ] = 2 * ( a[ j ] + q );
+                  if ( r < 0 )      kc[ j ] -= 1;
+                  else if ( r > 0 ) kc[ j ] += 1;
+                }
+            }
+          L_ab.insert( kc );
+        }
+    }
+  if ( a != b ) L_ab.insert( 2*b );
+  // LatticeSet Star_ab = L_ab.starOfCells();
+  return cells.includes( L_ab );
+  
+  // ASSERT( dimension == 3 );
+  // const auto SCab = CoverCvxH( a, b, cells.axis() );
+  // return cells.includes( SCab );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TKSpace>
+bool
+DGtal::DigitalConvexity<TKSpace>::
+isOpenTriangleFullySubconvex( const Point& a, const Point& b, const Point& c,
+			      const LatticeSet& StarX ) const
+{
+  ASSERT( dimension == 3 );
+  const auto SCabc = StarOpenTriangle( a, b, c, StarX.axis() );
   return StarX.includes( SCabc );
 }
 
@@ -1014,6 +1235,7 @@ DGtal::DigitalConvexity<TKSpace>::
 isFullyConvex( const RationalPolytope& P ) const
 {
   auto S = insidePoints( P );
+  if ( S.size() <= 1 ) return true;
   for ( Dimension k = 1; k < KSpace::dimension; ++ k )
     {
       auto touched_cells     = makeCellCover( S.begin(), S.end(), k, k );
