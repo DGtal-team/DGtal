@@ -34,6 +34,10 @@
 #include "DGtal/helpers/Shortcuts.h"
 #include "DGtal/helpers/ShortcutsGeometry.h"
 #include "DGtal/base/Common.h"
+
+#if DGTAL_WITH_POLYSCOPE
+#include "DGtal/io/viewers/PolyscopeViewer.h"
+#endif
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -391,8 +395,7 @@ int main( int /* argc */, char** /* argv */ )
   }
   trace.endBlock();
   
-#if defined(WITH_EIGEN)
-  
+#if defined(DGTAL_WITH_EIGEN)
   trace.beginBlock ( "Load vol file -> build main digital surface -> II normals -> AT regularization -> save OBJ with colored normals." );
   {
     auto params     = SH3::defaultParameters() | SHG3::defaultParameters();
@@ -443,6 +446,46 @@ int main( int /* argc */, char** /* argv */ )
   
 #endif // defined(WITH_EIGEN)
   
+#if DGTAL_WITH_POLYSCOPE
+  trace.beginBlock( "Load vol file -> Compute VoronoiMap -> Display in Viewer" );
+  {
+    auto params    = SH3::defaultParameters() | SHG3::defaultParameters();
+    //! [dgtal_shortcuts_ssec2_1_15s]
+    auto bimage    = SH3::makeBinaryImage( examplesPath + "samples/Al.100.vol", params );
+    auto domain    = bimage->domain();
+    
+    // Extract points location
+    std::vector<SH3::Point> sites;
+    std::copy_if(domain.begin(), 
+                 domain.end(), 
+                 std::back_inserter(sites), 
+                 *bimage);
+    
+    // Compute VoronoiMap and get distances from sites
+    auto vmap1 = SHG3::getDistanceTransformation<1>(bimage->domain(), sites, params);
+    auto vmap2 = SHG3::getDistanceTransformation<2>(bimage->domain(), sites, params);
+
+    PolyscopeViewer<> viewer;
+    viewer.newCubeList("VoronoiMap distance");
+    viewer.allowReuseList = true;
+
+    for (auto it = domain.begin(); it != domain.end(); ++it)
+    {
+      viewer << WithQuantity(
+                  WithQuantity(*it, 
+                     "L1 distance", vmap1(*it)
+                  ), "L2 distance", vmap2(*it)
+                );
+    }
+
+    viewer.show();
+    //! [dgtal_shortcuts_ssec2_1_15s]
+    nb ++;
+    nbok ++;:
+  }
+  trace.endBlock();
+#endif // DGTAL_WITH_POLYSCOPE
+
   trace.info() << nbok << "/" << nb << " passed tests." << std::endl;
   return 0;
 }
