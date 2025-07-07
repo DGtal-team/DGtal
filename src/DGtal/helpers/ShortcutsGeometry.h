@@ -40,14 +40,18 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include "DGtal/helpers/Shortcuts.h"
+#include "DGtal/kernel/BasicPointPredicates.h"
 #include "DGtal/geometry/volumes/distance/LpMetric.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
+#include "DGtal/geometry/volumes/distance/VoronoiMap.h"
+#include "DGtal/geometry/volumes/distance/DistanceTransformation.h"
 #include "DGtal/geometry/surfaces/estimation/TrueDigitalSurfaceLocalEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/VoronoiCovarianceMeasureOnDigitalSurface.h"
 #include "DGtal/geometry/surfaces/estimation/VCMDigitalSurfaceLocalEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/IIGeometricFunctors.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantVolumeEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantCovarianceEstimator.h"
+#include "DGtal/geometry/meshes/CorrectedNormalCurrentComputer.h"
 
 #include "DGtal/dec/DiscreteExteriorCalculusFactory.h"
 #include "DGtal/dec/ATSolver2D.h"
@@ -169,6 +173,7 @@ namespace DGtal
       typedef typename functors::IIPrincipalCurvaturesAndDirectionsFunctor<Space>::Quantity   CurvatureTensorQuantity;
       typedef std::vector< CurvatureTensorQuantity >              CurvatureTensorQuantities;
 
+      typedef CorrectedNormalCurrentComputer<RealPoint, RealVector> CNCComputer;
 
       typedef TrueDigitalSurfaceLocalEstimator
         < KSpace, ImplicitShape3D, PositionFunctor >                TruePositionEstimator;
@@ -195,6 +200,9 @@ namespace DGtal
       typedef std::map<Surfel, IdxSurfel>                         Surfel2Index;
       typedef std::map<Cell,   IdxVertex>                         Cell2Index;
 
+      typedef DigitalSetByAssociativeContainer<Domain, std::unordered_set<typename Domain::Point>> DigitalSet;
+      typedef functors::NotPointPredicate<DigitalSet> VoronoiPointPredicate;
+
       // ----------------------- Static services --------------------------------------
     public:
 
@@ -208,7 +216,8 @@ namespace DGtal
       {
         return parametersShapeGeometry()
           | parametersGeometryEstimation()
-          | parametersATApproximation();
+          | parametersATApproximation()
+          | parametersVoronoiMap();
       }
 
       /// @return the parameters and their default values which are used
@@ -220,7 +229,7 @@ namespace DGtal
       static Parameters parametersShapeGeometry()
       {
         return Parameters
-          ( "projectionMaxIter", 20 )
+          ( "projectionMaxIter",  20 )
           ( "projectionAccuracy", 0.0001 )
           ( "projectionGamma",    0.5 )
           ( "gridstep",           1.0 );
@@ -372,6 +381,106 @@ namespace DGtal
         return n_true_estimations;
       }
 
+    /// Given a SurfaceMesh, compute mean curvature at each face using 
+    /// CorrectedNormalCurrent method.
+    ///
+    /// @warning In this code, only triangles with barycenters strictly inside the sphere are 
+    /// considered.
+    ///
+    /// @param mesh The surface mesh
+    /// @param faces The faces to compute curvature at
+    /// @param params
+    ///   - unit_u: Whether the computed normals should be normalized or not
+    ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
+    ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II, CNC)."
+    ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
+    /// @return The curvatures for each face of the mesh, in the same order `faces` 
+    static Scalars
+      getCNCMeanCurvatures
+      ( CountedPtr<typename Base::SurfaceMesh>  mesh, 
+        const typename Base::SurfaceMesh::Faces faces, 
+        const Parameters&                       params = parametersShapeGeometry() )
+      {
+        using Face = typename Base::SurfaceMesh::Face;
+
+        bool unit_u = params["unit_u"].as<int>();
+        double radius = params["r-radius"].as<double>();
+        double alpha  = params["alpha"].as<double>();
+        double h      = params["gridstep"].as<double>();
+        if ( alpha != 1.0 ) radius *= pow( h, alpha-1.0 );
+
+        CNCComputer computer(*mesh, unit_u);
+        
+        const auto& mu0 = computer.computeMu0();
+        const auto& mu1 = computer.computeMu1();
+        
+        Scalars curvatures(faces.size());
+        for (size_t i = 0; i < faces.size(); ++i)
+        {
+          const auto center = mesh->faceCentroid(faces[i]);
+          const auto area = mu0.measure(center, radius, faces[i]);
+          const auto lmu1 = mu1.measure(center, radius, faces[i]);
+          curvatures[i] = CNCComputer::meanCurvature(area, lmu1);
+        }
+
+        return curvatures;
+      }
+
+      /// Given a SurfaceMesh, compute mean curvature at each face using
+      /// CorrectedNormalCurrent method.
+      ///
+      /// This overloads compute curvature for each face of the mesh.
+      ///
+      /// @warning In this code, only triangles with barycenters
+      /// strictly inside the sphere are considered.
+      ///
+      /// @param mesh The surface mesh
+      /// @param params
+      ///   - unit_u: Whether the computed normals should be normalized or not
+      ///   - r-radius        [   3.0]: the constant for kernel radius parameter
+      ///   r in r(h)=r h^alpha (VCM,II,Trivial).
+      ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha
+      ///   (VCM, II, CNC)."
+      ///   - gridstep        [   1.0]: the digitization gridstep (often denoted
+      ///   by h).
+      /// @return The curvatures for each face of mesh, in the the order given by
+      /// the mesh
+      static Scalars getCNCMeanCurvatures(
+      CountedPtr<typename Base::SurfaceMesh> mesh,
+      const Parameters & params = parametersShapeGeometry() )
+      {
+        std::vector<typename Base::SurfaceMesh::Face> allFaces(mesh->nbFaces());
+        std::iota(allFaces.begin(), allFaces.end(), 0);
+
+        return getCNCMeanCurvatures(mesh, allFaces, params);
+      }
+
+      /// Given a SurfaceMesh, compute mean curvature at each face using
+      /// CorrectedNormalCurrent method.
+      ///
+      /// @warning In this code, only triangles with barycenters strictly inside
+      /// the sphere are considered.
+      ///
+      /// @tparam Any digital object convertible to surface mesh via
+      /// Shortcuts::makePrimalSurfaceMesh
+      /// @param digitalObject A digital object
+      /// @param params
+      ///   - unit_u: Whether the computed normals should be normalized or not
+      ///   - r-radius        [   3.0]: the constant for kernel radius parameter
+      ///   r in r(h)=r h^alpha (VCM,II,Trivial).
+      ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha
+      ///   (VCM, II, CNC)."
+      ///   - gridstep        [   1.0]: the digitization gridstep (often denoted
+      ///   by h).
+      /// @return The curvatures for each face of the triangulated surface object
+      template <typename T>
+      static Scalars getCNCMeanCurvatures(
+      T & digitalObject, const Parameters & params = parametersShapeGeometry() )
+      {
+        CountedPtr<typename Base::SurfaceMesh> mesh = Base::makePrimalSurfaceMesh(digitalObject);
+        return getCNCMeanCurvatures(mesh, params);
+      }
+
       /// Given a space \a K, an implicit \a shape, a sequence of \a
       /// surfels, and a gridstep \a h, returns the gaussian curvatures at the
       /// specified surfels, in the same order.
@@ -412,10 +521,111 @@ namespace DGtal
         return n_true_estimations;
       }
 
-      /// Given a space \a K, an implicit \a shape, a sequence of \a
-      /// surfels, and a gridstep \a h, returns the first (smallest)
-      /// principal curvatures at the specified surfels, in the same
-      /// order.
+      /// Given a SurfaceMesh, compute gaussian curvature at each face using
+      /// CorrectedNormalCurrent method.
+      ///
+      /// @warning  In this code, only triangles with barycenters strictly
+      /// inside the sphere are considered.
+      ///
+      /// @param mesh The surface mesh
+      /// @param faces The faces to compute curvature at
+      /// @param params
+      ///   - unit_u: Whether the computed normals should be normalized or not
+      ///   - r-radius        [   3.0]: the constant for kernel radius parameter
+      ///   r in r(h)=r h^alpha (VCM,II,Trivial).
+      ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha
+      ///   (VCM, II, CNC)."
+      ///   - gridstep        [   1.0]: the digitization gridstep (often denoted
+      ///   by h).
+      /// @return The curvatures for each face of the mesh, in the same order
+      /// `faces`
+      static Scalars getCNCGaussianCurvatures(
+      CountedPtr<typename Base::SurfaceMesh> mesh,
+      const typename Base::SurfaceMesh::Faces & faces,
+      const Parameters & params = parametersShapeGeometry() )
+      {
+        using Face = typename Base::SurfaceMesh::Face;
+
+        bool unit_u = params["unit_u"].as<int>();
+        double radius = params["r-radius"].as<double>();
+        double alpha  = params["alpha"].as<double>();
+        double h      = params["gridstep"].as<double>();
+        if ( alpha != 1.0 ) radius *= pow( h, alpha-1.0 );
+
+        CNCComputer computer(*mesh, unit_u);
+        
+        const auto& mu0 = computer.computeMu0();
+        const auto& mu2 = computer.computeMu2();
+
+        Scalars curvatures(faces.size());
+        for (size_t i = 0; i < faces.size(); ++i)
+        {
+          const auto center = mesh->faceCentroid(faces[i]);
+          const auto area = mu0.measure(center, radius, faces[i]);
+          const auto lmu2 = mu2.measure(center, radius, faces[i]);
+          curvatures[i] = CNCComputer::GaussianCurvature(area, lmu2);
+        }
+        
+        return curvatures;
+      }
+
+      /// Given a SurfaceMesh, compute gaussian curvature at each face using
+      /// CorrectedNormalCurrent method.
+      ///
+      /// This overloads compute curvature for each face of the mesh.
+      ///
+      /// @warning  In this code, only triangles with barycenters strictly
+      /// inside the sphere are considered.
+      ///
+      /// @param mesh The surface mesh
+      /// @param params
+      ///   - unit_u: Whether the computed normals should be normalized or not
+      ///   - r-radius        [   3.0]: the constant for kernel radius parameter
+      ///   r in r(h)=r h^alpha (VCM,II,Trivial).
+      ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha
+      ///   (VCM, II, CNC)."
+      ///   - gridstep        [   1.0]: the digitization gridstep (often denoted
+      ///   by h).
+      /// @return The curvatures for each face of the mesh, in thn the order
+      /// given by the mesh
+      static Scalars getCNCGaussianCurvatures(
+      CountedPtr<typename Base::SurfaceMesh> mesh,
+      const Parameters & params = parametersShapeGeometry() )
+      {
+        std::vector<typename Base::SurfaceMesh::Face> allFaces(mesh->nbFaces());
+        std::iota(allFaces.begin(), allFaces.end(), 0);
+        
+        return getCNCGaussianCurvatures(mesh, allFaces, params);
+      }
+
+      /// Given a SurfaceMesh, compute mean curvature at each face using
+      /// CorrectedNormalCurrent method.
+      ///
+      /// @warning  In this code, only triangles with barycenters strictly
+      /// inside the sphere are considered.
+      ///
+      /// @tparam T Any digital object convertible to surface mesh via
+      /// Shortcuts::makePrimalSurfaceMesh
+      /// @param digitalObject A digital object
+      /// @param params
+      ///   - unit_u: Whether the computed normals should be normalized or not
+      ///   - r-radius        [   3.0]: the constant for kernel radius parameter
+      ///   r in r(h)=r h^alpha (VCM,II,Trivial).
+      ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha
+      ///   (VCM, II, CNC)."
+      ///   - gridstep        [   1.0]: the digitization gridstep (often denoted
+      ///   by h).
+      /// @return The curvatures for each face of the triangulated surface object
+      template <typename T>
+      static Scalars getCNCGaussianCurvatures(
+      T & digitalObject, const Parameters & params = parametersShapeGeometry() )
+      {
+        CountedPtr<typename Base::SurfaceMesh> mesh = Base::makePrimalSurfaceMesh(digitalObject);
+        return getCNCGaussianCurvatures(mesh, params);
+      }
+
+      /// Given a space \a K, an implicit \a shape, a sequence of \a principal curvatures 
+      /// at the specified surfels, in the same order.
       ///
       /// @note that the first principal curvature is approximated by projecting the
       /// surfel centroid onto the implicit 3D shape.
@@ -623,7 +833,140 @@ namespace DGtal
         return n_true_estimations;
       }
 
-      /// @}
+      /// Given a SurfaceMesh, compute principal curvature at each face using
+      /// CorrectedNormalCurrent method.
+      ///
+      /// @note If no normals are provided for the faces, the normals will be
+      /// computed (and set) using vertex normals if they exist and positions
+      /// otherwise.
+      ///
+      /// @warning  In this code, only triangles with barycenters strictly
+      /// inside the sphere are considered.
+      ///
+      /// @param[in,out] mesh The surface mesh. The mesh will be modified if no
+      /// face normals are provided.
+      /// @param[in] faces The faces to compute curvature at
+      /// @param[in] params
+      ///   - unit_u: Whether the computed normals should be normalized or not
+      ///   - r-radius        [   3.0]: the constant for kernel radius parameter
+      ///   r in r(h)=r h^alpha (VCM,II,Trivial).
+      ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha
+      ///   (VCM, II, CNC)."
+      ///   - gridstep        [   1.0]: the digitization gridstep (often denoted
+      ///   by h).
+      /// @return The principal curvatures for each face of the mesh, in the same
+      /// order as faces. The result is a 4-element tuples: [first curvatures,
+      /// second curvatures, first directions, second directions].
+      static std::tuple<Scalars, Scalars, RealVectors, RealVectors>
+        getCNCPrincipalCurvaturesAndDirections
+        ( CountedPtr<typename Base::SurfaceMesh>   mesh, 
+          const typename Base::SurfaceMesh::Faces& faces, 
+          const Parameters&                        params = parametersShapeGeometry() )
+        {
+          using Face = typename Base::SurfaceMesh::Face;
+
+          bool unit_u = params["unit_u"].as<int>();
+          double radius = params["r-radius"].as<double>();
+          double alpha  = params["alpha"].as<double>();
+          double h      = params["gridstep"].as<double>();
+          if ( alpha != 1.0 ) radius *= pow( h, alpha-1.0 );
+
+          CNCComputer computer(*mesh, unit_u);
+          
+          const auto& mu0  = computer.computeMu0();
+          const auto& muxy = computer.computeMuXY();
+          
+          if (mesh->faceNormals().size() == 0)
+          {
+            // Try to use vertex normals if any
+            if (mesh->vertexNormals().size() == 0)
+              mesh->computeFaceNormalsFromPositions();
+            else 
+              mesh->computeFaceNormalsFromVertexNormals();
+          }
+          
+          const auto& normals = mesh->faceNormals();
+
+          Scalars k1(faces.size()), k2(faces.size());
+          RealVectors d1(faces.size()), d2(faces.size());
+
+          for (size_t i = 0; i < faces.size(); ++i)
+          {
+            const auto center = mesh->faceCentroid(faces[i]);
+            const auto area  = mu0 .measure(center, radius, faces[i]);
+            const auto lmuxy = muxy.measure(center, radius, faces[i]);
+            std::tie(k1[i], k2[i], d1[i], d2[i]) = 
+                CNCComputer::principalCurvatures(area, lmuxy, normals[faces[i]]);
+          }
+
+          return std::make_tuple(k1, k2, d1, d2);
+        }
+
+        /// Given a SurfaceMesh, compute principal curvature at each face using
+        /// CorrectedNormalCurrent method.
+        ///
+        /// This overloads compute curvature for each face of the mesh.
+        ///
+        /// @note If no normals are provided for the faces, the normals will be
+        /// computed (and set) using vertex normals if they exist and positions
+        /// otherwise.
+        ///
+        /// @warning  In this code, only triangles with barycenters strictly
+        /// inside the sphere are considered.
+        ///
+        /// @param[in,out] mesh The surface mesh. The mesh will be modified if
+        /// no face normals are provided.
+        /// @param[in] params
+        ///   - unit_u: Whether the computed normals should be normalized or not
+        ///   - r-radius        [   3.0]: the constant for kernel radius
+        ///   parameter r in r(h)=r h^alpha (VCM,II,Trivial).
+        ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha
+        ///   (VCM, II, CNC)."
+        ///   - gridstep        [   1.0]: the digitization gridstep (often
+        ///   denoted by h).
+        /// @return The principal curvatures for each face of the mesh, in the
+        /// same order as mesh faces. The result is a 4-element tuples: [first
+        /// curvatures, second curvatures, first directions, second directions].
+        static std::tuple<Scalars, Scalars, RealVectors, RealVectors>
+        getCNCPrincipalCurvaturesAndDirections(
+        CountedPtr<typename Base::SurfaceMesh> mesh,
+        const Parameters & params = parametersShapeGeometry() )
+        {
+          std::vector<typename Base::SurfaceMesh::Face> allFaces(mesh->nbFaces());
+          std::iota(allFaces.begin(), allFaces.end(), 0);
+
+          return getCNCPrincipalCurvaturesAndDirections(mesh, allFaces, params);
+        }
+
+        /// Given a SurfaceMesh, compute principal curvature at each face using
+        /// CorrectedNormalCurrent method.
+        ///
+        /// @warning In this code, only triangles with barycenters strictly
+        /// inside the sphere are considered.
+        ///
+        /// @tparam T Any digital object convertible to surface mesh via
+        /// Shortcuts::makePrimalSurfaceMesh
+        /// @param digitalObject A digital object
+        /// @param params
+        ///   - unit_u: Whether the computed normals should be normalized or not
+        ///   - r-radius        [   3.0]: the constant for kernel radius
+        ///   parameter r in r(h)=r h^alpha (VCM,II,Trivial).
+        ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha
+        ///   (VCM, II, CNC)."
+        ///   - gridstep        [   1.0]: the digitization gridstep (often
+        ///   denoted by h).
+        /// @return The curvatures for each face of the triangulated surface
+        /// object
+        template <typename T>
+        static std::tuple<Scalars, Scalars, RealVectors, RealVectors>
+        getCNCPrincipalCurvaturesAndDirections(
+        T & digitalObject,
+        const Parameters & params = parametersShapeGeometry() )
+        {
+          CountedPtr<typename Base::SurfaceMesh> mesh = Base::makePrimalSurfaceMesh(digitalObject);
+          return getCNCPrincipalCurvaturesAndDirections(mesh, params);
+        }
+         /// @}
 
       // --------------------------- geometry estimation ------------------------------
       /// @name Geometry estimation services
@@ -639,6 +982,7 @@ namespace DGtal
       ///   - kernel          [ "hat"]: the kernel integration function chi_r, either "hat" or "ball". )
       ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
       ///   - surfelEmbedding [     0]: the surfel -> point embedding for VCM estimator: 0: Pointels, 1: InnerSpel, 2: OuterSpel.
+      ///   - unit_u [0]: Use unit normals for (CNC) curvature computations.
       static Parameters parametersGeometryEstimation()
       {
         return Parameters
@@ -648,7 +992,8 @@ namespace DGtal
           ( "R-radius",       10.0 )
           ( "r-radius",        3.0 )
           ( "alpha",          0.33 )
-          ( "surfelEmbedding",   0 );
+          ( "surfelEmbedding",   0 )
+          ( "unit_u"         ,   0 );
       }
 
       /// Given a digital space \a K and a vector of \a surfels,
@@ -1286,7 +1631,7 @@ namespace DGtal
       /// @param[in] surfels the sequence of surfels at which we compute the Gaussian curvatures
       /// @param[in] params the parameters:
       ///   - verbose         [     1]: verbose trace mode 0: silent, 1: verbose.
-      ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
+      ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).;
       ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
       ///
@@ -1339,7 +1684,7 @@ namespace DGtal
 
       /// @return the parameters and their default values which are used
       /// to compute Ambrosio-Tortorelli piecewise-smooth approximation of a function.
-      ///   - at-enabled      [  1     ]: 1 if AT is enabled (WITH_EIGEN), 0 otherwise.
+      ///   - at-enabled      [  1     ]: 1 if AT is enabled, 0 otherwise.
       ///   - at-alpha        [  0.1   ]: parameter alpha in AT (data fit)
       ///   - at-lambda       [  0.025 ]: parameter lambda in AT (1/length of discontinuities)
       ///   - at-epsilon      [  0.5   ]: (last value of) parameter epsilon in AT (width of discontinuities)
@@ -1349,10 +1694,8 @@ namespace DGtal
       ///   - at-diff-v-max   [  0.0001]: stopping criterion that measures the loo-norm of the evolution of \a v between two iterations
       ///   - at-v-policy     ["Maximum"]: the policy when outputing feature vector v onto cells: "Average"|"Minimum"|"Maximum"
       ///
-      /// @note Requires Eigen linear algebra backend. `Use cmake -DWITH_EIGEN=true ..`
       static Parameters parametersATApproximation()
       {
-#if defined(WITH_EIGEN)
         return Parameters
           ( "at-enabled",        1 )
           ( "at-alpha",          0.1 )
@@ -1363,12 +1706,7 @@ namespace DGtal
           ( "at-max-iter",      10 )
           ( "at-diff-v-max",     0.0001 )
           ( "at-v-policy",   "Maximum" );
-#else // defined(WITH_EIGEN)
-        return Parameters( "at-enabled", 0 );
-#endif// defined(WITH_EIGEN)
       }
-
-#if defined(WITH_EIGEN)
 
       /// Given any digital \a surface, a surfel range \a surfels, and an input vector field \a input,
       /// returns a piece-smooth approximation of \a input using Ambrosio-Tortorelli functional.
@@ -1392,7 +1730,6 @@ namespace DGtal
       ///
       /// @return the piecewise-smooth approximation of \a input.
       ///
-      /// @note Requires Eigen linear algebra backend. `Use cmake -DWITH_EIGEN=true ..`
       template <typename TAnyDigitalSurface,
                 typename VectorFieldInput>
       static
@@ -1454,7 +1791,6 @@ namespace DGtal
       ///
       /// @return the piecewise-smooth approximation of \a input.
       ///
-      /// @note Requires Eigen linear algebra backend. `Use cmake -DWITH_EIGEN=true ..`
       template <typename TAnyDigitalSurface,
                 typename VectorFieldInput,
                 typename CellRangeConstIterator>
@@ -1518,7 +1854,6 @@ namespace DGtal
       ///
       /// @return the piecewise-smooth approximation of \a input.
       ///
-      /// @note Requires Eigen linear algebra backend. `Use cmake -DWITH_EIGEN=true ..`
       template <typename TAnyDigitalSurface>
       static
       Scalars
@@ -1583,7 +1918,6 @@ namespace DGtal
       ///
       /// @return the piecewise-smooth approximation of \a input.
       ///
-      /// @note Requires Eigen linear algebra backend. `Use cmake -DWITH_EIGEN=true ..`
       template <typename TAnyDigitalSurface,
                 typename CellRangeConstIterator>
       static
@@ -1622,8 +1956,6 @@ namespace DGtal
         at_solver.getOutputScalarFieldV0( features, itB, itE, p );
         return output;
       }
-
-#endif // defined(WITH_EIGEN)
 
       /// @}
 
@@ -1751,6 +2083,318 @@ namespace DGtal
           loo = std::max( loo, fabs( v1[ i ] - v2[ i ] ) );
         return loo;
       }
+      /// @}
+      
+      // ----------------------- VoronoiMap services ------------------------------
+    public:
+      /// @name VoronoiMap services
+      /// @{
+
+      /// @return the parameters and their default values which are used
+      /// in VoronoiMap and DistanceTransformation
+      //    - toroidal-x [false]: If the domain is toroidal in the first  dimension
+      //    - toroidal-y [false]: If the domain is toroidal in the second dimension
+      //    - toroidal-z [false]: If the domain is toroidal in the third  dimension
+      static Parameters parametersVoronoiMap() {
+        return Parameters
+          // Toricity might be moved elsewhere as this is quite a general parameter
+          ( "toroidal-x" , false )
+          ( "toroidal-y" , false )
+          ( "toroidal-z" , false );
+      }
+
+
+
+      /// @brief Computes the VoronoiMap of a domain, where sites are given through a range.
+      ///
+      /// @tparam p The exponent in the Lp metric
+      /// @tparam PointRange An iterable of points (std::vector, DGtal::DigitalSet*, ...)
+      ///
+      /// @param domain The associated space to compute VoronoiMap on
+      /// @param sites The list of sites
+      /// @param params the parameters
+      //    - toroidal-x [false]: If the domain is toroidal in the first  dimension
+      //    - toroidal-y [false]: If the domain is toroidal in the second dimension
+      //    - toroidal-z [false]: If the domain is toroidal in the third  dimension
+      /// 
+      /// @return The VoronoiMap within a domain with prescribed sites
+      template<uint32_t p, typename PointRange>
+      static VoronoiMap<Space, VoronoiPointPredicate, ExactPredicateLpSeparableMetric<Space, p>>
+        getVoronoiMap(Domain domain, 
+                      const PointRange& sites,
+                      const Parameters& params = parametersVoronoiMap())
+      {
+        using Metric = ExactPredicateLpSeparableMetric<Space, p>;
+        using Map = VoronoiMap<Space, VoronoiPointPredicate, Metric>;
+        DigitalSet set(domain); set.insert(sites.begin(), sites.end());
+        VoronoiPointPredicate predicate(set);
+        Metric metric;
+
+        typename Map::PeriodicitySpec specs = {false, false, false};
+        if (params["toroidal-x"].as<int>()) specs[0] = true;
+        if (params["toroidal-y"].as<int>()) specs[1] = true;
+        if (params["toroidal-z"].as<int>()) specs[2] = true;
+
+
+        // Do not return a pointer here for two reasons:
+        //  - The distance transform will not be passed anywhere else
+        //  - The operator() is less accessible with pointers.
+        return Map(domain, predicate, metric, specs);
+      }
+
+      /// @brief Computes the VoronoiMap of a domain, where sites are given through a range.
+      ///
+      /// @tparam p The exponent in the Lp metric
+      /// @tparam PointRange An iterable of points (std::vector, DGtal::DigitalSet*, ...)
+      ///
+      /// @param domain The associated space to compute VoronoiMap on
+      /// @param sites The list of sites
+      /// @param params the parameters
+      //    - toroidal-x [false]: If the domain is toroidal in the first  dimension
+      //    - toroidal-y [false]: If the domain is toroidal in the second dimension
+      //    - toroidal-z [false]: If the domain is toroidal in the third  dimension
+      /// 
+      /// @return The VoronoiMap within a domain with prescribed sites
+      template<uint32_t p, typename PointRange>
+      static VoronoiMap<Space, VoronoiPointPredicate, ExactPredicateLpSeparableMetric<Space, p>>
+        getVoronoiMap(CountedPtr<Domain> domain, 
+                      const PointRange& sites,
+                      const Parameters& params = parametersVoronoiMap())
+      {
+        using Metric = ExactPredicateLpSeparableMetric<Space, p>;
+        using Map = VoronoiMap<Space, VoronoiPointPredicate, Metric>;
+        DigitalSet set(*domain); set.insert(sites.begin(), sites.end());
+        VoronoiPointPredicate predicate(set);
+        Metric metric;
+
+        typename Map::PeriodicitySpec specs = {false, false, false};
+        if (params["toroidal-x"].as<int>()) specs[0] = true;
+        if (params["toroidal-y"].as<int>()) specs[1] = true;
+        if (params["toroidal-z"].as<int>()) specs[2] = true;
+
+        // Do not return a pointer here for two reasons:
+        //  - The distance transform will not be passed anywhere else
+        //  - The operator() is less accessible with pointers.
+        return Map(*domain, predicate, metric, specs);
+      }
+
+      /// @brief Computes the VoronoiMap of a domain, where sites are given through a range.
+      ///
+      /// @note: This overloads return a distance transformation, ie. where operator() returns
+      /// the distance to the closest site.
+      ///
+      /// @tparam p The exponent in the Lp metric
+      /// @tparam PointRange An iterable of points (std::vector, DGtal::DigitalSet*, ...)
+      ///
+      /// @param domain The associated space to compute VoronoiMap on
+      /// @param sites The list of sites
+      /// @param params the parameters
+      //    - toroidal-x [false]: If the domain is toroidal in the first  dimension
+      //    - toroidal-y [false]: If the domain is toroidal in the second dimension
+      //    - toroidal-z [false]: If the domain is toroidal in the third  dimension
+      /// 
+      /// @return The DistanceTransformation within a domain with prescribed sites
+      template<uint32_t p, typename PointRange>
+      static DistanceTransformation<Space, VoronoiPointPredicate, ExactPredicateLpSeparableMetric<Space, p>>
+        getDistanceTransformation(Domain domain, 
+                                   const PointRange& sites,
+                                   const Parameters& params = parametersVoronoiMap())
+      {
+        using Metric = ExactPredicateLpSeparableMetric<Space, p>;
+        using Map = DistanceTransformation<Space, VoronoiPointPredicate, Metric>;
+        DigitalSet set(domain); set.insert(sites.begin(), sites.end());
+        VoronoiPointPredicate predicate(set);
+        Metric metric;
+
+        typename Map::PeriodicitySpec specs = {false, false, false};
+        if (params["toroidal-x"].as<int>()) specs[0] = true;
+        if (params["toroidal-y"].as<int>()) specs[1] = true;
+        if (params["toroidal-z"].as<int>()) specs[2] = true;
+
+        // Do not return a pointer here for two reasons:
+        //  - The distance transform will not be passed anywhere else
+        //  - The operator() is less accessible with pointers.
+        return Map(domain, predicate, metric, specs);
+      }
+
+      /// @brief Computes the VoronoiMap of a domain, where sites are given through a range.
+      ///
+      /// @note: This overloads return a distance transformation, ie. where operator() returns
+      /// the distance to the closest site.
+      ///
+      /// @tparam p The exponent in the Lp metric
+      /// @tparam PointRange An iterable of points (std::vector, DGtal::DigitalSet*, ...)
+      ///
+      /// @param domain The associated space to compute VoronoiMap on
+      /// @param sites The list of sites
+      /// @param params the parameters
+      //    - toroidal-x [false]: If the domain is toroidal in the first  dimension
+      //    - toroidal-y [false]: If the domain is toroidal in the second dimension
+      //    - toroidal-z [false]: If the domain is toroidal in the third  dimension
+      /// 
+      /// @return The DistanceTransformation within a domain with prescribed sites
+      template<uint32_t p, typename PointRange>
+      static DistanceTransformation<Space, VoronoiPointPredicate, ExactPredicateLpSeparableMetric<Space, p>>
+        getDistanceTransformation(CountedPtr<Domain> domain, 
+                              const PointRange& sites,
+                              const Parameters& params = parametersVoronoiMap())
+      {
+        using Metric = ExactPredicateLpSeparableMetric<Space, p>;
+        using Map = DistanceTransformation<Space, VoronoiPointPredicate, Metric>;
+        DigitalSet set(*domain); set.insert(sites.begin(), sites.end());
+        VoronoiPointPredicate predicate(set);
+        Metric metric;
+
+        typename Map::PeriodicitySpec specs = {false, false, false};
+        if (params["toroidal-x"].as<int>()) specs[0] = true;
+        if (params["toroidal-y"].as<int>()) specs[1] = true;
+        if (params["toroidal-z"].as<int>()) specs[2] = true;
+        
+        // Do not return a pointer here for two reasons:
+        //  - The distance transform will not be passed anywhere else
+        //  - The operator() is less accessible with pointers.
+        return Map(*domain, predicate, metric, specs);
+      }
+
+      /// @brief Computes the direction of the closest site of a range of points
+      /// 
+      /// @tparam p The exponent in the Lp metric
+      /// @tparam PointRange The range of point 
+      /// @tparam PointRangeSites The range of sites
+      ///
+      /// @param points The one to compute the closest site of
+      /// @param sites The list of sites
+      /// @param params Parameters
+      //    - toroidal-x [false]: If the domain is toroidal in the first  dimension
+      //    - toroidal-y [false]: If the domain is toroidal in the second dimension
+      //    - toroidal-z [false]: If the domain is toroidal in the third  dimension
+      /// 
+      /// @return A vector of direction to the closest in the same order as 'points'.
+      template<uint32_t p, typename PointRangeSites, typename PointRange>
+      static std::vector<Vector> getDirectionToClosestSite(
+        const PointRange& points, 
+        const PointRangeSites& sites,
+        const Parameters& params = parametersVoronoiMap())
+      {
+        using Metric = ExactPredicateLpSeparableMetric<Space, p>;
+        using Map = VoronoiMap<Space, VoronoiPointPredicate, Metric>;
+
+        // Compute domain of points
+        Point pmin = *points.begin();
+        Point pmax = pmin;
+
+        size_t pCount = 0;
+        for (auto it = points.begin(); it != points.end(); ++it) 
+        {
+          pCount ++;
+          for (size_t i = 0; i < Space::dimension; ++i)
+          {
+            pmin[i] = std::min(pmin[i], (*it)[i] - 1);
+            pmax[i] = std::max(pmax[i], (*it)[i] + 1);
+          }
+        }
+
+        for (auto it = sites.begin(); it != sites.end(); ++it) 
+        {
+          for (size_t i = 0; i < Space::dimension; ++i)
+          {
+            pmin[i] = std::min(pmin[i], (*it)[i] - 1);
+            pmax[i] = std::max(pmax[i], (*it)[i] + 1);
+          }
+        }
+
+        Domain domain(pmin, pmax);
+
+        DigitalSet set(domain); set.insert(sites.begin(), sites.end());
+        VoronoiPointPredicate predicate(set);
+        Metric metric;
+
+
+        typename Map::PeriodicitySpec specs = {false, false, false};
+        if (params["toroidal-x"].as<int>()) specs[0] = true;
+        if (params["toroidal-y"].as<int>()) specs[1] = true;
+        if (params["toroidal-z"].as<int>()) specs[2] = true;
+
+        auto map = Map(domain, predicate, metric, specs);
+
+        std::vector<Vector> directions(pCount);
+        size_t i = 0;
+        for (auto it = points.begin(); it != points.end(); ++it)
+        {
+          directions[i++] = map(*it);
+        }
+        return directions;
+      }
+
+      /// @brief Computes the distance of the closest site of a range of points
+      /// 
+      /// @tparam p The exponent in the Lp metric
+      /// @tparam PointRange The range of point 
+      /// @tparam PointRangeSites The range of sites
+      ///
+      /// @param points The one to compute the closest site of
+      /// @param sites The list of sites
+      /// @param params Parameters
+      //    - toroidal-x [false]: If the domain is toroidal in the first  dimension
+      //    - toroidal-y [false]: If the domain is toroidal in the second dimension
+      //    - toroidal-z [false]: If the domain is toroidal in the third  dimension
+      /// 
+      /// @return A vector of distances to the closest in the same order as 'points'.
+      template<uint32_t p, typename PointRangeSites, typename PointRange>
+      static std::vector<typename ExactPredicateLpSeparableMetric<Space, p>::Value> getDistanceToClosestSite(
+        const PointRange& points, 
+        const PointRangeSites& sites,
+        const Parameters& params = parametersVoronoiMap())
+      {
+        using Metric = ExactPredicateLpSeparableMetric<Space, p>;
+        using Map = DistanceTransformation<Space, VoronoiPointPredicate, Metric>;
+
+        // Compute domain of points
+        Point pmin = *points.begin();
+        Point pmax = pmin;
+
+        size_t pCount = 0;
+        for (auto it = points.begin(); it != points.end(); ++it) 
+        {
+          pCount ++;
+          for (size_t i = 0; i < Space::dimension; ++i)
+          {
+            pmin[i] = std::min(pmin[i], (*it)[i] - 1);
+            pmax[i] = std::max(pmax[i], (*it)[i] + 1);
+          }
+        }
+
+        for (auto it = sites.begin(); it != sites.end(); ++it) 
+        {
+          for (size_t i = 0; i < Space::dimension; ++i)
+          {
+            pmin[i] = std::min(pmin[i], (*it)[i] - 1);
+            pmax[i] = std::max(pmax[i], (*it)[i] + 1);
+          }
+        }
+
+        Domain domain(pmin, pmax);
+
+        DigitalSet set(domain); set.insert(sites.begin(), sites.end());
+        VoronoiPointPredicate predicate(set);
+        Metric metric;
+
+        typename Map::PeriodicitySpec specs = {false, false, false};
+        if (params["toroidal-x"].as<int>()) specs[0] = true;
+        if (params["toroidal-y"].as<int>()) specs[1] = true;
+        if (params["toroidal-z"].as<int>()) specs[2] = true;
+
+        auto map = Map(domain, predicate, metric, specs);
+
+        std::vector<typename Metric::Value> directions(pCount);
+        size_t i = 0;
+        for (auto it = points.begin(); it != points.end(); ++it)
+        {
+          directions[i++] = map(*it);
+        }
+        return directions;
+      }
+
 
       /// @}
 

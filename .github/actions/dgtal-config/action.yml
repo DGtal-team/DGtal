@@ -1,0 +1,76 @@
+name: "DGtal-Config"
+description: "Retrieve the configuration for DGtal"
+inputs:
+  config-name: 
+    description: "Name of the configuration. Availables are ['default', 'PR']"
+    required: true
+
+  dgtal:
+    description: "DGtal project location"
+    default: ${{ runner.workspace }}/DGtal
+    required: true
+
+outputs:
+  cmake-config:
+    description: "Configuration line."
+    value: ${{ steps.cmake-output.outputs.cmake-config }}
+
+  cmake-test-blacklist:
+    description: "Test that should be blacklisted"
+    value: ${{ steps.cmake-output.outputs.cmake-test-blacklist }}
+
+  cmake-test-whitelist:
+    description: "Test that should be blacklisted"
+    value: ${{ steps.cmake-output.outputs.cmake-test-whitelist }}
+
+runs:
+  using: "composite"
+  steps:
+    # Default configuration
+    - name: "Default Linux"
+      if: ${{ runner.os == 'Linux' && inputs.config-name == 'default' }}
+      shell: bash
+      run: |
+        echo "DGTAL_CMAKE_CONFIG -DDGTAL_WITH_CGAL=true -DDGTAL_WITH_LIBIGL=true -DDGTAL_WITH_FFTW3=true -DDGTAL_WITH_HDF5=true -DDGTAL_WITH_OPENMP=true  -DDGTAL_WITH_POLYSCOPE_VIEWER=true  -DDGTAL_WITH_CAIRO=true -DDGTAL_WITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true -DDGTAL_WARNING_AS_ERROR=ON -G Ninja" >> "$GITHUB_ENV"
+
+    - name: "Default MacOS"
+      if: ${{ runner.os == 'macOS' && inputs.config-name == 'default' }}
+      shell: bash
+      run: |
+        echo "DGTAL_CMAKE_CONFIG=-DDGTAL_WITH_CGAL=true" >> "$GITHUB_ENV"
+
+    - name: "Default Windows"
+      if: ${{ runner.os == 'Windows' && inputs.config-name == 'default' }}
+      shell: bash
+      run: |
+        echo "DGTAL_CMAKE_CONFIG=-DCMAKE_TOOLCHAIN_FILE='conan_toolchain.cmake'" >> "$GITHUB_ENV"
+    
+    # PR Configurations
+    - name: "PR Linux"
+      if: ${{ runner.os == 'Linux' && inputs.config-name == 'PR' }}
+      shell: bash
+      run: |
+        echo "DGTAL_CMAKE_CONFIG=-DDGTAL_BUILD_TESTS=true -DDGTAL_BUILD_EXAMPLES=true -DDGTAL_BUILD_POLYSCOPE_EXAMPLES=true -DUSE_CCACHE=NO -DDGTAL_WITH_CGAL=true -DDGTAL_WITH_LIBIGL=true -DDGTAL_WITH_FFTW3=true -DDGTAL_WITH_HDF5=true -DDGTAL_WITH_OPENMP=true  -DDGTAL_WITH_POLYSCOPE_VIEWER=true  -DDGTAL_WITH_CAIRO=true -DDGTAL_WITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true -DDGTAL_WARNING_AS_ERROR=ON -G Ninja" >> "$GITHUB_ENV"
+
+    - name: "PR MacOS"
+      if: ${{ runner.os == 'macOS' && inputs.config-name == 'PR' }}
+      shell: bash
+      run: |
+        echo "DGTAL_CMAKE_CONFIG=-DDGTAL_BUILD_TESTS=true -DDGTAL_BUILD_EXAMPLES=true -DDGTAL_BUILD_POLYSCOPE_EXAMPLES=true -DUSE_CCACHE=NO -DDGTAL_WITH_CGAL=true -DDGTAL_WITH_LIBIGL=true" >> "$GITHUB_ENV"
+
+    - name: "PR Windows"
+      if: ${{ runner.os == 'Windows' && inputs.config-name == 'PR' }}
+      shell: bash
+      run: |
+        echo "DGTAL_CMAKE_CONFIG=-DCMAKE_TOOLCHAIN_FILE='conan_toolchain.cmake' -DDGTAL_BUILD_TESTS=true -DDGTAL_BUILD_EXAMPLES=true" >> "$GITHUB_ENV"
+    
+
+    # Only a single step outputs variables
+    - name: "Set CMake output"
+      id: "cmake-output"
+      shell: bash
+      working-directory: ${{ inputs.dgtal }}
+      run: |
+        echo "cmake-config=$(echo $DGTAL_CMAKE_CONFIG)" >> "$GITHUB_OUTPUT"
+        echo "cmake-test-blacklist='(testLinearStructure|testIntegerConverter|testArithmeticalDSSComputerOnSurfels)'" >> "$GITHUB_OUTPUT"
+        echo "cmake-test-whitelist='$( ${{ inputs.dgtal }}/.github/actions/dgtal-config/get_whitelist.sh )'" >> "$GITHUB_OUTPUT"

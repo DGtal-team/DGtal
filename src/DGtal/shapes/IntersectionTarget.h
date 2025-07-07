@@ -168,7 +168,7 @@ namespace DGtal
       /**
        * Default constructor
        */
-      IntersectionTarget<Space, 26, 1>()
+      IntersectionTarget()
       {
         const double coef = 1. / std::sqrt(3.);
 

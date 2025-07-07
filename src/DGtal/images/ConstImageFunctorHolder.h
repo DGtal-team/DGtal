@@ -45,6 +45,7 @@
 
 #include <boost/iterator/transform_iterator.hpp>
 #include <boost/concept/assert.hpp>
+#include <boost/iterator/reverse_iterator.hpp>
 
 #include "DGtal/kernel/domains/CDomain.h"
 #include "DGtal/base/FunctorHolder.h"
@@ -120,7 +121,7 @@ public:
   using Functor   = TFunctor;
 
   using ConstIterator = boost::transform_iterator< std::reference_wrapper<const Self>, typename Domain::ConstIterator >;
-  using ConstReverseIterator = std::reverse_iterator< ConstIterator >;
+  using ConstReverseIterator = boost::reverse_iterator< ConstIterator >;
   class ConstRange;
 
   BOOST_STATIC_CONSTANT( Dimension, dimension = Domain::Space::dimension );

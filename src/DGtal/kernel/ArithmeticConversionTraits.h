@@ -44,7 +44,7 @@
 
 namespace DGtal
 {
-
+  
   /////////////////////////////////////////////////////////////////////////////
   // template class ArithmeticConversionTraits
   /**
@@ -92,23 +92,23 @@ namespace DGtal
   struct ArithmeticConversionTraits
   {
   };
-
+  
   /** @brief Specialization in order to remove const specifiers and references from given types
    *
    * @see ArithmeticConversionTraits
    */
   template <typename T, typename U>
   struct ArithmeticConversionTraits< T, U,
-      typename std::enable_if<
-           ! std::is_same< T, typename std::remove_cv< typename std::remove_reference<T>::type >::type >::value
-        || ! std::is_same< U, typename std::remove_cv< typename std::remove_reference<U>::type >::type >::value >::type >
-    : ArithmeticConversionTraits<
-        typename std::remove_cv< typename std::remove_reference<T>::type >::type,
-        typename std::remove_cv< typename std::remove_reference<U>::type >::type >
+  typename std::enable_if<
+  ! std::is_same< T, typename std::remove_cv< typename std::remove_reference<T>::type >::type >::value
+  || ! std::is_same< U, typename std::remove_cv< typename std::remove_reference<U>::type >::type >::value >::type >
+  : ArithmeticConversionTraits<
+  typename std::remove_cv< typename std::remove_reference<T>::type >::type,
+  typename std::remove_cv< typename std::remove_reference<U>::type >::type >
   {
   };
-
-
+  
+  
   /** @brief Specialization for (fundamental) arithmetic types.
    *
    * Resulting type is deduced from usual arithmetic conversion using
@@ -117,13 +117,12 @@ namespace DGtal
    * @see ArithmeticConversionTraits
    */
   template <typename T, typename U>
-  struct ArithmeticConversionTraits< T, U,
-      typename std::enable_if<    std::is_arithmetic<T>::value
-                               && std::is_arithmetic<U>::value >::type >
+  struct ArithmeticConversionTraits< T, U, typename std::enable_if<    std::is_arithmetic<T>::value
+  && std::is_arithmetic<U>::value >::type >
   {
     using type = typename std::common_type<T, U>::type; //! Arithmetic operation result type.
   };
-
+  
   /** @brief Result type of arithmetic binary operators between two given types.
    *
    * @tparam T      First operand type.
@@ -133,7 +132,7 @@ namespace DGtal
    */
   template <typename T, typename U>
   using ArithmeticConversionType = typename ArithmeticConversionTraits<T, U>::type;
-
+  
   /** @brief Helper to determine if an arithmetic operation between two given
    *      types has a valid result type (ie is valid).
    *
@@ -143,10 +142,10 @@ namespace DGtal
    */
   template <typename T, typename U, typename Enable = void>
   struct IsArithmeticConversionValid
-    : std::false_type
+  : std::false_type
   {
   };
-
+  
   /** @brief Specialization when arithmetic operation between the two given
    *      type is valid.
    *
@@ -157,12 +156,12 @@ namespace DGtal
    */
   template <typename T, typename U>
   struct IsArithmeticConversionValid<T, U,
-      typename std::conditional<false, ArithmeticConversionType<T, U>, void>::type >
-    : std::true_type
+  typename std::conditional<false, ArithmeticConversionType<T, U>, void>::type >
+  : std::true_type
   {
   };
-
-
+  
+  
   /** @brief Call constructor for the result type of an arithmetic operation.
    *
    * @tparam LHS    First operand type.
@@ -173,64 +172,49 @@ namespace DGtal
    * @param rhs     Second operand (only used for auto-deducing its type).
    * @param args    Parameters forwarded to the constructor.
    */
-  template <
-    typename LHS,
-    typename RHS,
-    typename... Args >
+  template <typename LHS,typename RHS,typename... Args >
   inline
   ArithmeticConversionType<LHS, RHS>
   constructFromArithmeticConversion( LHS const& lhs, RHS const& rhs, Args &&... args )
-    {
-      boost::ignore_unused_variable_warning(lhs);
-      boost::ignore_unused_variable_warning(rhs);
+  {
+    boost::ignore_unused_variable_warning(lhs);
+    boost::ignore_unused_variable_warning(rhs);
+    
+    return ArithmeticConversionType<LHS, RHS>( std::forward<Args>(args)... );
+  }
 
-      return ArithmeticConversionType<LHS, RHS>( std::forward<Args>(args)... );
-    }
-
-#ifdef WITH_GMP
-  /** @brief Specialization when first operand is a @ref BigInteger.
-   *
-   * @warning result type if set to BigInteger instead of the possible
-   *    more complex __gmp_expr.
+  /** @brief Specialization when first operand is a  BigInteger.
    *
    * @see ArithmeticConversionTraits
    */
-  template <typename T, typename GMP1, typename GMP2>
-  struct ArithmeticConversionTraits<T, __gmp_expr<GMP1, GMP2>,
-      typename std::enable_if< std::is_integral<T>::value >::type >
+  template <typename T>
+  struct ArithmeticConversionTraits<T, BigInteger,typename std::enable_if< std::is_integral<T>::value >::type >
   {
     using type = BigInteger;
   };
-
-  /** @brief Specialization when second operand is a @ref BigInteger.
-   *
-   * @warning result type if set to BigInteger instead of the possible
-   *    more complex __gmp_expr.
+  
+  /** @brief Specialization when second operand is a  BigInteger.
    *
    * @see ArithmeticConversionTraits
    */
-  template <typename GMP1, typename GMP2, typename U>
-  struct ArithmeticConversionTraits<__gmp_expr<GMP1, GMP2>, U,
-      typename std::enable_if< std::is_integral<U>::value >::type >
+  template <typename U>
+  struct ArithmeticConversionTraits<BigInteger, U,typename std::enable_if< std::is_integral<U>::value >::type >
   {
     using type = BigInteger;
   };
-
-  /** @brief Specialization when both operands are @ref BigInteger.
+  
+  /** @brief Specialization when both operands are  BigInteger.
    *
-   * @warning result type if set to BigInteger instead of the possible
-   *    more complex __gmp_expr.
    *
    * @see ArithmeticConversionTraits
    */
-  template <typename GMPL1, typename GMPL2, typename GMPR1, typename GMPR2>
-  struct ArithmeticConversionTraits<__gmp_expr<GMPL1, GMPL2>, __gmp_expr<GMPR1, GMPR2>>
+  template <>
+  struct ArithmeticConversionTraits<BigInteger,BigInteger>
   {
     using type = BigInteger;
   };
-#endif
-
 } // namespace DGtal
+
 
 #endif // !defined ArithmeticConversionTraits_h
 

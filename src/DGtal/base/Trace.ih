@@ -37,6 +37,7 @@
 #include <iostream>
 #include <stack>
 #include <cmath>
+#include "DGtal/base/Assert.h"      // for ASSERT
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -151,7 +152,7 @@ DGtal::Trace::endBlock()
   double tick;
   Clock *localClock;
 
-  ASSERT (myCurrentLevel >0);
+  ASSERT(myCurrentLevel >0);
 
   localClock =  myClockStack.top();
   tick = localClock->stopClock();

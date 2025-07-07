@@ -28,7 +28,7 @@
 #include "DGtal/dec/DiscreteExteriorCalculus.h"
 #include "DGtal/dec/DiscreteExteriorCalculusSolver.h"
 
-//#include "DGtal/io/viewers/Viewer3D.h"
+//#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -429,18 +429,12 @@ void test_manual_operators_3d()
     trace.endBlock();
 
     /*
-    QApplication app(0, NULL);
-
-    typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
+    typedef PolyscopeViewer<Z3i::Space, Z3i::KSpace> Viewer;
     Viewer* viewer = new Viewer(calculus.myKSpace);
-    viewer->show();
-    viewer->setWindowTitle("structure");
-    (*viewer) << CustomColors3D(DGtal::Color(255,0,0), DGtal::Color(0,0,0));
+    (*viewer) << DGtal::Color(0,0,0);
     (*viewer) << domain;
-    Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, calculus);
-    (*viewer) << Viewer::updateDisplay;
-
-    app.exec();
+    (*viewer) << calculus;
+    viewer->show();
     */
 
     trace.endBlock();

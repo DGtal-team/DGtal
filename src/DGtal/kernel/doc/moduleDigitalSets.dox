@@ -148,12 +148,9 @@ Other methods may be found in the concept definition of digital sets (CDigitalSe
 
 @section digital_sets_4 Digital sets and point predicates
 
-Since 0.6, any digital set is also a model of concepts::CPointPredicate. You may
+Any digital set is also a model of concepts::CPointPredicate. You may
 thus use a digital set directly in functions and methods requiring a
-predicate on points. However, the class deprecated::SetPredicate, which builds a
-predicate on points around a digital set, is deprecated since 0.6. You
-may still used it by referecing it with
-DGtal::deprecated::SetPredicate, but it will no longer be maintained.
+predicate on points.
 
 @section digital_sets_5 A digital set may be transformed into a domain
 

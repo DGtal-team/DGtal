@@ -156,7 +156,7 @@ ballGenerator(const int& size, double aCx, double aCy, double aR, GridCurve<TKSp
       // Getting the consecutive surfels of the 2D boundary
       std::vector<Point> points;
       Surfaces<KSpace>::track2DBoundaryPoints( points, K, SAdj, dig, bel );
-      gc.initFromVector(points); 
+      gc.initFromPointsVector(points); 
     }
   catch ( InputException& e )
     {

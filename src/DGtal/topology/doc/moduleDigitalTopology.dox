@@ -190,7 +190,7 @@ namespace DGtal {
    DT6_18 dt6_18( adj6, adj18, JORDAN_DT );
    @endcode
   
-   The foreground adjacency is classically called \e kappa \f$ \kappa
+   The foreground adjacency is classically called <em> kappa </em> \f$ \kappa
    \f$ while the background is called \e lambda \f$ \lambda \f$ . Any
    topology has a reversed topology which is the topology \f$
    (\lambda,\kappa) \f$. 
@@ -288,12 +288,12 @@ namespace DGtal {
  The resulting border can be visualized for instance by: 
  (see @ref 3dBorderExtraction.cpp)
 @code 
-Viewer3D<> viewer;
- viewer.show(); 
- viewer<<  CustomColors3D(QColor(250, 250,250),QColor(250, 250,250));
+ PolyscopeViewer<> viewer;
+ viewer<<  Color(250, 250,250);
  viewer << bdiamond_clone;
  viewer << bdiamond ;
- viewer << ClippingPlane(1,1,0,5, false)<< Viewer3D<>::updateDisplay;
+ viewer << ClippingPlane(1,1,0,5, false);
+ viewer.show();
 @endcode
  
 @image html visuBorderExtraction.png  "Border extraction visualisation" 
@@ -405,21 +405,18 @@ do
 @endcode
 
 
-Finally the result can simply be displayed using Viewer3D:
+Finally the result can simply be displayed using PolyscopeViewer:
 @code
  DigitalSet & S = shape.pointSet();
 
-  // Display by using two different list to manage OpenGL transparency.
+  // Transparency is handled automatically
 
-  viewer << SetMode3D( shape_set.className(), "Paving" );
-  viewer << CustomColors3D(QColor(25,25,255, 255), QColor(25,25,255, 255));
+  viewer.drawAsPaving();
+  viewer << Color(25,25,255, 255);
   viewer << S ; 
 
-  viewer << SetMode3D( shape_set.className(), "PavingTransp" );
-  viewer << CustomColors3D(QColor(250, 0,0, 25), QColor(250, 0,0, 5));
+  viewer << Color(250, 0,0, 5);
   viewer << shape_set;
-
-  viewer.updateList();
 @endcode
 
 

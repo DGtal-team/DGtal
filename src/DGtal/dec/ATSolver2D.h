@@ -903,7 +903,7 @@ namespace DGtal
     void updateSmallestEpsilonMap( const double threshold = .5 )
     {
       const KSpace& K = ptrCalculus->myKSpace;
-      for ( const SCell surfel : ptrCalculus->template getIndexedSCells<2, PRIMAL>() )
+      for ( const SCell& surfel : ptrCalculus->template getIndexedSCells<2, PRIMAL>() )
         {
           const Cell face            = K.unsigns( surfel );
           const Dimension    k1      = * K.uDirs( face );

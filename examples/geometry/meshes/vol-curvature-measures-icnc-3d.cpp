@@ -96,7 +96,7 @@ makeColorMap( double min_value, double max_value )
   return gradcmap;
 }
 
-void usage( int argc, char* argv[] )
+void usage( char* argv[] )
 {
   std::cout << "Usage: " << std::endl
             << "\t" << argv[ 0 ] << " <filename.vol> <R> <m> <M> <Hmax> <Gmax>" << std::endl
@@ -121,7 +121,7 @@ int main( int argc, char* argv[] )
 {
   if ( argc <= 1 )
     {
-      usage( argc, argv );
+      usage( argv );
       return 0;
     }
   //! [curvature-measures-Typedefs]

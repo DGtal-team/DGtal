@@ -72,7 +72,7 @@ int main( int argc, char** argv )
   board.saveEPS("BezierCurve.eps", Board2D::BoundingBox, 5000 ); 
   board.saveTikZ("BezierCurve.tikz", Board2D::BoundingBox, 5000 ); 
   board.saveFIG("BezierCurve.fig", Board2D::BoundingBox, 5000 ); 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   board.saveCairo("BezierCurve.pdf", Board2D::CairoPDF); 
 #endif
 
@@ -86,7 +86,7 @@ int main( int argc, char** argv )
   board.saveEPS("BezierCurve2.eps", Board2D::BoundingBox, 5000 ); 
   board.saveTikZ("BezierCurve2.tikz", Board2D::BoundingBox, 5000 ); 
   board.saveFIG("BezierCurve2.fig", Board2D::BoundingBox, 5000 ); 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   board.saveCairo("BezierCurve2.pdf", Board2D::CairoPDF); 
 #endif
 

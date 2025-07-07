@@ -20,7 +20,7 @@
  * @author David Coeurjolly
  * @date 2013/09/06
  *
- * Functions for testing class Viewer3D.
+ * Functions for testing class PolyscopeViewer.
  *
  * This file is part of the DGtal library.
  */
@@ -28,8 +28,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Shapes.h"
@@ -44,38 +43,28 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
+  PolyscopeViewer<> viewer;
+  trace.beginBlock ( "Testing Polygon 3D display in PolyscopeViewer" );
+  std::vector<Z3i::RealPoint> polyg1;
 
- QApplication application(argc,argv);
- Viewer3D<> viewer;
- viewer.setWindowTitle("simpleViewer");
- viewer.show();
- trace.beginBlock ( "Testing Polygon 3D display in Viewer3D" );
- std::vector<Z3i::RealPoint> polyg1;
+  polyg1.push_back(Z3i::RealPoint(0,0,0));
+  polyg1.push_back(Z3i::RealPoint(0,1,0));
+  polyg1.push_back(Z3i::RealPoint(1,1,0));
 
- polyg1.push_back(Z3i::RealPoint(0,0,0));
- polyg1.push_back(Z3i::RealPoint(0,1,0));
- polyg1.push_back(Z3i::RealPoint(1,1,0));
+  viewer.drawPolygon(polyg1);
 
- viewer.addPolygon(polyg1);
+  std::vector<Z3i::RealPoint> polyg2;
 
- viewer.createNewPolygonList("hop");
+  polyg2.push_back(Z3i::RealPoint(0,10,0));
+  polyg2.push_back(Z3i::RealPoint(0,11,0));
+  polyg2.push_back(Z3i::RealPoint(11,11,0));
 
- std::vector<Z3i::RealPoint> polyg2;
+  viewer.drawPolygon(polyg2, "hop");
 
- polyg2.push_back(Z3i::RealPoint(0,10,0));
- polyg2.push_back(Z3i::RealPoint(0,11,0));
- polyg2.push_back(Z3i::RealPoint(11,11,0));
-
- viewer.addPolygon(polyg2);
-
- viewer << Viewer3D<>::updateDisplay;
-
- bool res = application.exec();
- trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
- trace.endBlock();
- return res ? 0 : 1;
-
-
+  trace.emphase() << "Passed." << endl;
+  trace.endBlock();
+  viewer.show();
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

@@ -115,19 +115,6 @@ namespace DGtal {
                                          ks,SAdj, set3d, aCell );
    @endcode
 
-   To see both initial surfel and the surfel set, we can use the transparent mode:
-
-   @code
-   viewer << SetMode3D((*(vectBdrySCellALL.begin())).className(), "Transparent");
-   @endcode
-   	
-   To avoid surfel superposition we need to increase with a small
-   shift the surfel size, for this purpose you can add the following key:
-   @code 
-   viewer << Viewer3D<>::shiftSurfelVisu; 
-   @endcode
-   or use the special mode "Highlighted" which increase automaticly the surfel size.
-
    You can obtain for instance the following visualisation:
    
    @image html ctopo3dSurfel.png "Tracking surfaces in 3D (start surfel in green)."

@@ -47,12 +47,12 @@
 #include <DGtal/base/Common.h>
 #include <DGtal/topology/SCellsFunctors.h>
 
-#ifndef WITH_PATATE
-#error You need to have activated Patate (WITH_PATATE) to include this file.
+#ifndef DGTAL_WITH_PONCA
+#error You need to have activated Ponca (DGTAL_WITH_PONCA) to include this file.
 #endif
 
-//Patate includes
-#include <Patate/grenaille.h>
+//Ponca includes
+#include <Ponca/Fitting>
 #include <Eigen/Eigen>
 #include <vector>
 
@@ -66,11 +66,11 @@ namespace DGtal
     // template class SphereFittingEstimator
     /**
      * Description of template class 'SphereFittingEstimator' <p>
-     * \brief Aim: Use Patate library to perform a local sphere fitting.
+     * \brief Aim: Use Ponca library to perform a local sphere fitting.
      *
      * Given a kernel radius, this functor performs a sphere fitting
      * and outputs the parameters of an AlgebraicSphere (please see
-     * Patate documentation for details).
+     * Ponca documentation for details).
      *
      * Model of concepts::CLocalEstimatorFromSurfelFunctor.
      *
@@ -90,7 +90,7 @@ namespace DGtal
     public:
 
       
-      class PatatePoint
+      class PoncaPoint
       {
       public:
 	enum {Dim = 3};
@@ -98,15 +98,15 @@ namespace DGtal
 	typedef Eigen::Matrix<Scalar, Dim, 1>   VectorType;
 	typedef Eigen::Matrix<Scalar, Dim, Dim> MatrixType;
         
-	MULTIARCH inline PatatePoint(const VectorType& _pos    = VectorType::Zero(), 
+	PONCA_MULTIARCH inline PoncaPoint(const VectorType& _pos    = VectorType::Zero(), 
                                      const VectorType& _normal = VectorType::Zero())
           : m_pos(_pos), m_normal(_normal) {}
         
-	MULTIARCH inline const VectorType& pos()    const { return m_pos; }  
-	MULTIARCH inline const VectorType& normal() const { return m_normal; }
+	PONCA_MULTIARCH inline const VectorType& pos()    const { return m_pos; }  
+	PONCA_MULTIARCH inline const VectorType& normal() const { return m_normal; }
 
-	MULTIARCH inline VectorType& pos()    { return m_pos; }  
-	MULTIARCH inline VectorType& normal() { return m_normal; }
+	PONCA_MULTIARCH inline VectorType& pos()    { return m_pos; }  
+	PONCA_MULTIARCH inline VectorType& normal() { return m_normal; }
 
       private:
 	VectorType m_pos, m_normal;
@@ -119,11 +119,11 @@ namespace DGtal
 
       typedef TNormalVectorEstimatorCache NormalVectorEstimatorCache;
 
-      typedef typename PatatePoint::Scalar Scalar;
-      typedef typename PatatePoint::VectorType VectorType;
+      typedef typename PoncaPoint::Scalar Scalar;
+      typedef typename PoncaPoint::VectorType VectorType;
       
-      typedef Grenaille::DistWeightFunc<PatatePoint,Grenaille::SmoothWeightKernel<Scalar> > WeightFunc; 
-      typedef Grenaille::Basket<PatatePoint,WeightFunc,Grenaille::OrientedSphereFit, Grenaille::GLSParam> Fit;
+      typedef Ponca::DistWeightFunc<PoncaPoint, Ponca::SmoothWeightKernel<Scalar>> WeightFunc; 
+      typedef Ponca::Basket<PoncaPoint, WeightFunc, Ponca::OrientedSphereFit, Ponca::GLSParam> Fit;
 
       ///Quantity type: a 3-sphere (model of CQuantity)
       struct Quantity
@@ -199,7 +199,7 @@ namespace DGtal
         normal(0) = norm[0];
         normal(1) = norm[1];
         normal(2) = norm[2];
-        PatatePoint point(pp,  normal);
+        PoncaPoint point(pp,  normal);
         if (myFirstPoint)
           {
             myFirstPoint = false;

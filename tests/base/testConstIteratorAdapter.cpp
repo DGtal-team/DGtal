@@ -152,7 +152,7 @@ bool testProjection()
   trace.info() << nbok << "/" << nb << std::endl;   
 
   trace.info() << "backward scanning" << endl; 
-  std::reverse_iterator<Adapter> raitBegin( aitEnd ); 
+  boost::reverse_iterator<Adapter> raitBegin( aitEnd ); 
   if ( std::equal( rtrue.rbegin(), rtrue.rend(), raitBegin ) == true )
     nbok++; 
   nb++; 

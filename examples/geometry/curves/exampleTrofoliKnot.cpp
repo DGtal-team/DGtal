@@ -33,13 +33,12 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "ConfigExamples.h"
-#include "DGtal/io/viewers/Viewer3D.h"
 
 #include "DGtal/geometry/curves/parametric/Knot_3_1.h"
 #include "DGtal/geometry/curves/parametric/NaiveParametricCurveDigitizer3D.h"
 
-#ifdef WITH_VISU3D_QGLVIEWER
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
+#ifdef DGTAL_WITH_POLYSCOPE
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -69,7 +68,6 @@ unsigned char findMainAxis ( const T & curve, const long double & t )
 ///////////////////////////////////////////////////////////////////////////////
 int main( int argc, char** argv )
 {
- QApplication application(argc,argv);
  typedef Knot_3_1< Space > MyKnot;
  typedef NaiveParametricCurveDigitizer3D < MyKnot >  Digitizer;
  typedef NaiveParametricCurveDigitizer3D < MyKnot >::DigitalCurve MyDigitalCurve;
@@ -77,7 +75,7 @@ int main( int argc, char** argv )
 
  trace.info() << "exampleParamCurve3dDigitization" << endl;
 
- Viewer3D<> viewer;
+ PolyscopeViewer<> viewer;
 
  MyDigitalCurve digitalCurve;
  MyMetaData metaData;
@@ -89,20 +87,19 @@ int main( int argc, char** argv )
 
  trace.info() << "Number of points: " << digitalCurve.size () << " number of metadata: " << metaData.size () << endl;
 
- viewer.show();
  for ( unsigned int i = 0; i < digitalCurve.size ( ); i++ )
  {
   if ( findMainAxis ( knot, metaData.at ( i ).first ) == 0 )
-   viewer.setFillColor ( Color ( 255, 0, 0, 128 ) );
+   viewer.drawColor ( Color ( 255, 0, 0, 128 ) );
   if ( findMainAxis ( knot, metaData.at ( i ).first ) == 1 )
-   viewer.setFillColor ( Color ( 0, 255, 0, 128 ) );
+   viewer.drawColor ( Color ( 0, 255, 0, 128 ) );
   if ( findMainAxis ( knot, metaData.at ( i ).first ) == 2 )
-   viewer.setFillColor ( Color ( 0, 0, 255, 128 ) );
-  viewer << SetMode3D ( digitalCurve.at ( i ).className ( ), "PavingWired" ) << digitalCurve.at ( i );
+   viewer.drawColor ( Color ( 0, 0, 255, 128 ) );
+  viewer << digitalCurve.at ( i );
  }
- viewer << Viewer3D<>::updateDisplay;
 
- return application.exec();
+ viewer.show();
+ return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

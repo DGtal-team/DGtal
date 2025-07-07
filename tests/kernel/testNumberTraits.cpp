@@ -165,7 +165,6 @@ TEST_FUNDAMENTAL_FLOAT_TYPE( float )
 TEST_FUNDAMENTAL_FLOAT_TYPE( double )
 TEST_FUNDAMENTAL_FLOAT_TYPE( long double )
 
-#ifdef WITH_BIGINTEGER
 
 /// Check traits for a BigInteger
 TEST_CASE( "BigInteger" )
@@ -199,5 +198,3 @@ TEST_CASE( "BigInteger" )
   checkParamRef(NT::ZERO);
   checkParamRef(NT::ONE);
 }
-
-#endif

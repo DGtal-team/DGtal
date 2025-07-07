@@ -373,9 +373,7 @@ int main( int argc, char** argv )
 
   //main operators
   bool res = mainTest<DGtal::ArithmeticalDSL<DGtal::int32_t> >()
-#ifdef WITH_BIGINTEGER
     && mainTest<DGtal::ArithmeticalDSL<DGtal::int32_t, DGtal::BigInteger, 4> >()
-#endif
     && mainTest<DGtal::NaiveDSL<DGtal::int32_t> >()
     && mainTest<DGtal::StandardDSL<DGtal::int32_t> >()
     ; 
@@ -459,7 +457,6 @@ int main( int argc, char** argv )
 
   }
 
-#ifdef WITH_BIGINTEGER
   {
     typedef DGtal::ArithmeticalDSL<DGtal::int32_t, DGtal::BigInteger, 4> DSL; 
     res = res && rangeTest( DSL(5, 8, -26) ) && rangeTest( DSL(5, 8, 13) )
@@ -472,7 +469,6 @@ int main( int argc, char** argv )
   //   typedef DGtal::ArithmeticalDSL<DGtal::BigInteger, DGtal::BigInteger, 4> DSL; 
   //   res = res && rangeTest( DSL(5, 8, 123654) ); 
   // }
-#endif
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

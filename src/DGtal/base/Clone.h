@@ -126,17 +126,16 @@ namespace DGtal
      @note (Speed) Even on a small type (here a pair<int,int>), it is
      much faster than NClone and has the advantage (wrt Clone<T>) to
      handle nicely both const T& and CowPtr<T> as input. It may be
-     slightly slower than deprecated::Clone (and by value or by const ref
-     parameter passing) for small objects like a pair<int,int>. This
-     is certainly due to the fact that it uses one more integer
-     register for \a myParam data member.
+     slightly slower than passing by value or by const ref for small 
+     objects like a pair<int,int>. This is certainly due to the fact 
+     that it uses one more integer register for \a myParam data member.
 
-     | Type   | Context  | value    | const ref | deprecated::Clone  | Clone |
-     |--------|----------|----------|-----------|--------|--------|
-     | 2xint  |i7 2.4GHz |    48ms |     48ms  |   48ms |   59ms |
-     |2xdouble|i7 2.4GHz |    48ms |     48ms  |   48ms |   49ms |
-     | 2xint  |Xeon 2.67GHz|    54ms |     54ms  |   54ms |   54ms |
-     |2xdouble|Xeon 2.67GHz|    54ms |     54ms  |   54ms | 53.5ms |
+     | Type   | Context  | value    | const ref | Clone |
+     |--------|----------|----------|-----------|--------|
+     | 2xint  |i7 2.4GHz |    48ms |     48ms  |   59ms |
+     |2xdouble|i7 2.4GHz |    48ms |     48ms  |   49ms |
+     | 2xint  |Xeon 2.67GHz|    54ms |     54ms  |   54ms |
+     |2xdouble|Xeon 2.67GHz|    54ms |     54ms  | 53.5ms |
 
 
      @note It prevents direct assignment to CountedPtr<T> since their

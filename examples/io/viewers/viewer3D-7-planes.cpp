@@ -50,7 +50,7 @@ $ ./examples/io/viewers/viewer3D-7-planes
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/geometry/surfaces/COBANaivePlaneComputer.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -76,7 +76,6 @@ int main( int argc, char** argv )
 {
   using namespace Z3i;
 
-  QApplication application(argc,argv);
   trace.beginBlock ( "Testing class COBANaivePlaneComputer" );
 
   unsigned int nbok = 0;
@@ -142,27 +141,24 @@ int main( int argc, char** argv )
   trace.emphase() << ( nbok == nb ? "Passed." : "Error." ) << endl;
   trace.endBlock();
 
-  typedef Viewer3D<> MyViewer;
-  MyViewer viewer;
-  viewer.show();
+  PolyscopeViewer viewer;
   Color red( 255, 0, 0 );
   Color green( 0, 255, 0 );
   Color grey( 200, 200, 200 );
   Domain domain( Point( -5, -5, -5 ), Point( 12, 12, 12 ) );
-  viewer << ( pt0_inside ? CustomColors3D( green, green ) : CustomColors3D( red, red ) ) << pt0;
-  viewer << ( pt1_inside ? CustomColors3D( green, green ) : CustomColors3D( red, red ) ) << pt1;
-  viewer << ( pt2_inside ? CustomColors3D( green, green ) : CustomColors3D( red, red ) ) << pt2;
-  viewer << ( pt3_inside ? CustomColors3D( green, green ) : CustomColors3D( red, red ) ) << pt3;
-  viewer << ( pt4_inside ? CustomColors3D( green, green ) : CustomColors3D( red, red ) ) << pt4;
-  viewer << ( pt5_inside ? CustomColors3D( green, green ) : CustomColors3D( red, red ) ) << pt5;
-  viewer << ( pt6_inside ? CustomColors3D( green, green ) : CustomColors3D( red, red ) ) << pt6;
-  viewer << CustomColors3D( grey, grey );
+  viewer << grey;
+  viewer << ( pt0_inside ? green : red ) << pt0;
+  viewer << ( pt1_inside ? green : red ) << pt1;
+  viewer << ( pt2_inside ? green : red ) << pt2;
+  viewer << ( pt3_inside ? green : red ) << pt3;
+  viewer << ( pt4_inside ? green : red ) << pt4;
+  viewer << ( pt5_inside ? green : red ) << pt5;
+  viewer << ( pt6_inside ? green : red ) << pt6;
+  viewer << grey;
   displayPredicate( viewer, domain, strip );
 
-  viewer << MyViewer::updateDisplay;
-
-
-  return application.exec();
+  viewer.show();
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

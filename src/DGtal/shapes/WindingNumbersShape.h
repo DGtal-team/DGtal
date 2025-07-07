@@ -32,8 +32,8 @@
 /** Prevents repeated inclusion of headers. */
 #define WindingNumbersShape_h
 
-#ifndef WITH_LIBIGL
-#error You need to have activated LIBIGL (WITH_LIBIGL flag) to include this file.
+#ifndef DGTAL_WITH_LIBIGL
+#error You need to have activated LIBIGL (DGTAL_WITH_LIBIGL flag) to include this file.
 #endif
 
 #include <vector>
