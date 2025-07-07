@@ -13,7 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macOS-latest, windows-latest]
-        BUILD_TYPE: [Release]
+        BUILD_TYPE: [Release, Debug]
         python-version: ["3.9"]
 
     steps: 
