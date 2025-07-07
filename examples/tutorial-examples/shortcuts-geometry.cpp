@@ -481,7 +481,7 @@ int main( int /* argc */, char** /* argv */ )
     viewer.show();
     //! [dgtal_shortcuts_ssec2_1_15s]
     nb ++;
-    nbok ++;:
+    nbok ++;
   }
   trace.endBlock();
 #endif // DGTAL_WITH_POLYSCOPE
