@@ -698,7 +698,7 @@ template <typename TSpace>
 const typename DGtal::BoundedRationalPolytope<TSpace>::Domain&
 DGtal::BoundedRationalPolytope<TSpace>::getDomain() const
 {
-  return rationalD;
+  return latticeD;
 }
 
 //-----------------------------------------------------------------------------
