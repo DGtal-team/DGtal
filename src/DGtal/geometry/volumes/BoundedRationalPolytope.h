@@ -349,6 +349,13 @@ namespace DGtal
   public:
 
     /// @name Check point services (is inside test)
+    ///
+    /// @note These services consider the rational polytope
+    /// embedded as continuous polytope. Therefore even vertices of
+    /// the rational polytope may not be lattice points if their
+    /// coordinates do not reduce to an integer when divided by the
+    /// denominator of the rational polytope.
+    ///
     /// @{
 
     /**

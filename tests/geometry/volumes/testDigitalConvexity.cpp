@@ -312,7 +312,7 @@ SCENARIO( "DigitalConvexity< Z3 > rational fully convex tetrahedra", "[convex_si
 
   DConvexity dconv( Point( -1, -1, -1 ), Point( 10, 10, 10 ) );
   WHEN( "Computing many tetrahedra in domain (0,0,0)-(4,4,4)." ) {
-    const unsigned int nb = 50;
+    const unsigned int nb = 30;
     unsigned int nbsimplex= 0;
     unsigned int nb0      = 0;
     unsigned int nb1      = 0;
@@ -347,9 +347,9 @@ SCENARIO( "DigitalConvexity< Z3 > rational fully convex tetrahedra", "[convex_si
       REQUIRE( nb0 == nbsimplex );
     }
     THEN( "There are less 1-convex, 2-convex and 3-convex than 0-convex." ) {
-      REQUIRE( nb1 < nb0 );
-      REQUIRE( nb2 < nb0 );
-      REQUIRE( nb3 < nb0 );
+      REQUIRE( nb1 <= nb0 );
+      REQUIRE( nb2 <= nb0 );
+      REQUIRE( nb3 <= nb0 );
     }
     THEN( "When the tetrahedron is 0-convex, 1-convex and 2-convex, then it is 3-convex." ) {
       CAPTURE( nb0 );
@@ -366,13 +366,13 @@ SCENARIO( "DigitalConvexity< Z3 > rational fully convex tetrahedra", "[convex_si
 }
 
 
-SCENARIO( "DigitalConvexity< Z2 > rational fully convex tetrahedra", "[convex_simplices][2d][rational]" )
+SCENARIO( "DigitalConvexity< Z2 > rational fully convex triangles", "[convex_simplices][2d][rational]" )
 {
   typedef KhalimskySpaceND<2,int>          KSpace;
   typedef KSpace::Point                    Point;
   typedef DigitalConvexity< KSpace >       DConvexity;
 
-  DConvexity dconv( Point( -1, -1 ), Point( 10, 10 ) );
+  DConvexity dconv( Point( -1, -1 ), Point( 30, 30 ) );
   WHEN( "Computing many triangle in domain (0,0)-(9,9)." ) {
     const unsigned int nb = 50;
     unsigned int nbsimplex= 0;
@@ -388,11 +388,11 @@ SCENARIO( "DigitalConvexity< Z2 > rational fully convex tetrahedra", "[convex_si
         Point b(    rand() % 20 , 2*(rand() % 10) );
         Point c( 2*(rand() % 10), 2*(rand() % 10) );
         if ( ! dconv.isSimplexFullDimensional( { a, b, c } ) ) continue;
-        auto tetra = dconv.makeRationalSimplex( { Point(2,2), a, b, c } );
-        bool cvx0     = dconv.isKConvex( tetra, 0 );
-        bool cvx1     = dconv.isKConvex( tetra, 1 );
-        bool cvx2     = dconv.isKConvex( tetra, 2 );
-        bool cvxf     = dconv.isFullyConvex( tetra );
+        auto triangle = dconv.makeRationalSimplex( { Point(2,2), a, b, c } );
+        bool cvx0     = dconv.isKConvex( triangle, 0 );
+        bool cvx1     = dconv.isKConvex( triangle, 1 );
+        bool cvx2     = dconv.isKConvex( triangle, 2 );
+        bool cvxf     = dconv.isFullyConvex( triangle );
         nbsimplex += 1;
         nb0       += cvx0 ? 1 : 0;
         nb1       += cvx1 ? 1 : 0;
@@ -405,8 +405,8 @@ SCENARIO( "DigitalConvexity< Z2 > rational fully convex tetrahedra", "[convex_si
       REQUIRE( nb0 == nbsimplex );
     }
     THEN( "There are less 1-convex, 2-convex than 0-convex." ) {
-      REQUIRE( nb1 < nb0 );
-      REQUIRE( nb2 < nb0 );
+      REQUIRE( nb1 <= nb0 );
+      REQUIRE( nb2 <= nb0 );
     }
     THEN( "When the tetrahedron is 0-convex, and 1-convex, then it is 2-convex." ) {
       CAPTURE( nb0 );

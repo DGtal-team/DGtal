@@ -256,8 +256,17 @@ DGtal::CellGeometry<TKSpace>::
 addCellsTouchingPolytopePoints( const RationalPolytope& polytope )
 {
   std::vector< Point > points;
-  polytope.getPoints( points );
-  addCellsTouchingPoints( points.cbegin(), points.cend() );
+  if ( polytope.denominator() == 1 )
+    { 
+      polytope.getPoints( points );
+      addCellsTouchingPoints( points.cbegin(), points.cend() );
+    }
+  else
+    {
+      auto Q = polytope.denominator() * polytope;
+      Q.getPoints( points );
+      addCellsTouchingPoints( points.cbegin(), points.cend() );
+    }
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
@@ -277,10 +286,20 @@ void
 DGtal::CellGeometry<TKSpace>::
 addCellsTouchingPolytope( const RationalPolytope& polytope )
 {
-  for ( Dimension i = myMinCellDim; i <= myMaxCellDim; ++i )
+  if ( polytope.denominator() == 1 )
+    for ( Dimension i = myMinCellDim; i <= myMaxCellDim; ++i )
+      {
+        auto kpoints = getIntersectedKPoints( polytope, i );
+        myKPoints.insert( kpoints.cbegin(), kpoints.cend() );
+      }
+  else
     {
-      auto kpoints = getIntersectedKPoints( polytope, i );
-      myKPoints.insert( kpoints.cbegin(), kpoints.cend() );
+      auto Q = polytope.denominator() * polytope;
+      for ( Dimension i = myMinCellDim; i <= myMaxCellDim; ++i )
+        {
+          auto kpoints = getIntersectedKPoints( Q, i );
+          myKPoints.insert( kpoints.cbegin(), kpoints.cend() );
+        }
     }
 }
 //-----------------------------------------------------------------------------
@@ -561,6 +580,14 @@ getIntersectedCells( const RationalPolytope& polytope,
                     << std::endl;
   static const Dimension d = KSpace::dimension;
   std::vector< Cell >      result;
+  if ( polytope.denominator() != 1 )
+    {
+      trace.warning() << "[CellGeometryFunctions::getIntersectedCells]"
+                      << "only valid for rational polytopes with denominator 1, i.e. lattice polytope."
+                      << std::endl;
+      return result;
+    }
+  
   std::vector< Point >     points;
   std::vector< RationalPolytope  > polytopes( i+1, polytope );
   std::vector< Dimension > extensions( i+1, 0 );
@@ -624,6 +651,13 @@ getIntersectedKPoints( const RationalPolytope& polytope,
                     << std::endl;
   static const Dimension d = KSpace::dimension;
   std::vector< Point >     result;
+  if ( polytope.denominator() != 1 )
+    {
+      trace.warning() << "[CellGeometryFunctions::getIntersectedKPoints]"
+                      << "only valid for rational polytopes with denominator 1, i.e. lattice polytope."
+                      << std::endl;
+      return result;
+    }
   std::vector< Point >     points;
   std::vector< RationalPolytope  > polytopes( i+1, polytope );
   std::vector< Dimension > extensions( i+1, 0 );

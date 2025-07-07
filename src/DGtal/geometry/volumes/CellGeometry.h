@@ -290,6 +290,12 @@ namespace DGtal
     /// Given a rational \a polytope, such that `polytope.canBeSummed()==true`,
     /// return the \a i-kpoints that intersect it.
     ///
+    /// @note The rational polytope is dilated to a denominator 1 so
+    /// that the cells/k-points have a meaning.
+    ///
+    /// @warning Do not use when the polytope's denominator is too big,
+    /// otherwise the returned set can be huge.
+    ///
     /// @param polytope any rational polytope such that `polytope.canBeSummed() == true`
     /// @param i any integer between 0 and KSpace::dimension
     /// @return the \a i-kpoints that intersect this polytope.
@@ -316,6 +322,12 @@ namespace DGtal
 
     /// Given a rational \a polytope, such that `polytope.canBeSummed()==true`,
     /// return the \a i-cells that intersect it.
+    ///
+    /// @note The rational polytope is dilated to a denominator 1 so
+    /// that the cells/k-points have a meaning.
+    ///
+    /// @warning Do not use when the polytope's denominator is too big,
+    /// otherwise the returned set can be huge.
     ///
     /// @param polytope any rational polytope such that `polytope.canBeSummed() == true`
     /// @param i any integer between 0 and KSpace::dimension
