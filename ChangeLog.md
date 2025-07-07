@@ -10,9 +10,12 @@
   - Remove GMP dependency (Bastien Doignies, [#1769](https://github.com/DGtal-team/DGtal/pull/1769))
   - New Boost BigInteger Backend (Bastien Doignies, [#1769](https://github.com/DGtal-team/DGtal/pull/1769))
 
-- *io*  
+- *IO*  
   - New Polyscope-based 3D viewer (Bastien Doignies, [#1775](https://github.com/DGtal-team/DGtal/pull/1775))
   - Remove old QGLViewer and Qt dependency (Bastien Doignies, [#1775](https://github.com/DGtal-team/DGtal/pull/1775))
+  - Add reading material indices  (aka indicies to [MTL](https://fr.wikipedia.org/wiki/Material_Template_Library) entries) in SurfaceMeshReader::readOBJ
+    (Jacques-Olivier Lachaud, [#1788](https://github.com/DGtal-team/DGtal/pull/1788))
+
 
 - *Python*
   - New python bindings for Shortcuts and ShortcutsGeometry (Bastien Doignies, [#1782](https://github.com/DGtal-team/DGtal/pull/1782))
@@ -28,6 +31,7 @@
 
 - *Geometry*
   - Add CNC computer to Shortcuts (Bastien Doignies, [#1781](https://github.com/DGtal-team/DGtal/pull/1781))
+  - Add VoronoiMap (and DistanceTransformation) to Shortcuts (Bastien, Doignies, [#1784](https://github.com/DGtal-team/DGtal/pull/1784))
   - Add method to evaluate normal to `LocalEstimatorFromSurfelFunctorAdapter` from Surfel as a replacement for removed `LocalConvolutionNormalVectorEstimator` (Bastien DOIGNIES, [#1765](https://github.com/DGtal-team/DGtal/pull/1765))
   - Add method to evaluate all normals to `LocalEstimatorFromSurfelFunctorAdapter` as a replacement for removed `LocalConvolutionNormalVectorEstimator` (Bastien DOIGNIES, [#1765](https://github.com/DGtal-team/DGtal/pull/1765))
   - Add covering for segments and triangles in 3D (Jacques-Olivier Lachaud, [#1786](https://github.com/DGtal-team/DGtal/pull/1786))
@@ -37,6 +41,7 @@
   - Add a cmake option to use the ITK EIGEN configuration to solve the issue [#347](https://github.com/DGtal-team/DGtalTools/issues/437) of DGTalTools. (Bertrand Kerautret, [#1759](https://github.com/DGtal-team/DGtal/pull/1759)
   - Building tests does not build the benchmarks anymore (Bastien Doignies, [#1772](https://github.com/DGtal-team/DGtal/pull/1772)
   - Add a cmake option to build benchmark (Bastien Doignies, [#1772](https://github.com/DGtal-team/DGtal/pull/1772)
+  - Fix compilation typo in tutorial-examples (shortcuts-geometry)  (Bertrand Kerautret, [#1787] (https://github.com/DGtal-team/DGtal/pull/1787)) 
 
 - *Documentation*
   - Refactoring of the documentation structure (David Coeurjolly, [#1762](https://github.com/DGtal-team/DGtal/pull/1762))
@@ -172,6 +177,7 @@
   - Continuous integration on windows is now performed by Github
     Action instead of Appeveyor  (David Coeurjolly,
     [#1689](https://github.com/DGtal-team/DGtal/pull/1689))
+
 
 ## Bug fixes
 - *General*

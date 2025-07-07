@@ -66,6 +66,15 @@ bool
 DGtal::SurfaceMeshReader<TRealPoint, TRealVector>::
 readOBJ( std::istream & input, SurfaceMesh & smesh )
 {
+  Materials materials;
+  return readOBJ( input, smesh, materials );
+}
+//-----------------------------------------------------------------------------
+template <typename TRealPoint, typename TRealVector>
+bool
+DGtal::SurfaceMeshReader<TRealPoint, TRealVector>::
+readOBJ( std::istream & input, SurfaceMesh & smesh, Materials& materials )
+{
   std::vector<RealPoint>  vertices;
   std::vector<RealVector> normals;
   std::vector< std::vector< Index > > faces;
@@ -77,40 +86,56 @@ readOBJ( std::istream & input, SurfaceMesh & smesh )
   RealVector n;
   std::getline( input, linestr );
   Index l = 0;
+  int mat = 0; // current material
   for ( ; input.good() && ! input.eof(); std::getline( input, linestr ), l++ )
     {
       if ( linestr.empty() ) continue; // skip empty line
       if ( linestr[0] == '#' ) continue; // skip comment line
       std::istringstream lineinput( linestr );
       std::operator>>( lineinput, keyword ); // lineinput >> keyword;
-      if ( keyword == "v" ) {
-        lineinput >> p[ 0 ] >> p[ 1 ] >> p[ 2 ];
-        vertices.push_back( p );
-      } else if ( keyword == "vn" ) {
-        lineinput >> n[ 0 ] >> n[ 1 ] >> n[ 2 ];
-        normals.push_back( n );
-      } else if ( keyword == "f" ) {
-        std::vector< Index > face, face_normals;
-        while ( ! lineinput.eof() ) {
-          std::operator>>( lineinput, indices ); // lineinput >> indices;
-          if ( indices.empty() ) break;
-          auto vtxinfo = split( indices, '/' );
-          if ( vtxinfo.size() == 0 ) break;
-          Index  v  = static_cast<Index>((int)std::stoi( vtxinfo[ 0 ] )-1);
-          if (v < 0 ){ // special case of relative indices (ie negative index);
-            v = vertices.size() + v+1; 
-          }
-          face.push_back(v);
-          Index vn = vtxinfo.size() >= 3 ? std::stoi( vtxinfo[ 2 ] ) : v-1;
-          face_normals.push_back( vn - 1 );
-          indices = "";
-        }
-        if ( ! face.empty() && verifyIndicesUniqueness( face ) )
-          {
-            faces.push_back( face );
-            faces_normals_idx.push_back( face_normals );
-          }
-      }
+      if ( keyword == "v" )
+	{
+	  lineinput >> p[ 0 ] >> p[ 1 ] >> p[ 2 ];
+	  vertices.push_back( p );
+	}
+      else if ( keyword == "vn" )
+	{
+	  lineinput >> n[ 0 ] >> n[ 1 ] >> n[ 2 ];
+	  normals.push_back( n );
+	}
+      else if ( keyword == "usemtl" )
+	{
+	  std::string strmat;
+	  std::operator>>( lineinput, strmat ); // lineinput >> keyword;
+	  auto matinfo = split( strmat, '_' );
+	  mat = matinfo.size() >= 2 ? std::stoi( matinfo[ 1 ] ) : 0;
+	}
+      else if ( keyword == "f" )
+	{
+	  std::vector< Index > face, face_normals;
+	  while ( ! lineinput.eof() )
+	    {
+	      std::operator>>( lineinput, indices ); // lineinput >> indices;
+	      if ( indices.empty() ) break;
+	      auto vtxinfo = split( indices, '/' );
+	      if ( vtxinfo.size() == 0 ) break;
+	      Index  v  = static_cast<Index>((int)std::stoi( vtxinfo[ 0 ] )-1);
+	      if (v < 0 )
+		{ // special case of relative indices (ie negative index);
+		  v = vertices.size() + v+1; 
+		}
+	      face.push_back(v);
+	      Index vn = vtxinfo.size() >= 3 ? std::stoi( vtxinfo[ 2 ] ) : v-1;
+	      face_normals.push_back( vn - 1 );
+	      indices = "";
+	    }
+	  if ( ! face.empty() && verifyIndicesUniqueness( face ) )
+	    {
+	      faces.push_back( face );
+	      faces_normals_idx.push_back( face_normals );
+	      materials.push_back( mat );
+	    }
+	}
       // Weird: necessary to clear them.
       keyword = ""; linestr = "";
     }
