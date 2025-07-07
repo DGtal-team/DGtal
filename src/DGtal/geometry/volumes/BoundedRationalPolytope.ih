@@ -126,10 +126,10 @@ init( Integer denom,
   for ( Dimension s = 0; s < d; ++s )
     {
       Vector z = Vector::zero;
-      z[ s ]   = 1;
+      z[ s ]   = q;
       A.push_back( z );
       B.push_back( hi[ s ] );
-      z[ s ]   = -1;
+      z[ s ]   = -q;
       A.push_back( z );
       B.push_back( -lo[ s ] );
     }
@@ -147,13 +147,13 @@ init( Integer denom,
           const auto itF  = std::find( A.begin(), itAE, a );
           if ( itF == itAE )
             {
-              A.push_back( a );
-              B.push_back( q * b );
+              A.push_back( q * a );
+              B.push_back( b );
             }
           else
             {
               const auto k = itF - A.begin();
-              B[ k ] = std::min( B[ k ], q * b );
+              B[ k ] = std::min( B[ k ], b );
             }
         }
     }
@@ -161,8 +161,8 @@ init( Integer denom,
     { // Add other halfplanes
       for ( auto it = itB; it != itE; ++it )
         { 
-          A.push_back( it->N );
-          B.push_back( q * it->c );
+          A.push_back( q * it->N );
+          B.push_back( it->c );
           ++nb_hp;
         }
     }
@@ -181,22 +181,22 @@ internalInitFromTriangle3D( Point a, Point b, Point c )
   Vector  n = detail::BoundedRationalPolytopeSpecializer< dimension, Integer >::
     crossProduct( ab, bc );
   if ( n == Vector::zero ) { clear(); return false; }
-  A.push_back(  n );
-  B.push_back(  q *a.dot( n ) );
-  A.push_back( -n );
-  B.push_back( -q * a.dot( n ) );
+  A.push_back(  q * n );
+  B.push_back(  a.dot( n ) );
+  A.push_back( -q * n );
+  B.push_back( -a.dot( n ) );
   Vector abn = detail::BoundedRationalPolytopeSpecializer< dimension, Integer >::
     crossProduct( ab, n );
-  A.push_back( abn );
-  B.push_back( q * a.dot( abn ) );
+  A.push_back( q * abn );
+  B.push_back( a.dot( abn ) );
   Vector bcn = detail::BoundedRationalPolytopeSpecializer< dimension, Integer >::
     crossProduct( bc, n );
-  A.push_back( bcn );
-  B.push_back( q * b.dot( bcn ) );
+  A.push_back( q * bcn );
+  B.push_back( b.dot( bcn ) );
   Vector can = detail::BoundedRationalPolytopeSpecializer< dimension, Integer >::
     crossProduct( ca, n );
-  A.push_back( can );
-  B.push_back( q * c.dot( can ) );
+  A.push_back( q * can );
+  B.push_back( c.dot( can ) );
   I = std::vector<bool>( 2*3+5, true ); // inequalities are large
   return true;
 }
@@ -218,16 +218,16 @@ internalInitFromSegment3D( Point a, Point b )
       n = detail::BoundedRationalPolytopeSpecializer< dimension, Integer >::
     crossProduct( ab, t );
     }
-  A.push_back(  n );
-  B.push_back(  q * a.dot( n ) );
-  A.push_back( -n );
-  B.push_back( -q * a.dot( n ) );
+  A.push_back(  q * n );
+  B.push_back(  a.dot( n ) );
+  A.push_back( -q * n );
+  B.push_back( -a.dot( n ) );
   Vector w = detail::BoundedRationalPolytopeSpecializer< dimension, Integer >::
     crossProduct( ab, n );
-  A.push_back(  w );
-  B.push_back(  q* a.dot( w ) );
-  A.push_back( -w );
-  B.push_back( -q * a.dot( w ) );
+  A.push_back(  q * w );
+  B.push_back(  a.dot( w ) );
+  A.push_back( -q * w );
+  B.push_back( -a.dot( w ) );
   I = std::vector<bool>( 2*3+4, true ); // inequalities are large
   return true;
 }
@@ -241,10 +241,10 @@ internalInitFromSegment2D( Point a, Point b )
   Vector ab = b - a;
   if ( ab == Vector::zero ) return true; // domain and constraints already computed
   Vector  n( -ab[ 1 ], ab[ 0 ] );
-  A.push_back(  n );
-  B.push_back(  q * a.dot( n ) );
-  A.push_back( -n );
-  B.push_back( -q * a.dot( n ) );
+  A.push_back(  q * n );
+  B.push_back(  a.dot( n ) );
+  A.push_back( -q * n );
+  B.push_back( -a.dot( n ) );
   I = std::vector<bool>( 2*2+2, true ); // inequalities are large
   return true;
 }
@@ -302,10 +302,10 @@ init( Integer denom, PointIterator itB, PointIterator itE )
   for ( Dimension s = 0; s < d; ++s )
     {
       Vector z = Vector::zero;
-      z[ s ]   = 1;
+      z[ s ]   = q;
       A.push_back( z );
       B.push_back( hi[ s ] );
-      z[ s ]   = -1;
+      z[ s ]   = -q;
       A.push_back( z );
       B.push_back( -lo[ s ] );
     }
@@ -358,8 +358,8 @@ init( Integer denom, PointIterator itB, PointIterator itE )
       b       += a.dot( pts[ s ] );
       // Check sign
       if ( a.dot( pts[ s ] ) > b ) { a *= (Integer) -1; b *= (Integer) -1; }
-      A.push_back( a );
-      B.push_back( q * b );
+      A.push_back( q * a );
+      B.push_back( b );
     }
   myValidEdgeConstraints = true;
   if ( dimension >= 3 )
@@ -600,7 +600,7 @@ DGtal::BoundedRationalPolytope<TSpace>::
 count() const
 {
   Integer nb = 0;
-  for ( const Point & p : rationalD )
+  for ( const Point & p : latticeD )
     nb += isDomainPointInside( p ) ? NumberTraits<Integer>::ONE : NumberTraits<Integer>::ZERO;
   return nb;
 }
@@ -612,7 +612,7 @@ DGtal::BoundedRationalPolytope<TSpace>::
 countInterior() const
 {
   Integer nb = 0;
-  for ( const Point & p : rationalD )
+  for ( const Point & p : latticeD )
     nb += isInterior( p ) ? NumberTraits<Integer>::ONE : NumberTraits<Integer>::ZERO;
   return nb;
 }
@@ -623,7 +623,7 @@ DGtal::BoundedRationalPolytope<TSpace>::
 countBoundary() const
 {
   Integer nb = 0;
-  for ( const Point & p : rationalD )
+  for ( const Point & p : latticeD )
     nb += isBoundary( p ) ? NumberTraits<Integer>::ONE : NumberTraits<Integer>::ZERO;
   return nb;
 }
@@ -634,7 +634,7 @@ DGtal::BoundedRationalPolytope<TSpace>::
 countWithin( Point lo, Point hi ) const
 {
   Integer nb = 0;
-  Domain D1( lo.sup( rationalD.lowerBound() ), hi.inf( rationalD.upperBound() ) );
+  Domain D1( lo.sup( latticeD.lowerBound() ), hi.inf( latticeD.upperBound() ) );
   for ( const Point & p : D1 )
     nb += isDomainPointInside( p ) ? NumberTraits<Integer>::ONE : NumberTraits<Integer>::ZERO;
   return nb;
@@ -646,7 +646,7 @@ DGtal::BoundedRationalPolytope<TSpace>::
 countUpTo( Integer max) const
 {
   Integer nb = 0;
-  for ( const Point & p : rationalD ) {
+  for ( const Point & p : latticeD ) {
     nb += isDomainPointInside( p ) ? NumberTraits<Integer>::ONE : NumberTraits<Integer>::ZERO;
     if ( nb >= max ) return max;
   }
@@ -659,7 +659,7 @@ DGtal::BoundedRationalPolytope<TSpace>::
 getPoints( std::vector<Point>& pts ) const
 {
   pts.clear();
-  for ( const Point & p : rationalD )
+  for ( const Point & p : latticeD )
     if ( isDomainPointInside( p ) ) pts.push_back( p );
 }
 //-----------------------------------------------------------------------------
@@ -669,7 +669,7 @@ void
 DGtal::BoundedRationalPolytope<TSpace>::
 insertPoints( PointSet& pts_set ) const
 {
-  for ( const Point & p : rationalD )
+  for ( const Point & p : latticeD )
     if ( isDomainPointInside( p ) ) pts_set.insert( p );
 }
 //-----------------------------------------------------------------------------
@@ -679,7 +679,7 @@ DGtal::BoundedRationalPolytope<TSpace>::
 getInteriorPoints( std::vector<Point>& pts ) const
 {
   pts.clear();
-  for ( const Point & p : rationalD )
+  for ( const Point & p : latticeD )
     if ( isInterior( p ) ) pts.push_back( p );
 }
 //-----------------------------------------------------------------------------
@@ -689,7 +689,7 @@ DGtal::BoundedRationalPolytope<TSpace>::
 getBoundaryPoints( std::vector<Point>& pts ) const
 {
   pts.clear();
-  for ( const Point & p : rationalD )
+  for ( const Point & p : latticeD )
     if ( isBoundary( p ) ) pts.push_back( p );
 }
 

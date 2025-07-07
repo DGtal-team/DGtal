@@ -314,7 +314,7 @@ SCENARIO( "DigitalConvexity< Z3 > rational fully convex tetrahedra", "[convex_si
 
   DConvexity dconv( Point( -1, -1, -1 ), Point( 10, 10, 10 ) );
   WHEN( "Computing many tetrahedra in domain (0,0,0)-(4,4,4)." ) {
-    const unsigned int nb = 0; // 50
+    const unsigned int nb = 30;
     unsigned int nbsimplex= 0;
     unsigned int nb0      = 0;
     unsigned int nb1      = 0;
@@ -378,7 +378,7 @@ SCENARIO( "DigitalConvexity< Z2 > rational fully convex triangles", "[convex_sim
 
   DConvexity dconv( Point( -1, -1 ), Point( 30, 30 ) );
   WHEN( "Computing many triangle in domain (0,0)-(9,9)." ) {
-    const unsigned int nb = 0; // 20;
+    const unsigned int nb = 50;
     unsigned int nbsimplex= 0;
     unsigned int nb0      = 0;
     unsigned int nb1      = 0;

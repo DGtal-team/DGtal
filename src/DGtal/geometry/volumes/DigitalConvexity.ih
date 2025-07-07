@@ -1221,9 +1221,10 @@ DGtal::DigitalConvexity<TKSpace>::
 isKConvex( const RationalPolytope& P, const Dimension k ) const
 {
   if ( k == 0 ) return true;
-  auto S = insidePoints( P );
+  auto Q = P.denominator() * P;
+  auto S = insidePoints( Q );
   auto touched_cells     = makeCellCover( S.begin(), S.end(), k, k );
-  auto intersected_cells = makeCellCover( P, k, k );
+  auto intersected_cells = makeCellCover( Q, k, k );
   return intersected_cells.nbCells() == touched_cells.nbCells()
     && intersected_cells.subset( touched_cells );
 }
@@ -1234,12 +1235,13 @@ bool
 DGtal::DigitalConvexity<TKSpace>::
 isFullyConvex( const RationalPolytope& P ) const
 {
-  auto S = insidePoints( P );
+  auto Q = P.denominator() * P;
+  auto S = insidePoints( Q );
   if ( S.size() <= 1 ) return true;
   for ( Dimension k = 1; k < KSpace::dimension; ++ k )
     {
       auto touched_cells     = makeCellCover( S.begin(), S.end(), k, k );
-      auto intersected_cells = makeCellCover( P, k, k );
+      auto intersected_cells = makeCellCover( Q, k, k );
       if ( ( intersected_cells.nbCells() != touched_cells.nbCells() )
            || ( ! intersected_cells.subset( touched_cells ) ) )
         return false;
@@ -1254,6 +1256,7 @@ DGtal::DigitalConvexity<TKSpace>::
 isKSubconvex( const RationalPolytope& P, const CellGeometry& C,
               const Dimension k ) const
 {
+  // TODO
   auto intersected_cells = makeCellCover( P, k, k );
   return intersected_cells.subset( C );
 }
