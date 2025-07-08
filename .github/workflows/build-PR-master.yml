@@ -1,10 +1,10 @@
-name: CI (linux/macOS/windows), PR (2.0)
+name: CI (linux/macOS/windows), PR
 
 on:
   push:
-    branches: [ main2.0, GHActions ]
+    branches: [ master, GHActions ]
   pull_request:
-    branches: [ main2.0, GHActions ]
+    branches: [ master, GHActions ]
 
 jobs:
   build:
@@ -13,8 +13,11 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macOS-latest, windows-latest]
-        BUILD_TYPE: [Release]
+        BUILD_TYPE: [Release, Debug]
         python-version: ["3.9"]
+        exclude:
+          -  os: windows-latest
+             BUILD_TYPE: Debug
 
     steps: 
       - uses: actions/checkout@v4
