@@ -31,7 +31,7 @@ cmake ..
 make install
 ```
 
-Minimum system requirements: C++11 enabled compiler, [cmake](http://cmake.org), [boost](http://boost.org) (>= 1.50).
+Minimum system requirements: C++20 enabled compiler, [cmake](http://cmake.org).
 
 DGtal can be compiled on Microsoft Windows system using Visual Studio 2014 (or newer): Generate the Visual Studio project using windows [cmake](http://cmake.org) tool and compile the DGtal solution (you may also need to set the cmake variable ```DGTAL_BUILD_SHARED_LIBS``` to false).
 
@@ -58,6 +58,7 @@ More Information
 * Project homepage http://dgtal.org
 * Related DGtalTools project: http://dgtal.org/dgtaltools, [DGtalTools](https://github.com/DGtal-team/DGtalTools), [DGtalTools-contrib](https://github.com/DGtal-team/DGtalTools-contrib)
 
+* Release 2.0
 * Release 1.4 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11550945.svg)](https://doi.org/10.5281/zenodo.11550945)
 * Release 1.3 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7331486.svg)](https://doi.org/10.5281/zenodo.7331486)
 * Release 1.2 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4892404.svg)](https://doi.org/10.5281/zenodo.4892404)
