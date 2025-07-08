@@ -60,7 +60,8 @@
 
 - *Geometry*
   - Fix rational polytopes tests of digital-k-convexity and full convexity (Jacques-Olivier Lachaud, [#1790](https://github.com/DGtal-team/DGtal/pull/1790))
-	
+	- In `Naive3DDSSComputer`, ensure that the last segment is maximal in 2D, so that the corresponding 3D segment results from the intersection of two maximal 2D segments. (Kacper Pluta, [#1774]((https://github.com/DGtal-team/DGtal/pull/1775))
+
 # DGtal 1.4.2
 
 ## New features
