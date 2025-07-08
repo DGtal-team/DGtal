@@ -138,7 +138,7 @@ jobs:
           
 
       - name: Store the distribution packages
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: python-package-distributions
           path: wrap/deploy/dist/
