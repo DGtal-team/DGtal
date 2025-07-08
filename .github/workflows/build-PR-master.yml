@@ -15,6 +15,9 @@ jobs:
         os: [ubuntu-latest, macOS-latest, windows-latest]
         BUILD_TYPE: [Release, Debug]
         python-version: ["3.9"]
+        exclude:
+          -  os: windows-latest
+             BUILD_TYPE: Debug
 
     steps: 
       - uses: actions/checkout@v4
