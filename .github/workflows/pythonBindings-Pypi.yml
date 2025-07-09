@@ -161,7 +161,7 @@ jobs:
     - name: Download all the dists
       uses: actions/download-artifact@v4
       with:
-        name: python-package-distributions
+        name: python-package-distributions-${{ matrix.python-version }}
         path: dist/
 
     - name: Publish distribution 📦 to TestPyPI
