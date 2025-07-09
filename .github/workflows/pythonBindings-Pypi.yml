@@ -37,7 +37,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Installing dependencies (Linux)
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-22.04'
         run: |
           sudo apt-get update
           sudo apt-get install zsh libqglviewer-dev-qt5 libcgal-dev ninja-build libhdf5-serial-dev  libcairo2-dev libfftw3-dev  libinsighttoolkit5-dev xorg-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev
@@ -72,7 +72,7 @@ jobs:
           python -m pip install scikit-build
 
       - name: Setting build informations (Linux)
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-22.04'
         shell: bash
         working-directory: wrap/deploy  
         run: |
@@ -127,7 +127,7 @@ jobs:
           pytest .
 
       - name: Repairing Linux Wheel (autitwheel - linux -> manylinux)
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-22.04'
         shell: bash
         working-directory: wrap/deploy
         run: |
@@ -148,14 +148,8 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     needs:
     - build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-22.04]
-        python-version: ["3.9", "3.10", "3.11"]
-    
     environment:
       name: deploy-pypi
       url: https://pypi.org/p/dgtal
