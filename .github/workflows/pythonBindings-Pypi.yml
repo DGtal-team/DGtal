@@ -167,8 +167,9 @@ jobs:
     - name: Download all the dists
       uses: actions/download-artifact@v4
       with:
-        name: python-package-distributions-${{ matrix.python-version }}
         path: dist/
+        pattern: python-package-distributions-*
+        merge-multiple: true
 
     - name: Publish distribution 📦 to TestPyPI
       uses: pypa/gh-action-pypi-publish@release/v1
