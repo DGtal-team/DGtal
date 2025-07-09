@@ -140,7 +140,7 @@ jobs:
       - name: Store the distribution packages
         uses: actions/upload-artifact@v4
         with:
-          name: python-package-distributions
+          name: python-package-distributions-${{ matrix.python-version }}
           path: wrap/deploy/dist/
 
   publish-to-testpypi:
