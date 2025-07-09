@@ -150,6 +150,12 @@ jobs:
     - build
     runs-on: ubuntu-latest
 
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04]
+        python-version: ["3.9", "3.10", "3.11"]
+    
     environment:
       name: deploy-pypi
       url: https://pypi.org/p/dgtal
