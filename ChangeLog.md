@@ -1,5 +1,6 @@
 # DGtal 2.0
 
+
 ## New features
 
 - *General*
