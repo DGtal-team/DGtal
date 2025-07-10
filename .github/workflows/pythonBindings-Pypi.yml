@@ -4,7 +4,7 @@ on:
   push:
     tags: 
       - '*' # TODO: set filter here if multiple tags are required
-  workflow_dispatch
+  workflow_dispatch:
   
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
