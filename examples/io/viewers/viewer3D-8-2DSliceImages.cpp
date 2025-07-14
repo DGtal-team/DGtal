@@ -93,11 +93,6 @@ int main( int argc, char** argv )
   //! [ExampleViewer3D2DImagesDisplayImages]
   //
 
-  //! [ExampleViewer3D2DModifImages]
-  // Update image position by accessing the transform
-  viewer.data[imageY].transform.rotate(Eigen::AngleAxisd(M_PI / 2, Eigen::Vector3d::UnitX()));
-  viewer.data[imageY].transform.translate(Eigen::Vector3d(0, 50, -50));
-  // //! [ExampleViewer3D2DModifImages]
  
   viewer.show();
   return 0;

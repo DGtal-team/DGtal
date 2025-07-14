@@ -389,6 +389,21 @@ class MyCustomCallback : public typename Display3D<Space, KSpace>::Callback {
 
 For PolyscopeViewer, user inputs and UI are managed with ImGUI. Also note that the viewer displays "by default", the name of the clicked polyscope structure.
 
+\section DGtalGLV_Ext Adding other standard primitive
+
+The viewer can also display other standard primitives, like ball using the polyscope steps.
+For instance, to display a set of ball with different radius, you can follows these steps:
+
+@code
+    // Coordinates of the ball centers
+    std::vector<glm::vec3> points = { glm::vec3(0, 1, 2), glm::vec3(0, 1, 2) };
+    auto* psCloud = polyscope::registerPointCloud("TwoBalls", points);
+
+    // radius parameter
+    std::vector<double> rayons = { 2.0, 3.0 };
+    psCloud->setPointRadius(raduis, false); // false to keep scale not relative
+    psCloud->setPointRenderMode(polyscope::PointRenderMode::Sphere);
+@endcode
 
 
 */
