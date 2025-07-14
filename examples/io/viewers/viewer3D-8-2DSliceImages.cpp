@@ -28,7 +28,7 @@
  */
 
 /**
- * \image html  viewer3D-8Ex.png  "Illustration of the 2D image slice visualization."
+ * \image html  viewer3D-8.png  "Illustration of the 2D image slice visualization."
  * \example io/viewers/viewer3D-8-2DSliceImages.cpp
  *
  */
