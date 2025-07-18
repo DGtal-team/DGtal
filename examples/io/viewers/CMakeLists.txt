@@ -8,6 +8,7 @@ set(DGTAL_TESTS_SRC
    viewer3D-7-planes
    viewer3D-7-stdplane
    viewer3D-8-2DSliceImages
+   viewer3D-8bis-2Dimages
    viewer3D-9-3Dimages
    viewer3D-10-interaction
    viewer3D-11-extension

@@ -32,8 +32,9 @@
  * Example of a custom display
  * @see \ref DGtalGLV_Custom
  * \example io/viewers/viewer3D-5-colors.cpp
- * \image html visuModeCustom.png "Example of several custom display ." width=5cm
-*/
+ * \image html visuModeCustom.png "Example of several custom display ." 
+ * \image latex visuModeCustom.png "Example of several custom display ." width=5cm
+ */
 
 
 ///////////////////////////////////////////////////////////////////////////////
