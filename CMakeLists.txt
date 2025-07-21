@@ -2,7 +2,7 @@
 # Project definition
 # -----------------------------------------------------------------------------
 cmake_minimum_required (VERSION 3.20)
-project (DGtal VERSION 2.1.0)
+project (DGtal VERSION 2.1.beta)
 
 # Allow for cmake 3.5. This is required indirectly by polyscope (via glad)
 set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
