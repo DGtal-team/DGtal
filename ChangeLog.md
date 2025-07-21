@@ -1,5 +1,6 @@
-# DGtal 2.0
+# DGtal 2.1-dev
 
+# DGtal 2.0
 
 ## New features
 
