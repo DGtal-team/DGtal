@@ -278,7 +278,7 @@ public:
     }
 
     /**
-     * Allows to recover the point corresponding to domain source.
+     * Allows to recover the corresponding point in the source domain.
      * @param aPoint from the adapted domain
      * @return the point in the source domain  
      */
