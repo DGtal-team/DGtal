@@ -32,18 +32,18 @@ namespace DGtal {
 
 \section DGtalGLV_PolyscopeViewer Interactive visualization from PolyscopeViewer
 
-The class PolyscopeViewer is a wrapper around the Polyscope library ( https://polyscope.run/ ).  
+The class PolyscopeViewer is a wrapper around the Polyscope library ( https://polyscope.run ).  
 It permits displaying geometrical data such as Point, Lines and (volumetric) meshes. 
 The library handles 3D scenes movement and allows to attributes of displayed objects 
 (such as colors and colormaps). The graphical interface is based on ImGUI 
-( https://github.com/ocornut/imgui )which can be  further extended.
+(https://github.com/ocornut/imgui) which can be  further extended.
 
  *
 
 First to use the PolyscopeViewer stream, you need to include the following headers:
  *
 @code
- #include "DGtal/io/3dViewers/PolyscopeViewer.h"A
+ #include "DGtal/io/3dViewers/PolyscopeViewer.h"
 @endcode
  *
 The following code snippet defines three points and a rectangular
@@ -84,7 +84,7 @@ drawn with the viewer. You should obtain the following visualization:
 Polyscope has its own default rendering settings. Many parameters can be changed either
 programatically or at runtime directly within the viewer. This includes camera parameters
 (up direction, far/near plane, ...), materials of objects, lighting and many more. See 
-polyscope documentation for available options ( https://polyscope.run/ ). 
+polyscope documentation for available options (https://polyscope.run). 
 
 @note Some rendered image of this documentation may have altered parameters to improve
 visibility such as scene extents or transparency mode.  
@@ -99,7 +99,7 @@ visibility such as scene extents or transparency mode.
 @snippet io/viewers/viewer3D-2-sets.cpp ExampleViewer2dSet
 
 *
-* You should obtain the following visualization (see example: <a href="io_2viewers_2viewer3D-2-sets_8cpp-example.html">viewer3D-2-sets.cpp </a>):
+* You should obtain the following visualization (see example: <a href="io_2viewers_2viewer3D-2-sets_8cpp-example.html">viewer3D-2-sets.cpp</a>):
 *
 * \image html simple3dVisu2.png "Digital point visualization  with PolyscopeViewer."
 * \image latex simple3dVisu2.png "Digital point visualization  with PolyscopeViewer." width=5cm
@@ -124,7 +124,7 @@ visibility such as scene extents or transparency mode.
  viewer << shape2;
 @endcode
 
-* You should obtain the two following visualizations (see example: <a href="io_2viewers_2viewer3D-3-objects_8cpp-example.html">viewer3D-3-objects.cpp </a>):
+* You should obtain the two following visualizations (see example: <a href="io_2viewers_2viewer3D-3-objects_8cpp-example.html">viewer3D-3-objects.cpp</a>):
 
  \image html visu6-18Adj.png " 6-18 digital Adjacencies visualization  with PolyscopeViewer."
  \image latex visu6-18Adj.png " 6-18 digital Adjacencies visualization with PolyscopeViewer." width=5cm
@@ -222,9 +222,11 @@ Colors can also be set programatically;
   viewer.setDefaultColors(); // Reset to default colors
 @endcode
 
-The example <a  href="io_2viewers_2viewer3D-5-custom_8cpp-example.html"> viewer3D-5-custom.cpp </a> illustrates some possible customs :
+The example <a  href="io_2viewers_2viewer3D-5-colors_8cpp-example.html"> viewer3D-5-colors.cpp </a> illustrates some possible customs :
 
-\image html visuModeCustom.png "Example of several custom display ." width=5cm
+\image html visuModeCustom.png "Example of several custom display." 
+\image latex visuModeCustom.png "Example of several custom display." width=5cm
+
 
 If colors depend on values, please see section about adding properties to object instead of manually setting colors. 
 
@@ -269,7 +271,7 @@ change colors, positions and if they are drawn or not.
 
 \section DGtalGLV_Images Adding 2D image visualization in 3D
 
-With the PolyscopeViewer class it is possible to display 2D slice image from a volume one. It can be done in a few steps (see example of io/viewers/viewer3D-8-2DSliceImages.cpp) :
+With the PolyscopeViewer class it is possible to display 2D slice image from a volume one. It can be done in a few steps (see example of <a href="io_2viewers_2viewer3D-8-2DSliceImages_8cpp-example.html">viewer3D-8-2DSliceImages.cpp</a>) :
 
 @snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DImagesExtractImages
 
@@ -282,7 +284,11 @@ In the same way a 3D image can be displayed. By following the same stream operat
 \image html  viewer3D-9.png  "Example of 3D image visualization with also digital sets." 
 \image latex  viewer3D-9.png  "Example of 3D image visualization with also digital sets." width=5cm
 
-See more details in  the example: io/viewers/viewer3D-9-3Dimages.cpp 
+See more details in the example:  <a
+href="io_2viewers_2viewer3D-9-3Dimages_8cpp-example.html"
+>io/viewers/viewer3D-9-3Dimages.cpp</a>
+
+
 
 \section DGtalGLV_Groups Object names and groups
 
@@ -313,7 +319,7 @@ std::string name1 = viewer.draw(p1, "Point_{i}_name"); // name1 = "Point_1_name"
 std::string name2 = viewer.draw(p1, "Point_{i}_name"); // name2 = "Point_2_name"
 @endcode 
 
-A common pattern when using the DGtal library is to iterate over a set of object, and then perform a computation and draw them (see tests/geometry/surfaces/testLocalConvolutionNormalVectorEstimator.cpp). 
+%A common pattern when using the DGtal library is to iterate over a set of object, and then perform a computation and draw them (see tests/geometry/surfaces/testLocalConvolutionNormalVectorEstimator.cpp). 
 However, this would imply having one object for each draw command, which can bloat the user interface and would make the viewer slow. It also limits the ability to have colormaps, since each 
 value would be scattered across multiple objects. For this reason, a special variable can be set: 
 
@@ -378,8 +384,27 @@ class MyCustomCallback : public typename Display3D<Space, KSpace>::Callback {
 };
 @endcode
 
-A useful method is Display3D::renderNewData that renders to the screen any newly added data. Another method, Display3D::renderAll can be used to (re)render every object; but run-time settings might be lost.
+
+%A  useful method is Display3D::renderNewData that renders to the screen any newly added data. Another method, Display3D::renderAll can be used to (re)render every object; but run-time settings might be lost.
 
 For PolyscopeViewer, user inputs and UI are managed with ImGUI. Also note that the viewer displays "by default", the name of the clicked polyscope structure.
+
+\section DGtalGLV_OtherPrim Adding other standard primitive
+
+The viewer can also display other standard primitives, like ball using the polyscope steps.
+For instance, to display a set of ball with different radius, you can follows these steps:
+
+@code
+    // Coordinates of the ball centers
+    std::vector<glm::vec3> points = { glm::vec3(0, 1, 2), glm::vec3(0, 1, 2) };
+    auto* psCloud = polyscope::registerPointCloud("TwoBalls", points);
+
+    // radius parameter
+    std::vector<double> rayons = { 2.0, 3.0 };
+    psCloud->setPointRadius(raduis, false); // false to keep scale not relative
+    psCloud->setPointRenderMode(polyscope::PointRenderMode::Sphere);
+@endcode
+
+
 */
 }

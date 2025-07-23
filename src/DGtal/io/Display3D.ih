@@ -622,7 +622,7 @@ namespace DGtal {
             typename TFunctorV,
             typename TFunctorVm1>
   std::string Display3D<Space, KSpace>::draw(const ImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV, TFunctorVm1>& adapter, const std::string& name) {
-    return drawImage(name, adapter);
+    return drawImageAdaptDom(name, adapter);
   }
         
   template <typename Space, typename KSpace>
@@ -632,7 +632,7 @@ namespace DGtal {
             typename TNewValue,
             typename TFunctorV>
   std::string Display3D<Space, KSpace>::draw(const ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV>& adapter, const std::string& name) {
-    return drawImage(name, adapter);
+    return drawImageAdaptDom(name, adapter);
   }
 
   template <typename Space, typename KSpace>
@@ -889,7 +889,34 @@ namespace DGtal {
         rp = myEmbedder.embed(*it);
       } else {
         // We accept to draw theses 2D image, do ask to parametrize to also the myEmbedder...
-        rp = myEmbedder.embed(Point((*it)[0], (*it)[1], 0)); 
+        rp = myEmbedder.embed(Z3i::Point((*it)[0], (*it)[1], 0)); 
+      }
+      myCurrentData->scalarQuantities[QuantityScale::CELL]["value"].push_back(image(*it));
+      drawutils::insertCubeVertices(myCurrentData->vertices, rp, myCurrentData->style.width);
+    }
+    return name;
+  }
+  
+  template <typename Space, typename KSpace>
+  template <typename T>
+  std::string Display3D<Space, KSpace>::drawImageAdaptDom(const std::string& uname, const T& image) {
+    std::string name = newCubeList(uname);
+
+    size_t total = image.domain().size();
+
+    auto it = image.domain().begin();
+    auto itend = image.domain().end();
+    constexpr size_t dim = T::Domain::Space::dimension;
+    
+    myCurrentData->vertices.reserve(8 * total);
+    myCurrentData->scalarQuantities[QuantityScale::CELL]["value"].reserve(total);
+    for(; it != itend; ++it) {
+      RealPoint rp;
+      if constexpr (dim == 3) {
+        rp = myEmbedder.embed(*it);
+      } else {
+        // We accept to draw theses 2D image, do ask to parametrize to also the myEmbedder...
+        rp = myEmbedder.embed(image.sourceDomainPoint(Z2i::Point((*it)[0], (*it)[1]))); 
       }
       myCurrentData->scalarQuantities[QuantityScale::CELL]["value"].push_back(image(*it));
       drawutils::insertCubeVertices(myCurrentData->vertices, rp, myCurrentData->style.width);
@@ -897,6 +924,7 @@ namespace DGtal {
     return name;
   }
 
+  
   template <typename Space, typename KSpace>
   std::string Display3D<Space, KSpace>::drawKCell(std::string uname, const RealPoint& rp, bool xodd, bool yodd, bool zodd, bool hasSign, bool sign) {
     std::string name = myCurrentName;

@@ -29,7 +29,7 @@
 - *General*
   - C++20 support and new minimal standard (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
   - Remove deprecated classes and functions (Bastien Doignies, [#1765](https://github.com/DGtal-team/DGtal/pull/1765))
-
+  
 - *Geometry*
   - Add CNC computer to Shortcuts (Bastien Doignies, [#1781](https://github.com/DGtal-team/DGtal/pull/1781))
   - Add VoronoiMap (and DistanceTransformation) to Shortcuts (Bastien, Doignies, [#1784](https://github.com/DGtal-team/DGtal/pull/1784))
@@ -46,6 +46,9 @@
 
 - *Documentation*
   - Refactoring of the documentation structure (David Coeurjolly, [#1762](https://github.com/DGtal-team/DGtal/pull/1762))
+  - Doc complement in Display3D and back integration of examples viewer3D-8bis-2Dimages
+    and related Display3D adaptation to recover image position. (Bertrand Kerautret [1792](https://github.com/DGtal-team/DGtal/pull/1792))
+
 
 ## Bug fixes
 
