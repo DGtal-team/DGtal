@@ -280,6 +280,7 @@ namespace functors
      * @param dimRotated the index of the rotation axis.
      * @param ptCenter the rotation center.
      * @param rotationAngle the angle of rotation (in radians).
+     * @param keepInside if true, the resulting point will be forced to be inside the domain.
      */
 
     SliceRotator2D( const Dimension &dimAdded, const TDomain3D &aDomain3DImg, const Integer &sliceIndex,
