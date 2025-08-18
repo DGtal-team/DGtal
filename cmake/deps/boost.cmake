@@ -187,6 +187,9 @@ option(BOOST_IOSTREAMS_ENABLE_BZIP2 "Boost.Iostreams: Enable BZip2 support" OFF)
 option(BOOST_IOSTREAMS_ENABLE_LZMA "Boost.Iostreams: Enable LZMA support" OFF)
 option(BOOST_IOSTREAMS_ENABLE_ZSTD "Boost.Iostreams: Enable Zstd support" OFF)
 
+# Disabling BOOST_WARNINGS_AS_ERRORS
+option(BOOST_ENABLE_WARNINGS_AS_ERRORS "Boost warnings are errors: disabled" OFF)
+
 if(SKBUILD)
     set(OLD_BUILD_SHARED_LIBS ${BUILD_SHARED_LIBS})
     set(BUILD_SHARED_LIBS ON)
