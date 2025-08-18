@@ -277,6 +277,19 @@ public:
       return defaultValue;
     }
 
+    /**
+     * Allows to recover the corresponding point in the source domain.
+     * @param aPoint from the adapted domain
+     * @return the point in the source domain  
+     */
+
+   TImageContainer::Point sourceDomainPoint (const Point &aPoint) const
+    {
+      return  myFD->operator()(aPoint);
+    }
+
+  
+
     // ------------------------- Protected Datas ------------------------------
 private:
     /**

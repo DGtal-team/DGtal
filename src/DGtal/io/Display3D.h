@@ -720,6 +720,10 @@ namespace DGtal {
       template<typename T>
       std::string drawImage(const std::string& uname, const T& image);
 
+      // @brief Draws an image through an iterator and replacing from its original domain
+      template<typename T>
+      std::string drawImageAdaptDom(const std::string& uname, const T& image);
+
       // @brief Draws a KCell (signed or not)
       std::string drawKCell(std::string uname, const RealPoint& rp, bool xodd, bool yodd, bool zodd, bool hasSign, bool sign);
 
