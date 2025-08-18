@@ -47,6 +47,29 @@ CPMAddPackage(
 # -----------------------------------------------------------------------------
 option(DGTAL_WARNING_AS_ERROR "Transform compiler warnings as errors (in Debug build type)." OFF)
 if (DGTAL_WARNING_AS_ERROR)
-  set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wno-dangling-reference -Wno-sign-compare -Werror -Wno-unknown-pragmas -Wshadow -Wunused-variable -Wunused-parameter -Wunused-function -Wno-deprecated-copy  -Werror=type-limits -Wno-nonnull -Wno-unused-function -Wunused  -Wno-long-long -Wno-system-headers -Wno-deprecated -Woverloaded-virtual -Wwrite-strings")
+target_compile_options(DGtal PRIVATE
+  $<$<CONFIG:Debug>:
+    -Wall
+    -Wno-dangling-reference
+    -Wno-sign-compare
+    -Werror
+    -Wno-unknown-pragmas
+    -Wshadow
+    -Wunused-variable
+    -Wunused-parameter
+    -Wunused-function
+    -Wno-deprecated-copy
+    -Werror=type-limits
+    -Wno-nonnull
+    -Wno-unused-function
+    -Wunused
+    -Wno-long-long
+    -Wno-system-headers
+    -Wno-deprecated
+    -Woverloaded-virtual
+    -Wwrite-strings
+  >
+)
+ # set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -Wno-dangling-reference -Wno-sign-compare -Werror -Wno-unknown-pragmas -Wshadow -Wunused-variable -Wunused-parameter -Wunused-function -Wno-deprecated-copy  -Werror=type-limits -Wno-nonnull -Wno-unused-function -Wunused  -Wno-long-long -Wno-system-headers -Wno-deprecated -Woverloaded-virtual -Wwrite-strings")
   message(STATUS "Warnings as Errors ENABLED.")
 endif()

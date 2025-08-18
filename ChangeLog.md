@@ -1,5 +1,9 @@
 # DGtal 2.1.beta
 
+## Bug fixes
+- *Build*
+  - Replacing the global compilation flags when `DGTAL_WARNINGS_AS_ERRORS` is set, with per target `target_compile_options` to avoid errors on Boost warnings (David Coeurjolly,  [#1793](https://github.com/DGtal-team/DGtal/pull/1793))
+
 # DGtal 2.0
 
 ## New features
