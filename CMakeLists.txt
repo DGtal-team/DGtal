@@ -43,13 +43,6 @@ add_subdirectory(src)
 include(DevelopmentOptions)
 
 # -----------------------------------------------------------------------------
-# Downloading external deps
-# -----------------------------------------------------------------------------
-message(STATUS "Downloading external projects")
-include(FetchExternalDeps)
-message(STATUS "Done.")
-
-# -----------------------------------------------------------------------------
 # Check mandatory and optional dependencies
 # -----------------------------------------------------------------------------
 include(CheckDGtalDependencies)
