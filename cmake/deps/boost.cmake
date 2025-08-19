@@ -16,6 +16,9 @@ endif()
 message(STATUS "Third-party (external): creating targets 'Boost::<lib>'")
 
 set(OLD_CMAKE_POSITION_INDEPENDENT_CODE ${CMAKE_POSITION_INDEPENDENT_CODE})
+set(OLD_CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
+
+set(CMAKE_CXX_FLAGS_DEBUG "-w")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Restrict the list of Boost targets to expose in the project (this should be the superset of all
@@ -221,3 +224,9 @@ export(TARGETS
     NAMESPACE Boost::
     FILE BoostTargets.cmake
 )
+
+set(OLD_CMAKE_POSITION_INDEPENDENT_CODE ${CMAKE_POSITION_INDEPENDENT_CODE})
+set(OLD_CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
+
+set(CMAKE_CXX_FLAGS_DEBUG ${OLD_CMAKE_CXX_FLAGS_DEBUG})
+set(CMAKE_POSITION_INDEPENDENT_CODE ${OLD_CMAKE_POSITION_INDEPENDENT_CODE})

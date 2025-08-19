@@ -297,6 +297,10 @@ namespace DGtal {
      * @brief Clipping plane
      */
     struct ClippingPlane {
+      ClippingPlane(double _a, double _b, double _c, double _d) : 
+        a(_a), b(_b), c(_c), d(_d) 
+      { }
+
       double a, b, c; //< Normal components
       double d;       //< Offset
       
