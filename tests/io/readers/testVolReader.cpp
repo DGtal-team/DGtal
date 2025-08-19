@@ -97,6 +97,10 @@ bool testVolReader()
 }
 
 
+/**
+ * @brief Tests the VolReader's behavior when attempting to read a non-existent or invalid `.vol` file.
+ * @return true if the test passes and the exception is handled as expected; false otherwise.
+ */
 bool testIOException()
 {
   unsigned int nbok = 0;
