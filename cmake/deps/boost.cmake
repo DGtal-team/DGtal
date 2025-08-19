@@ -198,9 +198,9 @@ endif()
 include(CPM)
 CPMAddPackage(
     NAME Boost
-    VERSION 1.84.0
+    VERSION 1.89.0
     GITHUB_REPOSITORY "boostorg/boost"
-    GIT_TAG "boost-1.84.0"
+    GIT_TAG "boost-1.89.0"
 )
 
 # Manually create a library. For some reason boost::headers seems empty
