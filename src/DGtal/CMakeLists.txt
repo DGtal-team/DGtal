@@ -25,4 +25,4 @@ target_link_libraries(DGtal PUBLIC DGtal_STB DGTAL_LibBoard DGTAL_BoostAddons)
 #Bugfix warnings in boost headers https://stackoverflow.com/questions/52135983/cmake-target-link-libraries-include-as-system-to-suppress-compiler-warnings
 get_target_property(lib_include_dirs Boost::boost INTERFACE_INCLUDE_DIRECTORIES)
 target_include_directories(DGtal SYSTEM PUBLIC ${lib_include_dirs})
-target_link_libraries(DGtal Bosot::boost)
+target_link_libraries(DGtal PUBLIC Boost::boost)
