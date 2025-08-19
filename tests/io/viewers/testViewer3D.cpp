@@ -22,7 +22,7 @@
  *
  * @date 2011/01/03
  *
- * Functions for testing class Viewer3D.
+ * Functions for testing class PolyscopeViewer.
  *
  * This file is part of the DGtal library.
  */
@@ -30,8 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-#include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Shapes.h"
@@ -42,7 +41,7 @@ using namespace DGtal;
 using namespace Z3i;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class Viewer3D.
+// Functions for testing class PolyscopeViewer.
 ///////////////////////////////////////////////////////////////////////////////
 
 
@@ -51,44 +50,34 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
+  PolyscopeViewer viewer;
 
- QApplication application(argc,argv);
- Viewer3D<> viewer;
- viewer.setWindowTitle("simpleViewer");
- viewer.show();
+  trace.beginBlock ( "Testing class for  PolyscopeViewer" );
 
+  Point p1( 14, 14, 14 );
+  Point p2( 27, 27, 27 );
+  Domain domain( p1, p2 );
 
- trace.beginBlock ( "Testing class for  Viewer3D" );
+  viewer.drawAsGrid();
+  viewer << Color(20, 20, 20, 50);
+  viewer << domain;
 
+  DigitalSet shape_set( domain );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( 13, 23, 13 ), 7 );
+  viewer << Color(250, 200,0, 50);
 
- Point p1( 14, 14, 14 );
- Point p2( 27, 27, 27 );
- Domain domain( p1, p2 );
+  viewer << shape_set ;
+  DigitalSet shape_set2( domain );
+  Shapes<Domain>::addNorm1Ball( shape_set2, Point( 24, 15, 12 ), 12 );
+  viewer << shape_set2 ;
 
- viewer << CustomColors3D(Color(20, 20, 20, 50),Color(20, 0,250,30));
- viewer << SetMode3D(domain.className(), "Grid");
- viewer << domain;
-
- DigitalSet shape_set( domain );
- Shapes<Domain>::addNorm1Ball( shape_set, Point( 13, 23, 13 ), 7 );
-   viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 50));
-
- viewer << shape_set ;
- DigitalSet shape_set2( domain );
- Shapes<Domain>::addNorm1Ball( shape_set2, Point( 24, 15, 12 ), 12 );
- viewer << shape_set2 ;
-
- DigitalSet shape_set3( domain );
- Shapes<Domain>::addNorm2Ball( shape_set3, Point( 11, 15, 12 ), 12 );
- viewer << CustomColors3D(Color(250, 20,0, 190),Color(220, 20,20, 250));
- viewer << shape_set3 ;
-
-
-
+  DigitalSet shape_set3( domain );
+  Shapes<Domain>::addNorm2Ball( shape_set3, Point( 11, 15, 12 ), 12 );
+  viewer << Color(220, 20,20, 250);
+  viewer << shape_set3 ;
 
   Point pp1( -1, -1, -2 );
   Point pp2( 2, 2, 3 );
-
 
   Domain domain2( pp1, pp2 );
   Point pp3( 1, 1, 1 );
@@ -97,31 +86,24 @@ int main( int argc, char** argv )
   Point pp6( 0, 0, 0 );
   Point pp0( 0, 2, 1 );
 
-  //viewer<< m;
-  viewer <<  SetMode3D( pp1.className(), "Paving" );
+  viewer.drawAsPaving();
   viewer << pp1 << pp2 << pp3;
 
-  //viewer <<  SetMode3D( pp1.className(), "Grid" );
-  viewer << CustomColors3D(Color(250, 0,0),Color(250, 0,0));
-  viewer <<  SetMode3D( pp1.className(), "PavingWired" );
+  viewer.drawAsGrid();
+  viewer << Color(250, 0,0);
   viewer << pp4 << pp5 ;
-  viewer <<  SetMode3D( pp1.className(), "Both" );
-  viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 0,0, 100));
+  viewer << Color(250, 0,0, 100);
   viewer << pp6;
-  viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 20));
+  viewer << Color(250, 200,0, 20);
   viewer << pp0;
 
+  viewer.drawAsPaving();
+  viewer << domain2;
 
-  viewer << SetMode3D(domain.className(), "Paving");
-  viewer << domain2 << Display3D<Space, KSpace>::updateDisplay;
-
-
- bool res = application.exec();
- trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
- trace.endBlock();
- return res ? 0 : 1;
-
-
+  trace.emphase() << "Passed." << endl;
+  trace.endBlock();
+  viewer.show();
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

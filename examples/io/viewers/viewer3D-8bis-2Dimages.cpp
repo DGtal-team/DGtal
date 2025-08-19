@@ -35,12 +35,12 @@
  */
 
 ///////////////////////////////////////////////////////////////////////////////
-#include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/VolReader.h"
 #include "DGtal/images/ImageHelper.h"
 #include "ConfigExamples.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
+
 //! [ExampleViewer3D2DImagesExtractImagesNonSliceHeader]
 #include "DGtal/kernel/BasicPointFunctors.h"
 //! [ExampleViewer3D2DImagesExtractImagesNonSliceHeader]
@@ -61,10 +61,11 @@ int main( int argc, char** argv )
                                    Image3D::Value,  DGtal::functors::Identity >  ImageAdapterExtractor;
 
   //! [ExampleViewer3D2DImagesExtractImagesNonSliceType]
-  QApplication application(argc,argv);
-  typedef Viewer3D<> MyViewer;
-  MyViewer viewer;
-  viewer.show();
+  polyscope::options::programName = "examples/io/viewers: viewer3D-8bis-2Dimages";
+  PolyscopeViewer viewer;
+
+  
+
   std::string inputFilename = examplesPath + "samples/lobster.vol";
   Image3D imageVol = VolReader<Image3D>::importVol(inputFilename);
   DGtal::functors::Identity idV;
@@ -73,7 +74,7 @@ int main( int argc, char** argv )
 
   //! [ExampleViewer3D2DImagesExtractImagesNonSliceParam]
   DGtal::Z3i::Point ptCenter(50, 62, 28);
-  const int IMAGE_PATCH_WIDTH = 20;
+  const int IMAGE_PATCH_WIDTH = 30;
   // Setting the image domain of the resulting image to be displayed in 3D:
   DGtal::Z2i::Domain domainImage2D (DGtal::Z2i::Point(0,0),
                                     DGtal::Z2i::Point(IMAGE_PATCH_WIDTH, IMAGE_PATCH_WIDTH));
@@ -86,29 +87,27 @@ int main( int argc, char** argv )
     //! [ExampleViewer3D2DImagesExtractImagesNonSliceExtract]
     // Extracting images from 3D embeder
     DGtal::functors::Point2DEmbedderIn3D<DGtal::Z3i::Domain >  embedder(imageVol.domain(),
-                                                                        ptCenter+DGtal::Z3i::Point(static_cast<int>(200.0*cos(alpha)),static_cast<int>(100.0*sin(alpha))),
+                                                                        ptCenter+DGtal::Z3i::Point(static_cast<int>(200.0*cos(alpha)),
+												   static_cast<int>(100.0*sin(alpha))),
                                                                         DGtal::Z3i::RealPoint(cos(alpha),sin(alpha),cos(2.0*alpha)),
                                                                         IMAGE_PATCH_WIDTH);
     ImageAdapterExtractor extractedImage(imageVol, domainImage2D, embedder, idV);
     //! [ExampleViewer3D2DImagesExtractImagesNonSliceExtract]
 
     //! [ExampleViewer3D2DImagesExtractImagesNonSliceDisplay]
-    //Display image and update its position with embeder
+    //Display image and update its position
     viewer << extractedImage;
-    viewer << DGtal::UpdateImage3DEmbedding<Z3i::Space, Z3i::KSpace>(pos,
-                                                                     embedder(Z2i::RealPoint(0,0)),
-                                                                     embedder(Z2i::RealPoint(IMAGE_PATCH_WIDTH,0)),
-                                                                     embedder(domainImage2D.upperBound()),
-                                                                     embedder(Z2i::RealPoint(0, IMAGE_PATCH_WIDTH)));
     //! [ExampleViewer3D2DImagesExtractImagesNonSliceDisplay]
     pos++;
   }
 
 
-  viewer << MyViewer::updateDisplay;
 
+  viewer.show();
+  return EXIT_SUCCESS;
 
-  return application.exec();
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
+
+

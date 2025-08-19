@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file testBallQuad.cpp
+ * @file testBallQuadViewer.cpp
  * @ingroup Tests
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
@@ -33,7 +33,7 @@
 #include "ConfigTest.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/topology/ImplicitDigitalSurface.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -65,12 +65,10 @@ struct ImplicitDigitalBall3 {
 };
 
 
-bool testBallQuad(int argc, char **argv)
+void testBallQuad()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-
-  QApplication application(argc, argv);
 
   trace.beginBlock ( "Testing... Ball with quadnormal");
   using namespace Z3i;
@@ -91,27 +89,19 @@ bool testBallQuad(int argc, char **argv)
                      SurfelAdjacency<KSpace::dimension>( true ), bel );
   unsigned int nbsurfels = 0;
 
-  Viewer3D<Space,KSpace> viewer(K);
-  viewer.setWindowTitle("simpleViewer");
-  viewer.show();
-
+  PolyscopeViewer<Space,KSpace> viewer(K);
+  viewer.allowReuseList = true;
 
   for ( ConstIterator it = boundary.begin(), it_end = boundary.end();
         it != it_end; ++it )
-    {
-      ++nbsurfels;
-
-      Display3DFactory<>::drawOrientedSurfelWithNormal(viewer,
-                                                       *it,
-                                                       viewer.embedKS(*it).getNormalized());
-    }
+  {
+    ++nbsurfels;
+    viewer << *it;
+  }
 
   trace.info() << nbsurfels << " surfels found." << std::endl;
-  viewer  << Display3D<Space, KSpace>::updateDisplay;
 
-  bool res = application.exec();
-
-  return res;
+  viewer.show();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -125,10 +115,10 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testBallQuad(argc,argv); // && ... other tests
-  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+  testBallQuad(); // && ... other tests
+  trace.emphase() << "Passed." << endl;
   trace.endBlock();
-  return res ? 0 : 1;
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

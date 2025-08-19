@@ -78,11 +78,7 @@ namespace DGtal
     /// Specialization for integer coordinate int32_t and safe computations.
     template < >
     struct ConvexityHelperInternalInteger< DGtal::int32_t, true > {
-#ifdef WITH_BIGINTEGER
       typedef DGtal::BigInteger Type;
-#else
-      typedef DGtal::int64_t Type;
-#endif
     };
 
     /// Indicates which integer type should be used by ConvexityHelper,
@@ -102,11 +98,7 @@ namespace DGtal
     /// Specialization for integer coordinate int64_t and safe computations.
     template < >
     struct ConvexityHelperInternalInteger< DGtal::int64_t, true > {
-#ifdef WITH_BIGINTEGER
       typedef DGtal::BigInteger Type;
-#else
-      typedef DGtal::int64_t Type;
-#endif
     };
 
     /// Indicates which integer type should be used by ConvexityHelper,
@@ -119,7 +111,6 @@ namespace DGtal
       typedef DGtal::int64_t Type;
     };
 
-#ifdef WITH_BIGINTEGER
     /// Indicates which integer type should be used by ConvexityHelper,
     /// depending on the integral type of each point coordinate and if
     /// computations should be guaranteed or not.
@@ -132,7 +123,6 @@ namespace DGtal
     struct ConvexityHelperInternalInteger< DGtal::BigInteger, safe > {
       typedef DGtal::BigInteger Type;
     };
-#endif
 
     }  // namespace detail
   
@@ -394,12 +384,37 @@ namespace DGtal
     /// moduleDigitalConvexity).
     ///
     /// @return the tightiest bounded lattice polytope
-    /// (i.e. H-representation) including the given range of points.
+    /// (i.e. H-representation) including the given triangle.
+    ///
+    /// @warning Implemented only in 3D.
     static
     LatticePolytope
     compute3DTriangle( const Point& a, const Point& b, const Point& c,
 		       bool make_minkowski_summable = false );
 
+    /// Computes the lattice polytope enclosing an open triangle in
+    /// dimension 3. Takes care of degeneracies (non distinct points
+    /// or alignment).
+    ///
+    /// @param a any point
+    /// @param b any point
+    /// @param c any point
+    ///
+    /// @param[in] make_minkowski_summable Other constraints are added
+    /// so that we can perform axis aligned Minkowski sums on this
+    /// polytope. Useful for checking full convexity (see
+    /// moduleDigitalConvexity).
+    ///
+    /// @return the tightiest bounded lattice polytope
+    /// (i.e. H-representation) including the given open triangle
+    /// (i.e. without edges and vertices).
+    ///
+    /// @warning Implemented only in 3D.
+    static
+    LatticePolytope
+    compute3DOpenTriangle( const Point& a, const Point& b, const Point& c,
+			   bool make_minkowski_summable = false );
+    
     /// Computes the lattice polytope enclosing a degenerated
     /// triangle. The points must be aligned (or non distinct).
     ///
@@ -413,17 +428,34 @@ namespace DGtal
     LatticePolytope
     computeDegeneratedTriangle( const Point& a, const Point& b, const Point& c );
 
+    
     /// Computes the lattice polytope enclosing a segment.
     ///
     /// @param a any point 
     /// @param b any point 
     ///
     /// @return the tightiest bounded lattice polytope
-    /// (i.e. H-representation) including the given range of
-    /// points. It is always Minkowski summable.
+    /// (i.e. H-representation) including the closed segment
+    /// `[a,b]`. It is always Minkowski summable.
+    ///
+    /// @warning Implemented only in 3D.
     static
     LatticePolytope
     computeSegment( const Point& a, const Point& b );
+
+    /// Computes the lattice polytope enclosing an open segment.
+    ///
+    /// @param a any point 
+    /// @param b any point 
+    ///
+    /// @return the tightiest bounded lattice polytope
+    /// (i.e. H-representation) including the open segment
+    /// `]a,b[`. It is always Minkowski summable.
+    ///
+    /// @warning Implemented only in 3D.
+    static
+    LatticePolytope
+    computeOpenSegment( const Point& a, const Point& b );
     
     /// @}
     

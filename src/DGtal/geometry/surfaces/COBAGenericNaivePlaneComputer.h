@@ -96,7 +96,7 @@ namespace DGtal
    * of order (2*D^3)^2 if D is the diameter of the set of digital
    * points. In practice, diameter is limited to 20 for int32_t,
    * diameter is approximately 500 for int64_t, and whatever with
-   * BigInteger/GMP integers. For huge diameters, the slow-down is
+   * BigInteger. For huge diameters, the slow-down is
    * polylogarithmic with the diameter.
    *
    * Essentially a backport from ImaGene.

@@ -16,22 +16,22 @@
 
 /**
  * @file io/viewers/viewer3D-3-objects.cpp
- * @ingroup examples/3dViewer
+ * @ingroup Examples
  * @author Bertrand Kerautret (\c kerautre@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2011/19/03
  *
- * Simple example of class Viewer3D.
+ * Simple example of class PolyscopeViewer.
  *
  * This file is part of the DGtal library.
  */
 
 /**
- * Example of 6-18 digital Adjacencies visualization  with Viewer3D.
+ * Example of 6-18 digital Adjacencies visualization  with PolyscopeViewer.
  * @see \ref DGtalGLV_ModeEx
  * \example io/viewers/viewer3D-3-objects.cpp
- * \image html visu6-18Adj.png " 6-18 digital Adjacencies visualization  with Viewer3D."
+ * \image html visu6-18Adj.png " 6-18 digital Adjacencies visualization  with PolyscopeViewer."
  */
 
 
@@ -39,11 +39,10 @@
 #include <iostream>
 
 #include "DGtal/base/Common.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
 #include "DGtal/io/Color.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Shapes.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -57,34 +56,30 @@ using namespace Z3i;
 
 int main( int argc, char** argv )
 {
+  PolyscopeViewer v;
+  
+  // Instructs the viewer to draw adjacencies relation whenever possible
+  v.drawAdjacencies(true /* false */);
 
- QApplication application(argc,argv);
+  Point p1( 0, 0, 0 );
+  Point p2( 10, 10 , 10 );
+  Domain domain( p1, p2 );
 
- typedef Viewer3D<> MyViewer;
- MyViewer viewer;
- viewer.show();
+  DigitalSet shape_set( domain );
+  Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
+  Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
 
- Point p1( 0, 0, 0 );
- Point p2( 10, 10 , 10 );
- Domain domain( p1, p2 );
+  v << shape_set;
 
+  Object6_18 shape1( dt6_18, shape_set );
+  Object18_6 shape2( dt18_6, shape_set );
+  
+  // Draws both the object the adjacencies
+  v << shape1;
+  v << shape2;
 
- DigitalSet shape_set( domain );
- Shapes<Domain>::addNorm1Ball( shape_set, Point( 5, 5, 5 ), 2 );
- Shapes<Domain>::addNorm2Ball( shape_set, Point( 3, 3, 3 ), 2 );
- viewer <<  CustomColors3D(Color(250, 200,0, 100),Color(250, 200,0, 25));
- viewer << shape_set;
-
- Object6_18 shape( dt6_18, shape_set );
- viewer << SetMode3D( shape.className(), "DrawAdjacencies" );
- viewer << shape;
-
- Object18_6 shape2( dt18_6, shape_set );
- viewer << SetMode3D( shape2.className(), "DrawAdjacencies" );
- //viewer << shape2;
-
- viewer<< MyViewer::updateDisplay;
- return application.exec();
+  v.show();
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

@@ -16,7 +16,7 @@
 
 /**
  * @file io/viewers/viewer3D-10-interaction.cpp
- * @ingroup examples/3dViewer
+ * @ingroup Examples
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
@@ -25,31 +25,24 @@
  *
  * @date 2014/10/12
  *
- * Simple example of class Viewer3D.
+ * Simple example of class PolyscopeViewer.
  *
  * This file is part of the DGtal library.
  */
 
 /** 
  * Simple selection of a surfel (with shift + left click) with the
- * QGLViewer proposed by DGtal (Viewer3D). You may associates \a names
+ * Polyscope Viewer proposed by DGtal. You may associates \a names
  * (i.e. integers) to surfels or to group of surfels. You may associate
  * reactions or callback functions to \a named graphical objects (surfels
  * in DGtal 0.9).
- *
- * The red surfel is given the name 10001, the green 10002 and the blue
- * 10003. A specific reaction is associated with surfel 10001, while a
- * common reaction is associated with surfels 10002 and 10003. The
- * reactions simply display the clicked surfel.
- *
- * @see \ref moduleQGLInteraction
  *
  * @verbatim
  * $ ./examples/io/viewers/viewer3D-10-interaction
  * @endverbatim
  *
  *
- * @image html viewer3D-10-interaction.png   "Example of viewer3D interaction with the selection of surfels. "
+ * @image html viewer3D-10-interaction.png   "Example of PolyscopeViewer interaction with the selection of surfels. "
  *
  * \example io/viewers/viewer3D-10-interaction.cpp
  *
@@ -61,101 +54,55 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/io/viewers/Viewer3D.h"
-
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
 using namespace Z3i;
 
-typedef Viewer3D<Space,KSpace> MyViewer;
-typedef MyViewer::SelectCallbackFct SelectCallbackFct;
+typedef PolyscopeViewer<Space,KSpace> MyViewer;
+typedef MyViewer::Callback Callback;
 typedef KSpace::SCell SCell;
 
-struct BigDataCells
-{
-  KSpace K;
-  std::map< DGtal::int32_t, Z3i::SCell > cells;
-};
-
-struct BigDataVoxels
-{
-  std::map< DGtal::int32_t, Z3i::Point > voxels;
-};
-
-int reaction1( void* viewer, DGtal::int32_t name, void* data )
-{
-  BigDataCells* bg = (BigDataCells*) data;
-  stringstream ssMessage;
-  ssMessage << "Reaction1 with name " << name << " cell " << bg->K.sKCoords( bg->cells[ name ] )  ;
-  ((MyViewer *) viewer)->displayMessage(QString(ssMessage.str().c_str()), 100000);
-  trace.info() <<  ssMessage.str() << std::endl;
-  return 0;
-}
-int reaction23( void* viewer, DGtal::int32_t name, void* data )
-{
-  BigDataCells* bg = (BigDataCells*) data;
-  stringstream ssMessage;
-  ssMessage <<  "Reaction23 with name " << name << " cell " << bg->K.sKCoords( bg->cells[ name ] );
-  ((MyViewer *) viewer)->displayMessage(QString(ssMessage.str().c_str()), 100000);
-  trace.info() << ssMessage.str() << std::endl;
-  return 0;
-}
-int reaction4( void* viewer, DGtal::int32_t name, void* data )
-{
-  BigDataVoxels* bg = (BigDataVoxels*) data;
-  stringstream ssMessage;
-  ssMessage <<  "Reaction4 with name " << name << " Voxel " << bg->voxels[name] ;
-  ((MyViewer *) viewer)->displayMessage(QString(ssMessage.str().c_str()), 100000);
-  trace.info() << ssMessage.str() << std::endl;
-  return 0;
-}
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
+//
+struct MyCallback : public Callback {
+  void OnClick(
+      const std::string& name, size_t index, 
+      const DisplayData<MyViewer::RealPoint>& data, 
+      void* polyscopeStructure
+  ) {
+    std::cout << "Item name: " << name << std::endl;
+  }
+};
 
 int main( int argc, char** argv )
 {
-  QApplication application(argc,argv);
-  BigDataCells data;
-  BigDataVoxels dataV;
   Point p1( 0, 0, 0 );
   Point p2( 5, 5 ,5 );
   Point p3( 2, 3, 4 );
-  KSpace & K = data.K;
+
+  KSpace K;
   K.init( p1, p2, true );
+
   Point v1 = Z3i::Point(10, 10,10);
   Point v2 = Z3i::Point(9, 9, 9);
   Point v3 = Z3i::Point(11, 11,11);
   
-  dataV.voxels[4001] = v1;
-  dataV.voxels[4002] = v2;
-  dataV.voxels[4003] = v3;
-  
-  
   MyViewer viewer( K );
-  viewer.show();
-  viewer.displayMessage(QString("You can use [shift + click right] on surfels or voxel to interact ..."), 100000);
+  viewer.setCallback(new MyCallback);
   Z3i::SCell surfel1 = K.sCell( Point( 1, 1, 2 ), KSpace::POS );
   Z3i::SCell surfel2 = K.sCell( Point( 3, 3, 4 ), KSpace::NEG );
   Z3i::SCell surfel3 = K.sCell( Point( 5, 6, 5 ), KSpace::POS );
-  data.cells[ 10001 ] = surfel1;
-  data.cells[ 10002 ] = surfel2;
-  data.cells[ 10003 ] = surfel3;
-  viewer << SetMode3D( surfel1.className(), "Basic" );
-  viewer << SetName3D( 10001 ) << CustomColors3D( Color::Red, Color::Red ) << surfel1;
-  viewer << SetName3D( 10002 ) << CustomColors3D( Color::Green, Color::Green ) << surfel2;
-  viewer << SetName3D( 10003 ) << CustomColors3D( Color::Blue, Color::Blue ) << surfel3;
-  viewer << SetSelectCallback3D( reaction1,  &data, 10001, 10001 );
-  viewer << SetSelectCallback3D( reaction23, &data, 10002, 10003 );
+
+  viewer.draw(surfel1, "Surfel 1");
+  viewer.draw(surfel2, "Surfel 2");
+  viewer << Point(0, 0, 1) << Point(1, 1, 2);
  
-  // example by using voxel interaction:
-  viewer << SetName3D( 4001 ) << v1;
-  viewer << SetName3D( 4002 ) << v2;
-  viewer << SetName3D( 4003 ) << v3;
-  viewer << SetSelectCallback3D( reaction4, &dataV, 4001,4003 );
-  viewer<< MyViewer::updateDisplay;
-  return application.exec();
+  viewer.show();
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

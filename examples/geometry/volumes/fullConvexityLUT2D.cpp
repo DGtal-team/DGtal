@@ -167,7 +167,7 @@ displaySimplicityTable( Board2D & board,
 }
 
 
-int main( int argc, char** argv )
+int main( )
 {
   DConv dconv( Point::diagonal( -5 ), Point::diagonal( 5 ) );
   

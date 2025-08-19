@@ -58,7 +58,7 @@ namespace DGtal
    * @tparam TIterator  Iterator type on HyperRectDomain
    *
    * @note We need this specific implementation of a reverse iterator instead
-   *  of a std::reverse_iterator because the latter works only on non-stashing
+   *  of a boost::reverse_iterator because the latter works only on non-stashing
    *  iterators (i.e. iterators that don't own its pointed data).
    *  Otherwise, it will lead to dangling reference!
    */
@@ -145,11 +145,7 @@ namespace DGtal
         TPoint const,
         std::random_access_iterator_tag,
         TPoint const&,
-#ifdef WITH_BIGINTEGER
         typename std::conditional<std::is_same<typename TPoint::Component, BigInteger>::value, BigInteger, std::ptrdiff_t>::type
-#else
-        std::ptrdiff_t
-#endif
       >
   {
   public:
@@ -319,11 +315,7 @@ namespace DGtal
         const TPoint,
         std::random_access_iterator_tag,
         TPoint const&,
-#ifdef WITH_BIGINTEGER
         typename std::conditional<std::is_same<typename TPoint::Component, BigInteger>::value, BigInteger, std::ptrdiff_t>::type
-#else
-        std::ptrdiff_t
-#endif
       >
   {
   public:

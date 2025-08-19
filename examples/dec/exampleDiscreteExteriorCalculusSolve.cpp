@@ -23,8 +23,6 @@
 
 #include <string>
 
-#include <QApplication>
-
 #include "DECExamplesCommon.h"
 
 // always include EigenSupport.h before any other Eigen headers
@@ -33,7 +31,7 @@
 #include "DGtal/dec/DiscreteExteriorCalculusSolver.h"
 #include "DGtal/dec/DiscreteExteriorCalculusFactory.h"
 
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/readers/GenericReader.h"
 
@@ -833,14 +831,13 @@ void solve3d_decomposition()
     trace.info() << calculus << endl;
 
     {
-        typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
+        typedef PolyscopeViewer<Z3i::Space, Z3i::KSpace> Viewer;
         Viewer* viewer = new Viewer(calculus.myKSpace);
-        viewer->show();
-        viewer->setWindowTitle("structure");
-        (*viewer) << CustomColors3D(DGtal::Color(255,0,0), DGtal::Color(0,0,0));
+        (*viewer) << DGtal::Color(255,0,0);
         (*viewer) << domain;
-        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, calculus);
-        (*viewer) << Viewer::updateDisplay;
+        (*viewer) << calculus;
+        viewer->show();
+        delete viewer;
     }
 
     //! [3d_decomposition_operator_definition]
@@ -892,15 +889,14 @@ void solve3d_decomposition()
     const Calculus::PrimalForm2 input_one_form_derivated = d1 * input_one_form;
 
     {
-        typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
+        typedef PolyscopeViewer<Z3i::Space, Z3i::KSpace> Viewer;
         Viewer* viewer = new Viewer(calculus.myKSpace);
+        (*viewer) << input_one_form;
+        (*viewer) << input_one_form_derivated;
+        (*viewer) << input_one_form_anti_derivated;
+        (*viewer) << input_vector_field;
         viewer->show();
-        viewer->setWindowTitle("input vector field");
-        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, input_one_form);
-        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, input_one_form_derivated);
-        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, input_one_form_anti_derivated);
-        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, input_vector_field);
-        (*viewer) << Viewer::updateDisplay;
+        delete viewer;
     }
 
     Calculus::PrimalForm0 solution_curl_free(calculus);
@@ -920,13 +916,11 @@ void solve3d_decomposition()
     }
 
     {
-        typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
+        typedef PolyscopeViewer<Z3i::Space, Z3i::KSpace> Viewer;
         Viewer* viewer = new Viewer(calculus.myKSpace);
+        (*viewer) << solution_curl_free;
+        (*viewer) << calculus.sharp(d0*solution_curl_free);
         viewer->show();
-        viewer->setWindowTitle("curl free solution");
-        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, solution_curl_free);
-        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, calculus.sharp(d0*solution_curl_free));
-        (*viewer) << Viewer::updateDisplay;
     }
 
     Calculus::PrimalForm2 solution_div_free(calculus);
@@ -946,13 +940,11 @@ void solve3d_decomposition()
     }
 
     {
-        typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
+        typedef PolyscopeViewer<Z3i::Space, Z3i::KSpace> Viewer;
         Viewer* viewer = new Viewer(calculus.myKSpace);
+        (*viewer) << solution_div_free;
+        (*viewer) << calculus.sharp(ad2*solution_div_free);
         viewer->show();
-        viewer->setWindowTitle("div free solution");
-        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, solution_div_free);
-        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, calculus.sharp(ad2*solution_div_free));
-        (*viewer) << Viewer::updateDisplay;
     }
 
     //! [3d_decomposition_solution]
@@ -961,13 +953,11 @@ void solve3d_decomposition()
     trace.info() << "min=" << solution_harmonic.myContainer.minCoeff() << " max=" << solution_harmonic.myContainer.maxCoeff() << endl;
 
     {
-        typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
+        typedef PolyscopeViewer<Z3i::Space, Z3i::KSpace> Viewer;
         Viewer* viewer = new Viewer(calculus.myKSpace);
+        (*viewer) << solution_harmonic;
+        (*viewer) << calculus.sharp(solution_harmonic);
         viewer->show();
-        viewer->setWindowTitle("harmonic");
-        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, solution_harmonic);
-        Display3DFactory<Z3i::Space, Z3i::KSpace>::draw(*viewer, calculus.sharp(solution_harmonic), 10.);
-        (*viewer) << Viewer::updateDisplay;
     }
 
     trace.endBlock();
@@ -975,12 +965,10 @@ void solve3d_decomposition()
 
 int main(int argc, char* argv[])
 {
-    QApplication app(argc,argv);
-
     solve2d_laplace();
     solve2d_dual_decomposition();
     solve2d_primal_decomposition();
     solve3d_decomposition();
 
-    return app.exec();
+    return 0;
 }

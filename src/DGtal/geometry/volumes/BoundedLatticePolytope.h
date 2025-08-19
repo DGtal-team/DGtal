@@ -84,11 +84,7 @@ namespace DGtal
     typedef std::vector<Integer>            InequalityVector;
     typedef HyperRectDomain< Space >        Domain; 
     typedef ClosedIntegerHalfPlane< Space > HalfSpace;
-#ifdef WITH_BIGINTEGER
     typedef DGtal::BigInteger               BigInteger;
-#else
-    typedef DGtal::int64_t                  BigInteger;
-#endif
     static const Dimension dimension = Space::dimension;
 
     /**
@@ -100,6 +96,15 @@ namespace DGtal
       UnitSegment( Dimension d ) : k( d ) {}
     };
 
+    /**
+     * Represents the unit segment from (0,...,0) (excluded) to
+     * (0,...,1,...,0) (excluded) with the 1 at position \a k.
+     */
+    struct StrictUnitSegment {
+      Dimension k;
+      StrictUnitSegment( Dimension d ) : k( d ) {}
+    };
+    
     /**
      * Represents the unit segment from (0,...,0) (included) to
      * (0,...,1,...,0) (excluded) with the 1 at position \a k.
@@ -199,6 +204,33 @@ namespace DGtal
       }
     };
 
+    /**
+     * Represents the unit cell obtained by successive Minkowski sum
+     * of StrictUnitSegment whose dimensions are stored in \a dims. When \a
+     * dims is empty, it is only the point (0,...,0).
+     */
+    struct StrictUnitCell {
+      std::vector<Dimension> dims;
+      StrictUnitCell( std::initializer_list<Dimension> l )
+        : dims( l.begin(), l.end() ) {}
+
+      /**
+      * Overloads 'operator<<' for displaying objects of class 'BoundedLatticePolytope::UnitCell'.
+      * @param out the output stream where the object is written.
+      * @param object the object of class 'BoundedLatticePolytope::UnitCell' to write.
+      * @return the output stream after the writing.
+      */
+      friend std::ostream&
+      operator<< ( std::ostream & out, 
+                   const StrictUnitCell & object )
+      {
+        out << "{";
+        for ( Dimension i = 0; i < object.dims.size(); ++i ) out << object.dims[ i ];
+        out << "}";
+        return out;
+      }
+    };
+    
     /// @name Standard services (construction, initialization, assignment, interior, closure)
     /// @{
 
@@ -356,6 +388,18 @@ namespace DGtal
     /// form `Ax <= b`, 'false' if it is of the form `Ax < b`.
     bool isLarge( unsigned int i ) const;
 
+    /// Sets the \a i-th half space constraint to the form `Ax <= b`.
+    ///
+    /// @param i the index of the half-space constraint between 0 and
+    /// `nbHalfSpaces()` (excluded).
+    void setLarge( unsigned int i );
+    
+    /// Sets the \a i-th half space constraint to the form `Ax < b`.
+    ///
+    /// @param i the index of the half-space constraint between 0 and
+    /// `nbHalfSpaces()` (excluded).
+    void setStrict( unsigned int i );
+
     /// @return the matrix A in the polytope representation \f$ Ax \le B \f$.
     const InequalityMatrix& getA() const;
     
@@ -504,10 +548,26 @@ namespace DGtal
      * @param s any strict unit segment.
      * @return a reference to 'this'.
      */
+    Self& operator+=( StrictUnitSegment s );
+    
+    /**
+     * Minkowski sum of this polytope with an axis-aligned strict unit cell.
+     *
+     * @param c any unit cell.
+     * @return a reference to 'this'.
+     */
+    Self& operator+=( StrictUnitCell c );
+    
+    /**
+     * Minkowski sum of this polytope with a right strict unit segment aligned with some axis.
+     *
+     * @param s any strict unit segment.
+     * @return a reference to 'this'.
+     */
     Self& operator+=( RightStrictUnitSegment s );
 
     /**
-     * Minkowski sum of this polytope with an axis-aligned strict unit cell.
+     * Minkowski sum of this polytope with an axis-aligned right strict unit cell.
      *
      * @param c any strict unit cell.
      * @return a reference to 'this'.
@@ -515,7 +575,7 @@ namespace DGtal
     Self& operator+=( RightStrictUnitCell c );
 
     /**
-     * Minkowski sum of this polytope with a strict unit segment aligned with some axis.
+     * Minkowski sum of this polytope with a left strict unit segment aligned with some axis.
      *
      * @param s any strict unit segment.
      * @return a reference to 'this'.
@@ -523,7 +583,7 @@ namespace DGtal
     Self& operator+=( LeftStrictUnitSegment s );
 
     /**
-     * Minkowski sum of this polytope with an axis-aligned strict unit cell.
+     * Minkowski sum of this polytope with an axis-aligned left strict unit cell.
      *
      * @param c any strict unit cell.
      * @return a reference to 'this'.
@@ -1028,6 +1088,30 @@ namespace DGtal
   BoundedLatticePolytope<TSpace>
   operator+ ( const BoundedLatticePolytope<TSpace> & P,
               typename BoundedLatticePolytope<TSpace>::UnitCell c );
+
+  /**
+   * Minkowski sum of polytope \a P with strict unit segment \a s aligned with some axis.
+   *
+   * @param P any polytope.
+   * @param s any strict unit segment.
+   * @return the Polytope P + s.
+   */
+  template <typename TSpace>
+  BoundedLatticePolytope<TSpace>
+  operator+ ( const BoundedLatticePolytope<TSpace> & P,
+              typename BoundedLatticePolytope<TSpace>::StrictUnitSegment s );
+
+  /**
+   * Minkowski sum of polytope \a P with an axis-aligned strict unit cell \a c.
+   *
+   * @param P any polytope.
+   * @param c any strict unit cell.
+   * @return the Polytope P + c.
+   */
+  template <typename TSpace>
+  BoundedLatticePolytope<TSpace>
+  operator+ ( const BoundedLatticePolytope<TSpace> & P,
+              typename BoundedLatticePolytope<TSpace>::StrictUnitCell c );
 
   /**
    * Minkowski sum of polytope \a P with strict unit segment \a s aligned with some axis.

@@ -78,7 +78,7 @@ intersectionIntervalAlongAxis( Point p, Dimension a ) const
   const Integer x_a = x_min;
   p[ a ] = x_a;
   bool empty = false;
-  for ( Dimension k = 2*dimension; k < A.size(); k++ )
+  for ( Dimension k = 0; k < A.size(); k++ )
     {
       const Integer c = A[ k ].dot( p );
       const Integer n = A[ k ][ a ];
@@ -158,7 +158,6 @@ interiorIntersectionIntervalAlongAxis( Point p, Dimension a ) const
             }
           // otherwise the constraint is true
         }
-      // std::cout << " (" << empty << ":" << x_min << "," << x_max << ")";
       if ( empty || ( x_max <= x_min ) ) return Interval( 0, 0 );
     }
   return Interval( x_min, x_max );
@@ -267,9 +266,11 @@ getLatticeSet( Dimension a ) const
   LatticeSetByInterval L;
   for ( auto&& p : D )
     {
-      auto I  = intersectionIntervalAlongAxis( p, a );
-      L[ p ] = I;
+      auto I = intersectionIntervalAlongAxis( p, a );
+      if ( I.second > I.first )
+	L[ p ] = Interval( I.first, I.second - 1 );
     }
+  return L;
 }
 
 //-----------------------------------------------------------------------------

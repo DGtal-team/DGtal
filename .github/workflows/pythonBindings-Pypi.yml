@@ -4,7 +4,8 @@ on:
   push:
     tags: 
       - '*' # TODO: set filter here if multiple tags are required
-
+  workflow_dispatch:
+  
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   TESTBLACKLIST: "(testLinearStructure|testIntegerConverter|testArithmeticalDSSComputerOnSurfels)"
@@ -12,7 +13,7 @@ env:
   CONFIG_GLOBAL: 
   CONFIG_LINUX:
   CONFIG_MAC:
-  CONFIG_WINDOWS: -DWITH_OPENMP=true -DENABLE_CONAN=true -DCMAKE_C_COMPILER="cl.exe" -DCMAKE_CXX_COMPILER="cl.exe"
+  CONFIG_WINDOWS: -DDGTAL_WITH_OPENMP=true -DENABLE_CONAN=true -DCMAKE_C_COMPILER="cl.exe" -DCMAKE_CXX_COMPILER="cl.exe"
 
 jobs:
   build:
@@ -22,7 +23,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macOS-latest]
+        os: [ubuntu-22.04]
         python-version: ["3.9", "3.10", "3.11"]
         BUILD_TYPE: [Release]
 
@@ -37,14 +38,14 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Installing dependencies (Linux)
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-22.04'
         run: |
           sudo apt-get update
-          sudo apt-get install zsh libqglviewer-dev-qt5 libboost-dev libcgal-dev ninja-build libhdf5-serial-dev libboost-dev libcairo2-dev libgmp-dev libfftw3-dev libinsighttoolkit4-dev xorg-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev
+          sudo apt-get install zsh libqglviewer-dev-qt5 libcgal-dev ninja-build libhdf5-serial-dev  libcairo2-dev libfftw3-dev  libinsighttoolkit5-dev xorg-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev
       
       - name: Installing dependencies (macOS)
         if: matrix.os == 'macOS-latest'
-        run: brew install boost ninja gmp libomp ccache cgal
+        run: brew install ninja libomp ccache cgal
 
       - name: Install dependencies (conan - Windows 1/2)
         if: matrix.os == 'windows-latest'
@@ -72,7 +73,7 @@ jobs:
           python -m pip install scikit-build
 
       - name: Setting build informations (Linux)
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-22.04'
         shell: bash
         working-directory: wrap/deploy  
         run: |
@@ -96,7 +97,7 @@ jobs:
         shell: bash
         working-directory: ${{runner.workspace}}/build
         run: |
-              conan install $GITHUB_WORKSPACE --build=missing
+              conan install $GITHUB_WORKSPACE --build=missing -s:a compiler.cppstd=20 
               cmake $GITHUB_WORKSPACE -DCMAKE_TOOLCHAIN_FILE="conan_toolchain.cmake" -DCMAKE_POLICY_DEFAULT_CMP0091=NEW -DCMAKE_BUILD_TYPE=${{ matrix.BUILD_TYPE }} $CONFIG_PYTHON $CONFIG_GLOBAL $CONFIG_WINDOWS
              
       - name: Setting build informations (Windows)
@@ -127,7 +128,7 @@ jobs:
           pytest .
 
       - name: Repairing Linux Wheel (autitwheel - linux -> manylinux)
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-22.04'
         shell: bash
         working-directory: wrap/deploy
         run: |
@@ -138,9 +139,9 @@ jobs:
           
 
       - name: Store the distribution packages
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: python-package-distributions
+          name: python-package-distributions-${{ matrix.python-version }}
           path: wrap/deploy/dist/
 
   publish-to-testpypi:
@@ -148,7 +149,7 @@ jobs:
     if: startsWith(github.ref, 'refs/tags/')
     needs:
     - build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     environment:
       name: deploy-pypi
@@ -159,10 +160,11 @@ jobs:
 
     steps:
     - name: Download all the dists
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
-        name: python-package-distributions
         path: dist/
+        pattern: python-package-distributions-*
+        merge-multiple: true
 
     - name: Publish distribution 📦 to TestPyPI
       uses: pypa/gh-action-pypi-publish@release/v1

@@ -15,6 +15,6 @@ set(DGTALIO_SRC ${DGTALIO_SRC}
   DGtal/io/boards/Board3D.cpp)
 
 
-if( WITH_CAIRO )
+if( DGTAL_WITH_CAIRO )
   set(DGTALIO_SRC ${DGTALIO_SRC} DGtal/io/boards/Board3DTo2D.cpp)
 endif()

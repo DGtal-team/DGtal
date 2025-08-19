@@ -2,7 +2,7 @@
 
 Main website: [https://dgtal.org](https://dgtal.org)
 
-[![CI (linux/macOS), master](https://github.com/DGtal-team/DGtal/actions/workflows/build-master.yml/badge.svg)](https://github.com/DGtal-team/DGtal/actions/workflows/build-master.yml) [![Nightly-build documentation and deploy](https://github.com/DGtal-team/DGtal/actions/workflows/deployDoc-master.yml/badge.svg)](https://github.com/DGtal-team/DGtal/actions/workflows/deployDoc-master.yml)
+[![CI (linux/macOS/windows) - PR](https://github.com/DGtal-team/DGtal/actions/workflows/build-PR-master.yml/badge.svg)](https://github.com/DGtal-team/DGtal/actions/workflows/build-PR-master.yml) [![Nightly-build documentation and deploy](https://github.com/DGtal-team/DGtal/actions/workflows/deployDoc-master.yml/badge.svg)](https://github.com/DGtal-team/DGtal/actions/workflows/deployDoc-master.yml)
 
 Description
 ===========
@@ -31,15 +31,15 @@ cmake ..
 make install
 ```
 
-Minimum system requirements: C++11 enabled compiler, [cmake](http://cmake.org), [boost](http://boost.org) (>= 1.50).
+Minimum system requirements: C++20 enabled compiler, [cmake](http://cmake.org).
 
-DGtal can be compiled on Microsoft Windows system using Visual Studio 2014 (or newer): Generate the Visual Studio project using windows [cmake](http://cmake.org) tool and compile the DGtal solution (you may also need to set the cmake variable ```BUILD_SHARED_LIBS``` to false).
+DGtal can be compiled on Microsoft Windows system using Visual Studio 2014 (or newer): Generate the Visual Studio project using windows [cmake](http://cmake.org) tool and compile the DGtal solution (you may also need to set the cmake variable ```DGTAL_BUILD_SHARED_LIBS``` to false).
 
 
 Docker
 ======
 
-A Docker file is included in the repository in order to allow the users to build a docker image with the DGtal library installed. Inside the docker container, the library is installed with many optional dependencies (gmp, eigen, cgal, itk, cairo, qglviewer, openmp, fftw3) so the user can start developing without the need to install DGtal on the system.
+A Docker file is included in the repository in order to allow the users to build a docker image with the DGtal library installed. Inside the docker container, the library is installed with many optional dependencies (eigen, cgal, itk, cairo, polyscope, openmp, fftw3) so the user can start developing without the need to install DGtal on the system.
                                                                                                                                                                                                                         
 To build the Docker image, Docker should have been installed in the system (to [install Docker](https://docs.docker.com/engine/install/)) download the *Dockerfile* inside the [DGtal repository](https://github.com/DGtal-team/DGtal), in the same directory where the Dockerfile is located execute    
 
@@ -52,14 +52,13 @@ docker run -it --user=digital dgtal:lastest bash
 cd /home/digital/git/DGtal/build/examples
 ```
 
-To enable Viewer3D/QGLViewer features, please check [this discussion](https://github.com/DGtal-team/DGtal/pull/1580).
-
 More Information
 ================
 
 * Project homepage http://dgtal.org
 * Related DGtalTools project: http://dgtal.org/dgtaltools, [DGtalTools](https://github.com/DGtal-team/DGtalTools), [DGtalTools-contrib](https://github.com/DGtal-team/DGtalTools-contrib)
 
+* Release 2.0 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15838861.svg)](https://doi.org/10.5281/zenodo.15838861)
 * Release 1.4 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11550945.svg)](https://doi.org/10.5281/zenodo.11550945)
 * Release 1.3 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7331486.svg)](https://doi.org/10.5281/zenodo.7331486)
 * Release 1.2 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4892404.svg)](https://doi.org/10.5281/zenodo.4892404)

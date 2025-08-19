@@ -28,9 +28,9 @@ endforeach()
 
 
 # -----------------------------------------------------------------------------
-# CPP17
+# CPP20
 # -----------------------------------------------------------------------------
-set(DGTAL_CMAKE_CXX_STANDARD_MIN_REQUIRED 17)
+set(DGTAL_CMAKE_CXX_STANDARD_MIN_REQUIRED 20)
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD ${DGTAL_CMAKE_CXX_STANDARD_MIN_REQUIRED})
 else()
@@ -43,6 +43,8 @@ endif()
 if(NOT CMAKE_CXX_STANDARD_REQUIRED)
   set(CMAKE_CXX_STANDARD_REQUIRED ON)
 endif()
+
+message(STATUS "C++ standard set to ${CMAKE_CXX_STANDARD}")
 
 # -----------------------------------------------------------------------------
 # Visual Studio : to distinguish between debug and release lib and /bigobj flag
@@ -95,18 +97,19 @@ endif()
 # Parsing cmake options
 # -----------------------------------------------------------------------------
 if (MSVC)
-  option(BUILD_SHARED_LIBS "Build shared libraries." OFF)
+  option(DGTAL_BUILD_SHARED_LIBS "Build shared libraries." OFF)
 else()
-  option(BUILD_SHARED_LIBS "Build shared libraries." OFF)
+  option(DGTAL_BUILD_SHARED_LIBS "Build shared libraries." OFF)
 endif()
-option(BUILD_TESTING "Build testing." OFF)
-option(DEBUG_VERBOSE "Verbose debug messages." OFF)
-option(VERBOSE "Verbose messages." OFF)
-option(COLOR_WITH_ALPHA_ARITH "Consider alpha channel in color arithmetical operations." OFF)
+
+option(DGTAL_DEBUG_VERBOSE "Verbose debug messages." OFF)
+option(DGTAL_VERBOSE "Verbose messages." OFF)
+option(DGTAL_COLOR_WITH_ALPHA_ARITH "Consider alpha channel in color arithmetical operations." OFF)
 option(DGTAL_NO_ESCAPED_CHAR_IN_TRACE "Avoid printing special color and font weight terminal escaped char in program output." OFF)
 option(DGTAL_CONFIG_HINTS "Provide HINTS to find_dependency in DGtalConfig.cmake. Projects consuming DGtal does not have to provide FOO_DIR to their project, where FOO is a DGtal dependency. Recommended to turn it off when deploying." ON)
 mark_as_advanced(DGTAL_CONFIG_HINTS)
-option(NO_ADD_STBIMAGE_IMPLEMENT "To avoid duplicated linking errors (like LNK2005 in MSVC)" OFF)
+option(DGTAL_NO_ADD_STBIMAGE_IMPLEMENT "To avoid duplicated linking errors (like LNK2005 in MSVC)" OFF)
+
 #------------------------------------------------------------------------------
 # Some directories and files should also be cleaned when invoking 'make clean'
 #------------------------------------------------------------------------------
@@ -126,3 +129,4 @@ if(PROJECT_BINARY_DIR STREQUAL ${PROJECT_SOURCE_DIR})
   message(STATUS "Building in the source tree is not a good idea ! Remove the file 'CMakeCache.txt' and the folder 'CMakeFiles' an
 d build outside the sources (for example 'mkdir build ; cmake <DGTAL_DIR>'.")
 endif()
+

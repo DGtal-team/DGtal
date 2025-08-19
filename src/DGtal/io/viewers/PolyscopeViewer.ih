@@ -1,0 +1,289 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ **/
+
+/**
+ * @file PolyscopeViewer.ih
+ * @author Bastien Doignies <bastien.doignies@liris.cnrs.fr>
+ *
+ * @date 2025/05/11
+ *
+ * Implementation file for 3D Polyscope Viewer
+ *
+ * This file is part of the DGtal library.
+ */
+
+namespace DGtal {
+  namespace drawutils {
+    glm::vec3 toglm(const DGtal::Color& col) {
+      return glm::vec3{col.r(), col.g(), col.b()};
+    }
+
+    std::vector<glm::vec3> toglm(const std::vector<DGtal::Color>& col) {
+      std::vector<glm::vec3> colors(col.size());
+      for (size_t i = 0; i < colors.size(); ++i) {
+        colors[i] = toglm(col[i]);
+      }
+      return colors;
+    }
+
+    glm::mat4 toglm(const Eigen::Affine3d& transform) {
+      glm::mat4 glmmat(1.f);
+      Eigen::Matrix4d mat = transform.matrix();
+
+      for (int i = 0; i < 4; ++i) 
+        for (int j = 0; j < 4; ++j)
+          glmmat[i][j] = static_cast<float>(mat(j, i));
+      return glmmat;
+    }
+  }
+  
+  template <typename Space, typename KSpace>
+  void PolyscopeViewer<Space, KSpace>::setCallback(typename Display3D<Space, KSpace>::Callback* callback) {
+    Display3D<Space, KSpace>::setCallback(callback);
+    if (this->myCallback != nullptr) {
+        polyscope::state::userCallback = [this]() { this->polyscopeCallback(); };
+    } else {
+        polyscope::state::userCallback = nullptr; // Remove callback 
+    }
+  }
+
+  template <typename Space, typename KSpace>
+  void PolyscopeViewer<Space, KSpace>::renderClippingPlanes() {
+    using namespace drawutils;
+
+    // Draw clipping planes
+    for (const auto& plane : this->planes) {
+      const glm::vec3 normal { plane.a, plane.b, plane.c }; 
+      glm::vec3 pos {0, 0, 0};
+
+      if (plane.a != 0) { pos.x = -plane.d / plane.a; }
+      else if (plane.b != 0) { pos.y = -plane.d / plane.b; }
+      else if (plane.c != 0) { pos.z = -plane.d / plane.c; }
+      else continue;
+
+      polyscope::SlicePlane* ps = polyscope::addSceneSlicePlane();
+      if (!plane.style.useDefaultColors)
+        ps->setColor(toglm(plane.style.color));
+
+      //TODO: Keep this as default ?  
+      ps->setDrawPlane(true);
+      ps->setPose(pos, normal);
+    }
+  }
+
+  template <typename Space, typename KSpace>
+  void PolyscopeViewer<Space, KSpace>::setGeneralProperties(polyscope::Structure* structure, const DisplayData<typename Space::RealPoint>& data) {
+    using namespace drawutils;
+
+    structure->setTransform(toglm(data.transform));
+    structure->setTransparency(data.style.color.a());
+  }
+
+  template <typename Space, typename KSpace>
+  void PolyscopeViewer<Space, KSpace>::registerPointCloud(const std::string& name, const DisplayData<typename Space::RealPoint>& data) {
+    using namespace drawutils;
+
+    auto* pCloud = polyscope::registerPointCloud(name, data.vertices);
+
+    setGeneralProperties(pCloud, data);
+    if (!data.style.useDefaultColors) {
+      pCloud->setPointColor(toglm(data.style.color));
+    }
+
+    for (const auto& [name, vals] : data.scalarQuantities[QuantityScale::VERTEX]) {
+      pCloud->addScalarQuantity(name, vals)->setEnabled(true);
+    }
+
+    for (const auto& [name, vals] : data.vectorQuantities[QuantityScale::VERTEX]) {
+      auto* q = pCloud->addVectorQuantity(name, vals);
+      q->setEnabled(true);
+      q->setVectorLengthScale(VectorScale);
+    }
+
+    for (const auto& [name, vals] : data.colorQuantities[QuantityScale::VERTEX]) {
+      pCloud->addColorQuantity(name, toglm(vals))->setEnabled(true);
+    }
+    pCloud->setPointRadius(data.style.width * BallToCubeRatio);
+  }
+
+  template <typename Space, typename KSpace>
+  void PolyscopeViewer<Space, KSpace>::registerLineNetwork(const std::string& name, const DisplayData<typename Space::RealPoint>& data) {
+    using namespace drawutils;
+
+    auto* cNetwork = polyscope::registerCurveNetwork(name, data.vertices, makeIndices<2>(data.vertices.size() / 2));
+
+    setGeneralProperties(cNetwork, data);
+    if (!data.style.useDefaultColors) {
+      cNetwork->setColor(toglm(data.style.color));
+    }
+    
+    for (const auto& [name, vals] : data.scalarQuantities[QuantityScale::VERTEX]) {
+      cNetwork->addNodeScalarQuantity(name, vals)->setEnabled(true);
+    }
+    for (const auto& [name, vals] : data.scalarQuantities[QuantityScale::EDGE]) {
+      cNetwork->addEdgeScalarQuantity(name, vals)->setEnabled(true);
+    }
+
+    for (const auto& [name, vals] : data.vectorQuantities[QuantityScale::VERTEX]) {
+      auto* q = cNetwork->addNodeVectorQuantity(name, vals);
+      q->setVectorLengthScale(VectorScale);
+      q->setEnabled(true);
+    }
+    for (const auto& [name, vals] : data.vectorQuantities[QuantityScale::EDGE]) {
+      auto* q = cNetwork->addEdgeVectorQuantity(name, vals);
+      q->setVectorLengthScale(VectorScale);
+      q->setEnabled(true);
+    }
+
+    for (const auto& [name, vals] : data.colorQuantities[QuantityScale::VERTEX]) {
+      cNetwork->addEdgeColorQuantity(name, toglm(vals))->setEnabled(true);
+    }     
+    for (const auto& [name, vals] : data.colorQuantities[QuantityScale::EDGE]) {
+      cNetwork->addEdgeColorQuantity(name, toglm(vals))->setEnabled(true);
+    }     
+  }
+
+  template <typename Space, typename KSpace>
+  void PolyscopeViewer<Space, KSpace>::registerSurfaceMesh(const std::string& name, const DisplayData<typename Space::RealPoint>& data) {
+    using namespace drawutils;
+
+    polyscope::SurfaceMesh* mesh = nullptr;
+    if (data.elementSize == 3) {
+      mesh = polyscope::registerSurfaceMesh(name, data.vertices, makeIndices<3>(data.vertices.size() / 3));
+    } else if (data.elementSize == 4) {
+      mesh = polyscope::registerSurfaceMesh(name, data.vertices, makeIndices<4>(data.vertices.size() / 4));
+    } else {
+        mesh = polyscope::registerSurfaceMesh(name, data.vertices, data.indices);
+    }
+
+    setGeneralProperties(mesh, data);
+    if (!data.style.useDefaultColors) {
+      mesh->setSurfaceColor(toglm(data.style.color));
+    }
+
+    for (const auto& [name, vals] : data.scalarQuantities[QuantityScale::VERTEX]) {
+      mesh->addVertexScalarQuantity(name, vals)->setEnabled(true);
+    }
+    for (const auto& [name, vals] : data.scalarQuantities[QuantityScale::EDGE]) {
+      mesh->addEdgeScalarQuantity(name, vals)->setEnabled(true);
+    }
+    for (const auto& [name, vals] : data.scalarQuantities[QuantityScale::FACE]) {
+      mesh->addFaceScalarQuantity(name, vals)->setEnabled(true);
+    }
+
+    for (const auto& [name, vals] : data.vectorQuantities[QuantityScale::VERTEX]) {
+      auto* q = mesh->addVertexVectorQuantity(name, vals);
+      q->setVectorLengthScale(VectorScale);
+      q->setEnabled(true);
+    }
+    for (const auto& [name, vals] : data.vectorQuantities[QuantityScale::FACE]) {
+      auto* q = mesh->addFaceVectorQuantity(name, vals);
+      q->setVectorLengthScale(VectorScale);
+      q->setEnabled(true);
+    }
+
+    for (const auto& [name, vals] : data.colorQuantities[QuantityScale::VERTEX]) {
+      mesh->addVertexColorQuantity(name, toglm(vals))->setEnabled(true);
+    }
+    for (const auto& [name, vals] : data.colorQuantities[QuantityScale::FACE]) {
+      mesh->addFaceColorQuantity(name, toglm(vals))->setEnabled(true);
+    }
+  }
+
+  template <typename Space, typename KSpace>
+  void PolyscopeViewer<Space, KSpace>::registerVolumeMesh(const std::string& name, const DisplayData<typename Space::RealPoint>& data) {
+    using namespace drawutils;
+
+    polyscope::VolumeMesh* mesh = polyscope::registerVolumeMesh(name, data.vertices, makeIndices<8>(data.vertices.size() / 8));
+
+    setGeneralProperties(mesh, data);
+    if (!data.style.useDefaultColors) {
+      mesh->setColor(toglm(data.style.color));
+    }
+
+    for (const auto& [name, vals] : data.scalarQuantities[QuantityScale::VERTEX]) {
+      mesh->addVertexScalarQuantity(name, vals)->setEnabled(true);
+    }
+    for (const auto& [name, vals] : data.scalarQuantities[QuantityScale::CELL]) {
+      mesh->addCellScalarQuantity(name, vals)->setEnabled(true);
+    }
+
+    for (const auto& [name, vals] : data.vectorQuantities[QuantityScale::VERTEX]) {
+      auto* q = mesh->addVertexVectorQuantity(name, vals);
+      q->setVectorLengthScale(VectorScale);
+      q->setEnabled(true);
+    }
+    for (const auto& [name, vals] : data.vectorQuantities[QuantityScale::CELL]) {
+      auto* q = mesh->addCellVectorQuantity(name, vals);
+      q->setVectorLengthScale(VectorScale);
+      q->setEnabled(true);
+    }
+
+    for (const auto& [name, vals] : data.colorQuantities[QuantityScale::VERTEX]) {
+      mesh->addVertexColorQuantity(name, toglm(vals))->setEnabled(true);
+    }
+    for (const auto& [name, vals] : data.colorQuantities[QuantityScale::CELL]) {
+      mesh->addCellColorQuantity(name, toglm(vals))->setEnabled(true);
+    }
+  }
+
+  template <typename Space, typename KSpace>
+  void PolyscopeViewer<Space, KSpace>::renderNewData() {
+    using namespace drawutils;
+
+    for (const std::string& name : this->myToRender) {
+      auto it = this->data.find(name);
+      if (it == this->data.end()) continue;
+
+      const auto& data = it->second;
+      const auto& vertices = data.vertices;
+
+      if (vertices.size() == 0) continue;
+
+      switch(data.elementSize) {
+        case 1: registerPointCloud(name, data); break;
+        case 2: registerLineNetwork(name, data); break; 
+        case 0: 
+        case 3:
+        case 4: registerSurfaceMesh(name, data); break;
+        case 8: registerVolumeMesh(name, data); break;
+        default:
+          break;
+      };
+    }
+  }
+
+
+  template <typename Space, typename KSpace>
+  void PolyscopeViewer<Space, KSpace>::polyscopeCallback() {
+    this->myCallback->OnUI(nullptr);
+
+    ImGuiIO& io = ImGui::GetIO();
+    if (io.MouseClicked[0])
+    {
+        glm::vec2 screenCoords{io.MousePos.x, io.MousePos.y};
+        auto [structure, index] = 
+            polyscope::pick::pickAtScreenCoords(screenCoords);
+
+        if (structure != nullptr) {
+          void* viewerData = structure;
+          std::string name = structure->getName();
+
+          auto& data = this->data[name];
+          this->myCallback->OnClick(name, index, data, viewerData);
+        }
+    }
+  }
+}

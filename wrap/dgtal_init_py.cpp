@@ -22,6 +22,7 @@ void init_dgtal_base(py::module &);
 void init_dgtal_topology(py::module &);
 void init_dgtal_images(py::module &);
 void init_dgtal_io(py::module &);
+void init_dgtal_helpers(py::module&);
 
 PYBIND11_MODULE(_dgtal, m) {
     m.doc() = "Digital Geometry Tools and Algorithms.";
@@ -30,4 +31,5 @@ PYBIND11_MODULE(_dgtal, m) {
     init_dgtal_topology(m);
     init_dgtal_images(m);
     init_dgtal_io(m);
+    init_dgtal_helpers(m);
 }

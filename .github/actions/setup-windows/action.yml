@@ -1,0 +1,25 @@
+name: "Setup-Windows"
+description: "Set up a windows environment"
+inputs:
+  python-version:
+      description: "Version of python to use"
+      required: true
+      default: "3.9"
+
+runs:
+  using: "composite"
+  steps:
+     - name: Set up Python ${{ inputs.python-version }}
+       uses: actions/setup-python@v4
+       with: 
+          python-version: ${{ inputs.python-version }}
+
+     - name: Install conan
+       uses: turtlebrowser/get-conan@main
+       with:
+         version: 2.4.0
+
+     - name: Create conan default profile
+       shell: pwsh
+       run: |
+         conan profile detect --force

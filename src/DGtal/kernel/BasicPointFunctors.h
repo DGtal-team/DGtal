@@ -213,13 +213,14 @@ namespace functors
      * @param sliceIndex the value that is used to fill the dimension for a given N-1 point (equivalently the slice index).
      * @param dimRotated the index of the rotation axis.
      * @param rotationAngle the angle of rotation (in radians).
+     * @param keepInside if true, the resulting point will be forced to be inside the domain.
      */
 
     SliceRotator2D( const Dimension &dimAdded, const TDomain3D &aDomain3DImg,
                     const Integer &sliceIndex,  const Dimension &dimRotated,
-                    double rotationAngle):
+                    double rotationAngle, bool keepInside=true):
       myPosDimAdded(dimAdded), mySliceIndex(sliceIndex), myDomain(aDomain3DImg),
-      myDimRotated(dimRotated), myRotationAngle(rotationAngle), myDefaultPoint (aDomain3DImg.lowerBound())
+      myDimRotated(dimRotated), myRotationAngle(rotationAngle), myDefaultPoint (aDomain3DImg.lowerBound()), myKeepInsideDom(keepInside)
     {
       myCenter[0] = aDomain3DImg.lowerBound()[0]+((aDomain3DImg.upperBound())[0]-(aDomain3DImg.lowerBound())[0])/2.0;
       myCenter[1] = aDomain3DImg.lowerBound()[1]+((aDomain3DImg.upperBound())[1]-(aDomain3DImg.lowerBound())[1])/2.0;
@@ -235,13 +236,14 @@ namespace functors
      * @param dimRotated the index of the rotation axis.
      * @param rotationAngle the angle of rotation (in radians).
      * @param defaultPoint the point given when the resulting point is outside the domain.
+     * @param keepInside if true, the resulting point will be forced to be inside the domain.
      */
 
     SliceRotator2D( const Dimension &dimAdded, const TDomain3D &aDomain3DImg,
                     const Integer &sliceIndex,  const Dimension &dimRotated,
-                    double rotationAngle,  const Point &defaultPoint):
+                    double rotationAngle,  const Point &defaultPoint, bool keepInside=true):
       myPosDimAdded(dimAdded), mySliceIndex(sliceIndex), myDomain(aDomain3DImg),
-      myDimRotated(dimRotated), myRotationAngle(rotationAngle), myDefaultPoint (defaultPoint)
+      myDimRotated(dimRotated), myRotationAngle(rotationAngle), myDefaultPoint (defaultPoint), myKeepInsideDom(keepInside)
     {
       myCenter[0] = aDomain3DImg.lowerBound()[0]+((aDomain3DImg.upperBound())[0]-(aDomain3DImg.lowerBound())[0])/2.0;
       myCenter[1] = aDomain3DImg.lowerBound()[1]+((aDomain3DImg.upperBound())[1]-(aDomain3DImg.lowerBound())[1])/2.0;
@@ -258,12 +260,14 @@ namespace functors
      * @param ptCenter the rotation center.
      * @param rotationAngle the angle of rotation (in radians).
      * @param defaultPoint the point given when the resulting point is outside the domain.
+     * @param keepInside if true, the resulting point will be forced to be inside the domain.
      */
 
     SliceRotator2D( const Dimension &dimAdded, const TDomain3D &aDomain3DImg, const Integer &sliceIndex,
-                    const Dimension &dimRotated,  const Point &ptCenter, double rotationAngle, const Point &defaultPoint):
+                    const Dimension &dimRotated,  const Point &ptCenter, double rotationAngle, const Point &defaultPoint,
+      bool keepInside=true):
       myPosDimAdded(dimAdded), mySliceIndex(sliceIndex), myDomain(aDomain3DImg),
-      myDimRotated(dimRotated), myRotationAngle(rotationAngle), myCenter(ptCenter), myDefaultPoint (defaultPoint)
+      myDimRotated(dimRotated), myRotationAngle(rotationAngle), myCenter(ptCenter), myDefaultPoint (defaultPoint), myKeepInsideDom(keepInside)
     {
     };
 
@@ -276,12 +280,14 @@ namespace functors
      * @param dimRotated the index of the rotation axis.
      * @param ptCenter the rotation center.
      * @param rotationAngle the angle of rotation (in radians).
+     * @param keepInside if true, the resulting point will be forced to be inside the domain.
      */
 
     SliceRotator2D( const Dimension &dimAdded, const TDomain3D &aDomain3DImg, const Integer &sliceIndex,
-                    const Dimension &dimRotated,  const Point &ptCenter, double rotationAngle):
+                    const Dimension &dimRotated,  const Point &ptCenter, double rotationAngle, bool keepInside=true):
       myPosDimAdded(dimAdded), mySliceIndex(sliceIndex), myDomain(aDomain3DImg),
-      myDimRotated(dimRotated), myRotationAngle(rotationAngle), myCenter(ptCenter), myDefaultPoint (aDomain3DImg.lowerBound())
+      myDimRotated(dimRotated), myRotationAngle(rotationAngle), myCenter(ptCenter), myDefaultPoint (aDomain3DImg.lowerBound()),
+      myKeepInsideDom(keepInside)
     {
     };
 
@@ -320,12 +326,12 @@ namespace functors
       pt[indexesRotate[0]] = myCenter[indexesRotate[0]] + static_cast<Integer>(round(d1*cos(myRotationAngle)-d2*sin(myRotationAngle) ));
       pt[indexesRotate[1]] = myCenter[indexesRotate[1]] + static_cast<Integer>(round(d1*sin(myRotationAngle)+d2*cos(myRotationAngle) ));
 
-      if(myDomain.isInside(pt))
-        return pt;
-      else
-        return  myDefaultPoint;
+       if(!myKeepInsideDom || myDomain.isInside(pt))
+	 return pt;
+       else
+	  return  myDefaultPoint;
     }
-  private:
+  public:
     // position of insertion of the new dimension
     Dimension myPosDimAdded;
     // the index of the slice associated to the new domain.
@@ -335,6 +341,7 @@ namespace functors
     double myRotationAngle;
     PointVector<3, double> myCenter;
     Point myDefaultPoint;
+    bool myKeepInsideDom = true;
   };
 
 

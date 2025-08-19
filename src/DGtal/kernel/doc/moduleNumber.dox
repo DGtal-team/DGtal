@@ -33,8 +33,7 @@ First of all, approximation with built-in integer types with bounded
 ranges can be considered. For example, DGtal::int32_t defines OS
 independent 32 bits signed integers. 
 
-If more precision is required and if GMP (Gnu multiprecision library)
-is available, DGtal::BigInteger defines arbitrary precision
+If more precision is required, DGtal::BigInteger defines arbitrary precision
 integers. In this case, performances can be impacted.
 
 As detailed in the @ref moduleSpacePointVectorDomain documentation, the integer type

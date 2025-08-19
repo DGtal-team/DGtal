@@ -36,7 +36,7 @@ namespace DGtal {
 @page packagePython DGtal python binding
    
 
-@managers Pablo Hernandez-Cerdan, David Coeurjolly
+@managers David Coeurjolly
 @since 1.2
 
 
@@ -49,21 +49,37 @@ package, just use:
 pip install dgtal
 @endcode
 
-Then, you can import the module in python:
+@section install_and_build Installing and building the library
+
+For most use case, it is sufficient to install the library from its pypy repository.
+
+@code 
+pip install dgtal
+@endcode
+
+If it fails, it is also possible to build from sources. See []. In short:
 
 @code
+git clone 
+cd DGtal && mkdir build && cd build
+cmake .. -DDGTAL_WRAP_PYTHON=ON
+@endcode
+
+Which build the necessary shared library and copy the few plain python code; which may 
+need to be further installed depending on your installation. 
+
+To import the module and access its functionalities:
+
+@code{.py}
 import dgtal
 ....
 @endcode
 
-At this point, only a partial support is available (some base, kernel,
-image, topology classes). For a complete review of the available
-tools, have a look to this
-[Pull-Request](https://github.com/DGtal-team/DGtal/pull/1528).
+@section code_example Examples
 
-Just a quick example (Euler characteristics and simple point detection on random sets):
+@subsection topology_example Topology example (Euler characteristics)
 
-@code
+@code{.py}
 import dgtal
 import random
 
@@ -103,7 +119,163 @@ ccomplex.construct(mySet)
 print("Euler characteristic: "+str(ccomplex.euler()))
 @endcode
 
+@subsection shortcuts_examples Geometrical Estimators (Curvature and normals)
+
+This example loads a binary image and computes integral invariant estimators and displays them within an interactive viewer. It mostly follows Shortcuts examples with a one-to-one mapping. A few other utilities are provided not to loop over elements in python.
+
+This example requires [polyscope](https://polyscope.run/py/) to be installed 
+
+@code{.py}
+from dgtal import *
+from dgtal import SH3
+import polyscope as ps
+import numpy as np
+
+
+params = SH3.defaultParameters()
+
+# Available within examples/samples. This path can be obtained with SH3.helpers.SAMPLES_PATH
+al_capone = SH3.makeBinaryImage("Al.100.vol", params)
+
+# An image can also be obtained with a tri-dimensionnal array of 1 and 0s
+# size = np.asarray([100, 100, 100])
+# img = np.zeros(shape=size)
+# img[25:76, 25:76, 25:76] = 1 # A cube 50 voxels wide
+# digitalCube = SH3.makeBinaryImage(img.flatten().tolist(), Domain(Point(data=[0, 0, 0]), Point(data=size - 1))) # Domain are inclusive on their bounds.
+
+K = SH3.getKSpace(al_capone, params)
+surface = SH3.makeLightDigitalSurface(al_capone, K, params)
+surfels = SH3.getSurfelRange(surface, params)
+
+normals = SH3.getIINormalVectors(al_capone, surfels, params)
+meanCurvs  = SH3.getIIMeanCurvatures(al_capone, surfels, params)
+gaussCurvs = SH3.getIIGaussianCurvatures(al_capone, surfels, params)
+
+# Display information
+
+# Define coordinates of the unit cube
+pos = SH3.getEmbeddedPositions(K, surfels)
+cubes = np.asarray([
+    [-0.5, -0.5, -0.5],
+    [-0.5,  0.5, -0.5],
+    [ 0.5,  0.5, -0.5],
+    [ 0.5, -0.5, -0.5],
+    [-0.5, -0.5,  0.5],
+    [-0.5,  0.5,  0.5],
+    [ 0.5,  0.5,  0.5],
+    [ 0.5, -0.5,  0.5]
+])
+
+points  = pos[:, np.newaxis, :] + cubes
+points  = points.reshape(len(pos) * 8 , 3)
+indices = np.arange(len(pos) * 8).reshape(len(pos), 8)
+
+ps.init()
+vmesh = ps.register_volume_mesh("Al", points, hexes=indices)
+vmesh.add_scalar_quantity("Mean Curvature", np.asarray(meanCurvs), defined_on='cells', enabled=False)
+vmesh.add_scalar_quantity("Gaussian Curvature", np.asarray(gaussCurvs), defined_on='cells', enabled=True)
+vmesh.add_vector_quantity("Normals", np.asarray(normals), defined_on='cells', enabled=True)
+ps.show()
+# colors = SH3.applyColorMap(np.arange(len(surfels)), params)
+# SH3.saveOBJ(surface, [], colors, "al.obj")
+@endcode
+
+@section documentation Documentation
+
+@subsection base_topology_kernel Base, Topology and Kernel 
+
+In this section, we provide a list of functions and classes that can be used in python. You may find more documentation and example usage by calling the help function on these classes (eg. help(dgtal.Object4_8)). The python constructor column shows how objects can be inferred through their parameters (for example, point dimension and type from the data parameter). Often, this is done through factories that are written in python. 
+
+| Python class(es)                                                        | C++ class(es)                                      | Python constructor                                               |
+|-------------------------------------------------------------------------|----------------------------------------------------|------------------------------------------------------------------|
+| Point2D, Point3D, RealPoint2D, RealPoint3D                              | DGtal::PointVector                                 | Point(data=list_or_np_array)                                     |
+| DomainZ2i, DomainZ3i                                                    | DGtal::HyperRectDomain                             | Domain(point_lower, point_upper)                                 |
+| PreCell2D, SPreCell2D, KPreSpace2D,  PreCell3D, SPreCell3D, KPreSpace3D | DGtal::KhalimskyPreSpaceND DGtal::KhalimskyPreCell | N/A                                                              |
+| Cell2D, SCell2D, KSpace2D Cell3D, SCell3D, KSpace3D                     | DGtal::KhalimskySpaceND DGtal::KhalimskyCell       | KSpace(dim)                                                      |
+| Adj4, Adj8, Adj6, Adj18, Adj26                                          | DGtal::MetricAdjacency                             | MetricAdjacency(dim, maxnorm) Ex: adj26 implies dim=3, maxnorm=3 |
+| DT4_8, DT8_4, DT6_16, DT18_6, DT6_26, DT26_6                            | DGtal::DigitalTopology                             | DigitalTopology(foreground, background)                          |
+| Object4_8, Object8_4,  Object6_18, Object18_6, Object6_26, Object26_6   | DGtal::Object                                      | Object(topology, domain, points, connectedness)                  |
+
+@subsection shortcuts Shortcuts
+
+Most shortcuts (see. \subpage moduleShortcuts) also have their binding. These are available under:
+
+@code
+from dgtal import SH3 #Import both shortcuts and geometry shortcuts
+SH3.a_function_or_classes..
+@endcode
+
+@subsubsection shortcuts_classes Classes
+
+Objects within this module are not expected to be manipulated by the user. They are meant to be passed around to the next functions and are prefixed by two underscores. We reference them for completeness
+
+| Python class(es)              | C++ class(es)                                                 | Available methods (if any)                                                                                                                                                                       | Comments                                                       |
+|-------------------------------|---------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------|
+| __PtrBInaryImage              | DGtal::CountedPtr on DGtal::Shortcuts::BinaryImage              | None                                                                                                                                                                                             | Not to be used.                                                |
+| __PtrGrayScaleImage           | DGtal::CountedPtr on DGtal::Shortcuts::GrayScaleImage           | None                                                                                                                                                                                             | Not to be used.                                                |
+| __PtrLightDigitalSurface      | DGtal::CountedPtr on DGtal::Shortcuts::LightDigitalSurface      | len(object): Number of surfels /  object.size(): Number of surfels                                                                                                                               | Not to be used (except to query size)                          |
+| __PtrTriangulatedSurface      | DGtal::CountedPtr on DGtal::Shortcuts::TriangulatedSurface      | None                                                                                                                                                                                             | Not to be used.                                                |
+| __PtrMesh                     | DGtal::CountedPtr on DGtal::Shortcuts::Mesh                     | len(object): Number of vertices / object.nbVertex: Number of vertices                                                                                                                            | Not to be used (except to query size)                          |
+| __PtrImplicitShape3D          | DGtal::CountedPtr on DGtal::Shortcuts::ImplicitShape3D          | None                                                                                                                                                                                             | Not to be used.                                                |
+| __PtrDigitizedImplicitShape3D | DGtal::CountedPtr on DGtal::Shortcuts::DigitizedImplicitShape3D | None                                                                                                                                                                                             | Not to be used.                                                |
+| Cell2Index                    | DGtal::Shortcuts::Cell2Index                                  | None                                                                                                                                                                                             | Not to be used (except to be created and passed to funtions)   |
+| ColorMap                      | DGtal::Shortcuts::ColorMap                                    | ColorMap(min, max) / object.addColor(dgtal.Color): adds a color / object(value): convert value to color /                                                                                        | See: applyColorMap                                             |
+| SurfelRange                   | DGtal::Shortcuts::SurfelRange                                 |                                                                                                                                                                                                  | std::vector<SCell>. See documentation of kernel binding above. |
+| ScalarStatistic               | DGtal::Shortcuts::ScalarStatistic                             | samples(): number of samples / size(): number of samples / mean(): mean / variance(): biased variance / unbiasedVariance(): unbiased variance / min(): min / max(): max / values: list of values | Not to be created.                                             |
+
+@subsubsection shortcuts_functions Functions
+
+Static functions are also bound. For overloads, we only indicate the main parameters, not the whole signature. Refer to the C++ functions for complete signature (1 to 1 match).
+
+| Python method                     | C++ method                                       | Overloads (see C++ methods for more details)                                                                                                                                                                                     |
+|-----------------------------------|--------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| %SH3.makeBinaryImage               | Shortcuts::makeBinaryImage                       | std::string / Shortcuts::DigitizedImplicitShape3D / std::vector                                                                                                                                                                  |
+| %SH3.makeGrayScaleImage            | Shortcuts::makeGrayScaleImage                    | std::string / std::vector                                                                                                                                                                                                        |
+| %SH3.makeDigitalSurface            | Shortcuts::makeDigitalSurface                    | Shortcuts::BinaryImage                                                                                                                                                                                                           |
+| %SH3.makeLightDigitalSurface       | Shortcuts::makeLightDigitalSurface               | All.                                                                                                                                                                                                                             |
+| %SH3.makeLightDigitalSurfaces      | Shortcuts::makeLightDigitalSurfaces              | Shortcuts::BinaryImage                                                                                                                                                                                                           |
+| %SH3.makeTriangulatedSurface       | Shortcuts::makeTriangulatedSurface               | Shortcuts::GrayScaleImage                                                                                                                                                                                                       |
+| %SH3.makeMesh                      | Shortcuts::makeMesh                              | Shortcuts::TriangulatedSurface                                                                                                                                                                                                   |
+| %SH3.makeImplicitShape3D           | Shortcuts::makeImplicitShape3D                   | All.                                                                                                                                                                                                                             |
+| %SH3.makeDigitizedImplicitShape3D  | Shortcuts::makeDigitizedImplicitShape3D          | All.                                                                                                                                                                                                                             |
+| %SH3.makeIdxDigitalSurface         | Shortcuts::makeIdxDigitalSurface                 | Shortcuts::BinaryImage                                                                                                                                                                                                           |
+| %SH3.saveBinaryImage               | Shortcuts::saveBinaryImage                       | All.                                                                                                                                                                                                                             |
+| %SH3.saveOBJ                       | Shortcuts::saveOBJ                               | (Shortcuts::TriangulatedSurface or Shortcuts::LightDigitalSurface, std::string) / (Shortcuts::TriangulatedSurface or Shortcuts::LightDigitalSurface, Shortcuts::RealVectors, Shortcuts::Colors, std::string) / (Shortcuts::DigitalSurface, std::string) |
+| %SH3.saveVectorFieldOBJ            | Shortcuts::saveVectorFieldOBJ                    | (Shortcuts::RealPoints, Shortcuts::RealVectors, double, Shortcuts::Colors, std::string)                                                                                                                                |
+| %SH3.getKSpace                     | Shortcuts::getKSpace                             | Shortcuts::BinaryImage, (Shortcuts::Point, Shortcuts::Point), (std::vector, std::vector)*                                                                                                                               |
+| %SH3.getCellEmbedder               | Shortcuts::getCellEmbedder                       | Shortcuts::KSpace                                                                                                                                                                                                                |
+| %SH3.getSCellEmbedder              | Shortcuts::getSCellEmbedder                      | Shortcuts::KSpace                                                                                                                                                                                                                |
+| %SH3.getSurfelRange                | Shortcuts::getSurfelRange                        | Shortcuts::LightDigitalSurface / Shortcuts::DigitalSurface                                                                                                                                                                       |
+| %SH3.getPointelRange               | Shortcuts::getPointelRange                       | Shortcuts::LightDigitalSurface                                                                                                                                                                                                   |
+| %SH3.getCellRange                  | Shortcuts::getCellRange                          | Shortcuts::LightDigitalSurface / Shortcuts::DigitalSurface                                                                                                                                                                       |
+| %SH3.getRangeMatch                 | Shortcuts::getRangeMatch                         | Shortcuts::Surfel                                                                                                                                                                                                                |
+| %SH3.getMatchedRange               | Shortcuts::getMatchedRange                       | Shortcuts::RealVectors                                                                                                                                                                                                           |
+| %SH3.getColorMap                   | Shortcuts::getColorMap                           | All.                                                                                                                                                                                                                             |
+| %SH3.getIIMeanCurvatures           | ShortcutsGeometry::getIIMeanCurvatures           | Shortcuts::BinaryImage / Shortcuts::DigitizedImplicitShape3D                                                                                                                                                                     |
+| %SH3.getIIGaussianCurvatures       | ShortcutsGeometry::getIIGaussianCurvatures       | Shortcuts::BinaryImage / Shortcuts::DigitizedImplicitShape3D                                                                                                                                                                     |
+| %SH3.getIINormalVectors            | ShortcutsGeometry::getIINormalVectors            | Shortcuts::BinaryImage / Shortcuts::DigitizedImplicitShape3D                                                                                                                                                                     |
+| %SH3.getPositions                  | ShortcutsGeometry::getPositions                  | Shortcuts::ImplicitShape3D                                                                                                                                                                                                       |
+| %SH3.getNormalVectors              | ShortcutsGeometry::getNormalVectors              | Shortcuts::ImplicitShape3D                                                                                                                                                                                                       |
+| %SH3.getMeanCurvatures             | ShortcutsGeometry::getMeanCurvatures             | Shortcuts::ImplicitShape3D                                                                                                                                                                                                       |
+| %SH3.getGaussianCurvatures         | ShortcutsGeometry::getGaussianCurvatures         | Shortcuts::ImplicitShape3D                                                                                                                                                                                                       |
+| %SH3.getFirstPrincipalCurvatures   | ShortcutsGeometry::getFirstPrincipalCurvatures   | All.                                                                                                                                                                                                                             |
+| %SH3.getSecondPrincipalCurvatures  | ShortcutsGeometry::getSecondPrincipalCurvatures  | All.                                                                                                                                                                                                                             |
+| %SH3.getFirstPrincipalDirections   | ShortcutsGeometry::getFirstPrincipalDirections   | All.                                                                                                                                                                                                                             |
+| %SH3.getSecondPrincipalDirections  | ShortcutsGeometry::getSecondPrincipalDirections  | All.                                                                                                                                                                                                                             |
+| %SH3.getVCMNormalVectors           | ShortcutsGeometry::getVCMNormalVectors           | Shortcuts::LightDigitalSurface / Shortcuts::DigitalSurface                                                                                                                                                                       |
+| %SH3.getATScalarFieldApproximation | ShortcutsGeometry::getATScalarFieldApproximation | Shortcuts::LightDigitalSurface / Shortcuts::DigitalSurface                                                                                                                                                                       |
+| %SH3.getScalarsAbsoluteDifference  | ShortcutsGeometry::getScalarsAbsoluteDifference  | All.                                                                                                                                                                                                                             |
+| %SH3.getStatistic                  | ShortcutsGeometry::getStatistic                  | All.                                                                                                                                                                                                                             |
+
+@subsubsection shortcuts_helpers Helpers functions
+
+Looping through objects is slow in python and digital objects may be large. For this reason, we also provide a few helper functions for ease of usage and faster code:
+
+| Python function         | Description                                 | Example usage                                                                                                                                                                                            |
+|-------------------------|---------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| %SH3.applyColorMap       | Applies a colormap to a list of values      | @code{.py} cmap = SH3.getColorMap(params); colors = SH3.applyColorMap([0, 1, 2], cmap) @endcode                                                                                                          |
+| %SH3.getEmbeddedPosition | Returns the position of a list of surfels.  | @code{.py} K = SH3.getKSpace(image, params); surface = SH3.makeLightDigitalSurface(image, K, params); surfels = SH3.getSurfelRange(surface, params); pos = SH3.getEmbeddedPositions(K, surfels) @endcode |
 
 */
-
 }
+

@@ -75,7 +75,7 @@ int main( )
   board.saveEPS( "dgtalBoard2D-2-sets-1.eps");
   board.saveTikZ( "dgtalBoard2D-2-sets-1.tikz");
   
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   board.saveCairo("dgtalBoard2D-2-sets-1-cairo.pdf", Board2D::CairoPDF);
   board.saveCairo("dgtalBoard2D-2-sets-1-cairo.png", Board2D::CairoPNG);
   board.saveCairo("dgtalBoard2D-2-sets-1-cairo.ps", Board2D::CairoPS);
@@ -93,7 +93,7 @@ int main( )
   board.saveEPS( "dgtalBoard2D-2-sets-2.eps");
   board.saveTikZ( "dgtalBoard2D-2-sets-2.tikz");
  
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   board.saveCairo("dgtalBoard2D-2-sets-2-cairo.pdf", Board2D::CairoPDF);
   board.saveCairo("dgtalBoard2D-2-sets-2-cairo.png", Board2D::CairoPNG);
   board.saveCairo("dgtalBoard2D-2-sets-2-cairo.ps", Board2D::CairoPS);
@@ -111,7 +111,7 @@ int main( )
   board.saveEPS( "dgtalBoard2D-2-sets-3.eps");
   board.saveTikZ( "dgtalBoard2D-2-sets-3.tikz");
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   board.saveCairo("dgtalBoard2D-2-sets-3-cairo.pdf", Board2D::CairoPDF);
   board.saveCairo("dgtalBoard2D-2-sets-3-cairo.png", Board2D::CairoPNG);
   board.saveCairo("dgtalBoard2D-2-sets-3-cairo.ps", Board2D::CairoPS);

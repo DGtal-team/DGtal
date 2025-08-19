@@ -20,7 +20,7 @@ surface) from a digital object. It uses several ingredients of DGtal:
 - graph visitor: to define neighborhoods on the digital object boundary (class BreadthFirstVisitor)
 - digital plane computer: to recognize points of the boundary that belongs to the same plane (class ChordGenericNaivePlaneComputer)
 - umbrellas: to decompose the digital surface into cells 
-- viewers: to see intermediate and final results of our algorithm (class Viewer3D)
+- viewers: to see intermediate and final results of our algorithm (class PolyscopeViewer)
 
 [TOC]
 
@@ -29,7 +29,7 @@ surface) from a digital object. It uses several ingredients of DGtal:
 We will write a new C++ source file (say makePolyhedron.cpp) that uses
 the DGtal library. You can follow for instance \ref
 moduleHowToUseDGtal. Then you can already start with the following
-skeleton that includes the main required headers (Qt will be used for
+skeleton that includes the main required headers (Polyscope will be used for
 displaying results).
 
 \code
@@ -38,9 +38,10 @@ displaying results).
 #include <set>
 #include <map>
 #include <queue>
-#include <QtGui/qapplication.h>
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
+
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 \endcode
 
 We will also play with some .vol file. There are a few in the
@@ -55,7 +56,6 @@ using namespace DGtal;
 using namespace Z3i;
 int main( int argc, char** argv )
 {
-  QApplication application(argc,argv);
   string inputFilename = argc > 1 ? argv[ 1 ] : "DGtal/examples/samples/Al.100.vol";
   int threshold = argc > 2 ? atoi( argv[ 2 ] ) : 0; // volume is (val > threshold)
   int wp = argc > 3 ? atoi( argv[ 3 ] ) : 1;
@@ -139,20 +139,18 @@ If everything is fine, you should have a non-null digital surface !
 \section tutoPolyhedralisation_sec4 Visualising the surface
 
 Just to check that everything is fine, we can visualize the surface
-with class \ref Viewer3D, which is based on libQGLViewer (which in
-turn uses Qt and OpenGL). The principle is to instantiate the viewer
+with class \ref DGtal::PolyscopeViewer, which is based on Polyscope (which in
+turn uses OpenGL). The principle is to instantiate the viewer
 and then to use output streams to feed the viewer with cells, colors,
 etc. The following piece of code displays the first surfel of your
 surface.
 
 \code
-typedef Viewer3D<Space,KSpace> MyViewer3D;
+typedef PolyscopeViewer<Space,KSpace> MyViewer3D;
 MyViewer3D viewer( ks );
-viewer.show(); 
-viewer << CustomColors3D( Color::Black, Color::White );
+viewer << Color::White;
 viewer << *( digSurf.begin() ); // surfel pointed by the begin iterator.
-viewer << MyViewer3D::updateDisplay;
-application.exec();
+viewer.show(); 
 \endcode
 
 Update this code to display the whole surface, just by iterating on
@@ -161,7 +159,7 @@ the display, you may add the following line (after show() ), which
 forces a simplified display for surfels.
 
 \code
-viewer << SetMode3D( start_surfel.className(), "Basic" );
+viewer.drawAsSimplified();
 \endcode
 
 \section tutoPolyhedralisation_sec5 Recognizing planar zones on the object
@@ -372,19 +370,18 @@ of its round plane.
 
 \code
 MyViewer3D viewer( ks );
-viewer.show(); 
-viewer << SetMode3D( start_surfel.className(), "Basic" );
+viewer.drawAsSimplified();
 for ( std::map<Surfel,RoundPlane*>::const_iterator 
         it = v2plane.begin(), itE = v2plane.end();
         it != itE; ++it )
   {
     Surfel v = it->first;
     RoundPlane* rplane = it->second;
-    viewer << CustomColors3D( rplane->second, rplane->second );
+    viewer << rplane->second;
     viewer << v;
   }
-viewer << MyViewer3D::updateDisplay;
-application.exec();
+viewer.show(); 
+
 \endcode
 
 This is the kind of result you should obtain.
@@ -544,12 +541,10 @@ Once the polyhedron is build, you may view it and export it as follows:
 
 \code
 viewer.clear();
-viewer.show();
 viewer << polyhedron;
-viewer << MyViewer3D::updateDisplay;
-application.exec();
 bool isOK = polyhedron >> "test.off";
 bool isOK2 = polyhedron >> "test.obj";
+viewer.show();
 \endcode
 
 This gives the following results for different digital objects and plane width.

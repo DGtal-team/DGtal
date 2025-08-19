@@ -6,7 +6,7 @@
 #define NOVIEWER // comment to enable 3d viewers
 
 #if !defined(NOVIEWER)
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #endif
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/base/Common.h"
@@ -26,39 +26,21 @@ equal(const OperatorAA& aa, const OperatorBB& bb)
 int main(int , char** )
 {
 #if !defined(NOVIEWER)
-    typedef Viewer3D<Z3i::Space, Z3i::KSpace> Viewer;
+    typedef PolyscopeViewer<Z3i::Space, Z3i::KSpace> Viewer;
 #endif
     //! [embedding_factory]
     typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
     //! [embedding_factory]
 
 #if !defined(NOVIEWER)
-    QApplication app(argc, argv);
     Z3i::KSpace kspace_3d;
 #endif
     Z2i::KSpace kspace_2d;
 
 #if !defined(NOVIEWER)
     Viewer viewer1(kspace_3d);
-    viewer1.show();
-    viewer1.setWindowTitle("embedding_1d_calculus_3d");
-    viewer1.camera()->setPosition( Vec(2,2,2) );
-    viewer1.camera()->setUpVector( Vec(0,0,1), false );
-    viewer1.camera()->lookAt( Vec(0,0,0) );
-
     Viewer viewer2(kspace_3d);
-    viewer2.show();
-    viewer2.setWindowTitle("embedding_2d_calculus_3d");
-    viewer2.camera()->setPosition( Vec(2,2,2) );
-    viewer2.camera()->setUpVector( Vec(0,0,2), false );
-    viewer2.camera()->lookAt( Vec(0,0,0) );
-
     Viewer viewer3(kspace_3d);
-    viewer3.show();
-    viewer3.setWindowTitle("embedding_2d_calculus_3d_no_border");
-    viewer3.camera()->setPosition( Vec(2,2,2) );
-    viewer3.camera()->setUpVector( Vec(0,0,2), false );
-    viewer3.camera()->lookAt( Vec(0,0,0) );
 #endif
 
     {
@@ -250,8 +232,9 @@ int main(int , char** )
         trace.info() << "calculus_3d_manual=" << calculus_3d_manual << endl;
 
 #if !defined(NOVIEWER)
-        Display3DFactory<Calculus3D::KSpace::Space, Calculus3D::KSpace>::draw(viewer1, calculus_3d_manual);
-        viewer1 << Viewer::updateDisplay;
+        viewer1 << calculus_3d_manual;
+        polyscope::view::lookAt(glm::vec3{2, 2, 2}, glm::vec3{0, 0, 0}, glm::vec3{0, 0, 1});
+        viewer1.show();
 #endif
 
         //! [embedding_1d_cells_3d]
@@ -705,8 +688,9 @@ int main(int , char** )
         trace.info() << "calculus_3d_manual=" << calculus_3d_manual << endl;
 
 #if !defined(NOVIEWER)
-        Display3DFactory<Calculus3D::KSpace::Space, Calculus3D::KSpace>::draw(viewer2, calculus_3d_manual);
-        viewer2 << Viewer::updateDisplay;
+        viewer2 << calculus_3d_manual;
+        polyscope::view::lookAt(glm::vec3{2, 2, 2}, glm::vec3{0, 0, 0}, glm::vec3{0, 0, 2});
+        viewer2.show();
 #endif
 
         //! [embedding_2d_cells_3d]
@@ -941,8 +925,9 @@ int main(int , char** )
             trace.info() << "calculus_3d_factory=" << calculus_3d_factory << endl;
 
 #if !defined(NOVIEWER)
-            Display3DFactory<Calculus3D::KSpace::Space, Calculus3D::KSpace>::draw(viewer3, calculus_3d_factory_no_border);
-            viewer3 << Viewer::updateDisplay;
+            viewer3 << calculus_3d_factory_no_border;
+            polyscope::view::lookAt(glm::vec3{2, 2, 2}, glm::vec3{0, 0, 0}, glm::vec3{0, 0, 2});
+            viewer3.show()
 #endif
         }
 
@@ -988,11 +973,6 @@ int main(int , char** )
 
         trace.endBlock();
     }*/
-
-#if !defined(NOVIEWER)
-    return app.exec();
-#else
     return 0;
-#endif
 }
 

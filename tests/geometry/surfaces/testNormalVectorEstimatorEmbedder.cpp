@@ -55,10 +55,10 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/CanonicEmbedder.h"
 
-#include "DGtal/geometry/surfaces/estimation/CNormalVectorEstimator.h"
-#include "DGtal/geometry/surfaces/estimation/BasicConvolutionWeights.h"
-#include "DGtal/geometry/surfaces/estimation/LocalConvolutionNormalVectorEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/LocalEstimatorFromSurfelFunctorAdapter.h"
 #include "DGtal/geometry/surfaces/estimation/DigitalSurfaceEmbedderWithNormalVectorEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/estimationFunctors/ElementaryConvolutionNormalVectorEstimator.h"
+#include "DGtal/geometry/volumes/distance/LpMetric.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -110,14 +110,22 @@ bool testLocalConvolutionNormalVectorEstimator ( int /*argc*/, char**/*argv*/ )
 
     trace.beginBlock ( "Compute and output surface <cat10-constant.off> with trivial normals." );
     //Convolution kernel
-    deprecated::ConstantConvolutionWeights<MyDigitalSurface::Size> kernel;
+    typedef MyDigitalSurface::Surfel Surfel;
+    typedef DGtal::functors::ConstValue< double > ConvFunctor;
 
-    //Estimator definition
-    typedef deprecated::LocalConvolutionNormalVectorEstimator
-      < MyDigitalSurface,
-        deprecated::ConstantConvolutionWeights<MyDigitalSurface::Size> > MyConstantEstimator;
-    BOOST_CONCEPT_ASSERT ( ( concepts::CNormalVectorEstimator< MyConstantEstimator > ) );
-    MyConstantEstimator myNormalEstimator ( digSurf, kernel );
+    LpMetric<Z3i::Space> l1(1.0);
+    CanonicSCellEmbedder<KSpace> embedder(digSurf.container().space());
+    
+    typedef DGtal::functors::ElementaryConvolutionNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace>> Functor;
+    typedef LocalEstimatorFromSurfelFunctorAdapter<MyDigitalSurfaceContainer, LpMetric<Z3i::Space>,
+                                                   Functor, ConvFunctor> MyConstantEstimator;
+    ConvFunctor kernel(1.0);
+    Functor estimator(embedder, 1.0);
+
+    MyConstantEstimator myNormalEstimator;
+    myNormalEstimator.attach(digSurf);
+    myNormalEstimator.setParams(l1, estimator, kernel, 2.0); 
+    myNormalEstimator.init(1.0, digSurf.begin(), digSurf.end());
 
     // Embedder definition
     typedef CanonicDigitalSurfaceEmbedder<MyDigitalSurface> SurfaceEmbedder;
@@ -126,9 +134,6 @@ bool testLocalConvolutionNormalVectorEstimator ( int /*argc*/, char**/*argv*/ )
     < SurfaceEmbedder, MyConstantEstimator > SurfaceEmbedderWithTrivialNormal;
     SurfaceEmbedderWithTrivialNormal mySurfelEmbedder ( surfaceEmbedder,
             myNormalEstimator );
-
-    // Compute normal vector field and displays it.
-    myNormalEstimator.init ( 1.0, 2 );
 
     MyConstantEstimator::Quantity res = myNormalEstimator.eval ( it );
     trace.info() << "Normal vector at begin() : "<< res << std::endl;
@@ -142,20 +147,21 @@ bool testLocalConvolutionNormalVectorEstimator ( int /*argc*/, char**/*argv*/ )
     trace.beginBlock ( "Compute and output surface <cat10-gaussian.off> with gaussian convoluted normals." );
 
     //Convolution kernel
-    deprecated::GaussianConvolutionWeights < MyDigitalSurface::Size > Gkernel ( 4.0 );
+    typedef DGtal::functors::GaussianKernel ConvFunctorGaussian;
+    typedef LocalEstimatorFromSurfelFunctorAdapter<MyDigitalSurfaceContainer, LpMetric<Z3i::Space>,
+                                                   Functor, ConvFunctorGaussian> MyGaussianEstimator;
+    
+    ConvFunctorGaussian kernelGaussian(4.0);
+    Functor estimatorGaussian(embedder, 1.0); // Passed by alias, can't reuse previous
 
-    //Estimator definition
-    typedef deprecated::LocalConvolutionNormalVectorEstimator  < MyDigitalSurface,
-                                                                 deprecated::GaussianConvolutionWeights< MyDigitalSurface::Size>  > MyGaussianEstimator;
-    BOOST_CONCEPT_ASSERT ( ( concepts::CNormalVectorEstimator< MyGaussianEstimator > ) );
-    MyGaussianEstimator myNormalEstimatorG ( digSurf, Gkernel );
+    MyGaussianEstimator myNormalEstimatorG;
+    myNormalEstimatorG.attach(digSurf);
+    myNormalEstimatorG.setParams(l1, estimatorGaussian, kernelGaussian, 5.0); 
+    myNormalEstimatorG.init(1.0, digSurf.begin(), digSurf.end());
 
     // Embedder definition
     typedef DigitalSurfaceEmbedderWithNormalVectorEstimator<SurfaceEmbedder,MyGaussianEstimator> SurfaceEmbedderWithGaussianNormal;
     SurfaceEmbedderWithGaussianNormal mySurfelEmbedderG ( surfaceEmbedder, myNormalEstimatorG );
-
-    // Compute normal vector field and displays it.
-    myNormalEstimatorG.init ( 1.0, 5 );
 
     MyGaussianEstimator::Quantity res2 = myNormalEstimatorG.eval ( it );
     trace.info() << "Normal vector at begin() : "<< res2 << std::endl;

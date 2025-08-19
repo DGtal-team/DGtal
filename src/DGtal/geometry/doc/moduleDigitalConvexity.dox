@@ -361,7 +361,9 @@ Convexity services:
 - DigitalConvexity::isFullySubconvex( const LatticePolytope& P, const LatticeSet& StarX ) const tells if a given polytope is fully subconvex to a set of cells, represented as a LatticeSetByIntervals.
 - DigitalConvexity::isFullySubconvex( const PointRange& Y, const LatticeSet& StarX ) const tells is the given range of points is fully subconvex to a set of cells, represented as a LatticeSetByIntervals.
 - DigitalConvexity::isFullySubconvex( const Point& a, const Point& b, const LatticeSet& StarX ) const tells if the given pair of points is fully subconvex to a set of cells, represented as a LatticeSetByIntervals (three times faster than previous generic method).
-- DigitalConvexity::isFullySubconvex( const Point& a, const Point& b, const Point& c, const LatticeSet& StarX ) const tells if the given triplets of points is fully subconvex to a set of cells, represented as a LatticeSetByIntervals (five times faster than previous generic method).
+- DigitalConvexity::isFullySubconvex( const Point& a, const Point& b, const Point& c, const LatticeSet& cells ) const tells if the given triplet of points is fully subconvex to a set of cells, represented as a LatticeSetByIntervals (five times faster than previous generic method).
+- DigitalConvexity::isFullyCovered( const Point& a, const Point& b, const LatticeSet& cells ) const tells if the segment defined by the input pair of points is fully covered by the given set of cells, represented as a LatticeSetByIntervals (limited to 3D at the moment).
+- DigitalConvexity::isFullyCovered( const Point& a, const Point& b, const Point& c, const LatticeSet& cells ) const tells if the triangle defined by the input triplet of points is fully covered by the given set of cells, represented as a LatticeSetByIntervals (limited to 3D at the moment).
 
 @subsection dgtal_dconvexity_sec25 Ehrhart polynomial of a lattice polytope
 

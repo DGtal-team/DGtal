@@ -55,9 +55,7 @@ $ ./examples/geometry/surfaces/greedy-plane-segmentation -i ./examples/samples/A
 #include "DGtal/base/Common.h"
 #include "DGtal/io/readers/VolReader.h"
 
-#include "DGtal/io/Display3D.h"
-#include "DGtal/io/viewers/Viewer3D.h"
-#include "DGtal/io/DrawWithDisplay3DModifier.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/images/ImageSelector.h"
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 #include "DGtal/topology/DigitalSurface.h"
@@ -120,7 +118,6 @@ int main( int argc, char** argv )
   //! [greedy-plane-segmentation-parseCommandLine]
 
   //! [greedy-plane-segmentation-loadVolume]
-  QApplication application(argc,argv);
   typedef ImageSelector < Domain, int>::Type Image;
   Image image = VolReader<Image>::importVol(inputFilename);
   DigitalSet set3d (image.domain());
@@ -192,16 +189,14 @@ int main( int argc, char** argv )
   //! [greedy-plane-segmentation-segment]
 
   //! [greedy-plane-segmentation-visualization]
-  Viewer3D<> viewer( ks );
-  viewer.show();
+  PolyscopeViewer<> viewer( ks );
   for ( std::map<Vertex,SegmentedPlane*>::const_iterator
           it = v2plane.begin(), itE = v2plane.end();
         it != itE; ++it )
     {
-      viewer << CustomColors3D( it->second->color, it->second->color );
+      viewer << it->second->color;
       viewer << ks.unsigns( it->first );
     }
-  viewer << Viewer3D<>::updateDisplay;
   //! [greedy-plane-segmentation-visualization]
 
   //! [greedy-plane-segmentation-freeMemory]
@@ -213,6 +208,7 @@ int main( int argc, char** argv )
   v2plane.clear();
   //! [greedy-plane-segmentation-freeMemory]
 
-  return application.exec();
+  viewer.show();
+  return 0;
 }
 ///////////////////////////////////////////////////////////////////////////////

@@ -58,7 +58,7 @@ const char * xFigDashStylesTikZ[] = {
     "dash pattern=on 2pt off 3pt on 4pt off 4pt," // DashDotDotDotStyle
 };
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
 // cairo
 cairo_line_cap_t cairoLineCap[] = {
     CAIRO_LINE_CAP_BUTT,
@@ -148,7 +148,7 @@ Shape::postscriptProperties() const
     return str.str();
 }
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
 void
 Shape::setCairoDashStyle(cairo_t *cr, LineStyle type) const
 {
@@ -343,7 +343,7 @@ Dot::flushSVG( std::ostream & stream,
     << " />" << std::endl;
 }
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
 void
 Dot::flushCairo( cairo_t *cr,
      const TransformCairo & transform ) const
@@ -566,7 +566,7 @@ Line::flushSVG( std::ostream & stream,
     << " />" << std::endl;
 }
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
 void
 Line::flushCairo( cairo_t *cr,
                 const TransformCairo & transform ) const
@@ -681,7 +681,7 @@ Image::flushSVG( std::ostream & stream,
 
 }
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
 void
 Image::flushCairo( cairo_t *cr,
      const TransformCairo & transform ) const
@@ -690,7 +690,7 @@ Image::flushCairo( cairo_t *cr,
   cairo_surface_t *image;
   cairo_save (cr);
   std::string extension = _filename.substr(_filename.find_last_of(".") + 1);
-  ASSERT(extension=="png");
+  assert(extension=="png");
   image = cairo_image_surface_create_from_png (_filename.c_str());
   assert(cairo_surface_status (image) == CAIRO_STATUS_SUCCESS);
   w = cairo_image_surface_get_width (image);
@@ -928,7 +928,7 @@ Arrow::flushSVG( std::ostream & stream,
     stream << "</g>" << std::endl;
 }
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
 void
 Arrow::flushCairo( cairo_t *cr,
      const TransformCairo & transform ) const
@@ -1227,7 +1227,7 @@ Ellipse::flushSVG( std::ostream & stream,
     stream << " />" << std::endl;
 }
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
 void
 Ellipse::flushCairo( cairo_t *cr,
      const TransformCairo & transform ) const
@@ -1426,7 +1426,7 @@ Circle::flushSVG( std::ostream & stream,
     }
 }
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
 void
 Circle::flushCairo( cairo_t *cr,
      const TransformCairo & transform ) const
@@ -1495,7 +1495,7 @@ Arc::name() const
     return _name;
 }
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
 void
 Arc::flushCairo( cairo_t *cr,
      const TransformCairo & transform ) const
@@ -1804,7 +1804,7 @@ Polyline::flushSVG( std::ostream & stream,
     stream << "\" />" << std::endl;
 }
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
 void
 Polyline::flushCairo( cairo_t *cr,
      const TransformCairo & transform ) const
@@ -2005,7 +2005,7 @@ Rectangle::flushSVG( std::ostream & stream,
     }
 }
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
 void
 Rectangle::flushCairo( cairo_t *cr,
      const TransformCairo & transform ) const
@@ -2294,7 +2294,7 @@ GouraudTriangle::flushSVG( std::ostream & stream,
                      _subdivisions - 1, _depth ).flushSVG( stream, transform );
 }
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
 void
 GouraudTriangle::flushCairo( cairo_t * /*cr*/,
 			     const TransformCairo & /*transform*/ ) const
@@ -2443,7 +2443,7 @@ QuadraticBezierCurve::flushSVG( std::ostream & stream,
   stream << "' />";
 }
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
 void
 QuadraticBezierCurve::flushCairo( cairo_t *cr,
      const TransformCairo & transform ) const
@@ -2689,7 +2689,7 @@ Text::flushSVG( std::ostream & stream,
     }
 }
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
 void
 Text::flushCairo( cairo_t * /*cr*/,
 		  const TransformCairo & /*transform*/ ) const

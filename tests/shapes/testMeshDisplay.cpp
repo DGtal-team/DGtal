@@ -32,7 +32,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/shapes/Mesh.h"
-#include "DGtal/io/viewers/Viewer3D.h"
+#include "DGtal/io/viewers/PolyscopeViewer.h"
 //! [MeshUseInclude]
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -56,9 +56,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
   //! [MeshUseInitDisplay]
-  QApplication application(argc,argv);
-  Viewer3D<> viewer;
-  viewer.show();
+  PolyscopeViewer viewer;
   //! [MeshUseInitDisplay]
 
   //! [MeshUseMeshCreation]
@@ -93,14 +91,13 @@ int main( int argc, char** argv )
   aMesh.addFace(listIndex, Color(150,150,0,54));
   //! [MeshUseMeshCreation]
   //! [MeshUseDisplay]
-  viewer.setLineColor(Color(150,0,0,254));
   viewer << aMesh;
-  viewer << Viewer3D<>::updateDisplay;
-  bool res = application.exec();
+
   //! [MeshUseDisplay]
-  trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
+  trace.emphase() << "Passed." << endl;
   trace.endBlock();
-  return res ? 0 : 1;
+  viewer.show();
+  return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

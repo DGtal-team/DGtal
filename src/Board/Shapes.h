@@ -28,7 +28,7 @@
 
 #include "DGtal/io/Color.h"
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
 // cairo
 #if defined(__clang__)
 #pragma clang diagnostic push
@@ -255,7 +255,7 @@ struct Shape {
   virtual void flushSVG( std::ostream & stream,
        const TransformSVG & transform ) const = 0;
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   /** 
    * Writes the cairo code of the shape in a cairo drawing context according
    * to a transform.
@@ -316,7 +316,7 @@ protected:
    */
   std::string postscriptProperties() const;
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   // cairo
   /** 
    * Set a cairo dash style.
@@ -505,7 +505,7 @@ struct Dot : public Shape {
   void flushSVG( std::ostream & stream,
      const TransformSVG & transform ) const;
   
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   void flushCairo( cairo_t *cr,
      const TransformCairo & transform ) const;
 #endif
@@ -633,7 +633,7 @@ struct Line : public Shape {
   void flushSVG( std::ostream & stream,
      const TransformSVG & transform ) const;
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   void flushCairo( cairo_t *cr,
      const TransformCairo & transform ) const;
 #endif
@@ -744,7 +744,7 @@ struct Arrow : public Line {
   void flushSVG( std::ostream & stream,
      const TransformSVG & transform ) const;
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   void flushCairo( cairo_t *cr,
      const TransformCairo & transform ) const;
 #endif
@@ -886,7 +886,7 @@ struct Polyline : public Shape {
   void flushSVG( std::ostream & stream,
      const TransformSVG & transform ) const;
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   void flushCairo( cairo_t *cr,
      const TransformCairo & transform ) const;
 #endif
@@ -1000,7 +1000,7 @@ struct Rectangle : public Polyline {
   void flushSVG( std::ostream & stream,
      const TransformSVG & transform ) const;
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   void flushCairo( cairo_t *cr,
      const TransformCairo & transform ) const;
 #endif
@@ -1055,7 +1055,7 @@ struct Image : public Rectangle {
   void flushSVG( std::ostream & stream,
      const TransformSVG & transform ) const;
      
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   void flushCairo( cairo_t *cr,
      const TransformCairo & transform ) const;
 #endif
@@ -1196,7 +1196,7 @@ struct QuadraticBezierCurve : public Triangle {
   void flushSVG( std::ostream & stream,
      const TransformSVG & transform ) const;
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   void flushCairo( cairo_t *cr,
      const TransformCairo & transform ) const;
 #endif
@@ -1311,7 +1311,7 @@ struct GouraudTriangle : public Polyline {
   void flushSVG( std::ostream & stream,
      const TransformSVG & transform ) const;
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   void flushCairo( cairo_t *cr,
      const TransformCairo & transform ) const;
 #endif
@@ -1430,7 +1430,7 @@ struct Ellipse : public Shape {
   void flushSVG( std::ostream & stream,
      const TransformSVG & transform ) const;
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   void flushCairo( cairo_t *cr,
      const TransformCairo & transform ) const;
 #endif
@@ -1507,7 +1507,7 @@ struct Circle : public Ellipse {
   void flushSVG( std::ostream & stream,
      const TransformSVG & transform ) const;
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   void flushCairo( cairo_t *cr,
      const TransformCairo & transform ) const;
 #endif
@@ -1548,7 +1548,7 @@ struct Arc : public Circle {
   flushSVG( std::ostream & stream,
 		   const TransformSVG & transform ) const;
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   void flushCairo( cairo_t *cr,
      const TransformCairo & transform ) const;
 #endif
@@ -1671,7 +1671,7 @@ struct Text : public Shape {
   void flushSVG( std::ostream & stream,
      const TransformSVG & transform ) const;
 
-#ifdef WITH_CAIRO
+#ifdef DGTAL_WITH_CAIRO
   void flushCairo( cairo_t *cr,
      const TransformCairo & transform ) const;
 #endif

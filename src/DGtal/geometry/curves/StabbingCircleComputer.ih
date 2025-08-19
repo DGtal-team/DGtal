@@ -100,9 +100,9 @@ DGtal::StabbingCircleComputer<TConstIterator>::operator==( const Self& other ) c
       }
       bool flag2 = true; 
       {
-	std::reverse_iterator<ConstIterator> rfirst1(myEnd); 
+	boost::reverse_iterator<ConstIterator> rfirst1(myEnd); 
 	ConstIterator first2 = other.myBegin; 
-	while ( ( ( rfirst1 != std::reverse_iterator<ConstIterator>(myBegin) )
+	while ( ( ( rfirst1 != boost::reverse_iterator<ConstIterator>(myBegin) )
 		  ||( first2 != other.myEnd ) )
                 && (flag2) )
 	  {
@@ -111,7 +111,7 @@ DGtal::StabbingCircleComputer<TConstIterator>::operator==( const Self& other ) c
 	    if ( (pair1.first != pair2.first)||(pair1.second != pair2.second) ) flag2 = false;
 	    ++rfirst1; ++first2;
 	  }
-	if ( (rfirst1 != std::reverse_iterator<ConstIterator>(myBegin)) 
+	if ( (rfirst1 != boost::reverse_iterator<ConstIterator>(myBegin)) 
 	     || (first2 != other.myEnd) ) flag2 = false;
       }
     
@@ -456,16 +456,16 @@ DGtal::StabbingCircleComputer<TConstIterator>::isExtendableBack()
 	  if (!p1(aP))
 	    {
 	      Point Pf, Pl, Qf, Ql;
-	      std::reverse_iterator<ConstIterator> ritb(myEnd); 
-	      std::reverse_iterator<ConstIterator> rite(myBegin); 
+	      boost::reverse_iterator<ConstIterator> ritb(myEnd); 
+	      boost::reverse_iterator<ConstIterator> rite(myBegin); 
 	      if (isCircularlySeparable(ritb,rite,aP,Pf,Pl,Qf,Ql))
 		isOK = true; 
 	    }
 	  else if (!p2(aQ))
 	    {
 	      Point Pf, Pl, Qf, Ql;
-	      std::reverse_iterator<ConstIterator> ritb(myEnd); 
-	      std::reverse_iterator<ConstIterator> rite(myBegin); 
+	      boost::reverse_iterator<ConstIterator> ritb(myEnd); 
+	      boost::reverse_iterator<ConstIterator> rite(myBegin); 
 	      if (isCircularlySeparable(ritb,rite,aQ,Pf,Pl,Qf,Ql))
 		isOK = true; 
 	    }
@@ -479,8 +479,8 @@ DGtal::StabbingCircleComputer<TConstIterator>::isExtendableBack()
       else
 	{
 	  Point Pf, Pl, Qf, Ql; 
-	  std::reverse_iterator<ConstIterator> ritb(myEnd); 
-	  std::reverse_iterator<ConstIterator> rite(myBegin); 
+	  boost::reverse_iterator<ConstIterator> ritb(myEnd); 
+	  boost::reverse_iterator<ConstIterator> rite(myBegin); 
 	  if (mySegPtr->isOppositeEndConvex())
 	    { //convex part 
 	      if (isCircularlySeparable(ritb,rite,aQ,Pf,Pl,Qf,Ql))
@@ -525,8 +525,8 @@ DGtal::StabbingCircleComputer<TConstIterator>::extendBack()
 	  if (!p1(aP))
 	    {
 	      Point Pf, Pl, Qf, Ql;
-	      std::reverse_iterator<ConstIterator> ritb(myEnd); 
-	      std::reverse_iterator<ConstIterator> rite(myBegin); 
+	      boost::reverse_iterator<ConstIterator> ritb(myEnd); 
+	      boost::reverse_iterator<ConstIterator> rite(myBegin); 
 	      if (isCircularlySeparable(ritb,rite,aP,Pf,Pl,Qf,Ql))
 		{
 		  myCircle.init(aP,Pf,Ql); 
@@ -536,8 +536,8 @@ DGtal::StabbingCircleComputer<TConstIterator>::extendBack()
 	  else if (!p2(aQ))
 	    {
 	      Point Pf, Pl, Qf, Ql;
-	      std::reverse_iterator<ConstIterator> ritb(myEnd); 
-	      std::reverse_iterator<ConstIterator> rite(myBegin); 
+	      boost::reverse_iterator<ConstIterator> ritb(myEnd); 
+	      boost::reverse_iterator<ConstIterator> rite(myBegin); 
 	      if (isCircularlySeparable(ritb,rite,aQ,Pf,Pl,Qf,Ql))
 		{
 		  myCircle.init(aQ,Qf,Pl); 
@@ -554,8 +554,8 @@ DGtal::StabbingCircleComputer<TConstIterator>::extendBack()
       else
 	{
 	  Point Pf, Pl, Qf, Ql; 
-	  std::reverse_iterator<ConstIterator> ritb(myEnd); 
-	  std::reverse_iterator<ConstIterator> rite(myBegin); 
+	  boost::reverse_iterator<ConstIterator> ritb(myEnd); 
+	  boost::reverse_iterator<ConstIterator> rite(myBegin); 
 	  if (mySegPtr->isOppositeEndConvex())
 	    { //convex part 
 
