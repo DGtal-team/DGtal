@@ -16,9 +16,6 @@ endif()
 message(STATUS "Third-party (external): creating targets 'Boost::<lib>'")
 
 set(OLD_CMAKE_POSITION_INDEPENDENT_CODE ${CMAKE_POSITION_INDEPENDENT_CODE})
-set(OLD_CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
-
-set(CMAKE_CXX_FLAGS_DEBUG "-w")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Restrict the list of Boost targets to expose in the project (this should be the superset of all
@@ -198,13 +195,15 @@ endif()
 include(CPM)
 CPMAddPackage(
     NAME Boost
-    VERSION 1.89.0
+    VERSION 1.84.0
     GITHUB_REPOSITORY "boostorg/boost"
-    GIT_TAG "boost-1.89.0"
+    GIT_TAG "boost-1.84.0"
+    SYSTEM TRUE
 )
 
 # Manually create a library. For some reason boost::headers seems empty
 add_library(boost INTERFACE)
+
 add_library(Boost::boost ALIAS boost)
 set(boost_export_list )
 foreach (name ${BOOST_INCLUDE_LIBRARIES})
@@ -225,8 +224,3 @@ export(TARGETS
     FILE BoostTargets.cmake
 )
 
-set(OLD_CMAKE_POSITION_INDEPENDENT_CODE ${CMAKE_POSITION_INDEPENDENT_CODE})
-set(OLD_CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
-
-set(CMAKE_CXX_FLAGS_DEBUG ${OLD_CMAKE_CXX_FLAGS_DEBUG})
-set(CMAKE_POSITION_INDEPENDENT_CODE ${OLD_CMAKE_POSITION_INDEPENDENT_CODE})
