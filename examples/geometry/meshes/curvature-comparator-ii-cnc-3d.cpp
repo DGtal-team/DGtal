@@ -238,7 +238,7 @@ int main( int argc, char* argv[] )
   trace.info() << "CNC measuring radius = " << cnc_mr << std::endl;
   std::vector< double > H( smesh.nbFaces() );
   std::vector< double > G( smesh.nbFaces() );
-  for ( auto f = 0; f < smesh.nbFaces(); ++f )
+  for ( size_t f = 0; f < smesh.nbFaces(); ++f )
     {
       const auto b    = smesh.faceCentroid( f );
       const auto area = mu0.measure( b, cnc_mr, f );

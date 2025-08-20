@@ -35,8 +35,8 @@
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 DGtal::DigitalConvexity<TKSpace>::
-DigitalConvexity( Clone<KSpace> K, bool safe )
-  : myK( K ), mySafe( safe )
+DigitalConvexity( Clone<KSpace> K_, bool safe )
+  : myK( K_ ), mySafe( safe )
 {
 }
 //-----------------------------------------------------------------------------

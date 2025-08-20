@@ -90,7 +90,7 @@ bool operator<( const VertexSize & vs1, const VertexSize & vs2 )
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int argc, char** argv )
+int main()
 {
   //! [greedy-plane-segmentation-ex3-parseCommandLine]
    trace.info() << "Segments the surface at given threshold within given volume into digital planes of rational width num/den." << std::endl;

@@ -96,7 +96,7 @@ struct SegmentedPlane {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int argc, char** argv )
+int main()
 {
 
   //! [greedy-plane-segmentation-parseCommandLine]

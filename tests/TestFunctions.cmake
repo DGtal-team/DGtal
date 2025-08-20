@@ -11,7 +11,6 @@ function(DGtal_add_test test_file) #optional_avoid_add_test
       target_compile_options(${test_file} PRIVATE
         $<$<CONFIG:Debug>:
         -Wall
-        -Wno-dangling-reference
         -Wno-sign-compare
         -Werror
         -Wno-unknown-pragmas

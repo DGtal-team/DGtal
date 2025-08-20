@@ -256,8 +256,8 @@ namespace DGtal
     /// Default constructor
     /// @param[in] K a kernel for computing facet geometries.
     /// @param[in] dbg the trace level, from 0 (no) to 3 (very verbose).
-    QuickHull( const Kernel& K = Kernel(), int dbg = 0 )
-      : kernel( K ), debug_level( dbg ), myStatus( Status::Uninitialized )
+    QuickHull( const Kernel& K_ = Kernel(), int dbg = 0 )
+      : kernel( K_ ), debug_level( dbg ), myStatus( Status::Uninitialized )
     {}
 
     /// @return the current status of this object, in Uninitialized,

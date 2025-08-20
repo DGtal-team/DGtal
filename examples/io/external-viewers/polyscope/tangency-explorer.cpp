@@ -114,13 +114,13 @@ RealPoint pointelPoint2RealPoint( Point q )
 void embedPointels( const std::vector< Point >& vq, std::vector< RealPoint >& vp )
 {
   vp.resize( vq.size() );
-  for ( auto i = 0; i < vp.size(); ++i )
+  for ( size_t i = 0; i < vp.size(); ++i )
     vp[ i ] = pointelPoint2RealPoint( vq[ i ] );
 }
 void digitizePointels( const std::vector< RealPoint >& vp, std::vector< Point >& vq )
 {
   vq.resize( vp.size() );
-  for ( auto i = 0; i < vq.size(); ++i )
+  for ( size_t i = 0; i < vq.size(); ++i )
     vq[ i ] = pointelRealPoint2Point( vp[ i ] );
 }
 
@@ -142,13 +142,13 @@ RealPoint voxelPoint2RealPoint( Point q )
 void embedVoxels( const std::vector< Point >& vq, std::vector< RealPoint >& vp )
 {
   vp.resize( vq.size() );
-  for ( auto i = 0; i < vp.size(); ++i )
+  for ( size_t i = 0; i < vp.size(); ++i )
     vp[ i ] = voxelPoint2RealPoint( vq[ i ] );
 }
 void digitizeVoxels( const std::vector< RealPoint >& vp, std::vector< Point >& vq )
 {
   vq.resize( vp.size() );
-  for ( auto i = 0; i < vq.size(); ++i )
+  for ( size_t i = 0; i < vq.size(); ++i )
     vq[ i ] = voxelRealPoint2Point( vp[ i ] );
 }
 
@@ -232,11 +232,11 @@ void computePlanes()
           //      != Estimator::Neighborhood::HexagonState::Planar)
           //   continue;
           std::vector<SH3::SurfaceMesh::Vertex> triangle { i, i+1, i+2 };
-          auto v = estimator.vertices();
+          auto vi = estimator.vertices();
           faces.push_back( triangle );
-          vertices.push_back( v[ 0 ] );
-          vertices.push_back( v[ 1 ] );
-          vertices.push_back( v[ 2 ] );
+          vertices.push_back( vi[ 0 ] );
+          vertices.push_back( vi[ 1 ] );
+          vertices.push_back( vi[ 2 ] );
           while (estimator.advance().first) {
             auto state = estimator.hexagonState();
             if (state == Estimator::Neighborhood::HexagonState::Planar) {
@@ -268,7 +268,7 @@ void computePlanes()
 void computeTangentCone()
 {
   if ( digital_points.empty() ) return;
-  if ( vertex_idx < 0 || vertex_idx >= digital_points.size() ) return;
+  if ( vertex_idx < 0 || vertex_idx >= (long long int)digital_points.size() ) return;
   const auto p = digital_points[ vertex_idx ];
   trace.beginBlock( "Compute tangent cone" );
   auto local_X_idx = TC.getCotangentPoints( p );
@@ -410,7 +410,7 @@ Scalar bestTriangle( TriangleContext& ctx,
 void computeGreatTriangle()
 {
   if ( digital_points.empty() ) return;
-  if ( vertex_idx < 0 || vertex_idx >= digital_points.size() ) return;
+  if ( vertex_idx < 0 || vertex_idx >= (long long int)digital_points.size() ) return;
   trace.beginBlock( "Compute best triangle" );
   TriangleContext ctx;
   ctx.p      = digital_points[ vertex_idx ];
@@ -452,12 +452,12 @@ void myCallback()
     goodSelection = goodSelection || (selectedSurface == surf);
     const auto nv = surfmesh.nbVertices();
     const auto nf = surfmesh.nbFaces();
-    const auto ne = surfmesh.nbEdges();
+    // const auto ne = surfmesh.nbEdges();
     // Validate that it its a face index
     if ( goodSelection )
       {
         int idx = selection.localIndex;
-        if ( idx < nv )
+        if ( idx < (long long int)nv )
           {
             vertex_idx = idx;
             is_selected  = true;
@@ -517,7 +517,7 @@ int main( int argc, char* argv[] )
   //Need to convert the faces
   std::vector<std::vector<SH3::SurfaceMesh::Vertex>> faces;
   std::vector<RealPoint> positions;
-  for(auto face= 0 ; face < primalSurface->nbFaces(); ++face)
+  for(size_t face= 0 ; face < primalSurface->nbFaces(); ++face)
     faces.push_back(primalSurface->incidentVertices( face ));
   
   //Recasting to vector of vertices
@@ -529,11 +529,11 @@ int main( int argc, char* argv[] )
                       faces.end());
   std::vector<std::vector<SH3::SurfaceMesh::Vertex>> dual_faces;
   std::vector<RealPoint> dual_positions;
-  for(auto face= 0 ; face < dualSurface->nbFaces(); ++face)
+  for(size_t face= 0 ; face < dualSurface->nbFaces(); ++face)
     dual_faces.push_back( dualSurface->verticesAroundFace( face ));
     
     //Recasting to vector of vertices
-  for ( auto vtx = 0; vtx < dualSurface->nbVertices(); ++vtx )
+  for ( size_t vtx = 0; vtx < dualSurface->nbVertices(); ++vtx )
     dual_positions.push_back( dualSurface->position( vtx ) );
     
   dual_surfmesh = SurfMesh(dual_positions.begin(),

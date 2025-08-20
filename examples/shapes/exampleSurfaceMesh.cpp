@@ -73,7 +73,7 @@ using namespace Z3i;
 
 
 ///////////////////////////////////////////////////////////////////////////////
-int main( int argc, char** argv )
+int main()
 {
   //! [exampleSurfaceMesh-typedef]
   // The following typedefs are useful

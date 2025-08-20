@@ -72,7 +72,7 @@ using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-int main( int argc, char** argv )
+int main()
 {
   typedef Z3i::Space Space;
   typedef Z3i::KSpace KSpace;

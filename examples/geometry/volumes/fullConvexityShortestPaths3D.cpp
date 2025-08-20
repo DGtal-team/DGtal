@@ -124,7 +124,7 @@ int main( int argc, char** argv )
   trace.info() << "  [Done]" << std::endl;
   
   // Compute surface
-  auto surface = SH3::makeDigitalSurface( bimage, K, params );
+  const auto surface = SH3::makeDigitalSurface( bimage, K, params );
 
   // Compute interior boundary points
   // They are less immediate interior points than surfels.
@@ -205,7 +205,7 @@ int main( int argc, char** argv )
     Color colSurfel( 200, 200, 255, 128 );
     Color colStart( 255, 0, 0, 128 );
 
-    for ( auto i = 0; i < points.size(); ++i )
+    for ( size_t i = 0; i < points.size(); ++i )
       {
         const double d_s = SP.distance( i );
         Color c_s        = cmap( fmod( d_s, period ) );
@@ -217,7 +217,6 @@ int main( int argc, char** argv )
 
     // JOL: Left if you wish to display it as a surface, and to display paths.
     
-    auto surfels = SH3::getSurfelRange ( surface );
     for ( auto && s : surfels )
       {
         const double d_s = SP.distance( surfel2idx[ s ] );
@@ -228,9 +227,9 @@ int main( int argc, char** argv )
     viewerCore.drawColor( colStart );
     viewerCore.drawColor( Color::Green );
     for ( Index i = 0; i < SP.size(); i++ ) {
-      Point p1 = SP.point( i );
-      Point p2 = SP.point( SP.ancestor( i ) );
-      viewerCore.drawLine( p1, p2 );
+      Point p1_ = SP.point( i );
+      Point p2_ = SP.point( SP.ancestor( i ) );
+      viewerCore.drawLine( p1_, p2_ );
     }
     viewerCore.show();
   }
@@ -272,7 +271,7 @@ int main( int argc, char** argv )
     MViewer3D viewerCore;
     Color colSurfel( 200, 200, 255, 128 );
     Color colStart( 255, 0, 0, 128 );
-    for ( auto i = 0; i < points.size(); ++i )
+    for ( size_t i = 0; i < points.size(); ++i )
       {
         const double d_s0 = SP0.isVisited( i ) ? SP0.distance( i ) : SP0.infinity();
         const double d_s1 = SP1.isVisited( i ) ? SP1.distance( i ) : SP1.infinity();
@@ -287,7 +286,7 @@ int main( int argc, char** argv )
       }
 
     viewerCore.drawColor( Color::Green );
-    for ( auto i = 1; i < Q.size(); i++ )
+    for ( size_t i = 1; i < Q.size(); i++ )
       {
         Point p1_ = TC.point( Q[ i-1 ] );
         Point p2_ = TC.point( Q[ i   ] );
@@ -311,7 +310,7 @@ int main( int argc, char** argv )
     MViewer3D viewerCore;
     Color colSurfel( 200, 200, 255, 128 );
     Color colStart( 255, 0, 0, 128 );
-    for ( auto i = 0; i < points.size(); ++i )
+    for ( size_t i = 0; i < points.size(); ++i )
       {
         viewerCore.drawColor( Color( 150, 150, 150, 255 ) );
         viewerCore.drawBall( RealPoint( points[ i ][ 0 ],
@@ -321,7 +320,7 @@ int main( int argc, char** argv )
     viewerCore.drawColor( Color::Green );
     for ( auto path : paths )
       {
-        for ( auto i = 1; i < path.size(); i++ )
+        for ( size_t i = 1; i < path.size(); i++ )
           {
             Point p1_ = TC.point( path[ i-1 ] );
             Point p2_ = TC.point( path[ i   ] );

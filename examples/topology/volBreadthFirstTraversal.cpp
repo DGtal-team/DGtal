@@ -114,7 +114,6 @@ int main( int argc, char** argv )
   trace.beginBlock( "Extracting boundary by tracking from an initial bel." );
   typedef BreadthFirstVisitor<MyDigitalSurface> MyBreadthFirstVisitor;
   typedef MyBreadthFirstVisitor::Node MyNode;
-  typedef MyBreadthFirstVisitor::Size MySize;
   MyBreadthFirstVisitor visitor( digSurf, bel );
   unsigned long nbSurfels = 0;
   MyNode node;
@@ -124,7 +123,6 @@ int main( int argc, char** argv )
       ++nbSurfels;
       visitor.expand();
     }
-  MySize maxDist = node.second;
   trace.endBlock();
   //! [volBreadthFirstTraversal-ExtractingSurface]
 

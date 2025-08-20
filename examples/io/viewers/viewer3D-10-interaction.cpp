@@ -74,11 +74,12 @@ struct MyCallback : public Callback {
       const DisplayData<MyViewer::RealPoint>& data, 
       void* polyscopeStructure
   ) {
+    ((void) index); ((void) data); ((void) polyscopeStructure);
     std::cout << "Item name: " << name << std::endl;
   }
 };
 
-int main( int argc, char** argv )
+int main()
 {
   Point p1( 0, 0, 0 );
   Point p2( 5, 5 ,5 );

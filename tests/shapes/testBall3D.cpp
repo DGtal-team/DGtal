@@ -49,7 +49,7 @@
 // Standard services - public :
 
 
- int main(int argc, char** argv)
+ int main()
  {
    // -------------------------------------------------------------------------- Type declaring
    typedef Space::RealPoint RealPoint;

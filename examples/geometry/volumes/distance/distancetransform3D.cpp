@@ -96,7 +96,7 @@ void randomSeeds(Image &image, const unsigned int nb, const int value)
 
 using namespace DGtal;
 
-int main( int argc, char** argv )
+int main()
 {
 
   std::string inputFilename = examplesPath + "samples/Al.100.vol";

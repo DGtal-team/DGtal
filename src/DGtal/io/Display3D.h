@@ -329,16 +329,16 @@ namespace DGtal {
      */
     template<typename T, typename Type>
     struct WithQuantity {
-      WithQuantity(const T& object, const std::string& name, const Type& value, QuantityScale s = QuantityScale::UNKNOWN) : 
-        scale(s), object(object), name(name) 
+      WithQuantity(const T& _object, const std::string& _name, const Type& value, QuantityScale s = QuantityScale::UNKNOWN) : 
+        scale(s), object(_object), name(_name) 
       {
         values.push_back(value);
       }
       
-      WithQuantity(const T& object, const std::string& name, const std::vector<Type>& values, QuantityScale s = QuantityScale::UNKNOWN) : 
-        scale(s), object(object), name(name) 
+      WithQuantity(const T& _object, const std::string& _name, const std::vector<Type>& _values, QuantityScale s = QuantityScale::UNKNOWN) : 
+        scale(s), object(_object), name(_name) 
       {
-        this->values = values;
+        this->values = _values;
       }
       
       // Scale to apply the quantity at
@@ -388,6 +388,8 @@ namespace DGtal {
 
       Display3D() : Display3D(KSpace()) {}
 
+      virtual ~Display3D() {};
+
       // Usefull definitions
       using Point = typename Space::Point;
       using KCell = typename KSpace::Cell;
@@ -415,13 +417,13 @@ namespace DGtal {
          * 
          * @param viewer A pointer to the viewer on which this callback is attached
          */
-        virtual void OnAttach(void* viewer) {};
+        virtual void OnAttach(void* _viewer) { ((void) _viewer); };
         /**
          * @brief Called to render or interact with some UI
          *
          * @param viewerData Some viewer-dependent data to draw UI (context)
          */
-        virtual void OnUI(void* viewerData) {};
+        virtual void OnUI(void* viewerData) { ((void) viewerData); };
         /**
          * @brief Called when an element is clicked
          * 
@@ -432,7 +434,7 @@ namespace DGtal {
          * @param data The Display3D data associated with this structure
          * @param viewerData Viewer-dependent data associated with the click
          */
-        virtual void OnClick(const std::string& name, size_t index, const DisplayData<RealPoint>& data, void* viewerData) {};
+        virtual void OnClick(const std::string& name, size_t index, const DisplayData<RealPoint>& data, void* viewerData) {((void) name); ((void) index); ((void) data); ((void) viewerData); };
 
         // Pointer to the Display3D instance the callback is attached to
         Display3D<Space, KSpace>* viewer = nullptr;

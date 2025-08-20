@@ -55,7 +55,7 @@
 
 using namespace DGtal;
 
-int main(int argc, char **argv)
+int main()
 {
   DGtal::PolyscopeViewer<> viewer;
   viewer.allowReuseList = true;

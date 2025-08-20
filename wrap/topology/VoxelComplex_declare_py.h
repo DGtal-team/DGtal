@@ -38,7 +38,6 @@ pybind11::class_<TVoxelComplex> declare_VoxelComplex(pybind11::module &m,
     using TTKSpace = typename TT::KSpace;
     using TTPoint = typename TTKSpace::Point;
     using TTCell = typename TT::Cell;
-    using TTPreCell = typename TT::PreCell;
     using TTData = typename TT::Data;
 
     const std::string docs =
