@@ -415,7 +415,7 @@ namespace DGtal {
          * If only general properties are needed, use the Callback::viewer member
          * which is set prior calling this function. 
          * 
-         * @param viewer A pointer to the viewer on which this callback is attached
+         * @param _viewer A pointer to the viewer on which this callback is attached
          */
         virtual void OnAttach(void* _viewer) { ((void) _viewer); };
         /**
