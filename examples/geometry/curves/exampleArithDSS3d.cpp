@@ -66,7 +66,7 @@ using namespace Z3i;
 
 // Standard services - public :
 
-int main( int argc, char** argv )
+int main()
 {
 
   typedef PointVector<3,int> Point;

@@ -198,7 +198,7 @@ int main( int argc, char* argv[] )
   std::vector< RealVector > D2( smesh.nbFaces() );
   // Principal directions computation requires a local face normal
   smesh.computeFaceNormalsFromPositions();
-  for ( auto f = 0; f < smesh.nbFaces(); ++f )
+  for ( size_t f = 0; f < smesh.nbFaces(); ++f )
     {
       const auto b    = smesh.faceCentroid( f );
       const auto N    = smesh.faceNormals()[ f ];
@@ -233,7 +233,7 @@ int main( int argc, char* argv[] )
   const auto colormapK2 = makeQuantifiedColorMap( makeColorMap( -0.625, 0.625 ) );
   auto colorsK1 = SMW::Colors( smesh.nbFaces() );
   auto colorsK2 = SMW::Colors( smesh.nbFaces() );
-  for ( auto i = 0; i < smesh.nbFaces(); i++ )
+  for ( size_t i = 0; i < smesh.nbFaces(); i++ )
     {
       colorsK1[ i ] = colormapK1( K1[ i ] );
       colorsK2[ i ] = colormapK2( K2[ i ] );
@@ -242,7 +242,7 @@ int main( int argc, char* argv[] )
   SMW::writeOBJ( "example-nc-K2", smesh, colorsK2 );
   const auto avg_e = smesh.averageEdgeLength();
   SH::RealPoints positions( smesh.nbFaces() );
-  for ( auto f = 0; f < positions.size(); ++f )
+  for ( size_t f = 0; f < positions.size(); ++f )
     {
       D1[ f ] *= smesh.localWindow( f );
       positions[ f ] = smesh.faceCentroid( f ) - 0.5 * D1[ f ];
@@ -250,7 +250,7 @@ int main( int argc, char* argv[] )
   SH::saveVectorFieldOBJ( positions, D1, 0.05 * avg_e, SH::Colors(),
                           "example-nc-D1",
                           SH::Color::Black, SH::Color( 0, 128, 0 ) );
-  for ( auto f = 0; f < positions.size(); ++f )
+  for ( size_t f = 0; f < positions.size(); ++f )
     {
       D2[ f ] *= smesh.localWindow( f );
       positions[ f ] = smesh.faceCentroid( f ) - 0.5 * D2[ f ];

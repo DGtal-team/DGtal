@@ -55,7 +55,7 @@ using namespace Z3i;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int argc, char** argv )
+int main()
 {
   std::string inputFilename = examplesPath + "samples/pointList3d.pl";
   PolyscopeViewer<> viewer;

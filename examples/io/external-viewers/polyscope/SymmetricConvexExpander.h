@@ -137,7 +137,7 @@ namespace DGtal
           const auto y = myKCenter[ k ];
           if ( y % 2 == 0 )
             {
-              for ( auto i = 0; i < n; i++ )
+              for ( size_t i = 0; i < n; i++ )
                 points[ i ][ k ] = y / 2;
             }
           else
@@ -145,7 +145,7 @@ namespace DGtal
               points.resize( 2*n );
               const auto z  = (y-1)/2;
               const auto z1 = z + 1;
-              for ( auto i = 0; i < n; i++ )
+              for ( size_t i = 0; i < n; i++ )
                 {
                   points[ i ][ k ] = z;
                   Point q = points[ i ];

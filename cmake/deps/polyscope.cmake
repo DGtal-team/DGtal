@@ -7,8 +7,9 @@ set(CMAKE_CXX_FLAGS_DEBUG "-w")
 
 CPMAddPackage(
   NAME polyscope
-  VERSION 2.4.0
+  VERSION 2.5.0
   GITHUB_REPOSITORY "nmwsharp/polyscope"
+  SYSTEM TRUE
 )
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG_OLD}")
@@ -37,7 +38,7 @@ function(cleanup_target target)
   )
 endfunction()
 
-# Polyscope dependancies
+# Polyscope dependencies
 cleanup_target(imgui)
 cleanup_target(glfw)
 cleanup_target(glad)

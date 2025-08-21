@@ -164,13 +164,13 @@ int main( int argc, char** argv )
   std::vector< Plane > face_planes;
   face_planes.resize( surfmesh.nbFaces() );
   bool planarity = true;
-  for ( int f = 0; f < surfmesh.nbFaces() && planarity; ++f )
+  for ( size_t f = 0; f < surfmesh.nbFaces() && planarity; ++f )
     {
       PointRange X;
       for ( auto v : faceVertices[ f ] )
         X.push_back( vertices[ v ] );
       face_planes[ f ] = Plane( X[ 0 ], X[ 1 ], X[ 2 ] );
-      for ( int v = 3; v < X.size(); v++ )
+      for ( size_t v = 3; v < X.size(); v++ )
         if ( ! face_planes[ f ]( X[ v ] ) )
           {
             trace.error() << "Face " << f << " is not planar." << std::endl;
@@ -180,14 +180,14 @@ int main( int argc, char** argv )
   trace.endBlock();
   if ( ! planarity ) return 1;
   trace.beginBlock( "Computing polyhedron" );
-  for ( int f = 0; f < surfmesh.nbFaces(); ++f )
+  for ( size_t f = 0; f < surfmesh.nbFaces(); ++f )
     {
       PointRange X;
       for ( auto v : faceVertices[ f ] )
         X.push_back( vertices[ v ] );
       auto F = dconv.relativeEnvelope( X, face_planes[ f ], Algorithm::DIRECT );
       faces_set.insert( F.cbegin(), F.cend() );
-      for ( int i = 0; i < X.size(); i++ )
+      for ( size_t i = 0; i < X.size(); i++ )
         {
           PointRange Y { X[ i ], X[ (i+1)%X.size() ] };
           if ( Y[ 1 ] < Y[ 0 ] ) std::swap( Y[ 0 ], Y[ 1 ] ); 

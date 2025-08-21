@@ -59,7 +59,7 @@ using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int argc, char** argv )
+int main()
 {
  typedef SpaceND< 3,int > Z3;
  typedef MetricAdjacency< Z3, 1 > Adj6;

@@ -208,11 +208,11 @@ struct MultiScaleAnalyzer {
       = MultiScaleAnalyzer< KSpace, N-1>::multiscale_run( aK, pts, bimage );
     trace.info() << "------- Analyzing scale " << N << " --------" << std::endl;
     std::vector< int > geom( prev_geometry.size() );
-    for ( int i = 0; i < geom.size(); i++ )
+    for ( size_t i = 0; i < geom.size(); i++ )
       geom[ i ] = ( prev_geometry[ i ].first == N-1 ? 0x1 : 0x0 )
         |  ( prev_geometry[ i ].second == N-1 ? 0x2 : 0x0 );
     Analyzer< KSpace, N>::run( geom, aK, pts, bimage );
-    for ( int i = 0; i < geom.size(); i++ ) {
+    for ( size_t i = 0; i < geom.size(); i++ ) {
       prev_geometry[ i ].first  += ( geom[ i ] & 0x1 ) ? 1 : 0;
       prev_geometry[ i ].second += ( geom[ i ] & 0x2 ) ? 1 : 0;
     }
@@ -310,7 +310,7 @@ int main( int argc, char** argv )
           Color( 0, 0, 255, 255 ), Color( 255, 255, 255, 255 ) };
       auto surfels   = SH3::getSurfelRange( surface, params );
       SH3::Colors all_colors( surfels.size() );
-      for ( int i = 0; i < surfels.size(); i++ )
+      for ( size_t i = 0; i < surfels.size(); i++ )
         {
           const auto    j = surfel2idx[ surfels[ i ] ];
           all_colors[ i ] = colors[ result[ j ] ];
@@ -348,7 +348,7 @@ int main( int argc, char** argv )
           Color( 200, 200, 255, 255 ) };
       auto surfels   = SH3::getSurfelRange( surface, params );
       SH3::Colors all_colors( surfels.size() );
-      for ( int i = 0; i < surfels.size(); i++ ) {
+      for ( size_t i = 0; i < surfels.size(); i++ ) {
         const auto j = surfel2idx[ surfels[ i ] ];
         int m0 = std::min( geometry[ j ].first, geometry[ j ].second );
         int m1 = std::max( geometry[ j ].first, geometry[ j ].second );

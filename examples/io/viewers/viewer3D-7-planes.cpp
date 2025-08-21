@@ -72,7 +72,7 @@ displayPredicate( Viewer3D & viewer,
     }
 }
 
-int main( int argc, char** argv )
+int main()
 {
   using namespace Z3i;
 

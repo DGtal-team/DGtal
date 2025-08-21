@@ -1,5 +1,3 @@
-[![Build Status](https://dev.azure.com/DGtal/DGtal/_apis/build/status/DGtal-team.DGtal?branchName=master)](https://dev.azure.com/DGtal/DGtal/_build/latest?definitionId=2&branchName=master)
-
 Python
 ======
 

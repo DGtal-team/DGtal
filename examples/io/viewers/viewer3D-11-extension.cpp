@@ -50,7 +50,8 @@ using namespace Z3i;
 
 //! [viewer3D-extension-derivation]
 struct RandomPointExtension : public PolyscopeViewer<>::Callback {
-  void OnUI() {
+  void OnUI(void* viewerData) override {
+    ((void) viewerData);
     static int count = 16;
     // Depending on the viewer, this may change
     ImGui::SliderInt("Number of points to draw", &count, 0, 32);
@@ -67,7 +68,7 @@ struct RandomPointExtension : public PolyscopeViewer<>::Callback {
 };
 //! [viewer3D-extension-derivation]
 
-int main( int argc, char ** argv )
+int main()
 {
   Point p1( 0, 0, 0 );
   Point p2( 5, 5, 5 );

@@ -198,10 +198,12 @@ CPMAddPackage(
     VERSION 1.84.0
     GITHUB_REPOSITORY "boostorg/boost"
     GIT_TAG "boost-1.84.0"
+    SYSTEM TRUE
 )
 
 # Manually create a library. For some reason boost::headers seems empty
 add_library(boost INTERFACE)
+
 add_library(Boost::boost ALIAS boost)
 set(boost_export_list )
 foreach (name ${BOOST_INCLUDE_LIBRARIES})
@@ -210,7 +212,7 @@ foreach (name ${BOOST_INCLUDE_LIBRARIES})
 endforeach()
 
 # Install boost files when installing library
-install(DIRECTORY ${BOOST_INCLUDE_DIRS}/Boost DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/DGtal/3rdParties/)
+install(DIRECTORY ${BOOST_INCLUDE_DIRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/DGtal/3rdParties/)
 install(TARGETS boost ${boost_export_list} EXPORT boost)
 install(EXPORT boost DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/boost NAMESPACE Boost::)
 
@@ -221,3 +223,4 @@ export(TARGETS
     NAMESPACE Boost::
     FILE BoostTargets.cmake
 )
+

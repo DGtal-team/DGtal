@@ -466,7 +466,7 @@ void bind_voronoimap(py::module& mg) {
             // TODO: check for contiguity
             const int* data = static_cast<int*>(info.ptr);
             std::vector<SHG3::Point> points(info.shape[0]);
-            for (size_t i = 0; i < info.shape[0]; ++i)
+            for (long int i = 0; i < info.shape[0]; ++i)
                 for (size_t j = 0; j < 3; ++j)
                     points[i][j] = data[j + i * 3];
 
@@ -493,7 +493,7 @@ void bind_voronoimap(py::module& mg) {
             // TODO: check for contiguity
             const int* data = static_cast<int*>(info.ptr);
             std::vector<SHG3::Point> points(info.shape[0]);
-            for (size_t i = 0; i < info.shape[0]; ++i)
+            for (long int i = 0; i < info.shape[0]; ++i)
                 for (size_t j = 0; j < 3; ++j)
                     points[i][j] = data[j + i * 3];
 
@@ -521,7 +521,7 @@ void bind_voronoimap(py::module& mg) {
             // TODO: check for contiguity
             const int* data = static_cast<int*>(info.ptr);
             std::vector<SHG3::Point> points(info.shape[0]);
-            for (size_t i = 0; i < info.shape[0]; ++i)
+            for (long int i = 0; i < info.shape[0]; ++i)
                 for (size_t j = 0; j < 3; ++j)
                     points[i][j] = data[j + i * 3];
 
@@ -548,7 +548,7 @@ void bind_voronoimap(py::module& mg) {
             // TODO: check for contiguity
             const int* data = static_cast<int*>(info.ptr);
             std::vector<SHG3::Point> points(info.shape[0]);
-            for (size_t i = 0; i < info.shape[0]; ++i)
+            for (long int i = 0; i < info.shape[0]; ++i)
                 for (size_t j = 0; j < 3; ++j)
                     points[i][j] = data[j + i * 3];
 
