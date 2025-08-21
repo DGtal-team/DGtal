@@ -56,7 +56,7 @@ using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int argc, char** argv )
+int main()
 {
   PolyscopeViewer<> viewer;
   std::string inputFilename = examplesPath + "samples/Al.100.vol";

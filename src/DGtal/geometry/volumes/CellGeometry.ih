@@ -54,9 +54,9 @@ CellGeometry()
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 DGtal::CellGeometry<TKSpace>::
-CellGeometry( const KSpace & K,
+CellGeometry( const KSpace & K_,
               Dimension min_cell_dim, Dimension max_cell_dim, bool verbose )
-  : myK( K ), myKPoints(),
+  : myK( K_ ), myKPoints(),
     myMinCellDim( min_cell_dim ), myMaxCellDim( max_cell_dim ),
     myVerbose( verbose )
 {

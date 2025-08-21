@@ -7,4 +7,29 @@ function(DGtal_add_benchmark test_file)
 
     list(APPEND DGTAL_benchmark_exe_list ${test_file})
     set(DGTAL_benchmark_exe_list ${DGtal_benchmark_exe_list} CACHE STRING "" FORCE)
+
+    if(DGTAL_WARNING_AS_ERROR)
+      target_compile_options(${test_file} PRIVATE
+        $<$<CONFIG:Debug>:
+        -Wall
+        -Wno-sign-compare
+        -Werror
+        -Wno-unknown-pragmas
+        -Wshadow
+        -Wunused-variable
+        -Wunused-parameter
+        -Wunused-function
+        -Wno-deprecated-copy
+        -Werror=type-limits
+        -Wno-nonnull
+        -Wno-unused-function
+        -Wunused
+        -Wno-long-long
+        -Wno-system-headers
+        -Wno-deprecated
+        -Woverloaded-virtual
+        -Wwrite-strings
+        >
+      )
+    endif()
 endfunction()

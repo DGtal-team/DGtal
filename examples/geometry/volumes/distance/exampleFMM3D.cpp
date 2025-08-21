@@ -76,7 +76,7 @@ using namespace Z3i;
 #include "DGtal/geometry/volumes/distance/FMM.h"
 
 // Standard services - public :
-int main( int argc, char** argv )
+int main()
 {
 
 

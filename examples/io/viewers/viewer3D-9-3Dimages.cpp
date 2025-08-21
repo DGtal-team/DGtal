@@ -55,7 +55,7 @@
 using namespace std;
 using namespace DGtal;
 
-int main( int argc, char** argv )
+int main()
 {
   PolyscopeViewer viewer;
 

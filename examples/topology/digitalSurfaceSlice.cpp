@@ -66,7 +66,7 @@ using namespace DGtal;
 using namespace Z3i;
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int argc, char** argv )
+int main()
 {
   //! [digitalSurfaceSlice-readVol]
   trace.beginBlock( "Reading vol file into an image." );

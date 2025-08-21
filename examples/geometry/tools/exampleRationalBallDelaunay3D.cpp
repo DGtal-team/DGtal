@@ -89,7 +89,7 @@ int main( int argc, char* argv[] )
   std::vector< RealPoint > positions;
   std::vector< std::vector< Index > > facets;
   Index idxv = 0;
-  for ( auto c = 0; c < dcomplex.nbCells(); ++c )
+  for ( size_t c = 0; c < dcomplex.nbCells(); ++c )
     {
       RealPoint b = dcomplex.cellBarycenter( c );
       auto c_vtcs = dcomplex.cellVertices( c );

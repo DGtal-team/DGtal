@@ -201,7 +201,7 @@ int main( int argc, char* argv[] )
   // estimates mean (H) and Gaussian (G) curvatures by measure normalization.
   std::vector< double > H( smesh.nbFaces() );
   std::vector< double > G( smesh.nbFaces() );
-  for ( auto f = 0; f < smesh.nbFaces(); ++f )
+  for ( size_t f = 0; f < smesh.nbFaces(); ++f )
     {
       const auto b    = smesh.faceCentroid( f );
       const auto area = mu0.measure( b, R, f );
@@ -230,7 +230,7 @@ int main( int argc, char* argv[] )
   const auto colormapG = makeQuantifiedColorMap( makeColorMap( -Gmax, Gmax ) );
   auto colorsH = SMW::Colors( smesh.nbFaces() );
   auto colorsG = SMW::Colors( smesh.nbFaces() );
-  for ( auto i = 0; i < smesh.nbFaces(); i++ )
+  for ( size_t i = 0; i < smesh.nbFaces(); i++ )
     {
       colorsH[ i ] = colormapH( H[ i ] );
       colorsG[ i ] = colormapG( G[ i ] );

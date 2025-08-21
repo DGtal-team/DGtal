@@ -53,7 +53,7 @@ using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int argc, char** argv )
+int main()
 {
   typedef DGtal::SpaceND<3, DGtal::int32_t> MySpace;
   typedef MySpace::Point MyPoint;

@@ -84,158 +84,158 @@ namespace DGtal {
   }
 
   template <typename Space, typename KSpace>
-  void PolyscopeViewer<Space, KSpace>::setGeneralProperties(polyscope::Structure* structure, const DisplayData<typename Space::RealPoint>& data) {
+  void PolyscopeViewer<Space, KSpace>::setGeneralProperties(polyscope::Structure* structure, const DisplayData<typename Space::RealPoint>& ddata) {
     using namespace drawutils;
 
-    structure->setTransform(toglm(data.transform));
-    structure->setTransparency(data.style.color.a());
+    structure->setTransform(toglm(ddata.transform));
+    structure->setTransparency(ddata.style.color.a());
   }
 
   template <typename Space, typename KSpace>
-  void PolyscopeViewer<Space, KSpace>::registerPointCloud(const std::string& name, const DisplayData<typename Space::RealPoint>& data) {
+  void PolyscopeViewer<Space, KSpace>::registerPointCloud(const std::string& name, const DisplayData<typename Space::RealPoint>& ddata) {
     using namespace drawutils;
 
-    auto* pCloud = polyscope::registerPointCloud(name, data.vertices);
+    auto* pCloud = polyscope::registerPointCloud(name, ddata.vertices);
 
-    setGeneralProperties(pCloud, data);
-    if (!data.style.useDefaultColors) {
-      pCloud->setPointColor(toglm(data.style.color));
+    setGeneralProperties(pCloud, ddata);
+    if (!ddata.style.useDefaultColors) {
+      pCloud->setPointColor(toglm(ddata.style.color));
     }
 
-    for (const auto& [name, vals] : data.scalarQuantities[QuantityScale::VERTEX]) {
-      pCloud->addScalarQuantity(name, vals)->setEnabled(true);
+    for (const auto& [pname, vals] : ddata.scalarQuantities[QuantityScale::VERTEX]) {
+      pCloud->addScalarQuantity(pname, vals)->setEnabled(true);
     }
 
-    for (const auto& [name, vals] : data.vectorQuantities[QuantityScale::VERTEX]) {
-      auto* q = pCloud->addVectorQuantity(name, vals);
+    for (const auto& [pname, vals] : ddata.vectorQuantities[QuantityScale::VERTEX]) {
+      auto* q = pCloud->addVectorQuantity(pname, vals);
       q->setEnabled(true);
       q->setVectorLengthScale(VectorScale);
     }
 
-    for (const auto& [name, vals] : data.colorQuantities[QuantityScale::VERTEX]) {
-      pCloud->addColorQuantity(name, toglm(vals))->setEnabled(true);
+    for (const auto& [pname, vals] : ddata.colorQuantities[QuantityScale::VERTEX]) {
+      pCloud->addColorQuantity(pname, toglm(vals))->setEnabled(true);
     }
-    pCloud->setPointRadius(data.style.width * BallToCubeRatio);
+    pCloud->setPointRadius(ddata.style.width * BallToCubeRatio);
   }
 
   template <typename Space, typename KSpace>
-  void PolyscopeViewer<Space, KSpace>::registerLineNetwork(const std::string& name, const DisplayData<typename Space::RealPoint>& data) {
+  void PolyscopeViewer<Space, KSpace>::registerLineNetwork(const std::string& name, const DisplayData<typename Space::RealPoint>& ddata) {
     using namespace drawutils;
 
-    auto* cNetwork = polyscope::registerCurveNetwork(name, data.vertices, makeIndices<2>(data.vertices.size() / 2));
+    auto* cNetwork = polyscope::registerCurveNetwork(name, ddata.vertices, makeIndices<2>(ddata.vertices.size() / 2));
 
-    setGeneralProperties(cNetwork, data);
-    if (!data.style.useDefaultColors) {
-      cNetwork->setColor(toglm(data.style.color));
+    setGeneralProperties(cNetwork, ddata);
+    if (!ddata.style.useDefaultColors) {
+      cNetwork->setColor(toglm(ddata.style.color));
     }
     
-    for (const auto& [name, vals] : data.scalarQuantities[QuantityScale::VERTEX]) {
-      cNetwork->addNodeScalarQuantity(name, vals)->setEnabled(true);
+    for (const auto& [pname, vals] : ddata.scalarQuantities[QuantityScale::VERTEX]) {
+      cNetwork->addNodeScalarQuantity(pname, vals)->setEnabled(true);
     }
-    for (const auto& [name, vals] : data.scalarQuantities[QuantityScale::EDGE]) {
-      cNetwork->addEdgeScalarQuantity(name, vals)->setEnabled(true);
+    for (const auto& [pname, vals] : ddata.scalarQuantities[QuantityScale::EDGE]) {
+      cNetwork->addEdgeScalarQuantity(pname, vals)->setEnabled(true);
     }
 
-    for (const auto& [name, vals] : data.vectorQuantities[QuantityScale::VERTEX]) {
-      auto* q = cNetwork->addNodeVectorQuantity(name, vals);
+    for (const auto& [pname, vals] : ddata.vectorQuantities[QuantityScale::VERTEX]) {
+      auto* q = cNetwork->addNodeVectorQuantity(pname, vals);
       q->setVectorLengthScale(VectorScale);
       q->setEnabled(true);
     }
-    for (const auto& [name, vals] : data.vectorQuantities[QuantityScale::EDGE]) {
-      auto* q = cNetwork->addEdgeVectorQuantity(name, vals);
+    for (const auto& [pname, vals] : ddata.vectorQuantities[QuantityScale::EDGE]) {
+      auto* q = cNetwork->addEdgeVectorQuantity(pname, vals);
       q->setVectorLengthScale(VectorScale);
       q->setEnabled(true);
     }
 
-    for (const auto& [name, vals] : data.colorQuantities[QuantityScale::VERTEX]) {
-      cNetwork->addEdgeColorQuantity(name, toglm(vals))->setEnabled(true);
+    for (const auto& [pname, vals] : ddata.colorQuantities[QuantityScale::VERTEX]) {
+      cNetwork->addEdgeColorQuantity(pname, toglm(vals))->setEnabled(true);
     }     
-    for (const auto& [name, vals] : data.colorQuantities[QuantityScale::EDGE]) {
-      cNetwork->addEdgeColorQuantity(name, toglm(vals))->setEnabled(true);
+    for (const auto& [pname, vals] : ddata.colorQuantities[QuantityScale::EDGE]) {
+      cNetwork->addEdgeColorQuantity(pname, toglm(vals))->setEnabled(true);
     }     
   }
 
   template <typename Space, typename KSpace>
-  void PolyscopeViewer<Space, KSpace>::registerSurfaceMesh(const std::string& name, const DisplayData<typename Space::RealPoint>& data) {
+  void PolyscopeViewer<Space, KSpace>::registerSurfaceMesh(const std::string& name, const DisplayData<typename Space::RealPoint>& ddata) {
     using namespace drawutils;
 
     polyscope::SurfaceMesh* mesh = nullptr;
-    if (data.elementSize == 3) {
-      mesh = polyscope::registerSurfaceMesh(name, data.vertices, makeIndices<3>(data.vertices.size() / 3));
-    } else if (data.elementSize == 4) {
-      mesh = polyscope::registerSurfaceMesh(name, data.vertices, makeIndices<4>(data.vertices.size() / 4));
+    if (ddata.elementSize == 3) {
+      mesh = polyscope::registerSurfaceMesh(name, ddata.vertices, makeIndices<3>(ddata.vertices.size() / 3));
+    } else if (ddata.elementSize == 4) {
+      mesh = polyscope::registerSurfaceMesh(name, ddata.vertices, makeIndices<4>(ddata.vertices.size() / 4));
     } else {
-        mesh = polyscope::registerSurfaceMesh(name, data.vertices, data.indices);
+        mesh = polyscope::registerSurfaceMesh(name, ddata.vertices, ddata.indices);
     }
 
-    setGeneralProperties(mesh, data);
-    if (!data.style.useDefaultColors) {
-      mesh->setSurfaceColor(toglm(data.style.color));
+    setGeneralProperties(mesh, ddata);
+    if (!ddata.style.useDefaultColors) {
+      mesh->setSurfaceColor(toglm(ddata.style.color));
     }
 
-    for (const auto& [name, vals] : data.scalarQuantities[QuantityScale::VERTEX]) {
-      mesh->addVertexScalarQuantity(name, vals)->setEnabled(true);
+    for (const auto& [pname, vals] : ddata.scalarQuantities[QuantityScale::VERTEX]) {
+      mesh->addVertexScalarQuantity(pname, vals)->setEnabled(true);
     }
-    for (const auto& [name, vals] : data.scalarQuantities[QuantityScale::EDGE]) {
-      mesh->addEdgeScalarQuantity(name, vals)->setEnabled(true);
+    for (const auto& [pname, vals] : ddata.scalarQuantities[QuantityScale::EDGE]) {
+      mesh->addEdgeScalarQuantity(pname, vals)->setEnabled(true);
     }
-    for (const auto& [name, vals] : data.scalarQuantities[QuantityScale::FACE]) {
-      mesh->addFaceScalarQuantity(name, vals)->setEnabled(true);
+    for (const auto& [pname, vals] : ddata.scalarQuantities[QuantityScale::FACE]) {
+      mesh->addFaceScalarQuantity(pname, vals)->setEnabled(true);
     }
 
-    for (const auto& [name, vals] : data.vectorQuantities[QuantityScale::VERTEX]) {
-      auto* q = mesh->addVertexVectorQuantity(name, vals);
+    for (const auto& [pname, vals] : ddata.vectorQuantities[QuantityScale::VERTEX]) {
+      auto* q = mesh->addVertexVectorQuantity(pname, vals);
       q->setVectorLengthScale(VectorScale);
       q->setEnabled(true);
     }
-    for (const auto& [name, vals] : data.vectorQuantities[QuantityScale::FACE]) {
-      auto* q = mesh->addFaceVectorQuantity(name, vals);
+    for (const auto& [pname, vals] : ddata.vectorQuantities[QuantityScale::FACE]) {
+      auto* q = mesh->addFaceVectorQuantity(pname, vals);
       q->setVectorLengthScale(VectorScale);
       q->setEnabled(true);
     }
 
-    for (const auto& [name, vals] : data.colorQuantities[QuantityScale::VERTEX]) {
-      mesh->addVertexColorQuantity(name, toglm(vals))->setEnabled(true);
+    for (const auto& [pname, vals] : ddata.colorQuantities[QuantityScale::VERTEX]) {
+      mesh->addVertexColorQuantity(pname, toglm(vals))->setEnabled(true);
     }
-    for (const auto& [name, vals] : data.colorQuantities[QuantityScale::FACE]) {
-      mesh->addFaceColorQuantity(name, toglm(vals))->setEnabled(true);
+    for (const auto& [pname, vals] : ddata.colorQuantities[QuantityScale::FACE]) {
+      mesh->addFaceColorQuantity(pname, toglm(vals))->setEnabled(true);
     }
   }
 
   template <typename Space, typename KSpace>
-  void PolyscopeViewer<Space, KSpace>::registerVolumeMesh(const std::string& name, const DisplayData<typename Space::RealPoint>& data) {
+  void PolyscopeViewer<Space, KSpace>::registerVolumeMesh(const std::string& name, const DisplayData<typename Space::RealPoint>& ddata) {
     using namespace drawutils;
 
-    polyscope::VolumeMesh* mesh = polyscope::registerVolumeMesh(name, data.vertices, makeIndices<8>(data.vertices.size() / 8));
+    polyscope::VolumeMesh* mesh = polyscope::registerVolumeMesh(name, ddata.vertices, makeIndices<8>(ddata.vertices.size() / 8));
 
-    setGeneralProperties(mesh, data);
-    if (!data.style.useDefaultColors) {
-      mesh->setColor(toglm(data.style.color));
+    setGeneralProperties(mesh, ddata);
+    if (!ddata.style.useDefaultColors) {
+      mesh->setColor(toglm(ddata.style.color));
     }
 
-    for (const auto& [name, vals] : data.scalarQuantities[QuantityScale::VERTEX]) {
-      mesh->addVertexScalarQuantity(name, vals)->setEnabled(true);
+    for (const auto& [pname, vals] : ddata.scalarQuantities[QuantityScale::VERTEX]) {
+      mesh->addVertexScalarQuantity(pname, vals)->setEnabled(true);
     }
-    for (const auto& [name, vals] : data.scalarQuantities[QuantityScale::CELL]) {
-      mesh->addCellScalarQuantity(name, vals)->setEnabled(true);
+    for (const auto& [pname, vals] : ddata.scalarQuantities[QuantityScale::CELL]) {
+      mesh->addCellScalarQuantity(pname, vals)->setEnabled(true);
     }
 
-    for (const auto& [name, vals] : data.vectorQuantities[QuantityScale::VERTEX]) {
-      auto* q = mesh->addVertexVectorQuantity(name, vals);
+    for (const auto& [pname, vals] : ddata.vectorQuantities[QuantityScale::VERTEX]) {
+      auto* q = mesh->addVertexVectorQuantity(pname, vals);
       q->setVectorLengthScale(VectorScale);
       q->setEnabled(true);
     }
-    for (const auto& [name, vals] : data.vectorQuantities[QuantityScale::CELL]) {
-      auto* q = mesh->addCellVectorQuantity(name, vals);
+    for (const auto& [pname, vals] : ddata.vectorQuantities[QuantityScale::CELL]) {
+      auto* q = mesh->addCellVectorQuantity(pname, vals);
       q->setVectorLengthScale(VectorScale);
       q->setEnabled(true);
     }
 
-    for (const auto& [name, vals] : data.colorQuantities[QuantityScale::VERTEX]) {
-      mesh->addVertexColorQuantity(name, toglm(vals))->setEnabled(true);
+    for (const auto& [pname, vals] : ddata.colorQuantities[QuantityScale::VERTEX]) {
+      mesh->addVertexColorQuantity(pname, toglm(vals))->setEnabled(true);
     }
-    for (const auto& [name, vals] : data.colorQuantities[QuantityScale::CELL]) {
-      mesh->addCellColorQuantity(name, toglm(vals))->setEnabled(true);
+    for (const auto& [pname, vals] : ddata.colorQuantities[QuantityScale::CELL]) {
+      mesh->addCellColorQuantity(pname, toglm(vals))->setEnabled(true);
     }
   }
 
@@ -247,18 +247,18 @@ namespace DGtal {
       auto it = this->data.find(name);
       if (it == this->data.end()) continue;
 
-      const auto& data = it->second;
-      const auto& vertices = data.vertices;
+      const auto& ddata = it->second;
+      const auto& vertices = ddata.vertices;
 
       if (vertices.size() == 0) continue;
 
-      switch(data.elementSize) {
-        case 1: registerPointCloud(name, data); break;
-        case 2: registerLineNetwork(name, data); break; 
+      switch(ddata.elementSize) {
+        case 1: registerPointCloud(name, ddata); break;
+        case 2: registerLineNetwork(name, ddata); break; 
         case 0: 
         case 3:
-        case 4: registerSurfaceMesh(name, data); break;
-        case 8: registerVolumeMesh(name, data); break;
+        case 4: registerSurfaceMesh(name, ddata); break;
+        case 8: registerVolumeMesh(name, ddata); break;
         default:
           break;
       };
@@ -281,8 +281,8 @@ namespace DGtal {
           void* viewerData = structure;
           std::string name = structure->getName();
 
-          auto& data = this->data[name];
-          this->myCallback->OnClick(name, index, data, viewerData);
+          auto& ddata = this->data[name];
+          this->myCallback->OnClick(name, index, ddata, viewerData);
         }
     }
   }

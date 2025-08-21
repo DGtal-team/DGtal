@@ -483,10 +483,10 @@ namespace DGtal
       Matrix A;
       Vector N;
       Scalar c;
-      for ( int i = 1; i < dimension; i++ )
-        for ( int j = 0; j < dimension; j++ )
+      for ( size_t i = 1; i < dimension; i++ )
+        for ( size_t j = 0; j < dimension; j++ )
           A.setComponent( i-1, j, position( v[ i ] )[ j ] - position( v[ 0 ] )[ j ] );
-      for ( int j = 0; j < dimension; j++ )
+      for ( size_t j = 0; j < dimension; j++ )
         N[ j ] = A.cofactor( dimension-1, j );
       c = N.dot( position( v[ 0 ] ) );
       return std::make_pair( N, c );

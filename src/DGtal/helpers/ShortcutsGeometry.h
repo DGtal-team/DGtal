@@ -401,8 +401,6 @@ namespace DGtal
         const typename Base::SurfaceMesh::Faces faces, 
         const Parameters&                       params = parametersShapeGeometry() )
       {
-        using Face = typename Base::SurfaceMesh::Face;
-
         bool unit_u = params["unit_u"].as<int>();
         double radius = params["r-radius"].as<double>();
         double alpha  = params["alpha"].as<double>();
@@ -544,8 +542,6 @@ namespace DGtal
       const typename Base::SurfaceMesh::Faces & faces,
       const Parameters & params = parametersShapeGeometry() )
       {
-        using Face = typename Base::SurfaceMesh::Face;
-
         bool unit_u = params["unit_u"].as<int>();
         double radius = params["r-radius"].as<double>();
         double alpha  = params["alpha"].as<double>();
@@ -863,8 +859,6 @@ namespace DGtal
           const typename Base::SurfaceMesh::Faces& faces, 
           const Parameters&                        params = parametersShapeGeometry() )
         {
-          using Face = typename Base::SurfaceMesh::Face;
-
           bool unit_u = params["unit_u"].as<int>();
           double radius = params["r-radius"].as<double>();
           double alpha  = params["alpha"].as<double>();

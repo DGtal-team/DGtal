@@ -60,7 +60,7 @@ using namespace Z3i;
 
 
 
-int main( int argc, char** argv )
+int main()
 {
 
   trace.beginBlock ( "Example simple example of 3DViewer" );

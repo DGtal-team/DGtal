@@ -62,7 +62,7 @@ RealPoint centerSurfel (KSpace const& K, SH3::SCell const& s)
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main(int argc, char** argv)
+int main()
 {
     auto params = SH3::defaultParameters();
     params("polynomial", "ellipsoid")("gridstep", "1.0");

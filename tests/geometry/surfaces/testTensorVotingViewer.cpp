@@ -67,7 +67,7 @@ using namespace DGtal;
  *
  */
 template<typename Shape>
-bool testLocalEstimatorFromFunctorAdapter(int argc, char **argv)
+bool testLocalEstimatorFromFunctorAdapter()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -160,8 +160,8 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testLocalEstimatorFromFunctorAdapter<ImplicitHyperCube<Z3i::Space> >(argc,argv)
-    && testLocalEstimatorFromFunctorAdapter<ImplicitBall<Z3i::Space> >(argc,argv);
+  bool res = testLocalEstimatorFromFunctorAdapter<ImplicitHyperCube<Z3i::Space> >()
+    && testLocalEstimatorFromFunctorAdapter<ImplicitBall<Z3i::Space> >();
   
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

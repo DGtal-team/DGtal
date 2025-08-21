@@ -306,7 +306,7 @@ pyramid_3d()
     trace.endBlock();
 }
 
-int main(int argc, char* argv[])
+int main()
 {
     //pyramid_3d();
     alcapone_3d();

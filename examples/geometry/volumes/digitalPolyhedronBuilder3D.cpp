@@ -126,7 +126,7 @@ int main( int argc, char** argv )
   auto edgeVertices = surfmesh.allEdgeVertices();
 
   trace.beginBlock( "Computing polyhedron" );
-  for ( int f = 0; f < surfmesh.nbFaces(); ++f )
+  for ( size_t f = 0; f < surfmesh.nbFaces(); ++f )
     {
       PointRange X;
       for ( auto v : faceVertices[ f ] )
@@ -134,7 +134,7 @@ int main( int argc, char** argv )
       auto F = dconv.envelope( X, Algorithm::DIRECT );
       faces_set.insert( F.cbegin(), F.cend() );
     }
-  for ( int e = 0; e < surfmesh.nbEdges(); ++e )
+  for ( size_t e = 0; e < surfmesh.nbEdges(); ++e )
     {
       PointRange X =
         { vertices[ edgeVertices[ e ].first  ],

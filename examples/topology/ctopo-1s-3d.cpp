@@ -52,7 +52,7 @@ using namespace DGtal::Z3i;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int argc, char** argv )
+int main()
 {
   // for 3D display with PolyscopeViewer
   KSpace K;

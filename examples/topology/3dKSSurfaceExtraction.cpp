@@ -64,7 +64,7 @@ using namespace Z3i;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int argc, char** argv )
+int main()
 {
 
   Point p1( 0, 0,  0 );
@@ -114,7 +114,7 @@ int main( int argc, char** argv )
 
 
   // Each connected compoments are simply displayed with a specific color.
-  GradientColorMap<long> gradient(0, (const long)vectConnectedSCell.size());
+  GradientColorMap<long> gradient(0, vectConnectedSCell.size());
   gradient.addColor(Color::Red);
   gradient.addColor(Color::Yellow);
   gradient.addColor(Color::Green);

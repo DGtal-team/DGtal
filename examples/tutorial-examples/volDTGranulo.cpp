@@ -54,9 +54,8 @@
 
 using namespace DGtal;
 
-int main(int argc, char ** argv)
+int main(int, char** argv)
 {
-
   //Loarding the image
   typedef ImageContainerBySTLVector<Z3i::Domain, unsigned int> Image;
   Image image = VolReader<Image>::importVol(argv[1]);
@@ -85,8 +84,6 @@ int main(int argc, char ** argv)
 
   //Viewer
   PolyscopeViewer<> viewer2;
-  DT::Value maxDT = (*boost::first_max_element(distancemap.constRange().begin(),
-                                       distancemap.constRange().end()));
  trace.info() << "we display the dt map"<<std::endl;
   int cpt=0;
   viewer2 << DGtal::ClippingPlane(1,0,0,-10.1);
@@ -143,8 +140,6 @@ int main(int argc, char ** argv)
 
   //Viewer
   PolyscopeViewer<> viewer3;
-  Image::Value maxG = (*boost::first_max_element(imageGranulo.constRange().begin(),
-                                         imageGranulo.constRange().end()));
 
   viewer3 << DGtal::ClippingPlane(1,0,0,-10.1);
   cpt=0;

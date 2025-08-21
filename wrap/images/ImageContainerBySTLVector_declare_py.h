@@ -153,7 +153,6 @@ void def_buffer_bridge(
     namespace py = pybind11;
     using TTPoint = typename TT::Point;
     using TTValue = typename TT::Value;
-    using TTDomain = typename TT::Domain;
     // ----------------------- Bridges ----------------------------------------
     // Python buffers (requires py::buffer_protocol in py_class instantiation)
     /* Implements interface with the buffer protocol.
@@ -504,7 +503,22 @@ TT constructor_from_buffer_point_container(pybind11::buffer buf,
     assert( /* The container should be simple enough for memory to be continuous */
             containersize == componentsize * TTContainer::size());
     // Populate data of the container, copy is needed, vector has to own its memory.
+
+#if defined(__GNUG__)
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wclass-memaccess"
+#endif
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wclass-memaccess"
+#endif
     memcpy(out.data(), static_cast<TTComponent*>(info.ptr), info.size * componentsize);
+#if defined(__GNUG__)
+#pragma GCC diagnostic pop
+#endif
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
     return out;
 }
 
@@ -513,7 +527,6 @@ void def_buffer_bridge_for_PointVector(
         pybind11::class_<TT> & py_class) {
     namespace py = pybind11;
     using TTPoint = typename TT::Point;
-    using TTDomain = typename TT::Domain;
     using TTContainer = typename TT::Value;
 
     // ----------------------- Bridges ----------------------------------------

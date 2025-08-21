@@ -41,7 +41,7 @@ using namespace std;
 using namespace DGtal;
 using namespace Z3i;
 
-int main(int argc, char** argv) {
+int main() {
     typedef Shortcuts<KSpace> SH3;
     typedef ShortcutsGeometry<KSpace> SHG3;
 

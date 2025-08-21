@@ -48,7 +48,7 @@ using namespace Z3i;
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
-int main( int argc, char** argv )
+int main()
 {
   KSpace k;
   k.init(Point(2,2,2), Point(4,4,4), true);

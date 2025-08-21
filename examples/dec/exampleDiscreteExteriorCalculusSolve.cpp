@@ -963,7 +963,7 @@ void solve3d_decomposition()
     trace.endBlock();
 }
 
-int main(int argc, char* argv[])
+int main()
 {
     solve2d_laplace();
     solve2d_dual_decomposition();

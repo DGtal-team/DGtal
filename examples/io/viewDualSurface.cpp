@@ -146,7 +146,6 @@ template <typename Viewer,
           typename Vector>
 void viewPolygons
 ( Viewer & viewer,
-  const DGtal::Color & color,
   const std::vector< std::vector< unsigned int > > & indices,
   const std::vector<Vector> & points )
 {
@@ -451,7 +450,7 @@ int main( int argc, char** argv )
             localDualVolume( pts, f, *it );
             indices.clear();
             naiveConvexHull( indices, pts, false ); // right_handed
-            viewPolygons( viewer, fillColor, indices, pts );
+            viewPolygons( viewer, indices, pts );
           }
       }
   viewer.show();

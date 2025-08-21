@@ -66,7 +66,7 @@ unsigned char findMainAxis ( const T & curve, const long double & t )
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-int main( int argc, char** argv )
+int main()
 {
  typedef Knot_3_1< Space > MyKnot;
  typedef NaiveParametricCurveDigitizer3D < MyKnot >  Digitizer;
