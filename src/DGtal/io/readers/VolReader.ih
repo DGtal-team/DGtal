@@ -98,9 +98,9 @@ DGtal::VolReader<T, TFunctor>::importVol( const std::string & filename,
     char buf[128];
     int linecount = 1;
     int fieldcount = 0;
-    
+    char *line;
     // Read the file line by line until ".\n" is found
-    for (  char *line = fgets( buf, 128, fin );
+    for (  line = fgets( buf, 128, fin );
          line && strcmp( line, ".\n" ) != 0 ;
          line = fgets( line, 128, fin ), ++linecount
          )
