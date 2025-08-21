@@ -636,7 +636,7 @@ SCENARIO( "ConvexityHelper< 3 > open segment tests",
 {
   typedef ConvexityHelper< 3 >    Helper;
   typedef Helper::Point           Point;
-  typedef Helper::Vector          Vector;
+// typedef Helper::Vector          Vector;
   typedef Helper::LatticePolytope::UnitSegment UnitSegment;
 
   auto nb_open_segment_smaller_than_segment = 0;
@@ -697,7 +697,7 @@ SCENARIO( "ConvexityHelper< 3 > open triangle tests",
 {
   typedef ConvexityHelper< 3 >    Helper;
   typedef Helper::Point           Point;
-  typedef Helper::Vector          Vector;
+//  typedef Helper::Vector          Vector;
   typedef Helper::LatticePolytope::UnitSegment UnitSegment;
 
   auto nb_open_triangle_smaller_than_triangle = 0;
@@ -762,7 +762,7 @@ SCENARIO( "ConvexityHelper< 3 > open triangle unit tests",
 {
   typedef ConvexityHelper< 3 >    Helper;
   typedef Helper::Point           Point;
-  typedef Helper::Vector          Vector;
+// typedef Helper::Vector          Vector;
   typedef Helper::LatticePolytope::UnitSegment UnitSegment;
 
   Point a( 0, 0, 0 );

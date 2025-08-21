@@ -38,8 +38,8 @@
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 DGtal::TangencyComputer<TKSpace>::
-TangencyComputer( Clone<KSpace> K )
-  : myK( K ), myDConv( myK ), myLatticeCellCover( false )
+TangencyComputer( Clone<KSpace> K_ )
+  : myK( K_ ), myDConv( myK ), myLatticeCellCover( false )
 {
   setUp();
 }
@@ -235,7 +235,7 @@ shortestPaths( const std::vector< Index >& sources,
         trace.info() << "Point " << point( std::get<0>( n ) )
                      << " at distance " << std::get<2>( n ) << std::endl;
     }
-  for ( auto i = 0; i < sources.size(); i++ )
+  for ( size_t i = 0; i < sources.size(); i++ )
     paths[ i ] = SP.pathToSource( sources[ i ] );
   return paths;
 }

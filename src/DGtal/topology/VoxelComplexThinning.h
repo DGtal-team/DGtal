@@ -142,7 +142,6 @@ TComplex thinningVoxelComplex(
   // }
 
   // Create a VoxelComplex from the set
-  using KSpace = DGtal::Z3i::KSpace;
   using Complex = TComplex;
   using ComplexCell = typename Complex::Cell;
   using ComplexClique = typename Complex::Clique;

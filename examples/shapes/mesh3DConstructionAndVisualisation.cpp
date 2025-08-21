@@ -50,7 +50,7 @@ using namespace DGtal;
 using namespace DGtal::Z3i;
 
 
-int main( int argc, char** argv )
+int main()
 {
 
   //! [MeshUseInitDisplay]

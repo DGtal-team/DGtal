@@ -111,7 +111,7 @@ struct DiagonalPriority {
 };
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int argc, char** argv )
+int main()
 {
   // JOL: unordered_map is approximately twice faster than map for
   // collapsing.

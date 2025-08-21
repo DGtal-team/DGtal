@@ -234,7 +234,6 @@ pybind11::class_<TKhalimskyPreSpaceND> declare_KhalimskyPreSpaceND(pybind11::mod
     const std::string &typestr) {
     namespace py = pybind11;
     using TT = TKhalimskyPreSpaceND;
-    using TTInteger = typename TT::Integer;
     using TTPoint = typename TT::Point;
     using TTDimension = typename TTPoint::Dimension;
     using TTCell = typename TT::Cell;

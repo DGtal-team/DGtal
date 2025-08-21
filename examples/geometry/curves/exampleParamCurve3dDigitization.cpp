@@ -68,7 +68,7 @@ unsigned char findMainAxis ( const T & curve, const long double & t )
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-int main( int argc, char** argv )
+int main()
 {
 //! [DigiHelixConstr]
  typedef EllipticHelix < Space > MyHelix;

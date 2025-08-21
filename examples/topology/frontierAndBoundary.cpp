@@ -55,7 +55,7 @@ using namespace Z3i;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int argc, char** argv )
+int main()
 {
   //! [frontierAndBoundary-LabelledImage]
   typedef Space::RealPoint RealPoint;

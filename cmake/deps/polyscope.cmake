@@ -9,6 +9,7 @@ CPMAddPackage(
   NAME polyscope
   VERSION 2.5.0
   GITHUB_REPOSITORY "nmwsharp/polyscope"
+  SYSTEM TRUE
 )
 
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG_OLD}")

@@ -225,6 +225,7 @@ namespace DGtal {
 
   template <typename Space, typename KSpace>
   std::string Display3D<Space, KSpace>::draw(const DGtal::Color& color, const std::string& name) {
+    ((void) name);
     drawColor(color);
     return "";
   }
@@ -399,7 +400,7 @@ namespace DGtal {
     bool save = allowReuseList;
     allowReuseList = true;
 
-    using CSCell = Calculus::SCell;
+    // using CSCell = Calculus::SCell;
     using Scalar = Calculus::Scalar;
     
     std::string list0   = newBallList(uname + "_0d");
@@ -807,6 +808,7 @@ namespace DGtal {
       
   template <typename Space, typename KSpace>
   std::string Display3D<Space, KSpace>::draw(const ClippingPlane& plane, const std::string& uname) {
+    ((void) uname);
     planes.push_back(plane);
     planes.back().style = currentStyle;
     return "";
@@ -957,9 +959,9 @@ namespace DGtal {
       case 1: {
         name = createOrReuseLineList(uname);
 
-        const RealPoint shift(xodd, yodd, zodd);
-        myCurrentData->vertices.push_back(rp - 0.5 * shift);
-        myCurrentData->vertices.push_back(rp + 0.5 * shift);
+        const RealPoint newshift(xodd, yodd, zodd);
+        myCurrentData->vertices.push_back(rp - 0.5 * newshift);
+        myCurrentData->vertices.push_back(rp + 0.5 * newshift);
       }
       break;
       case 2: {

@@ -80,7 +80,7 @@ void projectRange( std::vector< ProjectedPoint >& pp,
                    const std::vector< Point > & p, Dimension a )
 {
   pp.resize( p.size() );
-  for ( auto i = 0; i < p.size(); i++ )
+  for ( size_t i = 0; i < p.size(); i++ )
     project( pp[ i ], p[ i ], a );
   std::sort( pp.begin(), pp.end() );
   auto last = std::unique( pp.begin(), pp.end() );

@@ -68,7 +68,7 @@ using namespace Z3i;
  * Example of a test. To be completed.
  *
  */
-bool testLocalConvolutionNormalVectorEstimator ( int argc, char**argv )
+bool testLocalConvolutionNormalVectorEstimator ()
 {
     trace.beginBlock ( "Testing convolution neighborhood ..." );
 
@@ -180,7 +180,7 @@ int main ( int argc, char** argv )
         trace.info() << " " << argv[ i ];
     trace.info() << endl;
 
-    bool res = testLocalConvolutionNormalVectorEstimator ( argc,argv ); // && ... other tests
+    bool res = testLocalConvolutionNormalVectorEstimator (); // && ... other tests
     trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
     trace.endBlock();
     

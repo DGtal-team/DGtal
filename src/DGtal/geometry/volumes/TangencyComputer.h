@@ -462,7 +462,7 @@ namespace DGtal
       auto eucl_d = [] ( const Point& p, const Point& q )
       { return ( p - q ).norm(); };
       double l = 0.0;
-      for ( auto i = 1; i < path.size(); i++ )
+      for ( size_t i = 1; i < path.size(); i++ )
         l += eucl_d( point( path[ i-1 ] ), point( path[ i ] ) );
       return l;
     }

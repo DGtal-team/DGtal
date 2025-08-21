@@ -1029,7 +1029,7 @@ SCENARIO( "DigitalConvexity< Z3 > full covering of segments", "[full_cover][3d]"
 {
   typedef KhalimskySpaceND<3,int>          KSpace;
   typedef KSpace::Point                    Point;
-  typedef KSpace::Vector                   Vector;
+  // typedef KSpace::Vector                   Vector;
   typedef KSpace::Space                    Space;
   typedef HyperRectDomain< Space >         Domain;
   typedef DigitalConvexity< KSpace >       DConvexity;
@@ -1066,7 +1066,7 @@ SCENARIO( "DigitalConvexity< Z3 > full covering of triangles", "[full_cover][3d]
 {
   typedef KhalimskySpaceND<3,int>          KSpace;
   typedef KSpace::Point                    Point;
-  typedef KSpace::Vector                   Vector;
+// typedef KSpace::Vector                   Vector;
   typedef KSpace::Space                    Space;
   typedef HyperRectDomain< Space >         Domain;
   typedef DigitalConvexity< KSpace >       DConvexity;

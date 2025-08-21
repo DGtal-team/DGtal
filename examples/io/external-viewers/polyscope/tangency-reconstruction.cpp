@@ -72,7 +72,7 @@ SurfMesh surfmesh;
 SurfMesh dual_surfmesh;
 SurfMesh outer_dual_surfmesh;
 float gridstep   = 1.0;
-int   vertex_idx = -1;
+int   param_vertex_idx = -1;
 float Time = 0.0;
 int   nb_cones = 10;
 bool remove_empty_cells = false;
@@ -151,13 +151,13 @@ RealPoint pointelPoint2RealPoint( Point q )
 void embedPointels( const std::vector< Point >& vq, std::vector< RealPoint >& vp )
 {
   vp.resize( vq.size() );
-  for ( auto i = 0; i < vp.size(); ++i )
+  for ( size_t i = 0; i < vp.size(); ++i )
     vp[ i ] = pointelPoint2RealPoint( vq[ i ] );
 }
 void digitizePointels( const std::vector< RealPoint >& vp, std::vector< Point >& vq )
 {
   vq.resize( vp.size() );
-  for ( auto i = 0; i < vq.size(); ++i )
+  for ( size_t i = 0; i < vq.size(); ++i )
     vq[ i ] = pointelRealPoint2Point( vp[ i ] );
 }
 
@@ -179,13 +179,13 @@ RealPoint voxelPoint2RealPoint( Point q )
 void embedVoxels( const std::vector< Point >& vq, std::vector< RealPoint >& vp )
 {
   vp.resize( vq.size() );
-  for ( auto i = 0; i < vp.size(); ++i )
+  for ( size_t i = 0; i < vp.size(); ++i )
     vp[ i ] = voxelPoint2RealPoint( vq[ i ] );
 }
 void digitizeVoxels( const std::vector< RealPoint >& vp, std::vector< Point >& vq )
 {
   vq.resize( vp.size() );
-  for ( auto i = 0; i < vq.size(); ++i )
+  for ( size_t i = 0; i < vq.size(); ++i )
     vq[ i ] = voxelRealPoint2Point( vp[ i ] );
 }
 
@@ -278,11 +278,11 @@ void computePlanes()
           //      != Estimator::Neighborhood::HexagonState::Planar)
           //   continue;
           std::vector<SH3::SurfaceMesh::Vertex> triangle { i, i+1, i+2 };
-          auto v = estimator.vertices();
+          auto vi = estimator.vertices();
           faces.push_back( triangle );
-          vertices.push_back( v[ 0 ] );
-          vertices.push_back( v[ 1 ] );
-          vertices.push_back( v[ 2 ] );
+          vertices.push_back( vi[ 0 ] );
+          vertices.push_back( vi[ 1 ] );
+          vertices.push_back( vi[ 2 ] );
           while (estimator.advance().first) {
             auto state = estimator.hexagonState();
             if (state == Estimator::Neighborhood::HexagonState::Planar) {
@@ -313,7 +313,7 @@ void computePlanes()
 void displayMidReconstruction()
 {
   std::vector< RealPoint > mid_dual_positions( dual_positions.size() );
-  for ( auto i = 0; i < surfels.size(); i++ )
+  for ( size_t i = 0; i < surfels.size(); i++ )
     {
       auto int_vox = K.interiorVoxel( surfels[ i ] );
       auto ext_vox = K.exteriorVoxel( surfels[ i ] );
@@ -330,7 +330,7 @@ void displayMidReconstruction()
 
 void displayReconstruction()
 {
-  for ( auto i = 0; i < surfels.size(); i++ )
+  for ( size_t i = 0; i < surfels.size(); i++ )
     {
       auto int_vox = K.interiorVoxel( surfels[ i ] );
       auto ext_vox = K.exteriorVoxel( surfels[ i ] );
@@ -355,7 +355,7 @@ void displayRemainingPoints()
 {
   std::vector< Point > X;
   std::vector< RealPoint > emb_X;
-  for ( auto i = current; i < digital_points.size(); i++ )
+  for ( size_t i = current; i < digital_points.size(); i++ )
     {
       Point p = digital_points[ order[ i ] ];
       if ( ! useless_points.count( p ) )
@@ -368,7 +368,7 @@ void displayRemainingPoints()
 
 void displayOuterReconstruction()
 {
-  for ( auto i = 0; i < surfels.size(); i++ )
+  for ( size_t i = 0; i < surfels.size(); i++ )
     {
       auto int_vox = K.interiorVoxel( surfels[ i ] );
       auto ext_vox = K.exteriorVoxel( surfels[ i ] );
@@ -513,7 +513,7 @@ void updateReconstructionFromCells( Point x, Point y,
 void updateReconstructionFromTangentConeLines( int vertex_idx )
 {
   if ( digital_points.empty() ) return;
-  if ( vertex_idx < 0 || vertex_idx >= digital_points.size() ) return;
+  if ( vertex_idx < 0 || vertex_idx >= (long long int)digital_points.size() ) return;
   const auto p = digital_points[ vertex_idx ];
   // trace.beginBlock( "Compute tangent cone" );
   auto local_X_idx = TC.getCotangentPoints( p );
@@ -532,7 +532,7 @@ void updateReconstructionFromTangentConeTriangles( int vertex_idx )
 {
   typedef QuickHull3D::IndexRange IndexRange;
   if ( digital_points.empty() ) return;
-  if ( vertex_idx < 0 || vertex_idx >= digital_points.size() ) return;
+  if ( vertex_idx < 0 || vertex_idx >= (int)digital_points.size() ) return;
   const auto p = digital_points[ vertex_idx ];
   // trace.beginBlock( "Compute tangent cone" );
   auto local_X_idx = TC.getCotangentPoints( p );
@@ -554,7 +554,7 @@ void updateReconstructionFromTangentConeTriangles( int vertex_idx )
   for ( auto&& facet : facet_vertices )
     {
       const auto nb = facet.size();
-      for ( auto i = 0; i < nb; i++ )
+      for ( size_t i = 0; i < nb; i++ )
         edges.insert( std::make_pair( positions[ facet[ i ] ],
                                       positions[ facet[ (i+1)%nb ] ] ) );
     }
@@ -652,7 +652,7 @@ void  updateReconstructionFromLocalTangentDelaunayComplex( int vertex_idx)
   if ( local_tangency ) 
     local_LS = DGtal::LatticeSetByIntervals< Space >( local_X.cbegin(), local_X.cend(), 0 ).starOfPoints();
 
-  typedef ConvexCellComplex< Point >::Index       Index;
+  typedef ConvexCellComplex< Point >::Index       cccIndex;
   ConvexCellComplex< Point > dcomplex;
   bool ok = CvxHelper::computeDelaunayCellComplex( dcomplex, local_X, false );
   if ( ! ok )
@@ -662,7 +662,7 @@ void  updateReconstructionFromLocalTangentDelaunayComplex( int vertex_idx)
   // Filter cells
   std::vector< bool > is_cell_tangent( dcomplex.nbCells(), false );
   if ( remove_empty_cells )
-    for ( Index c = 0; c < dcomplex.nbCells(); ++c )
+    for ( cccIndex c = 0; c < dcomplex.nbCells(); ++c )
       {
         auto Y = dcomplex.cellVertexPositions( c );
         auto P = dconv.makePolytope( Y );
@@ -673,7 +673,7 @@ void  updateReconstructionFromLocalTangentDelaunayComplex( int vertex_idx)
           : dconv.isFullySubconvex( P, LS );
       }
   else
-    for ( Index c = 0; c < dcomplex.nbCells(); ++c )
+    for ( cccIndex c = 0; c < dcomplex.nbCells(); ++c )
       {
       	auto Y = dcomplex.cellVertexPositions( c );
         is_cell_tangent[ c ] =
@@ -684,8 +684,8 @@ void  updateReconstructionFromLocalTangentDelaunayComplex( int vertex_idx)
   // Get faces
   std::vector< std::vector<SH3::SurfaceMesh::Vertex> > del_faces;
   std::vector< RealPoint >   del_positions;
-  std::set<Index> boundary_or_ext_points;
-  for ( Index f = 0; f < dcomplex.nbFaces(); ++f )
+  std::set<cccIndex> boundary_or_ext_points;
+  for ( cccIndex f = 0; f < dcomplex.nbFaces(); ++f )
     {
       auto f0 = std::make_pair( f, false );
       auto c0 = dcomplex.faceCell( f0 );
@@ -719,7 +719,7 @@ void  updateReconstructionFromLocalTangentDelaunayComplex( int vertex_idx)
       updateReconstructionFromCells( X, triangle_cells.toPointRange() );
     }
   useless_points.insert( p );
-  for ( Index v = 0; v < dcomplex.nbVertices(); v++ )
+  for ( cccIndex v = 0; v < dcomplex.nbVertices(); v++ )
     {
       auto q = dcomplex.position( v );
       if ( ! boundary_or_ext_points.count( v ) )
@@ -740,7 +740,7 @@ void updateOuterReconstructionFromLocalTangentDelaunayComplex( int vertex_idx)
   for ( auto idx : local_X_idx )
     local_X.push_back( outer_TC.point( idx ) );
 
-  typedef ConvexCellComplex< Point >::Index       Index;
+  typedef ConvexCellComplex< Point >::Index     cccIndex;
   ConvexCellComplex< Point > dcomplex;
   bool ok = CvxHelper::computeDelaunayCellComplex( dcomplex, local_X, false );
   if ( ! ok )
@@ -750,7 +750,7 @@ void updateOuterReconstructionFromLocalTangentDelaunayComplex( int vertex_idx)
   // Filter cells
   std::vector< bool > is_cell_tangent( dcomplex.nbCells(), false );
   if ( remove_empty_cells )
-    for ( Index c = 0; c < dcomplex.nbCells(); ++c )
+    for ( cccIndex c = 0; c < dcomplex.nbCells(); ++c )
       {
         auto Y = dcomplex.cellVertexPositions( c );
         auto P = dconv.makePolytope( Y );
@@ -758,14 +758,14 @@ void updateOuterReconstructionFromLocalTangentDelaunayComplex( int vertex_idx)
         is_cell_tangent[ c ] = dconv.isFullySubconvex( P, outer_LS );
       }
   else
-    for ( Index c = 0; c < dcomplex.nbCells(); ++c )
+    for ( cccIndex c = 0; c < dcomplex.nbCells(); ++c )
       {
       	auto Y = dcomplex.cellVertexPositions( c );
         is_cell_tangent[ c ] = dconv.isFullySubconvex( Y, outer_LS );
       }
   // Get faces
   std::vector< std::vector<SH3::SurfaceMesh::Vertex> > del_faces;
-  for ( Index f = 0; f < dcomplex.nbFaces(); ++f )
+  for ( cccIndex f = 0; f < dcomplex.nbFaces(); ++f )
     {
       auto f0 = std::make_pair( f, false );
       auto c0 = dcomplex.faceCell( f0 );
@@ -807,7 +807,7 @@ void computeLocalTangentDelaunayComplex( int vertex_idx)
   if ( local_tangency ) 
     local_LS = DGtal::LatticeSetByIntervals< Space >( local_X.cbegin(), local_X.cend(), 0 ).starOfPoints();
 
-  typedef ConvexCellComplex< Point >::Index       Index;
+  typedef ConvexCellComplex< Point >::Index       cccIndex;
   ConvexCellComplex< Point > dcomplex;
   bool ok = CvxHelper::computeDelaunayCellComplex( dcomplex, local_X, false );
   if ( ! ok )
@@ -817,7 +817,7 @@ void computeLocalTangentDelaunayComplex( int vertex_idx)
   // Filter cells
   std::vector< bool > is_cell_tangent( dcomplex.nbCells(), false );
   if ( remove_empty_cells )
-    for ( Index c = 0; c < dcomplex.nbCells(); ++c )
+    for ( cccIndex c = 0; c < dcomplex.nbCells(); ++c )
       {
         auto Y = dcomplex.cellVertexPositions( c );
         auto P = dconv.makePolytope( Y );
@@ -828,7 +828,7 @@ void computeLocalTangentDelaunayComplex( int vertex_idx)
           : dconv.isFullySubconvex( P, LS );
       }
   else
-    for ( Index c = 0; c < dcomplex.nbCells(); ++c )
+    for ( cccIndex c = 0; c < dcomplex.nbCells(); ++c )
       {
       	auto Y = dcomplex.cellVertexPositions( c );
         is_cell_tangent[ c ] =
@@ -840,8 +840,8 @@ void computeLocalTangentDelaunayComplex( int vertex_idx)
   std::vector< std::vector<SH3::SurfaceMesh::Vertex> > del_faces;
   std::vector< RealPoint >   del_positions;
   std::vector< RealPoint >   del_inner_points;
-  std::set<Index> boundary_or_ext_points;
-  for ( Index f = 0; f < dcomplex.nbFaces(); ++f )
+  std::set<cccIndex> boundary_or_ext_points;
+  for ( cccIndex f = 0; f < dcomplex.nbFaces(); ++f )
     {
       auto f0 = std::make_pair( f, false );
       auto c0 = dcomplex.faceCell( f0 );
@@ -870,12 +870,12 @@ void computeLocalTangentDelaunayComplex( int vertex_idx)
                                        && ( is_cell_tangent[ c1 ] ) ) );
       if ( bdry ) del_faces.push_back( dcomplex.faceVertices( f0 ) );
     }
-  for ( Index v = 0; v < dcomplex.nbVertices(); v++ )
+  for ( cccIndex v = 0; v < dcomplex.nbVertices(); v++ )
     {
-      auto p = dcomplex.position( v );
-      del_positions.push_back( voxelPoint2RealPoint( p ) );
+      auto p_ = dcomplex.position( v );
+      del_positions.push_back( voxelPoint2RealPoint( p_ ) );
       if ( ! boundary_or_ext_points.count( v ) )
-        del_inner_points.push_back( voxelPoint2RealPoint( p ) );
+        del_inner_points.push_back( voxelPoint2RealPoint( p_ ) );
     }
   Time = trace.endBlock();
   
@@ -894,10 +894,10 @@ void computeGlobalTangentDelaunayComplex()
 {
   if ( digital_points.empty() ) return;
   // if ( vertex_idx < 0 || vertex_idx >= digital_points.size() ) return;
-  const auto p = digital_points[ vertex_idx ];
+  const auto p = digital_points[ param_vertex_idx ];
   trace.beginBlock( "Compute global tangent Delaunay complex" );
 
-  typedef ConvexCellComplex< Point >::Index       Index;
+  typedef ConvexCellComplex< Point >::Index       cccIndex;
   ConvexCellComplex< Point > dcomplex;
   bool ok = CvxHelper::computeDelaunayCellComplex( dcomplex, digital_points, false );
   if ( ! ok )
@@ -908,7 +908,7 @@ void computeGlobalTangentDelaunayComplex()
   
   // Filter cells
   std::vector< bool > is_cell_tangent( dcomplex.nbCells(), false );
-  for ( Index c = 0; c < dcomplex.nbCells(); ++c )
+  for ( cccIndex c = 0; c < dcomplex.nbCells(); ++c )
     {
       auto Y = dcomplex.cellVertexPositions( c );
       auto P = dconv.makePolytope( Y );
@@ -920,9 +920,9 @@ void computeGlobalTangentDelaunayComplex()
   std::vector< std::vector<SH3::SurfaceMesh::Vertex> > del_faces;
   std::vector< RealPoint >   del_positions;
   std::vector< RealPoint >   del_inner_points;
-  std::set<Index> useful_points;
-  std::vector< std::pair< Index, bool > > all_bdry_faces;
-  for ( Index f = 0; f < dcomplex.nbFaces(); ++f )
+  std::set<cccIndex> useful_points;
+  std::vector< std::pair< cccIndex, bool > > all_bdry_faces;
+  for ( cccIndex f = 0; f < dcomplex.nbFaces(); ++f )
     {
       auto f0 = std::make_pair( f, false );
       auto c0 = dcomplex.faceCell( f0 );
@@ -963,14 +963,14 @@ void computeGlobalTangentDelaunayComplex()
           all_bdry_faces.push_back( f0 );
         }
     }
-  for ( Index v = 0; v < dcomplex.nbVertices(); v++ )
+  for ( cccIndex v = 0; v < dcomplex.nbVertices(); v++ )
     {
-      auto p = dcomplex.position( v );
-      del_positions.push_back( voxelPoint2RealPoint( p ) );
+      auto p_ = dcomplex.position( v );
+      del_positions.push_back( voxelPoint2RealPoint( p_ ) );
       if ( ! useful_points.count( v ) )
         {
-          del_inner_points.push_back( voxelPoint2RealPoint( p ) );
-          useless_points.insert( p );
+          del_inner_points.push_back( voxelPoint2RealPoint( p_ ) );
+          useless_points.insert( p_ );
         }
     }
   Time = trace.endBlock();
@@ -1017,9 +1017,9 @@ void myCallback()
             std::ostringstream otext;
             otext << "Selected vertex = " << idx;
             ImGui::Text( "%s", otext.str().c_str() );
-            vertex_idx = (Integer)idx;
+            param_vertex_idx = (Integer)idx;
           }
-        else vertex_idx = -1;
+        else param_vertex_idx = -1;
       }
   }
   if (ImGui::Button("Compute global tangent Delaunay complex"))
@@ -1157,7 +1157,7 @@ int main( int argc, char* argv[] )
   //Need to convert the faces
   std::vector<std::vector<SH3::SurfaceMesh::Vertex>> faces;
   std::vector<RealPoint> positions;
-  for(auto face= 0 ; face < primalSurface->nbFaces(); ++face)
+  for(size_t face= 0 ; face < primalSurface->nbFaces(); ++face)
     faces.push_back(primalSurface->incidentVertices( face ));
   
   //Recasting to vector of vertices
@@ -1167,11 +1167,11 @@ int main( int argc, char* argv[] )
                       positions.end(),
                       faces.begin(),
                       faces.end());
-  for(auto face= 0 ; face < dualSurface->nbFaces(); ++face)
+  for(size_t face= 0 ; face < dualSurface->nbFaces(); ++face)
     dual_faces.push_back( dualSurface->verticesAroundFace( face ));
     
     //Recasting to vector of vertices
-  for ( auto vtx = 0; vtx < dualSurface->nbVertices(); ++vtx )
+  for ( size_t vtx = 0; vtx < dualSurface->nbVertices(); ++vtx )
     dual_positions.push_back( dualSurface->position( vtx ) );
     
   dual_surfmesh = SurfMesh(dual_positions.begin(),

@@ -49,7 +49,7 @@ using namespace std;
 using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 
-int main( int argc, char** argv )
+int main()
 {
   trace.beginBlock ( "Example ctopo-2-3d" );
   // for 3D display with PolyscopeViewer
@@ -105,7 +105,7 @@ int main( int argc, char** argv )
   }
   trace.info()<<"done"<<std::endl;
   // Displaying First surfels cut with gradient colors.;
-  GradientColorMap<int> cmap_grad(0, (const int)vectBdrySCell2.size());
+  GradientColorMap<int> cmap_grad(0, vectBdrySCell2.size());
   cmap_grad.addColor( Color( 50, 50, 255 ) );
   cmap_grad.addColor( Color( 255, 0, 0 ) );
   cmap_grad.addColor( Color( 255, 255, 10 ) );
@@ -122,7 +122,7 @@ int main( int argc, char** argv )
     d++;
   }
 
-  GradientColorMap<int> cmap_grad2(0, (const int)vectBdrySCell.size());
+  GradientColorMap<int> cmap_grad2(0, vectBdrySCell.size());
   cmap_grad2.addColor( Color( 50, 50, 255 ) );
   cmap_grad2.addColor( Color( 255, 0, 0 ) );
   cmap_grad2.addColor( Color( 255, 255, 10 ) );
