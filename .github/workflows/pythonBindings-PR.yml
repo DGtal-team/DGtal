@@ -5,8 +5,8 @@ on:
     inputs:
       version:
         description: "Version xx.xx.xx"
-        required: true
 
+        required: true
 jobs:
   build_wheels:
     runs-on: ${{ matrix.os }}
@@ -20,7 +20,7 @@ jobs:
         with:
           # Note: at least (5 + 1) for the whitelist to work
           fetch-depth: 6
-      
+
       - name: Setup OS 
         uses: ./.github/actions/setup-os
         with:
@@ -52,3 +52,29 @@ jobs:
         with:
           name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
           path: ./wheelhouse/*.whl
+
+  publish-to-testpypi:
+    name: publish python 🐍 distribution 📦 to testpypi
+    runs-on: ubuntu-22.04
+    needs:
+      - build_wheels
+
+    environment:
+      name: deploy-pypi
+      url: https://test.pypi.org/p/dgtal-test
+
+    permissions:
+      id-token: write  # important: mandatory for trusted publishing
+
+    steps:
+    - name: download all the dists
+      uses: actions/download-artifact@v4
+      with:
+        path: dist/
+        pattern: cibw-wheels-*
+        merge-multiple: true
+
+    - name: publish distribution 📦 to testpypi
+      uses: pypa/gh-action-pypi-publish@release/v1
+      
+
