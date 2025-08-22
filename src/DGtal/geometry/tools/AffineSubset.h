@@ -118,6 +118,7 @@ namespace DGtal
           Point v = X[ i ] - X[ 0 ];
           if ( addIfIndependent( basis, v, tolerance ) )
             chosen.push_back( i );
+          if ( chosen.size() > dimension ) break;
         }
       return chosen;
     }
@@ -127,14 +128,20 @@ namespace DGtal
     bool addIfIndependent( Points& basis, const Point& v, const double tolerance )
     {
       Point w( v );
-      for ( const auto& b : basis ) reduceVector( w, b );
+      for ( const auto& b : basis ) reduceVector( w, b, tolerance );
       Scalar x = w.normInfinity();
       if ( isNonZero( x, tolerance ) )
         {
-          // std::cout << "w=" << w << " |w|_1=" << x << "\n";
+          // Useful to reduce the norm of vectors for lattice vectors
+          // and necessary for real vectors so that `tolerance` keeps
+          // the same meaning.
+          normalizeVector( w, x ); 
+          // std::cout << "w=" << w << " |w|_1=" << x << " tol=" << tolerance << std::endl;
           basis.push_back( w );
           return true;
         }
+      // else
+      //   std::cout << "w=" << w << " |w|_1=" << x << " tol=" << tolerance << std::endl;
       return false;
     }
     
@@ -144,6 +151,11 @@ namespace DGtal
     void reduceVector( Point& w, const Point& b, const double tolerance )
     {
       Size n = w.size();
+      // // Find index of greatest non null pivot in b in absolute value.
+      // Size lead = 0;
+      // for ( Size j = 1; j < n; j++)
+      //   if ( isAbsGreater( b[j], b[lead] ) ) { lead = j; }
+      // if ( ! isNonZero( b[ lead ], tolerance ) ) return;
       // Find index of first non null pivot in b.
       Size lead = n;
       for ( Size j = 0; j < n; j++)
@@ -196,6 +208,59 @@ namespace DGtal
     {
       return ( x > tol ) || ( x < -tol );
     }
+
+    template <typename TInteger>
+    static
+    bool isAbsGreater( TInteger x, TInteger y )
+    {
+      return std::abs( x ) > std::abs( y );
+    }
+    
+    static
+    bool isAbsGreater( float x, float y )
+    {
+      return std::fabs( x ) > std::fabs( y );      
+    }
+    
+    static
+    bool isAbsGreater( double x, double y )
+    {
+      return std::fabs( x ) > std::fabs( y );      
+    }
+
+    static void normalizeVector( Point& w, int32_t )
+    {
+      Dimension i = 0;
+      while ( i < dimension && w[ i ] == 0 ) i++;
+      if ( i == dimension ) return;
+      int32_t g = std::abs( w[ i ] );
+      for ( ; i < dimension; i++ )
+        g = IntegerComputer< int32_t >::staticGcd( g, std::abs( w[ i ] ) );
+      w /= g;
+    }
+    static void normalizeVector( Point& w , int64_t )
+    {
+      Dimension i = 0;
+      while ( i < dimension && w[ i ] == 0 ) i++;
+      if ( i == dimension ) return;
+      int64_t g = std::abs( w[ i ] );
+      for ( ; i < dimension; i++ )
+        g = IntegerComputer< int32_t >::staticGcd( g, std::abs( w[ i ] ) );
+      w /= g;
+    }
+
+    static
+    void normalizeVector( Point& w, double x )
+    {
+      w /= x;
+    }
+
+    static
+    void normalizeVector( Point& w, float x )
+    {
+      w /= x;
+    }
+    
     /// @}
 
   };
