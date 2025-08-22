@@ -20,7 +20,7 @@ inputs:
     default: ""
 
   test:
-    description: "Wether to run tests or not. This requires the proper build-config and environment variable TESTBLACKLIST to be set."
+    description: "Whether to run tests or not. This requires the proper build-config and environment variable TESTBLACKLIST to be set."
     type: boolean
     default: false
 

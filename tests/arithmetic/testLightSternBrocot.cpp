@@ -76,8 +76,8 @@ bool testReducedFraction()
   typedef typename SB::Fraction Fraction;
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  Integer p = rand() / 10000;
-  Integer q = rand() / 10000;
+  Integer p = ( rand() % 10000 ) + 1;
+  Integer q = ( rand() % 10000 ) + 1;
   trace.beginBlock ( "Testing block: reduced fraction." );
   IntegerComputer<Integer> ic;
   Integer g = ic.gcd( p, q );
@@ -127,8 +127,8 @@ bool testInitFraction()
   typedef typename SB::Fraction Fraction;
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  Integer p = rand() / 10000;
-  Integer q = rand() / 10000;
+  Integer p = ( rand() % 10000 ) + 1;
+  Integer q = ( rand() % 10000 ) + 1;
   trace.beginBlock ( "Testing block: init fraction." );
   IntegerComputer<Integer> ic;
   Integer g = ic.gcd( p, q );
@@ -160,8 +160,8 @@ bool testPattern()
   typedef typename MyPattern::Vector2I Vector2I;
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  Integer p = rand() / 10000;
-  Integer q = rand() / 10000;
+  Integer p = ( rand() % 10000 ) + 1;
+  Integer q = ( rand() % 10000 ) + 1;
   MyPattern pattern( p*6, q*6 );
   trace.info() << pattern << endl;
 
