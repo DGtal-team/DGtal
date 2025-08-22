@@ -7,17 +7,12 @@ on:
     branches: [ CIPython ]
 
 jobs:
-  build_sdists:
+  build_wheels:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macOS-latest, windows-latest]
-        BUILD_TYPE: [ Release ]
-        python-version: ["3.11"] # A 
-        exclude:
-          -  os: windows-latest
-             BUILD_TYPE: Debug
+        os: [windows-latest]
 
     steps: 
       - uses: actions/checkout@v4
@@ -28,7 +23,8 @@ jobs:
       - name: Setup OS 
         uses: ./.github/actions/setup-os
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "3.11" # At least 3.11 for cibuildwheel 3.1.4
+                                 # Note that the tool will build other python versions. 
 
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel==3.1.4
@@ -37,16 +33,18 @@ jobs:
         shell: bash
         if: ${{ runner.os == 'Windows'}}
         run:
-          conan install $DGTAL_PATH --build=missing -s:a compiler.cppstd=20
+          conan install ${{ runner.workspace }} --build=missing -s:a compiler.cppstd=20
 
-      - name: Building wheels (linux / macOS)
+      - name: Building wheels (Windows)
         if: ${{ runner.os == 'Windows' }}
         env:
-          CMAKE_ARGS: -DENABLE_CONAN:BOOL=ON -DCMAKE_TOOLCHAIN_FILE=\"conan_toolchain.cmake\"
+          CMAKE_ARGS: -DCMAKE_BUILD_TYPE:STRING=Release -DENABLE_CONAN:BOOL=ON -DCMAKE_TOOLCHAIN_FILE:STRING=\"conan_toolchain.cmake\"
         run: python -m cibuildwheel --output-dir wheelhouse
 
       - name: Building wheels (linux / macOS)
         if: ${{ runner.os != 'Windows' }}
+        env:
+          CMAKE_ARGS: -DCMAKE_BUILD_TYPE:STRING=Release
         run: python -m cibuildwheel --output-dir wheelhouse
 
       - uses: actions/upload-artifact@v4
