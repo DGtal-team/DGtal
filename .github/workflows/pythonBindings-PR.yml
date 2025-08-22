@@ -1,12 +1,7 @@
-name: CI (linux/macOS/windows), PR
+name: Deploy to pypi
 
-on:
-  workflow_dispatch:
-    inputs:
-      version:
-        description: "Version xx.xx.xx"
+on: workflow_dispatch
 
-        required: true
 jobs:
   build_wheels:
     runs-on: ${{ matrix.os }}
