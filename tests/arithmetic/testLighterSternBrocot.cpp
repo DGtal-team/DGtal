@@ -133,6 +133,7 @@ bool testInitFraction()
   Integer p = ( rand() % 10000 ) + 1;
   Integer q = ( rand() % 10000 ) + 1;
   trace.beginBlock ( "Testing block: init fraction." );
+  trace.info() << "Init p / q = " << p << " / " << q << std::endl;
   IntegerComputer<Integer> ic;
   Integer g = ic.gcd( p, q );
   p /= g;

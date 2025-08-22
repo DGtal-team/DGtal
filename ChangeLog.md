@@ -3,7 +3,7 @@
 ## Changes
 
 - *IO*
-  - Polyscope viewer upgraded from 2.4 to 2.5 ((David Coeurjolly,  [#1796](https://github.com/DGtal-team/DGtal/pull/1796))
+  - Polyscope viewer upgraded from 2.4 to 2.5 (David Coeurjolly,  [#1796](https://github.com/DGtal-team/DGtal/pull/1796)). Reverting to 2.4  due to build issues (David Coeurjolly,  [#1797](https://github.com/DGtal-team/DGtal/pull/1797))
 
 ## Bug fixes
 

@@ -16,4 +16,4 @@ runs:
 
      - name: Install macOS deps
        shell: bash
-       run: brew install boost ninja gmp libomp ccache cgal
+       run: brew install boost ninja libomp ccache cgal
