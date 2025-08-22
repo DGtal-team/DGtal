@@ -53,12 +53,12 @@ install(FILES ${wrap_header_common}
   DESTINATION ${CMAKE_INSTALL_PYTHONINCLUDEDIR}
   COMPONENT dev)
 
-install(FILES deploy/__init__.py
+install(FILES __init__.py
   DESTINATION ${CMAKE_INSTALL_PYTHONLIBDIR}
   COMPONENT runtime
   )
 # Copy deploy/__init__ at configure time
-file(COPY deploy/__init__.py DESTINATION ${CMAKE_BUILD_PYTHONLIBDIR})
+file(COPY __init__.py DESTINATION ${CMAKE_BUILD_PYTHONLIBDIR})
 # Copy at build time
 add_custom_command(
   TARGET _dgtal
