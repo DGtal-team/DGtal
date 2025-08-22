@@ -61,7 +61,7 @@ jobs:
 
     environment:
       name: deploy-pypi
-      url: https://test.pypi.org/p/dgtal-test
+      url: https://test.pypi.org/p/DGtal-test
 
     permissions:
       id-token: write  # important: mandatory for trusted publishing
