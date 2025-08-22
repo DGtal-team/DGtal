@@ -1,10 +1,11 @@
 name: CI (linux/macOS/windows), PR
 
 on:
-  push:
-    branches: [ CIPython ]
-  pull_request:
-    branches: [ CIPython ]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version xx.xx.xx"
+        required: true
 
 jobs:
   build_wheels:
