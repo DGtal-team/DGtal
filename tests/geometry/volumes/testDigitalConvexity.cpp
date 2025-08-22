@@ -310,7 +310,7 @@ SCENARIO( "DigitalConvexity< Z3 > rational fully convex tetrahedra", "[convex_si
   typedef KSpace::Point                    Point;
   typedef DigitalConvexity< KSpace >       DConvexity;
 
-  DConvexity dconv( Point( -1, -1, -1 ), Point( 10, 10, 10 ) );
+  DConvexity dconv( Point( -10, -10, -10 ), Point( 100, 100, 100 ) );
   WHEN( "Computing many tetrahedra in domain (0,0,0)-(4,4,4)." ) {
     const unsigned int nb = 30;
     unsigned int nbsimplex= 0;

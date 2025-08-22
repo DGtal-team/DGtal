@@ -283,7 +283,7 @@ public:
      * @return the point in the source domain  
      */
 
-   TImageContainer::Point sourceDomainPoint (const Point &aPoint) const
+   typename TImageContainer::Point sourceDomainPoint (const Point &aPoint) const
     {
       return  myFD->operator()(aPoint);
     }

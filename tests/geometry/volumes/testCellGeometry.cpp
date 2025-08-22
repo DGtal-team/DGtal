@@ -339,7 +339,7 @@ SCENARIO( "CellGeometry< Z2 > rational intersections",
 
   GIVEN( "A rational simplex P={ Point(0/4,0/4), Point(17/4,8/4), Point(-5/4,15/4) }" ) {
     KSpace K;
-    K.init( Point( -5, -5 ), Point( 10, 10 ), true );
+    K.init( Point( -50, -50 ), Point( 100, 100 ), true );
     std::vector< Point > V = { Point(0,0), Point(17,8), Point(-5,15) };
     Polytope P( 4, V.begin(), V.end() );
     CGeometry intersected_cover( K, 0, 2, false );
@@ -361,7 +361,7 @@ SCENARIO( "CellGeometry< Z2 > rational intersections",
   }
   GIVEN( "A thin rational simplex P={ Point(6/4,6/4), Point(17/4,8/4), Point(-5/4,15/4) }" ) {
     KSpace K;
-    K.init( Point( -5, -5 ), Point( 10, 10 ), true );
+    K.init( Point( -50, -50 ), Point( 100, 100 ), true );
     std::vector< Point > V = { Point(6,6), Point(17,8), Point(-5,15) };
     Polytope P( 4, V.begin(), V.end() );
     CGeometry intersected_cover( K, 0, 2, false );
@@ -395,7 +395,7 @@ SCENARIO( "CellGeometry< Z3 > rational intersections",
 
   GIVEN( "A simplex P={ Point(1/2,0/2,-1/2), Point(7/2,3/2,1/2), Point(-2/2,9/2,3/2), Point(6/2,7/2,10/2) }" ) {
     KSpace K;
-    K.init( Point( -5, -5, -5 ), Point( 10, 10, 10 ), true );
+    K.init( Point( -50, -50, -50 ), Point( 100, 100, 100 ), true );
     CGeometry intersected_cover( K, 0, 3, false );
     Polytope P = { Point(2,2,2),
                    Point(1,0,-1), Point(7,3,1), Point(-2,9,3), Point(6,7,10) };
