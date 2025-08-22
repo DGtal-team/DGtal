@@ -130,8 +130,8 @@ bool testInitFraction()
   typedef typename SB::Fraction Fraction;
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  Integer p = rand() / 10000;
-  Integer q = rand() / 10000;
+  Integer p = Integer(rand()) / Integer(10000);
+  Integer q = Integer(rand()) / Integer(10000);
   trace.beginBlock ( "Testing block: init fraction." );
   IntegerComputer<Integer> ic;
   Integer g = ic.gcd( p, q );
