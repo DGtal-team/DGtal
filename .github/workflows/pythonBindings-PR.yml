@@ -33,7 +33,8 @@ jobs:
         shell: bash
         if: ${{ runner.os == 'Windows'}}
         run:
-          conan install ${{ runner.workspace }} --build=missing -s:a compiler.cppstd=20
+          ls . 
+          conan install ${{ runner.workspace }}/DGtal --build=missing -s:a compiler.cppstd=20
 
       - name: Building wheels (Windows)
         if: ${{ runner.os == 'Windows' }}
