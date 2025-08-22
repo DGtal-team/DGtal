@@ -45,3 +45,6 @@ cmake.args = [
 [tool.cibuildwheel]
 # Necessary to see build output from the actual compilation
 build-verbosity = 1
+
+[tool.cibuildwheel.windows]
+archs = ["auto64"]
