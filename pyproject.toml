@@ -1,0 +1,55 @@
+[build-system]
+requires = ["scikit-build-core"]
+build-backend = "scikit_build_core.build"
+
+[project]
+name = "DGtal"
+version = "2.0.0"
+description = "DGtal is an open-source, cross-platform library providing Digital Geometry Tools and Algorithm"
+
+authors = [
+    { name = "David Coeurjolly", email = "david.coeurjolly@cnrs.fr" }
+]
+classifiers = [
+    "License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)",
+    "Programming Language :: Python",
+    "Programming Language :: C++",
+    "Development Status :: 5 - Production/Stable"
+    "Intended Audience :: Developers",
+    "Intended Audience :: Education",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+    "Topic :: Software Development :: Libraries",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX",
+    "Operating System :: Unix",
+    "Operating System :: MacOS"
+]
+
+[project.urls]
+Homepage = "https://www.dgtal.org/"
+
+[tool.scikit-build]
+sdist.include = [
+    "tables/**.zip"
+]
+cmake.args = [
+    '-DCMAKE_BUILD_TYPE=Release',
+    '-DDGTAL_BUILD_SHARED_LIBS:BOOL=OFF',
+    '-DDGTAL_BUILD_EXAMPLES:BOOL=OFF',
+    '-DDGTAL_BUILD_TESTS:BOOL=OFF',
+    '-DDGTAL_WRAP_PYTHON:BOOL=ON'
+]
+
+[tool.cibuildwheel]
+# Necessary to see build output from the actual compilation
+build-verbosity = 1
+# TODO: Remove both lines. This is debug to speed up ci
+build = "cp311-*"
+archs = ["auto64"]
+
+
+[tool.cibuildwheel.windows]
+# CIBuildWheel uses a 64 bit compiler on windows
+archs = ["auto64"]
