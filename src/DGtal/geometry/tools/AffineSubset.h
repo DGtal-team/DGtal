@@ -51,6 +51,194 @@
 
 namespace DGtal
 {
+  // Forward declaration of AffineSubset (needed for friend declaration).
+  template < typename T > struct AffineSubset;
+
+  namespace detail {
+
+    /////////////////////////////////////////////////////////////////////////////
+    // template class AffineSubsetPointOperations
+
+    /// Description of template class 'AffineSubsetPointOperations' <p>
+    /// \brief Aim: Internal class used by AffineSubset to
+    /// differentiate operations on lattice points and operations on
+    /// points with floating-point coordinates. 
+    ///
+    /// @tparam TScalar any integer or floating point number type.
+    template < typename TPoint >
+    struct AffineSubsetPointOperations
+    {
+      template <typename T> friend struct DGtal::AffineSubset;
+      typedef TPoint                     Point;
+      typedef typename Point::Coordinate Scalar;
+      /// In the generic class, the type scalar should be an integral type.
+      typedef Scalar Integer; 
+
+      // ----------------------- internal services --------------------------
+    private:
+      /// @name static internal services
+      /// @{
+
+      /// Generic method to normalize a vector.
+      /// By default, assume it is an integral type.
+      template <typename TInteger >
+      static void normalizeVector( Point& w, TInteger )
+      {
+        DGtal::Dimension i = 0;
+        while ( i < Point::dimension && w[ i ] == 0 ) i++;
+        if ( i == Point::dimension ) return;
+        TInteger g = std::abs( w[ i ] );
+        for ( ; i < Point::dimension; i++ )
+          g = DGtal::IntegerComputer< TInteger >::staticGcd( g, std::abs( w[ i ] ) );
+        w /= g;
+      }
+
+      /// Specialized version to normalize a vector in case of double
+      /// value parameter.
+      static
+      void normalizeVector( Point& w, double x )
+      {
+        w /= x;
+      }
+      
+      /// Specialized version to normalize a vector in case of float
+      /// value parameter.
+      static
+      void normalizeVector( Point& w, float x )
+      {
+        w /= x;
+      }
+      
+    }; // end of class AffineSubsetPointOperations
+
+    
+
+    /////////////////////////////////////////////////////////////////////////////
+    // template class AffineSubsetScalarOperations
+
+    /// Description of template class 'AffineSubsetScalarOperations'
+    /// <p> \brief Aim: Internal class used by AffineSubset to
+    /// differentiate operations on point coordinates, which may be
+    /// integer or floating-point numbers.. The generic class assume
+    /// integer coordinates, while there are two specializations for
+    /// float and double.
+    ///
+    /// @tparam TScalar any integer or floating point number type.
+    template < typename TScalar >
+    struct AffineSubsetScalarOperations
+    {
+      template <typename T> friend struct DGtal::AffineSubset;
+
+      typedef TScalar Scalar;
+      /// In the generic class, the type scalar should be an integral type.
+      typedef Scalar Integer; 
+      
+      // ----------------------- internal services --------------------------
+    private:
+      /// @name static internal services
+      /// @{
+
+      /// @param[in] a any integer number
+      /// @param[in] b any integer number
+      ///
+      /// @return the pair ( b/g, a/g ), where g is gcd(a,b), which
+      /// allows to cancel a component in a Gauss pivoting algorithm.
+      static
+      std::pair< Integer, Integer > getMultipliers( Integer a, Integer b )
+      {
+        Integer g = IntegerComputer< Integer >::staticGcd( std::abs( a ), std::abs( b ) );
+        return std::make_pair( b / g, a / g );
+      }
+
+      /// @param[in] x any integer number
+      ///
+      /// @return 'true' iff x is non zero.
+      static
+      bool isNonZero( Integer x, double )
+      {
+        return x != Integer( 0 );
+      }
+
+    }; // end of class AffineSubsetScalarOperations
+
+    /// Description of template class 'AffineSubsetScalarOperations' <p>
+    /// \brief Aim: Internal class used by AffineSubset to
+    /// differentiate operations on lattice points and operations on
+    /// points with floating-point coordinates. This specialization
+    /// assume double for coordinates.
+    template <>
+    struct AffineSubsetScalarOperations< double >
+    {
+      template <typename T> friend struct DGtal::AffineSubset;
+    
+      /// @param[in] a any number
+      /// @param[in] b any number
+      ///
+      /// @return the pair ( b, a ), which allows to cancel a
+      /// component in a Gauss pivoting algorithm.
+      static
+      std::pair< double, double > getMultipliers( double a, double b )
+      {
+        return std::make_pair( b, a );
+      }
+
+      /// @param[in] x any  number
+      ///
+      /// @param[in] tol the accepted tolerance value below which the
+      /// number is considered null (typically 1e-12).
+      ///
+      /// @return 'true' iff x is non zero.
+      static
+      bool isNonZero( double x, double tol )
+      {
+        return ( x > tol ) || ( x < -tol );
+      }
+
+    }; // end of class AffineSubsetScalarOperations< double >
+
+    /// Description of template class 'AffineSubsetScalarOperations' <p>
+    /// \brief Aim: Internal class used by AffineSubset to
+    /// differentiate operations on lattice points and operations on
+    /// points with floating-point coordinates. This specialization
+    /// assume float for coordinates.
+    template <>
+    struct AffineSubsetScalarOperations< float >
+    {
+      template <typename T> friend struct DGtal::AffineSubset;
+    
+      /// @param[in] a any number
+      /// @param[in] b any number
+      ///
+      /// @return the pair ( b, a ), which allows to cancel a
+      /// component in a Gauss pivoting algorithm.
+      static
+      std::pair< float, float > getMultipliers( float a, float b )
+      {
+        return std::make_pair( b, a );
+      }
+
+      /// @param[in] x any  number
+      ///
+      /// @param[in] tol the accepted tolerance value below which the
+      /// number is considered null (typically 1e-12).
+      ///
+      /// @return 'true' iff x is non zero.
+      static
+      bool isNonZero( float x, double tol )
+      {
+        const double dx = double(x);
+        return (dx > tol) || ( dx < -tol );
+      }
+      
+    }; // end of class AffineSubsetScalarOperations< float >
+    
+  } // namespace detail
+
+} // namespace DGtal
+
+
+namespace DGtal
+{
   /////////////////////////////////////////////////////////////////////////////
   // template class AffineSubset
 
@@ -79,7 +267,9 @@ namespace DGtal
     typedef std::vector< Point >       Points; ///< type for range of points.
     typedef std::vector< Size >        Sizes;  ///< type for range of sizes.
     static const Size  dimension  = Point::dimension;
-
+    typedef DGtal::detail::AffineSubsetPointOperations< Point >   PointOps;
+    typedef DGtal::detail::AffineSubsetScalarOperations< Scalar > ScalarOps;
+    
     // ----------------------- standard services --------------------------
   public:
     /// @name static affine services
@@ -89,7 +279,7 @@ namespace DGtal
     /// its spanned affine subspace.
     ///
     /// @param X the range of input points (may be lattice points or not).
-    /// @param tolerance the accepted 1-norm below which the vector is
+    /// @param tolerance the accepted oo-norm below which the vector is
     /// null (used only for points with float/double coordinates).
     /// @return the affine dimension of \a X
     /// @param X the
@@ -103,7 +293,7 @@ namespace DGtal
     /// that form an affine basis of \a X.
     ///
     /// @param X the range of input points (may be lattice points or not).
-    /// @param tolerance the accepted 1-norm below which the vector is
+    /// @param tolerance the accepted oo-norm below which the vector is
     /// null (used only for points with float/double coordinates).
     /// @return a subset of these points as a range of indices.
     ///
@@ -134,7 +324,7 @@ namespace DGtal
     /// vectors forming an affine basis containing \a X.
     ///
     /// @param X the range of input points (may be lattice points or not).
-    /// @param tolerance the accepted 1-norm below which the vector is
+    /// @param tolerance the accepted oo-norm below which the vector is
     /// null (used only for points with float/double coordinates).
     /// @return a point and a range of vectors forming an affine basis containing \a X.
     ///
@@ -151,12 +341,17 @@ namespace DGtal
 
     /// @}
 
-    
+    // ----------------------- specific services --------------------------
+  public:
+    /// @name static specific services
+    /// (Used internally)
+    /// @{
+
     /// Reduces the vector \a v on the (partial or not) basis of vectors \a basis.
     ///
     /// @param v any vector
     /// @param basis a range of vectors forming a (partial or not) basis of the space.
-    /// @param tolerance the accepted 1-norm below which the vector is
+    /// @param tolerance the accepted oo-norm below which the vector is
     /// null (used only for points with float/double coordinates).
     ///
     /// @return the part of \a v that cannot be expressed as a linear
@@ -178,9 +373,10 @@ namespace DGtal
     ///
     /// @param[in,out] basis a range of vectors forming a (partial or
     /// not) basis of the space.
+    ///
     /// @param v any vector.
     ///
-    /// @param tolerance the accepted 1-norm below which the vector is
+    /// @param tolerance the accepted oo-norm below which the vector is
     /// null (used only for points with float/double coordinates).
     ///
     /// @return 'true' iff the vector \a v was not a linear
@@ -196,12 +392,12 @@ namespace DGtal
     {
       Point        w = reductionOnBasis( v, basis, tolerance );
       const Scalar x = w.normInfinity(); 
-      if ( isNonZero( x, tolerance ) )
+      if ( ScalarOps::isNonZero( x, tolerance ) )
         {
           // Useful to reduce the norm of vectors for lattice vectors
           // and necessary for real vectors so that `tolerance` keeps
           // the same meaning.
-          normalizeVector( w, x ); 
+          PointOps::normalizeVector( w, x ); 
           // std::cout << "YES w=" << w << " |w|_1=" << x << " tol=" << tolerance << std::endl;
           basis.push_back( w );
           return true;
@@ -211,8 +407,14 @@ namespace DGtal
       return false;
     }
     
-    /// Reduces vector \a w by a pivot vector \a b
-    /// @param[in,out] w a 
+    /// Reduces vector \a w by the vector \a b
+    ///
+    /// @param[in,out] w any vector
+    /// @param[in] b a non-null vector of the current basis.
+    /// @param[in] tolerance the accepted oo-norm below which the vector is
+    /// null (used only for points with float/double coordinates).
+    ///
+    /// @note This reduction is an elementary Gauss elimination.
     static
     void reduceVector( Point& w, const Point& b, const double tolerance )
     {
@@ -220,109 +422,18 @@ namespace DGtal
       // Find index of first non null pivot in b.
       Size lead = n;
       for ( Size j = 0; j < n; j++)
-        if ( isNonZero( b[j], tolerance ) ) { lead = j; break; }
+        if ( ScalarOps::isNonZero( b[j], tolerance ) ) { lead = j; break; }
       if ( lead == n ) return; // b is null vector
 
       Scalar mul_w, mul_b;
-      std::tie( mul_w, mul_b ) = getMultipliers( w[ lead ], b[ lead ] );
+      std::tie( mul_w, mul_b ) = ScalarOps::getMultipliers( w[ lead ], b[ lead ] );
       
       for (Size j = 0; j < n; j++) 
         w[j] = mul_w * w[j] - mul_b * b[j];
     }
+
+    /// @}
     
-    template <typename TInteger>
-    static
-    std::pair< TInteger, TInteger > getMultipliers( TInteger a, TInteger b )
-    {
-      TInteger g = IntegerComputer< TInteger >::staticGcd( std::abs( a ), std::abs( b ) );
-      return std::make_pair( b / g, a / g );
-    }
-
-    static
-    std::pair< double, double > getMultipliers( double a, double b )
-    {
-      return std::make_pair( b, a );
-    }
-
-    static
-    std::pair< float, float > getMultipliers( float a, float b )
-    {
-      return std::make_pair( b, a );
-    }
-
-    template <typename TInteger>
-    static
-    bool isNonZero( TInteger x, double )
-    {
-      return x != TInteger( 0 );
-    }
-    
-    static
-    bool isNonZero( float x, double tol )
-    {
-      const double dx = double(x);
-      return (dx > tol) || ( dx < -tol );
-    }
-    
-    static
-    bool isNonZero( double x, double tol )
-    {
-      return ( x > tol ) || ( x < -tol );
-    }
-
-    template <typename TInteger>
-    static
-    bool isAbsGreater( TInteger x, TInteger y )
-    {
-      return std::abs( x ) > std::abs( y );
-    }
-    
-    static
-    bool isAbsGreater( float x, float y )
-    {
-      return std::fabs( x ) > std::fabs( y );      
-    }
-    
-    static
-    bool isAbsGreater( double x, double y )
-    {
-      return std::fabs( x ) > std::fabs( y );      
-    }
-
-    static void normalizeVector( Point& w, int32_t )
-    {
-      Dimension i = 0;
-      while ( i < dimension && w[ i ] == 0 ) i++;
-      if ( i == dimension ) return;
-      int32_t g = std::abs( w[ i ] );
-      for ( ; i < dimension; i++ )
-        g = IntegerComputer< int32_t >::staticGcd( g, std::abs( w[ i ] ) );
-      w /= g;
-    }
-    static void normalizeVector( Point& w , int64_t )
-    {
-      Dimension i = 0;
-      while ( i < dimension && w[ i ] == 0 ) i++;
-      if ( i == dimension ) return;
-      int64_t g = std::abs( w[ i ] );
-      for ( ; i < dimension; i++ )
-        g = IntegerComputer< int32_t >::staticGcd( g, std::abs( w[ i ] ) );
-      w /= g;
-    }
-
-    static
-    void normalizeVector( Point& w, double x )
-    {
-      w /= x;
-    }
-
-    static
-    void normalizeVector( Point& w, float x )
-    {
-      w /= x;
-    }
-    
-
   };
 
 } // namespace DGtal
