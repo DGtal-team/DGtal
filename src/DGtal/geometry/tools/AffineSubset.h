@@ -411,12 +411,9 @@ namespace DGtal
           // and necessary for real vectors so that `tolerance` keeps
           // the same meaning.
           PointOps::normalizeVector( w, x ); 
-          // std::cout << "YES w=" << w << " |w|_1=" << x << " tol=" << tolerance << std::endl;
           basis.push_back( w );
           return true;
         }
-      // else
-      //   std::cout << "NO w=" << w << " |w|_1=" << x << " tol=" << tolerance << std::endl;
       return false;
     }
     
