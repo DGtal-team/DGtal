@@ -40,13 +40,8 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
-#include <iostream>
-#include <string>
 #include <vector>
-#include <queue>
-#include <set>
 #include "DGtal/base/Common.h"
-#include "DGtal/base/Clock.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
 
 namespace DGtal
@@ -258,6 +253,24 @@ namespace DGtal
   ///
   /// @tparam TPoint the type for points, which may be lattice points
   /// or points with floating-point coordinates.
+  ///
+  /// @code
+  /// #include <iostream>
+  /// #include <vector>
+  /// #include "DGtal/base/Common.h"
+  /// #include "DGtal/kernel/SpaceND.h"
+  /// #include "DGtal/geometry/tools/AffineSubset.h"
+  /// ...
+  /// typedef SpaceND< 3, int >                Space;      
+  /// typedef Space::Point                     Point;
+  /// typedef AffineSubset< Point >            Affine;
+  /// std::vector<Point> X = { Point{1, 0, 0}, Point{2, 1, 0}, Point{3, 2, 0}, Point{3, 1, 1}, Point{5, 2, 2}, Point{4, 2, 1} };
+  /// auto I = Affine::affineSubset( X ); /// 3 points with indices (0,1,3)
+  /// auto B = Affine::affineBasis( X ); /// (1,0,0) and 2 basis vectors (1,1,0) and (2,1,1).
+  /// auto d = Affine::affineDimension( X ); /// 2
+  /// @endcode
+  ///
+  /// @see testAffineSubset.cpp
   template < typename TPoint >
   struct AffineSubset
   {
