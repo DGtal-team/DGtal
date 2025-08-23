@@ -63,7 +63,11 @@ namespace DGtal
   /// @note Useful for algorithms that requires the exact
   /// dimensionality of a set of points before processing, like
   /// QuickHull.
-  
+  ///
+  /// @warning You can use this class to test the dimensionality of a
+  /// set of points with floating point coordinates, but this approach
+  /// is less robust than singular value decomposition.
+  ///
   /// @tparam TPoint the type for points, which may be lattice points
   /// or points with floating-point coordinates.
   template < typename TPoint >
@@ -78,14 +82,15 @@ namespace DGtal
 
     // ----------------------- standard services --------------------------
   public:
-    /// @name static services
+    /// @name static affine services
     /// @{
 
     /// Given a range of points \a X, returns the affine dimension of
     /// its spanned affine subspace.
     ///
     /// @param X the range of input points (may be lattice points or not).
-    /// @param tolerance the accepted 1-norm below which the vector is null (used only for points with float/double coordinates).
+    /// @param tolerance the accepted 1-norm below which the vector is
+    /// null (used only for points with float/double coordinates).
     /// @return the affine dimension of \a X
     /// @param X the
     static
@@ -98,11 +103,13 @@ namespace DGtal
     /// that form an affine basis of \a X.
     ///
     /// @param X the range of input points (may be lattice points or not).
-    /// @param tolerance the accepted 1-norm below which the vector is null (used only for points with float/double coordinates).
+    /// @param tolerance the accepted 1-norm below which the vector is
+    /// null (used only for points with float/double coordinates).
     /// @return a subset of these points as a range of indices.
+    ///
     /// @note Complexity is O( m n^2 ), where m=#X and n=dimension.
     static
-    std::vector< Size > affineBasis( const Points& X, const double tolerance = 1e-12 )
+    std::vector< Size > affineSubset( const Points& X, const double tolerance = 1e-12 )
     {
       Size m = X.size();
       // Process trivial cases.
@@ -122,26 +129,85 @@ namespace DGtal
         }
       return chosen;
     }
-    
-    // Ajoute v à la base si indépendant (entier)
+
+    /// Given a range of points \a X, returns a point and a range of
+    /// vectors forming an affine basis containing \a X.
+    ///
+    /// @param X the range of input points (may be lattice points or not).
+    /// @param tolerance the accepted 1-norm below which the vector is
+    /// null (used only for points with float/double coordinates).
+    /// @return a point and a range of vectors forming an affine basis containing \a X.
+    ///
+    /// @note Complexity is O( m n^2 ), where m=#X and n=dimension.
     static
-    bool addIfIndependent( Points& basis, const Point& v, const double tolerance )
+    std::pair< Point, Points > affineBasis( const Points& X, const double tolerance = 1e-12 )
+    {
+      std::vector< Size > indices = affineSubset( X, tolerance );
+      Points basis( indices.size() - 1 );
+      for ( Size i = 0; i < basis.size(); i++ )
+        basis[ i ] = X[ indices[ i+1 ] ] - X[ indices[ 0 ] ];
+      return std::make_pair( X[ indices[ 0 ] ], basis );
+    }
+
+    /// @}
+
+    
+    /// Reduces the vector \a v on the (partial or not) basis of vectors \a basis.
+    ///
+    /// @param v any vector
+    /// @param basis a range of vectors forming a (partial or not) basis of the space.
+    /// @param tolerance the accepted 1-norm below which the vector is
+    /// null (used only for points with float/double coordinates).
+    ///
+    /// @return the part of \a v that cannot be expressed as a linear
+    /// combination of vectors of \a basis, and hence a null vector if
+    /// \a v is a linear combination of the vectors of the basis.
+    static
+    Point reductionOnBasis( const Point& v, const Points& basis,
+                            const double tolerance )
     {
       Point w( v );
       for ( const auto& b : basis ) reduceVector( w, b, tolerance );
-      Scalar x = w.normInfinity();
+      return w;
+    }
+
+    /// Checks if the vector \a v can be decomposed as a linear
+    /// combination of the vectors of the basis. If yes, returns
+    /// 'false', otherwise returns 'true' and adds the obtained
+    /// reduced vector to the basis after normalizing it.
+    ///
+    /// @param[in,out] basis a range of vectors forming a (partial or
+    /// not) basis of the space.
+    /// @param v any vector.
+    ///
+    /// @param tolerance the accepted 1-norm below which the vector is
+    /// null (used only for points with float/double coordinates).
+    ///
+    /// @return 'true' iff the vector \a v was not a linear
+    /// combination of the vectors of the basis and the basis is then
+    /// enriched by the direction indicated by \a v, otherwise returns 'false'.
+    ///
+    /// @note If the points have integer coordinates, the
+    /// normalization of the new basis vector is its reduction by its
+    /// gcd, otherwise the maximum absolute component value is
+    /// normalized to 1.0.
+    static
+    bool addIfIndependent( Points& basis, const Point& v, const double tolerance )
+    {
+      Point        w = reductionOnBasis( v, basis, tolerance );
+      const Scalar x = w.normInfinity(); 
       if ( isNonZero( x, tolerance ) )
         {
           // Useful to reduce the norm of vectors for lattice vectors
           // and necessary for real vectors so that `tolerance` keeps
           // the same meaning.
           normalizeVector( w, x ); 
-          // std::cout << "w=" << w << " |w|_1=" << x << " tol=" << tolerance << std::endl;
+          // std::cout << "YES w=" << w << " |w|_1=" << x << " tol=" << tolerance << std::endl;
           basis.push_back( w );
           return true;
         }
       // else
-      //   std::cout << "w=" << w << " |w|_1=" << x << " tol=" << tolerance << std::endl;
+      //   std::cout << "NO w=" << w << " |w|_1=" << x << " tol=" << tolerance << std::endl;
       return false;
     }
     
@@ -151,11 +217,6 @@ namespace DGtal
     void reduceVector( Point& w, const Point& b, const double tolerance )
     {
       Size n = w.size();
-      // // Find index of greatest non null pivot in b in absolute value.
-      // Size lead = 0;
-      // for ( Size j = 1; j < n; j++)
-      //   if ( isAbsGreater( b[j], b[lead] ) ) { lead = j; }
-      // if ( ! isNonZero( b[ lead ], tolerance ) ) return;
       // Find index of first non null pivot in b.
       Size lead = n;
       for ( Size j = 0; j < n; j++)
@@ -261,7 +322,6 @@ namespace DGtal
       w /= x;
     }
     
-    /// @}
 
   };
 
