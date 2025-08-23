@@ -303,14 +303,15 @@ namespace DGtal
     }
     
     /// Given a range of points \a X, returns a subset of these points
-    /// that form an affine basis of \a X.
+    /// that form an affine basis of \a X. Equivalently it is a
+    /// simplex whose affine space spans all the points of \a X.
     ///
     /// @param X the range of input points (may be lattice points or not).
     /// @param tolerance the accepted oo-norm below which the vector is
     /// null (used only for points with float/double coordinates).
     /// @return a subset of these points as a range of indices.
     ///
-    /// @note Complexity is O( m n^2 ), where m=#X and n=dimension.
+    /// @note Complexity is \f$O( m n^2 )\f$, where m=#X and n=dimension.
     static
     std::vector< Size > affineSubset( const Points& X, const double tolerance = 1e-12 )
     {
