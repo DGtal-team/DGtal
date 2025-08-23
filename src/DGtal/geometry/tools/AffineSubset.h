@@ -299,7 +299,7 @@ namespace DGtal
     static
     DGtal::int64_t affineDimension( const Points& X, const double tolerance = 1e-12 )
     {
-      return DGtal::int64_t( affineBasis( X, tolerance ).size() ) - 1;
+      return DGtal::int64_t( affineSubset( X, tolerance ).size() ) - 1;
     }
     
     /// Given a range of points \a X, returns a subset of these points

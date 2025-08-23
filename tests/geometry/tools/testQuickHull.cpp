@@ -267,13 +267,31 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 4 > > unit tests", "[quickhull][
 
 SCENARIO( "QuickHull< ConvexHullIntegralKernel< 2 > > dimensionality tests", "[quickhull][integral_kernel][2d][not_full_dimensional]" )
 {
-  typedef ConvexHullIntegralKernel< 4 >    QHKernel;
+  typedef ConvexHullIntegralKernel< 2 >    QHKernel;
   typedef QuickHull< QHKernel >            QHull;
   typedef SpaceND< 2, int >                Space;      
   typedef Space::Point                     Point;
   typedef AffineSubset< Point >            Affine;
   
   std::vector< Point > V = { Point{ 3, 1 } };
+
+  GIVEN( "Given 100 aligned points" ) {
+    auto X = makeRandomLatticePointsFromDirVectors( 100, V );
+    auto I = Affine::affineSubset( X );
+    auto d = Affine::affineDimension( X );
+    QHull hull;
+    hull.setInput( V, false );
+    bool ok = hull.computeConvexHull();
+    auto status = hull.status();
+    THEN( "AffineSubset should detect not full dimensionality" ) {
+      CAPTURE( d );
+      REQUIRE( d == 1 );
+    }      
+    THEN( "QuickHull should detect not full dimensionality" ) {
+      REQUIRE( status == QHull::Status::NotFullDimensional );
+    }
+  }
+  
   GIVEN( "Given 100 aligned points + another not aligned" ) {
     auto X = makeRandomLatticePointsFromDirVectors( 100, V );
     X.push_back( X[ 0 ] + Point(-1,1) );
