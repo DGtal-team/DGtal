@@ -266,12 +266,11 @@ SCENARIO( "AffineSubset< Point4i > unit tests", "[affine_subset][4i]" )
 {
   typedef SpaceND< 4, int >                Space;      
   typedef Space::Point                     Point;
-  typedef AffineSubset< Point >            Affine;
   GIVEN( "Given X a set of randomly generated points by adding linear combinations of 1 lattice vectors" ) {
     std::vector< Point > V = { Point{ 3, 1, 0, 2 } };
     auto X = makeRandomLatticePointsFromDirVectors( 20, V );
-    auto I = Affine::affineSubset( X );
-    auto B = Affine::affineBasis( X );
+    auto I = computeAffineSubset( X );
+    auto B = computeAffineBasis( X );
     THEN( "It has an affine basis of 2 points" ) {
       CAPTURE( I );
       REQUIRE( I.size() == 2 );
@@ -284,8 +283,8 @@ SCENARIO( "AffineSubset< Point4i > unit tests", "[affine_subset][4i]" )
   GIVEN( "Given X a set of randomly generated points by adding linear combinations of 2 lattice vectors" ) {
     std::vector< Point > V = { Point{ 3, 1, 0, 2 }, Point{ -2, -1, 2, 7 } };
     auto X = makeRandomLatticePointsFromDirVectors( 20, V );
-    auto I = Affine::affineSubset( X );
-    auto B = Affine::affineBasis( X );
+    auto I = computeAffineSubset( X );
+    auto B = computeAffineBasis( X );
     THEN( "It has an affine basis of 3 points" ) {
       CAPTURE( I );
       REQUIRE( I.size() == 3 );
@@ -297,8 +296,8 @@ SCENARIO( "AffineSubset< Point4i > unit tests", "[affine_subset][4i]" )
   GIVEN( "Given X a set of randomly generated points by adding linear combinations of 3 lattice vectors" ) {
     std::vector< Point > V = { Point{ 3, 1, 0, 2 }, Point{ -2, -1, 2, 7 }, Point{ -1, 4, 3, -1  } };
     auto X = makeRandomLatticePointsFromDirVectors( 20, V );
-    auto I = Affine::affineSubset( X );
-    auto B = Affine::affineBasis( X );
+    auto I = computeAffineSubset( X );
+    auto B = computeAffineBasis( X );
     THEN( "It has an affine basis of 4 points" ) {
       CAPTURE( I );
       REQUIRE( I.size() == 4 );
@@ -310,8 +309,8 @@ SCENARIO( "AffineSubset< Point4i > unit tests", "[affine_subset][4i]" )
   GIVEN( "Given X a set of randomly generated points by adding linear combinations of 4 lattice vectors" ) {
     std::vector< Point > V = { Point{ 3, 1, 0, 2 }, Point{ -2, -1, 2, 7 }, Point{ -1, 4, 3, -1 }, Point{ 2, 1, -3, -4 } };
     auto X = makeRandomLatticePointsFromDirVectors( 20, V );
-    auto I = Affine::affineSubset( X );
-    auto B = Affine::affineBasis( X, 1e-10 );
+    auto I = computeAffineSubset( X );
+    auto B = computeAffineBasis( X, 1e-10 );
     THEN( "It has an affine basis of 5 points" ) {
       CAPTURE( I );
       REQUIRE( I.size() == 5 );
@@ -328,12 +327,11 @@ SCENARIO( "AffineSubset< Point4d > unit tests", "[affine_subset][4d]" )
   // max norm of rejected vectors are 2e-12.
   typedef SpaceND< 4, int >                Space;      
   typedef Space::RealPoint                 Point;
-  typedef AffineSubset< Point >            Affine;
   GIVEN( "Given X a set of randomly generated points by adding linear combinations of 1 lattice vectors" ) {
     std::vector< Point > V = { Point{ 3, 1, 0, 2 } };
     auto X = makeRandomRealPointsFromDirVectors( 20, V );
-    auto I = Affine::affineSubset( X, 1e-10 );
-    auto B = Affine::affineBasis( X, 1e-10 );
+    auto I = computeAffineSubset( X, 1e-10 );
+    auto B = computeAffineBasis( X, 1e-10 );
     THEN( "It has an affine subset of 2 points" ) {
       CAPTURE( I );
       REQUIRE( I.size() == 2 );
@@ -345,8 +343,8 @@ SCENARIO( "AffineSubset< Point4d > unit tests", "[affine_subset][4d]" )
   GIVEN( "Given X a set of randomly generated points by adding linear combinations of 2 lattice vectors" ) {
     std::vector< Point > V = { Point{ 3, 1, 0, 2 }, Point{ -2, -1, 2, 7 } };
     auto X = makeRandomRealPointsFromDirVectors( 20, V );
-    auto I = Affine::affineSubset( X, 1e-10 );
-    auto B = Affine::affineBasis( X, 1e-10 );
+    auto I = computeAffineSubset( X, 1e-10 );
+    auto B = computeAffineBasis( X, 1e-10 );
     THEN( "It has an affine subset of 3 points" ) {
       CAPTURE( I );
       REQUIRE( I.size() == 3 );
@@ -358,8 +356,8 @@ SCENARIO( "AffineSubset< Point4d > unit tests", "[affine_subset][4d]" )
   GIVEN( "Given X a set of randomly generated points by adding linear combinations of 3 lattice vectors" ) {
     std::vector< Point > V = { Point{ 3, 1, 0, 2 }, Point{ -2, -1, 2, 7 }, Point{ -1, 4, 3, -1  } };
     auto X = makeRandomRealPointsFromDirVectors( 20, V );
-    auto I = Affine::affineSubset( X, 1e-10 );
-    auto B = Affine::affineBasis( X, 1e-10 );    
+    auto I = computeAffineSubset( X, 1e-10 );
+    auto B = computeAffineBasis( X, 1e-10 );    
     THEN( "It has an affine subset of 4 points" ) {
       CAPTURE( I );
       REQUIRE( I.size() == 4 );
@@ -371,8 +369,8 @@ SCENARIO( "AffineSubset< Point4d > unit tests", "[affine_subset][4d]" )
   GIVEN( "Given X a set of randomly generated points by adding linear combinations of 4 lattice vectors" ) {
     std::vector< Point > V = { Point{ 3, 1, 0, 2 }, Point{ -2, -1, 2, 7 }, Point{ -1, 4, 3, -1 }, Point{ 2, 1, -3, -4 } };
     auto X = makeRandomRealPointsFromDirVectors( 20, V );
-    auto I = Affine::affineSubset( X, 1e-10 );
-    auto B = Affine::affineBasis( X, 1e-10 );    
+    auto I = computeAffineSubset( X, 1e-10 );
+    auto B = computeAffineBasis( X, 1e-10 );    
     THEN( "It has an affine subset of 5 points" ) {
       CAPTURE( I );
       REQUIRE( I.size() == 5 );
