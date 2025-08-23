@@ -86,9 +86,9 @@ makeRandomLatticePointsFromDirVectors( int nb, const vector< Point>& V )
   return P;
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class QuickHull in 2D.
-///////////////////////////////////////////////////////////////////////////////
+// ///////////////////////////////////////////////////////////////////////////////
+// // Functions for testing class QuickHull in 2D.
+// ///////////////////////////////////////////////////////////////////////////////
 
 SCENARIO( "QuickHull< ConvexHullIntegralKernel< 2 > > unit tests", "[quickhull][integral_kernel][2d]" )
 {
@@ -280,7 +280,7 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 2 > > dimensionality tests", "[q
     auto I = Affine::affineSubset( X );
     auto d = Affine::affineDimension( X );
     QHull hull;
-    hull.setInput( V, false );
+    hull.setInput( X, false );
     bool ok = hull.computeConvexHull();
     auto status = hull.status();
     THEN( "AffineSubset should detect not full dimensionality" ) {
@@ -299,7 +299,7 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 2 > > dimensionality tests", "[q
     auto I = Affine::affineSubset( X );
     auto d = Affine::affineDimension( X );
     QHull hull;
-    hull.setInput( V, false );
+    hull.setInput( X, false );
     bool ok = hull.computeConvexHull();
     auto status = hull.status();
     THEN( "AffineSubset should detect full dimensionality" ) {

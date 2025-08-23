@@ -47,6 +47,7 @@
 #include <set>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Clock.h"
+#include "DGtal/geometry/tools/AffineSubset.h"
 #include "DGtal/geometry/tools/QuickHullKernels.h"
 
 namespace DGtal
@@ -1378,8 +1379,17 @@ namespace DGtal
       for ( Index j = 0; j < dimension; ++j ) splx[ j ] = best[ j ];
       const auto     first_H = kernel.compute( points, splx, best.back() );
       auto       best_volume = kernel.volume ( first_H, points[ best.back() ] );
+      // Randomized approach to find full dimensional simplex.
+      //
+      // Let a be the proportion of full dimensional simplices among
+      // all simplices of the input points. Let p be the desired
+      // probability to find a full dimensional simplex after t tries.
+      // Then t >= log(1-p)/log(1-a)
+      // For a=0.25, p=99% we found 16 tries.
+      // For a=0.20, p=99% we found 20 tries.
       const Size     nbtries = std::min( (Size) 10, 1 + nb / 10 );
-      const Size max_nbtries = std::max( (Size) 10, 2 * nb );
+      // const Size max_nbtries = std::max( (Size) 10, 2 * nb );
+      const Size max_nbtries = 20;
       for ( Size i = 0; i < max_nbtries; i++ )
         {
           IndexRange tmp = pickIntegers( dimension + 1, nb );
@@ -1395,9 +1405,14 @@ namespace DGtal
             best = tmp;
             best_volume = tmp_volume;
           }
-          if ( i >= nbtries && best_volume > 0 ) return best;
+          if ( i >= nbtries && best_volume > 0 )
+            return best;
         }
-      return IndexRange();
+      // If not found, we adopt a deterministic algorithm based on Gauss reduction.
+      best = AffineSubset<Point>::affineSubset( points );
+      if ( debug_level >= 1 )
+        trace.info() << "[QuickHull::pickInitialSimplex] #affine subset = " << best.size() << std::endl;
+      return ( best.size() == (dimension+1) ) ? best : IndexRange();
     }
 
     /// @return a vector of d distinct integers in `{0, 1, ..., n-1}` randomly chosen.
