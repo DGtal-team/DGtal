@@ -34,11 +34,15 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/geometry/tools/QuickHull.h"
+#include "DGtal/geometry/tools/AffineSubset.h"
 #include "DGtalCatch.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
 using namespace DGtal;
+
+std::random_device rd;
+std::mt19937 g(rd());
 
 template <typename Point>
 std::vector< Point >
@@ -54,6 +58,32 @@ randomPointsInBall( int nb, int R )
     if ( ( p - c ).squaredNorm() < R2 ) { V.push_back( p ); i++; }
   }
   return V;
+}
+
+template < typename Point >
+std::vector< Point >
+makeRandomLatticePointsFromDirVectors( int nb, const vector< Point>& V )
+{
+  std::uniform_int_distribution<int> U(-10, 10);
+  vector< Point > P;
+  int n = V[0].size();
+  int m = V.size();
+  Point A;
+  for ( auto i = 0; i < n; i++ )
+    A[ i ] = U( g );
+  P.push_back( A );
+  for ( auto k = 0; k < nb; k++ )
+    {
+      Point B = A;
+      for ( auto i = 0; i < m; i++ )
+        {
+          int l = U( g );
+          B += l * V[ i ];
+        }
+      P.push_back( B );
+    }
+  std::shuffle( P.begin(), P.end(), g );
+  return P;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -230,6 +260,39 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 4 > > unit tests", "[quickhull][
     }
     THEN( "Its convex hull has fewer vertices than input points" ) {
       REQUIRE( hull.nbVertices() < hull.nbPoints() );
+    }
+  }
+}
+
+
+SCENARIO( "QuickHull< ConvexHullIntegralKernel< 2 > > dimensionality tests", "[quickhull][integral_kernel][2d][not_full_dimensional]" )
+{
+  typedef ConvexHullIntegralKernel< 4 >    QHKernel;
+  typedef QuickHull< QHKernel >            QHull;
+  typedef SpaceND< 2, int >                Space;      
+  typedef Space::Point                     Point;
+  typedef AffineSubset< Point >            Affine;
+  
+  std::vector< Point > V = { Point{ 3, 1 } };
+  GIVEN( "Given 100 aligned points + another not aligned" ) {
+    auto X = makeRandomLatticePointsFromDirVectors( 100, V );
+    X.push_back( X[ 0 ] + Point(-1,1) );
+    std::shuffle( X.begin(), X.end(), g );
+    auto I = Affine::affineSubset( X );
+    auto d = Affine::affineDimension( X );
+    QHull hull;
+    hull.setInput( V, false );
+    bool ok = hull.computeConvexHull();
+    auto status = hull.status();
+    THEN( "AffineSubset should detect full dimensionality" ) {
+      CAPTURE( d );
+      REQUIRE( d == 2 );
+    }      
+    THEN( "QuickHull should detect full dimensionality" ) {
+      REQUIRE( status != QHull::Status::NotFullDimensional );
+    }
+    THEN( "QuickHull should find 3 vertices" ) {
+      REQUIRE( hull.nbVertices() == 3 );
     }
   }
 }
