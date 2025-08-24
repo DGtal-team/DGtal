@@ -33,7 +33,7 @@
 #include <algorithm>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
-#include "DGtal/geometry/tools/AffineSubset.h"
+#include "DGtal/geometry/tools/AffineGeometry.h"
 #include "DGtal/geometry/volumes/ConvexityHelper.h"
 #include "DGtal/shapes/SurfaceMesh.h"
 #include "DGtalCatch.h"
@@ -715,7 +715,7 @@ SCENARIO( "ConvexityHelper< 3 > open triangle tests",
         b = Point( rand() % K, rand() % K, rand() % K );
         c = Point( rand() % K, rand() % K, rand() % K );
         std::vector< Point > X = { a, b, c };
-        d = AffineSubset<Point>::affineDimension( X );
+        d = AffineGeometry<Point>::affineDimension( X );
       } while ( d != 2 );
       CAPTURE( a, b, c );
       Helper::LatticePolytope CS = Helper::compute3DTriangle( a, b, c, true );

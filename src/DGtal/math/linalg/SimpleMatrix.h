@@ -458,20 +458,21 @@ namespace DGtal
 
   namespace functions {
 
-    /// Computes the determinant of an integral squared matrix using Bareiss method.
-    /// Complexity is in O(n^3) if you assume O(1) for each arithmetic operation.
+    /// Computes the determinant of a squared matrix with integer or
+    /// floating-point coefficients using Bareiss method.  Complexity
+    /// is in O(n^3) if you assume O(1) for each arithmetic operation.
     ///
-    /// @param matrix a squared matrix with integer coefficients.
+    /// @param matrix a squared matrix.
     /// @param[out] the determinant of this matrix.
     ///
-    /// @note intermediate integer values may grow quickly. Use
-    /// int64_t or even boost::multiprecision::cpp_int to get robust
-    /// result.
+    /// @note In case of integer coefficients, intermediate integer
+    /// values may grow quickly. Use int64_t or even
+    /// boost::multiprecision::cpp_int to get robust result.
     template <typename TComponent, DGtal::Dimension TN,
-              typename TInternalInteger>
+              typename TInternalNumber>
     void
     determinantBareiss( const SimpleMatrix<TComponent, TN, TN>& matrix,
-                        TInternalInteger& result );
+                        TInternalNumber& result );
     
   } // namespace functions
   

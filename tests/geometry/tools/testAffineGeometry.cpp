@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file testAffineSubset.cpp
+ * @file testAffineGeometry.cpp
  * @ingroup Tests
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
- * @date 2020/02/01
+ * @date 2025/08/24
  *
- * Functions for testing class AffineSubset.
+ * Functions for testing class AffineGeometry.
  *
  * This file is part of the DGtal library.
  */
@@ -34,7 +34,7 @@
 #include <random>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
-#include "DGtal/geometry/tools/AffineSubset.h"
+#include "DGtal/geometry/tools/AffineGeometry.h"
 #include "DGtalCatch.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -110,14 +110,14 @@ makeRandomRealPointsFromDirVectors( int nb, const vector< Point>& V )
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class AffineSubset in 2D.
+// Functions for testing class AffineGeometry in 2D.
 ///////////////////////////////////////////////////////////////////////////////
 
-SCENARIO( "AffineSubset< Point2i > unit tests", "[affine_subset][2i]" )
+SCENARIO( "AffineGeometry< Point2i > unit tests", "[affine_subset][2i]" )
 {
   typedef SpaceND< 2, int >                Space;      
   typedef Space::Point                     Point;
-  typedef AffineSubset< Point >            Affine;
+  typedef AffineGeometry< Point >            Affine;
   GIVEN( "Given X = { (0,0), (-4,-1), (16,4), (-3,5), (7,3), (5, -2) } of affine dimension 2" ) {
     std::vector<Point> X
       = { Point(0,0), Point(-4,-1), Point(16,4), Point(-3,5), Point(7,3), Point(5, -2) };
@@ -139,11 +139,11 @@ SCENARIO( "AffineSubset< Point2i > unit tests", "[affine_subset][2i]" )
   }
 }
 
-SCENARIO( "AffineSubset< Point2d > unit tests", "[affine_subset][2d]" )
+SCENARIO( "AffineGeometry< Point2d > unit tests", "[affine_subset][2d]" )
 {
   typedef SpaceND< 2, int >                Space;      
   typedef Space::RealPoint                 Point;
-  typedef AffineSubset< Point >            Affine;
+  typedef AffineGeometry< Point >            Affine;
   GIVEN( "Given X = { (0,0), (-4,-1), (16,4), (-3,5), (7,3), (5, -2) } of affine dimension 2" ) {
     std::vector<Point> X
       = { Point(0,0), Point(-4,-1), Point(16,4), Point(-3,5), Point(7,3), Point(5, -2) };
@@ -197,15 +197,35 @@ SCENARIO( "AffineSubset< Point2d > unit tests", "[affine_subset][2d]" )
   }
 }
 
+SCENARIO( "AffineGeometry< Point2i > orthogonal tests", "[orthogonal_vector][2i]" )
+{
+  typedef SpaceND< 2, int >                Space;      
+  typedef Space::Point                     Point;
+  typedef AffineGeometry< Point >          Affine;
+  GIVEN( "Given basis B = { (7,3) } " ) {
+    std::vector<Point> B = { Point(7,3) };
+    Affine::completeBasis< false >( B );
+    THEN( "The complete basis has dimension 2" ) {
+      CAPTURE( B );
+      REQUIRE( B.size() == 2 );
+    }
+    THEN( "The last vector is non null and orthogonal to all the others" ) {
+      CAPTURE( B.back() );
+      REQUIRE( B.back().normInfinity() > 0 );
+      REQUIRE( B.back().dot( B[ 0 ] ) == 0 );
+    }
+  }
+}
+
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class AffineSubset in 3D.
+// Functions for testing class AffineGeometry in 3D.
 ///////////////////////////////////////////////////////////////////////////////
 
-SCENARIO( "AffineSubset< Point3i > unit tests", "[affine_subset][3i]" )
+SCENARIO( "AffineGeometry< Point3i > unit tests", "[affine_subset][3i]" )
 {
   typedef SpaceND< 3, int >                Space;      
   typedef Space::Point                     Point;
-  typedef AffineSubset< Point >            Affine;
+  typedef AffineGeometry< Point >            Affine;
   GIVEN( "Given X = { (1, 0, 0), (2, 1, 0), (3, 1, 1), (3, 2, 0), (5, 2, 2), (4, 2, 1)} of affine dimension 2" ) {
     std::vector<Point> X
       = { Point{1, 0, 0}, Point{2, 1, 0}, Point{3, 1, 1}, Point{3, 2, 0}, Point{5, 2, 2}, Point{4, 2, 1} };
@@ -258,11 +278,60 @@ SCENARIO( "AffineSubset< Point3i > unit tests", "[affine_subset][3i]" )
   }
 }
 
+SCENARIO( "AffineGeometry< Point3i > orthogonal tests", "[orthogonal_vector][3i]" )
+{
+  typedef SpaceND< 3, int >                Space;      
+  typedef Space::Point                     Point;
+  typedef AffineGeometry< Point >          Affine;
+  GIVEN( "Given basis B = { (7,3,1), (2,-5,1) } " ) {
+    std::vector<Point> B = { Point(7,3,1), Point( 2,-5,1) };
+    Point n = B[ 0 ].crossProduct( B[ 1 ] );
+    Affine::completeBasis< false >( B );
+    THEN( "The complete basis has dimension 3" ) {
+      CAPTURE( B );
+      REQUIRE( B.size() == 3 );
+    }
+    THEN( "The last vector is non null and orthogonal to all the others" ) {
+      CAPTURE( B.back() );
+      REQUIRE( B.back().normInfinity() > 0 );
+      REQUIRE( B.back().dot( B[ 0 ] ) == 0 );
+      REQUIRE( B.back().dot( B[ 1 ] ) == 0 );
+    }
+    THEN( "The last vector is the cross product of the two others" ) {
+      CAPTURE( B.back() );
+      REQUIRE( B.back() == n );
+    }
+  }
+  GIVEN( "Given basis B = { (7,3,1) } " ) {
+    std::vector<Point> B = { Point(7,3,1) };
+    Affine::completeBasis< false >( B );
+    THEN( "The complete basis has dimension 3" ) {
+      CAPTURE( B );
+      REQUIRE( B.size() == 3 );
+    }
+    THEN( "The mid vector is non null and trivial" ) {
+      CAPTURE( B[ 1 ] );
+      REQUIRE( B[ 1 ].norm1() == 1 );
+    }
+    THEN( "The last vector is non null and orthogonal to all the others" ) {
+      CAPTURE( B.back() );
+      REQUIRE( B.back().normInfinity() > 0 );
+      REQUIRE( B.back().dot( B[ 0 ] ) == 0 );
+      REQUIRE( B.back().dot( B[ 1 ] ) == 0 );
+    }
+    THEN( "The last vector is the cross product of the two others" ) {
+      Point n = B[ 0 ].crossProduct( B[ 1 ] );
+      CAPTURE( B.back() );
+      REQUIRE( B.back() == n );
+    }
+  }
+}
+
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class AffineSubset in 4D.
+// Functions for testing class AffineGeometry in 4D.
 ///////////////////////////////////////////////////////////////////////////////
 
-SCENARIO( "AffineSubset< Point4i > unit tests", "[affine_subset][4i]" )
+SCENARIO( "AffineGeometry< Point4i > unit tests", "[affine_subset][4i]" )
 {
   typedef SpaceND< 4, int >                Space;      
   typedef Space::Point                     Point;
@@ -321,7 +390,7 @@ SCENARIO( "AffineSubset< Point4i > unit tests", "[affine_subset][4i]" )
   }
 }
 
-SCENARIO( "AffineSubset< Point4d > unit tests", "[affine_subset][4d]" )
+SCENARIO( "AffineGeometry< Point4d > unit tests", "[affine_subset][4d]" )
 {
   // NB: 1e-10 in tolerance is ok for these examples.
   // max norm of rejected vectors are 2e-12.
@@ -377,6 +446,47 @@ SCENARIO( "AffineSubset< Point4d > unit tests", "[affine_subset][4d]" )
     }
     THEN( "It has an affine basis of 4 vectors" ) {
       REQUIRE( B.second.size() == 4 );
+    }
+  }
+}
+
+SCENARIO( "AffineGeometry< Point4i > orthogonal tests", "[orthogonal_vector][4i]" )
+{
+  typedef SpaceND< 4, int >                Space;      
+  typedef Space::Point                     Point;
+  typedef AffineGeometry< Point >          Affine;
+  GIVEN( "Given basis B = { (7,3,1,0), (2,-5,1,2), (-1,2,2,-3) } " ) {
+    std::vector<Point> B = { Point(7,3,1,0), Point(2,-5,1,2), Point(-1,2,2,-3) };
+    Affine::completeBasis< true >( B );
+    THEN( "The complete basis has dimension 4" ) {
+      CAPTURE( B );
+      REQUIRE( B.size() == 4 );
+    }
+    THEN( "The last vector is non null and orthogonal to all the others" ) {
+      CAPTURE( B.back() );
+      REQUIRE( B.back().normInfinity() > 0 );
+      REQUIRE( B.back().dot( B[ 0 ] ) == 0 );
+      REQUIRE( B.back().dot( B[ 1 ] ) == 0 );
+      REQUIRE( B.back().dot( B[ 2 ] ) == 0 );
+    }
+  }
+  GIVEN( "Given basis B = { (7,3,1,0), (2,-5,1,2) } " ) {
+    std::vector<Point> B = { Point(7,3,1,0), Point(2,-5,1,2) };
+    Affine::completeBasis< true >( B );
+    THEN( "The complete basis has dimension 4" ) {
+      CAPTURE( B );
+      REQUIRE( B.size() == 4 );
+    }
+    THEN( "The third vector is non null and trivial" ) {
+      CAPTURE( B[ 2 ] );
+      REQUIRE( B[ 2 ].norm1() == 1 );
+    }
+    THEN( "The last vector is non null and orthogonal to all the others" ) {
+      CAPTURE( B.back() );
+      REQUIRE( B.back().normInfinity() > 0 );
+      REQUIRE( B.back().dot( B[ 0 ] ) == 0 );
+      REQUIRE( B.back().dot( B[ 1 ] ) == 0 );
+      REQUIRE( B.back().dot( B[ 2 ] ) == 0 );
     }
   }
 }

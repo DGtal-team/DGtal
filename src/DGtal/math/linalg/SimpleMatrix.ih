@@ -485,21 +485,21 @@ DGtal::operator* ( const TComponent& scalar, const DGtal::SimpleMatrix<TComponen
 
 //-----------------------------------------------------------------------------
 template <typename TComponent, DGtal::Dimension TN, 
-          typename TInternalInteger>
+          typename TInternalNumber>
 void
 DGtal::functions::determinantBareiss
 ( const SimpleMatrix<TComponent, TN, TN>& matrix,
-  TInternalInteger& result )
+  TInternalNumber& result )
 {
-  const TInternalInteger zero = TInternalInteger( 0 );
-  result = TInternalInteger( 1 );
+  const TInternalNumber zero = TInternalNumber( 0 );
+  result = TInternalNumber( 1 );
   Dimension n = (Dimension) TN;
   if (n == 0) return;
-  TInternalInteger prev = TInternalInteger( 1 );
-  SimpleMatrix<TInternalInteger, TN, TN> M;
+  TInternalNumber prev = TInternalNumber( 1 );
+  SimpleMatrix<TInternalNumber, TN, TN> M;
   for ( Dimension i = 0; i < n; ++i )
     for ( Dimension j = 0; j < n; ++j )
-      M( i, j ) = TInternalInteger( matrix( i, j ) );
+      M( i, j ) = TInternalNumber( matrix( i, j ) );
   for ( Dimension k = 0; k < n; ++k )
     {
       // pivot
@@ -507,7 +507,7 @@ DGtal::functions::determinantBareiss
       while ( ( piv < n ) && ( M( piv, k ) == zero ) ) ++piv;
       if ( piv == n ) { result = zero; return; }
       if ( piv != k ) M.swapRows( piv, k );
-      TInternalInteger pivot = M( k, k );
+      TInternalNumber pivot = M( k, k );
       for ( Dimension i = k+1; i < n; ++i) {
         for ( Dimension j = k+1; j < n; ++j) {
           // Bareiss: (a_ij*a_kk - a_ik*a_kj)/prev

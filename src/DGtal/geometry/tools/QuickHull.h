@@ -47,7 +47,7 @@
 #include <set>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Clock.h"
-#include "DGtal/geometry/tools/AffineSubset.h"
+#include "DGtal/geometry/tools/AffineGeometry.h"
 #include "DGtal/geometry/tools/QuickHullKernels.h"
 
 namespace DGtal
@@ -1409,7 +1409,7 @@ namespace DGtal
             return best;
         }
       // If not found, we adopt a deterministic algorithm based on Gauss reduction.
-      best = AffineSubset<Point>::affineSubset( points );
+      best = AffineGeometry<Point>::affineSubset( points );
       if ( debug_level >= 1 )
         trace.info() << "[QuickHull::pickInitialSimplex] #affine subset = " << best.size() << std::endl;
       return ( best.size() == (dimension+1) ) ? best : IndexRange();

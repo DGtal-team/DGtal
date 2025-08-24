@@ -17,53 +17,54 @@
 #pragma once
 
 /**
- * @file AffineSubset.h
+ * @file AffineGeometry.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2025/08/22
  *
- * Header file for module AffineSubset.cpp
+ * Header file for module AffineGeometry.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(AffineSubset_RECURSES)
-#error Recursive header files inclusion detected in AffineSubset.h
-#else // defined(AffineSubset_RECURSES)
+#if defined(AffineGeometry_RECURSES)
+#error Recursive header files inclusion detected in AffineGeometry.h
+#else // defined(AffineGeometry_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define AffineSubset_RECURSES
+#define AffineGeometry_RECURSES
 
-#if !defined AffineSubset_h
+#if !defined AffineGeometry_h
 /** Prevents repeated inclusion of headers. */
-#define AffineSubset_h
+#define AffineGeometry_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
+#include "DGtal/math/linalg/SimpleMatrix.h"
 
 namespace DGtal
 {
-  // Forward declaration of AffineSubset (needed for friend declaration).
-  template < typename T > struct AffineSubset;
+  // Forward declaration of AffineGeometry (needed for friend declaration).
+  template < typename T > struct AffineGeometry;
 
   namespace detail {
 
     /////////////////////////////////////////////////////////////////////////////
-    // template class AffineSubsetPointOperations
+    // template class AffineGeometryPointOperations
 
-    /// Description of template class 'AffineSubsetPointOperations' <p>
-    /// \brief Aim: Internal class used by AffineSubset to
+    /// Description of template class 'AffineGeometryPointOperations' <p>
+    /// \brief Aim: Internal class used by AffineGeometry to
     /// differentiate operations on lattice points and operations on
     /// points with floating-point coordinates. 
     ///
     /// @tparam TScalar any integer or floating point number type.
     template < typename TPoint >
-    struct AffineSubsetPointOperations
+    struct AffineGeometryPointOperations
     {
-      template <typename T> friend struct DGtal::AffineSubset;
+      template <typename T> friend struct DGtal::AffineGeometry;
       typedef TPoint                     Point;
       typedef typename Point::Coordinate Scalar;
       /// In the generic class, the type scalar should be an integral type.
@@ -104,15 +105,15 @@ namespace DGtal
         w /= x;
       }
       
-    }; // end of class AffineSubsetPointOperations
+    }; // end of class AffineGeometryPointOperations
 
     
 
     /////////////////////////////////////////////////////////////////////////////
-    // template class AffineSubsetScalarOperations
+    // template class AffineGeometryScalarOperations
 
-    /// Description of template class 'AffineSubsetScalarOperations'
-    /// <p> \brief Aim: Internal class used by AffineSubset to
+    /// Description of template class 'AffineGeometryScalarOperations'
+    /// <p> \brief Aim: Internal class used by AffineGeometry to
     /// differentiate operations on point coordinates, which may be
     /// integer or floating-point numbers.. The generic class assume
     /// integer coordinates, while there are two specializations for
@@ -120,9 +121,9 @@ namespace DGtal
     ///
     /// @tparam TScalar any integer or floating point number type.
     template < typename TScalar >
-    struct AffineSubsetScalarOperations
+    struct AffineGeometryScalarOperations
     {
-      template <typename T> friend struct DGtal::AffineSubset;
+      template <typename T> friend struct DGtal::AffineGeometry;
 
       typedef TScalar Scalar;
       /// In the generic class, the type scalar should be an integral type.
@@ -154,17 +155,17 @@ namespace DGtal
         return x != Integer( 0 );
       }
 
-    }; // end of class AffineSubsetScalarOperations
+    }; // end of class AffineGeometryScalarOperations
 
-    /// Description of template class 'AffineSubsetScalarOperations' <p>
-    /// \brief Aim: Internal class used by AffineSubset to
+    /// Description of template class 'AffineGeometryScalarOperations' <p>
+    /// \brief Aim: Internal class used by AffineGeometry to
     /// differentiate operations on lattice points and operations on
     /// points with floating-point coordinates. This specialization
     /// assume double for coordinates.
     template <>
-    struct AffineSubsetScalarOperations< double >
+    struct AffineGeometryScalarOperations< double >
     {
-      template <typename T> friend struct DGtal::AffineSubset;
+      template <typename T> friend struct DGtal::AffineGeometry;
     
       /// @param[in] a any number
       /// @param[in] b any number
@@ -189,17 +190,17 @@ namespace DGtal
         return ( x > tol ) || ( x < -tol );
       }
 
-    }; // end of class AffineSubsetScalarOperations< double >
+    }; // end of class AffineGeometryScalarOperations< double >
 
-    /// Description of template class 'AffineSubsetScalarOperations' <p>
-    /// \brief Aim: Internal class used by AffineSubset to
+    /// Description of template class 'AffineGeometryScalarOperations' <p>
+    /// \brief Aim: Internal class used by AffineGeometry to
     /// differentiate operations on lattice points and operations on
     /// points with floating-point coordinates. This specialization
     /// assume float for coordinates.
     template <>
-    struct AffineSubsetScalarOperations< float >
+    struct AffineGeometryScalarOperations< float >
     {
-      template <typename T> friend struct DGtal::AffineSubset;
+      template <typename T> friend struct DGtal::AffineGeometry;
     
       /// @param[in] a any number
       /// @param[in] b any number
@@ -225,7 +226,44 @@ namespace DGtal
         return (dx > tol) || ( dx < -tol );
       }
       
-    }; // end of class AffineSubsetScalarOperations< float >
+    }; // end of class AffineGeometryScalarOperations< float >
+
+    template < typename TScalar, bool Robust >
+    struct AffineGeometryInternalNumber {
+      typedef TScalar type; 
+    };
+    template <>
+    struct AffineGeometryInternalNumber<int32_t, false> {
+      typedef int64_t type; 
+    };
+    template <>
+    struct AffineGeometryInternalNumber<int32_t, true> {
+      typedef BigInteger type; 
+    };
+    template <>
+    struct AffineGeometryInternalNumber<int64_t, false> {
+      typedef int64_t type; 
+    };
+    template <>
+    struct AffineGeometryInternalNumber<int64_t, true> {
+      typedef BigInteger type; 
+    };
+    template <>
+    struct AffineGeometryInternalNumber<float, false> {
+      typedef double type; 
+    };
+    template <>
+    struct AffineGeometryInternalNumber<float, true> {
+      typedef double type; 
+    };
+    template <>
+    struct AffineGeometryInternalNumber<double, false> {
+      typedef double type; 
+    };
+    template <>
+    struct AffineGeometryInternalNumber<double, true> {
+      typedef double type; 
+    };
     
   } // namespace detail
 
@@ -235,13 +273,13 @@ namespace DGtal
 namespace DGtal
 {
   /////////////////////////////////////////////////////////////////////////////
-  // template class AffineSubset
+  // template class AffineGeometry
 
-  /// Description of template class 'AffineSubset' <p> \brief Aim:
-  /// Utility class to determine an affine subset of an input set of
-  /// points which defines the same affine space as this set of
-  /// points. It provides exact results when the input is
-  /// composed of lattice points.
+  /// Description of template class 'AffineGeometry' <p> \brief Aim:
+  /// Utility class to determine the affine geometry of an input set
+  /// of points. It provides exact results when the input is composed
+  /// of lattice points, and may determine a basis, the dimension, or
+  /// an orthogonal vector.
   ///
   /// @note Useful for algorithms that requires the exact
   /// dimensionality of a set of points before processing, like
@@ -259,20 +297,20 @@ namespace DGtal
   /// #include <vector>
   /// #include "DGtal/base/Common.h"
   /// #include "DGtal/kernel/SpaceND.h"
-  /// #include "DGtal/geometry/tools/AffineSubset.h"
+  /// #include "DGtal/geometry/tools/AffineGeometry.h"
   /// ...
   /// typedef SpaceND< 3, int >                Space;      
   /// typedef Space::Point                     Point;
-  /// typedef AffineSubset< Point >            Affine;
+  /// typedef AffineGeometry< Point >            Affine;
   /// std::vector<Point> X = { Point{1, 0, 0}, Point{2, 1, 0}, Point{3, 2, 0}, Point{3, 1, 1}, Point{5, 2, 2}, Point{4, 2, 1} };
   /// auto I = Affine::affineSubset( X ); /// 3 points with indices (0,1,3)
   /// auto B = Affine::affineBasis( X ); /// (1,0,0) and 2 basis vectors (1,1,0) and (2,1,1).
   /// auto d = Affine::affineDimension( X ); /// 2
   /// @endcode
   ///
-  /// @see testAffineSubset.cpp
+  /// @see testAffineGeometry.cpp
   template < typename TPoint >
-  struct AffineSubset
+  struct AffineGeometry
   {
     typedef TPoint                     Point;
     typedef typename Point::Coordinate Scalar;
@@ -280,8 +318,8 @@ namespace DGtal
     typedef std::vector< Point >       Points; ///< type for range of points.
     typedef std::vector< Size >        Sizes;  ///< type for range of sizes.
     static const Size  dimension  = Point::dimension;
-    typedef DGtal::detail::AffineSubsetPointOperations< Point >   PointOps;
-    typedef DGtal::detail::AffineSubsetScalarOperations< Scalar > ScalarOps;
+    typedef DGtal::detail::AffineGeometryPointOperations< Point >   PointOps;
+    typedef DGtal::detail::AffineGeometryScalarOperations< Scalar > ScalarOps;
     
     // ----------------------- standard services --------------------------
   public:
@@ -356,6 +394,45 @@ namespace DGtal
       return std::make_pair( X[ indices[ 0 ] ], basis );
     }
 
+    static
+    Point independentVector( const Points& basis, const double tolerance = 1e-12 )
+    {
+      // If basis has already d independent vectors, then there is no
+      // other independent vector.
+      if ( basis.size() >= dimension ) return Point::zero;
+      // At least one trivial canonic vector should be independant.
+      Dimension k = 0;
+      for ( ; k < dimension; k++ )
+        {
+          Point e_k = Point::base( k );
+          Point w   = reductionOnBasis( e_k, basis, tolerance );
+          if ( ScalarOps::isNonZero( w.normInfinity(), tolerance ) )
+            return e_k;
+        }
+      trace.error() << "[AffineGeometry::independentVector]"
+                    << " Unable to find independent vector." << std::endl;
+      return Point::zero;
+    }
+
+    template < bool Safe >
+    static
+    void completeBasis( Points& basis, const double tolerance = 1e-12 )
+    {
+      if ( basis.size() >= dimension ) return;
+      while ( ( basis.size() + 1 ) < dimension )
+        { // add an independent vector
+          const Point u = independentVector( basis, tolerance );
+          basis.push_back( u );
+        }
+      // Use cofactors to determine normal vectors.
+      typedef typename DGtal::detail::AffineGeometryInternalNumber< Scalar, Safe >::type
+        InternalNumber;
+      std::vector<InternalNumber> u = orthogonalVector<InternalNumber>( basis );
+      Point p = convertToPoint( u );
+      PointOps::normalizeVector( p, (Scalar) p.normInfinity() );
+      basis.push_back( p );
+    }
+    
     /// @}
 
     // ----------------------- specific services --------------------------
@@ -446,6 +523,46 @@ namespace DGtal
         w[j] = mul_w * w[j] - mul_b * b[j];
     }
 
+
+    template < typename TInternalNumber >
+    static
+    Point convertToPoint( const std::vector<TInternalNumber>& w )
+    {
+      Point u;
+      std::size_t k = std::min( w.size(), std::size_t( dimension ) );
+      for ( std::size_t i = 0; i < k; i++ )
+        u[ i ] = (Scalar) w[ i ];
+      return u;
+    }
+      
+    template < typename TInternalNumber >
+    static
+    std::vector<TInternalNumber>
+    orthogonalVector( const Points& basis )
+    {
+      ASSERT( ( basis.size() + 1 ) == dimension );
+      const std::size_t n = dimension;
+      const std::size_t m = basis.size();
+      SimpleMatrix< TInternalNumber, dimension-1, dimension> A;
+      for ( std::size_t i = 0; i < m; ++i )
+        for ( std::size_t j = 0; j < n; ++j )
+          A( i, j ) = TInternalNumber( basis[ i ][ j ] );
+      std::vector<TInternalNumber> w( n );
+      for ( std::size_t col = 0; col < n; ++col)
+        { // construct sub-matrix removing column col
+          SimpleMatrix< TInternalNumber, dimension-1, dimension-1> M;
+          for ( std::size_t i = 0; i < m; ++i )
+            {
+              std::size_t c = 0;
+              for ( std::size_t j = 0; j < n; ++j)
+                if ( j != col ) M( i, c++ ) = A( i, j );
+            }
+          functions::determinantBareiss( M, w[ col ] );
+          if ( col % 2 != 0 ) w[ col ] = -w[ col ];
+        }
+      return w;
+    }
+
     /// @}
     
   };
@@ -464,7 +581,7 @@ namespace DGtal
     DGtal::int64_t
     computeAffineDimension( const std::vector< TPoint >& X, const double tolerance = 1e-12 )
     {
-      return AffineSubset<TPoint>::affineDimension( X, tolerance );
+      return AffineGeometry<TPoint>::affineDimension( X, tolerance );
     }
 
     /// Given a range of points \a X, returns a subset of these points
@@ -483,7 +600,7 @@ namespace DGtal
     std::vector< std::size_t >
     computeAffineSubset( const std::vector< TPoint >& X, const double tolerance = 1e-12 )
     {
-      return AffineSubset<TPoint>::affineSubset( X, tolerance );
+      return AffineGeometry<TPoint>::affineSubset( X, tolerance );
     }
   
     /// Given a range of points \a X, returns a point and a range of
@@ -499,7 +616,7 @@ namespace DGtal
     std::pair< TPoint, std::vector< TPoint > >
     computeAffineBasis( const std::vector< TPoint >& X, const double tolerance = 1e-12 )
     {
-      return AffineSubset<TPoint>::affineBasis( X, tolerance );
+      return AffineGeometry<TPoint>::affineBasis( X, tolerance );
     }
 
     /// Given a range of points \a X and the indices \a I of points in \a X which form an affine subset of \a X, returns a point and a range of
@@ -508,7 +625,7 @@ namespace DGtal
     /// @param X the range of input points (may be lattice points or not).
     ///
     /// @param I a subset of these points as a range of indices, forming
-    /// an affine subset of \a X, see computeAffineSubset.
+    /// an affine subset of \a X, see computeAffineGeometry.
     ///
     /// @return a point and a range of vectors forming an affine basis containing \a X.
     ///
@@ -531,8 +648,8 @@ namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined AffineSubset_h
+#endif // !defined AffineGeometry_h
 
-#undef AffineSubset_RECURSES
-#endif // else defined(AffineSubset_RECURSES)
+#undef AffineGeometry_RECURSES
+#endif // else defined(AffineGeometry_RECURSES)
     
