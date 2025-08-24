@@ -450,56 +450,80 @@ namespace DGtal
     
   };
 
-  /// Given a range of points \a X, returns the affine dimension of
-  /// its spanned affine subspace.
-  ///
-  /// @param X the range of input points (may be lattice points or not).
-  /// @param tolerance the accepted oo-norm below which the vector is
-  /// null (used only for points with float/double coordinates).
-  /// @return the affine dimension of \a X
-  /// @param X the
-  template <typename TPoint>
-  DGtal::int64_t
-  computeAffineDimension( const std::vector< TPoint >& X, const double tolerance = 1e-12 )
-  {
-    return AffineSubset<TPoint>::affineDimension( X, tolerance );
-  }
+  namespace functions {
+    
+    /// Given a range of points \a X, returns the affine dimension of
+    /// its spanned affine subspace.
+    ///
+    /// @param X the range of input points (may be lattice points or not).
+    /// @param tolerance the accepted oo-norm below which the vector is
+    /// null (used only for points with float/double coordinates).
+    /// @return the affine dimension of \a X
+    /// @param X the
+    template <typename TPoint>
+    DGtal::int64_t
+    computeAffineDimension( const std::vector< TPoint >& X, const double tolerance = 1e-12 )
+    {
+      return AffineSubset<TPoint>::affineDimension( X, tolerance );
+    }
 
-  /// Given a range of points \a X, returns a subset of these points
-  /// that form an affine basis of \a X. Equivalently it is a
-  /// simplex whose affine space spans all the points of \a X.
-  ///
-  /// @param X the range of input points (may be lattice points or not).
-  ///
-  /// @param tolerance the accepted oo-norm below which the vector is
-  /// null (used only for points with float/double coordinates).
-  ///
-  /// @return a subset of these points as a range of indices.
-  ///
-  /// @note Complexity is \f$O( m n^2 )\f$, where m=#X and n=dimension.
-  template <typename TPoint>
-  std::vector< std::size_t >
-  computeAffineSubset( const std::vector< TPoint >& X, const double tolerance = 1e-12 )
-  {
-    return AffineSubset<TPoint>::affineSubset( X, tolerance );
-  }
+    /// Given a range of points \a X, returns a subset of these points
+    /// that form an affine basis of \a X. Equivalently it is a
+    /// simplex whose affine space spans all the points of \a X.
+    ///
+    /// @param X the range of input points (may be lattice points or not).
+    ///
+    /// @param tolerance the accepted oo-norm below which the vector is
+    /// null (used only for points with float/double coordinates).
+    ///
+    /// @return a subset of these points as a range of indices.
+    ///
+    /// @note Complexity is \f$O( m n^2 )\f$, where m=#X and n=dimension.
+    template <typename TPoint>
+    std::vector< std::size_t >
+    computeAffineSubset( const std::vector< TPoint >& X, const double tolerance = 1e-12 )
+    {
+      return AffineSubset<TPoint>::affineSubset( X, tolerance );
+    }
   
-  /// Given a range of points \a X, returns a point and a range of
-  /// vectors forming an affine basis containing \a X.
-  ///
-  /// @param X the range of input points (may be lattice points or not).
-  /// @param tolerance the accepted oo-norm below which the vector is
-  /// null (used only for points with float/double coordinates).
-  /// @return a point and a range of vectors forming an affine basis containing \a X.
-  ///
-  /// @note Complexity is O( m n^2 ), where m=#X and n=dimension.
-  template <typename TPoint>
-  std::pair< TPoint, std::vector< TPoint > >
-  computeAffineBasis( const std::vector< TPoint >& X, const double tolerance = 1e-12 )
-  {
-    return AffineSubset<TPoint>::affineBasis( X, tolerance );
-  }
+    /// Given a range of points \a X, returns a point and a range of
+    /// vectors forming an affine basis containing \a X.
+    ///
+    /// @param X the range of input points (may be lattice points or not).
+    /// @param tolerance the accepted oo-norm below which the vector is
+    /// null (used only for points with float/double coordinates).
+    /// @return a point and a range of vectors forming an affine basis containing \a X.
+    ///
+    /// @note Complexity is O( m n^2 ), where m=#X and n=dimension.
+    template <typename TPoint>
+    std::pair< TPoint, std::vector< TPoint > >
+    computeAffineBasis( const std::vector< TPoint >& X, const double tolerance = 1e-12 )
+    {
+      return AffineSubset<TPoint>::affineBasis( X, tolerance );
+    }
 
+    /// Given a range of points \a X and the indices \a I of points in \a X which form an affine subset of \a X, returns a point and a range of
+    /// vectors forming an affine basis containing \a X.
+    ///
+    /// @param X the range of input points (may be lattice points or not).
+    ///
+    /// @param I a subset of these points as a range of indices, forming
+    /// an affine subset of \a X, see computeAffineSubset.
+    ///
+    /// @return a point and a range of vectors forming an affine basis containing \a X.
+    ///
+    /// @note Complexity is O( m n^2 ), where m=#X and n=dimension.
+    template <typename TPoint>
+    std::pair< TPoint, std::vector< TPoint > >
+    computeAffineBasis( const std::vector< TPoint >& X,
+                        const std::vector< std::size_t >& I )
+    {
+      std::vector< TPoint > basis( I.size() - 1 );
+      for ( std::size_t i = 0; i < basis.size(); i++ )
+        basis[ i ] = X[ I[ i+1 ] ] - X[ I[ 0 ] ];
+      return std::make_pair( X[ I[ 0 ] ], basis );
+    }
+  } // namespace functions
 } // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
