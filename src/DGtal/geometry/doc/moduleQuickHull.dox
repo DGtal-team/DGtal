@@ -51,14 +51,14 @@ for a simplex) and all the facets are then queued.
    - ignore it if contains no "above" point(s)
    - otherwise pick the furthest above point \a p
    - find by neighbor adjacencies from \a f all the facets visible from \a p (i.e. \a p is above them)
-   - define the horizon H as the set of ridges R, where a ridge is a pair of two neighbor facets, where the first is visible from \a ^, whilst the second is not.
+   - define the horizon H as the set of ridges R, where a ridge is a pair of two neighbor facets, where the first is visible from \a p, whilst the second is not.
    - define the new facets as the ones formed by the umbrella from \a p to its ridges.
    - merge possible parallel facets and update "on" points
    - reassign "above" points of \a f to these new facets and put them into the queue
 
 3. The algorithm stops when all current facets have no "above" points.
 
-4. Optionnaly extract vertices of the convex hull polytopes by
+4. Optionally it extracts vertices of the convex hull polytope by
 determining the "on" points that belong to at least \a d facets.
 
 @note In opposition to the usual `qhull` implementation, this
@@ -84,7 +84,7 @@ using the convex hull in a higher dimensional space is generally much
 slower than CGAL method for computing the Delaunay triangulation by
 point location (5-10 times slower in our experience).
 
-@section dgtal_quickhull_sec2 Computing convex hulls and Delaunay cell complex using QuickHull
+@section dgtal_quickhull_sec2 Convex hull and Delaunay cell complex
 
 In order to get a fine control over convex hull computations, you can
 use class QuickHull directly. It is required to choose a \b kernel
@@ -282,7 +282,7 @@ by convex hull computations might overflow. You may consider using
 DGtal::BigInteger at least for the internal integer representation.
 
 
-@subsection dgtal_quickhull_sec23 Delaunay cell complex of lattice points (2D example)
+@subsection dgtal_quickhull_sec23 Delaunay cell complex of lattice points (2D)
 
 Computing the Delaunay complex of lattice points is very similar to computing its convex hull. You should just use the appropriate kernel as follows:
 
@@ -337,12 +337,13 @@ total time      = 20723 ms.
 \endverbatim
  
 
-@subsection dgtal_quickhull_sec24 Delaunay cell complex of rational points (2D example)
+@subsection dgtal_quickhull_sec24 Delaunay cell complex of rational points (2D)
 
 It is completely similar with the previous example, just replace the kernel by DelaunayRationalKernel and specify a precision at kernel instantiation.
 
 
-@subsection dgtal_quickhull_sec25 Further information stored in QuickHull object
+@subsection dgtal_quickhull_sec25 Further information
+
 
 A number of public data is stored in object QuickHull and is
 meaningfull after a convex hull computation:
@@ -373,13 +374,28 @@ input points <------------ processed points <---------- convex hull vertices
 QuickHull:timings stores also the respective times taken by each step
 of the computation (see examples).
 
-@section dgtal_quickhull_sec3 Using ConvexityHelper for convex hull and Delaunay services
+
+You may inquire about the current state of QuickHull object with
+QuickHull::status. Possible states are
+
+- QuickHull::Status::Uninitialized QuickHull is empty and has just been instantiated.
+- QuickHull::Status::InputInitialized A range of input points has been given to QuickHull.
+- QuickHull::Status::SimplexCompleted An initial full-dimensional simplex has been found. QuickHull core algorithm can start.
+- QuickHull::Status::FacetsCompleted All facets of the convex hull are identified.
+- QuickHull::Status::VerticesCompleted All vertices of the convex hull are determined.
+- QuickHull::Status::AllCompleted Same as VerticesCompleted.
+- QuickHull::Status::NotFullDimensional Error: the initial simplex is not full dimensional.
+- QuickHull::Status::InvalidRidge Error: some ridge is not consistent (probably integer overflow).
+- QuickHull::Status::InvalidConvexHull Error: the convex hull does not contain all its points (probably integer overflow).
+
+
+@section dgtal_quickhull_sec3 Use ConvexityHelper as a shortcut
 
 Class ConvexityHelper offers several functions that makes easier the
 computation of convex hull or Delaunay complex (of course with a
 little bit less flexibility than using QuickHull directly).
 
-@subsection dgtal_quickhull_sec31 Building a lattice polytope (nD)
+@subsection dgtal_quickhull_sec31 Build a lattice polytope (nD)
 
 Building a lattice polytope in nD just requires a call to
 ConvexityHelper::computeLatticePolytope.
@@ -393,14 +409,14 @@ const auto P = ConvexityHelper< 2 >::computeLatticePolytope( V );
 polytope to be Minkowski summable by a cubical grid cell (see
 ConvexityHelper::computeLatticePolytope reference doc).
 
-@subsection dgtal_quickhull_sec32 Building the boundary of a lattice convex hull as a surface (3D) 
+@subsection dgtal_quickhull_sec32 Get boundary surface of lattice convex hull (3D)
 
 You may simply use one of the two static methods
 ConvexityHelper::computeConvexHullBoundary to build either a
 SurfaceMesh or a PolygonalSurface that represents the boundary convex
 hull of a set of 3D lattice points.
 
-@subsection dgtal_quickhull_sec33 Building the convex hull cell complex of lattice points (nD)
+@subsection dgtal_quickhull_sec33 Get convex hull cell complex of lattice points (nD)
 
 You can use ConvexityHelper::computeConvexHullCellComplex to build a
 cell complex that represents the convex hull of the given lattice
@@ -418,7 +434,7 @@ ConvexCellComplex< Point > complex;
 bool ok = Helper::computeConvexHullCellComplex( complex, V );
 \endcode
 
-@subsection dgtal_quickhull_sec34 Building the Delaunay cell complex of lattice points (nD)
+@subsection dgtal_quickhull_sec34 Get Delaunay cell complex of lattice points (nD)
 
 You may use ConvexityHelper::computeDelaunayCellComplex to compute the
 Delaunay cell complex of a range of lattice points.
@@ -445,7 +461,7 @@ You can have a look at exampleLatticeBallDelaunay3D.cpp for a complete example, 
 </tr>
 </table>
 
-@subsection dgtal_quickhull_sec35 Building a rational polytope (nD)
+@subsection dgtal_quickhull_sec35 Build a rational polytope (nD)
 
 Building a rational polytope in nD that approximately encloses the
 given range of real points just requires a call to
@@ -457,7 +473,7 @@ point coordinates.
 
 @note In opposition with ConvexityHelper::computeConvexHullBoundary the precision must be an integer (no smaller than one), but it acts similarly. This is because the built polytope must be a rational polytope (i.e. constraints are rational).
 
-@subsection dgtal_quickhull_sec36 Building the boundary of a rational convex hull as a surface (3D)
+@subsection dgtal_quickhull_sec36 Get boundary surface of rational convex hull (3D)
 
 You may simply use one of the two static methods
 ConvexityHelper::computeConvexHullBoundary to build either a
@@ -483,7 +499,7 @@ floating-point point coordinates.
 </tr>
 </table>
 
-@subsection dgtal_quickhull_sec37 Building the convex hull cell complex of real points (nD)
+@subsection dgtal_quickhull_sec37 Get convex hull cell complex of real points (nD)
 
 
 You can use ConvexityHelper::computeConvexHullCellComplex to build a
@@ -496,7 +512,7 @@ vertices than the points lying on the convex hull boundary.
 
 
 
-@subsection dgtal_quickhull_sec38 Building the Delaunay cell complex of real points (nD)
+@subsection dgtal_quickhull_sec38 Get Delaunay cell complex of real points (nD)
 
 You may use ConvexityHelper::computeDelaunayCellComplex to approximate the
 Delaunay cell complex of a range of real points, by specifying a precision.
