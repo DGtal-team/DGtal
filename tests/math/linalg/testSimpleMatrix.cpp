@@ -397,6 +397,63 @@ bool testConcepts()
   return true;
 }
 
+bool testBareissDeterminant()
+{
+  unsigned int nbok = 0;
+  unsigned int nb   = 0;
+
+  trace.beginBlock( "Bareiss determinant test" );
+  {
+    typedef DGtal::SimpleMatrix<int,3,3> Matrix;
+    Matrix M = { 1, 2, 3, 4, 5, 7, 6, 8, 9 };
+    auto   d = M.determinant();
+    int    db;
+    DGtal::functions::determinantBareiss( M, db );
+    trace.info() << "d=" << d << " db=" << db << "\n";
+    nbok += ( d == 7 ) ? 1 : 0;
+    nb++;
+    nbok += ( db == 7 ) ? 1 : 0;
+    nb++;
+  }
+
+  {
+    typedef DGtal::SimpleMatrix<int,4,4> Matrix;
+    Matrix  M = { 1, 2, 3, -4, 13, 4, 5, 7, 6, 8, 17, 9, 21, 12, -5, 11 };
+    auto    d = M.determinant();
+    int64_t db;
+    DGtal::functions::determinantBareiss( M, db );
+    trace.info() << "d=" << d << " db=" << db << "\n";
+    nbok += ( d == -12260 ) ? 1 : 0;
+    nb++;
+    nbok += ( db == -12260 ) ? 1 : 0;
+    nb++;
+  }
+  {
+    typedef DGtal::SimpleMatrix<int,5,5> Matrix;
+    Matrix  M = { 1311, 1, 2, 3, -4,
+                  13, 457, 4, 5, 7,
+                  6, 8, -535, 17, 9,
+                  21, 12, -5, 243, 11,
+                  123,-39,411,630,23 };
+    auto    d = M.determinant();
+    int64_t db;
+    BigInteger big_db;
+    DGtal::functions::determinantBareiss( M, db );
+    DGtal::functions::determinantBareiss( M, big_db );
+    int64_t   cdb = NumberTraits<BigInteger>::castToInt64_t( big_db );
+    trace.info() << "d=" << d << " (i64)db=" << db << " (big)db=" << cdb << "\n";
+    nbok += ( int64_t(d) != -171492636038 ) ? 1 : 0; // integer overflow
+    nb++;
+    nbok += ( db != -171492636038 ) ? 1 : 0;
+    nb++;
+    nbok += ( cdb == -171492636038 ) ? 1 : 0;
+    nb++;
+  }
+  trace.endBlock();
+  
+  return nbok == nb;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -408,9 +465,10 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testSimpleMatrix() && testArithm() && testColRow() &&
-             testDetCofactor() && testM1Matrix() && testInverse() &&
-             testConcepts() && testConstructor();
+  bool res = testSimpleMatrix() && testArithm() && testColRow()
+    && testDetCofactor() && testM1Matrix() && testInverse()
+    && testConcepts() && testConstructor()
+    && testBareissDeterminant();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

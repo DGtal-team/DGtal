@@ -404,6 +404,23 @@ DGtal::SimpleMatrix<T, TM, TN>::operator()(const DGtal::Dimension i,
   ASSERT(j<N);  
   return myValues[i*N + j];
 }
+//------------------------------------------------------------------------------
+template<typename T, DGtal::Dimension TM, DGtal::Dimension TN>
+inline
+void
+DGtal::SimpleMatrix<T, TM, TN>::swapRows(const DGtal::Dimension i1, 
+                                         const DGtal::Dimension i2)
+{
+  ASSERT(i1<M);
+  ASSERT(i2<M);
+  if ( i1 == i2 ) return;
+  std::size_t idx1 = i1*N;
+  std::size_t idx2 = i2*N;
+  const std::size_t idxe = idx1 + N;
+  for ( ; idx1 < idxe; ++idx1, ++idx2 )
+    std::swap( myValues[ idx1 ], myValues[ idx2 ] );
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
@@ -463,4 +480,45 @@ DGtal::SimpleMatrix<TComponent, TM, TN>
 DGtal::operator* ( const TComponent& scalar, const DGtal::SimpleMatrix<TComponent, TM, TN>& matrix)
 {
 		return matrix * scalar;
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename TComponent, DGtal::Dimension TN, 
+          typename TInternalInteger>
+void
+DGtal::functions::determinantBareiss
+( const SimpleMatrix<TComponent, TN, TN>& matrix,
+  TInternalInteger& result )
+{
+  const TInternalInteger zero = TInternalInteger( 0 );
+  result = TInternalInteger( 1 );
+  Dimension n = (Dimension) TN;
+  if (n == 0) return;
+  TInternalInteger prev = TInternalInteger( 1 );
+  SimpleMatrix<TInternalInteger, TN, TN> M;
+  for ( Dimension i = 0; i < n; ++i )
+    for ( Dimension j = 0; j < n; ++j )
+      M( i, j ) = TInternalInteger( matrix( i, j ) );
+  for ( Dimension k = 0; k < n; ++k )
+    {
+      // pivot
+      Dimension piv = k;
+      while ( ( piv < n ) && ( M( piv, k ) == zero ) ) ++piv;
+      if ( piv == n ) { result = zero; return; }
+      if ( piv != k ) M.swapRows( piv, k );
+      TInternalInteger pivot = M( k, k );
+      for ( Dimension i = k+1; i < n; ++i) {
+        for ( Dimension j = k+1; j < n; ++j) {
+          // Bareiss: (a_ij*a_kk - a_ik*a_kj)/prev
+          M( i, j ) = M( i, j ) * pivot - M( i, k ) * M( k, j );
+          if ( k != 0 ) M( i, j ) /= prev;
+        }
+      }
+      prev = pivot;
+      // Optionnally one could zero the column k below the diagonal
+      // (not necessary for the determinant).
+      // for (int i = k+1; i < n; ++i) M[i][k] = 0;
+    }
+  result = M( n-1, n-1 );
 }

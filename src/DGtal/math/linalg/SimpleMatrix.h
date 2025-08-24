@@ -210,6 +210,14 @@ namespace DGtal
      */
     Component& operator()(const DGtal::Dimension i, const DGtal::Dimension j);
 
+
+    /**
+     * Swap the coefficients of rows i1 and i2
+     * @param i1 any row
+     * @param i2 any row
+     */
+    void swapRows( const DGtal::Dimension i1, const DGtal::Dimension i2 );
+    
     // ----------------------- SimpleMatrix computations ------------------------------
 
 
@@ -459,11 +467,12 @@ namespace DGtal
     /// @note intermediate integer values may grow quickly. Use
     /// int64_t or even boost::multiprecision::cpp_int to get robust
     /// result.
-    template <typename TComponent, DGtal::Dimension TM, DGtal::Dimension TN,
+    template <typename TComponent, DGtal::Dimension TN,
               typename TInternalInteger>
     void
-    determinantBareiss( const SimpleMatrix<TComponent, TM, TN>& matrix,
+    determinantBareiss( const SimpleMatrix<TComponent, TN, TN>& matrix,
                         TInternalInteger& result );
+    
   } // namespace functions
   
 } // namespace DGtal
