@@ -414,9 +414,8 @@ namespace DGtal
       return Point::zero;
     }
 
-    template < bool Safe >
     static
-    void completeBasis( Points& basis, const double tolerance = 1e-12 )
+    void completeBasis( Points& basis, bool safe = true, const double tolerance = 1e-12 )
     {
       if ( basis.size() >= dimension ) return;
       while ( ( basis.size() + 1 ) < dimension )
@@ -425,10 +424,21 @@ namespace DGtal
           basis.push_back( u );
         }
       // Use cofactors to determine normal vectors.
-      typedef typename DGtal::detail::AffineGeometryInternalNumber< Scalar, Safe >::type
-        InternalNumber;
-      std::vector<InternalNumber> u = orthogonalVector<InternalNumber>( basis );
-      Point p = convertToPoint( u );
+      Point p;
+      if ( safe )
+        {
+          typedef typename DGtal::detail::AffineGeometryInternalNumber< Scalar, true >::type
+            InternalNumber;
+          std::vector<InternalNumber> u = orthogonalVector<InternalNumber>( basis );
+          p = convertToPoint( u );
+        }
+      else
+        {
+          typedef typename DGtal::detail::AffineGeometryInternalNumber< Scalar, false >::type
+            InternalNumber;
+          std::vector<InternalNumber> u = orthogonalVector<InternalNumber>( basis );
+          p = convertToPoint( u );
+        }
       PointOps::normalizeVector( p, (Scalar) p.normInfinity() );
       basis.push_back( p );
     }

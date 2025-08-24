@@ -34,7 +34,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/geometry/tools/QuickHull.h"
-#include "DGtal/geometry/tools/AffineSubset.h"
+#include "DGtal/geometry/tools/AffineGeometry.h"
 #include "DGtalCatch.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -171,7 +171,7 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 2 > > dimensionality tests", "[q
   typedef QuickHull< QHKernel >            QHull;
   typedef SpaceND< 2, int >                Space;      
   typedef Space::Point                     Point;
-  typedef AffineSubset< Point >            Affine;
+  typedef AffineGeometry< Point >            Affine;
   
   std::vector< Point > V = { Point{ 3, 1 } };
 
@@ -272,7 +272,7 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 3 > > dimensionality tests", "[q
   typedef QuickHull< QHKernel >            QHull;
   typedef SpaceND< 3, int >                Space;      
   typedef Space::Point                     Point;
-  typedef AffineSubset< Point >            Affine;
+  typedef AffineGeometry< Point >            Affine;
   
   GIVEN( "Given 100 aligned points" ) {
     std::vector< Point > V = { Point{ 3, 1, -1 } };
@@ -408,7 +408,7 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 4 > > dimensionality tests", "[q
   typedef QuickHull< QHKernel >            QHull;
   typedef SpaceND< 4, int >                Space;      
   typedef Space::Point                     Point;
-  typedef AffineSubset< Point >            Affine;
+  typedef AffineGeometry< Point >            Affine;
   
   GIVEN( "Given 100 aligned points" ) {
     std::vector< Point > V = { Point{ 3, 1, -1, 2 } };

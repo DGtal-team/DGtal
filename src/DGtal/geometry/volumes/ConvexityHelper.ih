@@ -72,12 +72,12 @@ computeDegeneratedLatticePolytope
   typedef typename LatticePolytope::HalfSpace  PolytopeHalfSpace;
   typedef QuickHull< LatticeConvexHullKernel > ConvexHull;
   typedef typename ConvexHull::HalfSpace       ConvexHullHalfSpace;
-
+  typedef AffineGeometry< Point >              Affine;
   // Rewrite computeDegeneratedLatticePolytope using AffineSubset
-  auto        indices   = functions::computeAffineSubset( input_points );
-  const auto  ref_basis = functions::computeAffineBasis ( input_points, indices );
-  const auto  ref       = ref_basis.first;
-  const auto& basis     = ref_basis.second;
+  auto  indices   = functions::computeAffineSubset( input_points );
+  auto  ref_basis = functions::computeAffineBasis ( input_points, indices );
+  auto  ref       = ref_basis.first;
+  auto& basis     = ref_basis.second;
   if ( basis.size() >= dimension )
     {
       trace.error() << "[ConvexityHelper::computeDegeneratedLatticePolytope]"
@@ -112,6 +112,10 @@ computeDegeneratedLatticePolytope
       return LatticePolytope();
     }
   // Polytope is d-1 dimensional (nD)
+  // Compute orthogonal vector
+  AffineGeometry<Point>::completeBasis( basis, true );
+  Point n = basis.back();
+  
   // Then at least one unit canonic vector is
   PointRange X( indices.size() + 1 );
   for ( std::size_t i = 0; i < indices.size(); i++ )
@@ -129,8 +133,6 @@ computeDegeneratedLatticePolytope
                     << " Weird error: d-1-affine subset but no trivial vector found independant." << std::endl;
       return LatticePolytope();
     }
-  // Now the set of input points should be full dimensional.
-  input_points.push_back( X.back() );
   // Compute domain
   Point l = input_points[ 0 ];
   Point u = input_points[ 0 ];
@@ -139,6 +141,8 @@ computeDegeneratedLatticePolytope
     u = u.sup( p );
   }
   Domain domain( l, u );
+  // Now the set of input points should be full dimensional.
+  input_points.push_back( X.back() );
   // Compute convex hull
   ConvexHull hull;
   hull.setInput( input_points, false );
