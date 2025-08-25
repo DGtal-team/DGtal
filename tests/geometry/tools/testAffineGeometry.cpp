@@ -48,7 +48,7 @@ std::uniform_real_distribution<double> uniform(-1.0, 1.0);
 template <typename RealPoint>
 void perturbate( RealPoint& x, double perturbation )
 {
-  for ( auto& c : x ) x += uniform( g ) * perturbation;
+  for ( auto& c : x ) c += uniform( g ) * perturbation;
 }
 
 template <typename RealPoint>
