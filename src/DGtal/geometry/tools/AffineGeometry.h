@@ -329,9 +329,9 @@ namespace DGtal
     /// Given a range of points \a X, returns the affine dimension of
     /// its spanned affine subspace.
     ///
-    /// @param X the range of input points (may be lattice points or not).
+    /// @param[in] X the range of input points (may be lattice points or not).
     ///
-    /// @param tolerance the accepted oo-norm below which the vector is
+    /// @param[in] tolerance the accepted oo-norm below which the vector is
     /// null (used only for points with float/double coordinates).
     ///
     /// @return the affine dimension of \a X
@@ -345,14 +345,14 @@ namespace DGtal
     /// that form an affine basis of \a X. Equivalently it is a
     /// simplex whose affine space spans all the points of \a X.
     ///
-    /// @param X the range of input points (may be lattice points or not).
+    /// @param[in] X the range of input points (may be lattice points or not).
     ///
-    /// @param tolerance the accepted oo-norm below which the vector is
+    /// @param[in] tolerance the accepted oo-norm below which the vector is
     /// null (used only for points with float/double coordinates).
     ///
     /// @return a subset of these points as a range of indices.
     ///
-    /// @note Complexity is \f$O( m n^2 )\f$, where m=#X and n=dimension.
+    /// @note Complexity is \f$O( m n^2 )\f$, where m=Cardinal(X) and n=dimension.
     static
     std::vector< Size > affineSubset( const Points& X, const double tolerance = 1e-12 )
     {
@@ -378,10 +378,12 @@ namespace DGtal
     /// Given a range of points \a X, returns a point and a range of
     /// vectors forming an affine basis containing \a X.
     ///
-    /// @param X the range of input points (may be lattice points or not).
-    /// @param tolerance the accepted oo-norm below which the vector is
+    /// @param[in] X the range of input points (may be lattice points or not).
+    ///
+    /// @param[in] tolerance the accepted oo-norm below which the vector is
     /// null (used only for points with float/double coordinates).
-    /// @return a point and a range of vectors forming an affine basis containing \a X.
+    ///
+    /// @return a point and a range of vectors forming an affine basis containing X.
     ///
     /// @note Complexity is O( m n^2 ), where m=#X and n=dimension.
     static
@@ -394,6 +396,16 @@ namespace DGtal
       return std::make_pair( X[ indices[ 0 ] ], basis );
     }
 
+    /// Given a partial basis of vectors, returns a new vector that is independent.
+    ///
+    /// @param[in] basis a range of independent vectors that defines a
+    /// partial basis of the space.
+    ///
+    /// @param[in] tolerance the accepted oo-norm below which the vector is
+    /// null (used only for points with float/double coordinates).
+    ///
+    /// @return a canonic unit vector independent of all vectors of \a
+    /// basis, or the null vector if the basis was not partial.
     static
     Point independentVector( const Points& basis, const double tolerance = 1e-12 )
     {
@@ -414,6 +426,21 @@ namespace DGtal
       return Point::zero;
     }
 
+    /// Complete the vectors \a basis with independent vectors so as
+    /// to form a basis of the space. The last added vector is
+    /// guaranteed to be \b orthogonal to all the previous vectors.
+    ///
+    /// @note In 3D, given two independent vectors as input, then the
+    /// added vector is the \b cross \b product of these two
+    /// vectors. In nD, it is thus a generalization of the cross
+    /// product.
+    ///
+    /// @param[in,out] basis a range of independent vectors of size less than dimension.
+    ///
+    /// @param safe when 'true' uses a safer internal number type for computations.
+    ///
+    /// @param[in] tolerance the accepted oo-norm below which the vector is
+    /// null (used only for points with float/double coordinates).
     static
     void completeBasis( Points& basis, bool safe = true, const double tolerance = 1e-12 )
     {
@@ -533,7 +560,12 @@ namespace DGtal
         w[j] = mul_w * w[j] - mul_b * b[j];
     }
 
-
+    /// Converts a range of coefficients into a Point of the space.
+    ///
+    /// @tparam TInternalNumber the number type used for coefficients.
+    ///
+    /// @param[in] w any vector represented as a range of number.
+    /// @return the conversion of \a w to the type Point. 
     template < typename TInternalNumber >
     static
     Point convertToPoint( const std::vector<TInternalNumber>& w )
@@ -544,7 +576,20 @@ namespace DGtal
         u[ i ] = (Scalar) w[ i ];
       return u;
     }
-      
+
+    /// Given `d-1` independent vectors in dD, returns a vector that
+    /// is orthogonal to each of them.
+    ///
+    /// @note In 3D, given two independent vectors as input, then the
+    /// added vector is the \b cross \b product of these two
+    /// vectors. In nD, it is thus a generalization of the cross
+    /// product.
+    ///
+    /// @tparam TInternalNumber the number type used for internal computations.
+    ///
+    /// @param[in] basis a range of independent vectors of size dimension-1.
+    ///
+    /// @return a vector of coefficients (represented with the given number type).
     template < typename TInternalNumber >
     static
     std::vector<TInternalNumber>
@@ -583,10 +628,13 @@ namespace DGtal
     /// its spanned affine subspace.
     ///
     /// @param X the range of input points (may be lattice points or not).
+    ///
     /// @param tolerance the accepted oo-norm below which the vector is
     /// null (used only for points with float/double coordinates).
-    /// @return the affine dimension of \a X
-    /// @param X the
+    ///
+    /// @return the affine dimension of \a X.
+    ///
+    /// @note Complexity is \f$O( m n^2 )\f$, where m=Cardinal(X) and n=dimension.
     template <typename TPoint>
     DGtal::int64_t
     computeAffineDimension( const std::vector< TPoint >& X, const double tolerance = 1e-12 )
@@ -605,7 +653,7 @@ namespace DGtal
     ///
     /// @return a subset of these points as a range of indices.
     ///
-    /// @note Complexity is \f$O( m n^2 )\f$, where m=#X and n=dimension.
+    /// @note Complexity is \f$O( m n^2 )\f$, where m=Cardinal(X) and n=dimension.
     template <typename TPoint>
     std::vector< std::size_t >
     computeAffineSubset( const std::vector< TPoint >& X, const double tolerance = 1e-12 )
@@ -617,11 +665,13 @@ namespace DGtal
     /// vectors forming an affine basis containing \a X.
     ///
     /// @param X the range of input points (may be lattice points or not).
+    ///
     /// @param tolerance the accepted oo-norm below which the vector is
     /// null (used only for points with float/double coordinates).
+    ///
     /// @return a point and a range of vectors forming an affine basis containing \a X.
     ///
-    /// @note Complexity is O( m n^2 ), where m=#X and n=dimension.
+    /// @note Complexity is O( m n^2 ), where m=Cardinal(X) and n=dimension.
     template <typename TPoint>
     std::pair< TPoint, std::vector< TPoint > >
     computeAffineBasis( const std::vector< TPoint >& X, const double tolerance = 1e-12 )
@@ -629,8 +679,9 @@ namespace DGtal
       return AffineGeometry<TPoint>::affineBasis( X, tolerance );
     }
 
-    /// Given a range of points \a X and the indices \a I of points in \a X which form an affine subset of \a X, returns a point and a range of
-    /// vectors forming an affine basis containing \a X.
+    /// Given a range of points \a X and the indices \a I of points in
+    /// \a X which form an affine subset of \a X, returns a point and
+    /// a range of vectors forming an affine basis containing \a X.
     ///
     /// @param X the range of input points (may be lattice points or not).
     ///
@@ -639,7 +690,7 @@ namespace DGtal
     ///
     /// @return a point and a range of vectors forming an affine basis containing \a X.
     ///
-    /// @note Complexity is O( m n^2 ), where m=#X and n=dimension.
+    /// @note Complexity is O( m n^2 ), where m=Cardinal(X) and n=dimension.
     template <typename TPoint>
     std::pair< TPoint, std::vector< TPoint > >
     computeAffineBasis( const std::vector< TPoint >& X,
