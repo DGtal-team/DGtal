@@ -384,7 +384,7 @@ namespace DGtal
     ///
     /// @return a point and a range of vectors forming an affine basis containing X.
     ///
-    /// @note Complexity is O( m n^2 ), where m=#X and n=dimension.
+    /// @note Complexity is O( m n^2 ), where m=Cardinal(X) and n=dimension.
     static
     std::pair< Point, Points > affineBasis( const Points& X, const double tolerance = 1e-12 )
     {

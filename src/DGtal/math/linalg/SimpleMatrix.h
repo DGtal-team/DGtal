@@ -451,6 +451,10 @@ namespace DGtal
 
   /**
    * External scalar multiplication
+   *
+   * @param scalar any scalar value v.
+   * @param matrix any matrix M.
+   * @return the matrix v * M, where * is the external product.
    */
   template <typename TComponent, DGtal::Dimension TM, DGtal::Dimension TN>
   SimpleMatrix<TComponent, TM, TN>
@@ -462,8 +466,8 @@ namespace DGtal
     /// floating-point coefficients using Bareiss method.  Complexity
     /// is in O(n^3) if you assume O(1) for each arithmetic operation.
     ///
-    /// @param matrix a squared matrix.
-    /// @param[out] the determinant of this matrix.
+    /// @param[in] matrix a squared matrix.
+    /// @param[out] result the determinant of this matrix.
     ///
     /// @note In case of integer coefficients, intermediate integer
     /// values may grow quickly. Use int64_t or even
