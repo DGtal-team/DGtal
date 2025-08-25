@@ -42,7 +42,7 @@ jobs:
           build-type: ${{ matrix.build_type }}
           build-config: ${{ steps.config.outputs.cmake-config }}
           test: true
-          test-threshold: "10"
+          test-threshold: "100"
           test-blacklist: ${{ steps.config.outputs.cmake-test-blacklist }}
           test-whitelist: ${{ steps.config.outputs.cmake-test-whitelist }}
 
