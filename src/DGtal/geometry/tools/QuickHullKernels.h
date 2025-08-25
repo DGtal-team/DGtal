@@ -245,7 +245,7 @@ namespace DGtal
     /// Computes an halfspace from dimension points specified by \a
     /// simplex with vertices in a range \a vpoints of
     /// Point. Orientation is induced by the order of the points. If
-    /// the simplex is degenrated, the half-space is invalid and has
+    /// the simplex is degenerated, the half-space is invalid and has
     /// null normal.
     ///
     /// @param[in] vpoints a range of points over which the simplex is defined.

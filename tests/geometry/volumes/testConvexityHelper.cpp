@@ -33,6 +33,7 @@
 #include <algorithm>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
+#include "DGtal/geometry/tools/AffineGeometry.h"
 #include "DGtal/geometry/volumes/ConvexityHelper.h"
 #include "DGtal/shapes/SurfaceMesh.h"
 #include "DGtalCatch.h"
@@ -707,13 +708,15 @@ SCENARIO( "ConvexityHelper< 3 > open triangle tests",
   const int K = 10;
   for ( auto n = 0; n < N; n++ )
     {
-      Point a( rand() % K, rand() % K, rand() % K );
-      Point b( rand() % K, rand() % K, rand() % K );
-      Point c( rand() % K, rand() % K, rand() % K );
-      if ( a == b ) b[ rand() % 3 ] += 1;
-      if ( b == c ) c[ rand() % 3 ] += 1;
-      if ( c == a ) c[ rand() % 3 ] += 1;
-      if ( b == c ) c[ rand() % 3 ] += 1;
+      Point a, b, c;
+      Dimension d = 0;
+      do {
+        a = Point( rand() % K, rand() % K, rand() % K );
+        b = Point( rand() % K, rand() % K, rand() % K );
+        c = Point( rand() % K, rand() % K, rand() % K );
+        std::vector< Point > X = { a, b, c };
+        d = AffineGeometry<Point>::affineDimension( X );
+      } while ( d != 2 );
       CAPTURE( a, b, c );
       Helper::LatticePolytope CS = Helper::compute3DTriangle( a, b, c, true );
       Helper::LatticePolytope OS = Helper::compute3DOpenTriangle( a, b, c, true );

@@ -203,7 +203,7 @@ namespace DGtal
     /// @return the tightiest bounded lattice polytope
     /// (i.e. H-representation) including the given range of points,
     /// or an empty range if the dimension is greater than 3 and the
-    /// given range of points is not full.
+    /// given range of points is not full dimensional.
     static
     LatticePolytope
     computeLatticePolytope( const PointRange& input_points,
@@ -221,7 +221,7 @@ namespace DGtal
     /// @return the vertices of the tightiest bounded lattice polytope
     /// including the given range of points, or an empty range if the
     /// dimension is greater than 3 and the given range of points is
-    /// not full.
+    /// not full dimensional.
     static
     PointRange
     computeConvexHullVertices( const PointRange& input_points,

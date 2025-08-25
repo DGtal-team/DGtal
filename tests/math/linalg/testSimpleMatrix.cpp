@@ -397,6 +397,77 @@ bool testConcepts()
   return true;
 }
 
+bool testBareissDeterminant()
+{
+  unsigned int nbok = 0;
+  unsigned int nb   = 0;
+
+  trace.beginBlock( "Bareiss determinant test" );
+  {
+    typedef DGtal::SimpleMatrix<int,3,3> Matrix;
+    Matrix M = { 1, 2, 3, 4, 5, 7, 6, 8, 9 };
+    auto   d = M.determinant();
+    int    db;
+    DGtal::functions::determinantBareiss( M, db );
+    trace.info() << "d=" << d << " db=" << db << "\n";
+    nbok += ( d == 7 ) ? 1 : 0;
+    nb++;
+    nbok += ( db == 7 ) ? 1 : 0;
+    nb++;
+  }
+
+  {
+    typedef DGtal::SimpleMatrix<int,4,4> Matrix;
+    Matrix  M = { 1, 2, 3, -4, 13, 4, 5, 7, 6, 8, 17, 9, 21, 12, -5, 11 };
+    auto    d = M.determinant();
+    int64_t db;
+    DGtal::functions::determinantBareiss( M, db );
+    trace.info() << "d=" << d << " db=" << db << "\n";
+    nbok += ( d == -12260 ) ? 1 : 0;
+    nb++;
+    nbok += ( db == -12260 ) ? 1 : 0;
+    nb++;
+  }
+  {
+    typedef DGtal::SimpleMatrix<int,5,5> Matrix;
+    Matrix  M = { 1311, 1, 2, 3, -4,
+                  13, 457, 4, 5, 7,
+                  6, 8, -535, 17, 9,
+                  21, 12, -5, 243, 11,
+                  123,-39,411,630,23 };
+    auto    d = M.determinant();
+    int64_t db;
+    BigInteger big_db;
+    DGtal::functions::determinantBareiss( M, db );
+    DGtal::functions::determinantBareiss( M, big_db );
+    int64_t   cdb = NumberTraits<BigInteger>::castToInt64_t( big_db );
+    trace.info() << "d=" << d << " (i64)db=" << db << " (big)db=" << cdb << "\n";
+    // The line below raises a warning in the macos compiler.
+    // nbok += ( int64_t(d) != -171492636038LL ) ? 1 : 0; // int overflow
+    nbok += ( int(d) != (-171492636038LL % 2147483648LL ) ) ? 1 : 0; // int overflow
+    nb++;
+    nbok += ( db != -171492636038LL ) ? 1 : 0; // int64 overflow (intermediate computation)
+    nb++;
+    nbok += ( cdb == -171492636038LL ) ? 1 : 0;
+    nb++;
+  }
+
+  {
+    typedef DGtal::SimpleMatrix<double,4,4> Matrix;
+    Matrix  M = { 1.5, 2.2, 3.1, -4.6, 13.3, 4.2, 5.7, 7.3, 6.4, 8.0, 17.9, 9.3, 21.2, 12.2, -5.1, 11.8 };
+    auto    d = M.determinant();
+    double  db;
+    DGtal::functions::determinantBareiss( M, db );
+    trace.info() << "d=" << d << " db=" << db << "\n";
+    nbok += ( std::fabs( d - db ) < 1e-10 ) ? 1 : 0;
+    nb++;
+  }
+
+  trace.endBlock();
+  
+  return nbok == nb;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -408,9 +479,10 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testSimpleMatrix() && testArithm() && testColRow() &&
-             testDetCofactor() && testM1Matrix() && testInverse() &&
-             testConcepts() && testConstructor();
+  bool res = testSimpleMatrix() && testArithm() && testColRow()
+    && testDetCofactor() && testM1Matrix() && testInverse()
+    && testConcepts() && testConstructor()
+    && testBareissDeterminant();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

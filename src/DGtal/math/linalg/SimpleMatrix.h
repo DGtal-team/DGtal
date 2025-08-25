@@ -210,6 +210,14 @@ namespace DGtal
      */
     Component& operator()(const DGtal::Dimension i, const DGtal::Dimension j);
 
+
+    /**
+     * Swap the coefficients of rows i1 and i2
+     * @param i1 any row
+     * @param i2 any row
+     */
+    void swapRows( const DGtal::Dimension i1, const DGtal::Dimension i2 );
+    
     // ----------------------- SimpleMatrix computations ------------------------------
 
 
@@ -443,11 +451,35 @@ namespace DGtal
 
   /**
    * External scalar multiplication
+   *
+   * @param scalar any scalar value v.
+   * @param matrix any matrix M.
+   * @return the matrix v * M, where * is the external product.
    */
   template <typename TComponent, DGtal::Dimension TM, DGtal::Dimension TN>
   SimpleMatrix<TComponent, TM, TN>
   operator* ( const TComponent& scalar, const SimpleMatrix<TComponent, TM, TN>& matrix);
 
+  namespace functions {
+
+    /// Computes the determinant of a squared matrix with integer or
+    /// floating-point coefficients using Bareiss method.  Complexity
+    /// is in O(n^3) if you assume O(1) for each arithmetic operation.
+    ///
+    /// @param[in] matrix a squared matrix.
+    /// @param[out] result the determinant of this matrix.
+    ///
+    /// @note In case of integer coefficients, intermediate integer
+    /// values may grow quickly. Use int64_t or even
+    /// boost::multiprecision::cpp_int to get robust result.
+    template <typename TComponent, DGtal::Dimension TN,
+              typename TInternalNumber>
+    void
+    determinantBareiss( const SimpleMatrix<TComponent, TN, TN>& matrix,
+                        TInternalNumber& result );
+    
+  } // namespace functions
+  
 } // namespace DGtal
 
 
