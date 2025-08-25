@@ -361,7 +361,6 @@ namespace DGtal
       if ( m == 0 ) return { };
       if ( m == 1 ) return { Size( 0 ) };
       // Process general case.
-      Dimension n = X[0].size();
       Points basis;  //< direction vectors
       Sizes  chosen; //< selected points
       chosen.push_back( 0 ); //< reference point (first one, as it may be any one)
@@ -627,6 +626,8 @@ namespace DGtal
     /// Given a range of points \a X, returns the affine dimension of
     /// its spanned affine subspace.
     ///
+    /// @tparam TPoint any type of lattice point or real point.
+    ///
     /// @param X the range of input points (may be lattice points or not).
     ///
     /// @param tolerance the accepted oo-norm below which the vector is
@@ -646,6 +647,8 @@ namespace DGtal
     /// that form an affine basis of \a X. Equivalently it is a
     /// simplex whose affine space spans all the points of \a X.
     ///
+    /// @tparam TPoint any type of lattice point or real point.
+    ///
     /// @param X the range of input points (may be lattice points or not).
     ///
     /// @param tolerance the accepted oo-norm below which the vector is
@@ -663,6 +666,8 @@ namespace DGtal
   
     /// Given a range of points \a X, returns a point and a range of
     /// vectors forming an affine basis containing \a X.
+    ///
+    /// @tparam TPoint any type of lattice point or real point.
     ///
     /// @param X the range of input points (may be lattice points or not).
     ///
@@ -683,6 +688,8 @@ namespace DGtal
     /// \a X which form an affine subset of \a X, returns a point and
     /// a range of vectors forming an affine basis containing \a X.
     ///
+    /// @tparam TPoint any type of lattice point or real point.
+    ///
     /// @param X the range of input points (may be lattice points or not).
     ///
     /// @param I a subset of these points as a range of indices, forming
@@ -701,6 +708,55 @@ namespace DGtal
         basis[ i ] = X[ I[ i+1 ] ] - X[ I[ 0 ] ];
       return std::make_pair( X[ I[ 0 ] ], basis );
     }
+
+    /// Given a partial basis of vectors, returns a new vector that is independent.
+    ///
+    /// @tparam TPoint any type of lattice point or real point.
+    ///
+    /// @param[in] basis a range of independent vectors that defines a
+    /// partial basis of the space.
+    ///
+    /// @param[in] tolerance the accepted oo-norm below which the vector is
+    /// null (used only for points with float/double coordinates).
+    ///
+    /// @return a canonic unit vector independent of all vectors of \a
+    /// basis, or the null vector if the basis was not partial.
+    template <typename TPoint>
+    TPoint
+    computeIndependentVector( const std::vector< TPoint >& basis,
+                              const double tolerance = 1e-12 )
+    {
+      return AffineGeometry<TPoint>::independentVector( basis, tolerance );
+    }
+
+    /// Complete the vectors \a basis with independent vectors so as
+    /// to form a basis of the space. The last added vector is
+    /// guaranteed to be \b orthogonal to all the previous vectors.
+    ///
+    /// @note In 3D, given two independent vectors as input, then the
+    /// added vector is the \b cross \b product of these two
+    /// vectors. In nD, it is thus a generalization of the cross
+    /// product.
+    ///
+    /// @tparam TPoint any type of lattice point or real point.
+    ///
+    /// @param[in,out] basis a range of independent vectors of size less than dimension.
+    ///
+    /// @param safe when 'true' uses a safer internal number type for computations.
+    ///
+    /// @param[in] tolerance the accepted oo-norm below which the vector is
+    /// null (used only for points with float/double coordinates).
+    template <typename TPoint>
+    static
+    void
+    computeCompleteBasis( std::vector< TPoint >& basis,
+                   bool safe = true,
+                   const double tolerance = 1e-12 )
+    {
+      AffineGeometry<TPoint>::completeBasis( basis, safe, tolerance );
+    }
+
+
   } // namespace functions
 } // namespace DGtal
 

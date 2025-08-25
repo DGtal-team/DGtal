@@ -72,7 +72,7 @@ computeDegeneratedLatticePolytope
   typedef typename LatticePolytope::HalfSpace  PolytopeHalfSpace;
   typedef QuickHull< LatticeConvexHullKernel > ConvexHull;
   typedef typename ConvexHull::HalfSpace       ConvexHullHalfSpace;
-  typedef AffineGeometry< Point >              Affine;
+
   // Rewrite computeDegeneratedLatticePolytope using AffineSubset
   auto  indices   = functions::computeAffineSubset( input_points );
   auto  ref_basis = functions::computeAffineBasis ( input_points, indices );
@@ -113,7 +113,7 @@ computeDegeneratedLatticePolytope
     }
   // Polytope is d-1 dimensional (nD)
   // Compute orthogonal vector
-  AffineGeometry<Point>::completeBasis( basis, true );
+  functions::computeCompleteBasis( basis, true );
   Point n = basis.back();
   
   // Then at least one unit canonic vector is
