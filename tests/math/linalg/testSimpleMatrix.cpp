@@ -442,11 +442,11 @@ bool testBareissDeterminant()
     DGtal::functions::determinantBareiss( M, big_db );
     int64_t   cdb = NumberTraits<BigInteger>::castToInt64_t( big_db );
     trace.info() << "d=" << d << " (i64)db=" << db << " (big)db=" << cdb << "\n";
-    nbok += ( int64_t(d) != -171492636038 ) ? 1 : 0; // int overflow
+    nbok += ( int64_t(d) != -171492636038LL ) ? 1 : 0; // int overflow
     nb++;
-    nbok += ( db != -171492636038 ) ? 1 : 0; // int64 overflow (intermediate computation)
+    nbok += ( db != -171492636038LL ) ? 1 : 0; // int64 overflow (intermediate computation)
     nb++;
-    nbok += ( cdb == -171492636038 ) ? 1 : 0;
+    nbok += ( cdb == -171492636038LL ) ? 1 : 0;
     nb++;
   }
 
