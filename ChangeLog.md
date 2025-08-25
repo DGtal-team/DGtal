@@ -19,6 +19,11 @@
   - Cleaning up the Github Actions reuses (Bastien Doignies, [#1793](https://github.com/DGtal-team/DGtal/pull/1793))
   - Add cache to github actions (Bastien Doignies, [#1805](https://github.com/DGtal-team/DGtal/pull/1805))
 
+- *Python*
+  - Build backend upgraded to scikit-build-core (Bastien Doignies, [#1804](https://github.com/DGtal-team/DGtal/pull/1804))
+  - New CI for pypi deployement with cibuildwheel (Bastien Doignies, [#1804](https://github.com/DGtal-team/DGtal/pull/1804))
+
+
 # DGtal 2.0
 
 ## New features
