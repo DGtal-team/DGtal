@@ -145,8 +145,8 @@ jobs:
           path: wrap/deploy/dist/
 
   publish-to-testpypi:
-    name: Publish Python 🐍 distribution 📦 to TestPyPI
-    if: startsWith(github.ref, 'refs/tags/')
+    name: publish python 🐍 distribution 📦 to testpypi
+    if: startswith(github.ref, 'refs/tags/')
     needs:
     - build
     runs-on: ubuntu-22.04
@@ -156,17 +156,17 @@ jobs:
       url: https://pypi.org/p/dgtal
 
     permissions:
-      id-token: write  # IMPORTANT: mandatory for trusted publishing
+      id-token: write  # important: mandatory for trusted publishing
 
     steps:
-    - name: Download all the dists
+    - name: download all the dists
       uses: actions/download-artifact@v4
       with:
         path: dist/
         pattern: python-package-distributions-*
         merge-multiple: true
 
-    - name: Publish distribution 📦 to TestPyPI
+    - name: publish distribution 📦 to testpypi
       uses: pypa/gh-action-pypi-publish@release/v1
       
 
