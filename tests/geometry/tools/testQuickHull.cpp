@@ -188,6 +188,7 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 2 > > dimensionality tests", "[q
       REQUIRE( d == 1 );
     }      
     THEN( "QuickHull should detect not full dimensionality" ) {
+      REQUIRE( ok == false );
       REQUIRE( status == QHull::Status::NotFullDimensional );
     }
   }
@@ -207,6 +208,7 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 2 > > dimensionality tests", "[q
       REQUIRE( d == 2 );
     }      
     THEN( "QuickHull should detect full dimensionality" ) {
+      REQUIRE( ok == true );
       REQUIRE( status != QHull::Status::NotFullDimensional );
     }
     THEN( "QuickHull should find 3 vertices" ) {
@@ -288,6 +290,7 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 3 > > dimensionality tests", "[q
       REQUIRE( d == 1 );
     }      
     THEN( "QuickHull should detect not full dimensionality" ) {
+      REQUIRE( ok == false );
       REQUIRE( status == QHull::Status::NotFullDimensional );
     }
   }
@@ -308,6 +311,7 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 3 > > dimensionality tests", "[q
       REQUIRE( d == 2 );
     }      
     THEN( "QuickHull should detect not full dimensionality" ) {
+      REQUIRE( ok == false );
       REQUIRE( status == QHull::Status::NotFullDimensional );
     }
   }
@@ -326,6 +330,7 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 3 > > dimensionality tests", "[q
       REQUIRE( d == 2 );
     }      
     THEN( "QuickHull should detect not full dimensionality" ) {
+      REQUIRE( ok == false );
       REQUIRE( status == QHull::Status::NotFullDimensional );
     }
   }
@@ -346,6 +351,7 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 3 > > dimensionality tests", "[q
       REQUIRE( d == 3 );
     }      
     THEN( "QuickHull should detect full dimensionality" ) {
+      REQUIRE( ok == true );
       REQUIRE( status != QHull::Status::NotFullDimensional );
     }
     THEN( "QuickHull should have more than 3 vertices" ) {
@@ -424,6 +430,7 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 4 > > dimensionality tests", "[q
       REQUIRE( d == 1 );
     }      
     THEN( "QuickHull should detect not full dimensionality" ) {
+      REQUIRE( ok == false );
       REQUIRE( status == QHull::Status::NotFullDimensional );
     }
   }
@@ -444,6 +451,7 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 4 > > dimensionality tests", "[q
       REQUIRE( d == 2 );
     }      
     THEN( "QuickHull should detect not full dimensionality" ) {
+      REQUIRE( ok == false );
       REQUIRE( status == QHull::Status::NotFullDimensional );
     }
   }
@@ -462,6 +470,7 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 4 > > dimensionality tests", "[q
       REQUIRE( d == 2 );
     }      
     THEN( "QuickHull should detect not full dimensionality" ) {
+      REQUIRE( ok == false );
       REQUIRE( status == QHull::Status::NotFullDimensional );
     }
   }
@@ -482,6 +491,7 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 4 > > dimensionality tests", "[q
       REQUIRE( d == 3 );
     }      
     THEN( "QuickHull should detect not full dimensionality" ) {
+      REQUIRE( ok == false );      
       REQUIRE( status == QHull::Status::NotFullDimensional );
     }
   }
@@ -500,6 +510,7 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 4 > > dimensionality tests", "[q
       REQUIRE( d == 3 );
     }      
     THEN( "QuickHull should detect not full dimensionality" ) {
+      REQUIRE( ok == false );      
       REQUIRE( status == QHull::Status::NotFullDimensional );
     }
   }
@@ -520,6 +531,7 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 4 > > dimensionality tests", "[q
       REQUIRE( d == 4 );
     }      
     THEN( "QuickHull should detect full dimensionality" ) {
+      REQUIRE( ok == true );
       REQUIRE( status != QHull::Status::NotFullDimensional );
     }
     THEN( "QuickHull should have more than 4 vertices" ) {
