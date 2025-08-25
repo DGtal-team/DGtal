@@ -3,7 +3,7 @@ requires = ["scikit-build-core"]
 build-backend = "scikit_build_core.build"
 
 [project]
-name = "DGtal"
+name = "dgtal-test"
 version = "2.1.0"
 description = "DGtal is an open-source, cross-platform library providing Digital Geometry Tools and Algorithm"
 
