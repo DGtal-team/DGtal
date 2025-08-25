@@ -51,6 +51,7 @@ runs:
       run: |
         echo "DGTAL_PATH=$(echo '${{ inputs.dgtal }}' | sed s/\\\\/\\//g)" >> "$GITHUB_ENV"
         echo "DGTAL_BUILD_PATH=$(echo '${{ inputs.build-dir }}' | sed s/\\\\/\\//g)" >> "$GITHUB_ENV"
+        echo "CPM_SOURCE_CACHE=$(echo '${{ inputs.cpm-cache }}' | sed s/\\\\/\\//g)" >> "$GITHUB_ENV"
     
     - name: "Caching and Restoring CMake deps"
       uses: actions/cache@v4
@@ -81,7 +82,7 @@ runs:
       shell: bash
       working-directory: ${{ inputs.build-dir }} 
       run: |
-        cmake $DGTAL_PATH -DCPM_SOURCE_CACHE=${{ inputs.cpm-cache }} -DCMAKE_BUILD_TYPE=${{ inputs.build-type }} -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ inputs.test-whitelist }}" -DDGTAL_RANDOMIZED_TESTING_THRESHOLD="${{ inputs.test-threshold }}" ${{ inputs.build-config }}
+        cmake $DGTAL_PATH -DCMAKE_BUILD_TYPE=${{ inputs.build-type }} -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ inputs.test-whitelist }}" -DDGTAL_RANDOMIZED_TESTING_THRESHOLD="${{ inputs.test-threshold }}" ${{ inputs.build-config }}
 
     - name: Build
       shell: bash
