@@ -30,10 +30,15 @@ classifiers = [
 [project.urls]
 Homepage = "https://www.dgtal.org/"
 
+[tool.scikit-build.wheel]
+exclude = ["**/doc/**"]
+
 [tool.scikit-build]
 sdist.include = [
     "tables/**.zip"
 ]
+sdist.exclude = ["**/doc/**"]
+
 cmake.args = [
     '-DCMAKE_BUILD_TYPE=Release',
     '-DDGTAL_BUILD_SHARED_LIBS:BOOL=OFF',
