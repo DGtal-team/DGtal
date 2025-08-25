@@ -83,9 +83,9 @@ namespace DGtal
         DGtal::Dimension i = 0;
         while ( i < Point::dimension && w[ i ] == 0 ) i++;
         if ( i == Point::dimension ) return;
-        TInteger g = std::abs( w[ i ] );
+        TInteger g = abs( w[ i ] );
         for ( ; i < Point::dimension; i++ )
-          g = DGtal::IntegerComputer< TInteger >::staticGcd( g, std::abs( w[ i ] ) );
+          g = DGtal::IntegerComputer< TInteger >::staticGcd( g, abs( w[ i ] ) );
         w /= g;
       }
 
@@ -142,7 +142,7 @@ namespace DGtal
       static
       std::pair< Integer, Integer > getMultipliers( Integer a, Integer b )
       {
-        Integer g = IntegerComputer< Integer >::staticGcd( std::abs( a ), std::abs( b ) );
+        Integer g = IntegerComputer< Integer >::staticGcd( abs( a ), abs( b ) );
         return std::make_pair( b / g, a / g );
       }
 

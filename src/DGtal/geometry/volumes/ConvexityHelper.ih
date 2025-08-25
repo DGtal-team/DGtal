@@ -182,7 +182,7 @@ computeDegeneratedLatticePolytope
   PHS.emplace_back( n, nu0 );
   return LatticePolytope( domain, PHS.cbegin(), PHS.cend(),
                           false, false );
-
+  // // Old version
   // // input_points is a range of points with no duplicates, but which
   // // seems to be not full dimensional.
   // if ( input_points.size() <= 1 )
