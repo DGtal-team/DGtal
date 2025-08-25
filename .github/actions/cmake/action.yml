@@ -46,6 +46,12 @@ runs:
       run: |
         echo "DGTAL_PATH=$(echo '${{ inputs.dgtal }}' | sed s/\\\\/\\//g)" >> "$GITHUB_ENV"
         echo "DGTAL_BUILD_PATH=$(echo '${{ inputs.build-dir }}' | sed s/\\\\/\\//g)" >> "$GITHUB_ENV"
+    
+    - name: "Caching and Restoring CMake deps"
+      uses: actions/cache@v4
+      with:
+        path: ${{ inputs.build-dir }}/_deps/
+        key: ${{ runner.os }}-${{ inputs.build-type }}-${{ hashFiles('**/CMakeLists.txt', 'cmake/**') }}
 
     - name: "Create build directory"
       shell: bash
