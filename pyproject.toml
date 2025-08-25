@@ -3,7 +3,7 @@ requires = ["scikit-build-core"]
 build-backend = "scikit_build_core.build"
 
 [project]
-name = "dgtal-test"
+name = "DGtal"
 version = "2.1.0"
 description = "DGtal is an open-source, cross-platform library providing Digital Geometry Tools and Algorithm"
 
@@ -50,9 +50,6 @@ cmake.args = [
 [tool.cibuildwheel]
 # Necessary to see build output from the actual compilation
 build-verbosity = 1
-# TODO: Remove both lines. This is debug to speed up ci
-build = "cp311-*"
-archs = ["auto64"]
 
 
 [tool.cibuildwheel.windows]

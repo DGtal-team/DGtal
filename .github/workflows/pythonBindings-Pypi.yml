@@ -56,7 +56,7 @@ jobs:
 
     environment:
       name: deploy-pypi
-      url: https://test.pypi.org/p/DGtal-test
+      url: https://pypi.org/p/DGtal
 
     permissions:
       id-token: write  # important: mandatory for trusted publishing
@@ -72,7 +72,6 @@ jobs:
     - name: publish distribution 📦 to testpypi
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
-        repository-url: https://test.pypi.org/legacy/
         verbose: true
 
 
