@@ -19,6 +19,11 @@ inputs:
     description: "Additionnal configuration to give to cmake"
     default: ""
 
+  cpm-cache:
+    description: "CPM Cache path"
+    default: ${{ runner.workspace }}/cache
+    required: true
+
   test:
     description: "Whether to run tests or not. This requires the proper build-config and environment variable TESTBLACKLIST to be set."
     type: boolean
@@ -50,8 +55,8 @@ runs:
     - name: "Caching and Restoring CMake deps"
       uses: actions/cache@v4
       with:
-        path: ${{ inputs.build-dir }}/_deps/
-        key: ${{ runner.os }}-${{ inputs.build-type }}-${{ hashFiles('**/CMakeLists.txt', 'cmake/**') }}
+        path: ${{ inputs.cpm-cache }}
+        key: cpm-cache
 
     - name: "Create build directory"
       shell: bash
@@ -65,11 +70,18 @@ runs:
       run: |
         conan install $DGTAL_PATH --build=missing -s:a compiler.cppstd=20
 
+    - name: "Conan Cache"
+      if: ${{ runner.os == 'Windows' }}
+      uses: actions/cache@v4
+      with:
+        path: ~/.conan2
+        key: ${{ runner.os }}-conan2-${{ matrix.BUILD_TYPE }}
+
     - name: Configure CMake
       shell: bash
       working-directory: ${{ inputs.build-dir }} 
       run: |
-        cmake $DGTAL_PATH -DCMAKE_BUILD_TYPE=${{ inputs.build-type }} -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ inputs.test-whitelist }}" -DDGTAL_RANDOMIZED_TESTING_THRESHOLD="${{ inputs.test-threshold }}" ${{ inputs.build-config }}
+        cmake $DGTAL_PATH -DCPM_SOURCE_CACHE=${{ inputs.cpm-cache }} -DCMAKE_BUILD_TYPE=${{ inputs.build-type }} -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ inputs.test-whitelist }}" -DDGTAL_RANDOMIZED_TESTING_THRESHOLD="${{ inputs.test-threshold }}" ${{ inputs.build-config }}
 
     - name: Build
       shell: bash
