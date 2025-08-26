@@ -19,9 +19,9 @@ inputs:
     description: "Additionnal configuration to give to cmake"
     default: ""
 
-  cpm-cache:
-    description: "CPM Cache path"
-    default: ${{ runner.workspace }}/cache
+  cache-deps-path:
+    description: "If non-empty, specify path to cache folder"
+    default: ${{ runner.workspace }}/cache 
     required: true
 
   test:
@@ -51,13 +51,18 @@ runs:
       run: |
         echo "DGTAL_PATH=$(echo '${{ inputs.dgtal }}' | sed s/\\\\/\\//g)" >> "$GITHUB_ENV"
         echo "DGTAL_BUILD_PATH=$(echo '${{ inputs.build-dir }}' | sed s/\\\\/\\//g)" >> "$GITHUB_ENV"
-        echo "CPM_SOURCE_CACHE=$(echo '${{ inputs.cpm-cache }}' | sed s/\\\\/\\//g)" >> "$GITHUB_ENV"
-    
-    - name: "Caching and Restoring CMake deps"
-      uses: actions/cache@v4
+        echo "CPM_SOURCE_CACHE=$(echo '${{ inputs.cache-deps-path }}' | sed s/\\\\/\\//g)" >> "$GITHUB_ENV"
+        echo "CACHE_ID=$(gh run list --workflow '${{ github.workflow }}' --branch CacheImprove --limit 1 --json databaseId --jq '.[0].data'" >> "$GITHUB_ENV"
+
+    - name: "Restoring cpm cache"
+      id: restore-cpm-cache
+      uses: actions/download-artifact@v4
+      continue-on-failure: true 
       with:
-        path: ${{ inputs.cpm-cache }}
-        key: cpm-cache
+        path: ${{ env.CPM_SOURCE_CACHE }}
+        name: ${{ runner.os }}-cpm-cache
+        run-id: ${{ env.CACHE_ID }}
+        github-token: ${{ github.token }}
 
     - name: "Create build directory"
       shell: bash
@@ -82,13 +87,21 @@ runs:
       shell: bash
       working-directory: ${{ inputs.build-dir }} 
       run: |
-        cmake $DGTAL_PATH -DCPM_SOURCE_CACHE=$CPM_SOURCE_CACHE -DCMAKE_BUILD_TYPE=${{ inputs.build-type }} -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ inputs.test-whitelist }}" -DDGTAL_RANDOMIZED_TESTING_THRESHOLD="${{ inputs.test-threshold }}" ${{ inputs.build-config }}
+        cmake $DGTAL_PATH -DCMAKE_BUILD_TYPE=${{ inputs.build-type }} -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ inputs.test-whitelist }}" -DDGTAL_RANDOMIZED_TESTING_THRESHOLD="${{ inputs.test-threshold }}" ${{ inputs.build-config }}
 
     - name: Build
       shell: bash
       working-directory: ${{ inputs.build-dir }} 
       run: cmake --build . --config ${{ inputs.build-type }} --parallel 3
-    
+
+    - name: Uploading artifacts
+      if: ${{ github.ref_name == 'CacheImprove' }}
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ runner.os }}-cpm-cache
+        path: ${{ env.CPM_SOURCE_CACHE }}
+        retention-day: 89 # Limit is 90 days for free use 
+
     - name: Perform tests
       if: ${{ inputs.test == 'true'}}
       shell: bash
