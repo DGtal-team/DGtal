@@ -105,7 +105,7 @@ runs:
       with:
         name: ${{ runner.os }}-cpm-cache
         path: ${{ env.CPM_SOURCE_CACHE }}
-        retention-day: 89 # Limit is 90 days for free use 
+        retention-days: 89 # Limit is 90 days for free use 
 
     - name: Perform tests
       if: ${{ inputs.test == 'true'}}
