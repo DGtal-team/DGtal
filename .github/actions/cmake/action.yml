@@ -57,7 +57,7 @@ runs:
       uses: actions/cache@v4
       with:
         path: ${{ inputs.cpm-cache }}
-        key: ${{ runner.os }}-cpm-cache
+        key: cpm-cache
 
     - name: "Create build directory"
       shell: bash
