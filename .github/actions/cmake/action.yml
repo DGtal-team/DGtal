@@ -82,7 +82,7 @@ runs:
       shell: bash
       working-directory: ${{ inputs.build-dir }} 
       run: |
-        cmake $DGTAL_PATH -DCMAKE_BUILD_TYPE=${{ inputs.build-type }} -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ inputs.test-whitelist }}" -DDGTAL_RANDOMIZED_TESTING_THRESHOLD="${{ inputs.test-threshold }}" ${{ inputs.build-config }}
+        cmake $DGTAL_PATH -DCPM_SOURCE_CACHE=$CPM_SOURCE_CACHE -DCMAKE_BUILD_TYPE=${{ inputs.build-type }} -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ inputs.test-whitelist }}" -DDGTAL_RANDOMIZED_TESTING_THRESHOLD="${{ inputs.test-threshold }}" ${{ inputs.build-config }}
 
     - name: Build
       shell: bash
