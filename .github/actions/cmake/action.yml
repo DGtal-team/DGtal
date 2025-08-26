@@ -52,7 +52,7 @@ runs:
         echo "DGTAL_PATH=$(echo '${{ inputs.dgtal }}' | sed s/\\\\/\\//g)" >> "$GITHUB_ENV"
         echo "DGTAL_BUILD_PATH=$(echo '${{ inputs.build-dir }}' | sed s/\\\\/\\//g)" >> "$GITHUB_ENV"
         echo "CPM_SOURCE_CACHE=$(echo '${{ inputs.cache-deps-path }}' | sed s/\\\\/\\//g)" >> "$GITHUB_ENV"
-        echo "CACHE_ID=$(gh run list --workflow '${{ github.workflow }}' --branch CacheImprove --limit 1 --json databaseId --jq '.[0].data'" >> "$GITHUB_ENV"
+        echo "CACHE_ID=$(gh run list --workflow '${{ github.workflow }}' --branch CacheImprove --limit 1 --json databaseId --jq '.[0].databaseId')" >> "$GITHUB_ENV"
 
     - name: "Restoring cpm cache"
       id: restore-cpm-cache
