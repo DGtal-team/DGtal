@@ -57,7 +57,7 @@ runs:
     - name: "Restoring cpm cache"
       id: restore-cpm-cache
       uses: actions/download-artifact@v4
-      continue-on-failure: true 
+      continue-on-error: true 
       with:
         path: ${{ env.CPM_SOURCE_CACHE }}
         name: ${{ runner.os }}-cpm-cache
