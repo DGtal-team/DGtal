@@ -2099,12 +2099,12 @@ namespace DGtal
 
 
 
-      /// @brief Computes the VoronoiMap of a domain, where sites are given through a range.
+      /// @brief Computes the VoronoiMap on a domain, where sites are given through a range.
       ///
       /// @tparam p The exponent in the Lp metric
       /// @tparam PointRange An iterable of points (std::vector, DGtal::DigitalSet*, ...)
       ///
-      /// @param domain The associated space to compute VoronoiMap on
+      /// @param domain The associated domain on which the VoronoiMap is computed
       /// @param sites The list of sites
       /// @param params the parameters
       //    - toroidal-x [false]: If the domain is toroidal in the first  dimension
@@ -2119,12 +2119,12 @@ namespace DGtal
                       const Parameters& params = parametersVoronoiMap())
       {
         using Metric = ExactPredicateLpSeparableMetric<Space, p>;
-        using Map = VoronoiMap<Space, VoronoiPointPredicate, Metric>;
+        using VoroMap = VoronoiMap<Space, VoronoiPointPredicate, Metric>;
         DigitalSet set(domain); set.insert(sites.begin(), sites.end());
         VoronoiPointPredicate predicate(set);
         Metric metric;
 
-        typename Map::PeriodicitySpec specs = {false, false, false};
+        typename VoroMap::PeriodicitySpec specs = {false, false, false};
         if (params["toroidal-x"].as<int>()) specs[0] = true;
         if (params["toroidal-y"].as<int>()) specs[1] = true;
         if (params["toroidal-z"].as<int>()) specs[2] = true;
@@ -2133,15 +2133,15 @@ namespace DGtal
         // Do not return a pointer here for two reasons:
         //  - The distance transform will not be passed anywhere else
         //  - The operator() is less accessible with pointers.
-        return Map(domain, predicate, metric, specs);
+        return VoroMap(domain, predicate, metric, specs);
       }
 
-      /// @brief Computes the VoronoiMap of a domain, where sites are given through a range.
+      /// @brief Computes the VoronoiMap on a domain, where sites are given through a range.
       ///
       /// @tparam p The exponent in the Lp metric
       /// @tparam PointRange An iterable of points (std::vector, DGtal::DigitalSet*, ...)
       ///
-      /// @param domain The associated space to compute VoronoiMap on
+      /// @param domain The associated domain on which the VoronoiMap is computed
       /// @param sites The list of sites
       /// @param params the parameters
       //    - toroidal-x [false]: If the domain is toroidal in the first  dimension
@@ -2156,12 +2156,12 @@ namespace DGtal
                       const Parameters& params = parametersVoronoiMap())
       {
         using Metric = ExactPredicateLpSeparableMetric<Space, p>;
-        using Map = VoronoiMap<Space, VoronoiPointPredicate, Metric>;
+        using VoroMap = VoronoiMap<Space, VoronoiPointPredicate, Metric>;
         DigitalSet set(*domain); set.insert(sites.begin(), sites.end());
         VoronoiPointPredicate predicate(set);
         Metric metric;
 
-        typename Map::PeriodicitySpec specs = {false, false, false};
+        typename VoroMap::PeriodicitySpec specs = {false, false, false};
         if (params["toroidal-x"].as<int>()) specs[0] = true;
         if (params["toroidal-y"].as<int>()) specs[1] = true;
         if (params["toroidal-z"].as<int>()) specs[2] = true;
@@ -2169,18 +2169,18 @@ namespace DGtal
         // Do not return a pointer here for two reasons:
         //  - The distance transform will not be passed anywhere else
         //  - The operator() is less accessible with pointers.
-        return Map(*domain, predicate, metric, specs);
+        return VoroMap(*domain, predicate, metric, specs);
       }
 
-      /// @brief Computes the VoronoiMap of a domain, where sites are given through a range.
+      /// @brief Computes the Distance Transformation on a domain, where sites are given through a range.
       ///
-      /// @note: This overloads return a distance transformation, ie. where operator() returns
-      /// the distance to the closest site.
+      /// @note This overload returns a distance transformation, ie. where operator() returns
+      /// the distance to the closest site for the considered Lp metric.
       ///
       /// @tparam p The exponent in the Lp metric
       /// @tparam PointRange An iterable of points (std::vector, DGtal::DigitalSet*, ...)
       ///
-      /// @param domain The associated space to compute VoronoiMap on
+      /// @param domain The associated domain on which the VoronoiMap is computed
       /// @param sites The list of sites
       /// @param params the parameters
       //    - toroidal-x [false]: If the domain is toroidal in the first  dimension
@@ -2195,12 +2195,12 @@ namespace DGtal
                                    const Parameters& params = parametersVoronoiMap())
       {
         using Metric = ExactPredicateLpSeparableMetric<Space, p>;
-        using Map = DistanceTransformation<Space, VoronoiPointPredicate, Metric>;
+        using DTMap = DistanceTransformation<Space, VoronoiPointPredicate, Metric>;
         DigitalSet set(domain); set.insert(sites.begin(), sites.end());
         VoronoiPointPredicate predicate(set);
         Metric metric;
 
-        typename Map::PeriodicitySpec specs = {false, false, false};
+        typename DTMap::PeriodicitySpec specs = {false, false, false};
         if (params["toroidal-x"].as<int>()) specs[0] = true;
         if (params["toroidal-y"].as<int>()) specs[1] = true;
         if (params["toroidal-z"].as<int>()) specs[2] = true;
@@ -2208,50 +2208,12 @@ namespace DGtal
         // Do not return a pointer here for two reasons:
         //  - The distance transform will not be passed anywhere else
         //  - The operator() is less accessible with pointers.
-        return Map(domain, predicate, metric, specs);
+        return DTMap(domain, predicate, metric, specs);
       }
 
-      /// @brief Computes the VoronoiMap of a domain, where sites are given through a range.
+    
+      /// @brief Computes the vector to the closest site from a range of points
       ///
-      /// @note: This overloads return a distance transformation, ie. where operator() returns
-      /// the distance to the closest site.
-      ///
-      /// @tparam p The exponent in the Lp metric
-      /// @tparam PointRange An iterable of points (std::vector, DGtal::DigitalSet*, ...)
-      ///
-      /// @param domain The associated space to compute VoronoiMap on
-      /// @param sites The list of sites
-      /// @param params the parameters
-      //    - toroidal-x [false]: If the domain is toroidal in the first  dimension
-      //    - toroidal-y [false]: If the domain is toroidal in the second dimension
-      //    - toroidal-z [false]: If the domain is toroidal in the third  dimension
-      /// 
-      /// @return The DistanceTransformation within a domain with prescribed sites
-      template<uint32_t p, typename PointRange>
-      static DistanceTransformation<Space, VoronoiPointPredicate, ExactPredicateLpSeparableMetric<Space, p>>
-        getDistanceTransformation(CountedPtr<Domain> domain, 
-                              const PointRange& sites,
-                              const Parameters& params = parametersVoronoiMap())
-      {
-        using Metric = ExactPredicateLpSeparableMetric<Space, p>;
-        using Map = DistanceTransformation<Space, VoronoiPointPredicate, Metric>;
-        DigitalSet set(*domain); set.insert(sites.begin(), sites.end());
-        VoronoiPointPredicate predicate(set);
-        Metric metric;
-
-        typename Map::PeriodicitySpec specs = {false, false, false};
-        if (params["toroidal-x"].as<int>()) specs[0] = true;
-        if (params["toroidal-y"].as<int>()) specs[1] = true;
-        if (params["toroidal-z"].as<int>()) specs[2] = true;
-        
-        // Do not return a pointer here for two reasons:
-        //  - The distance transform will not be passed anywhere else
-        //  - The operator() is less accessible with pointers.
-        return Map(*domain, predicate, metric, specs);
-      }
-
-      /// @brief Computes the direction of the closest site of a range of points
-      /// 
       /// @tparam p The exponent in the Lp metric
       /// @tparam PointRange The range of point 
       /// @tparam PointRangeSites The range of sites
@@ -2271,7 +2233,7 @@ namespace DGtal
         const Parameters& params = parametersVoronoiMap())
       {
         using Metric = ExactPredicateLpSeparableMetric<Space, p>;
-        using Map = VoronoiMap<Space, VoronoiPointPredicate, Metric>;
+        using VoroMap = VoronoiMap<Space, VoronoiPointPredicate, Metric>;
 
         // Compute domain of points
         Point pmin = *points.begin();
@@ -2304,12 +2266,12 @@ namespace DGtal
         Metric metric;
 
 
-        typename Map::PeriodicitySpec specs = {false, false, false};
+        typename VoroMap::PeriodicitySpec specs = {false, false, false};
         if (params["toroidal-x"].as<int>()) specs[0] = true;
         if (params["toroidal-y"].as<int>()) specs[1] = true;
         if (params["toroidal-z"].as<int>()) specs[2] = true;
 
-        auto map = Map(domain, predicate, metric, specs);
+        auto map = VoroMap(domain, predicate, metric, specs);
 
         std::vector<Vector> directions(pCount);
         size_t i = 0;
@@ -2320,8 +2282,8 @@ namespace DGtal
         return directions;
       }
 
-      /// @brief Computes the distance of the closest site of a range of points
-      /// 
+      /// @brief Computes the distances to the closest site from a range of points
+      ///
       /// @tparam p The exponent in the Lp metric
       /// @tparam PointRange The range of point 
       /// @tparam PointRangeSites The range of sites
@@ -2341,7 +2303,7 @@ namespace DGtal
         const Parameters& params = parametersVoronoiMap())
       {
         using Metric = ExactPredicateLpSeparableMetric<Space, p>;
-        using Map = DistanceTransformation<Space, VoronoiPointPredicate, Metric>;
+        using DTMap = DistanceTransformation<Space, VoronoiPointPredicate, Metric>;
 
         // Compute domain of points
         Point pmin = *points.begin();
@@ -2373,13 +2335,85 @@ namespace DGtal
         VoronoiPointPredicate predicate(set);
         Metric metric;
 
-        typename Map::PeriodicitySpec specs = {false, false, false};
+        typename DTMap::PeriodicitySpec specs = {false, false, false};
         if (params["toroidal-x"].as<int>()) specs[0] = true;
         if (params["toroidal-y"].as<int>()) specs[1] = true;
         if (params["toroidal-z"].as<int>()) specs[2] = true;
 
-        auto map = Map(domain, predicate, metric, specs);
+        auto map = DTMap(domain, predicate, metric, specs);
 
+        std::vector<typename Metric::Value> directions(pCount);
+        size_t i = 0;
+        for (auto it = points.begin(); it != points.end(); ++it)
+        {
+          directions[i++] = map(*it);
+        }
+        return directions;
+      }
+
+      /// @brief Computes the raw distances to the closest site from a range of points
+      ///
+      /// Raw distance means that we are computing an exact representation of the distance
+      /// (e.g. dropping the 1/p exponent for Lp metric).
+      ///
+      /// @tparam p The exponent in the Lp metric
+      /// @tparam PointRange The range of point
+      /// @tparam PointRangeSites The range of sites
+      ///
+      /// @param points The one to compute the closest site of
+      /// @param sites The list of sites
+      /// @param params Parameters
+      //    - toroidal-x [false]: If the domain is toroidal in the first  dimension
+      //    - toroidal-y [false]: If the domain is toroidal in the second dimension
+      //    - toroidal-z [false]: If the domain is toroidal in the third  dimension
+      ///
+      /// @return A vector of raw distances (eg. squared values for L2 metric) to the closest in the same order as 'points'.
+      template<uint32_t p, typename PointRangeSites, typename PointRange>
+      static std::vector<typename ExactPredicateLpSeparableMetric<Space, p>::Value> getRawDistanceToClosestSite(
+                                                                                                             const PointRange& points,
+                                                                                                             const PointRangeSites& sites,
+                                                                                                             const Parameters& params = parametersVoronoiMap())
+      {
+        using Metric = ExactPredicateLpSeparableMetric<Space, p>;
+        using DTMap = DistanceTransformation<Space, VoronoiPointPredicate, Metric>;
+        
+        // Compute domain of points
+        Point pmin = *points.begin();
+        Point pmax = pmin;
+        
+        size_t pCount = 0;
+        for (auto it = points.begin(); it != points.end(); ++it)
+        {
+          pCount ++;
+          for (size_t i = 0; i < Space::dimension; ++i)
+          {
+            pmin[i] = std::min(pmin[i], (*it)[i] - 1);
+            pmax[i] = std::max(pmax[i], (*it)[i] + 1);
+          }
+        }
+        
+        for (auto it = sites.begin(); it != sites.end(); ++it)
+        {
+          for (size_t i = 0; i < Space::dimension; ++i)
+          {
+            pmin[i] = std::min(pmin[i], (*it)[i] - 1);
+            pmax[i] = std::max(pmax[i], (*it)[i] + 1);
+          }
+        }
+        
+        Domain domain(pmin, pmax);
+        
+        DigitalSet set(domain); set.insert(sites.begin(), sites.end());
+        VoronoiPointPredicate predicate(set);
+        Metric metric;
+        
+        typename DTMap::PeriodicitySpec specs = {false, false, false};
+        if (params["toroidal-x"].as<int>()) specs[0] = true;
+        if (params["toroidal-y"].as<int>()) specs[1] = true;
+        if (params["toroidal-z"].as<int>()) specs[2] = true;
+        
+        auto map = DTMap(domain, predicate, metric, specs);
+        
         std::vector<typename Metric::Value> directions(pCount);
         size_t i = 0;
         for (auto it = points.begin(); it != points.end(); ++it)

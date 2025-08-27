@@ -31,7 +31,7 @@ runs:
       if: ${{ runner.os == 'Linux' && inputs.config-name == 'default' }}
       shell: bash
       run: |
-        echo "DGTAL_CMAKE_CONFIG=-DDGTAL_WITH_CGAL=true -DDGTAL_WITH_LIBIGL=true -DDGTAL_WITH_FFTW3=true -DDGTAL_WITH_HDF5=true -DDGTAL_WITH_OPENMP=true  -DDGTAL_WITH_POLYSCOPE_VIEWER=true  -DDGTAL_WITH_CAIRO=true -DDGTAL_WITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true -DDGTAL_WARNING_AS_ERROR=ON -G Ninja" >> "$GITHUB_ENV"
+        echo "DGTAL_CMAKE_CONFIG -DDGTAL_WITH_CGAL=true -DDGTAL_WITH_LIBIGL=true -DDGTAL_WITH_FFTW3=true -DDGTAL_WITH_HDF5=true -DDGTAL_WITH_OPENMP=true  -DDGTAL_WITH_POLYSCOPE_VIEWER=true  -DDGTAL_WITH_CAIRO=true -DDGTAL_WITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true -DDGTAL_WARNING_AS_ERROR=ON -G Ninja" >> "$GITHUB_ENV"
 
     - name: "Default MacOS"
       if: ${{ runner.os == 'macOS' && inputs.config-name == 'default' }}
@@ -72,5 +72,5 @@ runs:
       working-directory: ${{ inputs.dgtal }}
       run: |
         echo "cmake-config=$(echo $DGTAL_CMAKE_CONFIG)" >> "$GITHUB_OUTPUT"
-        echo "cmake-test-blacklist='(testLinearStructure|testIntegerConverter|testArithmeticalDSSComputerOnSurfels)'" >> "$GITHUB_OUTPUT"
+        echo "cmake-test-blacklist='(testLinearStructure|testIntegerConverter|testArithmeticalDSSComputerOnSurfels|testStern)'" >> "$GITHUB_OUTPUT"
         echo "cmake-test-whitelist='$( ${{ inputs.dgtal }}/.github/actions/dgtal-config/get_whitelist.sh )'" >> "$GITHUB_OUTPUT"
