@@ -186,8 +186,8 @@ option(BOOST_IOSTREAMS_ENABLE_ZLIB "Boost.Iostreams: Enable ZLIB support" OFF)
 option(BOOST_IOSTREAMS_ENABLE_BZIP2 "Boost.Iostreams: Enable BZip2 support" OFF)
 option(BOOST_IOSTREAMS_ENABLE_LZMA "Boost.Iostreams: Enable LZMA support" OFF)
 option(BOOST_IOSTREAMS_ENABLE_ZSTD "Boost.Iostreams: Enable Zstd support" OFF)
-
 include(CPM)
+
 CPMAddPackage(
     NAME Boost
     VERSION 1.84.0
@@ -195,6 +195,9 @@ CPMAddPackage(
     GIT_TAG "boost-1.84.0"
     SYSTEM TRUE
 )
+
+# message(ERROR "Library path is: ${Boost_SOURCE_DIR}")
+set(BOOST_ROOT ${Boost_SOURCE_DIR})
 
 # Manually create a library. For some reason boost::headers seems empty
 add_library(boost INTERFACE)
