@@ -197,7 +197,7 @@ CPMAddPackage(
 )
 
 # message(ERROR "Library path is: ${Boost_SOURCE_DIR}")
-set(BOOST_ROOT ${Boost_SOURCE_DIR})
+set(BOOST_ROOT ${Boost_SOURCE_DIR} CACHE PATH "Source dir location for boost")
 
 # Manually create a library. For some reason boost::headers seems empty
 add_library(boost INTERFACE)
