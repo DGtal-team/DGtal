@@ -46,6 +46,8 @@ runs:
   steps:
     - name: "Standardize to linux-style path"
       shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
       # Mixed-path are sometimes not working with CMake and Conan in bash shell
       # Avoid DGTAL_DIR for potential conflicts with CMake find_package
       run: |
