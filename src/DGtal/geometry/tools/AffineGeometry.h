@@ -617,6 +617,7 @@ namespace DGtal
       return w;
     }
 
+    
     /// @}
     
   };
@@ -759,6 +760,50 @@ namespace DGtal
       AffineGeometry<TPoint>::completeBasis( basis, safe, tolerance );
     }
 
+    /// Given `d-1` independent vectors in dD, returns a vector that
+    /// is orthogonal to each of them.
+    ///
+    /// @note In 3D, given two independent vectors as input, then the
+    /// added vector is the \b cross \b product of these two
+    /// vectors. In nD, it is thus a generalization of the cross
+    /// product.
+    ///
+    /// @tparam TPoint any type of lattice point or real point.
+    ///
+    /// @tparam TInternalVector the type of vector used for internal
+    /// computations and outputing the result, e.g. some PointVector.
+    ///
+    /// @param[out] w the returned orthogonal vector to every vector of basis.
+    ///
+    /// @param[in] basis a range of independent vectors of size dimension-1.
+    template < typename TPoint, typename TInternalVector >
+    static
+    void
+    computeOrthogonalVector( TInternalVector& w, const std::vector<TPoint>& basis )
+    {
+      typedef typename TInternalVector::Component TInternalNumber;
+      ASSERT( TPoint::dimension == TInternalVector::dimension );
+      ASSERT( ( basis.size() + 1 ) == TInternalVector::dimension );
+      constexpr std::size_t n = TInternalVector::dimension;
+      const std::size_t m = basis.size();
+      SimpleMatrix< TInternalNumber, n-1, n> A;
+      for ( std::size_t i = 0; i < m; ++i )
+        for ( std::size_t j = 0; j < n; ++j )
+          A( i, j ) = TInternalNumber( basis[ i ][ j ] );
+      //std::vector<TInternalNumber> w( n );
+      for ( std::size_t col = 0; col < n; ++col)
+        { // construct sub-matrix removing column col
+          SimpleMatrix< TInternalNumber, n-1, n-1> M;
+          for ( std::size_t i = 0; i < m; ++i )
+            {
+              std::size_t c = 0;
+              for ( std::size_t j = 0; j < n; ++j)
+                if ( j != col ) M( i, c++ ) = A( i, j );
+            }
+          functions::determinantBareiss( M, w[ col ] );
+          if ( (col + n) % 2 == 0 ) w[ col ] = -w[ col ];
+        }
+    }
 
   } // namespace functions
 } // namespace DGtal
