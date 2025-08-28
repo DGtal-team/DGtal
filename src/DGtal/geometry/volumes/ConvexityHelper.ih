@@ -488,7 +488,6 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::
 computeDegeneratedConvexHullVertices
 ( PointRange& input_points )
 {
-  typedef typename LatticePolytope::Domain     Domain;
   typedef typename LatticePolytope::HalfSpace  PolytopeHalfSpace;
   typedef QuickHull< LatticeConvexHullKernel > ConvexHull;
   typedef typename ConvexHull::HalfSpace       ConvexHullHalfSpace;
