@@ -380,9 +380,7 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::
 computeDegeneratedConvexHullVertices
 ( PointRange& input_points )
 {
-  typedef typename LatticePolytope::HalfSpace  PolytopeHalfSpace;
   typedef QuickHull< LatticeConvexHullKernel > ConvexHull;
-  typedef typename ConvexHull::HalfSpace       ConvexHullHalfSpace;
 
   // Rewrite computeDegeneratedLatticePolytope using AffineSubset
   auto  indices   = functions::computeAffineSubset( input_points );
