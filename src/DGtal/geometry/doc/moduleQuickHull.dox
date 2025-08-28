@@ -541,7 +541,6 @@ Since 2.0, the QuickHull and ConvexityHelper classes have been slightly improved
   big as possible initial simplex, but if no simplex was found, it
   uses \ref AffineGeometry to determine the exact affine dimension of the input.
 
-  @see AffineGeometry
   
 - ConvexityHelper handles a more general family of degenerated convex
   hulls. ConvexityHelper::computeLatticePolytope and

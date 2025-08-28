@@ -617,6 +617,20 @@ namespace DGtal
       return w;
     }
 
+    /// Given a vector, returns the aligned vector with its component
+    /// simplified by the gcd of all components (when the components
+    /// are integers) or the aligned vector with a maximum oo-norm of
+    /// 1 (when the components are floating-point numbers).
+    ///
+    /// @param[in] v any vector.
+    ///
+    /// @return a simplified vector aligned with \a v.
+    static 
+    TPoint simplifiedVector( TPoint v )
+    {
+      PointOps::normalizeVector( v, (Scalar) v.normInfinity() );
+      return v;
+    }
     
     /// @}
     
@@ -805,6 +819,23 @@ namespace DGtal
         }
     }
 
+    /// Given a vector, returns the aligned vector with its component
+    /// simplified by the gcd of all components (when the components
+    /// are integers) or the aligned vector with a maximum oo-norm of
+    /// 1 (when the components are floating-point numbers).
+    ///
+    /// @tparam TPoint any type of lattice point or real point.
+    ///
+    /// @param[in] v any vector.
+    ///
+    /// @return a simplified vector aligned with \a v.
+    template <typename TPoint>
+    TPoint
+    computeSimplifiedVector( const TPoint& v )
+    {
+      return AffineGeometry<TPoint>::simplifiedVector( v );
+    }
+    
   } // namespace functions
 } // namespace DGtal
 
