@@ -196,22 +196,6 @@ CPMAddPackage(
     SYSTEM TRUE
 )
 
-set(BOOST_ROOT ${Boost_SOURCE_DIR} CACHE PATH "Source dir location for boost")
-# set(Boost_ROOT ${Boost_SOURCE_DIR} CACHE PATH "Source dir location for boost")
-# set(Boost_NO_SYSTEM_PATHS ON CACHE STRING "Do not look for other boost directories")
-
-# Set include directories
-file(GLOB boostlibs ${BOOST_ROOT}/libs/*)
-set(includes "")
-foreach(name ${boostlibs})
-    if (IS_DIRECTORY ${name})
-        set(includes "${includes};${name}/include")
-    endif()
-endforeach()
-
-set(Boost_INCLUDE_DIRS ${includes} CACHE STRING "Boost includes paths")
-message(${Boost_INCLUDE_DIRS})
-
 # Manually create a library. For some reason boost::headers seems empty
 add_library(boost INTERFACE)
 

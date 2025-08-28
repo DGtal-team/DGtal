@@ -53,7 +53,6 @@ runs:
       run: |
         echo "DGTAL_PATH=$(echo '${{ inputs.dgtal }}' | sed s/\\\\/\\//g)" >> "$GITHUB_ENV"
         echo "DGTAL_BUILD_PATH=$(echo '${{ inputs.build-dir }}' | sed s/\\\\/\\//g)" >> "$GITHUB_ENV"
-        echo "CPM_SOURCE_CACHE=$(echo '${{ inputs.cache-deps-path }}' | sed s/\\\\/\\//g)" >> "$GITHUB_ENV"
         echo "CACHE_ID=$(gh run list --workflow '${{ github.workflow }}' --branch CacheImprove --limit 2 --json databaseId --jq '.[0].databaseId')" >> "$GITHUB_ENV"
 
     - name: "Restoring cpm cache"
@@ -61,7 +60,7 @@ runs:
       uses: actions/download-artifact@v4
       continue-on-error: true 
       with:
-        path: ${{ env.CPM_SOURCE_CACHE }}
+        path: ${{ inputs.build-dir }}/_deps/*-src
         name: ${{ runner.os }}-cpm-cache
         run-id: ${{ env.CACHE_ID }}
         github-token: ${{ github.token }}
@@ -106,8 +105,8 @@ runs:
       uses: actions/upload-artifact@v4
       with:
         name: ${{ runner.os }}-cpm-cache
-        path: ${{ env.CPM_SOURCE_CACHE }}
-        retention-days: 89 # Limit is 90 days for free use 
+        path: ${{ inputs.build-dir }}/_deps/*-src
+        retention-days: 1 # Limit is 90 days for free use 
 
     - name: Perform tests
       if: ${{ inputs.test == 'true'}}
