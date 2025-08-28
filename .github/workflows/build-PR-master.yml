@@ -12,8 +12,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macOS-latest, windows-latest]
-        BUILD_TYPE: [Release] # [Release, Debug]
+        # os: [ubuntu-latest, macOS-latest, windows-latest]
+        os: [ubuntu-latest]
+        BUILD_TYPE: [Debug] # [Release, Debug]
         python-version: ["3.11"]
         exclude:
           -  os: windows-latest

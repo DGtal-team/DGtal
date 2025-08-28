@@ -60,7 +60,7 @@ runs:
       uses: actions/download-artifact@v4
       continue-on-error: true 
       with:
-        path: ${{ inputs.build-dir }}/_deps/*-src
+        path: ${{ inputs.build-dir }}/_deps/
         name: ${{ runner.os }}-cpm-cache
         run-id: ${{ env.CACHE_ID }}
         github-token: ${{ github.token }}
