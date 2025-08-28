@@ -532,6 +532,41 @@ You can have a look at exampleRationalBallDelaunay3D.cpp for a complete example,
 
 \image html exampleRationalBallDelaunay3D-100.jpg "Delaunay cell decomposition of 100 randomly chosen points in a 3D ball with radius 10, with precision 100 and retraction 0.25"
 
+@section dgtal_quickhull_sec4 Further notes
+
+Since 2.0, the QuickHull and ConvexityHelper classes have been slightly improved:
+
+- The determination of the full dimensionality of input points is now
+  exact: it keeps a randomized initial approach to try to get an as
+  big as possible initial simplex, but if no simplex was found, it
+  uses \ref AffineGeometry to determine the exact affine dimension of the input.
+
+  @see AffineGeometry
+  
+- ConvexityHelper handles a more general family of degenerated convex
+  hulls. ConvexityHelper::computeLatticePolytope and
+  Computelatticepolytope can now compute convex hulls of:
+  
+  - 0D and 1D affine dimension in dD
+  - d-1D and dD affine dimension in dD
+  
+  Before this version, only 2D affine dimension in 3D was possible.
+  
+  @see ConvexityHelper::computeDegeneratedLatticePolytope, ConvexityHelper::computeDegeneratedConvexHullVertices 
+
+- method ConvexHullCommonKernel::compute( const std::vector<
+  CoordinatePoint >& vpoints, const CombinatorialPlaneSimplex& simplex
+  ), whose aim is to compute a vector orthogonal to the affine space
+  spanned by a given d-simplex, uses now
+  AffineGeometry::orthogonalVector instead of cofactor computations
+  with SimpleMatrix.
+
+  This approach is quicker when the dimension d increases (with a
+  complexity upper bounded by \f$O(d^3)\f$), while keeping the same
+  running times as before in 2D and 3D.
+
+  For instance, in 6D, quickhull is almost twice faster than before.
+  
 */
 
 } //  namespace DGtal
