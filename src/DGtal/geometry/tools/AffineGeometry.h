@@ -612,7 +612,7 @@ namespace DGtal
                 if ( j != col ) M( i, c++ ) = A( i, j );
             }
           functions::determinantBareiss( M, w[ col ] );
-          if ( col % 2 != 0 ) w[ col ] = -w[ col ];
+          if ( (col+dimension) % 2 == 0 ) w[ col ] = -w[ col ];
         }
       return w;
     }
@@ -690,6 +690,9 @@ namespace DGtal
     ///
     /// @tparam TPoint any type of lattice point or real point.
     ///
+    /// @tparam TIndexRange any type of range of indices, like
+    /// std::vector<std::size_t> or std::array<std::size_t,N>.
+    ///
     /// @param X the range of input points (may be lattice points or not).
     ///
     /// @param I a subset of these points as a range of indices, forming
@@ -698,10 +701,10 @@ namespace DGtal
     /// @return a point and a range of vectors forming an affine basis containing \a X.
     ///
     /// @note Complexity is O( m n^2 ), where m=Cardinal(X) and n=dimension.
-    template <typename TPoint>
+    template <typename TPoint, typename TIndexRange>
     std::pair< TPoint, std::vector< TPoint > >
     computeAffineBasis( const std::vector< TPoint >& X,
-                        const std::vector< std::size_t >& I )
+                        const TIndexRange& I )
     {
       std::vector< TPoint > basis( I.size() - 1 );
       for ( std::size_t i = 0; i < basis.size(); i++ )

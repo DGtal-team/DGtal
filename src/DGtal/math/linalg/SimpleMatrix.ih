@@ -500,13 +500,18 @@ DGtal::functions::determinantBareiss
   for ( Dimension i = 0; i < n; ++i )
     for ( Dimension j = 0; j < n; ++j )
       M( i, j ) = TInternalNumber( matrix( i, j ) );
+  bool change_sign = false;
   for ( Dimension k = 0; k < n; ++k )
     {
       // pivot
       Dimension piv = k;
       while ( ( piv < n ) && ( M( piv, k ) == zero ) ) ++piv;
       if ( piv == n ) { result = zero; return; }
-      if ( piv != k ) M.swapRows( piv, k );
+      if ( piv != k )
+        {
+          M.swapRows( piv, k );
+          change_sign = ! change_sign;
+        }
       TInternalNumber pivot = M( k, k );
       for ( Dimension i = k+1; i < n; ++i) {
         for ( Dimension j = k+1; j < n; ++j) {
@@ -520,5 +525,5 @@ DGtal::functions::determinantBareiss
       // (not necessary for the determinant).
       // for (int i = k+1; i < n; ++i) M[i][k] = 0;
     }
-  result = M( n-1, n-1 );
+  result = change_sign ? -M( n-1, n-1 ) : M( n-1, n-1 );
 }
