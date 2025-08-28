@@ -115,11 +115,16 @@ namespace DGtal
                     bool remove_duplicates )
     {
       typedef std::size_t Size;
-      std::vector< OutputValue > input;
-      while ( itb != ite ) {
-        const auto ip = *itb++;
-        input.push_back( F( ip ) );
-      }
+      // Compute size
+      Size n = 0;
+      for ( auto it = itb; it != ite; ++it ) ++n;
+      std::vector< OutputValue > input( n );
+      for ( Size i = 0; i < n; i++ )
+        input[ i ] = F( *itb++ );
+      // while ( itb != ite ) {
+      //   const auto ip = *itb++;
+      //   input.push_back( F( ip ) );
+      // }
       if ( ! remove_duplicates ) {
         output_values.swap( input );
         input2output.resize( input.size() );
@@ -258,39 +263,20 @@ namespace DGtal
     compute( const std::vector< CoordinatePoint >& vpoints,
              const CombinatorialPlaneSimplex& simplex )
     {
+      // Faster method than SimpleMatrix::cofactor.
       InternalVector N; // null normal
       const InternalPoint ip = Inner::cast( vpoints[ simplex[ 0 ] ] );
-      typedef DGtal::SimpleMatrix< InternalScalar, dimension, dimension > Matrix;
-      Matrix A;
-      for ( Dimension i = 1; i < dimension; i++ )
-        for ( Dimension j = 0; j < dimension; j++ )
-          A.setComponent( i-1, j,
-                          Inner::cast( vpoints[ simplex[ i ] ][ j ]
-                                       - vpoints[ simplex[ 0 ] ][ j ] ) );
-      for ( Dimension j = 0; j < dimension; j++ )
-        N[ j ] = A.cofactor( dimension-1, j );
       auto  ref_basis = functions::computeAffineBasis ( vpoints, simplex ); 
       auto  ref       = ref_basis.first;
       auto& basis     = ref_basis.second;
-      InternalVector N2;
       if ( ( basis.size() + 1 ) == dimension )
         {
            const auto VN = AffineGeometry< CoordinatePoint >
              ::template orthogonalVector<InternalScalar>( basis );
            for ( auto i = 0; i < dimension; i++ )
-             N2[ i ] = VN[ i ];
+             N[ i ] = VN[ i ];
          }
-      if ( N != N2 )
-        {
-          std::cout << "N/N2=[";
-          for ( auto i = 0; i < dimension; i++ )
-            {
-              std::cout << " " << N[i] << "/" << N2[i];
-            }
-           std::cout << " ]\n";
-        }        
       return HalfSpace { N, N.dot( ip ) };
-        
       // typedef DGtal::SimpleMatrix< InternalScalar, dimension, dimension > Matrix;
       // Matrix A;
       // for ( Dimension i = 1; i < dimension; i++ )

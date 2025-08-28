@@ -508,7 +508,7 @@ DGtal::functions::determinantBareiss
       while ( ( piv < n ) && ( M( piv, k ) == zero ) ) ++piv;
       if ( piv == n ) { result = zero; return; }
       if ( piv != k )
-        {
+        { // swaping 2 rows => change determinant sign
           M.swapRows( piv, k );
           change_sign = ! change_sign;
         }
