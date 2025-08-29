@@ -49,6 +49,8 @@ namespace DGtal
 {
   // Forward declaration of AffineGeometry (needed for friend declaration).
   template < typename T > struct AffineGeometry;
+  // Forward declaration of AffineBasis (needed for friend declaration).
+  template < typename T > struct AffineBasis;
 
   namespace detail {
 
@@ -65,6 +67,7 @@ namespace DGtal
     struct AffineGeometryPointOperations
     {
       template <typename T> friend struct DGtal::AffineGeometry;
+      template <typename T> friend struct DGtal::AffineBasis;
       typedef TPoint                     Point;
       typedef typename Point::Coordinate Scalar;
       /// In the generic class, the type scalar should be an integral type.
@@ -124,6 +127,7 @@ namespace DGtal
     struct AffineGeometryScalarOperations
     {
       template <typename T> friend struct DGtal::AffineGeometry;
+      template <typename T> friend struct DGtal::AffineBasis;
 
       typedef TScalar Scalar;
       /// In the generic class, the type scalar should be an integral type.
@@ -142,10 +146,31 @@ namespace DGtal
       static
       std::pair< Integer, Integer > getMultipliers( Integer a, Integer b )
       {
-        Integer g = IntegerComputer< Integer >::staticGcd( abs( a ), abs( b ) );
+        const Integer g = gcd( a, b );
         return std::make_pair( b / g, a / g );
       }
 
+      /// @param[in] a any integer number
+      /// @param[in] b any integer number
+      ///
+      /// @return the greatest common divisor of a and b.
+      static
+      Integer gcd( Integer a, Integer b )
+      {
+        return IntegerComputer< Integer >::staticGcd( abs( a ), abs( b ) );
+      }
+
+      /// @param[in] a any integer number
+      /// @param[in] b any integer number
+      ///
+      /// @return the least common multiple of a and b.
+      static
+      Integer lcmPositive( Integer a, Integer b )
+      {
+        const Integer g = gcd( a, b );
+        return (a / g) * b;
+      }
+      
       /// @param[in] x any integer number
       ///
       /// @return 'true' iff x is non zero.
@@ -166,6 +191,7 @@ namespace DGtal
     struct AffineGeometryScalarOperations< double >
     {
       template <typename T> friend struct DGtal::AffineGeometry;
+      template <typename T> friend struct DGtal::AffineBasis;
     
       /// @param[in] a any number
       /// @param[in] b any number
@@ -178,6 +204,27 @@ namespace DGtal
         return std::make_pair( b, a );
       }
 
+      /// @param[in] a any number
+      /// @param[in] b any number
+      ///
+      /// @return 1.0
+      static
+      double gcd( double a, double b )
+      {
+        return 1.0;
+      }
+
+      /// @param[in] a any integer number
+      /// @param[in] b any integer number
+      ///
+      /// @return 1.0
+      static
+      double lcmPositive( double a, double b )
+      {
+        return 1.0;
+      }
+
+      
       /// @param[in] x any  number
       ///
       /// @param[in] tol the accepted tolerance value below which the
@@ -201,6 +248,7 @@ namespace DGtal
     struct AffineGeometryScalarOperations< float >
     {
       template <typename T> friend struct DGtal::AffineGeometry;
+      template <typename T> friend struct DGtal::AffineBasis;
     
       /// @param[in] a any number
       /// @param[in] b any number
@@ -213,6 +261,27 @@ namespace DGtal
         return std::make_pair( b, a );
       }
 
+      /// @param[in] a any number
+      /// @param[in] b any number
+      ///
+      /// @return 1.0f
+      static
+      float gcd( float a, float b )
+      {
+        return 1.0f;
+      }
+
+      /// @param[in] a any integer number
+      /// @param[in] b any integer number
+      ///
+      /// @return 1.0f
+      static
+      float lcmPositive( float a, float b )
+      {
+        return 1.0f;
+      }
+
+      
       /// @param[in] x any  number
       ///
       /// @param[in] tol the accepted tolerance value below which the
@@ -541,22 +610,28 @@ namespace DGtal
     /// @param[in] tolerance the accepted oo-norm below which the vector is
     /// null (used only for points with float/double coordinates).
     ///
+    /// @return the coefficients (alpha,beta) for reduction such that
+    /// alpha * w - beta * b is the returned reduced vector.
+    ///
     /// @note This reduction is an elementary Gauss elimination.
     static
-    void reduceVector( Point& w, const Point& b, const double tolerance )
+    std::pair< Scalar, Scalar >
+    reduceVector( Point& w, const Point& b, const double tolerance )
     {
+      Scalar mul_w = 0;
+      Scalar mul_b = 0;
       Size n = w.size();
       // Find index of first non null pivot in b.
       Size lead = n;
       for ( Size j = 0; j < n; j++)
         if ( ScalarOps::isNonZero( b[j], tolerance ) ) { lead = j; break; }
-      if ( lead == n ) return; // b is null vector
+      if ( lead == n ) return std::make_pair( mul_w, mul_b ); // b is null vector
 
-      Scalar mul_w, mul_b;
       std::tie( mul_w, mul_b ) = ScalarOps::getMultipliers( w[ lead ], b[ lead ] );
       
       for (Size j = 0; j < n; j++) 
         w[j] = mul_w * w[j] - mul_b * b[j];
+      return std::make_pair( mul_w, mul_b );
     }
 
     /// Converts a range of coefficients into a Point of the space.

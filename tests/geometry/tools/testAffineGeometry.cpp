@@ -35,6 +35,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/geometry/tools/AffineGeometry.h"
+#include "DGtal/geometry/tools/AffineBasis.h"
 #include "DGtalCatch.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -55,6 +56,22 @@ template <typename RealPoint>
 void perturbate( std::vector< RealPoint >& X, double perturbation )
 {
   for ( auto& x : X ) perturbate( x, perturbation );
+}
+
+template < typename Point >
+std::vector< Point >
+makeRandomVectors( int nb, int amplitude )
+{
+  std::uniform_int_distribution<int> U(-amplitude, amplitude);
+  std::vector< Point > P;
+  for ( auto n = 0; n < nb; ++n )
+    {
+      Point A;
+      for ( auto i = 0; i < Point::dimension; i++ )
+        A[ i ] = U( g );
+      P.push_back( A );
+    }
+  return P;
 }
 
 template < typename Point >
@@ -491,3 +508,153 @@ SCENARIO( "AffineGeometry< Point4i > orthogonal tests", "[orthogonal_vector][4i]
   }
 }
 
+///////////////////////////////////////////////////////////////////////////////
+// Functions for testing class AffineBasis in 2D.
+///////////////////////////////////////////////////////////////////////////////
+
+SCENARIO( "AffineBasis< Point2i > unit tests", "[affine_basis][2i]" )
+{
+  typedef SpaceND< 2, int >                Space;      
+  typedef Space::Point                     Point;
+  typedef AffineBasis< Point >             Basis;
+  GIVEN( "Given B = (0,0) + { (8,2), (-4,-1),  (-8,-2), (16,4), (200,50) } of affine dimension 1" ) {
+    Point o( 0, 0 );
+    std::vector<Point> X
+      = { Point(8,2), Point(-4,-1), Point(-8,-2), Point(16,4), Point(200,50) };
+    Basis B( o, X );
+    THEN( "When reduced, it has dimension 1" ) {
+      CAPTURE( B.basis() );
+      REQUIRE( B.dimension() == 1 );
+    }
+    THEN( "When reduced, it is the vector (-4,-1) or (4,1)" ) {
+      Point b0 = B.basis()[ 0 ];
+      CAPTURE( b0 );
+      REQUIRE( ((b0 == Point(-4,-1)) || (b0 == Point(4,1))) );
+    }
+  }
+}
+
+SCENARIO( "AffineBasis< Point4i > unit tests", "[affine_basis][4i]" )
+{
+  typedef SpaceND< 4, int >                Space;      
+  typedef Space::Point                     Point;
+  typedef AffineBasis< Point >             Basis;
+  GIVEN( "Given X a set of randomly generated points by adding linear combinations of 1 lattice vectors" ) {
+    std::vector< Point > V = { Point{ 3, 1, 0, 2 } };
+    auto X = makeRandomLatticePointsFromDirVectors( 20, V );
+    Basis B( X );
+    THEN( "When reduced, it has dimension 1" ) {
+      CAPTURE( B.basis() );
+      REQUIRE( B.dimension() == 1 );
+    }
+    THEN( "When reduced, it is the vector V[0] or -V[0]" ) {
+      CAPTURE( V );
+      Point b0 = B.basis()[ 0 ];
+      CAPTURE( b0 );
+      REQUIRE( ((b0 == V[0]) || (b0 == -V[0])) );
+    }
+  }
+  GIVEN( "Given X a set of randomly generated points by adding linear combinations of 2 lattice vectors" ) {
+    std::vector< Point > V = { Point{ 3, 1, 0, 2 }, Point{ -2, -1, 2, 7 } };
+    auto X = makeRandomLatticePointsFromDirVectors( 20, V );
+    Basis B( X );
+    THEN( "When reduced, basis has dimension 2" ) {
+      CAPTURE( B.basis() );
+      REQUIRE( B.dimension() == 2 );
+    }
+    THEN( "When reduced, basis spans vectors V[i] or -V[i]" ) {
+      CAPTURE( V );
+      Point b0 = B.basis()[ 0 ];
+      Point b1 = B.basis()[ 1 ];
+      CAPTURE( b0 );
+      CAPTURE( b1 );
+      REQUIRE( B.isParallel( V[ 0 ] ) );
+      REQUIRE( B.isParallel( V[ 1 ] ) );
+    }
+    THEN( "every point of X has rational coordinates with no remainder" ) {
+      unsigned int nb_ok = 0;
+      for ( auto p : X )
+        {
+          const auto [d, lambda, rem ] = B.decompose( p );
+          std::cout << "p=" << p << " d=" << d
+                    << " lambda=" << lambda << " rem=" << rem << "\n";
+          nb_ok += ( rem == Point::zero ) ? : 1;
+        }
+      REQUIRE( nb_ok == X.size() );
+    }
+    THEN( "every lattice point can be written as a linear combination" ) {
+      auto Y = makeRandomVectors<Point>( 20, 10 );
+      unsigned int nb_ok = 0;
+      for ( auto y : Y )
+        {
+          const auto p = y + B.first;
+          const auto [d, lambda, rem ] = B.decompose( p );
+          auto q = B.recompose( d, lambda, rem );
+          std::cout << "p=" << p << " d=" << d
+                    << " lambda=" << lambda << " rem=" << rem
+                    << " q=" << q << "\n";
+          nb_ok += ( p == q ) ? : 1;
+        }
+      REQUIRE( nb_ok == Y.size() );
+    }
+  }
+}
+
+SCENARIO( "AffineBasis< Point4i > projection tests", "[affine_basis][4i][4d]" )
+{
+  typedef SpaceND< 4, int >                Space;      
+  typedef Space::Point                     Point;
+  typedef SpaceND< 2, int >                Space2;      
+  typedef Space2::Point                    PPoint;
+  typedef AffineBasis< Point >             Basis;
+  typedef Space::RealPoint                 RealPoint;
+  typedef Space2::RealPoint                PRealPoint;
+  typedef AffineBasis< RealPoint >         RealBasis;
+  GIVEN( "Given X a set of randomly generated points by adding linear combinations of 2 lattice vectors, and Y the same set but with real coordinates" ) {
+    std::vector< Point > V = { Point{ 3, 4, 0, 2 }, Point{ -2, -1, 5, -7 } };
+    auto X = makeRandomLatticePointsFromDirVectors( 20, V );
+    Basis B( X );
+    std::vector< RealPoint > Y( X.size() );
+    for ( auto i = 0; i < Y.size(); i++ )
+      Basis::transform( Y[ i ], X[ i ] );
+    RealBasis RB( Y );
+    std::vector< PPoint >     pX;
+    std::vector< PRealPoint > pY;
+    auto l  = B .projectPoints( pX, X );
+    auto rl = RB.projectPoints( pY, Y );
+    THEN( "When reduced, their affine bases has same dimension 2" ) {
+      CAPTURE( B.basis() );
+      CAPTURE( RB.basis() );
+      REQUIRE( B.dimension() == 2 );
+      REQUIRE( RB.dimension() == 2 );
+    }
+    THEN( "Their projections have the same geometry (i.e. orientations within points)" ) {
+      CAPTURE( l );
+      CAPTURE( rl );
+      CAPTURE( pX );
+      CAPTURE( pY );
+      REQUIRE( pX.size() == pY.size() );
+      // Computing arbitrary determinants between triplets of points
+      const std::size_t nb = 2000;
+      std::size_t    nb_ok = 0;
+      const double     eps = 1e-10 * double( l ) / rl;
+      for ( auto i = 0; i < nb; i++ )
+        {
+          const std::size_t j = rand() % pX.size();
+          const std::size_t k = rand() % pX.size();
+          const std::size_t l = rand() % pX.size();
+          const auto u  = pX[ k ] - pX[ j ];
+          const auto v  = pX[ l ] - pX[ j ];
+          const auto ru = pY[ k ] - pY[ j ];
+          const auto rv = pY[ l ] - pY[ j ];
+          const auto d  = u [ 0 ] * v [ 1 ] - u [ 1 ] * v [ 0 ];
+          const auto rd = ru[ 0 ] * rv[ 1 ] - ru[ 1 ] * rv[ 0 ];
+          if ( rd > eps )       nb_ok += ( d >  0 ) ? 1 : 0;
+          else if ( rd < -eps ) nb_ok += ( d <  0 ) ? 1 : 0;
+          else                  nb_ok += ( d == 0 ) ? 1 : 0;
+        }
+      REQUIRE( nb_ok == nb );
+    }
+  }
+}
+    
