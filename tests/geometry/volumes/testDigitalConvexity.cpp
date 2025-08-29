@@ -736,6 +736,7 @@ SCENARIO( "DigitalConvexity< Z3 > envelope", "[envelope][3d]" )
               S.insert( Point( rand() % 10, rand() % 10, rand() % 10 ) );
             std::vector< Point > X( S.cbegin(), S.cend() );
             auto Z = dconv.envelope( X );
+            CAPTURE( X );
             CAPTURE( dconv.depthLastEnvelope() );
             REQUIRE( dconv.isFullyConvex( Z ) );
           }
