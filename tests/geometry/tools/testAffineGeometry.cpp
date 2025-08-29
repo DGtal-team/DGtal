@@ -620,8 +620,8 @@ SCENARIO( "AffineBasis< Point4i > projection tests", "[affine_basis][4i][4d]" )
     RealBasis RB( Y );
     std::vector< PPoint >     pX;
     std::vector< PRealPoint > pY;
-    auto l  = B .projectPoints( pX, X );
-    auto rl = RB.projectPoints( pY, Y );
+    auto lcm  = B .projectPoints( pX, X );
+    auto rlcm = RB.projectPoints( pY, Y );
     THEN( "When reduced, their affine bases has same dimension 2" ) {
       CAPTURE( B.basis() );
       CAPTURE( RB.basis() );
@@ -629,29 +629,29 @@ SCENARIO( "AffineBasis< Point4i > projection tests", "[affine_basis][4i][4d]" )
       REQUIRE( RB.dimension() == 2 );
     }
     THEN( "Their projections have the same geometry (i.e. orientations within points)" ) {
-      CAPTURE( l );
-      CAPTURE( rl );
+      CAPTURE( lcm );
+      CAPTURE( rlcm );
       CAPTURE( pX );
       CAPTURE( pY );
       REQUIRE( pX.size() == pY.size() );
       // Computing arbitrary determinants between triplets of points
       const std::size_t nb = 2000;
       std::size_t    nb_ok = 0;
-      const double     eps = 1e-10 * double( l ) / rl;
+      const double     eps = 1e-10 * double( lcm ) / rlcm;
       for ( auto i = 0; i < nb; i++ )
         {
           const std::size_t j = rand() % pX.size();
           const std::size_t k = rand() % pX.size();
           const std::size_t l = rand() % pX.size();
-          const auto u  = pX[ k ] - pX[ j ];
-          const auto v  = pX[ l ] - pX[ j ];
-          const auto ru = pY[ k ] - pY[ j ];
-          const auto rv = pY[ l ] - pY[ j ];
-          const auto d  = u [ 0 ] * v [ 1 ] - u [ 1 ] * v [ 0 ];
-          const auto rd = ru[ 0 ] * rv[ 1 ] - ru[ 1 ] * rv[ 0 ];
-          if ( rd > eps )       nb_ok += ( d >  0 ) ? 1 : 0;
-          else if ( rd < -eps ) nb_ok += ( d <  0 ) ? 1 : 0;
-          else                  nb_ok += ( d == 0 ) ? 1 : 0;
+          const auto u    = pX[ k ] - pX[ j ];
+          const auto v    = pX[ l ] - pX[ j ];
+          const auto ru   = pY[ k ] - pY[ j ];
+          const auto rv   = pY[ l ] - pY[ j ];
+          const auto det  = u [ 0 ] * v [ 1 ] - u [ 1 ] * v [ 0 ];
+          const auto rdet = ru[ 0 ] * rv[ 1 ] - ru[ 1 ] * rv[ 0 ];
+          if ( rdet > eps )       nb_ok += ( det >  0 ) ? 1 : 0;
+          else if ( rdet < -eps ) nb_ok += ( det <  0 ) ? 1 : 0;
+          else                    nb_ok += ( det == 0 ) ? 1 : 0;
         }
       REQUIRE( nb_ok == nb );
     }
