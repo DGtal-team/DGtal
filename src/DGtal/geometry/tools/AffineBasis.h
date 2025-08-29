@@ -321,6 +321,17 @@ namespace DGtal
         : std::make_tuple( -alphas, -r, -w );
     }
 
+    /// Projects the range of points \a input onto the affine basis
+    /// and outputs it in \a result. A consistent choice for
+    /// ProjectedPoint is to match the affine dimension.
+    /// 
+    /// @tparam ProjectedPoint a type of point that matches the affine dimension.
+    ///
+    /// @param[out] result the range of projected points.
+    /// @param[in]  input  the range of input points
+    ///
+    /// @return the maximum dilation of projected rational coordinates
+    /// that was used to create integer coordinates.
     template <typename ProjectedPoint>
     Scalar projectPoints( std::vector< ProjectedPoint >& result,
                           const Points& input )
@@ -346,21 +357,35 @@ namespace DGtal
       return lcm;
     }
 
+    /// Transforms the type of an input point into another one.
+    ///
+    /// @tparam OtherPoint a type of point of dimension at most Point::dimension.
+    /// @param[out] pp the output restricted point.
+    /// @param[in]  p  the input point.
     template <typename OtherPoint>
     static
     void transform( OtherPoint& pp, const Point& p )
     {
+      BOOST_STATIC_ASSERT( OtherPoint::dimension <= Point::dimension );
       typedef typename OtherPoint::Coordinate Scalar;
       for ( std::size_t i = 0; i < pp.dimension; ++i )
         pp[ i ] = Scalar( p[ i ] );
     }
       
-    template <typename ProjectedPoint>
+    /// Transforms the type of an input point into another one, while
+    /// dilating it by a factor \a m.
+    ///
+    /// @tparam OtherPoint a type of point of dimension at most Point::dimension.
+    /// @param[out] pp the output restricted point.
+    /// @param[in]  p  the input point.
+    /// @param[in]  m  the dilation factor.
+    template <typename OtherPoint>
     static
-    void dilatedTransform( ProjectedPoint& pp, const Point& p, Scalar m )
+    void dilatedTransform( OtherPoint& pp, const Point& p, Scalar m )
     {
+      BOOST_STATIC_ASSERT( OtherPoint::dimension <= Point::dimension );
       for ( std::size_t i = 0; i < pp.dimension; ++i )
-        pp[ i ] = m * p[ i ];
+        pp[ i ] = m * Scalar( p[ i ] );
     }
     
     
