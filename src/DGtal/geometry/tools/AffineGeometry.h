@@ -204,22 +204,16 @@ namespace DGtal
         return std::make_pair( b, a );
       }
 
-      /// @param[in] a any number
-      /// @param[in] b any number
-      ///
       /// @return 1.0
       static
-      double gcd( double a, double b )
+      double gcd( double, double )
       {
         return 1.0;
       }
 
-      /// @param[in] a any integer number
-      /// @param[in] b any integer number
-      ///
       /// @return 1.0
       static
-      double lcmPositive( double a, double b )
+      double lcmPositive( double, double )
       {
         return 1.0;
       }
@@ -261,22 +255,16 @@ namespace DGtal
         return std::make_pair( b, a );
       }
 
-      /// @param[in] a any number
-      /// @param[in] b any number
-      ///
       /// @return 1.0f
       static
-      float gcd( float a, float b )
+      float gcd( float, float )
       {
         return 1.0f;
       }
 
-      /// @param[in] a any integer number
-      /// @param[in] b any integer number
-      ///
       /// @return 1.0f
       static
-      float lcmPositive( float a, float b )
+      float lcmPositive( float, float )
       {
         return 1.0f;
       }
