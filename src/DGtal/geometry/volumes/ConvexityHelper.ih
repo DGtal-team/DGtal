@@ -117,7 +117,6 @@ computeDegeneratedLatticePolytope
   // Compute an orthogonal vector to the basis
   functions::computeCompleteBasis( basis, true );
   Point n = basis.back(); // used to compute the two half-spaces that sandwich the polytope
-
   // Compute domain
   Point l = input_points[ 0 ];
   Point u = input_points[ 0 ];

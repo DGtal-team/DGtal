@@ -445,13 +445,64 @@ namespace DGtal
     static
     std::pair< Point, Points > affineBasis( const Points& X, const double tolerance = 1e-12 )
     {
-      std::vector< Size > indices = affineSubset( X, tolerance );
-      Points basis( indices.size() - 1 );
-      for ( Size i = 0; i < basis.size(); i++ )
-        basis[ i ] = X[ indices[ i+1 ] ] - X[ indices[ 0 ] ];
-      return std::make_pair( X[ indices[ 0 ] ], basis );
+      Points basis;  //< direction vectors
+      Size m = X.size();
+      // Process trivial cases.
+      if ( m == 0 ) return std::make_pair( Point::zero, basis );
+      if ( m == 1 ) return std::make_pair( X[ 0 ], basis );
+      // Process general case.
+      basis.reserve( Point::dimension );
+      Point  o = X[ 0 ];
+      for ( Size i = 1; i < m; i++ )
+        {
+          Point v = X[ i ] - o;
+          if ( addIfIndependent( basis, v, tolerance ) )
+            if ( basis.size() > dimension ) break;
+        }
+      return std::make_pair( o, basis );
+      // std::vector< Size > indices = affineSubset( X, tolerance );
+      // Points basis( indices.size() - 1 );
+      // for ( Size i = 0; i < basis.size(); i++ )
+      //   basis[ i ] = X[ indices[ i+1 ] ] - X[ indices[ 0 ] ];
+      // return std::make_pair( X[ indices[ 0 ] ], basis );
     }
 
+    /// Given a range of points \a X, returns a point and a range of
+    /// vectors forming an affine basis containing \a X.
+    ///
+    /// @param[in] X the range of input points (may be lattice points or not).
+    ///
+    /// @param[in] I the range of indices within X that specifies the subset of interest.
+    ///
+    /// @param[in] tolerance the accepted oo-norm below which the vector is
+    /// null (used only for points with float/double coordinates).
+    ///
+    /// @return a point and a range of vectors forming an affine basis containing X.
+    ///
+    /// @note Complexity is O( m n^2 ), where m=Cardinal(I) and n=dimension.
+    template < typename IndexRange >
+    static
+    std::pair< Point, Points > affineBasis( const Points& X,
+                                            const IndexRange& I,
+                                            const double tolerance = 1e-12 )
+    {
+      Points basis;  //< direction vectors
+      Size m = I.size();
+      // Process trivial cases.
+      if ( m == 0 ) return std::make_pair( Point::zero, basis );
+      if ( m == 1 ) return std::make_pair( X[ I[ 0 ] ], basis );
+      // Process general case.
+      basis.reserve( Point::dimension );
+      Point  o = X[ 0 ];
+      for ( Size i = 1; i < m; i++ )
+        {
+          Point v = X[ I[ i ] ] - o;
+          if ( addIfIndependent( basis, v, tolerance ) )
+            if ( basis.size() > dimension ) break;
+        }
+      return std::make_pair( o, basis );
+    }
+    
     /// Given a partial basis of vectors, returns a new vector that is independent.
     ///
     /// @param[in] basis a range of independent vectors that defines a
@@ -762,34 +813,29 @@ namespace DGtal
       return AffineGeometry<TPoint>::affineBasis( X, tolerance );
     }
 
-    /// Given a range of points \a X and the indices \a I of points in
-    /// \a X which form an affine subset of \a X, returns a point and
-    /// a range of vectors forming an affine basis containing \a X.
+    /// Given a range of points \a X, returns a point and a range of
+    /// vectors forming an affine basis containing \a X.
     ///
-    /// @tparam TPoint any type of lattice point or real point.
+    /// @param[in] X the range of input points (may be lattice points or not).
     ///
-    /// @tparam TIndexRange any type of range of indices, like
-    /// std::vector<std::size_t> or std::array<std::size_t,N>.
+    /// @param[in] I the range of indices within X that specifies the subset of interest.
     ///
-    /// @param X the range of input points (may be lattice points or not).
+    /// @param[in] tolerance the accepted oo-norm below which the vector is
+    /// null (used only for points with float/double coordinates).
     ///
-    /// @param I a subset of these points as a range of indices, forming
-    /// an affine subset of \a X, see computeAffineGeometry.
+    /// @return a point and a range of vectors forming an affine basis containing X.
     ///
-    /// @return a point and a range of vectors forming an affine basis containing \a X.
-    ///
-    /// @note Complexity is O( m n^2 ), where m=Cardinal(X) and n=dimension.
-    template <typename TPoint, typename TIndexRange>
+    /// @note Complexity is O( m n^2 ), where m=Cardinal(I) and n=dimension.
+    template < typename TPoint, typename IndexRange >
+    static
     std::pair< TPoint, std::vector< TPoint > >
     computeAffineBasis( const std::vector< TPoint >& X,
-                        const TIndexRange& I )
+                        const IndexRange& I,
+                        const double tolerance = 1e-12 )
     {
-      std::vector< TPoint > basis( I.size() - 1 );
-      for ( std::size_t i = 0; i < basis.size(); i++ )
-        basis[ i ] = X[ I[ i+1 ] ] - X[ I[ 0 ] ];
-      return std::make_pair( X[ I[ 0 ] ], basis );
+      return AffineGeometry<TPoint>::affineBasis( X, I, tolerance );
     }
-
+    
     /// Given a partial basis of vectors, returns a new vector that is independent.
     ///
     /// @tparam TPoint any type of lattice point or real point.

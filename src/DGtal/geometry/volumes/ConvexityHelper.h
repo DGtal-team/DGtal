@@ -186,6 +186,10 @@ namespace DGtal
   public:
     /// @name Lattice convex hull services
     /// @{
+
+    // todo
+    // static
+    // std::tuple< IndexRange, std::vector< IndexRange >, PointRange, Dimension >  
     
     /// Computes and returns a halfspace representation of the tightiest lattice
     /// polytope enclosing all the given input lattice points.
