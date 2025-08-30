@@ -199,7 +199,6 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
   typedef KSpace::Space                    Space;
   typedef HyperRectDomain< Space >         Domain;
   typedef DigitalConvexity< KSpace >       DConvexity;
-  typedef AffineGeometry< Point >          Affine;
   
   Domain     domain( Point( 0, 0, 0 ), Point( 3, 3, 3 ) );
   DConvexity dconv( Point( -1, -1, -1 ), Point( 4, 4, 4 ) );
