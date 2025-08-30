@@ -85,3 +85,25 @@ SCENARIO( "DigitalConvexity< Z3 > envelope bug", "[envelope][3d]" )
     }
   }
 }
+
+SCENARIO( "AffineGeometry< Z3 > bug", "[affine_geom][3d]" )
+{
+  typedef SpaceND<3,int>          Space;
+  typedef Space::Point            Point;
+
+  typedef AffineGeometry< Point > Affine;
+  typedef AffineBasis< Point >    Basis;  
+
+  std::vector< Point > X = { {-46, 38, -43}, {27, -89, 20}, {53, 26, -57} };
+  auto  ref_basis = functions::computeAffineBasis ( X );
+  auto  ref       = ref_basis.first;
+  auto& basis     = ref_basis.second;
+  WHEN( "Computing orthogonal vector" ) {
+    Point N;
+    functions::computeOrthogonalVector( N, basis );
+    THEN( "It is non null" ) {
+      CAPTURE( N );
+      REQUIRE( N != Point::zero );
+    }
+  }
+}

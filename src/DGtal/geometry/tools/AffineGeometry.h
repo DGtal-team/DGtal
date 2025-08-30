@@ -87,9 +87,10 @@ namespace DGtal
         while ( i < Point::dimension && w[ i ] == 0 ) i++;
         if ( i == Point::dimension ) return;
         TInteger g = abs( w[ i ] );
-        for ( ; i < Point::dimension; i++ )
-          g = DGtal::IntegerComputer< TInteger >::staticGcd( g, abs( w[ i ] ) );
-        w /= g;
+        for ( DGtal::Dimension k = i+1; k < Point::dimension; k++ )
+          g = DGtal::IntegerComputer< TInteger >::staticGcd( g, abs( w[ k ] ) );
+        for ( DGtal::Dimension k = i; k < Point::dimension; k++ )
+          w[ k ] /= g;
       }
 
       /// Specialized version to normalize a vector in case of double
@@ -147,7 +148,10 @@ namespace DGtal
       std::pair< Integer, Integer > getMultipliers( Integer a, Integer b )
       {
         const Integer g = gcd( a, b );
-        return std::make_pair( b / g, a / g );
+        // left multiplier should be positive.
+        return (b >= 0)
+          ? std::make_pair( b / g, a / g )
+          : std::make_pair( -b / g, -a / g );
       }
 
       /// @param[in] a any integer number
@@ -201,7 +205,9 @@ namespace DGtal
       static
       std::pair< double, double > getMultipliers( double a, double b )
       {
-        return std::make_pair( b, a );
+        return (b >= 0 )
+          ? std::make_pair( b, a )
+          : std::make_pair( -b, -a );
       }
 
       /// @return 1.0
@@ -252,7 +258,9 @@ namespace DGtal
       static
       std::pair< float, float > getMultipliers( float a, float b )
       {
-        return std::make_pair( b, a );
+        return (b >= 0 )
+          ? std::make_pair( b, a )
+          : std::make_pair( -b, -a );
       }
 
       /// @return 1.0f
@@ -493,7 +501,7 @@ namespace DGtal
       if ( m == 1 ) return std::make_pair( X[ I[ 0 ] ], basis );
       // Process general case.
       basis.reserve( Point::dimension );
-      Point  o = X[ 0 ];
+      Point  o = X[ I[ 0 ] ];
       for ( Size i = 1; i < m; i++ )
         {
           Point v = X[ I[ i ] ] - o;
@@ -740,7 +748,7 @@ namespace DGtal
     ///
     /// @return a simplified vector aligned with \a v.
     static 
-    TPoint simplifiedVector( TPoint v )
+    Point simplifiedVector( Point v )
     {
       PointOps::normalizeVector( v, (Scalar) v.normInfinity() );
       return v;
@@ -926,6 +934,7 @@ namespace DGtal
           functions::determinantBareiss( M, w[ col ] );
           if ( (col + n) % 2 == 0 ) w[ col ] = -w[ col ];
         }
+      w = AffineGeometry<TInternalVector>::simplifiedVector( w );
     }
 
     /// Given a vector, returns the aligned vector with its component

@@ -1333,6 +1333,8 @@ namespace DGtal
       CombinatorialPlaneSimplex splx;
       for ( Dimension k = 0; k < dimension-2; k++ )
         splx[ k ] = result[ k ];
+      std::cout << "Orienting face " << f << " (";
+      for ( auto i : result ) std::cout << " " << i;
       std::sort( result.begin()+dimension-2, result.end(),
                  [&] ( Index i, Index j )
                  {
@@ -1342,6 +1344,13 @@ namespace DGtal
                    const auto orient = kernel.dot( F.H, H );
                    return orient > 0;
                  } );
+      for ( Dimension k = 0; k < dimension; k++ )
+        splx[ k ] = result[ k ];
+      const auto H = kernel.compute( points, splx );
+      const auto orient = kernel.dot( F.H, H );
+      std::cout << " ) => (";
+      for ( auto i : result ) std::cout << " " << i;
+      std::cout << " ) N=" << H.internalNormal() << " dot=" << orient << "\n";
       return result;
     }
 

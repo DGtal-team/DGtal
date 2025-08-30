@@ -36,6 +36,7 @@
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/geometry/volumes/CellGeometry.h"
 #include "DGtal/geometry/volumes/DigitalConvexity.h"
+#include "DGtal/geometry/tools/AffineGeometry.h"
 #include "DGtalCatch.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -197,7 +198,8 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
   typedef KSpace::Space                    Space;
   typedef HyperRectDomain< Space >         Domain;
   typedef DigitalConvexity< KSpace >       DConvexity;
-
+  typedef AffineGeometry< Point >          Affine;
+  
   Domain     domain( Point( 0, 0, 0 ), Point( 3, 3, 3 ) );
   DConvexity dconv( Point( -1, -1, -1 ), Point( 4, 4, 4 ) );
 
@@ -249,6 +251,8 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
     unsigned int nbfg     = 0;
     unsigned int nbffast  = 0;
     unsigned int nb0123   = 0;
+    unsigned int nbdim3   = 0;
+    unsigned int nbfull   = 0;
     for ( unsigned int i = 0; i < nb; ++i )
       {
         Point a( rand() % 5, rand() % 5, rand() % 5 );
@@ -256,6 +260,9 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
         Point c( rand() % 5, rand() % 5, rand() % 5 );
         Point d( rand() % 5, rand() % 5, rand() % 5 );
         if ( ! dconv.isSimplexFullDimensional( { a, b, c, d } ) ) continue;
+        nbfull += 1;
+        auto dim = functions::computeAffineDimension( std::vector<Point>{ a, b, c, d } );
+        nbdim3 += ( dim == 3 ) ? 1 : 0;
         auto tetra = dconv.makeSimplex( { a, b, c, d } );
         std::vector< Point > X;
         tetra.getPoints( X );
@@ -267,10 +274,14 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
         bool cvxfg    = dconv.isFullyConvex( X, false );
         bool cvxffast = dconv.isFullyConvexFast( X );
         if ( cvxf != cvxfg || cvxf != cvxffast) {
-          std::cout << "[" << cvx0 << cvx1 << cvx2 << cvx3 << "] "
-                    << "[" << cvxf << "] [" << cvxfg
-                    << "] [" << cvxffast << "]"
-                    << a << b << c << d << std::endl;
+          bool cvxfc =  dconv.FC( X ).size() == X.size();
+          std::cout << "[0123 " << cvx0 << cvx1 << cvx2 << cvx3 << "] "
+                    << "[K " << cvxf << "] [M " << cvxfg
+                    << "] [MF " << cvxffast << "] [FC " << cvxfc << "] "
+                    << a << b << c << d << "\n";
+          std::cout << "X=";
+          for ( auto p : X ) std::cout << " " << p;
+          std::cout << "\n";
         }
         nbsimplex += 1;
         nb0       += cvx0 ? 1 : 0;
@@ -285,6 +296,9 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
       }
     THEN( "All valid tetrahedra are 0-convex." ) {
       REQUIRE( nb0 == nbsimplex );
+    }
+    THEN( "All full dimensional simplices have affine dimension 3" ) {
+      REQUIRE( nbfull == nbdim3 );
     }
     THEN( "There are less 1-convex, 2-convex and 3-convex than 0-convex." ) {
       REQUIRE( nb1 < nb0 );

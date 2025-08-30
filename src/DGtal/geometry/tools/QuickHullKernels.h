@@ -259,6 +259,19 @@ namespace DGtal
     compute( const std::vector< CoordinatePoint >& vpoints,
              const CombinatorialPlaneSimplex& simplex )
     {
+      // typedef DGtal::SimpleMatrix< InternalScalar, dimension, dimension > Matrix;
+      // Matrix A;
+      // InternalVector N;
+      // for ( Dimension i = 1; i < dimension; i++ )
+      //   for ( Dimension j = 0; j < dimension; j++ )
+      //     A.setComponent( i-1, j,
+      //                     Inner::cast( vpoints[ simplex[ i ] ][ j ]
+      //                                  - vpoints[ simplex[ 0 ] ][ j ] ) );
+      // for ( Dimension j = 0; j < dimension; j++ )
+      //   N[ j ] = A.cofactor( dimension-1, j );
+      // const InternalPoint ip = Inner::cast( vpoints[ simplex[ 0 ] ] );
+      // return HalfSpace { N, N.dot( ip ) };
+
       // Faster method than SimpleMatrix::cofactor.
       InternalVector N; // null normal
       const InternalPoint ip = Inner::cast( vpoints[ simplex[ 0 ] ] );
@@ -267,6 +280,18 @@ namespace DGtal
       auto& basis     = ref_basis.second;
       if ( ( basis.size() + 1 ) == dimension )
         functions::computeOrthogonalVector( N, basis );
+      // if ( N2.normInfinity() != 0 )
+      //   N2 = N2 * InternalScalar( N.normInfinity() / N2.normInfinity() );
+      // if ( N != N2 )
+      //   {
+      //     std::cout << "[compute] N=" << N << " N2=" << N2 << "\n";
+      //     std::cout << "[QHK::compute] #basis=" << basis.size()
+      //               << " #vpoints=" << vpoints.size()
+      //               << " #simplex=" << simplex.size()
+      //               << "\nP=";
+      //     for ( auto i : simplex ) std::cout << " v[" << i << "]=" << vpoints[ i ];
+      //     std::cout << "\n";
+      //   }
       return HalfSpace { N, N.dot( ip ) };
     }
     

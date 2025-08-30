@@ -700,11 +700,19 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeConvexHullBound
   ConvexHull hull;
   hull.setInput( input_points, remove_duplicates );
   bool ok = hull.computeConvexHull( ConvexHull::Status::VerticesCompleted );
+  std::cout << "[ConvexityHelper::computeConvexHullBoundary(SurfMesh)] status=" << (int) hull.status() << "\n";
   if ( !ok ) return false;
   std::vector< RealPoint > positions;
   hull.getVertexPositions( positions );
   std::vector< IndexRange > faces;
   hull.getFacetVertices( faces );
+  for ( auto p : positions ) std::cout << " " << p;
+  for ( auto f : faces ) {
+    std::cout << " (";
+    for ( auto i : f ) std::cout << " " << i;
+    std::cout << " )";
+  }
+  std::cout << "\n";
   mesh = SurfaceMesh( positions.cbegin(), positions.cend(),
                       faces.cbegin(), faces.cend() );
   return true;
@@ -722,11 +730,19 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeConvexHullBound
   ConvexHull hull;
   hull.setInput( input_points, remove_duplicates );
   bool ok = hull.computeConvexHull( ConvexHull::Status::VerticesCompleted );
+  std::cout << "[ConvexityHelper::computeConvexHullBoundary(PolySurf)] status=" << (int) hull.status() << "\n";
   if ( !ok ) return false;
   PointRange positions;
   hull.getVertexPositions( positions );
   std::vector< IndexRange > faces;
   hull.getFacetVertices( faces );
+  for ( auto p : positions ) std::cout << " " << p;
+  for ( auto f : faces ) {
+    std::cout << " (";
+    for ( auto i : f ) std::cout << " " << i;
+    std::cout << " )";
+  }
+  std::cout << "\n";
   // build polygonal surface
   polysurf.clear();
   for ( auto p : positions ) polysurf.addVertex( p );
