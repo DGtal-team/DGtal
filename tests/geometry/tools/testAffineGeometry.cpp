@@ -658,3 +658,32 @@ SCENARIO( "AffineBasis< Point4i > projection tests", "[affine_basis][4i][4d]" )
   }
 }
     
+
+SCENARIO( "AffineGeometry< Z3 > bug", "[affine_geom][3d]" )
+{
+  typedef SpaceND<3,int>          Space;
+  typedef Space::Point            Point;
+
+  typedef AffineGeometry< Point > Affine;
+  typedef AffineBasis< Point >    Basis;  
+
+  std::vector< Point > X = { {-46, 38, -43}, {27, -89, 20}, {53, 26, -57} };
+  auto  ref_basis = functions::computeAffineBasis ( X );
+  auto  ref       = ref_basis.first;
+  auto& basis     = ref_basis.second;
+  auto  C         = ( X[1]-X[0] ).crossProduct( X[2]-X[0] );
+  auto  sC        = functions::computeSimplifiedVector( C );
+  WHEN( "Computing orthogonal vector" ) {
+    Point N;
+    functions::computeOrthogonalVector( N, basis );
+    THEN( "It is non null" ) {
+      CAPTURE( N );
+      REQUIRE( N != Point::zero );
+    }
+    THEN( "It corresponds to the reduced cross product" ) {
+      CAPTURE( C );
+      CAPTURE( sC );
+      REQUIRE( N == sC );
+    }
+  }
+}

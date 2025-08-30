@@ -1203,3 +1203,40 @@ SCENARIO( "DigitalConvexity< Z3 > full subconvexity and full covering of triangl
   }
   
 }
+
+SCENARIO( "DigitalConvexity< Z3 > envelope bug", "[envelope][3d]" )
+{
+  typedef KhalimskySpaceND<3,int>          KSpace;
+  typedef KSpace::Point                    Point;
+  typedef DigitalConvexity< KSpace >       DConvexity;
+  typedef AffineBasis< Point >             Basis;
+
+  DConvexity dconv( Point( -36, -36, -36 ), Point( 36, 36, 36 ) );
+
+  WHEN( "Using basis B = (1, 0, -2) (1, 0, -1)" ) {
+    std::vector< Point > b = { Point( 0, 0, 0), Point(1, 0, -2), Point(1, 0, -1) };
+    const auto [ o, B ] = functions::computeAffineBasis( b );
+    Point e  = functions::computeIndependentVector( B );
+    Basis AB( Point( 0,0 ), b );
+    bool parallel = AB.isParallel( e );
+    const auto [ d, L, r ] = AB.decomposeVector( e );
+    CAPTURE( B ); 
+    CAPTURE( AB.basis() ); 
+    CAPTURE( d ); 
+    CAPTURE( L );
+    CAPTURE( r );
+    CAPTURE( e );
+    REQUIRE( ! parallel );
+    REQUIRE( r != Point::zero );
+  }
+  
+  WHEN( "Computing the envelope Z of a digital set X with direct algorithm" ) {
+    std::vector< Point > X = { Point(5, 1, 9), Point(8, 1, 8), Point(9, 1, 1) };
+    auto Z = dconv.envelope( X );
+    THEN( "Z is fully convex" ){
+      CAPTURE( X );
+      CAPTURE( dconv.depthLastEnvelope() );
+      REQUIRE( dconv.isFullyConvex( Z ) );
+    }
+  }
+}
