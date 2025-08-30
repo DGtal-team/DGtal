@@ -576,9 +576,10 @@ SCENARIO( "AffineBasis< Point4i > unit tests", "[affine_basis][4i]" )
       for ( auto p : X )
         {
           const auto [d, lambda, rem ] = B.decompose( p );
-          std::cout << "p=" << p << " d=" << d
-                    << " lambda=" << lambda << " rem=" << rem << "\n";
           nb_ok += ( rem == Point::zero ) ? : 1;
+          if ( rem != Point::zero )
+            std::cout << "p=" << p << " d=" << d
+                      << " lambda=" << lambda << " rem=" << rem << "\n";
         }
       REQUIRE( nb_ok == X.size() );
     }
@@ -590,10 +591,11 @@ SCENARIO( "AffineBasis< Point4i > unit tests", "[affine_basis][4i]" )
           const auto p = y + B.first;
           const auto [d, lambda, rem ] = B.decompose( p );
           auto q = B.recompose( d, lambda, rem );
-          std::cout << "p=" << p << " d=" << d
-                    << " lambda=" << lambda << " rem=" << rem
-                    << " q=" << q << "\n";
           nb_ok += ( p == q ) ? : 1;
+          if ( p != q )
+            std::cout << "p=" << p << " d=" << d
+                      << " lambda=" << lambda << " rem=" << rem
+                      << " q=" << q << "\n";
         }
       REQUIRE( nb_ok == Y.size() );
     }
@@ -663,10 +665,6 @@ SCENARIO( "AffineGeometry< Z3 > bug", "[affine_geom][3d]" )
 {
   typedef SpaceND<3,int>          Space;
   typedef Space::Point            Point;
-
-  typedef AffineGeometry< Point > Affine;
-  typedef AffineBasis< Point >    Basis;  
-
   std::vector< Point > X = { {-46, 38, -43}, {27, -89, 20}, {53, 26, -57} };
   auto  ref_basis = functions::computeAffineBasis ( X );
   auto  ref       = ref_basis.first;
@@ -684,6 +682,41 @@ SCENARIO( "AffineGeometry< Z3 > bug", "[affine_geom][3d]" )
       CAPTURE( C );
       CAPTURE( sC );
       REQUIRE( N == sC );
+    }
+  }
+}
+
+SCENARIO( "AffineGeometry< Z3 > orthogonality", "[affine_geom][3d]" )
+{
+  typedef SpaceND<3,int>          Space;
+  typedef Space::Point            Point;
+
+  WHEN( "Computing orthogonal vector to multiple random points" ) {
+    std::vector< Point > X = makeRandomVectors<Point>( 100, 50 );
+    std::size_t nb        = 300;
+    std::size_t nb_equal  = 0;
+    std::size_t nb_C_zero = 0;
+    std::size_t nb_N_zero = 0;
+    for ( auto i = 0; i < nb; i++ )
+      {
+        std::vector< Point > Y = { X[ rand() % 100 ], X[ rand() % 100 ], X[ rand() % 100 ] };
+        auto  ref_basis = functions::computeAffineBasis ( Y );
+        auto  ref       = ref_basis.first;
+        auto& basis     = ref_basis.second;
+        auto  C         = ( Y[1]-Y[0] ).crossProduct( Y[2]-Y[0] );
+        auto  sC        = functions::computeSimplifiedVector( C );
+        Point N;
+        functions::computeOrthogonalVector( N, basis );
+        nb_equal += (sC == N) ? 1 : 0;
+        if ( sC != N )
+          std::cout << "Y = " << Y[0] << " " << Y[1] << " " << Y[ 2 ]
+                    << " sC = " << sC << " N = " << N << "\n";
+        nb_C_zero += ( C == Point::zero ) ? 1 : 0;
+        nb_N_zero += ( N == Point::zero ) ? 1 : 0;
+      }
+    THEN( "They corresponds to the reduced cross product" ) {
+      REQUIRE( nb_equal == nb );
+      REQUIRE( nb_C_zero == nb_N_zero );
     }
   }
 }

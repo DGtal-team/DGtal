@@ -37,6 +37,7 @@
 #include "DGtal/geometry/volumes/CellGeometry.h"
 #include "DGtal/geometry/volumes/DigitalConvexity.h"
 #include "DGtal/geometry/tools/AffineGeometry.h"
+#include "DGtal/geometry/tools/AffineBasis.h"
 #include "DGtalCatch.h"
 ///////////////////////////////////////////////////////////////////////////////
 

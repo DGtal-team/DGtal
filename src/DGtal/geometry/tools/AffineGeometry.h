@@ -702,28 +702,29 @@ namespace DGtal
     /// is orthogonal to each of them.
     ///
     /// @note In 3D, given two independent vectors as input, then the
-    /// added vector is the \b cross \b product of these two
-    /// vectors. In nD, it is thus a generalization of the cross
+    /// added vector is the (reduced) \b cross \b product of these two
+    /// vectors. In nD, it is thus a kind of generalization of the cross
     /// product.
     ///
     /// @tparam TInternalNumber the number type used for internal computations.
     ///
     /// @param[in] basis a range of independent vectors of size dimension-1.
     ///
-    /// @return a vector of coefficients (represented with the given number type).
+    /// @return a vector of coefficients (represented with the given
+    /// number type), or the null vector if the basis is not d-1-dimensional.
     template < typename TInternalNumber >
     static
     std::vector<TInternalNumber>
     orthogonalVector( const Points& basis )
     {
-      ASSERT( ( basis.size() + 1 ) == dimension );
       const std::size_t n = dimension;
+      std::vector<TInternalNumber> w( n );
+      if ( ( basis.size() + 1 ) != dimension ) return w;
       const std::size_t m = basis.size();
       SimpleMatrix< TInternalNumber, dimension-1, dimension> A;
       for ( std::size_t i = 0; i < m; ++i )
         for ( std::size_t j = 0; j < n; ++j )
           A( i, j ) = TInternalNumber( basis[ i ][ j ] );
-      std::vector<TInternalNumber> w( n );
       for ( std::size_t col = 0; col < n; ++col)
         { // construct sub-matrix removing column col
           SimpleMatrix< TInternalNumber, dimension-1, dimension-1> M;
@@ -914,14 +915,13 @@ namespace DGtal
     {
       typedef typename TInternalVector::Component TInternalNumber;
       ASSERT( TPoint::dimension == TInternalVector::dimension );
-      ASSERT( ( basis.size() + 1 ) == TInternalVector::dimension );
+      if ( ( basis.size() + 1 ) != TInternalVector::dimension ) return;
       constexpr std::size_t n = TInternalVector::dimension;
       const std::size_t m = basis.size();
       SimpleMatrix< TInternalNumber, n-1, n> A;
       for ( std::size_t i = 0; i < m; ++i )
         for ( std::size_t j = 0; j < n; ++j )
           A( i, j ) = TInternalNumber( basis[ i ][ j ] );
-      //std::vector<TInternalNumber> w( n );
       for ( std::size_t col = 0; col < n; ++col)
         { // construct sub-matrix removing column col
           SimpleMatrix< TInternalNumber, n-1, n-1> M;
