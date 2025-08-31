@@ -1209,13 +1209,14 @@ SCENARIO( "DigitalConvexity< Z3 > envelope bug", "[envelope][3d]" )
   typedef KhalimskySpaceND<3,int>          KSpace;
   typedef KSpace::Point                    Point;
   typedef DigitalConvexity< KSpace >       DConvexity;
+  typedef AffineGeometry< Point >          Affine;
   typedef AffineBasis< Point >             Basis;
 
   DConvexity dconv( Point( -36, -36, -36 ), Point( 36, 36, 36 ) );
 
   WHEN( "Using basis B = (1, 0, -2) (1, 0, -1)" ) {
     std::vector< Point > b = { Point( 0, 0, 0), Point(1, 0, -2), Point(1, 0, -1) };
-    const auto [ o, B ] = functions::computeAffineBasis( b );
+    const auto [ o, B ] = Affine::affineBasis( b );
     Point e  = functions::computeIndependentVector( B );
     Basis AB( Point( 0,0 ), b );
     bool parallel = AB.isParallel( e );

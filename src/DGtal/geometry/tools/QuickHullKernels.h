@@ -275,11 +275,12 @@ namespace DGtal
       // Faster method than SimpleMatrix::cofactor.
       InternalVector N; // null normal
       const InternalPoint ip = Inner::cast( vpoints[ simplex[ 0 ] ] );
-      auto  ref_basis = functions::computeAffineBasis ( vpoints, simplex ); 
-      auto  ref       = ref_basis.first;
-      auto& basis     = ref_basis.second;
-      if ( ( basis.size() + 1 ) == dimension )
-        functions::computeOrthogonalVector( N, basis );
+      functions::getOrthogonalVector( N, vpoints, simplex );
+      // auto  ref_basis = functions::computeAffineBasis ( vpoints, simplex ); 
+      // auto  ref       = ref_basis.first;
+      // auto& basis     = ref_basis.second;
+      // if ( ( basis.size() + 1 ) == dimension )
+      //   functions::computeOrthogonalVector( N, basis );
       // if ( N2.normInfinity() != 0 )
       //   N2 = N2 * InternalScalar( N.normInfinity() / N2.normInfinity() );
       // if ( N != N2 )

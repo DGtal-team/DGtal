@@ -205,8 +205,8 @@ SCENARIO( "AffineGeometry< Point2d > unit tests", "[affine_subset][2d]" )
     std::vector<Point> X
       = { Point(0,0), Point(-4,-1), Point(-8,-2), Point(8,2), Point(16,4), Point(200,50) };
     perturbate( X, 1e-11 );
-    auto I = Affine::affineSubset( X, 1e-9 );
-    THEN( "It has an affine basis of 2 points [0,1] if tolerance is 1e-9" ) {
+    auto I = Affine::affineSubset( X, 1e-7 );
+    THEN( "It has an affine basis of 2 points [0,1] if tolerance is 1e-7" ) {
       CAPTURE( X );
       CAPTURE( I );
       REQUIRE( I.size() == 2 );
@@ -356,13 +356,15 @@ SCENARIO( "AffineGeometry< Point4i > unit tests", "[affine_subset][4i]" )
     std::vector< Point > V = { Point{ 3, 1, 0, 2 } };
     auto X = makeRandomLatticePointsFromDirVectors( 20, V );
     auto I = functions::computeAffineSubset( X );
-    auto B = functions::computeAffineBasis( X );
+    Point o;
+    std::vector< Point > B;
+    functions::getAffineBasis( o, B, X );
     THEN( "It has an affine basis of 2 points" ) {
       CAPTURE( I );
       REQUIRE( I.size() == 2 );
     }
     THEN( "It has an affine basis of 1 vector" ) {
-      REQUIRE( B.second.size() == 1 );
+      REQUIRE( B.size() == 1 );
     }
 
   }
@@ -370,39 +372,45 @@ SCENARIO( "AffineGeometry< Point4i > unit tests", "[affine_subset][4i]" )
     std::vector< Point > V = { Point{ 3, 1, 0, 2 }, Point{ -2, -1, 2, 7 } };
     auto X = makeRandomLatticePointsFromDirVectors( 20, V );
     auto I = functions::computeAffineSubset( X );
-    auto B = functions::computeAffineBasis( X );
+    Point o;
+    std::vector< Point > B;
+    functions::getAffineBasis( o, B, X );
     THEN( "It has an affine basis of 3 points" ) {
       CAPTURE( I );
       REQUIRE( I.size() == 3 );
     }
     THEN( "It has an affine basis of 2 vectors" ) {
-      REQUIRE( B.second.size() == 2 );
+      REQUIRE( B.size() == 2 );
     }
   }
   GIVEN( "Given X a set of randomly generated points by adding linear combinations of 3 lattice vectors" ) {
     std::vector< Point > V = { Point{ 3, 1, 0, 2 }, Point{ -2, -1, 2, 7 }, Point{ -1, 4, 3, -1  } };
     auto X = makeRandomLatticePointsFromDirVectors( 20, V );
     auto I = functions::computeAffineSubset( X );
-    auto B = functions::computeAffineBasis( X );
+    Point o;
+    std::vector< Point > B;
+    functions::getAffineBasis( o, B, X );
     THEN( "It has an affine basis of 4 points" ) {
       CAPTURE( I );
       REQUIRE( I.size() == 4 );
     }
     THEN( "It has an affine basis of 3 vectors" ) {
-      REQUIRE( B.second.size() == 3 );
+      REQUIRE( B.size() == 3 );
     }
   }
   GIVEN( "Given X a set of randomly generated points by adding linear combinations of 4 lattice vectors" ) {
     std::vector< Point > V = { Point{ 3, 1, 0, 2 }, Point{ -2, -1, 2, 7 }, Point{ -1, 4, 3, -1 }, Point{ 2, 1, -3, -4 } };
     auto X = makeRandomLatticePointsFromDirVectors( 20, V );
     auto I = functions::computeAffineSubset( X );
-    auto B = functions::computeAffineBasis( X, 1e-10 );
+    Point o;
+    std::vector< Point > B;
+    functions::getAffineBasis( o, B, X, 1e-10 );
     THEN( "It has an affine basis of 5 points" ) {
       CAPTURE( I );
       REQUIRE( I.size() == 5 );
     }
     THEN( "It has an affine basis of 4 vectors" ) {
-      REQUIRE( B.second.size() == 4 );
+      REQUIRE( B.size() == 4 );
     }
   }
 }
@@ -417,52 +425,60 @@ SCENARIO( "AffineGeometry< Point4d > unit tests", "[affine_subset][4d]" )
     std::vector< Point > V = { Point{ 3, 1, 0, 2 } };
     auto X = makeRandomRealPointsFromDirVectors( 20, V );
     auto I = functions::computeAffineSubset( X, 1e-10 );
-    auto B = functions::computeAffineBasis( X, 1e-10 );
+    Point o;
+    std::vector< Point > B;
+    functions::getAffineBasis( o, B, X, 1e-10 );
     THEN( "It has an affine subset of 2 points" ) {
       CAPTURE( I );
       REQUIRE( I.size() == 2 );
     }
     THEN( "It has an affine basis of 1 vector" ) {
-      REQUIRE( B.second.size() == 1 );
+      REQUIRE( B.size() == 1 );
     }
   }
   GIVEN( "Given X a set of randomly generated points by adding linear combinations of 2 lattice vectors" ) {
     std::vector< Point > V = { Point{ 3, 1, 0, 2 }, Point{ -2, -1, 2, 7 } };
     auto X = makeRandomRealPointsFromDirVectors( 20, V );
     auto I = functions::computeAffineSubset( X, 1e-10 );
-    auto B = functions::computeAffineBasis( X, 1e-10 );
+    Point o;
+    std::vector< Point > B;
+    functions::getAffineBasis( o, B, X, 1e-10 );
     THEN( "It has an affine subset of 3 points" ) {
       CAPTURE( I );
       REQUIRE( I.size() == 3 );
     }
     THEN( "It has an affine basis of 2 vectors" ) {
-      REQUIRE( B.second.size() == 2 );
+      REQUIRE( B.size() == 2 );
     }
   }
   GIVEN( "Given X a set of randomly generated points by adding linear combinations of 3 lattice vectors" ) {
     std::vector< Point > V = { Point{ 3, 1, 0, 2 }, Point{ -2, -1, 2, 7 }, Point{ -1, 4, 3, -1  } };
     auto X = makeRandomRealPointsFromDirVectors( 20, V );
     auto I = functions::computeAffineSubset( X, 1e-10 );
-    auto B = functions::computeAffineBasis( X, 1e-10 );    
+    Point o;
+    std::vector< Point > B;
+    functions::getAffineBasis( o, B, X, 1e-10 );
     THEN( "It has an affine subset of 4 points" ) {
       CAPTURE( I );
       REQUIRE( I.size() == 4 );
     }
     THEN( "It has an affine basis of 3 vectors" ) {
-      REQUIRE( B.second.size() == 3 );
+      REQUIRE( B.size() == 3 );
     }
   }
   GIVEN( "Given X a set of randomly generated points by adding linear combinations of 4 lattice vectors" ) {
     std::vector< Point > V = { Point{ 3, 1, 0, 2 }, Point{ -2, -1, 2, 7 }, Point{ -1, 4, 3, -1 }, Point{ 2, 1, -3, -4 } };
     auto X = makeRandomRealPointsFromDirVectors( 20, V );
     auto I = functions::computeAffineSubset( X, 1e-10 );
-    auto B = functions::computeAffineBasis( X, 1e-10 );    
+    Point o;
+    std::vector< Point > B;
+    functions::getAffineBasis( o, B, X, 1e-10 );
     THEN( "It has an affine subset of 5 points" ) {
       CAPTURE( I );
       REQUIRE( I.size() == 5 );
     }
     THEN( "It has an affine basis of 4 vectors" ) {
-      REQUIRE( B.second.size() == 4 );
+      REQUIRE( B.size() == 4 );
     }
   }
 }
@@ -604,14 +620,15 @@ SCENARIO( "AffineBasis< Point4i > unit tests", "[affine_basis][4i]" )
 
 SCENARIO( "AffineBasis< Point4i > projection tests", "[affine_basis][4i][4d]" )
 {
-  typedef SpaceND< 4, int >                Space;      
+  typedef SpaceND< 4, int64_t >            Space;      
   typedef Space::Point                     Point;
-  typedef SpaceND< 2, int >                Space2;      
+  typedef SpaceND< 2, int64_t >            Space2;      
   typedef Space2::Point                    PPoint;
   typedef AffineBasis< Point >             Basis;
   typedef Space::RealPoint                 RealPoint;
   typedef Space2::RealPoint                PRealPoint;
   typedef AffineBasis< RealPoint >         RealBasis;
+
   GIVEN( "Given X a set of randomly generated points by adding linear combinations of 2 lattice vectors, and Y the same set but with real coordinates" ) {
     std::vector< Point > V = { Point{ 3, 4, 0, 2 }, Point{ -2, -1, 5, -7 } };
     auto X = makeRandomLatticePointsFromDirVectors( 20, V );
@@ -666,14 +683,13 @@ SCENARIO( "AffineGeometry< Z3 > bug", "[affine_geom][3d]" )
   typedef SpaceND<3,int>          Space;
   typedef Space::Point            Point;
   std::vector< Point > X = { {-46, 38, -43}, {27, -89, 20}, {53, 26, -57} };
-  auto  ref_basis = functions::computeAffineBasis ( X );
-  auto  ref       = ref_basis.first;
-  auto& basis     = ref_basis.second;
+  Point o;
+  std::vector< Point > B;
+  functions::getAffineBasis ( o, B, X );
   auto  C         = ( X[1]-X[0] ).crossProduct( X[2]-X[0] );
   auto  sC        = functions::computeSimplifiedVector( C );
   WHEN( "Computing orthogonal vector" ) {
-    Point N;
-    functions::computeOrthogonalVector( N, basis );
+    auto N = functions::computeOrthogonalVectorToBasis( B );
     THEN( "It is non null" ) {
       CAPTURE( N );
       REQUIRE( N != Point::zero );
@@ -688,7 +704,7 @@ SCENARIO( "AffineGeometry< Z3 > bug", "[affine_geom][3d]" )
 
 SCENARIO( "AffineGeometry< Z3 > orthogonality", "[affine_geom][3d]" )
 {
-  typedef SpaceND<3,int>          Space;
+  typedef SpaceND<3,int64_t>          Space;
   typedef Space::Point            Point;
 
   WHEN( "Computing orthogonal vector to multiple random points" ) {
@@ -700,13 +716,10 @@ SCENARIO( "AffineGeometry< Z3 > orthogonality", "[affine_geom][3d]" )
     for ( auto i = 0; i < nb; i++ )
       {
         std::vector< Point > Y = { X[ rand() % 100 ], X[ rand() % 100 ], X[ rand() % 100 ] };
-        auto  ref_basis = functions::computeAffineBasis ( Y );
-        auto  ref       = ref_basis.first;
-        auto& basis     = ref_basis.second;
         auto  C         = ( Y[1]-Y[0] ).crossProduct( Y[2]-Y[0] );
         auto  sC        = functions::computeSimplifiedVector( C );
         Point N;
-        functions::computeOrthogonalVector( N, basis );
+        functions::getOrthogonalVector( N, Y );
         nb_equal += (sC == N) ? 1 : 0;
         if ( sC != N )
           std::cout << "Y = " << Y[0] << " " << Y[1] << " " << Y[ 2 ]

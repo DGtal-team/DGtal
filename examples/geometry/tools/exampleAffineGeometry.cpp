@@ -116,18 +116,19 @@ bool checkAffineGeometry( int nb, const std::vector< Point>& V )
   std::cout << "AffineDim(X) = " << functions::computeAffineDimension( X ) << "\n";
   auto I = functions::computeAffineSubset( X );
   std::cout << "AffineSubset(X) = " << I << "\n";
-  auto B = functions::computeAffineBasis( X );
-  std::cout << "AffineBasis(X) =: p+B = " << B.first << " + " << B.second << "\n";
-  auto e = functions::computeIndependentVector( B.second );
+  Point o;
+  std::vector<Point> B;
+  functions::getAffineBasis( o, B, X, I );
+  std::cout << "AffineBasis(X) =: p+B = " << o << " + " << B << "\n";
+  auto e = functions::computeIndependentVector( B );
   std::cout << "Independent(X) =: e = " << e << "\n";
-  Point n;
-  functions::computeOrthogonalVector( n, B.second );
+  Point n = functions::computeOrthogonalVectorToBasis( B );
   std::cout << "Orthogonal(X) =: n = " << n << "\n";
   Point ns = functions::computeSimplifiedVector( n );
   std::cout << "Orthogonal(X)/gcd =: ns = " << ns << "\n";  
-  for ( auto i = 0; i < B.second.size(); i++ )
-    std::cout << "B[" << i << "] . ns = " << B.second[i] << " . " << ns
-              << " == " << B.second[i].dot(ns) << " (should be 0)\n";
+  for ( auto i = 0; i < B.size(); i++ )
+    std::cout << "B[" << i << "] . ns = " << B[i] << " . " << ns
+              << " == " << B[i].dot(ns) << " (should be 0)\n";
   return true;
 }
 

@@ -74,8 +74,10 @@ computeDegeneratedLatticePolytope
   typedef typename ConvexHull::HalfSpace       ConvexHullHalfSpace;
 
   // Rewrite computeDegeneratedLatticePolytope using AffineSubset
-  auto  indices   = functions::computeAffineSubset( input_points );
-  auto  ref_basis = functions::computeAffineBasis ( input_points, indices );
+  typedef PointVector<dim, InternalInteger>   InternalPoint;
+  typedef AffineGeometry<InternalPoint>        Affine;
+  auto  indices   = Affine::affineSubset( input_points );
+  auto  ref_basis = Affine::affineBasis ( input_points, indices );
   auto  ref       = ref_basis.first;
   auto& basis     = ref_basis.second;
   if ( basis.size() >= dimension )
@@ -92,7 +94,7 @@ computeDegeneratedLatticePolytope
   if ( basis.size() == 1 )
     { // Polytope is a 1-dimensional straight segment (nD).
       // Find the two extremal points.
-      std::vector< Integer > alpha( input_points.size() );
+      std::vector< InternalInteger > alpha( input_points.size() );
       for ( std::size_t i = 0; i < input_points.size(); i++ )
         alpha[ i ] = basis[ 0 ].dot( input_points[ i ] - ref );      
       Index a = 0, b = 0;
@@ -113,10 +115,11 @@ computeDegeneratedLatticePolytope
     }
   // Polytope is d-1 dimensional (nD)
   // Compute an independent vector to the basis (one of the canonic vector)
-  Point e = functions::computeIndependentVector( basis );
+  Point e = Affine::template independentVector<Point>( basis );
   // Compute an orthogonal vector to the basis
-  functions::computeCompleteBasis( basis, true );
-  Point n = basis.back(); // used to compute the two half-spaces that sandwich the polytope
+  Affine::completeBasis( basis );
+  InternalPoint n = basis.back(); // used to compute the two half-spaces that sandwich the polytope
+  
   // Compute domain
   Point l = input_points[ 0 ];
   Point u = input_points[ 0 ];
@@ -166,8 +169,9 @@ computeDegeneratedLatticePolytope
     PHS.emplace_back( N, nu );
   }
   // Add top constraint.
-  Integer nu0 = input_points[ 0 ].dot( n );
-  PHS.emplace_back( n, nu0 );
+  Vector tn = IntegerConverter< dimension, Integer >::cast( n );
+  Integer nu0 = input_points[ 0 ].dot( tn );
+  PHS.emplace_back( tn, nu0 );
   return LatticePolytope( domain, PHS.cbegin(), PHS.cend(),
                           false, false );
 }
@@ -382,8 +386,10 @@ computeDegeneratedConvexHullVertices
   typedef QuickHull< LatticeConvexHullKernel > ConvexHull;
 
   // Rewrite computeDegeneratedLatticePolytope using AffineSubset
-  auto  indices   = functions::computeAffineSubset( input_points );
-  auto  ref_basis = functions::computeAffineBasis ( input_points, indices );
+  typedef PointVector<dim, TInternalInteger>   InternalPoint;
+  typedef AffineGeometry<InternalPoint>        Affine;
+  auto  indices   = Affine::affineSubset( input_points );
+  auto  ref_basis = Affine::affineBasis ( input_points, indices );
   auto  ref       = ref_basis.first;
   auto& basis     = ref_basis.second;
   if ( basis.size() >= dimension )
@@ -475,8 +481,8 @@ computeDegeneratedConvexHullVertices
   //   }
 
   // Compute an independent vector to the basis (one of the canonic vector)
-  Point e = functions::computeIndependentVector( basis );
-  if ( e == Vector::zero )
+  Point e = Affine::template independentVector<Point>( basis );
+  if ( e == Point::zero )
     {
       std::cerr << "[ConvexityHelper::computeDegeneratedConvexHullVertices]"
                 << "Weird numerical error, the basis is not full dimensional and there is no independent canonic vector !"
