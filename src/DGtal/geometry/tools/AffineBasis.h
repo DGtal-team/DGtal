@@ -117,6 +117,7 @@ namespace DGtal
         second[ i ] = points[ i+1 ] - first;
       reduce();
     }
+    
     /// Constructor from origin and basis.
     /// @param[in] origin the origin of the affine basis
     /// @param[in] basis the range of vectors forming the basis
@@ -388,8 +389,14 @@ namespace DGtal
         pp[ i ] = m * Scalar( p[ i ] );
     }
     
-    
     /// @}
+
+    void selfDisplay( std::ostream& out ) const
+    {
+      out << "[ AffineBasis o=" << first << " B=";
+      for ( auto b : second ) std::cout << "\n  " << b;
+      out << " ]";
+    }
     
     // ----------------------- public data --------------------------
   public:
@@ -410,6 +417,15 @@ namespace DGtal
 // Includes inline functions.
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
+
+template <typename TPoint>
+std::ostream&
+operator<<( std::ostream& out, const DGtal::AffineBasis<TPoint>& B )
+{
+  B.selfDisplay( out );
+  return out;
+}
+
 
 #endif // !defined AffineBasis_h
 

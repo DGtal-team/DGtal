@@ -272,27 +272,10 @@ namespace DGtal
       // const InternalPoint ip = Inner::cast( vpoints[ simplex[ 0 ] ] );
       // return HalfSpace { N, N.dot( ip ) };
 
-      // Faster method than SimpleMatrix::cofactor.
+      // More robust method than SimpleMatrix::cofactor and faster for higher dimension.
       InternalVector N; // null normal
       const InternalPoint ip = Inner::cast( vpoints[ simplex[ 0 ] ] );
       functions::getOrthogonalVector( N, vpoints, simplex );
-      // auto  ref_basis = functions::computeAffineBasis ( vpoints, simplex ); 
-      // auto  ref       = ref_basis.first;
-      // auto& basis     = ref_basis.second;
-      // if ( ( basis.size() + 1 ) == dimension )
-      //   functions::computeOrthogonalVector( N, basis );
-      // if ( N2.normInfinity() != 0 )
-      //   N2 = N2 * InternalScalar( N.normInfinity() / N2.normInfinity() );
-      // if ( N != N2 )
-      //   {
-      //     std::cout << "[compute] N=" << N << " N2=" << N2 << "\n";
-      //     std::cout << "[QHK::compute] #basis=" << basis.size()
-      //               << " #vpoints=" << vpoints.size()
-      //               << " #simplex=" << simplex.size()
-      //               << "\nP=";
-      //     for ( auto i : simplex ) std::cout << " v[" << i << "]=" << vpoints[ i ];
-      //     std::cout << "\n";
-      //   }
       return HalfSpace { N, N.dot( ip ) };
     }
     

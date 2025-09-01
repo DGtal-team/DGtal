@@ -524,6 +524,63 @@ SCENARIO( "AffineGeometry< Point4i > orthogonal tests", "[orthogonal_vector][4i]
   }
 }
 
+
+SCENARIO( "AffineGeometry< Z3 > bug", "[affine_geom][3d]" )
+{
+  typedef SpaceND<3,int>          Space;
+  typedef Space::Point            Point;
+  std::vector< Point > X = { {-46, 38, -43}, {27, -89, 20}, {53, 26, -57} };
+  Point o;
+  std::vector< Point > B;
+  functions::getAffineBasis ( o, B, X );
+  auto  C         = ( X[1]-X[0] ).crossProduct( X[2]-X[0] );
+  auto  sC        = functions::computeSimplifiedVector( C );
+  WHEN( "Computing orthogonal vector" ) {
+    auto N = functions::computeOrthogonalVectorToBasis( B );
+    THEN( "It is non null" ) {
+      CAPTURE( N );
+      REQUIRE( N != Point::zero );
+    }
+    THEN( "It corresponds to the reduced cross product" ) {
+      CAPTURE( C );
+      CAPTURE( sC );
+      REQUIRE( N == sC );
+    }
+  }
+}
+
+SCENARIO( "AffineGeometry< Z3 > orthogonality", "[affine_geom][3d]" )
+{
+  typedef SpaceND<3,int64_t>          Space;
+  typedef Space::Point            Point;
+
+  WHEN( "Computing orthogonal vector to multiple random points" ) {
+    std::vector< Point > X = makeRandomVectors<Point>( 100, 50 );
+    std::size_t nb        = 300;
+    std::size_t nb_equal  = 0;
+    std::size_t nb_C_zero = 0;
+    std::size_t nb_N_zero = 0;
+    for ( auto i = 0; i < nb; i++ )
+      {
+        std::vector< Point > Y = { X[ rand() % 100 ], X[ rand() % 100 ], X[ rand() % 100 ] };
+        auto  C         = ( Y[1]-Y[0] ).crossProduct( Y[2]-Y[0] );
+        auto  sC        = functions::computeSimplifiedVector( C );
+        Point N;
+        functions::getOrthogonalVector( N, Y );
+        nb_equal += (sC == N) ? 1 : 0;
+        if ( sC != N )
+          std::cout << "Y = " << Y[0] << " " << Y[1] << " " << Y[ 2 ]
+                    << " sC = " << sC << " N = " << N << "\n";
+        nb_C_zero += ( C == Point::zero ) ? 1 : 0;
+        nb_N_zero += ( N == Point::zero ) ? 1 : 0;
+      }
+    THEN( "They corresponds to the reduced cross product" ) {
+      REQUIRE( nb_equal == nb );
+      REQUIRE( nb_C_zero == nb_N_zero );
+    }
+  }
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class AffineBasis in 2D.
 ///////////////////////////////////////////////////////////////////////////////
@@ -549,6 +606,10 @@ SCENARIO( "AffineBasis< Point2i > unit tests", "[affine_basis][2i]" )
     }
   }
 }
+
+///////////////////////////////////////////////////////////////////////////////
+// Functions for testing class AffineBasis in 4D.
+///////////////////////////////////////////////////////////////////////////////
 
 SCENARIO( "AffineBasis< Point4i > unit tests", "[affine_basis][4i]" )
 {
@@ -676,60 +737,50 @@ SCENARIO( "AffineBasis< Point4i > projection tests", "[affine_basis][4i][4d]" )
     }
   }
 }
-    
 
-SCENARIO( "AffineGeometry< Z3 > bug", "[affine_geom][3d]" )
+///////////////////////////////////////////////////////////////////////////////
+// Functions for testing class AffineBasis in 5D.
+///////////////////////////////////////////////////////////////////////////////
+
+SCENARIO( "AffineBasis< Point5i > unit tests", "[affine_basis][5i]" )
 {
-  typedef SpaceND<3,int>          Space;
-  typedef Space::Point            Point;
-  std::vector< Point > X = { {-46, 38, -43}, {27, -89, 20}, {53, 26, -57} };
-  Point o;
-  std::vector< Point > B;
-  functions::getAffineBasis ( o, B, X );
-  auto  C         = ( X[1]-X[0] ).crossProduct( X[2]-X[0] );
-  auto  sC        = functions::computeSimplifiedVector( C );
-  WHEN( "Computing orthogonal vector" ) {
-    auto N = functions::computeOrthogonalVectorToBasis( B );
-    THEN( "It is non null" ) {
-      CAPTURE( N );
-      REQUIRE( N != Point::zero );
+  typedef SpaceND< 5, int64_t >            Space;      
+  typedef Space::Point                     Point;
+  typedef AffineGeometry< Point >          Affine;
+  typedef AffineBasis< Point >             Basis;
+
+  unsigned int nb           = 0;
+  unsigned int nb_equal_big = 0;
+  unsigned int nb_equal_N   = 0;
+  unsigned int nb_equal_Nr  = 0;
+  for ( auto n = 0; n < 100; n++ )
+    {
+      std::vector< Point > X = makeRandomVectors<Point>( 5, 100 );
+      std::vector< Point > Y;
+      for ( auto i = 1; i < X.size(); i++ ) Y.push_back( X[ i ] - X[ 0 ] );
+      Basis B ( X[ 0 ], Y, true );
+      Basis Br( X );
+      if ( functions::computeAffineDimension( X ) != 4 ) continue;
+      auto N = functions::computeOrthogonalVectorToBasis( B.basis() );
+      auto Nr = functions::computeOrthogonalVectorToBasis( Br.basis() );
+      auto N_big  = Affine::template orthogonalVector<BigInteger>( B.basis() );
+      auto Nr_big = Affine::template orthogonalVector<BigInteger>( B.basis() );
+      auto N_cast  = N_big;
+      auto Nr_cast = Nr_big;
+      for ( auto i = 0; i < 5; i++ ) N_cast[ i ]  = N[ i ];
+      for ( auto i = 0; i < 5; i++ ) Nr_cast[ i ] = Nr[ i ];
+      nb_equal_big += ( N_big == Nr_big ) ? 1 : 0;
+      nb_equal_N   += ( N_cast == N_big ) ? 1 : 0;
+      nb_equal_Nr  += ( Nr_cast == Nr_big ) ? 1 : 0;
+      nb           += 1;
     }
-    THEN( "It corresponds to the reduced cross product" ) {
-      CAPTURE( C );
-      CAPTURE( sC );
-      REQUIRE( N == sC );
-    }
+  // std::cout << B << "\n" << Br << "\n";
+  // std::cout << "N    =" << N << " Nr    =" << Nr << "\n";
+  // std::cout << "N_big=" << N_big << " Nr_big=" << Nr_big << "\n";
+  THEN( "Normals with big integers are the same" ) {  
+    REQUIRE( nb_equal_big == nb );
   }
-}
-
-SCENARIO( "AffineGeometry< Z3 > orthogonality", "[affine_geom][3d]" )
-{
-  typedef SpaceND<3,int64_t>          Space;
-  typedef Space::Point            Point;
-
-  WHEN( "Computing orthogonal vector to multiple random points" ) {
-    std::vector< Point > X = makeRandomVectors<Point>( 100, 50 );
-    std::size_t nb        = 300;
-    std::size_t nb_equal  = 0;
-    std::size_t nb_C_zero = 0;
-    std::size_t nb_N_zero = 0;
-    for ( auto i = 0; i < nb; i++ )
-      {
-        std::vector< Point > Y = { X[ rand() % 100 ], X[ rand() % 100 ], X[ rand() % 100 ] };
-        auto  C         = ( Y[1]-Y[0] ).crossProduct( Y[2]-Y[0] );
-        auto  sC        = functions::computeSimplifiedVector( C );
-        Point N;
-        functions::getOrthogonalVector( N, Y );
-        nb_equal += (sC == N) ? 1 : 0;
-        if ( sC != N )
-          std::cout << "Y = " << Y[0] << " " << Y[1] << " " << Y[ 2 ]
-                    << " sC = " << sC << " N = " << N << "\n";
-        nb_C_zero += ( C == Point::zero ) ? 1 : 0;
-        nb_N_zero += ( N == Point::zero ) ? 1 : 0;
-      }
-    THEN( "They corresponds to the reduced cross product" ) {
-      REQUIRE( nb_equal == nb );
-      REQUIRE( nb_C_zero == nb_N_zero );
-    }
+  THEN( "There is less overflow in orthogonal vector computation using non reduced basis" ) {
+    REQUIRE( nb_equal_N >= nb_equal_Nr );
   }
 }

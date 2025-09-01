@@ -540,6 +540,48 @@ namespace DGtal
       return chosen;
     }
 
+    /// Given a range of points \a X and a subset of it given by
+    /// indices \a I, returns a subset of these points that form an
+    /// affine basis of \a X. Equivalently it is a simplex whose
+    /// affine space spans all the points of \a X.
+    ///
+    /// @tparam TInputPoint the type of input points (may be less precise).
+    ///
+    /// @param[in] X the range of input points (may be lattice points or not).
+    ///
+    /// @param[in] I the range of indices specifying the subset of interest.
+    ///
+    /// @param[in] tolerance the accepted oo-norm below which the vector is
+    /// null (used only for points with float/double coordinates).
+    ///
+    /// @return a subset of these points as a range of indices.
+    ///
+    /// @note Complexity is \f$O( m n^2 )\f$, where m=Cardinal(X) and n=dimension.
+    template <typename TInputPoint, typename TIndexRange>
+    static
+    std::vector< Size >
+    affineSubset( const std::vector<TInputPoint>& X,
+                  const TIndexRange& I,
+                  const double tolerance = 1e-12 )
+    {
+      Size m = I.size();
+      // Process trivial cases.
+      if ( m == 0 ) return { };
+      if ( m == 1 ) return { I[ 0 ] };
+      // Process general case.
+      OutputPoints basis;  //< direction vectors
+      Sizes  chosen; //< selected points
+      chosen.push_back( I[ 0 ] ); //< reference point (first one, as it may be any one)
+      for ( Size i = 1; i < m; i++ )
+        {
+          OutputPoint v = transform( X[ I[ i ] ] - X[ I[ 0 ] ] );
+          if ( addIfIndependent( basis, v, tolerance ) )
+            chosen.push_back( I[ i ] );
+          if ( chosen.size() > dimension ) break;
+        }
+      return chosen;
+    }
+    
     /// Given a range of points \a X, returns a point and a range of
     /// vectors forming an affine basis containing \a X.
     ///
@@ -859,6 +901,49 @@ namespace DGtal
       return simplifiedVector( w );
     }
 
+    /// Given `d-1` independent vectors in dD, returns a vector that
+    /// is orthogonal to each of them.
+    ///
+    /// @note In 3D, given two independent vectors as input, then the
+    /// added vector is the (reduced) \b cross \b product of these two
+    /// vectors. In nD, it is thus a kind of generalization of the cross
+    /// product.
+    ///
+    /// @param[in] basis a range of independent vectors of size dimension-1.
+    ///
+    /// @return a vector of coefficients (represented with the given
+    /// number type), or the null vector if the basis is not d-1-dimensional.
+    template <typename TInternalNumber>
+    static
+    OutputPoint
+    orthogonalVector( const OutputPoints& basis )
+    {
+      OutputPoint w;
+      typedef  PointVector< dimension, TInternalNumber > InternalPoint;
+      InternalPoint W;
+      const std::size_t n = dimension;
+      if ( ( basis.size() + 1 ) != dimension ) return w;
+      const std::size_t m = basis.size();
+      SimpleMatrix< OutputScalar, dimension-1, dimension> A;
+      for ( std::size_t i = 0; i < m; ++i )
+        for ( std::size_t j = 0; j < n; ++j )
+          A( i, j ) = basis[ i ][ j ];
+      for ( std::size_t col = 0; col < n; ++col)
+        { // construct sub-matrix removing column col
+          SimpleMatrix< OutputScalar, dimension-1, dimension-1> M;
+          for ( std::size_t i = 0; i < m; ++i )
+            {
+              std::size_t c = 0;
+              for ( std::size_t j = 0; j < n; ++j)
+                if ( j != col ) M( i, c++ ) = A( i, j );
+            }
+          functions::determinantBareiss( M, W[ col ] );
+          if ( (col+dimension) % 2 == 0 ) W[ col ] = -W[ col ];
+        }
+      W = AffineGeometry<InternalPoint>::simplifiedVector( W );
+      return transform( W );
+    }
+    
     /// Given a vector, returns the aligned vector with its component
     /// simplified by the gcd of all components (when the components
     /// are integers) or the aligned vector with a maximum oo-norm of
@@ -1087,13 +1172,22 @@ namespace DGtal
                          const std::vector< TInputPoint >& X,
                          const TIndexRange& I,
                          const double tolerance = 1e-12 )
-    { 
+    {
+      typedef AffineGeometry<TPoint> Affine;
       w = TPoint::zero;
       TInputPoint o;
-      std::vector<TPoint> basis;
-      std::tie( o, basis ) = AffineGeometry<TPoint>::affineBasis( X, I, tolerance );
-      if ( ( basis.size() + 1 ) != TPoint::dimension ) return;
-      w = AffineGeometry<TPoint>::orthogonalVector( basis );
+      auto subset = Affine::affineSubset( X, I, tolerance );
+      if ( ( subset.size() ) != TPoint::dimension ) return;
+      std::vector<TPoint> basis( TPoint::dimension - 1);
+      for ( auto i = 0; i < basis.size(); i++ )
+        basis[ i ] = Affine::transform( X[ subset[ i+1 ] ] - X[ subset[ 0 ] ] );
+      w = Affine::orthogonalVector( basis );
+      // w = TPoint::zero;
+      // TInputPoint o;
+      // std::vector<TPoint> basis;
+      // std::tie( o, basis ) = AffineGeometry<TPoint>::affineBasis( X, I, tolerance );
+      // if ( ( basis.size() + 1 ) != TPoint::dimension ) return;
+      // w = AffineGeometry<TPoint>::orthogonalVector( basis );
     }
 
     /// Given a range of points \a X, returns a vector that is
@@ -1118,12 +1212,21 @@ namespace DGtal
                          const std::vector< TInputPoint >& X,
                          const double tolerance = 1e-12 )
     { 
+      typedef AffineGeometry<TPoint> Affine;
       w = TPoint::zero;
       TInputPoint o;
-      std::vector<TPoint> basis;
-      std::tie( o, basis ) = AffineGeometry<TPoint>::affineBasis( X, tolerance );
-      if ( ( basis.size() + 1 ) != TPoint::dimension ) return;
-      w = AffineGeometry<TPoint>::orthogonalVector( basis );
+      auto subset = AffineGeometry<TPoint>::affineSubset( X, tolerance );
+      if ( ( subset.size() ) != TPoint::dimension ) return;
+      std::vector<TPoint> basis( TPoint::dimension - 1);
+      for ( auto i = 0; i < basis.size(); i++ )
+        basis[ i ] = Affine::transform( X[ subset[ i+1 ] ] - X[ subset[ 0 ] ] );
+      w = Affine::orthogonalVector( basis );
+      // w = TPoint::zero;
+      // TInputPoint o;
+      // std::vector<TPoint> basis;
+      // std::tie( o, basis ) = AffineGeometry<TPoint>::affineBasis( X, tolerance );
+      // if ( ( basis.size() + 1 ) != TPoint::dimension ) return;
+      // w = AffineGeometry<TPoint>::orthogonalVector( basis );
     }
     
     /// Given a vector, returns the aligned vector with its component
