@@ -193,7 +193,6 @@ namespace DGtal
       static
       Point cast( const TOtherPoint& other )
       {
-        typedef typename TOtherPoint::Coordinate OtherScalar;
         Point result;
         for ( std::size_t i = 0; i < Point::dimension; i++ )
           result[ i ] = float( other[ i ] );
@@ -542,10 +541,13 @@ namespace DGtal
 
     /// Given a range of points \a X and a subset of it given by
     /// indices \a I, returns a subset of these points that form an
-    /// affine basis of \a X. Equivalently it is a simplex whose
-    /// affine space spans all the points of \a X.
+    /// affine basis of \a X[I]. Equivalently it is a simplex whose
+    /// affine space spans all the points of \a X[I].
     ///
     /// @tparam TInputPoint the type of input points (may be less precise).
+    ///
+    /// @tparam TIndexRange any type of range of indices that
+    /// specifies the subset of points of interest.
     ///
     /// @param[in] X the range of input points (may be lattice points or not).
     ///
@@ -756,9 +758,11 @@ namespace DGtal
 
     /// Reduces the vector \a v on the (partial or not) basis of vectors \a basis.
     ///
-    /// @param v any vector
-    /// @param basis a range of vectors forming a (partial or not) basis of the space.
-    /// @param tolerance the accepted oo-norm below which the vector is
+    /// @param[in] v any vector
+    ///
+    /// @param[in] basis a range of vectors forming a (partial or not) basis of the space.
+    ///
+    /// @param[in] tolerance the accepted oo-norm below which the vector is
     /// null (used only for points with float/double coordinates).
     ///
     /// @return the part of \a v that cannot be expressed as a linear
@@ -782,9 +786,9 @@ namespace DGtal
     /// @param[in,out] basis a range of vectors forming a (partial or
     /// not) basis of the space.
     ///
-    /// @param v any vector.
+    /// @param[in] v any vector.
     ///
-    /// @param tolerance the accepted oo-norm below which the vector is
+    /// @param[in] tolerance the accepted oo-norm below which the vector is
     /// null (used only for points with float/double coordinates).
     ///
     /// @return 'true' iff the vector \a v was not a linear
@@ -846,7 +850,13 @@ namespace DGtal
       return std::make_pair( mul_w, mul_b );
     }
 
-
+    /// Transform a vector or point into the representation chosen for
+    /// AffineGeometry class. This overloading takes care of the
+    /// trivial case, where there is no need to change the
+    /// representation.
+    ///
+    /// @param[in] w any vector or point
+    /// @return the same vector or point (does nothing).
     static
     const OutputPoint&
     transform( const OutputPoint& w )
@@ -854,6 +864,12 @@ namespace DGtal
       return w;
     }
 
+    /// Transform a vector or point into the representation chosen for
+    /// AffineGeometry class. This overloading takes care of the
+    /// generic case, where a transformation of each component is required.
+    ///
+    /// @param[in] w any vector or point
+    /// @return the same vector or point, but in the represention chosen for this class.
     template <typename TInputPoint>
     static
     OutputPoint
@@ -1005,7 +1021,38 @@ namespace DGtal
     {
       return AffineGeometry<TPoint>::affineSubset( X, tolerance );
     }
-  
+
+    /// Given a range of points \a X and a subset of it given by
+    /// indices \a I, returns a subset of these points that form an
+    /// affine basis of \a X[I]. Equivalently it is a simplex whose
+    /// affine space spans all the points of \a X[I].
+    ///
+    /// @tparam TPoint any type of lattice point or real point.
+    ///
+    /// @tparam TIndexRange any type of range of indices that
+    /// specifies the subset of points of interest.
+    ///
+    /// @param[in] X the range of input points (may be lattice points or not).
+    ///
+    /// @param[in] I the range of indices specifying the subset of interest.
+    ///
+    /// @param[in] tolerance the accepted oo-norm below which the vector is
+    /// null (used only for points with float/double coordinates).
+    ///
+    /// @return a subset of these points as a range of indices.
+    ///
+    /// @note Complexity is \f$O( m n^2 )\f$, where m=Cardinal(X) and n=dimension.
+    template <typename TPoint, typename TIndexRange>
+    static
+    std::vector< Size >
+    computeAffineSubset( const std::vector<TPoint>& X,
+                         const TIndexRange& I,
+                         const double tolerance = 1e-12 )
+    {
+      return AffineGeometry<TPoint>::affineSubset( X, I, tolerance );
+    }
+
+    
     /// Given a range of points \a X, returns a point and a range of
     /// vectors forming an affine basis containing \a X.
     ///
@@ -1155,7 +1202,7 @@ namespace DGtal
     /// @tparam TIndexRange any type of range of indices that
     /// specifies the subset of points of interest.
     ///
-    /// @param[out] an orthogonal vector to every vector of the affine subset (reduced
+    /// @param[out] w an orthogonal vector to every vector of the affine subset (reduced
     /// or normalized depending on integer/floating-point number
     /// type).
     ///
@@ -1165,6 +1212,14 @@ namespace DGtal
     ///
     /// @param[in] tolerance the accepted oo-norm below which the vector is
     /// null (used only for points with float/double coordinates).
+    ///
+    /// @note The orthogonal vector is computed as follows: (i)
+    /// identifies an affine subset J of maximal affine dimension,
+    /// (ii) computes the basis (X_J_k - X_J_0), k>0, (iii) computes
+    /// the cofactors using Bareiss determinant. This method induces
+    /// smaller integers than (i) reducing the basis, (ii) using
+    /// cofactors with Bareiss determinant, or the method that solely
+    /// cofactors with standard determinant computation.
     template < typename TPoint, typename TInputPoint, typename TIndexRange >
     static
     void
@@ -1182,12 +1237,6 @@ namespace DGtal
       for ( auto i = 0; i < basis.size(); i++ )
         basis[ i ] = Affine::transform( X[ subset[ i+1 ] ] - X[ subset[ 0 ] ] );
       w = Affine::orthogonalVector( basis );
-      // w = TPoint::zero;
-      // TInputPoint o;
-      // std::vector<TPoint> basis;
-      // std::tie( o, basis ) = AffineGeometry<TPoint>::affineBasis( X, I, tolerance );
-      // if ( ( basis.size() + 1 ) != TPoint::dimension ) return;
-      // w = AffineGeometry<TPoint>::orthogonalVector( basis );
     }
 
     /// Given a range of points \a X, returns a vector that is
@@ -1205,6 +1254,14 @@ namespace DGtal
     ///
     /// @param[in] tolerance the accepted oo-norm below which the vector is
     /// null (used only for points with float/double coordinates).
+    ///
+    /// @note The orthogonal vector is computed as follows: (i)
+    /// identifies an affine subset J of maximal affine dimension,
+    /// (ii) computes the basis (X_J_k - X_J_0), k>0, (iii) computes
+    /// the cofactors using Bareiss determinant. This method induces
+    /// smaller integers than (i) reducing the basis, (ii) using
+    /// cofactors with Bareiss determinant, or the method that solely
+    /// cofactors with standard determinant computation.
     template < typename TPoint, typename TInputPoint>
     static
     void
@@ -1221,12 +1278,6 @@ namespace DGtal
       for ( auto i = 0; i < basis.size(); i++ )
         basis[ i ] = Affine::transform( X[ subset[ i+1 ] ] - X[ subset[ 0 ] ] );
       w = Affine::orthogonalVector( basis );
-      // w = TPoint::zero;
-      // TInputPoint o;
-      // std::vector<TPoint> basis;
-      // std::tie( o, basis ) = AffineGeometry<TPoint>::affineBasis( X, tolerance );
-      // if ( ( basis.size() + 1 ) != TPoint::dimension ) return;
-      // w = AffineGeometry<TPoint>::orthogonalVector( basis );
     }
     
     /// Given a vector, returns the aligned vector with its component
