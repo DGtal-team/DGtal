@@ -1102,8 +1102,6 @@ namespace DGtal
     /// @param[in] tolerance the accepted oo-norm below which the vector is
     /// null (used only for points with float/double coordinates).
     ///
-    /// @return a point and a range of vectors forming an affine basis containing X.
-    ///
     /// @note Complexity is O( m n^2 ), where m=Cardinal(I) and n=dimension.
     template < typename TPoint, typename TInputPoint, typename TIndexRange >
     static
@@ -1246,7 +1244,7 @@ namespace DGtal
     ///
     /// @tparam TInputPoint any type of lattice point or real point.
     ///
-    /// @param[out] an orthogonal vector to every vector of the affine subset (reduced
+    /// @param[out] w an orthogonal vector to every vector of the affine subset (reduced
     /// or normalized depending on integer/floating-point number
     /// type).
     ///
