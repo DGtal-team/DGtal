@@ -466,6 +466,11 @@ namespace DGtal
     /// floating-point coefficients using Bareiss method.  Complexity
     /// is in O(n^3) if you assume O(1) for each arithmetic operation.
     ///
+    /// @tparam TComponent the number type.
+    /// @tparam TN the order of the squared matrix.
+    /// @tparam TInternalNumber the number type used for internal
+    /// computations and for the output.
+    ///
     /// @param[in] matrix a squared matrix.
     /// @param[out] result the determinant of this matrix.
     ///
@@ -477,6 +482,24 @@ namespace DGtal
     void
     determinantBareiss( const SimpleMatrix<TComponent, TN, TN>& matrix,
                         TInternalNumber& result );
+
+    /// Computes the determinant of a squared matrix with integer or
+    /// floating-point coefficients using Bareiss method.  Complexity
+    /// is in O(n^3) if you assume O(1) for each arithmetic operation.
+    ///
+    /// @tparam TComponent the number type.
+    /// @tparam TN the order of the squared matrix.
+    ///
+    /// @param[in] matrix a squared matrix.
+    /// @param[out] result the determinant of this matrix.
+    ///
+    /// @note In case of integer coefficients, intermediate integer
+    /// values may grow quickly. If you do not rely on your number
+    /// type, use the other form of functions::determinantBareiss.
+    template <typename TComponent, DGtal::Dimension TN>
+    void
+    determinantBareiss( const SimpleMatrix<TComponent, TN, TN>& matrix,
+                        TComponent& result );
     
   } // namespace functions
   

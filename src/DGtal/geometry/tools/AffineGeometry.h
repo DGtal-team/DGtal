@@ -1044,7 +1044,7 @@ namespace DGtal
     /// @note Complexity is \f$O( m n^2 )\f$, where m=Cardinal(X) and n=dimension.
     template <typename TPoint, typename TIndexRange>
     static
-    std::vector< Size >
+    std::vector< std::size_t >
     computeAffineSubset( const std::vector<TPoint>& X,
                          const TIndexRange& I,
                          const double tolerance = 1e-12 )
