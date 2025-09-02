@@ -484,6 +484,101 @@ bool testBareissDeterminant()
   return nbok == nb;
 }
 
+template <typename Number>
+std::ostream&
+operator<<( std::ostream& out, const std::vector< std::vector< Number> >& v )
+{
+  for ( auto i = 0; i < v.size(); i++ )
+    {
+      for ( auto j = 0; j < v[i].size(); j++ )
+        out << v[ i ][ j ] << " ";
+      out << "\n";
+    }
+  return out;
+}
+
+bool testLLL()
+{
+  unsigned int nbok = 0;
+  unsigned int nb   = 0;
+
+  typedef long double Double;
+  typedef int64_t     Integer;
+  {
+    std::vector< std::vector< Integer > > B = {
+      {73,-127,63},
+      {99,-12,-14},
+      {17,-26,14}
+    };
+    auto L1 = functions::computeLLLBasis( B, 0.75 );
+    auto L2 = functions::computeLLLBasis( B, 0.99 );
+    std::cout << "Init base: \n" << B
+              << "\nLLL base: delta=0.75\n" << L1 << "\n"
+              << "\nLLL base: delta=0.99\n" << L2 << "\n";
+    
+    std::vector< std::vector< Integer > > R = { {-12,3,-7}, {-7,-20,0}, {32,-17,-49} };
+    nbok += L1 == R ? 1 : 0;
+    nb++;
+    nbok += L2 == R ? 1 : 0;
+    nb++;
+  }
+  {
+    std::vector< std::vector< Integer > > B = {
+      {118, 113,  90,  78},
+      {187, 229,  12, 109},
+      { 26, 163, 223,  21}
+    };
+    auto L1 = functions::computeLLLBasis( B, 0.75 );
+    auto L2 = functions::computeLLLBasis( B, 0.99 );
+    std::cout << "Init base: \n" << B
+              << "\nLLL base: delta=0.75\n" << L1 << "\n"
+              << "\nLLL base: delta=0.99\n" << L2 << "\n";
+    
+    std::vector< std::vector< Integer > > R = {
+      { 69, 116, -78,  31},
+      {-23, 166,  55, -26},
+      { 49,  -3, 168,  47}
+    };
+    nbok += L1 == R ? 1 : 0;
+    nb++;
+    nbok += L2 == R ? 1 : 0;
+    nb++;
+  }
+  {
+    std::vector< std::vector< Integer > > B = {
+      {16,16,11,13,31,25,21, 9},
+      {31, 3, 2,18,11,31,30, 2},
+      { 4,25,11,18, 8,20,13,10},
+      {16,21, 9, 2,10,23, 7,27},
+      {28,12,26, 1, 2,18, 4,19}
+    };
+    auto L1 = functions::computeLLLBasis( B, 0.75 );
+    auto L2 = functions::computeLLLBasis( B, 0.99 );
+    std::cout << "Init base: \n" << B
+              << "\nLLL base: delta=0.75\n" << L1 << "\n"
+              << "\nLLL base: delta=0.99\n" << L2 << "\n";
+    
+    std::vector< std::vector< Integer > > R1 = {
+      { 15,-13, -9,  5,-20,  6,  9, -7},
+      {-12,  9,  0,  5,-23, -5, -8,  1},
+      { 12, -4, -2,-16,  2,  3, -6, 17},
+      { 12, -9, 17, -1, -8, -5, -3, -8},
+      {  4, 25, 11, 18,  8, 20, 13, 10}
+    };
+    std::vector< std::vector< Integer > > R2 = {
+      { 12, -9, 17, -1, -8, -5, -3, -8},
+      { 12, -4, -2,-16,  2,  3, -6, 17},
+      {-12,  9,  0,  5,-23, -5, -8,  1},
+      { 15,-13, -9,  5,-20,  6,  9, -7},
+      {  4, 25, 11, 18,  8, 20, 13, 10}
+    };
+    nbok += L1 == R1 ? 1 : 0;
+    nb++;
+    nbok += L2 == R2 ? 1 : 0;
+    nb++;
+  }
+  return true;
+}
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -498,7 +593,8 @@ int main( int argc, char** argv )
   bool res = testSimpleMatrix() && testArithm() && testColRow()
     && testDetCofactor() && testM1Matrix() && testInverse()
     && testConcepts() && testConstructor()
-    && testBareissDeterminant();
+    && testBareissDeterminant()
+    && testLLL();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
