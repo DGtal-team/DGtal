@@ -47,14 +47,9 @@
 #include "DGtal/math/linalg/SimpleMatrix.h"
 //////////////////////////////////////////////////////////////////////////////
 
-//! DGtal main namespace
 namespace DGtal
 {
-  /// Dummy class to force documentation.
-  class IntegerMatrixFunctions {
-  };
 
-  //! DGtal functions namespace.
   namespace functions {
 
     /// Overloaded dot product operator for vector of numbers.
@@ -68,7 +63,6 @@ namespace DGtal
     /// @return the dot product of a and b, a scalar value in the
     /// "best possible type" according to T and U.
     template <typename T, typename U >
-    static
     typename DGtal::ArithmeticConversionTraits<T,U>::type
     dotProduct( const std::vector<T>& a, const std::vector<U>& b );
     
@@ -77,11 +71,10 @@ namespace DGtal
     /// @tparam TOutput the desired number type for output.
     /// @tparam T the number type of the input vector.
     ///
-    /// @param[out] the dot product a.a, i.e. the squared l2-norm of a.
+    /// @param[out] n the dot product a.a, i.e. the squared l2-norm of a.
     ///
     /// @param[in] a the left vector
     template <typename TOutput, typename T>
-    static
     void
     getSquaredNorm2( TOutput& n, const std::vector<T>& a );
     
@@ -103,7 +96,6 @@ namespace DGtal
     /// boost::multiprecision::cpp_int to get robust result.
     template <typename TComponent, DGtal::Dimension TN,
               typename TInternalNumber>
-    static
     void
     getDeterminantBareiss( TInternalNumber& result,
                            const SimpleMatrix<TComponent, TN, TN>& matrix );
@@ -124,7 +116,6 @@ namespace DGtal
     /// values may grow quickly. Use int64_t or even
     /// boost::multiprecision::cpp_int to get robust result.
     template <typename TComponent, typename TInternalNumber>
-    static
     void
     getDeterminantBareiss( TInternalNumber& result,
                            const std::vector< std::vector< TComponent > >& matrix );
@@ -140,7 +131,6 @@ namespace DGtal
     /// @return the m x n matrix with coefficients c filled row
     /// per row, and potentially completed with zero.
     template <typename TComponent>
-    static
     std::vector< std::vector< TComponent > >
     matrixAsVectorVector( std::size_t m, std::size_t n,
                           const std::vector< TComponent >& c );
@@ -156,11 +146,10 @@ namespace DGtal
     ///
     /// @return the m x n matrix cloning the coefficients of \a M.
     template <typename TComponent, DGtal::Dimension TM, DGtal::Dimension TN>
-    static
     std::vector< std::vector< TComponent > >
     matrixAsVectorVector( const SimpleMatrix<TComponent, TM, TN>& M );
 
-    /// Computes the delta-LLL-reduced lattice of the input lattice B
+    /// Computes the \f$ \delta \f$-LLL-reduced lattice of the input lattice B
     /// (represented as an integer matrix B whose rows are the lattice
     /// vectors), using the LLL algorithm.
     ///
@@ -168,8 +157,8 @@ namespace DGtal
     /// their norm at most as possible.
     ///
     /// @note A lattice \f$(b_1,...,b_m)\f$ is \f$ \delta
-    /// \f$-LLL-reduced if (1), for any \f$ i>j \f$, \f$ |\mu_{i,j}|
-    /// <= 1/2 \f$, and (2), for any \f$ i<m \f$, \delta |b^*_i|^2 <=
+    /// \f$-LLL-reduced if (1), for any \f$ i>j, |\mu_{i,j}|
+    /// \le 1/2 \f$, and (2), for any \f$ i<m , \delta |b^*_i|^2 \le
     /// |b^*_{i+1}+mu_{i+1,i} b^*_i|^2 \f$. Here \f$ \mu_{i,j} :=
     /// \langle b_i, b_j^* \rangle / \langle b_j^*, b_j^* \rangle \f$
     /// and \f$ b^*_i \f$ is the \a i-th vector of the Gram-Schmidt
@@ -183,17 +172,49 @@ namespace DGtal
     /// @param[in] B the lattice of m vectors in Z^n represented as a mxn matrix.
     ///
     /// @param[in] delta the parameter \f$ \delta \f$ of
-    /// LLL-algorithm, which should be between 0.25 and 1.
+    /// LLL-algorithm, which should be between 0.25 and 1 (value 0.99
+    /// is default in sagemath).
     ///
-    /// @return the delta-LLL-reduced lattice of \a B.
+    /// @return the \f$ delta \f$-LLL-reduced lattice of \a B.
+    ///
+    /// @warning Computations requiring Gram-Schmidt orthogonalisation
+    /// uses the floating-point number type `TDouble`.
     template <typename TComponent, typename TDouble = long double >
-    static
     std::vector< std::vector< TComponent > >
     computeLLLBasis( const std::vector< std::vector< TComponent > >& B,
                      TDouble delta = 0.75 );
     
+    /// Computes the \f$ \delta \f$-LLL-reduced lattice of the input lattice B
+    /// (represented as an integer matrix B whose rows are the lattice
+    /// vectors), using the LLL algorithm.
+    ///
+    /// Such lattice has "almost" orthogonal vectors, while minimizing
+    /// their norm at most as possible.
+    ///
+    /// @note A lattice \f$(b_1,...,b_m)\f$ is \f$ \delta
+    /// \f$-LLL-reduced if (1), for any \f$ i>j, |\mu_{i,j}|
+    /// \le 1/2 \f$, and (2), for any \f$ i<m , \delta |b^*_i|^2 \le
+    /// |b^*_{i+1}+mu_{i+1,i} b^*_i|^2 \f$. Here \f$ \mu_{i,j} :=
+    /// \langle b_i, b_j^* \rangle / \langle b_j^*, b_j^* \rangle \f$
+    /// and \f$ b^*_i \f$ is the \a i-th vector of the Gram-Schmidt
+    /// orthogonalisation of \f$ (b_1, ..., b_m) \f$.
+    ///
+    /// @tparam TComponent the integer type of each coefficient of the integer matrix \a B.
+    ///
+    /// @tparam TDouble the floating-point number type used for the
+    /// Gram-Schmidt orthogonalisation of \a B.
+    ///
+    /// @param[in,out] B as input, the lattice of m vectors in Z^n
+    /// represented as a mxn matrix, as output the \f$ delta
+    /// \f$-LLL-reduced lattice of \a B.
+    ///
+    /// @param[in] delta the parameter \f$ \delta \f$ of
+    /// LLL-algorithm, which should be between 0.25 and 1 (value 0.99
+    /// is default in sagemath).
+    ///
+    /// @warning Computations requiring Gram-Schmidt orthogonalisation
+    /// uses the floating-point number type `TDouble`.
     template <typename TComponent, typename TDouble = long double >
-    static
     void
     reduceBasisWithLLL( std::vector< std::vector< TComponent > >& B,
                         TDouble delta = 0.75 );
