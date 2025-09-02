@@ -46,6 +46,7 @@
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
 #include "DGtal/math/linalg/SimpleMatrix.h"
+#include "DGtal/math/linalg/IntegerMatrixFunctions.h"
 
 namespace DGtal
 {
@@ -911,7 +912,7 @@ namespace DGtal
               for ( std::size_t j = 0; j < n; ++j)
                 if ( j != col ) M( i, c++ ) = A( i, j );
             }
-          functions::determinantBareiss( M, w[ col ] );
+          functions::getDeterminantBareiss( w[ col ], M );
           if ( (col+dimension) % 2 == 0 ) w[ col ] = -w[ col ];
         }
       return simplifiedVector( w );
@@ -953,7 +954,7 @@ namespace DGtal
               for ( std::size_t j = 0; j < n; ++j)
                 if ( j != col ) M( i, c++ ) = A( i, j );
             }
-          functions::determinantBareiss( M, W[ col ] );
+          functions::getDeterminantBareiss( W[ col ], M );
           if ( (col+dimension) % 2 == 0 ) W[ col ] = -W[ col ];
         }
       W = AffineGeometry<InternalPoint>::simplifiedVector( W );
@@ -1115,7 +1116,8 @@ namespace DGtal
       std::tie( o, basis ) = AffineGeometry<TPoint>::affineBasis( X, I, tolerance );
     }
     
-    /// Given a partial basis of vectors, returns a new vector that is independent.
+    /// Given a partial basis of vectors, returns a canonic unit
+    /// vector that is independent.
     ///
     /// @tparam TPoint any type of lattice point or real point.
     ///

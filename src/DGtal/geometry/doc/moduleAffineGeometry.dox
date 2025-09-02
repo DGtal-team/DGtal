@@ -36,45 +36,69 @@ computations. They can be conveniently used since they deduce
 automatically the type of parameters.  All these functions support
 number types for points and vectors that are either integers (int32_t,
 int64_t, BigInteger) or floating-point numbers (float, double). The
-computations are \b exact when types are integral (up to integer
-overflow), while a tolerance can be provided for floating-point
+computations are \b exact when types are \b integral (up to integer
+overflow), while a \b tolerance can be provided for floating-point
 numbers (default tolerance: between -1e-12 and 1e-12 is zero).
 
-- functions::computeAffineDimension Given a range of points \a X,
-  returns the affine dimension of its spanned affine subspace.
+- functions::computeAffineDimension( const std::vector< TPoint >& X,
+  const double tolerance ) Given a range of points \a X, returns the
+  affine dimension of its spanned affine subspace.
 
-- functions::computeAffineSubset Given a range of points \a X, returns
-  a subset of these points that form an affine basis of \a
+- functions::computeAffineSubset( const std::vector< TPoint >& X,
+  const double tolerance ) Given a range of points \a X, returns a
+  subset of these points that form an affine basis of \a
   X. Equivalently it is a simplex whose affine space spans all the
   points of \a X.
 
-- functions::computeAffineBasis( const std::vector< TPoint >& X, const
-  double tolerance ) Given a range of points \a X, returns a
-  point and a range of vectors forming an affine basis containing \a
-  X.
+- functions::computeAffineSubset( const std::vector<TPoint>& X, const
+  TIndexRange& I, const double tolerance ) Given a range of points \a
+  X and a subset of it given by indices \a I, returns a subset of
+  these points that form an affine basis of \a X[I]. Equivalently it
+  is a simplex whose affine space spans all the points of \a X[I].
 
-- functions::computeAffineBasis( const std::vector< TPoint >& X, const
-  TIndexRange& I ) Given a range of points \a X and the indices \a I
-  of points in \a X which form an affine subset of \a X, returns a
-  point and a range of vectors forming an affine basis containing \a
-  X.
+  
+- functions::getAffineBasis( TInputPoint& o, std::vector< TPoint >&
+  basis, const std::vector< TInputPoint >& X, const double tolerance )
+  Given a range of points \a X, outputs a point and a range of vectors
+  forming an affine basis containing \a X.
 
-- functions::computeIndependentVector Given a partial basis of
-  vectors, returns a new vector that is independent.
+  
+- functions::getAffineBasis( TInputPoint& o, std::vector< TPoint >&
+  basis, const std::vector< TInputPoint >& X, const TIndexRange& I,
+  const double tolerance ) Given a range of points \a X and the
+  indices \a I of points in \a X which form an affine subset of \a X,
+  returns a point and a range of vectors forming an affine basis
+  containing \a X.
 
-- functions::computeCompleteBasis Complete the vectors \a basis with
-  independent vectors so as to form a basis of the space. The last
-  added vector is guaranteed to be \b orthogonal to all the previous
-  vectors.
+- functions::computeIndependentVector( const std::vector< TPoint >&
+  basis, const double tolerance ) Given a partial basis of vectors,
+  returns a returns a canonic unit vector that is independent.
 
-- functions::computeOrthogonalVector Given `d-1` independent vectors
-  in dD, returns a vector that is orthogonal to each of them.
+- functions::getCompleteBasis( std::vector< TPoint >& basis, const
+  double tolerance ) Complete the vectors \a basis with independent
+  vectors so as to form a basis of the space. The last added vector is
+  guaranteed to be \b orthogonal to all the previous vectors.
 
-- functions::computeSimplifiedVector Given a vector, returns the
-  aligned vector with its component simplified by the gcd of all
-  components (when the components are integers) or the aligned vector
-  with a maximum oo-norm of 1 (when the components are floating-point
-  numbers).
+- functions::computeOrthogonalVectorToBasis( const
+  std::vector<TPoint>& basis ) Given `d-1` independent vectors \a
+  basis in dD, returns a vector that is orthogonal to each of them.
+
+- functions::getOrthogonalVector( TPoint& w, const std::vector<
+  TInputPoint >& X, const TIndexRange& I, const double tolerance )
+  Given a range of points \a X, a range of indices \a I specifying the
+  affine subset of interest, returns a vector that is orthogonal to
+  this affine subset, if it is d-1-dimensional.
+
+- functions::getOrthogonalVector( TPoint& w, const std::vector<
+  TInputPoint >& X, const double tolerance ) Given a range of points
+  \a X, returns a vector that is orthogonal to this affine set, if it
+  is d-1-dimensional.
+
+- functions::computeSimplifiedVector( const TPoint& v ) Given a
+  vector, returns the aligned vector with its component simplified by
+  the gcd of all components (when the components are integers) or the
+  aligned vector with a maximum oo-norm of 1 (when the components are
+  floating-point numbers).
 
 This example (similar to exampleAffineGeometry.cpp) shows how to
 process the affine geometry of a set of points that is not full
@@ -98,7 +122,11 @@ using namespace DGtal;
 int main()
 {
   typedef PointVector< 3, int64_t> Point;
-  std::vector< Point > X = {  Point{21, -29, -21}, Point{-6, 14, 8}, Point{-19, 1, 9}, Point{39, 16, -12}, Point{-26, 29, 23}, Point{-4, 45, 19}, Point{6, 31, 9}, Point{9, 6, -2}, Point{8, 49, 15} };
+  std::vector< Point > X = {
+    Point{21, -29, -21}, Point{-6, 14, 8}, Point{-19, 1, 9},
+    Point{39, 16, -12}, Point{-26, 29, 23}, Point{-4, 45, 19},
+    Point{6, 31, 9}, Point{9, 6, -2}, Point{8, 49, 15}
+  };
 
   std::cout << "Dimension is " << Point::dimension << "\n";
   std::cout << "X = " << X << "\n";
@@ -107,34 +135,35 @@ int main()
   std::cout << "AffineDim(X) = " << functions::computeAffineDimension( X ) << "\n";
   auto I = functions::computeAffineSubset( X );
   std::cout << "AffineSubset(X) = " << I << "\n";
-  auto B = functions::computeAffineBasis( X );
-  std::cout << "AffineBasis(X) =: p+B = " << B.first << " + " << B.second << "\n";
-  auto e = functions::computeIndependentVector( B.second );
+  Point o;
+  std::vector<Point> B;
+  functions::getAffineBasis( o, B, X, I );
+  std::cout << "AffineBasis(X) =: p+B = " << o << " + " << B << "\n";
+  auto e = functions::computeIndependentVector( B );
   std::cout << "Independent(X) =: e = " << e << "\n";
-  Point n;
-  functions::computeOrthogonalVector( n, B.second );
+  Point n = functions::computeOrthogonalVectorToBasis( B );
   std::cout << "Orthogonal(X) =: n = " << n << "\n";
   Point ns = functions::computeSimplifiedVector( n );
   std::cout << "Orthogonal(X)/gcd =: ns = " << ns << "\n";  
-  for ( auto i = 0; i < B.second.size(); i++ )
-    std::cout << "B[" << i << "] . ns = " << B.second[i] << " . " << ns
-              << " == " << B.second[i].dot(ns) << " (should be 0)\n";
+  for ( auto i = 0; i < B.size(); i++ )
+    std::cout << "B[" << i << "] . ns = " << B[i] << " . " << ns
+              << " == " << B[i].dot(ns) << " (should be 0)\n";
 }
 @endcode  
 
 outputs
 \verbatim
 Dimension is 3
-X = [ (21, -29, -21) (-6, 14, 8) (-19, 1, 9) (39, 16, -12) (-26, 29, 23) (-4, 45, 19) (6, 31, 9) (9, 6, -2) (8, 49, 15) ]
+X = [ (-5, -25, 0) (19, 22, 7) (0, -19, 0) (-20, -17, 10) (20, 5, 0) (0, -6, 5) (9, 23, 12) (-14, -41, -2) (22, 10, 1) (34, -38, -23) (12, 11, 6) ]
 Expected dimension of affine set of points X is 2
 AffineDim(X) = 2
 AffineSubset(X) = [ 0 1 2 ]
-AffineBasis(X) =: p+B = (21, -29, -21) + [ (-27, 43, 29) (-40, 30, 30) ]
+AffineBasis(X) =: p+B = (-5, -25, 0) + [ (24, 47, 7) (0, -13, -5) ]
 Independent(X) =: e = (1, 0, 0)
-Orthogonal(X) =: n = (420, -350, 910)
-Orthogonal(X)/gcd =: ns = (6, -5, 13)
-B[0] . ns = (-27, 43, 29) . (6, -5, 13) == 0 (should be 0)
-B[1] . ns = (-40, 30, 30) . (6, -5, 13) == 0 (should be 0)
+Orthogonal(X) =: n = (-6, 5, -13)
+Orthogonal(X)/gcd =: ns = (-6, 5, -13)
+B[0] . ns = (24, 47, 7) . (-6, 5, -13) == 0 (should be 0)
+B[1] . ns = (0, -13, -5) . (-6, 5, -13) == 0 (should be 0)
 \endverbatim
 
 @section dgtal_affgeom_sec2 Class AffineGeometry

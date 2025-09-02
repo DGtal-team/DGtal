@@ -36,6 +36,7 @@
 #include "DGtal/math/linalg/CStaticVector.h"
 #include "DGtal/math/linalg/CDenseVector.h"
 #include "DGtal/math/linalg/CLinearAlgebra.h"
+#include "DGtal/math/linalg/IntegerMatrixFunctions.h"
 #include "DGtal/helpers/StdDefs.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -405,10 +406,11 @@ bool testBareissDeterminant()
   trace.beginBlock( "Bareiss determinant test" );
   {
     typedef DGtal::SimpleMatrix<int,3,3> Matrix;
+    
     Matrix M = { 1, 2, 3, 4, 5, 7, 6, 8, 9 };
     auto   d = M.determinant();
     int    db;
-    DGtal::functions::determinantBareiss( M, db );
+    functions::getDeterminantBareiss( db, M );
     trace.info() << "d=" << d << " db=" << db << "\n";
     nbok += ( d == 7 ) ? 1 : 0;
     nb++;
@@ -420,11 +422,24 @@ bool testBareissDeterminant()
     typedef DGtal::SimpleMatrix<int,4,4> Matrix;
     Matrix  M = { 1, 2, 3, -4, 13, 4, 5, 7, 6, 8, 17, 9, 21, 12, -5, 11 };
     auto    d = M.determinant();
-    int64_t db;
-    DGtal::functions::determinantBareiss( M, db );
-    trace.info() << "d=" << d << " db=" << db << "\n";
+    int64_t db, dbv;
+    functions::getDeterminantBareiss( db, M );
+    auto  MV = functions::matrixAsVectorVector( M );
+    functions::getDeterminantBareiss( dbv, MV );
+    trace.info() << "d=" << d << " db=" << db << " dbv=" << dbv << "\n";
     nbok += ( d == -12260 ) ? 1 : 0;
     nb++;
+    nbok += ( db == -12260 ) ? 1 : 0;
+    nb++;
+    nbok += ( dbv == -12260 ) ? 1 : 0;
+    nb++;
+  }
+  {
+    std::vector<int> V = { 1, 2, 3, -4, 13, 4, 5, 7, 6, 8, 17, 9, 21, 12, -5, 11 };
+    auto MV = functions::matrixAsVectorVector( 4, 4, V );
+    int64_t db;
+    functions::getDeterminantBareiss( db, MV ); 
+    trace.info() << "db=" << db << "\n";
     nbok += ( db == -12260 ) ? 1 : 0;
     nb++;
   }
@@ -438,8 +453,8 @@ bool testBareissDeterminant()
     auto    d = M.determinant();
     int64_t db;
     BigInteger big_db;
-    DGtal::functions::determinantBareiss( M, db );
-    DGtal::functions::determinantBareiss( M, big_db );
+    functions::getDeterminantBareiss( db, M );
+    functions::getDeterminantBareiss( big_db, M );
     int64_t   cdb = NumberTraits<BigInteger>::castToInt64_t( big_db );
     trace.info() << "d=" << d << " (i64)db=" << db << " (big)db=" << cdb << "\n";
     // The line below raises a warning in the macos compiler.
@@ -457,12 +472,13 @@ bool testBareissDeterminant()
     Matrix  M = { 1.5, 2.2, 3.1, -4.6, 13.3, 4.2, 5.7, 7.3, 6.4, 8.0, 17.9, 9.3, 21.2, 12.2, -5.1, 11.8 };
     auto    d = M.determinant();
     double  db;
-    DGtal::functions::determinantBareiss( M, db );
+    functions::getDeterminantBareiss( db, M );
     trace.info() << "d=" << d << " db=" << db << "\n";
     nbok += ( std::fabs( d - db ) < 1e-10 ) ? 1 : 0;
     nb++;
   }
 
+  std::cout << "(" << nbok << "/" << nb << ")\n";
   trace.endBlock();
   
   return nbok == nb;
