@@ -1,0 +1,291 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file IntegerMatrixFunctions.ih
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2025/09/01
+ *
+ * Implementation of inline methods defined in IntegerMatrixFunctions.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+//////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
+
+namespace DGtal {
+  namespace functions {
+
+    template <typename T, typename U >
+    typename DGtal::ArithmeticConversionTraits<T,U>::type
+    dotProduct( const std::vector<T>& a, const std::vector<U>& b )
+    {
+      typename DGtal::ArithmeticConversionTraits<T,U>::type s = 0;
+      for ( size_t i = 0; i < a.size(); i++ ) s += a[i] * b[i];
+      return s;
+    }
+    
+    template <typename TOutput, typename T>
+    void
+    getSquaredNorm2( TOutput& n, const std::vector<T>& a )
+    {
+      n = 0;
+      for ( size_t i = 0; i < a.size(); i++ )
+        {
+          TOutput c = TOutput( a[ i ] );
+          n += c * c;
+        }
+    }
+    
+  } // namespace detail {
+} // namespace DGtal {
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline functions                                        //
+
+
+//-----------------------------------------------------------------------------
+template <typename TComponent, DGtal::Dimension TN, 
+          typename TInternalNumber>
+void
+DGtal::functions::getDeterminantBareiss
+( TInternalNumber& result,
+  const SimpleMatrix<TComponent, TN, TN>& matrix )
+{
+  result = TInternalNumber( 1 );
+  if constexpr (TN == 0) return;
+  const TInternalNumber zero = TInternalNumber( 0 );
+  TInternalNumber prev = TInternalNumber( 1 );
+  typedef std::array< TInternalNumber, TN > TRow;
+  typedef std::array< TRow, TN > TMatrix;
+  TMatrix M;
+  for ( Dimension i = 0; i < TN; ++i )
+    for ( Dimension j = 0; j < TN; ++j )
+      M[ i ][ j ] = TInternalNumber( matrix( i, j ) );
+  bool change_sign = false;
+  for ( Dimension k = 0; k < TN; ++k )
+    {
+      // pivot
+      Dimension piv = k;
+      while ( ( piv < TN ) && ( M[ piv ][ k ] == zero ) ) ++piv;
+      if ( piv == TN ) { result = zero; return; }
+      if ( piv != k )
+        { // swaping 2 rows => change determinant sign
+          M[ piv ].swap( M[ k ] );
+          change_sign = ! change_sign;
+        }
+      TRow& M_k = M[ k ];
+      TInternalNumber pivot = M_k[ k ];
+      for ( Dimension i = k+1; i < TN; ++i )
+        {
+          TRow& M_i = M[ i ];
+          for ( Dimension j = k+1; j < TN; ++j )
+            {
+              // Bareiss: (a_ij*a_kk - a_ik*a_kj)/prev
+              M_i[ j ] = M_i[ j ] * pivot - M_i[ k ] * M_k[ j ];
+              if ( k != 0 ) M_i[ j ] /= prev;
+            }
+        }
+      prev = pivot;
+      // Optionnally one could zero the column k below the diagonal
+      // (not necessary for the determinant).
+      // for (int i = k+1; i < TN; ++i) M[i][k] = 0;
+    }
+  result = change_sign ? -M[ TN-1 ][ TN-1 ] : M[ TN-1 ][ TN-1 ];
+}
+
+//-----------------------------------------------------------------------------
+template <typename TComponent, 
+          typename TInternalNumber>
+void
+DGtal::functions::getDeterminantBareiss
+( TInternalNumber& result,
+  const std::vector< std::vector< TComponent > >& matrix )
+{
+  result = TInternalNumber( 1 );
+  const Dimension n = matrix.size();
+  if (n == 0) return;
+  const TInternalNumber zero = TInternalNumber( 0 );
+  TInternalNumber prev = TInternalNumber( 1 );
+  typedef std::vector< TInternalNumber > TRow;
+  typedef std::vector< TRow > TMatrix;
+  TMatrix M( n );
+  for ( Dimension i = 0; i < n; ++i )
+    {
+      if ( matrix[ i ].size() != n )
+        {
+          trace.error() << "[functions::getDeterminantBareiss] Input matrix is not square: "
+                        << n << " rows, while row " << i << " has " << matrix[ i ].size()
+                        << "columns. Returning det=1." << "\n";
+          return;
+        }
+      M[ i ] = TRow( n );
+      for ( Dimension j = 0; j < n; ++j )
+        M[ i ][ j ] = TInternalNumber( matrix[ i ][ j ] );
+    }
+  bool change_sign = false;
+  for ( Dimension k = 0; k < n; ++k )
+    {
+      // pivot
+      Dimension piv = k;
+      while ( ( piv < n ) && ( M[ piv ][ k ] == zero ) ) ++piv;
+      if ( piv == n ) { result = zero; return; }
+      if ( piv != k )
+        { // swaping 2 rows => change determinant sign
+          M[ piv ].swap( M[ k ] );
+          change_sign = ! change_sign;
+        }
+      TRow& M_k = M[ k ];
+      TInternalNumber pivot = M_k[ k ];
+      for ( Dimension i = k+1; i < n; ++i )
+        {
+          TRow& M_i = M[ i ];
+          for ( Dimension j = k+1; j < n; ++j )
+            {
+              // Bareiss: (a_ij*a_kk - a_ik*a_kj)/prev
+              M_i[ j ] = M_i[ j ] * pivot - M_i[ k ] * M_k[ j ];
+              if ( k != 0 ) M_i[ j ] /= prev;
+            }
+        }
+      prev = pivot;
+      // Optionnally one could zero the column k below the diagonal
+      // (not necessary for the determinant).
+      // for (int i = k+1; i < n; ++i) M[i][k] = 0;
+    }
+  result = change_sign ? -M[ n-1 ][ n-1 ] : M[ n-1 ][ n-1 ];
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename TComponent>
+std::vector< std::vector< TComponent > >
+DGtal::functions::matrixAsVectorVector
+( std::size_t m, std::size_t n,
+  const std::vector< TComponent >& c )
+{
+  std::vector< std::vector< TComponent > > R( m );
+  std::size_t k  = 0;
+  for ( std::size_t i = 0; i < m; i++ )
+    {
+      R[ i ] = std::vector< TComponent >( n );
+      for ( std::size_t j = 0; j < n; j++ )
+        R[ i ][ j ] = ( k < c.size() ) ? c[ k++ ] : TComponent( 0 );
+    }
+  return R;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TComponent, DGtal::Dimension TM, DGtal::Dimension TN>
+std::vector< std::vector< TComponent > >
+DGtal::functions::matrixAsVectorVector
+( const SimpleMatrix<TComponent, TM, TN>& M )
+{
+  std::vector< std::vector< TComponent > > R( TM );
+  for ( std::size_t i = 0; i < TM; i++ )
+    {
+      R[ i ] = std::vector< TComponent >( TN );
+      for ( std::size_t j = 0; j < TN; j++ )
+        R[ i ][ j ] = M( i, j );
+    }
+  return R;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TComponent, typename TDouble >
+std::vector< std::vector< TComponent > >
+DGtal::functions::computeLLLBasis
+( const std::vector< std::vector< TComponent > >& B,
+  TDouble delta )
+{
+  std::vector< std::vector< TComponent > > R( B );
+  functions::reduceBasisWithLLL( R, delta );
+  return R;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TComponent, typename TDouble >
+void
+DGtal::functions::reduceBasisWithLLL
+( std::vector< std::vector< TComponent > >& B,
+  TDouble delta )
+{
+  typedef TComponent            Integer;
+  typedef TDouble               Double;
+  typedef std::vector< Double > Doubles;
+  const int64_t     n = B.size();    // number of input row vectors
+  const std::size_t d = B[0].size(); // dimension of row vectors (and embedding space)
+  std::vector<Doubles> Bo(n, Doubles(d)); // orthogonalized basis
+  Doubles              Bo_norm(n);        // squared 2-norm of each row vector
+  std::vector<Doubles> mu(n, Doubles(n)); // projection coefficients on orth. basis
+  
+  int64_t k = 1; // current vector 
+  while ( k < n )
+    {
+      // Apply Gram–Schmidt until row k included.
+      for ( int64_t i = 0; i <= k; i++ )
+        {
+          Doubles v( B[i].cbegin(), B[i].cend() ); // cast row i to doubles.
+          for ( int64_t j = 0; j < i; j++ )
+            {
+              mu[i][j] = functions::dotProduct( B[i], Bo[j] ) / Bo_norm[j];
+              for ( std::size_t l = 0; l < d; l++ )
+                v[l] -= mu[i][j] * Bo[j][l];
+            }
+          Bo[i].swap( v ); // faster than `Bo[i] = v;`
+          functions::getSquaredNorm2( Bo_norm[i], Bo[i] );
+        }
+      // réduction de taille
+      for ( int64_t j = k - 1; j >= 0; j-- ) {
+        Double mu_kj = functions::dotProduct( B[k], Bo[j] ) / Bo_norm[j];
+        Double q = round( mu_kj ); //round( mu[k][j] );
+        if ( q != 0.0 )
+          {
+            const Integer iq = Integer( q );
+            for ( std::size_t l = 0; l < d; l++ )
+              B[k][l] -= iq * B[j][l];
+          }
+      }
+      // Reperform Gram–Schmidt for k after reduction
+      {
+        Doubles v( B[k].cbegin(), B[k].cend());
+        for ( int64_t j = 0; j < k; j++ )
+          {
+            mu[k][j] = functions::dotProduct( B[k], Bo[j] ) / Bo_norm[j];
+            for ( std::size_t l = 0; l < d; l++ )
+              v[l] -= mu[k][j] * Bo[j][l];
+          }
+        Bo[k].swap( v ); // faster than `Bo[k] = v;`
+        functions::getSquaredNorm2( Bo_norm[k], Bo[k] );
+      }
+    
+      // Lovász test
+      if ( Bo_norm[k] >= ( (delta - mu[k][k-1]*mu[k][k-1]) * Bo_norm[k-1] ) )
+        k++;
+      else
+        {
+          swap( B[k], B[k-1] );
+          k = std::max( k - 1, int64_t(1) );
+        }
+    }
+}
