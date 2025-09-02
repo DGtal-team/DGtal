@@ -168,6 +168,23 @@ B[1] . ns = (0, -13, -5) . (-6, 5, -13) == 0 (should be 0)
 
 @section dgtal_affgeom_sec2 Class AffineGeometry
 
+@section dgtal_affgeom_sec3 Notes
+
+Several functions that works with lattice vectors use functions
+specialized to integer computations:
+
+- functions::getDeterminantBareiss( TInternalNumber& result,
+  const SimpleMatrix<TComponent, TN, TN>& matrix )
+
+- functions::getDeterminantBareiss( TInternalNumber& result,
+  const std::vector< std::vector< TComponent > >& matrix )
+
+- functions::computeLLLBasis( const std::vector< std::vector<
+  TComponent>>& B, TDouble delta );
+
+- functions::reduceBasisWithLLL( std::vector< std::vector<
+  TComponent>>& B, TDouble delta );
+
 */
 
 } //  namespace DGtal
