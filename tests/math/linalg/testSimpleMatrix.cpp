@@ -502,7 +502,6 @@ bool testLLL()
   unsigned int nbok = 0;
   unsigned int nb   = 0;
 
-  typedef long double Double;
   typedef int64_t     Integer;
   {
     std::vector< std::vector< Integer > > B = {
