@@ -46,7 +46,7 @@
 
 namespace DGtal
 {
-    /////////////////////////////////////////////////////////////////////////////
+  /////////////////////////////////////////////////////////////////////////////
   // template class AffineBasis
 
   /// Description of template class 'AffineBasis' <p> \brief Aim:
@@ -86,6 +86,7 @@ namespace DGtal
   template < typename TPoint >
   struct AffineBasis
   {
+    typedef AffineBasis<TPoint>        Self;
     typedef TPoint                     Point;
     typedef typename Point::Coordinate Scalar;
     typedef std::vector< Point >       Points;
@@ -143,6 +144,14 @@ namespace DGtal
     {
       return second.size();
     }
+
+    /// If the basis is an integer lattice, reduces the basis vectors
+    /// by their gcd, otherwise normalize vectors to have 1 L2-norm.
+    void normalize()
+    {
+      for ( auto& v : second )
+        v = Affine::simplifiedVector( v );
+    }
     
     /// Reduces the basis so that each basis vector is reduced and
     /// removes linearly dependent vectors.
@@ -189,14 +198,14 @@ namespace DGtal
     /// @name geometry services
     /// @{
 
-    /// @param[in] basis a reduced basis of vectors
+    /// @param[in] other an other affine basis
     ///
-    /// @return 'true' if and only if 'this' basis spans the same
-    /// vector space as \a basis.
-    bool isSameBasis( const Points& basis ) const
+    /// @return 'true' if and only if every vector of 'this' basis is
+    /// parallel to every vector of the \a other given basis.
+    bool isParallel( const Self& other ) const
     {
-      if ( basis.size() != second.size() ) return false;
-      for ( const auto& b : basis )
+      if ( dimension() != other.dimension() ) return false;
+      for ( const auto& b : other )
         if ( ! isParallel( b ) ) return false;
       return true;
     }
@@ -405,7 +414,7 @@ namespace DGtal
 
     Point  first;  ///< the origin of the affine basis
     Points second; ///< the vector basis
-    double epsilon;///< the accepted value below which a floating-point number is 0.
+    double epsilon {1e-12};///< the accepted value below which a floating-point number is 0.
     
     /// @}
     

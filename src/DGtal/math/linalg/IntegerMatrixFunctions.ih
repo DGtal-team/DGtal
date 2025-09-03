@@ -42,9 +42,61 @@ namespace DGtal {
       return s;
     }
     
+    template <typename T>
+    T
+    squaredNormL2( const std::vector<T>& a )
+    {
+      T n = 0;
+      for ( size_t i = 0; i < a.size(); i++ )
+        n += a[ i ] * a[ i ];
+      return n;
+    }
+    
+    template <typename T>
+    T
+    normL1( const std::vector<T>& a )
+    {
+      T n = 0;
+      for ( size_t i = 0; i < a.size(); i++ )
+        {
+          T c = a[ i ];
+          n += ( c >= 0 ) ? c : -c;
+        }
+      return n;
+    }
+
+    template <typename T>
+    T
+    normLoo( const std::vector<T>& a )
+    {
+      T n = 0;
+      for ( size_t i = 0; i < a.size(); i++ )
+        {
+          T c = ( a[ i ] >= 0 ) ? a[ i ] : -a[ i ];
+          if ( c > n ) n = c;
+        }
+      return n;
+    }
+
     template <typename TOutput, typename T>
     void
-    getSquaredNorm2( TOutput& n, const std::vector<T>& a )
+    getSquaredNormL2( TOutput& n, const std::vector<T>& a )
+    {
+      n = 0;
+      for ( size_t i = 0; i < a.size(); i++ )
+        {
+          TOutput c = TOutput( a[ i ] );
+          n += c * c;
+        }
+    }
+
+    template <typename TOutput,
+              DGtal::Dimension dim,
+              typename TEuclideanRing,
+              typename TContainer>
+    void
+    getSquaredNormL2( TOutput& n,
+                      const DGtal::PointVector<dim,TEuclideanRing,TContainer>& a )
     {
       n = 0;
       for ( size_t i = 0; i < a.size(); i++ )
@@ -253,7 +305,7 @@ DGtal::functions::reduceBasisWithLLL
                 v[l] -= mu[i][j] * Bo[j][l];
             }
           Bo[i].swap( v ); // faster than `Bo[i] = v;`
-          functions::getSquaredNorm2( Bo_norm[i], Bo[i] );
+          functions::getSquaredNormL2( Bo_norm[i], Bo[i] );
         }
       // réduction de taille
       for ( int64_t j = k - 1; j >= 0; j-- ) {
@@ -276,7 +328,7 @@ DGtal::functions::reduceBasisWithLLL
               v[l] -= mu[k][j] * Bo[j][l];
           }
         Bo[k].swap( v ); // faster than `Bo[k] = v;`
-        functions::getSquaredNorm2( Bo_norm[k], Bo[k] );
+        functions::getSquaredNormL2( Bo_norm[k], Bo[k] );
       }
     
       // Lovász test

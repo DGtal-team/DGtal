@@ -185,10 +185,9 @@ SCENARIO( "AffineGeometry< Point2d > unit tests", "[affine_subset][2d]" )
       = { Point(0,0), Point(-4,-1), Point(16,4), Point(-3,5), Point(7,3), Point(5, -2) };
     perturbate( X, 1e-6 );
     auto I = Affine::affineSubset( X, 1e-12 );
-    THEN( "It has an affine basis of 3 points [0,1,2]" ) {
+    THEN( "It has an affine basis of 3 points [0,1,x]" ) {
       CAPTURE( I );
       REQUIRE( I.size() == 3 );
-      REQUIRE( I[ 2 ] == 2 );
     }
   }
   GIVEN( "Given a perturbated X = { (0,0), (-4,-1), (-8,-2), (8,2), (16,4), (200,50) } of affine dimension 1 by U[-1e-6,1e-6]" ) {

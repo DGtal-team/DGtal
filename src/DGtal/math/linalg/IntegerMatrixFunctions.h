@@ -65,18 +65,87 @@ namespace DGtal
     template <typename T, typename U >
     typename DGtal::ArithmeticConversionTraits<T,U>::type
     dotProduct( const std::vector<T>& a, const std::vector<U>& b );
+
+    /// Overloaded squared L2-norm operator for a vector of numbers.
+    ///
+    /// @tparam T the number type of the input vector.
+    ///
+    /// @param[in] a the vector of numbers
+    ///
+    /// @return the dot product a.a, i.e. the squared L2-norm of a.
+    ///
+    /// @see getSquaredNormL2 if you wish to use another type for computation.
+    template <typename T>
+    T
+    squaredNormL2( const std::vector<T>& a );
     
-    /// Overloaded squared l2-norm operator for a vector of numbers.
+    /// Overloaded L1-norm operator for a vector of numbers.
+    ///
+    /// @tparam T the number type of the input vector.
+    ///
+    /// @param[in] a the vector of numbers
+    ///
+    /// @return the L1-norm of a, i.e. \f$ \sum_i |a_i| \f$, sometimes called block distance.
+    template <typename T>
+    T
+    normL1( const std::vector<T>& a );
+
+    /// Overloaded Loo-norm operator for a vector of numbers.
+    ///
+    /// @tparam T the number type of the input vector.
+    ///
+    /// @param[in] a the vector of numbers
+    ///
+    /// @return the \f$ L_\infinity \f$-norm of a, i.e. \f$ \max_i |a_i| \f$.
+    template <typename T>
+    T
+    normLoo( const std::vector<T>& a );
+    
+    /// Overloaded squared L2-norm operator for a vector of numbers.
     ///
     /// @tparam TOutput the desired number type for output.
     /// @tparam T the number type of the input vector.
     ///
-    /// @param[out] n the dot product a.a, i.e. the squared l2-norm of a.
+    /// @param[out] n the dot product a.a, i.e. the squared L2-norm of a.
     ///
-    /// @param[in] a the left vector
+    /// @param[in] a the vector of numbers.
     template <typename TOutput, typename T>
     void
-    getSquaredNorm2( TOutput& n, const std::vector<T>& a );
+    getSquaredNormL2( TOutput& n, const std::vector<T>& a );
+
+    /// Overloaded squared L2-norm operator for a vector of numbers.
+    ///
+    /// @tparam TOutput the desired number type for output.
+    ///
+    /// @tparam dim static constant of type DGtal::Dimension that
+    /// specifies the static  dimension of the space and thus the number
+    /// of elements  of the Point or Vector.
+    ///
+    /// @tparam TEuclideanRing speficies the number type assoicated to an
+    /// Euclidean domain (or Euclidean ring) algebraic structure
+    /// (commutative unitary ring with no zero divisors and with a division
+    /// operator but not necessarily an inverse for the multiplication
+    /// operator). This type is used to represent PointVector elements
+    /// (Coordinate for Point and Component for Vector) and define
+    /// operations on Point or Vectors.
+    ///
+    /// @tparam TContainer specifies the container to be used to store
+    /// the point coordinates. At this point, such container must be a
+    /// random access bidirectionnal a-la STL containers (e.g. vector,
+    /// boost/array). If TContainer implements comparison operators == !=
+    /// < <= > <=, then PointVector will also implements it and with the
+    /// exact same behaviour.
+    ///
+    /// @param[out] n the dot product a.a, i.e. the squared L2-norm of a.
+    ///
+    /// @param[in] a the vector of numbers.
+    template <typename TOutput,
+              DGtal::Dimension dim,
+              typename TEuclideanRing,
+              typename TContainer>
+    void
+    getSquaredNormL2( TOutput& n,
+                      const DGtal::PointVector<dim,TEuclideanRing,TContainer>& a );
     
     /// Computes the determinant of a squared matrix with integer or
     /// floating-point coefficients using Bareiss method.  Complexity

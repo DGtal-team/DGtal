@@ -520,6 +520,7 @@ bool testLLL()
     nb++;
     nbok += L2 == R ? 1 : 0;
     nb++;
+    std::cout << "(" << nbok << "/" << nb << ") " << (nbok == nb ? "PASSED\n" : "ERROR\n");
   }
   {
     std::vector< std::vector< Integer > > B = {
@@ -533,15 +534,21 @@ bool testLLL()
               << "\nLLL base: delta=0.75\n" << L1 << "\n"
               << "\nLLL base: delta=0.99\n" << L2 << "\n";
     
-    std::vector< std::vector< Integer > > R = {
+    std::vector< std::vector< Integer > > R1 = {
+      { 69, 116, -78,  31},
+      { 49,  -3, 168,  47},
+      {-23, 166,  55, -26}
+    };
+    std::vector< std::vector< Integer > > R2 = {
       { 69, 116, -78,  31},
       {-23, 166,  55, -26},
       { 49,  -3, 168,  47}
     };
-    nbok += L1 == R ? 1 : 0;
+    nbok += L1 == R1 ? 1 : 0;
     nb++;
-    nbok += L2 == R ? 1 : 0;
+    nbok += L2 == R2 ? 1 : 0;
     nb++;
+    std::cout << "(" << nbok << "/" << nb << ") " << (nbok == nb ? "PASSED\n" : "ERROR\n");
   }
   {
     std::vector< std::vector< Integer > > B = {
@@ -575,8 +582,47 @@ bool testLLL()
     nb++;
     nbok += L2 == R2 ? 1 : 0;
     nb++;
+    std::cout << "(" << nbok << "/" << nb << ") " << (nbok == nb ? "PASSED\n" : "ERROR\n");
   }
-  return true;
+  {
+    // when the matrix is unimodular, outputs canonic vectors.
+    std::vector< std::vector< Integer > > B = {
+      {   -3,   10,   47,   61,  -53, -126,  713,  601,-1476, 1569},
+      {    2,   -7,  -33,  -43,   37,   89, -502, -425, 1047,-1103},
+      {   -3,   11,   53,   69,  -59, -142,  800,  677,-1663, 1764},
+      {    1,   -9,  -48,  -63,   52,  130, -727, -623, 1543,-1604},
+      {   -2,    9,   48,   63,  -49, -124,  680,  583,-1409, 1533},
+      {    5,  -25, -118, -163,  113,  334,-1761,-1595, 4030,-3838},
+      {   -3,   17,   85,  118,  -84, -245, 1297, 1173,-2974, 2824},
+      {    5,  -24, -119, -156,  126,  321,-1782,-1534, 3799,-3921},
+      {    2,  -10,  -44,  -65,   42,  137, -699, -659, 1713,-1489},
+      {    1,   -5,  -23,  -27,   33,   64, -405, -315,  784, -868}
+    };
+    auto L2 = DGtal::functions::computeLLLBasis( B, 0.99 );
+    Integer d, d2;
+    DGtal::functions::getDeterminantBareiss( d,  B );
+    DGtal::functions::getDeterminantBareiss( d2, L2 );
+    std::cout << "Init base: \n" << B
+              << "\nLLL base: delta=0.99\n" << L2 << "\n"
+              << "det(B)=" << d << " det(L)=" << d2 << "\n";
+    nbok += d  == 1 ? 1 : 0;
+    nb++;
+    nbok += d2 == 1 ? 1 : 0;
+    nb++;
+    std::cout << "(" << nbok << "/" << nb << ") "
+              << "When input matrix is unimodular, output matrix L is unimodular: "
+              << (nbok == nb ? "PASSED\n" : "ERROR\n");
+    for ( auto i = 0; i < B.size(); i++ )
+      {
+        nbok += DGtal::functions::normL1( L2[ i ] ) == 1 ? : 0;
+        nb++;
+      }
+    std::cout << "(" << nbok << "/" << nb << ") "
+              << "The output matrix is then canonic: "
+              << (nbok == nb ? "PASSED\n" : "ERROR\n");
+  }
+
+  return nbok == nb;
 }
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :

@@ -96,22 +96,6 @@ namespace DGtal
           w[ k ] /= g;
       }
       
-      // /// Specialized version to normalize a vector in case of double
-      // /// value parameter.
-      // static
-      // void normalizeVector( Point& w, double x )
-      // {
-      //   w /= x;
-      // }
-      
-      // /// Specialized version to normalize a vector in case of float
-      // /// value parameter.
-      // static
-      // void normalizeVector( Point& w, float x )
-      // {
-      //   w /= x;
-      // }
-
       /// Specialized version to cast points to other point type.
       template <typename TOtherPoint>
       static
@@ -146,7 +130,7 @@ namespace DGtal
       static
       void normalizeVector( Point& w, double x )
       {
-        w /= x;
+        w /= sqrt( x );
       }
 
       /// Specialized version to cast points to other point type.
@@ -186,7 +170,7 @@ namespace DGtal
       static
       void normalizeVector( Point& w, float x )
       {
-        w /= x;
+        w /= sqrt( x );
       }
 
       /// Specialized version to cast points to other point type.
@@ -683,7 +667,9 @@ namespace DGtal
         {
           OutputPoint e_k = OutputPoint::base( k );
           OutputPoint w   = reductionOnBasis( e_k, basis, tolerance );
-          if ( ScalarOps::isNonZero( w.normInfinity(), tolerance ) )
+          OutputScalar sql2;
+          functions::getSquaredNormL2( sql2, w );
+          if ( ScalarOps::isNonZero( sql2, tolerance ) )
             return e_k;
         }
       trace.error() << "[AffineGeometry::independentVector]"
@@ -715,7 +701,9 @@ namespace DGtal
         {
           OutputPoint e_k = OutputPoint::base( k );
           OutputPoint w   = reductionOnBasis( e_k, basis, tolerance );
-          if ( ScalarOps::isNonZero( w.normInfinity(), tolerance ) )
+          OutputScalar sql2;
+          functions::getSquaredNormL2( sql2, w );
+          if ( ScalarOps::isNonZero( sql2, tolerance ) )
             return TPoint::base( k ); 
         }
       trace.error() << "[AffineGeometry::independentVector]"
@@ -798,15 +786,15 @@ namespace DGtal
     ///
     /// @note If the points have integer coordinates, the
     /// normalization of the new basis vector is its reduction by its
-    /// gcd, otherwise the maximum absolute component value is
-    /// normalized to 1.0.
+    /// gcd, otherwise the vector has unit L2-norm.
     static
     bool addIfIndependent( OutputPoints& basis,
                            const OutputPoint& v,
                            const double tolerance )
     {
       OutputPoint  w = reductionOnBasis( v, basis, tolerance );
-      const OutputScalar x = w.normInfinity(); 
+      OutputScalar x;
+      functions::getSquaredNormL2( x, w );
       if ( ScalarOps::isNonZero( x, tolerance ) )
         {
           // Useful to reduce the norm of vectors for lattice vectors
@@ -963,8 +951,8 @@ namespace DGtal
     
     /// Given a vector, returns the aligned vector with its component
     /// simplified by the gcd of all components (when the components
-    /// are integers) or the aligned vector with a maximum oo-norm of
-    /// 1 (when the components are floating-point numbers).
+    /// are integers) or the aligned vector with unit L2-norm (when
+    /// the components are floating-point numbers).
     ///
     /// @param[in] v any vector.
     ///
@@ -972,7 +960,9 @@ namespace DGtal
     static 
     OutputPoint simplifiedVector( OutputPoint v )
     {
-      PointOps::normalizeVector( v, (OutputScalar) v.normInfinity() );
+      OutputScalar x;
+      functions::getSquaredNormL2( x, v );
+      PointOps::normalizeVector( v, x );
       return v;
     }
     
@@ -989,7 +979,7 @@ namespace DGtal
     ///
     /// @param X the range of input points (may be lattice points or not).
     ///
-    /// @param tolerance the accepted oo-norm below which the vector is
+    /// @param tolerance the accepted squared L2-norm below which the vector is
     /// null (used only for points with float/double coordinates).
     ///
     /// @return the affine dimension of \a X.
@@ -1010,7 +1000,7 @@ namespace DGtal
     ///
     /// @param X the range of input points (may be lattice points or not).
     ///
-    /// @param tolerance the accepted oo-norm below which the vector is
+    /// @param tolerance the accepted squared L2-norm below which the vector is
     /// null (used only for points with float/double coordinates).
     ///
     /// @return a subset of these points as a range of indices.
@@ -1037,7 +1027,7 @@ namespace DGtal
     ///
     /// @param[in] I the range of indices specifying the subset of interest.
     ///
-    /// @param[in] tolerance the accepted oo-norm below which the vector is
+    /// @param[in] tolerance the accepted squared L2-norm below which the vector is
     /// null (used only for points with float/double coordinates).
     ///
     /// @return a subset of these points as a range of indices.
@@ -1068,7 +1058,7 @@ namespace DGtal
     ///
     /// @param[in] X the range of input points (may be lattice points or not).
     ///
-    /// @param[in] tolerance the accepted oo-norm below which the vector is
+    /// @param[in] tolerance the accepted squared L2-norm below which the vector is
     /// null (used only for points with float/double coordinates).
     ///
     /// @note Complexity is O( m n^2 ), where m=Cardinal(X) and n=dimension.
@@ -1100,7 +1090,7 @@ namespace DGtal
     ///
     /// @param[in] I the range of indices within X that specifies the subset of interest.
     ///
-    /// @param[in] tolerance the accepted oo-norm below which the vector is
+    /// @param[in] tolerance the accepted squared L2-norm below which the vector is
     /// null (used only for points with float/double coordinates).
     ///
     /// @note Complexity is O( m n^2 ), where m=Cardinal(I) and n=dimension.
@@ -1124,7 +1114,7 @@ namespace DGtal
     /// @param[in] basis a range of independent vectors that defines a
     /// partial basis of the space.
     ///
-    /// @param[in] tolerance the accepted oo-norm below which the vector is
+    /// @param[in] tolerance the accepted squared L2-norm below which the vector is
     /// null (used only for points with float/double coordinates).
     ///
     /// @return a canonic unit vector independent of all vectors of \a
@@ -1143,7 +1133,7 @@ namespace DGtal
     ///
     /// @note In 3D, given two independent vectors as input, then the
     /// added vector is the (reduced for integers, normalized with 1
-    /// oo-norm for floats) \b cross \b product of these two
+    /// squared L2-norm for floats) \b cross \b product of these two
     /// vectors. In nD, it is thus a generalization of the cross
     /// product.
     ///
@@ -1153,7 +1143,7 @@ namespace DGtal
     /// less than dimension, which is completed so as to be a basis of
     /// the full space.
     ///
-    /// @param[in] tolerance the accepted oo-norm below which the vector is
+    /// @param[in] tolerance the accepted squared L2-norm below which the vector is
     /// null (used only for points with float/double coordinates).
     template <typename TPoint>
     static
@@ -1170,7 +1160,7 @@ namespace DGtal
     ///
     /// @note In 3D, given two independent vectors as input, then the
     /// added vector is the (reduced for integers, normalized with 1
-    /// oo-norm for floats) \b cross \b product of these two
+    /// squared L2-norm for floats) \b cross \b product of these two
     /// vectors. In nD, it is thus a generalization of the cross
     /// product.
     ///
@@ -1210,7 +1200,7 @@ namespace DGtal
     ///
     /// @param[in] I the range of indices within X that specifies the subset of interest.
     ///
-    /// @param[in] tolerance the accepted oo-norm below which the vector is
+    /// @param[in] tolerance the accepted squared L2-norm below which the vector is
     /// null (used only for points with float/double coordinates).
     ///
     /// @note The orthogonal vector is computed as follows: (i)
@@ -1252,7 +1242,7 @@ namespace DGtal
     ///
     /// @param[in] X the range of input points (may be lattice points or not).
     ///
-    /// @param[in] tolerance the accepted oo-norm below which the vector is
+    /// @param[in] tolerance the accepted squared L2-norm below which the vector is
     /// null (used only for points with float/double coordinates).
     ///
     /// @note The orthogonal vector is computed as follows: (i)
@@ -1282,7 +1272,7 @@ namespace DGtal
     
     /// Given a vector, returns the aligned vector with its component
     /// simplified by the gcd of all components (when the components
-    /// are integers) or the aligned vector with a maximum oo-norm of
+    /// are integers) or the aligned vector with a squared L2-norm of
     /// 1 (when the components are floating-point numbers).
     ///
     /// @tparam TPoint any type of lattice point or real point.
