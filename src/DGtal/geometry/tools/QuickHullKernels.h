@@ -197,6 +197,8 @@ namespace DGtal
     typedef std::array< Index, dim >   CombinatorialPlaneSimplex;
     static const Dimension dimension = dim;
 
+    typedef ConvexHullCommonKernel< dim, TCoordinateInteger, TInternalInteger > Self;
+    typedef ConvexHullCommonKernel< dim-1, TCoordinateInteger, TInternalInteger > LowerSelf;
     /// Converter to outer coordinate integers or lattice points / vector
     typedef IntegerConverter< dim, CoordinateInteger > Outer; 
     /// Converter to inner internal integers or lattice points / vector
@@ -383,6 +385,8 @@ namespace DGtal
     : public ConvexHullCommonKernel< dim, TCoordinateInteger, TInternalInteger >
   {
     typedef ConvexHullCommonKernel< dim, TCoordinateInteger, TInternalInteger > Base;
+    typedef ConvexHullIntegralKernel< dim, TCoordinateInteger, TInternalInteger > Self;
+    typedef ConvexHullIntegralKernel< dim-1, TCoordinateInteger, TInternalInteger > LowerSelf;
     // inheriting types
     // using typename Base::Point;
     // using typename Base::Vector;
@@ -515,6 +519,8 @@ namespace DGtal
     : public ConvexHullCommonKernel< dim+1, TCoordinateInteger, TInternalInteger >
   {
     typedef ConvexHullCommonKernel< dim+1, TCoordinateInteger, TInternalInteger > Base;
+    typedef DelaunayIntegralKernel< dim, TCoordinateInteger, TInternalInteger > Self;
+    typedef DelaunayIntegralKernel< dim-1, TCoordinateInteger, TInternalInteger > LowerSelf;
     // inheriting types
     // using typename Base::Point;
     // using typename Base::Vector;
@@ -665,6 +671,8 @@ namespace DGtal
     : public ConvexHullCommonKernel< dim, TCoordinateInteger, TInternalInteger >
   {
     typedef ConvexHullCommonKernel< dim, TCoordinateInteger, TInternalInteger > Base;
+    typedef ConvexHullRationalKernel< dim, TCoordinateInteger, TInternalInteger > Self;
+    typedef ConvexHullRationalKernel< dim-1, TCoordinateInteger, TInternalInteger > LowerSelf;
     // inheriting types
     // using typename Base::Point;
     // using typename Base::Vector;
@@ -837,6 +845,8 @@ namespace DGtal
     : public ConvexHullCommonKernel< dim+1, TCoordinateInteger, TInternalInteger >
   {
     typedef ConvexHullCommonKernel< dim+1, TCoordinateInteger, TInternalInteger > Base;
+    typedef DelaunayRationalKernel< dim, TCoordinateInteger, TInternalInteger > Self;
+    typedef DelaunayRationalKernel< dim-1, TCoordinateInteger, TInternalInteger > LowerSelf;
     // inheriting types
     // using typename Base::Point;
     // using typename Base::Vector;

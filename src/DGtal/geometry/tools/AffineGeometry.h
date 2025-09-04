@@ -863,7 +863,7 @@ namespace DGtal
       Size n = w.size();
       // Find index of first non null pivot in b.
       Size lead = n;
-      for ( Size j = 0; j < n; j++)
+      for ( Size j = start; j < n; j++)
         if ( ScalarOps::isNonZero( b[j], tolerance ) ) { lead = j; break; }
       if ( lead == n ) return std::make_pair( mul_w, mul_b ); // b is null vector
 

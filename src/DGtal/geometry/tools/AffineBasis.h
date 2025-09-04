@@ -177,7 +177,7 @@ namespace DGtal
     /// Reduces the basis into a set of a linearly independent
     /// vectors, and in the desired reduced form.
     ///
-    /// @param[in] the desired type of matrix reduction.
+    /// @param[in] type the desired type of matrix reduction.
     ///
     /// @param[in] delta the parameter \f$ \delta \f$ of
     /// LLL-algorithm, which should be between 0.25 and 1 (value 0.99
