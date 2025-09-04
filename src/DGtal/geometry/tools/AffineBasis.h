@@ -469,7 +469,10 @@ namespace DGtal
       std::vector< bool > is_independent( second.size() );
       for ( std::size_t i = 0; i < second.size(); i++ )
         {
-          Point& w           = second[ i ];
+          // std::size_t row = findIndexWithSmallestNonNullComponent( i, second );
+          // if ( row == second.size() ) continue;
+          // if ( row != i ) std::swap( second[ i ], second[ row ] );
+          Point& w            = second[ i ];
           is_independent[ i ] = true;
           for ( std::size_t j = 0; j < i; j++ )
             if ( is_independent[ j ] )
@@ -538,6 +541,40 @@ namespace DGtal
         }
     }
     
+    /// Given a range of points \a basis, starting from rank \a k,
+    /// find the index of the point with lowest non null k-th
+    /// coefficient in absolute value, or basis.size() if every point
+    /// had its k-th component null.
+    ///
+    /// @param[in] k the component/coordinate of interest
+    /// @param[in] basis a range of points/vectors
+    ///
+    /// @return starting from rank \a k, the index of the point with lowest non null k-th
+    /// coefficient in absolute value, or basis.size() if every point
+    /// had its k-th component null.
+    std::int64_t
+    findIndexWithSmallestNonNullComponent( Dimension k,
+                                           const std::vector< Point >& basis )
+    {
+      ASSERT( ! basis.empty() );
+      int64_t index = k;
+      Scalar  v     = 0;
+      for ( ; index < basis.size(); index++ )
+        {
+          v = abs( basis[ index ][ k ] );
+          if ( Affine::ScalarOps::isNonZero( v, epsilon ) )
+            break;
+        }
+      for ( auto i = index + 1; i < basis.size(); i++ )
+        if ( abs( basis[ i ][ k ] ) < v )
+          {
+            index = i;
+            v     = abs( basis[ i ][ k ] );
+          }
+      std::cout << "[find] from " << k << " index=" << index << " v=" << basis[ index ]
+                << "\n";
+      return index;
+    }
     
   }; // struct AffineBasis
     
