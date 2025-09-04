@@ -515,7 +515,7 @@ bool testLLL()
               << "\nLLL base: delta=0.75\n" << L1 << "\n"
               << "\nLLL base: delta=0.99\n" << L2 << "\n";
     
-    std::vector< std::vector< Integer > > R = { {-12,3,-7}, {-7,-20,0}, {32,-17,-49} };
+    std::vector< std::vector< Integer > > R = { {-12,3,-7}, {32,-17,-49}, {-7,-20,0} };
     nbok += L1 == R ? 1 : 0;
     nb++;
     nbok += L2 == R ? 1 : 0;
@@ -536,8 +536,8 @@ bool testLLL()
     
     std::vector< std::vector< Integer > > R1 = {
       { 69, 116, -78,  31},
-      { 49,  -3, 168,  47},
-      {-23, 166,  55, -26}
+      {-23, 166,  55, -26},
+      { 49,  -3, 168,  47}
     };
     std::vector< std::vector< Integer > > R2 = {
       { 69, 116, -78,  31},

@@ -222,6 +222,7 @@ namespace DGtal
       std::pair< Integer, Integer > getMultipliers( Integer a, Integer b )
       {
         const Integer g = gcd( a, b );
+        // return std::make_pair( b / g, a / g );
         // left multiplier should be positive.
         return (b >= 0)
           ? std::make_pair( b / g, a / g )

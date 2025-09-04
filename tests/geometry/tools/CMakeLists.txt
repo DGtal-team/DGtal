@@ -10,7 +10,8 @@ set(DGTAL_TESTS_SRC
   testConvexHull2DThickness
   testConvexHull2DReverse
   testQuickHull
-  testAffineGeometry)
+  testAffineGeometry
+  testAffineBasis)  
 
 set(DGTAL_TESTS_VSRC
   testSphericalAccumulatorViewer)

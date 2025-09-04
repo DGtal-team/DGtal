@@ -290,7 +290,7 @@ DGtal::functions::reduceBasisWithLLL
   std::vector<Doubles> Bo(n, Doubles(d)); // orthogonalized basis
   Doubles              Bo_norm(n);        // squared 2-norm of each row vector
   std::vector<Doubles> mu(n, Doubles(n)); // projection coefficients on orth. basis
-  
+  bool sign = true;
   int64_t k = 1; // current vector 
   while ( k < n )
     {
@@ -338,6 +338,9 @@ DGtal::functions::reduceBasisWithLLL
         {
           swap( B[k], B[k-1] );
           k = std::max( k - 1, int64_t(1) );
+          sign = ! sign;
         }
     }
+  if ( ! sign )
+    swap( B[n-2], B[n-1] );
 }

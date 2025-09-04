@@ -126,6 +126,28 @@ makeRandomRealPointsFromDirVectors( int nb, const vector< Point>& V )
   return P;
 }
 
+template <typename TPoint>
+bool sameDirection( const TPoint& a, const TPoint& b )
+{
+  return ( a[ 0 ] == b[ 0 ] ) ? ( a == b ) : ( a == -b );
+}
+
+template <typename TPoint>
+std::pair<TPoint, TPoint>
+boundingBox( const std::vector< TPoint >& v )
+{
+  TPoint l, u;
+  if ( ! v.empty() )
+    {
+      l = u = v[ 0 ];
+      for ( auto i = 1; i < v.size(); i++ )
+        {
+          l = l.inf( v[ i ] );
+          u = u.sup( v[ i ] );
+        }
+    }
+  return std::make_pair( l, u );
+}
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class AffineGeometry in 2D.
 ///////////////////////////////////////////////////////////////////////////////
@@ -180,20 +202,20 @@ SCENARIO( "AffineGeometry< Point2d > unit tests", "[affine_subset][2d]" )
       REQUIRE( I.size() == 2 );
     }
   }
-  GIVEN( "Given a perturbated X = { (0,0), (-4,-1), (16,4), (-3,5), (7,3), (5, -2) } of affine dimension 2 by U[-1e-6,1e-6]" ) {
+  GIVEN( "Given a perturbated X = { (0,0), (-4,-1), (16,4), (-3,5), (7,3), (5, -2) } of affine dimension 2 by U[-1e-4,1e-4]" ) {
     std::vector<Point> X
       = { Point(0,0), Point(-4,-1), Point(16,4), Point(-3,5), Point(7,3), Point(5, -2) };
-    perturbate( X, 1e-6 );
+    perturbate( X, 1e-4 );
     auto I = Affine::affineSubset( X, 1e-12 );
     THEN( "It has an affine basis of 3 points [0,1,x]" ) {
       CAPTURE( I );
       REQUIRE( I.size() == 3 );
     }
   }
-  GIVEN( "Given a perturbated X = { (0,0), (-4,-1), (-8,-2), (8,2), (16,4), (200,50) } of affine dimension 1 by U[-1e-6,1e-6]" ) {
+  GIVEN( "Given a perturbated X = { (0,0), (-4,-1), (-8,-2), (8,2), (16,4), (200,50) } of affine dimension 1 by U[-1e-4,1e-4]" ) {
     std::vector<Point> X
       = { Point(0,0), Point(-4,-1), Point(-8,-2), Point(8,2), Point(16,4), Point(200,50) };
-    perturbate( X, 1e-6 );
+    perturbate( X, 1e-4 );
     auto I = Affine::affineSubset( X, 1e-12 );
     THEN( "It has an affine basis of 3 points [0,1,x]" ) {
       CAPTURE( I );
@@ -593,7 +615,7 @@ SCENARIO( "AffineBasis< Point2i > unit tests", "[affine_basis][2i]" )
     Point o( 0, 0 );
     std::vector<Point> X
       = { Point(8,2), Point(-4,-1), Point(-8,-2), Point(16,4), Point(200,50) };
-    Basis B( o, X );
+    Basis B( o, X, Basis::Type::SCALED_REDUCED );
     THEN( "When reduced, it has dimension 1" ) {
       CAPTURE( B.basis() );
       REQUIRE( B.dimension() == 1 );
@@ -618,7 +640,7 @@ SCENARIO( "AffineBasis< Point4i > unit tests", "[affine_basis][4i]" )
   GIVEN( "Given X a set of randomly generated points by adding linear combinations of 1 lattice vectors" ) {
     std::vector< Point > V = { Point{ 3, 1, 0, 2 } };
     auto X = makeRandomLatticePointsFromDirVectors( 20, V );
-    Basis B( X );
+    Basis B( X, Basis::Type::SCALED_REDUCED );
     THEN( "When reduced, it has dimension 1" ) {
       CAPTURE( B.basis() );
       REQUIRE( B.dimension() == 1 );
@@ -633,7 +655,7 @@ SCENARIO( "AffineBasis< Point4i > unit tests", "[affine_basis][4i]" )
   GIVEN( "Given X a set of randomly generated points by adding linear combinations of 2 lattice vectors" ) {
     std::vector< Point > V = { Point{ 3, 1, 0, 2 }, Point{ -2, -1, 2, 7 } };
     auto X = makeRandomLatticePointsFromDirVectors( 20, V );
-    Basis B( X );
+    Basis B( X, Basis::Type::SCALED_REDUCED );
     THEN( "When reduced, basis has dimension 2" ) {
       CAPTURE( B.basis() );
       REQUIRE( B.dimension() == 2 );
@@ -692,15 +714,17 @@ SCENARIO( "AffineBasis< Point4i > projection tests", "[affine_basis][4i][4d]" )
   GIVEN( "Given X a set of randomly generated points by adding linear combinations of 2 lattice vectors, and Y the same set but with real coordinates" ) {
     std::vector< Point > V = { Point{ 3, 4, 0, 2 }, Point{ -2, -1, 5, -7 } };
     auto X = makeRandomLatticePointsFromDirVectors( 20, V );
-    Basis B( X );
+    Basis B( X, Basis::Type::SCALED_REDUCED );
     std::vector< RealPoint > Y( X.size() );
     for ( auto i = 0; i < Y.size(); i++ )
       Basis::transform( Y[ i ], X[ i ] );
-    RealBasis RB( Y );
+    RealBasis RB( Y, RealBasis::Type::SCALED_REDUCED );
     std::vector< PPoint >     pX;
     std::vector< PRealPoint > pY;
     auto lcm  = B .projectPoints( pX, X );
     auto rlcm = RB.projectPoints( pY, Y );
+    auto rbox = boundingBox( pY );
+    double factor = ( rbox.second - rbox.first ).squaredNorm();
     THEN( "When reduced, their affine bases has same dimension 2" ) {
       CAPTURE( B.basis() );
       CAPTURE( RB.basis() );
@@ -716,7 +740,7 @@ SCENARIO( "AffineBasis< Point4i > projection tests", "[affine_basis][4i][4d]" )
       // Computing arbitrary determinants between triplets of points
       const std::size_t nb = 2000;
       std::size_t    nb_ok = 0;
-      const double     eps = 1e-10 * double( lcm ) / rlcm;
+      const double     eps = 1e-12 * factor;
       for ( auto i = 0; i < nb; i++ )
         {
           const std::size_t j = rand() % pX.size();
@@ -731,6 +755,13 @@ SCENARIO( "AffineBasis< Point4i > projection tests", "[affine_basis][4i][4d]" )
           if ( rdet > eps )       nb_ok += ( det >  0 ) ? 1 : 0;
           else if ( rdet < -eps ) nb_ok += ( det <  0 ) ? 1 : 0;
           else                    nb_ok += ( det == 0 ) ? 1 : 0;
+          if ( nb_ok != i+1 )
+            {
+              std::cout << "eps=" << eps << " factor=" << factor << "\n";
+              std::cout << "u =" << u  << " v =" << v << " det ="  << det << "\n";
+              std::cout << "ru=" << ru << " rv=" << rv << " rdet=" << rdet << "\n";
+              break;
+            }
         }
       REQUIRE( nb_ok == nb );
     }
@@ -757,25 +788,25 @@ SCENARIO( "AffineBasis< Point5i > unit tests", "[affine_basis][5i]" )
       std::vector< Point > X = makeRandomVectors<Point>( 5, 100 );
       std::vector< Point > Y;
       for ( auto i = 1; i < X.size(); i++ ) Y.push_back( X[ i ] - X[ 0 ] );
-      Basis B ( X[ 0 ], Y, true );
-      Basis Br( X );
+      Basis B ( X[ 0 ], Y, Basis::Type::LLL_REDUCED );
+      Basis Br( X, Basis::Type::SCALED_REDUCED );
       if ( functions::computeAffineDimension( X ) != 4 ) continue;
       auto N = functions::computeOrthogonalVectorToBasis( B.basis() );
       auto Nr = functions::computeOrthogonalVectorToBasis( Br.basis() );
       auto N_big  = Affine::template orthogonalVector<BigInteger>( B.basis() );
-      auto Nr_big = Affine::template orthogonalVector<BigInteger>( B.basis() );
+      auto Nr_big = Affine::template orthogonalVector<BigInteger>( Br.basis() );
       auto N_cast  = N_big;
       auto Nr_cast = Nr_big;
       for ( auto i = 0; i < 5; i++ ) N_cast[ i ]  = N[ i ];
       for ( auto i = 0; i < 5; i++ ) Nr_cast[ i ] = Nr[ i ];
-      nb_equal_big += ( N_big == Nr_big ) ? 1 : 0;
-      nb_equal_N   += ( N_cast == N_big ) ? 1 : 0;
-      nb_equal_Nr  += ( Nr_cast == Nr_big ) ? 1 : 0;
+      nb_equal_big += sameDirection( N_big,   Nr_big ) ? 1 : 0;
+      nb_equal_N   += sameDirection( N_cast,  N_big  ) ? 1 : 0;
+      nb_equal_Nr  += sameDirection( Nr_cast, Nr_big ) ? 1 : 0;
       nb           += 1;
+      // std::cout << B << "\n" << Br << "\n";
+      // std::cout << "N    =" << N << " Nr    =" << Nr << "\n";
+      // std::cout << "N_big=" << N_big << " Nr_big=" << Nr_big << "\n";
     }
-  // std::cout << B << "\n" << Br << "\n";
-  // std::cout << "N    =" << N << " Nr    =" << Nr << "\n";
-  // std::cout << "N_big=" << N_big << " Nr_big=" << Nr_big << "\n";
   THEN( "Normals with big integers are the same" ) {  
     REQUIRE( nb_equal_big == nb );
   }

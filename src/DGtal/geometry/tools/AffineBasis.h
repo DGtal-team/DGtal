@@ -40,6 +40,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
+#include <type_traits>
 #include <vector>
 #include "DGtal/base/Common.h"
 #include "DGtal/geometry/tools/AffineGeometry.h"
@@ -91,6 +92,12 @@ namespace DGtal
     typedef typename Point::Coordinate Scalar;
     typedef std::vector< Point >       Points;
     typedef AffineGeometry< Point >    Affine;
+
+    enum struct Type {
+      INVALID = 0,        ///< invalid basis 
+      SCALED_REDUCED, ///< scaled matrix
+      LLL_REDUCED     ///< delta-LLL reduced matrix
+    };
     
     // ----------------------- standard services --------------------------
   public:
@@ -102,26 +109,40 @@ namespace DGtal
     AffineBasis() = default;
 
     /// Constructor from points.
+    ///
     /// @param[in] points the range of points belonging to the affine space.
+    ///
+    /// @param[in] type if Type::SCALED, reduces the basis so that it
+    /// forms a scaled matrix, otherwise computes its
+    /// delta-LLL-lattice.
     ///
     /// @param[in] tolerance the accepted oo-norm below which the
     /// vector is null (used only for points with float/double
     /// coordinates).
-    AffineBasis( const Points& points,
+    template <typename TInputPoint>
+    AffineBasis( const std::vector< TInputPoint >& points,
+                 AffineBasis::Type type,
+                 const double delta = 0.99,
                  const double tolerance = 1e-12 )
       : epsilon( tolerance )
     {
       if ( points.size() == 0 ) return;
-      first  = points[ 0 ];
-      second = Points( points.size() - 1 );
-      for ( std::size_t i = 0; i < second.size(); i++ )
-        second[ i ] = points[ i+1 ] - first;
-      reduce();
+      first  = Affine::transform( points[ 0 ] );
+      std::vector< TInputPoint > basis( points.size() - 1 );
+      for ( std::size_t i = 0; i < basis.size(); i++ )
+        basis[ i ] = ( points[ i+1 ] - first );
+      initBasis( basis );
+      reduce( type, delta );
     }
     
     /// Constructor from origin and basis.
+    ///
     /// @param[in] origin the origin of the affine basis
     /// @param[in] basis the range of vectors forming the basis
+    ///
+    /// @param[in] type if Type::SCALED, reduces the basis so that it
+    /// forms a scaled matrix, otherwise computes its
+    /// delta-LLL-lattice.
     ///
     /// @param[in] is_reduced when 'true', assumes that the given
     /// basis is already reduced, otherwise it forces the reduction of
@@ -130,53 +151,34 @@ namespace DGtal
     /// @param[in] tolerance the accepted oo-norm below which the
     /// vector is null (used only for points with float/double
     /// coordinates).
-    AffineBasis( const Point& origin, const Points& basis,
+    template <typename TInputPoint>
+    AffineBasis( const TInputPoint& origin,
+                 const std::vector<TInputPoint>& basis,
+                 AffineBasis::Type type,
                  bool is_reduced = false,
+                 const double delta = 0.99,
                  const double tolerance = 1e-12 )
-      : first( origin ), second( basis ), epsilon( tolerance )
+      : epsilon( tolerance )
     {
-      if ( ! is_reduced ) reduce();
+      first = Affine::transform( origin );
+      initBasis( basis );
+      if ( ! is_reduced ) reduce( type, delta );
+      else _type = type;
     }
 
+    void reduce( AffineBasis::Type type, double delta )
+    {
+      if ( type == Type::SCALED_REDUCED )
+        reduceAsScaled();
+      else if ( type == Type::LLL_REDUCED )
+        reduceAsLLL( delta, (Scalar) 0 );
+    }
+    
     /// @returns the affine dimension of the basis
     /// @pre the basis is reduced.
     Dimension dimension() const
     {
       return second.size();
-    }
-
-    /// If the basis is an integer lattice, reduces the basis vectors
-    /// by their gcd, otherwise normalize vectors to have 1 L2-norm.
-    void normalize()
-    {
-      for ( auto& v : second )
-        v = Affine::simplifiedVector( v );
-    }
-    
-    /// Reduces the basis so that each basis vector is reduced and
-    /// removes linearly dependent vectors.
-    void reduce()
-    {
-      for ( auto& v : second )
-        v = Affine::simplifiedVector( v );
-      std::vector< bool > is_independent( second.size() );
-      for ( std::size_t i = 0; i < second.size(); i++ )
-        {
-          Point& w           = second[ i ];
-          is_independent[ i ] = true;
-          for ( std::size_t j = 0; j < i; j++ )
-            if ( is_independent[ j ] )
-              Affine::reduceVector( w, second[ j ], epsilon );
-          if ( ! Affine::ScalarOps::isNonZero( w.normInfinity(), epsilon ) )
-            is_independent[ i ] = false;
-          else
-            w = Affine::simplifiedVector( w );
-        }
-      Points new_basis;
-      for ( std::size_t i = 0; i < second.size(); i++ )
-        if ( is_independent[ i ] )
-          new_basis.push_back( second[ i ] );
-      std::swap( second, new_basis );
     }
 
     /// @return the origin of this affine basis.
@@ -400,13 +402,40 @@ namespace DGtal
     
     /// @}
 
+    // ----------------------- debug and I/O services --------------------------
+  public:
+    /// @name debug and I/O services
+    /// @{
+
+    /// Displays this object on the output stream.
+    ///
+    /// @param[in,out] out any output stream.
     void selfDisplay( std::ostream& out ) const
     {
-      out << "[ AffineBasis o=" << first << " B=";
+      out << "[ AffineBasis o=" << first
+          << " type=" << reductionTypeName()
+          << " B=";
       for ( auto b : second ) std::cout << "\n  " << b;
       out << " ]";
     }
-    
+
+    /// @return 'true' if and only if this object is in a consistent
+    /// state. Here it means that the matrix is scaled or LLL-reduced.
+    bool isValid() const
+    {
+      return _type != Type::INVALID;
+    }  
+
+    /// @return the type of matrix as a string
+    std::string reductionTypeName() const
+    {
+      if ( _type == Type::INVALID )             return "INVALID";
+      else if ( _type == Type::SCALED_REDUCED ) return "SCALED";
+      else if ( _type == Type::LLL_REDUCED )    return "LLL";
+      else return "";
+    }
+    /// @}
+
     // ----------------------- public data --------------------------
   public:
     /// @name public data
@@ -415,8 +444,100 @@ namespace DGtal
     Point  first;  ///< the origin of the affine basis
     Points second; ///< the vector basis
     double epsilon {1e-12};///< the accepted value below which a floating-point number is 0.
-    
+    AffineBasis::Type _type; ///< the type of reduction of the basis.
     /// @}
+
+    // ----------------------- protected services --------------------------
+  protected:
+    /// @name protected services
+    /// @{
+
+    /// If the basis is an integer lattice, reduces the basis vectors
+    /// by their gcd, otherwise normalize vectors to have 1 L2-norm.
+    void normalize()
+    {
+      for ( auto& v : second )
+        v = Affine::simplifiedVector( v );
+    }
+    
+    /// Reduces the basis so that each basis vector is normalized,
+    /// removes linearly dependent vectors, and builds a scaled matrix.
+    void reduceAsScaled()
+    {
+      for ( auto& v : second )
+        v = Affine::simplifiedVector( v );
+      std::vector< bool > is_independent( second.size() );
+      for ( std::size_t i = 0; i < second.size(); i++ )
+        {
+          Point& w           = second[ i ];
+          is_independent[ i ] = true;
+          for ( std::size_t j = 0; j < i; j++ )
+            if ( is_independent[ j ] )
+              Affine::reduceVector( w, second[ j ], epsilon );
+          if ( ! Affine::ScalarOps::isNonZero( w.normInfinity(), epsilon ) )
+            is_independent[ i ] = false;
+          else
+            w = Affine::simplifiedVector( w );
+        }
+      Points new_basis;
+      for ( std::size_t i = 0; i < second.size(); i++ )
+        if ( is_independent[ i ] )
+          new_basis.push_back( second[ i ] );
+      std::swap( second, new_basis );
+      _type = Type::SCALED_REDUCED;
+    }
+
+    /// Reduces the basis so that each basis vector is normalized,
+    /// then computes its delta-LLL-reduction lattice, and removes
+    /// linearly dependent vectors.
+    void reduceAsLLL( double delta, Scalar )
+    {
+      if constexpr( std::is_floating_point< Scalar >::value == true )
+        {
+          trace.error() << "[AffineBasis::reduceAsLLL]"
+                        << " It has no meaning to use LLL algorithm on matrix with double coefficients\n";
+          _type = Type::INVALID;
+          return;
+        }
+      for ( auto& v : second )
+        v = Affine::simplifiedVector( v );
+      std::vector< std::vector< Scalar > > B( second.size() );
+      for ( auto i = 0; i < second.size(); i++ )
+        {
+          B[ i ] = std::vector< Scalar >( Point::dimension );
+          for ( auto j = 0; j < Point::dimension; j++ )
+            B[ i ][ j ] = second[ i ][ j ];
+        }
+      functions::reduceBasisWithLLL( B, delta );
+      /// keep only independent vectors in basis
+      second.clear();
+      for ( std::size_t i = 0; i < B.size(); i++ )
+        {
+          Point b;
+          for ( auto j = 0; j < Point::dimension; j++ )
+            b[ j ] = B[ i ][ j ];
+          if ( b != Point::zero )
+            second.push_back( b );
+        }
+      _type = Type::LLL_REDUCED;
+    }
+
+    /// Removes null vectors from input set of vectors and sets the
+    /// initial basis.
+    ///
+    /// @tparam TInputPoint the type of input points
+    /// @param[in] basis a set of arbitrary vectors
+    template <typename TInputPoint>
+    void initBasis( const std::vector<TInputPoint>& basis )
+    {
+      second.reserve( basis.size() );
+      for ( auto i = 0; i < basis.size(); i++ )
+        {
+          Point b = Affine::transform( basis[ i ] );
+          if ( b != Point::zero ) second.push_back( b );
+        }
+    }
+    
     
   }; // struct AffineBasis
     

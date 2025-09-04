@@ -1218,7 +1218,7 @@ SCENARIO( "DigitalConvexity< Z3 > envelope bug", "[envelope][3d]" )
     std::vector< Point > b = { Point( 0, 0, 0), Point(1, 0, -2), Point(1, 0, -1) };
     const auto [ o, B ] = Affine::affineBasis( b );
     Point e  = functions::computeIndependentVector( B );
-    Basis AB( Point( 0,0 ), b );
+    Basis AB( Point( 0,0 ), b, Basis::Type::SCALED_REDUCED );
     bool parallel = AB.isParallel( e );
     const auto [ d, L, r ] = AB.decomposeVector( e );
     CAPTURE( B ); 
