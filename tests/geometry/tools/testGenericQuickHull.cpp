@@ -100,7 +100,7 @@ SCENARIO( "GenericQuickHull< ConvexHullIntegralKernel< 2 > > unit tests", "[genq
   typedef QHull::IndexRange                IndexRange;
 
   
-  GIVEN( "Given a star { (0,0), (-4,-1), (-3,5), (7,3), (5, -2) } " ) {
+  GIVEN( "Given a set { (0,0), (-4,-1), (-3,5), (7,3), (5, -2) } " ) {
     std::vector<Point> V
       = { Point(0,0), Point(-4,-1), Point(-3,5), Point(7,3), Point(5, -2) };
     QHull hull;
@@ -109,4 +109,14 @@ SCENARIO( "GenericQuickHull< ConvexHullIntegralKernel< 2 > > unit tests", "[genq
       REQUIRE( ok );
     }
   }
+  GIVEN( "Given a set { (0,0), (-4,-1), (8, 2), (16,4) } " ) {
+    std::vector<Point> V
+      = { Point(0,0), Point(-4,-1), Point(8,2), Point(16,4) };
+    QHull hull;
+    bool ok = hull.compute( V, false );
+    THEN( "Everything went fine." ) {
+      REQUIRE( ok );
+    }
+  }
+
 }

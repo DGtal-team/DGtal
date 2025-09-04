@@ -121,23 +121,66 @@ namespace DGtal
     {
       typedef TKernel                    Kernel;
       typedef Kernel                     Type;
-      static const Dimension             dimension = 0;
       typedef std::size_t                Size;
+      typedef typename Kernel::CoordinatePoint Point;
+      typedef typename Point::Coordinate Scalar;
+      typedef std::size_t                Index;
+      typedef std::vector< Index >       IndexRange;
+      static const Dimension             dimension = 1;
 
       GenericQuickHullKernels( const Kernel& aKernel = Kernel() )
         : kernel( aKernel )
       {
-        std::cout << "[GenericQuickHullKernels<K,0>::GenericQuickHullKernels]\n";
+        std::cout << "[GenericQuickHullKernels<K,1>::GenericQuickHullKernels]\n";
       }
       template <typename TInputPoint>
       bool compute( const std::vector< Size >& I,
                     const std::vector< TInputPoint >& X,
                     bool remove_duplicates )
       {
+        std::cout << "[GenericQuickHullKernels<K,1>::GenericQuickHullKernels]\n";
+        typedef TInputPoint InputPoint;
+        typedef AffineGeometry< InputPoint > Affine;
+        typedef AffineBasis< InputPoint >    Basis;
+        typedef AffineGeometry< Point >      ProjAffine;
+        typedef AffineBasis< Point >         ProjBasis;
+        if ( (I.size()-1) != dimension )
+          { // This kernel is not adapted => lower dimension is either
+            // 0, ie. 1 point, or -1, ie. 0 points.
+            if ( ! X.empty() )
+              std::cout << "Convex hull dim=0 #V=" << 1
+                        << " #F=" << 0 << "\n";
+            else
+              std::cout << "Convex hull dim=-1 #V=" << 0
+                        << " #F=" << 0 << "\n";
+            return true;
+          }
+        // Build points of affine basis
+        std::vector< InputPoint > Z( I.size() );
+        for ( auto i = 0; i < I.size(); i++ )
+          Z[ i ] = X[ I[ i ] ];
+        // Build the affine basis spanning the convex hull affine space.
+        Basis basis( Z, Basis::Type::SCALED_REDUCED );
+        // Build projected points on affine basis
+        proj_dilation  = basis.projectPoints( proj_points, X );
+        // Compute convex hull by looking at extremal points
+        Index left  = 0;
+        Index right = 0;
+        for ( Index i = 1; i < proj_points.size(); i++ )
+          {
+            if ( proj_points[ i ][ 0 ] < proj_points[ left ][ 0 ] )
+              left = i;
+            else if ( proj_points[ i ][ 0 ] > proj_points[ right ][ 0 ] )
+              right = i;
+          }
+        std::cout << "Convex hull #V=2=(" << left << "," << right << ")"
+                  << " #F=" << 0 << "\n";
         return true;
       }
 
-      Kernel                             kernel;
+      Kernel               kernel;
+      std::vector< Point > proj_points;
+      Scalar               proj_dilation;
     };
   }
   
