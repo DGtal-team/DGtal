@@ -171,7 +171,10 @@ namespace DGtal
       if ( type == Type::SCALED_REDUCED )
         reduceAsScaled();
       else if ( type == Type::LLL_REDUCED )
-        reduceAsLLL( delta, (Scalar) 0 );
+        {
+          reduceAsScaled();
+          reduceAsLLL( delta, (Scalar) 0 );
+        }
     }
     
     /// @returns the affine dimension of the basis
@@ -207,7 +210,9 @@ namespace DGtal
     bool isParallel( const Self& other ) const
     {
       if ( dimension() != other.dimension() ) return false;
-      for ( const auto& b : other )
+      if ( _type != Type::SCALED_REDUCED )
+        trace.error() << "[AffineBasis::isParallel] Requires type=SCALED_REDUCED\n";
+      for ( const auto& b : other.second )
         if ( ! isParallel( b ) ) return false;
       return true;
     }
@@ -322,7 +327,7 @@ namespace DGtal
       for ( auto i = 0; i < second.size(); i++ )
         {
           std::pair< Scalar, Scalar > c
-            = Affine::reduceVector( w, second[ i ], epsilon );
+            = Affine::reduceVector( w, second[ i ], i, epsilon );
           for ( auto j = 0; j < i; j++ )
             r[ j ] *= c.first;
           r[ i ]  = c.second;
@@ -467,6 +472,8 @@ namespace DGtal
       for ( auto& v : second )
         v = Affine::simplifiedVector( v );
       std::vector< bool > is_independent( second.size() );
+      std::vector< std::vector< Scalar > > U( second.size() );
+      
       for ( std::size_t i = 0; i < second.size(); i++ )
         {
           // std::size_t row = findIndexWithSmallestNonNullComponent( i, second );
@@ -520,7 +527,7 @@ namespace DGtal
           for ( auto j = 0; j < Point::dimension; j++ )
             b[ j ] = B[ i ][ j ];
           if ( b != Point::zero )
-            second.push_back( b );
+            second.push_back( Affine::simplifiedVector( b ) );
         }
       _type = Type::LLL_REDUCED;
     }

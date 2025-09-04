@@ -41,6 +41,24 @@ namespace DGtal {
       for ( size_t i = 0; i < a.size(); i++ ) s += a[i] * b[i];
       return s;
     }
+
+    double
+    dotProduct( const std::vector<BigInteger>& a, const std::vector<double>& b )
+    {
+      double s = 0;
+      for ( size_t i = 0; i < a.size(); i++ )
+        s += NumberTraits<BigInteger>::castToDouble( a[i] ) * b[i];
+      return s;
+    }
+
+    double
+    dotProduct( const std::vector<double>& a, const std::vector<BigInteger>& b )
+    {
+      double s = 0;
+      for ( size_t i = 0; i < a.size(); i++ )
+        s += a[ i ] * NumberTraits<BigInteger>::castToDouble( b[i] );
+      return s;
+    }
     
     template <typename T>
     T

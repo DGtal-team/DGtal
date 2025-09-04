@@ -840,6 +840,41 @@ namespace DGtal
       return std::make_pair( mul_w, mul_b );
     }
 
+    /// Reduces vector \a w by the vector \a b
+    ///
+    /// @param[in,out] w any vector
+    /// @param[in] b a non-null vector of the current basis.
+    /// @param[in] start the starting component index.
+    /// @param[in] tolerance the accepted oo-norm below which the vector is
+    /// null (used only for points with float/double coordinates).
+    ///
+    /// @return the coefficients (alpha,beta) for reduction such that
+    /// alpha * w - beta * b is the returned reduced vector, alpha >=
+    /// 0.
+    ///
+    /// @note This reduction is an elementary Gauss elimination.
+    static
+    std::pair< OutputScalar, OutputScalar >
+    reduceVector( OutputPoint& w, const OutputPoint& b,
+                  Dimension start, const double tolerance )
+    {
+      OutputScalar mul_w = 0;
+      OutputScalar mul_b = 0;
+      Size n = w.size();
+      // Find index of first non null pivot in b.
+      Size lead = n;
+      for ( Size j = 0; j < n; j++)
+        if ( ScalarOps::isNonZero( b[j], tolerance ) ) { lead = j; break; }
+      if ( lead == n ) return std::make_pair( mul_w, mul_b ); // b is null vector
+
+      std::tie( mul_w, mul_b ) = ScalarOps::getMultipliers( w[ lead ], b[ lead ] );
+      
+      for (Size j = 0; j < n; j++) 
+        w[j] = mul_w * w[j] - mul_b * b[j];
+      return std::make_pair( mul_w, mul_b );
+    }
+
+    
     /// Transform a vector or point into the representation chosen for
     /// AffineGeometry class. This overloading takes care of the
     /// trivial case, where there is no need to change the

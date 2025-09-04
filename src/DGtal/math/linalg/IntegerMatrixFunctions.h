@@ -66,6 +66,27 @@ namespace DGtal
     typename DGtal::ArithmeticConversionTraits<T,U>::type
     dotProduct( const std::vector<T>& a, const std::vector<U>& b );
 
+    /// Overloaded dot product operator for vector of big integers
+    /// with vector of doubles.
+    ///
+    /// @param[in] a the left vector
+    /// @param[in] b the right vector
+    ///
+    /// @return the dot product of a and b.
+    double
+    dotProduct( const std::vector<BigInteger>& a, const std::vector<double>& b );
+
+    /// Overloaded dot product operator for vector of big integers
+    /// with vector of doubles.
+    ///
+    /// @param[in] a the left vector
+    /// @param[in] b the right vector
+    ///
+    /// @return the dot product of a and b.
+    double
+    dotProduct( const std::vector<double>& a, const std::vector<BigInteger>& b );
+
+    
     /// Overloaded squared L2-norm operator for a vector of numbers.
     ///
     /// @tparam T the number type of the input vector.
