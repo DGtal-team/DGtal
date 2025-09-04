@@ -614,7 +614,7 @@ bool testLLL()
               << (nbok == nb ? "PASSED\n" : "ERROR\n");
     for ( auto i = 0; i < B.size(); i++ )
       {
-        nbok += DGtal::functions::normL1( L2[ i ] ) == 1 ? : 0;
+        nbok += DGtal::functions::normL1( L2[ i ] ) == 1 ? 1 : 0;
         nb++;
       }
     std::cout << "(" << nbok << "/" << nb << ") "

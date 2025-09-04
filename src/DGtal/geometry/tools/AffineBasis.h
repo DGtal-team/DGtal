@@ -116,6 +116,10 @@ namespace DGtal
     /// forms a scaled matrix, otherwise computes its
     /// delta-LLL-lattice.
     ///
+    /// @param[in] delta the parameter \f$ \delta \f$ of
+    /// LLL-algorithm, which should be between 0.25 and 1 (value 0.99
+    /// is default in sagemath).
+    ///
     /// @param[in] tolerance the accepted oo-norm below which the
     /// vector is null (used only for points with float/double
     /// coordinates).
@@ -148,6 +152,10 @@ namespace DGtal
     /// basis is already reduced, otherwise it forces the reduction of
     /// the basis.
     ///
+    /// @param[in] delta the parameter \f$ \delta \f$ of
+    /// LLL-algorithm, which should be between 0.25 and 1 (value 0.99
+    /// is default in sagemath).
+    ///
     /// @param[in] tolerance the accepted oo-norm below which the
     /// vector is null (used only for points with float/double
     /// coordinates).
@@ -166,6 +174,15 @@ namespace DGtal
       else _type = type;
     }
 
+    /// Reduces the basis into a set of a linearly independent
+    /// vectors, and in the desired reduced form.
+    ///
+    /// @param[in] the desired type of matrix reduction.
+    ///
+    /// @param[in] delta the parameter \f$ \delta \f$ of
+    /// LLL-algorithm, which should be between 0.25 and 1 (value 0.99
+    /// is default in sagemath).
+    ///
     void reduce( AffineBasis::Type type, double delta )
     {
       if ( type == Type::SCALED_REDUCED )
@@ -500,6 +517,10 @@ namespace DGtal
     /// Reduces the basis so that each basis vector is normalized,
     /// then computes its delta-LLL-reduction lattice, and removes
     /// linearly dependent vectors.
+    ///
+    /// @param[in] delta the parameter \f$ \delta \f$ of
+    /// LLL-algorithm, which should be between 0.25 and 1 (value 0.99
+    /// is default in sagemath).
     void reduceAsLLL( double delta, Scalar )
     {
       if constexpr( std::is_floating_point< Scalar >::value == true )
