@@ -174,7 +174,7 @@ namespace DGtal
       template <typename TInputPoint>
       bool compute( const std::vector< Size >& I,
                     const std::vector< TInputPoint >& X,
-                    bool remove_duplicates )
+                    bool  )
       {
         // std::cout << "[GenericQuickHullKernels<K,1>::GenericQuickHullKernels]\n";
         typedef TInputPoint InputPoint;

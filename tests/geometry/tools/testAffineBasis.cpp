@@ -440,8 +440,7 @@ SCENARIO( "AffineBasis< Z10 > LLL tests", "[affine_basis][10d][LLL]" )
       CAPTURE( S.basis() );
       REQUIRE( nbok == nb );
     }
-    THEN( "The LLL-reduced basis and the scaled-reduced basis are parallel" ) {
-      // REQUIRE( L.isParallel( S ) );
+    THEN( "The LLL-reduced basis is parallel to the scaled-reduced basis" ) {
       REQUIRE( S.isParallel( L ) );
     }
   }
