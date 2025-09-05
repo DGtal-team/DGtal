@@ -96,6 +96,11 @@ namespace DGtal
             return lower_kernels.compute( I, X, remove_duplicates );
           }
         ptr_gen_qhull->affine_dimension = dimension;
+        auto& points    = ptr_gen_qhull->points;
+        auto& ppoints   = ptr_gen_qhull->projected_points;
+        auto& positions = ptr_gen_qhull->positions;
+        auto& v2p       = ptr_gen_qhull->vertex2point;
+        auto& facets    = ptr_gen_qhull->facets;
         Basis basis;
         if ( dimension != ptr_gen_qhull->dimension )
           {
@@ -120,13 +125,7 @@ namespace DGtal
                           << "qhull=" << hull << "\n";
             return false;
           }
-        //std::vector< Point > positions;
-        //hull.getVertexPositions( positions );
         /// Copy back convex hull in initial space.
-        auto& points    = ptr_gen_qhull->points;
-        auto& positions = ptr_gen_qhull->positions;
-        auto& v2p       = ptr_gen_qhull->vertex2point;
-        auto& facets    = ptr_gen_qhull->facets;
         points.resize( X.size() );
         for ( Size i = 0; i < points.size(); i++ )
           points[ i ] = Affine::transform( X[ i ] );
@@ -135,21 +134,14 @@ namespace DGtal
         positions.resize( v2p.size() );
         for ( Size i = 0; i < positions.size(); i++ )
           positions[ i ] = X[ v2p[ i ] ];
-        if ( ptr_gen_qhull->debug_level >= 1 )
+        ppoints.resize( proj_points.size() );
+        for ( Size i = 0; i < ppoints.size(); i++ )
           {
-            std::cout << "Generic Convex hull #V=" << positions.size()
-                      << " #F=" << facets.size() << "\n";
-            if ( ptr_gen_qhull->debug_level >= 2 )
-            for ( Size i = 0; i < facets.size(); i++ )
-              {
-                std::cout << "F_" << i << " = (";
-                for ( auto v : facets[ i ] ) std::cout << " " << v;
-                std::cout << " )\n";
-              }
-            for ( Size i = 0; i < positions.size(); i++ )
-              std::cout << "V_" << i << " pi(x)=" << proj_points[ v2p[ i ] ]
-                        << " -> x=" << positions[ i ] << "\n";
+            ppoints[ i ] = ParentKernel::CoordinatePoint::zero;
+            for ( Dimension j = 0; j < Point::dimension; j++ )
+              ppoints[ i ][ j ] = proj_points[ i ][ j ];
           }
+        
         return ok_input && ok_hull;
       }
 
@@ -190,23 +182,52 @@ namespace DGtal
         typedef AffineBasis< InputPoint >    Basis;
         typedef AffineGeometry< Point >      ProjAffine;
         typedef AffineBasis< Point >         ProjBasis;
+
+        auto& aff_dim   = ptr_gen_qhull->affine_dimension;
+        auto& points    = ptr_gen_qhull->points;
+        auto& ppoints   = ptr_gen_qhull->projected_points;
+        auto& positions = ptr_gen_qhull->positions;
+        auto& v2p       = ptr_gen_qhull->vertex2point;
+        auto& facets    = ptr_gen_qhull->facets;
+        facets.clear(); // no facets
+        
         if ( (I.size()-1) != dimension )
           { // This kernel is not adapted => lower dimension is either
             // 0, ie. 1 point, or -1, ie. 0 points.
-            // TODO
             if ( ! X.empty() )
-              ptr_gen_qhull->affine_dimension = 0;
+              {
+                aff_dim = 0;
+                points.resize( X.size() );
+                for ( Size i = 0; i < points.size(); i++ )
+                  points[ i ] = Affine::transform( X[ i ] );
+                ppoints = points;
+                positions.resize( 1 );
+                positions[ 0 ] = X[ 0 ];
+                v2p.resize( 1 );
+                v2p[ 0 ] = 0;
+              }
             else
-              ptr_gen_qhull->affine_dimension = -1;
+              {
+                aff_dim = -1;
+                points.clear();
+                ppoints.clear();
+                positions.clear();
+                v2p.clear();
+              }
             return true;
           }
-        ptr_gen_qhull->affine_dimension = dimension;
-        // Build points of affine basis
-        std::vector< InputPoint > Z( I.size() );
-        for ( auto i = 0; i < I.size(); i++ )
-          Z[ i ] = X[ I[ i ] ];
-        // Build the affine basis spanning the convex hull affine space.
-        Basis basis( Z, Basis::Type::SCALED_REDUCED );
+        // Generic 1D case.
+        aff_dim = dimension;
+        Basis basis;
+        if ( dimension != ptr_gen_qhull->dimension )
+          {
+            // Build points of affine basis
+            std::vector< InputPoint > Z( I.size() );
+            for ( auto i = 0; i < I.size(); i++ )
+              Z[ i ] = X[ I[ i ] ];
+            // Build the affine basis spanning the convex hull affine space.
+            basis = Basis( Z, Basis::Type::SCALED_REDUCED );
+          }
         // Build projected points on affine basis
         proj_dilation  = basis.projectPoints( proj_points, X );
         // Compute convex hull by looking at extremal points
@@ -219,7 +240,21 @@ namespace DGtal
             else if ( proj_points[ i ][ 0 ] > proj_points[ right ][ 0 ] )
               right = i;
           }
-        // todo
+        points.resize( X.size() );
+        for ( Size i = 0; i < points.size(); i++ )
+          points[ i ] = Affine::transform( X[ i ] );
+        ppoints.resize( proj_points.size() );
+        for ( Size i = 0; i < ppoints.size(); i++ )
+          {
+            ppoints[ i ] = ParentKernel::CoordinatePoint::zero;
+            ppoints[ i ][ 0 ] = proj_points[ i ][ 0 ];
+          }
+        v2p.resize( 2 );
+        v2p[ 0 ] = left;
+        v2p[ 1 ] = right;
+        positions.resize( 2 );
+        positions[ 0 ] = X[ v2p[ 0 ] ];
+        positions[ 1 ] = X[ v2p[ 1 ] ];
         return true;
       }
 
@@ -299,7 +334,23 @@ namespace DGtal
       // Determine affine dimension of set of input points.
       typedef AffineGeometry< Point > Affine;
       std::vector< Size > indices = Affine::affineSubset( input_points );
-      return generic_kernels.compute( indices, input_points, remove_duplicates );
+      bool ok = generic_kernels.compute( indices, input_points, remove_duplicates );
+      if ( ( ! ok ) || ( debug_level >= 1 ) )
+        {
+          std::cout << "Generic Convex hull #V=" << positions.size()
+                    << " #F=" << facets.size() << "\n";
+          for ( Size i = 0; i < facets.size(); i++ )
+            {
+              std::cout << "F_" << i << " = (";
+              for ( auto v : facets[ i ] ) std::cout << " " << v;
+              std::cout << " )\n";
+            }
+          for ( Size i = 0; i < positions.size(); i++ )
+            std::cout << "V_" << i
+                      << " pi(x)=" << projected_points[ vertex2point[ i ] ]
+                      << " -> x=" << positions[ i ] << "\n";
+        }
+      return ok;
     }
 
     /// @}
@@ -342,7 +393,7 @@ namespace DGtal
   public:
     /// The main quickhull kernel that is used for convex hull computations.
     Kernel kernel;
-    /// debug_level from 0:no to 2
+    /// debug_level from 0:no to 2:verbose
     int debug_level; 
     /// The delegate computation kernel that can take care of all kind
     /// of convex hulls, full dimensional or degenerated.
@@ -350,6 +401,8 @@ namespace DGtal
 
     /// the set of input points, indexed as in the input
     std::vector< Point >      points;
+    /// the set of projected input points, indexed as in the input
+    std::vector< Point >      projected_points;
     /// The affine dimension of the input set.
     int64_t                   affine_dimension;
     /// The positions of the vertices (a subset of the input points).

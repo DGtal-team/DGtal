@@ -86,6 +86,8 @@ makeRandomLatticePointsFromDirVectors( int nb, const vector< Point>& V )
   return P;
 }
 
+const int debug_level = 0;
+
 // ///////////////////////////////////////////////////////////////////////////////
 // // Functions for testing class GenericQuickHull in 2D.
 // ///////////////////////////////////////////////////////////////////////////////
@@ -100,24 +102,47 @@ SCENARIO( "GenericQuickHull< ConvexHullIntegralKernel< 2 > > unit tests", "[genq
   typedef QHull::IndexRange                IndexRange;
 
   
-  GIVEN( "Given a set { (0,0), (-4,-1), (-3,5), (7,3), (5, -2), (2, 2) } " ) {
-    std::vector<Point> V
-      = { Point(0,0), Point(-4,-1), Point(-3,5), Point(7,3), Point(5, -2), Point(2,2) };
-    QHull hull( QHKernel(), 2);
+  GIVEN( "Given a set { } " ) {
+    std::vector<Point> V = { };
+    QHull hull( QHKernel(), debug_level );
     bool ok = hull.compute( V, false );
     std::cout << hull << std::endl;
-    THEN( "Everything went fine." ) {
+    THEN( "Everything went fine and dim=-1." ) {
       REQUIRE( ok );
+      REQUIRE( hull.affine_dimension == -1 );
+    }
+  }
+  GIVEN( "Given a set { (2,1), (2,1) } " ) {
+    std::vector<Point> V
+      = { Point(2,1), Point(2,1) };
+    QHull hull( QHKernel(), debug_level );
+    bool ok = hull.compute( V, false );
+    std::cout << hull << std::endl;
+    THEN( "Everything went fine and dim=0." ) {
+      REQUIRE( ok );
+      REQUIRE( hull.affine_dimension == 0 );
     }
   }
   GIVEN( "Given a set { (0,0), (-4,-1), (8, 2), (16,4) } " ) {
     std::vector<Point> V
       = { Point(0,0), Point(-4,-1), Point(8,2), Point(16,4) };
-    QHull hull;
+    QHull hull( QHKernel(), debug_level );
     bool ok = hull.compute( V, false );
     std::cout << hull << std::endl;
-    THEN( "Everything went fine." ) {
+    THEN( "Everything went fine and dim=1." ) {
       REQUIRE( ok );
+      REQUIRE( hull.affine_dimension == 1 );
+    }
+  }
+  GIVEN( "Given a set { (0,0), (-4,-1), (-3,5), (7,3), (5, -2), (2, 2) } " ) {
+    std::vector<Point> V
+      = { Point(0,0), Point(-4,-1), Point(-3,5), Point(7,3), Point(5, -2), Point(2,2) };
+    QHull hull( QHKernel(), debug_level );
+    bool ok = hull.compute( V, false );
+    std::cout << hull << std::endl;
+    THEN( "Everything went fine and dim=2." ) {
+      REQUIRE( ok );
+      REQUIRE( hull.affine_dimension == 2 );
     }
   }
 
@@ -133,34 +158,37 @@ SCENARIO( "GenericQuickHull< ConvexHullIntegralKernel< 3 > > unit tests", "[genq
   typedef QHull::IndexRange                IndexRange;
 
   std::vector< Point > V1 = { Point{ 5,-2, 1 } };
-  std::vector< Point > X1 = makeRandomLatticePointsFromDirVectors( 10, V1 );
+  std::vector< Point > X1 = makeRandomLatticePointsFromDirVectors( 20, V1 );
   std::vector< Point > V2 = { Point{ 5,-2, 1 }, Point{ -3, 4, 2 } };
-  std::vector< Point > X2 = makeRandomLatticePointsFromDirVectors( 10, V2 );
+  std::vector< Point > X2 = makeRandomLatticePointsFromDirVectors( 20, V2 );
   std::vector< Point > V3 = { Point{ 5,-2, 1 }, Point{ -3, 4, 2 }, Point{ 1, -7, 11 } };
-  std::vector< Point > X3 = makeRandomLatticePointsFromDirVectors( 10, V3 );
+  std::vector< Point > X3 = makeRandomLatticePointsFromDirVectors( 20, V3 );
   
   GIVEN( "Given a 1-d lattice set in Z3 " ) {
-    QHull hull;
+    QHull hull( QHKernel(), debug_level );
     bool ok = hull.compute( X1, false );
     std::cout << hull << std::endl;
-    THEN( "Everything went fine." ) {
+    THEN( "Everything went fine and dim=1." ) {
       REQUIRE( ok );
+      REQUIRE( hull.affine_dimension == 1 );
     }
   }
   GIVEN( "Given a 2-d lattice set in Z3 " ) {
-    QHull hull;
+    QHull hull( QHKernel(), debug_level );
     bool ok = hull.compute( X2, false );
     std::cout << hull << std::endl;
-    THEN( "Everything went fine." ) {
+    THEN( "Everything went fine and dim=2." ) {
       REQUIRE( ok );
+      REQUIRE( hull.affine_dimension == 2 );
     }
   }
   GIVEN( "Given a 3-d lattice set in Z3 " ) {
-    QHull hull;
+    QHull hull( QHKernel(), debug_level );
     bool ok = hull.compute( X3, false );
     std::cout << hull << std::endl;
-    THEN( "Everything went fine." ) {
+    THEN( "Everything went fine and dim=3." ) {
       REQUIRE( ok );
+      REQUIRE( hull.affine_dimension == 3 );
     }
   }
 }
