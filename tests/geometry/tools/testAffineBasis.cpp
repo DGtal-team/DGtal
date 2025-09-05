@@ -340,7 +340,6 @@ SCENARIO( "AffineBasis< Point5i > unit tests", "[affine_basis][5i]" )
 
   unsigned int nb           = 0;
   unsigned int nb_s_parallel_l = 0;
-  unsigned int nb_l_parallel_s = 0;
   unsigned int nb_equal_big = 0;
   unsigned int nb_equal_N   = 0;
   unsigned int nb_equal_Nr  = 0;
@@ -364,15 +363,7 @@ SCENARIO( "AffineBasis< Point5i > unit tests", "[affine_basis][5i]" )
       nb_equal_N   += sameDirection( N_cast,  N_big  ) ? 1 : 0;
       nb_equal_Nr  += sameDirection( Nr_cast, Nr_big ) ? 1 : 0;
       nb           += 1;
-      // nb_l_parallel_s  += B. isParallel( Br ) ? 1 : 0;
       nb_s_parallel_l  += Br.isParallel( B  ) ? 1 : 0;
-      // if ( ! B.isParallel( Br ) )
-      //   {
-      //     std::cout << "* B is not // to Br:\n" << B << "\n";
-      //     for ( auto v : Br.basis() )
-      //       std::cout << "  v=" << v << " //=" << ( B.isParallel( v ) ? "True" : "False" )
-      //                 << "\n";
-      //   }
       if ( ! Br.isParallel( B ) )
         {
           std::cout << "* Br is not // to B:\n" << Br << "\n";
@@ -392,7 +383,6 @@ SCENARIO( "AffineBasis< Point5i > unit tests", "[affine_basis][5i]" )
   }
   THEN( "The LLL-reduced basis and the scaled-reduced basis are parallel" ) {
     REQUIRE( nb_s_parallel_l == nb );
-    // REQUIRE( nb_l_parallel_s == nb );
   }
 }
 
@@ -405,7 +395,6 @@ SCENARIO( "AffineBasis< Z10 > LLL tests", "[affine_basis][10d][LLL]" )
 {
   typedef SpaceND< 10, int64_t>            Space;
   typedef Space::Point                     Point;
-  typedef AffineGeometry< Point >          Affine;
   typedef AffineBasis< Point >             Basis;
 
 
