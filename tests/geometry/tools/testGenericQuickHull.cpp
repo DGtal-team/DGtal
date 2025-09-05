@@ -100,11 +100,12 @@ SCENARIO( "GenericQuickHull< ConvexHullIntegralKernel< 2 > > unit tests", "[genq
   typedef QHull::IndexRange                IndexRange;
 
   
-  GIVEN( "Given a set { (0,0), (-4,-1), (-3,5), (7,3), (5, -2) } " ) {
+  GIVEN( "Given a set { (0,0), (-4,-1), (-3,5), (7,3), (5, -2), (2, 2) } " ) {
     std::vector<Point> V
-      = { Point(0,0), Point(-4,-1), Point(-3,5), Point(7,3), Point(5, -2) };
-    QHull hull;
+      = { Point(0,0), Point(-4,-1), Point(-3,5), Point(7,3), Point(5, -2), Point(2,2) };
+    QHull hull( QHKernel(), 2);
     bool ok = hull.compute( V, false );
+    std::cout << hull << std::endl;
     THEN( "Everything went fine." ) {
       REQUIRE( ok );
     }
@@ -114,9 +115,52 @@ SCENARIO( "GenericQuickHull< ConvexHullIntegralKernel< 2 > > unit tests", "[genq
       = { Point(0,0), Point(-4,-1), Point(8,2), Point(16,4) };
     QHull hull;
     bool ok = hull.compute( V, false );
+    std::cout << hull << std::endl;
     THEN( "Everything went fine." ) {
       REQUIRE( ok );
     }
   }
 
+}
+
+SCENARIO( "GenericQuickHull< ConvexHullIntegralKernel< 3 > > unit tests", "[genquickhull][integral_kernel][3d]" )
+{
+  typedef ConvexHullIntegralKernel< 3 >    QHKernel;
+  typedef GenericQuickHull< QHKernel >     QHull;
+  typedef SpaceND< 3, int >                Space;      
+  typedef Space::Point                     Point;
+  typedef QHull::Index                     Index;
+  typedef QHull::IndexRange                IndexRange;
+
+  std::vector< Point > V1 = { Point{ 5,-2, 1 } };
+  std::vector< Point > X1 = makeRandomLatticePointsFromDirVectors( 10, V1 );
+  std::vector< Point > V2 = { Point{ 5,-2, 1 }, Point{ -3, 4, 2 } };
+  std::vector< Point > X2 = makeRandomLatticePointsFromDirVectors( 10, V2 );
+  std::vector< Point > V3 = { Point{ 5,-2, 1 }, Point{ -3, 4, 2 }, Point{ 1, -7, 11 } };
+  std::vector< Point > X3 = makeRandomLatticePointsFromDirVectors( 10, V3 );
+  
+  GIVEN( "Given a 1-d lattice set in Z3 " ) {
+    QHull hull;
+    bool ok = hull.compute( X1, false );
+    std::cout << hull << std::endl;
+    THEN( "Everything went fine." ) {
+      REQUIRE( ok );
+    }
+  }
+  GIVEN( "Given a 2-d lattice set in Z3 " ) {
+    QHull hull;
+    bool ok = hull.compute( X2, false );
+    std::cout << hull << std::endl;
+    THEN( "Everything went fine." ) {
+      REQUIRE( ok );
+    }
+  }
+  GIVEN( "Given a 3-d lattice set in Z3 " ) {
+    QHull hull;
+    bool ok = hull.compute( X3, false );
+    std::cout << hull << std::endl;
+    THEN( "Everything went fine." ) {
+      REQUIRE( ok );
+    }
+  }
 }

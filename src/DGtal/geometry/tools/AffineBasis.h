@@ -105,8 +105,20 @@ namespace DGtal
     /// @{
 
     /// Default constructor.
-    /// This create an affine basis of dimension 0 at the origin.
-    AffineBasis() = default;
+    /// This create the identity basis of the space.
+    ///
+    /// @param[in] tolerance the accepted oo-norm below which the
+    /// vector is null (used only for points with float/double
+    /// coordinates).
+    AffineBasis( const double tolerance = 1e-12)
+      : epsilon( tolerance )
+    {
+      first  = Point::zero;
+      second.resize( Point::dimension );
+      for ( auto k = 0; k < Point::dimension; k++ )
+        second[ k ] = Point::base( k );
+      _type = Type::SCALED_REDUCED;
+    }
 
     /// Constructor from points.
     ///

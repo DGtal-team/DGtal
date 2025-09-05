@@ -53,10 +53,14 @@
 
 namespace DGtal
 {
+  // Forward declaration.
+  template < typename TKernel > struct GenericQuickHull;
+
   namespace detail {
-    template <typename TKernel, Dimension K>
+    template <typename TParentKernel, typename TKernel, Dimension K>
     struct GenericQuickHullKernels
     {
+      typedef TParentKernel              ParentKernel;
       typedef TKernel                    Kernel;
       typedef Kernel                     Type;
       typedef std::size_t                Size;
@@ -68,18 +72,20 @@ namespace DGtal
       typedef typename QHull::IndexRange IndexRange;
       static const Dimension             dimension = K;
 
-      GenericQuickHullKernels( const Kernel& aKernel = Kernel() )
-        : kernel( aKernel )
+      GenericQuickHullKernels( GenericQuickHull< ParentKernel >* ptrGenQHull = nullptr )
+        : ptr_gen_qhull( ptrGenQHull ), lower_kernels( ptrGenQHull )
       {
-        std::cout << "[GenericQuickHullKernels<K," << K << ">::GenericQuickHullKernels]\n";
+        // std::cout << "[GenericQuickHullKernels<K," << K << ">::GenericQuickHullKernels]"
+        //           << " dim=" << ptr_gen_qhull->dimension << "\n";
       }
+      
       template <typename TInputPoint>
       bool compute( const std::vector< Size >& I,
                     const std::vector< TInputPoint >& X,
                     bool remove_duplicates )
       {
-        std::cout << "[GenericQuickHullKernels<K," << K << ">::compute]"
-                  << " #I=" << I.size() << " #X=" << X.size() << "\n";
+        // std::cout << "[GenericQuickHullKernels<K," << K << ">::compute]"
+        //           << " #I=" << I.size() << " #X=" << X.size() << "\n";
         typedef TInputPoint InputPoint;
         typedef AffineGeometry< InputPoint > Affine;
         typedef AffineBasis< InputPoint >    Basis;
@@ -89,36 +95,75 @@ namespace DGtal
           { // This kernel is not adapted => go to lower dimension
             return lower_kernels.compute( I, X, remove_duplicates );
           }
-        // Build points of affine basis
-        std::vector< InputPoint > Z( I.size() );
-        for ( auto i = 0; i < I.size(); i++ )
-          Z[ i ] = X[ I[ i ] ];
-        // Build the affine basis spanning the convex hull affine space.
-        Basis basis( Z, Basis::Type::SCALED_REDUCED );
+        ptr_gen_qhull->affine_dimension = dimension;
+        Basis basis;
+        if ( dimension != ptr_gen_qhull->dimension )
+          {
+            // Build points of affine basis
+            std::vector< InputPoint > Z( I.size() );
+            for ( auto i = 0; i < I.size(); i++ )
+              Z[ i ] = X[ I[ i ] ];
+            // Build the affine basis spanning the convex hull affine space.
+            basis = Basis( Z, Basis::Type::SCALED_REDUCED );
+          }
         // Build projected points on affine basis
         proj_dilation  = basis.projectPoints( proj_points, X );
+          
         // Compute convex hull using quickhull.
-        QHull hull;
+        QHull hull( Kernel(), ptr_gen_qhull->debug_level );
         bool ok_input = hull.setInput( proj_points, remove_duplicates );
         bool ok_hull  = hull.computeConvexHull( QHull::Status::VerticesCompleted );
-        std::vector< Point > positions;
-        hull.getVertexPositions( positions );
-        std::vector< IndexRange > faces;
-        hull.getFacetVertices( faces );
-        std::cout << "Convex hull #V=" << positions.size()
-                  << " #F=" << faces.size() << "\n";
+        if ( ! ok_hull || ! ok_input )
+          {
+            trace.error() << "[GenericQuickHullKernels::compute]"
+                          << " Error in quick hull computation.\n"
+                          << "qhull=" << hull << "\n";
+            return false;
+          }
+        //std::vector< Point > positions;
+        //hull.getVertexPositions( positions );
+        /// Copy back convex hull in initial space.
+        auto& points    = ptr_gen_qhull->points;
+        auto& positions = ptr_gen_qhull->positions;
+        auto& v2p       = ptr_gen_qhull->vertex2point;
+        auto& facets    = ptr_gen_qhull->facets;
+        points.resize( X.size() );
+        for ( Size i = 0; i < points.size(); i++ )
+          points[ i ] = Affine::transform( X[ i ] );
+        hull.getVertex2Point( v2p );
+        hull.getFacetVertices( facets );
+        positions.resize( v2p.size() );
+        for ( Size i = 0; i < positions.size(); i++ )
+          positions[ i ] = X[ v2p[ i ] ];
+        if ( ptr_gen_qhull->debug_level >= 1 )
+          {
+            std::cout << "Generic Convex hull #V=" << positions.size()
+                      << " #F=" << facets.size() << "\n";
+            if ( ptr_gen_qhull->debug_level >= 2 )
+            for ( Size i = 0; i < facets.size(); i++ )
+              {
+                std::cout << "F_" << i << " = (";
+                for ( auto v : facets[ i ] ) std::cout << " " << v;
+                std::cout << " )\n";
+              }
+            for ( Size i = 0; i < positions.size(); i++ )
+              std::cout << "V_" << i << " pi(x)=" << proj_points[ v2p[ i ] ]
+                        << " -> x=" << positions[ i ] << "\n";
+          }
         return ok_input && ok_hull;
       }
-      
-      Kernel kernel; ///< the quickhull computation kernel
+
+      GenericQuickHull< ParentKernel >* ptr_gen_qhull;
+      GenericQuickHullKernels< ParentKernel, LowerKernel, K-1> lower_kernels;
       std::vector< Point > proj_points;
       Scalar               proj_dilation;
-      GenericQuickHullKernels< LowerKernel, K-1> lower_kernels;
     };
 
-    template <typename TKernel>
-    struct GenericQuickHullKernels<TKernel, 1>
+    
+    template <typename TParentKernel, typename TKernel>
+    struct GenericQuickHullKernels<TParentKernel, TKernel, 1>
     {
+      typedef TParentKernel              ParentKernel;
       typedef TKernel                    Kernel;
       typedef Kernel                     Type;
       typedef std::size_t                Size;
@@ -128,17 +173,18 @@ namespace DGtal
       typedef std::vector< Index >       IndexRange;
       static const Dimension             dimension = 1;
 
-      GenericQuickHullKernels( const Kernel& aKernel = Kernel() )
-        : kernel( aKernel )
+      GenericQuickHullKernels( GenericQuickHull< ParentKernel >* ptrGenQHull = nullptr )
+        : ptr_gen_qhull( ptrGenQHull )
       {
-        std::cout << "[GenericQuickHullKernels<K,1>::GenericQuickHullKernels]\n";
+        // std::cout << "[GenericQuickHullKernels<K,1>::GenericQuickHullKernels]"
+        //           << " dim=" << ptr_gen_qhull->dimension << "\n";
       }
       template <typename TInputPoint>
       bool compute( const std::vector< Size >& I,
                     const std::vector< TInputPoint >& X,
                     bool remove_duplicates )
       {
-        std::cout << "[GenericQuickHullKernels<K,1>::GenericQuickHullKernels]\n";
+        // std::cout << "[GenericQuickHullKernels<K,1>::GenericQuickHullKernels]\n";
         typedef TInputPoint InputPoint;
         typedef AffineGeometry< InputPoint > Affine;
         typedef AffineBasis< InputPoint >    Basis;
@@ -147,14 +193,14 @@ namespace DGtal
         if ( (I.size()-1) != dimension )
           { // This kernel is not adapted => lower dimension is either
             // 0, ie. 1 point, or -1, ie. 0 points.
+            // TODO
             if ( ! X.empty() )
-              std::cout << "Convex hull dim=0 #V=" << 1
-                        << " #F=" << 0 << "\n";
+              ptr_gen_qhull->affine_dimension = 0;
             else
-              std::cout << "Convex hull dim=-1 #V=" << 0
-                        << " #F=" << 0 << "\n";
+              ptr_gen_qhull->affine_dimension = -1;
             return true;
           }
+        ptr_gen_qhull->affine_dimension = dimension;
         // Build points of affine basis
         std::vector< InputPoint > Z( I.size() );
         for ( auto i = 0; i < I.size(); i++ )
@@ -173,12 +219,11 @@ namespace DGtal
             else if ( proj_points[ i ][ 0 ] > proj_points[ right ][ 0 ] )
               right = i;
           }
-        std::cout << "Convex hull #V=2=(" << left << "," << right << ")"
-                  << " #F=" << 0 << "\n";
+        // todo
         return true;
       }
 
-      Kernel               kernel;
+      GenericQuickHull< ParentKernel >* ptr_gen_qhull;
       std::vector< Point > proj_points;
       Scalar               proj_dilation;
     };
@@ -223,7 +268,7 @@ namespace DGtal
     /// @param[in] K_ a kernel for computing facet geometries.
     /// @param[in] dbg the trace level, from 0 (no) to 3 (very verbose).
     GenericQuickHull( const Kernel& K_ = Kernel(), int dbg = 0 )
-      : generic_kernels( K_ ), debug_level( dbg )
+      : kernel( K_ ), generic_kernels( this ), debug_level( dbg )
     {}
 
     /// @}
@@ -256,7 +301,6 @@ namespace DGtal
       std::vector< Size > indices = Affine::affineSubset( input_points );
       return generic_kernels.compute( indices, input_points, remove_duplicates );
     }
-    
 
     /// @}
     
@@ -271,7 +315,13 @@ namespace DGtal
      */
     void selfDisplay ( std::ostream & out ) const
     {
-      out << "[GenericGenericQuickHull]";
+      out << "[GenericQuickHull"
+          << " dim=" << dimension
+          << " #in=" << points.size()
+          << " aff_dim=" << affine_dimension
+          << " #V=" << positions.size()
+          << " #F=" << facets.size()
+          << "]";
     }
   
     /**
@@ -290,12 +340,24 @@ namespace DGtal
     /// @{
   
   public:
+    /// The main quickhull kernel that is used for convex hull computations.
+    Kernel kernel;
     /// debug_level from 0:no to 2
     int debug_level; 
-    /// the set of points, indexed as in the array.
-    std::vector< Point > points;
+    /// The delegate computation kernel that can take care of all kind
+    /// of convex hulls, full dimensional or degenerated.
+    detail::GenericQuickHullKernels<TKernel, TKernel, dimension> generic_kernels;
 
-    detail::GenericQuickHullKernels<TKernel, dimension> generic_kernels;
+    /// the set of input points, indexed as in the input
+    std::vector< Point >      points;
+    /// The affine dimension of the input set.
+    int64_t                   affine_dimension;
+    /// The positions of the vertices (a subset of the input points).
+    std::vector< Point >      positions;
+    /// The range giving for each facet the indices of its vertices.
+    std::vector< IndexRange > facets;
+    /// The indices of the vertices of the convex hull in the original set.
+    IndexRange                vertex2point;
     
     /// @}
     

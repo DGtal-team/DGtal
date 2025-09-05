@@ -1525,11 +1525,11 @@ namespace DGtal
       if ( status() >= Status::VerticesCompleted && status() <= Status::AllCompleted )
         out << " #V=" << nbVertices();
       out << "]";
-      if ( status() >= Status::FacetsCompleted && status() <= Status::AllCompleted
-           && nbFacets() == 24 ) {
-        for ( auto f : facets ) f.display( out );
-        for ( auto v : v2p ) out << points[ v2p[ v ] ] << std::endl;
-      }
+      // if ( status() >= Status::FacetsCompleted && status() <= Status::AllCompleted
+      //      && nbFacets() == 24 ) {
+      //   for ( auto f : facets ) f.display( out );
+      //   for ( auto v : v2p ) out << points[ v2p[ v ] ] << std::endl;
+      // }
     }
   
     /**
