@@ -46,10 +46,12 @@
 #include <queue>
 #include <set>
 #include "DGtal/base/Common.h"
+#include "DGtal/kernel/SpaceND.h"
 #include "DGtal/geometry/tools/AffineGeometry.h"
 #include "DGtal/geometry/tools/AffineBasis.h"
 #include "DGtal/geometry/tools/QuickHull.h"
 #include "DGtal/geometry/tools/QuickHullKernels.h"
+#include "DGtal/geometry/volumes/BoundedLatticePolytope.h"
 
 namespace DGtal
 {
@@ -66,17 +68,29 @@ namespace DGtal
       typedef std::size_t                Size;
       typedef typename Kernel::LowerSelf LowerKernel;
       typedef typename Kernel::CoordinatePoint Point;
-      typedef typename Point::Coordinate Scalar;
+      typedef typename Point::Coordinate Integer;
       typedef QuickHull< Kernel >        QHull;
       typedef typename QHull::Index      Index;
       typedef typename QHull::IndexRange IndexRange;
+      typedef SpaceND< K, Integer >      Space;
+      typedef BoundedLatticePolytope< Space > LatticePolytope;
       static const Dimension             dimension = K;
 
-      GenericQuickHullKernels( GenericQuickHull< ParentKernel >* ptrGenQHull = nullptr )
-        : ptr_gen_qhull( ptrGenQHull ), lower_kernels( ptrGenQHull )
+      GenericQuickHullKernels( GenericQuickHull< ParentKernel >* ptrGenQHull )
+        : ptr_gen_qhull( ptrGenQHull ), lower_kernels( ptrGenQHull ),
+          hull( Kernel(), ptrGenQHull->debug_level )
       {
-        // std::cout << "[GenericQuickHullKernels<K," << K << ">::GenericQuickHullKernels]"
-        //           << " dim=" << ptr_gen_qhull->dimension << "\n";
+        clear();
+      }
+
+      /// Clears the object as if no computations have been made.
+      void clear()
+      {
+        hull.clear(); 
+        proj_points.clear();
+        proj_dilation = 1;
+        polytope.clear();
+        lower_kernels.clear();
       }
       
       template <typename TInputPoint>
@@ -84,13 +98,13 @@ namespace DGtal
                     const std::vector< TInputPoint >& X,
                     bool remove_duplicates )
       {
-        // std::cout << "[GenericQuickHullKernels<K," << K << ">::compute]"
-        //           << " #I=" << I.size() << " #X=" << X.size() << "\n";
         typedef TInputPoint InputPoint;
         typedef AffineGeometry< InputPoint > Affine;
         typedef AffineBasis< InputPoint >    Basis;
         typedef AffineGeometry< Point >      ProjAffine;
         typedef AffineBasis< Point >         ProjBasis;
+        hull.clear();
+        polytope.clear();
         if ( (I.size()-1) != dimension )
           { // This kernel is not adapted => go to lower dimension
             return lower_kernels.compute( I, X, remove_duplicates );
@@ -115,7 +129,6 @@ namespace DGtal
         proj_dilation  = basis.projectPoints( proj_points, X );
           
         // Compute convex hull using quickhull.
-        QHull hull( Kernel(), ptr_gen_qhull->debug_level );
         bool ok_input = hull.setInput( proj_points, remove_duplicates );
         bool ok_hull  = hull.computeConvexHull( QHull::Status::VerticesCompleted );
         if ( ! ok_hull || ! ok_input )
@@ -145,10 +158,71 @@ namespace DGtal
         return ok_input && ok_hull;
       }
 
+      bool makePolytope()
+      {
+        typedef typename LatticePolytope::Domain     Domain;
+        typedef typename LatticePolytope::HalfSpace  PolytopeHalfSpace;
+        typedef typename QHull::HalfSpace            ConvexHullHalfSpace;
+        std::cout << "[makePolytope d=" << dimension << "]\n";
+        if ( ptr_gen_qhull->affine_dimension != dimension )
+          { // This kernel is not adapted => go to lower dimension
+            return lower_kernels.makePolytope();
+          }
+        // If polytope is already initialized returns.
+        if ( polytope.nbHalfSpaces() > 0 ) return true;
+        // Compute domain
+        Point l = proj_points[ 0 ];
+        Point u = proj_points[ 0 ];
+        for ( std::size_t i = 1; i < proj_points.size(); i++ )
+          {
+            const auto& p = proj_points[ i ];
+            l = l.inf( p );
+            u = u.sup( p );
+          }
+        Domain domain( l, u );
+        
+        // Initialize polytope
+        std::vector< ConvexHullHalfSpace > HS;
+        std::vector< PolytopeHalfSpace >   PHS;
+        hull.getFacetHalfSpaces( HS );
+        PHS.reserve( HS.size() );
+        for ( auto& H : HS ) {
+          Point  N;
+          Integer nu;
+          for ( Dimension i = 0; i < dimension; ++i )
+            N[ i ] = IntegerConverter< dimension, Integer >
+              ::cast( H.internalNormal()[ i ] );
+          nu = IntegerConverter< dimension, Integer >::cast( H.internalIntercept() );
+          PHS.emplace_back( N, nu );
+        }
+        polytope = LatticePolytope( domain, PHS.cbegin(), PHS.cend(), false, true );
+        return true;
+      }
+
+      /// Computes the number of integer points lying within the polytope.
+      ///
+      /// @return the number of integer points lying within the polytope,
+      /// or -1 if their was a problem when computing the polytope.
+      ///
+      /// @note Quite fast: obtained by line intersection, see
+      /// BoundedLatticePolytopeCounter
+      Integer count()
+      {
+        if ( ptr_gen_qhull->affine_dimension != dimension )
+          { // This kernel is not adapted => go to lower dimension
+            return lower_kernels.count();
+          }
+        // If polytope is not initialized returns error.
+        if ( polytope.nbHalfSpaces() == 0 ) return -1;
+        return polytope.count();
+      }
+      
       GenericQuickHull< ParentKernel >* ptr_gen_qhull;
       GenericQuickHullKernels< ParentKernel, LowerKernel, K-1> lower_kernels;
+      QHull                hull; ///< the quick hull object that computes the convex hull
       std::vector< Point > proj_points;
-      Scalar               proj_dilation;
+      Integer              proj_dilation;
+      LatticePolytope      polytope;
     };
 
     
@@ -160,17 +234,25 @@ namespace DGtal
       typedef Kernel                     Type;
       typedef std::size_t                Size;
       typedef typename Kernel::CoordinatePoint Point;
-      typedef typename Point::Coordinate Scalar;
+      typedef typename Point::Coordinate Integer;
       typedef std::size_t                Index;
       typedef std::vector< Index >       IndexRange;
+      typedef SpaceND<1, Integer>        Space;
       static const Dimension             dimension = 1;
 
-      GenericQuickHullKernels( GenericQuickHull< ParentKernel >* ptrGenQHull = nullptr )
+      GenericQuickHullKernels( GenericQuickHull< ParentKernel >* ptrGenQHull )
         : ptr_gen_qhull( ptrGenQHull )
       {
-        // std::cout << "[GenericQuickHullKernels<K,1>::GenericQuickHullKernels]"
-        //           << " dim=" << ptr_gen_qhull->dimension << "\n";
+        clear();
       }
+
+      /// Clears the object as if no computations have been made.
+      void clear()
+      {
+        proj_points.clear();
+        proj_dilation = 1;
+      }
+      
       template <typename TInputPoint>
       bool compute( const std::vector< Size >& I,
                     const std::vector< TInputPoint >& X,
@@ -204,7 +286,8 @@ namespace DGtal
                 positions.resize( 1 );
                 positions[ 0 ] = X[ 0 ];
                 v2p.resize( 1 );
-                v2p[ 0 ] = 0;
+                v2p[ 0 ]   = 0;
+                nb_in_hull = 1;
               }
             else
               {
@@ -213,6 +296,7 @@ namespace DGtal
                 ppoints.clear();
                 positions.clear();
                 v2p.clear();
+                nb_in_hull = 0;
               }
             return true;
           }
@@ -255,12 +339,35 @@ namespace DGtal
         positions.resize( 2 );
         positions[ 0 ] = X[ v2p[ 0 ] ];
         positions[ 1 ] = X[ v2p[ 1 ] ];
+        auto    dx  = Affine::transform( points[ v2p[ 1 ] ] - points[ v2p[ 0 ] ] );
+        auto    sdx = Affine::simplifiedVector( dx );
+        Integer n   = dx.normInfinity() / sdx.normInfinity();
+        nb_in_hull  = n+1;
         return true;
       }
 
+      bool makePolytope()
+      {
+        std::cout << "[makePolytope d=" << dimension << "]\n";
+        return true;
+      }
+
+      /// Computes the number of integer points lying within the polytope.
+      ///
+      /// @return the number of integer points lying within the polytope,
+      /// or -1 if their was a problem when computing the polytope.
+      ///
+      /// @note Quite fast: obtained by line intersection, see
+      /// BoundedLatticePolytopeCounter
+      Integer count() const
+      {
+        return nb_in_hull;
+      }
+      
       GenericQuickHull< ParentKernel >* ptr_gen_qhull;
-      std::vector< Point > proj_points;
-      Scalar               proj_dilation;
+      std::vector< Point >              proj_points;
+      Integer                           proj_dilation;
+      Integer                           nb_in_hull;                   
     };
   }
   
@@ -280,8 +387,8 @@ namespace DGtal
     typedef TKernel                    Kernel;
     typedef typename Kernel::CoordinatePoint     Point;
     typedef typename Kernel::CoordinateVector    Vector;
-    typedef typename Kernel::CoordinateScalar    Scalar;
-    typedef typename Kernel::InternalScalar      InternalScalar;
+    typedef typename Kernel::CoordinateScalar    Integer;
+    typedef typename Kernel::InternalScalar      InternalInteger;
     typedef std::size_t                Index;
     typedef std::size_t                Size;
     BOOST_STATIC_ASSERT(( Point::dimension == Vector::dimension ));
@@ -304,8 +411,17 @@ namespace DGtal
     /// @param[in] dbg the trace level, from 0 (no) to 3 (very verbose).
     GenericQuickHull( const Kernel& K_ = Kernel(), int dbg = 0 )
       : kernel( K_ ), generic_kernels( this ), debug_level( dbg )
-    {}
+    {
+      clear();
+    }
 
+    /// Clears the object as if no computations have been made.
+    void clear()
+    {
+      affine_dimension  = -1;
+      polytope_computed = false;
+      generic_kernels.clear();
+    }
     /// @}
     
     // -------------------------- Convex hull services ----------------------------
@@ -353,6 +469,21 @@ namespace DGtal
       return ok;
     }
 
+    /// Computes the number of integer points lying within the polytope.
+    ///
+    /// @return the number of integer points lying within the polytope,
+    /// or -1 if their was a problem when computing the polytope.
+    ///
+    /// @note Quite fast: obtained by line intersection, see
+    /// BoundedLatticePolytopeCounter
+    Integer count()
+    {
+      if ( ! polytope_computed )
+        polytope_computed = generic_kernels.makePolytope();
+      if ( ! polytope_computed ) return -1; 
+      return generic_kernels.count();
+    }
+    
     /// @}
     
     // ----------------------- Interface --------------------------------------
@@ -411,7 +542,8 @@ namespace DGtal
     std::vector< IndexRange > facets;
     /// The indices of the vertices of the convex hull in the original set.
     IndexRange                vertex2point;
-    
+    /// When 'true', the polytope has been computed.
+    bool                      polytope_computed { false };
     /// @}
     
   };

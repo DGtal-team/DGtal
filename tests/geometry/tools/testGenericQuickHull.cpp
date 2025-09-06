@@ -110,6 +110,7 @@ SCENARIO( "GenericQuickHull< ConvexHullIntegralKernel< 2 > > unit tests", "[genq
     THEN( "Everything went fine and dim=-1." ) {
       REQUIRE( ok );
       REQUIRE( hull.affine_dimension == -1 );
+      REQUIRE( hull.count() == 0 );
     }
   }
   GIVEN( "Given a set { (2,1), (2,1) } " ) {
@@ -121,6 +122,7 @@ SCENARIO( "GenericQuickHull< ConvexHullIntegralKernel< 2 > > unit tests", "[genq
     THEN( "Everything went fine and dim=0." ) {
       REQUIRE( ok );
       REQUIRE( hull.affine_dimension == 0 );
+      REQUIRE( hull.count() == 1 );
     }
   }
   GIVEN( "Given a set { (0,0), (-4,-1), (8, 2), (16,4) } " ) {
@@ -132,6 +134,7 @@ SCENARIO( "GenericQuickHull< ConvexHullIntegralKernel< 2 > > unit tests", "[genq
     THEN( "Everything went fine and dim=1." ) {
       REQUIRE( ok );
       REQUIRE( hull.affine_dimension == 1 );
+      REQUIRE( hull.count() == 6 );
     }
   }
   GIVEN( "Given a set { (0,0), (-4,-1), (-3,5), (7,3), (5, -2), (2, 2) } " ) {
@@ -143,6 +146,7 @@ SCENARIO( "GenericQuickHull< ConvexHullIntegralKernel< 2 > > unit tests", "[genq
     THEN( "Everything went fine and dim=2." ) {
       REQUIRE( ok );
       REQUIRE( hull.affine_dimension == 2 );
+      REQUIRE( hull.count() > V.size() );
     }
   }
 
@@ -169,8 +173,10 @@ SCENARIO( "GenericQuickHull< ConvexHullIntegralKernel< 3 > > unit tests", "[genq
     bool ok = hull.compute( X1, false );
     std::cout << hull << std::endl;
     THEN( "Everything went fine and dim=1." ) {
+      CAPTURE( hull.positions );
       REQUIRE( ok );
       REQUIRE( hull.affine_dimension == 1 );
+      REQUIRE( hull.count() >= 2 );
     }
   }
   GIVEN( "Given a 2-d lattice set in Z3 " ) {
@@ -180,6 +186,7 @@ SCENARIO( "GenericQuickHull< ConvexHullIntegralKernel< 3 > > unit tests", "[genq
     THEN( "Everything went fine and dim=2." ) {
       REQUIRE( ok );
       REQUIRE( hull.affine_dimension == 2 );
+      REQUIRE( hull.count() >= 3 );
     }
   }
   GIVEN( "Given a 3-d lattice set in Z3 " ) {
@@ -189,6 +196,7 @@ SCENARIO( "GenericQuickHull< ConvexHullIntegralKernel< 3 > > unit tests", "[genq
     THEN( "Everything went fine and dim=3." ) {
       REQUIRE( ok );
       REQUIRE( hull.affine_dimension == 3 );
+      REQUIRE( hull.count() >= 4 );
     }
   }
 }
