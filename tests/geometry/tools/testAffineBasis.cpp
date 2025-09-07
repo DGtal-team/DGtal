@@ -143,7 +143,7 @@ SCENARIO( "AffineBasis< Point2i > unit tests", "[affine_basis][2i]" )
     Point o( 0, 0 );
     std::vector<Point> X
       = { Point(8,2), Point(-4,-1), Point(-8,-2), Point(16,4), Point(200,50) };
-    Basis B( o, X, Basis::Type::SCALED_REDUCED );
+    Basis B( o, X, Basis::Type::ECHELON_REDUCED );
     THEN( "When reduced, it has dimension 1" ) {
       CAPTURE( B.basis() );
       REQUIRE( B.dimension() == 1 );
@@ -198,7 +198,7 @@ SCENARIO( "AffineBasis< Point4i > unit tests", "[affine_basis][4i]" )
   GIVEN( "Given X a set of randomly generated points by adding linear combinations of 1 lattice vectors" ) {
     std::vector< Point > V = { Point{ 3, 1, 0, 2 } };
     auto X = makeRandomLatticePointsFromDirVectors( 20, V );
-    Basis B( X, Basis::Type::SCALED_REDUCED );
+    Basis B( X, Basis::Type::ECHELON_REDUCED );
     THEN( "When reduced, it has dimension 1" ) {
       CAPTURE( B.basis() );
       REQUIRE( B.dimension() == 1 );
@@ -213,7 +213,7 @@ SCENARIO( "AffineBasis< Point4i > unit tests", "[affine_basis][4i]" )
   GIVEN( "Given X a set of randomly generated points by adding linear combinations of 2 lattice vectors" ) {
     std::vector< Point > V = { Point{ 3, 1, 0, 2 }, Point{ -2, -1, 2, 7 } };
     auto X = makeRandomLatticePointsFromDirVectors( 20, V );
-    Basis B( X, Basis::Type::SCALED_REDUCED );
+    Basis B( X, Basis::Type::ECHELON_REDUCED );
     THEN( "When reduced, basis has dimension 2" ) {
       CAPTURE( B.basis() );
       REQUIRE( B.dimension() == 2 );
@@ -272,11 +272,11 @@ SCENARIO( "AffineBasis< Point4i > projection tests", "[affine_basis][4i][4d]" )
   GIVEN( "Given X a set of randomly generated points by adding linear combinations of 2 lattice vectors, and Y the same set but with real coordinates" ) {
     std::vector< Point > V = { Point{ 3, 4, 0, 2 }, Point{ -2, -1, 5, -7 } };
     auto X = makeRandomLatticePointsFromDirVectors( 20, V );
-    Basis B( X, Basis::Type::SCALED_REDUCED );
+    Basis B( X, Basis::Type::ECHELON_REDUCED );
     std::vector< RealPoint > Y( X.size() );
     for ( auto i = 0; i < Y.size(); i++ )
       Basis::transform( Y[ i ], X[ i ] );
-    RealBasis RB( Y, RealBasis::Type::SCALED_REDUCED );
+    RealBasis RB( Y, RealBasis::Type::ECHELON_REDUCED );
     std::vector< PPoint >     pX;
     std::vector< PRealPoint > pY;
     auto lcm  = B .projectPoints( pX, X );
@@ -349,7 +349,7 @@ SCENARIO( "AffineBasis< Point5i > unit tests", "[affine_basis][5i]" )
       std::vector< Point > Y;
       for ( auto i = 1; i < X.size(); i++ ) Y.push_back( X[ i ] - X[ 0 ] );
       Basis B ( X[ 0 ], Y, Basis::Type::LLL_REDUCED );
-      Basis Br( X, Basis::Type::SCALED_REDUCED );
+      Basis Br( X, Basis::Type::ECHELON_REDUCED );
       if ( functions::computeAffineDimension( X ) != 4 ) continue;
       auto N = functions::computeOrthogonalVectorToBasis( B.basis() );
       auto Nr = functions::computeOrthogonalVectorToBasis( Br.basis() );
@@ -381,7 +381,7 @@ SCENARIO( "AffineBasis< Point5i > unit tests", "[affine_basis][5i]" )
   THEN( "There is less overflow in orthogonal vector computation using non reduced basis" ) {
     REQUIRE( nb_equal_N >= nb_equal_Nr );
   }
-  THEN( "The LLL-reduced basis and the scaled-reduced basis are parallel" ) {
+  THEN( "The LLL-reduced basis and the echelon-reduced basis are parallel" ) {
     REQUIRE( nb_s_parallel_l == nb );
   }
 }
@@ -413,7 +413,7 @@ SCENARIO( "AffineBasis< Z10 > LLL tests", "[affine_basis][10d][LLL]" )
       Point{    1,   -5,  -23,  -27,   33,   64, -405, -315,  784, -868}
     };
     Point o = Point::zero;
-    Basis S( o, B, Basis::Type::SCALED_REDUCED );
+    Basis S( o, B, Basis::Type::ECHELON_REDUCED );
     Basis L( o, B, Basis::Type::LLL_REDUCED );
     THEN( "The LLL-reduced basis is canonic" ) {
       const auto&  V    = L.basis();
@@ -427,7 +427,7 @@ SCENARIO( "AffineBasis< Z10 > LLL tests", "[affine_basis][10d][LLL]" )
       CAPTURE( L.basis() );
       REQUIRE( nbok == nb );
     }
-    THEN( "The scaled-reduced basis is triangular" ) {
+    THEN( "The echelon-reduced basis is triangular" ) {
       const auto&  V    = S.basis();
       unsigned int nb   = 0;
       unsigned int nbok = 0;
@@ -440,7 +440,7 @@ SCENARIO( "AffineBasis< Z10 > LLL tests", "[affine_basis][10d][LLL]" )
       CAPTURE( S.basis() );
       REQUIRE( nbok == nb );
     }
-    THEN( "The LLL-reduced basis is parallel to the scaled-reduced basis" ) {
+    THEN( "The LLL-reduced basis is parallel to the echelon-reduced basis" ) {
       REQUIRE( S.isParallel( L ) );
     }
   }
@@ -461,11 +461,11 @@ SCENARIO( "AffineBasis< Point5i > projection tests", "[affine_basis][5i][5d]" )
     typedef Space2::RealPoint                PRealPoint;
     std::vector< Point > V = { Point{ 3, 4, 0, 2, -5 }, Point{ -2, -1, 5, -7, 1 } };
     auto X = makeRandomLatticePointsFromDirVectors( 20, V );
-    Basis B( X, Basis::Type::SCALED_REDUCED );
+    Basis B( X, Basis::Type::ECHELON_REDUCED );
     std::vector< RealPoint > Y( X.size() );
     for ( auto i = 0; i < Y.size(); i++ )
       Basis::transform( Y[ i ], X[ i ] );
-    RealBasis RB( Y, RealBasis::Type::SCALED_REDUCED );
+    RealBasis RB( Y, RealBasis::Type::ECHELON_REDUCED );
     std::vector< PPoint >     pX;
     std::vector< PRealPoint > pY;
     auto lcm  = B .projectPoints( pX, X );
@@ -522,11 +522,11 @@ SCENARIO( "AffineBasis< Point5i > projection tests", "[affine_basis][5i][5d]" )
                                Point{ -2, -1, 5, -7, 1 },
                                Point{ -5, 2, 11, 1, 4 } };
     auto X = makeRandomLatticePointsFromDirVectors( 20, V );
-    Basis B( X, Basis::Type::SCALED_REDUCED );
+    Basis B( X, Basis::Type::ECHELON_REDUCED );
     std::vector< RealPoint > Y( X.size() );
     for ( auto i = 0; i < Y.size(); i++ )
       Basis::transform( Y[ i ], X[ i ] );
-    RealBasis RB( Y, RealBasis::Type::SCALED_REDUCED );
+    RealBasis RB( Y, RealBasis::Type::ECHELON_REDUCED );
     std::vector< PPoint >     pX;
     std::vector< PRealPoint > pY;
     auto lcm  = B .projectPoints( pX, X );

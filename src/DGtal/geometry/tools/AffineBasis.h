@@ -95,7 +95,7 @@ namespace DGtal
 
     enum struct Type {
       INVALID = 0,        ///< invalid basis 
-      SCALED_REDUCED, ///< scaled matrix
+      ECHELON_REDUCED, ///< echelon matrix
       LLL_REDUCED     ///< delta-LLL reduced matrix
     };
     
@@ -117,15 +117,15 @@ namespace DGtal
       second.resize( Point::dimension );
       for ( auto k = 0; k < Point::dimension; k++ )
         second[ k ] = Point::base( k );
-      _type = Type::SCALED_REDUCED;
+      _type = Type::ECHELON_REDUCED;
     }
 
     /// Constructor from points.
     ///
     /// @param[in] points the range of points belonging to the affine space.
     ///
-    /// @param[in] type if Type::SCALED, reduces the basis so that it
-    /// forms a scaled matrix, otherwise computes its
+    /// @param[in] type if Type::ECHELON, reduces the basis so that it
+    /// forms a echelon matrix, otherwise computes its
     /// delta-LLL-lattice.
     ///
     /// @param[in] delta the parameter \f$ \delta \f$ of
@@ -156,8 +156,8 @@ namespace DGtal
     /// @param[in] origin the origin of the affine basis
     /// @param[in] basis the range of vectors forming the basis
     ///
-    /// @param[in] type if Type::SCALED, reduces the basis so that it
-    /// forms a scaled matrix, otherwise computes its
+    /// @param[in] type if Type::ECHELON, reduces the basis so that it
+    /// forms a echelon matrix, otherwise computes its
     /// delta-LLL-lattice.
     ///
     /// @param[in] is_reduced when 'true', assumes that the given
@@ -197,11 +197,11 @@ namespace DGtal
     ///
     void reduce( AffineBasis::Type type, double delta )
     {
-      if ( type == Type::SCALED_REDUCED )
-        reduceAsScaled();
+      if ( type == Type::ECHELON_REDUCED )
+        reduceAsEchelon();
       else if ( type == Type::LLL_REDUCED )
         {
-          reduceAsScaled();
+          reduceAsEchelon();
           reduceAsLLL( delta, (Scalar) 0 );
         }
     }
@@ -239,8 +239,8 @@ namespace DGtal
     bool isParallel( const Self& other ) const
     {
       if ( dimension() != other.dimension() ) return false;
-      if ( _type != Type::SCALED_REDUCED )
-        trace.error() << "[AffineBasis::isParallel] Requires type=SCALED_REDUCED\n";
+      if ( _type != Type::ECHELON_REDUCED )
+        trace.error() << "[AffineBasis::isParallel] Requires type=ECHELON_REDUCED\n";
       for ( const auto& b : other.second )
         if ( ! isParallel( b ) ) return false;
       return true;
@@ -454,7 +454,7 @@ namespace DGtal
     }
 
     /// @return 'true' if and only if this object is in a consistent
-    /// state. Here it means that the matrix is scaled or LLL-reduced.
+    /// state. Here it means that the matrix is echelon or LLL-reduced.
     bool isValid() const
     {
       return _type != Type::INVALID;
@@ -463,9 +463,9 @@ namespace DGtal
     /// @return the type of matrix as a string
     std::string reductionTypeName() const
     {
-      if ( _type == Type::INVALID )             return "INVALID";
-      else if ( _type == Type::SCALED_REDUCED ) return "SCALED";
-      else if ( _type == Type::LLL_REDUCED )    return "LLL";
+      if ( _type == Type::INVALID )              return "INVALID";
+      else if ( _type == Type::ECHELON_REDUCED ) return "ECHELON";
+      else if ( _type == Type::LLL_REDUCED )     return "LLL";
       else return "";
     }
     /// @}
@@ -495,8 +495,8 @@ namespace DGtal
     }
     
     /// Reduces the basis so that each basis vector is normalized,
-    /// removes linearly dependent vectors, and builds a scaled matrix.
-    void reduceAsScaled()
+    /// removes linearly dependent vectors, and builds a echelon matrix.
+    void reduceAsEchelon()
     {
       for ( auto& v : second )
         v = Affine::simplifiedVector( v );
@@ -523,12 +523,12 @@ namespace DGtal
         if ( is_independent[ i ] )
           new_basis.push_back( second[ i ] );
       std::swap( second, new_basis );
-      orderScaledBasis();
-      _type = Type::SCALED_REDUCED;
+      orderEchelonBasis();
+      _type = Type::ECHELON_REDUCED;
     }
 
     /// Guarantees that the basis is in echelon form.
-    void orderScaledBasis()
+    void orderEchelonBasis()
     {
       auto compare = [this] ( const Point& v, const Point& w ) -> bool
       {

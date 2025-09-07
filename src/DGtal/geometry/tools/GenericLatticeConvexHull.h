@@ -130,7 +130,7 @@ namespace DGtal
             for ( auto i = 0; i < I.size(); i++ )
               Z[ i ] = X[ I[ i ] ];
             // Build the affine basis spanning the convex hull affine space.
-            basis = Basis( Z, Basis::Type::SCALED_REDUCED );
+            basis = Basis( Z, Basis::Type::ECHELON_REDUCED );
           }
         // Build projected points on affine basis
         proj_dilation  = basis.projectPoints( proj_points, X );
@@ -321,7 +321,7 @@ namespace DGtal
             for ( auto i = 0; i < I.size(); i++ )
               Z[ i ] = X[ I[ i ] ];
             // Build the affine basis spanning the convex hull affine space.
-            basis = Basis( Z, Basis::Type::SCALED_REDUCED );
+            basis = Basis( Z, Basis::Type::ECHELON_REDUCED );
           }
         // Build projected points on affine basis
         proj_dilation  = basis.projectPoints( proj_points, X );
