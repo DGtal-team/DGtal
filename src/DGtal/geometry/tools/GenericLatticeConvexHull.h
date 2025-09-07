@@ -17,26 +17,26 @@
 #pragma once
 
 /**
- * @file GenericQuickHull.h
+ * @file GenericLatticeConvexHull.h
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2025/09/04
  *
- * Header file for module GenericQuickHull.cpp
+ * Header file for module GenericLatticeConvexHull.cpp
  *
  * This file is part of the DGtal library.
  */
 
-#if defined(GenericQuickHull_RECURSES)
-#error Recursive header files inclusion detected in GenericQuickHull.h
-#else // defined(GenericQuickHull_RECURSES)
+#if defined(GenericLatticeConvexHull_RECURSES)
+#error Recursive header files inclusion detected in GenericLatticeConvexHull.h
+#else // defined(GenericLatticeConvexHull_RECURSES)
 /** Prevents recursive inclusion of headers. */
-#define GenericQuickHull_RECURSES
+#define GenericLatticeConvexHull_RECURSES
 
-#if !defined GenericQuickHull_h
+#if !defined GenericLatticeConvexHull_h
 /** Prevents repeated inclusion of headers. */
-#define GenericQuickHull_h
+#define GenericLatticeConvexHull_h
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
@@ -56,17 +56,25 @@
 namespace DGtal
 {
   // Forward declaration.
-  template < typename TKernel > struct GenericQuickHull;
+  template < Dimension dim,
+             typename TCoordinateInteger,
+             typename TInternalInteger >
+  struct GenericLatticeConvexHull;
 
   namespace detail {
-    template <typename TParentKernel, typename TKernel, Dimension K>
-    struct GenericQuickHullKernels
+    template < Dimension dim,
+               typename TCoordinateInteger,
+               typename TInternalInteger,
+               Dimension K >
+    struct GenericLatticeConvexHullKernels
     {
-      typedef TParentKernel              ParentKernel;
-      typedef TKernel                    Kernel;
-      typedef Kernel                     Type;
+      typedef ConvexHullIntegralKernel
+      < dim,TCoordinateInteger,TInternalInteger > ParentKernel;
+      typedef ConvexHullIntegralKernel
+      < K,TCoordinateInteger,TInternalInteger > Kernel;
+      typedef detail::GenericLatticeConvexHullKernels
+      < dim, TCoordinateInteger, TInternalInteger, K-1> LowerKernels;
       typedef std::size_t                Size;
-      typedef typename Kernel::LowerSelf LowerKernel;
       typedef typename Kernel::CoordinatePoint Point;
       typedef typename Point::Coordinate Integer;
       typedef QuickHull< Kernel >        QHull;
@@ -74,9 +82,12 @@ namespace DGtal
       typedef typename QHull::IndexRange IndexRange;
       typedef SpaceND< K, Integer >      Space;
       typedef BoundedLatticePolytope< Space > LatticePolytope;
+      typedef GenericLatticeConvexHull< dim,
+                                        TCoordinateInteger,
+                                        TInternalInteger > Computer;
       static const Dimension             dimension = K;
 
-      GenericQuickHullKernels( GenericQuickHull< ParentKernel >* ptrGenQHull )
+      GenericLatticeConvexHullKernels( Computer* ptrGenQHull )
         : ptr_gen_qhull( ptrGenQHull ), lower_kernels( ptrGenQHull ),
           hull( Kernel(), ptrGenQHull->debug_level )
       {
@@ -133,7 +144,7 @@ namespace DGtal
         bool ok_hull  = hull.computeConvexHull( QHull::Status::VerticesCompleted );
         if ( ! ok_hull || ! ok_input )
           {
-            trace.error() << "[GenericQuickHullKernels::compute]"
+            trace.error() << "[GenericLatticeConvexHullKernels::compute]"
                           << " Error in quick hull computation.\n"
                           << "qhull=" << hull << "\n";
             return false;
@@ -217,8 +228,8 @@ namespace DGtal
         return polytope.count();
       }
       
-      GenericQuickHull< ParentKernel >* ptr_gen_qhull;
-      GenericQuickHullKernels< ParentKernel, LowerKernel, K-1> lower_kernels;
+      Computer*            ptr_gen_qhull;
+      LowerKernels         lower_kernels;
       QHull                hull; ///< the quick hull object that computes the convex hull
       std::vector< Point > proj_points;
       Integer              proj_dilation;
@@ -226,11 +237,15 @@ namespace DGtal
     };
 
     
-    template <typename TParentKernel, typename TKernel>
-    struct GenericQuickHullKernels<TParentKernel, TKernel, 1>
+    template < Dimension dim,
+               typename TCoordinateInteger,
+               typename TInternalInteger >
+    struct GenericLatticeConvexHullKernels< dim, TCoordinateInteger, TInternalInteger, 1>
     {
-      typedef TParentKernel              ParentKernel;
-      typedef TKernel                    Kernel;
+      typedef ConvexHullIntegralKernel
+      < dim,TCoordinateInteger,TInternalInteger > ParentKernel;
+      typedef ConvexHullIntegralKernel
+      < 1,TCoordinateInteger,TInternalInteger > Kernel;
       typedef Kernel                     Type;
       typedef std::size_t                Size;
       typedef typename Kernel::CoordinatePoint Point;
@@ -238,9 +253,12 @@ namespace DGtal
       typedef std::size_t                Index;
       typedef std::vector< Index >       IndexRange;
       typedef SpaceND<1, Integer>        Space;
+      typedef GenericLatticeConvexHull< dim,
+                                        TCoordinateInteger,
+                                        TInternalInteger > Computer;
       static const Dimension             dimension = 1;
 
-      GenericQuickHullKernels( GenericQuickHull< ParentKernel >* ptrGenQHull )
+      GenericLatticeConvexHullKernels( Computer* ptrGenQHull )
         : ptr_gen_qhull( ptrGenQHull )
       {
         clear();
@@ -258,7 +276,7 @@ namespace DGtal
                     const std::vector< TInputPoint >& X,
                     bool  )
       {
-        // std::cout << "[GenericQuickHullKernels<K,1>::GenericQuickHullKernels]\n";
+        // std::cout << "[GenericLatticeConvexHullKernels<K,1>::GenericLatticeConvexHullKernels]\n";
         typedef TInputPoint InputPoint;
         typedef AffineGeometry< InputPoint > Affine;
         typedef AffineBasis< InputPoint >    Basis;
@@ -364,27 +382,39 @@ namespace DGtal
         return nb_in_hull;
       }
       
-      GenericQuickHull< ParentKernel >* ptr_gen_qhull;
-      std::vector< Point >              proj_points;
-      Integer                           proj_dilation;
-      Integer                           nb_in_hull;                   
+      Computer*            ptr_gen_qhull;
+      std::vector< Point > proj_points;
+      Integer              proj_dilation;
+      Integer              nb_in_hull;                   
     };
   }
   
   /////////////////////////////////////////////////////////////////////////////
-  // template class GenericQuickHull
+  // template class GenericLatticeConvexHull
 
-  /// Description of template class 'GenericQuickHull' <p> \brief Aim:
+  /// Description of template class 'GenericLatticeConvexHull' <p> \brief Aim:
   /// Implements the quickhull algorithm by Barber et al. \cite barber1996,
   /// a famous arbitrary dimensional convex hull
   /// computation algorithm. It relies on dedicated geometric kernels
   /// for computing and comparing facet geometries.
   ///
-  /// @tparam TKernel any type of GenericQuickHull kernel, like ConvexHullIntegralKernel.
-  template < typename TKernel >
-  struct GenericQuickHull
+  /// @tparam dim the dimension of the space of processed points.
+  ///
+  /// @tparam TCoordinateInteger the integer type that represents
+  /// coordinates of lattice points, a model of concepts::CInteger.
+  ///
+  /// @tparam TInternalInteger the integer type that is used for
+  /// internal computations of above/below plane tests, a model of
+  /// concepts::CInteger. Must be at least as precise as
+  ///TCoordinateInteger.
+  template < Dimension dim,
+             typename TCoordinateInteger  = DGtal::int64_t,
+             typename TInternalInteger = DGtal::int64_t >
+  struct GenericLatticeConvexHull
   {
-    typedef TKernel                    Kernel;
+    typedef ConvexHullIntegralKernel< dim,
+                                      TCoordinateInteger,
+                                      TInternalInteger > Kernel;
     typedef typename Kernel::CoordinatePoint     Point;
     typedef typename Kernel::CoordinateVector    Vector;
     typedef typename Kernel::CoordinateScalar    Integer;
@@ -393,8 +423,9 @@ namespace DGtal
     typedef std::size_t                Size;
     BOOST_STATIC_ASSERT(( Point::dimension == Vector::dimension ));
     typedef std::vector< Index >       IndexRange;
-    typedef typename Kernel::HalfSpace HalfSpace;
-    typedef typename Kernel::CombinatorialPlaneSimplex CombinatorialPlaneSimplex;
+    typedef detail::GenericLatticeConvexHullKernels
+    < dim, TCoordinateInteger, TInternalInteger, dim > GenericKernels;
+
     static const Size  dimension  = Point::dimension;
 
     /// Label for points that are not assigned to any facet.
@@ -409,7 +440,7 @@ namespace DGtal
     /// Default constructor
     /// @param[in] K_ a kernel for computing facet geometries.
     /// @param[in] dbg the trace level, from 0 (no) to 3 (very verbose).
-    GenericQuickHull( const Kernel& K_ = Kernel(), int dbg = 0 )
+    GenericLatticeConvexHull( const Kernel& K_ = Kernel(), int dbg = 0 )
       : kernel( K_ ), generic_kernels( this ), debug_level( dbg )
     {
       clear();
@@ -448,7 +479,7 @@ namespace DGtal
                   bool remove_duplicates = true )
     {
       // Determine affine dimension of set of input points.
-      typedef AffineGeometry< Point > Affine;
+      typedef AffineGeometry< InputPoint > Affine;
       std::vector< Size > indices = Affine::affineSubset( input_points );
       bool ok = generic_kernels.compute( indices, input_points, remove_duplicates );
       if ( ( ! ok ) || ( debug_level >= 1 ) )
@@ -497,7 +528,7 @@ namespace DGtal
      */
     void selfDisplay ( std::ostream & out ) const
     {
-      out << "[GenericQuickHull"
+      out << "[GenericLatticeConvexHull"
           << " dim=" << dimension
           << " #in=" << points.size()
           << " aff_dim=" << affine_dimension
@@ -528,7 +559,7 @@ namespace DGtal
     int debug_level; 
     /// The delegate computation kernel that can take care of all kind
     /// of convex hulls, full dimensional or degenerated.
-    detail::GenericQuickHullKernels<TKernel, TKernel, dimension> generic_kernels;
+    GenericKernels generic_kernels;
 
     /// the set of input points, indexed as in the input
     std::vector< Point >      points;
@@ -548,17 +579,27 @@ namespace DGtal
     
   };
 
-  /**
-   * Overloads 'operator<<' for displaying objects of class 'GenericQuickHull'.
-   * @tparam TKernel any type of GenericQuickHull kernel, like ConvexHullIntegralKernel.
-   * @param out the output stream where the object is written.
-   * @param object the object of class 'GenericQuickHull' to write.
-   * @return the output stream after the writing.
-   */
-  template < typename TKernel >
+  /// Overloads 'operator<<' for displaying objects of class 'GenericLatticeConvexHull'.
+  ///
+  /// @tparam dim the dimension of the space of processed points.
+  ///
+  /// @tparam TCoordinateInteger the integer type that represents
+  /// coordinates of lattice points, a model of concepts::CInteger.
+  ///
+  /// @tparam TInternalInteger the integer type that is used for
+  /// internal computations of above/below plane tests, a model of
+  /// concepts::CInteger. Must be at least as precise as
+  /// TCoordinateInteger.
+  ///
+  /// @param out the output stream where the object is written.
+  /// @param object the object of class 'GenericLatticeConvexHull' to write.
+  /// @return the output stream after the writing.
+  template < Dimension dim,
+             typename TCoordinateInteger,
+             typename TInternalInteger >
   std::ostream&
   operator<< ( std::ostream & out,
-               const GenericQuickHull< TKernel > & object )
+               const GenericLatticeConvexHull< dim, TCoordinateInteger, TInternalInteger > & object )
   {
     object.selfDisplay( out );
     return out;
@@ -571,7 +612,7 @@ namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
 
-#endif // !defined GenericQuickHull_h
+#endif // !defined GenericLatticeConvexHull_h
 
-#undef GenericQuickHull_RECURSES
-#endif // else defined(GenericQuickHull_RECURSES)
+#undef GenericLatticeConvexHull_RECURSES
+#endif // else defined(GenericLatticeConvexHull_RECURSES)

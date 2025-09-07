@@ -15,14 +15,14 @@
  **/
 
 /**
- * @file testGenericQuickHull.cpp
+ * @file testGenericLatticeConvexHull.cpp
  * @ingroup Tests
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2025/09/04
  *
- * Functions for testing class GenericQuickHull.
+ * Functions for testing class GenericLatticeConvexHull.
  *
  * This file is part of the DGtal library.
  */
@@ -33,7 +33,7 @@
 #include <algorithm>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/SpaceND.h"
-#include "DGtal/geometry/tools/GenericQuickHull.h"
+#include "DGtal/geometry/tools/GenericLatticeConvexHull.h"
 #include "DGtal/geometry/tools/AffineGeometry.h"
 #include "DGtalCatch.h"
 ///////////////////////////////////////////////////////////////////////////////
@@ -86,25 +86,22 @@ makeRandomLatticePointsFromDirVectors( int nb, const vector< Point>& V )
   return P;
 }
 
-const int debug_level = 0;
-
 // ///////////////////////////////////////////////////////////////////////////////
-// // Functions for testing class GenericQuickHull in 2D.
+// // Functions for testing class GenericLatticeConvexHull in 2D.
 // ///////////////////////////////////////////////////////////////////////////////
 
-SCENARIO( "GenericQuickHull< ConvexHullIntegralKernel< 2 > > unit tests", "[genquickhull][integral_kernel][2d]" )
+SCENARIO( "GenericLatticeConvexHull< ConvexHullIntegralKernel< 2 > > unit tests", "[genquickhull][integral_kernel][2d]" )
 {
-  typedef ConvexHullIntegralKernel< 2 >    QHKernel;
-  typedef GenericQuickHull< QHKernel >     QHull;
+  typedef GenericLatticeConvexHull< 2, int > CvxHull;
   typedef SpaceND< 2, int >                Space;      
   typedef Space::Point                     Point;
-  typedef QHull::Index                     Index;
-  typedef QHull::IndexRange                IndexRange;
+  typedef CvxHull::Index                     Index;
+  typedef CvxHull::IndexRange                IndexRange;
 
   
   GIVEN( "Given a set { } " ) {
     std::vector<Point> V = { };
-    QHull hull( QHKernel(), debug_level );
+    CvxHull hull;
     bool ok = hull.compute( V, false );
     std::cout << hull << std::endl;
     THEN( "Everything went fine and dim=-1." ) {
@@ -116,7 +113,7 @@ SCENARIO( "GenericQuickHull< ConvexHullIntegralKernel< 2 > > unit tests", "[genq
   GIVEN( "Given a set { (2,1), (2,1) } " ) {
     std::vector<Point> V
       = { Point(2,1), Point(2,1) };
-    QHull hull( QHKernel(), debug_level );
+    CvxHull hull;
     bool ok = hull.compute( V, false );
     std::cout << hull << std::endl;
     THEN( "Everything went fine and dim=0." ) {
@@ -128,7 +125,7 @@ SCENARIO( "GenericQuickHull< ConvexHullIntegralKernel< 2 > > unit tests", "[genq
   GIVEN( "Given a set { (0,0), (-4,-1), (8, 2), (16,4) } " ) {
     std::vector<Point> V
       = { Point(0,0), Point(-4,-1), Point(8,2), Point(16,4) };
-    QHull hull( QHKernel(), debug_level );
+    CvxHull hull;
     bool ok = hull.compute( V, false );
     std::cout << hull << std::endl;
     THEN( "Everything went fine and dim=1." ) {
@@ -140,7 +137,7 @@ SCENARIO( "GenericQuickHull< ConvexHullIntegralKernel< 2 > > unit tests", "[genq
   GIVEN( "Given a set { (0,0), (-4,-1), (-3,5), (7,3), (5, -2), (2, 2) } " ) {
     std::vector<Point> V
       = { Point(0,0), Point(-4,-1), Point(-3,5), Point(7,3), Point(5, -2), Point(2,2) };
-    QHull hull( QHKernel(), debug_level );
+    CvxHull hull;
     bool ok = hull.compute( V, false );
     std::cout << hull << std::endl;
     THEN( "Everything went fine and dim=2." ) {
@@ -152,14 +149,13 @@ SCENARIO( "GenericQuickHull< ConvexHullIntegralKernel< 2 > > unit tests", "[genq
 
 }
 
-SCENARIO( "GenericQuickHull< ConvexHullIntegralKernel< 3 > > unit tests", "[genquickhull][integral_kernel][3d]" )
+SCENARIO( "GenericLatticeConvexHull< ConvexHullIntegralKernel< 3 > > unit tests", "[genquickhull][integral_kernel][3d]" )
 {
-  typedef ConvexHullIntegralKernel< 3 >    QHKernel;
-  typedef GenericQuickHull< QHKernel >     QHull;
+  typedef GenericLatticeConvexHull< 3, int > CvxHull;
   typedef SpaceND< 3, int >                Space;      
   typedef Space::Point                     Point;
-  typedef QHull::Index                     Index;
-  typedef QHull::IndexRange                IndexRange;
+  typedef CvxHull::Index                     Index;
+  typedef CvxHull::IndexRange                IndexRange;
 
   std::vector< Point > V1 = { Point{ 5,-2, 1 } };
   std::vector< Point > X1 = makeRandomLatticePointsFromDirVectors( 20, V1 );
@@ -169,7 +165,7 @@ SCENARIO( "GenericQuickHull< ConvexHullIntegralKernel< 3 > > unit tests", "[genq
   std::vector< Point > X3 = makeRandomLatticePointsFromDirVectors( 20, V3 );
   
   GIVEN( "Given a 1-d lattice set in Z3 " ) {
-    QHull hull( QHKernel(), debug_level );
+    CvxHull hull;
     bool ok = hull.compute( X1, false );
     std::cout << hull << std::endl;
     THEN( "Everything went fine and dim=1." ) {
@@ -180,7 +176,7 @@ SCENARIO( "GenericQuickHull< ConvexHullIntegralKernel< 3 > > unit tests", "[genq
     }
   }
   GIVEN( "Given a 2-d lattice set in Z3 " ) {
-    QHull hull( QHKernel(), debug_level );
+    CvxHull hull;
     bool ok = hull.compute( X2, false );
     std::cout << hull << std::endl;
     THEN( "Everything went fine and dim=2." ) {
@@ -190,7 +186,7 @@ SCENARIO( "GenericQuickHull< ConvexHullIntegralKernel< 3 > > unit tests", "[genq
     }
   }
   GIVEN( "Given a 3-d lattice set in Z3 " ) {
-    QHull hull( QHKernel(), debug_level );
+    CvxHull hull;
     bool ok = hull.compute( X3, false );
     std::cout << hull << std::endl;
     THEN( "Everything went fine and dim=3." ) {

@@ -10,7 +10,7 @@ set(DGTAL_TESTS_SRC
   testConvexHull2DThickness
   testConvexHull2DReverse
   testQuickHull
-  testGenericQuickHull  
+  testGenericLatticeConvexHull
   testAffineGeometry
   testAffineBasis)  
 

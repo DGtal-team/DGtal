@@ -14,7 +14,7 @@
  *
  */
 /**
- * @file exampleGenericQuickHull4D.cpp
+ * @file exampleGenericLatticeConvexHull4D.cpp
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
  *
@@ -34,7 +34,7 @@
 
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/geometry/tools/GenericQuickHull.h"
+#include "DGtal/geometry/tools/GenericLatticeConvexHull.h"
 
 
 using namespace DGtal;
@@ -104,13 +104,12 @@ makeRandomLatticePointsFromDirVectors( Point A, const std::vector< Point>& V,
 
 int main( int argc, char* argv[] )
 {
-  typedef ConvexHullIntegralKernel< 4 >    QHKernel;
-  typedef GenericQuickHull< QHKernel >     QHull;
-  typedef SpaceND< 4, int >                Space;
-  typedef Space::Point                     Point4;
+  typedef GenericLatticeConvexHull< 4, int > QHull;
+  typedef SpaceND< 4, int >                  Space;
+  typedef Space::Point                       Point4;
 
   std::cout << "Usage: " << argv[ 0 ] << " [R=30] [N=30] [D=2]\n";
-  std::cout << "Computes the convex hull of N 4D points within a ball of radius R, these points belonging to a lattice of chosen dimension 0<=D<=3.\n";
+  std::cout << "Computes the convex hull of N 4D points within a ball of radius R, these points belonging to a lattice of chosen dimension 0<=D<=3. The output is projected along the 4 canonic projections onto 3D space. You cannot choose D=4 since we cannot diplay the result in 3D.\n";
   double radius = argc > 1 ? atof( argv[ 1 ] ) : 30.0;
   int    nb     = argc > 2 ? atoi( argv[ 2 ] ) : 30;
   int    adim   = argc > 3 ? atoi( argv[ 3 ] ) : 2;
