@@ -66,13 +66,13 @@ namespace DGtal
                typename TCoordinateInteger,
                typename TInternalInteger,
                Dimension K >
-    struct GenericLatticeConvexHullKernels
+    struct GenericLatticeConvexHullComputers
     {
       typedef ConvexHullIntegralKernel
       < dim,TCoordinateInteger,TInternalInteger > ParentKernel;
       typedef ConvexHullIntegralKernel
       < K,TCoordinateInteger,TInternalInteger > Kernel;
-      typedef detail::GenericLatticeConvexHullKernels
+      typedef detail::GenericLatticeConvexHullComputers
       < dim, TCoordinateInteger, TInternalInteger, K-1> LowerKernels;
       typedef std::size_t                Size;
       typedef typename Kernel::CoordinatePoint Point;
@@ -85,7 +85,7 @@ namespace DGtal
                                         TInternalInteger > Computer;
       static const Dimension             dimension = K;
 
-      GenericLatticeConvexHullKernels( Computer* ptrGenQHull )
+      GenericLatticeConvexHullComputers( Computer* ptrGenQHull )
         : ptr_gen_qhull( ptrGenQHull ), lower_kernels( ptrGenQHull ),
           hull( Kernel(), ptrGenQHull->debug_level )
       {
@@ -140,7 +140,7 @@ namespace DGtal
         bool ok_hull  = hull.computeConvexHull( QHull::Status::VerticesCompleted );
         if ( ! ok_hull || ! ok_input )
           {
-            trace.error() << "[GenericLatticeConvexHullKernels::compute]"
+            trace.error() << "[GenericLatticeConvexHullComputers::compute]"
                           << " Error in quick hull computation.\n"
                           << "qhull=" << hull << "\n";
             return false;
@@ -236,7 +236,7 @@ namespace DGtal
     template < Dimension dim,
                typename TCoordinateInteger,
                typename TInternalInteger >
-    struct GenericLatticeConvexHullKernels< dim, TCoordinateInteger, TInternalInteger, 1>
+    struct GenericLatticeConvexHullComputers< dim, TCoordinateInteger, TInternalInteger, 1>
     {
       typedef ConvexHullIntegralKernel
       < dim,TCoordinateInteger,TInternalInteger > ParentKernel;
@@ -252,7 +252,7 @@ namespace DGtal
                                         TInternalInteger > Computer;
       static const Dimension             dimension = 1;
 
-      GenericLatticeConvexHullKernels( Computer* ptrGenQHull )
+      GenericLatticeConvexHullComputers( Computer* ptrGenQHull )
         : ptr_gen_qhull( ptrGenQHull )
       {
         clear();
@@ -270,7 +270,7 @@ namespace DGtal
                     const std::vector< TInputPoint >& X,
                     bool  )
       {
-        // std::cout << "[GenericLatticeConvexHullKernels<K,1>::GenericLatticeConvexHullKernels]\n";
+        // std::cout << "[GenericLatticeConvexHullComputers<K,1>::GenericLatticeConvexHullComputers]\n";
         typedef TInputPoint InputPoint;
         typedef AffineGeometry< InputPoint > Affine;
         typedef AffineBasis< InputPoint >    Basis;
@@ -416,8 +416,8 @@ namespace DGtal
     typedef std::size_t                Size;
     BOOST_STATIC_ASSERT(( Point::dimension == Vector::dimension ));
     typedef std::vector< Index >       IndexRange;
-    typedef detail::GenericLatticeConvexHullKernels
-    < dim, TCoordinateInteger, TInternalInteger, dim > GenericKernels;
+    typedef detail::GenericLatticeConvexHullComputers
+    < dim, TCoordinateInteger, TInternalInteger, dim > GenericComputers;
 
     static const Size  dimension  = Point::dimension;
 
@@ -431,7 +431,7 @@ namespace DGtal
     /// @param[in] K_ a kernel for computing facet geometries.
     /// @param[in] dbg the trace level, from 0 (no) to 3 (very verbose).
     GenericLatticeConvexHull( const Kernel& K_ = Kernel(), int dbg = 0 )
-      : kernel( K_ ), debug_level( dbg ), generic_kernels( this )
+      : kernel( K_ ), debug_level( dbg ), generic_computers( this )
     {
       clear();
     }
@@ -441,7 +441,7 @@ namespace DGtal
     {
       affine_dimension  = -1;
       polytope_computed = false;
-      generic_kernels.clear();
+      generic_computers.clear();
     }
     /// @}
     
@@ -471,7 +471,7 @@ namespace DGtal
       // Determine affine dimension of set of input points.
       typedef AffineGeometry< InputPoint > Affine;
       std::vector< Size > indices = Affine::affineSubset( input_points );
-      bool ok = generic_kernels.compute( indices, input_points, remove_duplicates );
+      bool ok = generic_computers.compute( indices, input_points, remove_duplicates );
       if ( ( ! ok ) || ( debug_level >= 1 ) )
         {
           std::cout << "Generic Convex hull #V=" << positions.size()
@@ -500,9 +500,9 @@ namespace DGtal
     Integer count()
     {
       if ( ! polytope_computed )
-        polytope_computed = generic_kernels.makePolytope();
+        polytope_computed = generic_computers.makePolytope();
       if ( ! polytope_computed ) return -1; 
-      return generic_kernels.count();
+      return generic_computers.count();
     }
     
     /// @}
@@ -549,7 +549,7 @@ namespace DGtal
     int debug_level; 
     /// The delegate computation kernel that can take care of all kind
     /// of convex hulls, full dimensional or degenerated.
-    GenericKernels generic_kernels;
+    GenericComputers generic_computers;
 
     /// the set of input points, indexed as in the input
     std::vector< Point >      points;

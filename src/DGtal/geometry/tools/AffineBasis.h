@@ -523,9 +523,30 @@ namespace DGtal
         if ( is_independent[ i ] )
           new_basis.push_back( second[ i ] );
       std::swap( second, new_basis );
+      orderScaledBasis();
       _type = Type::SCALED_REDUCED;
     }
 
+    /// Guarantees that the basis is in echelon form.
+    void orderScaledBasis()
+    {
+      auto compare = [this] ( const Point& v, const Point& w ) -> bool
+      {
+        // Note: curiously std::sort sometimes test v against itself
+        // and must return false in this case.
+        for ( auto k = 0; k < Point::dimension; ++k )
+          {
+            bool v_non_null = Affine::ScalarOps::isNonZero( v[ k ], epsilon );
+            bool w_non_null = Affine::ScalarOps::isNonZero( w[ k ], epsilon );
+            if ( v_non_null && ! w_non_null )      return true;
+            else if ( ! v_non_null && w_non_null ) return false;
+            else if ( v_non_null && w_non_null )   return false; // ==
+          }
+        return false; // 0 == 0
+      };
+      std::sort( second.begin(), second.end(), compare );
+    }
+    
     /// Reduces the basis so that each basis vector is normalized,
     /// then computes its delta-LLL-reduction lattice, and removes
     /// linearly dependent vectors.
