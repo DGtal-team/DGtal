@@ -17,6 +17,8 @@ set(DGTAL_EXAMPLES_POLYSCOPE_SRC
   exampleVectorHeatMethod
   exampleHarmonicParametrization
   exampleBunnyHead
+  exampleGenericQuickHull
+  exampleGenericQuickHull4D  
   tangency-explorer
   tangency-reconstruction
 )
