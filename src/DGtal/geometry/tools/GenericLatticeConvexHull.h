@@ -78,8 +78,6 @@ namespace DGtal
       typedef typename Kernel::CoordinatePoint Point;
       typedef typename Point::Coordinate Integer;
       typedef QuickHull< Kernel >        QHull;
-      typedef typename QHull::Index      Index;
-      typedef typename QHull::IndexRange IndexRange;
       typedef SpaceND< K, Integer >      Space;
       typedef BoundedLatticePolytope< Space > LatticePolytope;
       typedef GenericLatticeConvexHull< dim,
@@ -112,8 +110,6 @@ namespace DGtal
         typedef TInputPoint InputPoint;
         typedef AffineGeometry< InputPoint > Affine;
         typedef AffineBasis< InputPoint >    Basis;
-        typedef AffineGeometry< Point >      ProjAffine;
-        typedef AffineBasis< Point >         ProjBasis;
         hull.clear();
         polytope.clear();
         if ( (I.size()-1) != dimension )
@@ -250,8 +246,6 @@ namespace DGtal
       typedef std::size_t                Size;
       typedef typename Kernel::CoordinatePoint Point;
       typedef typename Point::Coordinate Integer;
-      typedef std::size_t                Index;
-      typedef std::vector< Index >       IndexRange;
       typedef SpaceND<1, Integer>        Space;
       typedef GenericLatticeConvexHull< dim,
                                         TCoordinateInteger,
@@ -280,8 +274,7 @@ namespace DGtal
         typedef TInputPoint InputPoint;
         typedef AffineGeometry< InputPoint > Affine;
         typedef AffineBasis< InputPoint >    Basis;
-        typedef AffineGeometry< Point >      ProjAffine;
-        typedef AffineBasis< Point >         ProjBasis;
+        typedef std::size_t                  Index;
 
         auto& aff_dim   = ptr_gen_qhull->affine_dimension;
         auto& points    = ptr_gen_qhull->points;
@@ -428,9 +421,6 @@ namespace DGtal
 
     static const Size  dimension  = Point::dimension;
 
-    /// Label for points that are not assigned to any facet.
-    enum { UNASSIGNED = (Index) -1 };
-
     
     // ----------------------- standard services --------------------------
   public:
@@ -441,7 +431,7 @@ namespace DGtal
     /// @param[in] K_ a kernel for computing facet geometries.
     /// @param[in] dbg the trace level, from 0 (no) to 3 (very verbose).
     GenericLatticeConvexHull( const Kernel& K_ = Kernel(), int dbg = 0 )
-      : kernel( K_ ), generic_kernels( this ), debug_level( dbg )
+      : kernel( K_ ), debug_level( dbg ), generic_kernels( this )
     {
       clear();
     }
