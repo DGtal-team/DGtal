@@ -405,7 +405,6 @@ namespace DGtal
     typedef Point                                OutputPoint;
     typedef std::size_t                Index;
     typedef std::size_t                Size;
-    BOOST_STATIC_ASSERT(( Point::dimension == Point::dimension ));
     typedef std::vector< Index >       IndexRange;
     typedef detail::GenericLatticeConvexHullComputers
     < dim, TCoordinateInteger, TInternalInteger, dim > GenericComputers;
