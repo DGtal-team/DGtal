@@ -713,8 +713,9 @@ namespace DGtal
     }
 
     /// Complete the vectors \a basis with independent vectors so as
-    /// to form a basis of the space. The last added vector is
-    /// guaranteed to be \b orthogonal to all the previous vectors.
+    /// to form a basis of the space. When \a normal_vector is true,
+    /// the last added vector is guaranteed to be \b orthogonal to all
+    /// the previous vectors.
     ///
     /// @note In 3D, given two independent vectors as input, then the
     /// added vector is the \b cross \b product of these two
@@ -723,11 +724,17 @@ namespace DGtal
     ///
     /// @param[in,out] basis a range of independent vectors of size less than dimension.
     ///
+    /// @param[in] normal_vector when 'true', the last vector of the
+    /// basis is orthogonal to all the other vectors of the basis,
+    /// otherwise it is just an independent canonic vector.
+    ///
     /// @param[in] tolerance the accepted oo-norm below which the vector is
     /// null (used only for points with float/double coordinates).
     static
     void
-    completeBasis( OutputPoints& basis, const double tolerance = 1e-12 )
+    completeBasis( OutputPoints& basis,
+                   bool normal_vector,
+                   const double tolerance = 1e-12 )
     {
       if ( basis.size() >= dimension ) return;
       while ( ( basis.size() + 1 ) < dimension )
@@ -735,7 +742,10 @@ namespace DGtal
           const OutputPoint u = independentVector( basis, tolerance );
           basis.push_back( u );
         }
-      basis.push_back( orthogonalVector( basis ) );
+      if ( normal_vector )
+        basis.push_back( orthogonalVector( basis ) );
+      else
+        basis.push_back( independentVector( basis, tolerance ) );
     }
     
     /// @}
@@ -1164,8 +1174,10 @@ namespace DGtal
     }
 
     /// Complete the vectors \a basis with independent vectors so as
-    /// to form a basis of the space. The last added vector is
-    /// guaranteed to be \b orthogonal to all the previous vectors.
+    /// to form a basis of the space. When \a normal_vector is true,
+    /// the last added vector is guaranteed to be \b orthogonal to all
+    /// the previous vectors, otherwise it is just an independent
+    /// canonic vector.
     ///
     /// @note In 3D, given two independent vectors as input, then the
     /// added vector is the (reduced for integers, normalized with 1
@@ -1179,15 +1191,20 @@ namespace DGtal
     /// less than dimension, which is completed so as to be a basis of
     /// the full space.
     ///
+    /// @param[in] normal_vector when 'true', the last vector of the
+    /// basis is orthogonal to all the other vectors of the basis,
+    /// otherwise it is just an independent canonic vector.
+    ///
     /// @param[in] tolerance the accepted squared L2-norm below which the vector is
     /// null (used only for points with float/double coordinates).
     template <typename TPoint>
     static
     void
     getCompleteBasis( std::vector< TPoint >& basis,
+                      bool normal_vector,
                       const double tolerance = 1e-12 )
     {
-      AffineGeometry<TPoint>::completeBasis( basis, tolerance );
+      AffineGeometry<TPoint>::completeBasis( basis, normal_vector, tolerance );
     }
 
     /// Given `d-1` independent vectors in dD, outputs a vector that

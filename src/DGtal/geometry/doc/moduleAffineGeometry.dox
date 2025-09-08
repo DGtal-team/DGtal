@@ -74,10 +74,12 @@ numbers (default tolerance: between -1e-12 and 1e-12 is zero).
   basis, const double tolerance ) Given a partial basis of vectors,
   returns a returns a canonic unit vector that is independent.
 
-- functions::getCompleteBasis( std::vector< TPoint >& basis, const
-  double tolerance ) Complete the vectors \a basis with independent
-  vectors so as to form a basis of the space. The last added vector is
-  guaranteed to be \b orthogonal to all the previous vectors.
+- functions::getCompleteBasis( std::vector< TPoint >& basis, bool
+  normal_vector, const double tolerance ) Complete the vectors \a
+  basis with independent vectors so as to form a basis of the
+  space. When \a normal_vector is true, the last added vector is
+  guaranteed to be \b orthogonal to all the previous vectors,
+  otherwise it is just an independent canonic vector.
 
 - functions::computeOrthogonalVectorToBasis( const
   std::vector<TPoint>& basis ) Given `d-1` independent vectors \a

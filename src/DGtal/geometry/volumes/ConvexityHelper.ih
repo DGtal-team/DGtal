@@ -117,7 +117,7 @@ computeDegeneratedLatticePolytope
   // Compute an independent vector to the basis (one of the canonic vector)
   Point e = Affine::template independentVector<Point>( basis );
   // Compute an orthogonal vector to the basis
-  Affine::completeBasis( basis );
+  Affine::completeBasis( basis, true );
   InternalPoint n = basis.back(); // used to compute the two half-spaces that sandwich the polytope
   
   // Compute domain
