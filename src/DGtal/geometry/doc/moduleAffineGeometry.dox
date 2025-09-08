@@ -230,7 +230,7 @@ The same services are provided as AffineGeometry static methods:
   all the others.
 
   - AffineGeometry::affineBasis( const std::vector<TInputPoint>& X,
-    const double tolerance = ) Given a range of points \a X, returns a
+    const double tolerance ) Given a range of points \a X, returns a
     point and a range of vectors forming an affine basis containing \a
     X.
 
@@ -240,19 +240,17 @@ The same services are provided as AffineGeometry static methods:
     interest, returns a point and a range of vectors forming an affine
     basis containing the subset `X[I]`.
 
-  - AffineGeometry::independentVector( const Points& basis, const
-    double tolerance ) Given a partial basis of vectors, returns a new
+  - AffineGeometry::independentVector Given a partial basis of vectors, returns a new
     vector that is independent.
 
-  - AffineGeometry::completeBasis( Points& basis, bool normal_vector,
-    const double tolerance ) Complete the vectors \a basis with
+  - AffineGeometry::completeBasis Complete the vectors \a basis with
     independent vectors so as to form a basis of the space. When \a
     normal_vector is true, the last added vector is guaranteed to be
     \b orthogonal to all the previous vectors.
 
 * <b> orthogonal vector to basis of codimension 1 </b>
 
-  - AffineGeometry::orthogonalVector( const Points& basis ) Given
+  - AffineGeometry::orthogonalVector Given
     `d-1` independent vectors in dD, returns a vector that is
     orthogonal to each of them.
 
@@ -262,20 +260,18 @@ The same services are provided as AffineGeometry static methods:
   slightly modified to handle integers (in case of lattice points and
   vectors).
 
-  - AffineGeometry::reductionOnBasis( const Point& v, const Points&
-    basis, const double tolerance ) Reduces the vector \a v on the
+  - AffineGeometry::reductionOnBasis Reduces the vector \a v on the
     (partial or not) basis of vectors \a basis, and returns the part
     of \a v that cannot be expressed as a linear combination of
     vectors of \a basis, and hence a null vector if \a v is a linear
     combination of the vectors of the basis.
 
-  - AffineGeometry::reduceVector( Point& w, const Point& b, const
-    double tolerance ) Reduces vector \a w by the vector \a b, and
+  - AffineGeometry::reduceVector Reduces vector \a w by the vector \a b, and
     returns the coefficients \f$ (\alpha,\beta) \f$ for reduction such
     that \f$ \alpha w - \beta b \f$ is the returned reduced vector,
     \f$ \alpha \ge 0 \f$.
 
-  - AffineGeometry::simplifiedVector( Point v ) Given a vector,
+  - AffineGeometry::simplifiedVector Given a vector,
     returns the aligned vector with its component simplified by the
     gcd of all components (when the components are integers) or the
     aligned vector with unit L2-norm (when the components are
