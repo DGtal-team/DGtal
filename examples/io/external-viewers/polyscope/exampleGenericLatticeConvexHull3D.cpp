@@ -58,7 +58,6 @@ makeRandomLatticePointsFromDirVectors( Point A, const std::vector< Point>& V,
 {
   std::uniform_int_distribution<int> U(-amplitude, amplitude);
   std::vector< Point > P;
-  int n = V[0].size();
   int m = std::min( aff_dim, (int) V.size() );
   for ( auto k = 0; P.size() < nb && k < 100000; k++ )
     {
