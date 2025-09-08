@@ -69,8 +69,6 @@ namespace DGtal
     struct GenericLatticeConvexHullComputers
     {
       typedef ConvexHullIntegralKernel
-      < dim,TCoordinateInteger,TInternalInteger > ParentKernel;
-      typedef ConvexHullIntegralKernel
       < K,TCoordinateInteger,TInternalInteger > Kernel;
       typedef detail::GenericLatticeConvexHullComputers
       < dim, TCoordinateInteger, TInternalInteger, K-1> LowerKernels;
@@ -83,7 +81,7 @@ namespace DGtal
       typedef GenericLatticeConvexHull< dim,
                                         TCoordinateInteger,
                                         TInternalInteger > Computer;
-      static const Dimension             dimension = K;
+      static const Dimension dimension = K;
 
       GenericLatticeConvexHullComputers( Computer* ptrGenQHull )
         : ptr_gen_qhull( ptrGenQHull ), lower_kernels( ptrGenQHull ),
@@ -157,7 +155,7 @@ namespace DGtal
         ppoints.resize( proj_points.size() );
         for ( Size i = 0; i < ppoints.size(); i++ )
           {
-            ppoints[ i ] = ParentKernel::CoordinatePoint::zero;
+            ppoints[ i ] = Computer::OutputPoint::zero;
             for ( Dimension j = 0; j < Point::dimension; j++ )
               ppoints[ i ][ j ] = proj_points[ i ][ j ];
           }
@@ -170,7 +168,6 @@ namespace DGtal
         typedef typename LatticePolytope::Domain     Domain;
         typedef typename LatticePolytope::HalfSpace  PolytopeHalfSpace;
         typedef typename QHull::HalfSpace            ConvexHullHalfSpace;
-        std::cout << "[makePolytope d=" << dimension << "]\n";
         if ( ptr_gen_qhull->affine_dimension != dimension )
           { // This kernel is not adapted => go to lower dimension
             return lower_kernels.makePolytope();
@@ -238,8 +235,6 @@ namespace DGtal
                typename TInternalInteger >
     struct GenericLatticeConvexHullComputers< dim, TCoordinateInteger, TInternalInteger, 1>
     {
-      typedef ConvexHullIntegralKernel
-      < dim,TCoordinateInteger,TInternalInteger > ParentKernel;
       typedef ConvexHullIntegralKernel
       < 1,TCoordinateInteger,TInternalInteger > Kernel;
       typedef Kernel                     Type;
@@ -341,7 +336,7 @@ namespace DGtal
         ppoints.resize( proj_points.size() );
         for ( Size i = 0; i < ppoints.size(); i++ )
           {
-            ppoints[ i ] = ParentKernel::CoordinatePoint::zero;
+            ppoints[ i ] = Computer::OutputPoint::zero;
             ppoints[ i ][ 0 ] = proj_points[ i ][ 0 ];
           }
         v2p.resize( 2 );
@@ -359,7 +354,6 @@ namespace DGtal
 
       bool makePolytope()
       {
-        std::cout << "[makePolytope d=" << dimension << "]\n";
         return true;
       }
 
@@ -367,9 +361,6 @@ namespace DGtal
       ///
       /// @return the number of integer points lying within the polytope,
       /// or -1 if their was a problem when computing the polytope.
-      ///
-      /// @note Quite fast: obtained by line intersection, see
-      /// BoundedLatticePolytopeCounter
       Integer count() const
       {
         return nb_in_hull;
@@ -409,12 +400,12 @@ namespace DGtal
                                       TCoordinateInteger,
                                       TInternalInteger > Kernel;
     typedef typename Kernel::CoordinatePoint     Point;
-    typedef typename Kernel::CoordinateVector    Vector;
     typedef typename Kernel::CoordinateScalar    Integer;
     typedef typename Kernel::InternalScalar      InternalInteger;
+    typedef Point                                OutputPoint;
     typedef std::size_t                Index;
     typedef std::size_t                Size;
-    BOOST_STATIC_ASSERT(( Point::dimension == Vector::dimension ));
+    BOOST_STATIC_ASSERT(( Point::dimension == Point::dimension ));
     typedef std::vector< Index >       IndexRange;
     typedef detail::GenericLatticeConvexHullComputers
     < dim, TCoordinateInteger, TInternalInteger, dim > GenericComputers;
@@ -552,19 +543,19 @@ namespace DGtal
     GenericComputers generic_computers;
 
     /// the set of input points, indexed as in the input
-    std::vector< Point >      points;
+    std::vector< OutputPoint > points;
     /// the set of projected input points, indexed as in the input
-    std::vector< Point >      projected_points;
+    std::vector< OutputPoint > projected_points;
     /// The affine dimension of the input set.
-    int64_t                   affine_dimension;
+    int64_t                    affine_dimension;
     /// The positions of the vertices (a subset of the input points).
-    std::vector< Point >      positions;
+    std::vector< OutputPoint > positions;
     /// The range giving for each facet the indices of its vertices.
-    std::vector< IndexRange > facets;
+    std::vector< IndexRange >  facets;
     /// The indices of the vertices of the convex hull in the original set.
-    IndexRange                vertex2point;
+    IndexRange                 vertex2point;
     /// When 'true', the polytope has been computed.
-    bool                      polytope_computed { false };
+    bool                       polytope_computed { false };
     /// @}
     
   };
