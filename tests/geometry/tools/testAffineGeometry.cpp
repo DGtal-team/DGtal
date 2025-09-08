@@ -220,7 +220,7 @@ SCENARIO( "AffineGeometry< Point2i > orthogonal tests", "[orthogonal_vector][2i]
   typedef AffineGeometry< Point >          Affine;
   GIVEN( "Given basis B = { (7,3) } " ) {
     std::vector<Point> B = { Point(7,3) };
-    Affine::completeBasis( B, false );
+    Affine::completeBasis( B, true );
     THEN( "The complete basis has dimension 2" ) {
       CAPTURE( B );
       REQUIRE( B.size() == 2 );
@@ -302,7 +302,7 @@ SCENARIO( "AffineGeometry< Point3i > orthogonal tests", "[orthogonal_vector][3i]
   GIVEN( "Given basis B = { (7,3,1), (2,-5,1) } " ) {
     std::vector<Point> B = { Point(7,3,1), Point( 2,-5,1) };
     Point n = B[ 0 ].crossProduct( B[ 1 ] );
-    Affine::completeBasis( B, false );
+    Affine::completeBasis( B, true );
     THEN( "The complete basis has dimension 3" ) {
       CAPTURE( B );
       REQUIRE( B.size() == 3 );
@@ -320,7 +320,7 @@ SCENARIO( "AffineGeometry< Point3i > orthogonal tests", "[orthogonal_vector][3i]
   }
   GIVEN( "Given basis B = { (7,3,1) } " ) {
     std::vector<Point> B = { Point(7,3,1) };
-    Affine::completeBasis( B, false );
+    Affine::completeBasis( B, true );
     THEN( "The complete basis has dimension 3" ) {
       CAPTURE( B );
       REQUIRE( B.size() == 3 );
@@ -489,7 +489,7 @@ SCENARIO( "AffineGeometry< Point4i > orthogonal tests", "[orthogonal_vector][4i]
   typedef AffineGeometry< Point >          Affine;
   GIVEN( "Given basis B = { (7,3,1,0), (2,-5,1,2), (-1,2,2,-3) } " ) {
     std::vector<Point> B = { Point(7,3,1,0), Point(2,-5,1,2), Point(-1,2,2,-3) };
-    Affine::completeBasis( B, false );
+    Affine::completeBasis( B, true );
     THEN( "The complete basis has dimension 4" ) {
       CAPTURE( B );
       REQUIRE( B.size() == 4 );
@@ -504,7 +504,7 @@ SCENARIO( "AffineGeometry< Point4i > orthogonal tests", "[orthogonal_vector][4i]
   }
   GIVEN( "Given basis B = { (7,3,1,0), (2,-5,1,2) } " ) {
     std::vector<Point> B = { Point(7,3,1,0), Point(2,-5,1,2) };
-    Affine::completeBasis( B, false );
+    Affine::completeBasis( B, true );
     THEN( "The complete basis has dimension 4" ) {
       CAPTURE( B );
       REQUIRE( B.size() == 4 );
