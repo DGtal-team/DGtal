@@ -441,7 +441,7 @@ namespace DGtal
   /// ...
   /// typedef SpaceND< 3, int >                Space;      
   /// typedef Space::Point                     Point;
-  /// typedef AffineGeometry< Point >            Affine;
+  /// typedef AffineGeometry< Point >          Affine;
   /// std::vector<Point> X = { Point{1, 0, 0}, Point{2, 1, 0}, Point{3, 2, 0}, Point{3, 1, 1}, Point{5, 2, 2}, Point{4, 2, 1} };
   /// auto I = Affine::affineSubset( X ); /// 3 points with indices (0,1,3)
   /// auto B = Affine::affineBasis( X ); /// (1,0,0) and 2 basis vectors (1,1,0) and (2,1,1).
@@ -449,19 +449,19 @@ namespace DGtal
   /// @endcode
   ///
   /// @see testAffineGeometry.cpp
-  template < typename TOutputPoint >
+  template < typename TPoint >
   struct AffineGeometry
   {
-    typedef TOutputPoint               OutputPoint;
-    typedef typename OutputPoint::Coordinate OutputScalar;
-    typedef typename OutputPoint::Container  Container;
+    typedef TPoint               Point;
+    typedef typename Point::Coordinate Scalar;
+    typedef typename Point::Container  Container;
     typedef std::size_t                Size;
-    typedef std::vector< OutputPoint > OutputPoints; ///< type for range of points.
+    typedef std::vector< Point > Points; ///< type for range of points.
     typedef std::vector< Size >        Sizes;  ///< type for range of sizes.
-    static const Size  dimension  = OutputPoint::dimension;
+    static const Size  dimension  = Point::dimension;
     typedef DGtal::detail::AffineGeometryPointOperations
-    < dimension, OutputScalar, Container >   PointOps;
-    typedef DGtal::detail::AffineGeometryScalarOperations< OutputScalar > ScalarOps;
+    < dimension, Scalar, Container >   PointOps;
+    typedef DGtal::detail::AffineGeometryScalarOperations< Scalar > ScalarOps;
     
     // ----------------------- standard services --------------------------
   public:
@@ -512,12 +512,12 @@ namespace DGtal
       if ( m == 0 ) return { };
       if ( m == 1 ) return { Size( 0 ) };
       // Process general case.
-      OutputPoints basis;  //< direction vectors
+      Points basis;  //< direction vectors
       Sizes  chosen; //< selected points
       chosen.push_back( 0 ); //< reference point (first one, as it may be any one)
       for ( Size i = 1; i < m; i++ )
         {
-          OutputPoint v = transform( X[ i ] - X[ 0 ] );
+          Point v = transform( X[ i ] - X[ 0 ] );
           if ( addIfIndependent( basis, v, tolerance ) )
             chosen.push_back( i );
           if ( chosen.size() > dimension ) break;
@@ -557,12 +557,12 @@ namespace DGtal
       if ( m == 0 ) return { };
       if ( m == 1 ) return { I[ 0 ] };
       // Process general case.
-      OutputPoints basis;  //< direction vectors
+      Points basis;  //< direction vectors
       Sizes  chosen; //< selected points
       chosen.push_back( I[ 0 ] ); //< reference point (first one, as it may be any one)
       for ( Size i = 1; i < m; i++ )
         {
-          OutputPoint v = transform( X[ I[ i ] ] - X[ I[ 0 ] ] );
+          Point v = transform( X[ I[ i ] ] - X[ I[ 0 ] ] );
           if ( addIfIndependent( basis, v, tolerance ) )
             chosen.push_back( I[ i ] );
           if ( chosen.size() > dimension ) break;
@@ -585,20 +585,20 @@ namespace DGtal
     /// @note Complexity is O( m n^2 ), where m=Cardinal(X) and n=dimension.
     template <typename TInputPoint>
     static
-    std::pair< OutputPoint, OutputPoints >
+    std::pair< Point, Points >
     affineBasis( const std::vector<TInputPoint>& X, const double tolerance = 1e-12 )
     {
-      OutputPoints basis;  //< direction vectors
+      Points basis;  //< direction vectors
       Size m = X.size();
       // Process trivial cases.
-      if ( m == 0 ) return std::make_pair( OutputPoint::zero, basis );
-      const OutputPoint o = transform( X[ 0 ] );
+      if ( m == 0 ) return std::make_pair( Point::zero, basis );
+      const Point o = transform( X[ 0 ] );
       if ( m == 1 ) return std::make_pair( o, basis );
       // Process general case.
       basis.reserve( dimension );
       for ( Size i = 1; i < m; i++ )
         {
-          OutputPoint v = transform( X[ i ] ) - o;
+          Point v = transform( X[ i ] ) - o;
           if ( addIfIndependent( basis, v, tolerance ) )
             if ( basis.size() >= dimension ) break;
         }
@@ -623,22 +623,22 @@ namespace DGtal
     /// @note Complexity is O( m n^2 ), where m=Cardinal(I) and n=dimension.
     template < typename TInputPoint, typename TIndexRange >
     static
-    std::pair< TInputPoint, OutputPoints >
+    std::pair< TInputPoint, Points >
     affineBasis( const std::vector<TInputPoint>& X,
                  const TIndexRange& I,
                  const double tolerance = 1e-12 )
     {
-      OutputPoints basis;  //< direction vectors
+      Points basis;  //< direction vectors
       Size m = I.size();
       // Process trivial cases.
       if ( m == 0 ) return std::make_pair( TInputPoint::zero, basis );
       if ( m == 1 ) return std::make_pair( X[ I[ 0 ] ], basis );
       // Process general case.
-      const OutputPoint  o = transform( X[ I[ 0 ] ] );
+      const Point  o = transform( X[ I[ 0 ] ] );
       basis.reserve( dimension );
       for ( Size i = 1; i < m; i++ )
         {
-          OutputPoint v = transform( X[ I[ i ] ] ) - o;
+          Point v = transform( X[ I[ i ] ] ) - o;
           if ( addIfIndependent( basis, v, tolerance ) )
             if ( basis.size() > dimension ) break;
         }
@@ -656,29 +656,31 @@ namespace DGtal
     /// @return a canonic unit vector independent of all vectors of \a
     /// basis, or the null vector if the basis was not partial.
     static
-    OutputPoint
-    independentVector( const OutputPoints& basis, const double tolerance = 1e-12 )
+    Point
+    independentVector( const Points& basis, const double tolerance = 1e-12 )
     {
       // If basis has already d independent vectors, then there is no
       // other independent vector.
-      if ( basis.size() >= dimension ) return OutputPoint::zero;
+      if ( basis.size() >= dimension ) return Point::zero;
       // At least one trivial canonic vector should be independant.
       Dimension k = 0;
       for ( ; k < dimension; k++ )
         {
-          OutputPoint e_k = OutputPoint::base( k );
-          OutputPoint w   = reductionOnBasis( e_k, basis, tolerance );
-          OutputScalar sql2;
+          Point e_k = Point::base( k );
+          Point w   = reductionOnBasis( e_k, basis, tolerance );
+          Scalar sql2;
           functions::getSquaredNormL2( sql2, w );
           if ( ScalarOps::isNonZero( sql2, tolerance ) )
             return e_k;
         }
       trace.error() << "[AffineGeometry::independentVector]"
                     << " Unable to find independent vector." << std::endl;
-      return OutputPoint::zero;
+      return Point::zero;
     }
 
     /// Given a partial basis of vectors, returns a new vector that is independent.
+    ///
+    /// @tparam TOtherPoint any type of point
     ///
     /// @param[in] basis a range of independent vectors that defines a
     /// partial basis of the space.
@@ -688,28 +690,28 @@ namespace DGtal
     ///
     /// @return a canonic unit vector independent of all vectors of \a
     /// basis, or the null vector if the basis was not partial.
-    template < typename TPoint >
+    template < typename TOtherPoint >
     static
-    TPoint
-    independentVector( const OutputPoints& basis, const double tolerance = 1e-12 )
+    TOtherPoint
+    independentVector( const Points& basis, const double tolerance = 1e-12 )
     {
       // If basis has already d independent vectors, then there is no
       // other independent vector.
-      if ( basis.size() >= dimension ) return TPoint::zero;
+      if ( basis.size() >= dimension ) return TOtherPoint::zero;
       // At least one trivial canonic vector should be independant.
       Dimension k = 0;
       for ( ; k < dimension; k++ )
         {
-          OutputPoint e_k = OutputPoint::base( k );
-          OutputPoint w   = reductionOnBasis( e_k, basis, tolerance );
-          OutputScalar sql2;
+          Point e_k = Point::base( k );
+          Point w   = reductionOnBasis( e_k, basis, tolerance );
+          Scalar sql2;
           functions::getSquaredNormL2( sql2, w );
           if ( ScalarOps::isNonZero( sql2, tolerance ) )
-            return TPoint::base( k ); 
+            return TOtherPoint::base( k ); 
         }
       trace.error() << "[AffineGeometry::independentVector]"
                     << " Unable to find independent vector." << std::endl;
-      return TPoint::zero;
+      return TOtherPoint::zero;
     }
 
     /// Complete the vectors \a basis with independent vectors so as
@@ -732,14 +734,14 @@ namespace DGtal
     /// null (used only for points with float/double coordinates).
     static
     void
-    completeBasis( OutputPoints& basis,
+    completeBasis( Points& basis,
                    bool normal_vector,
                    const double tolerance = 1e-12 )
     {
       if ( basis.size() >= dimension ) return;
       while ( ( basis.size() + 1 ) < dimension )
         { // add an independent vector
-          const OutputPoint u = independentVector( basis, tolerance );
+          const Point u = independentVector( basis, tolerance );
           basis.push_back( u );
         }
       if ( normal_vector )
@@ -769,11 +771,11 @@ namespace DGtal
     /// combination of vectors of \a basis, and hence a null vector if
     /// \a v is a linear combination of the vectors of the basis.
     static
-    OutputPoint reductionOnBasis( const OutputPoint& v,
-                                  const OutputPoints& basis,
+    Point reductionOnBasis( const Point& v,
+                                  const Points& basis,
                                   const double tolerance )
     {
-      OutputPoint w( v );
+      Point w( v );
       for ( const auto& b : basis ) reduceVector( w, b, tolerance );
       return w;
     }
@@ -799,12 +801,12 @@ namespace DGtal
     /// normalization of the new basis vector is its reduction by its
     /// gcd, otherwise the vector has unit L2-norm.
     static
-    bool addIfIndependent( OutputPoints& basis,
-                           const OutputPoint& v,
+    bool addIfIndependent( Points& basis,
+                           const Point& v,
                            const double tolerance )
     {
-      OutputPoint  w = reductionOnBasis( v, basis, tolerance );
-      OutputScalar x;
+      Point  w = reductionOnBasis( v, basis, tolerance );
+      Scalar x;
       functions::getSquaredNormL2( x, w );
       if ( ScalarOps::isNonZero( x, tolerance ) )
         {
@@ -831,11 +833,11 @@ namespace DGtal
     ///
     /// @note This reduction is an elementary Gauss elimination.
     static
-    std::pair< OutputScalar, OutputScalar >
-    reduceVector( OutputPoint& w, const OutputPoint& b, const double tolerance )
+    std::pair< Scalar, Scalar >
+    reduceVector( Point& w, const Point& b, const double tolerance )
     {
-      OutputScalar mul_w = 0;
-      OutputScalar mul_b = 0;
+      Scalar mul_w = 0;
+      Scalar mul_b = 0;
       Size n = w.size();
       // Find index of first non null pivot in b.
       Size lead = n;
@@ -864,12 +866,12 @@ namespace DGtal
     ///
     /// @note This reduction is an elementary Gauss elimination.
     static
-    std::pair< OutputScalar, OutputScalar >
-    reduceVector( OutputPoint& w, const OutputPoint& b,
+    std::pair< Scalar, Scalar >
+    reduceVector( Point& w, const Point& b,
                   Dimension start, const double tolerance )
     {
-      OutputScalar mul_w = 0;
-      OutputScalar mul_b = 0;
+      Scalar mul_w = 0;
+      Scalar mul_b = 0;
       Size n = w.size();
       // Find index of first non null pivot in b.
       Size lead = n;
@@ -893,8 +895,8 @@ namespace DGtal
     /// @param[in] w any vector or point
     /// @return the same vector or point (does nothing).
     static
-    const OutputPoint&
-    transform( const OutputPoint& w )
+    const Point&
+    transform( const Point& w )
     {
       return w;
     }
@@ -907,7 +909,7 @@ namespace DGtal
     /// @return the same vector or point, but in the represention chosen for this class.
     template <typename TInputPoint>
     static
-    OutputPoint
+    Point
     transform( const TInputPoint& w )
     {
       return PointOps::cast( w );
@@ -926,20 +928,20 @@ namespace DGtal
     /// @return a vector of coefficients (represented with the given
     /// number type), or the null vector if the basis is not d-1-dimensional.
     static
-    OutputPoint
-    orthogonalVector( const OutputPoints& basis )
+    Point
+    orthogonalVector( const Points& basis )
     {
-      OutputPoint w;
+      Point w;
       const std::size_t n = dimension;
       if ( ( basis.size() + 1 ) != dimension ) return w;
       const std::size_t m = basis.size();
-      SimpleMatrix< OutputScalar, dimension-1, dimension> A;
+      SimpleMatrix< Scalar, dimension-1, dimension> A;
       for ( std::size_t i = 0; i < m; ++i )
         for ( std::size_t j = 0; j < n; ++j )
           A( i, j ) = basis[ i ][ j ];
       for ( std::size_t col = 0; col < n; ++col)
         { // construct sub-matrix removing column col
-          SimpleMatrix< OutputScalar, dimension-1, dimension-1> M;
+          SimpleMatrix< Scalar, dimension-1, dimension-1> M;
           for ( std::size_t i = 0; i < m; ++i )
             {
               std::size_t c = 0;
@@ -966,22 +968,22 @@ namespace DGtal
     /// number type), or the null vector if the basis is not d-1-dimensional.
     template <typename TInternalNumber>
     static
-    OutputPoint
-    orthogonalVector( const OutputPoints& basis )
+    Point
+    orthogonalVector( const Points& basis )
     {
-      OutputPoint w;
+      Point w;
       typedef  PointVector< dimension, TInternalNumber > InternalPoint;
       InternalPoint W;
       const std::size_t n = dimension;
       if ( ( basis.size() + 1 ) != dimension ) return w;
       const std::size_t m = basis.size();
-      SimpleMatrix< OutputScalar, dimension-1, dimension> A;
+      SimpleMatrix< Scalar, dimension-1, dimension> A;
       for ( std::size_t i = 0; i < m; ++i )
         for ( std::size_t j = 0; j < n; ++j )
           A( i, j ) = basis[ i ][ j ];
       for ( std::size_t col = 0; col < n; ++col)
         { // construct sub-matrix removing column col
-          SimpleMatrix< OutputScalar, dimension-1, dimension-1> M;
+          SimpleMatrix< Scalar, dimension-1, dimension-1> M;
           for ( std::size_t i = 0; i < m; ++i )
             {
               std::size_t c = 0;
@@ -1004,9 +1006,9 @@ namespace DGtal
     ///
     /// @return a simplified vector aligned with \a v.
     static 
-    OutputPoint simplifiedVector( OutputPoint v )
+    Point simplifiedVector( Point v )
     {
-      OutputScalar x;
+      Scalar x;
       functions::getSquaredNormL2( x, v );
       PointOps::normalizeVector( v, x );
       return v;
