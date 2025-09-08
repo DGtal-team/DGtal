@@ -19,7 +19,6 @@ set(DGTAL_EXAMPLES_POLYSCOPE_SRC
   exampleBunnyHead
   exampleGenericLatticeConvexHull3D
   exampleGenericLatticeConvexHull4D
-  exampleGenericLatticeDelaunay3D
   tangency-explorer
   tangency-reconstruction
 )

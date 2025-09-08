@@ -95,8 +95,6 @@ SCENARIO( "GenericLatticeConvexHull< ConvexHullIntegralKernel< 2 > > unit tests"
   typedef GenericLatticeConvexHull< 2, int > CvxHull;
   typedef SpaceND< 2, int >                Space;      
   typedef Space::Point                     Point;
-  typedef CvxHull::Index                     Index;
-  typedef CvxHull::IndexRange                IndexRange;
 
   
   GIVEN( "Given a set { } " ) {
@@ -154,8 +152,6 @@ SCENARIO( "GenericLatticeConvexHull< ConvexHullIntegralKernel< 3 > > unit tests"
   typedef GenericLatticeConvexHull< 3, int > CvxHull;
   typedef SpaceND< 3, int >                Space;      
   typedef Space::Point                     Point;
-  typedef CvxHull::Index                     Index;
-  typedef CvxHull::IndexRange                IndexRange;
 
   std::vector< Point > V1 = { Point{ 5,-2, 1 } };
   std::vector< Point > X1 = makeRandomLatticePointsFromDirVectors( 20, V1 );
