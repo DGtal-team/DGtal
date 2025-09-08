@@ -24,7 +24,7 @@ QuickHull algorithm.
 
 The following programs are related to this documentation:
 testAffineGeometry.cpp exampleAffineGeometry.cpp
-
+testAffineBasis.cpp
 
 See \subpage moduleQuickHull
 
@@ -178,7 +178,7 @@ B[0] . ns = (24, 47, 7) . (-6, 5, -13) == 0 (should be 0)
 B[1] . ns = (0, -13, -5) . (-6, 5, -13) == 0 (should be 0)
 \endverbatim
 
-@section dgtal_affgeom_sec2 Class AffineGeometry
+@section dgtal_affgeom_sec2 Using class AffineGeometry directly
 
 If you need to finetune how affine geometry computations are
 performed, you may use the static methods of class AffineGeometry
@@ -277,7 +277,94 @@ The same services are provided as AffineGeometry static methods:
     aligned vector with unit L2-norm (when the components are
     floating-point numbers).
 
-@section dgtal_affgeom_sec3 Notes
+@section dgtal_affgeom_sec3 Projecting points onto an affine basis
+
+AffineBasis is a convenience class that represents an affine basis
+(integral or not) in a form chosen by the user: either \e echelon \e
+reduced (AffineBasis::Type::ECHELON_REDUCED) or \e LLL \e reduced
+(AffineBasis::Type::ECHELON_REDUCED). It is mostly useful for
+projecting points and vectors onto it, and providing a system of
+coordinates on the affine space.
+
+@warning For now, you cannot project onto the basis when it is
+LLL-reduced (AffineBasis::Type::LLL_REDUCED). Use
+AffineBasis::Type::ECHELON_REDUCED instead.
+
+* <b> Constructors </b>
+
+You can construct an affine basis from a set of points or from an
+origin and arbitrary vectors, while choosing its form in
+AffineBasis::Type.
+
+  - AffineBasis::AffineBasis( const double tolerance ) Constructs the canonic basis
+
+  - AffineBasis::AffineBasis( const std::vector< TInputPoint >&
+    points, AffineBasis::Type type, const double delta, const double
+    tolerance ) Constructs an affine basis spanning the set of points.
+
+  - AffineBasis::AffineBasis( const TInputPoint& origin, const
+    std::vector<TInputPoint>& basis, AffineBasis::Type type, bool
+    is_reduced, const double delta, const double tolerance )
+    Constructs an affine basis spanning the given vectors and going
+    through the given origin.
+
+* <b> standard services </b>
+
+  - AffineBasis::dimension() returns the dimension of the spanned affine subspace.
+  - AffineBasis::origin() returns a point on the spanned affine subspace.
+  - AffineBasis::basis() returns the vectors spanning the affine subspace.
+
+* <b> geometric services </b>
+
+  - AffineBasis::isParallel  returns 'true' iff the
+    vectors \a w lies in this affine space.
+  
+  - AffineBasis::isOnAffineSpace returns 'true' iff the
+    point \a p lies in this affine space.
+
+* <b> projection services </b>
+
+  - AffineBasis::decompose Decomposes a point \a p into a tuple \f$
+    (d,L,R) \f$, such that: \f$ d (p - o) = L \cdot B + R \f$, where R
+    is independent from this basis \f$ B=(b_0, \ldots, b_i) \f$, with
+    origin \a o. \a d is a scalar, \f$ L/d \f$ are the rational
+    coordinates of \f$ (p-o) \f$ in the basis, \a R is the remainer
+    vector. Note that \a R is not null whenever \a p does not belong
+    to the affine space.
+
+  - AffineBasis::decomposeVector Same as above but for a
+    vector (ignores the origin).
+
+  - AffineBasis::recompose and AffineBasis::recomposeVector are the
+    inverse functions of the two previous ones.
+
+  - AffineBasis::projectPoints Projects a range of points onto the
+    affine basis and outputs it. It also returns the maximum dilation
+    of projected rational coordinates which was used to create lattice
+    coordinates.
+
+The example below shows how to use AffineBasis to project 4D points
+onto a 2D affine subspace.
+
+\code
+typedef SpaceND< 4, int64_t >            Space4;
+typedef Space4::Point                    Point4;
+typedef SpaceND< 2, int64_t >            Space2;
+typedef Space2::Point                    Point2;
+typedef AffineBasis< Point4 >            Basis;
+...
+std::vector< Point4 > V = { Point{ 3, 4, 0, 2 }, Point{ -2, -1, 5, -7 } };
+Point4 o( 1,4,2,-1 );
+std::vector< Point4 > X = { o, o + V[0], o + V[1], o + 3*V[0] - V[1], o - V[0] + V[1] };
+Basis B( X, Basis::Type::ECHELON_REDUCED ); // afine basis of dimension 2
+std::vector< Point2 >     proj_X;
+auto d = B.projectPoints( proj_X, X ); // proj_X contains the projection of X onto B
+// d is the dilatation factor, hence proj_X/d corresponds to rational coordinates
+\endcode
+
+@see testAffineBasis.cpp
+
+@section dgtal_affgeom_sec4 Notes
 
 Several functions that works with lattice vectors use functions
 specialized to integer computations:

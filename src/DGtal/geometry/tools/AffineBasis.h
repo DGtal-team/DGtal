@@ -94,9 +94,9 @@ namespace DGtal
     typedef AffineGeometry< Point >    Affine;
 
     enum struct Type {
-      INVALID = 0,        ///< invalid basis 
+      INVALID = 0,     ///< invalid basis 
       ECHELON_REDUCED, ///< echelon matrix
-      LLL_REDUCED     ///< delta-LLL reduced matrix
+      LLL_REDUCED      ///< delta-LLL reduced matrix
     };
     
     // ----------------------- standard services --------------------------
