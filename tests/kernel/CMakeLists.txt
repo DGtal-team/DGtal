@@ -17,6 +17,7 @@ set(DGTAL_TESTS_SRC_KERNEL
    testIntegralIntervals
    testLatticeSetByIntervals
    testDGtalBigInteger
+   testDigitalSetByOctree
    )
 
 
