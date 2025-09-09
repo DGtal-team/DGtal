@@ -100,7 +100,7 @@ SCENARIO( "GenericLatticeConvexHull< ConvexHullIntegralKernel< 2 > > unit tests"
   GIVEN( "Given a set { } " ) {
     std::vector<Point> V = { };
     CvxHull hull;
-    bool ok = hull.compute( V, false );
+    bool ok = hull.compute( V );
     std::cout << hull << std::endl;
     THEN( "Everything went fine and dim=-1." ) {
       REQUIRE( ok );
@@ -112,7 +112,7 @@ SCENARIO( "GenericLatticeConvexHull< ConvexHullIntegralKernel< 2 > > unit tests"
     std::vector<Point> V
       = { Point(2,1), Point(2,1) };
     CvxHull hull;
-    bool ok = hull.compute( V, false );
+    bool ok = hull.compute( V );
     std::cout << hull << std::endl;
     THEN( "Everything went fine and dim=0." ) {
       REQUIRE( ok );
@@ -124,7 +124,7 @@ SCENARIO( "GenericLatticeConvexHull< ConvexHullIntegralKernel< 2 > > unit tests"
     std::vector<Point> V
       = { Point(0,0), Point(-4,-1), Point(8,2), Point(16,4) };
     CvxHull hull;
-    bool ok = hull.compute( V, false );
+    bool ok = hull.compute( V );
     std::cout << hull << std::endl;
     THEN( "Everything went fine and dim=1." ) {
       REQUIRE( ok );
@@ -136,7 +136,7 @@ SCENARIO( "GenericLatticeConvexHull< ConvexHullIntegralKernel< 2 > > unit tests"
     std::vector<Point> V
       = { Point(0,0), Point(-4,-1), Point(-3,5), Point(7,3), Point(5, -2), Point(2,2) };
     CvxHull hull;
-    bool ok = hull.compute( V, false );
+    bool ok = hull.compute( V );
     std::cout << hull << std::endl;
     THEN( "Everything went fine and dim=2." ) {
       REQUIRE( ok );
@@ -162,7 +162,7 @@ SCENARIO( "GenericLatticeConvexHull< ConvexHullIntegralKernel< 3 > > unit tests"
   
   GIVEN( "Given a 1-d lattice set in Z3 " ) {
     CvxHull hull;
-    bool ok = hull.compute( X1, false );
+    bool ok = hull.compute( X1 );
     std::cout << hull << std::endl;
     THEN( "Everything went fine and dim=1." ) {
       CAPTURE( hull.positions );
@@ -173,7 +173,7 @@ SCENARIO( "GenericLatticeConvexHull< ConvexHullIntegralKernel< 3 > > unit tests"
   }
   GIVEN( "Given a 2-d lattice set in Z3 " ) {
     CvxHull hull;
-    bool ok = hull.compute( X2, false );
+    bool ok = hull.compute( X2 );
     std::cout << hull << std::endl;
     THEN( "Everything went fine and dim=2." ) {
       REQUIRE( ok );
@@ -183,7 +183,7 @@ SCENARIO( "GenericLatticeConvexHull< ConvexHullIntegralKernel< 3 > > unit tests"
   }
   GIVEN( "Given a 3-d lattice set in Z3 " ) {
     CvxHull hull;
-    bool ok = hull.compute( X3, false );
+    bool ok = hull.compute( X3 );
     std::cout << hull << std::endl;
     THEN( "Everything went fine and dim=3." ) {
       REQUIRE( ok );

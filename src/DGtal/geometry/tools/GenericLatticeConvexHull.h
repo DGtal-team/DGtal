@@ -102,8 +102,7 @@ namespace DGtal
       
       template <typename TInputPoint>
       bool compute( const std::vector< Size >& I,
-                    const std::vector< TInputPoint >& X,
-                    bool remove_duplicates )
+                    const std::vector< TInputPoint >& X )
       {
         typedef TInputPoint InputPoint;
         typedef AffineGeometry< InputPoint > Affine;
@@ -112,7 +111,7 @@ namespace DGtal
         polytope.clear();
         if ( (I.size()-1) != dimension )
           { // This kernel is not adapted => go to lower dimension
-            return lower_kernels.compute( I, X, remove_duplicates );
+            return lower_kernels.compute( I, X );
           }
         ptr_gen_qhull->affine_dimension = dimension;
         auto& points    = ptr_gen_qhull->points;
@@ -137,7 +136,7 @@ namespace DGtal
         dilation  = basis.projectPoints( proj_points, X );
           
         // Compute convex hull using quickhull.
-        bool ok_input = hull.setInput( proj_points, remove_duplicates );
+        bool ok_input = hull.setInput( proj_points, false );
         bool ok_hull  = hull.computeConvexHull( QHull::Status::VerticesCompleted );
         if ( ! ok_hull || ! ok_input )
           {
@@ -334,8 +333,7 @@ namespace DGtal
       
       template <typename TInputPoint>
       bool compute( const std::vector< Size >& I,
-                    const std::vector< TInputPoint >& X,
-                    bool  )
+                    const std::vector< TInputPoint >& X )
       {
         // std::cout << "[GenericLatticeConvexHullComputers<K,1>::GenericLatticeConvexHullComputers]\n";
         typedef TInputPoint InputPoint;
@@ -567,19 +565,15 @@ namespace DGtal
     ///
     /// @param[in] input_points the range of input points.
     ///
-    /// @param[in] remove_duplicates should be set to 'true' if the
-    /// input data has duplicates.
-    ///
     /// @return 'true' if the object is successfully initialized,
     /// status must be Status::InputInitialized, 'false' otherwise.
     template < typename InputPoint >
-    bool compute( const std::vector< InputPoint >& input_points,
-                  bool remove_duplicates = true )
+    bool compute( const std::vector< InputPoint >& input_points )
     {
       // Determine affine dimension of set of input points.
       typedef AffineGeometry< InputPoint > Affine;
       std::vector< Size > indices = Affine::affineSubset( input_points );
-      bool ok = generic_computers.compute( indices, input_points, remove_duplicates );
+      bool ok = generic_computers.compute( indices, input_points );
       if ( ( ! ok ) || ( debug_level >= 1 ) )
         {
           std::cout << "Generic Convex hull #V=" << positions.size()

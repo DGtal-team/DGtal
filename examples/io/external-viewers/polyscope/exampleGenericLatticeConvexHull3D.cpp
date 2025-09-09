@@ -131,7 +131,7 @@ int main( int argc, char* argv[] )
 
   // Compute convex hull
   QHull hull;
-  bool ok = hull.compute( X, false );
+  bool ok = hull.compute( X );
   std:: cout << ( ok ? "[PASSED]" : "[FAILED]" ) << " hull=" << hull << "\n";
   // Initialize polyscope
   polyscope::init();
