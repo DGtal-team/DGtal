@@ -6,6 +6,8 @@
   - Polyscope viewer upgraded from 2.4 to 2.5 (David Coeurjolly,  [#1796](https://github.com/DGtal-team/DGtal/pull/1796)). Reverting to 2.4  due to build issues (David Coeurjolly,  [#1797](https://github.com/DGtal-team/DGtal/pull/1797))
 
 ## Bug fixes
+- *Kernel*
+  - New DigitalSet model with SVO or SVDAG (Bastien Doignies, [#1808](https://github.com/DGtal-team/DGtal/pull/1804))
 
 - *Arithmetics*
   - Fix `testLightSternBrocot` issue on windows with the `rand()` function (Jacques-Olivier Lachaud, [#1801](https://github.com/DGtal-team/DGtal/pull/1801))
@@ -22,7 +24,6 @@
 - *Python*
   - Build backend upgraded to scikit-build-core (Bastien Doignies, [#1804](https://github.com/DGtal-team/DGtal/pull/1804))
   - New CI for pypi deployement with cibuildwheel (Bastien Doignies, [#1804](https://github.com/DGtal-team/DGtal/pull/1804))
-
 
 # DGtal 2.0
 
