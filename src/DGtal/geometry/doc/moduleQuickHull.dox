@@ -28,7 +28,15 @@ exampleLatticeBallDelaunay2D.cpp ,
 exampleRationalBallQuickHull3D.cpp ,
 exampleRationalBallDelaunay3D.cpp ,
 exampleQuickHull3D.cpp ,
-testQuickHull.cpp , testConvexityHelper.cpp
+testQuickHull.cpp , testConvexityHelper.cpp ,
+testGenericLatticeConvexHull.cpp ,
+exampleGenericLatticeConvexHull3D.cpp ,
+exampleGenericLatticeConvexHull4D.cpp
+
+@note Since version 2.0, QuickHull detects the affine dimension of
+input sets of points exactly. You may also use class
+GenericLatticeConvexHull to compute the convex hull of non full
+dimensional sets. See  \ref dgtal_quickhull_sec4
 
 @section dgtal_quickhull_sec1 The QuickHull convex hull algorithm
 
@@ -532,7 +540,94 @@ You can have a look at exampleRationalBallDelaunay3D.cpp for a complete example,
 
 \image html exampleRationalBallDelaunay3D-100.jpg "Delaunay cell decomposition of 100 randomly chosen points in a 3D ball with radius 10, with precision 100 and retraction 0.25"
 
-@section dgtal_quickhull_sec4 Further notes
+@section dgtal_quickhull_sec4 Generic convex hulls 
+
+Since 2.0, you can compute the convex hull of any input set of point
+\a X in any dimension, whatever the affine dimension of \a X. The core
+class is GenericLatticeConvexHull, parameterized by the dimension of
+input points, the coordinate type for points and a type for internal
+computations and output.
+
+Its use is quite simple. The following example draws at random 100000
+sets of 3-9 points in 3D, and computes the proportions of the affine
+dimension of their convex hull as their average number of vertices.
+
+\snippet examples/geometry/tools/exampleGenericLatticeConvexHull.cpp generic-qhull-example
+
+It outputs
+\verbatim
+0.024% are 0-dimensional #V=1 #F=0 (24/24)
+11.2% are 1-dimensional #V=2 #F=0 (11208/11208)
+11.3% are 2-dimensional #V=3.02 #F=3.02 (11255/11255)
+77.5% are 3-dimensional #V=6.41 #F=8.62 (77513/77513)
+\endverbatim
+
+Essentially, you call method GenericLatticeConvexHull::compute with an
+input set of points and the instantiated GenericLatticeConvexHull
+object holds the convex hull in its following public data members:
+
+- GenericLatticeConvexHull::affine_dimension The affine dimension of
+  the input set.
+
+- GenericLatticeConvexHull::positions The positions of the
+  verticesfacets (a subset of the input points).
+
+- GenericLatticeConvexHull::facets The range giving for each facet the
+  indices of its vertices.
+
+- GenericLatticeConvexHull::points The set of input points, indexed as
+  in the input, possibly converted into the chosen coordinate type.
+
+- GenericLatticeConvexHull::vertex2point The indices of the vertices
+  of the convex hull in the input set.
+  
+- GenericLatticeConvexHull::projected_points The set of projected
+  input points, indexed as in the input, converted into the chosen
+  coordinate type. If the affine dimension \a k is equal to the
+  ambient dimension \a n, then it is equal to
+  GenericLatticeConvexHull::points. Otherwise the last \f$ n-k \f$
+  coordinates are null).
+
+- GenericLatticeConvexHull::affine_basis The affine basis used for
+  projection (identity if the convex hull is full dimensional,
+  otherwise a basis in reduced echelon form).
+
+You may also count the number of lattice points within the convex
+polytope spanned by the computed convex hull.
+
+- GenericLatticeConvexHull::count() Returns the number of integer points
+  lying within the convex hull polytope.
+
+- GenericLatticeConvexHull::countInterior() Returns the number of
+  integer points lying within the interior of the convex hull polytope.
+
+- GenericLatticeConvexHull::countBoundary() Returns the number of
+  integer points lying on the convex hull boundary of the polytope.
+
+- GenericLatticeConvexHull::countUpTo Returns the
+  number of integer points within the polytope up to some maximum
+  number \a max. For instance, a d-dimensional simplex that contains
+  no integer points in its interior contains only d+1 points. If there
+  is more, you know that the simplex has a non empty interior.
+
+You may yave a look at exampleGenericLatticeConvexHull3D.cpp and
+exampleGenericLatticeConvexHull4D.cpp for examples of use of this
+class.
+
+<table>
+<tr><td>
+\image html genqhull-affdim1.png "Convex hull of 10 points of affine dimension 1" width=90%
+</td><td>
+\image html genqhull-affdim2.png "Convex hull of 100 points of affine dimension 2" width=90%
+</td></tr>
+<tr><td>
+\image html genqhull-affdim3-0.png "Convex hull of 1000 points of affine dimension 3" width=90%
+</td><td>
+\image html genqhull-affdim3-1.png "Convex hull of 1000 points of affine dimension 3" width=90%
+</td></tr>
+</table>
+  
+@section dgtal_quickhull_sec5 Further notes
 
 Since 2.0, the QuickHull and ConvexityHelper classes have been slightly improved:
 

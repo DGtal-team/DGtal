@@ -81,6 +81,7 @@ namespace DGtal
       typedef GenericLatticeConvexHull< dim,
                                         TCoordinateInteger,
                                         TInternalInteger > Computer;
+      typedef typename Computer::OutputPoint OutputPoint;
       static const Dimension dimension = K;
 
       GenericLatticeConvexHullComputers( Computer* ptrGenQHull )
@@ -95,7 +96,6 @@ namespace DGtal
       {
         hull.clear(); 
         proj_points.clear();
-        proj_dilation = 1;
         polytope.clear();
         lower_kernels.clear();
       }
@@ -120,6 +120,9 @@ namespace DGtal
         auto& positions = ptr_gen_qhull->positions;
         auto& v2p       = ptr_gen_qhull->vertex2point;
         auto& facets    = ptr_gen_qhull->facets;
+        auto& dilation  = ptr_gen_qhull->proj_dilation;
+        auto& aff_basis = ptr_gen_qhull->affine_basis;
+        
         Basis basis;
         if ( dimension != ptr_gen_qhull->dimension )
           {
@@ -131,7 +134,7 @@ namespace DGtal
             basis = Basis( Z, Basis::Type::ECHELON_REDUCED );
           }
         // Build projected points on affine basis
-        proj_dilation  = basis.projectPoints( proj_points, X );
+        dilation  = basis.projectPoints( proj_points, X );
           
         // Compute convex hull using quickhull.
         bool ok_input = hull.setInput( proj_points, remove_duplicates );
@@ -155,12 +158,15 @@ namespace DGtal
         ppoints.resize( proj_points.size() );
         for ( Size i = 0; i < ppoints.size(); i++ )
           {
-            ppoints[ i ] = Computer::OutputPoint::zero;
+            ppoints[ i ] = OutputPoint::zero;
             for ( Dimension j = 0; j < Point::dimension; j++ )
               ppoints[ i ][ j ] = proj_points[ i ][ j ];
           }
-        
-        return ok_input && ok_hull;
+        aff_basis = AffineBasis<OutputPoint>( basis.origin(),
+                                              basis.basis(),
+                                              Basis::Type::ECHELON_REDUCED,
+                                              true );
+        return true;
       }
 
       bool makePolytope()
@@ -220,12 +226,78 @@ namespace DGtal
         if ( polytope.nbHalfSpaces() == 0 ) return -1;
         return polytope.count();
       }
+
+      /// Computes the number of integer points lying within the interior of the polytope.
+      ///
+      /// @return the number of integer points lying within the interior of the polytope.
+      ///
+      /// @note Quite fast: obtained by line intersection, see
+      /// BoundedLatticePolytopeCounter
+      ///
+      /// @note `count() <= countInterior() + countBoundary()` with
+      /// equality when the polytope is closed.
+      Integer countInterior()
+      {
+        if ( ptr_gen_qhull->affine_dimension != dimension )
+          { // This kernel is not adapted => go to lower dimension
+            return lower_kernels.count();
+          }
+        // If polytope is not initialized returns error.
+        if ( polytope.nbHalfSpaces() == 0 ) return -1;
+        return polytope.countInterior();
+      }
+      
+      /// Computes the number of integer points lying on the boundary of the polytope.
+      ///
+      /// @return the number of integer points lying on the boundary of the polytope.
+      ///
+      /// @note Quite fast: obtained by line intersection, see
+      /// BoundedLatticePolytopeCounter
+      ///
+      /// @note `count() <= countInterior() + countBoundary()` with
+      /// equality when the polytope is closed.
+      Integer countBoundary()
+      {
+        if ( ptr_gen_qhull->affine_dimension != dimension )
+          { // This kernel is not adapted => go to lower dimension
+            return lower_kernels.count();
+          }
+        // If polytope is not initialized returns error.
+        if ( polytope.nbHalfSpaces() == 0 ) return -1;
+        return polytope.countBoundary();
+      }
+      
+      /// Computes the number of integer points within the polytope up to
+      /// some maximum number \a max. 
+      ///
+      /// @note For instance, a d-dimensional simplex that contains no
+      /// integer points in its interior contains only d+1 points. If
+      /// there is more, you know that the simplex has a non empty
+      /// interior.
+      ///
+      /// @param[in] max the maximum number of points that are counted,
+      /// the method exists when this number of reached.
+      ///
+      /// @return the number of integer points within the polytope up to .
+      ///
+      /// @note Quite fast: obtained by line intersection, see
+      /// BoundedLatticePolytopeCounter
+      Integer countUpTo( Integer max )
+      {
+        if ( ptr_gen_qhull->affine_dimension != dimension )
+          { // This kernel is not adapted => go to lower dimension
+            return lower_kernels.count();
+          }
+        // If polytope is not initialized returns error.
+        if ( polytope.nbHalfSpaces() == 0 ) return -1;
+        return polytope.countUpTo( max );
+      }
+
       
       Computer*            ptr_gen_qhull;
       LowerKernels         lower_kernels;
       QHull                hull; ///< the quick hull object that computes the convex hull
       std::vector< Point > proj_points;
-      Integer              proj_dilation;
       LatticePolytope      polytope;
     };
 
@@ -245,6 +317,7 @@ namespace DGtal
       typedef GenericLatticeConvexHull< dim,
                                         TCoordinateInteger,
                                         TInternalInteger > Computer;
+      typedef typename Computer::OutputPoint OutputPoint;
       static const Dimension             dimension = 1;
 
       GenericLatticeConvexHullComputers( Computer* ptrGenQHull )
@@ -257,7 +330,6 @@ namespace DGtal
       void clear()
       {
         proj_points.clear();
-        proj_dilation = 1;
       }
       
       template <typename TInputPoint>
@@ -277,6 +349,8 @@ namespace DGtal
         auto& positions = ptr_gen_qhull->positions;
         auto& v2p       = ptr_gen_qhull->vertex2point;
         auto& facets    = ptr_gen_qhull->facets;
+        auto& dilation  = ptr_gen_qhull->proj_dilation;
+        auto& aff_basis = ptr_gen_qhull->affine_basis;
         facets.clear(); // no facets
         
         if ( (I.size()-1) != dimension )
@@ -319,7 +393,7 @@ namespace DGtal
             basis = Basis( Z, Basis::Type::ECHELON_REDUCED );
           }
         // Build projected points on affine basis
-        proj_dilation  = basis.projectPoints( proj_points, X );
+        dilation  = basis.projectPoints( proj_points, X );
         // Compute convex hull by looking at extremal points
         Index left  = 0;
         Index right = 0;
@@ -336,7 +410,7 @@ namespace DGtal
         ppoints.resize( proj_points.size() );
         for ( Size i = 0; i < ppoints.size(); i++ )
           {
-            ppoints[ i ] = Computer::OutputPoint::zero;
+            ppoints[ i ]      = OutputPoint::zero;
             ppoints[ i ][ 0 ] = proj_points[ i ][ 0 ];
           }
         v2p.resize( 2 );
@@ -345,6 +419,10 @@ namespace DGtal
         positions.resize( 2 );
         positions[ 0 ] = X[ v2p[ 0 ] ];
         positions[ 1 ] = X[ v2p[ 1 ] ];
+        aff_basis = AffineBasis<OutputPoint>( basis.origin(),
+                                              basis.basis(),
+                                              Basis::Type::ECHELON_REDUCED,
+                                              true );
         auto    dx  = Affine::transform( points[ v2p[ 1 ] ] - points[ v2p[ 0 ] ] );
         auto    sdx = Affine::simplifiedVector( dx );
         Integer n   = dx.normInfinity() / sdx.normInfinity();
@@ -365,10 +443,43 @@ namespace DGtal
       {
         return nb_in_hull;
       }
+
+      /// Computes the number of integer points lying within the interior of the polytope.
+      ///
+      /// @return the number of integer points lying within the interior of the polytope.
+      Integer countInterior()
+      {
+        return nb_in_hull >= 2 ? nb_in_hull - 2 : 0;
+      }
+      
+      /// Computes the number of integer points lying on the boundary of the polytope.
+      ///
+      /// @return the number of integer points lying on the boundary of the polytope.
+      Integer countBoundary()
+      {
+        return nb_in_hull >= 2 ? 2 : nb_in_hull;
+      }
+      
+      /// Computes the number of integer points within the polytope up to
+      /// some maximum number \a max. 
+      ///
+      /// @note For instance, a d-dimensional simplex that contains no
+      /// integer points in its interior contains only d+1 points. If
+      /// there is more, you know that the simplex has a non empty
+      /// interior.
+      ///
+      /// @param[in] max the maximum number of points that are counted,
+      /// the method exists when this number of reached.
+      ///
+      /// @return the number of integer points within the polytope up to .
+      Integer countUpTo( Integer max )
+      {
+        return nb_in_hull < max ? nb_in_hull : max;
+      }
+
       
       Computer*            ptr_gen_qhull;
       std::vector< Point > proj_points;
-      Integer              proj_dilation;
       Integer              nb_in_hull;                   
     };
   }
@@ -429,9 +540,16 @@ namespace DGtal
     /// Clears the object as if no computations have been made.
     void clear()
     {
-      affine_dimension  = -1;
-      polytope_computed = false;
       generic_computers.clear();
+      points.clear();
+      projected_points.clear();
+      affine_dimension  = -1;
+      positions.clear();
+      facets.clear();
+      vertex2point.clear();
+      affine_basis      = AffineBasis< OutputPoint >();
+      proj_dilation     = 1;
+      polytope_computed = false;
     }
     /// @}
     
@@ -494,6 +612,64 @@ namespace DGtal
       if ( ! polytope_computed ) return -1; 
       return generic_computers.count();
     }
+
+      /// Computes the number of integer points lying within the interior of the polytope.
+      ///
+      /// @return the number of integer points lying within the interior of the polytope.
+      ///
+      /// @note Quite fast: obtained by line intersection, see
+      /// BoundedLatticePolytopeCounter
+      ///
+      /// @note `count() <= countInterior() + countBoundary()` with
+      /// equality when the polytope is closed.
+      Integer countInterior()
+      {
+        if ( ! polytope_computed )
+          polytope_computed = generic_computers.makePolytope();
+        if ( ! polytope_computed ) return -1; 
+        return generic_computers.countInterior();
+      }
+      
+      /// Computes the number of integer points lying on the boundary of the polytope.
+      ///
+      /// @return the number of integer points lying on the boundary of the polytope.
+      ///
+      /// @note Quite fast: obtained by line intersection, see
+      /// BoundedLatticePolytopeCounter
+      ///
+      /// @note `count() <= countInterior() + countBoundary()` with
+      /// equality when the polytope is closed.
+      Integer countBoundary()
+      {
+        if ( ! polytope_computed )
+          polytope_computed = generic_computers.makePolytope();
+        if ( ! polytope_computed ) return -1; 
+        return generic_computers.countBoundary();
+      }
+      
+      /// Computes the number of integer points within the polytope up to
+      /// some maximum number \a max. 
+      ///
+      /// @note For instance, a d-dimensional simplex that contains no
+      /// integer points in its interior contains only d+1 points. If
+      /// there is more, you know that the simplex has a non empty
+      /// interior.
+      ///
+      /// @param[in] max the maximum number of points that are counted,
+      /// the method exists when this number of reached.
+      ///
+      /// @return the number of integer points within the polytope up to .
+      ///
+      /// @note Quite fast: obtained by line intersection, see
+      /// BoundedLatticePolytopeCounter
+      Integer countUpTo( Integer max )
+      {
+        if ( ! polytope_computed )
+          polytope_computed = generic_computers.makePolytope();
+        if ( ! polytope_computed ) return -1; 
+        return generic_computers.countUpTo( max );
+      }
+
     
     /// @}
     
@@ -502,10 +678,8 @@ namespace DGtal
     /// @name Interface
     /// @{
 
-    /**
-     * Writes/Displays the object on an output stream.
-     * @param out the output stream where the object is written.
-     */
+    /// Writes/Displays the object on an output stream.
+    /// @param out the output stream where the object is written.
     void selfDisplay ( std::ostream & out ) const
     {
       out << "[GenericLatticeConvexHull"
@@ -517,13 +691,11 @@ namespace DGtal
           << "]";
     }
   
-    /**
-     * Checks the validity/consistency of the object.
-     * @return 'true' if the object is valid, 'false' otherwise.
-     */
+    /// Checks the validity/consistency of the object.
+    /// @return 'true' if the object has made a convex hull computation, 'false' otherwise.
     bool isValid() const
     {
-      return true;
+      return affine_dimension >= 0;
     }
     /// @}
 
@@ -553,6 +725,12 @@ namespace DGtal
     std::vector< IndexRange >  facets;
     /// The indices of the vertices of the convex hull in the original set.
     IndexRange                 vertex2point;
+    /// The factor of dilation d applied on every projected point coordinates
+    Integer                    proj_dilation;
+    /// The affine basis used for projection (identity if the convex
+    /// hull is full dimensional, otherwise a basis in reduced echelon
+    /// form).
+    AffineBasis< OutputPoint > affine_basis;
     /// When 'true', the polytope has been computed.
     bool                       polytope_computed { false };
     /// @}

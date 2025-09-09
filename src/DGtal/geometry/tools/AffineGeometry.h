@@ -771,9 +771,10 @@ namespace DGtal
     /// combination of vectors of \a basis, and hence a null vector if
     /// \a v is a linear combination of the vectors of the basis.
     static
-    Point reductionOnBasis( const Point& v,
-                                  const Points& basis,
-                                  const double tolerance )
+    Point
+    reductionOnBasis( const Point& v,
+                      const Points& basis,
+                      const double tolerance )
     {
       Point w( v );
       for ( const auto& b : basis ) reduceVector( w, b, tolerance );
