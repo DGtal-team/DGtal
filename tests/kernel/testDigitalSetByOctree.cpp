@@ -33,51 +33,160 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/sets/DigitalSetByOctree.h"
 
-int main(int argc, char** argv) { 
+void checkConcept() {
     using namespace DGtal;
-    
-    
-    Z3i::Domain d(Z3i::Point{-1, -1, -1}, Z3i::Point{14, 3, 9});
-    DigitalSetByOctree<Z3i::Space> octree(d);
     BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<DigitalSetByOctree< Z3i::Space >> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<DigitalSetByOctree< Z2i::Space >> ));
+}
 
-    std::cout << octree.domain() << std::endl;
-    std::cout << "====" << std::endl;
-    octree.insert(Z3i::Point{0, 0, 0});
-    std::cout << "====" << std::endl;
-    octree.insert(Z3i::Point{1, 1, 1});
-    std::cout << "====" << std::endl;
-    octree.insert(Z3i::Point{-1, -1, -1});
-    std::cout << "====" << std::endl;
-    octree.insert(Z3i::Point{10, 10, 10});
+bool testDiagonalPointsDAG() {
+    using namespace DGtal;
+    const unsigned int lvl = 5;
+    const int size = (1 << 5);
+
+    bool ok = true;
+    Z3i::Domain domain(Z3i::Point{0, 0, 0}, Z3i::Point{size, size, size});
+    DigitalSetByOctree<Z3i::Space> octree(domain);
+
+    // One of best cases for dag: all points on the diagonal of the domain
+    // This is compressed as a single node per level !
+    for (size_t i = 0; i < size; ++i) {
+        octree.insert(Z3i::Point{(int)i, (int)i, (int)i});
+    }
+
+    trace.beginBlock( "Simple check for DAG compression ");
+    {
+        const size_t mem_before = octree.memoryFootprint();
+            octree.convertToDAG();
+        const size_t mem_after  = octree.memoryFootprint();
+
+        trace.info() << "Before conversion: " << mem_before << " bytes occupied" << "\n";
+        trace.info() << "After conversion: "  << mem_after  << " bytes occupied" << "\n";
+
+        ok = ok && (mem_after == lvl * sizeof(typename DigitalSetByOctree<Z3i::Space>::Node));
+    } trace.endBlock();
+
+    return ok;
+}
+
+bool testInsertAndIterate() {
+    using namespace DGtal;
+
+    bool ok = true;
     
-    std::cout << "====" << std::endl;
-    std::cout << std::boolalpha;
-    std::cout << octree(Z3i::Point{ 0, 0, 0}) << std::endl;;
-    std::cout << octree(Z3i::Point{-1, -1, -1}) << std::endl;;
-    std::cout << octree(Z3i::Point{ 12, 18, 24}) << std::endl;;
-    std::cout << octree(Z3i::Point{2, 6, 3}) << std::endl;;
+    const Z3i::Domain domain  (Z3i::Point{-1, -2, -1}, Z3i::Point{14, 3, 9});        
+    const Z3i::Domain expected(Z3i::Point{-1, -2, -1}, Z3i::Point{15, 14, 15});        
 
-    std::cout << "====" << std::endl;
-   
-    auto it = octree.find(Z3i::Point{10, 10, 10});
-    std::cout << *it << std::endl;
-    std::cout << "====" << std::endl;
-    std::cout << "====" << std::endl;
-    for (auto it = octree.begin(); it != octree.end(); it.next()) {
-        std::cout << *it << std::endl;
-    }
+    // Some test cases
+    const Z3i::Point testPoints[] = {
+        // Valid points inside the domain
+        Z3i::Point(0, 0, 0)   , Z3i::Point(2, 1, 4),    // Some points
+        Z3i::Point(-1, -1, -1), Z3i::Point(14, 13, 14), // On the edge
+        Z3i::Point(8, 7, 4),                            // Outside the original domain, but inside the excpected one  
+        // Duplicates
+        Z3i::Point(0, 0, 0), Z3i::Point(8, 7, 4), 
+        // Outside the domain
+        Z3i::Point(-5, 152, -123)
+    };
+    const size_t testPointCount = sizeof(testPoints) / sizeof(Z3i::Point);
+    const bool testPointsValid[8] = {
+        true, true, 
+        true, true, 
+        true, 
+        true, true, 
+        false, 
+    };
+    // Valid points of testPoints, in expected order
+    const Z3i::Point validPoints[] = {
+        Z3i::Point(-1, -1, -1), Z3i::Point(0, 0, 0), 
+        Z3i::Point(2, 1, 4)   , Z3i::Point(8, 7, 4), 
+        Z3i::Point(14, 13, 14)
+    };
+    const size_t validPointCount = sizeof(validPoints) / sizeof(Z3i::Point);
 
-    std::cout << "====" << std::endl;
-    std::cout << "====" << std::endl;
-    auto it2 = octree.find(Z3i::Point{10, 10, 10});
-    std::cout << *it2 << std::endl;
-    std::cout << std::endl;
-    std::cout << octree.memoryFootprint() << std::endl;
-    octree.erase(it2);
-    for (auto it = octree.begin(); it != octree.end(); it.next()) {
-        std::cout << *it << std::endl;
-    }
-    std::cout << octree.memoryFootprint() << std::endl;
-    return 0;
+
+    trace.beginBlock ( "Checking domain " );
+    {
+        DigitalSetByOctree<Z3i::Space> octree(domain);
+
+        trace.info() << "Domain = " << domain << "\n";
+        trace.info() << "Octree Domain   = " << octree.domain() << "\n";
+        trace.info() << "Expected Domain = " << expected << "\n";
+
+        ok = ok && (octree.domain().lowerBound() == expected.lowerBound()) && 
+                   (octree.domain().upperBound() == expected.upperBound());
+    } trace.endBlock();
+
+    trace.beginBlock( "Testing insertion ");
+    {
+        DigitalSetByOctree<Z3i::Space> octree(domain);
+        for (int i = 0; i < testPointCount; ++i) {
+            octree.insert(testPoints[i]);
+        }
+
+        trace.info() << "Attempts of insertion = " << 8  
+                     << ", octree size = "  << octree.size()
+                     << ", valid points = " << validPointCount << "\n";
+
+        ok = ok && (octree.size() == validPointCount);
+    } trace.endBlock();
+
+    trace.beginBlock( "Testing existence ");
+    {
+        DigitalSetByOctree<Z3i::Space> octree(domain);
+        for (int i = 0; i < testPointCount; ++i) {
+            octree.insert(testPoints[i]);
+        }
+
+        for (int i = 0; i < sizeof(testPoints) / sizeof(Z3i::Point); ++i) {
+            trace.info() << "Testing for:" << testPoints[i] 
+                         << ", octree = "    << octree(testPoints[i])
+                         << ", expected = "  << testPointsValid[i]  << "\n";
+
+            ok = ok && (testPointsValid[i] == octree(testPoints[i]));
+        }
+    } trace.endBlock();
+
+    trace.beginBlock( "Test iterating ");
+    {
+        DigitalSetByOctree<Z3i::Space> octree(domain);
+        for (int i = 0; i < testPointCount; ++i) {
+            octree.insert(testPoints[i]);
+        }
+
+        size_t i = 0;
+        for (auto it = octree.begin(); it != octree.end(); ++it, ++i) {
+            if (i >= validPointCount) {
+                trace.info() << "Error: more valid points than expected. \n";
+                ok = false;
+                break;
+            }
+            trace.info() << i << ": " << *it << ", expected = " << validPoints[i] << "\n";
+            ok = ok && (*it == validPoints[i]);
+        }
+    } trace.endBlock();
+
+    trace.beginBlock( "Test erase" );
+    {
+        DigitalSetByOctree<Z3i::Space> octree(domain);
+        for (int i = 0; i < testPointCount; ++i) {
+            octree.insert(testPoints[i]);
+        }
+
+        octree.erase(testPoints[0]);
+        octree.erase(octree.end());
+
+        trace.info() << "Removing point:"  
+                     << " octree size = "  << octree.size()
+                     << " valid points = " << validPointCount - 1 << "\n";
+        ok = ok && (octree.size() == validPointCount - 1);
+    } trace.endBlock();
+
+    return ok;
+}
+
+int main(int argc, char** argv) { 
+    const bool res = testInsertAndIterate() && testDiagonalPointsDAG();
+    DGtal::trace.emphase() << ( res ? "Passed." : "Error." ) << std::endl;
+    return !res;
 }

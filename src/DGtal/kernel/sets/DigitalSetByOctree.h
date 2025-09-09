@@ -32,6 +32,7 @@
 
 // Inclusions
 #include <stack>
+#include <map>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -41,6 +42,34 @@
 
 namespace DGtal
 {
+    /**
+     * @brief A DigitalSet that stores voxel as an octree, or a DAG
+     * 
+     * This class allows for a compact representation of voxel as a
+     * sparse voxel octree (SVO). Optionnally, this can be further
+     * compressed as a Sparse Voxel Directed Acyclic Graph where 
+     * nodes are shared when they share a common structure.
+     * 
+     * Leaves are never explicitely stored to further reduce memory
+     * usage. 
+     * 
+     * Common operation complexity:
+     * (L = depth of the tree computed with domain size, N = number of points)
+     *  - Insertion: O(log(L))
+     *  - Erase: O(N * log(L))
+     *  - find: O(log(L))
+     *  - Iterator next: O(log(L))
+     *  - Listing all voxels: O(N * log(L))
+     *  - Memory usage (octree): O(N * log(L))
+     * 
+     * When converted to a DAG, the set can not be modified anymore
+     * (ni insertion, or erase).
+     * 
+     * References:
+     *  - Laine and Kerras 2010: Efficient Sparse Voxel Octrees – Analysis, Extensions, and Implementation
+     *  - Kampe et al 2013: High Resolution Sparse Voxel DAGs
+     *  - Villanueva et al 2017: Symmetry-aware Sparse Voxel DAGs (SSVDAGs) for compression-domain tracing of high-resolution geometric scenes
+     */
     template <class Space>
     class DigitalSetByOctree {
     public:
@@ -48,140 +77,16 @@ namespace DGtal
         using CellIndex = typename Space::UnsignedInteger;
         using Size = size_t;
 
+        // Only HyperRectDomain are supported 
         using Domain = HyperRectDomain<Space>;
         using Point  = typename Domain::Point;
 
-
-        struct TraversalMemory {
-            Domain domain;
-            CellIndex lvl;
-            CellIndex idx;
-            CellIndex currentChildIdx;
-
-            bool operator==(const TraversalMemory& other) const {
-                return lvl == other.lvl && idx == other.idx && currentChildIdx == other.currentChildIdx;
-            }
-        };
-        friend class Iterator;
-        struct OctreeIterator {
-            // Should be std::output_iterator_tag, but CDigitalSet
-            // does not allow this; so we upgrade the category
-            using iterator_category = std::forward_iterator_tag;
-            using difference_type = std::ptrdiff_t;
-            using value_type = Point;
-            using reference = value_type&;
-            using pointer = value_type*;
-
-            friend class DigitalSetByOctree;
-
-            OctreeIterator(const DigitalSetByOctree* container) {
-                myContainer = container;
-            }
-
-            OctreeIterator(const DigitalSetByOctree* container, 
-                           TraversalMemory init) {
-                myContainer = container;
-                myMemory.push(std::move(init));
-
-                findNextLeaf();
-            }
-
-            OctreeIterator(const DigitalSetByOctree* container, 
-                           std::stack<TraversalMemory>& memory) {
-                myContainer = container;
-                myMemory = memory;
-            }
-
-            void findNextLeaf() {
-                while (myMemory.size() != 0) {
-                    TraversalMemory& m = myMemory.top();
-                    CellIndex k = (m.currentChildIdx == INVALID_IDX) ? 0 : (m.currentChildIdx + 1);
-                    for (; k < CELL_COUNT; ++k) {
-                        if (myContainer->myNodes[m.lvl][m.idx].children[k] != INVALID_IDX) {
-                            // Update explored child
-                            m.currentChildIdx = k;
-                            break;
-                        }
-                    }
-
-                    if (k < CELL_COUNT) {
-                        if (myMemory.top().lvl == myContainer->myNodes.size() - 1) break;
-                        // Child found, go down
-
-                        TraversalMemory newMemory;
-                        newMemory.lvl = m.lvl + 1;
-                        newMemory.domain = splitDomain(m.domain, SIDES_FROM_INDEX[k].data());
-                        newMemory.idx = myContainer->myNodes[m.lvl][m.idx].children[k];
-                        newMemory.currentChildIdx = INVALID_IDX;
-
-                        myMemory.push(std::move(newMemory));
-                    } else {
-                        // No children unexplored, go back to parent
-                        myMemory.pop();
-                    }
-
-                }
-
-                if (myMemory.size() != 0) {
-                    // For leaves, find first non 0 index
-                    auto& mem = myMemory.top();
-                    if (mem.currentChildIdx == INVALID_IDX) {
-                        for (CellIndex k = 0; k < CELL_COUNT; ++k) {
-                            if (myContainer->myNodes[mem.lvl][mem.idx].children[k] != 0) {
-                                mem.currentChildIdx = k;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-
-            void next() {
-                findNextLeaf();
-            }
-
-            bool operator==(const OctreeIterator& other) const {
-                if (myContainer != other.myContainer) return false;
-                if (myMemory.size() != other.myMemory.size()) return false;
-
-                if (myMemory.size() != 0) {
-                    return myMemory.top() == other.myMemory.top();
-                }
-                return true;
-            }
-
-            bool operator!=(const OctreeIterator& other) const {
-                return !(*this == other);
-            }
-
-            Point operator*() const {
-                const auto& sides = SIDES_FROM_INDEX[myMemory.top().currentChildIdx];
-                return splitDomain(myMemory.top().domain, sides.data()).lowerBound();
-            }
-
-            OctreeIterator& operator++() {
-                next();
-                return *this;
-            }
-
-            OctreeIterator operator++(int) {
-                auto it = *this;
-                next();
-                return it;
-            }
-
-        private:
-            const DigitalSetByOctree* myContainer;
-            std::stack<TraversalMemory> myMemory;
-        };
-
-        using Iterator = OctreeIterator;
-        using ConstIterator = OctreeIterator;
-
-        BOOST_STATIC_CONSTANT(DGtal::Dimension, D = Space::dimension);
-        BOOST_STATIC_CONSTANT(CellIndex, CELL_COUNT  = (1 << D));
-        BOOST_STATIC_CONSTANT(CellIndex, INVALID_IDX = (1 << CELL_COUNT) - 1);
-        constexpr static std::array<std::array<DimIndex, D>, CELL_COUNT> SIDES_FROM_INDEX = []() constexpr {
+        static constexpr DGtal::Dimension D = Space::dimension;
+        static constexpr DGtal::Dimension dimension = Space::dimension;
+        
+        static constexpr CellIndex CELL_COUNT  = (1 << D);
+        static constexpr CellIndex INVALID_IDX = std::numeric_limits<CellIndex>::max();
+        static constexpr std::array<std::array<DimIndex, D>, CELL_COUNT> SIDES_FROM_INDEX = [](){
             std::array<std::array<DimIndex, D>, CELL_COUNT> sides_from_index{};
             for (CellIndex i = 0; i < CELL_COUNT; ++i) {
                 CellIndex coord = i;
@@ -194,220 +99,260 @@ namespace DGtal
             return sides_from_index;
         }();
 
-        DigitalSetByOctree(const Domain& d) {
-            const auto lb = d.lowerBound();
-            const auto ub = d.upperBound();
-            auto size = ub - lb;
-            
-            // Enforce cubical domain with side that are powers of 2
-            CellIndex newSize = 1;
-            for (DimIndex d = 0; d < D; ++d) {
-                if (!(size[d] & (size[d] - 1))) {
-                    newSize = (newSize > size[d]) ? newSize : size[d];
-                } else {
-                    CellIndex s = 1 << (static_cast<CellIndex>(std::ceil(std::log(size[d]))) + 1);
-                    newSize = (newSize > s) ? newSize : s;
-                }
+        /** 
+         * @brief Node for octree
+         * 
+         * Only stores the index of its children
+         */
+        struct Node {
+            Node() {
+                for (CellIndex i = 0; i < CELL_COUNT; ++i)
+                    children[i] = INVALID_IDX;
             }
 
-            for (DimIndex d = 0; d < D; ++d) {
-                size[d] = newSize;
-            }
-
-            size_t lvl = static_cast<size_t>(std::ceil(std::log(newSize)));
-            myNodes.resize(lvl + 1);
-            myNodes[0].push_back(Node());
-
-            myDomain = CowPtr(new Domain(lb, lb + size));
-            mySize = 0;
+            CellIndex children[CELL_COUNT];
         };
 
-        const Domain& domain() const {
-            return *myDomain;
-        }
+        /**
+         * @brief Helper struct to store traversal and go to next leaf
+         */
+        struct TraversalMemory {
+            Domain domain; //< Domain represented by the node
+            CellIndex lvl; //< Level of the node
+            CellIndex idx; //< Index of the node 
+            CellIndex currentChildIdx; //< Which child is currently explored.
 
-        CowPtr<Domain> domainPointer() const {
-            return myDomain;
-        }
-
-        static Domain splitDomain(const Domain& domain, const DimIndex* sides) {
-                  auto lb = domain.lowerBound();
-            const auto ub = domain.upperBound();
-            const auto size = (ub - lb) / 2;
-
-            for (DimIndex d = 0; d < D; ++d)
-                lb[d] += sides[d] * size[d];
-            
-            return Domain(lb, lb + size);
-        }
-
-        void insert(const Point& p) {
-            if (myState == State::OCTREE) {
-                Domain domain = *myDomain;
-                CellIndex nodeIdx = 0;
-                
-                if (!domain.isInside(p)) return;
-                for (size_t i = 0; i < myNodes.size() - 1; ++i) {
-                    const auto lb = domain.lowerBound();
-                    const auto ub = domain.upperBound();
-                    const Point middle = domain.lowerBound() + (ub - lb) / 2;
-
-                    CellIndex childIdx = 0;
-                    DimIndex sides[D]{};
-                    for (DimIndex d = 0; d < D; ++d) {
-                        sides[d]  = (p[d] >= middle[d]);
-                        childIdx += sides[d] * (1 << (D - d - 1));
-                    }
-
-                    domain = splitDomain(domain, sides);
-                    if (myNodes[i][nodeIdx].children[childIdx] == INVALID_IDX) {
-                        myNodes[i + 1].push_back(Node());
-                        myNodes[i + 1].back().parent = nodeIdx;
-                        myNodes[i][nodeIdx].children[childIdx] = myNodes[i + 1].size() - 1;
-
-                        mySize ++;
-                    }
-
-                    nodeIdx = myNodes[i][nodeIdx].children[childIdx];
-                }
-
-                // Do not create nodes for single voxels. So we repeat 
-                const auto lb = domain.lowerBound();
-                const auto ub = domain.upperBound();
-                const Point middle = domain.lowerBound() + (ub - lb) / 2;
-
-                CellIndex childIdx = 0;
-                for (DimIndex d = 0; d < D; ++d) {
-                    childIdx += (p[d] >= middle[d]) * (1 << (D - d - 1));
-                }
-                myNodes[myNodes.size() - 1][nodeIdx].children[childIdx] = 1;
+            bool operator==(const TraversalMemory& other) const {
+                return lvl == other.lvl && idx == other.idx && currentChildIdx == other.currentChildIdx;
             }
-        }
+        };
 
-        void insertNew(const Point& p) {
-            insert(p);
-        }
+        /**
+         * @brief Iterator over the octree
+         */
+        struct OctreeIterator {
+            friend class DigitalSetByOctree;
 
-        bool operator()(const Point& p) const {
-            return find(p) != end();
-        }
+            // Should be std::output_iterator_tag, but CDigitalSet
+            // does not allow this; so we upgrade the category
+            using iterator_category = std::forward_iterator_tag;
+            using difference_type = std::ptrdiff_t;
+            using value_type = Point;
+            using reference = value_type&;
+            using pointer = value_type*;
 
-        Iterator find(const Point& p) const {
-            std::stack<TraversalMemory> traversal;
-            Domain domain = *myDomain;
-            CellIndex nodeIdx = 0;
-            
-            TraversalMemory root;
-            root.lvl = 0;
-            root.domain = domain;
-            root.idx = 0;
-            traversal.push(root);
-            
-            if (!domain.isInside(p)) return end();
-            for (size_t i = 0; i < myNodes.size() - 1; ++i) {
-                const auto lb = domain.lowerBound();
-                const auto ub = domain.upperBound();
-                const Point middle = domain.lowerBound() + (ub - lb) / 2;
-
-                CellIndex childIdx = 0;
-
-                DimIndex sides[D]{};
-                for (DimIndex d = 0; d < D; ++d) {
-                    sides[d]  = (p[d] >= middle[d]);
-                    childIdx += sides[d] * (1 << (D - d - 1));
-                }
-                
-                if (myNodes[i][nodeIdx].children[childIdx] == INVALID_IDX) {
-                    return end();
-                }
-                
-                domain = splitDomain(domain, sides);
-                nodeIdx = myNodes[i][nodeIdx].children[childIdx];
-    
-                TraversalMemory memory;
-                memory.domain = domain;
-                memory.lvl = i + 1;
-                memory.idx = nodeIdx;
-                memory.currentChildIdx = INVALID_IDX;
-                
-                traversal.top().currentChildIdx = childIdx;
-                traversal.push(memory);
+            /** 
+             * @brief Constuctor to end of an octree
+             */
+            OctreeIterator(const DigitalSetByOctree* container) {
+                myContainer = container;
             }
-            
-            const auto lb = domain.lowerBound();
-            const auto ub = domain.upperBound();
-            const Point middle = domain.lowerBound() + (ub - lb) / 2;
-            CellIndex childIdx = 0;
-            for (DimIndex d = 0; d < D; ++d) {
-                childIdx += (p[d] >= middle[d]) * (1 << (D - d - 1));
+
+            /**
+             * @brief Constructor from any node to explore subtree
+             * 
+             * The main purpose of this constructor is to pass the 
+             * root node.
+             */
+            OctreeIterator(const DigitalSetByOctree* container, 
+                           TraversalMemory init) {
+                myContainer = container;
+                myMemory.push(std::move(init));
+
+                findNextLeaf();
             }
-            traversal.top().currentChildIdx = childIdx;
 
-            return Iterator(this, traversal);
-        }
+            /** 
+             * @brief Constructor from an entire traversal
+             * 
+             * The main purpose of this constructor is for the 
+             * find method to directly build the iterator without
+             * searching through the whole tree.
+             */
+            OctreeIterator(const DigitalSetByOctree* container, 
+                           std::stack<TraversalMemory>& memory) {
+                myContainer = container;
+                myMemory = memory;
+            }
 
-        size_t size() const {
-            return mySize;
-        }
+            /**
+             * @brief Compares two iterator
+             * 
+             * Note: The end of an octree is represented by 
+             * an empty traversal memory
+             */
+            bool operator==(const OctreeIterator& other) const {
+                if (myContainer != other.myContainer) return false;
+                if (myMemory.size() != other.myMemory.size()) return false;
 
+                if (myMemory.size() != 0) {
+                    return myMemory.top() == other.myMemory.top();
+                }
+                return true;
+            }
+
+            /**
+             * @brief Not equal comparison operator
+             */
+            bool operator!=(const OctreeIterator& other) const {
+                return !(*this == other);
+            }
+
+            /**
+             * @brief Dereference operator
+             */
+            Point operator*() const {
+                const auto& sides = SIDES_FROM_INDEX[myMemory.top().currentChildIdx];
+                return splitDomain(myMemory.top().domain, sides.data()).lowerBound();
+            }
+
+            /**
+             * @brief Prefix increment
+             */
+            OctreeIterator& operator++() {
+                findNextLeaf();
+                return *this;
+            }
+
+            /**
+             * @brief Postfix increment
+             */
+            OctreeIterator operator++(int) {
+                auto it = *this;
+                findNextLeaf();
+                return it;
+            }
+        private:
+            /**
+             * @brief Finds the next leaf, if any
+             */
+            void findNextLeaf();
+
+        private:
+            const DigitalSetByOctree* myContainer; //< Pointer to the original octree
+            std::stack<TraversalMemory> myMemory;  //< Current traversal infromation
+        };
+
+        using Iterator = OctreeIterator;
+        using ConstIterator = OctreeIterator;
+
+        /**
+         * @brief Constructor from a domain
+         * 
+         * Only HyperRectDomains are supported for octrees.
+         * 
+         * The given domain will be extend to ensure
+         * it is an hyper cube sides that is a power of 2
+         * 
+         * @param d The domain 
+         */
+        DigitalSetByOctree(const Domain& d);
+
+        /**
+         * @brief Returns the domain of the voxels
+         */
+        const Domain& domain() const { return *myDomain; }
+
+        /**
+         * @brief Returns the domain of the voxels
+         */
+        CowPtr<Domain> domainPointer() const { return myDomain; }
+
+    public:
+        /**
+         * @brief Inserts a new point in the octree
+         * 
+         * This function can be called multiple times with the same
+         * point without any risk.
+         * 
+         * If the point is not in bounds or the octree was converted
+         * to a DAG, this function does nothing.
+         * 
+         * @param p The point to insert
+         */
+        void insert(const Point& p);
+
+        /**
+         * @brief Inserts a new point in the octree
+         * 
+         * This function can be called multiple times with the same
+         * point without any risk.
+         * 
+         * If the point is not in bounds or the octree was converted
+         * to a DAG, this function does nothing.
+         * 
+         * @param p The point to insert
+         * @see insert
+         */
+        void insertNew(const Point& p) { insert(p); }
+
+        /**
+         * @brief Check if a voxel is set or not
+         * 
+         * @param p The point to check for
+         * @see find
+         */
+        bool operator()(const Point& p) const { return find(p) != end(); }
+
+        /**
+         * @brief Finds a point within the Octree
+         * 
+         * @param p The point to find
+         * @return An iterator to the point if possible otherwise end()
+         */
+        Iterator find(const Point& p) const;
+
+        /** 
+         * @brief Returns the number of voxel in the set
+         */
+        size_t size() const { return mySize; }
+
+        /** 
+         * @brief Check if the octree is empty or not
+         */
+        bool empty() const { return size() == 0; }
+
+        /**
+         * @brief Returns the memory occupied by node storage in bytes
+         * 
+         * @see shrink
+         */
         size_t memoryFootprint() const {
             size_t count = 0;
             for (CellIndex i = 0; i < myNodes.size(); ++i) {
-                count += myNodes[i].size() * sizeof(Node);
+                count += myNodes[i].capacity() * sizeof(Node);
             }
             return count;
         }
 
-        bool empty() const {
-            return mySize == 0;
-        }
-
+        /**
+         * @brief Removes all nodes from the octree
+         * 
+         * Note: if the octree was converted to a dag, 
+         * this function reset the flag and insertion 
+         * are available afterwards. 
+         */
         void clear() {
             myNodes.clear();
             myState = State::OCTREE;
         }
 
-        size_t erase(const Iterator& it) {
-            if (myState == State::OCTREE) {
-                std::vector<std::pair<CellIndex, CellIndex>> reindex;
-                bool childRemoved = true;
+        /** 
+         * @brief Remove a voxel from the octree
+         * 
+         * This functions is undefined behavior if the Iterator
+         * is invalid.
+         * 
+         * @param it The iterator pointing to the voxel to remove
+         */
+        size_t erase(const Iterator& it);
 
-                auto mem = it.myMemory;
-                while (!mem.empty()) {
-                    const auto& tmem = mem.top();
-                    if (childRemoved) { // Can disconnect parent from the child
-                        CellIndex child = myNodes[tmem.lvl][tmem.idx].children[tmem.currentChildIdx];
-                        myNodes[tmem.lvl][tmem.idx].children[tmem.currentChildIdx] = INVALID_IDX;
-                        
-                        // Reindex childrens because one was removed in previous layer
-                        for (CellIndex i = 0; i < myNodes[tmem.lvl].size(); ++i) {
-                            auto& node = myNodes[tmem.lvl][i];
-                            for (CellIndex j = 0; j < CELL_COUNT; ++j) {
-                                if (node.children[j] != INVALID_IDX && node.children[j] >= child) {
-                                    node.children[j] --;
-                                }
-                            }
-                        }
-                    }
-
-                    size_t count = 0;
-                    for (CellIndex i = 0; i < CELL_COUNT; ++i) {
-                        count += (myNodes[tmem.lvl][tmem.idx].children[i] != INVALID_IDX);
-                    }
-
-                    if (count == 0) {
-                        myNodes[tmem.lvl].erase(myNodes[tmem.lvl].begin() + tmem.idx);
-                        childRemoved = true;
-                    } else {
-                        childRemoved = false;
-                    }
-
-                    mem.pop();
-                }
-            }
-            return 0;
-        }
-
+        /** 
+         * @brief Removes a range of voxels
+         * 
+         * @param begin The begining of the range
+         * @param end The end of the range
+         */
         size_t erase(Iterator begin, Iterator end) {
             size_t count = 0;
             for (; begin != end; ++begin) {
@@ -416,16 +361,34 @@ namespace DGtal
             return count;
         }
 
+        /**
+         * @brief Removes a voxel from the octree
+         * 
+         * @param p The point to remove
+         */
         size_t erase(const Point& p) {
             return erase(find(p));
         }
 
+        /**
+         * @brief Shrinks storage to reduce memory usage
+         * 
+         * @see memoryFootprint
+         */
         void shrink() {
             for (CellIndex i = 0; i < myNodes.size(); ++i) {
                 myNodes[i].shrink_to_fit();
             }
         }
 
+        /**
+         * @brief Appends an octree to another
+         * 
+         * This is equivalent to looping through an octree and inserting
+         * every node into another*
+         * 
+         * @param other The octree to append
+         */
         DigitalSetByOctree& operator+=(const DigitalSetByOctree& other) {
             if (myState == State::OCTREE) {
                 for (auto it = other.begin(); it != other.end(); ++it) {
@@ -434,7 +397,15 @@ namespace DGtal
             }
             return *this;
         }
-        
+
+        /**
+         * @brief Computes the complement of the octree
+         * 
+         * This is equivalent to looping through an octree and inserting
+         * every node into another*
+         * 
+         * @param it The output iterator
+         */
         template<typename It>
         void computeComplement(It out) const {
             DigitalSetByOctree complement(*myDomain);
@@ -445,10 +416,19 @@ namespace DGtal
                 }
             }
         }
-        
+
+        /**
+         * @brief Assigns the octree as the complement of another set
+         * 
+         * This is equivalent to looping through a set and inserting
+         * every node
+         * 
+         * @param other The digital set to compute complement of
+         */
         template<class DSet>
         void assignFromComplement(const DSet& other) {
             if (myState == State::OCTREE) {
+                clear();
                 for (auto it = myDomain->begin(); it != myDomain->end(); ++it) {
                     if (!other(*it)) {
                         insert(*it);
@@ -457,6 +437,14 @@ namespace DGtal
             }
         }
         
+        /**
+         * @brief Computes the bounding box of stored points
+         * 
+         * This functions runs in O(N log(L)). 
+         * 
+         * @param lb Output lower bound
+         * @param ub Output upper bound
+         */
         void computeBoundingBox(Point& lb, Point& ub) const {
             lb = myDomain->upperBound();
             ub = myDomain->lowerBound();
@@ -470,6 +458,9 @@ namespace DGtal
             }
         }
 
+        /**
+         * @brief Returns an iterator to the begining of the octree
+         */
         Iterator begin() const {
             CellIndex nodeIdx  = 0;
             CellIndex childIdx = 0;
@@ -484,48 +475,63 @@ namespace DGtal
             return Iterator(this, mem);
         }
 
+        /**
+         * @brief Returns an iterator to the begining of the octree
+         */
         Iterator begin() {
             return static_cast<const DigitalSetByOctree&>(*this).begin();
         }
 
+        /**
+         * @brief Returns an iterator to the end of the octree
+         */
         Iterator end() { return Iterator(this); }
+
+        /**
+         * @brief Returns an iterator to the end of the octree
+         */
         Iterator end() const { return Iterator(this); }
 
     public:
-        void convertToDAG() {
+        /**
+         * @brief Converts the octree to DAG
+         */
+        void convertToDAG();
 
-            myState = State::DAG;
-        }
-
+        /**
+         * @brief Dumps the octree to std out
+         * 
+         * Note: This function is meant for debug purposes only
+         */
+        void dumpOctree() const;
+    private:
+        /**
+         * @brief Helper function to split and select among 2^D subdomains
+         * 
+         * @param domain The domain to split
+         * @param sides Selection between left or right subdomain for each dimension
+         */
+        static Domain splitDomain(const Domain& domain, const DimIndex* sides);
+    
     private:
         /**
          * @brief The state the container is in
          *  
          * After the octree is converted to a DAG, it is not possible
          * to insert or remove nodes. 
-         *
          */
         enum class State {
             OCTREE, 
             DAG
         };
 
-        struct Node {
-            Node() {
-                parent = INVALID_IDX;
-                for (CellIndex i = 0; i < CELL_COUNT; ++i)
-                    children[i] = INVALID_IDX;
-            }
-
-            CellIndex parent;
-            CellIndex children[CELL_COUNT];
-        };
     private:
-        CowPtr<Domain> myDomain;
-        State myState = State::OCTREE;
+        CowPtr<Domain> myDomain;       // Pointer to domain, as required by CDigitalSet
+        State myState = State::OCTREE; // Current state
         
-        size_t mySize;
-        std::vector<std::vector<Node>> myNodes;
+        size_t mySize;                 // Current number of stored voxel.
+        std::vector<std::vector<Node>> myNodes; // Nodes storage
     };
 };
 
+#include "DigitalSetByOctree.ih"
