@@ -626,7 +626,10 @@ class.
 \image html genqhull-affdim3-0.png "Convex hull of 1000 points of affine dimension 3 (interior view)" width=90%
 </td></tr>
 </table>
-  
+
+\image html genqhull-4d-affdim2.jpg "Convex hull of 100 4D points of affine dimension 2, projected along the 4 main axes." width=90%
+
+
 @section dgtal_quickhull_sec5 Further notes
 
 Since 2.0, the QuickHull and ConvexityHelper classes have been slightly improved:

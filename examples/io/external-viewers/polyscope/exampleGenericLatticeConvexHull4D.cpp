@@ -23,6 +23,24 @@
  * @ingroup Examples
  * This file is part of the DGtal library.
  */
+
+/**
+
+   Computes the convex hull of N 4D points within a ball of radius R,
+   these points belonging to a lattice of chosen dimension D. Displays
+   their projections along the different main axes.
+
+\verbatim
+./examples/io/external-viewers/polyscope/exampleGenericLatticeConvexHull4D 20 100 2
+\endverbatim
+
+\image html genqhull-4d-affdim2.jpg "Convex hull of 100 4D points of affine dimension 2" width=90%
+
+@see \ref dgtal_quickhull_sec5
+
+@example examples/io/external-viewers/polyscope/exampleGenericLatticeConvexHull4D.cpp
+ */
+
 #include <iostream>
 #include <vector>
 #include <random>

@@ -240,7 +240,7 @@ namespace DGtal
       {
         if ( ptr_gen_qhull->affine_dimension != dimension )
           { // This kernel is not adapted => go to lower dimension
-            return lower_kernels.count();
+            return lower_kernels.countInterior();
           }
         // If polytope is not initialized returns error.
         if ( polytope.nbHalfSpaces() == 0 ) return -1;
@@ -260,7 +260,7 @@ namespace DGtal
       {
         if ( ptr_gen_qhull->affine_dimension != dimension )
           { // This kernel is not adapted => go to lower dimension
-            return lower_kernels.count();
+            return lower_kernels.countBoundary();
           }
         // If polytope is not initialized returns error.
         if ( polytope.nbHalfSpaces() == 0 ) return -1;
@@ -286,7 +286,7 @@ namespace DGtal
       {
         if ( ptr_gen_qhull->affine_dimension != dimension )
           { // This kernel is not adapted => go to lower dimension
-            return lower_kernels.count();
+            return lower_kernels.countUpTo( max );
           }
         // If polytope is not initialized returns error.
         if ( polytope.nbHalfSpaces() == 0 ) return -1;
@@ -613,62 +613,62 @@ namespace DGtal
       return generic_computers.count();
     }
 
-      /// Computes the number of integer points lying within the interior of the polytope.
-      ///
-      /// @return the number of integer points lying within the interior of the polytope.
-      ///
-      /// @note Quite fast: obtained by line intersection, see
-      /// BoundedLatticePolytopeCounter
-      ///
-      /// @note `count() <= countInterior() + countBoundary()` with
-      /// equality when the polytope is closed.
-      Integer countInterior()
-      {
-        if ( ! polytope_computed )
-          polytope_computed = generic_computers.makePolytope();
-        if ( ! polytope_computed ) return -1; 
-        return generic_computers.countInterior();
+    /// Computes the number of integer points lying within the interior of the polytope.
+    ///
+    /// @return the number of integer points lying within the interior of the polytope.
+    ///
+    /// @note Quite fast: obtained by line intersection, see
+    /// BoundedLatticePolytopeCounter
+    ///
+    /// @note `count() <= countInterior() + countBoundary()` with
+    /// equality when the polytope is closed.
+    Integer countInterior()
+    {
+      if ( ! polytope_computed )
+        polytope_computed = generic_computers.makePolytope();
+      if ( ! polytope_computed ) return -1; 
+      return generic_computers.countInterior();
       }
-      
-      /// Computes the number of integer points lying on the boundary of the polytope.
-      ///
-      /// @return the number of integer points lying on the boundary of the polytope.
-      ///
-      /// @note Quite fast: obtained by line intersection, see
-      /// BoundedLatticePolytopeCounter
-      ///
-      /// @note `count() <= countInterior() + countBoundary()` with
-      /// equality when the polytope is closed.
-      Integer countBoundary()
-      {
-        if ( ! polytope_computed )
-          polytope_computed = generic_computers.makePolytope();
-        if ( ! polytope_computed ) return -1; 
-        return generic_computers.countBoundary();
-      }
-      
-      /// Computes the number of integer points within the polytope up to
-      /// some maximum number \a max. 
-      ///
-      /// @note For instance, a d-dimensional simplex that contains no
-      /// integer points in its interior contains only d+1 points. If
-      /// there is more, you know that the simplex has a non empty
-      /// interior.
-      ///
-      /// @param[in] max the maximum number of points that are counted,
-      /// the method exists when this number of reached.
-      ///
-      /// @return the number of integer points within the polytope up to .
-      ///
-      /// @note Quite fast: obtained by line intersection, see
-      /// BoundedLatticePolytopeCounter
-      Integer countUpTo( Integer max )
-      {
-        if ( ! polytope_computed )
-          polytope_computed = generic_computers.makePolytope();
-        if ( ! polytope_computed ) return -1; 
-        return generic_computers.countUpTo( max );
-      }
+    
+    /// Computes the number of integer points lying on the boundary of the polytope.
+    ///
+    /// @return the number of integer points lying on the boundary of the polytope.
+    ///
+    /// @note Quite fast: obtained by line intersection, see
+    /// BoundedLatticePolytopeCounter
+    ///
+    /// @note `count() <= countInterior() + countBoundary()` with
+    /// equality when the polytope is closed.
+    Integer countBoundary()
+    {
+      if ( ! polytope_computed )
+        polytope_computed = generic_computers.makePolytope();
+      if ( ! polytope_computed ) return -1; 
+      return generic_computers.countBoundary();
+    }
+    
+    /// Computes the number of integer points within the polytope up to
+    /// some maximum number \a max. 
+    ///
+    /// @note For instance, a d-dimensional simplex that contains no
+    /// integer points in its interior contains only d+1 points. If
+    /// there is more, you know that the simplex has a non empty
+    /// interior.
+    ///
+    /// @param[in] max the maximum number of points that are counted,
+    /// the method exists when this number of reached.
+    ///
+    /// @return the number of integer points within the polytope up to .
+    ///
+    /// @note Quite fast: obtained by line intersection, see
+    /// BoundedLatticePolytopeCounter
+    Integer countUpTo( Integer max )
+    {
+      if ( ! polytope_computed )
+        polytope_computed = generic_computers.makePolytope();
+      if ( ! polytope_computed ) return -1; 
+      return generic_computers.countUpTo( max );
+    }
 
     
     /// @}

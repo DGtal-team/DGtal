@@ -23,6 +23,38 @@
  * @ingroup Examples
  * This file is part of the DGtal library.
  */
+
+/**
+
+   Computes the convex hull of N 3D points within a ball of radius R,
+   these points belonging to a lattice of chosen dimension D.
+
+\verbatim
+./examples/io/external-viewers/polyscope/exampleGenericLatticeConvexHull3D 20 10 1
+./examples/io/external-viewers/polyscope/exampleGenericLatticeConvexHull3D 20 100 2
+./examples/io/external-viewers/polyscope/exampleGenericLatticeConvexHull3D 20 1000 3
+\endverbatim
+
+<table>
+<tr><td>
+\image html genqhull-affdim1.png "Convex hull of 10 points of affine dimension 1" width=90%
+</td><td>
+\image html genqhull-affdim2.png "Convex hull of 100 points of affine dimension 2" width=90%
+</td></tr>
+<tr><td>
+\image html genqhull-affdim3-1.png "Convex hull of 1000 points of affine dimension 3" width=\
+90%
+</td><td>
+\image html genqhull-affdim3-0.png "Convex hull of 1000 points of affine dimension 3 (interi\
+or view)" width=90%
+</td></tr>
+</table>
+
+@see \ref dgtal_quickhull_sec5
+
+@example examples/io/external-viewers/polyscope/exampleGenericLatticeConvexHull.cpp
+ */
+
 #include <iostream>
 #include <vector>
 #include <random>
@@ -123,7 +155,9 @@ int main( int argc, char* argv[] )
       psBoundary2 = polyscope::registerSurfaceMesh("Convex hull bdy dim=2",
                                                    hull.positions, hull.facets );
     }
-  
+  std::cout << "     #(P ∩ Z3)=" << hull.count() << "\n";
+  std::cout << "#(Int(P) ∩ Z3)=" << hull.countInterior() << "\n";
+  std::cout << " #(Bd(P) ∩ Z3)=" << hull.countBoundary() << "\n";
   polyscope::show();
   return EXIT_SUCCESS;
   
