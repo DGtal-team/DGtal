@@ -621,9 +621,9 @@ class.
 \image html genqhull-affdim2.png "Convex hull of 100 points of affine dimension 2" width=90%
 </td></tr>
 <tr><td>
-\image html genqhull-affdim3-0.png "Convex hull of 1000 points of affine dimension 3" width=90%
-</td><td>
 \image html genqhull-affdim3-1.png "Convex hull of 1000 points of affine dimension 3" width=90%
+</td><td>
+\image html genqhull-affdim3-0.png "Convex hull of 1000 points of affine dimension 3 (interior view)" width=90%
 </td></tr>
 </table>
   
