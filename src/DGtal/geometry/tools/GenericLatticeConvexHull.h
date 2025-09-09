@@ -173,6 +173,7 @@ namespace DGtal
         typedef typename LatticePolytope::Domain     Domain;
         typedef typename LatticePolytope::HalfSpace  PolytopeHalfSpace;
         typedef typename QHull::HalfSpace            ConvexHullHalfSpace;
+        typedef AffineGeometry< Point > Affine;
         if ( ptr_gen_qhull->affine_dimension != dimension )
           { // This kernel is not adapted => go to lower dimension
             return lower_kernels.makePolytope();
@@ -200,9 +201,11 @@ namespace DGtal
           Integer nu;
           for ( Dimension i = 0; i < dimension; ++i )
             N[ i ] = IntegerConverter< dimension, Integer >
-              ::cast( H.internalNormal()[ i ] );
+              ::cast( H.internalNormal()[ i ]  );
+          Point   Ns = Affine::simplifiedVector( N );
+          Integer g  = N.norm1() / Ns.norm1();
           nu = IntegerConverter< dimension, Integer >::cast( H.internalIntercept() );
-          PHS.emplace_back( N, nu );
+          PHS.emplace_back( Ns, nu / g );
         }
         polytope = LatticePolytope( domain, PHS.cbegin(), PHS.cend(), false, true );
         return true;
@@ -597,6 +600,12 @@ namespace DGtal
     /// @return the number of integer points lying within the polytope,
     /// or -1 if their was a problem when computing the polytope.
     ///
+    /// @warning The result is valid only if
+    /// GenericLatticeConvexHull::proj_dilation is equal to 1
+    /// (i.e. the affine basis for the projection was obtained through
+    /// an unimodular transformation). Otherwise the result is greater
+    /// or equal to the expected number.
+    ///
     /// @note Quite fast: obtained by line intersection, see
     /// BoundedLatticePolytopeCounter
     Integer count()
@@ -610,6 +619,12 @@ namespace DGtal
     /// Computes the number of integer points lying within the interior of the polytope.
     ///
     /// @return the number of integer points lying within the interior of the polytope.
+    ///
+    /// @warning The result is valid only if
+    /// GenericLatticeConvexHull::proj_dilation is equal to 1
+    /// (i.e. the affine basis for the projection was obtained through
+    /// an unimodular transformation). Otherwise the result is greater
+    /// or equal to the expected number.
     ///
     /// @note Quite fast: obtained by line intersection, see
     /// BoundedLatticePolytopeCounter
@@ -627,6 +642,12 @@ namespace DGtal
     /// Computes the number of integer points lying on the boundary of the polytope.
     ///
     /// @return the number of integer points lying on the boundary of the polytope.
+    ///
+    /// @warning The result is valid only if
+    /// GenericLatticeConvexHull::proj_dilation is equal to 1
+    /// (i.e. the affine basis for the projection was obtained through
+    /// an unimodular transformation). Otherwise the result is greater
+    /// or equal to the expected number.
     ///
     /// @note Quite fast: obtained by line intersection, see
     /// BoundedLatticePolytopeCounter
@@ -653,6 +674,12 @@ namespace DGtal
     /// the method exists when this number of reached.
     ///
     /// @return the number of integer points within the polytope up to .
+    ///
+    /// @warning The result is valid only if
+    /// GenericLatticeConvexHull::proj_dilation is equal to 1
+    /// (i.e. the affine basis for the projection was obtained through
+    /// an unimodular transformation). Otherwise the result is greater
+    /// or equal to the expected number.
     ///
     /// @note Quite fast: obtained by line intersection, see
     /// BoundedLatticePolytopeCounter

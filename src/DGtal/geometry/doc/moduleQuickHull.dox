@@ -592,6 +592,28 @@ object holds the convex hull in its following public data members:
   projection (identity if the convex hull is full dimensional,
   otherwise a basis in reduced echelon form).
 
+
+You may yave a look at exampleGenericLatticeConvexHull3D.cpp and
+exampleGenericLatticeConvexHull4D.cpp for examples of use of this
+class.
+
+<table>
+<tr><td>
+\image html genqhull-affdim1.jpg "Convex hull of 10 points of affine dimension 1" width=90%
+</td><td>
+\image html genqhull-affdim2.jpg "Convex hull of 100 points of affine dimension 2" width=90%
+</td></tr>
+<tr><td>
+\image html genqhull-affdim3-1.jpg "Convex hull of 1000 points of affine dimension 3" width=90%
+</td><td>
+\image html genqhull-affdim3-0.jpg "Convex hull of 1000 points of affine dimension 3 (interior view)" width=90%
+</td></tr>
+</table>
+
+\image html genqhull-4d-affdim2.jpg "Convex hull of 100 4D points of affine dimension 2, projected along the 4 main axes." width=90%
+
+
+  
 You may also count the number of lattice points within the convex
 polytope spanned by the computed convex hull.
 
@@ -610,24 +632,11 @@ polytope spanned by the computed convex hull.
   no integer points in its interior contains only d+1 points. If there
   is more, you know that the simplex has a non empty interior.
 
-You may yave a look at exampleGenericLatticeConvexHull3D.cpp and
-exampleGenericLatticeConvexHull4D.cpp for examples of use of this
-class.
-
-<table>
-<tr><td>
-\image html genqhull-affdim1.png "Convex hull of 10 points of affine dimension 1" width=90%
-</td><td>
-\image html genqhull-affdim2.png "Convex hull of 100 points of affine dimension 2" width=90%
-</td></tr>
-<tr><td>
-\image html genqhull-affdim3-1.png "Convex hull of 1000 points of affine dimension 3" width=90%
-</td><td>
-\image html genqhull-affdim3-0.png "Convex hull of 1000 points of affine dimension 3 (interior view)" width=90%
-</td></tr>
-</table>
-
-\image html genqhull-4d-affdim2.jpg "Convex hull of 100 4D points of affine dimension 2, projected along the 4 main axes." width=90%
+@warning Counting results are valid only if
+GenericLatticeConvexHull::proj_dilation is equal to 1 (i.e. the affine
+basis for the projection was obtained through an unimodular
+transformation). Otherwise the result is greater or equal to the
+expected number.
 
 
 @section dgtal_quickhull_sec5 Further notes

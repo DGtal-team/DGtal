@@ -37,15 +37,15 @@
 
 <table>
 <tr><td>
-\image html genqhull-affdim1.png "Convex hull of 10 points of affine dimension 1" width=90%
+\image html genqhull-affdim1.jpg "Convex hull of 10 points of affine dimension 1" width=90%
 </td><td>
-\image html genqhull-affdim2.png "Convex hull of 100 points of affine dimension 2" width=90%
+\image html genqhull-affdim2.jpg "Convex hull of 100 points of affine dimension 2" width=90%
 </td></tr>
 <tr><td>
-\image html genqhull-affdim3-1.png "Convex hull of 1000 points of affine dimension 3" width=\
+\image html genqhull-affdim3-1.jpg "Convex hull of 1000 points of affine dimension 3" width=\
 90%
 </td><td>
-\image html genqhull-affdim3-0.png "Convex hull of 1000 points of affine dimension 3 (interi\
+\image html genqhull-affdim3-0.jpg "Convex hull of 1000 points of affine dimension 3 (interi\
 or view)" width=90%
 </td></tr>
 </table>
@@ -148,6 +148,15 @@ int main( int argc, char* argv[] )
       // facets are edges (and implicitly converted by polyscope)
       psBoundary1 = polyscope::registerCurveNetwork( "Convex hull bdy dim=1",
                                                      hull.positions, hull.facets );
+      psBoundary0 = polyscope::registerPointCloud( "Projected points",
+                                                   hull.projected_points );
+      std::set<Point> S( hull.projected_points.cbegin(),
+                         hull.projected_points.cend() );
+      std::cout << "basis=" << hull.affine_basis.basis()[0]
+                << hull.affine_basis.basis()[1]
+                << " d=" << hull.proj_dilation << "\n";
+      for (auto p: S) std::cout << " " << p;
+      std::cout << "\n";
     }
   else if ( hull.affine_dimension == 3 ) // 3D
     {
