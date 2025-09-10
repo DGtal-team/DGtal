@@ -84,6 +84,8 @@ namespace DGtal
       typedef typename Computer::OutputPoint OutputPoint;
       static const Dimension dimension = K;
 
+      /// Constructor.
+      /// @param ptrGenQHull the pointer on the parent computer.
       GenericLatticeConvexHullComputers( Computer* ptrGenQHull )
         : ptr_gen_qhull( ptrGenQHull ), lower_kernels( ptrGenQHull ),
           hull( Kernel(), ptrGenQHull->debug_level )
@@ -99,7 +101,10 @@ namespace DGtal
         polytope.clear();
         lower_kernels.clear();
       }
-      
+
+      /// @tparam TInputPoint any type of input points.
+      /// @param I a range of indices specifying an affine subset of \a X.
+      /// @param X the range of input points.
       template <typename TInputPoint>
       bool compute( const std::vector< Size >& I,
                     const std::vector< TInputPoint >& X )
@@ -125,10 +130,6 @@ namespace DGtal
         Basis basis;
         if ( dimension != ptr_gen_qhull->dimension )
           {
-            // // Build points of affine basis
-            // std::vector< InputPoint > Z( I.size() );
-            // for ( auto i = 0; i < I.size(); i++ )
-            //   Z[ i ] = X[ I[ i ] ];
             // Build the affine basis spanning the convex hull affine space.
             basis = Basis( X, Basis::Type::SHORTEST_ECHELON_REDUCED );
           }
@@ -168,6 +169,8 @@ namespace DGtal
         return true;
       }
 
+      /// Constructs the polytope that is the F-representation of the convex hull.
+      /// @return 'true' iff the constructed polytope is valid.
       bool makePolytope()
       {
         typedef typename LatticePolytope::Domain     Domain;
@@ -208,7 +211,7 @@ namespace DGtal
           PHS.emplace_back( Ns, nu / g );
         }
         polytope = LatticePolytope( domain, PHS.cbegin(), PHS.cend(), false, true );
-        return true;
+        return polytope.isValid();
       }
 
       /// Computes the number of integer points lying within the polytope.
@@ -296,11 +299,11 @@ namespace DGtal
       }
 
       
-      Computer*            ptr_gen_qhull;
-      LowerKernels         lower_kernels;
+      Computer*            ptr_gen_qhull; ///< the pointer on the parent computer
+      LowerKernels         lower_kernels; ///< the computers of lower dimension
       QHull                hull; ///< the quick hull object that computes the convex hull
-      std::vector< Point > proj_points;
-      LatticePolytope      polytope;
+      std::vector< Point > proj_points; ///< the projected points, as points in lower dimension
+      LatticePolytope      polytope; ///< the polytope corresponding to the convex hull
     };
 
     
@@ -322,6 +325,8 @@ namespace DGtal
       typedef typename Computer::OutputPoint OutputPoint;
       static const Dimension             dimension = 1;
 
+      /// Constructor.
+      /// @param ptrGenQHull the pointer on the parent computer.
       GenericLatticeConvexHullComputers( Computer* ptrGenQHull )
         : ptr_gen_qhull( ptrGenQHull )
       {
@@ -334,11 +339,13 @@ namespace DGtal
         proj_points.clear();
       }
       
+      /// @tparam TInputPoint any type of input points.
+      /// @param I a range of indices specifying an affine subset of \a X.
+      /// @param X the range of input points.
       template <typename TInputPoint>
       bool compute( const std::vector< Size >& I,
                     const std::vector< TInputPoint >& X )
       {
-        // std::cout << "[GenericLatticeConvexHullComputers<K,1>::GenericLatticeConvexHullComputers]\n";
         typedef TInputPoint InputPoint;
         typedef AffineGeometry< InputPoint > Affine;
         typedef AffineBasis< InputPoint >    Basis;
@@ -386,10 +393,6 @@ namespace DGtal
         Basis basis;
         if ( dimension != ptr_gen_qhull->dimension )
           {
-            // // Build points of affine basis
-            // std::vector< InputPoint > Z( I.size() );
-            // for ( auto i = 0; i < I.size(); i++ )
-            //   Z[ i ] = X[ I[ i ] ];
             // Build the affine basis spanning the convex hull affine space.
             basis = Basis( X, Basis::Type::SHORTEST_ECHELON_REDUCED );
           }
@@ -431,6 +434,7 @@ namespace DGtal
         return true;
       }
 
+      /// Does nothing for this 1-dimensional specialization.
       bool makePolytope()
       {
         return true;
@@ -478,10 +482,9 @@ namespace DGtal
         return nb_in_hull < max ? nb_in_hull : max;
       }
 
-      
-      Computer*            ptr_gen_qhull;
-      std::vector< Point > proj_points;
-      Integer              nb_in_hull;                   
+      Computer*            ptr_gen_qhull; ///< the pointer on the parent computer
+      std::vector< Point > proj_points; ///< the projected points, as points in lower dimension
+      Integer              nb_in_hull; ///< the number of lattice points in the convex hull.                   
     };
   }
   

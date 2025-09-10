@@ -200,15 +200,10 @@ namespace DGtal
     {
       if ( type == Type::SHORTEST_ECHELON_REDUCED )
         sortBasis();
-      // if ( type == Type::ECHELON_REDUCED || type == Type::SHORTEST_ECHELON_REDUCED )
-      reduceAsEchelon( type );
+      if ( type == Type::ECHELON_REDUCED || type == Type::SHORTEST_ECHELON_REDUCED )
+        reduceAsEchelon( type );
       if ( type == Type::LLL_REDUCED )
         reduceAsLLL( delta, (Scalar) 0 );
-      // else if ( type == Type::LLL_REDUCED )
-      //   {
-      //     reduceAsEchelon( type );
-      //     reduceAsLLL( delta, (Scalar) 0 );
-      //   }
     }
     
     /// @returns the affine dimension of the basis

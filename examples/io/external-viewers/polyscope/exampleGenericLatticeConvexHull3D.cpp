@@ -52,7 +52,7 @@ or view)" width=90%
 
 @see \ref dgtal_quickhull_sec5
 
-@example examples/io/external-viewers/polyscope/exampleGenericLatticeConvexHull.cpp
+@example examples/io/external-viewers/polyscope/exampleGenericLatticeConvexHull3D.cpp
  */
 
 #include <iostream>
