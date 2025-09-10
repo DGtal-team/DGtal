@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file DigitalSetBySTLSet.h
+ * @file DigitalSetByOctree.h
  * @author Bastien DOIGNIES 
  * LIRIS 
  *
@@ -31,8 +31,6 @@
 #pragma once
 
 // Inclusions
-#include <stack>
-#include <map>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -404,7 +402,7 @@ namespace DGtal
          * This is equivalent to looping through an octree and inserting
          * every node into another*
          * 
-         * @param it The output iterator
+         * @param out The output iterator
          */
         template<typename It>
         void computeComplement(It out) const {
@@ -462,10 +460,6 @@ namespace DGtal
          * @brief Returns an iterator to the begining of the octree
          */
         Iterator begin() const {
-            CellIndex nodeIdx  = 0;
-            CellIndex childIdx = 0;
-            Domain domain = *myDomain;
-
             TraversalMemory mem;
             mem.domain = *myDomain;
             mem.lvl = 0;

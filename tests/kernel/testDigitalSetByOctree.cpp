@@ -49,7 +49,7 @@ bool testDiagonalPointsDAG() {
     DigitalSetByOctree<Z3i::Space> octree(domain);
 
     // One of best cases for dag: all points on the diagonal of the domain
-    // This is compressed as a single node per level !
+    // This is compressed as a single node per level.
     for (size_t i = 0; i < size; ++i) {
         octree.insert(Z3i::Point{(int)i, (int)i, (int)i});
     }
@@ -185,7 +185,7 @@ bool testInsertAndIterate() {
     return ok;
 }
 
-int main(int argc, char** argv) { 
+int main(int, char**) { 
     const bool res = testInsertAndIterate() && testDiagonalPointsDAG();
     DGtal::trace.emphase() << ( res ? "Passed." : "Error." ) << std::endl;
     return !res;

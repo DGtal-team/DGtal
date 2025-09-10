@@ -45,9 +45,9 @@ namespace DGtal {
 	}
 
 	template<class Space>
-	DigitalSetByOctree<Space>::DigitalSetByOctree(const Domain& d) {
-        const auto lb = d.lowerBound();
-        const auto ub = d.upperBound();
+	DigitalSetByOctree<Space>::DigitalSetByOctree(const Domain& dom) {
+        const auto lb = dom.lowerBound();
+        const auto ub = dom.upperBound();
         auto size = ub - lb;
         
         // Enforce cubical domain with side that are powers of 2
