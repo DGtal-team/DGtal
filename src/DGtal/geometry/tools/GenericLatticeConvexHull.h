@@ -125,12 +125,12 @@ namespace DGtal
         Basis basis;
         if ( dimension != ptr_gen_qhull->dimension )
           {
-            // Build points of affine basis
-            std::vector< InputPoint > Z( I.size() );
-            for ( auto i = 0; i < I.size(); i++ )
-              Z[ i ] = X[ I[ i ] ];
+            // // Build points of affine basis
+            // std::vector< InputPoint > Z( I.size() );
+            // for ( auto i = 0; i < I.size(); i++ )
+            //   Z[ i ] = X[ I[ i ] ];
             // Build the affine basis spanning the convex hull affine space.
-            basis = Basis( Z, Basis::Type::ECHELON_REDUCED );
+            basis = Basis( X, Basis::Type::SHORTEST_ECHELON_REDUCED );
           }
         // Build projected points on affine basis
         dilation  = basis.projectPoints( proj_points, X );
@@ -163,7 +163,7 @@ namespace DGtal
           }
         aff_basis = AffineBasis<OutputPoint>( basis.origin(),
                                               basis.basis(),
-                                              Basis::Type::ECHELON_REDUCED,
+                                              Basis::Type::SHORTEST_ECHELON_REDUCED,
                                               true );
         return true;
       }
@@ -386,12 +386,12 @@ namespace DGtal
         Basis basis;
         if ( dimension != ptr_gen_qhull->dimension )
           {
-            // Build points of affine basis
-            std::vector< InputPoint > Z( I.size() );
-            for ( auto i = 0; i < I.size(); i++ )
-              Z[ i ] = X[ I[ i ] ];
+            // // Build points of affine basis
+            // std::vector< InputPoint > Z( I.size() );
+            // for ( auto i = 0; i < I.size(); i++ )
+            //   Z[ i ] = X[ I[ i ] ];
             // Build the affine basis spanning the convex hull affine space.
-            basis = Basis( Z, Basis::Type::ECHELON_REDUCED );
+            basis = Basis( X, Basis::Type::SHORTEST_ECHELON_REDUCED );
           }
         // Build projected points on affine basis
         dilation  = basis.projectPoints( proj_points, X );
@@ -422,7 +422,7 @@ namespace DGtal
         positions[ 1 ] = X[ v2p[ 1 ] ];
         aff_basis = AffineBasis<OutputPoint>( basis.origin(),
                                               basis.basis(),
-                                              Basis::Type::ECHELON_REDUCED,
+                                              Basis::Type::SHORTEST_ECHELON_REDUCED,
                                               true );
         auto    dx  = Affine::transform( points[ v2p[ 1 ] ] - points[ v2p[ 0 ] ] );
         auto    sdx = Affine::simplifiedVector( dx );

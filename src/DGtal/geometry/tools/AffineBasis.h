@@ -96,6 +96,7 @@ namespace DGtal
     enum struct Type {
       INVALID = 0,     ///< invalid basis 
       ECHELON_REDUCED, ///< echelon matrix
+      SHORTEST_ECHELON_REDUCED, ///< echelon matrix starting from shortest vectors
       LLL_REDUCED      ///< delta-LLL reduced matrix
     };
     
@@ -117,7 +118,7 @@ namespace DGtal
       second.resize( Point::dimension );
       for ( auto k = 0; k < Point::dimension; k++ )
         second[ k ] = Point::base( k );
-      _type = Type::ECHELON_REDUCED;
+      _type = Type::SHORTEST_ECHELON_REDUCED;
     }
 
     /// Constructor from points.
@@ -197,13 +198,17 @@ namespace DGtal
     ///
     void reduce( AffineBasis::Type type, double delta )
     {
-      if ( type == Type::ECHELON_REDUCED )
-        reduceAsEchelon();
-      else if ( type == Type::LLL_REDUCED )
-        {
-          reduceAsEchelon();
-          reduceAsLLL( delta, (Scalar) 0 );
-        }
+      if ( type == Type::SHORTEST_ECHELON_REDUCED )
+        sortBasis();
+      // if ( type == Type::ECHELON_REDUCED || type == Type::SHORTEST_ECHELON_REDUCED )
+      reduceAsEchelon( type );
+      if ( type == Type::LLL_REDUCED )
+        reduceAsLLL( delta, (Scalar) 0 );
+      // else if ( type == Type::LLL_REDUCED )
+      //   {
+      //     reduceAsEchelon( type );
+      //     reduceAsLLL( delta, (Scalar) 0 );
+      //   }
     }
     
     /// @returns the affine dimension of the basis
@@ -465,6 +470,7 @@ namespace DGtal
     {
       if ( _type == Type::INVALID )              return "INVALID";
       else if ( _type == Type::ECHELON_REDUCED ) return "ECHELON";
+      else if ( _type == Type::SHORTEST_ECHELON_REDUCED ) return "SHORTEST_ECHELON";
       else if ( _type == Type::LLL_REDUCED )     return "LLL";
       else return "";
     }
@@ -496,18 +502,16 @@ namespace DGtal
     
     /// Reduces the basis so that each basis vector is normalized,
     /// removes linearly dependent vectors, and builds a echelon matrix.
-    void reduceAsEchelon()
+    void reduceAsEchelon( Type type )
     {
-      for ( auto& v : second )
-        v = Affine::simplifiedVector( v );
       std::vector< bool > is_independent( second.size() );
       std::vector< std::vector< Scalar > > U( second.size() );
       
       for ( std::size_t i = 0; i < second.size(); i++ )
         {
-          // std::size_t row = findIndexWithSmallestNonNullComponent( i, second );
-          // if ( row == second.size() ) continue;
-          // if ( row != i ) std::swap( second[ i ], second[ row ] );
+          std::size_t row = findIndexWithSmallestNonNullComponent( i, second );
+          if ( row == second.size() ) continue;
+          if ( row != i ) std::swap( second[ i ], second[ row ] );
           Point& w            = second[ i ];
           is_independent[ i ] = true;
           for ( std::size_t j = 0; j < i; j++ )
@@ -524,7 +528,7 @@ namespace DGtal
           new_basis.push_back( second[ i ] );
       std::swap( second, new_basis );
       orderEchelonBasis();
-      _type = Type::ECHELON_REDUCED;
+      _type = type;
     }
 
     /// Guarantees that the basis is in echelon form.
@@ -601,7 +605,32 @@ namespace DGtal
           if ( b != Point::zero ) second.push_back( b );
         }
     }
-    
+
+    /// Simplifies vectors, removes duplicates and puts smallest
+    /// candidate basis vectors before longest.
+    void sortBasis()
+    {
+      // Reduces all vectors
+      normalize();
+      // Purge duplicates
+      std::sort( second.begin(), second.end() );
+      second.erase( std::unique( second.begin(), second.end() ), second.end() );
+      // Sort according to size of components.
+      auto compare = []( const Point& u, const Point& v ) -> bool
+      {
+        const auto n1_u = u.norm1();
+        const auto n1_v = v.norm1();
+        if ( n1_u < n1_v ) return true;
+        else if ( n1_v < n1_u ) return false;
+        const auto noo_u = u.normInfinity();
+        const auto noo_v = v.normInfinity();
+        if ( noo_u < noo_v ) return true;
+        else if ( noo_v < noo_u ) return false;
+        return u < v;
+      };
+      std::sort( second.begin(), second.end(), compare );
+    }
+
     /// Given a range of points \a basis, starting from rank \a k,
     /// find the index of the point with lowest non null k-th
     /// coefficient in absolute value, or basis.size() if every point
@@ -632,8 +661,6 @@ namespace DGtal
             index = i;
             v     = abs( basis[ i ][ k ] );
           }
-      std::cout << "[find] from " << k << " index=" << index << " v=" << basis[ index ]
-                << "\n";
       return index;
     }
     
