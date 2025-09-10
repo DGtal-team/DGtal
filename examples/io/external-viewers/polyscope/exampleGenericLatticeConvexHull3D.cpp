@@ -152,11 +152,9 @@ int main( int argc, char* argv[] )
                                                    hull.projected_points );
       std::set<Point> S( hull.projected_points.cbegin(),
                          hull.projected_points.cend() );
-      std::cout << "basis=" << hull.affine_basis.basis()[0]
-                << hull.affine_basis.basis()[1]
-                << " d=" << hull.proj_dilation << "\n";
-      for (auto p: S) std::cout << " " << p;
-      std::cout << "\n";
+      std::cout << "Projection basis=[ " << hull.affine_basis.basis()[0]
+                << "," << hull.affine_basis.basis()[1] << " ]"
+                << " d=" << hull.projected_dilation << "\n";
     }
   else if ( hull.affine_dimension == 3 ) // 3D
     {
@@ -164,6 +162,9 @@ int main( int argc, char* argv[] )
       psBoundary2 = polyscope::registerSurfaceMesh("Convex hull bdy dim=2",
                                                    hull.positions, hull.facets );
     }
+  std::cout << "      dilation=" << hull.projected_dilation
+            << " => counting of lattice points is "
+            << (hull.projected_dilation == 1 ? "correct" : "INCORRECT") << ".\n"; 
   std::cout << "     #(P ∩ Z3)=" << hull.count() << "\n";
   std::cout << "#(Int(P) ∩ Z3)=" << hull.countInterior() << "\n";
   std::cout << " #(Bd(P) ∩ Z3)=" << hull.countBoundary() << "\n";

@@ -124,7 +124,7 @@ namespace DGtal
         auto& positions = ptr_gen_qhull->positions;
         auto& v2p       = ptr_gen_qhull->vertex2point;
         auto& facets    = ptr_gen_qhull->facets;
-        auto& dilation  = ptr_gen_qhull->proj_dilation;
+        auto& dilation  = ptr_gen_qhull->projected_dilation;
         auto& aff_basis = ptr_gen_qhull->affine_basis;
         
         Basis basis;
@@ -357,7 +357,7 @@ namespace DGtal
         auto& positions = ptr_gen_qhull->positions;
         auto& v2p       = ptr_gen_qhull->vertex2point;
         auto& facets    = ptr_gen_qhull->facets;
-        auto& dilation  = ptr_gen_qhull->proj_dilation;
+        auto& dilation  = ptr_gen_qhull->projected_dilation;
         auto& aff_basis = ptr_gen_qhull->affine_basis;
         facets.clear(); // no facets
         
@@ -551,9 +551,9 @@ namespace DGtal
       positions.clear();
       facets.clear();
       vertex2point.clear();
-      affine_basis      = AffineBasis< OutputPoint >();
-      proj_dilation     = 1;
-      polytope_computed = false;
+      affine_basis       = AffineBasis< OutputPoint >();
+      projected_dilation = 1;
+      polytope_computed  = false;
     }
     /// @}
     
@@ -604,7 +604,7 @@ namespace DGtal
     /// or -1 if their was a problem when computing the polytope.
     ///
     /// @warning The result is valid only if
-    /// GenericLatticeConvexHull::proj_dilation is equal to 1
+    /// GenericLatticeConvexHull::projected_dilation is equal to 1
     /// (i.e. the affine basis for the projection was obtained through
     /// an unimodular transformation). Otherwise the result is greater
     /// or equal to the expected number.
@@ -624,7 +624,7 @@ namespace DGtal
     /// @return the number of integer points lying within the interior of the polytope.
     ///
     /// @warning The result is valid only if
-    /// GenericLatticeConvexHull::proj_dilation is equal to 1
+    /// GenericLatticeConvexHull::projected_dilation is equal to 1
     /// (i.e. the affine basis for the projection was obtained through
     /// an unimodular transformation). Otherwise the result is greater
     /// or equal to the expected number.
@@ -647,7 +647,7 @@ namespace DGtal
     /// @return the number of integer points lying on the boundary of the polytope.
     ///
     /// @warning The result is valid only if
-    /// GenericLatticeConvexHull::proj_dilation is equal to 1
+    /// GenericLatticeConvexHull::projected_dilation is equal to 1
     /// (i.e. the affine basis for the projection was obtained through
     /// an unimodular transformation). Otherwise the result is greater
     /// or equal to the expected number.
@@ -679,7 +679,7 @@ namespace DGtal
     /// @return the number of integer points within the polytope up to .
     ///
     /// @warning The result is valid only if
-    /// GenericLatticeConvexHull::proj_dilation is equal to 1
+    /// GenericLatticeConvexHull::projected_dilation is equal to 1
     /// (i.e. the affine basis for the projection was obtained through
     /// an unimodular transformation). Otherwise the result is greater
     /// or equal to the expected number.
@@ -750,7 +750,7 @@ namespace DGtal
     /// The indices of the vertices of the convex hull in the original set.
     IndexRange                 vertex2point;
     /// The factor of dilation d applied on every projected point coordinates
-    Integer                    proj_dilation;
+    Integer                    projected_dilation;
     /// The affine basis used for projection (identity if the convex
     /// hull is full dimensional, otherwise a basis in reduced echelon
     /// form).

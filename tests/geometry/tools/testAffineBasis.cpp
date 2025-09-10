@@ -172,7 +172,6 @@ SCENARIO( "AffineBasis< Z3 > LLL tests", "[affine_basis][3d][LLL]" )
     const auto [ o, B ] = Affine::affineBasis( b );
     Point e  = functions::computeIndependentVector( B );
     Basis AB( b, Basis::Type::LLL_REDUCED );
-    bool parallel = AB.isParallel( e );
     const auto [ d, L, r ] = AB.decomposeVector( e );
     CAPTURE( B ); 
     CAPTURE( AB.basis() ); 
@@ -180,7 +179,6 @@ SCENARIO( "AffineBasis< Z3 > LLL tests", "[affine_basis][3d][LLL]" )
     CAPTURE( L );
     CAPTURE( r );
     CAPTURE( e );
-    REQUIRE( ! parallel );
     REQUIRE( r != Point::zero );
   }
 }
@@ -213,7 +211,7 @@ SCENARIO( "AffineBasis< Point4i > unit tests", "[affine_basis][4i]" )
   GIVEN( "Given X a set of randomly generated points by adding linear combinations of 2 lattice vectors" ) {
     std::vector< Point > V = { Point{ 3, 1, 0, 2 }, Point{ -2, -1, 2, 7 } };
     auto X = makeRandomLatticePointsFromDirVectors( 20, V );
-    Basis B( X, Basis::Type::ECHELON_REDUCED );
+    Basis B( X, Basis::Type::SHORTEST_ECHELON_REDUCED );
     THEN( "When reduced, basis has dimension 2" ) {
       CAPTURE( B.basis() );
       REQUIRE( B.dimension() == 2 );
@@ -349,7 +347,7 @@ SCENARIO( "AffineBasis< Point5i > unit tests", "[affine_basis][5i]" )
       std::vector< Point > Y;
       for ( auto i = 1; i < X.size(); i++ ) Y.push_back( X[ i ] - X[ 0 ] );
       Basis B ( X[ 0 ], Y, Basis::Type::LLL_REDUCED );
-      Basis Br( X, Basis::Type::ECHELON_REDUCED );
+      Basis Br( X[ 0 ], Y, Basis::Type::ECHELON_REDUCED );
       if ( functions::computeAffineDimension( X ) != 4 ) continue;
       auto N = functions::computeOrthogonalVectorToBasis( B.basis() );
       auto Nr = functions::computeOrthogonalVectorToBasis( Br.basis() );
@@ -363,13 +361,22 @@ SCENARIO( "AffineBasis< Point5i > unit tests", "[affine_basis][5i]" )
       nb_equal_N   += sameDirection( N_cast,  N_big  ) ? 1 : 0;
       nb_equal_Nr  += sameDirection( Nr_cast, Nr_big ) ? 1 : 0;
       nb           += 1;
-      nb_s_parallel_l  += Br.isParallel( B  ) ? 1 : 0;
-      if ( ! Br.isParallel( B ) )
+      bool s_parallel_l = Br.isParallel( B );
+      nb_s_parallel_l  += s_parallel_l ? 1 : 0;
+      if ( ! s_parallel_l )
         {
+          std::cout << "dim(B)=" << B.dimension() << " dim(Br)=" << Br.dimension() << "\n";
           std::cout << "* Br is not // to B:\n" << Br << "\n";
           for ( auto v : B.basis() )
-            std::cout << "  v=" << v << " //=" << ( Br.isParallel( v ) ? "True" : "False" )
-                      << "\n";
+            {
+              bool parallel = Br.isParallel( v );
+              std::cout << "  v=" << v << " //=" << ( parallel ? "True" : "False" ) << "\n";
+              if ( ! parallel )
+                {
+                  const auto [d, lambda, r] = B.decomposeVector( v );
+                  std::cout << "d=" << d << " L=" << lambda << " r=" << r << "\n";
+                }
+            }
         }
       // std::cout << B << "\n" << Br << "\n";
       // std::cout << "N    =" << N << " Nr    =" << Nr << "\n";
@@ -413,7 +420,7 @@ SCENARIO( "AffineBasis< Z10 > LLL tests", "[affine_basis][10d][LLL]" )
       Point{    1,   -5,  -23,  -27,   33,   64, -405, -315,  784, -868}
     };
     Point o = Point::zero;
-    Basis S( o, B, Basis::Type::ECHELON_REDUCED );
+    Basis S( o, B, Basis::Type::SHORTEST_ECHELON_REDUCED );
     Basis L( o, B, Basis::Type::LLL_REDUCED );
     THEN( "The LLL-reduced basis is canonic" ) {
       const auto&  V    = L.basis();
@@ -465,7 +472,7 @@ SCENARIO( "AffineBasis< Point5i > projection tests", "[affine_basis][5i][5d]" )
     std::vector< RealPoint > Y( X.size() );
     for ( auto i = 0; i < Y.size(); i++ )
       Basis::transform( Y[ i ], X[ i ] );
-    RealBasis RB( Y, RealBasis::Type::ECHELON_REDUCED );
+    RealBasis RB( Y, RealBasis::Type::ECHELON_REDUCED, 0.99, 1e-10 );
     std::vector< PPoint >     pX;
     std::vector< PRealPoint > pY;
     auto lcm  = B .projectPoints( pX, X );

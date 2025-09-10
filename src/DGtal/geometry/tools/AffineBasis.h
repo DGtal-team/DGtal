@@ -202,8 +202,15 @@ namespace DGtal
         sortBasis();
       if ( type == Type::ECHELON_REDUCED || type == Type::SHORTEST_ECHELON_REDUCED )
         reduceAsEchelon( type );
-      if ( type == Type::LLL_REDUCED )
-        reduceAsLLL( delta, (Scalar) 0 );
+      else if ( type == Type::LLL_REDUCED )
+        {
+          std::vector< Point > X( second.size()+1 );
+          X[ 0 ] = first;
+          for ( auto i = 0; i < second.size(); i++ )
+            X[ i+1 ] = second[ i ] + first;
+          const auto [first, second] = AffineGeometry<Point>::affineBasis( X, epsilon );
+          reduceAsLLL( delta, (Scalar) 0 );
+        }
     }
     
     /// @returns the affine dimension of the basis
@@ -239,8 +246,10 @@ namespace DGtal
     bool isParallel( const Self& other ) const
     {
       if ( dimension() != other.dimension() ) return false;
-      if ( _type != Type::ECHELON_REDUCED )
-        trace.error() << "[AffineBasis::isParallel] Requires type=ECHELON_REDUCED\n";
+      if ( ( _type != Type::ECHELON_REDUCED )
+           && ( _type != Type::SHORTEST_ECHELON_REDUCED ) )
+        trace.error() << "[AffineBasis::isParallel] Requires type=*_ECHELON_REDUCED\n"
+                      << " type=" << reductionTypeName() << "\n" ;
       for ( const auto& b : other.second )
         if ( ! isParallel( b ) ) return false;
       return true;
@@ -464,9 +473,9 @@ namespace DGtal
     std::string reductionTypeName() const
     {
       if ( _type == Type::INVALID )              return "INVALID";
-      else if ( _type == Type::ECHELON_REDUCED ) return "ECHELON";
-      else if ( _type == Type::SHORTEST_ECHELON_REDUCED ) return "SHORTEST_ECHELON";
-      else if ( _type == Type::LLL_REDUCED )     return "LLL";
+      else if ( _type == Type::ECHELON_REDUCED ) return "ECHELON_REDUCED";
+      else if ( _type == Type::SHORTEST_ECHELON_REDUCED ) return "SHORTEST_ECHELON_REDUCED";
+      else if ( _type == Type::LLL_REDUCED )     return "LLL_REDUCED";
       else return "";
     }
     /// @}
@@ -499,23 +508,27 @@ namespace DGtal
     /// removes linearly dependent vectors, and builds a echelon matrix.
     void reduceAsEchelon( Type type )
     {
-      std::vector< bool > is_independent( second.size() );
+      std::vector< bool > is_independent( second.size(), false );
       std::vector< std::vector< Scalar > > U( second.size() );
-      
+      Dimension k = 0; // the current column to put in echelon form.
       for ( std::size_t i = 0; i < second.size(); i++ )
         {
-          std::size_t row = findIndexWithSmallestNonNullComponent( i, second );
-          if ( row == second.size() ) continue;
-          if ( row != i ) std::swap( second[ i ], second[ row ] );
+          std::size_t row = findIndexWithSmallestNonNullComponent( k, i, second );
+          if ( row != i && row != second.size() )
+            std::swap( second[ i ], second[ row ] );            
           Point& w            = second[ i ];
+          // check if this vector is independent from the previous ones
           is_independent[ i ] = true;
           for ( std::size_t j = 0; j < i; j++ )
             if ( is_independent[ j ] )
               Affine::reduceVector( w, second[ j ], epsilon );
           if ( ! Affine::ScalarOps::isNonZero( w.normInfinity(), epsilon ) )
-            is_independent[ i ] = false;
+            is_independent[ i ] = false; // not independent, forget it
           else
-            w = Affine::simplifiedVector( w );
+            { // independent, make sure it is reduced.
+              w = Affine::simplifiedVector( w );
+              k++;
+            }
         }
       Points new_basis;
       for ( std::size_t i = 0; i < second.size(); i++ )
@@ -626,24 +639,27 @@ namespace DGtal
       std::sort( second.begin(), second.end(), compare );
     }
 
-    /// Given a range of points \a basis, starting from rank \a k,
+    /// Given a range of points \a basis, starting from rank \a i,
     /// find the index of the point with lowest non null k-th
     /// coefficient in absolute value, or basis.size() if every point
     /// had its k-th component null.
     ///
     /// @param[in] k the component/coordinate of interest
+    /// @param[in] i the starting index 
     /// @param[in] basis a range of points/vectors
     ///
-    /// @return starting from rank \a k, the index of the point with lowest non null k-th
+    /// @return starting from rank \a i, the index of the point with lowest non null k-th
     /// coefficient in absolute value, or basis.size() if every point
     /// had its k-th component null.
-    std::int64_t
+    std::size_t
     findIndexWithSmallestNonNullComponent( Dimension k,
+                                           std::size_t i,
                                            const std::vector< Point >& basis )
     {
       ASSERT( ! basis.empty() );
-      int64_t index = k;
-      Scalar  v     = 0;
+      ASSERT( k < Point::dimension );
+      std::size_t index = i;
+      Scalar      v     = 0;
       for ( ; index < basis.size(); index++ )
         {
           v = abs( basis[ index ][ k ] );
@@ -651,11 +667,14 @@ namespace DGtal
             break;
         }
       for ( auto i = index + 1; i < basis.size(); i++ )
-        if ( abs( basis[ i ][ k ] ) < v )
-          {
-            index = i;
-            v     = abs( basis[ i ][ k ] );
-          }
+        {
+          Scalar vi = abs( basis[ i ][ k ] );
+          if ( vi != 0 && vi < v )
+            {
+              index = i;
+              v     = vi;
+            }
+        }
       return index;
     }
     
