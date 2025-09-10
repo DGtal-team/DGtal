@@ -208,7 +208,7 @@ namespace DGtal
           X[ 0 ] = first;
           for ( auto i = 0; i < second.size(); i++ )
             X[ i+1 ] = second[ i ] + first;
-          const auto [first, second] = AffineGeometry<Point>::affineBasis( X, epsilon );
+          std::tie( first, second ) = AffineGeometry<Point>::affineBasis( X, epsilon );
           reduceAsLLL( delta, (Scalar) 0 );
         }
     }
@@ -666,13 +666,13 @@ namespace DGtal
           if ( Affine::ScalarOps::isNonZero( v, epsilon ) )
             break;
         }
-      for ( auto i = index + 1; i < basis.size(); i++ )
+      for ( auto j = index + 1; j < basis.size(); j++ )
         {
-          Scalar vi = abs( basis[ i ][ k ] );
-          if ( vi != 0 && vi < v )
+          Scalar vj = abs( basis[ j ][ k ] );
+          if ( vj != 0 && vj < v )
             {
-              index = i;
-              v     = vi;
+              index = j;
+              v     = vj;
             }
         }
       return index;
