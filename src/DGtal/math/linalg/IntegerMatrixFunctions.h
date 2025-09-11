@@ -385,13 +385,29 @@ namespace DGtal
     std::vector< std::vector< TComponent > >
     computeOrthogonalLattice( std::vector< TComponent > N );
 
+    /// Tries to shorten u and v while preserving their vector span by
+    /// trying u+v and u-v.
+    ///
+    /// @tparam TComponent the integer type for the input vector and for computations.
+    /// @param[in,out] u any vector
+    /// @param[in,out] v any vector
+    ///
+    /// @return 'true' if one shortening was possible, then at least
+    /// one of u and v is modified.
     template <typename TComponent>
     bool
     shortenVectors( std::vector< TComponent >& u,
                     std::vector< TComponent >& v );
 
+    /// Shortens the vectors of the basis B (by pairwise shortenings)
+    /// until no further shortening pairs are found, and returns the
+    /// number of shortening operations.
+    ///
+    /// @tparam TComponent the integer type for the input vector and for computations.
+    /// @param[in,out] a range of vectors forming a basis
+    /// @return the number of pairwise shortenings done.
     template <typename TComponent>
-    void
+    std::size_t
     shortenBasis( std::vector< std::vector< TComponent > >& B );
     
   } // namespace functions

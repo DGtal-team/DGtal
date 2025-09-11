@@ -585,10 +585,11 @@ DGtal::functions::shortenVectors( std::vector< TComponent >& u,
 
 //-----------------------------------------------------------------------------
 template <typename TComponent>
-void
+std::size_t
 DGtal::functions::shortenBasis( std::vector< std::vector< TComponent > >& B )
 {
-  if ( B.size() <= 1 ) return;
+  std::size_t total = 0;
+  if ( B.size() <= 1 ) return total;
   while ( true )
     {
       std::size_t nb_shortened = 0;
@@ -598,8 +599,9 @@ DGtal::functions::shortenBasis( std::vector< std::vector< TComponent > >& B )
       TComponent m = 0;
       for ( std::size_t i = 0; i < B.size(); i++ )
         m = std::max( m, dotProduct( B[ i ], B[ i ] ) );
-      std::cout << "#shortened=" << nb_shortened << " max=" << m << "\n";
-      if ( nb_shortened == 0 ) return;
+      total += nb_shortened;
+      if ( nb_shortened == 0 ) break;
     }
+  return total;
 }
 

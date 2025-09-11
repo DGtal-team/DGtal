@@ -512,6 +512,7 @@ bool testLLL()
   unsigned int nb   = 0;
 
   typedef int64_t     Integer;
+  trace.beginBlock( "Test LLL-reduction on matrices." );
   {
     std::vector< std::vector< Integer > > B = {
       {73,-127,63},
@@ -629,8 +630,12 @@ bool testLLL()
     std::cout << "(" << nbok << "/" << nb << ") "
               << "The output matrix is then canonic: "
               << (nbok == nb ? "PASSED\n" : "ERROR\n");
+    trace.beginBlock( "Shorten B" );
+    auto nb = functions::shortenBasis( B );
+    std::cout << "Shorten base: \n" << B << "#nb=" << nb << "\n";
+    trace.endBlock();
   }
-
+  trace.endBlock();
   return nbok == nb;
 }
 
@@ -640,15 +645,13 @@ bool testOrthogonalLattice()
   unsigned int nb   = 0;
 
   typedef int64_t     Integer;
-  // vector<int64_t> n  = {11,-20,8};
-  for ( auto i = 0; i < 100; i++ )
+  trace.beginBlock( "Test orthogonal lattice computation." );
+  for ( auto i = 0; i < 10000; i++ )
     {
       vector<int64_t> n = { rand() % 30 - 15, rand() % 30 - 15, rand() % 30 - 15 };
-      //vector<int64_t> n  = {0,0,1};
       
       auto g = functions::makePrimitive( n );
       if ( g==0 ) continue;
-      std::cout << "n=" << n;
       vector<int64_t> no = n;
       functions::negate( no );
       auto L = DGtal::functions::computeOrthogonalLattice( n );
@@ -663,6 +666,7 @@ bool testOrthogonalLattice()
       if ( nbok != nb )
         {
           std::cout << "----------- " << nbok << "/" << nb << " ----------------\n";
+          std::cout << "Error for vector n=" << n;
           std::cout << "u.n=" << l0 << " v.n=" << l1 << " uxv=" << c << "\n";
           std::cout << "u=" << L[0] << "v=" << L[1];
           std::cout << "u.n=" << l0 << " v.n=" << l1 << " uxv=" << c << "\n";
@@ -670,7 +674,10 @@ bool testOrthogonalLattice()
           break;
         }
     }
-  for ( auto i = 0; i < 1; i++ )
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "Orthogonal lattice in 3D: "
+               << (nbok == nb ? "PASSED\n" : "ERROR\n");
+  for ( auto i = 0; i < 10000; i++ )
     {
       vector<int64_t> n = { rand() % 30 - 15, rand() % 30 - 15,
                             rand() % 30 - 15, rand() % 30 - 15 };
@@ -704,6 +711,10 @@ bool testOrthogonalLattice()
           break;
         }
     }
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "Orthogonal lattice in 4D: "
+               << (nbok == nb ? "PASSED\n" : "ERROR\n");
+  trace.endBlock();
   return nbok == nb;
 }
 
