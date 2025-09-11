@@ -44,6 +44,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/ArithmeticConversionTraits.h"
+#include "DGtal/arithmetic/IntegerComputer.h"
 #include "DGtal/math/linalg/SimpleMatrix.h"
 //////////////////////////////////////////////////////////////////////////////
 
@@ -51,6 +52,26 @@ namespace DGtal
 {
 
   namespace functions {
+
+    /// Negates the components of the input vector.
+    ///
+    /// @tparam TComponent the scalar type of each component.
+    /// @param[in,out] the vector v as input, outputed as -v.
+    template <typename TComponent>
+    void
+    negate( std::vector<TComponent> &V );
+
+    /// Returns 'true' iff all the components of the two  vectors are equal.
+    ///
+    /// @tparam TComponent the scalar type of each component.
+    ///
+    /// @param[in] a the left vector (same size)
+    /// @param[in] b the right vector (same size)
+    ///
+    /// @return 'true' iff all the components of the two  vectors are equal.
+    template <typename TComponent>
+    bool
+    equals( const std::vector<TComponent> &a, const std::vector<TComponent> &b );
 
     /// Overloaded dot product operator for vector of numbers.
     ///
@@ -86,6 +107,23 @@ namespace DGtal
     double
     dotProduct( const std::vector<double>& a, const std::vector<BigInteger>& b );
 
+    /// Overloaded cross product operator for vector of numbers.
+    ///
+    /// @tparam T the number type of the left operand vector.
+    /// @tparam U the number type of the right operand vector.
+    ///
+    /// @param[in] a the left vector (must be of size 3 )
+    /// @param[in] b the right vector (must be of size 3 )
+    ///
+    /// @return the cross product of a and b (a vector of size 3 ).
+    template <typename T, typename U >
+    std::vector< typename DGtal::ArithmeticConversionTraits<T,U>::type >
+    crossProduct( const std::vector<T>& a, const std::vector<U>& b );
+
+    template <typename T, typename U, typename Op2 >
+    std::vector< typename DGtal::ArithmeticConversionTraits<T,U>::type >
+    apply( const std::vector<T>& a, const std::vector<U>& b,
+           Op2 op2 );
     
     /// Overloaded squared L2-norm operator for a vector of numbers.
     ///
@@ -309,6 +347,52 @@ namespace DGtal
     reduceBasisWithLLL( std::vector< std::vector< TComponent > >& B,
                         TDouble delta = 0.75 );
 
+    /// Makes a lattice vector primitive.
+    ///
+    /// @tparam TComponent the integer type for the input vector and for computations.
+    ///
+    /// @param[in,out] N the input vector, that is modified to be N/g,
+    /// where g is the gcd of its components.
+    ///
+    /// @return the gcd of the components.
+    template <typename TComponent>
+    TComponent
+    makePrimitive( std::vector< TComponent >& N );
+
+    template <typename TComponent>
+    TComponent
+    extendedGcd(TComponent a,TComponent b,TComponent &x,TComponent &y);
+
+    template <typename TComponent>
+    TComponent
+    extendedGcd( std::vector<TComponent> &coeffs, const std::vector<TComponent> &A );
+    
+    
+    /// Computes a basis of the orthogonal lattice to the vector \a N,
+    /// i.e. it has n-1 vectors if N had n components.
+    ///
+    /// @note If N is a 3D vector, then the returned basis of two
+    /// vectors is a shortest basis, whose cross product is equal to
+    /// N (when primitive).
+    ///
+    /// @tparam TComponent the integer type for the input vector and for computations.
+    ///
+    /// @param[in] N the input normal vector, which should be non null.
+    ///
+    /// @return a basis \f$ (u_1, \dots, u_{n-1}) \f$ such that \f$
+    /// u_i \cdot N = 0 \f$.
+    template <typename TComponent>
+    std::vector< std::vector< TComponent > >
+    computeOrthogonalLattice( std::vector< TComponent > N );
+
+    template <typename TComponent>
+    bool
+    shortenVectors( std::vector< TComponent >& u,
+                    std::vector< TComponent >& v );
+
+    template <typename TComponent>
+    void
+    shortenBasis( std::vector< std::vector< TComponent > >& B );
     
   } // namespace functions
 

@@ -33,6 +33,16 @@
 namespace DGtal {
   namespace functions {
 
+    template <typename TComponent>
+    bool
+    equals( const std::vector<TComponent> &a, const std::vector<TComponent> &b )
+    {
+      ASSERT( a.size() == b.size() );
+      for ( std::size_t i = 0; i < a.size(); i++ )
+        if ( a[ i ] != b[ i ] ) return false;
+      return true;
+    }
+    
     template <typename T, typename U >
     typename DGtal::ArithmeticConversionTraits<T,U>::type
     dotProduct( const std::vector<T>& a, const std::vector<U>& b )
@@ -59,6 +69,32 @@ namespace DGtal {
         s += a[ i ] * NumberTraits<BigInteger>::castToDouble( b[i] );
       return s;
     }
+
+    template <typename T, typename U >
+    std::vector< typename DGtal::ArithmeticConversionTraits<T,U>::type >
+    crossProduct( const std::vector<T>& a, const std::vector<U>& b )
+    {
+      ASSERT( a.size() == 3 && b.size() == 3 );
+      typedef typename DGtal::ArithmeticConversionTraits<T,U>::type W;
+      std::vector< W > R( 3 );
+      R[ 0 ] = a[ 1 ] * b[ 2 ] - a[ 2 ] * b[ 1 ];
+      R[ 1 ] = a[ 2 ] * b[ 0 ] - a[ 0 ] * b[ 2 ];
+      R[ 2 ] = a[ 0 ] * b[ 1 ] - a[ 1 ] * b[ 0 ];
+      return R;
+    }
+
+    template <typename T, typename U, typename Op2 >
+    std::vector< typename DGtal::ArithmeticConversionTraits<T,U>::type >
+    apply( const std::vector<T>& a, const std::vector<U>& b,
+           Op2 op2 )
+    {
+      ASSERT( a.size() == b.size() );
+      std::vector< typename DGtal::ArithmeticConversionTraits<T,U>::type > R( a.size() );
+      for ( std::size_t i = 0; i < R.size(); i++ )
+        R[ i ] = op2( a[ i ], b[ i ] );
+      return R;
+    }
+
     
     template <typename T>
     T
@@ -362,3 +398,163 @@ DGtal::functions::reduceBasisWithLLL
   if ( ! sign )
     swap( B[n-2], B[n-1] );
 }
+
+//-----------------------------------------------------------------------------
+template <typename TComponent>
+TComponent
+DGtal::functions::makePrimitive( std::vector< TComponent >& N )
+{
+  typedef IntegerComputer<TComponent> Comp;
+  TComponent g = 0;
+  for ( Dimension k = 0; k < N.size(); k++ )
+    g = Comp::staticGcd( g, N[ k ] );
+  if ( g != 0 ) 
+    for ( Dimension k = 0; k < N.size(); k++ )
+      N[ k ] /= g;
+  return g;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TComponent>
+void
+DGtal::functions::negate( std::vector<TComponent> &V )
+{
+  for ( auto& v :V ) v = -v;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TComponent>
+TComponent
+DGtal::functions::extendedGcd
+(TComponent a,TComponent b,TComponent &x,TComponent &y)
+{
+  if ( b == 0 ){ x = 1; y = 0; return a; }
+  TComponent x1,y1;
+  TComponent g = functions::extendedGcd( b, a%b, x1, y1 );
+  x = y1;
+  y = x1 - (a/b)*y1;
+  return g;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TComponent>
+TComponent
+DGtal::functions::extendedGcd
+( std::vector<TComponent> &coeffs, const std::vector<TComponent> &A )
+{
+  auto n = A.size();
+  coeffs.assign(n, 0);
+  TComponent g = A[0];
+  coeffs[0] = 1;
+  for ( Dimension i = 1; i < n; i++)
+    {
+      TComponent x, y;
+      TComponent g2 = functions::extendedGcd( g, A[i], x, y );
+      for ( Dimension j = 0; j < i; j++) coeffs[j] *= x;
+      coeffs[i] = y;
+      g = g2;
+    }
+  return g;
+}
+
+//-----------------------------------------------------------------------------
+// https://math.stackexchange.com/questions/1049608/lattice-generated-by-vectors-orthogonal-to-an-integer-vector
+template <typename TComponent>
+std::vector< std::vector< TComponent > >
+DGtal::functions::computeOrthogonalLattice( std::vector< TComponent > N )
+{
+  std::vector< std::vector< TComponent > > R;
+  int64_t n = N.size();
+  if ( n <= 1 ) return R;
+  std::vector< TComponent > V = N;
+  while ( n > 1 )
+    {
+      makePrimitive( V );
+      n -= 1;
+      if ( n == 1 ) 
+        { // last orthogonal vector
+          std::vector< TComponent > B( N.size(), 0 );
+          B[ 0 ] =  V[ 1 ];
+          B[ 1 ] = -V[ 0 ];
+          R.push_back( B );
+          n = 0;
+          break;
+        }
+      else
+        { // general case
+          TComponent Vn = V[ n ];
+          V[ n ] = 0;
+          std::vector< TComponent > B( N.size() );
+          TComponent gp = extendedGcd( B, V );
+          if ( gp == 0 ) break;
+          // Build orthogonal vector
+          for ( Dimension k = 0; k < n; k++ ) B[ k ] *= -Vn;
+          B[ n ] = gp;
+          R.push_back( B );
+        }
+    } // while ( n > 1 )
+  if ( n > 0 )
+    { // complete basis
+      std::vector< TComponent > B( N.size() );
+      B.assign( N.size(), 0 );
+      for( ; n > 0; --n )
+        {
+          B[ n   ] = 0;
+          B[ n-1 ] = 1;
+          R.push_back( B );
+        }
+    }
+  return R;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TComponent>
+bool
+DGtal::functions::shortenVectors( std::vector< TComponent >& u,
+                                  std::vector< TComponent >& v )
+{
+  auto is_shorter = []
+    ( const std::vector< TComponent >& u, const std::vector< TComponent >& v ) -> bool
+  {
+    return dotProduct( u, u ) < dotProduct( v, v );
+  };
+  bool u_shorter_v = is_shorter( u, v );
+  auto min_uv   = u_shorter_v ? u : v;
+  auto max_uv   = u_shorter_v ? v : u;
+  auto u_plus_v = functions::apply( u, v, std::plus() );
+  auto u_minus_v= functions::apply( u, v, std::minus() );
+  if ( is_shorter( u_plus_v, max_uv ) )
+    {
+      u = min_uv;
+      v = u_plus_v;
+      return true;
+    }
+  else if ( is_shorter( u_minus_v, max_uv ) )
+    {
+      u = min_uv;
+      v = u_minus_v;
+      return true;
+    }
+  return false;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TComponent>
+void
+DGtal::functions::shortenBasis( std::vector< std::vector< TComponent > >& B )
+{
+  if ( B.size() <= 1 ) return;
+  while ( true )
+    {
+      std::size_t nb_shortened = 0;
+      for ( std::size_t i = 0; i < B.size(); i++ )
+        for ( std::size_t j = i+1; j < B.size(); j++ )
+          nb_shortened += functions::shortenVectors( B[ i ], B[ j ] ) ? 1 : 0;
+      TComponent m = 0;
+      for ( std::size_t i = 0; i < B.size(); i++ )
+        m = std::max( m, dotProduct( B[ i ], B[ i ] ) );
+      std::cout << "#shortened=" << nb_shortened << " max=" << m << "\n";
+      if ( nb_shortened == 0 ) return;
+    }
+}
+

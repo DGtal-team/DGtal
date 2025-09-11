@@ -486,16 +486,25 @@ bool testBareissDeterminant()
 
 template <typename Number>
 std::ostream&
-operator<<( std::ostream& out, const std::vector< std::vector< Number> >& v )
+operator<<( std::ostream& out, const std::vector< Number>& v )
 {
   for ( auto i = 0; i < v.size(); i++ )
-    {
-      for ( auto j = 0; j < v[i].size(); j++ )
-        out << v[ i ][ j ] << " ";
-      out << "\n";
-    }
+    out << v[ i ] << " ";
+  out << "\n";
   return out;
 }
+// template <typename Number>
+// std::ostream&
+// operator<<( std::ostream& out, const std::vector< std::vector< Number> >& v )
+// {
+//   for ( auto i = 0; i < v.size(); i++ )
+//     {
+//       for ( auto j = 0; j < v[i].size(); j++ )
+//         out << v[ i ][ j ] << " ";
+//       out << "\n";
+//     }
+//   return out;
+// }
 
 bool testLLL()
 {
@@ -624,6 +633,77 @@ bool testLLL()
 
   return nbok == nb;
 }
+
+bool testOrthogonalLattice()
+{
+  unsigned int nbok = 0;
+  unsigned int nb   = 0;
+
+  typedef int64_t     Integer;
+  // vector<int64_t> n  = {11,-20,8};
+  for ( auto i = 0; i < 100; i++ )
+    {
+      vector<int64_t> n = { rand() % 30 - 15, rand() % 30 - 15, rand() % 30 - 15 };
+      //vector<int64_t> n  = {0,0,1};
+      
+      auto g = functions::makePrimitive( n );
+      if ( g==0 ) continue;
+      std::cout << "n=" << n;
+      vector<int64_t> no = n;
+      functions::negate( no );
+      auto L = DGtal::functions::computeOrthogonalLattice( n );
+      std::cout << "u'=" << L[0] << "v'=" << L[1];
+      functions::shortenBasis( L );
+      std::cout << "u=" << L[0] << "v=" << L[1];
+      Integer l0 = functions::dotProduct( L[ 0 ], n );
+      Integer l1 = functions::dotProduct( L[ 1 ], n );
+      auto     c = functions::crossProduct( L[ 0 ], L[ 1 ] );
+      std::cout << "u.n=" << l0 << " v.n=" << l1 << " uxv=" << c << "\n";
+      nbok += l0 == 0 ? 1 : 0;
+      nbok += l1 == 0 ? 1 : 0;
+      nbok += ( functions::equals( c, n )  || functions::equals( c, no ) ) ? 1 : 0;
+      nb   += 3;
+      std::cout << "----------- " << setw(4) << nbok << "/" << nb << " ----------------\n";
+      std::cout << "------------------------------------\n";
+      if ( nbok != nb ) break;
+    }
+  for ( auto i = 0; i < 100; i++ )
+    {
+      vector<int64_t> n = { rand() % 30 - 15, rand() % 30 - 15,
+                            rand() % 30 - 15, rand() % 30 - 15 };
+      //vector<int64_t> n  = {0,0,1};
+      
+      auto g = functions::makePrimitive( n );
+      if ( g==0 ) continue;
+      std::cout << "n=" << n;
+      vector<int64_t> no = n;
+      functions::negate( no );
+      auto L = DGtal::functions::computeOrthogonalLattice( n );
+      std::cout << "u'=" << L[0] << "v'=" << L[1] << "w'=" << L[2];
+      functions::shortenBasis( L );
+      std::cout << "u=" << L[0] << "v=" << L[1] << "w=" << L[2];
+      Integer l0 = functions::dotProduct( L[ 0 ], n );
+      Integer l1 = functions::dotProduct( L[ 1 ], n );
+      Integer l2 = functions::dotProduct( L[ 2 ], n );
+      std::cout << "u.n=" << l0 << " v.n=" << l1 << " w.n=" << l2 << "\n";
+      Integer n0 = functions::dotProduct( L[ 0 ], L[ 0 ] );
+      Integer n1 = functions::dotProduct( L[ 1 ], L[ 1 ] );
+      Integer n2 = functions::dotProduct( L[ 2 ], L[ 2 ] );
+      std::cout << "u.u=" << n0 << " v.v=" << n1 << " w.w=" << n2 << "\n";
+      nbok += l0 == 0 ? 1 : 0;
+      nbok += l1 == 0 ? 1 : 0;
+      nbok += l2 == 0 ? 1 : 0;
+      nbok += n0 > 0 ? 1 : 0;
+      nbok += n1 > 0 ? 1 : 0;
+      nbok += n2 > 0 ? 1 : 0;
+      nb   += 6;
+      std::cout << "----------- " << setw(4) << nbok << "/" << nb << " ----------------\n";
+      std::cout << "------------------------------------\n";
+      if ( nbok != nb ) break;
+    }
+  return nbok == nb;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -639,7 +719,8 @@ int main( int argc, char** argv )
     && testDetCofactor() && testM1Matrix() && testInverse()
     && testConcepts() && testConstructor()
     && testBareissDeterminant()
-    && testLLL();
+    && testLLL()
+    && testOrthogonalLattice();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;
