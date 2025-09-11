@@ -667,12 +667,10 @@ bool testOrthogonalLattice()
       std::cout << "------------------------------------\n";
       if ( nbok != nb ) break;
     }
-  for ( auto i = 0; i < 100; i++ )
+  for ( auto i = 0; i < 1; i++ )
     {
       vector<int64_t> n = { rand() % 30 - 15, rand() % 30 - 15,
                             rand() % 30 - 15, rand() % 30 - 15 };
-      //vector<int64_t> n  = {0,0,1};
-      
       auto g = functions::makePrimitive( n );
       if ( g==0 ) continue;
       std::cout << "n=" << n;

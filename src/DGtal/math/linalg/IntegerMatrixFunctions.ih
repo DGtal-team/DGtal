@@ -464,48 +464,93 @@ std::vector< std::vector< TComponent > >
 DGtal::functions::computeOrthogonalLattice( std::vector< TComponent > N )
 {
   std::vector< std::vector< TComponent > > R;
-  int64_t n = N.size();
+  const std::size_t n = N.size();
   if ( n <= 1 ) return R;
   std::vector< TComponent > V = N;
-  while ( n > 1 )
+  std::size_t m = 0;
+  while ( m+1 < n )
     {
       makePrimitive( V );
-      n -= 1;
-      if ( n == 1 ) 
+      if ( n-m == 2 ) 
         { // last orthogonal vector
           std::vector< TComponent > B( N.size(), 0 );
-          B[ 0 ] =  V[ 1 ];
-          B[ 1 ] = -V[ 0 ];
+          B[ m   ] =  V[ m+1 ];
+          B[ m+1 ] = -V[ m   ];
           R.push_back( B );
-          n = 0;
+          m = n;
           break;
         }
       else
         { // general case
-          TComponent Vn = V[ n ];
-          V[ n ] = 0;
-          std::vector< TComponent > B( N.size() );
+          TComponent Vm = V[ m ];
+          V[ m ] = 0;
+          std::vector< TComponent > B( n );
           TComponent gp = extendedGcd( B, V );
           if ( gp == 0 ) break;
           // Build orthogonal vector
-          for ( Dimension k = 0; k < n; k++ ) B[ k ] *= -Vn;
-          B[ n ] = gp;
+          for ( Dimension k = m+1; k < n; k++ ) B[ k ] *= -Vm;
+          B[ m ] = gp;
           R.push_back( B );
         }
-    } // while ( n > 1 )
-  if ( n > 0 )
-    { // complete basis
-      std::vector< TComponent > B( N.size() );
-      B.assign( N.size(), 0 );
-      for( ; n > 0; --n )
-        {
-          B[ n   ] = 0;
-          B[ n-1 ] = 1;
-          R.push_back( B );
-        }
+      m += 1;
+    } // while ( m+1 < n )
+  // complete basis
+  std::vector< TComponent > B( N.size(), 0 );
+  for( ; m+1 < n; m++ )
+    {
+      B[ m   ] = 0;
+      B[ m+1 ] = 1;
+      R.push_back( B );
     }
   return R;
 }
+// template <typename TComponent>
+// std::vector< std::vector< TComponent > >
+// DGtal::functions::computeOrthogonalLattice( std::vector< TComponent > N )
+// {
+//   std::vector< std::vector< TComponent > > R;
+//   int64_t n = N.size();
+//   if ( n <= 1 ) return R;
+//   std::vector< TComponent > V = N;
+//   while ( n > 1 )
+//     {
+//       makePrimitive( V );
+//       n -= 1;
+//       if ( n == 1 ) 
+//         { // last orthogonal vector
+//           std::vector< TComponent > B( N.size(), 0 );
+//           B[ 0 ] =  V[ 1 ];
+//           B[ 1 ] = -V[ 0 ];
+//           R.push_back( B );
+//           n = 0;
+//           break;
+//         }
+//       else
+//         { // general case
+//           TComponent Vn = V[ n ];
+//           V[ n ] = 0;
+//           std::vector< TComponent > B( N.size() );
+//           TComponent gp = extendedGcd( B, V );
+//           if ( gp == 0 ) break;
+//           // Build orthogonal vector
+//           for ( Dimension k = 0; k < n; k++ ) B[ k ] *= -Vn;
+//           B[ n ] = gp;
+//           R.push_back( B );
+//         }
+//     } // while ( n > 1 )
+//   if ( n > 0 )
+//     { // complete basis
+//       std::vector< TComponent > B( N.size() );
+//       B.assign( N.size(), 0 );
+//       for( ; n > 0; --n )
+//         {
+//           B[ n   ] = 0;
+//           B[ n-1 ] = 1;
+//           R.push_back( B );
+//         }
+//     }
+//   return R;
+// }
 
 //-----------------------------------------------------------------------------
 template <typename TComponent>
