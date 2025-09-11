@@ -14,8 +14,6 @@
  *
  **/
 
-#pragma once
-
 /**
  * @file DigitalSetByOctree.h
  * @author Bastien DOIGNIES 
@@ -111,6 +109,18 @@ namespace DGtal
             CellIndex children[CELL_COUNT];
         };
 
+        struct ComputationCacheKey {
+            CellIndex parentLvl;
+            CellIndex parentIdx;
+            std::vector<DimIndex> code;
+
+            bool operator<(const ComputationCacheKey& other) const {
+                if (parentLvl != other.parentLvl) return parentLvl < other.parentLvl;
+                if (parentIdx != other.parentIdx) return parentLvl < other.parentIdx;
+                return code < other.code;
+            }
+        };
+
         /**
          * @brief Helper struct to store traversal and go to next leaf
          */
@@ -155,7 +165,7 @@ namespace DGtal
             OctreeIterator(const DigitalSetByOctree* container, 
                            TraversalMemory init) {
                 myContainer = container;
-                myMemory.push(std::move(init));
+                myMemory.push_back(std::move(init));
 
                 findNextLeaf();
             }
@@ -168,7 +178,7 @@ namespace DGtal
              * searching through the whole tree.
              */
             OctreeIterator(const DigitalSetByOctree* container, 
-                           std::stack<TraversalMemory>& memory) {
+                           std::vector<TraversalMemory>& memory) {
                 myContainer = container;
                 myMemory = memory;
             }
@@ -184,7 +194,7 @@ namespace DGtal
                 if (myMemory.size() != other.myMemory.size()) return false;
 
                 if (myMemory.size() != 0) {
-                    return myMemory.top() == other.myMemory.top();
+                    return myMemory.back() == other.myMemory.back();
                 }
                 return true;
             }
@@ -200,8 +210,8 @@ namespace DGtal
              * @brief Dereference operator
              */
             Point operator*() const {
-                const auto& sides = SIDES_FROM_INDEX[myMemory.top().currentChildIdx];
-                return splitDomain(myMemory.top().domain, sides.data()).lowerBound();
+                const auto& sides = SIDES_FROM_INDEX[myMemory.back().currentChildIdx];
+                return splitDomain(myMemory.back().domain, sides.data()).lowerBound();
             }
 
             /**
@@ -228,7 +238,7 @@ namespace DGtal
 
         private:
             const DigitalSetByOctree* myContainer; //< Pointer to the original octree
-            std::stack<TraversalMemory> myMemory;  //< Current traversal infromation
+            std::vector<TraversalMemory> myMemory;  //< Current traversal infromation
         };
 
         using Iterator = OctreeIterator;
@@ -249,13 +259,12 @@ namespace DGtal
         /**
          * @brief Returns the domain of the voxels
          */
-        const Domain& domain() const { return *myDomain; }
+        const Domain& domain() const { return *myAdmissibleDomain; }
 
         /**
          * @brief Returns the domain of the voxels
          */
-        CowPtr<Domain> domainPointer() const { return myDomain; }
-
+        CowPtr<Domain> domainPointer() const { return myAdmissibleDomain; }
     public:
         /**
          * @brief Inserts a new point in the octree
@@ -400,9 +409,9 @@ namespace DGtal
          * @brief Computes the complement of the octree
          * 
          * This is equivalent to looping through an octree and inserting
-         * every node into another*
          * 
          * @param out The output iterator
+         * every node into another*
          */
         template<typename It>
         void computeComplement(It out) const {
@@ -492,6 +501,11 @@ namespace DGtal
          */
         void convertToDAG();
 
+        template<class Func>
+        auto computeFunction(
+            OctreeIterator start, OctreeIterator end, CellIndex range, const Func& f
+        );
+
         /**
          * @brief Dumps the octree to std out
          * 
@@ -520,7 +534,15 @@ namespace DGtal
         };
 
     private:
-        CowPtr<Domain> myDomain;       // Pointer to domain, as required by CDigitalSet
+        // We store two domains:
+        //  - myDomain is the domain used for computation, that 
+        //    requires its size to be whole power of two for 
+        //    computationnal purposes
+        //  - myAdmissibleDomain is the domain of points that can be
+        //    stored within the octree. It shares the same lower bound
+        //    with domain, but its upper bound is lowered by one.
+        CowPtr<Domain> myAdmissibleDomain;     // Domain of point that are allowed. 
+        CowPtr<Domain> myDomain;       // Pointer to domain, as required by CDigitalSet.
         State myState = State::OCTREE; // Current state
         
         size_t mySize;                 // Current number of stored voxel.

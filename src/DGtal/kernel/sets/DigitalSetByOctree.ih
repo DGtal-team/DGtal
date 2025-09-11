@@ -1,51 +1,78 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file DigitalSetByOctree.Ih
+ * @author Bastien DOIGNIES 
+ * LIRIS 
+ *
+ * @date 2025/09/05
+ *
+ * Header file for module DigitalSetByOctree.cpp
+ *
+ * This file is part of the DGtal library.
+ */
 namespace DGtal {
-	template<class Space>
-	void DigitalSetByOctree<Space>::OctreeIterator::findNextLeaf() {
-	    while (myMemory.size() != 0) {
-	        TraversalMemory& m = myMemory.top();
+    template<class Space>
+    void DigitalSetByOctree<Space>::OctreeIterator::findNextLeaf() {
+        while (myMemory.size() != 0) {
+            TraversalMemory& m = myMemory.back();
 
-	        // Find next unexplored child. Invalid index means no child was explored yet
-	        CellIndex k = (m.currentChildIdx == INVALID_IDX) ? 0 : (m.currentChildIdx + 1);
-	        for (; k < CELL_COUNT; ++k) {
-	            if (myContainer->myNodes[m.lvl][m.idx].children[k] != INVALID_IDX) {
-	                // Update explored child
-	                m.currentChildIdx = k;
-	                break;
-	            }
-	        }
+            // Find next unexplored child. Invalid index means no child was explored yet
+            CellIndex k = (m.currentChildIdx == INVALID_IDX) ? 0 : (m.currentChildIdx + 1);
+            for (; k < CELL_COUNT; ++k) {
+                if (myContainer->myNodes[m.lvl][m.idx].children[k] != INVALID_IDX) {
+                    // Update explored child
+                    m.currentChildIdx = k;
+                    break;
+                }
+            }
 
-	        if (k < CELL_COUNT) { // Child found, go down
-	        	if (myMemory.top().lvl == myContainer->myNodes.size() - 1) break;
+            if (k < CELL_COUNT) { // Child found, go down
+                    if (myMemory.back().lvl == myContainer->myNodes.size() - 1) break;
 
-	            TraversalMemory newMemory;
-	            newMemory.lvl = m.lvl + 1;
-	            newMemory.domain = splitDomain(m.domain, SIDES_FROM_INDEX[k].data());
-	            newMemory.idx = myContainer->myNodes[m.lvl][m.idx].children[k];
-	            newMemory.currentChildIdx = INVALID_IDX;
+                TraversalMemory newMemory;
+                newMemory.lvl = m.lvl + 1;
+                newMemory.domain = splitDomain(m.domain, SIDES_FROM_INDEX[k].data());
+                newMemory.idx = myContainer->myNodes[m.lvl][m.idx].children[k];
+                newMemory.currentChildIdx = INVALID_IDX;
 
-	            myMemory.push(std::move(newMemory));
-	        } else { // No more child unexplored, go back to parent
-	            myMemory.pop();
-	        }
+                myMemory.push_back(std::move(newMemory));
+            } else { // No more child unexplored, go back to parent
+                myMemory.pop_back();
+            }
 
-	    }
+        }
 
-	    if (myMemory.size() != 0) {
-	        // For leaves, find first non 0 index
-	        auto& mem = myMemory.top();
-	        if (mem.currentChildIdx == INVALID_IDX) {
-	            for (CellIndex k = 0; k < CELL_COUNT; ++k) {
-	                if (myContainer->myNodes[mem.lvl][mem.idx].children[k] != 0) {
-	                    mem.currentChildIdx = k;
-	                    break;
-	                }
-	            }
-	        }
-	    }
-	}
+        if (myMemory.size() != 0) {
+            // For leaves, find first non 0 index
+            auto& mem = myMemory.back();
+            if (mem.currentChildIdx == INVALID_IDX) {
+                for (CellIndex k = 0; k < CELL_COUNT; ++k) {
+                    if (myContainer->myNodes[mem.lvl][mem.idx].children[k] != 0) {
+                        mem.currentChildIdx = k;
+                        break;
+                    }
+                }
+            }
+        }
+    }
 
-	template<class Space>
-	DigitalSetByOctree<Space>::DigitalSetByOctree(const Domain& dom) {
+    template<class Space>
+    DigitalSetByOctree<Space>::DigitalSetByOctree(const Domain& dom) {
         const auto lb = dom.lowerBound();
         const auto ub = dom.upperBound();
         auto size = ub - lb;
@@ -70,10 +97,11 @@ namespace DGtal {
         myNodes[0].push_back(Node());
 
         myDomain = CowPtr(new Domain(lb, lb + size));
+        myAdmissibleDomain = CowPtr(new Domain(lb, lb + size - 1));
         mySize = 0;
     };
 
-	template<class Space>
+    template<class Space>
     HyperRectDomain<Space> DigitalSetByOctree<Space>::splitDomain(const Domain& domain, const DimIndex* sides) {
               auto lb = domain.lowerBound();
         const auto ub = domain.upperBound();
@@ -85,9 +113,9 @@ namespace DGtal {
         return Domain(lb, lb + size);
     }
 
-	template<class Space>
+    template<class Space>
     void DigitalSetByOctree<Space>::insert(const Point& p) {
-        if (!myDomain->isInside(p)) return;
+        if (!myAdmissibleDomain->isInside(p)) return;
         
         if (myState == State::OCTREE) {
             Domain domain = *myDomain;
@@ -133,19 +161,20 @@ namespace DGtal {
         }
     }
 
-	template<class Space>
+    template<class Space>
     DigitalSetByOctree<Space>::OctreeIterator DigitalSetByOctree<Space>::find(const Point& p) const {
-        std::stack<TraversalMemory> traversal;
+        if (!myAdmissibleDomain->isInside(p)) return end();
+
         Domain domain = *myDomain;
+        std::vector<TraversalMemory> traversal;
         CellIndex nodeIdx = 0;
         
         TraversalMemory root;
         root.lvl = 0;
-        root.domain = domain;
         root.idx = 0;
-        traversal.push(root);
+        root.domain = domain;
+        traversal.push_back(root);
         
-        if (!domain.isInside(p)) return end();
         for (size_t i = 0; i < myNodes.size() - 1; ++i) {
             const auto lb = domain.lowerBound();
             const auto ub = domain.upperBound();
@@ -172,8 +201,8 @@ namespace DGtal {
             memory.idx = nodeIdx;
             memory.currentChildIdx = INVALID_IDX;
             
-            traversal.top().currentChildIdx = childIdx;
-            traversal.push(memory);
+            traversal.back().currentChildIdx = childIdx;
+            traversal.push_back(memory);
         }
         
         const auto lb = domain.lowerBound();
@@ -183,9 +212,11 @@ namespace DGtal {
         for (DimIndex d = 0; d < D; ++d) {
             childIdx += (p[d] >= middle[d]) * (1 << (D - d - 1));
         }
-        traversal.top().currentChildIdx = childIdx;
+        traversal.back().currentChildIdx = childIdx;
 
-        return Iterator(this, traversal);
+        if (myNodes[traversal.back().lvl][traversal.back().idx].children[childIdx] != INVALID_IDX)
+            return Iterator(this, traversal);
+        return end();
     }
 
 	template<class Space>
@@ -198,7 +229,7 @@ namespace DGtal {
 
             auto mem = it.myMemory;
             while (!mem.empty()) {
-                const auto& tmem = mem.top();
+                const auto& tmem = mem.back();
                 if (childRemoved) { // Can disconnect parent from the child
                     CellIndex child = myNodes[tmem.lvl][tmem.idx].children[tmem.currentChildIdx];
                     myNodes[tmem.lvl][tmem.idx].children[tmem.currentChildIdx] = INVALID_IDX;
@@ -226,7 +257,7 @@ namespace DGtal {
                     childRemoved = false;
                 }
 
-                mem.pop();
+                mem.pop_back();
             }
             mySize --;
             return 1;
@@ -268,8 +299,8 @@ namespace DGtal {
 	            }
 	        }
 	        
-	        myNodes[i] = newNodes;
-	        correspondances = newCorrespondances;
+	        myNodes[i] = std::move(newNodes);
+	        correspondances = std::move(newCorrespondances);
 	    }
 
 	    // New pointers for root lvl:
@@ -301,4 +332,80 @@ namespace DGtal {
 	    }
 	    std::cout << std::flush;
 	}
+
+    template<class Space>
+    template<class Func>
+    auto DigitalSetByOctree<Space>::computeFunction(
+        DigitalSetByOctree<Space>::OctreeIterator start, 
+        DigitalSetByOctree<Space>::OctreeIterator end,
+        CellIndex range, 
+        const Func& f
+    ) {
+        using ResultType = decltype(f({}, {}));
+        std::map<ComputationCacheKey, ResultType> cache;
+        std::vector<ResultType> rslt;
+
+        Point neighborSize;
+        for (DimIndex d = 0; d < D; ++d) neighborSize[d] = range;
+
+        for (; start != end; ++start) {
+            // Shift so the position is at the minimum 
+            const auto pos = *start;
+            const auto shiftedPos = pos - myDomain->lowerBound();
+
+            // Find parent depth that contains the whole neighborhood
+            // This is the maximum over dimension, of how many prefix 
+            // bits of position, position - range, position + range
+            // have in common. 
+            CellIndex lvl = 0;
+            for (DimIndex d = 0; d < D; ++d) {
+                const CellIndex coord = static_cast<CellIndex>(shiftedPos[d]);
+                const CellIndex coord_min = coord - range;
+                const CellIndex coord_max = coord + range;
+
+                // Parent in common, for this dimension, this can be higher than
+                // the depth of the tree for points on the border.
+                const CellIndex l = std::max(boost::core::bit_width(coord ^ coord_min), 
+                                             boost::core::bit_width(coord ^ coord_max));
+                lvl = std::max(lvl, std::min(l, static_cast<CellIndex>(myNodes.size())));
+            }
+
+            const auto& parent = start.myMemory[start.myMemory.size() - lvl];
+            ComputationCacheKey key;
+            key.parentLvl = parent.lvl;
+            key.parentIdx = parent.idx;
+            key.code.resize(D * lvl);
+
+            for (CellIndex i = 0; i < lvl; ++i) {
+                const size_t idx = start.myMemory.size() - i - 1;
+                for (DimIndex d = 0; d < D; ++d) {
+                    key.code[d + i * D] = SIDES_FROM_INDEX[start.myMemory[idx].currentChildIdx][d];
+                }
+            }
+
+            const auto it = cache.find(key);
+            if (it != cache.end()) {
+                // Cache hit, get value
+                rslt.push_back(it->second);
+            } else {
+                std::vector<Point> neighborhood;
+                
+                // Gather neighborhood
+                const Domain neighborhoodDomain(pos - neighborSize, pos + neighborSize);
+                for (auto dIt = neighborhoodDomain.begin(); dIt != neighborhoodDomain.end(); ++dIt) {
+                    const auto ptIt = *dIt;
+                    if (operator()(ptIt)) {
+                        neighborhood.push_back(ptIt);
+                    }
+                }
+
+                const auto feval = f(pos, neighborhood);
+                cache[key] = feval;
+                rslt.push_back(feval);
+            }
+
+        }
+
+        return rslt;
+    }
 }
