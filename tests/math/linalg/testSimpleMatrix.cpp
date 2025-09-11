@@ -652,20 +652,23 @@ bool testOrthogonalLattice()
       vector<int64_t> no = n;
       functions::negate( no );
       auto L = DGtal::functions::computeOrthogonalLattice( n );
-      std::cout << "u'=" << L[0] << "v'=" << L[1];
       functions::shortenBasis( L );
-      std::cout << "u=" << L[0] << "v=" << L[1];
-      Integer l0 = functions::dotProduct( L[ 0 ], n );
-      Integer l1 = functions::dotProduct( L[ 1 ], n );
-      auto     c = functions::crossProduct( L[ 0 ], L[ 1 ] );
-      std::cout << "u.n=" << l0 << " v.n=" << l1 << " uxv=" << c << "\n";
+      Integer l0 = functions::dotProduct( L[ 0 ], n ); // vectors are orthogonal
+      Integer l1 = functions::dotProduct( L[ 1 ], n ); 
+      auto     c = functions::crossProduct( L[ 0 ], L[ 1 ] ); // u x v = n
       nbok += l0 == 0 ? 1 : 0;
       nbok += l1 == 0 ? 1 : 0;
       nbok += ( functions::equals( c, n )  || functions::equals( c, no ) ) ? 1 : 0;
       nb   += 3;
-      std::cout << "----------- " << setw(4) << nbok << "/" << nb << " ----------------\n";
-      std::cout << "------------------------------------\n";
-      if ( nbok != nb ) break;
+      if ( nbok != nb )
+        {
+          std::cout << "----------- " << nbok << "/" << nb << " ----------------\n";
+          std::cout << "u.n=" << l0 << " v.n=" << l1 << " uxv=" << c << "\n";
+          std::cout << "u=" << L[0] << "v=" << L[1];
+          std::cout << "u.n=" << l0 << " v.n=" << l1 << " uxv=" << c << "\n";
+          std::cout << "------------------------------------\n";
+          break;
+        }
     }
   for ( auto i = 0; i < 1; i++ )
     {
@@ -673,31 +676,33 @@ bool testOrthogonalLattice()
                             rand() % 30 - 15, rand() % 30 - 15 };
       auto g = functions::makePrimitive( n );
       if ( g==0 ) continue;
-      std::cout << "n=" << n;
       vector<int64_t> no = n;
       functions::negate( no );
       auto L = DGtal::functions::computeOrthogonalLattice( n );
-      std::cout << "u'=" << L[0] << "v'=" << L[1] << "w'=" << L[2];
       functions::shortenBasis( L );
-      std::cout << "u=" << L[0] << "v=" << L[1] << "w=" << L[2];
       Integer l0 = functions::dotProduct( L[ 0 ], n );
       Integer l1 = functions::dotProduct( L[ 1 ], n );
       Integer l2 = functions::dotProduct( L[ 2 ], n );
-      std::cout << "u.n=" << l0 << " v.n=" << l1 << " w.n=" << l2 << "\n";
       Integer n0 = functions::dotProduct( L[ 0 ], L[ 0 ] );
       Integer n1 = functions::dotProduct( L[ 1 ], L[ 1 ] );
       Integer n2 = functions::dotProduct( L[ 2 ], L[ 2 ] );
-      std::cout << "u.u=" << n0 << " v.v=" << n1 << " w.w=" << n2 << "\n";
-      nbok += l0 == 0 ? 1 : 0;
+      nbok += l0 == 0 ? 1 : 0; // vectors are orthogonal
       nbok += l1 == 0 ? 1 : 0;
       nbok += l2 == 0 ? 1 : 0;
-      nbok += n0 > 0 ? 1 : 0;
+      nbok += n0 > 0 ? 1 : 0;  // vectors are non null
       nbok += n1 > 0 ? 1 : 0;
       nbok += n2 > 0 ? 1 : 0;
       nb   += 6;
-      std::cout << "----------- " << setw(4) << nbok << "/" << nb << " ----------------\n";
-      std::cout << "------------------------------------\n";
-      if ( nbok != nb ) break;
+      if ( nbok != nb )
+        {
+          std::cout << "----------- " << nbok << "/" << nb << " ----------------\n";
+          std::cout << "Error for vector n=" << n;
+          std::cout << "u=" << L[0] << "v=" << L[1] << "w=" << L[2];
+          std::cout << "u.n=" << l0 << " v.n=" << l1 << " w.n=" << l2 << "\n";
+          std::cout << "u.u=" << n0 << " v.v=" << n1 << " w.w=" << n2 << "\n";
+          std::cout << "------------------------------------\n";
+          break;
+        }
     }
   return nbok == nb;
 }
