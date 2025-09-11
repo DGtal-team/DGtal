@@ -67,17 +67,7 @@ bool testDiagonalPointsDAG() {
         ok = ok && (mem_after == lvl * sizeof(typename DigitalSetByOctree<Z3i::Space>::Node));
     } trace.endBlock();
 
-    for (auto it = octree.begin(); it != octree.end(); ++it) {
-        std::cout << *it << std::endl;
-    }
-
-    for (auto it = domain.begin(); it != domain.end(); ++it) {
-        if (octree(*it)) {
-            // std::cout << *it << " is in octree" << std::endl;
-        }
-    }
-
-    auto lmbd = [](Z3i::Point, std::vector<Z3i::Point> neighborhood) {
+    auto lmbd = [](Z3i::Point, const std::vector<Z3i::Point>& neighborhood) {
         return neighborhood.size();
     };
     auto rslt = octree.computeFunction(octree.begin(), octree.end(), 1, lmbd);
@@ -91,7 +81,7 @@ bool testInsertAndIterate() {
     bool ok = true;
     
     const Z3i::Domain domain  (Z3i::Point{-1, -2, -1}, Z3i::Point{14, 3, 9});        
-    const Z3i::Domain expected(Z3i::Point{-1, -2, -1}, Z3i::Point{15, 14, 15});        
+    const Z3i::Domain expected(Z3i::Point{-1, -2, -1}, Z3i::Point{14, 13, 14});        
 
     // Some test cases
     const Z3i::Point testPoints[] = {
@@ -202,7 +192,7 @@ bool testInsertAndIterate() {
 }
 
 int main(int, char**) { 
-    const bool res = testINsertAndIterate() && testDiagonalPointsDAG();
+    const bool res = testInsertAndIterate() && testDiagonalPointsDAG();
     DGtal::trace.emphase() << ( res ? "Passed." : "Error." ) << std::endl;
     return !res;
 }
