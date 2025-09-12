@@ -4,7 +4,7 @@
 
 - *Geometry*
   - Add a generic quick hull variant that can process arbitrary input lattice points and outputs their convex hull, even if it is not full dimensional (Jacques-Olivier Lachaud, [#1803](https://github.com/DGtal-team/DGtal/pull/1803))
-  - Add affine geometry module for determining the affine dimension of a subset of points or a set of vectors, and for providing bases in reduced-echelon form or in LLL-form (Jacques-Olivier Lachaud, [#1803](https://github.com/DGtal-team/DGtal/pull/1803))
+  - Add affine geometry module for determining the affine dimension of a subset of points or a set of vectors, and for providing bases and orthogonal bases in reduced-echelon form or in LLL-form (Jacques-Olivier Lachaud, [#1803](https://github.com/DGtal-team/DGtal/pull/1803))
   
 	
 ## Changes

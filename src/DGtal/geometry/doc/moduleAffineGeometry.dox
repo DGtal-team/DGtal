@@ -318,6 +318,13 @@ AffineBasis::Type.
     Constructs an affine basis spanning the given vectors and going
     through the given origin.
 
+  - AffineBasis::AffineBasis( const TInputPoint& origin, const
+    TInputPoint& normal, AffineBasis::Type type, const double delta,
+    const double tolerance ) Creates an affine basis of codimension 1,
+    going through \a origin and orthogonal to the lattice vector \a
+    normal.
+
+    
 * <b> standard services </b>
 
   - AffineBasis::dimension() returns the dimension of the spanned affine subspace.
@@ -366,7 +373,7 @@ typedef AffineBasis< Point4 >            Basis;
 std::vector< Point4 > V = { Point{ 3, 4, 0, 2 }, Point{ -2, -1, 5, -7 } };
 Point4 o( 1,4,2,-1 );
 std::vector< Point4 > X = { o, o + V[0], o + V[1], o + 3*V[0] - V[1], o - V[0] + V[1] };
-Basis B( X, Basis::Type::ECHELON_REDUCED ); // afine basis of dimension 2
+Basis B( X, Basis::Type::SHORTEST_ECHELON_REDUCED ); // affine basis of dimension 2
 std::vector< Point2 >     proj_X;
 auto d = B.projectPoints( proj_X, X ); // proj_X contains the projection of X onto B
 // d is the dilatation factor, hence proj_X/d corresponds to rational coordinates
@@ -407,4 +414,4 @@ specialized to integer computations (defined in
 
 */
 
-} //  namespace DGtal
+} //  Namespace DGtal
