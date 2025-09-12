@@ -631,8 +631,8 @@ bool testLLL()
               << "The output matrix is then canonic: "
               << (nbok == nb ? "PASSED\n" : "ERROR\n");
     trace.beginBlock( "Shorten B" );
-    auto nb = functions::shortenBasis( B );
-    std::cout << "Shorten base: \n" << B << "#nb=" << nb << "\n";
+    auto nbs = functions::shortenBasis( B );
+    std::cout << "Shorten base: \n" << B << "#nb shortening=" << nbs << "\n";
     trace.endBlock();
   }
   trace.endBlock();
