@@ -56,7 +56,7 @@ namespace DGtal
     /// Negates the components of the input vector.
     ///
     /// @tparam TComponent the scalar type of each component.
-    /// @param[in,out] the vector v as input, outputed as -v.
+    /// @param[in,out] V the vector as input, outputed as -V.
     template <typename TComponent>
     void
     negate( std::vector<TComponent> &V );
@@ -444,7 +444,7 @@ namespace DGtal
     ///
     /// @tparam TComponent the integer type for the input vector and for computations.
     ///
-    /// @param[in,out] a range of vectors forming a basis, which is
+    /// @param[in,out] B a range of vectors forming a basis, which is
     /// shorten as much as possible in terms of L2-norm. Note that the
     /// output basis is \b not in \b echelon \b form in general.
     ///

@@ -503,53 +503,6 @@ DGtal::functions::computeOrthogonalLattice( std::vector< TComponent > N )
     }
   return R;
 }
-// template <typename TComponent>
-// std::vector< std::vector< TComponent > >
-// DGtal::functions::computeOrthogonalLattice( std::vector< TComponent > N )
-// {
-//   std::vector< std::vector< TComponent > > R;
-//   int64_t n = N.size();
-//   if ( n <= 1 ) return R;
-//   std::vector< TComponent > V = N;
-//   while ( n > 1 )
-//     {
-//       makePrimitive( V );
-//       n -= 1;
-//       if ( n == 1 ) 
-//         { // last orthogonal vector
-//           std::vector< TComponent > B( N.size(), 0 );
-//           B[ 0 ] =  V[ 1 ];
-//           B[ 1 ] = -V[ 0 ];
-//           R.push_back( B );
-//           n = 0;
-//           break;
-//         }
-//       else
-//         { // general case
-//           TComponent Vn = V[ n ];
-//           V[ n ] = 0;
-//           std::vector< TComponent > B( N.size() );
-//           TComponent gp = extendedGcd( B, V );
-//           if ( gp == 0 ) break;
-//           // Build orthogonal vector
-//           for ( Dimension k = 0; k < n; k++ ) B[ k ] *= -Vn;
-//           B[ n ] = gp;
-//           R.push_back( B );
-//         }
-//     } // while ( n > 1 )
-//   if ( n > 0 )
-//     { // complete basis
-//       std::vector< TComponent > B( N.size() );
-//       B.assign( N.size(), 0 );
-//       for( ; n > 0; --n )
-//         {
-//           B[ n   ] = 0;
-//           B[ n-1 ] = 1;
-//           R.push_back( B );
-//         }
-//     }
-//   return R;
-// }
 
 //-----------------------------------------------------------------------------
 template <typename TComponent>
@@ -558,9 +511,9 @@ DGtal::functions::shortenVectors( std::vector< TComponent >& u,
                                   std::vector< TComponent >& v )
 {
   auto is_shorter = []
-    ( const std::vector< TComponent >& u, const std::vector< TComponent >& v ) -> bool
+    ( const std::vector< TComponent >& a, const std::vector< TComponent >& b ) -> bool
   {
-    return dotProduct( u, u ) < dotProduct( v, v );
+    return dotProduct( a, a ) < dotProduct( b, b );
   };
   bool u_shorter_v = is_shorter( u, v );
   auto min_uv   = u_shorter_v ? u : v;
