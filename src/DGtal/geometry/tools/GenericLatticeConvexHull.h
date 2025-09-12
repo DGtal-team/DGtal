@@ -129,9 +129,18 @@ namespace DGtal
         
         Basis basis;
         if ( dimension != ptr_gen_qhull->dimension )
-          {
-            // Build the affine basis spanning the convex hull affine space.
-            basis = Basis( X, Basis::Type::SHORTEST_ECHELON_REDUCED );
+          { // Build the affine basis spanning the convex hull affine space.
+            if ( dimension == ptr_gen_qhull->dimension-1 )
+              { // codimension 1
+                // builds orthogonal vector
+                InputPoint normal;
+                functions::getOrthogonalVector( normal, X, I );
+                basis = Basis( X[0], normal, Basis::Type::ECHELON_REDUCED );
+              }
+            else
+              { // Generic case
+                basis = Basis( X, Basis::Type::SHORTEST_ECHELON_REDUCED );
+              }
           }
         // Build projected points on affine basis
         dilation  = basis.projectPoints( proj_points, X );

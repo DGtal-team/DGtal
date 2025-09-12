@@ -749,7 +749,36 @@ namespace DGtal
       else
         basis.push_back( independentVector( basis, tolerance ) );
     }
-    
+
+    /// Given a primitive lattice vector \a N, returns a possible basis for
+    /// its orthogonal d-1 dimensional lattice.
+    ///
+    /// @tparam TOtherPoint any type of lattice point
+    ///
+    /// @param[in] N a non null primitive lattice vector
+    ///
+    /// @param[in] shortened when 'false', the basis is in echelon
+    /// form, when 'true', the basis is shortened (with pairwise
+    /// shortenings, may not be optimal, except in 3D).
+    ///
+    /// @return the d-1 vectors forming a basis of the orthogonal lattice to \a N.
+    template < typename TInputPoint >
+    static
+    std::vector< Point >
+    orthogonalLatticeBasis( const TInputPoint& N, bool shortened = false )
+    {
+      std::vector< Scalar > Np( N.begin(), N.end() );
+      Np.resize( Point::dimension );
+      auto B = functions::computeOrthogonalLattice( Np );
+      if ( shortened )
+        functions::shortenBasis( B );
+      std::vector< Point > R( B.size() );
+      for ( std::size_t i = 0; i < B.size(); i++ )
+        for ( std::size_t j = 0; j < Point::dimension; j++ )
+          R[ i ][ j ] = B[ i ][ j ];
+      return R;
+    }
+      
     /// @}
 
     // ----------------------- specific services --------------------------
@@ -1288,7 +1317,8 @@ namespace DGtal
     /// Given a range of points \a X, returns a vector that is
     /// orthogonal to this affine set, if it is d-1-dimensional.
     ///
-    /// @tparam TPoint any type of lattice point or real point.
+    /// @tparam TPoint any type of lattice point or real point (type
+    /// for computations and output).
     ///
     /// @tparam TInputPoint any type of lattice point or real point.
     ///
@@ -1325,6 +1355,29 @@ namespace DGtal
         basis[ i ] = Affine::transform( X[ subset[ i+1 ] ] - X[ subset[ 0 ] ] );
       w = Affine::orthogonalVector( basis );
     }
+
+    /// Given a primitive lattice vector \a N, returns a possible basis for
+    /// its orthogonal d-1 dimensional lattice.
+    ///
+    /// @tparam TPoint any type of lattice point (type for computations and output).
+    /// @tparam TInputPoint any type of lattice point
+    ///
+    /// @param[out] B the d-1 dimension basis of the orthognal lattice to \a N.
+    ///
+    /// @param[in] N a non null primitive lattice vector
+    ///
+    /// @param[in] shortened when 'false', the basis is in echelon
+    /// form, when 'true', the basis is shortened (with pairwise
+    /// shortenings, may not be optimal, except in 3D).
+    template < typename TPoint, typename TInputPoint>
+    static
+    void
+    getOrthogonalLatticeBasis( std::vector< TPoint >& B,
+                               const TInputPoint& N, bool shortened = false )
+    {
+      B = AffineGeometry<TPoint>::orthogonalLatticeBasis( N, shortened );
+    }
+
     
     /// Given a vector, returns the aligned vector with its component
     /// simplified by the gcd of all components (when the components

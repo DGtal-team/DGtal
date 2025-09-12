@@ -120,6 +120,19 @@ namespace DGtal
     std::vector< typename DGtal::ArithmeticConversionTraits<T,U>::type >
     crossProduct( const std::vector<T>& a, const std::vector<U>& b );
 
+    /// Applies the binary operation \a op2 to every pair of elements
+    /// (a[i],b[i]) and returns the resulting range of values
+    /// `op2([a[0],b[0]), ..., op2([a[n-1],b[n-1])`.
+    ///
+    /// @tparam T the number type of the left operand vector.
+    /// @tparam U the number type of the right operand vector.
+    /// @tparam Op2 the type for the binary operator.
+    ///
+    /// @param a the range of values acting as left operands.
+    /// @param b the range of values acting as rights operands.
+    ///
+    /// @param op2 the binary operator (T,U) -> V, where V is the best
+    /// possible type combining T and U.
     template <typename T, typename U, typename Op2 >
     std::vector< typename DGtal::ArithmeticConversionTraits<T,U>::type >
     apply( const std::vector<T>& a, const std::vector<U>& b,
@@ -359,28 +372,54 @@ namespace DGtal
     TComponent
     makePrimitive( std::vector< TComponent >& N );
 
+    /// Extended Eucliden algorithm to compute the gcd g of two
+    /// integers a and b as well as two other integers x and y such
+    /// that `a*x+b*y=g`, where g the gcd of a and b.
+    ///
+    /// @param[out] x,y two integers x and y such that `a*x+b*y=g`.
+    ///
+    /// @param[in] a,b any pair of integers.
+    ///
+    /// @return the greatest common divisor g of a and b, i.e. gcd( a, b ).
     template <typename TComponent>
     TComponent
-    extendedGcd(TComponent a,TComponent b,TComponent &x,TComponent &y);
+    extendedGcd( TComponent& x, TComponent& y, TComponent a,TComponent b );
 
+    /// Extended Eucliden algorithm to compute the gcd g of n integers
+    /// \a A as will as the vector of integers C such that
+    /// `C[0]*A[0]+...+C[n-1]*A[n-1]=g`, where g is the gcd of
+    /// `A[0],...,A[n-1]`.
+    ///
+    /// @param[out] C the array of integers such that `C[0]*A[0]+...+C[n-1]*A[n-1]=g`
+    ///
+    /// @param[in] A the array of input integers.
+    ///
+    /// @return the greatest common divisor g of \a A, i.e. gcd( A[0],
+    /// gcd( A[1], ... )).
     template <typename TComponent>
     TComponent
-    extendedGcd( std::vector<TComponent> &coeffs, const std::vector<TComponent> &A );
+    extendedGcd( std::vector<TComponent> &C, const std::vector<TComponent> &A );
     
     
     /// Computes a basis of the orthogonal lattice to the vector \a N,
-    /// i.e. it has n-1 vectors if N had n components.
+    /// i.e. it has n-1 vectors if N had n components. It essentially
+    /// follows
+    /// https://math.stackexchange.com/questions/1049608/lattice-generated-by-vectors-orthogonal-to-an-integer-vector
     ///
-    /// @note If N is a 3D vector, then the returned basis of two
-    /// vectors is a shortest basis, whose cross product is equal to
-    /// N (when primitive).
+    /// @note If N is a primitive 3D vector, then the returned basis has two
+    /// vectors, whose cross product is N or -N.
     ///
     /// @tparam TComponent the integer type for the input vector and for computations.
     ///
-    /// @param[in] N the input normal vector, which should be non null.
+    /// @param[in] N the input normal vector, which should be non
+    /// null. Even if \a N is not primitive, it is considered
+    /// primitive in the function.
     ///
     /// @return a basis \f$ (u_1, \dots, u_{n-1}) \f$ such that \f$
-    /// u_i \cdot N = 0 \f$.
+    /// u_i \cdot N = 0 \f$. Because \a N is made primitive, the
+    /// orthogonal lattice is the finest possible for the d-1
+    /// dimensional space. The returned basis is in \b echelon \b
+    /// form.
     template <typename TComponent>
     std::vector< std::vector< TComponent > >
     computeOrthogonalLattice( std::vector< TComponent > N );
@@ -404,7 +443,11 @@ namespace DGtal
     /// number of shortening operations.
     ///
     /// @tparam TComponent the integer type for the input vector and for computations.
-    /// @param[in,out] a range of vectors forming a basis
+    ///
+    /// @param[in,out] a range of vectors forming a basis, which is
+    /// shorten as much as possible in terms of L2-norm. Note that the
+    /// output basis is \b not in \b echelon \b form in general.
+    ///
     /// @return the number of pairwise shortenings done.
     template <typename TComponent>
     std::size_t

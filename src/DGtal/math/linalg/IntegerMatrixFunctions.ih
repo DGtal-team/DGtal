@@ -426,11 +426,11 @@ DGtal::functions::negate( std::vector<TComponent> &V )
 template <typename TComponent>
 TComponent
 DGtal::functions::extendedGcd
-(TComponent a,TComponent b,TComponent &x,TComponent &y)
+( TComponent& x, TComponent& y, TComponent a, TComponent b )
 {
   if ( b == 0 ){ x = 1; y = 0; return a; }
   TComponent x1,y1;
-  TComponent g = functions::extendedGcd( b, a%b, x1, y1 );
+  TComponent g = functions::extendedGcd( x1, y1, b, a%b );
   x = y1;
   y = x1 - (a/b)*y1;
   return g;
@@ -449,7 +449,7 @@ DGtal::functions::extendedGcd
   for ( Dimension i = 1; i < n; i++)
     {
       TComponent x, y;
-      TComponent g2 = functions::extendedGcd( g, A[i], x, y );
+      TComponent g2 = functions::extendedGcd( x, y, g, A[i] );
       for ( Dimension j = 0; j < i; j++) coeffs[j] *= x;
       coeffs[i] = y;
       g = g2;
@@ -458,7 +458,6 @@ DGtal::functions::extendedGcd
 }
 
 //-----------------------------------------------------------------------------
-// https://math.stackexchange.com/questions/1049608/lattice-generated-by-vectors-orthogonal-to-an-integer-vector
 template <typename TComponent>
 std::vector< std::vector< TComponent > >
 DGtal::functions::computeOrthogonalLattice( std::vector< TComponent > N )

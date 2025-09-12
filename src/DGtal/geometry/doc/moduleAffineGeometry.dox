@@ -87,6 +87,16 @@ numbers (default tolerance: between -1e-12 and 1e-12 is zero).
   guaranteed to be \b orthogonal to all the previous vectors,
   otherwise it is just an independent canonic vector.
 
+* <b> affine basis of codimension 1 </b>
+
+  - functions::getOrthogonalLatticeBasis( std::vector< TPoint >& B,
+  const TInputPoint& N, bool shortened ) Given a lattice vector \a N,
+  returns a possible basis for its orthogonal d-1 dimensional
+  lattice. The returned basis is guaranteed to span all the lattice
+  points contained in the vector space orthogonal to \a N. If
+  `shortened` is false, the basis is in echelon form, otherwise the
+  vectors are shortened by pairwise linear combinations.
+
 * <b> orthogonal vector to basis of codimension 1 </b>
 
   - functions::computeOrthogonalVectorToBasis( const
@@ -367,7 +377,8 @@ auto d = B.projectPoints( proj_X, X ); // proj_X contains the projection of X on
 @section dgtal_affgeom_sec4 Notes
 
 Several functions that works with lattice vectors use functions
-specialized to integer computations:
+specialized to integer computations (defined in
+`math/linalg/IntegerMatrixFunctions.h`:
 
 - functions::getDeterminantBareiss( TInternalNumber& result,
   const SimpleMatrix<TComponent, TN, TN>& matrix )
@@ -376,10 +387,23 @@ specialized to integer computations:
   const std::vector< std::vector< TComponent > >& matrix )
 
 - functions::computeLLLBasis( const std::vector< std::vector<
-  TComponent>>& B, TDouble delta );
+  TComponent>>& B, TDouble delta )
 
 - functions::reduceBasisWithLLL( std::vector< std::vector<
-  TComponent>>& B, TDouble delta );
+  TComponent>>& B, TDouble delta )
+
+- functions::computeOrthogonalLattice( std::vector< TComponent > N )
+
+- functions::shortenVectors( std::vector< TComponent >& u, std::vector< TComponent >& v )
+
+- functions::shortenBasis( std::vector< std::vector< TComponent > >& B )
+
+- functions::makePrimitive( std::vector< TComponent >& N )
+
+- functions::extendedGcd( TComponent& x, TComponent& y, TComponent a,TComponent b )
+
+- functions::extendedGcd( std::vector<TComponent> &C, const std::vector<TComponent> &A )
+
 
 */
 

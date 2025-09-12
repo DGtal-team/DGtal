@@ -125,7 +125,8 @@ namespace DGtal
     ///
     /// @param[in] points the range of points belonging to the affine space.
     ///
-    /// @param[in] type if Type::ECHELON, reduces the basis so that it
+    /// @param[in] type if Type::ECHELON_REDUCED or
+    /// Type::SHORTEST_ECHELON_REDUCED, reduces the basis so that it
     /// forms a echelon matrix, otherwise computes its
     /// delta-LLL-lattice.
     ///
@@ -157,7 +158,8 @@ namespace DGtal
     /// @param[in] origin the origin of the affine basis
     /// @param[in] basis the range of vectors forming the basis
     ///
-    /// @param[in] type if Type::ECHELON, reduces the basis so that it
+    /// @param[in] type if Type::ECHELON_REDUCED or
+    /// Type::SHORTEST_ECHELON_REDUCED, reduces the basis so that it
     /// forms a echelon matrix, otherwise computes its
     /// delta-LLL-lattice.
     ///
@@ -187,6 +189,39 @@ namespace DGtal
       else _type = type;
     }
 
+    /// Creates an affine basis going through \a origin and orthogonal
+    /// to the lattice vector \a normal.
+    ///
+    /// @param[in] origin the origin of the affine basis
+    /// @param[in] normal the lattice normal vector.
+    ///
+    /// @param[in] type if Type::ECHELON_REDUCED or
+    /// Type::SHORTEST_ECHELON_REDUCED, then the basis will be in
+    /// echelon form, otherwise it will make the vectors as short as
+    /// possible, but the matrix won't be in echelon form.
+    ///
+    /// @param[in] delta the parameter \f$ \delta \f$ of
+    /// LLL-algorithm, which should be between 0.25 and 1 (value 0.99
+    /// is default in sagemath).
+    ///
+    /// @param[in] tolerance the accepted oo-norm below which the
+    /// vector is null (used only for points with float/double
+    /// coordinates).
+    template <typename TInputPoint>
+    AffineBasis( const TInputPoint& origin,
+                 const TInputPoint& normal,
+                 AffineBasis::Type type = Type::ECHELON_REDUCED,
+                 const double delta = 0.99,
+                 const double tolerance = 1e-12 )
+      : epsilon( tolerance )
+    {
+      first = Affine::transform( origin );
+      // basis is shortened is type is LLL.
+      second = Affine::orthogonalLatticeBasis( normal, type == Type::LLL_REDUCED );
+      _type = ( type == Type::LLL_REDUCED )
+        ? Type::LLL_REDUCED : Type::ECHELON_REDUCED;
+    }
+    
     /// Reduces the basis into a set of a linearly independent
     /// vectors, and in the desired reduced form.
     ///
