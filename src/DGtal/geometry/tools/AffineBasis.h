@@ -200,10 +200,6 @@ namespace DGtal
     /// echelon form, otherwise it will make the vectors as short as
     /// possible, but the matrix won't be in echelon form.
     ///
-    /// @param[in] delta the parameter \f$ \delta \f$ of
-    /// LLL-algorithm, which should be between 0.25 and 1 (value 0.99
-    /// is default in sagemath).
-    ///
     /// @param[in] tolerance the accepted oo-norm below which the
     /// vector is null (used only for points with float/double
     /// coordinates).
@@ -211,7 +207,6 @@ namespace DGtal
     AffineBasis( const TInputPoint& origin,
                  const TInputPoint& normal,
                  AffineBasis::Type type = Type::ECHELON_REDUCED,
-                 const double delta = 0.99,
                  const double tolerance = 1e-12 )
       : epsilon( tolerance )
     {
