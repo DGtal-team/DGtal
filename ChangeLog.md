@@ -15,6 +15,9 @@
 - *Geometry*
   - ConvexityHelper::computeLatticePolytope can now outputs exact lattice polytopes for k-dimensional sets of points in dD, whenever k in 0,1,d-1,d (Jacques-Olivier Lachaud, [#1803](https://github.com/DGtal-team/DGtal/pull/1803))
 
+- *Documentation*
+  - Refactoring of the volumetric examples in the Shortcuts (David Coeurjolly,  [#1807](https://github.com/DGtal-team/DGtal/pull/1807)).
+
 ## Bug fixes
 
 - *Arithmetics*
