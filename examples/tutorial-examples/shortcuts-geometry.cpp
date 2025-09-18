@@ -461,7 +461,7 @@ int main( int /* argc */, char** /* argv */ )
                  std::back_inserter(sites), 
                  *bimage);
     
-    // Compute VoronoiMap and get distances from sites
+    // Compute VoronoiMap and get distances from sites (L_1 and L_2 metrics)
     auto vmap1 = SHG3::getDistanceTransformation<1>(bimage->domain(), sites, params);
     auto vmap2 = SHG3::getDistanceTransformation<2>(bimage->domain(), sites, params);
 

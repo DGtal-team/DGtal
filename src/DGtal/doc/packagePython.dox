@@ -39,6 +39,7 @@ namespace DGtal {
 @managers David Coeurjolly
 @since 1.2
 
+[TOC]
 
 @b Package @b Overview
 
@@ -75,7 +76,7 @@ import dgtal
 ....
 @endcode
 
-@section code_example Examples
+@section code_example_python Examples
 
 @subsection topology_example Topology example (Euler characteristics)
 
@@ -119,7 +120,7 @@ ccomplex.construct(mySet)
 print("Euler characteristic: "+str(ccomplex.euler()))
 @endcode
 
-@subsection shortcuts_examples Geometrical Estimators (Curvature and normals)
+@subsection shortcuts_examples_python Geometrical Estimators (Curvature and normals)
 
 This example loads a binary image and computes integral invariant estimators and displays them within an interactive viewer. It mostly follows Shortcuts examples with a one-to-one mapping. A few other utilities are provided not to loop over elements in python.
 
@@ -180,7 +181,7 @@ ps.show()
 # SH3.saveOBJ(surface, [], colors, "al.obj")
 @endcode
 
-@section documentation Documentation
+@section documentation_python Documentation
 
 @subsection base_topology_kernel Base, Topology and Kernel 
 
@@ -196,16 +197,16 @@ In this section, we provide a list of functions and classes that can be used in 
 | DT4_8, DT8_4, DT6_16, DT18_6, DT6_26, DT26_6                            | DGtal::DigitalTopology                             | DigitalTopology(foreground, background)                          |
 | Object4_8, Object8_4,  Object6_18, Object18_6, Object6_26, Object26_6   | DGtal::Object                                      | Object(topology, domain, points, connectedness)                  |
 
-@subsection shortcuts Shortcuts
+@subsection shortcuts_python Python Shortcuts
 
-Most shortcuts (see. \subpage moduleShortcuts) also have their binding. These are available under:
+Most shortcuts (see. \ref moduleShortcuts) also have their binding. These are available under:
 
 @code
 from dgtal import SH3 #Import both shortcuts and geometry shortcuts
 SH3.a_function_or_classes..
 @endcode
 
-@subsubsection shortcuts_classes Classes
+@subsubsection shortcuts_classes_python Classes
 
 Objects within this module are not expected to be manipulated by the user. They are meant to be passed around to the next functions and are prefixed by two underscores. We reference them for completeness
 
@@ -223,7 +224,7 @@ Objects within this module are not expected to be manipulated by the user. They 
 | SurfelRange                   | DGtal::Shortcuts::SurfelRange                                 |                                                                                                                                                                                                  | std::vector<SCell>. See documentation of kernel binding above. |
 | ScalarStatistic               | DGtal::Shortcuts::ScalarStatistic                             | samples(): number of samples / size(): number of samples / mean(): mean / variance(): biased variance / unbiasedVariance(): unbiased variance / min(): min / max(): max / values: list of values | Not to be created.                                             |
 
-@subsubsection shortcuts_functions Functions
+@subsubsection shortcuts_functions_python Functions
 
 Static functions are also bound. For overloads, we only indicate the main parameters, not the whole signature. Refer to the C++ functions for complete signature (1 to 1 match).
 
@@ -267,7 +268,7 @@ Static functions are also bound. For overloads, we only indicate the main parame
 | %SH3.getScalarsAbsoluteDifference  | ShortcutsGeometry::getScalarsAbsoluteDifference  | All.                                                                                                                                                                                                                             |
 | %SH3.getStatistic                  | ShortcutsGeometry::getStatistic                  | All.                                                                                                                                                                                                                             |
 
-@subsubsection shortcuts_helpers Helpers functions
+@subsubsection shortcuts_helpers_python Helpers functions
 
 Looping through objects is slow in python and digital objects may be large. For this reason, we also provide a few helper functions for ease of usage and faster code:
 
