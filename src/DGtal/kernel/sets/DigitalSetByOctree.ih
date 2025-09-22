@@ -83,7 +83,7 @@ namespace DGtal {
             if (!(size[d] & (size[d] - 1))) {
                 newSize = (newSize > size[d]) ? newSize : size[d];
             } else {
-                CellIndex s = 1 << (static_cast<CellIndex>(std::ceil(std::log(size[d]))) + 1);
+                CellIndex s = 1 << (static_cast<CellIndex>(std::ceil(std::log2(size[d]))));
                 newSize = (newSize > s) ? newSize : s;
             }
         }
@@ -92,14 +92,15 @@ namespace DGtal {
             size[d] = newSize;
         }
 
-        size_t lvl = static_cast<size_t>(std::ceil(std::log(newSize)));
+
+        size_t lvl = static_cast<size_t>(std::ceil(std::log2(newSize)));
         myNodes.resize(lvl + 1);
         myNodes[0].push_back(Node());
 
         myDomain = CowPtr(new Domain(lb, lb + size));
         myAdmissibleDomain = CowPtr(new Domain(lb, lb + size - 1));
         mySize = 0;
-    };
+    }
 
     template<class Space>
     HyperRectDomain<Space> DigitalSetByOctree<Space>::splitDomain(const Domain& domain, const DimIndex* sides) {
@@ -219,7 +220,7 @@ namespace DGtal {
         return end();
     }
 
-	template<class Space>
+    template<class Space>
     size_t DigitalSetByOctree<Space>::erase(const Iterator& it) {
         if (it.myMemory.size() == 0) return 0;
 
@@ -265,73 +266,77 @@ namespace DGtal {
         return 0;
     }
 
-	template<class Space>
+    template<class Space>
     void DigitalSetByOctree<Space>::convertToDAG() {
-	    std::vector<size_t> correspondances;
-	    for (CellIndex i = myNodes.size() - 1; i > 0; --i) {
-	        std::vector<Node> newNodes;
-	        std::map<std::array<CellIndex, CELL_COUNT>, size_t> signatures;
-	        std::vector<size_t> newCorrespondances(myNodes[i].size());
+        std::vector<size_t> correspondances;
+        for (CellIndex i = myNodes.size() - 1; i > 0; --i) {
+            std::vector<Node> newNodes;
+            std::map<std::array<CellIndex, CELL_COUNT>, size_t> signatures;
+            std::vector<size_t> newCorrespondances(myNodes[i].size(), 0);
+            
+            for (CellIndex j = 0; j < myNodes[i].size(); ++j) {
+                std::array<CellIndex, CELL_COUNT> signature = {};
+                
+                if (correspondances.size() != 0) { // Mostly leaves
+                    for (CellIndex k = 0; k < CELL_COUNT; ++k) {
+                        if (myNodes[i][j].children[k] != INVALID_IDX) {
+                            myNodes[i][j].children[k] = correspondances[myNodes[i][j].children[k]];
+                        }
+                        signature[k] = myNodes[i][j].children[k];
+                    }
+                } else {
+                    for (CellIndex k = 0; k < CELL_COUNT; ++k) {
+                        signature[k] = myNodes[i][j].children[k];
+                    }
+                }
+                
+                auto it = signatures.find(signature);
+                if (it != signatures.end()) {
+                    newCorrespondances[j] = it->second;
+                } else {
+                    newNodes.push_back(myNodes[i][j]);
+                    signatures[signature] = newNodes.size() - 1;
+                    newCorrespondances[j] = newNodes.size() - 1;
+                }
+            }
 
-	        for (CellIndex j = 0; j < myNodes[i].size(); ++j) {
-	            std::array<CellIndex, CELL_COUNT> signature;
+            myNodes[i] = newNodes;
+            correspondances = newCorrespondances;
+        }
 
-	            if (correspondances.size() != 0) { // Mostly leaves
-	                for (CellIndex k = 0; k < CELL_COUNT; ++k) {
-	                    if (myNodes[i][j].children[k] != INVALID_IDX) {
-	                        myNodes[i][j].children[k] = correspondances[myNodes[i][j].children[k]];
-	                    }
-	                    signature[k] = myNodes[i][j].children[k];
-	                }
-	            } else {
-	                for (CellIndex k = 0; k < CELL_COUNT; ++k) {
-	                    signature[k] = myNodes[i][j].children[k];
-	                }
-	            }
-	            
-	            auto it = signatures.find(signature);
-	            if (it != signatures.end()) {
-	                newCorrespondances[i] = it->second;
-	            } else {
-	                newNodes.push_back(myNodes[i][j]);
-	                signatures[signature] = newNodes.size() - 1;
-	                newCorrespondances[i] = newNodes.size() - 1;
-	            }
-	        }
-	        
-	        myNodes[i] = std::move(newNodes);
-	        correspondances = std::move(newCorrespondances);
-	    }
+        // New pointers for root lvl:
+        if (correspondances.size() != 0) {
+            for (CellIndex k = 0; k < CELL_COUNT; ++k) {
+                if (myNodes[0][0].children[k] != INVALID_IDX) 
+                    myNodes[0][0].children[k] = correspondances[myNodes[0][0].children[k]];
+            }
+        }
+    
+        shrink();
+        myState = State::DAG;
+    }
 
-	    // New pointers for root lvl:
-	    if (correspondances.size() != 0) {
-	        for (CellIndex k = 0; k < CELL_COUNT; ++k) {
-	            if (myNodes[0][0].children[k] != INVALID_IDX) 
-	                myNodes[0][0].children[k] = correspondances[myNodes[0][0].children[k]];
-	        }
-	    }
-	    shrink();
-	    myState = State::DAG;
-	}
-
-	template<class Space>
-	void DigitalSetByOctree<Space>::dumpOctree() const {
-	    for (size_t i = 0; i < myNodes.size(); ++i) {
-	        std::cout << "===" << i << "===\n";
-	        for (size_t j = 0; j < myNodes[i].size(); j++) {
-	            std::cout << "  -> " << j << "\n";
-	            for (size_t k = 0; k < CELL_COUNT; k++) {
-	                std::cout << "\t" << k << ": ";
-	                if (myNodes[i][j].children[k] == INVALID_IDX) {
-	                    std::cout << "N.A." << "\n";
-	                } else {
-	                    std::cout << myNodes[i][j].children[k] << "\n";
-	                }
-	            }
-	        }
-	    }
-	    std::cout << std::flush;
-	}
+    template<class Space>
+    void DigitalSetByOctree<Space>::dumpOctree() const {
+        for (size_t i = 0; i < myNodes.size(); ++i) {
+            std::cout << "===" << i << "===\n";
+            for (size_t j = 0; j < myNodes[i].size(); j++) {
+                std::cout << "  -> " << j << "\n";
+                std::bitset<CELL_COUNT> bits;
+                for (size_t k = 0; k < CELL_COUNT; k++) {
+                    std::cout << "\t" << k << ": ";
+                    if (myNodes[i][j].children[k] == INVALID_IDX) {
+                        std::cout << "N.A." << "\n";
+                    } else {
+                        std::cout << myNodes[i][j].children[k] << "\n";
+                        bits[k] = 1;
+                    }
+                }
+                std::cout << "\tSig: " << bits.to_ulong() << std::endl;
+            }
+        }
+        std::cout << std::flush;
+    }
 
     template<class Space>
     template<class Func>

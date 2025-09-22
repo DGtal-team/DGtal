@@ -1,4 +1,5 @@
 set(DGTAL_BENCH_SRC 
+    benchmarkDigitalSetByOctree
     benchmarkHyperRectDomain
     benchmarkHyperRectDomain-catch
     benchmarkHyperRectDomain-google
