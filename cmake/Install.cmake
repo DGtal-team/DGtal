@@ -1,29 +1,47 @@
-#------------------------------------------------------------------------------
-# DGtal Configuration file for the install target
-#------------------------------------------------------------------------------
 include(CMakePackageConfigHelpers)
 set(DGTAL_INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/DGtal")
 
-install(TARGETS 
+# On system where boost is fetched through multiples sources, there can
+# be some confusion as to which version is linked. 
+# For some unknown reason, DGtal can be linked with targets not declared
+# within this project, thus not necessarly in the export set; causing 
+# CMake to issue an error.
+# We tried fixing this in multiples ways but none of them but no parameters
+# that can be passed to CMake worked. 
+# We therefore add a mecanism to disable install/export targets (note that
+# other file might be required) that resolves the problem, although this is quite ugly...
+option(DGTAL_ENABLE_TARGET_INSTALL "Enable DGtal file installation" ON)
+if (${DGTAL_ENABLE_TARGET_INSTALL})
+  #------------------------------------------------------------------------------
+  # DGtal Configuration file for the install target
+  #------------------------------------------------------------------------------
+  install(TARGETS 
     DGtal 
-      # Dependancies also built by the project
-      DGtal_STB DGTAL_LibBoard DGTAL_BoostAddons
-  EXPORT DGtalTargets
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-)
+    # Dependancies also built by the project
+    DGtal_STB DGTAL_LibBoard DGTAL_BoostAddons
+    EXPORT DGtalTargets
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  )
+  # Export file locally also, so the DGtalConfig.cmake 
+  # in the build/ directory can work 
+  export(TARGETS 
+    DGtal 
+    # Dependancies also built by the project
+    DGtal_STB DGTAL_LibBoard DGTAL_BoostAddons
+    NAMESPACE DGtal::
+    FILE DGtalTargets.cmake
+  )
 
-# Export file locally also, so the DGtalConfig.cmake 
-# in the build/ directory can work 
-export(TARGETS 
-    DGtal 
-      # Dependancies also built by the project
-      DGtal_STB DGTAL_LibBoard DGTAL_BoostAddons
-  NAMESPACE DGtal::
-  FILE DGtalTargets.cmake
-)
+  install(EXPORT DGtalTargets
+    FILE DGtalTargets.cmake
+    NAMESPACE DGtal::
+    DESTINATION ${DGTAL_INSTALL_DESTINATION}
+  )
+endif()
+
 
 # Install headers 
 # Note : this also copies a few .cpp and CMakeLists but simplifies the code here
@@ -44,14 +62,6 @@ install(FILES
   ${PROJECT_BINARY_DIR}/src/DGtal/topology/tables/NeighborhoodTables.h
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/DGtal/topology/tables/
 )
-
-
-install(EXPORT DGtalTargets
-  FILE DGtalTargets.cmake
-  NAMESPACE DGtal::
-  DESTINATION ${DGTAL_INSTALL_DESTINATION}
-)
-
 
 #------------------------------------------------------------------------------
 # DGtalConfig.cmake variables
