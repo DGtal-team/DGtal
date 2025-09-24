@@ -2,7 +2,7 @@
 # -- Messages
 #------------------------------------------------------------------------------
 message(STATUS "-------------------------------------------------------------------------------")
-message(STATUS "DGtal Version ${PROJECT_VERSION}")
+message(STATUS "DGtal Version ${DGTAL_VERSION}")
 message(STATUS "-------------------------------------------------------------------------------" )
 message(STATUS "Source DIR is ${PROJECT_SOURCE_DIR}")
 message(STATUS "Binary/Build DIR is ${PROJECT_BINARY_DIR}")

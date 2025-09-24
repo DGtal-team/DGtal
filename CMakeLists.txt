@@ -3,6 +3,7 @@
 # -----------------------------------------------------------------------------
 cmake_minimum_required (VERSION 3.20)
 project (DGtal VERSION 2.1.0)
+set(DGTAL_VERSION 2.1.0) # TODO: Set version through VERSION file
 
 # Allow for cmake 3.5. This is required indirectly by polyscope (via glad)
 set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
@@ -23,7 +24,6 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/deps)
 set(DGtal_VERSION_MAJOR ${CMAKE_PROJECT_VERSION_MAJOR})
 set(DGtal_VERSION_MINOR ${CMAKE_PROJECT_VERSION_MINOR})
 set(DGtal_VERSION_PATCH ${CMAKE_PROJECT_VERSION_PATCH})
-set(DGTAL_VERSION ${CMAKE_PROJECT_VERSION})
 set(PROJECT_VERSION ${CMAKE_PROJECT_VERSION})
 set(VERSION ${CMAKE_PROJECT_VERSION})
 

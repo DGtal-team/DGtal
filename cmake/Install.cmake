@@ -85,9 +85,10 @@ foreach(dep ${_dependencies_list})
   endif()
 endforeach()
 
+message("DGtal version = ${DGTAL_VERSION}")
 write_basic_package_version_file(
   "${CMAKE_CURRENT_BINARY_DIR}/DGtalConfigVersion.cmake"
-  VERSION "${version}"
+  VERSION "${DGTAL_VERSION}"
   COMPATIBILITY AnyNewerVersion
 )
 
