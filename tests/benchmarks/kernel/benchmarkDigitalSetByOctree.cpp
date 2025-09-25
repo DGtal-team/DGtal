@@ -31,8 +31,8 @@ struct BenchInfo
     if (shapes.size() != 0) return;
 
     const auto polys = SH3::getPolynomialList();
-    const double steps[]  = { 0.25 };
-    const double noises[] = { 0.0 };
+    const double steps[]  = { 1.00, 0.50, 0.25 };
+    const double noises[] = { 0.00, 0.10  };
     
     for (const auto& poly : polys) {
       for (const auto& step : steps) {
