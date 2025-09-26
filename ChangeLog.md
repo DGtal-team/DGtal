@@ -14,6 +14,7 @@
   - Fix issue [#1797](https://github.com/DGtal-team/DGtal/pull/1797), assertions raised in testCellGeometry and testDigitalConvexity because of improper digital space extent (Jacques-Olivier Lachaud, [#1801](https://github.com/DGtal-team/DGtal/pull/1801))
 
 - *Build*
+  - Version is now extracted from the `VERSION` file for CMake and Python builds (Bastien Doignies, [#1810](https://github.com/DGtal-team/DGtal/pull/1810))
   - Replacing the global compilation flags when `DGTAL_WARNINGS_AS_ERRORS` is set, with per target `target_compile_options` to avoid errors on Boost warnings (David Coeurjolly,  [#1793](https://github.com/DGtal-team/DGtal/pull/1793))
   - Fixing the `make install` command for boost (issue #1794) (Bastien Doignies, [#1793](https://github.com/DGtal-team/DGtal/pull/1793))
   - Cleaning up the Github Actions reuses (Bastien Doignies, [#1793](https://github.com/DGtal-team/DGtal/pull/1793))
