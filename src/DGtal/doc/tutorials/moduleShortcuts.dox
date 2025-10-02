@@ -6,9 +6,9 @@ namespace DGtal {
 
 /**
    
-@page moduleShortcuts  Shortcuts (for the impatient developper)
+@page moduleShortcuts  Shortcuts
 
-@writers Jacques-Olivier Lachaud
+@writers Jacques-Olivier Lachaud, Bastien Doignies, David Coeurjolly
 
 @since 1.0
 
@@ -465,38 +465,38 @@ Shortcuts::Point is Z3i::KSpace::Point.
 -# General methods
   - Shortcuts::defaultParameters: returns the set of all shorcut parameters.
 
--# ImplicitShape3D methods
+-# Shortcuts::ImplicitShape3D methods
   - Shortcuts::getPolynomialList: returns the list of polynomial shapes predefined for implicit shapes 
   - Shortcuts::parametersImplicitShape3D: parameters related to 3D implicit shapes (polynomial)
   - Shortcuts::makeImplicitShape3D: builds a 3D implicit shape
 
--# KSpace methods
+-# Shortcuts::KSpace methods
   - Shortcuts::parametersKSpace: parameters related to Khalimsky spaces (closed)
   - Shortcuts::getKSpace: overloaded methods for building a Khalimsky space from a domain or an image, from a bounding box, from a digitization process, or from a (indexed or not) digital surface.
   - Shortcuts::refKSpace: overloaded methods for referencing the Khalimsky space of a (indexed or not) digital surface.
   - Shortcuts::getCellEmbedder: returns the canonic cell embedder of the given space.
   - Shortcuts::getSCellEmbedder: returns the canonic signed cell embedder of the given space.
 
--# DigitizedImplicitShape3D methods
+-# Shortcuts::DigitizedImplicitShape3D methods
   - Shortcuts::parametersDigitizedImplicitShape3D: parameters related to shape digitization (bounding box, sampling)
   - Shortcuts::makeDigitizedImplicitShape3D: digitizes an implicit shape.
 
--# BinaryImage methods
+-# Shortcuts::BinaryImage methods
   - Shortcuts::parametersBinaryImage: parameters related to binary images (noise, threshold).
   - Shortcuts::makeBinaryImage: many overloaded methods for creating from scratch, vectorizing shape digitization, loading, copying/noisifying binary images, thresholding gray-scale images.
   - Shortcuts::saveBinaryImage: saves a binary image to a file.
 
--# GrayScaleImage methods
+-# Shortcuts::GrayScaleImage methods
   - Shortcuts::makeGrayScaleImage: overloaded methods for creating from scratch or from binary image, or for loading gray scale images, or for creating a gray-scale image from a float or double image.
   - Shortcuts::saveGrayScaleImage: saves a gray scale image to a file.
 
--# FloatImage methods
+-# Shortcuts::FloatImage methods
   - Shortcuts::makeFloatImage: overloaded methods for creating a float image from a domain or from an implicit shape.
 
--# DoubleImage methods
+-# Shortcuts::DoubleImage methods
   - Shortcuts::makeDoubleImage: overloaded methods for creating a double image from a domain or from an implicit shape.
 
--# DigitalSurface methods
+-# Shortcuts::DigitalSurface methods
   - Shortcuts::parametersDigitalSurface: parameters related to digital surfaces (surfel adjacency, components, internal heuristics)
   - Shortcuts::getCellEmbedder: returns the canonic cell embedder of the given (indexed or not) digital surface
   - Shortcuts::getSCellEmbedder: returns the canonic signed cell embedder of the given (indexed or not) digital surface.
@@ -510,10 +510,10 @@ Shortcuts::Point is Z3i::KSpace::Point.
   - Shortcuts::getPointelRange: returns the pointels of a digital surface in the default order and optionnaly the map Pointel -> Index giving the indices of each pointel, or simply the pointels around a surfel.
   - Shortcuts::saveOBJ: several overloaded functions that save geometric elements as an OBJ file. You may save a digital surface as an OBJ file, with optionally positions, normals and colors information
 
--# RealVectors methods
+-# Shortcuts::RealVectors methods
   - Shortcuts::saveVectorFieldOBJ: saves a vector field as an OBJ file (vectors are represented by tubes).
 
--# Mesh services
+-# Shortcuts::Mesh services
   - Shortcuts::parametersMesh: parameters related to mesh, triangulated or polygonal surfaces.
   - Shortcuts::makeTriangulatedSurface: builds the dual triangulated surface approximating an arbitrary digital surface, or the triangulated surface covering a given mesh, or subdivide a polygonal surface into a triangulated surface, or builds the marching cubes triangulated surface approximating an isosurface in a gray-scale image. 
   - Shortcuts::makePolygonalSurface: builds a polygonal surface from a mesh, or builds the marching cubes polygonal surface approximating an isosurface in a gray-scale image. 
@@ -523,7 +523,7 @@ Shortcuts::Point is Z3i::KSpace::Point.
   - Shortcuts::makeSurfaceMesh: load a surface mesh from file
   - Shortcuts::saveOBJ: saves a triangulated or polygonal surface or a mesh as an OBJ file, with optionnaly normals and colors information.
 
--# Utilities
+-# ShortcutsGeometry::Mesh utilities
   - Shortcuts::parametersUtilities: parameters related to colormaps.
   - Shortcuts::getColorMap: returns the specified colormap.
   - Shortcuts::getZeroTickedColorMap: returns the specified colormap with a tic around zero.
@@ -535,7 +535,7 @@ Shortcuts::Point is Z3i::KSpace::Point.
   - Shortcuts::outputPrimalIdxDigitalSurfaceAsObj: outputs any indexed digital surface in standard OBJ file format as its primal quadrangulated mesh.
   - Shortcuts::outputDualDigitalSurfaceAsObj: outputs any digital surface in standard OBJ file format as its dual polygonal or triangulated mesh.
 
--# ShapeGeometry services
+-#  Shape Geometry services
   - ShortcutsGeometry::parametersShapeGeometry: parameters related to implicit shape geometry. 
   - ShortcutsGeometry::getPositions: returns the positions on the 3D implicit shape close to the specified surfels.
   - ShortcutsGeometry::getNormalVectors: returns the vectors normal to the 3D implicit shape close to the specified surfels.
@@ -547,7 +547,7 @@ Shortcuts::Point is Z3i::KSpace::Point.
   - ShortcutsGeometry::getSecondPrincipalDirections: returns the second principal directions along the 3D implicit shape close to the specified surfels.
   - ShortcutsGeometry::getPrincipalCurvaturesAndDirections: returns the first and second principal curvatures and directions along the 3D implicit shape close to the specified surfels.
 
--# GeometryEstimation services
+-# Geometry Estimation services
   - ShortcutsGeometry::parametersGeometryEstimation: parameters related to geometric estimators.
   - ShortcutsGeometry::getTrivialNormalVectors: returns the trivial (Trivial) normal vectors to the given surfel range  
   - ShortcutsGeometry::getCTrivialNormalVectors: returns the convolved trivial (CTrivial) normal vectors to the given surfel range
@@ -560,17 +560,24 @@ Shortcuts::Point is Z3i::KSpace::Point.
   - ShortcutsGeometry::getCNCGaussianCurvatures: returns the Corrected Normal Current (CNC) gaussian curvatures onto the given faces (as ids of the mesh).
   - ShortcutsGeometry::getCNCPrincipalCurvaturesAndDirections: returns the Corrected Normal Current (CNC) principal curvatures values and directions for the given face range (as ids of the mesh).
   - ShortcutsGeometry::orientVectors: reorient a range of vectors so as to point in the same half-space as another range of vectors.
+
+-# Volumetric services
+  - ShortcutsGeometry::getVoronoiMap: return the Voronoi map on a domain from a list of sites
+  - ShortcutsGeometry::getDistanceTransformation: return the distance transformation on a domain from a list of sites
+  - ShortcutsGeometry::getDirectionToClosestSite: return the list of vectors to the closest site
+  - ShortcutsGeometry::getDistanceToClosestSite: return the distance to the closest site
+  - ShortcutsGeometry::getRAwDistanceToClosestSite: return the (raw) distance to the closest site. Raw distance means an exact representation of the distance value from integers dropping the 1/p exponent for Lp metrics (i.e. squared distance for the Euclidean L2 metric)
+
+-# AT Approximation services
+  - ShortcutsGeometry::parametersATApproximation: parameters related to piecewise-smooth AT approximation.
+  - ShortcutsGeometry::getATVectorFieldApproximation: returns the piecewise-smooth approximation of the given vector field, and optionnaly returns the locii of discontinuity
+
+-# Misc. services
   - ShortcutsGeometry::getScalarsAbsoluteDifference: return the range of scalars that is the difference of two range of scalars
   - ShortcutsGeometry::getVectorsAngleDeviation: return the range of scalars that form the angle deviations between two range of vectors
   - ShortcutsGeometry::getStatistic: return the statistic of the given range of values.
-  - ShortcutsGeometry::getVoronoiMap: return the voronoi map on a domain from a list of sites
-  - ShortcutsGeometry::getDistanceTransformation: return the distance to the closest voronoi site on a domain from a list of sites
-  - ShortcutsGeometry::getDirectionToClosestSite: return the list of vector to the closest site
-  - ShortcutsGeometry::getDistanceToClosestSite: return the distance to the closest site
 
--# ATApproximation services
-  - ShortcutsGeometry::parametersATApproximation: parameters related to piecewise-smooth AT approximation.
-  - ShortcutsGeometry::getATVectorFieldApproximation: returns the piecewise-smooth approximation of the given vector field, and optionnaly returns the locii of discontinuity
+
 
 
 @subsection dgtal_shortcuts_ssec3_4 Parameters
