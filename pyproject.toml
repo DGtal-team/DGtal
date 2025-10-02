@@ -4,7 +4,8 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "DGtal"
-version = "2.1.0"
+dynamic = ["version"]
+# version = "2.1.0"
 description = "DGtal is an open-source, cross-platform library providing Digital Geometry Tools and Algorithm"
 
 authors = [
@@ -26,6 +27,17 @@ classifiers = [
     "Operating System :: Unix",
     "Operating System :: MacOS"
 ]
+
+[tool.scikit-build.metadata.version]
+provider = "scikit_build_core.metadata.regex"
+input = "VERSION"
+regex = '''(?P<major>\d+)\.(?P<minor>\d+)\.(?P<patch>\d+)'''
+result = "{major}.{minor}.{patch}"
+
+
+[[tool.scikit-build.generate]]
+path = "VERSION"
+template = '''version = ${version}'''
 
 [project.urls]
 Homepage = "https://www.dgtal.org/"

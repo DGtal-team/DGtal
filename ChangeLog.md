@@ -5,6 +5,10 @@
 - *IO*
   - Polyscope viewer upgraded from 2.4 to 2.5 (David Coeurjolly,  [#1796](https://github.com/DGtal-team/DGtal/pull/1796)). Reverting to 2.4  due to build issues (David Coeurjolly,  [#1797](https://github.com/DGtal-team/DGtal/pull/1797))
 
+- *Documentation*
+  - Refactoring of the volumetric examples in the Shortcuts (David Coeurjolly,  [#1807](https://github.com/DGtal-team/DGtal/pull/1807)).
+
+
 ## Bug fixes
 
 - *Arithmetics*
@@ -14,6 +18,7 @@
   - Fix issue [#1797](https://github.com/DGtal-team/DGtal/pull/1797), assertions raised in testCellGeometry and testDigitalConvexity because of improper digital space extent (Jacques-Olivier Lachaud, [#1801](https://github.com/DGtal-team/DGtal/pull/1801))
 
 - *Build*
+  - Version is now extracted from the `VERSION` file for CMake and Python builds (Bastien Doignies, [#1810](https://github.com/DGtal-team/DGtal/pull/1810))
   - Replacing the global compilation flags when `DGTAL_WARNINGS_AS_ERRORS` is set, with per target `target_compile_options` to avoid errors on Boost warnings (David Coeurjolly,  [#1793](https://github.com/DGtal-team/DGtal/pull/1793))
   - Fixing the `make install` command for boost (issue #1794) (Bastien Doignies, [#1793](https://github.com/DGtal-team/DGtal/pull/1793))
   - Adding option not to install targets to avoid crashes when boost is fetched through multiple channels ([#1809](https://github.com/DGtal-team/DGtal/pull/1809))
