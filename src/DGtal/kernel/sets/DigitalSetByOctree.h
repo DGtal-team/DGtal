@@ -42,11 +42,11 @@ namespace DGtal
      * @brief A DigitalSet that stores voxel as an octree, or a DAG
      * 
      * This class allows for a compact representation of voxel as a
-     * sparse voxel octree (SVO). Optionnally, this can be further
+     * sparse voxel octree (SVO). Optionally, this can be further
      * compressed as a Sparse Voxel Directed Acyclic Graph where 
      * nodes are shared when they share a common structure.
      * 
-     * Leaves are never explicitely stored to further reduce memory
+     * Leaves are never explicitly stored to further reduce memory
      * usage. 
      * 
      * Common operation complexity:
@@ -58,9 +58,9 @@ namespace DGtal
      *  - Listing all voxels: O(N * log(L))
      *  - Memory usage (octree): O(N * log(L))
      * 
-     * When converted to a DAG, the set can not be modified anymore
-     * (ni insertion, or erase).
-     * 
+     * When converted to a DAG, the digital set can not be modified anymore
+     * (neither insertion, or erase).
+     *
      * References:
      *  - Laine and Kerras 2010: Efficient Sparse Voxel Octrees – Analysis, Extensions, and Implementation
      *  - Kampe et al 2013: High Resolution Sparse Voxel DAGs
