@@ -11,7 +11,7 @@
 
 ## Bug fixes
 - *Kernel*
-  - New DigitalSet model with SVO or SVDAG (Bastien Doignies, [#1808](https://github.com/DGtal-team/DGtal/pull/1804))
+  - New DigitalSet model with SVO or SVDAG (Sparse Voxel Octree w/o acyclic graph features) for efficient representation of large digital objects (Bastien Doignies, [#1808](https://github.com/DGtal-team/DGtal/pull/1804))
 
 - *Arithmetics*
   - Fix `testLightSternBrocot` issue on windows with the `rand()` function (Jacques-Olivier Lachaud, [#1801](https://github.com/DGtal-team/DGtal/pull/1801))
