@@ -50,7 +50,7 @@ namespace DGtal
      * usage. 
      * 
      * Common operation complexity:
-     * (L = depth of the tree computed with domain size, N = number of points)
+     * (L = depth of the tree computed with domain size, N = number of voxels)
      *  - Insertion: O(log(L))
      *  - Erase: O(N * log(L))
      *  - find: O(log(L))
@@ -62,9 +62,8 @@ namespace DGtal
      * (neither insertion, or erase).
      *
      * References:
-     *  - Laine and Kerras 2010: Efficient Sparse Voxel Octrees – Analysis, Extensions, and Implementation
-     *  - Kampe et al 2013: High Resolution Sparse Voxel DAGs
-     *  - Villanueva et al 2017: Symmetry-aware Sparse Voxel DAGs (SSVDAGs) for compression-domain tracing of high-resolution geometric scenes
+     *  @cite Laine2010SVO
+     *  @cite Kampe2013SVDag
      */
     template <class Space>
     class DigitalSetByOctree {
@@ -82,6 +81,8 @@ namespace DGtal
         
         static constexpr CellIndex CELL_COUNT  = (1 << D);
         static constexpr CellIndex INVALID_IDX = std::numeric_limits<CellIndex>::max();
+
+        // For each child node, store on which side of the octree split it is.
         static constexpr std::array<std::array<DimIndex, D>, CELL_COUNT> SIDES_FROM_INDEX = [](){
             std::array<std::array<DimIndex, D>, CELL_COUNT> sides_from_index{};
             for (CellIndex i = 0; i < CELL_COUNT; ++i) {
@@ -108,9 +109,16 @@ namespace DGtal
 
             CellIndex children[CELL_COUNT];
         };
-
+        
+        /**
+         * @brief Helper struct for computing local estimators
+         *
+         * It serves as a cache key to identify a neighborhood:
+         *  - The parent that encloses the whole neighborhood
+         *  - The neighborhood code
+         */
         struct ComputationCacheKey {
-            CellIndex parentLvl;
+            CellIndex parentLvl; 
             CellIndex parentIdx;
             std::vector<DimIndex> code;
 
@@ -249,15 +257,15 @@ namespace DGtal
          * 
          * Only HyperRectDomains are supported for octrees.
          * 
-         * The given domain will be extend to ensure
-         * it is an hyper cube sides that is a power of 2
+         * The given domain will be extended to ensure
+         * it is an hyper cube with sides that is a power of 2
          * 
          * @param d The domain 
          */
         DigitalSetByOctree(const Domain& d);
 
         /**
-         * @brief Returns the domain of the voxels
+         * @brief Returns the domain of the digital set
          */
         const Domain& domain() const { return *myAdmissibleDomain; }
 
@@ -272,8 +280,8 @@ namespace DGtal
          * This function can be called multiple times with the same
          * point without any risk.
          * 
-         * If the point is not in bounds or the octree was converted
-         * to a DAG, this function does nothing.
+         * If the point is not in bounds or the octree has been 
+         * converted to a DAG, this function does nothing.
          * 
          * @param p The point to insert
          */
@@ -285,8 +293,8 @@ namespace DGtal
          * This function can be called multiple times with the same
          * point without any risk.
          * 
-         * If the point is not in bounds or the octree was converted
-         * to a DAG, this function does nothing.
+         * If the point is not in bounds or the octree has been 
+         * converted to a DAG, this function does nothing.
          * 
          * @param p The point to insert
          * @see insert
@@ -335,9 +343,9 @@ namespace DGtal
         /**
          * @brief Removes all nodes from the octree
          * 
-         * Note: if the octree was converted to a dag, 
+         * Note: if the octree has been converted to a dag, 
          * this function reset the flag and insertion 
-         * are available afterwards. 
+         * is available afterwards. 
          */
         void clear() {
             myNodes.clear();
@@ -380,9 +388,15 @@ namespace DGtal
         /**
          * @brief Shrinks storage to reduce memory usage
          * 
+         * This function removes extra capacity added for 
+         * faster insertion with vector and can be usefull
+         * when insertion phase is over.
+         *
+         * This function is called automatically by convertToDAG.
+         *
          * @see memoryFootprint
          */
-        void shrink() {
+        void shrink_to_fit() {
             for (CellIndex i = 0; i < myNodes.size(); ++i) {
                 myNodes[i].shrink_to_fit();
             }
@@ -392,7 +406,7 @@ namespace DGtal
          * @brief Appends an octree to another
          * 
          * This is equivalent to looping through an octree and inserting
-         * every node into another*
+         * every node into another
          * 
          * @param other The octree to append
          */
@@ -411,7 +425,6 @@ namespace DGtal
          * This is equivalent to looping through an octree and inserting
          * 
          * @param out The output iterator
-         * every node into another*
          */
         template<typename It>
         void computeComplement(It out) const {

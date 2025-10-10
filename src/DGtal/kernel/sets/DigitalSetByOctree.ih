@@ -312,7 +312,7 @@ namespace DGtal {
             }
         }
     
-        shrink();
+        shrink_to_fit();
         myState = State::DAG;
     }
 
