@@ -71,6 +71,7 @@ namespace DGtal
 
     std::map<std::string, std::string> fields;
   };
+  
 
   /////////////////////////////////////////////////////////////////////////////
   // template class VolReader
@@ -80,9 +81,6 @@ namespace DGtal
    *
    * The main import method "importVol" returns an instance of the template 
    * parameter TImageContainer.
-   *
-   * The private methods have been backported from the SimpleVol project 
-   * (see http://liris.cnrs.fr/david.coeurjolly).
    *
    * Example usage:
    * @code
@@ -136,8 +134,16 @@ namespace DGtal
                                     const Functor & aFunctor =  Functor());
     
   }; // end of class VolReader
+  
+  template<class Space>
+  class DigitalSetByOctree;
 
-
+  template<typename Space, typename Functor>
+  struct VolReader<DigitalSetByOctree<Space>, Functor> 
+  {
+    static DigitalSetByOctree<Space> importVol(const std::string & filename, 
+                                               const Functor & unused =  Functor());
+  };
 } // namespace DGtal
 
 

@@ -69,6 +69,7 @@ namespace DGtal {
                 }
             }
         }
+
     }
 
     template<class Space>
@@ -94,7 +95,7 @@ namespace DGtal {
 
 
         size_t lvl = static_cast<size_t>(std::ceil(std::log2(newSize)));
-        myNodes.resize(lvl + 1);
+        myNodes.resize(lvl);
         myNodes[0].push_back(Node());
 
         myDomain = CowPtr(new Domain(lb, lb + size));

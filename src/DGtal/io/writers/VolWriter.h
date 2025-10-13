@@ -88,6 +88,18 @@ namespace DGtal
                           const bool compressed=true,
                           const Functor & aFunctor = Functor());
   };
+  
+  template<typename Space>
+  class DigitalSetByOctree;
+
+  template<typename Space, typename Functor>
+  struct VolWriter<DigitalSetByOctree<Space>, Functor> 
+  {
+    static bool exportVol(
+        const std::string& filename, const DigitalSetByOctree<Space>& octree,
+        const bool compressed = true, 
+        const Functor& unused = Functor());
+  };
 }//namespace
 
 ///////////////////////////////////////////////////////////////////////////////

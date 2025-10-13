@@ -68,6 +68,12 @@ namespace DGtal
     template <class Space>
     class DigitalSetByOctree {
     public:
+        // Friend can not refer to partial specialization...
+        template<class Type, class Func>
+        friend class VolWriter;
+        template<class Type, class Func>
+        friend class VolReader;
+
         using DimIndex = std::uint8_t;
         using CellIndex = typename Space::UnsignedInteger;
         using Size = size_t;
@@ -75,6 +81,10 @@ namespace DGtal
         // Only HyperRectDomain are supported 
         using Domain = HyperRectDomain<Space>;
         using Point  = typename Domain::Point;
+        
+        // Define a value type for this class to be somewhat compatible
+        // with image-based code. 
+        using Value = void;
 
         static constexpr DGtal::Dimension D = Space::dimension;
         static constexpr DGtal::Dimension dimension = Space::dimension;
@@ -389,8 +399,8 @@ namespace DGtal
          * @brief Shrinks storage to reduce memory usage
          * 
          * This function removes extra capacity added for 
-         * faster insertion with vector and can be usefull
-         * when insertion phase is over.
+         * faster insertion with vector and can free some
+         * memory once insertion phase is over.
          *
          * This function is called automatically by convertToDAG.
          *

@@ -34,6 +34,9 @@
 #include "DGtal/kernel/sets/DigitalSetByOctree.h"
 #include "DGtalCatch.h"
 
+#include "DGtal/io/writers/VolWriter.h"
+#include "DGtal/io/readers/VolReader.h"
+
 using namespace DGtal;
 using namespace std;
 
@@ -82,6 +85,7 @@ TEST_CASE_METHOD(TestFixture, "Benchmarking DigitalSetByOctree using Catch2", "[
         DigitalSetByOctree<Z3i::Space> octree(domain);
         REQUIRE(octree.domain().lowerBound() == expectedDomain.lowerBound());
         REQUIRE(octree.domain().upperBound() == expectedDomain.upperBound());
+
     }
 
     SECTION("Test octree insert") {
@@ -140,7 +144,7 @@ TEST_CASE_METHOD(TestFixture, "Benchmarking DigitalSetByOctree using Catch2", "[
         const unsigned int lvl = 4;
         const int size = (1 << lvl);
 
-        const size_t expectedMemory = (lvl + 1) * sizeof(typename DigitalSetByOctree<Z3i::Space>::Node);
+        const size_t expectedMemory = lvl * sizeof(typename DigitalSetByOctree<Z3i::Space>::Node);
         std::vector<size_t> expectedRslt(size, 3);
         expectedRslt.front() = 2;
         expectedRslt.back()  = 2;
@@ -148,13 +152,13 @@ TEST_CASE_METHOD(TestFixture, "Benchmarking DigitalSetByOctree using Catch2", "[
         Z3i::Domain domain(Z3i::Point{0, 0, 0}, Z3i::Point{size, size, size});
         DigitalSetByOctree<Z3i::Space> octree(domain);
         trace.emphase() << octree.domain() << std::endl;
-
+        
         // One of best cases for dag: all points on the diagonal of the domain
         // This is compressed as a single node per level.
         for (size_t i = 0; i < size; ++i) {
             octree.insert(Z3i::Point{(int)i, (int)i, (int)i});
         }
-
+        
         octree.convertToDAG();
 
         auto lmbd = [](Z3i::Point, const std::vector<Z3i::Point>& neighborhood) {
@@ -164,6 +168,15 @@ TEST_CASE_METHOD(TestFixture, "Benchmarking DigitalSetByOctree using Catch2", "[
 
         REQUIRE(octree.memoryFootprint() == expectedMemory);
         REQUIRE(rslt == expectedRslt);
+
+        VolWriter<DigitalSetByOctree<Z3i::Space>> writer;
+        VolReader<DigitalSetByOctree<Z3i::Space>, int> reader;
+
+        writer.exportVol("test.vol", octree, false);
+        auto octree2 = reader.importVol("test.vol");
+        for (auto it = octree2.begin(); it != octree2.end(); ++it) {
+            std::cout << *it << std::endl;
+        }
     }
 };
 

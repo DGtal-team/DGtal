@@ -224,5 +224,160 @@ DGtal::VolReader<T, TFunctor>::importVol( const std::string & filename,
     trace.error() << "VolReader: not enough memory\n" ;
     throw dgtalexception;
   }
+}
 
+template <typename Space, typename Functor>
+inline
+DGtal::DigitalSetByOctree<Space>
+DGtal::VolReader<DGtal::DigitalSetByOctree<Space>, Functor>::importVol( 
+    const std::string & filename,
+    const Functor & unused
+) 
+{
+  using Octree = DGtal::DigitalSetByOctree<Space>;
+  using Point = typename Space::Point;
+
+  DGtal::IOException dgtalexception;
+  std::ifstream file(filename.c_str(), std::ios_base::binary);
+
+  if (!file.is_open()) 
+  {
+    trace.error() << "VolReader : can't open " << filename << std::endl;
+    throw dgtalexception;
+  }
+
+  VolHeader header;
+  header.parse(file);
+
+  if (!header.validate()) 
+  {
+    trace.error() << "VolReader : Invalid header " << filename << std::endl;
+    throw dgtalexception;
+  }
+
+  Point firstPoint( 0, 0, 0 );
+  Point lastPoint( 0, 0, 0 );
+
+  int sx = header.getAs<int>("X");
+  int sy = header.getAs<int>("Y");
+  int sz = header.getAs<int>("Z");
+  int version = header.getAs<int>("Version");
+
+  if (! ((version == 2) || (version == 3)))
+  {
+    trace.error() << "VolReader: invalid Version header (must be either 2 or 3)\n";
+    throw dgtalexception;
+  }
+
+  if (header.exists("Center-X")) 
+  {
+    int cx = header.getAs<int>("Center-X");
+    int cy = header.getAs<int>("Center-Y");
+    int cz = header.getAs<int>("Center-Z");
+
+    firstPoint[0] = cx - (sx - 1)/2;
+    firstPoint[1] = cy - (sy - 1)/2;
+    firstPoint[2] = cz - (sz - 1)/2;
+    lastPoint[0] = cx + sx/2;
+    lastPoint[1] = cy + sy/2;
+    lastPoint[2] = cz + sz/2;
+  }
+  else
+  {
+    firstPoint = Point::zero;
+    lastPoint[0] = sx - 1;
+    lastPoint[1] = sy - 1;
+    lastPoint[2] = sz - 1;
+  }
+
+  typename Octree::Domain domain( firstPoint, lastPoint );
+  
+  try
+  {
+    Octree octree( domain );
+
+    //Uncompress if needed
+    if(version == 3)
+    {
+      std::stringstream uncompressed;
+      boost::iostreams::filtering_streambuf<boost::iostreams::input> in;
+      in.push(boost::iostreams::zlib_decompressor());
+      in.push(file);
+      boost::iostreams::copy(in, uncompressed);
+      
+      // Warning: types should match with the writer !
+      int state;
+      uncompressed.read(reinterpret_cast<char*>(&state), sizeof(int));
+      octree.myState = static_cast<Octree::State>(state);
+      
+      size_t size;
+      uncompressed.read(reinterpret_cast<char*>(&size), sizeof(size_t));
+
+      size_t depth;
+      uncompressed.read(reinterpret_cast<char*>(&depth), sizeof(size_t));
+
+      if (depth != octree.myNodes.size()) {
+        trace.error() << "VolReader: integrity error, saved depth does not match domain" << std::endl;
+        throw dgtalexception;
+      }
+
+      for (unsigned int i = 0; i < depth; ++i) {
+        size_t count; 
+        uncompressed.read(reinterpret_cast<char*>(&count), sizeof(size_t));
+        octree.myNodes[i].resize(count);
+      }
+
+      using Int = typename Octree::CellIndex;
+      for (unsigned int i = 0; i < depth; ++i) {
+        for (unsigned int j = 0; j < octree.myNodes[i].size(); ++j) {
+          for (unsigned int k = 0; k < octree.CELL_COUNT; ++k) {
+            Int child;
+            uncompressed.read(reinterpret_cast<char*>(&child), sizeof(Int));
+            octree.myNodes[i][j].children[k] = child;
+          }
+        }
+      }
+    
+    }
+    else
+    {
+      int state;
+      file.read(reinterpret_cast<char*>(&state), sizeof(int));
+      octree.myState = static_cast<Octree::State>(state);
+      
+      size_t size;
+      file.read(reinterpret_cast<char*>(&size), sizeof(size_t));
+
+      size_t depth;
+      file.read(reinterpret_cast<char*>(&depth), sizeof(size_t));
+
+      if (depth != octree.myNodes.size()) {
+        trace.error() << "VolReader: integrity error, saved depth does not match domain" << std::endl;
+        throw dgtalexception;
+      }
+
+      for (unsigned int i = 0; i < depth; ++i) {
+        size_t count; 
+        file.read(reinterpret_cast<char*>(&count), sizeof(size_t));
+        octree.myNodes[i].resize(count);
+      }
+
+      using Int = typename Octree::CellIndex;
+      for (unsigned int i = 0; i < depth; ++i) {
+        for (unsigned int j = 0; j < octree.myNodes[i].size(); ++j) {
+          for (unsigned int k = 0; k < octree.CELL_COUNT; ++k) {
+            Int child;
+            file.read(reinterpret_cast<char*>(&child), sizeof(Int));
+            octree.myNodes[i][j].children[k] = child;
+          }
+        }
+      }
+    }
+    return octree;
+  }
+  catch ( ... )
+  {
+    trace.error() << "VolReader: not enough memory\n" ;
+    throw dgtalexception;
+  }
 }
