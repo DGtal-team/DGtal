@@ -44,6 +44,7 @@
 #include <sstream>
 #include <string>
 #include <cstdio>
+#include <map>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CUnaryFunctor.h"
 //////////////////////////////////////////////////////////////////////////////
@@ -188,7 +189,6 @@ namespace DGtal
    *
    * @tparam Space The space on which the DigitalSetByOctree is templated
    * @tparam Functor Unused, here for compatibility
-   * * @tp
    */
   template<typename Space, typename Functor>
   struct VolReader<DigitalSetByOctree<Space>, Functor> 
@@ -197,7 +197,7 @@ namespace DGtal
      * @brief Import an octree from a file
      *
      * @param filename name if the input file
-     * @pram unused Unused, here for compatibility
+     * @param unused Unused, here for compatibility
      * 
      * @return The octree represented within the file.
      */

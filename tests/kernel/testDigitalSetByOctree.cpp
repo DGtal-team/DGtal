@@ -148,9 +148,9 @@ TEST_CASE_METHOD(TestFixture, "Benchmarking DigitalSetByOctree using Catch2", "[
         expectedRslt.front() = 2;
         expectedRslt.back()  = 2;
 
-        Z3i::Domain domain(Z3i::Point{0, 0, 0}, Z3i::Point{size, size, size});
+        Z3i::Domain domainL(Z3i::Point{0, 0, 0}, Z3i::Point{size, size, size});
         
-        DigitalSetByOctree<Z3i::Space> octree = DigitalSetByOctree<Z3i::Space>(domain);
+        DigitalSetByOctree<Z3i::Space> octree = DigitalSetByOctree<Z3i::Space>(domainL);
         
         // One of best cases for dag: all points on the diagonal of the domain
         // This is compressed as a single node per level.

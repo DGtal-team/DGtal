@@ -128,6 +128,8 @@ namespace DGtal {
         const bool compressed, 
         const Functor& unused) 
   {
+    ((void) unused);
+
     DGtal::IOException dgtalio;
     std::ofstream out;
 

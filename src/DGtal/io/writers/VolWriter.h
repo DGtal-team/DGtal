@@ -42,7 +42,6 @@
 // Inclusions
 #include <iostream>
 #include <string>
-#include <map>
 
 #include <boost/static_assert.hpp>
 #include <boost/type_traits.hpp>

@@ -29,6 +29,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
+#include <fstream>
 
 #if defined(__GNUC__) || defined(__clang__)
 #pragma GCC diagnostic push
@@ -232,6 +233,8 @@ DGtal::VolReader<DGtal::DigitalSetByOctree<Space>, Functor>::importVol(
     const Functor & unused
 ) 
 {
+  ((void) unused);
+
   using Octree = DGtal::DigitalSetByOctree<Space>;
   using Point = typename Space::Point;
 
