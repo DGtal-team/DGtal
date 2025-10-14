@@ -57,12 +57,11 @@ runs:
 
     - name: "Restoring cpm cache"
       id: restore-cpm-cache
-      uses: actions/download-artifact@v4
+      uses: actions/download-artifact@v5
       continue-on-error: true 
       with:
         path: ${{ inputs.cache-deps-path }}
         name: ${{ runner.os }}-cache
-        run-id: ${{ env.CACHE_ID }}
         github-token: ${{ github.token }}
 
     - name: "Create build directory"
@@ -104,7 +103,7 @@ runs:
 
     - name: Uploading artifacts
       # if: ${{ github.ref_name == 'CacheImprove' }}
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: ${{ runner.os }}-cpm-cache
         path: ${{ inputs.build-dir }}/_deps
