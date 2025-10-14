@@ -57,6 +57,7 @@ runs:
 
     - name: "Restoring cpm cache"
       id: restore-cpm-cache
+      shell: bash
       uses: actions/download-artifact@v4
       continue-on-error: true 
       with:
@@ -105,7 +106,7 @@ runs:
       uses: actions/upload-artifact@v4
       with:
         name: ${{ runner.os }}-cpm-cache
-        path: ${{ inputs.build-dir }}/_deps/*-src
+        path: ${{ inputs.build-dir }}/_deps
         retention-days: 1 # Limit is 90 days for free use 
 
     - name: Perform tests
