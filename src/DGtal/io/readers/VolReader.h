@@ -57,11 +57,11 @@ namespace DGtal
    */
   struct VolHeader {
     // List required fields
-    inline static constexpr std::string requiredFields[] {
+    inline static const std::string requiredFields[] {
       "X", "Y", "Z", "Voxel-Size", "Int-Endian", "Voxel-Endian", "Alpha-Color"
     };
     // Count of required fields
-    inline static constexpr unsigned int requiredFieldsCount = sizeof(requiredFields) / sizeof(requiredFields[0]);
+    inline static const unsigned int requiredFieldsCount = sizeof(requiredFields) / sizeof(requiredFields[0]);
     VolHeader() { }
 
     /**
