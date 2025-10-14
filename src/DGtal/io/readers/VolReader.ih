@@ -29,8 +29,6 @@
 
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
-#include <fstream>
-#include <string>
 
 #if defined(__GNUC__) || defined(__clang__)
 #pragma GCC diagnostic push
@@ -51,7 +49,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Interface - public : VolHeader
-bool DGtal::VolHeader::parse(std::ifstream& in) {
+bool DGtal::VolHeader::parse(std::istream& in) {
   std::string line;
 
   while (std::getline(in, line)) {
@@ -61,7 +59,7 @@ bool DGtal::VolHeader::parse(std::ifstream& in) {
     auto split = line.find(':');
     if (split == std::string::npos) {
       // Throw here for unknown line ?
-      trace.error() << "VolReader: unrecognized line \"" << line << "\"" << std::endl;
+      trace.warning() << "VolReader: unrecognized line \"" << line << "\"" << std::endl;
       continue;
     }
 
@@ -76,7 +74,7 @@ bool DGtal::VolHeader::parse(std::ifstream& in) {
       trace.error() << "VolReader : invalid (empty) value for line \"" << line << "\"" << std::endl;
       throw DGtal::IOException{};
     }
-    fields[key] = val.substr(start, end - start + 1);
+    myFields[key] = val.substr(start, end - start + 1);
   }
 
   return false;
@@ -84,7 +82,7 @@ bool DGtal::VolHeader::parse(std::ifstream& in) {
 
 bool DGtal::VolHeader::validate() const {
   for (unsigned int i = 0; i < requiredFieldsCount; ++i) {
-    if (fields.find(requiredFields[i]) == fields.end()) 
+    if (!exists(requiredFields[i])) 
       return false;
   }
   return true;
@@ -92,9 +90,10 @@ bool DGtal::VolHeader::validate() const {
 
 template<typename T>
 T DGtal::VolHeader::getAs(const std::string& name) const {
-  auto it = fields.find(name);
-  if (it == fields.end()) {
+  auto it = myFields.find(name);
+  if (it == myFields.end()) {
     // Field does not exist
+    trace.error() << "VolReader: No such field \"" << name << "\"" << std::endl;
     throw DGtal::IOException{};
   }
 
@@ -108,6 +107,7 @@ T DGtal::VolHeader::getAs(const std::string& name) const {
 
     if (iss.fail() || !iss.eof()) {
       // Invalid type / value
+      trace.error() << "VolReader: Can't convert \"" << name << "\" to desired type" << std::endl;
       throw DGtal::IOException{};
     }
 
@@ -116,7 +116,7 @@ T DGtal::VolHeader::getAs(const std::string& name) const {
 }
 
 bool DGtal::VolHeader::exists(const std::string& field) const {
-  return fields.find(field) != fields.end();
+  return myFields.find(field) != myFields.end();
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -188,7 +188,6 @@ DGtal::VolReader<T, TFunctor>::importVol( const std::string & filename,
   {
     T image( domain );
 
-    size_t count = 0;
     typename T::Domain::ConstIterator it = domain.begin();
     size_t total = sx * sy * sz;
 
@@ -201,7 +200,6 @@ DGtal::VolReader<T, TFunctor>::importVol( const std::string & filename,
       in.push(file);
       boost::iostreams::copy(in, uncompressed);
       //Apply to the image structure
-      unsigned int c = 0;
       for(size_t i=0; i < total; ++i)
       {
         image.setValue(( *it ), aFunctor(uncompressed.get()) );
@@ -295,81 +293,48 @@ DGtal::VolReader<DGtal::DigitalSetByOctree<Space>, Functor>::importVol(
   try
   {
     Octree octree( domain );
+    std::stringstream uncompressed;
+    std::istream* input = &file;
 
     //Uncompress if needed
     if(version == 3)
     {
-      std::stringstream uncompressed;
       boost::iostreams::filtering_streambuf<boost::iostreams::input> in;
       in.push(boost::iostreams::zlib_decompressor());
       in.push(file);
       boost::iostreams::copy(in, uncompressed);
       
-      // Warning: types should match with the writer !
-      int state;
-      uncompressed.read(reinterpret_cast<char*>(&state), sizeof(int));
-      octree.myState = static_cast<Octree::State>(state);
-      
-      size_t size;
-      uncompressed.read(reinterpret_cast<char*>(&size), sizeof(size_t));
-
-      size_t depth;
-      uncompressed.read(reinterpret_cast<char*>(&depth), sizeof(size_t));
-
-      if (depth != octree.myNodes.size()) {
-        trace.error() << "VolReader: integrity error, saved depth does not match domain" << std::endl;
-        throw dgtalexception;
-      }
-
-      for (unsigned int i = 0; i < depth; ++i) {
-        size_t count; 
-        uncompressed.read(reinterpret_cast<char*>(&count), sizeof(size_t));
-        octree.myNodes[i].resize(count);
-      }
-
-      using Int = typename Octree::CellIndex;
-      for (unsigned int i = 0; i < depth; ++i) {
-        for (unsigned int j = 0; j < octree.myNodes[i].size(); ++j) {
-          for (unsigned int k = 0; k < octree.CELL_COUNT; ++k) {
-            Int child;
-            uncompressed.read(reinterpret_cast<char*>(&child), sizeof(Int));
-            octree.myNodes[i][j].children[k] = child;
-          }
-        }
-      }
-    
+      input = &uncompressed;
     }
-    else
-    {
-      int state;
-      file.read(reinterpret_cast<char*>(&state), sizeof(int));
-      octree.myState = static_cast<Octree::State>(state);
-      
-      size_t size;
-      file.read(reinterpret_cast<char*>(&size), sizeof(size_t));
 
-      size_t depth;
-      file.read(reinterpret_cast<char*>(&depth), sizeof(size_t));
+    int state;
+    input->read(reinterpret_cast<char*>(&state), sizeof(int));
+    octree.myState = static_cast<Octree::State>(state);
 
-      if (depth != octree.myNodes.size()) {
-        trace.error() << "VolReader: integrity error, saved depth does not match domain" << std::endl;
-        throw dgtalexception;
-      }
+    size_t size;
+    input->read(reinterpret_cast<char*>(&size), sizeof(size_t));
 
-      for (unsigned int i = 0; i < depth; ++i) {
-        size_t count; 
-        file.read(reinterpret_cast<char*>(&count), sizeof(size_t));
-        octree.myNodes[i].resize(count);
-      }
+    size_t depth;
+    input->read(reinterpret_cast<char*>(&depth), sizeof(size_t));
 
-      using Int = typename Octree::CellIndex;
-      for (unsigned int i = 0; i < depth; ++i) {
-        for (unsigned int j = 0; j < octree.myNodes[i].size(); ++j) {
-          for (unsigned int k = 0; k < octree.CELL_COUNT; ++k) {
-            Int child;
-            file.read(reinterpret_cast<char*>(&child), sizeof(Int));
-            octree.myNodes[i][j].children[k] = child;
-          }
+    if (depth != octree.myNodes.size()) {
+      trace.error() << "VolReader: integrity error, saved depth does not match domain" << std::endl;
+      throw dgtalexception;
+    }
+
+    for (unsigned int i = 0; i < depth; ++i) {
+      size_t count; 
+      input->read(reinterpret_cast<char*>(&count), sizeof(size_t));
+      octree.myNodes[i].resize(count);
+    }
+
+    using Int = typename Octree::CellIndex;
+    for (unsigned int i = 0; i < depth; ++i) {
+      for (unsigned int j = 0; j < octree.myNodes[i].size(); ++j) {
+        for (unsigned int k = 0; k < octree.CELL_COUNT; ++k) {
+          Int child;
+          input->read(reinterpret_cast<char*>(&child), sizeof(Int));
+          octree.myNodes[i][j].children[k] = child;
         }
       }
     }

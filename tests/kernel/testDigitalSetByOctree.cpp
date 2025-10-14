@@ -85,8 +85,7 @@ TEST_CASE_METHOD(TestFixture, "Benchmarking DigitalSetByOctree using Catch2", "[
         DigitalSetByOctree<Z3i::Space> octree(domain);
         REQUIRE(octree.domain().lowerBound() == expectedDomain.lowerBound());
         REQUIRE(octree.domain().upperBound() == expectedDomain.upperBound());
-
-    }
+    };
 
     SECTION("Test octree insert") {
         DigitalSetByOctree<Z3i::Space> octree(domain);
@@ -95,8 +94,8 @@ TEST_CASE_METHOD(TestFixture, "Benchmarking DigitalSetByOctree using Catch2", "[
         }
 
         REQUIRE(octree.size() == validPointCount);
-    }
-
+    };
+    
     SECTION("Testing if points exists") {
         DigitalSetByOctree<Z3i::Space> octree(domain);
         for (int i = 0; i < testPointCount; ++i) {
@@ -106,7 +105,7 @@ TEST_CASE_METHOD(TestFixture, "Benchmarking DigitalSetByOctree using Catch2", "[
         for (int i = 0; i < sizeof(testPoints) / sizeof(Z3i::Point); ++i) {
             REQUIRE(testPointsValid[i] == octree(testPoints[i]));
         }
-    }
+    };
 
     SECTION("Testing iterating over octree") {
         DigitalSetByOctree<Z3i::Space> octree(domain);
@@ -122,7 +121,7 @@ TEST_CASE_METHOD(TestFixture, "Benchmarking DigitalSetByOctree using Catch2", "[
             }
             REQUIRE(*it == validPoints[i]);
         }
-    }
+    };
 
     SECTION("Testing erasing points") {
         DigitalSetByOctree<Z3i::Space> octree(domain);
@@ -138,7 +137,7 @@ TEST_CASE_METHOD(TestFixture, "Benchmarking DigitalSetByOctree using Catch2", "[
         }
 
         REQUIRE(octree.size() == validPointCount - 1);
-    }
+    };
 
     SECTION("Test DAG on simple case") {
         const unsigned int lvl = 4;
@@ -150,8 +149,8 @@ TEST_CASE_METHOD(TestFixture, "Benchmarking DigitalSetByOctree using Catch2", "[
         expectedRslt.back()  = 2;
 
         Z3i::Domain domain(Z3i::Point{0, 0, 0}, Z3i::Point{size, size, size});
-        DigitalSetByOctree<Z3i::Space> octree(domain);
-        trace.emphase() << octree.domain() << std::endl;
+        
+        DigitalSetByOctree<Z3i::Space> octree = DigitalSetByOctree<Z3i::Space>(domain);
         
         // One of best cases for dag: all points on the diagonal of the domain
         // This is compressed as a single node per level.
@@ -169,14 +168,31 @@ TEST_CASE_METHOD(TestFixture, "Benchmarking DigitalSetByOctree using Catch2", "[
         REQUIRE(octree.memoryFootprint() == expectedMemory);
         REQUIRE(rslt == expectedRslt);
 
+    };
+
+    SECTION("Test Vol I/O") {
+        const unsigned int start = 5;
+        const unsigned int end = 10;
+        DigitalSetByOctree<Z3i::Space> octree1(Z3i::Domain(Z3i::Point{start, start, start}, {end, end, end}));
+        for (unsigned int i = 0; i < (end - start); ++i) {
+            const int c = (int)start + (int)i;
+            octree1.insert(Z3i::Point{c, c, c});
+        }
+        octree1.convertToDAG();
+
         VolWriter<DigitalSetByOctree<Z3i::Space>> writer;
         VolReader<DigitalSetByOctree<Z3i::Space>, int> reader;
 
-        writer.exportVol("test.vol", octree, false);
-        auto octree2 = reader.importVol("test.vol");
-        for (auto it = octree2.begin(); it != octree2.end(); ++it) {
-            std::cout << *it << std::endl;
+        writer.exportVol("tmp.vol", octree1, true);
+        auto octree2 = reader.importVol("tmp.vol");
+
+        auto it1 = octree1.begin();
+        auto it2 = octree2.begin();
+        for (; it1 != octree1.end() && it2 != octree2.end(); ++it1, ++it2) {
+            REQUIRE(*it1 == *it2);
         }
-    }
+        REQUIRE(it1 == octree1.end());
+        REQUIRE(it2 == octree2.end());
+    };
 };
 

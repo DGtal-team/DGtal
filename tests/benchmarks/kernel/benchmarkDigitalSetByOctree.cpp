@@ -1,7 +1,3 @@
-#include <iostream>
-#include <numeric>
-#include <chrono>
-
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/helpers/Shortcuts.h"
 #include "DGtal/io/readers/VolReader.h"

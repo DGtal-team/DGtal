@@ -556,6 +556,7 @@ namespace DGtal
             DAG
         };
 
+
     private:
         // We store two domains:
         //  - myDomain is the domain used for computation, that 

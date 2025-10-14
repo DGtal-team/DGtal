@@ -42,7 +42,6 @@
 // Inclusions
 #include <iostream>
 #include <sstream>
-#include <fstream>
 #include <string>
 #include <cstdio>
 #include "DGtal/base/Common.h"
@@ -52,24 +51,61 @@
 namespace DGtal
 {
 
+  /**
+   * @brief Helper class to parse VolHeader
+   */
   struct VolHeader {
+    // List required fields
     inline static constexpr std::string requiredFields[] {
       "X", "Y", "Z", "Voxel-Size", "Int-Endian", "Voxel-Endian", "Alpha-Color"
     };
+    // Count of required fields
     inline static constexpr unsigned int requiredFieldsCount = sizeof(requiredFields) / sizeof(requiredFields[0]);
-
     VolHeader() { }
 
-    bool parse(std::ifstream& in);
-
+    /**
+     * @brief Parse header given an inputstream
+     *
+     * This function may throw for early EOF or empty value. 
+     *
+     * @param in The input stream
+     */
+    bool parse(std::istream& in);
+  
+    /**
+     * @brief Validates the parsed information
+     *
+     * For now, it only checks that required fields
+     * are specified
+     */
     bool validate() const;
     
+    /**
+     * @brief Return a field, cast as the given type
+     *
+     * This function may throw if the field does not exist
+     *
+     * @see exists
+     * @param name The name of the field
+     * @tparam T Return value
+     */
     template<typename T>
     T getAs(const std::string& name) const;
-
+    
+    /**
+     * @brief Check if a field exists or not
+     *
+     * For non mandatory fields, this allows not to
+     * rely on throw by getAs.
+     *
+     * @see getAs
+     * @param field The field to check for existence
+     */
     bool exists(const std::string& field) const;
 
-    std::map<std::string, std::string> fields;
+    private:
+      // Store fields information
+      std::map<std::string, std::string> myFields;
   };
   
 
@@ -135,12 +171,36 @@ namespace DGtal
     
   }; // end of class VolReader
   
+  // Forward declaration
   template<class Space>
   class DigitalSetByOctree;
-
+  
+  /**
+   * @brief Partial specialization for DigitalSetByOctree
+   *
+   * This function directly restores the tree and the 
+   * associated state.
+   *
+   * Note that this class is friend with DigitalSetByOctree.
+   * @see VolWriter
+   * @see VolReader 
+   * @see DigitalSetByOctree
+   *
+   * @tparam Space The space on which the DigitalSetByOctree is templated
+   * @tparam Functor Unused, here for compatibility
+   * * @tp
+   */
   template<typename Space, typename Functor>
   struct VolReader<DigitalSetByOctree<Space>, Functor> 
   {
+    /**
+     * @brief Import an octree from a file
+     *
+     * @param filename name if the input file
+     * @pram unused Unused, here for compatibility
+     * 
+     * @return The octree represented within the file.
+     */
     static DigitalSetByOctree<Space> importVol(const std::string & filename, 
                                                const Functor & unused =  Functor());
   };

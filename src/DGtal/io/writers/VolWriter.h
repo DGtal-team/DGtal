@@ -42,6 +42,8 @@
 // Inclusions
 #include <iostream>
 #include <string>
+#include <map>
+
 #include <boost/static_assert.hpp>
 #include <boost/type_traits.hpp>
 #include "DGtal/base/Common.h"
@@ -89,13 +91,39 @@ namespace DGtal
                           const Functor & aFunctor = Functor());
   };
   
+  // Forward declaration
   template<typename Space>
   class DigitalSetByOctree;
 
+  /**
+   * @brief Partial specialization for DigitalSetByOctree
+   * @brief Partial specialization for DigitalSetByOctree
+   *
+   * Unlike Images, DigitalSetByOctree does not store a per
+   * voxel value. Also, it is much more efficient to directly
+   * store the tree
+   *
+   * Note that this class is friend with DigitalSetByOctree.
+   * @see VolWriter
+   * @see VolReader
+   * @see DigitalSetByOctree
+   *
+   * @tparam Space The space on which the DigitalSetByOctree is templated
+   * @tparam Functor Unused, here for compatibility
+   */
   template<typename Space, typename Functor>
   struct VolWriter<DigitalSetByOctree<Space>, Functor> 
   {
-    static bool exportVol(
+    /** 
+     * @brief Export an Image with the Vol format.
+     * 
+     * @param filename name of the output file
+     * @param octree the octree to export
+     * @param compressed boolean to decide wether the vol must be compressed or not
+     * @param unused Unused, here for compatibility
+     *
+     * @return true if no errors occur.
+     */static bool exportVol(
         const std::string& filename, const DigitalSetByOctree<Space>& octree,
         const bool compressed = true, 
         const Functor& unused = Functor());
