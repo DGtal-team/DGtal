@@ -30,7 +30,7 @@ jobs:
         id: "config"
         uses: ./.github/actions/dgtal-config
         with:
-          config-name: "PR"
+          config-name: "default"
 
       - name: Setup OS 
         uses: ./.github/actions/setup-os
