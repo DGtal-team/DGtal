@@ -61,6 +61,8 @@ runs:
       with:
         path: ${{ inputs.cache-deps-path }}
         name: ${{ runner.os }}-cache
+        github-token: ${{ github.token }}
+        run-id: 18561899676
 
     - name: "Create build directory"
       shell: bash
