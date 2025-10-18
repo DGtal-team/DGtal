@@ -108,7 +108,6 @@ Then you can reconstruct a tubular mesh with a given radius:
 
 You will obtain such a tube display:
    \image html  testMeshVisu3d.png  "Resulting mesh of tubular object."
-   \image latex testMeshVisu3d.png  "Resulting mesh of tubular object."  width=5cm
 
 
 
@@ -126,7 +125,6 @@ and then construct the height field mesh:
 You will obtain such a small height field display (with previous tube mesh):
 
    \image html  testMeshVisu3dBis.png  "Resulting mesh of tubular object and height field."
-   \image latex testMeshVisu3dBis.png  "Resulting mesh of tubular object and height field."  width=5cm
 
 @see  tests/shapes/testMesh.cpp
 

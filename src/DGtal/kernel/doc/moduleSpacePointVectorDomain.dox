@@ -180,7 +180,6 @@ defined by the bounding box of the points a and b. Note that  type  Z2i::Domain 
  We can visualise the domain using the Board2D stream mechanism (see \ref moduleBoard2D).
 
 @image html kernel-domain.png "Illustration of a simple 2-D domain"
-@image latex kernel-domain.png "Illustration of a simple 2-D domain"  width=6cm
 
 
 The HyperRectDomain class provides several methods such as HyperRectDomain::isInside to decide if a point is inside the domain or not.
@@ -194,7 +193,6 @@ The HyperRectDomain class provides several methods such as HyperRectDomain::isIn
  @endcode
 
 @image html kernel-domain-point.png "Illustration of a simple 2-D domain with a point"
-@image latex kernel-domain-point.png "Illustration of a simple 2-D domain with a point"  width=6cm
 
 
 \subsection sectDomIter Iterating over an  HyperRectDomain
@@ -232,7 +230,6 @@ Again, for details on the Board2D mechanism, please refer to \ref moduleBoard2D.
 @endcode
 
 \image html kernel-domain-it-arrow.png "Iteration over a domain with displacements depicted as arrows."
-\image latex kernel-domain-it-arrow.png "Iteration over a domain with displacements depicted as arrows."  width=5cm
 
 
 For each iterator ̀ XXX`, there is a corresponding `ReverseXXX` class allowing to run through the same elements but in reverse direction. For the whole domain, we wan use

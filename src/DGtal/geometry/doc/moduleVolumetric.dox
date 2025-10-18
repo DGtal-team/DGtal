@@ -76,7 +76,6 @@ example, we illustrate the distance maps from a single source point
 for various metrics in 2D using the generic DistanceTransformation method:
 
 @image html DTmetrics-small.png "Distance maps for metrics  L_1, L_2, L_4, L_80 and Chamfer masks M_{3−4} and M_{5−7−11}."
-@image latex  DTmetrics-small.png  "Distance maps for metrics  L_1, L_2, L_4, L_80 and Chamfer masks M_{3−4} and M_{5−7−11}."
 
 For a complete discussion of metric concepts in DGtal, please refer to
 @ref moduleMetrics.
@@ -179,7 +178,6 @@ construction:
 and the resulting set:
 
 @image html voronoimap-inputset.png "Input set."
-@image latex voronoimap-inputset.png "Input set."
 
 
 The voronoi map is simply given by:
@@ -194,7 +192,6 @@ background point. We can display this information as follows:
 To obtain:
 
 @image html voronoimap-voro.png "Voronoi map."
-@image latex voronoimap-voro.png "Voronoi map."
 
 Changing the board output, we can see the Voronoi cells accordingly:
 
@@ -203,14 +200,12 @@ Changing the board output, we can see the Voronoi cells accordingly:
 To get:
 
 @image html voronoimap-cells.png "Voronoi map cells."
-@image latex voronoimap-cells.png "Voronoi map cells."
 
 We could easily change the metric (here to the @f$ l_8 @f$) and get a
 new Voronoi map:
 @snippet geometry/volumes/distance/voronoimap2D.cpp Voro2D-l8Metric
 
 @image html voronoimap-vorol8.png "Voronoi map for the l_8 metric."
-@image latex voronoimap-vorol8.png "Voronoi map for the l_8 metric."
 
 @section vorocomplete Complete Discrete Voronoi Map
 
@@ -277,7 +272,6 @@ a colormap to display distance values for the @f$ l_2 @f$ mertic:
 @snippet geometry/volumes/distance/voronoimap2D.cpp Voro2D-DT
 
 @image html voronoimap-dt.png "Distance transformation for  the l_2 metric."
-@image latex voronoimap-dt.png  "Distance transformation for  the l_2 metric."
 
 
 

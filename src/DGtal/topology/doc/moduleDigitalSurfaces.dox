@@ -135,15 +135,10 @@ spels, and its \e boundary is obtained by applying the boundary
 operator on \e S.
 
 @image html digital-surface-BdryOp-1s.png "Using the boundary operator to compute the boundary of a digital shape S." 
-@image latex digital-surface-BdryOp-1s.png "Using the boundary operator to compute the boundary of a digital shape." width=5cm
 @image html digital-surface-BdryOp-2s.png "The boundary operator is linear with cells, thus we compute spel by spel." 
-@image latex digital-surface-BdryOp-2s.png "The boundary operator is linear with cells, thus we compute spel by spel."  width=5cm
 @image html digital-surface-BdryOp-3s.png "The boundary operator is linear with cells, thus we compute spel by spel." 
-@image latex digital-surface-BdryOp-3s.png "The boundary operator is linear with cells, thus we compute spel by spel."  width=5cm
 @image html digital-surface-BdryOp-4s.png "Opposite cells cancel each other."
-@image latex digital-surface-BdryOp-4s.png "Opposite cells cancel each other." width=5cm
 @image html digital-surface-BdryOp-5s.png "This is the resulting set of surfels (in blue and magenta."
-@image latex digital-surface-BdryOp-5s.png "This is the resulting set of surfels (in blue and magenta." width=5cm
 
 Defining a digital surface as a set of surfels is not enough for
 geometry. Indeed we need to relate surfels together so as to have a
@@ -175,7 +170,6 @@ choice has to be made along each possible pair of directions when
 going nD. In DGtal, this is encoded with the class SurfelAdjacency.
 
 @image html digital-surface-IntAdjacency.png "Interior adjacency on digital surfaces in 2D" 
-@image latex digital-surface-IntAdjacency.png "Interior adjacency on digital surfaces in 2D" width=5cm
 
 The following snippet shows the interior surfel adjacency
 (i.e. (6,18)-surfaces).
@@ -190,7 +184,6 @@ along directions different from the orthogonal direction of the
 surfel.
 
 @image html digital-surface-SurfaceTracking2.png "Any surfel in 3D has 4 adjacent surfels." 
-@image latex digital-surface-SurfaceTracking2.png "Any surfel in 3D has 4 adjacent surfels." width=5cm
 
 In fact, we can be even more precise. We can use orientation to
 orient the adjacencies consistently. Given two surfels sharing an
@@ -201,7 +194,6 @@ orientation (positive) and @f$n-1@f$ adjacent cells in the indirect
 orientation (negative). The direct adjacent surfels look like:
 
 @image html digital-surface-SurfaceTracking.png "Any surfel in 3D has 2 adjacent surfels in the direct orientation." 
-@image latex digital-surface-SurfaceTracking.png "Any surfel in 3D has 2 adjacent surfels in the direct orientation." width=5cm
 
 The class SurfelNeighborhood is the base class for computing
 adjacent surfels. You may use it as follow, but generally this
@@ -275,7 +267,6 @@ $ ./examples/topology/volTrackBoundary ../examples/samples/lobster.vol 50 255
 @endverbatim
 
 @image html volTrackBoundary-lobster.png "Digital surface that is the boundary of a (6,18)-connected component in image lobster.vol, extracted by tracking from an initial surfel in 351ms."
-@image latex volTrackBoundary-lobster.png "Digital surface that is the boundary of a (6,18)-connected component in image lobster.vol, extracted by tracking from an initial surfel in 351ms." width=5cm
 
 In the case you know \b beforehands that your surface is closed
 (i.e. without boundary), you should use preferentially
@@ -284,9 +275,7 @@ adjacent surfels and extracts the whole surface when it is
 closed. This process can be illustrated as follows:
 
 @image html suivi-parcours-largeur.png "Tracking a digital surface by following adjacencies."
-@image latex suivi-parcours-largeur.png "Tracking a digital surface by following adjacencies." width=5cm
 @image html suivi-artzy.png "Tracking a digital surface by following only direct adjacencies."
-@image latex suivi-artzy.png "Tracking a digital surface by following only direct adjacencies." width=5cm
 
 @subsection dgtal_digsurf_sec2_3 Other constructions by tracking: 2D contours, surface connected components, 2D slices in 3D surface
 
@@ -344,7 +333,6 @@ Tracker should be a model of concepts::CDigitalSurfaceTracker. The
 architecture is sumed up below:
 
 @image html diag-digital-surface-1.png "Class architecture of digital surfaces."
-@image latex diag-digital-surface-1.png "Class architecture of digital surfaces." width=0.95\textwidth
 
 @subsection dgtal_digsurf_sec3_2  Models of digital surface containers
 
@@ -463,7 +451,6 @@ $ ./examples/topology/volBreadthFirstTraversal ../examples/samples/cat10.vol 1 2
 
 to get these pictures:
 @image html digital-surface-bfv-all.png "Examples of breadth-first traversal on a digital surface."
-@image latex digital-surface-bfv-all.png "Examples of breadth-first traversal on a digital surface." width=0.5\textwidth
 
 @note In fact, the specific container LightImplicitDigitalSurface
 performs itself a breadth-first traversal to extract its vertices
@@ -499,7 +486,6 @@ frontierAndBoundary.cpp.
 
 Running it give the pictures:
 @image html digital-surface-intersecting-balls.png "Frontiers and boundary of two intersecting balls. The first ball is labelled 1 (red), the second 2 (yellow), their intersection 3 (orange). The frontier between 1 and 0 is displayed in red, the frontier between 2 and 0 is displayed in yellow, the boundary of region 3 is displayed in orange."
-@image latex digital-surface-intersecting-balls.png "Frontiers and boundary of two intersecting balls. The first ball is labelled 1 (red), the second 2 (yellow), their intersection 3 (orange). The frontier between 1 and 0 is displayed in red, the frontier between 2 and 0 is displayed in yellow, the boundary of region 3 is displayed in orange." width=0.5\textwidth
 
 
 
@@ -612,9 +598,7 @@ the edge.
 @snippet topology/volToOFF.cpp volToOff-makingOFF
 
 @image html digital-surface-mc-cat10.png "Marching-cube surface of cat10.vol file."
-@image latex digital-surface-mc-cat10.png "Marching-cube surface of cat10.vol file." width=0.5\textwidth
 @image html digital-surface-mc-lobster.png "Marching-cube surface of lobster.vol file."
-@image latex digital-surface-mc-lobster.png "Marching-cube surface of lobster.vol file." width=0.5\textwidth
 
 
 @section dgtal_digsurf_sec5  Precomputed 3D digital surface with IndexedDigitalSurface

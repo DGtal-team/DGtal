@@ -424,7 +424,6 @@ $ ctmviewer marching-cube.off
 @endverbatim
 
 @image html nice-mpolynomial.png "Implicit polynomial surface (x^2+y^2+2*z^2-1)*(z^2x-0.1) between [-2,-2,-2] and [2,2,2], step 0.02."
-@image latex nice-mpolynomial.png "Implicit polynomial surface (x^2+y^2+2*z^2-1)*(z^2x-0.1) between [-2,-2,-2] and [2,2,2], step 0.02." width=0.5\textwidth
 
 
 @see polynomial-read.cpp, polynomial-derivative.cpp, polynomial2-derivative.cpp.

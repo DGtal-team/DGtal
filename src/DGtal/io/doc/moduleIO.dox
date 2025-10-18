@@ -36,12 +36,10 @@ offer better colormap for scientific visualisation purposes.
 
 
 \image html colormaps.png "Example of predefined colormaps" 
-\image latex colormaps.png "Example of predefined colormaps" width=5cm
 
 Beside colormaps, TickedColorMap is a colormap adapter that adds ticks. For example, you can adapt a Black-Red gradient colormap to add regular white ticks (see usage in @ref testTickedColorMap.cpp):
 
 \image html testTicked-gradient-regular.png "Colormaps with regular ticks" 
-\image latex testTicked-gradient-regular.png "Colormaps with regular ticks" width=10cm
 Ticks can be regularly spaced or explicitly given by the user.
 
 
@@ -324,7 +322,6 @@ Afterwards the set is thresholded in ]0,255[:
 Then you will obtain the following visualisation:
 
 \image html visuDigitalSet3D.png "3D digital set from volumetric file (.vol)" 
-\image latex visuDigitalSet3D.png "3D digital set from volumetric file (.vol)" width=5cm
 
 
 \subsection importPointList Import 3D point list from file
@@ -354,7 +351,6 @@ We can change the way to select the coordinate field:
 You may obtain the following visualisation:
 
 \image html visuPointList.png "Visualisation of 3d imported point list " 
-\image latex visuPointList.png "Visualisation of 3d imported point list" width=5cm
 
 \subsection importMesh3D Import 3D mesh from OFF file
 
@@ -376,12 +372,10 @@ Display the result:
 You may obtain the following visualisation:
 
 \image html  visuTrefExample.png   "Visualisation of 3d imported Mesh "  width=5cm
-\image latex  visuTrefExample.png  "Visualisation of 3d imported Mesh" width=5cm
 
 You can also import large scale mesh, like the one of classic Angel scan ( available here:  http://www.cc.gatech.edu/projects/large_models/ )
 
 \image html visuImportOFF.png  "Visualisation of the 3d angel "  width=5cm
-\image latex visuImportOFF.png  "Visualisation of the 3d  angel" width=5cm
 
 */
 

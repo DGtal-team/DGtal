@@ -92,7 +92,6 @@ namespace DGtal {
    @snippet graph/graphTraversal.cpp graphTraversal-graph-enumeration
 
    @image html graphTraversal-enum.png "Coloring vertices of an object graph according to the enumeration order."
-   @image latex graphTraversal-enum.png "Coloring vertices of an object graph according to the enumeration order." width=0.5\textwidth
 
 
    @subsection dgtal_graph_def_2_3 Enumerating edges of a graph
@@ -169,7 +168,6 @@ namespace DGtal {
    @snippet graph/graphTraversal.cpp graphTraversal-graph-dfs-range
 
    @image html graphTraversal-dfs-range.png "Coloring vertices of an object graph according to their order given by a depth-first traversal."
-   @image latex graphTraversal-dfs-range.png "Coloring vertices of an object graph according to their order given by a depth-first traversal." width=0.5\textwidth
 
 
 */
