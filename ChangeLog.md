@@ -7,7 +7,7 @@
 
 - *Documentation*
   - Refactoring of the volumetric examples in the Shortcuts (David Coeurjolly, [#1807](https://github.com/DGtal-team/DGtal/pull/1807))
-  - Removing the doxygen image includes for the latex target (David Coeurjolly, [#18011](https://github.com/DGtal-team/DGtal/pull/1811))
+  - Removing the doxygen image includes for the latex target (David Coeurjolly, [#1811](https://github.com/DGtal-team/DGtal/pull/1811))
 
 ## Bug fixes
 
