@@ -64,7 +64,6 @@ its vertical and horizontal thicknesses (see figure below).
 
 
 @image html exampleConvexHullHV.png "The isothetic thickness of this convexhull is the minimum between its vertical (dV) and horizontal (dH) thickness. The points P,Q and R are the antipodal pair." 
-@image latex exampleConvexHullHV.png "The isothetic thickness of this convexhull is the minimum between its vertical (dV) and horizontal (dH) thickness. The points P,Q and R are the antipodal pair." width=5cm
 
 
 From this notion of isothetic thickness follows the \b blurred \b segment definition \cite DebledRennessonBlurred2005 :
@@ -90,7 +89,6 @@ illustration below) also defined from the rotating caliper algorithm.
 
 
 @image html exampleConvexHullEucl.png "Illustration of the Euclidean thickness (dE) of the convexhull defined from antipodal pair (P,Q) and R." 
-@image latex exampleConvexHullEucl.png "Illustration of the Euclidean thickness (dE) of the convexhull defined from antipodal pair (P,Q) and R." width=5cm
 
 
 
@@ -112,13 +110,11 @@ check manually the end condition or the iterator type).
 
 As illustration, the alpha-thick segments can be recognized on such contours:
 @image html alphThickSegmentInputPoints.png "Examples of different input coutours which can be used with the alpha-thick segment. (1) Input contour with non increasing axis coordinates, (2) contour with non connected points, (3) polygonal contour with floating points. " 
-@image latex alphThickSegmentInputPoints.png "Examples of different input coutours which can be used with the alpha-thick segment. (1) Input contour with non increasing axis coordinates, (2) contour with non connected points, (3) polygonal contour with floating points. " width=5cm
 
 
 
 And the example of non-simple contour can produce some errors:
 @image html alphThickSegmentInputPointsLoop.png "Example of input contour (1) containing loop which produce incorrect convexhull (2)." 
-@image latex alphThickSegmentInputPointsLoop.png "Example of input contour (1) containing loop which produce incorrect convexhull (2)." width=5cm
 
 
 
@@ -164,7 +160,6 @@ As illustration the segment recognition given in
 exampleAlphaThickSegmentNoisy.cpp produces such a display:
 
 @image html exampleAlphaThickSegmentNoisy.png "Simple example of some alpha-thick segments recognition with alpha = 2, 9  and 15."
-@image latex exampleAlphaThickSegmentNoisy.png "Simple example of some alpha-thick segments recognition with alpha = 2, 9  and 15." width=6cm
 
 
 
@@ -208,7 +203,6 @@ The resulting set of segments can be displayed using the bounding box mode:
 You should obtain such a visualization:
 
 @image html examplegreedyAlphaThickDecomposition.png "Greedy decomposition with alpha-thick segments with alpha = 4"
-@image latex examplegreedyAlphaThickDecomposition.png "Greedy decomposition with alpha-thick segment with alpha = 4" width=6cm
 
 
 The whole example can be found in \ref greedyAlphaThickDecomposition.cpp.
@@ -255,7 +249,6 @@ Finally we can access to the complete tangential cover and display it:
 You will obtain such a resulting visualization:
 
    @image html exampleAlphaThickSegmentTgtCover.png "Tangential cover with alpha-thick segments with alpha = 4"
-   @image latex exampleAlphaThickSegmentTgtCover.png "Tangential cover with alpha-thick segments with alpha = 4" width=6c
 
 
 \subsection moduleAlphaThickSegmentTgtCoverSingle Tangential cover on a single point
@@ -277,7 +270,6 @@ using the function @ref nextMaximalSegment :
 
 You will obtain for instance such a resulting cover:
    @image html exampleAlphaThickSegmentTgtCoverSingle.png "Tangential cover with alpha-thick segments with alpha = 4 for a point of index 80 (in blue)"
-   @image latex exampleAlphaThickSegmentTgtCoverSingle.png "Tangential cover with alpha-thick segments with alpha = 4 for a point of index 80 (in blue)" width=6cm
 
 
 

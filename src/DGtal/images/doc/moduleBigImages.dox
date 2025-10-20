@@ -196,7 +196,6 @@ filled with 1 to 256 values like that:
 which looks like that with a simple HueShadeColorMap varying from 1 to 256 and with (1,1) the first bottom-left point:
 
 \image html tiledImageFromImage-image.png " (1) simple 16x16 source image: (1,1) to (16,16) drawn with a simple HueShadeColorMap varying from 1 to 256."
-\image latex tiledImageFromImage-image.png " (1) simple 16x16 source image: (1,1) to (16,16) drawn with a simple HueShadeColorMap varying from 1 to 256." width=5cm
 
 Here is now the construction of a simple 4x4 tiled image with therefore 16 subdomains of the initial image domain.
 The tiled image is created from an existing image and with four parameters.
@@ -218,7 +217,6 @@ First we want to read the point 4,2 (which is in domain 1),
 so after that the cache is (domain1,empty). Here is the domain1:
 
 \image html TiledImageFromImage-01-read.png " (3) read: not in cache, so, update. Cache: (domain1,empty). Read: domain1."
-\image latex TiledImageFromImage-01-read.png " (3) read: not in cache, so, update. Cache: (domain1,empty). Read: domain1."  width=5cm </TD>
 
 Then we want to read the point 10,6 (which is in domain 7),
 
@@ -227,7 +225,6 @@ Then we want to read the point 10,6 (which is in domain 7),
 so after that the cache is (domain1,domain7). Here is the domain7:
 
 \image html TiledImageFromImage-03-read.png " (4) read: not in cache, so, update. Cache: (domain1,domain7). Read: domain7."
-\image latex TiledImageFromImage-03-read.png " (4) read: not in cache, so, update. Cache: (domain1,domain7). Read: domain7."  width=5cm </TD>
 
 Then we want to set the value of the point 11,7 to 1 (which is in domain 7),
 
@@ -236,7 +233,6 @@ Then we want to set the value of the point 11,7 to 1 (which is in domain 7),
 so after that the cache is always (domain1,domain7). Here is the new domain7 after writing:
 
 \image html TiledImageFromImage-05-write.png " (5) write: in cache. Cache: (domain1,domain7). Write: domain7."
-\image latex TiledImageFromImage-05-write.png " (5) write: in cache. Cache: (domain1,domain7). Write: domain7."  width=5cm </TD>
 
 Then we want to read the point 2,3 (which is in domain 1),
 
@@ -245,7 +241,6 @@ Then we want to read the point 2,3 (which is in domain 1),
 so after that the cache is always (domain1,domain7). Here is the domain1:
 
 \image html TiledImageFromImage-07-read.png " (6) read: in cache. Cache: (domain1,domain7). Read: domain1."
-\image latex TiledImageFromImage-07-read.png " (6) read: in cache. Cache: (domain1,domain7). Read: domain1."  width=5cm </TD>
 
 Then we want to read the point 16,1 (which is in domain 4),
 
@@ -254,7 +249,6 @@ Then we want to read the point 16,1 (which is in domain 4),
 so after that the cache is (domain7,domain4). Here is the domain4:
 
 \image html TiledImageFromImage-09-read.png " (7) read: not in cache, so, update. Cache: (domain7,domain4). Read: domain4."
-\image latex TiledImageFromImage-09-read.png " (7) read: not in cache, so, update. Cache: (domain7,domain4). Read: domain4."  width=5cm </TD>
 
 Then we want to set the value of the point 16,1 to 128 (which is in domain 4),
 
@@ -263,12 +257,10 @@ Then we want to set the value of the point 16,1 to 128 (which is in domain 4),
 so after that the cache is always (domain7,domain4). Here is the new domain4 after writing:
 
 \image html TiledImageFromImage-11-write.png " (8) write: in cache. Cache: (domain7,domain4). Write: domain4"
-\image latex TiledImageFromImage-11-write.png " (8) write: in cache. Cache: (domain7,domain4). Write: domain4"  width=5cm </TD>
 
 And finally, here is the modified original image after the two writings.
 
 \image html tiledImageFromImage-image2.png " (9) result image."
-\image latex tiledImageFromImage-image2.png " (9) result image."  width=5cm </TD>
 
 */
 

@@ -60,7 +60,6 @@ see @ref passing_functorholder.
 Finally, export the result:
 @snippet kernel/examplePointFunctorHolder.cpp examplePointFunctorHolder-DTvis
 @image html examplePointFunctorHolder.png  "Distance transformation of Mickey"
-@image latex examplePointFunctorHolder.png  "Distance transformation of Mickey"
 It has never been so easy to calculate the distance map to Mickey!
 
 @subsection functorholder_aim Aim
@@ -850,7 +849,6 @@ Finally, an image can be easily defined from a functor with a syntax like:
 @snippet exampleConstImageFunctorHolder.cpp example1
 resulting in:
 \image html ConstImageFunctorHolder_example1.png "Image generated from a point-dependent lambda."
-\image latex ConstImageFunctorHolder_example1.png "Image generated from a point-dependent lambda." width=5cm
  */
 
 } // namespace functors

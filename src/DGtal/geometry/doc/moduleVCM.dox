@@ -57,7 +57,6 @@ integrable function \f$\chi:\mathbb{R}^3 \to \mathbb{R}^+\f$ to the matrix
 \f]
 
 @image html vcm.png "Voronoi Covariance Measure of a point set in the plane."
-@image latex vcm.png "Voronoi Covariance Measure of a point set in the plane." width=8cm
 
 \note The stability result of @cite Merigot_2011-tvcg implies that
 information extracted from the covariance matrix such as normals or
@@ -136,7 +135,6 @@ Example geometry/volumes/dvcm-2d.cpp gives the full code for computing the \f$ \
 normal vector as well as detecting corners.
 
 @image html dvcm-hat-r.png "Normal vector and feature detection with Voronoi Covariance Measure."
-@image latex dvcm-hat-r.png "Normal vector and feature detection with Voronoi Covariance Measure." width=8cm
 
 
 
@@ -234,7 +232,6 @@ is a small piece of code that extracts the VCM normal for each surfel.
 \endcode
 
 @image html dvcm-3d-hat-r.png "Normal vector and feature detection with Voronoi Covariance Measure."
-@image latex dvcm-3d-hat-r.png "Normal vector and feature detection with Voronoi Covariance Measure." width=8cm
 
 
 \subsection moduleVCM_sec3_2 The class VCMDigitalSurfaceLocalEstimator
@@ -312,7 +309,6 @@ for ( typename Surface::ConstIterator it = ptrSurface->begin(),
 Example geometry/surfaces/dvcm-2d-curvature.cpp shows how to extract the curvature field (in absolute value) of a digital contour with VCMDigitalSurfaceLocalEstimator templated by functor functors::VCMAbsoluteCurvatureFunctor.
 
 @image html dvcm-curvature.png "Absolute curvature estimation with Voronoi Covariance Measure."
-@image latex dvcm-curvature.png "Absolute curvature estimation with Voronoi Covariance Measure." width=8cm
 
 
 */

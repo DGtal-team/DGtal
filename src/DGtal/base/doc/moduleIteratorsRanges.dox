@@ -131,7 +131,6 @@ In this example, [`i,j`) is not a valid range because `j` cannot be reached from
 and the whole range may be denoted by [`begin,end`). 
 
  @image html linearRange.png  "Linear range"
- @image latex linearRange.png  "Linear range"
 
 \subsection subsecIteratorRangesRangesMainConcepts Main concepts
 
@@ -292,7 +291,6 @@ A range of a circular data structure is illustrated below.
 In this example, [`i,j`) is of course a valid range.  
 
  @image html circularRange.png  "Circular range"
- @image latex circularRange.png  "Circular range"
 
 As long as `i != j`, circulators are quite similar to classic iterator
 in the subrange [`i,j`). More precisely, forward and bidirectional circulators 
