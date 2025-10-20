@@ -102,7 +102,7 @@ In the normal workflow, you can pull from the main DGtal
 repository (upstream)... 
 
 @code
-git pull upstream master
+git pull upstream main
 @endcode
 
 ...but only push to your own copy of DGtal (origin). 
@@ -116,7 +116,7 @@ The merge between the two repositories is done by another developper
 after a pull request. 
 To make a pull request, go to http://github.com/yourlogin/DGtal, 
 click on "Pull Request". Then, choose the two branches you would like 
-to merge (master in upstream and yourbranch in origin), write your 
+to merge (main in upstream and yourbranch in origin), write your 
 comments and click on "Send Pull Request". 
 
 
@@ -126,13 +126,13 @@ comments and click on "Send Pull Request".
 0- Before starting to work, pull the upstream (you have to be online). 
 
 @code
-git pull upstream master
+git pull upstream main
 @endcode
 
 
 
 
-1- By default, you have a main local branch called master. 
+1- By default, you have a main local branch called main. 
 Create a local branch "cool-feature". 
 
 @code
@@ -148,7 +148,7 @@ git branch
 Note also that the branch marked with a star is your 
 current local branch. At this point you should see
 @code
-- * master
+- * main
 - cool-feature
 @endcode
 
@@ -160,7 +160,7 @@ git checkout cool-feature
 
 After taping the command "git branch" you should see now: 
 @code
- - master
+ - main
  - * cool-feature
 @endcode
 
@@ -198,11 +198,11 @@ git push origin cool-feature:another-name
 
 
 5- If you have to work on another issue (e.g. bug #42), 
-you can create a new local branch "bug42" from your master,
+you can create a new local branch "bug42" from your main,
 jump onto it, commit edits, and push: 
 
 @code
-git checkout master
+git checkout main
 git branch bug42
 git checkout bug42
 git commit -a -m "Bug #42 fixed....."
@@ -217,12 +217,12 @@ go to http://github.com/yourlogin/DGtal and ask for a "Pull Request"
 you can remove your local branch: 
 
 @code
-git checkout master
+git checkout main
 git branch -d cool-feature
 @endcode
 
 And you can also remove the associated remote branch 
-(because everything should be merged into either the "master" of your fork, or the "master" of DGtal-team):
+(because everything should be merged into either the "main" of your fork, or the "main" of DGtal-team):
 
 @code
 git push origin :cool-feature
@@ -241,7 +241,7 @@ git stash
 @endcode
 will put all your edits (uncommited edits) into a patch stack (and remove them from your working copy). Then, you can create your new local branch and "pop" your edit from the stack to reapply the changes. E.g.:
 @code
-git pull //up-to-date branch "master"
+git pull //up-to-date branch "main"
 //...
 //edits
 //...
@@ -352,7 +352,7 @@ all your local commits)
 	svn merge URL (assuming your WC is trunk)
 	svn commit...
 	<==>
-	git checkout master (we go back to the "trunk")
+	git checkout main (we go back to the "trunk")
 	git merge toto (merger toto->trunk)	
 	git commit -a ...
 @endcode
@@ -365,13 +365,13 @@ all your local commits)
 Even it is very rare, conflit can appear when you try to apply a pull:
 
 @code 
->git pull upstream master
+>git pull upstream main
 
 remote: Counting objects: 1, done.
 remote: Total 1 (delta 0), reused 1 (delta 0)
 Unpacking objects: 100% (1/1), done.
 From github.com:DGtal-team/DGtal
- * branch            master     -> FETCH_HEAD
+ * branch            main     -> FETCH_HEAD
 Auto-merging doc/cellular-topology.dox
 CONFLICT (content): Merge conflict in doc/cellular-topology.dox
 Auto-merging src/DGtal/topology/KhalimskySpaceND.ih
