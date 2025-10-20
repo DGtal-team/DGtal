@@ -66,7 +66,6 @@ mode of digital space gives a nice illustration of what is this
 space. The 2-cell is in red, the 1-cell in green, the 0-cell in blue.
 
 @image html cellular-grid-space-1.png "Illustration of a cellular grid space with cells of different dimensions."
-@image latex cellular-grid-space-1.png "Illustration of a cellular grid space with cells of different dimensions." width=0.4\textwidth
 
 
 @subsection dgtal_ctopo_sec2  Cells in the cubical grid and Khalimsky coordinates
@@ -244,7 +243,6 @@ coordinates (the topology is known in the two latter cases).
 @endcode
 
 @image html ctopo-1.png "Displaying some cells in different colors."
-@image latex ctopo-1.png "Displaying some cells in different colors." width=0.5\textwidth
 
 
 The file ctopo-1-3d.cpp shows another example in 3D:
@@ -269,7 +267,6 @@ The file ctopo-1-3d.cpp shows another example in 3D:
 @endcode
 
   @image html ctopo-1-3d.png  "Displaying some cells in different colors."
-  @image latex ctopo-1-3d.png  "Displaying some cells in different colors." width=0.5\textwidth
 
 
 
@@ -306,9 +303,7 @@ methods concerning signed cells are prefixed by \c s.
 
   <CENTER>
 @image html ctopo-1b-3d.png "Visualisation of unsigned Cell"
-@image latex ctopo-1b-3d.png "Visualisation of unsigned Cell" width=0.4\textwidth
 @image html ctopo-1s-3d.png "Visualisation of signed Cell"
-@image latex ctopo-1s-3d.png "Visualisation of signed Cell" width=0.4\textwidth
   </CENTER>
 
 
@@ -390,7 +385,6 @@ cells:
   For instance (see.  khalimskySpaceScanner.cpp) you will obtain the default following scan:
 
 @image html khalimskySpaceScanner1.png "Sequence of visited pixels in a scan of Khalimsky Space (standard scan order)."
-@image latex khalimskySpaceScanner1.png "Sequence of visited pixels in a scan of Khalimsky Space (standard scan order)." width=0.4\textwidth
 
 - The scan can also be done by explicitly controlling the order:
 @code
@@ -406,7 +400,6 @@ for (q = K.uGetMax(q, 0); K.uIsInside(q,0); q = K.uGetDecr(q, 0))
 You will obtain the following scan:
 
  @image html khalimskySpaceScanner2.png "Sequence of visited pixels in a scan of Khalimsky Space (other scan order)."
- @image latex khalimskySpaceScanner2.png "Sequence of visited pixels in a scan of Khalimsky Space (other scan order)." width=0.4\textwidth
 
 - Translating arbitrarily a cell in the space with
   KhalimskySpaceND::uTranslation and

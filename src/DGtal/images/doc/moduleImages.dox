@@ -331,7 +331,6 @@ filled with 0 to 255 values like that:
 which looks like that with a simple HueShadeColorMap varying from 0 to 255 and with (1,1) the first bottom-left point:
 
 \image html image.png " (1) simple 16x16 image: (1,1) to (16,16) drawn with a simple HueShadeColorMap varying from 0 to 255." 
-\image latex image.png " (1) simple 16x16 image: (1,1) to (16,16) drawn with a simple HueShadeColorMap varying from 0 to 255." width=5cm 
 
 Here is now the construction of a simple image adapter that 
  use a subdomain of the initial image domain to
@@ -341,7 +340,6 @@ Here is now the construction of a simple image adapter that
 
 and here is the result:
 \image html subImage.png " (2) first bottom-left 8x8 image: (1,1) to (8,8) adapted from image (1) with a subdomain." 
-\image latex subImage.png " (2) first bottom-left 8x8 image: (1,1) to (8,8) adapted from image (1) with a subdomain." width=5cm 
 
 
 Here is then the construction of an image adapter that 
@@ -356,7 +354,6 @@ from the initial image domain.
 Here is the result:
 
 \image html specificImage.png " (3) 16x16 image: (1,1) to (16,16) adapted from image (1) with a specific domain." 
-\image latex specificImage.png " (3) 16x16 image: (1,1) to (16,16) adapted from image (1) with a specific domain." width=5cm </TD>
 
 Here is now the construction of an image adapter that 
  is a thresholded view of the initial scalar image: 
@@ -366,7 +363,6 @@ Here is now the construction of an image adapter that
 and here is the result with a simple GrayscaleColorMap varying from 0 to 1:
 
 \image html thresholderImage.png " (4) 16x16 image: (1,1) to (16,16) adapted from image (1) with a thresholder set to 127." 
-\image latex thresholderImage.png " (4) 16x16 image: (1,1) to (16,16) adapted from image (1) with a thresholder set to 127." width=5cm 
 
 Here is finally the construction of an image adapter that 
  use a functor to change 'unsigned char' values to 'double'
@@ -381,7 +377,6 @@ defined from the initial image:
 and here is the result with a simple HueShadeColorMap varying from 0. to logScale(255):
 
 \image html logImage.png " (5) 16x16 image: (1,1) to (16,16) adapted from image (1) with a log scale functor." 
-\image latex logImage.png " (5) 16x16 image: (1,1) to (16,16) adapted from image (1) with a log scale functor." width=5cm 
 
 
 \subsection imageadat  ImageAdapter 
@@ -431,13 +426,11 @@ and fill it using common iterator syntax:
 @snippet images/exampleArrayImageAdapter.cpp image_filling
 that gives us the following result:
 \image html ArrayImageAdapter_image.png " (6) simple 16x16 image: (1,1) to (16,16) drawn with a simple HueShadeColorMap varying from 0 to 255."
-\image latex ArrayImageAdapter_image.png " (6) simple 16x16 image: (1,1) to (16,16) drawn with a simple HueShadeColorMap varying from 0 to 255." width=5cm
 
 We can now create a read-only view of the same image on a sub-domain:
 @snippet images/exampleArrayImageAdapter.cpp ConstArrayImageAdapterForSubImage_creation
 that gives us:
 \image html ArrayImageAdapter_subImage.png " (7) first bottom-left 8x8 image: (1,1) to (8,8) adapted from image (1) with a subdomain."
-\image latex ArrayImageAdapter_subImage.png " (7) first bottom-left 8x8 image: (1,1) to (8,8) adapted from image (1) with a subdomain." width=5cm
 
 If we want to modify the image through this adapter, we must create a read-write instance using the following syntax:
 @snippet images/exampleArrayImageAdapter.cpp ArrayImageAdapterForSubImage_creation
@@ -447,13 +440,11 @@ and we can then modify it using the common syntax with a domain iterator:
 @snippet images/exampleArrayImageAdapter.cpp ArrayImageAdapterForSubImage_modifByDomain
 
 \image html ArrayImageAdapter_subImage_modifByDomain.png " (8) modifying the first bottom-left 8x8 image through the sub-domain view with a domain iterator."
-\image latex ArrayImageAdapter_subImage_modifByDomain.png " (8) modifying the first bottom-left 8x8 image through the sub-domain view with a domain iterator." width=5cm
 
 Alternatively, there is a computationally faster syntax (no need to linearize the point) using the method `getPoint` featured by the ArrayImageAdapter iterators (see ArrayImageIterator):
 @snippet images/exampleArrayImageAdapter.cpp ArrayImageAdapterForSubImage_modifByImage
 
 \image html ArrayImageAdapter_subImage_modifByImage.png " (9) modifying the first bottom-left 8x8 image through the sub-domain view with an image iterator."
-\image latex ArrayImageAdapter_subImage_modifByImage.png " (9) modifying the first bottom-left 8x8 image through the sub-domain view with an image iterator." width=5cm
 
 It is also possible to use ArrayImageAdater on any image model that provides a random-access iterator, like ImageContainerBySTLVector:
 @snippet images/exampleArrayImageAdapter.cpp ImageSTL_creation
@@ -466,7 +457,6 @@ From there, we can use all the previous features or, for example, use available 
 @snippet images/exampleArrayImageAdapter.cpp ArrayImageAdapterFromImageSTL_copy
 
 \image html ArrayImageAdapter_subImage_copyToImageSTL.png " (10) modifying the first bottom-left 8x8 image of a ImageContainerBySTLVector through the sub-domain view."
-\image latex ArrayImageAdapter_subImage_copyToImageSTL.png " (10) modifying the first bottom-left 8x8 image of a ImageContainerBySTLVector through the sub-domain view." width=5cm
 
 
 \section dgtalImagesFunctions Useful classes and functions
@@ -543,20 +533,17 @@ followed by the image definition:
 @snippet exampleConstImageFunctorHolder.cpp example1
 that gives us the following result:
 \image html ConstImageFunctorHolder_example1.png "(12) Image generated from a point-dependent lambda."
-\image latex ConstImageFunctorHolder_example1.png "(12) Image generated from a point-dependent lambda." width=5cm
 
 You can also use a functor that depends on the point and the image's domain:
 @snippet exampleConstImageFunctorHolder.cpp example2
 resulting in:
 \image html ConstImageFunctorHolder_example2.png "(13) Image generated from a lambda that depends on the point and the domain."
-\image latex ConstImageFunctorHolder_example2.png "(13) Image generated from a lambda that depends on the point and the domain." width=5cm
 
 Going further, you can also capture other images in the lambda so that to
 define a mix:
 @snippet exampleConstImageFunctorHolder.cpp example3
 resulting in:
 \image html ConstImageFunctorHolder_example3.png "(14) Image generated as the sum of two images."
-\image latex ConstImageFunctorHolder_example3.png "(14) Image generated as the sum of two images." width=5cm
 
 @see FunctorHolder, @ref moduleFunctors
 */

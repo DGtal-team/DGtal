@@ -44,7 +44,6 @@ The idea is the following (for a surfel \f$ s \f$):
 4. We finally take the cross product of the two 2D normal vectors.
 
 @image html maximalseg-ellipsoid-slices.png "Two slices on the digitization of an ellipsoid"
-@image latex maximalseg-ellipsoid-slices.png "Two slices on the digitization of an ellipsoid" width=8cm
 
 \section sectMaximalSegmentSliceEstimation2 Usage
 

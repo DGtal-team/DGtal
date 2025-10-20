@@ -490,7 +490,6 @@ COBANaivePlaneComputer (COBA).
    task.
 
 @image html coba-chord-benchmark.png "Evaluation of computation times of COBA and Chord algorithms according to the number of points. Times are in ms. We did not put the graph of COBANaivePlaneComputer with int64_t since we cannot exceed a diameter of 500. In this benchmark, the diameter was always 10 times the number of points."
-@image latex coba-chord-benchmark.png "Evaluation of computation times of COBA and Chord algorithms according to the number of points. Times are in ms. We did not put the graph of COBANaivePlaneComputer with int64_t since we cannot exceed a diameter of 500. In this benchmark, the diameter was always 10 times the number of points." width=5cm
 
 */
 

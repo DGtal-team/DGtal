@@ -88,7 +88,6 @@ digitally 0-convexity is the usual digital convexity.
 
 @image html non-fully-convex-triangles.png  "Examples of non fully digitally convex triangles in Z2. Missing 1-cells for 1-digital convexity are in blue, Missing 2-cells for 2-digital convexity are in green."
 
-@image latex non-fully-convex-triangles.png  "Examples of non fully digitally convex triangles in Z2. Missing 1-cells for 1-digital convexity are in blue, Missing 2-cells for 2-digital convexity are in green." width=6cm
 
 A last useful notion is the \e subconvexity, or \e tangency. Let \f$ X \subset
 \mathbb{Z}^d \f$ some arbitrary digital set. Then the digital set \f$
