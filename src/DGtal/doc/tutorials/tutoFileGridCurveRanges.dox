@@ -80,7 +80,6 @@ you can write your grid curve in a vector-graphics file
 Here is a png conversion of the resulting image: 
 
  @image html images/DisplayGridCurveTuto.png  "A small closed grid curve" 
- @image latex images/DisplayGridCurveTuto.png  "A small closed grid curve" width=5cm
 
 \section secttutofileGridCurveRanges3 Ranges
 
@@ -99,7 +98,6 @@ you can get the grid curve inner points as follows:
 @snippet tutorial-examples/fileGridCurveRanges.cpp fileGridCurveRanges-displayInnerPoints
 
  @image html images/DisplayInnerPointsTuto.png  "Inner points" 
- @image latex images/DisplayInnerPointsTuto.png  "Inner points" width=5cm
 
 If you have to (or want to) work with separating algorithms, 
 you can get the grid curve incident points as follows: 
@@ -107,7 +105,6 @@ you can get the grid curve incident points as follows:
 @snippet tutorial-examples/fileGridCurveRanges.cpp fileGridCurveRanges-displayIncidentPoints
 
  @image html images/DisplayIncidentPointsTuto.png  "Incident points" 
- @image latex images/DisplayIncidentPointsTuto.png  "Incident points" width=5cm
 
 See GridCurve for the exhaustive list of available ranges and their basic usage. 
 See @ref moduleGridCurveAnalysis for a general introduction about digital curves analysis. 

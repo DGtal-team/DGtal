@@ -137,39 +137,30 @@ See exampleParamCurve3dDigitization.cpp and exampleTrofoliKnot.cpp
 
 * Elliptic Helix (see EllipticHelix.h)
 \image html elliptic_helix_main_axis.png
-\image latex elliptic_helix_main_axis.png
 
 Knot \f$ 3_1 \f$ (see Knot_3_1.h)
 \image html knot_3_1.png
-\image latex knot_3_1.png
 
 Knot \f$ 3_2 \f$ (see Knot_3_2.h)
 \image html knot_3_2.png
-\image latex knot_3_2.png
 
 Knot \f$ 4_1 \f$ (see Knot_4_1.h)
 \image html knot_4_1.png
-\image latex knot_4_1.png
 
 Knot \f$ 4_3 \f$ (see Knot_4_3.h)
 \image html knot_4_3.png
-\image latex knot_4_3.png
 
 Knot \f$ 5_1 \f$ (see Knot_5_1.h)
 \image html knot_5_1.png
-\image latex knot_5_1.png
 
 Knot \f$ 5_2 \f$ (see Knot_5_2.h)
 \image html knot_5_2.png
-\image latex knot_5_2.png
 
 Knot \f$ 6_2 \f$ (see Knot_6_2.h)
 \image html knot_6_2.png
-\image latex knot_6_2.png
 
 Knot \f$ 7_4 \f$ (see Knot_7_4.h)
 \image html knot_7_4.png
-\image latex knot_7_4.png
 
 For more information about parametrized knots see  <a
 href="https://www.maa.org/sites/default/files/images/upload_library/23/stemkoski/knots/page1.html">https://www.maa.org/sites/default/files/images/upload_library/23/stemkoski/knots/page1.html</a>
@@ -213,7 +204,6 @@ High step values can lead to disconnections in the digitization. For example, kn
 scaling factors all equal 10 for a step 0.03 leads to
 
 \image html knot_3_1_low_step_value.png
-\image latex knot_3_1_low_step_value.png
 
 In order, to solve the above issue it is necessary to lower the step value e.g., to 0.003.
 

@@ -118,7 +118,6 @@ following snippet creates and outputs a 2D complex.
 @snippet topology/cubical-complex-illustrations.cpp cubical-complex-illustrations-X
 
 @image html cubical-complex-illustrations-X.png "Displaying a 2D cubical complex on a Board."
-@image latex cubical-complex-illustrations-X.png "Displaying a 2D cubical complex on a Board." width=5cm
 
 
 @section dgtal_ccomplex_sec3  Incidence within a cubical complex
@@ -170,7 +169,6 @@ X. In each case, you must give a subcomplex \a S of \a X which defines
 the cells for which you wish to compute the closure, star or link.
 
 @image html cubical-complex-illustrations-S.png "Cubical complex \a X in light grey and subcomplex \a S in dark grey."
-@image latex cubical-complex-illustrations-S.png "Cubical complex \a X in light grey and subcomplex \a S in dark grey." width=5cm
 
 
 - CubicalComplex::closure: returns the closure of the cells of \a S
@@ -180,7 +178,6 @@ the cells for which you wish to compute the closure, star or link.
   @snippet topology/cubical-complex-illustrations.cpp cubical-complex-illustrations-closure
 
   @image html cubical-complex-illustrations-closure.png "Closure of \a S in \a X, displayed in red."
-  @image latex cubical-complex-illustrations-closure.png "Closure of \a S in \a X, displayed in red." width=5cm
 
 - CubicalComplex::star: returns the star of the cells of \a S
   within this complex, i.e. the union of the star (co-faces + cell) in \a X of every cell of \a S.
@@ -188,7 +185,6 @@ the cells for which you wish to compute the closure, star or link.
   @snippet topology/cubical-complex-illustrations.cpp cubical-complex-illustrations-star
 
   @image html cubical-complex-illustrations-star.png "Star of \a S in \a X, displayed in red."
-  @image latex cubical-complex-illustrations-star.png "Star of \a S in \a X, displayed in red." width=5cm
 
 - CubicalComplex::link: returns the link of the cells of \a S within
   this complex, i.e. the closure of the star of \a S in \a X minus the
@@ -197,7 +193,6 @@ the cells for which you wish to compute the closure, star or link.
   @snippet topology/cubical-complex-illustrations.cpp cubical-complex-illustrations-link
 
   @image html cubical-complex-illustrations-link.png "Link of \a S in \a X, displayed in green."
-  @image latex cubical-complex-illustrations-link.png "Link of \a S in \a X, displayed in green." width=5cm
 
 @section dgtal_ccomplex_sec5  Interior, boundary of a complex
 
@@ -212,7 +207,6 @@ empty intersection:
   @snippet topology/cubical-complex-illustrations.cpp cubical-complex-illustrations-int
 
   @image html cubical-complex-illustrations-int.png "Interior of \a X, displayed in cyan."
-  @image latex cubical-complex-illustrations-int.png "Interior of \a X, displayed in cyan." width=5cm
   
 - CubicalComplex::boundary: returns the (topological) boundary of this
   complex \a X, i.e. the closure of \a X minus the interior of \a
@@ -222,7 +216,6 @@ empty intersection:
   @snippet topology/cubical-complex-illustrations.cpp cubical-complex-illustrations-bd
 
   @image html cubical-complex-illustrations-bd.png "Boundary of \a X, displayed in magenta."
-  @image latex cubical-complex-illustrations-bd.png "Boundary of \a X, displayed in magenta." width=5cm
   
 - CubicalComplex::getInteriorAndBoundary: returns both the boundary
   and the interior of X, faster then computing both separately if you
@@ -303,7 +296,6 @@ As you can see, when collapsing a complex X, you precise:
 Example topology/cubical-complex-collapse.cpp shows that it works also in 3D (in fact, it is nD).
 
 @image html cubical-complex-illustrations-collapse.png "Homotopic collapse of \a X, displayed in orange, with fixed points marked in blue."
-@image latex cubical-complex-illustrations-collapse.png "Homotopic collapse of \a X, displayed in orange, with fixed points marked in blue." width=5cm
 
 @section dgtal_ccomplex_sec8 Thinning in cubical complexes
 
@@ -336,10 +328,8 @@ d) run the algorithm (here two iterations):
 @snippet topology/cubicalComplexThinning.cpp thinn
 
 @image html ComplexBeforeThinning.png "The starting complex X before thinning." 
-@image latex ComplexBeforeThinning.png "The starting complex X before thinning." width=3cm
 
 @image html ParDirCollapse_2.png  "The starting complex X after two iterations of ParDirCollapse."
-@image latex ParDirCollapse_2.png  "The starting complex X after two iterations of ParDirCollapse." width=5cm
 
 The second scheme, so-called SurfaceCollapse is similar to ParDirCollapse. The only difference is that after each
 iteration of ParDirCollapse, faces of dimension \f$dim(X) - 1\f$ which are not included in faces of higher
@@ -352,7 +342,6 @@ d) run the algorithm:
 @snippet topology/cubicalComplexThinning.cpp thinnSurface
 
 @image html ParDirCollapse_collapseSurface.png "The starting complex X after SurfaceCollapse." 
-@image latex ParDirCollapse_collapseSurface.png "The starting complex X after SurfaceCollapse." width=3cm
 
 The last scheme, so-called IsthmusCollapse is similar to SurfaceCollapse. The only difference is that after each
 iteration of ParDirCollapse, we mark as non-collapsible those faces which are of dimension dim\f$(X) - 1\f$ and not
@@ -366,7 +355,6 @@ d) run the algorithm:
 @snippet topology/cubicalComplexThinning.cpp thinnIsthmus
 
 @image html ParDirCollapse_collapseIsthmus.png "The starting complex X after IsthmusCollapse." 
-@image latex ParDirCollapse_collapseIsthmus.png "The starting complex X after IsthmusCollapse." width=3cm
 
 For more details see the example topology/cubicalComplexThinning.cpp.
 

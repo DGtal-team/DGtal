@@ -35,7 +35,6 @@ It is well known that this set of digital points is a simple
 (3,5,-5).
 
 @image html dsl-standard-s.png "Standard Digital Straight Line of characteristics (3,5,-5)"
-@image latex dsl-standard-s.png "Standard Digital Straight Line of characteristics (3,5,-5)" width=5cm
 
 The \b slope of the DSL is \f$ a/b \f$, while \f$ \mu \f$ is the \b
 shift at origin. The \e remainder of the DSL is the value \f$ ax-by

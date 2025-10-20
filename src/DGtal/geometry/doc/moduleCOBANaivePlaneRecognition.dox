@@ -171,7 +171,6 @@ whenever you wish to extend the plane at this point.
 You may also have a look at example viewer3D-7-planes.cpp.
 
 @image html coba-naive-plane.png "Piece of naive plane containing the four green points. There is no naive plane containing also any one of the red points."
-@image latex coba-naive-plane.png "Piece of naive plane containing the four green points. There is no naive plane containing also any one of the red points." width=5cm
 
 
 \note \a TInternalInteger specifies the type of integer used in
@@ -241,10 +240,8 @@ performs better in practice than the given upper bounds, even assuming
 BigInteger.
 
 @image html COBA-timings.png "Time (in ms) to recognize a naive plane as a function of the number of points N (x-axis) and the diameter (y-axis). Time is averaged over 1000 random recognitions."
-@image latex COBA-timings.png "Time (in ms) to recognize a naive plane as a function of the number of points N (x-axis) and the diameter (y-axis). Time is averaged over 1000 random recognitions." width=5cm
 
 @image html COBA-updates.png "Number of updates (and deviation) when recognizing a naive plane, as a function of the number of points N (x-axis) and the diameter (y-axis). This number is averaged over 1000 random recognitions."
-@image latex COBA-updates.png "Number of updates (and deviation) when recognizing a naive plane, as a function of the number of points N (x-axis) and the diameter (y-axis). This number is averaged over 1000 random recognitions." width=5cm
 
 
 \section moduleCOBANaivePlaneRecognition_sec5 Application to greedy segmentation into digital planes
@@ -279,7 +276,6 @@ We display it using 3D viewers.
 @snippet geometry/surfaces/greedy-plane-segmentation.cpp greedy-plane-segmentation-visualization
 
 @image html greedy-plane-segmentation-al-w1.png "Greedy segmentation of Al capone into naive planes."
-@image latex greedy-plane-segmentation-al-w1.png "Greedy segmentation of Al capone into naive planes." width=6cm
 
 @note This approach to plane segmentation is very naive. Because there
 are favored axes when iterating (vertices are not randomly picked up),

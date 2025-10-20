@@ -150,7 +150,6 @@ You will obtain the following result in eps (you can also use the pdf format if 
 is installed on your system). 
 
 @image html images/churchLevelSets.png
-@image latex images/churchLevelSets.png "Church level sets." width=6cm
 
 
 By adding the obption @code
@@ -158,7 +157,6 @@ By adding the obption @code
 transparency.
 
 @image html images/churchLevelSetsTransp.png
-@image latex images/churchLevelSetsTransp.png "Church level sets." width=6cm
 
 
 \section secttutoImageGridCurveExctraction5 Required includes
