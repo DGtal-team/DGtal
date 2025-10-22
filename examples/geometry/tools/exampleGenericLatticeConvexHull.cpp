@@ -73,7 +73,7 @@ int main()
       // Compute convex hull
       QHull hull;
       bool ok = hull.compute( X ); 
-      int  k  = hull.affine_dimension;    // affine dimension of X
+      auto  k  = hull.affine_dimension;    // affine dimension of X
       // Compute statistics
       nb_per_dim [ k ] += 1;
       nb_vertices[ k ] += hull.positions.size(); // positions of vertices
