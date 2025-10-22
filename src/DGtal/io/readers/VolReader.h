@@ -44,71 +44,12 @@
 #include <sstream>
 #include <string>
 #include <cstdio>
-#include <map>
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CUnaryFunctor.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
 {
-
-  /**
-   * @brief Helper class to parse VolHeader
-   */
-  struct VolHeader {
-    // List required fields
-    inline static const std::string requiredFields[] {
-      "X", "Y", "Z", "Voxel-Size", "Int-Endian", "Voxel-Endian", "Alpha-Color"
-    };
-    // Count of required fields
-    inline static const unsigned int requiredFieldsCount = sizeof(requiredFields) / sizeof(requiredFields[0]);
-    VolHeader() { }
-
-    /**
-     * @brief Parse header given an inputstream
-     *
-     * This function may throw for early EOF or empty value. 
-     *
-     * @param in The input stream
-     */
-    bool parse(std::istream& in);
-  
-    /**
-     * @brief Validates the parsed information
-     *
-     * For now, it only checks that required fields
-     * are specified
-     */
-    bool validate() const;
-    
-    /**
-     * @brief Return a field, cast as the given type
-     *
-     * This function may throw if the field does not exist
-     *
-     * @see exists
-     * @param name The name of the field
-     * @tparam T Return value
-     */
-    template<typename T>
-    T getAs(const std::string& name) const;
-    
-    /**
-     * @brief Check if a field exists or not
-     *
-     * For non mandatory fields, this allows not to
-     * rely on throw by getAs.
-     *
-     * @see getAs
-     * @param field The field to check for existence
-     */
-    bool exists(const std::string& field) const;
-
-    private:
-      // Store fields information
-      std::map<std::string, std::string> myFields;
-  };
-  
 
   /////////////////////////////////////////////////////////////////////////////
   // template class VolReader
@@ -118,6 +59,9 @@ namespace DGtal
    *
    * The main import method "importVol" returns an instance of the template 
    * parameter TImageContainer.
+   *
+   * The private methods have been backported from the SimpleVol project 
+   * (see http://liris.cnrs.fr/david.coeurjolly).
    *
    * Example usage:
    * @code
@@ -170,40 +114,62 @@ namespace DGtal
     static ImageContainer importVol(const std::string & filename, 
                                     const Functor & aFunctor =  Functor());
     
-  }; // end of class VolReader
-  
-  // Forward declaration
-  template<class Space>
-  class DigitalSetByOctree;
-  
-  /**
-   * @brief Partial specialization for DigitalSetByOctree
-   *
-   * This function directly restores the tree and the 
-   * associated state.
-   *
-   * Note that this class is friend with DigitalSetByOctree.
-   * @see VolWriter
-   * @see VolReader 
-   * @see DigitalSetByOctree
-   *
-   * @tparam Space The space on which the DigitalSetByOctree is templated
-   * @tparam Functor Unused, here for compatibility
-   */
-  template<typename Space, typename Functor>
-  struct VolReader<DigitalSetByOctree<Space>, Functor> 
-  {
+  private:
+
+    typedef unsigned char voxel;
     /**
-     * @brief Import an octree from a file
-     *
-     * @param filename name if the input file
-     * @param unused Unused, here for compatibility
-     * 
-     * @return The octree represented within the file.
+     * This class help us to associate a field type and his value.
+     * An object is a pair (type, value). You can copy and assign
+     * such objects.
      */
-    static DigitalSetByOctree<Space> importVol(const std::string & filename, 
-                                               const Functor & unused =  Functor());
-  };
+    /* In recent C++, we should use a std::map, but we prefer (badly) code it
+       by hand for compatibility with old compilers.
+       At this time, there is a limit of 30 fields in header :-} */
+    struct HeaderField {
+      //! Constructor. The string are copied.
+      HeaderField( const char *t, const char *v ) :
+        type( strdup(t) ), value( strdup(v) ) {}
+      ~HeaderField() {
+        free( type );
+        free( value );
+      }
+      //! Copy constructor
+      HeaderField( const HeaderField &h ) :
+        type( strdup(h.type) ), value( strdup(h.value) ) {};
+      //! Default constructor
+      HeaderField() : type(NULL), value(NULL) {};
+      //! Assignement operator
+      const HeaderField &operator = (const HeaderField &h) {
+        free( type );
+        free( value );
+        if (h.type != NULL) {
+          type = strdup( h.type );
+          value = strdup( h.value );
+        }
+        return *this;
+      }
+      //! Type of field (e.g. Voxel-Size)
+      char *type;
+      //! Value of field (e.g. 2)
+      char *value;
+    };
+
+
+    //! Returns NULL if this field is not found
+    static const char *getHeaderValue( const char *type, const HeaderField * header );
+
+    //! Returns non-zero if failure
+    static     int getHeaderValueAsInt( const char *type, int *dest , const HeaderField * header); 
+    
+    //! Internal method which returns the index of a field or -1 if not found.
+    static int getHeaderField( const char *type, const HeaderField * header ) ;
+    
+    //! Global list of required fields in a .vol file
+    static const char *requiredHeaders[];
+   
+  }; // end of class VolReader
+
+
 } // namespace DGtal
 
 
