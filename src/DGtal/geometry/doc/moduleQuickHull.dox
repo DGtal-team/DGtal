@@ -28,7 +28,15 @@ exampleLatticeBallDelaunay2D.cpp ,
 exampleRationalBallQuickHull3D.cpp ,
 exampleRationalBallDelaunay3D.cpp ,
 exampleQuickHull3D.cpp ,
-testQuickHull.cpp , testConvexityHelper.cpp
+testQuickHull.cpp , testConvexityHelper.cpp ,
+testGenericLatticeConvexHull.cpp ,
+exampleGenericLatticeConvexHull3D.cpp ,
+exampleGenericLatticeConvexHull4D.cpp
+
+@note Since version 2.0, QuickHull detects the affine dimension of
+input sets of points exactly. You may also use class
+GenericLatticeConvexHull to compute the convex hull of non full
+dimensional sets. See  \ref dgtal_quickhull_sec4
 
 @section dgtal_quickhull_sec1 The QuickHull convex hull algorithm
 
@@ -51,14 +59,14 @@ for a simplex) and all the facets are then queued.
    - ignore it if contains no "above" point(s)
    - otherwise pick the furthest above point \a p
    - find by neighbor adjacencies from \a f all the facets visible from \a p (i.e. \a p is above them)
-   - define the horizon H as the set of ridges R, where a ridge is a pair of two neighbor facets, where the first is visible from \a ^, whilst the second is not.
+   - define the horizon H as the set of ridges R, where a ridge is a pair of two neighbor facets, where the first is visible from \a p, whilst the second is not.
    - define the new facets as the ones formed by the umbrella from \a p to its ridges.
    - merge possible parallel facets and update "on" points
    - reassign "above" points of \a f to these new facets and put them into the queue
 
 3. The algorithm stops when all current facets have no "above" points.
 
-4. Optionnaly extract vertices of the convex hull polytopes by
+4. Optionally it extracts vertices of the convex hull polytope by
 determining the "on" points that belong to at least \a d facets.
 
 @note In opposition to the usual `qhull` implementation, this
@@ -84,7 +92,7 @@ using the convex hull in a higher dimensional space is generally much
 slower than CGAL method for computing the Delaunay triangulation by
 point location (5-10 times slower in our experience).
 
-@section dgtal_quickhull_sec2 Computing convex hulls and Delaunay cell complex using QuickHull
+@section dgtal_quickhull_sec2 Convex hull and Delaunay cell complex
 
 In order to get a fine control over convex hull computations, you can
 use class QuickHull directly. It is required to choose a \b kernel
@@ -282,7 +290,7 @@ by convex hull computations might overflow. You may consider using
 DGtal::BigInteger at least for the internal integer representation.
 
 
-@subsection dgtal_quickhull_sec23 Delaunay cell complex of lattice points (2D example)
+@subsection dgtal_quickhull_sec23 Delaunay cell complex of lattice points (2D)
 
 Computing the Delaunay complex of lattice points is very similar to computing its convex hull. You should just use the appropriate kernel as follows:
 
@@ -337,12 +345,13 @@ total time      = 20723 ms.
 \endverbatim
  
 
-@subsection dgtal_quickhull_sec24 Delaunay cell complex of rational points (2D example)
+@subsection dgtal_quickhull_sec24 Delaunay cell complex of rational points (2D)
 
 It is completely similar with the previous example, just replace the kernel by DelaunayRationalKernel and specify a precision at kernel instantiation.
 
 
-@subsection dgtal_quickhull_sec25 Further information stored in QuickHull object
+@subsection dgtal_quickhull_sec25 Further information
+
 
 A number of public data is stored in object QuickHull and is
 meaningfull after a convex hull computation:
@@ -373,13 +382,28 @@ input points <------------ processed points <---------- convex hull vertices
 QuickHull:timings stores also the respective times taken by each step
 of the computation (see examples).
 
-@section dgtal_quickhull_sec3 Using ConvexityHelper for convex hull and Delaunay services
+
+You may inquire about the current state of QuickHull object with
+QuickHull::status. Possible states are
+
+- QuickHull::Status::Uninitialized QuickHull is empty and has just been instantiated.
+- QuickHull::Status::InputInitialized A range of input points has been given to QuickHull.
+- QuickHull::Status::SimplexCompleted An initial full-dimensional simplex has been found. QuickHull core algorithm can start.
+- QuickHull::Status::FacetsCompleted All facets of the convex hull are identified.
+- QuickHull::Status::VerticesCompleted All vertices of the convex hull are determined.
+- QuickHull::Status::AllCompleted Same as VerticesCompleted.
+- QuickHull::Status::NotFullDimensional Error: the initial simplex is not full dimensional.
+- QuickHull::Status::InvalidRidge Error: some ridge is not consistent (probably integer overflow).
+- QuickHull::Status::InvalidConvexHull Error: the convex hull does not contain all its points (probably integer overflow).
+
+
+@section dgtal_quickhull_sec3 Use ConvexityHelper as a shortcut
 
 Class ConvexityHelper offers several functions that makes easier the
 computation of convex hull or Delaunay complex (of course with a
 little bit less flexibility than using QuickHull directly).
 
-@subsection dgtal_quickhull_sec31 Building a lattice polytope (nD)
+@subsection dgtal_quickhull_sec31 Build a lattice polytope (nD)
 
 Building a lattice polytope in nD just requires a call to
 ConvexityHelper::computeLatticePolytope.
@@ -393,14 +417,14 @@ const auto P = ConvexityHelper< 2 >::computeLatticePolytope( V );
 polytope to be Minkowski summable by a cubical grid cell (see
 ConvexityHelper::computeLatticePolytope reference doc).
 
-@subsection dgtal_quickhull_sec32 Building the boundary of a lattice convex hull as a surface (3D) 
+@subsection dgtal_quickhull_sec32 Get boundary surface of lattice convex hull (3D)
 
 You may simply use one of the two static methods
 ConvexityHelper::computeConvexHullBoundary to build either a
 SurfaceMesh or a PolygonalSurface that represents the boundary convex
 hull of a set of 3D lattice points.
 
-@subsection dgtal_quickhull_sec33 Building the convex hull cell complex of lattice points (nD)
+@subsection dgtal_quickhull_sec33 Get convex hull cell complex of lattice points (nD)
 
 You can use ConvexityHelper::computeConvexHullCellComplex to build a
 cell complex that represents the convex hull of the given lattice
@@ -418,7 +442,7 @@ ConvexCellComplex< Point > complex;
 bool ok = Helper::computeConvexHullCellComplex( complex, V );
 \endcode
 
-@subsection dgtal_quickhull_sec34 Building the Delaunay cell complex of lattice points (nD)
+@subsection dgtal_quickhull_sec34 Get Delaunay cell complex of lattice points (nD)
 
 You may use ConvexityHelper::computeDelaunayCellComplex to compute the
 Delaunay cell complex of a range of lattice points.
@@ -445,7 +469,7 @@ You can have a look at exampleLatticeBallDelaunay3D.cpp for a complete example, 
 </tr>
 </table>
 
-@subsection dgtal_quickhull_sec35 Building a rational polytope (nD)
+@subsection dgtal_quickhull_sec35 Build a rational polytope (nD)
 
 Building a rational polytope in nD that approximately encloses the
 given range of real points just requires a call to
@@ -457,7 +481,7 @@ point coordinates.
 
 @note In opposition with ConvexityHelper::computeConvexHullBoundary the precision must be an integer (no smaller than one), but it acts similarly. This is because the built polytope must be a rational polytope (i.e. constraints are rational).
 
-@subsection dgtal_quickhull_sec36 Building the boundary of a rational convex hull as a surface (3D)
+@subsection dgtal_quickhull_sec36 Get boundary surface of rational convex hull (3D)
 
 You may simply use one of the two static methods
 ConvexityHelper::computeConvexHullBoundary to build either a
@@ -483,7 +507,7 @@ floating-point point coordinates.
 </tr>
 </table>
 
-@subsection dgtal_quickhull_sec37 Building the convex hull cell complex of real points (nD)
+@subsection dgtal_quickhull_sec37 Get convex hull cell complex of real points (nD)
 
 
 You can use ConvexityHelper::computeConvexHullCellComplex to build a
@@ -496,7 +520,7 @@ vertices than the points lying on the convex hull boundary.
 
 
 
-@subsection dgtal_quickhull_sec38 Building the Delaunay cell complex of real points (nD)
+@subsection dgtal_quickhull_sec38 Get Delaunay cell complex of real points (nD)
 
 You may use ConvexityHelper::computeDelaunayCellComplex to approximate the
 Delaunay cell complex of a range of real points, by specifying a precision.
@@ -516,6 +540,139 @@ You can have a look at exampleRationalBallDelaunay3D.cpp for a complete example,
 
 \image html exampleRationalBallDelaunay3D-100.jpg "Delaunay cell decomposition of 100 randomly chosen points in a 3D ball with radius 10, with precision 100 and retraction 0.25"
 
+@section dgtal_quickhull_sec4 Generic convex hulls 
+
+Since 2.0, you can compute the convex hull of any input set of point
+\a X in any dimension, whatever the affine dimension of \a X. The core
+class is GenericLatticeConvexHull, parameterized by the dimension of
+input points, the coordinate type for points and a type for internal
+computations and output.
+
+Its use is quite simple. The following example draws at random 100000
+sets of 3-9 points in 3D, and computes the proportions of the affine
+dimension of their convex hull as their average number of vertices.
+
+\snippet examples/geometry/tools/exampleGenericLatticeConvexHull.cpp generic-qhull-example
+
+It outputs
+\verbatim
+0.024% are 0-dimensional #V=1 #F=0 (24/24)
+11.2% are 1-dimensional #V=2 #F=0 (11208/11208)
+11.3% are 2-dimensional #V=3.02 #F=3.02 (11255/11255)
+77.5% are 3-dimensional #V=6.41 #F=8.62 (77513/77513)
+\endverbatim
+
+Essentially, you call method GenericLatticeConvexHull::compute with an
+input set of points and the instantiated GenericLatticeConvexHull
+object holds the convex hull in its following public data members:
+
+- GenericLatticeConvexHull::affine_dimension The affine dimension of
+  the input set.
+
+- GenericLatticeConvexHull::positions The positions of the
+  verticesfacets (a subset of the input points).
+
+- GenericLatticeConvexHull::facets The range giving for each facet the
+  indices of its vertices.
+
+- GenericLatticeConvexHull::points The set of input points, indexed as
+  in the input, possibly converted into the chosen coordinate type.
+
+- GenericLatticeConvexHull::vertex2point The indices of the vertices
+  of the convex hull in the input set.
+  
+- GenericLatticeConvexHull::projected_points The set of projected
+  input points, indexed as in the input, converted into the chosen
+  coordinate type. If the affine dimension \a k is equal to the
+  ambient dimension \a n, then it is equal to
+  GenericLatticeConvexHull::points. Otherwise the last \f$ n-k \f$
+  coordinates are null).
+
+- GenericLatticeConvexHull::affine_basis The affine basis used for
+  projection (identity if the convex hull is full dimensional,
+  otherwise a basis in reduced echelon form).
+
+
+You may yave a look at exampleGenericLatticeConvexHull3D.cpp and
+exampleGenericLatticeConvexHull4D.cpp for examples of use of this
+class.
+
+<table>
+<tr><td>
+\image html genqhull-affdim1.jpg "Convex hull of 10 points of affine dimension 1" width=90%
+</td><td>
+\image html genqhull-affdim2.jpg "Convex hull of 100 points of affine dimension 2" width=90%
+</td></tr>
+<tr><td>
+\image html genqhull-affdim3-1.jpg "Convex hull of 1000 points of affine dimension 3" width=90%
+</td><td>
+\image html genqhull-affdim3-0.jpg "Convex hull of 1000 points of affine dimension 3 (interior view)" width=90%
+</td></tr>
+</table>
+
+\image html genqhull-4d-affdim2.jpg "Convex hull of 100 4D points of affine dimension 2, projected along the 4 main axes." width=90%
+
+
+  
+You may also count the number of lattice points within the convex
+polytope spanned by the computed convex hull.
+
+- GenericLatticeConvexHull::count() Returns the number of integer points
+  lying within the convex hull polytope.
+
+- GenericLatticeConvexHull::countInterior() Returns the number of
+  integer points lying within the interior of the convex hull polytope.
+
+- GenericLatticeConvexHull::countBoundary() Returns the number of
+  integer points lying on the convex hull boundary of the polytope.
+
+- GenericLatticeConvexHull::countUpTo Returns the
+  number of integer points within the polytope up to some maximum
+  number \a max. For instance, a d-dimensional simplex that contains
+  no integer points in its interior contains only d+1 points. If there
+  is more, you know that the simplex has a non empty interior.
+
+@warning Counting results are valid only if
+GenericLatticeConvexHull::proj_dilation is equal to 1 (i.e. the affine
+basis for the projection was obtained through an unimodular
+transformation). Otherwise the result is greater or equal to the
+expected number.
+
+
+@section dgtal_quickhull_sec5 Further notes
+
+Since 2.0, the QuickHull and ConvexityHelper classes have been slightly improved:
+
+- The determination of the full dimensionality of input points is now
+  exact: it keeps a randomized initial approach to try to get an as
+  big as possible initial simplex, but if no simplex was found, it
+  uses \ref AffineGeometry to determine the exact affine dimension of the input.
+
+  
+- ConvexityHelper handles a more general family of degenerated convex
+  hulls. ConvexityHelper::computeLatticePolytope and
+  Computelatticepolytope can now compute convex hulls of:
+  
+  - 0D and 1D affine dimension in dD
+  - d-1D and dD affine dimension in dD
+  
+  Before this version, only 2D affine dimension in 3D was possible.
+  
+  @see ConvexityHelper::computeDegeneratedLatticePolytope, ConvexityHelper::computeDegeneratedConvexHullVertices 
+
+- method ConvexHullCommonKernel::compute( const std::vector<
+  CoordinatePoint >& vpoints, const CombinatorialPlaneSimplex& simplex
+  ), whose aim is to compute a vector orthogonal to the affine space
+  spanned by a given d-simplex, uses now
+  AffineGeometry::orthogonalVector instead of cofactor computations
+  with SimpleMatrix.
+
+  This approach is quicker when the dimension d increases (with a
+  complexity upper bounded by \f$O(d^3)\f$), while keeping the same
+  running times as before in 2D and 3D.
+
+  For instance, in 6D, quickhull is almost twice faster than before.
+  
 */
 
 } //  namespace DGtal

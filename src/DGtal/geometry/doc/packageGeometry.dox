@@ -92,6 +92,7 @@ of arbitrary dimension, by the means of separable and incremental distance trans
 - Tools 
   - \subpage moduleGeometricPredicates (Tristan Roussillon)
   - \subpage moduleHull2D (Tristan Roussillon, Bertrand Kerautret)
+  - \subpage moduleAffineGeometry (Jacques-Olivier Lachaud)
   - \subpage moduleQuickHull (Jacques-Olivier Lachaud)
 
 
