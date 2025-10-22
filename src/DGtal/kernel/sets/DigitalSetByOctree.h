@@ -68,11 +68,10 @@ namespace DGtal
     template <class Space>
     class DigitalSetByOctree {
     public:
-        // Friend can not refer to partial specialization...
-        template<class Type, class Func>
-        friend class VolWriter;
-        template<class Type, class Func>
-        friend class VolReader;
+        template<class>
+        friend class SVOWriter;
+        template<class>
+        friend class SVOReader;
 
         using DimIndex = std::uint8_t;
         using CellIndex = typename Space::UnsignedInteger;

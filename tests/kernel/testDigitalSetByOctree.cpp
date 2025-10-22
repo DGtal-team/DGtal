@@ -36,6 +36,8 @@
 
 #include "DGtal/io/writers/VolWriter.h"
 #include "DGtal/io/readers/VolReader.h"
+#include "DGtal/io/writers/SVOWriter.h"
+#include "DGtal/io/readers/SVOReader.h"
 
 using namespace DGtal;
 using namespace std;
@@ -179,12 +181,9 @@ TEST_CASE_METHOD(TestFixture, "Benchmarking DigitalSetByOctree using Catch2", "[
             octree1.insert(Z3i::Point{c, c, c});
         }
         octree1.convertToDAG();
-
-        VolWriter<DigitalSetByOctree<Z3i::Space>> writer;
-        VolReader<DigitalSetByOctree<Z3i::Space>, int> reader;
-
-        writer.exportVol("tmp.vol", octree1, true);
-        auto octree2 = reader.importVol("tmp.vol");
+        
+        SVOWriter::exportSVO("tmp.svo", octree1, true);
+        auto octree2 = SVOReader<Z3i::Space>::importSVO("tmp.svo");
 
         auto it1 = octree1.begin();
         auto it2 = octree2.begin();
