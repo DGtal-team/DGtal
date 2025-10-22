@@ -182,7 +182,7 @@ TEST_CASE_METHOD(TestFixture, "Benchmarking DigitalSetByOctree using Catch2", "[
         }
         octree1.convertToDAG();
         
-        SVOWriter::exportSVO("tmp.svo", octree1, true);
+        SVOWriter<Z3i::Space>::exportSVO("tmp.svo", octree1, true);
         auto octree2 = SVOReader<Z3i::Space>::importSVO("tmp.svo");
 
         auto it1 = octree1.begin();
