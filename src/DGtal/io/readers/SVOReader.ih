@@ -129,7 +129,7 @@ namespace DGtal {
     }
     
     const std::string format   = getAs<std::string>(header, "Format");
-    const std::int32_t version  = getAs<std::int32_t>(header, "Version");
+    // const std::int32_t version  = getAs<std::int32_t>(header, "Version");
     const std::int32_t compress = getAs<std::int32_t>(header, "Compression");
     const std::int32_t dim      = getAs<std::int32_t>(header, "Dim");
     const std::int32_t state    = getAs<std::int32_t>(header, "State");

@@ -43,7 +43,7 @@ namespace DGtal {
    *  by a ':'. 
    *  - Each field is defined on its own line. A second ':' in a line would 
    *  be part of the value.
-   *  - Spaces (' ', '\r', '\t') around the value are ignored. 
+   *  - Spaces (' ', '\\r', '\\t') around the value are ignored. 
    *  - There is technically no specified order, although it is recommended 
    *  to follow the one below.
    *  - Fields are:
