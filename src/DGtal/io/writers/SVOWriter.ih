@@ -1,0 +1,94 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+#pragma once
+
+/**
+ * @file SVOWriter.ih
+ * @author Bastien Doignies (bastien.doignies@liris.cnrs.fr)
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2025/10/20
+ *
+ * This file is part of the DGtal library.
+ */
+
+#include <boost/iostreams/filtering_stream.hpp>
+
+namespace DGtal {
+  template<typename Stream, typename Int>
+  static inline void writeBinInt(Stream& stream, Int i) {
+    boost::endian::native_to_little_inplace(i); 
+    stream.write(reinterpret_cast<const char*>(&i), sizeof(Int));
+  }
+
+  template<class Space>
+  bool SVOWriter<Space>::exportSVO(const std::string& filename, const DigitalSetByOctree<Space>& octree, bool compressed) {
+    using Octree = DigitalSetByOctree<Space>;
+    
+    std::ofstream out(filename.c_str(), std::ios_base::out | std::ios::binary);
+    if (!out) {
+      trace.error() << "Can't open file '" << filename << "'" << std::endl;
+      throw IOException{};
+    }
+
+    std::stringstream mainbuf;
+
+    out << "Format: SVO\n";
+    out << "Version: 1\n";
+    out << "Compression: " << compressed << '\n';
+    out << "Size: " << static_cast<uint64_t>(octree.size()) << '\n';
+    out << "State: " << static_cast<uint64_t>(octree.myState) << '\n';
+    out << "Dim: " << Octree::dimension << '\n';
+    out << "LowerBound:";
+    for (size_t i = 0; i < Space::dimension; ++i) {
+      out << " " << octree.domain().lowerBound()[i];
+    }
+    out << '\n';
+    out << "UpperBound:";
+    for (size_t i = 0; i < Space::dimension; ++i) {
+      out << " " << octree.domain().upperBound()[i];
+    }
+    out << "\n";
+    out << ".\n";
+
+    const auto& nodes = octree.myNodes;
+
+    boost::iostreams::filtering_ostream outData;
+
+    if (compressed) outData.push(boost::iostreams::zlib_compressor(boost::iostreams::zlib::best_compression));
+    outData.push(out);
+
+    // Technical data of current implementation
+    writeBinInt(outData, static_cast<int64_t>(sizeof(typename Octree::Size)));
+    writeBinInt(outData, static_cast<int64_t>(sizeof(typename Octree::CellIndex)));
+
+    writeBinInt(outData, (typename Octree::Size)nodes.size());
+    for (size_t i = 0; i < nodes.size(); ++i) {
+      writeBinInt(outData, (typename Octree::Size)nodes[i].size());
+    }
+
+    for (size_t i = 0; i < nodes.size(); ++i) {
+      for (size_t j = 0; j < nodes[i].size(); ++j) {
+        for (size_t k = 0; k < Octree::CELL_COUNT; ++k) {
+          writeBinInt(outData, nodes[i][j].children[k]);
+        }
+      }
+    }
+
+    return true;
+  }
+}

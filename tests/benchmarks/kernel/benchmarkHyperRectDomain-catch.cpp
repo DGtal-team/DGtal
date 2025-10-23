@@ -15,8 +15,8 @@
  **/
 
 /**
- * @file benchmarkHyperRectDomain.cpp
  * @ingroup Tests
+ * @file benchmarkHyperRectDomain.cpp
  * @author Roland Denis (\c roland.denis@math.univ-lyon1.fr )
  *
  * @date 2019/10/14

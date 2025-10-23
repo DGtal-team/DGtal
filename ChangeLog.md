@@ -15,6 +15,8 @@
   - Removing the doxygen image includes for the latex target (David Coeurjolly, [#1811](https://github.com/DGtal-team/DGtal/pull/1811))
 
 ## Bug fixes
+- *Kernel*
+  - New DigitalSet model with SVO or SVDAG (Sparse Voxel Octree w/o acyclic graph features) for efficient representation of large digital objects (Bastien Doignies, [#1808](https://github.com/DGtal-team/DGtal/pull/1804))
 
 - *Arithmetics*
   - Fix `testLightSternBrocot` issue on windows with the `rand()` function (Jacques-Olivier Lachaud, [#1801](https://github.com/DGtal-team/DGtal/pull/1801))
@@ -33,7 +35,6 @@
 - *Python*
   - Build backend upgraded to scikit-build-core (Bastien Doignies, [#1804](https://github.com/DGtal-team/DGtal/pull/1804))
   - New CI for pypi deployement with cibuildwheel (Bastien Doignies, [#1804](https://github.com/DGtal-team/DGtal/pull/1804))
-
 
 # DGtal 2.0
 
