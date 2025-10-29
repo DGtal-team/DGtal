@@ -25,6 +25,11 @@
  * This file is part of the DGtal library.
  */
 
+#if defined(DGTAL_WITH_POLYSCOPE_VIEWER)
+#else
+#error DGTAL_WITH_POLYSCOPE_VIEWER flag not set during the cmake step
+#endif 
+
 #include "DGtal/io/Display3D.h"
 
 #include "polyscope/polyscope.h"

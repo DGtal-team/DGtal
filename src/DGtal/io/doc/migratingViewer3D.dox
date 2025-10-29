@@ -14,7 +14,7 @@ namespace DGtal {
 
 [TOC]
 
-@warning Do not forget to enable Polyscope at the `cmake` step, e.g. with `cmake .. -DGTAL_WITH_POLYSCOPE_VIEWER=true` 
+@warning Do not forget to enable Polyscope at the `cmake` step, e.g. with `cmake .. -DGTAL_WITH_POLYSCOPE_VIEWER=true`.
 
 \section DGtalMigration_Intro Introduction and features changes
 

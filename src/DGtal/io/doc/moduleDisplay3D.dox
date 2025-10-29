@@ -29,6 +29,8 @@ namespace DGtal {
   embedding mechanism to convert digital objects to structures in @f$
   \mathbb{R}^n@f$.
 
+@warning Do not forget to enable Polyscope at the `cmake` step, e.g. with `cmake .. -DGTAL_WITH_POLYSCOPE_VIEWER=true`.
+
 
 \section DGtalGLV_PolyscopeViewer Interactive visualization from PolyscopeViewer
 
