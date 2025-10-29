@@ -14,6 +14,8 @@ namespace DGtal {
 
 [TOC]
 
+@warning Do not forget to enable Polyscope at the `cmake` step, e.g. with `cmake .. -DGTAL_WITH_POLYSCOPE_VIEWER=true` 
+
 \section DGtalMigration_Intro Introduction and features changes
 
 With version 2.0 of DGtal, the internal and external structures of 3D visualization have been completely changed. The aim is to take advantage of the advanced features of Polyscope, a geometric object viewer. 
