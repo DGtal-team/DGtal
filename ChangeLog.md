@@ -3,7 +3,7 @@
 ## New features
 
 - *DGtal project*
- - The default branch for the `DGtal-team/DGtal` project has been switched from `master` to `main`. To update your local copy of DGtal, use the following instructions  (David Coeurjolly, [#1812](https://github.com/DGtal-team/DGtal/pull/1812)): 
+  - The default branch for the `DGtal-team/DGtal` project has been switched from `master` to `main`. To update your local copy of DGtal, use the following instructions  (David Coeurjolly, [#1812](https://github.com/DGtal-team/DGtal/pull/1812)): 
 ```
 git branch -m master main                                                                  
 git fetch origin
