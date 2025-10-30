@@ -81,7 +81,7 @@ include(TargetDoxygenDoc OPTIONAL)
 include(TargetDoxygenDox OPTIONAL)
 
 # -----------------------------------------------------------------------------
-# uninstall target
+# install/uninstall targets
 # -----------------------------------------------------------------------------
 # Define cmake install path here so it is available for everyone
 include(GNUInstallDirs)
