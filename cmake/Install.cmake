@@ -1,5 +1,4 @@
 include(CMakePackageConfigHelpers)
-set(DGTAL_INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/DGtal")
 
 # On system where boost is fetched through multiples sources, there can
 # be some confusion as to which version is linked. 
@@ -38,7 +37,7 @@ if (${DGTAL_ENABLE_TARGET_INSTALL})
   install(EXPORT DGtalTargets
     FILE DGtalTargets.cmake
     NAMESPACE DGtal::
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake
+    DESTINATION ${DGTAL_CMAKE_INSTALL_DESTINATION}
   )
 endif()
 
@@ -117,7 +116,7 @@ install(FILES
     "${CMAKE_CURRENT_BINARY_DIR}/DGtalConfig.cmake"
     "${CMAKE_CURRENT_BINARY_DIR}/DGtalConfigVersion.cmake"
      ${_find_cmake_files}
-  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake
+  DESTINATION ${DGTAL_CMAKE_INSTALL_DESTINATION}
 )
 
 # Also export find dependency files (no export commands for this) 

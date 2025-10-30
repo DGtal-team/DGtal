@@ -43,7 +43,7 @@ function(cleanup_target target ho)
   )
   install(EXPORT ${target}Targets
       FILE ${target}Config.cmake
-      DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake
+      DESTINATION ${DGTAL_CMAKE_INSTALL_DESTINATION}
   )
 
   get_property(includes TARGET ${target} PROPERTY INCLUDE_DIRECTORIES)
