@@ -38,7 +38,7 @@ if (${DGTAL_ENABLE_TARGET_INSTALL})
   install(EXPORT DGtalTargets
     FILE DGtalTargets.cmake
     NAMESPACE DGtal::
-    DESTINATION ${DGTAL_INSTALL_DESTINATION}
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake
   )
 endif()
 
@@ -95,7 +95,7 @@ write_basic_package_version_file(
 configure_package_config_file(
   ${PROJECT_SOURCE_DIR}/cmake/DGtalConfig.cmake.in
   "${CMAKE_CURRENT_BINARY_DIR}/DGtalConfig.cmake"
-  INSTALL_DESTINATION ${DGTAL_INSTALL_DESTINATION}
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake 
   NO_CHECK_REQUIRED_COMPONENTS_MACRO
 )
 
@@ -114,10 +114,10 @@ set(_find_cmake_files
 )
 
 install(FILES
-          "${CMAKE_CURRENT_BINARY_DIR}/DGtalConfig.cmake"
-          "${CMAKE_CURRENT_BINARY_DIR}/DGtalConfigVersion.cmake"
-           ${_find_cmake_files}
-        DESTINATION ${DGTAL_INSTALL_DESTINATION}
+    "${CMAKE_CURRENT_BINARY_DIR}/DGtalConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/DGtalConfigVersion.cmake"
+     ${_find_cmake_files}
+  DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake
 )
 
 # Also export find dependency files (no export commands for this) 
