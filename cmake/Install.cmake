@@ -14,10 +14,23 @@ if (${DGTAL_ENABLE_TARGET_INSTALL})
   #------------------------------------------------------------------------------
   # DGtal Configuration file for the install target
   #------------------------------------------------------------------------------
+  install(TARGETS
+    DGtal_STB DGTAL_LibBoard DGTAL_BoostAddons
+    EXPORT DGtalModulesTargets
+    DESTINATION ${DGTAL_INSTALL_DEPS_DESTINATION}
+  )
+  export(TARGETS
+    DGtal_STB DGTAL_LibBoard DGTAL_BoostAddons
+    FILE DGtalModulesTargets.cmake
+  )
+  install(EXPORT DGtalModulesTargets
+    FILE DGtalModulesTargets.cmake
+    DESTINATION ${DGTAL_INSTALL_CMAKE_DESTINATION}
+  )
+
   install(TARGETS 
     DGtal 
     # Dependancies also built by the project
-    DGtal_STB DGTAL_LibBoard DGTAL_BoostAddons
     EXPORT DGtalTargets
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -25,13 +38,10 @@ if (${DGTAL_ENABLE_TARGET_INSTALL})
     INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
   )
 
-
   # Export file locally also, so the DGtalConfig.cmake 
   # in the build/ directory can work 
   export(TARGETS 
     DGtal 
-    # Dependancies also built by the project
-    DGtal_STB DGTAL_LibBoard DGTAL_BoostAddons
     NAMESPACE DGtal::
     FILE DGtalTargets.cmake
   )
@@ -48,9 +58,13 @@ endif()
 # Note : this also copies a few .cpp and CMakeLists but simplifies the code here
 install(DIRECTORY
   "${PROJECT_SOURCE_DIR}/src/Board"
-  "${PROJECT_SOURCE_DIR}/src/DGtal"
   "${PROJECT_SOURCE_DIR}/src/BoostAddons"
   "${PROJECT_SOURCE_DIR}/src/stb"
+  DESTINATION ${DGTAL_INSTALL_DEPS_DESTINATION}
+)
+
+install(DIRECTORY
+  "${PROJECT_SOURCE_DIR}/src/DGtal"
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 # COPY Generated files

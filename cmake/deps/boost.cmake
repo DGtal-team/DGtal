@@ -209,7 +209,7 @@ endforeach()
 # Install boost files when installing library
 install(DIRECTORY ${BOOST_INCLUDE_DIRS} DESTINATION ${DGTAL_INSTALL_DEPS_DESTINATION})
 install(TARGETS boost ${boost_export_list} EXPORT boost)
-install(EXPORT boost DESTINATION ${DGTAL_INSTALL_CMAKE_DESTINATION} NAMESPACE Boost::)
+install(EXPORT boost FILE BoostConfig.cmake DESTINATION ${DGTAL_INSTALL_CMAKE_DESTINATION} NAMESPACE Boost::)
 
 # Export target Boost::headers
 export(TARGETS
