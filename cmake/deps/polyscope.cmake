@@ -45,16 +45,21 @@ function(cleanup_target target ho)
       FILE ${target}Config.cmake
       DESTINATION ${DGTAL_CMAKE_INSTALL_DESTINATION}
   )
-
+  
   get_property(includes TARGET ${target} PROPERTY INCLUDE_DIRECTORIES)
-  install(DIRECTORY ${includes} DESTINATION include/${target})
+  set(existring_include_dirs)
+  foreach(file in ${includes})
+    if (EXISTS ${file})
+      list(APPEND existing_include_dirs ${file})
+    endif()
+  endforeach()
+  install(DIRECTORY ${existing_include_dirs} DESTINATION include/${target})
 endfunction()
 
 # glm does not have an include_directories by default when pulled through polyscope
 # we instead copy source dir wich is the correct location
 get_property(glm_dir TARGET glm PROPERTY SOURCE_DIR)
 set_target_properties(glm PROPERTIES INCLUDE_DIRECTORIES ${glm_dir})
-set_target_properties(glm-header-only PROPERTIES INCLUDE_DIRECTORIES ${glm_dir})
 
 # Polyscope dependencies
 cleanup_target(imgui OFF)
