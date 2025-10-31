@@ -24,6 +24,8 @@ if (${DGTAL_ENABLE_TARGET_INSTALL})
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
   )
+
+
   # Export file locally also, so the DGtalConfig.cmake 
   # in the build/ directory can work 
   export(TARGETS 
@@ -37,7 +39,7 @@ if (${DGTAL_ENABLE_TARGET_INSTALL})
   install(EXPORT DGtalTargets
     FILE DGtalTargets.cmake
     NAMESPACE DGtal::
-    DESTINATION ${DGTAL_CMAKE_INSTALL_DESTINATION}
+    DESTINATION ${DGTAL_INSTALL_CMAKE_DESTINATION}
   )
 endif()
 
@@ -102,11 +104,10 @@ configure_package_config_file(
 # find_package for DGtalConfig.cmake
 #------------------------------------------------------------------------------
 set(_find_cmake_files
-  "${PROJECT_SOURCE_DIR}/cmake/deps/eigen.cmake"
+  # Libraries not pulled by the project. Hence, we need to copyt he cmake that
+  # finds them
   "${PROJECT_SOURCE_DIR}/cmake/deps/FindCairo.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/deps/FindFFTW3.cmake"
-  "${PROJECT_SOURCE_DIR}/cmake/deps/polyscope.cmake"
-  "${PROJECT_SOURCE_DIR}/cmake/deps/eigen.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/deps/libigl.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/deps/openmp.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/CPM.cmake"
@@ -116,7 +117,7 @@ install(FILES
     "${CMAKE_CURRENT_BINARY_DIR}/DGtalConfig.cmake"
     "${CMAKE_CURRENT_BINARY_DIR}/DGtalConfigVersion.cmake"
      ${_find_cmake_files}
-  DESTINATION ${DGTAL_CMAKE_INSTALL_DESTINATION}
+  DESTINATION ${DGTAL_INSTALL_CMAKE_DESTINATION}
 )
 
 # Also export find dependency files (no export commands for this) 

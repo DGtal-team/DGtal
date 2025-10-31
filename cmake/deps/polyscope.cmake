@@ -24,16 +24,14 @@ function(cleanup_target target ho)
   set_target_properties(${target} PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "")
   target_include_directories(${target} 
     INTERFACE
-      $<BUILD_INTERFACE:${target_include_dir}>
-      $<INSTALL_INTERFACE:include/${target}> 
-      $<INSTALL_INTERFACE:include> 
+    $<BUILD_INTERFACE:${target_include_dir}>
+    $<INSTALL_INTERFACE:${DGTAL_INSTALL_DEPS_DESTINATION}/${target}> 
   )
 
   if (NOT DEFINED ho)
     target_include_directories(${target} PUBLIC
         $<BUILD_INTERFACE:${target_include_dir}>
-        $<INSTALL_INTERFACE:include/${target}> 
-        $<INSTALL_INTERFACE:include> 
+        $<INSTALL_INTERFACE:${DGTAL_INSTALL_DEPS_DESTINATION}/${target}> 
     )
   endif()
 
@@ -43,7 +41,7 @@ function(cleanup_target target ho)
   )
   install(EXPORT ${target}Targets
       FILE ${target}Config.cmake
-      DESTINATION ${DGTAL_CMAKE_INSTALL_DESTINATION}
+      DESTINATION ${DGTAL_INSTALL_CMAKE_DESTINATION}
   )
   
   get_property(includes TARGET ${target} PROPERTY INCLUDE_DIRECTORIES)
@@ -53,7 +51,8 @@ function(cleanup_target target ho)
       list(APPEND existing_include_dirs ${file})
     endif()
   endforeach()
-  install(DIRECTORY ${existing_include_dirs} DESTINATION include/${target})
+  message(STATUS "${target}: ${existing_include_dirs}")
+  install(DIRECTORY ${existing_include_dirs} DESTINATION ${DGTAL_INSTALL_DEPS_DESTINATION}/${target})
 endfunction()
 
 # glm does not have an include_directories by default when pulled through polyscope
@@ -70,7 +69,5 @@ cleanup_target(glm OFF)
 cleanup_target(glm-header-only ON)
 cleanup_target(nlohmann_json OFF)
 cleanup_target(MarchingCube OFF)
-
-# GLM has a special setup fix it here !
 
 cleanup_target(polyscope OFF)

@@ -207,9 +207,9 @@ foreach (name ${BOOST_INCLUDE_LIBRARIES})
 endforeach()
 
 # Install boost files when installing library
-install(DIRECTORY ${BOOST_INCLUDE_DIRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/DGtal/3rdParties/)
+install(DIRECTORY ${BOOST_INCLUDE_DIRS} DESTINATION ${DGTAL_INSTALL_DEPS_DESTINATION})
 install(TARGETS boost ${boost_export_list} EXPORT boost)
-install(EXPORT boost DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/boost NAMESPACE Boost::)
+install(EXPORT boost DESTINATION ${DGTAL_INSTALL_CMAKE_DESTINATION} NAMESPACE Boost::)
 
 # Export target Boost::headers
 export(TARGETS

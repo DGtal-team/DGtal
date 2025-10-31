@@ -17,7 +17,7 @@ target_include_directories(DGtal PUBLIC
   # build/src/DGtal
   $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/src>
   # INSTALL_INTERFACE must not contain absolute paths
-  $<INSTALL_INTERFACE:${INSTALL_INCLUDE_DIR_RELATIVE}>
+  $<INSTALL_INTERFACE:${DGTAL_INSTALL_DEPS_DESTINATION}>
 )
 
 target_link_libraries(DGtal PUBLIC DGtal_STB DGTAL_LibBoard DGTAL_BoostAddons Boost::boost)
