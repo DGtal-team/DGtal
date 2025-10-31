@@ -18,9 +18,10 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG_OLD}")
 # points to build dir. This is forbidden by CMake (in install/export).
 # This function cleans INTERFACE_INCLUDE_DIRECTORIES to use generator expression
 # instead. It also provide the necessary install and exports.
+
+include(CMakePrintHelpers)
 function(cleanup_target target ho)
   get_property(target_include_dir TARGET ${target} PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
-
   set_target_properties(${target} PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "")
   target_include_directories(${target} 
     INTERFACE
@@ -45,12 +46,20 @@ function(cleanup_target target ho)
   )
   
   get_property(includes TARGET ${target} PROPERTY INCLUDE_DIRECTORIES)
+  cmake_print_properties(
+    TARGETS ${target} 
+    PROPERTIES
+    INCLUDE_DIRECTORIES
+    INTERFACE_INCLUDE_DIRECTORIES
+  )
+
   set(existring_include_dirs)
   foreach(file in ${includes})
     if (EXISTS ${file})
       list(APPEND existing_include_dirs ${file})
     endif()
   endforeach()
+  message(STATUS "$${target}: Filtered dirs {existing_include_dirs}")
   install(DIRECTORY ${existing_include_dirs} DESTINATION ${DGTAL_INSTALL_DEPS_DESTINATION}/${target})
 endfunction()
 
