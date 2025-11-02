@@ -39,7 +39,7 @@
 #include "DGtal/geometry/curves/parametric/NaiveParametricCurveDigitizer3D.h"
 //! [DigiHelixHeader]
 
-#ifdef DGTAL_WITH_POLYSCOPE
+#ifdef DGTAL_WITH_POLYSCOPE_VIEWER
   #include "DGtal/io/viewers/PolyscopeViewer.h"
 #endif
 

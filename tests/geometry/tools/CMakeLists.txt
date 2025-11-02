@@ -19,7 +19,7 @@ foreach(FILE ${DGTAL_TESTS_SRC})
 endforeach()
 
 
-if (DGTAL_WITH_POLYSCOPE)
+if (DGTAL_WITH_POLYSCOPE_VIEWER)
   foreach(FILE ${DGTAL_TESTS_VSRC})
     DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
   endforeach()

@@ -15,6 +15,7 @@ git remote set-head origin -a
 
 - *IO*
   - Polyscope viewer upgraded from 2.4 to 2.5 (David Coeurjolly,  [#1796](https://github.com/DGtal-team/DGtal/pull/1796)). Reverting to 2.4  due to build issues (David Coeurjolly,  [#1797](https://github.com/DGtal-team/DGtal/pull/1797))
+  - The DGTAL_BUILD_POLYSCOPE_EXAMPLES option has been removed. If the polyscope viewer is enabled (DGTAL_WITH_POLYSCOPE_VIEWER), the polyscope examples are automatically built (David Coeurjolly, [#1814](https://github.com/DGtal-team/DGtal/pull/1814))
 
 - *Documentation*
   - Refactoring of the volumetric examples in the Shortcuts (David Coeurjolly, [#1807](https://github.com/DGtal-team/DGtal/pull/1807))
@@ -36,6 +37,10 @@ git remote set-head origin -a
   - Adding option not to install targets to avoid crashes when boost is fetched through multiple channels ([#1809](https://github.com/DGtal-team/DGtal/pull/1809))
   - Cleaning up the Github Actions reuses (Bastien Doignies, [#1793](https://github.com/DGtal-team/DGtal/pull/1793))
   - Add cache to github actions (Bastien Doignies, [#1805](https://github.com/DGtal-team/DGtal/pull/1805))
+
+- *IO*
+  - Error is raised if the polyscope viewer is used without the DGTAL_WITH_POLYSCOPE_VIEWER flag (David Coeurjolly, [#1814](https://github.com/DGtal-team/DGtal/pull/1814))
+  - Replacing  DGTAL_WITH_POLYSCOPE with DGTAL_WITH_POLYSCOPE_VIEWER flags (David Coeurjolly, [#1814](https://github.com/DGtal-team/DGtal/pull/1814))
 
 - *Python*
   - Build backend upgraded to scikit-build-core (Bastien Doignies, [#1804](https://github.com/DGtal-team/DGtal/pull/1804))

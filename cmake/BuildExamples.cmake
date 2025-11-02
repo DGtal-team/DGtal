@@ -14,10 +14,10 @@ if (DGTAL_BUILD_EXAMPLES)
   # -----------------------------------------------------------------------------
   # polyscope examples
   # -----------------------------------------------------------------------------
-  option(DGTAL_BUILD_POLYSCOPE_EXAMPLES "Build polyscope examples." OFF)
-  if (DGTAL_BUILD_POLYSCOPE_EXAMPLES )
-    message(STATUS "Build polyscope examples ENABLED (DGTAL_BUILD_POLYSCOPE_EXAMPLES)")
+  if (DGTAL_WITH_POLYSCOPE_VIEWER)
+    message(STATUS "Build polyscope examples ENABLED (DGTAL_WITH_POLYSCOPE_VIEWER)")
   else()
-    message(STATUS "Build polyscope examples DISABLED (DGTAL_BUILD_POLYSCOPE_EXAMPLES)")
+    message(STATUS "Build polyscope examples DISABLED (DGTAL_WITH_POLYSCOPE_VIEWER)")
   endif()
 endif()
+message(STATUS "-------------------------------------------------------------------------------")

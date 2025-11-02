@@ -19,7 +19,7 @@ foreach(FILE ${DGTAL_TUTO_EXAMPLES_SRC})
    endif()
 endforeach()
 
-if (DGTAL_WITH_POLYSCOPE)
+if (DGTAL_WITH_POLYSCOPE_VIEWER)
   set(DGTAL_TUTO_EXAMPLES_POLYSCOPE_SRC
     shapeDTViewer
     volDTGranulo

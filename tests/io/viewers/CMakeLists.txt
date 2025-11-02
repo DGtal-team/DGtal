@@ -11,7 +11,7 @@ set(VIEWER_BASED_TESTS_SRC
   testDisplayKSCell
   )
 
-if (  DGTAL_WITH_POLYSCOPE )
+if (  DGTAL_WITH_POLYSCOPE_VIEWER )
   foreach(FILE ${VIEWER_BASED_TESTS_SRC})
     DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
   endforeach()
