@@ -137,13 +137,14 @@ int main()
                       faces.begin(),
                       faces.end());
 
+  // Initialize polyscope
+  polyscope::init();
+  
   psVertices = polyscope::registerPointCloud("Vertices", positions);
     
   std::vector<std::array<size_t,2>> edges={{0,1},{1,2},{2,3},{3,4},{4,0} };
   psBoundary = polyscope::registerCurveNetwork("Edges", positions, edges);
   
-  // Initialize polyscope
-  polyscope::init();
   
   psMesh = polyscope::registerSurfaceMesh("Single face", positions, faces);
 
