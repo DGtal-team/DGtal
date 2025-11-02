@@ -37,7 +37,7 @@
 #include "DGtal/geometry/curves/parametric/Knot_3_1.h"
 #include "DGtal/geometry/curves/parametric/NaiveParametricCurveDigitizer3D.h"
 
-#ifdef DGTAL_WITH_POLYSCOPE
+#ifdef DGTAL_WITH_POLYSCOPE_VIEWER
 #include "DGtal/io/viewers/PolyscopeViewer.h"
 #endif
 
@@ -75,7 +75,7 @@ int main()
 
  trace.info() << "exampleParamCurve3dDigitization" << endl;
 
- PolyscopeViewer<> viewer;
+ PolyscopeViewer viewer;
 
  MyDigitalCurve digitalCurve;
  MyMetaData metaData;
