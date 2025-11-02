@@ -88,7 +88,7 @@ endforeach()
 message(STATUS "DGtal version = ${DGtal_VERSION}")
 write_basic_package_version_file(
   "${CMAKE_CURRENT_BINARY_DIR}/DGtalConfigVersion.cmake"
-  VERSION "${DGTAL_VERSION}"
+  VERSION "${DGtal_VERSION}"
   COMPATIBILITY AnyNewerVersion
 )
 
