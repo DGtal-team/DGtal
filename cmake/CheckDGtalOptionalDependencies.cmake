@@ -211,9 +211,8 @@ if (DGTAL_WITH_POLYSCOPE_VIEWER)
   include(polyscope)
 
   target_link_libraries(DGtal PUBLIC polyscope)
-  target_compile_definitions(DGtal PUBLIC -DDGTAL_WITH_POLYSCOPE)
+  target_compile_definitions(DGtal PUBLIC -DDGTAL_WITH_POLYSCOPE_VIEWER)
   set(POLYSCOPE_FOUND_DGTAL 1)
-  set(DGTAL_WITH_POLYSCOPE 1)
   set(DGTAL_WITH_POLYSCOPE_VIEWER 1)
 endif()
 

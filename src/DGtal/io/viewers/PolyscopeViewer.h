@@ -25,8 +25,7 @@
  * This file is part of the DGtal library.
  */
 
-#if defined(DGTAL_WITH_POLYSCOPE_VIEWER)
-#else
+#if !defined(DGTAL_WITH_POLYSCOPE_VIEWER)
 #error DGTAL_WITH_POLYSCOPE_VIEWER flag not set during the cmake step
 #endif 
 
