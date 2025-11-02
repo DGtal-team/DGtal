@@ -124,10 +124,10 @@ int main()
                       positions.end(),
                       faces.begin(),
                       faces.end());
-  psMesh = polyscope::registerSurfaceMesh("digital surface", positions, faces);
-
   // Initialize polyscope
   polyscope::init();
+
+  psMesh = polyscope::registerSurfaceMesh("digital surface", positions, faces);
 
   // Set the callback function
   polyscope::state::userCallback = myCallback;

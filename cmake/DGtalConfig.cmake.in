@@ -8,7 +8,7 @@
 include(CMakeFindDependencyMacro)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
 
-set(DGTAL_VERSION "@DGTAL_VERSION@")
+set(DGTAL_VERSION "@DGtal_VERSION@")
 
 #### Required dependencies  ####
 find_dependency(Boost REQUIRED

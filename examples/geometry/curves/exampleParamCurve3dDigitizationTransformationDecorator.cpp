@@ -40,7 +40,7 @@
 #include "DGtal/images/RigidTransformation3D.h"
 //! [DigiRotHelixHeader]
 
-#ifdef DGTAL_WITH_POLYSCOPE
+#ifdef DGTAL_WITH_POLYSCOPE_VIEWER
 #include "DGtal/io/viewers/PolyscopeViewer.h"
 #endif
 
