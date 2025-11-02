@@ -207,7 +207,7 @@ endif()
 # Look for Polyscope.
 # -----------------------------------------------------------------------------
 set(POLYSCOPE_FOUND_DGTAL 0)
-if (DGTAL_WITH_POLYSCOPE_VIEWER OR DGTAL_BUILD_POLYSCOPE_EXAMPLES)
+if (DGTAL_WITH_POLYSCOPE_VIEWER)
   include(polyscope)
 
   target_link_libraries(DGtal PUBLIC polyscope)

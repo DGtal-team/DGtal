@@ -1,11 +1,7 @@
-if (NOT DGTAL_BUILD_POLYSCOPE_EXAMPLES)
+if (NOT DGTAL_WITH_POLYSCOPE_VIEWERS)
   return()
 endif()
 
-if (NOT TARGET polyscope)
-  # Fetch library
-  include(polyscope)
-endif()
 
 set(DGTAL_EXAMPLES_POLYSCOPE_SRC
   dgtalCalculus
