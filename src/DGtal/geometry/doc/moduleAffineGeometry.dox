@@ -40,7 +40,7 @@ computations are \b exact when types are \b integral (up to integer
 overflow), while a \b tolerance can be provided for floating-point
 numbers (default tolerance: between -1e-12 and 1e-12 is zero).
 
-* <b> affine dimension and affine subset </b>
+* <b> Affine dimension and affine subset </b>
 
   - functions::computeAffineDimension( const std::vector< TPoint >& X,
   const double tolerance ) Given a range of points \a X, returns the
@@ -58,7 +58,7 @@ numbers (default tolerance: between -1e-12 and 1e-12 is zero).
   these points that form an affine basis of \a X[I]. Equivalently it
   is a simplex whose affine space spans all the points of \a X[I].
 
-* <b> affine basis and independent vectors </b>
+* <b> Affine basis and independent vectors </b>
 
   The computed bases are in echelon reduced form, except when using
   completeBasis where the last vector may be asked to be orthogonal to
@@ -87,7 +87,7 @@ numbers (default tolerance: between -1e-12 and 1e-12 is zero).
   guaranteed to be \b orthogonal to all the previous vectors,
   otherwise it is just an independent canonic vector.
 
-* <b> affine basis of codimension 1 </b>
+* <b> Affine basis of codimension 1 </b>
 
   - functions::getOrthogonalLatticeBasis( std::vector< TPoint >& B,
   const TInputPoint& N, bool shortened ) Given a lattice vector \a N,
@@ -97,7 +97,7 @@ numbers (default tolerance: between -1e-12 and 1e-12 is zero).
   `shortened` is false, the basis is in echelon form, otherwise the
   vectors are shortened by pairwise linear combinations.
 
-* <b> orthogonal vector to basis of codimension 1 </b>
+* <b> Orthogonal vector to basis of codimension 1 </b>
 
   - functions::computeOrthogonalVectorToBasis( const
   std::vector<TPoint>& basis ) Given `d-1` independent vectors \a
@@ -114,7 +114,7 @@ numbers (default tolerance: between -1e-12 and 1e-12 is zero).
   \a X, returns a vector that is orthogonal to this affine set, if it
   is d-1-dimensional.
 
-* <b> utilities </b>
+* <b> Utilities </b>
 
   - functions::computeSimplifiedVector( const TPoint& v ) Given a
   vector, returns the aligned vector with its component simplified by
@@ -325,13 +325,13 @@ AffineBasis::Type.
     normal.
 
     
-* <b> standard services </b>
+* <b> Standard services </b>
 
   - AffineBasis::dimension() returns the dimension of the spanned affine subspace.
   - AffineBasis::origin() returns a point on the spanned affine subspace.
   - AffineBasis::basis() returns the vectors spanning the affine subspace.
 
-* <b> geometric services </b>
+* <b> Geometric services </b>
 
   - AffineBasis::isParallel  returns 'true' iff the
     vectors \a w lies in this affine space.
@@ -339,7 +339,7 @@ AffineBasis::Type.
   - AffineBasis::isOnAffineSpace returns 'true' iff the
     point \a p lies in this affine space.
 
-* <b> projection services </b>
+* <b> Projection services </b>
 
   - AffineBasis::decompose Decomposes a point \a p into a tuple \f$
     (d,L,R) \f$, such that: \f$ d (p - o) = L \cdot B + R \f$, where R
