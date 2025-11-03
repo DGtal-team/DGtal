@@ -21,7 +21,9 @@ find_dependency(ZLIB REQUIRED
   )
 
 set(DGTAL_WITH_EIGEN 1)
-find_dependency(Eigen REQUIRED)
+if (NOT @DGTAL_WITH_EIGEN_ITK@) # Delegate finding Eigen to ITK
+  find_dependency(Eigen REQUIRED)
+endif()
 set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3::Eigen)
 
 if (@LIBIGL_FOUND_DGTAL@) 
