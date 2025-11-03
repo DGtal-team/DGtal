@@ -139,7 +139,7 @@ namespace DGtal
 
   template < class Space, class KSpace>  class Display3D;
 
-#if defined( DGTAL_WITH_POLYSCOPE )
+#if defined( DGTAL_WITH_POLYSCOPE_VIEWER )
   template < class Space, class KSpace> class PolyscopeViewer;
 #endif
 

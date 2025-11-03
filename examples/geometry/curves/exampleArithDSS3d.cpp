@@ -85,7 +85,7 @@ int main()
   //display  
   Point p;
 
-#ifdef DGTAL_WITH_POLYSCOPE
+#ifdef DGTAL_WITH_POLYSCOPE_VIEWER
 
   PolyscopeViewer viewer;
   viewer.allowReuseList = true; // groups segments
@@ -96,7 +96,7 @@ int main()
   Decomposition::SegmentComputerIterator i = theDecomposition.begin();
   for ( ; i != theDecomposition.end(); ++i) {
     SegmentComputer currentSegmentComputer(*i);
-     #ifdef DGTAL_WITH_POLYSCOPE
+     #ifdef DGTAL_WITH_POLYSCOPE_VIEWER
        viewer.drawAsBalls();
        viewer << currentSegmentComputer;  
        viewer.defaultStyle();
@@ -106,7 +106,7 @@ int main()
   } 
   
   
-  #ifdef DGTAL_WITH_POLYSCOPE
+  #ifdef DGTAL_WITH_POLYSCOPE_VIEWER
     viewer.show();
   #endif
     

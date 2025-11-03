@@ -56,7 +56,7 @@ This command line produces the following output (points are displayed as voxels)
 #include "ConfigExamples.h"
 #include "DGtal/geometry/curves/GridCurve.h"
 
-#ifdef DGTAL_WITH_POLYSCOPE
+#ifdef DGTAL_WITH_POLYSCOPE_VIEWER
   #include "DGtal/io/viewers/PolyscopeViewer.h"
 #endif
 ///////////////////////////////////////////////////////////////////////////////
@@ -101,7 +101,7 @@ int main( int argc, char** argv )
   inputStream.close();
   //! [GridCurveFromDataFile]
 
-#ifdef DGTAL_WITH_POLYSCOPE
+#ifdef DGTAL_WITH_POLYSCOPE_VIEWER
   PolyscopeViewer<Space,K3> viewer(ks);
 
   if (type == "gridcurve")

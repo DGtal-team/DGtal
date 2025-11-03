@@ -14,7 +14,7 @@ foreach(FILE ${DGTAL_EXAMPLES_SRC})
      DGtal_add_example(${FILE})
 endforeach()
 
-if (  DGTAL_WITH_POLYSCOPE )
+if (  DGTAL_WITH_POLYSCOPE_VIEWER )
    set( DGTAL_EXAMPLES_POLYSCOPE_SRC
       fullConvexityAnalysis3D
       fullConvexityThinning3D

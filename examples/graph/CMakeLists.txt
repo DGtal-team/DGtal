@@ -7,7 +7,7 @@ foreach(FILE ${DGTAL_EXAMPLES_TOPO_SRC})
 endforeach()
 
 
-if ( DGTAL_WITH_POLYSCOPE )
+if ( DGTAL_WITH_POLYSCOPE_VIEWER )
    set(DGTAL_EXAMPLES_POLYSCOPE_SRC
      volDistanceTraversal
    )

@@ -2,7 +2,7 @@
 
 Main website: [https://dgtal.org](https://dgtal.org)
 
-[![CI (linux/macOS/windows) - PR](https://github.com/DGtal-team/DGtal/actions/workflows/build-PR-master.yml/badge.svg)](https://github.com/DGtal-team/DGtal/actions/workflows/build-PR-master.yml) [![Nightly-build documentation and deploy](https://github.com/DGtal-team/DGtal/actions/workflows/deployDoc-master.yml/badge.svg)](https://github.com/DGtal-team/DGtal/actions/workflows/deployDoc-master.yml)
+[![CI (linux/macOS/windows) - PR](https://github.com/DGtal-team/DGtal/actions/workflows/build-PR-main.yml/badge.svg)](https://github.com/DGtal-team/DGtal/actions/workflows/build-PR-main.yml) [![Nightly-build documentation and deploy](https://github.com/DGtal-team/DGtal/actions/workflows/deployDoc-main.yml/badge.svg)](https://github.com/DGtal-team/DGtal/actions/workflows/deployDoc-main.yml)
 
 Description
 ===========

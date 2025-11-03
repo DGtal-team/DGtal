@@ -2,7 +2,21 @@
 # Project definition
 # -----------------------------------------------------------------------------
 cmake_minimum_required (VERSION 3.20)
-project (DGtal VERSION 2.1.0)
+
+# Reading version 
+file(READ "VERSION" version_file_raw)
+string(REGEX REPLACE "[\r\n]" "" version_file "${version_file_raw}")
+string(REGEX MATCHALL "([0-9]+)" version_parts ${version_file})
+
+set(DGtal_VERSION ${version_file})
+list(GET version_parts 0 DGtal_VERSION_MAJOR)
+list(GET version_parts 1 DGtal_VERSION_MINOR)
+list(GET version_parts 2 DGtal_VERSION_PATCH)
+
+set(PROJECT_VERSION ${DGtal_VERSION})
+set(VERSION ${DGtal_VERSION})
+
+project (DGtal VERSION ${DGtal_VERSION})
 
 # Allow for cmake 3.5. This is required indirectly by polyscope (via glad)
 set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
@@ -23,7 +37,6 @@ list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/deps)
 set(DGtal_VERSION_MAJOR ${CMAKE_PROJECT_VERSION_MAJOR})
 set(DGtal_VERSION_MINOR ${CMAKE_PROJECT_VERSION_MINOR})
 set(DGtal_VERSION_PATCH ${CMAKE_PROJECT_VERSION_PATCH})
-set(DGTAL_VERSION ${CMAKE_PROJECT_VERSION})
 set(PROJECT_VERSION ${CMAKE_PROJECT_VERSION})
 set(VERSION ${CMAKE_PROJECT_VERSION})
 
