@@ -20,7 +20,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG_OLD}")
 # instead. It also provide the necessary install and exports.
 
 include(CMakePrintHelpers)
-function(cleanup_target target ho)
+function(cleanup_target target include_paths)
   get_property(target_include_dir TARGET ${target} PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
   set_target_properties(${target} PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "")
   target_include_directories(${target} 
@@ -28,12 +28,14 @@ function(cleanup_target target ho)
     $<BUILD_INTERFACE:${target_include_dir}>
     $<INSTALL_INTERFACE:${DGTAL_INSTALL_DEPS_DESTINATION}/${target}> 
   )
-
-  if (NOT DEFINED ho)
-    target_include_directories(${target} PUBLIC
-        $<BUILD_INTERFACE:${target_include_dir}>
-        $<INSTALL_INTERFACE:${DGTAL_INSTALL_DEPS_DESTINATION}/${target}> 
-    )
+  
+  if (NOT ${include_paths})
+    foreach(path ${include_paths}) 
+      target_include_directories(${target}
+        INTERFACE
+          $<INSTALL_INTERFACE:${DGTAL_INSTALL_DEPS_DESTINATION}/${target}/${path}> 
+      )
+    endforeach()
   endif()
 
   install(TARGETS ${target} EXPORT ${target}Targets)
@@ -45,37 +47,19 @@ function(cleanup_target target ho)
       DESTINATION ${DGTAL_INSTALL_CMAKE_DESTINATION}
   )
   
-  get_property(includes TARGET ${target} PROPERTY INCLUDE_DIRECTORIES)
-  cmake_print_properties(
-    TARGETS ${target} 
-    PROPERTIES
-    INCLUDE_DIRECTORIES
-    INTERFACE_INCLUDE_DIRECTORIES
-  )
-
-  set(existring_include_dirs)
-  foreach(file in ${includes})
-    if (EXISTS ${file})
-      list(APPEND existing_include_dirs ${file})
-    endif()
-  endforeach()
-  message(STATUS "$${target}: Filtered dirs {existing_include_dirs}")
-  install(DIRECTORY ${existing_include_dirs} DESTINATION ${DGTAL_INSTALL_DEPS_DESTINATION}/${target})
+  get_property(target_dir TARGET ${target} PROPERTY SOURCE_DIR)
+  install(DIRECTORY ${target_dir} DESTINATION ${DGTAL_INSTALL_DEPS_DESTINATION}/${target})
 endfunction()
 
-# glm does not have an include_directories by default when pulled through polyscope
-# we instead copy source dir wich is the correct location
-get_property(glm_dir TARGET glm PROPERTY SOURCE_DIR)
-set_target_properties(glm PROPERTIES INCLUDE_DIRECTORIES ${glm_dir})
-
 # Polyscope dependencies
-cleanup_target(imgui OFF)
-cleanup_target(glfw OFF)
-cleanup_target(glad OFF)
-cleanup_target(stb OFF)
-cleanup_target(glm OFF)
-cleanup_target(glm-header-only ON)
-cleanup_target(nlohmann_json OFF)
-cleanup_target(MarchingCube OFF)
+# Only imgui have a different structure...
+cleanup_target(imgui "imgui/imgui")
+cleanup_target(glfw "")
+cleanup_target(glad "")
+cleanup_target(stb "")
+cleanup_target(glm "")
+cleanup_target(glm-header-only "")
+cleanup_target(nlohmann_json "")
+cleanup_target(MarchingCube "")
 
-cleanup_target(polyscope OFF)
+cleanup_target(polyscope "")
