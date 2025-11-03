@@ -261,19 +261,6 @@ namespace DGtal
     compute( const std::vector< CoordinatePoint >& vpoints,
              const CombinatorialPlaneSimplex& simplex )
     {
-      // typedef DGtal::SimpleMatrix< InternalScalar, dimension, dimension > Matrix;
-      // Matrix A;
-      // InternalVector N;
-      // for ( Dimension i = 1; i < dimension; i++ )
-      //   for ( Dimension j = 0; j < dimension; j++ )
-      //     A.setComponent( i-1, j,
-      //                     Inner::cast( vpoints[ simplex[ i ] ][ j ]
-      //                                  - vpoints[ simplex[ 0 ] ][ j ] ) );
-      // for ( Dimension j = 0; j < dimension; j++ )
-      //   N[ j ] = A.cofactor( dimension-1, j );
-      // const InternalPoint ip = Inner::cast( vpoints[ simplex[ 0 ] ] );
-      // return HalfSpace { N, N.dot( ip ) };
-
       // More robust method than SimpleMatrix::cofactor and faster for higher dimension.
       InternalVector N; // null normal
       const InternalPoint ip = Inner::cast( vpoints[ simplex[ 0 ] ] );
@@ -388,9 +375,6 @@ namespace DGtal
     typedef ConvexHullIntegralKernel< dim, TCoordinateInteger, TInternalInteger > Self;
     typedef ConvexHullIntegralKernel< dim-1, TCoordinateInteger, TInternalInteger > LowerSelf;
     // inheriting types
-    // using typename Base::Point;
-    // using typename Base::Vector;
-    // using typename Base::Scalar;
     using typename Base::CoordinatePoint;
     using typename Base::CoordinateVector;
     using typename Base::CoordinateScalar;

@@ -493,18 +493,6 @@ operator<<( std::ostream& out, const std::vector< Number>& v )
   out << "\n";
   return out;
 }
-// template <typename Number>
-// std::ostream&
-// operator<<( std::ostream& out, const std::vector< std::vector< Number> >& v )
-// {
-//   for ( auto i = 0; i < v.size(); i++ )
-//     {
-//       for ( auto j = 0; j < v[i].size(); j++ )
-//         out << v[ i ][ j ] << " ";
-//       out << "\n";
-//     }
-//   return out;
-// }
 
 bool testLLL()
 {
