@@ -12,9 +12,8 @@ git remote set-head origin -a
 ```
 
 - *Geometry*
+  - Add a generic quick hull variant that can process arbitrary input lattice points and outputs their convex hull, even if it is not full dimensional (Jacques-Olivier Lachaud, [#1803](https://github.com/DGtal-team/DGtal/pull/1803))
   - Add affine geometry module for determining the affine dimension of a subset of points or a set of vectors, and for providing bases and orthogonal bases in reduced-echelon form or in LLL-form (Jacques-Olivier Lachaud, [#1803](https://github.com/DGtal-team/DGtal/pull/1803))
-  - ConvexityHelper::computeLatticePolytope can now outputs exact lattice polytopes for k-dimensional sets of points in dD, whenever k in 0,1,d-1,d (Jacques-Olivier Lachaud, [#1803](https://github.com/DGtal-team/DGtal/pull/1803))
-	
 
 ## Changes
 
@@ -22,12 +21,12 @@ git remote set-head origin -a
   - Polyscope viewer upgraded from 2.4 to 2.5 (David Coeurjolly,  [#1796](https://github.com/DGtal-team/DGtal/pull/1796)). Reverting to 2.4  due to build issues (David Coeurjolly,  [#1797](https://github.com/DGtal-team/DGtal/pull/1797))
   - The DGTAL_BUILD_POLYSCOPE_EXAMPLES option has been removed. If the polyscope viewer is enabled (DGTAL_WITH_POLYSCOPE_VIEWER), the polyscope examples are automatically built (David Coeurjolly, [#1814](https://github.com/DGtal-team/DGtal/pull/1814))
 
+- *Geometry*
+  - ConvexityHelper::computeLatticePolytope can now outputs exact lattice polytopes for k-dimensional sets of points in dD, whenever k in 0,1,d-1,d (Jacques-Olivier Lachaud, [#1803](https://github.com/DGtal-team/DGtal/pull/1803))
+
 - *Documentation*
   - Refactoring of the volumetric examples in the Shortcuts (David Coeurjolly, [#1807](https://github.com/DGtal-team/DGtal/pull/1807))
   - Removing the doxygen image includes for the latex target (David Coeurjolly, [#1811](https://github.com/DGtal-team/DGtal/pull/1811))
-
-- *Geometry*
-  - Add a generic quick hull variant that can process arbitrary input lattice points and outputs their convex hull, even if it is not full dimensional (Jacques-Olivier Lachaud, [#1803](https://github.com/DGtal-team/DGtal/pull/1803))
 
 ## Bug fixes
 
