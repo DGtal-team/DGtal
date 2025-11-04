@@ -580,8 +580,8 @@ namespace DGtal
          */
         enum class State 
         {
-          OCTREE, 
-          DAG
+          OCTREE = 1, 
+          DAG    = 2
         };
 
 

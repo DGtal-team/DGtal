@@ -52,9 +52,7 @@ namespace DGtal
     // Even if binary is specified, flux operator writes integer in ascii format.
     out << "Format: SVO\n";
     out << "Version: 1\n";
-    out << "Compression: " << compressed << '\n';
     out << "Size: " << static_cast<uint64_t>(octree.size()) << '\n';
-    out << "State: " << static_cast<uint64_t>(octree.myState) << '\n';
     out << "Dim: " << Octree::dimension << '\n';
     out << "LowerBound:";
     for (size_t i = 0; i < Space::dimension; ++i)
@@ -64,6 +62,8 @@ namespace DGtal
     for (size_t i = 0; i < Space::dimension; ++i)
       out << " " << octree.domain().upperBound()[i];
     out << "\n";
+    out << "State: " << static_cast<uint64_t>(octree.myState) << '\n';
+    out << "Compression: " << compressed << '\n';
     out << ".\n";
 
     const auto& nodes = octree.myNodes;
