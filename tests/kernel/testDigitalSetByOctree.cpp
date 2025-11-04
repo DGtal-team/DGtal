@@ -46,7 +46,7 @@ struct TestFixture
 {
   inline static const Z3i::Domain domain        {Z3i::Point(-1, -2, -1), Z3i::Point(14, 3, 9)};
   inline static const Z3i::Domain expectedDomain{Z3i::Point(-1, -2, -1), Z3i::Point(14, 13, 14)};
-   / Some test cases
+  // Some test cases
   inline static const Z3i::Point testPoints[8] = 
   {
     // Valid points inside the domain

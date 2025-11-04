@@ -365,9 +365,7 @@ namespace DGtal
         {
           size_t count = 0;
           for (CellIndex i = 0; i < myNodes.size(); ++i) 
-          {
             count += myNodes[i].capacity() * sizeof(Node);
-          }
           return count;
         }
 
@@ -404,9 +402,7 @@ namespace DGtal
         {
           size_t count = 0;
           for (; begin != end; ++begin) 
-          {
             count += erase(begin);
-          }
           return count;
         }
 
@@ -431,12 +427,10 @@ namespace DGtal
          *
          * @see memoryFootprint
          */
-        void shrink_to_fit() 
+        void shrinkToFit() 
         {
           for (CellIndex i = 0; i < myNodes.size(); ++i) 
-          {
             myNodes[i].shrink_to_fit();
-          }
         }
 
         /**
@@ -452,9 +446,7 @@ namespace DGtal
           if (myState == State::OCTREE) 
           {
             for (auto it = other.begin(); it != other.end(); ++it) 
-            {
               insert(*it);
-            }
           }
           return *this;
         }

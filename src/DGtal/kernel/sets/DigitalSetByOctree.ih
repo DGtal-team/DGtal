@@ -44,6 +44,7 @@ namespace DGtal
           break;
         }
       }
+
       if (k < CELL_COUNT) 
       { 
         // Child found, go down
@@ -332,7 +333,7 @@ namespace DGtal
       }
     }
   
-    shrink_to_fit();
+    shrinkToFit();
     myState = State::DAG;
   }
 
