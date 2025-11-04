@@ -28,24 +28,31 @@
 
 #include <boost/iostreams/filtering_stream.hpp>
 
-namespace DGtal {
+namespace DGtal 
+{
   template<typename T> 
-  inline static T getAs(const std::map<std::string, std::string>& fields, const std::string& key) {
+  inline static T getAs(const std::map<std::string, std::string>& fields, const std::string& key) 
+  {
     T result;
 
     auto it = fields.find(key);
-    if (it == fields.end()) {
+    if (it == fields.end()) 
+    {
       trace.error() << "SVOReader: No such field \"" << key << "\"" << std::endl;
       throw IOException{};
     }
 
-    if constexpr (std::is_same_v<T, std::string>) {
+    if constexpr (std::is_same_v<T, std::string>) 
+    {
       return it->second;
-    } else {
+    }
+    else
+    {
       std::istringstream iss(it->second);
       iss >> result;
 
-      if (iss.fail()) {
+      if (iss.fail()) 
+      {
         trace.error() << "SVOReader: Can't convert \"" << key << "\" to desired type." << std::endl; 
         throw IOException{};
       }
@@ -55,25 +62,32 @@ namespace DGtal {
   }
 
   template <typename T>
-  inline std::vector<T> getMultipleAs(const std::map<std::string, std::string>& fields, unsigned int count, const std::string& key) {
+  inline std::vector<T> getMultipleAs(const std::map<std::string, std::string>& fields, unsigned int count, const std::string& key) 
+  {
     std::vector<T> result;
 
     auto it = fields.find(key);
-    if (it == fields.end()) {
+    if (it == fields.end()) 
+    {
       trace.error() << "SVOReader: No such field \"" << key << "\"" << std::endl;
       throw IOException{};
     }
 
-    if constexpr (std::is_same_v<T, std::string>) {
+    if constexpr (std::is_same_v<T, std::string>) 
+    {
       return it->second;
-    } else {
+    } 
+    else
+    {
       std::istringstream iss(it->second);
-      for (unsigned int i = 0; i < count; ++i) {
+      for (unsigned int i = 0; i < count; ++i) 
+      {
         T tmp; iss >> tmp;
         result.push_back(tmp);
       }
 
-      if (!iss.fail() && !iss.eof()) {
+      if (!iss.fail() && !iss.eof()) 
+      {
         trace.error() << "SVOReader: Can't convert \"" << key << "\" to desired type." << std::endl; 
         throw IOException{};
       }
@@ -82,10 +96,12 @@ namespace DGtal {
   }
 
   template<typename Int, typename Stream>
-  Int readBinInt(Stream& stream, unsigned int count) {
+  Int readBinInt(Stream& stream, unsigned int count) 
+  {
     std::uint64_t value = 0;
     char byte;
-    for (size_t i = 0; i < count; ++i) {
+    for (size_t i = 0; i < count; ++i) 
+    {
       if (!stream.get(byte)) throw IOException{};
       value |= static_cast<std::uint64_t>(byte) << (8 * i);
     }
@@ -94,22 +110,24 @@ namespace DGtal {
   }
 
   template <class Space>
-  DigitalSetByOctree<Space> SVOReader<Space>::importSVO(const std::string& filename) {
+  DigitalSetByOctree<Space> SVOReader<Space>::importSVO(const std::string& filename) 
+  {
     std::ifstream file(filename.c_str(), std::ios::binary);
-    if (!file) {
+    if (!file) 
+    {
       trace.warning() << "SVOReader: can't open file '" << filename << "'" << std::endl;
       throw IOException{};
     }
     
     std::string line;
     std::map<std::string, std::string> header;
-    while (std::getline(file, line)) {
-      if (!line.empty() && line.back() == '.') {
-        break;
-      }
+    while (std::getline(file, line)) 
+    {
+      if (!line.empty() && line.back() == '.') break;
 
       auto split = line.find(":");
-      if (split == std::string::npos) {
+      if (split == std::string::npos) 
+      {
         trace.warning() << "SVOReader: unrecognized line \"" << line << "\"" << std::endl;
         continue;
       }
@@ -120,7 +138,8 @@ namespace DGtal {
       // Trim value
       auto start = val.find_first_not_of(" \t\r\n");
       auto end = val.find_last_not_of(" \t\r\n");
-      if (start == std::string::npos) {
+      if (start == std::string::npos) 
+      {
         trace.error() << "SVOReader: invalid value for line \"" << line << "\"" << std::endl;
         throw DGtal::IOException{};
       }
@@ -135,7 +154,8 @@ namespace DGtal {
     const std::int32_t state    = getAs<std::int32_t>(header, "State");
     const std::uint64_t size   = getAs<std::uint64_t>(header, "Size");
     
-    if (dim != Space::dimension) {
+    if (dim != Space::dimension) 
+    {
       trace.error() << "SVOReader: Dimension mismatch, space is " << Space::dimension << "d and Octree is " << dim << "d" << std::endl;
       throw IOException{};
     }
@@ -144,7 +164,8 @@ namespace DGtal {
     const auto ubdata = getMultipleAs<std::int64_t>(header, dim, "UpperBound");
     
     typename Space::Point lb, ub;
-    for (unsigned int i = 0; i < dim; ++i) {
+    for (unsigned int i = 0; i < dim; ++i) 
+    {
       lb[i] = lbdata[i];
       ub[i] = ubdata[i];
     }
@@ -171,19 +192,18 @@ namespace DGtal {
     
 
     octree.myNodes.resize(readBinInt<Size>(main, sizesize));
-    for (size_t i = 0; i < octree.myNodes.size(); ++i) {
+    for (size_t i = 0; i < octree.myNodes.size(); ++i) 
       octree.myNodes[i].resize(readBinInt<Size>(main, sizesize));
-    }
     
-    try {
-      for (size_t i = 0; i < octree.myNodes.size(); ++i) {
-        for (size_t j = 0; j < octree.myNodes[i].size(); ++j) {
-          for (unsigned int k = 0; k < Octree::CELL_COUNT; ++k) {
+    try 
+    {
+      for (size_t i = 0; i < octree.myNodes.size(); ++i) 
+        for (size_t j = 0; j < octree.myNodes[i].size(); ++j) 
+          for (unsigned int k = 0; k < Octree::CELL_COUNT; ++k) 
             octree.myNodes[i][j].children[k] = readBinInt<CellI>(main, cellsize);
-          }
-        }
-      }
-    } catch(...) {
+    } 
+    catch(...) 
+    {
       trace.error() << "SVOReader: Unexpected EOF while reading data." << std::endl;
     }
 

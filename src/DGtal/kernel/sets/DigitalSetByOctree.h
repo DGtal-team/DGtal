@@ -38,36 +38,37 @@
 
 namespace DGtal
 {
-    /**
-     * @brief A DigitalSet that stores voxel as an octree, or a DAG
-     * 
-     * This class allows for a compact representation of voxel as a
-     * sparse voxel octree (SVO). Optionally, this can be further
-     * compressed as a Sparse Voxel Directed Acyclic Graph where 
-     * nodes are shared when they share a common structure.
-     * 
-     * Leaves are never explicitly stored to further reduce memory
-     * usage. 
-     * 
-     * Common operation complexity:
-     * (L = depth of the tree computed with domain size, N = number of voxels)
-     *  - Insertion: O(log(L))
-     *  - Erase: O(N * log(L))
-     *  - find: O(log(L))
-     *  - Iterator next: O(log(L))
-     *  - Listing all voxels: O(N * log(L))
-     *  - Memory usage (octree): O(N * log(L))
-     * 
-     * When converted to a DAG, the digital set can not be modified anymore
-     * (neither insertion, or erase).
-     *
-     * References:
-     *  @cite Laine2010SVO
-     *  @cite Kampe2013SVDag
-     */
-    template <class Space>
-    class DigitalSetByOctree {
-    public:
+  /**
+   * @brief A DigitalSet that stores voxel as an octree, or a DAG
+   * 
+   * This class allows for a compact representation of voxel as a
+   * sparse voxel octree (SVO). Optionally, this can be further
+   * compressed as a Sparse Voxel Directed Acyclic Graph where 
+   * nodes are shared when they share a common structure.
+   * 
+   * Leaves are never explicitly stored to further reduce memory
+   * usage. 
+   * 
+   * Common operation complexity:
+   * (L = depth of the tree computed with domain size, N = number of voxels)
+   *  - Insertion: O(log(L))
+   *  - Erase: O(N * log(L))
+   *  - find: O(log(L))
+   *  - Iterator next: O(log(L))
+   *  - Listing all voxels: O(N * log(L))
+   *  - Memory usage (octree): O(N * log(L))
+   * 
+   * When converted to a DAG, the digital set can not be modified anymore
+   * (neither insertion, or erase).
+   *
+   * References:
+   *  @cite Laine2010SVO
+   *  @cite Kampe2013SVDag
+   */
+  template <class Space>
+    class DigitalSetByOctree 
+    {
+      public:
         template<class>
         friend class SVOWriter;
         template<class>
@@ -92,17 +93,20 @@ namespace DGtal
         static constexpr CellIndex INVALID_IDX = std::numeric_limits<CellIndex>::max();
 
         // For each child node, store on which side of the octree split it is.
-        static constexpr std::array<std::array<DimIndex, D>, CELL_COUNT> SIDES_FROM_INDEX = [](){
-            std::array<std::array<DimIndex, D>, CELL_COUNT> sides_from_index{};
-            for (CellIndex i = 0; i < CELL_COUNT; ++i) {
-                CellIndex coord = i;
-                for (DimIndex d = 0; d < D; ++d) {
-                    sides_from_index[i][d] = coord % 2;
-                    coord /= 2;
-                }
-            }
+        static constexpr std::array<std::array<DimIndex, D>, CELL_COUNT> SIDES_FROM_INDEX = []()
+        {
+         std::array<std::array<DimIndex, D>, CELL_COUNT> sides_from_index{};
+         for (CellIndex i = 0; i < CELL_COUNT; ++i) 
+         {
+           CellIndex coord = i;
+           for (DimIndex d = 0; d < D; ++d) 
+           {
+             sides_from_index[i][d] = coord % 2;
+             coord /= 2;
+           }
+         }
 
-            return sides_from_index;
+         return sides_from_index;
         }();
 
         /** 
@@ -110,13 +114,15 @@ namespace DGtal
          * 
          * Only stores the index of its children
          */
-        struct Node {
-            Node() {
-                for (CellIndex i = 0; i < CELL_COUNT; ++i)
-                    children[i] = INVALID_IDX;
-            }
+        struct Node 
+        {
+          Node() 
+          {
+            for (CellIndex i = 0; i < CELL_COUNT; ++i)
+              children[i] = INVALID_IDX;
+          }
 
-            CellIndex children[CELL_COUNT];
+          CellIndex children[CELL_COUNT];
         };
         
         /**
@@ -126,36 +132,42 @@ namespace DGtal
          *  - The parent that encloses the whole neighborhood
          *  - The neighborhood code
          */
-        struct ComputationCacheKey {
-            CellIndex parentLvl; 
-            CellIndex parentIdx;
-            std::vector<DimIndex> code;
+        struct ComputationCacheKey 
+        {
+          CellIndex parentLvl; 
+          CellIndex parentIdx;
+          std::vector<DimIndex> code;
 
-            bool operator<(const ComputationCacheKey& other) const {
-                if (parentLvl != other.parentLvl) return parentLvl < other.parentLvl;
-                if (parentIdx != other.parentIdx) return parentIdx < other.parentIdx;
-                return code < other.code;
-            }
+          bool operator<(const ComputationCacheKey& other) const 
+          {
+            if (parentLvl != other.parentLvl) return parentLvl < other.parentLvl;
+            if (parentIdx != other.parentIdx) return parentIdx < other.parentIdx;
+            return code < other.code;
+          }
         };
 
         /**
          * @brief Helper struct to store traversal and go to next leaf
          */
-        struct TraversalMemory {
-            Domain domain; //< Domain represented by the node
-            CellIndex lvl; //< Level of the node
-            CellIndex idx; //< Index of the node 
-            CellIndex currentChildIdx; //< Which child is currently explored.
+        struct TraversalMemory 
+        {
+          Domain domain; //< Domain represented by the node
+          CellIndex lvl; //< Level of the node
+          CellIndex idx; //< Index of the node 
+          CellIndex currentChildIdx; //< Which child is currently explored.
 
-            bool operator==(const TraversalMemory& other) const {
-                return lvl == other.lvl && idx == other.idx && currentChildIdx == other.currentChildIdx;
-            }
+          bool operator==(const TraversalMemory& other) const 
+          {
+            return lvl == other.lvl && idx == other.idx && currentChildIdx == other.currentChildIdx;
+          }
         };
 
         /**
          * @brief Iterator over the octree
          */
-        struct OctreeIterator {
+        struct OctreeIterator 
+        {
+          public:
             friend class DigitalSetByOctree;
 
             // Should be std::output_iterator_tag, but CDigitalSet
@@ -169,8 +181,9 @@ namespace DGtal
             /** 
              * @brief Constuctor to end of an octree
              */
-            OctreeIterator(const DigitalSetByOctree* container) {
-                myContainer = container;
+            OctreeIterator(const DigitalSetByOctree* container) 
+            {
+              myContainer = container;
             }
 
             /**
@@ -180,11 +193,12 @@ namespace DGtal
              * root node.
              */
             OctreeIterator(const DigitalSetByOctree* container, 
-                           TraversalMemory init) {
-                myContainer = container;
-                myMemory.push_back(std::move(init));
+                           TraversalMemory init) 
+            {
+              myContainer = container;
+              myMemory.push_back(std::move(init));
 
-                findNextLeaf();
+              findNextLeaf();
             }
 
             /** 
@@ -195,9 +209,10 @@ namespace DGtal
              * searching through the whole tree.
              */
             OctreeIterator(const DigitalSetByOctree* container, 
-                           std::vector<TraversalMemory>& memory) {
-                myContainer = container;
-                myMemory = memory;
+                           std::vector<TraversalMemory>& memory) 
+            {
+              myContainer = container;
+              myMemory = memory;
             }
 
             /**
@@ -206,54 +221,59 @@ namespace DGtal
              * Note: The end of an octree is represented by 
              * an empty traversal memory
              */
-            bool operator==(const OctreeIterator& other) const {
-                if (myContainer != other.myContainer) return false;
-                if (myMemory.size() != other.myMemory.size()) return false;
+            bool operator==(const OctreeIterator& other) const 
+            {
+              if (myContainer != other.myContainer) return false;
+              if (myMemory.size() != other.myMemory.size()) return false;
 
-                if (myMemory.size() != 0) {
-                    return myMemory.back() == other.myMemory.back();
-                }
-                return true;
+              if (myMemory.size() != 0) 
+              {
+                return myMemory.back() == other.myMemory.back();
+              }
+              return true;
             }
 
             /**
              * @brief Not equal comparison operator
              */
-            bool operator!=(const OctreeIterator& other) const {
-                return !(*this == other);
+            bool operator!=(const OctreeIterator& other) const 
+            {
+              return !(*this == other);
             }
 
             /**
              * @brief Dereference operator
              */
-            Point operator*() const {
-                const auto& sides = SIDES_FROM_INDEX[myMemory.back().currentChildIdx];
-                return splitDomain(myMemory.back().domain, sides.data()).lowerBound();
+            Point operator*() const 
+            {
+              const auto& sides = SIDES_FROM_INDEX[myMemory.back().currentChildIdx];
+              return splitDomain(myMemory.back().domain, sides.data()).lowerBound();
             }
 
             /**
              * @brief Prefix increment
              */
-            OctreeIterator& operator++() {
-                findNextLeaf();
-                return *this;
+            OctreeIterator& operator++() 
+            {
+              findNextLeaf();
+              return *this;
             }
 
             /**
              * @brief Postfix increment
              */
-            OctreeIterator operator++(int) {
-                auto it = *this;
-                findNextLeaf();
-                return it;
+            OctreeIterator operator++(int) 
+            {
+              auto it = *this;
+              findNextLeaf();
+              return it;
             }
-        private:
+          private:
             /**
              * @brief Finds the next leaf, if any
              */
             void findNextLeaf();
-
-        private:
+          private:
             const DigitalSetByOctree* myContainer; //< Pointer to the original octree
             std::vector<TraversalMemory> myMemory;  //< Current traversal information
         };
@@ -282,7 +302,7 @@ namespace DGtal
          * @brief Returns the domain of the voxels
          */
         CowPtr<Domain> domainPointer() const { return myAdmissibleDomain; }
-    public:
+      public:
         /**
          * @brief Inserts a new point in the octree
          * 
@@ -341,12 +361,14 @@ namespace DGtal
          * 
          * @see shrink
          */
-        size_t memoryFootprint() const {
-            size_t count = 0;
-            for (CellIndex i = 0; i < myNodes.size(); ++i) {
-                count += myNodes[i].capacity() * sizeof(Node);
-            }
-            return count;
+        size_t memoryFootprint() const 
+        {
+          size_t count = 0;
+          for (CellIndex i = 0; i < myNodes.size(); ++i) 
+          {
+            count += myNodes[i].capacity() * sizeof(Node);
+          }
+          return count;
         }
 
         /**
@@ -356,9 +378,10 @@ namespace DGtal
          * this function reset the flag and insertion 
          * is available afterwards. 
          */
-        void clear() {
-            myNodes.clear();
-            myState = State::OCTREE;
+        void clear() 
+        {
+          myNodes.clear();
+          myState = State::OCTREE;
         }
 
         /** 
@@ -377,12 +400,14 @@ namespace DGtal
          * @param begin The begining of the range
          * @param end The end of the range
          */
-        size_t erase(Iterator begin, Iterator end) {
-            size_t count = 0;
-            for (; begin != end; ++begin) {
-                count += erase(begin);
-            }
-            return count;
+        size_t erase(Iterator begin, Iterator end) 
+        {
+          size_t count = 0;
+          for (; begin != end; ++begin) 
+          {
+            count += erase(begin);
+          }
+          return count;
         }
 
         /**
@@ -390,8 +415,9 @@ namespace DGtal
          * 
          * @param p The point to remove
          */
-        size_t erase(const Point& p) {
-            return erase(find(p));
+        size_t erase(const Point& p) 
+        {
+          return erase(find(p));
         }
 
         /**
@@ -405,10 +431,12 @@ namespace DGtal
          *
          * @see memoryFootprint
          */
-        void shrink_to_fit() {
-            for (CellIndex i = 0; i < myNodes.size(); ++i) {
-                myNodes[i].shrink_to_fit();
-            }
+        void shrink_to_fit() 
+        {
+          for (CellIndex i = 0; i < myNodes.size(); ++i) 
+          {
+            myNodes[i].shrink_to_fit();
+          }
         }
 
         /**
@@ -419,13 +447,16 @@ namespace DGtal
          * 
          * @param other The octree to append
          */
-        DigitalSetByOctree& operator+=(const DigitalSetByOctree& other) {
-            if (myState == State::OCTREE) {
-                for (auto it = other.begin(); it != other.end(); ++it) {
-                    insert(*it);
-                }
+        DigitalSetByOctree& operator+=(const DigitalSetByOctree& other) 
+        {
+          if (myState == State::OCTREE) 
+          {
+            for (auto it = other.begin(); it != other.end(); ++it) 
+            {
+              insert(*it);
             }
-            return *this;
+          }
+          return *this;
         }
 
         /**
@@ -436,14 +467,17 @@ namespace DGtal
          * @param out The output iterator
          */
         template<typename It>
-        void computeComplement(It out) const {
-            DigitalSetByOctree complement(*myDomain);
-            for (auto it = myDomain->begin(); it != myDomain->end(); ++it) {
-                if (!this->operator()(*it)) {
-                    *out = *it;
-                    ++out;
-                }
+        void computeComplement(It out) const 
+        {
+          DigitalSetByOctree complement(*myDomain);
+          for (auto it = myDomain->begin(); it != myDomain->end(); ++it) 
+          {
+            if (!this->operator()(*it)) 
+            {
+              *out = *it;
+              ++out;
             }
+          }
         }
 
         /**
@@ -455,15 +489,17 @@ namespace DGtal
          * @param other The digital set to compute complement of
          */
         template<class DSet>
-        void assignFromComplement(const DSet& other) {
-            if (myState == State::OCTREE) {
-                clear();
-                for (auto it = myDomain->begin(); it != myDomain->end(); ++it) {
-                    if (!other(*it)) {
-                        insert(*it);
-                    }
-                }
+        void assignFromComplement(const DSet& other) 
+        {
+          if (myState == State::OCTREE) 
+          {
+            clear();
+            for (auto it = myDomain->begin(); it != myDomain->end(); ++it) 
+            {
+              if (!other(*it)) 
+                  insert(*it);
             }
+          }
         }
         
         /**
@@ -474,38 +510,40 @@ namespace DGtal
          * @param lb Output lower bound
          * @param ub Output upper bound
          */
-        void computeBoundingBox(Point& lb, Point& ub) const {
-            lb = myDomain->upperBound();
-            ub = myDomain->lowerBound();
+        void computeBoundingBox(Point& lb, Point& ub) const 
+        {
+          lb = myDomain->upperBound();
+          ub = myDomain->lowerBound();
 
-            for (auto it = begin(); it != end(); ++it) {
-                const auto p = *it;
-                for (DimIndex d = 0; d < D; d++) {
-                    lb[d] = std::min(lb[d], p[d]);
-                    ub[d] = std::max(ub[d], p[d]);
-                }
+          for (auto it = begin(); it != end(); ++it) 
+          {
+            const auto p = *it;
+            for (DimIndex d = 0; d < D; d++) 
+            {
+              lb[d] = std::min(lb[d], p[d]);
+              ub[d] = std::max(ub[d], p[d]);
             }
+          }
         }
 
         /**
          * @brief Returns an iterator to the begining of the octree
          */
-        Iterator begin() const {
-            TraversalMemory mem;
-            mem.domain = *myDomain;
-            mem.lvl = 0;
-            mem.idx = 0;
-            mem.currentChildIdx = INVALID_IDX;
-            
-            return Iterator(this, mem);
+        Iterator begin() const 
+        {
+          TraversalMemory mem;
+          mem.domain = *myDomain;
+          mem.lvl = 0;
+          mem.idx = 0;
+          mem.currentChildIdx = INVALID_IDX;
+          
+          return Iterator(this, mem);
         }
 
         /**
          * @brief Returns an iterator to the begining of the octree
          */
-        Iterator begin() {
-            return static_cast<const DigitalSetByOctree&>(*this).begin();
-        }
+        Iterator begin() { return static_cast<const DigitalSetByOctree&>(*this).begin(); }
 
         /**
          * @brief Returns an iterator to the end of the octree
@@ -524,9 +562,7 @@ namespace DGtal
         void convertToDAG();
 
         template<class Func>
-        auto computeFunction(
-            OctreeIterator start, OctreeIterator end, CellIndex range, const Func& f
-        );
+        auto computeFunction(OctreeIterator start, OctreeIterator end, CellIndex range, const Func& f);
 
         /**
          * @brief Dumps the octree to std out
@@ -550,9 +586,10 @@ namespace DGtal
          * After the octree is converted to a DAG, it is not possible
          * to insert or remove nodes. 
          */
-        enum class State {
-            OCTREE, 
-            DAG
+        enum class State 
+        {
+          OCTREE, 
+          DAG
         };
 
 

@@ -28,15 +28,18 @@
 
 #include <boost/iostreams/filtering_stream.hpp>
 
-namespace DGtal {
+namespace DGtal 
+{
   template<typename Stream, typename Int>
-  static inline void writeBinInt(Stream& stream, Int i) {
+  static inline void writeBinInt(Stream& stream, Int i) 
+  {
     boost::endian::native_to_little_inplace(i); 
     stream.write(reinterpret_cast<const char*>(&i), sizeof(Int));
   }
 
   template<class Space>
-  bool SVOWriter<Space>::exportSVO(const std::string& filename, const DigitalSetByOctree<Space>& octree, bool compressed) {
+  bool SVOWriter<Space>::exportSVO(const std::string& filename, const DigitalSetByOctree<Space>& octree, bool compressed) 
+  {
     using Octree = DigitalSetByOctree<Space>;
     
     std::ofstream out(filename.c_str(), std::ios_base::out | std::ios::binary);
@@ -45,8 +48,8 @@ namespace DGtal {
       throw IOException{};
     }
 
-    std::stringstream mainbuf;
-
+    // Header:
+    // Even if binary is specified, flux operator writes integer in ascii format.
     out << "Format: SVO\n";
     out << "Version: 1\n";
     out << "Compression: " << compressed << '\n';
@@ -54,14 +57,12 @@ namespace DGtal {
     out << "State: " << static_cast<uint64_t>(octree.myState) << '\n';
     out << "Dim: " << Octree::dimension << '\n';
     out << "LowerBound:";
-    for (size_t i = 0; i < Space::dimension; ++i) {
+    for (size_t i = 0; i < Space::dimension; ++i)
       out << " " << octree.domain().lowerBound()[i];
-    }
     out << '\n';
     out << "UpperBound:";
-    for (size_t i = 0; i < Space::dimension; ++i) {
+    for (size_t i = 0; i < Space::dimension; ++i)
       out << " " << octree.domain().upperBound()[i];
-    }
     out << "\n";
     out << ".\n";
 
@@ -77,17 +78,13 @@ namespace DGtal {
     writeBinInt(outData, static_cast<int64_t>(sizeof(typename Octree::CellIndex)));
 
     writeBinInt(outData, (typename Octree::Size)nodes.size());
-    for (size_t i = 0; i < nodes.size(); ++i) {
+    for (size_t i = 0; i < nodes.size(); ++i) 
       writeBinInt(outData, (typename Octree::Size)nodes[i].size());
-    }
 
-    for (size_t i = 0; i < nodes.size(); ++i) {
-      for (size_t j = 0; j < nodes[i].size(); ++j) {
-        for (size_t k = 0; k < Octree::CELL_COUNT; ++k) {
+    for (size_t i = 0; i < nodes.size(); ++i) 
+      for (size_t j = 0; j < nodes[i].size(); ++j) 
+        for (size_t k = 0; k < Octree::CELL_COUNT; ++k) 
           writeBinInt(outData, nodes[i][j].children[k]);
-        }
-      }
-    }
 
     return true;
   }
