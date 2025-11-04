@@ -146,7 +146,7 @@ namespace DGtal {
 
             // This octree does not create nodes for leaves. 
             // We treat them separately and use children field as 
-            // a binary array to indicate wether a voxel is stored or not
+            // a binary array to indicate whether a voxel is stored or not
             const auto lb = domain.lowerBound();
             const auto ub = domain.upperBound();
             const Point middle = domain.lowerBound() + (ub - lb) / 2;
@@ -158,7 +158,7 @@ namespace DGtal {
 
             if (myNodes[myNodes.size() - 1][nodeIdx].children[childIdx] != 1) {
                 myNodes[myNodes.size() - 1][nodeIdx].children[childIdx]  = 1;
-        		mySize ++;
+                mySize ++;
             }
         }
     }

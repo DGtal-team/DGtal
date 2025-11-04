@@ -133,7 +133,7 @@ namespace DGtal
 
             bool operator<(const ComputationCacheKey& other) const {
                 if (parentLvl != other.parentLvl) return parentLvl < other.parentLvl;
-                if (parentIdx != other.parentIdx) return parentLvl < other.parentIdx;
+                if (parentIdx != other.parentIdx) return parentIdx < other.parentIdx;
                 return code < other.code;
             }
         };
@@ -255,7 +255,7 @@ namespace DGtal
 
         private:
             const DigitalSetByOctree* myContainer; //< Pointer to the original octree
-            std::vector<TraversalMemory> myMemory;  //< Current traversal infromation
+            std::vector<TraversalMemory> myMemory;  //< Current traversal information
         };
 
         using Iterator = OctreeIterator;

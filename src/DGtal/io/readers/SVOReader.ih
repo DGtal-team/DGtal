@@ -135,7 +135,6 @@ namespace DGtal {
     const std::int32_t state    = getAs<std::int32_t>(header, "State");
     const std::uint64_t size   = getAs<std::uint64_t>(header, "Size");
     
-    std::cout << dim << " / " << Space::dimension << std::endl;
     if (dim != Space::dimension) {
       trace.error() << "SVOReader: Dimension mismatch, space is " << Space::dimension << "d and Octree is " << dim << "d" << std::endl;
       throw IOException{};

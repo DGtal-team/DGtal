@@ -27,7 +27,7 @@
 
 /**
  * Description of test_DigitalSetByOctree <p>
- * Aim: simple tesst of DigitalSetByOctree
+ * Aim: simple test of DigitalSetByOctree
  */
 
 #include "DGtal/helpers/StdDefs.h"
@@ -51,7 +51,7 @@ struct TestFixture {
         // Valid points inside the domain
         Z3i::Point(0, 0, 0)   , Z3i::Point(2, 1, 4),    // Some points
         Z3i::Point(-1, -1, -1), Z3i::Point(14, 13, 14), // On the edge
-        Z3i::Point(8, 7, 4),                            // Outside the original domain, but inside the excpected one  
+        Z3i::Point(8, 7, 4),                            // Outside the original domain, but inside the expected one  
                                                         // We pay for the bigger domain, we might accept those points as well
         // Duplicates
         Z3i::Point(0, 0, 0), Z3i::Point(8, 7, 4), 
