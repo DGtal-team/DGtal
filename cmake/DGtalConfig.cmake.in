@@ -90,7 +90,6 @@ if(@FFTW3_FOUND_DGTAL@) #if FFTW3_FOUND_DGTAL
   set(DGTAL_WITH_FFTW3 1)
 endif()
 
-message(STATUS "Including: ${CMAKE_CURRENT_LIST_DIR}/DGtalModulesTargets.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/DGtalModulesTargets.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/DGtalTargets.cmake")
 
