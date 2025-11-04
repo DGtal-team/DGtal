@@ -93,7 +93,7 @@ runs:
       if: ${{ runner.os == 'Linux' }}
       shell: bash
       working-directory: ${{ inputs.build-dir }}
-      run:  sudo cmake --build . --target install --config ${{ inputs.build-type }} --parallel 3 && sudo find /usr/local/lib/cmake/
+      run:  sudo cmake --build . --target install --config ${{ inputs.build-type }} --parallel 3
 
     - name: Perform tests
       if: ${{ inputs.test == 'true'}}

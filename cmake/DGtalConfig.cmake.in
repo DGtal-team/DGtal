@@ -8,12 +8,6 @@
 include(CMakeFindDependencyMacro)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
 list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_LIST_DIR})
-file(GLOB_RECURSE all_files ${CMAKE_CURRENT_LIST_DIR}/*)
-message(STATUS "Path: ${CMAKE_CURRENT_LIST_DIR}")
-message(STATUS "Module: ${CMAKE_MODULE_PATH}")
-message(STATUS "Prefix: ${CMAKE_PREFIX_PATH}")
-message(STATUS "Listing all files: ${all_files}")
-
 set(DGTAL_VERSION "@DGtal_VERSION@")
 
 #### Required dependencies  ####
@@ -26,7 +20,7 @@ find_dependency(ZLIB REQUIRED
   )
 
 set(DGTAL_WITH_EIGEN 1)
-if (NOT @DGTAL_WITH_EIGEN_ITK@) # Delegate finding Eigen to ITK
+if (NOT @ITK_FOUND_DGTAL@ OR NOT @DGTAL_WITH_EIGEN_ITK@) 
   find_dependency(Eigen REQUIRED)
 endif()
 set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3::Eigen)
@@ -96,6 +90,7 @@ if(@FFTW3_FOUND_DGTAL@) #if FFTW3_FOUND_DGTAL
   set(DGTAL_WITH_FFTW3 1)
 endif()
 
+message(STATUS "Including: ${CMAKE_CURRENT_LIST_DIR}/DGtalModulesTargets.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/DGtalModulesTargets.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/DGtalTargets.cmake")
 

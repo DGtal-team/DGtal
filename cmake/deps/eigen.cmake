@@ -81,3 +81,4 @@ set_target_properties(Eigen3_Eigen PROPERTIES EXPORT_NAME Eigen)
 
 install(TARGETS Eigen3_Eigen EXPORT Eigen_Targets)
 install(EXPORT Eigen_Targets FILE EigenConfig.cmake DESTINATION ${DGTAL_INSTALL_CMAKE_DESTINATION} NAMESPACE Eigen3::)
+export(TARGETS Eigen3_Eigen FILE EigenConfig.cmake NAMESPACE Eigen3::)

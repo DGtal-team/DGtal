@@ -21,10 +21,12 @@ if (${DGTAL_ENABLE_TARGET_INSTALL})
   )
   export(TARGETS
     DGtal_STB DGTAL_LibBoard DGTAL_BoostAddons
+    NAMESPACE DGtal::
     FILE DGtalModulesTargets.cmake
   )
   install(EXPORT DGtalModulesTargets
     FILE DGtalModulesTargets.cmake
+    NAMESPACE DGtal::
     DESTINATION ${DGTAL_INSTALL_CMAKE_DESTINATION}
   )
 

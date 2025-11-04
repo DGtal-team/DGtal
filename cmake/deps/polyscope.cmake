@@ -40,7 +40,7 @@ function(cleanup_target target include_paths)
 
   install(TARGETS ${target} EXPORT ${target}Targets)
   export(TARGETS ${target}
-    FILE ${target}Targets.cmake
+    FILE ${target}Config.cmake
   )
   install(EXPORT ${target}Targets
       FILE ${target}Config.cmake
