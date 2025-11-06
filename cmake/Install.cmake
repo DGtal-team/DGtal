@@ -1,5 +1,4 @@
 include(CMakePackageConfigHelpers)
-set(DGTAL_INSTALL_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/DGtal")
 
 # On system where boost is fetched through multiples sources, there can
 # be some confusion as to which version is linked. 
@@ -15,22 +14,39 @@ if (${DGTAL_ENABLE_TARGET_INSTALL})
   #------------------------------------------------------------------------------
   # DGtal Configuration file for the install target
   #------------------------------------------------------------------------------
+  install(TARGETS
+    DGtal_STB DGTAL_LibBoard DGTAL_BoostAddons
+    EXPORT DGtalModulesTargets
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    INCLUDES DESTINATION ${DGTAL_INSTALL_DEPS_DESTINATION}
+  )
+  export(TARGETS
+    DGtal_STB DGTAL_LibBoard DGTAL_BoostAddons
+    NAMESPACE DGtal::
+    FILE DGtalModulesTargets.cmake
+  )
+  install(EXPORT DGtalModulesTargets
+    FILE DGtalModulesTargets.cmake
+    NAMESPACE DGtal::
+    DESTINATION ${DGTAL_INSTALL_CMAKE_DESTINATION}
+  )
+
   install(TARGETS 
     DGtal 
     # Dependancies also built by the project
-    DGtal_STB DGTAL_LibBoard DGTAL_BoostAddons
     EXPORT DGtalTargets
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
     INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
   )
+
   # Export file locally also, so the DGtalConfig.cmake 
   # in the build/ directory can work 
   export(TARGETS 
     DGtal 
-    # Dependancies also built by the project
-    DGtal_STB DGTAL_LibBoard DGTAL_BoostAddons
     NAMESPACE DGtal::
     FILE DGtalTargets.cmake
   )
@@ -38,7 +54,7 @@ if (${DGTAL_ENABLE_TARGET_INSTALL})
   install(EXPORT DGtalTargets
     FILE DGtalTargets.cmake
     NAMESPACE DGtal::
-    DESTINATION ${DGTAL_INSTALL_DESTINATION}
+    DESTINATION ${DGTAL_INSTALL_CMAKE_DESTINATION}
   )
 endif()
 
@@ -47,9 +63,13 @@ endif()
 # Note : this also copies a few .cpp and CMakeLists but simplifies the code here
 install(DIRECTORY
   "${PROJECT_SOURCE_DIR}/src/Board"
-  "${PROJECT_SOURCE_DIR}/src/DGtal"
   "${PROJECT_SOURCE_DIR}/src/BoostAddons"
   "${PROJECT_SOURCE_DIR}/src/stb"
+  DESTINATION ${DGTAL_INSTALL_DEPS_DESTINATION}
+)
+
+install(DIRECTORY
+  "${PROJECT_SOURCE_DIR}/src/DGtal"
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 # COPY Generated files
@@ -95,7 +115,7 @@ write_basic_package_version_file(
 configure_package_config_file(
   ${PROJECT_SOURCE_DIR}/cmake/DGtalConfig.cmake.in
   "${CMAKE_CURRENT_BINARY_DIR}/DGtalConfig.cmake"
-  INSTALL_DESTINATION ${DGTAL_INSTALL_DESTINATION}
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake 
   NO_CHECK_REQUIRED_COMPONENTS_MACRO
 )
 
@@ -103,21 +123,20 @@ configure_package_config_file(
 # find_package for DGtalConfig.cmake
 #------------------------------------------------------------------------------
 set(_find_cmake_files
-  "${PROJECT_SOURCE_DIR}/cmake/deps/eigen.cmake"
+  # Libraries not pulled by the project. Hence, we need to copyt he cmake that
+  # finds them
   "${PROJECT_SOURCE_DIR}/cmake/deps/FindCairo.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/deps/FindFFTW3.cmake"
-  "${PROJECT_SOURCE_DIR}/cmake/deps/polyscope.cmake"
-  "${PROJECT_SOURCE_DIR}/cmake/deps/eigen.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/deps/libigl.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/deps/openmp.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/CPM.cmake"
 )
 
 install(FILES
-          "${CMAKE_CURRENT_BINARY_DIR}/DGtalConfig.cmake"
-          "${CMAKE_CURRENT_BINARY_DIR}/DGtalConfigVersion.cmake"
-           ${_find_cmake_files}
-        DESTINATION ${DGTAL_INSTALL_DESTINATION}
+    "${CMAKE_CURRENT_BINARY_DIR}/DGtalConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/DGtalConfigVersion.cmake"
+     ${_find_cmake_files}
+  DESTINATION ${DGTAL_INSTALL_CMAKE_DESTINATION}
 )
 
 # Also export find dependency files (no export commands for this) 

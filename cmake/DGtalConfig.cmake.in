@@ -7,10 +7,11 @@
 @PACKAGE_INIT@
 include(CMakeFindDependencyMacro)
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
-
+list(APPEND CMAKE_PREFIX_PATH ${CMAKE_CURRENT_LIST_DIR})
 set(DGTAL_VERSION "@DGtal_VERSION@")
 
 #### Required dependencies  ####
+find_package(Threads REQUIRED)
 find_dependency(Boost REQUIRED
   @Boost_HINTS@
   )
@@ -19,7 +20,9 @@ find_dependency(ZLIB REQUIRED
   )
 
 set(DGTAL_WITH_EIGEN 1)
-include(eigen)
+if (NOT @ITK_FOUND_DGTAL@ OR NOT @DGTAL_WITH_EIGEN_ITK@) 
+  find_dependency(Eigen REQUIRED)
+endif()
 set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3::Eigen)
 
 if (@LIBIGL_FOUND_DGTAL@) 
@@ -87,6 +90,7 @@ if(@FFTW3_FOUND_DGTAL@) #if FFTW3_FOUND_DGTAL
   set(DGTAL_WITH_FFTW3 1)
 endif()
 
+include("${CMAKE_CURRENT_LIST_DIR}/DGtalModulesTargets.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/DGtalTargets.cmake")
 
 set(DGTAL_LIBRARIES DGtal::DGtal DGtal::DGTAL_LibBoard DGtal::DGTAL_BoostAddons DGtal::DGtal_STB ${DGtalLibDependencies})
