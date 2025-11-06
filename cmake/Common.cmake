@@ -81,8 +81,13 @@ include(TargetDoxygenDoc OPTIONAL)
 include(TargetDoxygenDox OPTIONAL)
 
 # -----------------------------------------------------------------------------
-# uninstall target
+# install/uninstall targets
 # -----------------------------------------------------------------------------
+# Define cmake install path here so it is available for everyone
+include(GNUInstallDirs)
+set(DGTAL_INSTALL_CMAKE_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/DGtal")
+set(DGTAL_INSTALL_DEPS_DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/DGtal/3rdParties")
+
 option(DGTAL_REMOVE_UNINSTALL "Remove DGtal uninstall target." OFF)
 if (NOT DGTAL_REMOVE_UNINSTALL)
 configure_file(
