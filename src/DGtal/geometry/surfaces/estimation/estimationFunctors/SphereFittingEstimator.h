@@ -30,7 +30,7 @@
  *
  * @see testLengthEstimators.cpp, testTrueLocalEstimator.cpp
  */
-
+  
 #if defined(SphereFittingEstimator_RECURSES)
 #error Recursive header files inclusion detected in SphereFittingEstimator.h
 #else // defined(SphereFittingEstimator_RECURSES)
