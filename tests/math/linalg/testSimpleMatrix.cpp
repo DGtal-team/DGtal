@@ -36,6 +36,7 @@
 #include "DGtal/math/linalg/CStaticVector.h"
 #include "DGtal/math/linalg/CDenseVector.h"
 #include "DGtal/math/linalg/CLinearAlgebra.h"
+#include "DGtal/math/linalg/IntegerMatrixFunctions.h"
 #include "DGtal/helpers/StdDefs.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -397,6 +398,314 @@ bool testConcepts()
   return true;
 }
 
+bool testBareissDeterminant()
+{
+  unsigned int nbok = 0;
+  unsigned int nb   = 0;
+
+  trace.beginBlock( "Bareiss determinant test" );
+  {
+    typedef DGtal::SimpleMatrix<int,3,3> Matrix;
+    
+    Matrix M = { 1, 2, 3, 4, 5, 7, 6, 8, 9 };
+    auto   d = M.determinant();
+    int    db;
+    DGtal::functions::getDeterminantBareiss( db, M );
+    trace.info() << "d=" << d << " db=" << db << "\n";
+    nbok += ( d == 7 ) ? 1 : 0;
+    nb++;
+    nbok += ( db == 7 ) ? 1 : 0;
+    nb++;
+  }
+
+  {
+    typedef DGtal::SimpleMatrix<int,4,4> Matrix;
+    Matrix  M = { 1, 2, 3, -4, 13, 4, 5, 7, 6, 8, 17, 9, 21, 12, -5, 11 };
+    auto    d = M.determinant();
+    int64_t db, dbv;
+    DGtal::functions::getDeterminantBareiss( db, M );
+    auto  MV = DGtal::functions::matrixAsVectorVector( M );
+    DGtal::functions::getDeterminantBareiss( dbv, MV );
+    trace.info() << "d=" << d << " db=" << db << " dbv=" << dbv << "\n";
+    nbok += ( d == -12260 ) ? 1 : 0;
+    nb++;
+    nbok += ( db == -12260 ) ? 1 : 0;
+    nb++;
+    nbok += ( dbv == -12260 ) ? 1 : 0;
+    nb++;
+  }
+  {
+    std::vector<int> V = { 1, 2, 3, -4, 13, 4, 5, 7, 6, 8, 17, 9, 21, 12, -5, 11 };
+    auto MV = DGtal::functions::matrixAsVectorVector( 4, 4, V );
+    int64_t db;
+    DGtal::functions::getDeterminantBareiss( db, MV ); 
+    trace.info() << "db=" << db << "\n";
+    nbok += ( db == -12260 ) ? 1 : 0;
+    nb++;
+  }
+  {
+    typedef DGtal::SimpleMatrix<int,5,5> Matrix;
+    Matrix  M = { 1311, 1, 2, 3, -4,
+                  13, 457, 4, 5, 7,
+                  6, 8, -535, 17, 9,
+                  21, 12, -5, 243, 11,
+                  123,-39,411,630,23 };
+    auto    d = M.determinant();
+    int64_t db;
+    BigInteger big_db;
+    DGtal::functions::getDeterminantBareiss( db, M );
+    DGtal::functions::getDeterminantBareiss( big_db, M );
+    int64_t   cdb = NumberTraits<BigInteger>::castToInt64_t( big_db );
+    trace.info() << "d=" << d << " (i64)db=" << db << " (big)db=" << cdb << "\n";
+    // The line below raises a warning in the macos compiler.
+    // nbok += ( int64_t(d) != -171492636038LL ) ? 1 : 0; // int overflow
+    nbok += ( int(d) != (-171492636038LL % 2147483648LL ) ) ? 1 : 0; // int overflow
+    nb++;
+    nbok += ( db != -171492636038LL ) ? 1 : 0; // int64 overflow (intermediate computation)
+    nb++;
+    nbok += ( cdb == -171492636038LL ) ? 1 : 0;
+    nb++;
+  }
+
+  {
+    typedef DGtal::SimpleMatrix<double,4,4> Matrix;
+    Matrix  M = { 1.5, 2.2, 3.1, -4.6, 13.3, 4.2, 5.7, 7.3, 6.4, 8.0, 17.9, 9.3, 21.2, 12.2, -5.1, 11.8 };
+    auto    d = M.determinant();
+    double  db;
+    DGtal::functions::getDeterminantBareiss( db, M );
+    trace.info() << "d=" << d << " db=" << db << "\n";
+    nbok += ( std::fabs( d - db ) < 1e-10 ) ? 1 : 0;
+    nb++;
+  }
+
+  std::cout << "(" << nbok << "/" << nb << ")\n";
+  trace.endBlock();
+  
+  return nbok == nb;
+}
+
+template <typename Number>
+std::ostream&
+operator<<( std::ostream& out, const std::vector< Number>& v )
+{
+  for ( auto i = 0; i < v.size(); i++ )
+    out << v[ i ] << " ";
+  out << "\n";
+  return out;
+}
+
+bool testLLL()
+{
+  unsigned int nbok = 0;
+  unsigned int nb   = 0;
+
+  typedef int64_t     Integer;
+  trace.beginBlock( "Test LLL-reduction on matrices." );
+  {
+    std::vector< std::vector< Integer > > B = {
+      {73,-127,63},
+      {99,-12,-14},
+      {17,-26,14}
+    };
+    auto L1 = DGtal::functions::computeLLLBasis( B, 0.75 );
+    auto L2 = DGtal::functions::computeLLLBasis( B, 0.99 );
+    std::cout << "Init base: \n" << B
+              << "\nLLL base: delta=0.75\n" << L1 << "\n"
+              << "\nLLL base: delta=0.99\n" << L2 << "\n";
+    
+    std::vector< std::vector< Integer > > R = { {-12,3,-7}, {32,-17,-49}, {-7,-20,0} };
+    nbok += L1 == R ? 1 : 0;
+    nb++;
+    nbok += L2 == R ? 1 : 0;
+    nb++;
+    std::cout << "(" << nbok << "/" << nb << ") " << (nbok == nb ? "PASSED\n" : "ERROR\n");
+  }
+  {
+    std::vector< std::vector< Integer > > B = {
+      {118, 113,  90,  78},
+      {187, 229,  12, 109},
+      { 26, 163, 223,  21}
+    };
+    auto L1 = DGtal::functions::computeLLLBasis( B, 0.75 );
+    auto L2 = DGtal::functions::computeLLLBasis( B, 0.99 );
+    std::cout << "Init base: \n" << B
+              << "\nLLL base: delta=0.75\n" << L1 << "\n"
+              << "\nLLL base: delta=0.99\n" << L2 << "\n";
+    
+    std::vector< std::vector< Integer > > R1 = {
+      { 69, 116, -78,  31},
+      {-23, 166,  55, -26},
+      { 49,  -3, 168,  47}
+    };
+    std::vector< std::vector< Integer > > R2 = {
+      { 69, 116, -78,  31},
+      {-23, 166,  55, -26},
+      { 49,  -3, 168,  47}
+    };
+    nbok += L1 == R1 ? 1 : 0;
+    nb++;
+    nbok += L2 == R2 ? 1 : 0;
+    nb++;
+    std::cout << "(" << nbok << "/" << nb << ") " << (nbok == nb ? "PASSED\n" : "ERROR\n");
+  }
+  {
+    std::vector< std::vector< Integer > > B = {
+      {16,16,11,13,31,25,21, 9},
+      {31, 3, 2,18,11,31,30, 2},
+      { 4,25,11,18, 8,20,13,10},
+      {16,21, 9, 2,10,23, 7,27},
+      {28,12,26, 1, 2,18, 4,19}
+    };
+    auto L1 = DGtal::functions::computeLLLBasis( B, 0.75 );
+    auto L2 = DGtal::functions::computeLLLBasis( B, 0.99 );
+    std::cout << "Init base: \n" << B
+              << "\nLLL base: delta=0.75\n" << L1 << "\n"
+              << "\nLLL base: delta=0.99\n" << L2 << "\n";
+    
+    std::vector< std::vector< Integer > > R1 = {
+      { 15,-13, -9,  5,-20,  6,  9, -7},
+      {-12,  9,  0,  5,-23, -5, -8,  1},
+      { 12, -4, -2,-16,  2,  3, -6, 17},
+      { 12, -9, 17, -1, -8, -5, -3, -8},
+      {  4, 25, 11, 18,  8, 20, 13, 10}
+    };
+    std::vector< std::vector< Integer > > R2 = {
+      { 12, -9, 17, -1, -8, -5, -3, -8},
+      { 12, -4, -2,-16,  2,  3, -6, 17},
+      {-12,  9,  0,  5,-23, -5, -8,  1},
+      { 15,-13, -9,  5,-20,  6,  9, -7},
+      {  4, 25, 11, 18,  8, 20, 13, 10}
+    };
+    nbok += L1 == R1 ? 1 : 0;
+    nb++;
+    nbok += L2 == R2 ? 1 : 0;
+    nb++;
+    std::cout << "(" << nbok << "/" << nb << ") " << (nbok == nb ? "PASSED\n" : "ERROR\n");
+  }
+  {
+    // when the matrix is unimodular, outputs canonic vectors.
+    std::vector< std::vector< Integer > > B = {
+      {   -3,   10,   47,   61,  -53, -126,  713,  601,-1476, 1569},
+      {    2,   -7,  -33,  -43,   37,   89, -502, -425, 1047,-1103},
+      {   -3,   11,   53,   69,  -59, -142,  800,  677,-1663, 1764},
+      {    1,   -9,  -48,  -63,   52,  130, -727, -623, 1543,-1604},
+      {   -2,    9,   48,   63,  -49, -124,  680,  583,-1409, 1533},
+      {    5,  -25, -118, -163,  113,  334,-1761,-1595, 4030,-3838},
+      {   -3,   17,   85,  118,  -84, -245, 1297, 1173,-2974, 2824},
+      {    5,  -24, -119, -156,  126,  321,-1782,-1534, 3799,-3921},
+      {    2,  -10,  -44,  -65,   42,  137, -699, -659, 1713,-1489},
+      {    1,   -5,  -23,  -27,   33,   64, -405, -315,  784, -868}
+    };
+    auto L2 = DGtal::functions::computeLLLBasis( B, 0.99 );
+    Integer d, d2;
+    DGtal::functions::getDeterminantBareiss( d,  B );
+    DGtal::functions::getDeterminantBareiss( d2, L2 );
+    std::cout << "Init base: \n" << B
+              << "\nLLL base: delta=0.99\n" << L2 << "\n"
+              << "det(B)=" << d << " det(L)=" << d2 << "\n";
+    nbok += d  == 1 ? 1 : 0;
+    nb++;
+    nbok += d2 == 1 ? 1 : 0;
+    nb++;
+    std::cout << "(" << nbok << "/" << nb << ") "
+              << "When input matrix is unimodular, output matrix L is unimodular: "
+              << (nbok == nb ? "PASSED\n" : "ERROR\n");
+    for ( auto i = 0; i < B.size(); i++ )
+      {
+        nbok += DGtal::functions::normL1( L2[ i ] ) == 1 ? 1 : 0;
+        nb++;
+      }
+    std::cout << "(" << nbok << "/" << nb << ") "
+              << "The output matrix is then canonic: "
+              << (nbok == nb ? "PASSED\n" : "ERROR\n");
+    trace.beginBlock( "Shorten B" );
+    auto nbs = functions::shortenBasis( B );
+    std::cout << "Shorten base: \n" << B << "#nb shortening=" << nbs << "\n";
+    trace.endBlock();
+  }
+  trace.endBlock();
+  return nbok == nb;
+}
+
+bool testOrthogonalLattice()
+{
+  unsigned int nbok = 0;
+  unsigned int nb   = 0;
+
+  typedef int64_t     Integer;
+  trace.beginBlock( "Test orthogonal lattice computation." );
+  for ( auto i = 0; i < 10000; i++ )
+    {
+      vector<int64_t> n = { rand() % 30 - 15, rand() % 30 - 15, rand() % 30 - 15 };
+      
+      auto g = functions::makePrimitive( n );
+      if ( g==0 ) continue;
+      vector<int64_t> no = n;
+      functions::negate( no );
+      auto L = DGtal::functions::computeOrthogonalLattice( n );
+      functions::shortenBasis( L );
+      Integer l0 = functions::dotProduct( L[ 0 ], n ); // vectors are orthogonal
+      Integer l1 = functions::dotProduct( L[ 1 ], n ); 
+      auto     c = functions::crossProduct( L[ 0 ], L[ 1 ] ); // u x v = n
+      nbok += l0 == 0 ? 1 : 0;
+      nbok += l1 == 0 ? 1 : 0;
+      nbok += ( functions::equals( c, n )  || functions::equals( c, no ) ) ? 1 : 0;
+      nb   += 3;
+      if ( nbok != nb )
+        {
+          std::cout << "----------- " << nbok << "/" << nb << " ----------------\n";
+          std::cout << "Error for vector n=" << n;
+          std::cout << "u.n=" << l0 << " v.n=" << l1 << " uxv=" << c << "\n";
+          std::cout << "u=" << L[0] << "v=" << L[1];
+          std::cout << "u.n=" << l0 << " v.n=" << l1 << " uxv=" << c << "\n";
+          std::cout << "------------------------------------\n";
+          break;
+        }
+    }
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "Orthogonal lattice in 3D: "
+               << (nbok == nb ? "PASSED\n" : "ERROR\n");
+  for ( auto i = 0; i < 10000; i++ )
+    {
+      vector<int64_t> n = { rand() % 30 - 15, rand() % 30 - 15,
+                            rand() % 30 - 15, rand() % 30 - 15 };
+      auto g = functions::makePrimitive( n );
+      if ( g==0 ) continue;
+      vector<int64_t> no = n;
+      functions::negate( no );
+      auto L = DGtal::functions::computeOrthogonalLattice( n );
+      functions::shortenBasis( L );
+      Integer l0 = functions::dotProduct( L[ 0 ], n );
+      Integer l1 = functions::dotProduct( L[ 1 ], n );
+      Integer l2 = functions::dotProduct( L[ 2 ], n );
+      Integer n0 = functions::dotProduct( L[ 0 ], L[ 0 ] );
+      Integer n1 = functions::dotProduct( L[ 1 ], L[ 1 ] );
+      Integer n2 = functions::dotProduct( L[ 2 ], L[ 2 ] );
+      nbok += l0 == 0 ? 1 : 0; // vectors are orthogonal
+      nbok += l1 == 0 ? 1 : 0;
+      nbok += l2 == 0 ? 1 : 0;
+      nbok += n0 > 0 ? 1 : 0;  // vectors are non null
+      nbok += n1 > 0 ? 1 : 0;
+      nbok += n2 > 0 ? 1 : 0;
+      nb   += 6;
+      if ( nbok != nb )
+        {
+          std::cout << "----------- " << nbok << "/" << nb << " ----------------\n";
+          std::cout << "Error for vector n=" << n;
+          std::cout << "u=" << L[0] << "v=" << L[1] << "w=" << L[2];
+          std::cout << "u.n=" << l0 << " v.n=" << l1 << " w.n=" << l2 << "\n";
+          std::cout << "u.u=" << n0 << " v.v=" << n1 << " w.w=" << n2 << "\n";
+          std::cout << "------------------------------------\n";
+          break;
+        }
+    }
+  trace.info() << "(" << nbok << "/" << nb << ") "
+               << "Orthogonal lattice in 4D: "
+               << (nbok == nb ? "PASSED\n" : "ERROR\n");
+  trace.endBlock();
+  return nbok == nb;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
@@ -408,9 +717,12 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testSimpleMatrix() && testArithm() && testColRow() &&
-             testDetCofactor() && testM1Matrix() && testInverse() &&
-             testConcepts() && testConstructor();
+  bool res = testSimpleMatrix() && testArithm() && testColRow()
+    && testDetCofactor() && testM1Matrix() && testInverse()
+    && testConcepts() && testConstructor()
+    && testBareissDeterminant()
+    && testLLL()
+    && testOrthogonalLattice();
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

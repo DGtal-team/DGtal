@@ -404,6 +404,23 @@ DGtal::SimpleMatrix<T, TM, TN>::operator()(const DGtal::Dimension i,
   ASSERT(j<N);  
   return myValues[i*N + j];
 }
+//------------------------------------------------------------------------------
+template<typename T, DGtal::Dimension TM, DGtal::Dimension TN>
+inline
+void
+DGtal::SimpleMatrix<T, TM, TN>::swapRows(const DGtal::Dimension i1, 
+                                         const DGtal::Dimension i2)
+{
+  ASSERT(i1<M);
+  ASSERT(i2<M);
+  if ( i1 == i2 ) return;
+  std::size_t idx1 = i1*N;
+  std::size_t idx2 = i2*N;
+  const std::size_t idxe = idx1 + N;
+  for ( ; idx1 < idxe; ++idx1, ++idx2 )
+    std::swap( myValues[ idx1 ], myValues[ idx2 ] );
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
@@ -464,3 +481,4 @@ DGtal::operator* ( const TComponent& scalar, const DGtal::SimpleMatrix<TComponen
 {
 		return matrix * scalar;
 }
+
