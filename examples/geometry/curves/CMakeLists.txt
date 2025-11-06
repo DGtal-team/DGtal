@@ -28,7 +28,7 @@ foreach(FILE ${DGTAL_EXAMPLES_SRC})
 endforeach()
 
 ### Test with Polyscope viewer
-if (  DGTAL_WITH_POLYSCOPE )
+if (  DGTAL_WITH_POLYSCOPE_VIEWER)
    set(DGTAL_EXAMPLES_POLYSCOPE_SRC
      exampleArithDSS3d
      exampleGridCurve3d

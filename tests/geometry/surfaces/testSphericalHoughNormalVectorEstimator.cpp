@@ -44,7 +44,7 @@
 #include "DGtal/geometry/surfaces/estimation/LocalEstimatorFromSurfelFunctorAdapter.h"
 #include "DGtal/geometry/surfaces/estimation/estimationFunctors/SphericalHoughNormalVectorEstimator.h"
 
-#ifdef DGTAL_WITH_POLYSCOPE
+#ifdef DGTAL_WITH_POLYSCOPE_VIEWER
   #include "DGtal/io/viewers/PolyscopeViewer.h"
 #endif
 

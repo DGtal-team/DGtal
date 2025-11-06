@@ -46,6 +46,16 @@ jobs:
           test-blacklist: ${{ steps.config.outputs.cmake-test-blacklist }}
           test-whitelist: ${{ steps.config.outputs.cmake-test-whitelist }}
 
+      - name: Testing system-wide includes
+        if: matrix.os == 'ubuntu-latest'
+        shell: bash
+        working-directory: ${{ runner.workspace }}/DGtal/tests/projects
+        run: |
+          mkdir build && cd build
+          cmake ..
+          cmake --build . 
+
+
       - name: DGtalTools (linux only, we check this PR against DGtalTools PR main2.0)
         if: matrix.os == 'ubuntu-latest'
         shell: bash
