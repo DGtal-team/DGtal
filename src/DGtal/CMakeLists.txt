@@ -3,6 +3,7 @@ if (DGTAL_BUILD_SHARED_LIBS)
 else()
   add_library(DGtal STATIC helpers/StdDefs.cpp)
 endif()
+add_library(DGtal::DGtal ALIAS DGtal)
 
 if( CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" )
   # Add -fPIC
@@ -20,4 +21,4 @@ target_include_directories(DGtal PUBLIC
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-target_link_libraries(DGtal PUBLIC DGtal_STB DGTAL_LibBoard DGTAL_BoostAddons Boost::boost)
+target_link_libraries(DGtal PUBLIC DGtal_STB DGTAL_LibBoard DGTAL_BoostAddons Boost::boost Eigen3::Eigen)
