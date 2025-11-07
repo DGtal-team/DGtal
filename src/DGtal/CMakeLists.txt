@@ -3,6 +3,7 @@ if (DGTAL_BUILD_SHARED_LIBS)
 else()
   add_library(DGtal STATIC helpers/StdDefs.cpp)
 endif()
+add_library(DGtal::DGtal ALIAS DGtal)
 
 if( CMAKE_SYSTEM_PROCESSOR STREQUAL "x86_64" )
   # Add -fPIC
