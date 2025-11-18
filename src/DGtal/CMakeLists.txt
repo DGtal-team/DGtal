@@ -21,4 +21,13 @@ target_include_directories(DGtal PUBLIC
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
-target_link_libraries(DGtal PUBLIC DGtal_STB DGTAL_LibBoard DGTAL_BoostAddons Boost::boost Eigen3_Eigen)
+target_compile_definitions(DGtal PUBLIC "-DDGTAL_WITH_EIGEN=true")
+target_link_libraries(DGtal PUBLIC DGtal_STB DGTAL_LibBoard DGTAL_BoostAddons)
+
+message(STATUS "Linking with: ${DGtalLibDependencies}")
+message(STATUS "Options with: ${DGtalLibCompileDefs}")
+message(STATUS "Includes: ${DGtalLibIncludeDirs}")
+# message(FATAL_ERROR "")
+target_link_libraries(DGtal PUBLIC ${DGtalLibDependencies})
+target_include_directories(DGtal PUBLIC ${DGtalLibIncludeDirs})
+target_compile_definitions(DGtal PUBLIC ${DGtalLibCompileDefs})

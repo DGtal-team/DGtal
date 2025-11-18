@@ -112,10 +112,6 @@ if (DGTAL_WITH_ITK)
     include(${ITK_USE_FILE})
     message(STATUS "ITK found ${ITK_USE_FILE}.")
 
-    target_link_libraries(DGtal PUBLIC ${ITK_LIBRARIES})
-    set(DGtalLibDependencies ${DGtalLibDependencies} ${ITK_LIBRARIES})
-    target_compile_definitions(DGtal PUBLIC  -DDGTAL_WITH_ITK)
-    
     # -------------------------------------------------------------------------
     # ITK 5.0 adds "/usr/lib/x86_64-linux-gnu/include" to include path which 
     # does not exists on "new" (for example in Docker containers) systems. 
@@ -131,9 +127,11 @@ if (DGTAL_WITH_ITK)
         list(APPEND FILTERED_ITK_INCLUDE_DIRS ${includedir})
       endif()
     endforeach()
-    
-    target_include_directories(DGtal PUBLIC ${FILTERED_ITK_INCLUDE_DIRS})
 
+    set(DGtalLibDependencies ${DGtalLibDependencies} ${ITK_LIBRARIES})
+    set(DGtalLibCompileDefs ${DGtalLibCompileDefs} -DDGTAL_WITH_ITK)
+    set(DGtalLibIncludeDirs ${DGtalLibIncludeDirs} ${FILTERED_ITK_INCLUDE_DIRS})
+    
     # -------------------------------------------------------------------------
     # This test is for instance used for ITK v3.x. ITK forces a limited
     # template depth. We remove this option.
@@ -160,18 +158,14 @@ set(CAIRO_FOUND_DGTAL 0)
 if(DGTAL_WITH_CAIRO)
   find_package(Cairo REQUIRED)
   if(CAIRO_FOUND)
-    target_compile_definitions(DGtal PUBLIC  -DDGTAL_WITH_CAIRO)
-    target_include_directories(DGtal PUBLIC ${CAIRO_INCLUDE_DIRS} ${cairo_INCLUDE_DIRS})
-    target_link_libraries(DGtal PUBLIC ${CAIRO_LIBRARIES} ${cairo_LIBRARIES})
+    set(BoardLibDependencies ${BoardLibDependencies} ${CAIRO_LIBRARIES} ${cairo_LIBRARIES})
     set(DGtalLibDependencies ${DGtalLibDependencies} ${CAIRO_LIBRARIES} ${cairo_LIBRARIES})
-    
-    target_compile_definitions(DGTAL_LibBoard PUBLIC  -DDGTAL_WITH_CAIRO)
-    target_include_directories(DGTAL_LibBoard PUBLIC ${CAIRO_INCLUDE_DIRS} ${cairo_INCLUDE_DIRS})
-    target_link_libraries(DGTAL_LibBoard PUBLIC ${CAIRO_LIBRARIES} ${cairo_LIBRARIES})
+    set(BoardLibCompileDefs ${BoardLibCompileDefs} -DDGTAL_WITH_CAIRO)
+    set(DGtalLibCompileDefs ${DGtalLibCompileDefs} -DDGTAL_WITH_CAIRO)
+    set(BoardLibIncludeDirs ${BoardLibIncludeDirs} ${CAIRO_INCLUDE_DIRS} ${cairo_INCLUDE_DIRS})
+    set(DGtalLibIncludeDirs ${DGtalLibIncludeDirs} ${CAIRO_INCLUDE_DIRS} ${cairo_INCLUDE_DIRS})
 
     message(STATUS "cairo found")
-
-
     set(CAIRO_FOUND_DGTAL 1)
   else()
     message(FATAL_ERROR "cairo not found. Check the cmake variables associated to this package or disable it." )
@@ -189,10 +183,10 @@ set(HDF5_FOUND_DGTAL 0)
 if (DGTAL_WITH_HDF5)
   find_package (HDF5 REQUIRED HL C)
   if(HDF5_FOUND)
-    target_compile_definitions(DGtal PUBLIC -DDGTAL_WITH_HDF5)
-    target_include_directories(DGtal PUBLIC ${HDF5_INCLUDE_DIRS})
-    target_link_libraries(DGtal PUBLIC ${HDF5_LIBRARIES} ${HDF5_HL_LIBRARIES})
     set(DGtalLibDependencies ${DGtalLibDependencies} ${HDF5_LIBRARIES} ${HDF5_HL_LIBRARIES})
+    set(DGtalLibCompileDefs ${DGtalLibCompileDefs} -DDGTAL_WITH_HDF5)
+    set(DGtalLibIncludeDirs ${DGtalLibIncludeDirs} ${HDF5_INCLUDE_DIRS})
+
     message(STATUS "HDF5 found")
     set(HDF5_FOUND_DGTAL 1)
   else()
@@ -210,8 +204,9 @@ set(POLYSCOPE_FOUND_DGTAL 0)
 if (DGTAL_WITH_POLYSCOPE_VIEWER)
   include(polyscope)
 
-  target_link_libraries(DGtal PUBLIC polyscope)
-  target_compile_definitions(DGtal PUBLIC -DDGTAL_WITH_POLYSCOPE_VIEWER)
+  set(DGtalLibDependencies ${DGtalLibDependencies} polyscope)
+  set(DGtalLibCompileDefs ${DGtalLibCompileDefs} -DDGTAL_WITH_POLYSCOPE_VIEWER)
+
   set(POLYSCOPE_FOUND_DGTAL 1)
   set(DGTAL_WITH_POLYSCOPE_VIEWER 1)
 endif()
@@ -237,9 +232,10 @@ if (DGTAL_WITH_CGAL)
   find_package(CGAL COMPONENTS Core)
   if(CGAL_FOUND)
     set(CGAL_FOUND_DGTAL 1)
-    target_compile_definitions(DGtal PUBLIC -DCGAL_EIGEN3_ENABLED)
-    target_compile_definitions(DGtal PUBLIC -DDGTAL_WITH_CGAL)
-    target_compile_definitions(DGtal PUBLIC -DWITH_LAPACK)
+    set(DGtalLibCompileDefs ${DGtalLibCompileDefs} -DCGAL_EIGEN3_ENABLED)
+    set(DGtalLibCompileDefs ${DGtalLibCompileDefs} -DCGAL_WITH_CGAL)
+    set(DGtalLibCompileDefs ${DGtalLibCompileDefs} -DWITH_LAPACK)
+
     message(STATUS  "CGAL found, version ${CGAL_VERSION}")
     if (CGAL_VERSION VERSION_LESS "5.0")
       message(FATAL_ERROR "CGAL version 5.0 or higher is required.")
@@ -247,11 +243,9 @@ if (DGTAL_WITH_CGAL)
       if (CGAL_VERSION VERSION_LESS "6.0")
         message(STATUS  "CGAL  using ${CGAL_USE_FILE}")
         include( ${CGAL_USE_FILE} )
-        target_link_libraries(DGtal PUBLIC ${CGAL_LIBRARIES} ${CGAL_3D_PARTY-LIBRARIES})
         set(DGtalLibDependencies ${DGtalLibDependencies} ${CGAL_LIBRARIES} ${CGAL_3D_PARTY-LIBRARIES})
         ## Making sure that CGAL got the Eigen3 flag
       else()
-        target_link_libraries(DGtal PUBLIC CGAL::CGAL)
         set(DGtalLibDependencies ${DGtalLibDependencies} CGAL::CGAL)
       endif()
     endif()
@@ -267,8 +261,8 @@ set(PONCA_FOUND_DGTAL 0)
 if(DGTAL_WITH_PONCA)
   include(ponca)
   
-  target_link_libraries(DGtal PUBLIC Ponca::Ponca)
-  target_compile_definitions(DGtal PUBLIC -DDGTAL_WITH_PONCA)
+  set(DGtalLibDependencies ${DGtalLibDependencies} Ponca::Ponca)
+  set(DGtalLibCompileDefs ${DGtalLibCompileDefs} -DCGAL_WITH_PONCA)
 endif()
 
 # -----------------------------------------------------------------------------
@@ -280,10 +274,11 @@ if(DGTAL_WITH_FFTW3)
   find_package(FFTW3 REQUIRED)
   if(FFTW3_FOUND)
     set(FFTW3_FOUND_DGTAL 1)
-    target_compile_definitions(DGtal PUBLIC -DDGTAL_WITH_FFTW3)
-    target_include_directories(DGtal PUBLIC ${FFTW3_INCLUDES} ${FFTW3_INCLUDE_DIRS})
-    target_link_libraries(DGtal PUBLIC ${FFTW3_LIBRARIES} ${FFTW3_DEP_LIBRARIES})
+
     set(DGtalLibDependencies ${DGtalLibDependencies} ${FFTW3_LIBRARIES} ${FFTW3_DEP_LIBRARIES})
+    set(DGtalLibCompileDefs ${DGtalLibCompileDefs} -DDGTAL_WITH_FFTW3)
+    set(DGtalLibIncludeDirs ${DGtalLibIncludeDirs} ${FFTW3_INCLUDES} ${FFTW3_INCLUDE_DIRS})
+
     message(STATUS "FFTW3 is found : ${FFTW3_LIBRARIES}.")
   else()
     message(FATAL_ERROR "FFTW3 is not found.")
@@ -291,17 +286,17 @@ if(DGTAL_WITH_FFTW3)
 
   if(FFTW3_FLOAT_FOUND)
     set(FFTW3_FLOAT_FOUND_DGTAL 1)
-    target_compile_definitions(DGtal PUBLIC -DDGTAL_WITH_FFTW3_FLOAT)
+    set(DGtalLibCompileDefs ${DGtalLibCompileDefs} -DDGTAL_WITH_FFTW3_FLOAT)
   endif()
 
   if(FFTW3_DOUBLE_FOUND)
     set(FFTW3_DOUBLE_FOUND_DGTAL 1)
-    target_compile_definitions(DGtal PUBLIC -DDGTAL_WITH_FFTW3_DOUBLE)
+    set(DGtalLibCompileDefs ${DGtalLibCompileDefs} -DDGTAL_WITH_FFTW3_DOUBLE)
   endif()
 
   if(FFTW3_LONG_FOUND)
     set(FFTW3_LONG_FOUND_DGTAL 1)
-    target_compile_definitions(DGtal PUBLIC -DDGTAL_WITH_FFTW3_LONG)
+    set(DGtalLibCompileDefs ${DGtalLibCompileDefs} -DDGTAL_WITH_FFTW3_LONG)
   endif()
 
 endif()
@@ -311,16 +306,15 @@ endif()
 # (They are not compulsory).
 # -----------------------------------------------------------------------------
 if(DGTAL_WITH_LIBIGL)
-  if  (DGTAL_WITH_CGAL)
+  if(DGTAL_WITH_CGAL)
     message(STATUS "DGtal/CGAL enabled.")
   else()
     message(FATAL_ERROR "LIBIGL requires CGAL. Please if the `WITH_CGAL=true` cmake flag.")
   endif()
   include(cmake/deps/libigl.cmake)
-  target_compile_definitions(DGtal PUBLIC  -DDGTAL_WITH_LIBIGL)
+  set(DGtalLibCompileDefs ${DGtalLibCompileDefs} -DDGTAL_WITH_LIBIGL)
   set(DGtalLibDependencies ${DGtalLibDependencies} igl::core)
   set(LIBIGL_FOUND_DGTAL 1)
-
 endif()
 
 message(STATUS "-------------------------------------------------------------------------------")
