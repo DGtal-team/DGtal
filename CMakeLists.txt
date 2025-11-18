@@ -58,8 +58,8 @@ include(DevelopmentOptions)
 # -----------------------------------------------------------------------------
 # Check mandatory and optional dependencies
 # -----------------------------------------------------------------------------
-include(CheckDGtalDependencies)
 include(CheckDGtalOptionalDependencies)
+include(CheckDGtalDependencies)
 
 # -----------------------------------------------------------------------------
 # Unit-testing, Cpack and Ctest settings

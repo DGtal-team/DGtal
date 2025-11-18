@@ -14,12 +14,6 @@ option(EIGEN_WITH_MKL "Use Eigen with MKL" OFF)
 option(EIGEN_DONT_VECTORIZE "Disable Eigen vectorization" OFF)
 option(DGTAL_WITH_EIGEN_ITK "Use the EIGEN configuration of ITK (effective only if DGTAL_WITH_ITK=ON)" ON)
 
-
-if (DGTAL_WITH_ITK AND DGTAL_WITH_EIGEN_ITK)
-   message(STATUS "Using EIGEN from ITK project, to avoid any eigen conflit version we strongly recommand to compile ITK using cmake option -DITK_USE_SYSTEM_EIGEN:BOOL=on ")
-   return()    
-endif()
-
 if(TARGET Eigen3::Eigen)
     return()
 endif()
@@ -27,6 +21,12 @@ endif()
 if(EIGEN_ROOT)
     message(STATUS "Third-party (external): creating target 'Eigen3::Eigen' for external path: ${EIGEN_ROOT}")
     set(EIGEN_INCLUDE_DIRS ${EIGEN_ROOT})
+elseif(DGTAL_WITH_ITK AND DGTAL_WITH_EIGEN_ITK)
+    message(STATUS "Using EIGEN from ITK project, to avoid any eigen conflit version we strongly recommand to compile ITK using cmake option -DITK_USE_SYSTEM_EIGEN:BOOL=on ")
+
+    set(Eigen3_DIR ${ITKInternalEigen3_DIR})
+    find_package(Eigen3 REQUIRED CONFIG)
+    get_target_property(EIGEN_INCLUDE_DIRS Eigen3::Eigen INTERFACE_INCLUDE_DIRECTORIES)
 else()
     message(STATUS "Third-party (external): creating target 'Eigen3::Eigen'")
 
@@ -46,7 +46,9 @@ else()
 endif()
 
 add_library(Eigen3_Eigen INTERFACE)
-add_library(Eigen3::Eigen ALIAS Eigen3_Eigen)
+if (NOT TARGET Eigen3::Eigen)
+    add_library(Eigen3::Eigen ALIAS Eigen3_Eigen)
+endif()
 
 include(GNUInstallDirs)
 target_include_directories(Eigen3_Eigen SYSTEM INTERFACE
