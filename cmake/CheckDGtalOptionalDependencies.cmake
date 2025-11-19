@@ -235,7 +235,7 @@ if (DGTAL_WITH_CGAL)
   if(CGAL_FOUND)
     set(CGAL_FOUND_DGTAL 1)
     set(DGtalLibCompileDefs ${DGtalLibCompileDefs} -DCGAL_EIGEN3_ENABLED)
-    set(DGtalLibCompileDefs ${DGtalLibCompileDefs} -DCGAL_WITH_CGAL)
+    set(DGtalLibCompileDefs ${DGtalLibCompileDefs} -DDGTAL_WITH_CGAL)
     set(DGtalLibCompileDefs ${DGtalLibCompileDefs} -DWITH_LAPACK)
 
     message(STATUS  "CGAL found, version ${CGAL_VERSION}")

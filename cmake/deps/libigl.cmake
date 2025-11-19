@@ -13,6 +13,8 @@ if(TARGET igl::core)
     return()
 endif()
 
+# Fetch eigen first as required by the library
+include(eigen)
 message(STATUS "Third-party (external): creating target 'igl::core'")
 
 option(LIBIGL_INSTALL "Enable installation of libigl targets" ON)
