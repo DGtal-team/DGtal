@@ -14,7 +14,7 @@ option(EIGEN_WITH_MKL "Use Eigen with MKL" OFF)
 option(EIGEN_DONT_VECTORIZE "Disable Eigen vectorization" OFF)
 option(DGTAL_WITH_EIGEN_ITK "Use the EIGEN configuration of ITK (effective only if DGTAL_WITH_ITK=ON)" ON)
 
-if(TARGET Eigen3::Eigen)
+if(TARGET Eigen3_Eigen)
     return()
 endif()
 

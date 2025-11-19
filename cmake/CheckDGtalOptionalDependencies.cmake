@@ -112,6 +112,8 @@ if (DGTAL_WITH_ITK)
     include(${ITK_USE_FILE})
     message(STATUS "ITK found ${ITK_USE_FILE}.")
 
+    include(eigen)
+
     # -------------------------------------------------------------------------
     # ITK 5.0 adds "/usr/lib/x86_64-linux-gnu/include" to include path which 
     # does not exists on "new" (for example in Docker containers) systems. 
@@ -311,9 +313,9 @@ if(DGTAL_WITH_LIBIGL)
   else()
     message(FATAL_ERROR "LIBIGL requires CGAL. Please if the `WITH_CGAL=true` cmake flag.")
   endif()
-  include(cmake/deps/libigl.cmake)
+  include(libigl)
   set(DGtalLibCompileDefs ${DGtalLibCompileDefs} -DDGTAL_WITH_LIBIGL)
-  set(DGtalLibDependencies ${DGtalLibDependencies} igl::core)
+  set(DGtalLibDependencies ${DGtalLibDependencies} igl_core)
   set(LIBIGL_FOUND_DGTAL 1)
 endif()
 

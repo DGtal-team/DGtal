@@ -25,4 +25,6 @@ CPMAddPackage(
     OPTIONS LIBIGL_WITH_CGAL
 )
 
-set_target_properties(igl_core PROPERTIES FOLDER third_party/libigl)
+# set_target_properties(igl_core PROPERTIES FOLDER third_party/libigl)
+
+export (TARGETS igl_core FILE IGLConfig.cmake)
