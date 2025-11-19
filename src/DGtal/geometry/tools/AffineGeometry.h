@@ -757,7 +757,7 @@ namespace DGtal
     ///
     /// @param[in] N a non null primitive lattice vector
     ///
-    /// @param[in] shortened when 'false', the basis is in echelon
+    /// @param[in] shortened when 'false', the basis is in row echelon
     /// form, when 'true', the basis is shortened (with pairwise
     /// shortenings, may not be optimal, except in 3D).
     ///
@@ -1366,7 +1366,7 @@ namespace DGtal
     ///
     /// @param[in] N a non null primitive lattice vector
     ///
-    /// @param[in] shortened when 'false', the basis is in echelon
+    /// @param[in] shortened when 'false', the basis is in row echelon
     /// form, when 'true', the basis is shortened (with pairwise
     /// shortenings, may not be optimal, except in 3D).
     template < typename TPoint, typename TInputPoint>
