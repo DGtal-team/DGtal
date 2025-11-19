@@ -41,7 +41,6 @@
 
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
-#include <iostream>
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/ArithmeticConversionTraits.h"
 #include "DGtal/arithmetic/IntegerComputer.h"

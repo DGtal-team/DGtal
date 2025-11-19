@@ -33,7 +33,7 @@ See \subpage moduleQuickHull
 A set of generic functions is provided in header
 `DGtal/geometry/tools/AffineGeometry.h` for several affine geometry
 computations. They can be conveniently used since they deduce
-automatically the type of parameters.  All these functions support
+automatically the type of their parameters.  All these functions support
 number types for points and vectors that are either integers (int32_t,
 int64_t, BigInteger) or floating-point numbers (float, double). The
 computations are \b exact when types are \b integral (up to integer
@@ -60,7 +60,9 @@ numbers (default tolerance: between -1e-12 and 1e-12 is zero).
 
 * <b> Affine basis and independent vectors </b>
 
-  The computed bases are in echelon reduced form, except when using
+  The computed bases are in row echelon form (see \ref
+  https://en.wikipedia.org/wiki/Row_echelon_form), potentially reduced
+  if components are real-value and nnot integers, except when using
   completeBasis where the last vector may be asked to be orthogonal to
   all the others.
 
@@ -94,7 +96,7 @@ numbers (default tolerance: between -1e-12 and 1e-12 is zero).
   returns a possible basis for its orthogonal d-1 dimensional
   lattice. The returned basis is guaranteed to span all the lattice
   points contained in the vector space orthogonal to \a N. If
-  `shortened` is false, the basis is in echelon form, otherwise the
+  `shortened` is false, the basis is in row echelon form, otherwise the
   vectors are shortened by pairwise linear combinations.
 
 * <b> Orthogonal vector to basis of codimension 1 </b>
@@ -235,9 +237,11 @@ The same services are provided as AffineGeometry static methods:
                   
 * <b> affine basis and independent vectors </b>
 
-  The computed bases are in echelon reduced form, except when using
-  completeBasis where the last vector may be asked to be orthogonal to
-  all the others.
+  The computed bases are in row echelon form (see \ref
+  https://en.wikipedia.org/wiki/Row_echelon_form), even reduced row
+  echelon form if components are real-valued and not integers, except
+  when using completeBasis where the last vector may be asked to be
+  orthogonal to all the others.
 
   - AffineGeometry::affineBasis( const std::vector<TInputPoint>& X,
     const double tolerance ) Given a range of points \a X, returns a

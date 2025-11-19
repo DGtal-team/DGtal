@@ -84,6 +84,28 @@ namespace DGtal
   /// @endcode
   ///
   /// @see testAffineBasis.cpp
+  ///
+  /// @note Affine basis can be computed in several forms, which are
+  /// more or less suited according to the targeted use:
+  ///
+  /// - ECHELON_REDUCED: the basis A is in row echelon form, useful
+  ///   for solving systems of the form Ax=b. A drawback is that
+  ///   component values may increase quickly if we ask for integers.
+  ///
+  /// - SHORTEST_ECHELON_REDUCED: the basis A is in row echelon form,
+  ///   but the computation first sorts the input vector from the
+  ///   shortest to the longest vectors before Gauss elimination. It
+  ///   is useful for solving systems of the form Ax=b. A drawback is
+  ///   also that component values may increase quickly if we ask for
+  ///   integers.
+  ///
+  /// - LLL_REDUCED (specific to lattice vectors): the basis A is not
+  /// - in row echelon form but is made of almost the shortest
+  /// - possible lattice vectors. It is implemented with the LLL
+  /// - algorithm (see \ref
+  /// - https://en.wikipedia.org/wiki/Lenstra–Lenstra–Lovász_lattice_basis_reduction_algorithm). It
+  /// - is not handy for solving systems but the basis vectors are in
+  /// - general much shorter than in row echelon form.
   template < typename TPoint >
   struct AffineBasis
   {
