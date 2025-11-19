@@ -19,11 +19,10 @@ find_dependency(ZLIB REQUIRED
   @ZLIB_HINTS@
   )
 
+find_dependency(Eigen3_Eigen REQUIRED @EIGEN_HINT@)
+
 set(DGTAL_WITH_EIGEN 1)
-if (NOT @ITK_FOUND_DGTAL@ OR NOT @DGTAL_WITH_EIGEN_ITK@) 
-  find_dependency(Eigen REQUIRED)
-endif()
-set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3::Eigen)
+set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3_Eigen)
 
 if (@LIBIGL_FOUND_DGTAL@) 
   include(libigl)
@@ -90,6 +89,7 @@ if(@FFTW3_FOUND_DGTAL@) #if FFTW3_FOUND_DGTAL
   set(DGTAL_WITH_FFTW3 1)
 endif()
 
+message(STATUS "Including: ${CMAKE_CURRENT_LIST_DIR}/DGtalModulesTargets.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/DGtalModulesTargets.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/DGtalTargets.cmake")
 

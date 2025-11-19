@@ -40,21 +40,18 @@ else()
     )
     set(EIGEN_INCLUDE_DIRS ${eigen_SOURCE_DIR})
 
-    install(DIRECTORY ${EIGEN_INCLUDE_DIRS}/Eigen
-        DESTINATION ${DGTAL_INSTALL_DEPS_DESTINATION}
-    )
 endif()
 
 add_library(Eigen3_Eigen INTERFACE)
-if (NOT TARGET Eigen3::Eigen)
-    add_library(Eigen3::Eigen ALIAS Eigen3_Eigen)
-endif()
-
 include(GNUInstallDirs)
 target_include_directories(Eigen3_Eigen SYSTEM INTERFACE
     $<BUILD_INTERFACE:${EIGEN_INCLUDE_DIRS}>
     $<INSTALL_INTERFACE:${DGTAL_INSTALL_DEPS_DESTINATION}/Eigen>
 )
+install(DIRECTORY ${EIGEN_INCLUDE_DIRS}/Eigen
+    DESTINATION ${DGTAL_INSTALL_DEPS_DESTINATION}
+)
+
 target_compile_definitions(Eigen3_Eigen INTERFACE EIGEN_MPL2_ONLY)
 
 if(EIGEN_DONT_VECTORIZE)
@@ -79,8 +76,8 @@ endif()
 
 # Install rules
 set(CMAKE_INSTALL_DEFAULT_COMPONENT_NAME eigen)
-set_target_properties(Eigen3_Eigen PROPERTIES EXPORT_NAME Eigen)
+set_target_properties(Eigen3_Eigen PROPERTIES EXPORT_NAME Eigen3_Eigen)
 
 install(TARGETS Eigen3_Eigen EXPORT Eigen_Targets)
-install(EXPORT Eigen_Targets FILE EigenConfig.cmake DESTINATION ${DGTAL_INSTALL_CMAKE_DESTINATION} NAMESPACE Eigen3::)
-export(TARGETS Eigen3_Eigen FILE EigenConfig.cmake NAMESPACE Eigen3::)
+install(EXPORT Eigen_Targets FILE Eigen3_EigenConfig.cmake DESTINATION ${DGTAL_INSTALL_CMAKE_DESTINATION})
+export(TARGETS Eigen3_Eigen FILE Eigen3_EigenConfig.cmake)

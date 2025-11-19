@@ -89,7 +89,7 @@ install(FILES
 set(_dependencies_list
   Boost::headers ZLIB
   LibBoard
-   ITK Cairo HDF5 OpenMP Eigen3::Eigen CGAL FFTW3 OpenMP::OpenMPCXX
+   ITK Cairo HDF5 OpenMP Eigen3_Eigen CGAL FFTW3 OpenMP::OpenMPCXX
   )
 
 foreach(dep ${_dependencies_list})

@@ -48,4 +48,4 @@ endif()
 # Fetching Eigen3
 # -----------------------------------------------------------------------------
 include(eigen)
-set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3::Eigen)
+set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3_Eigen)
