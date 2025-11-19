@@ -102,10 +102,11 @@ namespace DGtal
   /// - LLL_REDUCED (specific to lattice vectors): the basis A is not
   /// - in row echelon form but is made of almost the shortest
   /// - possible lattice vectors. It is implemented with the LLL
-  /// - algorithm (see \ref
-  /// - https://en.wikipedia.org/wiki/Lenstra–Lenstra–Lovász_lattice_basis_reduction_algorithm). It
-  /// - is not handy for solving systems but the basis vectors are in
-  /// - general much shorter than in row echelon form.
+  /// - algorithm (see <a
+  /// - href="https://en.wikipedia.org/wiki/Lenstra–Lenstra–Lovász_lattice_basis_reduction_algorithm">
+  /// - Wikipedia LLL algorithm </a>). It is not handy for solving
+  /// - systems but the basis vectors are in general much shorter than
+  /// - in row echelon form.
   template < typename TPoint >
   struct AffineBasis
   {
