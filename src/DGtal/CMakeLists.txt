@@ -21,6 +21,7 @@ target_include_directories(DGtal PUBLIC
   $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
 )
 
+<<<<<<< Updated upstream
 target_compile_definitions(DGtal PUBLIC "-DDGTAL_WITH_EIGEN=true")
 target_link_libraries(DGtal PUBLIC DGtal_STB DGTAL_LibBoard DGTAL_BoostAddons)
 

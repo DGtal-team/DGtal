@@ -14,7 +14,7 @@ option(EIGEN_WITH_MKL "Use Eigen with MKL" OFF)
 option(EIGEN_DONT_VECTORIZE "Disable Eigen vectorization" OFF)
 option(DGTAL_WITH_EIGEN_ITK "Use the EIGEN configuration of ITK (effective only if DGTAL_WITH_ITK=ON)" ON)
 
-if(TARGET Eigen3_Eigen)
+if(TARGET DGtalEigen3)
     return()
 endif()
 
@@ -42,9 +42,10 @@ else()
 
 endif()
 
-add_library(Eigen3_Eigen INTERFACE)
+add_library(DGtalEigen3 INTERFACE)
+
 include(GNUInstallDirs)
-target_include_directories(Eigen3_Eigen SYSTEM INTERFACE
+target_include_directories(DGtalEigen3 SYSTEM INTERFACE
     $<BUILD_INTERFACE:${EIGEN_INCLUDE_DIRS}>
     $<INSTALL_INTERFACE:${DGTAL_INSTALL_DEPS_DESTINATION}/Eigen>
 )
@@ -52,18 +53,18 @@ install(DIRECTORY ${EIGEN_INCLUDE_DIRS}/Eigen
     DESTINATION ${DGTAL_INSTALL_DEPS_DESTINATION}
 )
 
-target_compile_definitions(Eigen3_Eigen INTERFACE EIGEN_MPL2_ONLY)
+target_compile_definitions(DGtalEigen3 INTERFACE EIGEN_MPL2_ONLY)
 
 if(EIGEN_DONT_VECTORIZE)
-    target_compile_definitions(Eigen3_Eigen INTERFACE EIGEN_DONT_VECTORIZE)
+    target_compile_definitions(DGtalEigen3 INTERFACE EIGEN_DONT_VECTORIZE)
 endif()
 
 if(EIGEN_WITH_MKL)
     # TODO: Checks that, on 64bits systems, `mkl::mkl` is using the LP64 interface
     # (by looking at the compile definition of the target)
     include(mkl)
-    target_link_libraries(Eigen3_Eigen INTERFACE mkl::mkl)
-    target_compile_definitions(Eigen3_Eigen INTERFACE
+    target_link_libraries(DGtalEigen3 INTERFACE mkl::mkl)
+    target_compile_definitions(DGtalEigen3 INTERFACE
         EIGEN_USE_MKL_ALL
         EIGEN_USE_LAPACKE_STRICT
     )
@@ -71,13 +72,13 @@ endif()
 
 # On Windows, enable natvis files to improve debugging experience
 if(WIN32 AND eigen_SOURCE_DIR)
-    target_sources(Eigen3_Eigen INTERFACE $<BUILD_INTERFACE:${eigen_SOURCE_DIR}/debug/msvc/eigen.natvis>)
+    target_sources(DGtalEigen3 INTERFACE $<BUILD_INTERFACE:${eigen_SOURCE_DIR}/debug/msvc/eigen.natvis>)
 endif()
 
 # Install rules
 set(CMAKE_INSTALL_DEFAULT_COMPONENT_NAME eigen)
-set_target_properties(Eigen3_Eigen PROPERTIES EXPORT_NAME Eigen3_Eigen)
+set_target_properties(DGtalEigen3 PROPERTIES EXPORT_NAME DGtalEigen3)
 
-install(TARGETS Eigen3_Eigen EXPORT Eigen_Targets)
-install(EXPORT Eigen_Targets FILE Eigen3_EigenConfig.cmake DESTINATION ${DGTAL_INSTALL_CMAKE_DESTINATION})
-export(TARGETS Eigen3_Eigen FILE Eigen3_EigenConfig.cmake)
+install(TARGETS DGtalEigen3 EXPORT Eigen_Targets)
+install(EXPORT Eigen_Targets FILE DGtalEigen3Config.cmake DESTINATION ${DGTAL_INSTALL_CMAKE_DESTINATION})
+export(TARGETS DGtalEigen3 FILE DGtalEigen3Config.cmake)

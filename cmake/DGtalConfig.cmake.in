@@ -19,10 +19,10 @@ find_dependency(ZLIB REQUIRED
   @ZLIB_HINTS@
   )
 
-find_dependency(Eigen3_Eigen REQUIRED @EIGEN_HINT@)
+find_dependency(DGtalEigen3 REQUIRED @EIGEN_HINT@)
 
 set(DGTAL_WITH_EIGEN 1)
-set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3_Eigen)
+set(DGtalLibDependencies ${DGtalLibDependencies} DGtalEigen3)
 
 if (@LIBIGL_FOUND_DGTAL@) 
   include(libigl)
