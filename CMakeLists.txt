@@ -45,6 +45,18 @@ set(VERSION ${CMAKE_PROJECT_VERSION})
 # -----------------------------------------------------------------------------
 include(Common)
 
+# -----------------------------------------------------------------------------
+# Tools for developpment (compilers, formats, ...)
+# -----------------------------------------------------------------------------
+include(DevelopmentTools)
+
+# -----------------------------------------------------------------------------
+# Check mandatory and optional dependencies
+# -----------------------------------------------------------------------------
+# Find optional first, since ITK fetches Eigen which is mandatory
+include(CheckDGtalOptionalDependencies)
+include(CheckDGtalDependencies)
+
 #------------------------------------------------------------------------------
 # Add DGtal library
 #------------------------------------------------------------------------------
@@ -54,12 +66,6 @@ add_subdirectory(src)
 # Development and debug options
 # -----------------------------------------------------------------------------
 include(DevelopmentOptions)
-
-# -----------------------------------------------------------------------------
-# Check mandatory and optional dependencies
-# -----------------------------------------------------------------------------
-include(CheckDGtalDependencies)
-include(CheckDGtalOptionalDependencies)
 
 # -----------------------------------------------------------------------------
 # Unit-testing, Cpack and Ctest settings

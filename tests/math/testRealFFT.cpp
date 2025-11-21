@@ -31,7 +31,7 @@
  */
 
 #ifndef DGTAL_WITH_FFTW3
-  #error You need to have activated FFTW3 (DGTAL_WITH_FFTW3_FFTW3) to include this file.
+  #error You need to have activated FFTW3 (DGTAL_WITH_FFTW3) to include this file.
 #endif
 
 #include <cstddef>

@@ -13,6 +13,8 @@ if(TARGET igl::core)
     return()
 endif()
 
+# Fetch eigen first as required by the library
+include(eigen)
 message(STATUS "Third-party (external): creating target 'igl::core'")
 
 option(LIBIGL_INSTALL "Enable installation of libigl targets" ON)
@@ -25,4 +27,7 @@ CPMAddPackage(
     OPTIONS LIBIGL_WITH_CGAL
 )
 
-set_target_properties(igl_core PROPERTIES FOLDER third_party/libigl)
+# set_target_properties(igl_core PROPERTIES FOLDER third_party/libigl)
+
+export (TARGETS igl_core FILE IGLConfig.cmake)
+export (TARGETS Eigen3_Eigen FILE IGLEigen3Config.cmake)
