@@ -10,6 +10,8 @@ set(DGTAL_EXAMPLES_SRC
   exampleQuickHull3D
   exampleLatticeBallDelaunay3D
   exampleRationalBallDelaunay3D
+  exampleAffineGeometry
+  exampleGenericLatticeConvexHull
   checkLatticeBallQuickHull
 )
 
