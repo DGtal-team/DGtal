@@ -44,7 +44,7 @@ if (  DGTAL_WITH_POLYSCOPE_VIEWER )
     testTensorVotingViewer)
 
   foreach(FILE ${POLYSCOPE_VIEWER_TESTS_SRC})
-    DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
+    DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE NO_CATCH)
   endforeach()
 endif()
 

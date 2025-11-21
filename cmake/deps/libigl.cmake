@@ -30,3 +30,4 @@ CPMAddPackage(
 # set_target_properties(igl_core PROPERTIES FOLDER third_party/libigl)
 
 export (TARGETS igl_core FILE IGLConfig.cmake)
+export (TARGETS Eigen3_Eigen FILE IGLEigen3Config.cmake)
