@@ -1,0 +1,421 @@
+
+/* 
+ * Useful to avoid writing DGtal:: in front of every class.
+ */
+namespace DGtal {
+
+/**
+   
+@page moduleAffineGeometry Affine geometry of points and vectors
+
+@writers Jacques-Olivier Lachaud
+
+@since 2.0
+
+Part of the \ref packageGeometry.
+
+This part of the manual describes how to perform some elementary
+affine geometry computations: affine dimension of a set of points,
+subset of maximum affine dimension, completion of a partial basis,
+computation of an orthogonal vector. This module is notably used in
+QuickHull algorithm.
+
+[TOC]
+
+The following programs are related to this documentation:
+testAffineGeometry.cpp exampleAffineGeometry.cpp
+testAffineBasis.cpp
+
+See \subpage moduleQuickHull
+
+@section dgtal_affgeom_sec1 Generic functions for affine geometry
+
+A set of generic functions is provided in header
+`DGtal/geometry/tools/AffineGeometry.h` for several affine geometry
+computations. They can be conveniently used since they deduce
+automatically the type of their parameters.  All these functions support
+number types for points and vectors that are either integers (int32_t,
+int64_t, BigInteger) or floating-point numbers (float, double). The
+computations are \b exact when types are \b integral (up to integer
+overflow), while a \b tolerance can be provided for floating-point
+numbers (default tolerance: between -1e-12 and 1e-12 is zero).
+
+* <b> Affine dimension and affine subset </b>
+
+  - functions::computeAffineDimension( const std::vector< TPoint >& X,
+  const double tolerance ) Given a range of points \a X, returns the
+  affine dimension of its spanned affine subspace.
+
+  - functions::computeAffineSubset( const std::vector< TPoint >& X,
+  const double tolerance ) Given a range of points \a X, returns a
+  subset of these points that form an affine basis of \a
+  X. Equivalently it is a simplex whose affine space spans all the
+  points of \a X.
+
+  - functions::computeAffineSubset( const std::vector<TPoint>& X, const
+  TIndexRange& I, const double tolerance ) Given a range of points \a
+  X and a subset of it given by indices \a I, returns a subset of
+  these points that form an affine basis of \a X[I]. Equivalently it
+  is a simplex whose affine space spans all the points of \a X[I].
+
+* <b> Affine basis and independent vectors </b>
+
+  The computed bases are in row echelon form (see <a
+  href="https://en.wikipedia.org/wiki/Row_echelon_form"> Wikipedia
+  </a>), potentially reduced if components are real-value and nnot
+  integers, except when using completeBasis where the last vector may
+  be asked to be orthogonal to all the others.
+
+  - functions::getAffineBasis( TInputPoint& o, std::vector< TPoint >&
+  basis, const std::vector< TInputPoint >& X, const double tolerance )
+  Given a range of points \a X, outputs a point and a range of vectors
+  forming an affine basis containing \a X.
+
+  - functions::getAffineBasis( TInputPoint& o, std::vector< TPoint >&
+  basis, const std::vector< TInputPoint >& X, const TIndexRange& I,
+  const double tolerance ) Given a range of points \a X and the
+  indices \a I of points in \a X which form an affine subset of \a X,
+  returns a point and a range of vectors forming an affine basis
+  containing \a X.
+
+  - functions::computeIndependentVector( const std::vector< TPoint >&
+  basis, const double tolerance ) Given a partial basis of vectors,
+  returns a returns a canonic unit vector that is independent.
+
+  - functions::getCompleteBasis( std::vector< TPoint >& basis, bool
+  normal_vector, const double tolerance ) Complete the vectors \a
+  basis with independent vectors so as to form a basis of the
+  space. When \a normal_vector is true, the last added vector is
+  guaranteed to be \b orthogonal to all the previous vectors,
+  otherwise it is just an independent canonic vector.
+
+* <b> Affine basis of codimension 1 </b>
+
+  - functions::getOrthogonalLatticeBasis( std::vector< TPoint >& B,
+  const TInputPoint& N, bool shortened ) Given a lattice vector \a N,
+  returns a possible basis for its orthogonal d-1 dimensional
+  lattice. The returned basis is guaranteed to span all the lattice
+  points contained in the vector space orthogonal to \a N. If
+  `shortened` is false, the basis is in row echelon form, otherwise the
+  vectors are shortened by pairwise linear combinations.
+
+* <b> Orthogonal vector to basis of codimension 1 </b>
+
+  - functions::computeOrthogonalVectorToBasis( const
+  std::vector<TPoint>& basis ) Given `d-1` independent vectors \a
+  basis in dD, returns a vector that is orthogonal to each of them.
+
+  - functions::getOrthogonalVector( TPoint& w, const std::vector<
+  TInputPoint >& X, const TIndexRange& I, const double tolerance )
+  Given a range of points \a X, a range of indices \a I specifying the
+  affine subset of interest, returns a vector that is orthogonal to
+  this affine subset, if it is d-1-dimensional.
+
+  - functions::getOrthogonalVector( TPoint& w, const std::vector<
+  TInputPoint >& X, const double tolerance ) Given a range of points
+  \a X, returns a vector that is orthogonal to this affine set, if it
+  is d-1-dimensional.
+
+* <b> Utilities </b>
+
+  - functions::computeSimplifiedVector( const TPoint& v ) Given a
+  vector, returns the aligned vector with its component simplified by
+  the gcd of all components (when the components are integers) or the
+  aligned vector with a maximum oo-norm of 1 (when the components are
+  floating-point numbers).
+
+This example (similar to exampleAffineGeometry.cpp) shows how to
+process the affine geometry of a set of points that is not full
+dimensional.
+  
+@code
+#include "DGtal/base/Common.h"
+#include "DGtal/kernel/PointVector.h"
+#include "DGtal/geometry/tools/AffineGeometry.h"
+
+template <typename T> std::ostream&
+operator<<( std::ostream& out, const std::vector< T >& object )
+{ // to display vector<T>
+  out << "[";
+  for ( auto t : object ) out << " " << t;
+  out << " ]";
+  return out;
+}
+
+using namespace DGtal;
+int main()
+{
+  typedef PointVector< 3, int64_t> Point;
+  std::vector< Point > X = {
+    Point{21, -29, -21}, Point{-6, 14, 8}, Point{-19, 1, 9},
+    Point{39, 16, -12}, Point{-26, 29, 23}, Point{-4, 45, 19},
+    Point{6, 31, 9}, Point{9, 6, -2}, Point{8, 49, 15}
+  };
+
+  std::cout << "Dimension is " << Point::dimension << "\n";
+  std::cout << "X = " << X << "\n";
+  std::cout << "Expected dimension of affine set of points X is "
+            << (Point::dimension-1) << "\n";
+  std::cout << "AffineDim(X) = " << functions::computeAffineDimension( X ) << "\n";
+  auto I = functions::computeAffineSubset( X );
+  std::cout << "AffineSubset(X) = " << I << "\n";
+  Point o;
+  std::vector<Point> B;
+  functions::getAffineBasis( o, B, X, I );
+  std::cout << "AffineBasis(X) =: p+B = " << o << " + " << B << "\n";
+  auto e = functions::computeIndependentVector( B );
+  std::cout << "Independent(X) =: e = " << e << "\n";
+  Point n = functions::computeOrthogonalVectorToBasis( B );
+  std::cout << "Orthogonal(X) =: n = " << n << "\n";
+  Point ns = functions::computeSimplifiedVector( n );
+  std::cout << "Orthogonal(X)/gcd =: ns = " << ns << "\n";  
+  for ( auto i = 0; i < B.size(); i++ )
+    std::cout << "B[" << i << "] . ns = " << B[i] << " . " << ns
+              << " == " << B[i].dot(ns) << " (should be 0)\n";
+}
+@endcode  
+
+outputs
+\verbatim
+Dimension is 3
+X = [ (-5, -25, 0) (19, 22, 7) (0, -19, 0) (-20, -17, 10) (20, 5, 0) (0, -6, 5) (9, 23, 12) (-14, -41, -2) (22, 10, 1) (34, -38, -23) (12, 11, 6) ]
+Expected dimension of affine set of points X is 2
+AffineDim(X) = 2
+AffineSubset(X) = [ 0 1 2 ]
+AffineBasis(X) =: p+B = (-5, -25, 0) + [ (24, 47, 7) (0, -13, -5) ]
+Independent(X) =: e = (1, 0, 0)
+Orthogonal(X) =: n = (-6, 5, -13)
+Orthogonal(X)/gcd =: ns = (-6, 5, -13)
+B[0] . ns = (24, 47, 7) . (-6, 5, -13) == 0 (should be 0)
+B[1] . ns = (0, -13, -5) . (-6, 5, -13) == 0 (should be 0)
+\endverbatim
+
+@section dgtal_affgeom_sec2 Using class AffineGeometry directly
+
+If you need to finetune how affine geometry computations are
+performed, you may use the static methods of class AffineGeometry
+directly. The advantage is that you can specify a type for
+computations that is \b more \b precise than the type of input data.
+
+\code
+typedef SpaceND<3, int> Space;
+typedef Space::Point    Point;
+typedef SpaceND<3, int64_t> ComputationSpace;
+typedef ComputationSpace::Point  ComputationPoint;
+...
+typedef AffineGeometry<ComputationPoint> Affine;
+
+std::vector<Point> X = { Point{1, 0, 0}, Point{2, 1, 0}, Point{3, 2, 0},
+                         Point{3, 1, 1}, Point{5, 2, 2}, Point{4, 2, 1} };
+auto I = Affine::affineSubset( X ); /// 3 points with indices (0,1,3)
+auto B = Affine::affineBasis( X );  /// (1,0,0) and 2 basis vectors (1,1,0) and (2,1,1).
+auto d = Affine::affineDimension( X ); /// 2
+/// Computations are made with int64_t.
+/// vectors of B also use this precision.
+\endcode
+
+The same services are provided as AffineGeometry static methods:
+
+* <b> affine dimension and affine subset </b>
+
+  - AffineGeometry::affineDimension( const std::vector<TInputPoint>&
+    X, const double tolerance ) Given a range of points \a X, returns
+    the affine dimension of its spanned affine subspace.
+  
+  - AffineGeometry::affineSubset( const std::vector<TInputPoint>& X,
+    const double tolerance ) Given a range of points \a X, returns a
+    subset of these points that form an affine basis of \a
+    X. Equivalently it is a simplex whose affine space spans all the
+    points of \a X.
+
+  - AffineGeometry::affineSubset( const std::vector<TInputPoint>& X,
+    const TIndexRange& I, const double tolerance ) Given a range of
+    points \a X and a subset of it given by indices \a I, returns a
+    subset of these points that form an affine basis of \a
+    X[I]. Equivalently it is a simplex whose affine space spans all
+    the points of \a X[I].
+                  
+* <b> affine basis and independent vectors </b>
+
+  The computed bases are in row echelon form (see <a
+  href="https://en.wikipedia.org/wiki/Row_echelon_form"> Wikipedia
+  </a>), even reduced row echelon form if components are real-valued
+  and not integers, except when using completeBasis where the last
+  vector may be asked to be orthogonal to all the others.
+
+  - AffineGeometry::affineBasis( const std::vector<TInputPoint>& X,
+    const double tolerance ) Given a range of points \a X, returns a
+    point and a range of vectors forming an affine basis containing \a
+    X.
+
+  - AffineGeometry::affineBasis( const std::vector<TInputPoint>& X,
+    const TIndexRange& I, const double tolerance ) Given a range of
+    points \a X and a range of indices \a I describing its subset of
+    interest, returns a point and a range of vectors forming an affine
+    basis containing the subset `X[I]`.
+
+  - AffineGeometry::independentVector Given a partial basis of vectors, returns a new
+    vector that is independent.
+
+  - AffineGeometry::completeBasis Complete the vectors \a basis with
+    independent vectors so as to form a basis of the space. When \a
+    normal_vector is true, the last added vector is guaranteed to be
+    \b orthogonal to all the previous vectors.
+
+* <b> orthogonal vector to basis of codimension 1 </b>
+
+  - AffineGeometry::orthogonalVector Given
+    `d-1` independent vectors in dD, returns a vector that is
+    orthogonal to each of them.
+
+* <b> utilities </b>
+
+  Reducing a vector onto a basis is a Gaussian elimination but
+  slightly modified to handle integers (in case of lattice points and
+  vectors).
+
+  - AffineGeometry::reductionOnBasis Reduces the vector \a v on the
+    (partial or not) basis of vectors \a basis, and returns the part
+    of \a v that cannot be expressed as a linear combination of
+    vectors of \a basis, and hence a null vector if \a v is a linear
+    combination of the vectors of the basis.
+
+  - AffineGeometry::reduceVector Reduces vector \a w by the vector \a b, and
+    returns the coefficients \f$ (\alpha,\beta) \f$ for reduction such
+    that \f$ \alpha w - \beta b \f$ is the returned reduced vector,
+    \f$ \alpha \ge 0 \f$.
+
+  - AffineGeometry::simplifiedVector Given a vector,
+    returns the aligned vector with its component simplified by the
+    gcd of all components (when the components are integers) or the
+    aligned vector with unit L2-norm (when the components are
+    floating-point numbers).
+
+@section dgtal_affgeom_sec3 Projecting points onto an affine basis
+
+AffineBasis is a convenience class that represents an affine basis
+(integral or not) in a form chosen by the user: either \e echelon \e
+reduced (AffineBasis::Type::ECHELON_REDUCED) or \e LLL \e reduced
+(AffineBasis::Type::ECHELON_REDUCED). It is mostly useful for
+projecting points and vectors onto it, and providing a system of
+coordinates on the affine space.
+
+@warning For now, you cannot project onto the basis when it is
+LLL-reduced (AffineBasis::Type::LLL_REDUCED). Use
+AffineBasis::Type::ECHELON_REDUCED instead.
+
+* <b> Constructors </b>
+
+You can construct an affine basis from a set of points or from an
+origin and arbitrary vectors, while choosing its form in
+AffineBasis::Type.
+
+  - AffineBasis::AffineBasis( const double tolerance ) Constructs the canonic basis
+
+  - AffineBasis::AffineBasis( const std::vector< TInputPoint >&
+    points, AffineBasis::Type type, const double delta, const double
+    tolerance ) Constructs an affine basis spanning the set of points.
+
+  - AffineBasis::AffineBasis( const TInputPoint& origin, const
+    std::vector<TInputPoint>& basis, AffineBasis::Type type, bool
+    is_reduced, const double delta, const double tolerance )
+    Constructs an affine basis spanning the given vectors and going
+    through the given origin.
+
+  - AffineBasis::AffineBasis( const TInputPoint& origin, const
+    TInputPoint& normal, AffineBasis::Type type, const double delta,
+    const double tolerance ) Creates an affine basis of codimension 1,
+    going through \a origin and orthogonal to the lattice vector \a
+    normal.
+
+    
+* <b> Standard services </b>
+
+  - AffineBasis::dimension() returns the dimension of the spanned affine subspace.
+  - AffineBasis::origin() returns a point on the spanned affine subspace.
+  - AffineBasis::basis() returns the vectors spanning the affine subspace.
+
+* <b> Geometric services </b>
+
+  - AffineBasis::isParallel  returns 'true' iff the
+    vectors \a w lies in this affine space.
+  
+  - AffineBasis::isOnAffineSpace returns 'true' iff the
+    point \a p lies in this affine space.
+
+* <b> Projection services </b>
+
+  - AffineBasis::decompose Decomposes a point \a p into a tuple \f$
+    (d,L,R) \f$, such that: \f$ d (p - o) = L \cdot B + R \f$, where R
+    is independent from this basis \f$ B=(b_0, \ldots, b_i) \f$, with
+    origin \a o. \a d is a scalar, \f$ L/d \f$ are the rational
+    coordinates of \f$ (p-o) \f$ in the basis, \a R is the remainer
+    vector. Note that \a R is not null whenever \a p does not belong
+    to the affine space.
+
+  - AffineBasis::decomposeVector Same as above but for a
+    vector (ignores the origin).
+
+  - AffineBasis::recompose and AffineBasis::recomposeVector are the
+    inverse functions of the two previous ones.
+
+  - AffineBasis::projectPoints Projects a range of points onto the
+    affine basis and outputs it. It also returns the maximum dilation
+    of projected rational coordinates which was used to create lattice
+    coordinates.
+
+The example below shows how to use AffineBasis to project 4D points
+onto a 2D affine subspace.
+
+\code
+typedef SpaceND< 4, int64_t >            Space4;
+typedef Space4::Point                    Point4;
+typedef SpaceND< 2, int64_t >            Space2;
+typedef Space2::Point                    Point2;
+typedef AffineBasis< Point4 >            Basis;
+...
+std::vector< Point4 > V = { Point{ 3, 4, 0, 2 }, Point{ -2, -1, 5, -7 } };
+Point4 o( 1,4,2,-1 );
+std::vector< Point4 > X = { o, o + V[0], o + V[1], o + 3*V[0] - V[1], o - V[0] + V[1] };
+Basis B( X, Basis::Type::SHORTEST_ECHELON_REDUCED ); // affine basis of dimension 2
+std::vector< Point2 >     proj_X;
+auto d = B.projectPoints( proj_X, X ); // proj_X contains the projection of X onto B
+// d is the dilatation factor, hence proj_X/d corresponds to rational coordinates
+\endcode
+
+@see testAffineBasis.cpp
+
+@section dgtal_affgeom_sec4 Notes
+
+Several functions that works with lattice vectors use functions
+specialized to integer computations (defined in
+`math/linalg/IntegerMatrixFunctions.h`:
+
+- functions::getDeterminantBareiss( TInternalNumber& result,
+  const SimpleMatrix<TComponent, TN, TN>& matrix )
+
+- functions::getDeterminantBareiss( TInternalNumber& result,
+  const std::vector< std::vector< TComponent > >& matrix )
+
+- functions::computeLLLBasis( const std::vector< std::vector<
+  TComponent>>& B, TDouble delta )
+
+- functions::reduceBasisWithLLL( std::vector< std::vector<
+  TComponent>>& B, TDouble delta )
+
+- functions::computeOrthogonalLattice( std::vector< TComponent > N )
+
+- functions::shortenVectors( std::vector< TComponent >& u, std::vector< TComponent >& v )
+
+- functions::shortenBasis( std::vector< std::vector< TComponent > >& B )
+
+- functions::makePrimitive( std::vector< TComponent >& N )
+
+- functions::extendedGcd( TComponent& x, TComponent& y, TComponent a,TComponent b )
+
+- functions::extendedGcd( std::vector<TComponent> &C, const std::vector<TComponent> &A )
+
+
+*/
+
+} //  Namespace DGtal

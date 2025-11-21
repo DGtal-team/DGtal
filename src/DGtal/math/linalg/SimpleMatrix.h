@@ -210,6 +210,14 @@ namespace DGtal
      */
     Component& operator()(const DGtal::Dimension i, const DGtal::Dimension j);
 
+
+    /**
+     * Swap the coefficients of rows i1 and i2
+     * @param i1 any row
+     * @param i2 any row
+     */
+    void swapRows( const DGtal::Dimension i1, const DGtal::Dimension i2 );
+    
     // ----------------------- SimpleMatrix computations ------------------------------
 
 
@@ -443,11 +451,15 @@ namespace DGtal
 
   /**
    * External scalar multiplication
+   *
+   * @param scalar any scalar value v.
+   * @param matrix any matrix M.
+   * @return the matrix v * M, where * is the external product.
    */
   template <typename TComponent, DGtal::Dimension TM, DGtal::Dimension TN>
   SimpleMatrix<TComponent, TM, TN>
   operator* ( const TComponent& scalar, const SimpleMatrix<TComponent, TM, TN>& matrix);
-
+  
 } // namespace DGtal
 
 
