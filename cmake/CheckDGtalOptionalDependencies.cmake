@@ -119,7 +119,7 @@ if (DGTAL_WITH_ITK)
     if (DGTAL_WITH_EIGEN_ITK)
       set(Eigen3_DIR ${ITKInternalEigen3_DIR})
       find_package(Eigen3 REQUIRED CONFIG)
-      target_link_libraries(DGtal PUBLIC Eigen3::Eigen3)
+      target_link_libraries(DGtal PUBLIC Eigen3::Eigen)
     endif()
     
     # -------------------------------------------------------------------------
