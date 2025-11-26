@@ -115,6 +115,13 @@ if (DGTAL_WITH_ITK)
     target_link_libraries(DGtal PUBLIC ${ITK_LIBRARIES})
     set(DGtalLibDependencies ${DGtalLibDependencies} ${ITK_LIBRARIES})
     target_compile_definitions(DGtal PUBLIC  -DDGTAL_WITH_ITK)
+
+    if (DGTAL_WITH_EIGEN_ITK)
+      set(Eigen3_DIR ${ITKInternalEigen3_DIR})
+      find_package(Eigen3 REQUIRED CONFIG)
+      set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3::Eigen)
+      target_link_libraries(DGtal PUBLIC Eigen3::Eigen)
+    endif()
     
     # -------------------------------------------------------------------------
     # ITK 5.0 adds "/usr/lib/x86_64-linux-gnu/include" to include path which 

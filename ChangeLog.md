@@ -24,6 +24,9 @@ git remote set-head origin -a
 - *Geometry*
   - ConvexityHelper::computeLatticePolytope can now outputs exact lattice polytopes for k-dimensional sets of points in dD, whenever k in 0,1,d-1,d (Jacques-Olivier Lachaud, [#1803](https://github.com/DGtal-team/DGtal/pull/1803))
 
+- *Build*
+  - New DGtal::DGtal target (Bastien Doignies, [#1818](https://github.com/DGtal-team/DGtal/pull/1818))
+
 - *Documentation*
   - Refactoring of the volumetric examples in the Shortcuts (David Coeurjolly, [#1807](https://github.com/DGtal-team/DGtal/pull/1807))
   - Removing the doxygen image includes for the latex target (David Coeurjolly, [#1811](https://github.com/DGtal-team/DGtal/pull/1811))
@@ -40,6 +43,7 @@ git remote set-head origin -a
 
 - *Build*
   - Version is now extracted from the `VERSION` file for CMake and Python builds (Bastien Doignies, [#1810](https://github.com/DGtal-team/DGtal/pull/1810))
+  - Eigen is now properly fetched when DGTAL_ITK_WITH_EIGEN is set (Bastien Doignies, [#1818](https://github.com/DGtal-team/DGtal/pull/1818))
   - Replacing the global compilation flags when `DGTAL_WARNINGS_AS_ERRORS` is set, with per target `target_compile_options` to avoid errors on Boost warnings (David Coeurjolly,  [#1793](https://github.com/DGtal-team/DGtal/pull/1793))
   - Fixing the `make install` command for boost (issue #1794) (Bastien Doignies, [#1793](https://github.com/DGtal-team/DGtal/pull/1793))
   - Add and fix install commands for polyscope dependencies (Bastien Doignies, [#1815](https://github.com/DGtal-team/DGtal/pull§1815))
