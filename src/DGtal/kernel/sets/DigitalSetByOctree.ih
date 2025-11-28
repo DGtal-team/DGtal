@@ -247,7 +247,7 @@ namespace DGtal
             CellIndex child = myNodes[tmem.lvl][tmem.idx].children[tmem.currentChildIdx];
             myNodes[tmem.lvl][tmem.idx].children[tmem.currentChildIdx] = INVALID_IDX;
             
-            // Reindex childrens because one was removed in previous layer
+            // Reindex children because one was removed in previous layer
             for (CellIndex i = 0; i < myNodes[tmem.lvl].size(); ++i) 
             {
               auto& node = myNodes[tmem.lvl][i];
