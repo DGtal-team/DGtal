@@ -297,7 +297,7 @@ Theses classes can be used as follows to import or export SVO:
     auto newOctree = SVOReader<Z3i::Space>::importSVO("file.svo");
 @endcode
 
-The reader allows an octree to be read in a different space of the same dimension. However, there may be integer truncation that may lead to unexpected results (a warning is issued in this case). Please note that BigIntegers are not supported for reading or writting.
+The reader allows an octree to be read in a different space of the same dimension. However, there may be integer truncation that may lead to unexpected results (a warning is issued in this case). Please note that BigIntegers are not supported for reading or writing.
 
 \subsubsection svoformat SVO File format
 
