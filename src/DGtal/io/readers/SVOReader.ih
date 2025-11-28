@@ -205,6 +205,7 @@ namespace DGtal
     catch(...) 
     {
       trace.error() << "SVOReader: Unexpected EOF while reading data." << std::endl;
+      throw;
     }
 
     return octree;

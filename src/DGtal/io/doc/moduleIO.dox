@@ -303,11 +303,11 @@ The reader allows an octree to be read in a different space of the same dimensio
 
 The SVO file format is comprised of a header in ascii, and data in binary.
 
-The header is written in ascii. Each line represents a different fields, whose name is space and case sensitive and for which the value is separated by a ':'. The spaces around the value is written in ascii, and spaces (' ', '\\t', '\\r') around the value are ignored. There is no specified order, but we recommand following the order bellow. The header ends with a single '.' on a separated line. The expected fields are: 
+The header is written in ascii. Each line represents a different fields, whose name is space and case sensitive and for which the value is separated by a ':'. The value is written in ASCII format, and surrounding whitespace (spaces, tabs, carriage returns) is trimmed. There is no specified order, but we recommand following the order bellow. The header ends with a single '.' on a separated line. The expected fields are: 
 - 'Format': always 'SVO'.
 - 'Version': unsigned integer, for now only '1' is supported.
 - 'Size': unsigned integer representing the number of voxels stored.
-- 'Dim': unsigned integer representing the dimension of foxels.
+- 'Dim': unsigned integer representing the dimension of voxels.
 - 'LowerBound': exactly 'Dim' integers separated by spaces representing the domain lower bound.
 - 'UpperBound': exactly 'Dim' integers separated by spaces representing the domain upper bound.
 - 'State': Indicates whether this is an SVO ('1') or an SVDag ('2').

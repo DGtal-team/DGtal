@@ -78,7 +78,7 @@ struct TestFixture
   inline static const size_t validPointCount = sizeof(validPoints) / sizeof(Z3i::Point);
 };
 
-TEST_CASE_METHOD(TestFixture, "Benchmarking DigitalSetByOctree using Catch2", "[catch]")
+TEST_CASE_METHOD(TestFixture, "Testing DigitalSetByOctree using Catch2", "[catch]")
 {
   // This is checked at compile time !
   using namespace DGtal;
