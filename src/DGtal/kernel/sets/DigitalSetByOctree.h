@@ -21,7 +21,7 @@
  *
  * @date 2025/09/05
  *
- * Header file for module DigitalSetByOctree.cpp
+ * Header file for module DigitalSetByOctree.h
  *
  * This file is part of the DGtal library.
  */
