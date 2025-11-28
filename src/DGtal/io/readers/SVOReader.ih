@@ -185,10 +185,10 @@ namespace DGtal
     using Size = typename Octree::Size;
 
     if (sizesize > sizeof(Size)) 
-      trace.warning() << "SVOReader: integer size mismatch, this may cause unwanted trucation" << std::endl;
+      trace.warning() << "SVOReader: integer size mismatch, this may cause unwanted truncation" << std::endl;
 
     if (cellsize > sizeof(CellI))
-      trace.warning() << "SVOReader: integer size mismatch, this may cause unwanted trucation" << std::endl;
+      trace.warning() << "SVOReader: integer size mismatch, this may cause unwanted truncation" << std::endl;
     
 
     octree.myNodes.resize(readBinInt<Size>(main, sizesize));
