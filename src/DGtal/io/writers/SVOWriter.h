@@ -51,7 +51,7 @@ namespace DGtal
        * @param octree The octree to export
        * @param compressed Whether the octree is compressed
        *
-       * @return Returns always true. Error are handle by exception and written to trace.
+       * @return Returns always true. Errors are handled by exception and written to trace.
        *
        */
       static bool exportSVO(const std::string& filename, const DigitalSetByOctree<Space>& octree, const bool compressed = true);
