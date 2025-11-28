@@ -39,7 +39,7 @@
 namespace DGtal
 {
   /**
-   * @brief A DigitalSet that stores voxel as an octree, or a DAG
+   * @brief A DigitalSet that stores voxels as an octree, or a DAG
    * 
    * This class allows for a compact representation of voxel as a
    * sparse voxel octree (SVO). Optionally, this can be further
