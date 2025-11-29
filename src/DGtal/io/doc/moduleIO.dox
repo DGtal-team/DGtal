@@ -284,6 +284,56 @@ The mesh importation can be done automatically from the extension file name by u
 You can also export a Mesh object by using the operator
 (">>"). 
 
+\subsection svoio Sparse Voxel Octree and Sparse Voxel Direct Acyclic Graphs
+
+The static classes \c SVOReader and \c SVOWriter allow to import and export \c DigitalSetByOctree from and to files. In order to maintain an efficient data representation, DGtal uses a custom file format described below. Both SVO and SVDag are stored using the same file fomat.
+
+Theses classes can be used as follows to import or export SVO:
+
+@code
+    // Writes the Octree
+    SVOWriter<Z3i::Space>::exportSVO("file.svo", octree, compressed /* boolean */);
+    // Reads it back
+    auto newOctree = SVOReader<Z3i::Space>::importSVO("file.svo");
+@endcode
+
+The reader allows an octree to be read in a different space of the same dimension. However, there may be integer truncation that may lead to unexpected results (a warning is issued in this case). Please note that BigIntegers are not supported for reading or writing.
+
+\subsubsection svoformat SVO File format
+
+The SVO file format is comprised of a header in ascii, and data in binary.
+
+The header is written in ascii. Each line represents a different fields, whose name is space and case sensitive and for which the value is separated by a ':'. The value is written in ASCII format, and surrounding whitespace (spaces, tabs, carriage returns) is trimmed. There is no specified order, but we recommand following the order bellow. The header ends with a single '.' on a separated line. The expected fields are: 
+- 'Format': always 'SVO'.
+- 'Version': unsigned integer, for now only '1' is supported.
+- 'Size': unsigned integer representing the number of voxels stored.
+- 'Dim': unsigned integer representing the dimension of voxels.
+- 'LowerBound': exactly 'Dim' integers separated by spaces representing the domain lower bound.
+- 'UpperBound': exactly 'Dim' integers separated by spaces representing the domain upper bound.
+- 'State': Indicates whether this is an SVO ('1') or an SVDag ('2').
+- 'Compression': Indicates whether data is compressed ('1') or not ('0').
+
+For example, a header could be:
+
+@code
+Format: SVO
+Version: 1
+Size: 5
+Dim: 3
+LowerBound: 5 5 5
+UpperBound: 12 12 12
+State: 2
+Compression: 1
+.
+@endcode
+
+The data is always written in binary in little-endian order (regardless of host system). When compressed, data is compressed using zlib algorithm with the best compression level (9). The data is layed out as follows:
+- 8 bytes: 'SizeSize', the number of bytes array length occupies in memory
+- 8 bytes: 'PtrSize', the number of bytes array indices occupies in memory
+- [SizeSize] bytes: 'Depth', the depth of the underlying tree.
+- [Depth] * [SizeSize] bytes: 'ChildrenCount', the number of children at each depth of the tree.
+/bin/bash: line 1: :w: command not found
+
 \section io_examples Examples
 
 \subsection importDigitalSet Importing a 3D digital set from volume file:
