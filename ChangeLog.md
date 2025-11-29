@@ -10,6 +10,8 @@ git fetch origin
 git branch -u origin/main main
 git remote set-head origin -a
 ```
+- *Kernel*
+  - New DigitalSet model with SVO or SVDAG (Sparse Voxel Octree w/o acyclic graph features) for efficient representation of large digital objects (Bastien Doignies, [#1808](https://github.com/DGtal-team/DGtal/pull/1808))
 
 - *Geometry*
   - Add a generic quick hull variant that can process arbitrary input lattice points and outputs their convex hull, even if it is not full dimensional (Jacques-Olivier Lachaud, [#1803](https://github.com/DGtal-team/DGtal/pull/1803))
@@ -58,8 +60,6 @@ git remote set-head origin -a
 - *Python*
   - Build backend upgraded to scikit-build-core (Bastien Doignies, [#1804](https://github.com/DGtal-team/DGtal/pull/1804))
   - New CI for pypi deployement with cibuildwheel (Bastien Doignies, [#1804](https://github.com/DGtal-team/DGtal/pull/1804))
-
-
 
 # DGtal 2.0
 
