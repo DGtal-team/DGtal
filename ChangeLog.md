@@ -1,4 +1,4 @@
-# DGtal 2.1.beta
+# DGtal 2.1.0
 
 ## New features
 
