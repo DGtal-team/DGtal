@@ -1,0 +1,149 @@
+namespace DGtal
+{
+  template<typename TKS, typename TPP, typename TE, typename TD, typename TDS>
+  ParallelSurfaceEstimator<TKS, TPP, TE, TD, TDS>::ParallelSurfaceEstimator()
+  {
+    myThreadCount = omp_get_max_threads();
+    myStep = 0.0;
+
+    myEstimatorRequiresDuplication = true;
+  }
+  
+  template<typename TKS, typename TPP, typename TE, typename TD, typename TDS>
+  void ParallelSurfaceEstimator<TKS, TPP, TE, TD, TDS>::setThreadCount(uint32_t tCount)
+  {
+    myThreadCount = tCount;
+  }
+
+  template<typename TKS, typename TPP, typename TE, typename TD, typename TDS>
+  void ParallelSurfaceEstimator<TKS, TPP, TE, TD, TDS>::attach(ConstAlias<TPP> predicate)
+  {
+    myPredicate = predicate;
+  }
+
+  template<typename TKS, typename TPP, typename TE, typename TD, typename TDS>
+  void ParallelSurfaceEstimator<TKS, TPP, TE, TD, TDS>::attach(Alias<TE> estimator)
+  {
+    myEstimator = estimator;
+  }
+
+  template<typename TKS, typename TPP, typename TE, typename TD, typename TDS>
+  void ParallelSurfaceEstimator<TKS, TPP, TE, TD, TDS>::setEstimatorDuplication(bool dup)
+  {
+    myEstimatorRequiresDuplication = dup;
+  }
+
+  template<typename TKS, typename TPP, typename TE, typename TD, typename TDS>
+  void ParallelSurfaceEstimator<TKS, TPP, TE, TD, TDS>::setPointPredicateDuplication(bool dup)
+  {
+    myPredicateRequiresDuplication = dup;
+  }
+
+  template<typename TKS, typename TPP, typename TE, typename TD, typename TDS>
+  template<typename It>
+  void ParallelSurfaceEstimator<TKS, TPP, TE, TD, TDS>::init(double h, It, It)
+  {
+    init(h);
+  }
+
+  template<typename TKS, typename TPP, typename TE, typename TD, typename TDS>
+  void ParallelSurfaceEstimator<TKS, TPP, TE, TD, TDS>::init(double h)
+  {
+    myStep = h;
+  }
+
+  template<typename TKS, typename TPP, typename TE, typename TD, typename TDS>
+  template<typename It>
+  typename ParallelSurfaceEstimator<TKS, TPP, TE, TD, TDS>::Quantity 
+  ParallelSurfaceEstimator<TKS, TPP, TE, TD, TDS>::eval(It loc)
+  {
+    const auto beg  = loc;
+    const auto surf = *beg;
+  
+    // As init does not perform initialization, 
+    // we need to do it here
+    myEstimator->init(myStep, loc, ++loc);
+    const auto q = myEstimator->eval(beg);
+
+    return {surf, q};
+  }
+
+  template<typename TKS, typename TPP, typename TE, typename TD, typename TDS>
+  template<typename It, typename OIt>
+  OIt& ParallelSurfaceEstimator<TKS, TPP, TE, TD, TDS>::eval(It beg, It end, OIt& out)
+  {
+    return eval(out, 0);
+  }
+
+  template<typename TKS, typename TPP, typename TE, typename TD, typename TDS>
+  template<typename OIt>
+  OIt& ParallelSurfaceEstimator<TKS, TPP, TE, TD, TDS>::eval(OIt& out, int)
+  {
+    using SurfelSet = typename TKS::SurfelSet;
+    
+    const auto domains = mySplitter(myDomain, myThreadCount);
+    
+    std::vector<std::vector<Quantity>> quantities(domains.size());
+    if (!myEstimatorRequiresDuplication)
+    {
+      // TODO: myDomain.begin() is a point, not a surfel
+      // We should probably do smth else...
+      myEstimator->init(myStep, myDomain.begin(), myDomain.end());
+    }
+
+    // #pragma omp parallel for
+    for (uint32_t i = 0; i < domains.size(); ++i)
+    {
+      // TODO: Manage opendness depending on boundary condition of the 
+      // domain. Also, what should be do for periodic domains? => Not
+      // sure we can do much...
+      TKS space(domains[i].domain.lowerBound(), domains[i].domain.upperBound(), true);
+
+      auto predicate = myPredicate;
+      if (myPredicateRequiresDuplication)
+        predicate = CountedPtrOrPtr(new TPP(*myPredicate));
+
+      // Construct range iterator
+      SurfelSet set;
+      Surfaces<TKS>::sMakeBoundary(
+          set, space, 
+          [&](auto loc) { return (*predicate)(loc); },
+          domains[i].domain.lowerBound(), 
+          domains[i].domain.upperBound()
+      );
+
+      auto estimator = myEstimator;
+      // Initialize estimator
+      if (myEstimatorRequiresDuplication)
+      {
+        // Copy constructible is part of requirements
+        estimator = CountedPtrOrPtr(new TE(*myEstimator));
+        estimator->init(myStep, set.begin(), set.end());
+      }
+
+      // Run estimator
+      quantities.reserve(domains[i].hintSurfelCount);
+
+      // TODO: Benchmark what is faster:
+      //  - eval then loop through set again to set location [current]
+      //  - loop once, calling eval with a single location
+      auto it = std::back_inserter(quantities[i]);
+      estimator->eval(set.begin(), set.end(), it);
+
+      auto it1 = quantities[i].begin(); 
+      auto it2 = set.begin();
+      for (; it2 != set.end(); ++it1, ++it2)
+        it1->surfel = *it2;
+    }
+
+    for (uint32_t i = 0; i < quantities.size(); ++i)
+    {
+      for (uint32_t j = 0; j < quantities[i].size(); ++j)
+      {
+        *out++ = quantities[i][j];
+      }
+    }
+
+    return out;
+  }
+}
