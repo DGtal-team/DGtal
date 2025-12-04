@@ -34,17 +34,15 @@ To build DGtal in is minimal configuration, you need at least these
 dependencies:
 
 - \e c++ compiler (g++, clang++, ...) with C++20 features
-- \e [cmake](http://cmake.org) (>3.2, optionally cmake-gui),
+- \e [cmake](http://cmake.org) (>3.20, optionally cmake-gui),
 - \e zlib (already available in most OS)
 
 To build DGtal in is full configuration, you may need these dependencies too:
 
 - \e [CGAL](http://cgal.org),
-- \e [libIGL](https://libigl.github.io),
-- \e cairo,
-- \e polyscope,
-- \e insighttoolkit, itk >= 5.0
+- \e [cairo](https://www.cairographics.org/download/),
 - \e [HDF5](http://www.hdfgroup.org/HDF5/)
+- \e [ITK](https://itk.org/), version 5.X,
 
 If you want to generate the documentation, you would need:
 - \e doxygen >= 1.8.0,
@@ -86,9 +84,11 @@ Next, use the cmake command to generate your Unix Makefile project
 cmake ..
 @endcode
 
-For the full DGtal configuration, you have to set these options with cmake:
+Many options can be specified to add functionnalities or control the build of DGtal. A
+full list is available below. As an example, you can activate the use of 3D viewer and
+parallelization by adding the following options:
 @code
-cmake .. -DDGTAL_WITH_ITK=true  -DDGTAL_WITH_CAIRO=true -DDGTAL_WITH_POLYSCOPE_VIEWER=true 
+cmake .. -DDGTAL_WITH_POLYSCOPE_VIEWER=ON -DDGTAL_WITH_OPENMP=ON
 @endcode
 
 If no error occurs, you can build the DGtal lib and install it:
@@ -104,6 +104,26 @@ Then, since recent Mac OS systems are unix-like operating systems, the
 easiest way to compile DGtal with cmake/make is to follow Linux-based
 instructions from source code archive.
 
+
+\subsection win Build on Windows / Visual Studio
+
+DGtal core library compiles on Windows using Visual Studio 2015 or
+newer (note that building DGtal on cygwin or MinGW environments is
+        trivial using linux based build). Since DGtal requires C++11 features
+since release 0.9.1, compiling the library with older Visual Studio
+compilers is not supported.
+
+To generate the Visual Studio project, use the cmake (or cmake-gui)
+tools with recent Visual Studio target. During the project generation,
+you would have to specify the path to @e boost headers (or paths
+needed for any optional dependency such as CGAL, Cairo...).
+
+
+@note Do not forget to set @e DGTAL_BUILD_SHARED_LIBS cmake to false (static
+  DGtal lib target, default).
+
+@advanced When working on DGtal within github, we have set up a
+Windows container for continuous integration. 
 
 \section cmakeDGtal Main DGtal cmake options
 
@@ -131,28 +151,21 @@ debug messages are traced out.
 
 - \e  DGTAL_BUILD_SHARED_LIBS (ON/OFF): to build the lib as a shared library (default: OFF) but \b must be \b OFF actually on \b Windows
 
+\section cmakeDGtalDeps DGtal Optionnal Dependencies
 
+When building DGtal only mandatory dependencies are fetched and setup. However, 
+some functionnalities may require additionnal dependencies as specified in their
+documentation. We list here options to build DGtal accordingly: 
 
-\subsection win Build on Windows / Visual Studio
-
-DGtal core library compiles on Windows using Visual Studio 2015 or
-newer (note that building DGtal on cygwin or MinGW environments is
-trivial using linux based build). Since DGtal requires C++11 features
-since release 0.9.1, compiling the library with older Visual Studio
-compilers is not supported.
-
-To generate the Visual Studio project, use the cmake (or cmake-gui)
-tools with recent Visual Studio target. During the project generation,
-you would have to specify the path to @e boost headers (or paths
-needed for any optional dependency such as CGAL, Cairo...).
-
-
-@note Do not forget to set @e DGTAL_BUILD_SHARED_LIBS cmake to false (static
-DGtal lib target, default).
-
-
-@advanced When working on DGtal within github, we have set up a
-Windows container for continuous integration. 
+- \e DGTAL_WITH_OPENMP (ON/OFF): build DGtal with openmp (requires compiler supports)
+- \e DGTAL_WITH_CGAL (ON/OFF): links DGtal with [CGAL](http://cgal.org) library (requires manual installation)
+- \e DGTAL_WITH_ITK (ON/OFF): links DGtal with [ITK](https://itk.org/) library (requires manual installation)
+- \e DGTAL_WITH_CAIRO (ON/OFF): links DGtal with [cairo](https://www.cairographics.org/download/) library (requires manual installation))
+- \e DGTAL_WITH_HDF5 (ON/OFF): links DGtal with [HDF5](http://www.hdfgroup.org/HDF5/) library (requires manual installation)
+- \e DGTAL_WITH_POLYSCOPE_VIEWER (ON/OFF): links DGtal with [polyscope](https://polyscope.run) library (fetched automatically).
+- \e DGTAL_WITH_PONCA (ON/OFF): links DGtal with [Ponca](https://poncateam.github.io/ponca) library (fetched automatically).
+- \e DGTAL_WITH_FFTW3 (ON/OFF): links DGtal with [FFTW](https://www.fftw.org) (requires manual installation)
+- \e DGTAL_WITH_LIBIGL (ON/OFF): links DGtal with [libigl](https://libigl.github.io) (fetched automatically)
 
 */
 
