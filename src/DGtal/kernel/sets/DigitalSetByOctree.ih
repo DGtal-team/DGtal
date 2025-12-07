@@ -173,7 +173,8 @@ namespace DGtal
   }
 
   template<class Space>
-  DigitalSetByOctree<Space>::OctreeIterator DigitalSetByOctree<Space>::find(const Point& p) const 
+  typename DigitalSetByOctree<Space>::OctreeIterator
+  DigitalSetByOctree<Space>::find(const Point& p) const 
   {
     if (!myAdmissibleDomain->isInside(p)) return end();
 
