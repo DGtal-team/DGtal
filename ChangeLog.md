@@ -61,6 +61,9 @@ git remote set-head origin -a
   - Build backend upgraded to scikit-build-core (Bastien Doignies, [#1804](https://github.com/DGtal-team/DGtal/pull/1804))
   - New CI for pypi deployement with cibuildwheel (Bastien Doignies, [#1804](https://github.com/DGtal-team/DGtal/pull/1804))
 
+- *Topology*
+  - Fixing compiler issue on iostream overload in VoxelComplex.ih, see [#1820](https://github.com/DGtal-team/DGtal/issues/1820),  (David Coeurjolly, [#1823](https://github.com/DGtal-team/DGtal/pull/1823))
+
 # DGtal 2.0
 
 ## New features
