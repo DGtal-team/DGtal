@@ -64,6 +64,10 @@ git remote set-head origin -a
 - *Topology*
   - Fixing compiler issue on iostream overload in VoxelComplex.ih, see [#1820](https://github.com/DGtal-team/DGtal/issues/1820),  (David Coeurjolly, [#1823](https://github.com/DGtal-team/DGtal/pull/1823))
 
+- *Kernel*
+  - Fixing missing typename in DigitalSetByOctree.ih and SVOReader.ih,  (Jacques-Olivier Lachaud, [#1824](https://github.com/DGtal-team/DGtal/pull/1824))
+
+	
 # DGtal 2.0
 
 ## New features
