@@ -172,7 +172,7 @@ namespace DGtal
 
     Octree octree(typename Octree::Domain(lb, ub));
     octree.mySize = size;
-    octree.myState = static_cast<Octree::State>(state);
+    octree.myState = static_cast<typename Octree::State>(state);
     
     boost::iostreams::filtering_istream main;
     if (compress) main.push(boost::iostreams::zlib_decompressor());
