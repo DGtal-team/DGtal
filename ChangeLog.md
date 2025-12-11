@@ -46,7 +46,8 @@ git remote set-head origin -a
   - Fix issue [#1797](https://github.com/DGtal-team/DGtal/pull/1797), assertions raised in testCellGeometry and testDigitalConvexity because of improper digital space extent (Jacques-Olivier Lachaud, [#1801](https://github.com/DGtal-team/DGtal/pull/1801))
   - QuickHull could sometimes output that its output was not full dimensional since the computation of affine dimension was randomized. Now QuickHull relies on an exact computation of affine dimension (Jacques-Olivier Lachaud, [#1803](https://github.com/DGtal-team/DGtal/pull/1803))
   - Silencing a warning in the Naive3DDSSComputer.ih file. (David Coeurjolly, [#1815](https://github.com/DGtal-team/DGtal/pull/1815))
-
+  - Fix issue in `testAffineBasis` that may produce errors for some compilers (David Coeurjolly, [#1826](https://github.com/DGtal-team/DGtal/pull/1826))
+  
 - *Build*
   - Version is now extracted from the `VERSION` file for CMake and Python builds (Bastien Doignies, [#1810](https://github.com/DGtal-team/DGtal/pull/1810))
   - Eigen is now properly fetched when DGTAL_ITK_WITH_EIGEN is set (Bastien Doignies, [#1818](https://github.com/DGtal-team/DGtal/pull/1818))

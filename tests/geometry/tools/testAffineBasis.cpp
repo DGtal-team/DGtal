@@ -230,7 +230,7 @@ SCENARIO( "AffineBasis< Point4i > unit tests", "[affine_basis][4i]" )
       for ( auto p : X )
         {
           const auto [d, lambda, rem ] = B.decompose( p );
-          nb_ok += ( rem == Point::zero ) ? : 1;
+          nb_ok += ( rem == Point::zero ) ?  1:0;
           if ( rem != Point::zero )
             std::cout << "p=" << p << " d=" << d
                       << " lambda=" << lambda << " rem=" << rem << "\n";
@@ -245,7 +245,7 @@ SCENARIO( "AffineBasis< Point4i > unit tests", "[affine_basis][4i]" )
           const auto p = y + B.first;
           const auto [d, lambda, rem ] = B.decompose( p );
           auto q = B.recompose( d, lambda, rem );
-          nb_ok += ( p == q ) ? : 1;
+          nb_ok += ( p == q ) ? 1: 0;
           if ( p != q )
             std::cout << "p=" << p << " d=" << d
                       << " lambda=" << lambda << " rem=" << rem
@@ -428,7 +428,7 @@ SCENARIO( "AffineBasis< Z10 > LLL tests", "[affine_basis][10d][LLL]" )
       unsigned int nbok = 0;
       for ( auto i = 0; i < V.size(); i++ )
       {
-        nbok += V[ i ].norm1() == 1 ? : 0;
+        nbok += (V[ i ].norm1() == 1) ? 1 : 0;
         nb++;
       }
       CAPTURE( L.basis() );
