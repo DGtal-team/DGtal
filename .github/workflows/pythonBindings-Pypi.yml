@@ -23,7 +23,7 @@ jobs:
                                  # Note that the tool will build other python versions. 
 
       - name: Install cibuildwheel
-        run: python -m pip install cibuildwheel==3.1.4
+        run: python -m pip install cibuildwheel==3.3.0
 
       - name: Conan (Windows)
         shell: bash
