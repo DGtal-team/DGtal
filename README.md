@@ -58,6 +58,7 @@ More Information
 * Project homepage http://dgtal.org
 * Related DGtalTools project: http://dgtal.org/dgtaltools, [DGtalTools](https://github.com/DGtal-team/DGtalTools), [DGtalTools-contrib](https://github.com/DGtal-team/DGtalTools-contrib)
 
+* Release 2.1 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17910944.svg)](https://doi.org/10.5281/zenodo.17910944)
 * Release 2.0 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15838861.svg)](https://doi.org/10.5281/zenodo.15838861)
 * Release 1.4 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11550945.svg)](https://doi.org/10.5281/zenodo.11550945)
 * Release 1.3 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7331486.svg)](https://doi.org/10.5281/zenodo.7331486)
