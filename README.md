@@ -2,7 +2,7 @@
 
 Main website: [https://dgtal.org](https://dgtal.org)
 
-[![CI (linux/macOS/windows) - PR](https://github.com/DGtal-team/DGtal/actions/workflows/build-PR-main.yml/badge.svg)](https://github.com/DGtal-team/DGtal/actions/workflows/build-PR-main.yml) [![Nightly-build documentation and deploy](https://github.com/DGtal-team/DGtal/actions/workflows/deployDoc-main.yml/badge.svg)](https://github.com/DGtal-team/DGtal/actions/workflows/deployDoc-main.yml)
+[![CI (linux/macOS/windows) - PR](https://github.com/DGtal-team/DGtal/actions/workflows/build-PR-main.yml/badge.svg)](https://github.com/DGtal-team/DGtal/actions/workflows/build-PR-main.yml) [![Nightly-build documentation and deploy](https://github.com/DGtal-team/DGtal/actions/workflows/deployDoc-main.yml/badge.svg)](https://github.com/DGtal-team/DGtal/actions/workflows/deployDoc-main.yml)[![Deploy to pypi](https://github.com/DGtal-team/DGtal/actions/workflows/pythonBindings-Pypi.yml/badge.svg)](https://github.com/DGtal-team/DGtal/actions/workflows/pythonBindings-Pypi.yml)
 
 Description
 ===========
