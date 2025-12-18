@@ -1,4 +1,4 @@
-# DGtal 2.2-dev
+# DGtal 2.1.1-dev
 
 # DGtal 2.1.0
 
