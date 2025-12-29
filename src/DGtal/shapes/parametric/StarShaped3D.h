@@ -139,8 +139,8 @@ namespace DGtal
     virtual AngularCoordinates parameter( const RealPoint& p ) const = 0;
 
     /**
-     * @param t is a couple of Theta && Phi wich are 2 angles
-     * respectivly between [0,2PI] and [0,Pi].
+     * @param t is a couple of Theta && Phi which are 2 angles
+     * respectively between [0,2PI] and [0,Pi].
      *
      * @return the vector (x(t),y(t),z(t)) which is the position on the
      * shape boundary.
@@ -148,52 +148,52 @@ namespace DGtal
     virtual RealPoint x( const AngularCoordinates& t ) const = 0;
 
     /**
-     * @param t is a couple of Teta && Phi wich are 2 angles
-     * respectivly between [0,2PI] and [0,Pi].
+     * @param t is a couple of Teta && Phi which are 2 angles
+     * respectively between [0,2PI] and [0,Pi].
      *
      * @return the vector (gradf(M).
      */
     virtual RealPoint gradient( const AngularCoordinates& t ) const = 0;
 
     /**
-     * @param t is a couple of Teta && Phi wich are 2 angles
-     * respectivly between [0,2PI] and [0,Pi].
+     * @param t is a couple of Teta && Phi which are 2 angles
+     * respectively between [0,2PI] and [0,Pi].
      *
-     * @return the vector (rt(M)) wich is the partial derivative with respect to Teta.
+     * @return the vector (rt(M)) which is the partial derivative with respect to Teta.
      */
     virtual RealPoint rt( const AngularCoordinates& t ) const = 0;
 
     /**
-     * @param t is a couple of Teta && Phi wich are 2 angles
-     * respectivly between [0,2PI] and [0,Pi].
+     * @param t is a couple of Teta && Phi which are 2 angles
+     * respectively between [0,2PI] and [0,Pi].
      *
-     * @return the vector (rp(M)) wich is the first partial derivative with respect to Phi.
+     * @return the vector (rp(M)) which is the first partial derivative with respect to Phi.
      */
     virtual RealPoint rp( const AngularCoordinates& t ) const = 0;
 
     /**
-     * @param t is a couple of Teta && Phi wich are 2 angles
-     * respectivly between [0,2PI] and [0,Pi].
+     * @param t is a couple of Teta && Phi which are 2 angles
+     * respectively between [0,2PI] and [0,Pi].
      *
-     * @return the vector (rtt(M)) wich is second the partial
+     * @return the vector (rtt(M)) which is second the partial
      * derivative with respect to Teta(twice).
      */
     virtual RealPoint rtt( const AngularCoordinates& t ) const = 0;
 
     /**
-     * @param t is a couple of Teta && Phi wich are 2 angles
-     * respectivly between [0,2PI] and [0,Pi].
+     * @param t is a couple of Teta && Phi which are 2 angles
+     * respectively between [0,2PI] and [0,Pi].
      *
-     * @return the vector (rpp(M)) wich is second the partial
+     * @return the vector (rpp(M)) which is second the partial
      * derivative with respect to Phi.
      */
     virtual RealPoint rpp( const AngularCoordinates& t ) const = 0;
 
     /**
-     * @param t is a couple of Teta && Phi wich are 2 angles
-     * respectivly between [0,2PI] and [0,Pi].
+     * @param t is a couple of Teta && Phi which are 2 angles
+     * respectively between [0,2PI] and [0,Pi].
      *
-     * @return the vector (rpp(M)) wich is second the partial
+     * @return the vector (rpp(M)) which is second the partial
      * derivative with respect to Teta then Phi.
      */
     virtual RealPoint rtp( const AngularCoordinates& t ) const = 0;
@@ -211,8 +211,8 @@ namespace DGtal
     virtual Orientation orientation( const RealPoint& p ) const;
 
     /*
-     * @param t is a couple of Teta && Phi wich are 2 angles
-     respectivly between [0,2PI] and [0,Pi].
+     * @param t is a couple of Teta && Phi which are 2 angles
+     respectively between [0,2PI] and [0,Pi].
      *
      * @return the vector (x'(t),y'(t),z'(t)) made unitary which is
      * the unit tangent to the shape boundary.
@@ -222,8 +222,8 @@ namespace DGtal
     */
 
     /**
-     * @param t is a couple of Teta && Phi wich are 2 angles
-     * respectivly between [0,2PI] and [0,Pi].
+     * @param t is a couple of Teta && Phi which are 2 angles
+     * respectively between [0,2PI] and [0,Pi].
      *
      * @return the vector normal made unitary which is the unit
      * normal to the shape boundary looking inside the shape.
@@ -231,8 +231,8 @@ namespace DGtal
     virtual RealPoint normal( const AngularCoordinates& t ) const;
 
     /**
-     * @param t is a couple of Teta && Phi wich are 2 angles
-     * respectivly between [0,2PI] and [0,Pi].
+     * @param t is a couple of Teta && Phi which are 2 angles
+     * respectively between [0,2PI] and [0,Pi].
      *
      * @return the gaussian curvature at point (x(t),y(t)), positive
      * is convex, negative is concave when shape is to the left and
@@ -242,8 +242,8 @@ namespace DGtal
 
 
     /**
-     * @param t is a couple of Teta && Phi wich are 2 angles
-     * respectivly between [0,2PI] and [0,Pi]
+     * @param t is a couple of Teta && Phi which are 2 angles
+     * respectively between [0,2PI] and [0,Pi]
      *
      * @return the mean curvature at point (x(t),y(t)), positive
      * is convex, negative is concave when shape is to the left and
@@ -253,10 +253,10 @@ namespace DGtal
 
 
     /**
-     * @param t1 is a couple of Teta && Phi wich are 2 angles
-     * respectivly between [0,2PI] and [0,Pi].
-     * @param t2 is a couple of Teta && Phi wich are 2 angles
-     * respectivly between [0,2PI] and [0,Pi]. further from
+     * @param t1 is a couple of Teta && Phi which are 2 angles
+     * respectively between [0,2PI] and [0,Pi].
+     * @param t2 is a couple of Teta && Phi which are 2 angles
+     * respectively between [0,2PI] and [0,Pi]. further from
      * [t1].
      * @param nb the number of points used to estimate the arclength
      * between x(Teta1,Phi1) and x(Teta2,Phi2).
@@ -268,10 +268,10 @@ namespace DGtal
 
 
     /**
-     * @param t1 is a couple of Teta && Phi wich are 2 angles
-     * respectivly between [0,2PI] and [0,Pi].
-     * @param t2 is a couple of Teta && Phi wich are 2 angles
-     * respectivly between [0,2PI] and [0,Pi]. further from
+     * @param t1 is a couple of Teta && Phi which are 2 angles
+     * respectively between [0,2PI] and [0,Pi].
+     * @param t2 is a couple of Teta && Phi which are 2 angles
+     * respectively between [0,2PI] and [0,Pi]. further from
      * [t1].
      * @param nb the number of points used to estimate the surface
      * between x(Teta1,Phi1) and x(Teta2,Phi2).

@@ -150,7 +150,7 @@ template <typename TCalculus, Duality duality>
 
     /**
      * Create zero form by projecting the vector field along basis vector.
-     * @param dir direction along wich the vector field is projected.
+     * @param dir direction along which the vector field is projected.
      */
     KForm<Calculus, 0, duality> coordAlongDirection(const Dimension& dir) const;
 
