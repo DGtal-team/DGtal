@@ -3,7 +3,7 @@
 ## Changes
 
 - *Documentation*
-  - Many typos fixed using Github Copilot. (David Coeurjolly, [#1829](https://github.com/DGtal-team/DGtal/pull/1829))
+  - Many typos fixed in documentation using Github Copilot. (David Coeurjolly, [#1829](https://github.com/DGtal-team/DGtal/pull/1829))
 
 # DGtal 2.1.0
 
