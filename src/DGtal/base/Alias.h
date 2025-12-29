@@ -118,7 +118,7 @@ struct A { ...
 // ambiguity on the role of parameter a and its life-time. Here
 // a's lifetime should be longer than the construction. Generally
 // the ambiguity is removed by adding comments or, for the
-// experienced developer, by looking at other parts of the code.
+-// experienced developer, by looking at other parts of the code.
 
 // Only aliasing, but for a long lifetime.
 struct B1 {
