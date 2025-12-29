@@ -346,11 +346,11 @@ of concepts::CDigitalSurfaceContainer):
 - model ImplicitDigitalSurface, parameterized by a cellular space
   and a predicate Point->bool. Represents the (connected) boundary
   of shape defined implicitly by a predicate. Computes at
-  instanciation the set of surfels by a tracking algorithm.
+  instantiation the set of surfels by a tracking algorithm.
 - model LightImplicitDigitalSurface, parameterized by a cellular
   space and a predicate Point->bool. Represents the (connected)
   boundary of shape defined implicitly by a predicate. Do not
-  compute at instanciation the set of surfels, but rather visits
+  compute at instantiation the set of surfels, but rather visits
   the surface on demand.
 - model SetOfSurfels, parameterized by a cellular space and a set
   storing surfels. Represents an arbitrary set of surfels stored
@@ -358,11 +358,11 @@ of concepts::CDigitalSurfaceContainer):
 - model ExplicitDigitalSurface, parameterized by a cellular space
   and a predicate Surfel->bool. Represents a (connected) set of
   surfels defined implicitly by a predicate. Computes at
-  instanciation the set of surfels by a tracking algorithm.
+  instantiation the set of surfels by a tracking algorithm.
 - model LightExplicitDigitalSurface, parameterized by a cellular space
   and a predicate Surfel->bool. Represents a (connected) set of
   surfels defined implicitly by a predicate.  Do not
-  compute at instanciation the set of surfels, but rather visits
+  compute at instantiation the set of surfels, but rather visits
   the surface on demand.
 
 

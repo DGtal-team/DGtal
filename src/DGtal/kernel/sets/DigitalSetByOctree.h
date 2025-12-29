@@ -395,7 +395,7 @@ namespace DGtal
         /** 
          * @brief Removes a range of voxels
          * 
-         * @param begin The begining of the range
+         * @param begin The beginning of the range
          * @param end The end of the range
          */
         size_t erase(Iterator begin, Iterator end) 
@@ -519,7 +519,7 @@ namespace DGtal
         }
 
         /**
-         * @brief Returns an iterator to the begining of the octree
+         * @brief Returns an iterator to the beginning of the octree
          */
         Iterator begin() const 
         {
@@ -533,7 +533,7 @@ namespace DGtal
         }
 
         /**
-         * @brief Returns an iterator to the begining of the octree
+         * @brief Returns an iterator to the beginning of the octree
          */
         Iterator begin() { return static_cast<const DigitalSetByOctree&>(*this).begin(); }
 

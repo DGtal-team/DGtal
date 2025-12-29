@@ -403,7 +403,7 @@ class RealFFT< HyperRectDomain<TSpace>, T >
      * so that future creation of similar plan (same image dimension, size and precision,
      * same number of process, same @a flags and @a way) will be costless.
      *
-     * It is only usefull when using a plan flag other than @a FFTW_ESTIMATE, when the allocation of a temporary image
+     * It is only useful when using a plan flag other than @a FFTW_ESTIMATE, when the allocation of a temporary image
      * is not wanted and when the spatial or frequency image has not been already initialized.
      * Otherwise, consider using doFFT(), forwardFFT() or backwardFFT() directly.
      *
