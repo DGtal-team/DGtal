@@ -333,7 +333,7 @@ topology. Here a few of them (with the model example KhalimskySpaceND)
 Note that you dispose also of a whole set of methods to determine
 cells according to different geometric queries. The following
 methods do not change the topology of the input cell only the
-coordiantes. Again the prefix \c u is related to method taking as
+coordinates. Again the prefix \c u is related to method taking as
 input unsigned cells while the prefix \c s is related to signed
 cells:
 

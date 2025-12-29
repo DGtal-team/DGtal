@@ -211,7 +211,7 @@ and you will get the resulting cell display:
 
  The helper class Surface also proposes some methods to fill the
  interior/exterior of a digital set of 1-SCell which can be defined from
- an oriented FreemanChain. These methods can be usefull in particular
+ an oriented FreemanChain. These methods can be useful in particular
  to reconstruct images (as given for instance in the tool of
  freeman2pgm given in  <a  href="https://github.com/DGtal-team/DGtalTools">DGtalTools</a>.). 
  

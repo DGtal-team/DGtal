@@ -66,7 +66,7 @@ a \e fixed point outside the set at the top of the tetrahedron (the blue circle)
 are \e inside the digital set will be denoted by disks while points that are \e
 outside by circles.
 
-@image html plane-probing-start-frame.png "Left: the base triangle. Right: the base frame at the begining."
+@image html plane-probing-start-frame.png "Left: the base triangle. Right: the base frame at the beginning."
 
 We now describe the update procedure in more details, see the next figure.
 
