@@ -163,7 +163,7 @@ following types:
    for integrating the VCM, a map: Point -> Scalar, e.g. \ref functors::HatPointFunction
   or \ref functors::BallConstantPointFunction, but you may define your own.
 
-At instanciation, you have to precise several parameters:
+At instantiation, you have to precise several parameters:
 
 - \b surface the digital surface that is aliased in this. The
   user can \b secure the aliasing by passing a CountedConstPtrOrConstPtr.

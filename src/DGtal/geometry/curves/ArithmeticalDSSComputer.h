@@ -441,7 +441,7 @@ namespace DGtal
    * Then, you can construct a DSS computer as follows:
    * @snippet geometry/curves/exampleArithmeticalDSSComputer.cpp ArithmeticalDSSComputerStandardCtor
    *
-   * The extention is simply done as follows:
+   * The extension is simply done as follows:
    * @snippet geometry/curves/exampleArithmeticalDSSComputer.cpp ArithmeticalDSSComputerStandardExtension
    *
    * See @ref moduleArithDSSReco for further details.

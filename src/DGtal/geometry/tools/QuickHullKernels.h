@@ -629,12 +629,12 @@ namespace DGtal
      Each floating point input coordinate `x` is converted to an integer
      through the following formula `(Integer) round( x * precision )`,
      where `precision` is the floating point value given at
-     instanciation of the kernel.
+     instantiation of the kernel.
 
      Each output floating point coordinate is built from integer
      coordinates `a` through the formula `( (double) a ) / precision`,
      where `precision` is the floating point value given at
-     instanciation of the kernel.
+     instantiation of the kernel.
 
      @see \ref moduleQuickHull
 
@@ -741,7 +741,7 @@ namespace DGtal
     /// @note Each floating point input coordinate `x` is converted to an integer
     /// through the following formula `(Integer) round( x * precision )`,
     /// where `precision` is the floating point value given at
-    /// instanciation of the kernel.
+    /// instantiation of the kernel.
     template < typename InputPoint>
     void makeInput( std::vector< CoordinatePoint >& processed_points,
                     IndexRange& input2comp, IndexRange& comp2input,
@@ -775,7 +775,7 @@ namespace DGtal
     /// @note Each output floating point coordinate is built from integer
     /// coordinates `a` through the formula `( (double) a ) / precision`,
     /// where `precision` is the floating point value given at
-    /// instanciation of the kernel.
+    /// instantiation of the kernel.
     template < typename OutputPoint>
     void convertPointTo( const CoordinatePoint& p, OutputPoint& out_p ) const
     {
@@ -803,12 +803,12 @@ namespace DGtal
      Each floating point input coordinate `x` is converted to an integer
      through the following formula `(Integer) round( x * precision )`,
      where `precision` is the floating point value given at
-     instanciation of the kernel.
+     instantiation of the kernel.
 
      Each output floating point coordinate is built from integer
      coordinates `a` through the formula `( (double) a ) / precision`,
      where `precision` is the floating point value given at
-     instanciation of the kernel.
+     instantiation of the kernel.
 
      @see \ref moduleQuickHull
 
@@ -918,7 +918,7 @@ namespace DGtal
     /// @note Each floating point input coordinate `x` is converted to
     /// an integer through the following formula `(Integer) round( x *
     /// precision )`, where `precision` is the floating point value
-    /// given at instanciation of the kernel. A new coordinate is
+    /// given at instantiation of the kernel. A new coordinate is
     /// added so that the point is lifted onto the "norm" paraboloid.
     template < typename InputPoint>
     void makeInput( std::vector< CoordinatePoint >& processed_points,
@@ -959,7 +959,7 @@ namespace DGtal
     /// @note Each output floating point coordinate is built from
     /// integer coordinates `a` through the formula `( (double) a ) /
     /// precision`, where `precision` is the floating point value
-    /// given at instanciation of the kernel. The last coordinate is
+    /// given at instantiation of the kernel. The last coordinate is
     /// not used since it was just related to the lifting of the point
     /// onto the "norm" paraboloid, as classically done when computing
     /// the Delaunay triangulation from a convex hull.

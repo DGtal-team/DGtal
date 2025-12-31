@@ -369,7 +369,7 @@ Let us consider that \f$ S \f$ and \f$ M \f$ are defined as follows:
 
 @image html NaiveDSS8ExtInit.png "Extension to the red point"
 
-The extention is simply done as follows: 
+The extension is simply done as follows: 
 @snippet geometry/curves/exampleArithmeticalDSS.cpp ArithmeticalDSSUpdateExtension
 
 In this case, the return value is true and the resulting DSS is: 

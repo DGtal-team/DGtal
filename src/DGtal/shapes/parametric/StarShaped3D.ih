@@ -64,7 +64,7 @@ DGtal::StarShaped3D<TSpace>::orientation( const RealPoint& p ) const
 
 
 /**
- * @param t is a couple of Teta && Phi wich are 2 angles respectivly between [0,2PI] and [0,Pi] a.
+ * @param t is a couple of Teta && Phi which are 2 angles respectively between [0,2PI] and [0,Pi] a.
  *
  * @return the vector (gradient(f(x,y,z))) made unitary which is the unit
  * normal to the shape boundary looking inside the shape.
@@ -80,7 +80,7 @@ DGtal::StarShaped3D<TSpace>::normal( const AngularCoordinates& t ) const
 
 
 /**
- * @param t is a couple of Teta && Phi wich are 2 angles respectivly between [0,2PI] and [0,Pi] 
+ * @param t is a couple of Teta && Phi which are 2 angles respectively between [0,2PI] and [0,Pi] 
  *
  * @return the mean curvature at point (x(t),y(t),z(t)), positive
  * is convex, negative is concave when shape is to the left and
@@ -118,7 +118,7 @@ DGtal::StarShaped3D<TSpace>::meanCurvature( const AngularCoordinates& t ) const
 
 
 /**
- * @param t is a couple of Teta && Phi wich are 2 angles respectivly between [0,2PI] and [0,Pi] .
+ * @param t is a couple of Teta && Phi which are 2 angles respectively between [0,2PI] and [0,Pi] .
  *
  * @return the gaussian curvature at point (x(t),y(t),z(t)), positive
  * is convex, negative is concave when shape is to the left and
@@ -156,8 +156,8 @@ DGtal::StarShaped3D<TSpace>::gaussianCurvature( const AngularCoordinates& t ) co
 
 
 /**
- * @param t1 is a couple of Teta && Phi wich are 2 angles respectivly between [0,2PI] and [0,Pi] .
- * @param t2 is a couple of Teta && Phi wich are 2 angles respectivly between [0,2PI] and [0,Pi]  further from [t1].
+ * @param t1 is a couple of Teta && Phi which are 2 angles respectively between [0,2PI] and [0,Pi] .
+ * @param t2 is a couple of Teta && Phi which are 2 angles respectively between [0,2PI] and [0,Pi]  further from [t1].
  * @param nb the number of points used to estimate the arclength between x(Teta1,Phi1) and x(Teta2,Phi2).
  * @return the estimated arclength.
  */
@@ -189,8 +189,8 @@ DGtal::StarShaped3D<TSpace>::arclength( const AngularCoordinates& t1, AngularCoo
 
 
 /**
- * @param t1 is a couple of Teta && Phi wich are 2 angles respectivly between [0,2PI] and [0,Pi].
- * @param t2 is a couple of Teta && Phi wich are 2 angles respectivly between [0,2PI] and [0,Pi], further from [t1].
+ * @param t1 is a couple of Teta && Phi which are 2 angles respectively between [0,2PI] and [0,Pi].
+ * @param t2 is a couple of Teta && Phi which are 2 angles respectively between [0,2PI] and [0,Pi], further from [t1].
  * @param nb the number of points used to estimate the surfacelength between x(Teta1,Phi1) and x(Teta2,Phi2).
  * @return the estimated surfacelength.
  */

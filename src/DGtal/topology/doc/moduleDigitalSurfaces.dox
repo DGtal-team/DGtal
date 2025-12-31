@@ -145,7 +145,7 @@ geometry. Indeed we need to relate surfels together so as to have a
 topology on the digital surface. The first step is to transform the
 digital surface into a graph.
  
-@note From a properly oriented @f$n-1@f$-cell (i.e. a surfel), one can retreive the coordinates
+@note From a properly oriented @f$n-1@f$-cell (i.e. a surfel), one can retrieve the coordinates
  in @f$Z^n@f$ of the associated interior / exterior grid points (voxel in 3d) using the KhalimskySpaceND::interiorVoxel
  and KhalimskySpaceND::exteriorVoxel methods.
 
@@ -346,11 +346,11 @@ of concepts::CDigitalSurfaceContainer):
 - model ImplicitDigitalSurface, parameterized by a cellular space
   and a predicate Point->bool. Represents the (connected) boundary
   of shape defined implicitly by a predicate. Computes at
-  instanciation the set of surfels by a tracking algorithm.
+  instantiation the set of surfels by a tracking algorithm.
 - model LightImplicitDigitalSurface, parameterized by a cellular
   space and a predicate Point->bool. Represents the (connected)
   boundary of shape defined implicitly by a predicate. Do not
-  compute at instanciation the set of surfels, but rather visits
+  compute at instantiation the set of surfels, but rather visits
   the surface on demand.
 - model SetOfSurfels, parameterized by a cellular space and a set
   storing surfels. Represents an arbitrary set of surfels stored
@@ -358,11 +358,11 @@ of concepts::CDigitalSurfaceContainer):
 - model ExplicitDigitalSurface, parameterized by a cellular space
   and a predicate Surfel->bool. Represents a (connected) set of
   surfels defined implicitly by a predicate. Computes at
-  instanciation the set of surfels by a tracking algorithm.
+  instantiation the set of surfels by a tracking algorithm.
 - model LightExplicitDigitalSurface, parameterized by a cellular space
   and a predicate Surfel->bool. Represents a (connected) set of
   surfels defined implicitly by a predicate.  Do not
-  compute at instanciation the set of surfels, but rather visits
+  compute at instantiation the set of surfels, but rather visits
   the surface on demand.
 
 
@@ -604,7 +604,7 @@ the edge.
 @section dgtal_digsurf_sec5  Precomputed 3D digital surface with IndexedDigitalSurface
 
 Digital surfaces are built upon digital surface containers. Although
-containers may be very differnt, digital surfaces provide a uniform
+containers may be very different, digital surfaces provide a uniform
 interface to visit them and to explore their topology. But they are
 merely just an interface. Hence neighbors, umbrellas, and sometimes
 even vertices are recomputed on-the-fly as needed.

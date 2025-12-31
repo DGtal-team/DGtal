@@ -157,7 +157,7 @@ namespace DGtal
     AngularCoordinates parameter( const RealPoint & p ) const;
 
     /**
-     * @param t is a couple of Teta && Phi wich are respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
+     * @param t is a couple of Teta && Phi which are respectively between [-Pi/2,Pi/2) and [-Pi,Pi].
      *
      * @return the vector (x(t),y(t),z(t)) which is the position on the
      * shape boundary.
@@ -165,44 +165,44 @@ namespace DGtal
     RealPoint x( const AngularCoordinates& t ) const;
 
     /**
-     * @param t is a couple of Teta && Phi wich are respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
+     * @param t is a couple of Teta && Phi which are respectively between [-Pi/2,Pi/2) and [-Pi,Pi].
      *
      * @return the vector (gradf(M)).
      */
     virtual RealPoint gradient( const AngularCoordinates& t) const ;
 
     /**
-     * @param t is a couple of Teta && Phi wich are respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
+     * @param t is a couple of Teta && Phi which are respectively between [-Pi/2,Pi/2) and [-Pi,Pi].
      *
-     * @return the vector (rt(M)) wich is the partial derivative with respect to Teta.
+     * @return the vector (rt(M)) which is the partial derivative with respect to Teta.
      */
     virtual RealPoint rt( const AngularCoordinates& t) const ;
 
     /**
-     * @param t is a couple of Teta && Phi wich are respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
+     * @param t is a couple of Teta && Phi which are respectively between [-Pi/2,Pi/2) and [-Pi,Pi].
      *
-     * @return the vector (rp(M)) wich is the partial derivative with respect to Phi.
+     * @return the vector (rp(M)) which is the partial derivative with respect to Phi.
      */
     virtual RealPoint rp( const AngularCoordinates& t) const ;
 
     /**
-     * @param t is a couple of Teta && Phi wich are respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
+     * @param t is a couple of Teta && Phi which are respectively between [-Pi/2,Pi/2) and [-Pi,Pi].
      *
-     * @return the vector (rtt(M)) wich is second the partial derivative with respect to Teta (twice).
+     * @return the vector (rtt(M)) which is second the partial derivative with respect to Teta (twice).
      */
     virtual RealPoint rtt( const AngularCoordinates& t) const ;
 
     /**
-     * @param t is a couple of Teta && Phi wich are respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
+     * @param t is a couple of Teta && Phi which are respectively between [-Pi/2,Pi/2) and [-Pi,Pi].
      *
-     * @return the vector (rpp(M)) wich is second the partial derivatif with respect to Phi (twice).
+     * @return the vector (rpp(M)) which is second the partial derivatif with respect to Phi (twice).
      */
     virtual RealPoint rpp( const AngularCoordinates& t) const ;
 
     /**
-     * @param t is a couple of Teta && Phi wich are respectivly between [-Pi/2,Pi/2) and [-Pi,Pi].
+     * @param t is a couple of Teta && Phi which are respectively between [-Pi/2,Pi/2) and [-Pi,Pi].
      *
-     * @return the vector (rpp(M)) wich is second the partial derivative with respect to Teta then Phi.
+     * @return the vector (rpp(M)) which is second the partial derivative with respect to Teta then Phi.
      */
     virtual RealPoint rtp( const AngularCoordinates& t) const ;
 

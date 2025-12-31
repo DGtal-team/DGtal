@@ -31,7 +31,7 @@ Please have a look to shapeGridCurveEstimator.cpp to get the complete source cod
 
 \section secttutoShapeGridCurveEstimator0 Implicit Gauss digitization of a Euclidean shape 
 
-Let us assume that a flower-like shape has been instanciated.  
+Let us assume that a flower-like shape has been instantiated.  
 We now implicitely consider its digitization according to the Gauss scheme
 (set of digital points lying inside the shape).  
 

@@ -139,7 +139,7 @@ namespace DGtal {
    Adjacencies are used at many places as a basis for more complex
    operations. To keep genericity and efficiency, adjacencies should
    satisfy the concept concepts::CAdjacency. They are specialized only at
-   instanciation as argument to templates. A model of concepts::CAdjacency should
+   instantiation as argument to templates. A model of concepts::CAdjacency should
    define the following inner types:
   
    - Space: the space of the adjacency.

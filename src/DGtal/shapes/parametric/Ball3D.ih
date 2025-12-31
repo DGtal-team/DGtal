@@ -70,7 +70,7 @@ DGtal::Ball3D<T>::Ball3D(const Ball3D& other):
 /**
  * @param pp any point in the plane.
  *
- * @return the couple of angle parameters (Teta,Phi) respectivly between [0,2PI] and [0,Pi] corresponding to
+ * @return the couple of angle parameters (Teta,Phi) respectively between [0,2PI] and [0,Pi] corresponding to
  * this point for the shape.
  */
 template <typename T>
@@ -113,7 +113,7 @@ DGtal::Ball3D<T>::x( const AngularCoordinates& t ) const
 
 
 /**
- * @param t is a couple of Teta && Phi wich are angles respectivly betweend [0,2PI] and [0,Pi].
+ * @param t is a couple of Teta && Phi which are angles respectively between [0,2PI] and [0,Pi].
  *
  * @return the vector (gradf(M)).
  */
@@ -126,9 +126,9 @@ DGtal::Ball3D<T>::gradient( const AngularCoordinates& t ) const
 }
 
 /**
- * @param t is a couple of Teta && Phi wich are angles respectivly betweend [0,2PI] and [0,Pi].
+ * @param t is a couple of Teta && Phi which are angles respectively between [0,2PI] and [0,Pi].
  *
- * @return the vector (rt(M)) wich is the first partial derivative with respect to Teta.
+ * @return the vector (rt(M)) which is the first partial derivative with respect to Teta.
  */
 template <typename T>
 inline
@@ -145,9 +145,9 @@ DGtal::Ball3D<T>::rt( const AngularCoordinates& t ) const
 
 
 /**
- * @param t is a couple of Teta && Phi wich are angles respectivly betweend [-Pi/2,Pi/2) and [-Pi,Pi].
+ * @param t is a couple of Teta && Phi which are angles respectively between [-Pi/2,Pi/2) and [-Pi,Pi].
  *
- * @return the vector (rp(M)) wich is the first partial derivative with respect to Phi.
+ * @return the vector (rp(M)) which is the first partial derivative with respect to Phi.
  */
 template <typename T>
 inline
@@ -163,9 +163,9 @@ DGtal::Ball3D<T>::rp( const AngularCoordinates& t ) const
 
 
 /**
- * @param t is a couple of Teta && Phi wich are angles respectivly betweend [0,2PI] and [0,Pi].
+ * @param t is a couple of Teta && Phi which are angles respectively between [0,2PI] and [0,Pi].
  *
- * @return the vector (rtt(M)) wich is second the second partial derivative with respect to Teta(twice).
+ * @return the vector (rtt(M)) which is second the second partial derivative with respect to Teta(twice).
  */
 template <typename T>
 inline
@@ -182,9 +182,9 @@ DGtal::Ball3D<T>::rtt( const AngularCoordinates& t ) const
 
 
 /**
- * @param t is a couple of Teta && Phi wich are angles respectivly betweend [0,2PI] and [0,Pi].
+ * @param t is a couple of Teta && Phi which are angles respectively between [0,2PI] and [0,Pi].
  *
- * @return the vector (rpp(M)) wich is second the partial derivatif with respect to Phi(twice).
+ * @return the vector (rpp(M)) which is second the partial derivatif with respect to Phi(twice).
  */
 template <typename T>
 inline
@@ -199,9 +199,9 @@ DGtal::Ball3D<T>::rpp( const AngularCoordinates& t ) const
 }
 
 /**
- * @param t is a couple of Teta && Phi wich are angles respectivly betweend [0,2PI] and [0,Pi]
+ * @param t is a couple of Teta && Phi which are angles respectively between [0,2PI] and [0,Pi]
  *
- * @return the vector (rtp(M)) wich is second the partial derivatif with respect to Teta then Phi.
+ * @return the vector (rtp(M)) which is second the partial derivatif with respect to Teta then Phi.
  */
 template <typename T>
 inline

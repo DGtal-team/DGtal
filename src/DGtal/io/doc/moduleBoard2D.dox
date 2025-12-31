@@ -178,7 +178,7 @@ The simplest way is to use instances of the following classes:
 - CustomColors: to change pen color and fill color.
 - CustomPenColor: to change only pen color.
 - CustomFillColor: to change only fill color.
-- CustomPen: to change pen color and fill color, but also optionnaly in this order the line width, the line style, the line cap, the line join.
+- CustomPen: to change pen color and fill color, but also optionally in this order the line width, the line style, the line cap, the line join.
 
 An instance of one of this class is then attached to the drawable
 element by creating an instance of CustomStyle. Do not worry

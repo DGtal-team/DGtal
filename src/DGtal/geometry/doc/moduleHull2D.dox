@@ -50,7 +50,7 @@ Three convex hull algorithms use this basic procedure:
 - functions::Hull2D::grahamConvexHullAlgorithm [Graham, 1972: \cite Graham1972]
 - functions::Hull2D::melkmanConvexHullAlgorithm [Melkman, 1987: \cite Melkman1987]
 
-Before calling these algoritms, you must use the functions::Hull2D namespace
+Before calling these algorithms, you must use the functions::Hull2D namespace
 defined in the file Hull2DHelpers.h. 
 @snippet geometry/tools/exampleConvexHull2D.cpp Hull2D-Include
 @snippet geometry/tools/exampleConvexHull2D.cpp Hull2D-Namespace

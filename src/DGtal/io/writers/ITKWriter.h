@@ -104,7 +104,7 @@ namespace DGtal
 
   /**
    * ITKWriter
-   * Template partial specialisation for ImageContainerByITKImage. This specialisation is usefull to export image including image spacing.
+   * Template partial specialisation for ImageContainerByITKImage. This specialisation is useful to export image including image spacing.
    **/
 template <typename TDomain, typename TValue, typename TFunctor >
 struct ITKWriter<ImageContainerByITKImage<TDomain, TValue>, TFunctor >

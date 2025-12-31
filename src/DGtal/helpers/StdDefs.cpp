@@ -26,7 +26,7 @@
 
 
 //////////////////
-/// Z2i Explicit instanciation
+/// Z2i Explicit instantiation
 //////////////////
 template class DGtal::SpaceND<2, DGtal::Z2i::Integer>;
 template class DGtal::PointVector<2, DGtal::Z2i::Integer>;
@@ -46,7 +46,7 @@ template class DGtal::ExactPredicateLpPowerSeparableMetric<DGtal::Z2i::Space,1> 
 
 
 //////////////////
-/// Z3i Explicit instanciation
+/// Z3i Explicit instantiation
 //////////////////
 template class DGtal::SpaceND<3, DGtal::Z3i::Integer>;
 template class DGtal::PointVector<3, DGtal::Z3i::Integer>;

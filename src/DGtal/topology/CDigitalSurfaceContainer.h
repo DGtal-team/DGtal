@@ -110,7 +110,7 @@ See @ref dgtal_digsurf_sec3_2
 | inside test   | \e x.isInside( s )|              | \e bool     |                  | returns \c true iff the surfel \c s belongs to this digital surface. | | |
 | begin of range| \e x.begin()|                    | \e SurfelConstIterator |       | returns a const iterator pointing to the first element in the digital surface, seen as a collection of surfels. | | |
 | end of range  | \e x.end()|                      | \e SurfelConstIterator |       | returns an iterator pointing past the last element in the digital surface, seen as a collection of surfels. | | |
-| tracker instanciation | \e x.newTracker( s )|    | \e DigitalSurfaceTracker* |    | returns a dynamically allocated instance of tracker initialized at the surfel \e s. | | |
+| tracker instantiation | \e x.newTracker( s )|    | \e DigitalSurfaceTracker* |    | returns a dynamically allocated instance of tracker initialized at the surfel \e s. | | |
 | connectedness test | \e x.connectedness()|       | \c enum \e Connectedness |     | returns either DISCONNECTED, CONNECTED, UNKNOWN depending on the surface. | | |
 | number of surfels | \e x.nbSurfels()|            | \e Size     |                  | returns the number of surfels of this surface. | | |
 | empty container test | \e x.empty()|             | \e bool     |                  | returns \c true iff the digital surface contains no surfel. | | |
