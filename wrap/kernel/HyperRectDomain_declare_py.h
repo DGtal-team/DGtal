@@ -23,15 +23,16 @@
 #endif
 
 #include "dgtal_nanobind_common.h"
-#include <pybind11/pytypes.h>
+// pytypes not needed in nanobind
 
 #include "base/Common_types_py.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 
 template<typename THyperRectDomain>
-nanobind::class_<THyperRectDomain> declare_HyperRectDomain(nanobind::module &m,
+nanobind::class_<THyperRectDomain> declare_HyperRectDomain(nanobind::module_ &m,
     const std::string &typestr) {
-    namespace py = pybind11;
+    namespace nb = nanobind;
+    using namespace nanobind::literals;
     using TT = THyperRectDomain;
     using TTSpace = typename THyperRectDomain::Space;
     using TTPoint = typename THyperRectDomain::Point;
@@ -48,78 +49,78 @@ The following code snippet demonstrates how to use \p HyperRectDomain
     upper_bound = Point.diagonal(4)
     dom = Domain(lower_bound, upper_bound)
 )";
-    auto py_class = py::class_<TT>(m, typestr.c_str(), docs.c_str());
+    auto nb_class = nb::class_<TT>(m, typestr.c_str(), docs.c_str());
 
-    py_class.def("dtype", [](const TT &) {
+    nb_class.def("dtype", [](const TT &) {
             return DGtal::Python::Integer_str;
             });
     // ----------------------- Constructors -----------------------------------
-    py_class.def(py::init(), "Default constructor.");
+    nb_class.def(nb::init(), "Default constructor.");
 
-    py_class.def(py::init<const TTPoint &, const TTPoint&>(),
+    nb_class.def(nb::init<const TTPoint &, const TTPoint&>(),
 R"(Constructor from two points lower_bound, upper_bound defining the space diagonal.)",
-        py::arg("lower_bound"), py::arg("upper_bound"));
+        nb::arg("lower_bound"), nb::arg("upper_bound"));
 
-    py_class.def(py::init<const TTRealPoint &, const TTRealPoint&>(),
+    nb_class.def(nb::init<const TTRealPoint &, const TTRealPoint&>(),
 R"(Constructor from two points lower_bound, upper_bound with
 real coordinates defining the space diagonal.
 
 The domain actualy defined is the smallest domain with integer bounds that
 contains the two given points.
 )",
-        py::arg("lower_bound"), py::arg("upper_bound"));
+        nb::arg("lower_bound"), nb::arg("upper_bound"));
 
-    py_class.def(py::init<const TT &>());
+    nb_class.def(nb::init<const TT &>());
 
     // ----------------------- Python operators -------------------------------
-    py_class.def("__len__", &TT::size);
-    py_class.def("__contains__", &TT::isInside);
-    py_class.def("__iter__", [](const TT &self) {
-        return py::make_iterator(self.begin(), self.end()); },
-         py::keep_alive<0, 1>() /* Keep object alive while iterator exists */);
+    nb_class.def("__len__", &TT::size);
+    nb_class.def("__contains__", &TT::isInside);
+    nb_class.def("__iter__", [](const TT &self) {
+        return nb::make_iterator(self.begin(), self.end()); },
+         nb::keep_alive<0, 1>() /* Keep object alive while iterator exists */);
 
     // ----------------------- Class operators --------------------------------
 
     // ----------------------- Class functions --------------------------------
-    py_class.def("is_empty", &TT::isEmpty, R"(True if the domain is empty)");
-    py_class.def("size", &TT::size, "Return the number of points of the domain.");
+    nb_class.def("is_empty", &TT::isEmpty, R"(True if the domain is empty)");
+    nb_class.def("size", &TT::size, "Return the number of points of the domain.");
 
     // ----------------------- Class data -------------------------------------
-    py_class.def_readwrite("lower_bound", &TT::myLowerBound);
-    py_class.def_readwrite("upper_bound", &TT::myUpperBound);
+    nb_class.def_readwrite("lower_bound", &TT::myLowerBound);
+    nb_class.def_readwrite("upper_bound", &TT::myUpperBound);
 
-    py_class.def_property_readonly_static("TPoint",
-            [](py::object /* self */) {
-            return py::type::of<TTPoint>();
+    nb_class.def_property_readonly_static("TPoint",
+            [](nb::object /* self */) {
+            return nb::type::of<TTPoint>();
             });
-    py_class.def_property_readonly_static("TRealPoint",
-            [](py::object /* self */) {
-            return py::type::of<TTRealPoint>();
+    nb_class.def_property_readonly_static("TRealPoint",
+            [](nb::object /* self */) {
+            return nb::type::of<TTRealPoint>();
             });
-    py_class.def_property_readonly_static("dimension",
-            [](py::object /* self */) { return TT::dimension; },
+    nb_class.def_property_readonly_static("dimension",
+            [](nb::object /* self */) { return TT::dimension; },
             R"(The dimension of the domain.)");
 
     // ----------------------- Print / Display --------------------------------
-    py_class.def("__str__", [](const TT & self) {
+    nb_class.def("__str__", [](const TT & self) {
         std::stringstream os;
         self.selfDisplay(os);
         return os.str();
     });
 
-    py_class.def("__repr__", [typestr](const TT & self) {
+    nb_class.def("__repr__", [typestr](const TT & self) {
         std::stringstream os;
         os << typestr;
         os << "(";
-        auto py_LowerBound = py::cast(self.myLowerBound);
+        auto py_LowerBound = nb::cast(self.myLowerBound);
         os << py_LowerBound.attr("__repr__")();
         os << ", ";
-        auto py_UpperBound = py::cast(self.myUpperBound);
+        auto py_UpperBound = nb::cast(self.myUpperBound);
         os << py_UpperBound.attr("__repr__")();
         os << ")";
         return os.str();
         });
 
-    return py_class;
+    return nb_class;
 }
 #endif

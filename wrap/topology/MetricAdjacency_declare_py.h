@@ -28,9 +28,10 @@
 #include "MetricAdjacency_types_py.h"
 
 template<typename TMetricAdjacency>
-nanobind::class_<TMetricAdjacency> declare_MetricAdjacency(nanobind::module &m,
+nanobind::class_<TMetricAdjacency> declare_MetricAdjacency(nanobind::module_ &m,
     const std::string &typestr) {
-    namespace py = pybind11;
+    namespace nb = nanobind;
+    using namespace nanobind::literals;
     using TT = TMetricAdjacency;
     using TTPoint = typename TT::Point;
     // Vertex is alias to Point
@@ -50,10 +51,10 @@ Example of usage:
     pointB = Adj.TPoint(3, 3, 1)
     print(Adj.isAdjacentTo(pointA, pointB)
 )";
-    auto py_class = py::class_<TT>(m, typestr.c_str(), docs.c_str());
+    auto nb_class = nb::class_<TT>(m, typestr.c_str(), docs.c_str());
 
     // ----------------------- Constructors -----------------------------------
-    py_class.def(py::init());
+    nb_class.def(nb::init());
 
     // ----------------------- Python operators -------------------------------
 
@@ -61,7 +62,7 @@ Example of usage:
 
     // ----------------------- Class functions --------------------------------
     // ----------------------- Adjacency services -----------------------------
-    py_class.def_static("isAdjacentTo", &TT::isAdjacentTo,
+    nb_class.def_static("isAdjacentTo", &TT::isAdjacentTo,
 R"(True iff [p1] is adjacent to [p2] according to this adjacency relation.
 
 Parameters
@@ -74,9 +75,9 @@ p2: Point
 Return
 ------
     True iff [p1] is adjacent to [p2] according to this adjacency relation.
-)", py::arg("p1"), py::arg("p2"));
+)", nb::arg("p1"), nb::arg("p2"));
 
-    py_class.def_static("isProperlyAdjacentTo", &TT::isProperlyAdjacentTo,
+    nb_class.def_static("isProperlyAdjacentTo", &TT::isProperlyAdjacentTo,
 R"(True iff [p1] is adjacent to [p2] according to this adjacency relation and p1 != p2.
 
 Parameters
@@ -89,13 +90,13 @@ p2: Point
 Return
 ------
     True iff [p1] is adjacent to [p2] according to this adjacency relation and p1 != p2.
-)", py::arg("p1"), py::arg("p2"));
+)", nb::arg("p1"), nb::arg("p2"));
 
     // ----------------------- Local graph services --------------------------
-    py_class.def_static("bestCapacity", &TT::bestCapacity,
+    nb_class.def_static("bestCapacity", &TT::bestCapacity,
 R"(Returns maximum number of neighbors for this adjacency.)");
 
-    py_class.def_static("degree", &TT::degree,
+    nb_class.def_static("degree", &TT::degree,
 R"(Returns the number of neighbors of the input vertex (point).
 
 Parameters
@@ -106,9 +107,9 @@ vertex: Point
 Return
 ------
     Returns the number of neighbors of the input vertex (point).
-)", py::arg("vertex"));
+)", nb::arg("vertex"));
 
-    py_class.def_static("writeNeighbors", [](const TTVertex & v) {
+    nb_class.def_static("writeNeighbors", [](const TTVertex & v) {
         using OutType = std::vector<TTPoint>;
         OutType neighs;
         std::back_insert_iterator<OutType> bii(neighs);
@@ -125,23 +126,23 @@ vertex: Point
 Return
 ------
     List with the neighbors of input vertex.
-)", py::arg("vertex"));
+)", nb::arg("vertex"));
 
     // ----------------------- Class data -------------------------------------
-    py_class.def_property_readonly_static("TPoint",
-            [](py::object /* self */) {
-            return py::type::of<TTPoint>();
+    nb_class.def_property_readonly_static("TPoint",
+            [](nb::object /* self */) {
+            return nb::type::of<TTPoint>();
             });
-    py_class.def_property_readonly_static("TVertex",
-            [](py::object /* self */) {
-            return py::type::of<TTVertex>();
+    nb_class.def_property_readonly_static("TVertex",
+            [](nb::object /* self */) {
+            return nb::type::of<TTVertex>();
             });
-    py_class.def_property_readonly_static("dimension",
-            [](py::object /* self */) { return TT::Space::dimension; },
+    nb_class.def_property_readonly_static("dimension",
+            [](nb::object /* self */) { return TT::Space::dimension; },
             R"(The dimension of the Space.)");
 
     // ----------------------- Print / Display --------------------------------
-    py_class.def("__str__", [typestr](const TT & self) {
+    nb_class.def("__str__", [typestr](const TT & self) {
         std::stringstream os;
         os << typestr;
         os << ": ";
@@ -149,7 +150,7 @@ Return
         return os.str();
     });
 
-    py_class.def("__repr__", [typestr](const TT & self) {
+    nb_class.def("__repr__", [typestr](const TT & self) {
         std::stringstream os;
         os << typestr;
         os << ": ";
@@ -157,6 +158,6 @@ Return
         return os.str();
     });
 
-    return py_class;
+    return nb_class;
 }
 #endif

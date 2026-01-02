@@ -29,9 +29,10 @@
 #include "Object_types_py.h"
 
 template<typename TObject>
-nanobind::class_<TObject> declare_Object(nanobind::module &m,
+nanobind::class_<TObject> declare_Object(nanobind::module_ &m,
     const std::string &typestr) {
-    namespace py = pybind11;
+    namespace nb = nanobind;
+    using namespace nanobind::literals;
     using TT = TObject;
     using TTPoint = typename TT::Point;
     // Vertex is alias to Point
@@ -86,12 +87,12 @@ Example of usage:
     obj.border()
     obj.properNeighborhood(p1)
 )";
-    auto py_class = py::class_<TT>(m, typestr.c_str(), docs.c_str());
+    auto nb_class = nb::class_<TT>(m, typestr.c_str(), docs.c_str());
 
     // ----------------------- Constructors -----------------------------------
-    py_class.def(py::init());
-    py_class.def(py::init<const TT &>());
-    py_class.def(py::init([](const TTDigitalTopology & topo,
+    nb_class.def(nb::init());
+    nb_class.def(nb::init<const TT &>());
+    nb_class.def(nb::init([](const TTDigitalTopology & topo,
                     const TTDigitalSet & point_set, Connectedness cxn){
                 return TT(topo, point_set, cxn);}),
 R"(Constructor
@@ -104,10 +105,10 @@ point_set: DigitalSet
     The set of points of the objects. It is copied in the object.
 connectedness: Connectedness (enum)
     The connectedness (DISCONNECTED, CONNECTED, or UNKNOWN). Defaults to UNKNOWN.
-)", py::arg("topology"), py::arg("point_set"),
-    py::arg("connectedness") = Connectedness::UNKNOWN);
+)", nb::arg("topology"), nb::arg("point_set"),
+    nb::arg("connectedness") = Connectedness::UNKNOWN);
 
-    py_class.def(py::init([](const TTDigitalTopology & topo,
+    nb_class.def(nb::init([](const TTDigitalTopology & topo,
                     const TTDomain & domain){
                 return TT(topo, domain);}),
 R"(Constructor of an empty object by providing a domain.
@@ -118,32 +119,32 @@ topology: DigitalTopology
      The digital topology chosen for this set, a copy of which is stored in the object.
 domain: Domain
     Any domain related to the given topology.
-)", py::arg("topology"), py::arg("domain"));
+)", nb::arg("topology"), nb::arg("domain"));
 
     // ----------------------- Python operators -------------------------------
-    py_class.def("__len__", &TT::size);
-    py_class.def("__iter__", [](const TT & self) {
-        return py::make_iterator(self.begin(), self.end()); },
-        py::keep_alive<0, 1>() /* keep object alive while iterator exists */);
+    nb_class.def("__len__", &TT::size);
+    nb_class.def("__iter__", [](const TT & self) {
+        return nb::make_iterator(self.begin(), self.end()); },
+        nb::keep_alive<0, 1>() /* keep object alive while iterator exists */);
     // ----------------------- Class operators --------------------------------
 
     // ----------------------- Class functions --------------------------------
-    py_class.def("size", &TT::size,
+    nb_class.def("size", &TT::size,
 R"(Returns the number of elements in the set.)");
 
-    py_class.def("domain", &TT::domain,
+    nb_class.def("domain", &TT::domain,
 R"(A reference to the embedding domain.)");
 
     // We only wrap the const version to avoid CowPtr to make a copy every time
     // we call this function. Python doesn't know about const objects.
     const std::string point_set_docs =
 R"(A reference to the point set containing the points of the digital object.)";
-    py_class.def("pointSet", [](const TT & self) -> const TTDigitalSet & {
+    nb_class.def("pointSet", [](const TT & self) -> const TTDigitalSet & {
             return self.pointSet();
             },
-            py::return_value_policy::reference_internal,
+            nb::return_value_policy::reference_internal,
             point_set_docs.c_str());
-    py_class.def_property("point_set",
+    nb_class.def_property("point_set",
             // Getter
             [](const TT & self) -> const TTDigitalSet & {
                 return self.pointSet();
@@ -152,31 +153,31 @@ R"(A reference to the point set containing the points of the digital object.)";
             [](TT & self, const TTDigitalSet & value) -> void {
                 self.pointSet() = value;
             },
-            py::return_value_policy::reference_internal,
+            nb::return_value_policy::reference_internal,
             point_set_docs.c_str());
 
-    py_class.def("topology",
+    nb_class.def("topology",
             [](const TT & self) -> const TTDigitalTopology & {
                 return self.topology();
             },
-            py::return_value_policy::reference_internal,
+            nb::return_value_policy::reference_internal,
             R"(A reference to the topology of this object.)");
 
-    py_class.def("adjacency", &TT::adjacency,
+    nb_class.def("adjacency", &TT::adjacency,
 R"(A reference to the adjacency of this object.)");
 
-    py_class.def("connectedness", &TT::connectedness,
+    nb_class.def("connectedness", &TT::connectedness,
 R"(Returns the connectedness of this object. CONNECTED, DISCONNECTED, or UNKNOWN.
 If UNKNOWN, you might use computeConnectedness())");
 
-    py_class.def("computeConnectedness", &TT::computeConnectedness,
+    nb_class.def("computeConnectedness", &TT::computeConnectedness,
 R"(Computes the connectedness of this object if `connectedness() == UNKNOWN`.
 After this, the connectedness would be CONNECTED or DISCONNECTED.)");
 
 
-    py_class.def("border", &TT::border);
+    nb_class.def("border", &TT::border);
 
-    py_class.def("degree", &TT::degree,
+    nb_class.def("degree", &TT::degree,
 R"(
 Parameters
 ----------
@@ -185,12 +186,12 @@ vertex: Point
 Return
 ------
     The number of neighbors of the input point (vertex), excluding itself.
-)", py::arg("vertex"));
+)", nb::arg("vertex"));
 
-    py_class.def("bestCapacity", &TT::bestCapacity,
+    nb_class.def("bestCapacity", &TT::bestCapacity,
 R"(Returns maximum number of neighbors for this adjacency.)");
 
-    py_class.def("writeNeighbors", [](const TT & self, const TTVertex & v) {
+    nb_class.def("writeNeighbors", [](const TT & self, const TTVertex & v) {
         using OutType = std::vector<TTPoint>;
         OutType neighs;
         std::back_insert_iterator<OutType> bii(neighs);
@@ -207,9 +208,9 @@ vertex: Point
 Return
 ------
     List with the neighbors of input vertex.
-)", py::arg("vertex"));
+)", nb::arg("vertex"));
 
-    py_class.def("neighborhood", &TT::neighborhood,
+    nb_class.def("neighborhood", &TT::neighborhood,
 R"(Let A be this object with foreground adjacency k and N_k(p) the
 k-neighborhood of p. Returns the set A intersected with N_k(p).
 
@@ -222,9 +223,9 @@ point: Point
 Return
 ------
     The kappa-neighborhood of [point] in this object.
-)", py::arg("point"));
+)", nb::arg("point"));
 
-    py_class.def("neighborhoodSize", &TT::neighborhoodSize,
+    nb_class.def("neighborhoodSize", &TT::neighborhoodSize,
 R"(The size of the neighborhood.
 
 Parameters
@@ -234,9 +235,9 @@ point: Point
 Return
 ------
     The cardinal of the kappa-neighborhood of [point] in this object.
-)", py::arg("point"));
+)", nb::arg("point"));
 
-    py_class.def("properNeighborhood", &TT::properNeighborhood,
+    nb_class.def("properNeighborhood", &TT::properNeighborhood,
 R"(The neighborhood of [point] without point.
 
 Parameters
@@ -246,9 +247,9 @@ point: Point
 Return
 ------
     The kappa-neighborhood of [point] in this object without [point].
-)", py::arg("point"));
+)", nb::arg("point"));
 
-    py_class.def("properNeighborhoodSize", &TT::properNeighborhoodSize,
+    nb_class.def("properNeighborhoodSize", &TT::properNeighborhoodSize,
 R"(The size of the properNeighborhood.
 
 Parameters
@@ -258,9 +259,9 @@ point: Point
 Return
 ------
     The cardinal of the kappa-neighborhood of [point] in this object without [point].
-)", py::arg("point"));
+)", nb::arg("point"));
 
-    py_class.def("isSimple", &TT::isSimple,
+    nb_class.def("isSimple", &TT::isSimple,
 R"([Bertrand, 1994] A voxel v is simple for a set X if \#C6 [G6 (v,
 X)] = \#C18[G18(v, X^c)] = 1, where \#Ck [Y] denotes the number
 of k-connected components of a set Y.
@@ -276,10 +277,10 @@ point: Point
 Return
 ------
     True if this point is simple.
-)", py::arg("point"));
+)", nb::arg("point"));
 
 
-    py_class.def("setTable", [](TT & self, const std::string & tables_folder) {
+    nb_class.def("setTable", [](TT & self, const std::string & tables_folder) {
             auto foregroundAdjNumber = self.topology().kappa().bestCapacity();
             auto backgroundAdjNumber = self.topology().lambda().bestCapacity();
             const std::string table_filename = "simplicity_table" + std::to_string(foregroundAdjNumber) + "_" + std::to_string(backgroundAdjNumber);
@@ -305,9 +306,9 @@ tables_folder: String
 Return
 ------
     A string with the full path of the loaded table file.
-)", py::arg("tables_folder"));
+)", nb::arg("tables_folder"));
 
-    py_class.def("geodesicNeighborhood", [](const TT & self, const TTPoint & p, unsigned int k) {
+    nb_class.def("geodesicNeighborhood", [](const TT & self, const TTPoint & p, unsigned int k) {
                 return self.geodesicNeighborhood(self.adjacency(), p, k);
             },
 R"(Geodesic neighborhood of point [point] and order [k] in the object for this Object foreground adjacency.
@@ -322,9 +323,9 @@ k: Int
 Return
 ------
     Object with the geodesic Neighborhood of the input point.
-)", py::arg("point"), py::arg("k"));
+)", nb::arg("point"), nb::arg("k"));
 
-    py_class.def("geodesicNeighborhoodInComplement", [](const TT & self, const TTPoint & p, unsigned int k) {
+    nb_class.def("geodesicNeighborhoodInComplement", [](const TT & self, const TTPoint & p, unsigned int k) {
                 return self.geodesicNeighborhoodInComplement(self.adjacency(), p, k);
             },
 R"(Geodesic neighborhood of point [point] and order [k] in the complemented object for this Object foreground adjacency.
@@ -339,46 +340,46 @@ k: Int
 Return
 ------
     Object with the geodesic Neighborhood of the complemented object of the input point.
-)", py::arg("point"), py::arg("k"));
+)", nb::arg("point"), nb::arg("k"));
 
     // ----------------------- Class data -------------------------------------
-    py_class.def_property_readonly_static("TPoint",
-            [](py::object /* self */) {
-            return py::type::of<TTPoint>();
+    nb_class.def_property_readonly_static("TPoint",
+            [](nb::object /* self */) {
+            return nb::type::of<TTPoint>();
             });
-    py_class.def_property_readonly_static("TVertex",
-            [](py::object /* self */) {
-            return py::type::of<TTVertex>();
+    nb_class.def_property_readonly_static("TVertex",
+            [](nb::object /* self */) {
+            return nb::type::of<TTVertex>();
             });
-    py_class.def_property_readonly_static("TDomain",
-            [](py::object /* self */) {
-            return py::type::of<TTDomain>();
+    nb_class.def_property_readonly_static("TDomain",
+            [](nb::object /* self */) {
+            return nb::type::of<TTDomain>();
             });
-    py_class.def_property_readonly_static("TDigitalSet",
-            [](py::object /* self */) {
-            return py::type::of<TTDigitalSet>();
+    nb_class.def_property_readonly_static("TDigitalSet",
+            [](nb::object /* self */) {
+            return nb::type::of<TTDigitalSet>();
             });
-    py_class.def_property_readonly_static("TDigitalTopology",
-            [](py::object /* self */) {
-            return py::type::of<TTDigitalTopology>();
+    nb_class.def_property_readonly_static("TDigitalTopology",
+            [](nb::object /* self */) {
+            return nb::type::of<TTDigitalTopology>();
             });
-    py_class.def_property_readonly_static("TForegroundAdjacency",
-            [](py::object /* self */) {
-            return py::type::of<TTForegroundAdjacency>();
+    nb_class.def_property_readonly_static("TForegroundAdjacency",
+            [](nb::object /* self */) {
+            return nb::type::of<TTForegroundAdjacency>();
             });
-    py_class.def_property_readonly_static("TBackgroundAdjacency",
-            [](py::object /* self */) {
-            return py::type::of<TTBackgroundAdjacency>();
+    nb_class.def_property_readonly_static("TBackgroundAdjacency",
+            [](nb::object /* self */) {
+            return nb::type::of<TTBackgroundAdjacency>();
             });
 
     // ----------------------- Print / Display --------------------------------
-    py_class.def("__str__", [](const TT & self) {
+    nb_class.def("__str__", [](const TT & self) {
         std::stringstream os;
         self.selfDisplay(os);
         return os.str();
     });
 
-    py_class.def("__repr__", [typestr](const TT & self) {
+    nb_class.def("__repr__", [typestr](const TT & self) {
         std::stringstream os;
         os << typestr;
         os << ": ";
@@ -386,6 +387,6 @@ Return
         return os.str();
     });
 
-    return py_class;
+    return nb_class;
 }
 #endif

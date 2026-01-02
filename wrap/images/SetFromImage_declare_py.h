@@ -27,11 +27,12 @@
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 
 template<typename TImageContainer, typename TDigitalSet, typename TPyClassImageContainer >
-void add_set_from_image( TPyClassImageContainer & py_class) {
-    namespace py = pybind11;
+void add_set_from_image( TPyClassImageContainer & nb_class) {
+    namespace nb = nanobind;
+    using namespace nanobind::literals;
     using TImageValue = typename TImageContainer::Value;
 
-    py_class.def("set_from_image", [](
+    nb_class.def("set_from_image", [](
                 const TImageContainer & self,
                 const TImageValue & min_value,
                 const TImageValue & max_value) {
@@ -56,7 +57,7 @@ max_value: ImageContainer::Value
 Return
 ------
 A DigitalSet with all the values from the image between ]min_value and max_value]
-)", py::arg("min_value"), py::arg("max_value")
+)", nb::arg("min_value"), nb::arg("max_value")
     );
 }
 #endif

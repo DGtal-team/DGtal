@@ -42,15 +42,16 @@ typedef SSIZE_T ssize_t;
 template<typename TOther, typename TSelf>
 void declare_PointVector_arithmetic_operators_between_types(nanobind::class_<TSelf> & in_py_class)
 {
-    namespace py = pybind11;
-    in_py_class.def(py::self + TOther());
-    in_py_class.def(py::self - TOther());
-    in_py_class.def(py::self * TOther());
-    in_py_class.def(py::self / TOther());
-    in_py_class.def(TOther() + py::self);
-    in_py_class.def(TOther() - py::self);
-    in_py_class.def(TOther() * py::self);
-    in_py_class.def(TOther() / py::self);
+    namespace nb = nanobind;
+    using namespace nanobind::literals;
+    in_py_class.def(nb::self + TOther());
+    in_py_class.def(nb::self - TOther());
+    in_py_class.def(nb::self * TOther());
+    in_py_class.def(nb::self / TOther());
+    in_py_class.def(TOther() + nb::self);
+    in_py_class.def(TOther() - nb::self);
+    in_py_class.def(TOther() * nb::self);
+    in_py_class.def(TOther() / nb::self);
 }
 
 /**
@@ -59,20 +60,21 @@ void declare_PointVector_arithmetic_operators_between_types(nanobind::class_<TSe
 template<typename TOther, typename TSelf>
 void declare_PointVector_arithmetic_in_place_operators_between_types(nanobind::class_<TSelf> & in_py_class)
 {
-    namespace py = pybind11;
-    // in_py_class.def(py::self += TOther());
+    namespace nb = nanobind;
+    using namespace nanobind::literals;
+    // in_py_class.def(nb::self += TOther());
     in_py_class.def("__iadd__", [](TSelf & self, const TOther & other) {
             return self.operator+=(other);
             });
-    // in_py_class.def(py::self -= TOther());
+    // in_py_class.def(nb::self -= TOther());
     in_py_class.def("__isub__", [](TSelf & self, const TOther & other) {
             return self.operator-=(other);
             });
-    // in_py_class.def(py::self *= TOther());
+    // in_py_class.def(nb::self *= TOther());
     in_py_class.def("__imul__", [](TSelf & self, const TOther & other) {
             return self.operator*=(other);
             });
-    // in_py_class.def(py::self /= TOther());
+    // in_py_class.def(nb::self /= TOther());
     in_py_class.def("__itruediv__", [](TSelf & self, const TOther & other) {
             return self.operator/=(other);
             });
@@ -84,14 +86,15 @@ void declare_PointVector_arithmetic_in_place_operators_between_types(nanobind::c
 template<typename TOther, typename TSelf>
 void declare_PointVector_comparison_operators_between_types(nanobind::class_<TSelf> & in_py_class)
 {
-    namespace py = pybind11;
+    namespace nb = nanobind;
+    using namespace nanobind::literals;
     // Comparisons
-    in_py_class.def(py::self == TOther());
-    in_py_class.def(py::self != TOther());
-    in_py_class.def(py::self < TOther());
-    in_py_class.def(py::self > TOther());
-    in_py_class.def(py::self <= TOther());
-    in_py_class.def(py::self >= TOther());
+    in_py_class.def(nb::self == TOther());
+    in_py_class.def(nb::self != TOther());
+    in_py_class.def(nb::self < TOther());
+    in_py_class.def(nb::self > TOther());
+    in_py_class.def(nb::self <= TOther());
+    in_py_class.def(nb::self >= TOther());
 }
 
 /**
@@ -254,9 +257,10 @@ void declare_PointVector_all_mixings(nanobind::class_<TSelf> & in_py_class)
 }
 
 template<typename TPointVector>
-nanobind::class_<TPointVector> declare_PointVector(nanobind::module &m,
+nanobind::class_<TPointVector> declare_PointVector(nanobind::module_ &m,
         const std::string &typestr, const std::string &component_str) {
-    namespace py = pybind11;
+    namespace nb = nanobind;
+    using namespace nanobind::literals;
     using TT = TPointVector;
     using TTComponent = typename TT::Component;
 
@@ -286,81 +290,66 @@ Example of usage:
     import numpy as np
     np_array = np.array(point1, copy = False)
 )";
-    auto py_class = py::class_<TT>(m, typestr.c_str(), py::buffer_protocol(), docs.c_str());
+    auto nb_class = nb::class_<TT>(m, typestr.c_str(), docs.c_str());
 
-    py_class.def_property_readonly_static("dtype",
-            [&component_str](py::object /* self */) {
+    nb_class.def_property_readonly_static("dtype",
+            [&component_str](nb::object /* self */) {
             return component_str;
             });
     // ----------------------- Constructors -----------------------------------
-    py_class.def(py::init());
-    py_class.def(py::init<const TT &>());
+    nb_class.def(nb::init());
+    nb_class.def(nb::init<const TT &>());
     if(TT::dimension == 2) {
-        py_class.def(py::init<const TTComponent &,
+        nb_class.def(nb::init<const TTComponent &,
                 const TTComponent &>());
     } else if(TT::dimension == 3)  {
-        py_class.def(py::init<const TTComponent &,
+        nb_class.def(nb::init<const TTComponent &,
                 const TTComponent &,
                 const TTComponent &>());
     } else if(TT::dimension == 4)  {
-        py_class.def(py::init<const TTComponent &,
+        nb_class.def(nb::init<const TTComponent &,
                 const TTComponent &,
                 const TTComponent &,
                 const TTComponent &>());
     }
     // ----------------------- Bridges ----------------------------------------
-    // Python buffers (requires py::buffer_protocol in py_class instantiation)
+    // Python buffers (requires nb::buffer_protocol in nb_class instantiation)
     // Allows: numpy.array(an_instance, copy = False)
-    py_class.def_buffer([](TT &self) -> py::buffer_info {
-        return py::buffer_info(
+    nb_class.def_buffer([](TT &self) -> nb::buffer_info {
+        return nb::buffer_info(
             self.data(),                                  /* Pointer to buffer */
             static_cast<ssize_t>(sizeof(TTComponent)),    /* Size of one scalar */
-            py::format_descriptor<TTComponent>::format(), /* Python struct-style format descriptor */
+            nb::format_descriptor<TTComponent>::format(), /* Python struct-style format descriptor */
             1,                                            /* Number of dimensions */
             { TT::dimension },                            /* Shape, buffer dimensions */
             { static_cast<ssize_t>(sizeof(TTComponent)) } /* Strides (in bytes) for each index */
             );
         });
 
-    // Note(phcerdan): A constructor from a py::buffer would be most helpful
+    // Note(phcerdan): A constructor from a nb::buffer would be most helpful
     // in a factory/helper function, which will return the appropiate PointVector type
     // i.e PointVector(np.array([2., 3.1, 4.])) will return a RealPoint3D
-    py_class.def(py::init([](py::buffer buf) {
-        /* Note(phcerdan): Adapted from numpy/stl_bind.h vector_buffer */
-        /* Request a buffer descriptor from Python */
-        auto info = buf.request();
-
-        /* Sanity checks */
-        if (info.ndim != 1 || info.strides[0] % static_cast<ssize_t>(sizeof(TTComponent)))
-            throw py::type_error("Only valid 1D buffers can be copied to a PointVector");
-        if (!py::detail::compare_buffer_info<TTComponent>::compare(info) || (ssize_t) sizeof(TTComponent) != info.itemsize)
-            throw py::type_error("Format mismatch (Python: " + info.format + " C++: " + py::format_descriptor<TTComponent>::format() + ")");
-
-        if(info.shape[0] != TT::dimension)
-            throw py::type_error("Shape missmatch (Python: " + std::to_string(info.shape[0]) + " C++: " + std::to_string(TT::dimension) + ")");
-
-        TTComponent *p = static_cast<TTComponent*>(info.ptr);
-        return TT(p);
-        }));
+    /* Buffer init constructor not yet implemented
+    nb_class.def(nb::init(...)); */
 
     // ----------------------- Python operators -------------------------------
-    py_class.def_static("__len__", &TT::size);
-    py_class.def("__getitem__", [](const TT & self, const DGtal::Dimension index) {
-        if (index >= self.size()) throw py::index_error();
+    nb_class.def_static("__len__", &TT::size);
+    nb_class.def("__getitem__", [](const TT & self, const DGtal::Dimension index) {
+        if (index >= self.size()) throw nb::index_error();
         return self[index];
         });
-    py_class.def("__setitem__", [](TT & self, const DGtal::Dimension index,
+    nb_class.def("__setitem__", [](TT & self, const DGtal::Dimension index,
                 const TTComponent value) {
-        if (index >= self.size()) throw py::index_error();
+        if (index >= self.size()) throw nb::index_error();
         self[index] = value;
         });
 
-    py_class.def("__iter__", [](const TT & self) {
-        return py::make_iterator(self.begin(), self.end()); },
-        py::keep_alive<0, 1>() /* keep object alive while iterator exists */);
+    nb_class.def("__iter__", [](const TT & self) {
+        return nb::make_iterator(self.begin(), self.end()); },
+        nb::keep_alive<0, 1>() /* keep object alive while iterator exists */);
 
     // ----------------------- Pickling ---------------------------------------
-    py_class.def(py::pickle(
+    nb_class.def(nb::pickle(
             [](const TT & self) { // __getstate__
             /* Return a tuple that fully encodes the state of the object */
             using TArray = std::array<TTComponent, TT::dimension >;
@@ -368,9 +357,9 @@ Example of usage:
             for(DGtal::Dimension i = 0; i < TT::dimension; ++i){
                 values[i] = self[i];
             }
-            return py::make_tuple(values);
+            return nb::make_tuple(values);
             },
-            [](py::tuple t) { //__setstate__
+            [](nb::tuple t) { //__setstate__
             if(t.size() != 1) {
                 throw std::runtime_error("Invalid state!");
             }
@@ -382,56 +371,56 @@ Example of usage:
 
     // ----------------------- Class operators --------------------------------
     // Negation
-    py_class.def(-py::self);
+    nb_class.def(-nb::self);
     // Operators with its own type and its own Component.
     // These functions can be used to add operators between different types.
-    declare_PointVector_arithmetic_operators_between_types<TT>(py_class);
-    declare_PointVector_arithmetic_in_place_operators_between_types<TT>(py_class);
-    declare_PointVector_comparison_operators_between_types<TT>(py_class);
+    declare_PointVector_arithmetic_operators_between_types<TT>(nb_class);
+    declare_PointVector_arithmetic_in_place_operators_between_types<TT>(nb_class);
+    declare_PointVector_comparison_operators_between_types<TT>(nb_class);
 
-    declare_PointVector_arithmetic_operators_between_types<TTComponent>(py_class);
-    declare_PointVector_arithmetic_in_place_operators_between_types<TTComponent>(py_class);
+    declare_PointVector_arithmetic_operators_between_types<TTComponent>(nb_class);
+    declare_PointVector_arithmetic_in_place_operators_between_types<TTComponent>(nb_class);
 
 
     // ----------------------- Class functions --------------------------------
     // Also use declare_PointVector_member_functions_between_types
 
-    py_class.def("max", &TT::max,
+    nb_class.def("max", &TT::max,
             R"(Returns the maximum component value of a point/vector.)");
 
-    py_class.def("min", &TT::min,
+    nb_class.def("min", &TT::min,
             R"(Returns the minimum component value of a point/vector.)");
 
-    py_class.def("negate", &TT::negate, R"(Negate this vector (in-place).)");
+    nb_class.def("negate", &TT::negate, R"(Negate this vector (in-place).)");
 
-    py_class.def("norm", [](const TT& self) {
+    nb_class.def("norm", [](const TT& self) {
             return self.norm();
             },
             R"(Computes the norm of a point/vector. Using the default L_2 norm. Use norm1, or normInfinity for different norms types.)");
 
-    py_class.def("squaredNorm", &TT::squaredNorm,
+    nb_class.def("squaredNorm", &TT::squaredNorm,
             R"(Computes the squared norm of a vector as a double.)");
 
-    py_class.def("norm1", &TT::norm1,
+    nb_class.def("norm1", &TT::norm1,
             R"(Computes the 1-norm of a vector. The absolute sum of the components.)");
 
-    py_class.def("normInfinity", &TT::normInfinity,
+    nb_class.def("normInfinity", &TT::normInfinity,
             R"(Computes the infinity-norm of a vector. The maximum absolute value of the components.)");
-    py_class.def("getNormalized", &TT::getNormalized,
+    nb_class.def("getNormalized", &TT::getNormalized,
             R"(Compute the normalization of the vector.
 Returns a unitary vector with double as coordinate type.)");
 
-    py_class.def("reset", &TT::reset,
+    nb_class.def("reset", &TT::reset,
             R"(Resets all the values to zero.)");
 
-    py_class.def("clear", &TT::clear,
+    nb_class.def("clear", &TT::clear,
             R"(Resets all the values to zero.)");
 
-    py_class.def_static("diagonal", &TT::diagonal,
+    nb_class.def_static("diagonal", &TT::diagonal,
             R"(Returns the diagonal vector with the input value.
 i.e. (val, val, ..., val))");
 
-    py_class.def_static("base", &TT::base,
+    nb_class.def_static("base", &TT::base,
             R"(Returns the k-th base vector with the input value.
 i.e. Example: the 1-th base vector in 3D: (0, val, 0).
 
@@ -444,15 +433,15 @@ val: Component [Default = 1]
 )");
 
     // ----------------------- Class data -------------------------------------
-    py_class.def_readonly_static("zero", &TT::zero,
+    nb_class.def_readonly_static("zero", &TT::zero,
             R"(The zero PointVector.)");
-    py_class.def_property_readonly_static("dimension",
-            [](py::object /* self */) { return TT::dimension; },
+    nb_class.def_property_readonly_static("dimension",
+            [](nb::object /* self */) { return TT::dimension; },
             R"(The dimension of the PointVector.)");
 
     // ----------------------- Print / Display --------------------------------
     // __str__ is for human readable, pretty-print
-    py_class.def("__str__", [](const TT& self) {
+    nb_class.def("__str__", [](const TT& self) {
             std::stringstream os;
             os << "{";
             for (DGtal::Dimension i = 0; i < TT::dimension ; ++i)
@@ -461,7 +450,7 @@ val: Component [Default = 1]
             return os.str();
             });
     // __repr__ is for reproducibility, shows signature of constructor.
-    py_class.def("__repr__", [typestr](const TT& self) {
+    nb_class.def("__repr__", [typestr](const TT& self) {
             std::stringstream os;
             os << typestr << "(";
             for (DGtal::Dimension i = 0; i < TT::dimension ; ++i)
@@ -470,9 +459,9 @@ val: Component [Default = 1]
             return os.str();
             });
 
-    declare_PointVector_member_functions_between_types<TT>(py_class);
+    declare_PointVector_member_functions_between_types<TT>(nb_class);
 
-    return py_class;
+    return nb_class;
 }
 
 

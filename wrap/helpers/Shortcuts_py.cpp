@@ -25,7 +25,7 @@
  */
 
 #include "dgtal_nanobind_common.h"
-#include "pybind11/numpy.h"
+#include <nanobind/ndarray.h>
 namespace nb = nanobind;
 using namespace nanobind::literals;
 

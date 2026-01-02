@@ -23,12 +23,12 @@
 #endif
 
 #include "dgtal_nanobind_common.h"
-#include <pybind11/numpy.h> // for py::array_t
+#include <nanobind/ndarray.h> // for nb::array_t
 
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "ImageContainerBySTLVector_types_py.h"
 
-// py::type::of<int> fails at compilation time.
+// nb::type::of<int> fails at compilation time.
 // But it works for any wrapped type.
 // The following is a SFINAE workaround to return also a type for
 // pure python types (not wrapped by pybind11).
@@ -43,17 +43,17 @@ using IsNotCPPType = typename std::enable_if<!std::is_base_of<
 
 template<typename TT>
 void def_TValue(
-        nanobind::class_<TT> & py_class,
+        nanobind::class_<TT> & nb_class,
         IsCPPType<typename TT::Value> * = nullptr) {
-    py_class.def_property_readonly_static("TValue",
+    nb_class.def_property_readonly_static("TValue",
             [](nanobind::object /* self */ ) {
             return nanobind::type::of<typename TT::Value>();
             });
 }
 template<typename TT>
-void def_TValue(nanobind::class_<TT> & py_class,
+void def_TValue(nanobind::class_<TT> & nb_class,
         IsNotCPPType<typename TT::Value> * = nullptr) {
-    py_class.def_property_readonly_static("TValue",
+    nb_class.def_property_readonly_static("TValue",
             [](nanobind::object /* self */ ) {
             return nanobind::type::of(
                         nanobind::cast(typename TT::Value())
@@ -67,16 +67,16 @@ template<typename TPoint>
 using Is3D = typename std::enable_if<TPoint::dimension == 3>::type;
 
 template<typename TT>
-void def_toindices(nanobind::class_<TT> & py_class,
+void def_toindices(nanobind::class_<TT> & nb_class,
         Is2D<typename TT::Point> * = nullptr) {
-    py_class.def("toindices", [](const TT &, const typename TT::Point & a_point) {
+    nb_class.def("toindices", [](const TT &, const typename TT::Point & a_point) {
             return nanobind::make_tuple(a_point[1], a_point[0]);
     }, "Return tuple of the i,j,k-coordinates of the input point in the c_style format: (k,j,i)");
 }
 template<typename TT>
-void def_toindices(nanobind::class_<TT> & py_class,
+void def_toindices(nanobind::class_<TT> & nb_class,
         Is3D<typename TT::Point> * = nullptr) {
-    py_class.def("toindices", [](const TT &, const typename TT::Point & a_point) {
+    nb_class.def("toindices", [](const TT &, const typename TT::Point & a_point) {
             return nanobind::make_tuple(a_point[2], a_point[1], a_point[0]);
     }, "Return tuple of the i,j,k-coordinates of the input point in the c_style format: (k,j,i)");
 }
@@ -86,7 +86,8 @@ template<typename TT>
 TT constructor_from_buffer(nanobind::buffer buf,
         typename TT::Point lower_bound_ijk = TT::Point::zero,
         const std::string & order = "C") {
-    namespace py = pybind11;
+    namespace nb = nanobind;
+    using namespace nanobind::literals;
     using TTPoint = typename TT::Point;
     using TTValue = typename TT::Value;
     using TTDomain = typename TT::Domain;
@@ -98,31 +99,31 @@ TT constructor_from_buffer(nanobind::buffer buf,
 
     /* Sanity checks */
     if(order != "C" && order != "F") {
-        throw py::type_error("The provided order [" + order + "] is invalid. "
+        throw nb::type_error("The provided order [" + order + "] is invalid. "
                 "Valid options are: 'C' or 'F'.");
     }
     if (info.ndim != TTPoint::dimension) {
-        throw py::type_error("The dimension of the input buffer (" +
+        throw nb::type_error("The dimension of the input buffer (" +
                 std::to_string(info.ndim) +
                 ") is invalid for the dimension of this type (" +
                 std::to_string(TTPoint::dimension) + ").");
     }
     if(valuesize != info.itemsize) {
-        throw py::type_error("Data types have different size. Python: " +
+        throw nb::type_error("Data types have different size. Python: " +
                 std::to_string(info.itemsize) +
                 ", C++: " + std::to_string(valuesize) + ".");
     }
     if (info.strides[0] % valuesize ) {
-        throw py::type_error("The strides of the input buffer (" +
+        throw nb::type_error("The strides of the input buffer (" +
                 std::to_string(info.strides[0]) +
                 ") are not multiple of the expected value size (" +
                 std::to_string(valuesize) + "). "
                 "Maybe the data types or the order (F or C) are incompatible "
                 "for this conversion.");
     }
-    if (!py::detail::compare_buffer_info<TTValue>::compare(info)) {
-        throw py::type_error("Format mismatch (Python: " + info.format +
-                " C++: " + py::format_descriptor<TTValue>::format() + ")");
+    if (!nb::detail::compare_buffer_info<TTValue>::compare(info)) {
+        throw nb::type_error("Format mismatch (Python: " + info.format +
+                " C++: " + nb::format_descriptor<TTValue>::format() + ")");
     }
 
     TTPoint upper_bound_ijk = lower_bound_ijk;
@@ -149,29 +150,30 @@ TT constructor_from_buffer(nanobind::buffer buf,
 
 template<typename TT>
 void def_buffer_bridge(
-        nanobind::class_<TT> & py_class) {
-    namespace py = pybind11;
+        nanobind::class_<TT> & nb_class) {
+    namespace nb = nanobind;
+    using namespace nanobind::literals;
     using TTPoint = typename TT::Point;
     using TTValue = typename TT::Value;
     // ----------------------- Bridges ----------------------------------------
-    // Python buffers (requires py::buffer_protocol in py_class instantiation)
+    // Python buffers (requires nb::buffer_protocol in nb_class instantiation)
     /* Implements interface with the buffer protocol.
      * For example: `numpy.array(an_instance, copy=False
      * Note that the order of the linear array on the image container is F_contiguous
      * (column major) (i, j, k ) in C++, but we return a C_contiguous (row major) buffer,
      * (k, j, i) to ease up the interface with other python packages (which by default work with C order)
      */
-    py_class.def_buffer([](TT &self) -> py::buffer_info {
+    nb_class.def_buffer([](TT &self) -> nb::buffer_info {
         const auto dextent = self.extent();
         // Note that shape would be the reverse of dextent for c_contiguous (row-major)
         // But the container works in f_contiguous (column major) when using the Point accessor.
         const std::vector<ssize_t> shape(dextent.rbegin(), dextent.rend());
         const auto valuesize = static_cast<ssize_t>(sizeof(TTValue));
         // DGtal::Linearizer is column major by default
-        return py::buffer_info(
+        return nb::buffer_info(
             self.data(),                                  /* Pointer to buffer */
             valuesize,                                    /* Size of one scalar */
-            py::format_descriptor<TTValue>::format(),     /* Python struct-style format descriptor */
+            nb::format_descriptor<TTValue>::format(),     /* Python struct-style format descriptor */
             TTPoint::dimension,                           /* Number of dimensions */
             shape,                                        /* Shape, buffer dimensions */
             // c_strides == row major. --->, --->
@@ -181,7 +183,7 @@ void def_buffer_bridge(
         });
 
     // Allows: ImageContainer(np_array, lower_bound=Point(0,0,0), order='F')
-    py_class.def(py::init([](py::buffer buf,
+    nb_class.def(nb::init([](nb::buffer buf,
                     const TTPoint & lower_bound_ijk,
                     const std::string &order) {
             return constructor_from_buffer<TT>(buf, lower_bound_ijk, order);
@@ -197,9 +199,9 @@ order: F or C (Optional)
     Order of the input buffer.
     F, i.e F_contiguous (column major)
     C is C_contiguous (row major).
-)", py::arg("buffer"), py::arg("lower_bound_ijk") = TTPoint::zero, py::arg("order"));
+)", nb::arg("buffer"), nb::arg("lower_bound_ijk") = TTPoint::zero, nb::arg("order"));
 
-    py_class.def(py::init([](py::array_t<TTValue, py::array::c_style> np_array,
+    nb_class.def(nb::init([](nb::array_t<TTValue, nb::array::c_style> np_array,
                     const TTPoint &lower_bound_ijk) {
         return constructor_from_buffer<TT>(np_array, lower_bound_ijk, "C");
     }),
@@ -211,9 +213,9 @@ buffer: python buffer
     The buffer must be F_contiguous (column major).
 lower_bound: Point (Optional)
     Defaults to TPoint.zero of this ImageContainer.
-)", py::arg("array"), py::arg("lower_bound_ijk") = TTPoint::zero);
+)", nb::arg("array"), nb::arg("lower_bound_ijk") = TTPoint::zero);
 
-    py_class.def(py::init([](py::array_t<TTValue, py::array::f_style> np_array,
+    nb_class.def(nb::init([](nb::array_t<TTValue, nb::array::f_style> np_array,
                     const TTPoint &lower_bound_ijk) {
         return constructor_from_buffer<TT>(np_array, lower_bound_ijk, "F");
     }),
@@ -225,14 +227,15 @@ buffer: python buffer
     The buffer must be F_contiguous (column major).
 lower_bound: Point (Optional)
     Defaults to TPoint.zero of this ImageContainer.
-)", py::arg("array"), py::arg("lower_bound_ijk") = TTPoint::zero);
+)", nb::arg("array"), nb::arg("lower_bound_ijk") = TTPoint::zero);
 
 }
 
 template<typename TImageContainerBySTLVector>
-nanobind::class_<TImageContainerBySTLVector> declare_ImageContainerBySTLVector(nanobind::module &m,
+nanobind::class_<TImageContainerBySTLVector> declare_ImageContainerBySTLVector(nanobind::module_ &m,
     const std::string &typestr) {
-    namespace py = pybind11;
+    namespace nb = nanobind;
+    using namespace nanobind::literals;
     using TT = TImageContainerBySTLVector;
     const std::string docs =
 R"(Model of CImage implementing the association Point<->Value using a STL vector as container.
@@ -255,7 +258,7 @@ Example of usage:
     print(img[point1])
 )";
 
-    auto py_class = py::class_<TT>(m, typestr.c_str(), py::buffer_protocol(), docs.c_str());
+    auto nb_class = nb::class_<TT>(m, typestr.c_str(), docs.c_str());
 
     using TTPoint = typename TT::Point;
     using TTValue = typename TT::Value;
@@ -264,21 +267,21 @@ Example of usage:
     using T = typename Vector::value_type;
     using DiffType = typename Vector::difference_type;
     using SizeType = typename Vector::size_type;
-    using Class_ = py::class_<TT>;
-    auto & cl = py_class;
+    using Class_ = nb::class_<TT>;
+    auto & cl = nb_class;
 
     auto wrap_i = [](DiffType i, SizeType n) {
         if (i < 0)
             i += n;
         if (i < 0 || (SizeType)i >= n)
-            throw py::index_error();
+            throw nb::index_error();
         return i;
     };
 
     // ----------- Start std::vector binding ------------/
 
     // Register copy constructor (if possible)
-    py::detail::vector_if_copy_constructible<Vector, Class_>(cl);
+    nb::detail::vector_if_copy_constructible<Vector, Class_>(cl);
     cl.def("__setitem__",
         [wrap_i](Vector &v, DiffType i, const T &t) {
             i = wrap_i(i, v.size());
@@ -287,7 +290,7 @@ Example of usage:
         "Set item using linear index");
 
     // Accessor and iterator; return by value if copyable, otherwise we return by ref + keep-alive
-    py::detail::vector_accessor<Vector, Class_>(cl);
+    nb::detail::vector_accessor<Vector, Class_>(cl);
 
     cl.def("__bool__",
         [](const Vector &v) -> bool {
@@ -301,28 +304,28 @@ Example of usage:
     // ----------- End std::vector binding ------------/
 
     // ----------------------- Constructors -----------------------------------
-    py_class.def(py::init<const TTDomain &>(),
+    nb_class.def(nb::init<const TTDomain &>(),
 R"(Constructor from a domain.
 Parameters
 ----------
 domain: dgtal.Domain
     Input domain
-)", py::arg("domain"));
+)", nb::arg("domain"));
 
     // ----------------------- Python operators -------------------------------
     // Accessors with points
-    py_class.def("__getitem__",
+    nb_class.def("__getitem__",
             [](const TT &self, const TTPoint &point) {
             return self.operator()(point);
             }, "Via Point.");
-    py_class.def("__setitem__",
+    nb_class.def("__setitem__",
             [](TT &self, const TTPoint &point, const TTValue & value) {
             self.setValue(point, value);
             }, "Via Point.");
-    py_class.def("__getitem__",
-            [](const TT &self, const py::tuple &tup) {
+    nb_class.def("__getitem__",
+            [](const TT &self, const nb::tuple &tup) {
             if(tup.size() != TTPoint::dimension) {
-                throw py::type_error("The provided tuple has the wrong dimension [" +
+                throw nb::type_error("The provided tuple has the wrong dimension [" +
                         std::to_string(tup.size()) + "]. "
                     "It should be " + std::to_string(TTPoint::dimension) + ".");
             }
@@ -334,10 +337,10 @@ domain: dgtal.Domain
             },
 R"(Via a tuple of integers of the right dimension. Index style [i,j,k] (column-major, F_style.)");
 
-    py_class.def("__setitem__",
-            [](TT &self, const py::tuple &tup, const TTValue & value) {
+    nb_class.def("__setitem__",
+            [](TT &self, const nb::tuple &tup, const TTValue & value) {
             if(tup.size() != TTPoint::dimension) {
-                throw py::type_error("The provided tuple has the wrong dimension [" +
+                throw nb::type_error("The provided tuple has the wrong dimension [" +
                         std::to_string(tup.size()) + "]. "
                     "It should be " + std::to_string(TTPoint::dimension) + ".");
             }
@@ -349,21 +352,21 @@ R"(Via a tuple of integers of the right dimension. Index style [i,j,k] (column-m
             },
 R"(Via a tuple of integers of the right dimension. Index style [i,j,k] (column-major, F_style.)");
 
-    def_toindices<TT>(py_class);
+    def_toindices<TT>(nb_class);
 
     // ----------------------- Class operators --------------------------------
 
     // ----------------------- Class functions --------------------------------
-    py_class.def("translateDomain", &TT::translateDomain,
+    nb_class.def("translateDomain", &TT::translateDomain,
 R"(Translate the underlying domain by a [shift]."
 Parameters
 ----------
 shift: Point
     Any point to shift the domain
-)", py::arg("shift"));
+)", nb::arg("shift"));
 
-    py_class.def("setValue",
-            py::detail::overload_cast_impl<const TTPoint&, const TTValue&>()(&TT::setValue),
+    nb_class.def("setValue",
+            nb::detail::overload_cast_impl<const TTPoint&, const TTValue&>()(&TT::setValue),
 R"(Set a value on an Image at a position specified by [point].
 Pre: The point must be in the image domain.
 
@@ -375,9 +378,9 @@ point: Point
     Any point inside the domain.
 value: ImageContainer::Value
     Any value of the corresponding type of the container.
-)", py::arg("point"), py::arg("value"));
+)", nb::arg("point"), nb::arg("value"));
 
-    py_class.def("getValue",
+    nb_class.def("getValue",
             [](const TT& self, const TTPoint & point) {
             self.operator()(point);
             },
@@ -390,7 +393,7 @@ Parameters
 ----------
 point: Point
     Any point inside the domain.
-)", py::arg("point"));
+)", nb::arg("point"));
 
     // --- Slicing with subdomains ----
 
@@ -401,29 +404,29 @@ point: Point
 
     // ----------------------- Class data -------------------------------------
 
-    py_class.def_property_readonly("domain", &TT::domain,
+    nb_class.def_property_readonly("domain", &TT::domain,
             "Returns the domain of the container.");
-    py_class.def_property_readonly("extent", &TT::extent,
+    nb_class.def_property_readonly("extent", &TT::extent,
             "Returns the extent of the domain.");
 
-    py_class.def_property_readonly_static("TPoint",
-            [](py::object /* self */) {
-            return py::type::of<TTPoint>();
+    nb_class.def_property_readonly_static("TPoint",
+            [](nb::object /* self */) {
+            return nb::type::of<TTPoint>();
             });
-    py_class.def_property_readonly_static("TDomain",
-            [](py::object /* self */) {
-            return py::type::of<TTDomain>();
+    nb_class.def_property_readonly_static("TDomain",
+            [](nb::object /* self */) {
+            return nb::type::of<TTDomain>();
             });
-    def_TValue<TT>(py_class);
+    def_TValue<TT>(nb_class);
 
     // ----------------------- Print / Display --------------------------------
-    py_class.def("__str__", [](const TT & self) {
+    nb_class.def("__str__", [](const TT & self) {
         std::stringstream os;
         self.selfDisplay(os);
         return os.str();
     });
 
-    py_class.def("__repr__", [typestr](const TT & self) {
+    nb_class.def("__repr__", [typestr](const TT & self) {
         std::stringstream os;
         os << typestr;
         os << ": ";
@@ -431,14 +434,15 @@ point: Point
         return os.str();
         });
 
-    return py_class;
+    return nb_class;
 }
 
 template<typename TT, typename TTComponent>
 TT constructor_from_buffer_point_container(nanobind::buffer buf,
         typename TT::Point lower_bound_ijk = TT::Point::zero,
         const std::string & order = "C") {
-    namespace py = pybind11;
+    namespace nb = nanobind;
+    using namespace nanobind::literals;
     using TTPoint = typename TT::Point;
     using TTContainer = typename TT::Value;
     using TTDomain = typename TT::Domain;
@@ -451,34 +455,34 @@ TT constructor_from_buffer_point_container(nanobind::buffer buf,
 
     /* Sanity checks */
     if(order != "C" && order != "F") {
-        throw py::type_error("The provided order [" + order + "] is invalid. "
+        throw nb::type_error("The provided order [" + order + "] is invalid. "
                 "Valid options are: 'C' or 'F'.");
     }
     if (info.ndim != TTPoint::dimension + 1) {
-        throw py::type_error("The dimension of the input buffer (" +
+        throw nb::type_error("The dimension of the input buffer (" +
                 std::to_string(info.ndim) +
                 ") is invalid for the dimension of this type (" +
                 std::to_string(TTPoint::dimension + 1) + ").");
     }
     if (info.shape[TTPoint::dimension] != container_dimension) {
-        throw py::type_error("The shape of the last index should be " + std::to_string(container_dimension) + ".");
+        throw nb::type_error("The shape of the last index should be " + std::to_string(container_dimension) + ".");
     }
     if(componentsize != info.itemsize) {
-        throw py::type_error("Data types have different size. Python: " +
+        throw nb::type_error("Data types have different size. Python: " +
                 std::to_string(info.itemsize) +
                 ", C++: " + std::to_string(componentsize) + ".");
     }
     if (info.strides[0] % componentsize ) {
-        throw py::type_error("The strides of the input buffer (" +
+        throw nb::type_error("The strides of the input buffer (" +
                 std::to_string(info.strides[0]) +
                 ") are not multiple of the expected value size (" +
                 std::to_string(componentsize) + "). "
                 "Maybe the data types or the order (F or C) are incompatible "
                 "for this conversion.");
     }
-    if (!py::detail::compare_buffer_info<TTComponent>::compare(info)) {
-        throw py::type_error("Format mismatch (Python: " + info.format +
-                " C++: " + py::format_descriptor<TTComponent>::format() + ")");
+    if (!nb::detail::compare_buffer_info<TTComponent>::compare(info)) {
+        throw nb::type_error("Format mismatch (Python: " + info.format +
+                " C++: " + nb::format_descriptor<TTComponent>::format() + ")");
     }
 
     TTPoint upper_bound_ijk = lower_bound_ijk;
@@ -524,20 +528,21 @@ TT constructor_from_buffer_point_container(nanobind::buffer buf,
 
 template<typename TT, typename TTComponent>
 void def_buffer_bridge_for_PointVector(
-        nanobind::class_<TT> & py_class) {
-    namespace py = pybind11;
+        nanobind::class_<TT> & nb_class) {
+    namespace nb = nanobind;
+    using namespace nanobind::literals;
     using TTPoint = typename TT::Point;
     using TTContainer = typename TT::Value;
 
     // ----------------------- Bridges ----------------------------------------
-    // Python buffers (requires py::buffer_protocol in py_class instantiation)
+    // Python buffers (requires nb::buffer_protocol in nb_class instantiation)
     /* Implements interface with the buffer protocol.
      * For example: `numpy.array(an_instance, copy=False
      * Note that the order of the linear array on the image container is F_contiguous
      * (column major) (i, j, k ) in C++, but we return a C_contiguous (row major) buffer,
      * (k, j, i) to ease up the interface with other python packages (which by default work with C order)
      */
-    py_class.def_buffer([](TT &self) -> py::buffer_info {
+    nb_class.def_buffer([](TT &self) -> nb::buffer_info {
         const auto containersize = static_cast<ssize_t>(sizeof(TTContainer));
         const auto componentsize = static_cast<ssize_t>(sizeof(TTComponent));
         assert( /* The container should be simple enough for memory to be continuous */
@@ -554,10 +559,10 @@ void def_buffer_bridge_for_PointVector(
         // The variation in the this dimension is the size of the elements of Point
         c_strides.push_back(componentsize);
         const auto ndimensions = TTPoint::dimension + 1;
-        return py::buffer_info(
+        return nb::buffer_info(
             self.data(),                                  /* Pointer to buffer */
             componentsize,                                /* Size of one scalar */
-            py::format_descriptor<TTComponent>::format(), /* Python struct-style format descriptor of the component */
+            nb::format_descriptor<TTComponent>::format(), /* Python struct-style format descriptor of the component */
             ndimensions,                                  /* Number of dimensions */
             shape,                                        /* Shape, buffer dimensions */
             c_strides                                     /* Strides (in bytes) for each index */
@@ -565,7 +570,7 @@ void def_buffer_bridge_for_PointVector(
         });
 
     // Allows: ImageContainer(np_array, lower_bound=Point(0,0,0), order='F')
-    py_class.def(py::init([](py::buffer buf,
+    nb_class.def(nb::init([](nb::buffer buf,
                     const TTPoint & lower_bound_ijk,
                     const std::string &order) {
         return constructor_from_buffer_point_container<TT, TTComponent>(buf, lower_bound_ijk, order);
@@ -582,9 +587,9 @@ order: F or C (Optional)
     Order of the input buffer.
     F, i.e F_contiguous (column major)
     C is C_contiguous (row major).
-)", py::arg("buffer"), py::arg("lower_bound_ijk") = TTPoint::zero, py::arg("order"));
+)", nb::arg("buffer"), nb::arg("lower_bound_ijk") = TTPoint::zero, nb::arg("order"));
 
-    py_class.def(py::init([](py::array_t<TTComponent, py::array::c_style> np_array,
+    nb_class.def(nb::init([](nb::array_t<TTComponent, nb::array::c_style> np_array,
                     const TTPoint &lower_bound_ijk) {
         return constructor_from_buffer_point_container<TT, TTComponent>(np_array, lower_bound_ijk, "C");
     }),
@@ -596,9 +601,9 @@ buffer: python buffer
     The buffer must be F_contiguous (column major).
 lower_bound: Point (Optional)
     Defaults to TPoint.zero of this ImageContainer.
-)", py::arg("array"), py::arg("lower_bound_ijk") = TTPoint::zero);
+)", nb::arg("array"), nb::arg("lower_bound_ijk") = TTPoint::zero);
 
-    py_class.def(py::init([](py::array_t<TTComponent, py::array::f_style> np_array,
+    nb_class.def(nb::init([](nb::array_t<TTComponent, nb::array::f_style> np_array,
                     const TTPoint &lower_bound_ijk) {
         return constructor_from_buffer_point_container<TT, TTComponent>(np_array, lower_bound_ijk, "F");
     }),
@@ -610,14 +615,15 @@ buffer: python buffer
     The buffer must be F_contiguous (column major).
 lower_bound: Point (Optional)
     Defaults to TPoint.zero of this ImageContainer.
-)", py::arg("array"), py::arg("lower_bound_ijk") = TTPoint::zero);
+)", nb::arg("array"), nb::arg("lower_bound_ijk") = TTPoint::zero);
 }
 
 template<typename TT>
 TT constructor_from_buffer_color_container(nanobind::buffer buf,
         typename TT::Point lower_bound_ijk = TT::Point::zero,
         const std::string & order = "C") {
-    namespace py = pybind11;
+    namespace nb = nanobind;
+    using namespace nanobind::literals;
     using TTPoint = typename TT::Point;
     using TTContainer = typename TT::Value;
     using TTDomain = typename TT::Domain;
@@ -631,34 +637,34 @@ TT constructor_from_buffer_color_container(nanobind::buffer buf,
 
     /* Sanity checks */
     if(order != "C" && order != "F") {
-        throw py::type_error("The provided order [" + order + "] is invalid. "
+        throw nb::type_error("The provided order [" + order + "] is invalid. "
                 "Valid options are: 'C' or 'F'.");
     }
     if (info.ndim != TTPoint::dimension + 1) {
-        throw py::type_error("The dimension of the input buffer (" +
+        throw nb::type_error("The dimension of the input buffer (" +
                 std::to_string(info.ndim) +
                 ") is invalid for the dimension of this type (" +
                 std::to_string(TTPoint::dimension + 1) + ").");
     }
     if (info.shape[TTPoint::dimension] != container_dimension) {
-        throw py::type_error("The shape of the last index should be " + std::to_string(container_dimension) + ".");
+        throw nb::type_error("The shape of the last index should be " + std::to_string(container_dimension) + ".");
     }
     if(componentsize != info.itemsize) {
-        throw py::type_error("Data types have different size. Python: " +
+        throw nb::type_error("Data types have different size. Python: " +
                 std::to_string(info.itemsize) +
                 ", C++: " + std::to_string(componentsize) + ".");
     }
     if (info.strides[0] % componentsize ) {
-        throw py::type_error("The strides of the input buffer (" +
+        throw nb::type_error("The strides of the input buffer (" +
                 std::to_string(info.strides[0]) +
                 ") are not multiple of the expected value size (" +
                 std::to_string(componentsize) + "). "
                 "Maybe the data types or the order (F or C) are incompatible "
                 "for this conversion.");
     }
-    if (!py::detail::compare_buffer_info<TTComponent>::compare(info)) {
-        throw py::type_error("Format mismatch (Python: " + info.format +
-                " C++: " + py::format_descriptor<TTComponent>::format() + ")");
+    if (!nb::detail::compare_buffer_info<TTComponent>::compare(info)) {
+        throw nb::type_error("Format mismatch (Python: " + info.format +
+                " C++: " + nb::format_descriptor<TTComponent>::format() + ")");
     }
 
     TTPoint upper_bound_ijk = lower_bound_ijk;
@@ -689,13 +695,14 @@ TT constructor_from_buffer_color_container(nanobind::buffer buf,
 
 template<typename TT>
 void def_buffer_bridge_for_Color(
-        nanobind::class_<TT> & py_class) {
-    namespace py = pybind11;
+        nanobind::class_<TT> & nb_class) {
+    namespace nb = nanobind;
+    using namespace nanobind::literals;
     using TTPoint = typename TT::Point; // DomainPoint
     using TTContainer = typename TT::Value;
     using TTComponent = unsigned char;
 
-    py_class.def_buffer([](TT &self) -> py::buffer_info {
+    nb_class.def_buffer([](TT &self) -> nb::buffer_info {
         const size_t container_dimension = 4; // r,g,b,a
         const auto containersize = static_cast<ssize_t>(sizeof(TTContainer));
         const auto componentsize = static_cast<ssize_t>(sizeof(TTComponent));
@@ -713,10 +720,10 @@ void def_buffer_bridge_for_Color(
         // The variation in the this dimension is the size of the elements of Point
         c_strides.push_back(componentsize);
         const auto ndimensions = TTPoint::dimension + 1;
-        return py::buffer_info(
+        return nb::buffer_info(
             self.data(),                                  /* Pointer to buffer */
             componentsize,                                /* Size of one scalar */
-            py::format_descriptor<TTComponent>::format(), /* Python struct-style format descriptor of the component */
+            nb::format_descriptor<TTComponent>::format(), /* Python struct-style format descriptor of the component */
             ndimensions,                                  /* Number of dimensions */
             shape,                                        /* Shape, buffer dimensions */
             c_strides                                     /* Strides (in bytes) for each index */
@@ -724,7 +731,7 @@ void def_buffer_bridge_for_Color(
     });
 
     // Allows: ImageContainer(np_array, lower_bound=Point(0,0,0), order='F')
-    py_class.def(py::init([](py::buffer buf,
+    nb_class.def(nb::init([](nb::buffer buf,
                     const TTPoint & lower_bound_ijk,
                     const std::string &order) {
         return constructor_from_buffer_color_container<TT>(buf, lower_bound_ijk, order);
@@ -741,9 +748,9 @@ order: F or C (Optional)
     Order of the input buffer.
     F, i.e F_contiguous (column major)
     C is C_contiguous (row major).
-)", py::arg("buffer"), py::arg("lower_bound_ijk") = TTPoint::zero, py::arg("order"));
+)", nb::arg("buffer"), nb::arg("lower_bound_ijk") = TTPoint::zero, nb::arg("order"));
 
-    py_class.def(py::init([](py::array_t<TTComponent, py::array::c_style> np_array,
+    nb_class.def(nb::init([](nb::array_t<TTComponent, nb::array::c_style> np_array,
                     const TTPoint &lower_bound_ijk) {
         return constructor_from_buffer_color_container<TT>(np_array, lower_bound_ijk, "C");
     }),
@@ -755,9 +762,9 @@ buffer: python buffer
     The buffer must be F_contiguous (column major).
 lower_bound: Point (Optional)
     Defaults to TPoint.zero of this ImageContainer.
-)", py::arg("array"), py::arg("lower_bound_ijk") = TTPoint::zero);
+)", nb::arg("array"), nb::arg("lower_bound_ijk") = TTPoint::zero);
 
-    py_class.def(py::init([](py::array_t<TTComponent, py::array::f_style> np_array,
+    nb_class.def(nb::init([](nb::array_t<TTComponent, nb::array::f_style> np_array,
                     const TTPoint &lower_bound_ijk) {
         return constructor_from_buffer_color_container<TT>(np_array, lower_bound_ijk, "F");
     }),
@@ -769,7 +776,7 @@ buffer: python buffer
     The buffer must be F_contiguous (column major).
 lower_bound: Point (Optional)
     Defaults to TPoint.zero of this ImageContainer.
-)", py::arg("array"), py::arg("lower_bound_ijk") = TTPoint::zero);
+)", nb::arg("array"), nb::arg("lower_bound_ijk") = TTPoint::zero);
 
 }
 #endif

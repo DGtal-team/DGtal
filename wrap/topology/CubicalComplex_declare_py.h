@@ -30,26 +30,28 @@
 #include "kernel/DigitalSetBySTLVector_types_py.h" // For DigitalSetZ3i
 
 template<typename TCellMap>
-nanobind::class_<TCellMap> declare_CellMap(nanobind::module &m,
+nanobind::class_<TCellMap> declare_CellMap(nanobind::module_ &m,
     const std::string &typestr) {
-    namespace py = pybind11;
+    namespace nb = nanobind;
+    using namespace nanobind::literals;
     using TT = TCellMap;
-    auto py_class = py::bind_map<TT>(m, typestr.c_str());
-    py_class.def("__str__", [](const TT & self) {
+    auto nb_class = nb::bind_map<TT>(m, typestr.c_str());
+    nb_class.def("__str__", [](const TT & self) {
         std::stringstream os;
         for (auto it = self.cbegin(); it != self.cend() ; ++it) {
             os << it->first << ": " << it->second.data << std::endl;
         }
         return os.str();
     });
-    return py_class;
+    return nb_class;
 }
 
 
 template<typename TCubicalComplex>
-nanobind::class_<TCubicalComplex> declare_CubicalComplex(nanobind::module &m,
+nanobind::class_<TCubicalComplex> declare_CubicalComplex(nanobind::module_ &m,
     const std::string &typestr) {
-    namespace py = pybind11;
+    namespace nb = nanobind;
+    using namespace nanobind::literals;
     using TT = TCubicalComplex;
     using TTKSpace = typename TT::KSpace;
     using TTCell = typename TT::Cell;
@@ -91,73 +93,73 @@ faces = ccomplex.faces(cell1)
 directFaces = ccomplex.directFaces(cell1)
 isCellInterior = ccomplex.isCellInterior(cell1)
 )";
-    auto py_class = py::class_<TT>(m, typestr.c_str(), docs.c_str());
+    auto nb_class = nb::class_<TT>(m, typestr.c_str(), docs.c_str());
     // ----------------------- Constructors -----------------------------------
-    py_class.def(py::init<const TTKSpace &>());
-    py_class.def(py::init<const TT &>());
+    nb_class.def(nb::init<const TTKSpace &>());
+    nb_class.def(nb::init<const TT &>());
 
-    py_class.def("__copy__", [](const TT &self) {
+    nb_class.def("__copy__", [](const TT &self) {
         return TT(self);
     }, "Equivalent to __deepcopy__.");
-    py_class.def("__deepcopy__", [](const TT &self, py::dict) {
+    nb_class.def("__deepcopy__", [](const TT &self, nb::dict) {
         return TT(self);
-    }, py::arg("memo"));
+    }, nb::arg("memo"));
 
     // ----------------------- Python operators -------------------------------
-    py_class.def("__len__", &TT::size);
-    py_class.def("size", &TT::size);
-    py_class.def("__iter__", [](const TT & self) {
-        return py::make_iterator(self.begin(), self.end()); },
-         py::keep_alive<0, 1>() /* Keep object alive while iterator exists */);
-    // py_class.def("__getitem__", [](const TT & self, const TTCell &cell) {
+    nb_class.def("__len__", &TT::size);
+    nb_class.def("size", &TT::size);
+    nb_class.def("__iter__", [](const TT & self) {
+        return nb::make_iterator(self.begin(), self.end()); },
+         nb::keep_alive<0, 1>() /* Keep object alive while iterator exists */);
+    // nb_class.def("__getitem__", [](const TT & self, const TTCell &cell) {
     //         return self.operator[](cell);
     //     });
 
-    py_class.def("iter", [](const TT & self, DGtal::Dimension dim) {
-        if(dim > TT::dimension) throw py::index_error();
-        return py::make_iterator(self.begin(dim), self.end(dim)); },
-         py::keep_alive<0, 1>() /* Keep object alive while iterator exists */);
+    nb_class.def("iter", [](const TT & self, DGtal::Dimension dim) {
+        if(dim > TT::dimension) throw nb::index_error();
+        return nb::make_iterator(self.begin(dim), self.end(dim)); },
+         nb::keep_alive<0, 1>() /* Keep object alive while iterator exists */);
     // ----------------------- Class operators --------------------------------
 
     // Arithmetic
-    py_class.def(py::self | py::self, "Union");
-    py_class.def(py::self |= py::self, "Union in-place");
-    py_class.def(py::self & py::self, "Intersection");
-    py_class.def(py::self &= py::self, "Intersection in-place");
-    py_class.def(py::self - py::self, "Difference");
-    py_class.def(py::self -= py::self, "Difference in-place");
-    py_class.def(py::self ^ py::self, "Symmetric difference");
-    py_class.def(py::self ^= py::self, "Symmetric difference in-place");
-    py_class.def(~py::self, "Close");
+    nb_class.def(nb::self | nb::self, "Union");
+    nb_class.def(nb::self |= nb::self, "Union in-place");
+    nb_class.def(nb::self & nb::self, "Intersection");
+    nb_class.def(nb::self &= nb::self, "Intersection in-place");
+    nb_class.def(nb::self - nb::self, "Difference");
+    nb_class.def(nb::self -= nb::self, "Difference in-place");
+    nb_class.def(nb::self ^ nb::self, "Symmetric difference");
+    nb_class.def(nb::self ^= nb::self, "Symmetric difference in-place");
+    nb_class.def(~nb::self, "Close");
     // Open not implemented: in python operator * is not unary
-    // py_class.def(*py::self);//, "Open");
+    // nb_class.def(*nb::self);//, "Open");
 
     // Comparisons
-    py_class.def(py::self == py::self);
-    py_class.def(py::self != py::self);
-    py_class.def(py::self <= py::self);
-    py_class.def(py::self >= py::self);
+    nb_class.def(nb::self == nb::self);
+    nb_class.def(nb::self != nb::self);
+    nb_class.def(nb::self <= nb::self);
+    nb_class.def(nb::self >= nb::self);
 
     // ----------------------- Class functions --------------------------------
-    py_class.def("clear", py::detail::overload_cast_impl<>()(&TT::clear),
+    nb_class.def("clear", nb::detail::overload_cast_impl<>()(&TT::clear),
             "Clears the cubical complex, which becomes empty.");
-    py_class.def("clear", py::detail::overload_cast_impl<DGtal::Dimension>()(&TT::clear),
+    nb_class.def("clear", nb::detail::overload_cast_impl<DGtal::Dimension>()(&TT::clear),
 R"(Clears all cell of the input dimension.
 Parameters
 ----------
 dim: Dimension
     Input dimension
-)", py::arg("dim"));
+)", nb::arg("dim"));
 
-    py_class.def("nbCells", &TT::nbCells,
+    nb_class.def("nbCells", &TT::nbCells,
 R"(The number of cells of the input dimension in this complex.
 Parameters
 ----------
 dim: Dimension
     Input dimension
-)", py::arg("dim"));
+)", nb::arg("dim"));
 
-    py_class.def("euler", &TT::euler,
+    nb_class.def("euler", &TT::euler,
 R"(The Euler number of this complex which equals nbCells( 0 ) - nbCells( 1 ) + nbCells( 2 ) - ...
 
 Note: For instance, all Platonician solids have euler number
@@ -165,38 +167,38 @@ equal to one, while their surface have euler number equal to
 two.
 )");
 
-    py_class.def("space", &TT::space,
+    nb_class.def("space", &TT::space,
 R"(Returns a reference to the Khalimsky space associated to this complex.)");
 
-    py_class.def("getCells", py::detail::overload_cast_impl<const DGtal::Dimension>()(&TT::getCells),
+    nb_class.def("getCells", nb::detail::overload_cast_impl<const DGtal::Dimension>()(&TT::getCells),
 R"(The cell container associated to the cells of dimension dim
 Parameters
 ----------
 dim: Dimension
     Input dimension
-)", py::arg("dim"));
+)", nb::arg("dim"));
 
-    py_class.def("count", &TT::count,
+    nb_class.def("count", &TT::count,
 R"(The number of matches for \a cell, which is thus zero (not present) or one (present).
 Parameters
 ----------
 cell: Cell
     Any cell
-)", py::arg("cell"));
-    py_class.def("max_size", &TT::max_size,
+)", nb::arg("cell"));
+    nb_class.def("max_size", &TT::max_size,
 R"(The maximal number of cells in this complex (i.e., the number of cells of the Khalimsky space).
 )");
-    py_class.def("empty", &TT::empty,
+    nb_class.def("empty", &TT::empty,
 R"('True' if and only if the complex does not hold any cell.)");
-    py_class.def("erase", py::detail::overload_cast_impl<const TTCell &>()(&TT::erase),
+    nb_class.def("erase", nb::detail::overload_cast_impl<const TTCell &>()(&TT::erase),
 R"(Erases input cell from the complex (STL version, see eraseCell).
 Parameters
 ----------
 cell: Cell
     Any cell
-)", py::arg("cell"));
+)", nb::arg("cell"));
 
-    py_class.def("insert", [](TT & self, const TTCell & cell) {
+    nb_class.def("insert", [](TT & self, const TTCell & cell) {
             auto insert_pair = self.insert(cell);
             return insert_pair.second;
             },
@@ -211,9 +213,9 @@ Return
     True when the cell was indeed a new element.
     False when the cell already existed in the complex.
 
-)",py::arg("cell"));
+)",nb::arg("cell"));
 
-    py_class.def("insertCell", [](TT & self,
+    nb_class.def("insertCell", [](TT & self,
                 const TTCell & cell, const TTData & data ) {
             self.insertCell(cell, data);
             },
@@ -224,9 +226,9 @@ cell: Cell
     Any cell valid in the Khalimsky space associated to the complex.
 data: CubicalCellData
     Any uint32_t value
-)",py::arg("cell"), py::arg("data") = TTData());
+)",nb::arg("cell"), nb::arg("data") = TTData());
 
-    py_class.def("eraseCell", [](TT & self,
+    nb_class.def("eraseCell", [](TT & self,
                 const TTCell & cell) {
             self.eraseCell(cell);
             },
@@ -238,14 +240,14 @@ cell: Cell
 Return
 ------
     The number of cells effectively removed from the complex.
-)",py::arg("cell"));
+)",nb::arg("cell"));
 
-    py_class.def("find", [](const TT & self, const TTCell & cell) -> py::object {
+    nb_class.def("find", [](const TT & self, const TTCell & cell) -> nb::object {
             typename TT::ConstIterator it = self.find(cell);
             if (it != self.end() ) {
-                return py::cast(*it, py::return_value_policy::reference);
+                return nb::cast(*it, nb::return_value_policy::reference);
             } else {
-                return py::none();
+                return nb::none();
             }
             },
 R"(Find input cell in the complex, returns None if not found, or the cell itself if found.
@@ -256,9 +258,9 @@ cell: Cell
 Return
 ------
 None if not found, or the cell itself.
-)", py::arg("cell"));
+)", nb::arg("cell"));
 
-    py_class.def("belongs", [](TT & self, const TTCell & cell) {
+    nb_class.def("belongs", [](TT & self, const TTCell & cell) {
             return self.belongs(cell);
             },
 R"(Returns True if cell (Cell) belongs to the complex.
@@ -269,8 +271,8 @@ cell: Cell
 Return
 ------
     True if and only if [cell] belongs to this complex.
-)", py::arg("cell"));
-    py_class.def("belongs", [](TT & self, const TTPreCell & cell) {
+)", nb::arg("cell"));
+    nb_class.def("belongs", [](TT & self, const TTPreCell & cell) {
             return self.belongs(cell);
             },
 R"(Returns True if cell (PreCell) belongs to the complex.
@@ -281,9 +283,9 @@ cell: PreCell
 Return
 ------
     True if and only if [cell] belongs to this complex.
-)", py::arg("cell"));
+)", nb::arg("cell"));
 
-    py_class.def("faces", [](TT & self, const TTCell & cell, bool hintClosed) {
+    nb_class.def("faces", [](TT & self, const TTCell & cell, bool hintClosed) {
             typename TT::Cells out;
             std::back_insert_iterator< typename TT::Cells > outIt( out );
             self.faces(outIt, cell, hintClosed);
@@ -302,9 +304,9 @@ hintClosed: Bool [False]
     When 'true', this hint tells that the complex is closed, so this speeds up this method.
     Otherwise, the complex may be arbitrary.
     False by default
-)", py::arg("cell"), py::arg("hintClosed") = false);
+)", nb::arg("cell"), nb::arg("hintClosed") = false);
 
-    py_class.def("directFaces", [](TT & self, const TTCell & cell, bool hintClosed) {
+    nb_class.def("directFaces", [](TT & self, const TTCell & cell, bool hintClosed) {
             typename TT::Cells out;
             std::back_insert_iterator< typename TT::Cells > outIt( out );
             self.directFaces(outIt, cell, hintClosed);
@@ -324,9 +326,9 @@ hintClosed: Bool [False]
     When 'true', this hint tells that the complex is closed, so this speeds up this method.
     Otherwise, the complex may be arbitrary.
     False by default
-)", py::arg("cell"), py::arg("hintClosed") = false);
+)", nb::arg("cell"), nb::arg("hintClosed") = false);
 
-    py_class.def("coFaces", [](TT & self, const TTCell & cell, bool hintOpen) {
+    nb_class.def("coFaces", [](TT & self, const TTCell & cell, bool hintOpen) {
             typename TT::Cells out;
             std::back_insert_iterator< typename TT::Cells > outIt( out );
             self.coFaces(outIt, cell, hintOpen);
@@ -345,9 +347,9 @@ hintOpen: Bool [False]
     When 'true', this hint tells that the complex is open, so this speeds up this method.
     Otherwise, the complex may be arbitrary.
     False by default
-)", py::arg("cell"), py::arg("hintOpen") = false);
+)", nb::arg("cell"), nb::arg("hintOpen") = false);
 
-    py_class.def("directCoFaces", [](TT & self, const TTCell & cell, bool hintOpen) {
+    nb_class.def("directCoFaces", [](TT & self, const TTCell & cell, bool hintOpen) {
             typename TT::Cells out;
             std::back_insert_iterator< typename TT::Cells > outIt( out );
             self.directCoFaces(outIt, cell, hintOpen);
@@ -367,10 +369,10 @@ hintOpen: Bool [False]
     When 'true', this hint tells that the complex is open, so this speeds up this method.
     Otherwise, the complex may be arbitrary.
     False by default
-)", py::arg("cell"), py::arg("hintOpen") = false);
+)", nb::arg("cell"), nb::arg("hintOpen") = false);
 
     // ---------- local operations for extracting specific subcomplexes -------------
-    py_class.def("cellBoundary", &TT::cellBoundary,
+    nb_class.def("cellBoundary", &TT::cellBoundary,
 R"(Returns the boundary of input cell as a cell collection,
 i.e. all the cells that are proper faces of the cell. Generally
 faster than calling the function faces.
@@ -386,9 +388,9 @@ hintClosed: Bool [False]
     When 'true', this hint tells that the complex is closed, so this speeds up this method.
     Otherwise, the complex may be arbitrary.
     False by default
-)", py::arg("cell"), py::arg("hintClosed") = false);
+)", nb::arg("cell"), nb::arg("hintClosed") = false);
 
-    py_class.def("cellCoBoundary", &TT::cellCoBoundary,
+    nb_class.def("cellCoBoundary", &TT::cellCoBoundary,
 R"(Returns the boundary of input cell as a cell collection,
 i.e. all the cells that are proper co-faces of the cell. Generally
 faster than calling the function co-faces.
@@ -404,10 +406,10 @@ hintOpen: Bool [False]
     When 'true', this hint tells that the complex is open, so this speeds up this method.
     Otherwise, the complex may be arbitrary.
     False by default
-)", py::arg("cell"), py::arg("hintOpen") = false);
+)", nb::arg("cell"), nb::arg("hintOpen") = false);
 
     // ---------------------- local properties --------------------------------------
-    py_class.def("isCellInterior", &TT::isCellInterior,
+    nb_class.def("isCellInterior", &TT::isCellInterior,
 R"(Returns true if and only if input cell is interior to the complex.
 Which means that it has the same co-faces in the Khalimsky space as in this complex.
 
@@ -415,9 +417,9 @@ Parameters
 ----------
 cell: Cell
     Any cell valid in the Khalimsky space associated to the complex.
-)", py::arg("cell"));
+)", nb::arg("cell"));
 
-    py_class.def("isCellBoundary", &TT::isCellBoundary,
+    nb_class.def("isCellBoundary", &TT::isCellBoundary,
 R"(Returns true if and only if input cell is not interior to the complex.
 Which means that it has the more co-faces in the Khalimsky space than in this complex.
 
@@ -425,13 +427,13 @@ Parameters
 ----------
 cell: Cell
     Any cell valid in the Khalimsky space associated to the complex.
-)", py::arg("cell"));
+)", nb::arg("cell"));
 
     // ----------------------- Standard subcomplexes --------------------------------
-    py_class.def("interior", &TT::interior,
+    nb_class.def("interior", &TT::interior,
 R"(Computes and returns the (topological) interior to this complex.)");
 
-    py_class.def("boundary", &TT::boundary,
+    nb_class.def("boundary", &TT::boundary,
 R"(Computes and returns the (topological) boundary of this complex (say X),
 hence it may not be a subcomplex of X, but it is a subcomplex
 of Cl(X).
@@ -442,9 +444,9 @@ hintClosed: Bool [False]
     When 'true', this hint tells that the complex is closed, so this speeds up this method.
     Otherwise, the complex may be arbitrary.
     False by default
-)", py::arg("hintClosed") = false);
+)", nb::arg("hintClosed") = false);
 
-    py_class.def("closure", &TT::closure,
+    nb_class.def("closure", &TT::closure,
 R"(Returns the closure of the cells in the input complex (S) within this complex,
 i.e. the smallest subcomplex that contains each cell in S.
 
@@ -459,9 +461,9 @@ hintClosed: Bool [False]
 Return
 ------
 The closure of input complex (S) within this complex as a cubical complex.
-)", py::arg("ccomplex"), py::arg("hintClosed") = false);
+)", nb::arg("ccomplex"), nb::arg("hintClosed") = false);
 
-    py_class.def("star", &TT::star,
+    nb_class.def("star", &TT::star,
 R"(Returns the star of the cells in the input complex (S) within this complex,
 i.e. the set of all cells of thiscomplex that have any faces in S.
 
@@ -476,9 +478,9 @@ hintOpen: Bool [False]
 Return
 ------
 The star of input complex (S) within this complex as a cubical complex.
-)", py::arg("ccomplex"), py::arg("hintOpen") = false);
+)", nb::arg("ccomplex"), nb::arg("hintOpen") = false);
 
-    py_class.def("link", &TT::link,
+    nb_class.def("link", &TT::link,
 R"(Returns the link of the cells in the input complex (S) within this complex,
 i.e. the closed star of S minus the stars of all faces of S.
 
@@ -497,66 +499,66 @@ hintOpen: Bool [False]
 Return
 ------
 The link of input complex (S) within this complex as a cubical complex.
-)", py::arg("ccomplex"), py::arg("hintClosed") = false, py::arg("hintOpen") = false);
+)", nb::arg("ccomplex"), nb::arg("hintClosed") = false, nb::arg("hintOpen") = false);
 
     // ----------------------- global operations on complexes -----------------------
-    py_class.def("close", py::detail::overload_cast_impl<>()(&TT::close), R"(Close the whole complex.)");
-    py_class.def("close", py::detail::overload_cast_impl<DGtal::Dimension>()(&TT::close),
+    nb_class.def("close", nb::detail::overload_cast_impl<>()(&TT::close), R"(Close the whole complex.)");
+    nb_class.def("close", nb::detail::overload_cast_impl<DGtal::Dimension>()(&TT::close),
 R"(Close all cells of dimension less or equal to input dim.
 Parameters
 ----------
 dim: Dimension
     Input dimension
-)", py::arg("dim"));
+)", nb::arg("dim"));
 
-    py_class.def("open", py::detail::overload_cast_impl<>()(&TT::open), R"(open the whole complex.)");
-    py_class.def("open", py::detail::overload_cast_impl<DGtal::Dimension>()(&TT::open),
+    nb_class.def("open", nb::detail::overload_cast_impl<>()(&TT::open), R"(open the whole complex.)");
+    nb_class.def("open", nb::detail::overload_cast_impl<DGtal::Dimension>()(&TT::open),
 R"(open all cells of dimension less or equal to input dim.
 Parameters
 ----------
 dim: Dimension
     Input dimension
-)", py::arg("dim"));
+)", nb::arg("dim"));
 
     // ----------------------- Class data -------------------------------------
-    py_class.def_property_readonly_static("TKSpace",
-            [](py::object /* self */) {
-            return py::type::of<TTKSpace>();
+    nb_class.def_property_readonly_static("TKSpace",
+            [](nb::object /* self */) {
+            return nb::type::of<TTKSpace>();
             });
-    py_class.def_property_readonly_static("TData",
-            [](py::object /* self */) {
-            return py::type::of<TTData>();
+    nb_class.def_property_readonly_static("TData",
+            [](nb::object /* self */) {
+            return nb::type::of<TTData>();
             });
-    py_class.def_property_readonly_static("TCell",
-            [](py::object /* self */) {
-            return py::type::of<TTCell>();
+    nb_class.def_property_readonly_static("TCell",
+            [](nb::object /* self */) {
+            return nb::type::of<TTCell>();
             });
-    py_class.def_property_readonly_static("TPreCell",
-            [](py::object /* self */) {
-            return py::type::of<TTPreCell>();
+    nb_class.def_property_readonly_static("TPreCell",
+            [](nb::object /* self */) {
+            return nb::type::of<TTPreCell>();
             });
-    py_class.def_property_readonly_static("dimension",
-            [](py::object /* self */) { return TT::dimension; },
+    nb_class.def_property_readonly_static("dimension",
+            [](nb::object /* self */) { return TT::dimension; },
             R"(The dimension of the complex.)");
-    py_class.def_property_readonly_static("REMOVED",
-            [](py::object /* self */) { return TT::REMOVED; },
+    nb_class.def_property_readonly_static("REMOVED",
+            [](nb::object /* self */) { return TT::REMOVED; },
             R"(Predefined flag for CubicalCellData.)");
-    py_class.def_property_readonly_static("COLLAPSIBLE",
-            [](py::object /* self */) { return TT::COLLAPSIBLE; },
+    nb_class.def_property_readonly_static("COLLAPSIBLE",
+            [](nb::object /* self */) { return TT::COLLAPSIBLE; },
             R"(Predefined flag for CubicalCellData.)");
-    py_class.def_property_readonly_static("FIXED",
-            [](py::object /* self */) { return TT::FIXED; },
+    nb_class.def_property_readonly_static("FIXED",
+            [](nb::object /* self */) { return TT::FIXED; },
             R"(Predefined flag for CubicalCellData.)");
-    py_class.def_property_readonly_static("USER1",
-            [](py::object /* self */) { return TT::USER1; },
+    nb_class.def_property_readonly_static("USER1",
+            [](nb::object /* self */) { return TT::USER1; },
             R"(Predefined flag for CubicalCellData.)");
-    py_class.def_property_readonly_static("VALUE",
-            [](py::object /* self */) { return TT::VALUE; },
+    nb_class.def_property_readonly_static("VALUE",
+            [](nb::object /* self */) { return TT::VALUE; },
             R"(Predefined flag for CubicalCellData.)");
 
     // ----------------- Python only functions  -------------------------------
     // ParDirCollapse
-    py_class.def("thinning", [](TT &self, const std::string &method, const unsigned int iterations, bool verbose) {
+    nb_class.def("thinning", [](TT &self, const std::string &method, const unsigned int iterations, bool verbose) {
         DGtal::ParDirCollapse < TT > thinning ( self.space() );
         thinning.verbose = verbose;
         thinning.attach(&self);
@@ -571,7 +573,7 @@ dim: Dimension
         } else if( method == "pardir_isthmus") {
             thinning.collapseIsthmus();
         } else {
-            throw py::value_error("Not valid method ("
+            throw nb::value_error("Not valid method ("
                     + method + "). Valid methods are: pardir, surface or isthmus.");
         }
     },
@@ -609,19 +611,19 @@ iterations: Int [0]
 verbose: Bool [False]
     State is reported during the run.
 )",
-    py::arg("method") = "pardir",
-    py::arg("iterations") = 0,
-    py::arg("verbose") = false
+    nb::arg("method") = "pardir",
+    nb::arg("iterations") = 0,
+    nb::arg("verbose") = false
     );
 
     // ----------------------- Print / Display --------------------------------
-    py_class.def("__str__", [](const TT & self) {
+    nb_class.def("__str__", [](const TT & self) {
         std::stringstream os;
         self.selfDisplay(os);
         return os.str();
     });
 
-    py_class.def("__repr__", [typestr](const TT & self) {
+    nb_class.def("__repr__", [typestr](const TT & self) {
         std::stringstream os;
         os << typestr;
         os << ": ";
@@ -629,14 +631,15 @@ verbose: Bool [False]
         return os.str();
     });
 
-    return py_class;
+    return nb_class;
 }
 
 template<typename TCubicalComplex, typename TPyClass>
-void declare_CubicalComplex3DMethods( TPyClass & py_class) {
-    namespace py = pybind11;
+void declare_CubicalComplex3DMethods( TPyClass & nb_class) {
+    namespace nb = nanobind;
+    using namespace nanobind::literals;
     using TT = TCubicalComplex;
-    py_class.def("construct", [](TT & self, const DGtal::Python::DigitalSetZ3i & digital_set) {
+    nb_class.def("construct", [](TT & self, const DGtal::Python::DigitalSetZ3i & digital_set) {
              self.construct(digital_set);
             },
 R"(Construct the CubicalComplex with the input digital_set
@@ -645,19 +648,20 @@ Parameters
 ----------
 digital_set: DigitalSetZ3i
     Input set to construct the complex
-)", py::arg("digital_set"));
+)", nb::arg("digital_set"));
 
-    py_class.def_property_readonly_static("TDigitalSet",
-            [](py::object /* self */) {
-            return py::type::of<DGtal::Python::DigitalSetZ3i>();
+    nb_class.def_property_readonly_static("TDigitalSet",
+            [](nb::object /* self */) {
+            return nb::type::of<DGtal::Python::DigitalSetZ3i>();
             });
 }
 
 template<typename TCubicalComplex, typename TPyClass>
-void declare_CubicalComplex2DMethods( TPyClass & py_class) {
-    namespace py = pybind11;
+void declare_CubicalComplex2DMethods( TPyClass & nb_class) {
+    namespace nb = nanobind;
+    using namespace nanobind::literals;
     using TT = TCubicalComplex;
-    py_class.def("construct", [](TT & self, const DGtal::Python::DigitalSetZ2i & digital_set) {
+    nb_class.def("construct", [](TT & self, const DGtal::Python::DigitalSetZ2i & digital_set) {
              self.construct(digital_set);
             },
 R"(Construct the CubicalComplex with the input digital_set
@@ -666,11 +670,11 @@ Parameters
 ----------
 digital_set: DigitalSetZ2i
     Input set to construct the complex
-)", py::arg("digital_set"));
+)", nb::arg("digital_set"));
 
-    py_class.def_property_readonly_static("TDigitalSet",
-            [](py::object /* self */) {
-            return py::type::of<DGtal::Python::DigitalSetZ2i>();
+    nb_class.def_property_readonly_static("TDigitalSet",
+            [](nb::object /* self */) {
+            return nb::type::of<DGtal::Python::DigitalSetZ2i>();
             });
 }
 

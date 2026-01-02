@@ -111,20 +111,20 @@ void init_Color(nb::module_ & m) {
     // ----------------------- Class data -------------------------------------
 
     nb_class.def_property("red",
-            nb::overload_cast<>()(&TT::red, nb::const_), // getter
-            nb::overload_cast<const TTValue>()(&TT::red) // setter
+            static_cast<TTValue (TT::*)() const>(&TT::red), // getter
+            static_cast<void (TT::*)(const TTValue)>(&TT::red) // setter
             );
     nb_class.def_property("green",
-            nb::overload_cast<>()(&TT::green, nb::const_), // getter
-            nb::overload_cast<const TTValue>()(&TT::green) // setter
+            static_cast<TTValue (TT::*)() const>(&TT::green), // getter
+            static_cast<void (TT::*)(const TTValue)>(&TT::green) // setter
             );
     nb_class.def_property("blue",
-            nb::overload_cast<>()(&TT::blue, nb::const_), // getter
-            nb::overload_cast<const TTValue>()(&TT::blue) // setter
+            static_cast<TTValue (TT::*)() const>(&TT::blue), // getter
+            static_cast<void (TT::*)(const TTValue)>(&TT::blue) // setter
             );
     nb_class.def_property("alpha",
-            nb::overload_cast<>()(&TT::alpha, nb::const_), // getter
-            nb::overload_cast<const TTValue>()(&TT::alpha) // setter
+            static_cast<TTValue (TT::*)() const>(&TT::alpha), // getter
+            static_cast<void (TT::*)(const TTValue)>(&TT::alpha) // setter
             );
 
     // Predefined colors
@@ -160,20 +160,22 @@ void init_Color(nb::module_ & m) {
         return os.str();
     });
 
+    // Note: Buffer protocol is not directly supported in nanobind
+    // If needed, this can be implemented using __getitem__ and __setitem__ methods
+    /*
     nb_class.def_buffer([](TT &self) -> nb::buffer_info {
         return nb::buffer_info(
-            &self, /* Pointer to buffer */
-            static_cast<ssize_t>(sizeof(TTValue)),    /* Size of one scalar */
-            nb::format_descriptor<TTValue>::format(), /* Python struct-style format descriptor */
-            1,                                            /* Number of dimensions */
-            { 4 },                            /* Shape, buffer dimensions */
-            { static_cast<ssize_t>(sizeof(TTValue)) } /* Strides (in bytes) for each index */
+            &self,
+            static_cast<ssize_t>(sizeof(TTValue)),
+            nb::format_descriptor<TTValue>::format(),
+            1,
+            { 4 },
+            { static_cast<ssize_t>(sizeof(TTValue)) }
             );
     });
 
     nb_class.def(nb::init([](nb::buffer buf) {
         auto info = buf.request();
-        /* Sanity checks */
         if (info.ndim != 1 || info.strides[0] % static_cast<ssize_t>(sizeof(TTValue)))
             throw nb::type_error("Only valid 1D buffers can be copied to a Color");
         if (!nb::detail::compare_buffer_info<TTValue>::compare(info) || (ssize_t) sizeof(TTValue) != info.itemsize)
@@ -184,4 +186,5 @@ void init_Color(nb::module_ & m) {
         TTValue *p = static_cast<TTValue*>(info.ptr);
         return TT(*p, *(p+1), *(p+2), *(p+3));
     }));
+    */
 }

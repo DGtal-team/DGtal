@@ -28,9 +28,10 @@
 #include "DigitalTopology_types_py.h"
 
 template<typename TDigitalTopology>
-nanobind::class_<TDigitalTopology> declare_DigitalTopology(nanobind::module &m,
+nanobind::class_<TDigitalTopology> declare_DigitalTopology(nanobind::module_ &m,
     const std::string &typestr) {
-    namespace py = pybind11;
+    namespace nb = nanobind;
+    using namespace nanobind::literals;
     using TT = TDigitalTopology;
     using TTPoint = typename TT::Point;
     using TTForegroundAdjacency = typename TT::ForegroundAdjacency;
@@ -64,11 +65,11 @@ Example of usage:
     print(topo)
 
 )";
-    auto py_class = py::class_<TT>(m, typestr.c_str(), docs.c_str());
+    auto nb_class = nb::class_<TT>(m, typestr.c_str(), docs.c_str());
 
     // ----------------------- Constructors -----------------------------------
-    py_class.def(py::init<const TT &>());
-    py_class.def(py::init([]( const TTForegroundAdjacency & kappa,
+    nb_class.def(nb::init<const TT &>());
+    nb_class.def(nb::init([]( const TTForegroundAdjacency & kappa,
                     const TTBackgroundAdjacency & lambda,
                     DigitalTopologyProperties properties) {
                 return TT(kappa, lambda, properties);
@@ -83,7 +84,7 @@ background: MetricAdjacency
     (Lambda) The adjacency object chosen for the background topology.
 properties: DigitalTopologyProperties
     A hint of the properties of this digital topology, default is UNKNOWN_DT.
-)", py::arg("foreground"), py::arg("background"), py::arg("properties")=DigitalTopologyProperties::UNKNOWN_DT);
+)", nb::arg("foreground"), nb::arg("background"), nb::arg("properties")=DigitalTopologyProperties::UNKNOWN_DT);
 
     // ----------------------- Python operators -------------------------------
 
@@ -91,42 +92,42 @@ properties: DigitalTopologyProperties
 
     // ----------------------- Class functions --------------------------------
     // Note, kappa, lambda, names changed because lambda is a restricted keyword in python.
-    py_class.def("foreground", &TT::kappa,
-            py::return_value_policy::reference_internal,
+    nb_class.def("foreground", &TT::kappa,
+            nb::return_value_policy::reference_internal,
             R"(Reference to foreground adjacency (connectedness))");
-    py_class.def("background", &TT::lambda,
-            py::return_value_policy::reference_internal,
+    nb_class.def("background", &TT::lambda,
+            nb::return_value_policy::reference_internal,
             R"(Reference to background adjacency (connectedness))");
-    py_class.def("properties", &TT::properties, R"(JORDAN iff the topology is Jordan,
+    nb_class.def("properties", &TT::properties, R"(JORDAN iff the topology is Jordan,
 NOT_JORDAN iff the topology is known to be NOT_JORDAN, UNKNOWN otherwise.)");
 
     // ----------------------- Class data -------------------------------------
-    py_class.def_property_readonly_static("TPoint",
-            [](py::object /* self */) {
-            return py::type::of<TTPoint>();
+    nb_class.def_property_readonly_static("TPoint",
+            [](nb::object /* self */) {
+            return nb::type::of<TTPoint>();
             });
-    py_class.def_property_readonly_static("TForegroundAdjacency",
-            [](py::object /* self */) {
-            return py::type::of<TTForegroundAdjacency>();
+    nb_class.def_property_readonly_static("TForegroundAdjacency",
+            [](nb::object /* self */) {
+            return nb::type::of<TTForegroundAdjacency>();
             });
-    py_class.def_property_readonly_static("TBackgroundAdjacency",
-            [](py::object /* self */) {
-            return py::type::of<TTBackgroundAdjacency>();
+    nb_class.def_property_readonly_static("TBackgroundAdjacency",
+            [](nb::object /* self */) {
+            return nb::type::of<TTBackgroundAdjacency>();
             });
-    py_class.def_property_readonly_static("adjacency_pair_string",
-            [](py::object /*self*/) {
+    nb_class.def_property_readonly_static("adjacency_pair_string",
+            [](nb::object /*self*/) {
             return std::to_string(TTForegroundAdjacency::bestCapacity()) +
             "_" + std::to_string(TTBackgroundAdjacency::bestCapacity());
             });
 
     // ----------------------- Print / Display --------------------------------
-    py_class.def("__str__", [](const TT & self) {
+    nb_class.def("__str__", [](const TT & self) {
         std::stringstream os;
         self.selfDisplay(os);
         return os.str();
     });
 
-    py_class.def("__repr__", [typestr](const TT & self) {
+    nb_class.def("__repr__", [typestr](const TT & self) {
         std::stringstream os;
         os << typestr;
         os << ": ";
@@ -134,6 +135,6 @@ NOT_JORDAN iff the topology is known to be NOT_JORDAN, UNKNOWN otherwise.)");
         return os.str();
     });
 
-    return py_class;
+    return nb_class;
 }
 #endif

@@ -30,9 +30,10 @@
 #include "kernel/DigitalSetBySTLVector_types_py.h" // For DigitalSetZ3i,Z2i
 
 template<typename TVoxelComplex>
-nanobind::class_<TVoxelComplex> declare_VoxelComplex(nanobind::module &m,
+nanobind::class_<TVoxelComplex> declare_VoxelComplex(nanobind::module_ &m,
     const std::string &typestr) {
-    namespace py = pybind11;
+    namespace nb = nanobind;
+    using namespace nanobind::literals;
     using TT = TVoxelComplex;
     using TTCubicalComplex = typename TT::Parent;
     using TTKSpace = typename TT::KSpace;
@@ -55,19 +56,19 @@ Implemented using resources from CubicalComplex and
 
 CellContainer is a std::unordered_map.
 )";
-    auto py_class = py::class_<TT, TTCubicalComplex>(m, typestr.c_str(), docs.c_str());
+    auto nb_class = nb::class_<TT, TTCubicalComplex>(m, typestr.c_str(), docs.c_str());
     // ----------------------- Constructors -----------------------------------
-    py_class.def(py::init<const TTKSpace &>());
-    py_class.def(py::init<const TT &>());
+    nb_class.def(nb::init<const TTKSpace &>());
+    nb_class.def(nb::init<const TT &>());
 
-    py_class.def("__copy__", [](const TT &self) {
+    nb_class.def("__copy__", [](const TT &self) {
         return TT(self);
     }, "Equivalent to __deepcopy__.");
-    py_class.def("__deepcopy__", [](const TT &self, py::dict) {
+    nb_class.def("__deepcopy__", [](const TT &self, nb::dict) {
         return TT(self);
-    }, py::arg("memo"));
+    }, nb::arg("memo"));
 
-    py_class.def("setSimplicityTable", [](TT & self, const std::string & tables_folder) {
+    nb_class.def("setSimplicityTable", [](TT & self, const std::string & tables_folder) {
             const std::string table_filename = "simplicity_table26_6";
             const std::string table_suffix = ".zlib";
             const std::string full_path =
@@ -91,23 +92,23 @@ tables_folder: String
 Return
 ------
     A string with the full path of the loaded table file.
-)", py::arg("tables_folder"));
+)", nb::arg("tables_folder"));
 
-    py_class.def("copySimplicityTable", &TT::copySimplicityTable,
+    nb_class.def("copySimplicityTable", &TT::copySimplicityTable,
             "Copy table from other complex.");
 
-    py_class.def("isTableLoaded", &TT::isTableLoaded,
+    nb_class.def("isTableLoaded", &TT::isTableLoaded,
             "True if table would be used for isSimple computations.");
 
-    py_class.def("voxelClose", &TT::voxelClose,
+    nb_class.def("voxelClose", &TT::voxelClose,
 R"(Close input voxel
 Parameters
 ----------
 cell: Cell
     Input voxel
-)", py::arg("cell"));
+)", nb::arg("cell"));
 
-    py_class.def("cellsClose", &TT::cellsClose,
+    nb_class.def("cellsClose", &TT::cellsClose,
 R"(Close all the input cells of input dimension
 Parameters
 ----------
@@ -115,10 +116,10 @@ dim: Dimension
     Close cells of input dimension
 cells: CellContainer
     List of cells
-)",py::arg("dim"), py::arg("cells"));
+)",nb::arg("dim"), nb::arg("cells"));
 
-    py_class.def("insertVoxelCell",
-        py::detail::overload_cast_impl<const TTCell &, const bool &, const TTData &>()
+    nb_class.def("insertVoxelCell",
+        nb::detail::overload_cast_impl<const TTCell &, const bool &, const TTData &>()
         (&TT::insertVoxelCell),
 R"(Insert cell (voxel) in the Khalimsky space.
 Parameters
@@ -129,9 +130,9 @@ close_it: Bool
     If True, apply voxelClose in the input cell
 data: CubicalCellData
     CubicalCellData associated to the input cell
-)",py::arg("cell"), py::arg("close_it") = true, py::arg("data") = TTData());
+)",nb::arg("cell"), nb::arg("close_it") = true, nb::arg("data") = TTData());
 
-    py_class.def("insertVoxelPoint", &TT::insertVoxelPoint,
+    nb_class.def("insertVoxelPoint", &TT::insertVoxelPoint,
 R"(Create a uSpel from the input Point and insert it using inserVoxelCell.
 Parameters
 ----------
@@ -141,10 +142,10 @@ close_it: Bool
     If True, apply voxelClose in the input cell
 data: CubicalCellData
     CubicalCellData associated to the input cell
-)",py::arg("point"), py::arg("close_it"), py::arg("data"));
+)",nb::arg("point"), nb::arg("close_it"), nb::arg("data"));
 
 
-    py_class.def("dumpVoxels", [](const TT &self, DGtal::Python::DigitalSetZ3i & in_out_set) {
+    nb_class.def("dumpVoxels", [](const TT &self, DGtal::Python::DigitalSetZ3i & in_out_set) {
             self.dumpVoxels(in_out_set);
             return in_out_set;
         },
@@ -156,10 +157,10 @@ digital_set: DigitalSetZ3i
 Return
 ------
 The input/output set filled with the voxels.
-)",py::arg("digital_set"));
+)",nb::arg("digital_set"));
 
     // --------------------- Spels --------------------------------------------
-    py_class.def("pointelsFromCell", [](const TT & self, const TTCell & input_cell) {
+    nb_class.def("pointelsFromCell", [](const TT & self, const TTCell & input_cell) {
             std::set<TTCell> pointels_out;
             self.pointelsFromCell(pointels_out, input_cell);
             return pointels_out;
@@ -175,9 +176,9 @@ cell: Cell
 Return
 ------
 A list of pointels
-)", py::arg("cell"));
+)", nb::arg("cell"));
 
-    py_class.def("spelsFromCell", [](const TT & self, const TTCell & input_cell) {
+    nb_class.def("spelsFromCell", [](const TT & self, const TTCell & input_cell) {
             std::set<TTCell> spels_out;
             self.spelsFromCell(spels_out, input_cell);
             return spels_out;
@@ -193,9 +194,9 @@ cell: Cell
 Return
 ------
 A list of spels
-)", py::arg("cell"));
+)", nb::arg("cell"));
 
-    py_class.def("neighborhoodVoxels", &TT::neighborhoodVoxels,
+    nb_class.def("neighborhoodVoxels", &TT::neighborhoodVoxels,
 R"(Return the neighbor spels of input cell
 Parameters
 ----------
@@ -204,9 +205,9 @@ cell: Cell
 Return
 ------
 A list of spels
-)", py::arg("cell"));
+)", nb::arg("cell"));
 
-    py_class.def("properNeighborhoodVoxels", &TT::properNeighborhoodVoxels,
+    nb_class.def("properNeighborhoodVoxels", &TT::properNeighborhoodVoxels,
 R"(Return the set of voxels that are the properNeighborhood of the input cell
 Parameters
 ----------
@@ -215,9 +216,9 @@ cell: Cell
 Return
 ------
 A list of spels
-)", py::arg("cell"));
+)", nb::arg("cell"));
 
-    py_class.def("Kneighborhood", &TT::Kneighborhood,
+    nb_class.def("Kneighborhood", &TT::Kneighborhood,
 R"(Get a clique holding the K-neighborhood of the input cell.
 The K-neighborhood is calculated first, getting the pointels
 from input cell (See pointelsFromCell) and then, getting all
@@ -230,13 +231,13 @@ cell: Cell
 Return
 ------
 Clique with the the cells forming the K-Neighborhood of the input cell.
-)", py::arg("cell"));
+)", nb::arg("cell"));
 
-    py_class.def("isSpel", &TT::isSpel,
+    nb_class.def("isSpel", &TT::isSpel,
 R"(True if input cell is a cell with max dimension (3)
-)", py::arg("cell"));
+)", nb::arg("cell"));
 
-    py_class.def("surfelBetweenAdjacentSpels", &TT::surfelBetweenAdjacentSpels,
+    nb_class.def("surfelBetweenAdjacentSpels", &TT::surfelBetweenAdjacentSpels,
 R"(Surfel between between two adjacent spels.
 
 Parameters
@@ -248,9 +249,9 @@ spel_B: Cell
 Return
 ------
 The surfel (cell with dimension 2) between two input spels.
-)", py::arg("spel_A"), py::arg("spel_B"));
+)", nb::arg("spel_A"), nb::arg("spel_B"));
     // ---------------------- Critical Cliques --------------------------------
-    py_class.def("criticalCliques", [](const TT & self, bool verbose) {
+    nb_class.def("criticalCliques", [](const TT & self, bool verbose) {
         return self.criticalCliques(verbose);
      },
 R"(Returns all critical cliques for this complex.
@@ -263,9 +264,9 @@ Return
 ------
 All critical cliques arranged by dimension:
 [[clique_dim0, ...], [clique_dim1, ...], [clique_dim2, ...], [clique_dim_3,...]]
-)", py::arg("verbose") = false);
+)", nb::arg("verbose") = false);
 
-    py_class.def("criticalCliquesForD",
+    nb_class.def("criticalCliquesForD",
             [](const TT & self, const DGtal::Dimension dim, bool verbose) {
         return self.criticalCliquesForD(dim, self, verbose);
      },
@@ -280,12 +281,12 @@ verbose: Bool
 Return
 ------
 All critical cliques arranged for the specified dimension.
-)", py::arg("dim"), py::arg("verbose") = false);
+)", nb::arg("dim"), nb::arg("verbose") = false);
 
     // ---------------------- Masks -------------------------------------------
-    py_class.def("K_2",
-        py::detail::overload_cast_impl<const TTCell &, const TTCell &, bool>()
-        (&TT::K_2, py::const_),
+    nb_class.def("K_2",
+        nb::detail::overload_cast_impl<const TTCell &, const TTCell &, bool>()
+        (&TT::K_2, nb::const_),
 R"(Compute the criticality of the surfel between A,B voxels and returns the
 associated 2-clique.
 
@@ -300,11 +301,11 @@ verbose: Bool [False]
 Return
 ------
 pair of types [Bool, CubicalComplex] -> [is_critical, 2-clique]
-)", py::arg("spel_A"), py::arg("spel_B"), py::arg("verbose") = false);
+)", nb::arg("spel_A"), nb::arg("spel_B"), nb::arg("verbose") = false);
 
-    py_class.def("K_2",
-        py::detail::overload_cast_impl<const TTPoint &, const TTPoint &, bool>()
-        (&TT::K_2, py::const_),
+    nb_class.def("K_2",
+        nb::detail::overload_cast_impl<const TTPoint &, const TTPoint &, bool>()
+        (&TT::K_2, nb::const_),
 R"(Compute the criticality of the surfel between points A, B (uCoords) and returns the
 associated 2-clique.
 
@@ -319,11 +320,11 @@ verbose: Bool [False]
 Return
 ------
 pair of types [Bool, CubicalComplex] -> [is_critical, 2-clique]
-)", py::arg("point_A"), py::arg("point_B"), py::arg("verbose") = false);
+)", nb::arg("point_A"), nb::arg("point_B"), nb::arg("verbose") = false);
 
-    py_class.def("K_2",
-        py::detail::overload_cast_impl<const TTCell &, bool>()
-        (&TT::K_2, py::const_),
+    nb_class.def("K_2",
+        nb::detail::overload_cast_impl<const TTCell &, bool>()
+        (&TT::K_2, nb::const_),
 R"(Compute the criticality of the input surfel (face) and returns the
 associated 2-clique.
 
@@ -336,11 +337,11 @@ verbose: Bool [False]
 Return
 ------
 pair of types [Bool, CubicalComplex] -> [is_critical, 2-clique]
-)", py::arg("face"), py::arg("verbose") = false);
+)", nb::arg("face"), nb::arg("verbose") = false);
 
-    py_class.def("K_1",
-        py::detail::overload_cast_impl<const TTCell &, bool>()
-        (&TT::K_1, py::const_),
+    nb_class.def("K_1",
+        nb::detail::overload_cast_impl<const TTCell &, bool>()
+        (&TT::K_1, nb::const_),
 R"(Compute the criticality of the input linel and the associated 1-clique.
 
 Parameters
@@ -352,11 +353,11 @@ verbose: Bool [False]
 Return
 ------
 pair of types [Bool, CubicalComplex] -> [is_critical, 1-clique]
-)", py::arg("linel"), py::arg("verbose") = false);
+)", nb::arg("linel"), nb::arg("verbose") = false);
 
-    py_class.def("K_0",
-        py::detail::overload_cast_impl<const TTCell &, bool>()
-        (&TT::K_0, py::const_),
+    nb_class.def("K_0",
+        nb::detail::overload_cast_impl<const TTCell &, bool>()
+        (&TT::K_0, nb::const_),
 R"(Compute the criticality of the input pointel and the associated 1-clique.
 
 Parameters
@@ -368,11 +369,11 @@ verbose: Bool [False]
 Return
 ------
 pair of types [Bool, CubicalComplex] -> [is_critical, 0-clique]
-)", py::arg("pointel"), py::arg("verbose") = false);
+)", nb::arg("pointel"), nb::arg("verbose") = false);
 
-    py_class.def("K_3",
-        py::detail::overload_cast_impl<const TTCell &, bool>()
-        (&TT::K_3, py::const_),
+    nb_class.def("K_3",
+        nb::detail::overload_cast_impl<const TTCell &, bool>()
+        (&TT::K_3, nb::const_),
 R"(Compute the criticality of the input spel and the associated 3-clique.
 Note: It uses isSimple to check criticality.
 
@@ -385,10 +386,10 @@ verbose: Bool [False]
 Return
 ------
 pair of types [Bool, CubicalComplex] -> [is_critical, 0-clique]
-)", py::arg("spel"), py::arg("verbose") = false);
+)", nb::arg("spel"), nb::arg("verbose") = false);
 
     // --------------------- Simplicity checks --------------------------------
-    py_class.def("isSimpleByThinning", &TT::isSimpleByThinning,
+    nb_class.def("isSimpleByThinning", &TT::isSimpleByThinning,
 R"(Check if the input_spel from khalimsky space is simple using thinning.
 First create a CubicalComplex from the neighbor voxels on the input spel
 This does not include the input spel itself, close the new clique and apply
@@ -403,9 +404,9 @@ spel: Cell
 Return
 ------
 True if the input spel is simple within the complex.
-)",py::arg("spel"));
+)",nb::arg("spel"));
 
-    py_class.def("isSimple", &TT::isSimple,
+    nb_class.def("isSimple", &TT::isSimple,
 R"(Check if the input_spel from khalimsky space is simple using
 either a simplicity_table if loaded, or isSimpleByThinning.
 Parameters
@@ -415,7 +416,7 @@ spel: Cell
 Return
 ------
 True if the input spel is simple within the complex.
-)",py::arg("spel"));
+)",nb::arg("spel"));
 
 
     // TODO wrap DistanceTransformation
@@ -423,7 +424,7 @@ True if the input spel is simple within the complex.
           DGtal::Z3i::Space,
           DGtal::Python::DigitalSetZ3i,
           DGtal::ExactPredicateLpSeparableMetric<DGtal::Z3i::Space, 3>>;
-    py_class.def("thinningVoxelComplex", [](TT &self,
+    nb_class.def("thinningVoxelComplex", [](TT &self,
       const std::string & skel_type,
       const std::string & skel_select_type,
       const std::string & tables_folder,
@@ -486,34 +487,34 @@ verbose: bool
 Return
 ------
 A new thinned voxel complex.
-)", py::arg("skel_type"),
-    py::arg("select_type"),
-    py::arg("tables_folder"),
-    py::arg("persistence") = 0,
-    py::arg("profile") = false,
-    py::arg("verbose") = false
+)", nb::arg("skel_type"),
+    nb::arg("select_type"),
+    nb::arg("tables_folder"),
+    nb::arg("persistence") = 0,
+    nb::arg("profile") = false,
+    nb::arg("verbose") = false
     );
 
-    py_class.def_property_readonly_static("TDigitalSet",
-            [](py::object /* self */) {
-            return py::type::of<DGtal::Python::DigitalSetZ3i>();
+    nb_class.def_property_readonly_static("TDigitalSet",
+            [](nb::object /* self */) {
+            return nb::type::of<DGtal::Python::DigitalSetZ3i>();
             });
 
     // ----------------------- Print / Display --------------------------------
-    py_class.def("__str__", [](const TT & self) {
+    nb_class.def("__str__", [](const TT & self) {
         std::stringstream os;
         self.selfDisplay(os);
         return os.str();
     });
 
-    py_class.def("__repr__", [typestr](const TT & self) {
+    nb_class.def("__repr__", [typestr](const TT & self) {
         std::stringstream os;
         os << typestr << ": ";
         self.selfDisplay(os);
         return os.str();
     });
 
-    return py_class;
+    return nb_class;
 }
 
 #endif
