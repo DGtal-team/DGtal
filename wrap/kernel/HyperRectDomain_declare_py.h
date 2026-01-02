@@ -22,14 +22,14 @@
     #define ssize_t ptrdiff_t
 #endif
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 #include <pybind11/pytypes.h>
 
 #include "base/Common_types_py.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 
 template<typename THyperRectDomain>
-pybind11::class_<THyperRectDomain> declare_HyperRectDomain(pybind11::module &m,
+nanobind::class_<THyperRectDomain> declare_HyperRectDomain(nanobind::module &m,
     const std::string &typestr) {
     namespace py = pybind11;
     using TT = THyperRectDomain;

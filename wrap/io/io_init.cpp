@@ -14,13 +14,13 @@
  *
  **/
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 
-namespace py = pybind11;
+namespace nb = nanobind;
 
-void init_Color(py::module &);
+void init_Color(nb::module_ &);
 
-void init_dgtal_io(py::module & mparent) {
+void init_dgtal_io(nb::module_ & mparent) {
     auto m = mparent.def_submodule("io");
     init_Color(m);
 }

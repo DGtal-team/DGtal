@@ -22,7 +22,7 @@
     #define ssize_t ptrdiff_t
 #endif
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 #include <pybind11/numpy.h> // for py::array_t
 
 #include "DGtal/images/ImageContainerBySTLVector.h"
@@ -35,28 +35,28 @@
 // This implementation found a bug in pybind11: https://github.com/pybind/pybind11/issues/2700
 template<typename T>
 using IsCPPType = typename std::enable_if<std::is_base_of<
-    pybind11::detail::type_caster_generic, pybind11::detail::make_caster<T>>::value>::type;
+    nanobind::detail::type_caster_generic, nanobind::detail::make_caster<T>>::value>::type;
 
 template<typename T>
 using IsNotCPPType = typename std::enable_if<!std::is_base_of<
-    pybind11::detail::type_caster_generic, pybind11::detail::make_caster<T>>::value>::type;
+    nanobind::detail::type_caster_generic, nanobind::detail::make_caster<T>>::value>::type;
 
 template<typename TT>
 void def_TValue(
-        pybind11::class_<TT> & py_class,
+        nanobind::class_<TT> & py_class,
         IsCPPType<typename TT::Value> * = nullptr) {
     py_class.def_property_readonly_static("TValue",
-            [](pybind11::object /* self */ ) {
-            return pybind11::type::of<typename TT::Value>();
+            [](nanobind::object /* self */ ) {
+            return nanobind::type::of<typename TT::Value>();
             });
 }
 template<typename TT>
-void def_TValue(pybind11::class_<TT> & py_class,
+void def_TValue(nanobind::class_<TT> & py_class,
         IsNotCPPType<typename TT::Value> * = nullptr) {
     py_class.def_property_readonly_static("TValue",
-            [](pybind11::object /* self */ ) {
-            return pybind11::type::of(
-                        pybind11::cast(typename TT::Value())
+            [](nanobind::object /* self */ ) {
+            return nanobind::type::of(
+                        nanobind::cast(typename TT::Value())
                     );
             });
 }
@@ -67,23 +67,23 @@ template<typename TPoint>
 using Is3D = typename std::enable_if<TPoint::dimension == 3>::type;
 
 template<typename TT>
-void def_toindices(pybind11::class_<TT> & py_class,
+void def_toindices(nanobind::class_<TT> & py_class,
         Is2D<typename TT::Point> * = nullptr) {
     py_class.def("toindices", [](const TT &, const typename TT::Point & a_point) {
-            return pybind11::make_tuple(a_point[1], a_point[0]);
+            return nanobind::make_tuple(a_point[1], a_point[0]);
     }, "Return tuple of the i,j,k-coordinates of the input point in the c_style format: (k,j,i)");
 }
 template<typename TT>
-void def_toindices(pybind11::class_<TT> & py_class,
+void def_toindices(nanobind::class_<TT> & py_class,
         Is3D<typename TT::Point> * = nullptr) {
     py_class.def("toindices", [](const TT &, const typename TT::Point & a_point) {
-            return pybind11::make_tuple(a_point[2], a_point[1], a_point[0]);
+            return nanobind::make_tuple(a_point[2], a_point[1], a_point[0]);
     }, "Return tuple of the i,j,k-coordinates of the input point in the c_style format: (k,j,i)");
 }
 
 
 template<typename TT>
-TT constructor_from_buffer(pybind11::buffer buf,
+TT constructor_from_buffer(nanobind::buffer buf,
         typename TT::Point lower_bound_ijk = TT::Point::zero,
         const std::string & order = "C") {
     namespace py = pybind11;
@@ -149,7 +149,7 @@ TT constructor_from_buffer(pybind11::buffer buf,
 
 template<typename TT>
 void def_buffer_bridge(
-        pybind11::class_<TT> & py_class) {
+        nanobind::class_<TT> & py_class) {
     namespace py = pybind11;
     using TTPoint = typename TT::Point;
     using TTValue = typename TT::Value;
@@ -176,7 +176,7 @@ void def_buffer_bridge(
             shape,                                        /* Shape, buffer dimensions */
             // c_strides == row major. --->, --->
             // f_strides == col major. |, |
-            pybind11::detail::c_strides(shape, valuesize) /* Strides (in bytes) for each index */
+            nanobind::detail::c_strides(shape, valuesize) /* Strides (in bytes) for each index */
             );
         });
 
@@ -230,7 +230,7 @@ lower_bound: Point (Optional)
 }
 
 template<typename TImageContainerBySTLVector>
-pybind11::class_<TImageContainerBySTLVector> declare_ImageContainerBySTLVector(pybind11::module &m,
+nanobind::class_<TImageContainerBySTLVector> declare_ImageContainerBySTLVector(nanobind::module &m,
     const std::string &typestr) {
     namespace py = pybind11;
     using TT = TImageContainerBySTLVector;
@@ -435,7 +435,7 @@ point: Point
 }
 
 template<typename TT, typename TTComponent>
-TT constructor_from_buffer_point_container(pybind11::buffer buf,
+TT constructor_from_buffer_point_container(nanobind::buffer buf,
         typename TT::Point lower_bound_ijk = TT::Point::zero,
         const std::string & order = "C") {
     namespace py = pybind11;
@@ -524,7 +524,7 @@ TT constructor_from_buffer_point_container(pybind11::buffer buf,
 
 template<typename TT, typename TTComponent>
 void def_buffer_bridge_for_PointVector(
-        pybind11::class_<TT> & py_class) {
+        nanobind::class_<TT> & py_class) {
     namespace py = pybind11;
     using TTPoint = typename TT::Point;
     using TTContainer = typename TT::Value;
@@ -546,7 +546,7 @@ void def_buffer_bridge_for_PointVector(
         // The reverse of dextent for c_contiguous (row-major)
         std::vector<ssize_t> shape(dextent.rbegin(), dextent.rend());
         // The c_strides of the original shape
-        auto c_strides = pybind11::detail::c_strides(shape, containersize);
+        auto c_strides = nanobind::detail::c_strides(shape, containersize);
         // We are "appending" our n-dimensional pixel type as a new dimension.
         // We add to the shape of the image, another dimension at the end with
         // the len of the container (2 if we are holding Point2D for example)
@@ -614,7 +614,7 @@ lower_bound: Point (Optional)
 }
 
 template<typename TT>
-TT constructor_from_buffer_color_container(pybind11::buffer buf,
+TT constructor_from_buffer_color_container(nanobind::buffer buf,
         typename TT::Point lower_bound_ijk = TT::Point::zero,
         const std::string & order = "C") {
     namespace py = pybind11;
@@ -689,7 +689,7 @@ TT constructor_from_buffer_color_container(pybind11::buffer buf,
 
 template<typename TT>
 void def_buffer_bridge_for_Color(
-        pybind11::class_<TT> & py_class) {
+        nanobind::class_<TT> & py_class) {
     namespace py = pybind11;
     using TTPoint = typename TT::Point; // DomainPoint
     using TTContainer = typename TT::Value;
@@ -705,7 +705,7 @@ void def_buffer_bridge_for_Color(
             containersize == componentsize * container_dimension);
         std::vector<ssize_t> shape(dextent.rbegin(), dextent.rend());
         // The c_strides of the original shape
-        auto c_strides = pybind11::detail::c_strides(shape, containersize);
+        auto c_strides = nanobind::detail::c_strides(shape, containersize);
         // We are "appending" our n-dimensional pixel type as a new dimension.
         // We add to the shape of the image, another dimension at the end with
         // the len of the container (4 for r,g,b,a in Color)

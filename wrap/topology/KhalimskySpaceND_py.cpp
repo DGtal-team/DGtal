@@ -14,16 +14,17 @@
  *
  **/
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 
 #include "KhalimskySpaceND_types_py.h"
 #include "KhalimskySpaceND_declare_py.h"
 
-namespace py = pybind11;
+namespace nb = nanobind;
+using namespace nanobind::literals;
 using namespace DGtal;
 
 
-void init_KhalimskySpaceND(py::module & m) {
+void init_KhalimskySpaceND(nb::module_ & m) {
     using Cell2D = DGtal::Python::Cell2D;
     using SCell2D = DGtal::Python::SCell2D;
     using KSpace2D = DGtal::Python::KSpace2D;

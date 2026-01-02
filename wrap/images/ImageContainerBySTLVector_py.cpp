@@ -14,7 +14,7 @@
  *
  **/
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 
 #include "ImageContainerBySTLVector_types_py.h"
 #include "ImageContainerBySTLVector_declare_py.h"
@@ -22,10 +22,11 @@
 #include "images/SetFromImage_declare_py.h"
 #include "kernel/DigitalSetBySTLVector_types_py.h" // For DigitalSetZ
 
-namespace py = pybind11;
+namespace nb = nanobind;
+using namespace nanobind::literals;
 using namespace DGtal;
 
-void init_ImageContainerBySTLVector(py::module & m) {
+void init_ImageContainerBySTLVector(nb::module_ & m) {
     // ------------------------------ 2D --------------------------------------
     // --------------- Single types --------------
     // Integer

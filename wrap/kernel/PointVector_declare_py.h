@@ -23,7 +23,7 @@
     #define ssize_t ptrdiff_t
 #endif
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 
 #include "DGtal/kernel/PointVector.h"
 
@@ -40,7 +40,7 @@ typedef SSIZE_T ssize_t;
  * Note that TOther can be equal to TSelf.
  */
 template<typename TOther, typename TSelf>
-void declare_PointVector_arithmetic_operators_between_types(pybind11::class_<TSelf> & in_py_class)
+void declare_PointVector_arithmetic_operators_between_types(nanobind::class_<TSelf> & in_py_class)
 {
     namespace py = pybind11;
     in_py_class.def(py::self + TOther());
@@ -57,7 +57,7 @@ void declare_PointVector_arithmetic_operators_between_types(pybind11::class_<TSe
  * Arithmetic operators (in place)
  */
 template<typename TOther, typename TSelf>
-void declare_PointVector_arithmetic_in_place_operators_between_types(pybind11::class_<TSelf> & in_py_class)
+void declare_PointVector_arithmetic_in_place_operators_between_types(nanobind::class_<TSelf> & in_py_class)
 {
     namespace py = pybind11;
     // in_py_class.def(py::self += TOther());
@@ -82,7 +82,7 @@ void declare_PointVector_arithmetic_in_place_operators_between_types(pybind11::c
  * Comparison operators.
  */
 template<typename TOther, typename TSelf>
-void declare_PointVector_comparison_operators_between_types(pybind11::class_<TSelf> & in_py_class)
+void declare_PointVector_comparison_operators_between_types(nanobind::class_<TSelf> & in_py_class)
 {
     namespace py = pybind11;
     // Comparisons
@@ -99,7 +99,7 @@ void declare_PointVector_comparison_operators_between_types(pybind11::class_<TSe
  * For example: dotProduct.
  */
 template<typename TOther, typename TSelf>
-void declare_PointVector_member_functions_between_types(pybind11::class_<TSelf> & in_py_class)
+void declare_PointVector_member_functions_between_types(nanobind::class_<TSelf> & in_py_class)
 {
     const std::string dot_docs =
 R"(Dot product with another Point of the same dimension.
@@ -244,7 +244,7 @@ isUpper : PointND | RealPointND
  * ```
  */
 template<typename TOther, typename TSelf>
-void declare_PointVector_all_mixings(pybind11::class_<TSelf> & in_py_class)
+void declare_PointVector_all_mixings(nanobind::class_<TSelf> & in_py_class)
 {
     declare_PointVector_arithmetic_operators_between_types<TOther>(in_py_class);
     declare_PointVector_comparison_operators_between_types<TOther>(in_py_class);
@@ -254,7 +254,7 @@ void declare_PointVector_all_mixings(pybind11::class_<TSelf> & in_py_class)
 }
 
 template<typename TPointVector>
-pybind11::class_<TPointVector> declare_PointVector(pybind11::module &m,
+nanobind::class_<TPointVector> declare_PointVector(nanobind::module &m,
         const std::string &typestr, const std::string &component_str) {
     namespace py = pybind11;
     using TT = TPointVector;

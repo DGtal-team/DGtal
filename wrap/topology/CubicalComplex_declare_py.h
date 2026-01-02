@@ -22,7 +22,7 @@
     #define ssize_t ptrdiff_t
 #endif
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 
 #include "DGtal/topology/CubicalComplex.h"
 #include "DGtal/topology/ParDirCollapse.h"
@@ -30,7 +30,7 @@
 #include "kernel/DigitalSetBySTLVector_types_py.h" // For DigitalSetZ3i
 
 template<typename TCellMap>
-pybind11::class_<TCellMap> declare_CellMap(pybind11::module &m,
+nanobind::class_<TCellMap> declare_CellMap(nanobind::module &m,
     const std::string &typestr) {
     namespace py = pybind11;
     using TT = TCellMap;
@@ -47,7 +47,7 @@ pybind11::class_<TCellMap> declare_CellMap(pybind11::module &m,
 
 
 template<typename TCubicalComplex>
-pybind11::class_<TCubicalComplex> declare_CubicalComplex(pybind11::module &m,
+nanobind::class_<TCubicalComplex> declare_CubicalComplex(nanobind::module &m,
     const std::string &typestr) {
     namespace py = pybind11;
     using TT = TCubicalComplex;

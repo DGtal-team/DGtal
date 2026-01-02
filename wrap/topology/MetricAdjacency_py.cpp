@@ -14,15 +14,16 @@
  *
  **/
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 
 #include "MetricAdjacency_types_py.h"
 #include "MetricAdjacency_declare_py.h"
 
-namespace py = pybind11;
+namespace nb = nanobind;
+using namespace nanobind::literals;
 using namespace DGtal;
 
-void init_MetricAdjacency(py::module & m) {
+void init_MetricAdjacency(nb::module_ & m) {
     // --- 2D ---
     using Adj4 = Python::Adj4;
     using Adj8 = Python::Adj8;

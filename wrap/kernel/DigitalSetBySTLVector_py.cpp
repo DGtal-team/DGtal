@@ -14,15 +14,16 @@
  *
  **/
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 
 #include "DigitalSetBySTLVector_types_py.h"
 #include "DigitalSetBySTLVector_declare_py.h"
 
-namespace py = pybind11;
+namespace nb = nanobind;
+using namespace nanobind::literals;
 using namespace DGtal;
 
-void init_DigitalSetBySTLVector(py::module & m) {
+void init_DigitalSetBySTLVector(nb::module_ & m) {
     auto py_class_DigitalSetZ2i = declare_DigitalSetBySTLVector<Python::DigitalSetZ2i>(m, "DigitalSetZ2i");
     auto py_class_DigitalSetZ3i = declare_DigitalSetBySTLVector<Python::DigitalSetZ3i>(m, "DigitalSetZ3i");
 }

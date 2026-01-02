@@ -22,13 +22,13 @@
     #define ssize_t ptrdiff_t
 #endif
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "KhalimskySpaceND_types_py.h"
 
 template<typename TKhalimskyCell>
-pybind11::class_<TKhalimskyCell> declare_KhalimskyCell_common(pybind11::module &m,
+nanobind::class_<TKhalimskyCell> declare_KhalimskyCell_common(nanobind::module &m,
     const std::string &typestr) {
     namespace py = pybind11;
     using TT = TKhalimskyCell;
@@ -86,7 +86,7 @@ R"(Represents an cell in a cellular grid space by its Khalimsky coordinates.)";
 }
 
 template<typename TKhalimskyCell>
-pybind11::class_<TKhalimskyCell> declare_KhalimskyCell(pybind11::module &m,
+nanobind::class_<TKhalimskyCell> declare_KhalimskyCell(nanobind::module &m,
     const std::string &typestr) {
     namespace py = pybind11;
     using TT = TKhalimskyCell;
@@ -119,7 +119,7 @@ pybind11::class_<TKhalimskyCell> declare_KhalimskyCell(pybind11::module &m,
 }
 
 template<typename TKhalimskyCell>
-pybind11::class_<TKhalimskyCell> declare_SignedKhalimskyCell(pybind11::module &m,
+nanobind::class_<TKhalimskyCell> declare_SignedKhalimskyCell(nanobind::module &m,
     const std::string &typestr) {
     namespace py = pybind11;
     using TT = TKhalimskyCell;
@@ -154,7 +154,7 @@ pybind11::class_<TKhalimskyCell> declare_SignedKhalimskyCell(pybind11::module &m
 }
 
 template<typename TKhalimskySpaceND>
-pybind11::class_<TKhalimskySpaceND> declare_KhalimskySpaceND(pybind11::module &m,
+nanobind::class_<TKhalimskySpaceND> declare_KhalimskySpaceND(nanobind::module &m,
     const std::string &typestr) {
     namespace py = pybind11;
     using TT = TKhalimskySpaceND;

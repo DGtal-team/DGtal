@@ -22,7 +22,7 @@
     #define ssize_t ptrdiff_t
 #endif
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 
 #include "DGtal/topology/VoxelComplex.h"
 #include "DGtal/topology/VoxelComplexThinning.h"
@@ -30,7 +30,7 @@
 #include "kernel/DigitalSetBySTLVector_types_py.h" // For DigitalSetZ3i,Z2i
 
 template<typename TVoxelComplex>
-pybind11::class_<TVoxelComplex> declare_VoxelComplex(pybind11::module &m,
+nanobind::class_<TVoxelComplex> declare_VoxelComplex(nanobind::module &m,
     const std::string &typestr) {
     namespace py = pybind11;
     using TT = TVoxelComplex;

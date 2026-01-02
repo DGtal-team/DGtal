@@ -22,14 +22,14 @@
     #define ssize_t ptrdiff_t
 #endif
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 
 #include "DGtal/topology/Object.h"
 #include "DGtal/topology/NeighborhoodConfigurations.h" // for loadTable
 #include "Object_types_py.h"
 
 template<typename TObject>
-pybind11::class_<TObject> declare_Object(pybind11::module &m,
+nanobind::class_<TObject> declare_Object(nanobind::module &m,
     const std::string &typestr) {
     namespace py = pybind11;
     using TT = TObject;

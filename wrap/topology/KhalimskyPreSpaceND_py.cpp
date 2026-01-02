@@ -14,15 +14,16 @@
  *
  **/
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 
 #include "KhalimskyPreSpaceND_types_py.h"
 #include "KhalimskyPreSpaceND_declare_py.h"
 
-namespace py = pybind11;
+namespace nb = nanobind;
+using namespace nanobind::literals;
 using namespace DGtal;
 
-void init_KhalimskyPreSpaceND(py::module & m) {
+void init_KhalimskyPreSpaceND(nb::module_ & m) {
     using PreCell2D = DGtal::Python::PreCell2D;
     using SPreCell2D = DGtal::Python::SPreCell2D;
     using KPreSpace2D = DGtal::Python::KPreSpace2D;

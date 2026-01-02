@@ -22,12 +22,12 @@
     #define ssize_t ptrdiff_t
 #endif
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
 
 template<typename TDigitalSetBySTLVector>
-pybind11::class_<TDigitalSetBySTLVector> declare_DigitalSetBySTLVector(pybind11::module &m,
+nanobind::class_<TDigitalSetBySTLVector> declare_DigitalSetBySTLVector(nanobind::module &m,
     const std::string &typestr) {
     namespace py = pybind11;
     using TT = TDigitalSetBySTLVector;

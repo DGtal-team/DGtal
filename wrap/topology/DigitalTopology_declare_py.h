@@ -22,13 +22,13 @@
     #define ssize_t ptrdiff_t
 #endif
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 
 #include "DGtal/topology/DigitalTopology.h"
 #include "DigitalTopology_types_py.h"
 
 template<typename TDigitalTopology>
-pybind11::class_<TDigitalTopology> declare_DigitalTopology(pybind11::module &m,
+nanobind::class_<TDigitalTopology> declare_DigitalTopology(nanobind::module &m,
     const std::string &typestr) {
     namespace py = pybind11;
     using TT = TDigitalTopology;

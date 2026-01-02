@@ -22,7 +22,7 @@
     #define ssize_t ptrdiff_t
 #endif
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 
 #include "DGtal/images/imagesSetsUtils/SetFromImage.h"
 

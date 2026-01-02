@@ -14,15 +14,16 @@
  *
  **/
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 
 #include "Object_types_py.h"
 #include "Object_declare_py.h"
 
-namespace py = pybind11;
+namespace nb = nanobind;
+using namespace nanobind::literals;
 using namespace DGtal;
 
-void init_Object(py::module & m) {
+void init_Object(nb::module_ & m) {
     // --- 2D ---
     auto py_class_Object4_8 = declare_Object<Python::Object4_8>(m, "Object4_8");
     auto py_class_Object8_4 = declare_Object<Python::Object8_4>(m, "Object8_4");

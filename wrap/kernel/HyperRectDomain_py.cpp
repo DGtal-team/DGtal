@@ -14,15 +14,16 @@
  *
  **/
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 
 #include "HyperRectDomain_types_py.h"
 #include "HyperRectDomain_declare_py.h"
 
-namespace py = pybind11;
+namespace nb = nanobind;
+using namespace nanobind::literals;
 using namespace DGtal;
 
-void init_HyperRectDomain(py::module & m) {
+void init_HyperRectDomain(nb::module_ & m) {
     auto py_class_DomainZ2i = declare_HyperRectDomain<Python::DomainZ2i>(m, "DomainZ2i");
     auto py_class_DomainZ3i = declare_HyperRectDomain<Python::DomainZ3i>(m, "DomainZ3i");
 }

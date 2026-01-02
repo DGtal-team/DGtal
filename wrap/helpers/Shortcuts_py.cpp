@@ -24,9 +24,10 @@
  * This file is part of the DGtal library.
  */
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 #include "pybind11/numpy.h"
-namespace py = pybind11;
+namespace nb = nanobind;
+using namespace nanobind::literals;
 
 #include "DGtal/helpers/Shortcuts.h"
 #include "DGtal/helpers/ShortcutsGeometry.h"
@@ -66,11 +67,11 @@ std::vector<Color> apply_colormapV(const std::vector<T>& data, const Parameters&
 }
 
 template<typename It, typename Embd>
-py::array_t<double> getEmbeddedPosition(Embd& embedder, size_t size, It it, It end) {
+nb::array_t<double> getEmbeddedPosition(Embd& embedder, size_t size, It it, It end) {
     constexpr size_t eSize  = sizeof(double);
     const size_t shape[2]   = {size, 3};
     const size_t strides[2] = {3 * eSize, eSize};
-    auto array = py::array_t<double>(shape, strides);
+    auto array = nb::array_t<double>(shape, strides);
     auto view  = array.mutable_unchecked<2>();
 
     for (size_t i = 0; it != end; ++it, ++i) {
@@ -84,7 +85,7 @@ py::array_t<double> getEmbeddedPosition(Embd& embedder, size_t size, It it, It e
     return array;
 }
 
-void define_types(py::module& m) {
+void define_types(nb::module_& m) {
     // We define some "opaques" type that are only be meant to be returned to the user
     // and pass to other functions afterwards. These are not meant to be full binding 
     // of the types.
@@ -98,44 +99,44 @@ void define_types(py::module& m) {
     //  SCellEmbedder
     
     // TODO: In IO module?
-    py::class_<SH3::ColorMap>(m, "ColorMap")
-        .def(py::init<double, double>())
+    nb::class_<SH3::ColorMap>(m, "ColorMap")
+        .def(nb::init<double, double>())
         .def("addColor", &SH3::ColorMap::addColor)
         .def("__call__", &SH3::ColorMap::operator());
 
     // Ranges
-    py::class_<SH3::SurfelRange>(m, "SurfelRange"); // This is a vector, so len() is available !
-    py::class_<SH3::IdxRange>(m, "IdxRange");
+    nb::class_<SH3::SurfelRange>(m, "SurfelRange"); // This is a vector, so len() is available !
+    nb::class_<SH3::IdxRange>(m, "IdxRange");
 
     // Containers
-    py::class_<CountedPtr<SH3::BinaryImage>>(m, "__PtrBinaryImage");
-    py::class_<CountedPtr<SH3::GrayScaleImage>>(m, "__PtrGrayScaleImage");
-    py::class_<CountedPtr<SH3::LightDigitalSurface>>(m, "__PtrLightDigitalSurface")
+    nb::class_<CountedPtr<SH3::BinaryImage>>(m, "__PtrBinaryImage");
+    nb::class_<CountedPtr<SH3::GrayScaleImage>>(m, "__PtrGrayScaleImage");
+    nb::class_<CountedPtr<SH3::LightDigitalSurface>>(m, "__PtrLightDigitalSurface")
         .def("__len__", [](const CountedPtr<SH3::LightDigitalSurface>& surf) {
             return surf->size();
         })
         .def("size", [](const CountedPtr<SH3::LightDigitalSurface>& surf) {
             return surf->size();
         });
-    py::class_<CountedPtr<SH3::TriangulatedSurface>>(m, "__PtrTriangulatedSurface");
-    py::class_<CountedPtr<SH3::Mesh>>(m, "__PtrMesh")
+    nb::class_<CountedPtr<SH3::TriangulatedSurface>>(m, "__PtrTriangulatedSurface");
+    nb::class_<CountedPtr<SH3::Mesh>>(m, "__PtrMesh")
         .def("__len__", [](const CountedPtr<SH3::LightDigitalSurface>& surf) {
             return surf->size();
         })
         .def("nbVertex", [](const CountedPtr<SH3::Mesh>& mesh) {
             return mesh->nbVertex();
         });
-    py::class_<CountedPtr<SH3::ImplicitShape3D>>(m, "__PtrImplicitShape3D");
-    py::class_<CountedPtr<SH3::DigitizedImplicitShape3D>>(m, "__PtrDigitizedImplicitShape3D");
-    py::class_<SH3::Cell2Index>(m, "Cell2Index")
-        .def(py::init<>());
+    nb::class_<CountedPtr<SH3::ImplicitShape3D>>(m, "__PtrImplicitShape3D");
+    nb::class_<CountedPtr<SH3::DigitizedImplicitShape3D>>(m, "__PtrDigitizedImplicitShape3D");
+    nb::class_<SH3::Cell2Index>(m, "Cell2Index")
+        .def(nb::init<>());
 
 }
 
-void defines_types_geometry(py::module& m) {
+void defines_types_geometry(nb::module_& m) {
     // TODO: Should probably be bound in math header instead (but it does not exist yet)
-    py::class_<SHG3::ScalarStatistic>(m, "ScalarStatistic")
-        .def(py::init<>())
+    nb::class_<SHG3::ScalarStatistic>(m, "ScalarStatistic")
+        .def(nb::init<>())
         .def("samples", &SHG3::ScalarStatistic::samples)
         .def("size", &SHG3::ScalarStatistic::size)
         .def("mean", &SHG3::ScalarStatistic::mean)
@@ -154,7 +155,7 @@ void defines_types_geometry(py::module& m) {
 
     // We map distance transformation and voronoi map under the same name. 
     // We just "cheat" by binding functions under different names
-    py::class_<L1DistanceTransform>(m, "L1VoronoiMap")
+    nb::class_<L1DistanceTransform>(m, "L1VoronoiMap")
         // No constructor, we let the user build it with getDistanceTransformation
         .def("distanceToClosestSite", [](const L1DistanceTransform& vmap, const SHG3::Point& p){
                 return vmap(p);
@@ -175,7 +176,7 @@ void defines_types_geometry(py::module& m) {
                 return vmap.getVoronoiSite(SHG3::Point(p[0], p[1], p[2]));
             });
 
-    py::class_<L2DistanceTransform>(m, "L2VoronoiMap")
+    nb::class_<L2DistanceTransform>(m, "L2VoronoiMap")
         // No constructor, we let the user build it with getDistanceTransformation
         .def("distanceToClosestSite", [](const L2DistanceTransform& vmap, const SHG3::Point& p){
                 return vmap(p);
@@ -196,9 +197,9 @@ void defines_types_geometry(py::module& m) {
                 return vmap.getVoronoiSite(SHG3::Point(p[0], p[1], p[2]));
             });}
 
-void bind_voronoimap(py::module& mg);
+void bind_voronoimap(nb::module_& mg);
 
-void bind_shortcuts(py::module& m_helpers) {
+void bind_shortcuts(nb::module_& m_helpers) {
     auto m = m_helpers.def_submodule("SH3", "Shortcuts 3D"); 
     define_types(m);
 
@@ -213,7 +214,7 @@ void bind_shortcuts(py::module& m_helpers) {
         });
 
     // Note: We use lambda because default parameters or partial specialization results 
-    // in multiple overloads that are not disambiguated with py::overload_cast...
+    // in multiple overloads that are not disambiguated with nb::overload_cast...
     // Even when it could, we use lambda for consistency
     
     // Create objects
@@ -431,7 +432,7 @@ void bind_shortcuts(py::module& m_helpers) {
     bind_voronoimap(mg);
 }
 
-void bind_voronoimap(py::module& mg) {
+void bind_voronoimap(nb::module_& mg) {
     mg.def("makeL1VoronoiMap", [](const SH3::Domain& d, const std::vector<SHG3::Point>& points, const Parameters& params) {
             return SHG3::getDistanceTransformation<1>(d, points, params);
         });
@@ -451,10 +452,10 @@ void bind_voronoimap(py::module& mg) {
     mg.def("getL1DistanceToClosestSite", [](const std::vector<SH3::Point>& points, const std::vector<SHG3::Point>& sites, const Parameters& params) {
             return SHG3::getDistanceToClosestSite<1>(points, sites, params);
         });
-    mg.def("getL1DistanceToClosestSite", [](py::buffer b, const std::vector<SHG3::Point>& sites, const Parameters& params) {
-            py::buffer_info info = b.request();
+    mg.def("getL1DistanceToClosestSite", [](nb::buffer b, const std::vector<SHG3::Point>& sites, const Parameters& params) {
+            nb::buffer_info info = b.request();
 
-            if (info.format != py::format_descriptor<int>::format())
+            if (info.format != nb::format_descriptor<int>::format())
                 throw std::runtime_error("Only arrays of int are supported");
 
             if (info.ndim != 2)
@@ -478,10 +479,10 @@ void bind_voronoimap(py::module& mg) {
     mg.def("getL2DistanceToClosestSite", [](const std::vector<SH3::Point>& points, const std::vector<SHG3::Point>& sites, const Parameters& params) {
             return SHG3::getDistanceToClosestSite<2>(points, sites, params);
         });
-    mg.def("getL2DistanceToClosestSite", [](py::buffer b, const std::vector<SHG3::Point>& sites, const Parameters& params) {
-            py::buffer_info info = b.request();
+    mg.def("getL2DistanceToClosestSite", [](nb::buffer b, const std::vector<SHG3::Point>& sites, const Parameters& params) {
+            nb::buffer_info info = b.request();
 
-            if (info.format != py::format_descriptor<int>::format())
+            if (info.format != nb::format_descriptor<int>::format())
                 throw std::runtime_error("Only arrays of int are supported");
 
             if (info.ndim != 2)
@@ -506,10 +507,10 @@ void bind_voronoimap(py::module& mg) {
     mg.def("getL1DirectionToClosestSite", [](const std::vector<SH3::Point>& points, const std::vector<SHG3::Point>& sites, const Parameters& params) {
             return SHG3::getDirectionToClosestSite<1>(points, sites, params);
         });
-    mg.def("getL1DirectionToClosestSite", [](py::buffer b, const std::vector<SHG3::Point>& sites, const Parameters& params) {
-            py::buffer_info info = b.request();
+    mg.def("getL1DirectionToClosestSite", [](nb::buffer b, const std::vector<SHG3::Point>& sites, const Parameters& params) {
+            nb::buffer_info info = b.request();
 
-            if (info.format != py::format_descriptor<int>::format())
+            if (info.format != nb::format_descriptor<int>::format())
                 throw std::runtime_error("Only arrays of int are supported");
 
             if (info.ndim != 2)
@@ -533,10 +534,10 @@ void bind_voronoimap(py::module& mg) {
     mg.def("getL2DirectionToClosestSite", [](const std::vector<SH3::Point>& points, const std::vector<SHG3::Point>& sites, const Parameters& params) {
             return SHG3::getDirectionToClosestSite<2>(points, sites, params);
         });
-    mg.def("getL2DirectionToClosestSite", [](py::buffer b, const std::vector<SHG3::Point>& sites, const Parameters& params) {
-            py::buffer_info info = b.request();
+    mg.def("getL2DirectionToClosestSite", [](nb::buffer b, const std::vector<SHG3::Point>& sites, const Parameters& params) {
+            nb::buffer_info info = b.request();
 
-            if (info.format != py::format_descriptor<int>::format())
+            if (info.format != nb::format_descriptor<int>::format())
                 throw std::runtime_error("Only arrays of int are supported");
 
             if (info.ndim != 2)

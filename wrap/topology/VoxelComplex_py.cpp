@@ -14,14 +14,15 @@
  *
  **/
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 
 #include "VoxelComplex_types_py.h"
 #include "VoxelComplex_declare_py.h"
 
-namespace py = pybind11;
+namespace nb = nanobind;
+using namespace nanobind::literals;
 using namespace DGtal;
 
-void init_VoxelComplex(py::module & m) {
+void init_VoxelComplex(nb::module_ & m) {
     declare_VoxelComplex<Python::VoxelComplex>(m, "VoxelComplex");
 }

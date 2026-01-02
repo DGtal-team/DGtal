@@ -22,7 +22,7 @@
     #define ssize_t ptrdiff_t
 #endif
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 
 #include "DGtal/topology/KhalimskyPreSpaceND.h"
 #include "KhalimskyPreSpaceND_types_py.h"
@@ -34,7 +34,7 @@
  * @return the respective py:class_ of the type.
  */
 template<typename TKhalimskyPreCell>
-pybind11::class_<TKhalimskyPreCell> declare_KhalimskyPreCell_common(pybind11::module &m,
+nanobind::class_<TKhalimskyPreCell> declare_KhalimskyPreCell_common(nanobind::module &m,
     const std::string &typestr) {
     namespace py = pybind11;
     using TT = TKhalimskyPreCell;
@@ -91,7 +91,7 @@ Khalimsky coordinates.)";
 }
 
 template<typename TKhalimskyPreCell>
-pybind11::class_<TKhalimskyPreCell> declare_KhalimskyPreCell(pybind11::module &m,
+nanobind::class_<TKhalimskyPreCell> declare_KhalimskyPreCell(nanobind::module &m,
     const std::string &typestr) {
     namespace py = pybind11;
     using TT = TKhalimskyPreCell;
@@ -174,7 +174,7 @@ point: dgtal.Point
 }
 
 template<typename TSignedKhalimskyPreCell>
-pybind11::class_<TSignedKhalimskyPreCell> declare_SignedKhalimskyPreCell(pybind11::module &m,
+nanobind::class_<TSignedKhalimskyPreCell> declare_SignedKhalimskyPreCell(nanobind::module &m,
     const std::string &typestr) {
     namespace py = pybind11;
     using TT = TSignedKhalimskyPreCell;
@@ -230,7 +230,7 @@ positive: Bool
 }
 
 template<typename TKhalimskyPreSpaceND>
-pybind11::class_<TKhalimskyPreSpaceND> declare_KhalimskyPreSpaceND(pybind11::module &m,
+nanobind::class_<TKhalimskyPreSpaceND> declare_KhalimskyPreSpaceND(nanobind::module &m,
     const std::string &typestr) {
     namespace py = pybind11;
     using TT = TKhalimskyPreSpaceND;

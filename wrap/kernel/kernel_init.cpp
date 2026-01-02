@@ -14,15 +14,15 @@
  *
  **/
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 
-namespace py = pybind11;
+namespace nb = nanobind;
 
-void init_PointVector(py::module &);
-void init_HyperRectDomain(py::module &);
-void init_DigitalSetBySTLVector(py::module &);
+void init_PointVector(nb::module_ &);
+void init_HyperRectDomain(nb::module_ &);
+void init_DigitalSetBySTLVector(nb::module_ &);
 
-void init_dgtal_kernel(py::module & mparent) {
+void init_dgtal_kernel(nb::module_ & mparent) {
     auto m = mparent.def_submodule("kernel");
     init_PointVector(m);
     init_HyperRectDomain(m);
