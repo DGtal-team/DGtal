@@ -14,17 +14,18 @@
  *
  **/
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 
 #include "DigitalTopology_types_py.h"
 #include "DigitalTopology_declare_py.h"
 
-namespace py = pybind11;
+namespace nb = nanobind;
+using namespace nanobind::literals;
 using namespace DGtal;
 
-void init_DigitalTopology(py::module & m) {
+void init_DigitalTopology(nb::module_ & m) {
 
-    py::enum_<DGtal::DigitalTopologyProperties>(m, "DigitalTopologyProperties",
+    nb::enum_<DGtal::DigitalTopologyProperties>(m, "DigitalTopologyProperties",
             R"(Possible properties of digital topologies.)")
         .value("UNKNOWN_DT", DGtal::UNKNOWN_DT)
         .value("NOT_JORDAN_DT", DGtal::NOT_JORDAN_DT)

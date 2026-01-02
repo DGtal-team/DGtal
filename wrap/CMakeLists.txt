@@ -19,12 +19,12 @@ add_subdirectory(io)
 add_subdirectory(helpers)
 
 set(wrap_header_common
-  dgtal_pybind11_common.h)
+  dgtal_nanobind_common.h)
 
-# Add the pybind module
+# Add the nanobind module
 # Use SHARED instead of the default MODULE to allow external plugins to link to it.
 # This would require the same CI/CD to build and link these external plugins.
-pybind11_add_module(_dgtal
+nanobind_add_module(_dgtal
   SHARED
   dgtal_init_py.cpp # Where module is added
   ${all_modules_python_sources} # all the collected sources in submodules
@@ -34,7 +34,7 @@ add_library(DGtal::_dgtal ALIAS _dgtal)
 target_link_libraries(_dgtal PRIVATE ${enabled_libs_})
 target_include_directories(_dgtal PUBLIC
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-  $<INSTALL_INTERFACE:${CMAKE_INSTALL_PYTHONINCLUDEDIR}> # For dgtal_pybind11_common.h
+  $<INSTALL_INTERFACE:${CMAKE_INSTALL_PYTHONINCLUDEDIR}> # For dgtal_nanobind_common.h
   )
 target_include_directories(_dgtal PRIVATE ${enabled_include_dirs_})
 target_include_directories(_dgtal SYSTEM PRIVATE ${enabled_include_system_dirs_})

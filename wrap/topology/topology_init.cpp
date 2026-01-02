@@ -14,23 +14,23 @@
  *
  **/
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 #include "DGtal/topology/Topology.h" // For enum Connectedness
 
-namespace py = pybind11;
+namespace nb = nanobind;
 
-void init_KhalimskyPreSpaceND(py::module &);
-void init_KhalimskySpaceND(py::module &);
-void init_MetricAdjacency(py::module &);
-void init_DigitalTopology(py::module &);
-void init_Object(py::module &);
-void init_CubicalComplex(py::module &);
-void init_VoxelComplex(py::module &);
+void init_KhalimskyPreSpaceND(nb::module_ &);
+void init_KhalimskySpaceND(nb::module_ &);
+void init_MetricAdjacency(nb::module_ &);
+void init_DigitalTopology(nb::module_ &);
+void init_Object(nb::module_ &);
+void init_CubicalComplex(nb::module_ &);
+void init_VoxelComplex(nb::module_ &);
 
-void init_dgtal_topology(py::module & mparent) {
+void init_dgtal_topology(nb::module_ & mparent) {
     auto m = mparent.def_submodule("topology");
 
-    py::enum_<DGtal::Connectedness>(m, "Connectedness")
+    nb::enum_<DGtal::Connectedness>(m, "Connectedness")
         .value("DISCONNECTED", DGtal::DISCONNECTED)
         .value("CONNECTED", DGtal::CONNECTED)
         .value("UNKNOWN", DGtal::UNKNOWN);

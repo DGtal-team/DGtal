@@ -14,15 +14,16 @@
  *
  **/
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 
 #include "CubicalComplex_types_py.h"
 #include "CubicalComplex_declare_py.h"
 
-namespace py = pybind11;
+namespace nb = nanobind;
+using namespace nanobind::literals;
 using namespace DGtal;
 
-void init_CubicalComplex(py::module & m) {
+void init_CubicalComplex(nb::module_ & m) {
     // CubicalCellData
     const std::string docs_CubicalCellData =
 R"(Any cell is stored within a cubical complex with an associated
@@ -40,10 +41,10 @@ The corresponding mask is CubicalComplex.VALUE.
 
 Such data is notably used in collapse operation
 )";
-    auto py_class_CubicalCellData = py::class_<CubicalCellData>(m, "CubicalCellData",
+    auto py_class_CubicalCellData = nb::class_<CubicalCellData>(m, "CubicalCellData",
             docs_CubicalCellData.c_str());
-    py_class_CubicalCellData.def(py::init());
-    py_class_CubicalCellData.def(py::init<DGtal::uint32_t>());
+    py_class_CubicalCellData.def(nb::init());
+    py_class_CubicalCellData.def(nb::init<DGtal::uint32_t>());
     py_class_CubicalCellData.def_readwrite("data", &CubicalCellData::data);
     py_class_CubicalCellData.def("__repr__", [](const CubicalCellData & self) {
         std::stringstream os;

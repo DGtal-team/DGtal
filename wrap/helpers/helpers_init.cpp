@@ -24,31 +24,32 @@
  * This file is part of the DGtal library.
  */
 
-#include "dgtal_pybind11_common.h"
-namespace py = pybind11;
+#include "dgtal_nanobind_common.h"
+namespace nb = nanobind;
+using namespace nanobind::literals;
 
 #include "DGtal/helpers/Parameters.h"
 
-void bind_shortcuts(py::module& m);
+void bind_shortcuts(nb::module_& m);
 
-void init_dgtal_helpers(py::module& m) {
+void init_dgtal_helpers(nb::module_& m) {
     using namespace DGtal;
 
     auto m_helpers = m.def_submodule("helpers", "Submodule for DGtal helpers");
-    m_helpers.attr("SAMPLES_PATH") = py::str(std::string(DGTAL_PATH) + "/examples/samples/");
+    m_helpers.attr("SAMPLES_PATH") = nb::str(std::string(DGTAL_PATH) + "/examples/samples/");
 
     // Bind parameter class
-    py::class_<Parameters>(m_helpers, "Parameters")
-        .def(py::init<>())
+    nb::class_<Parameters>(m_helpers, "Parameters")
+        .def(nb::init<>())
         .def("set", [](Parameters& params, const std::string& name, int value) {
             return params(name, ParameterValue(value));
-        }, py::return_value_policy::reference)
+        }, nb::rv_policy::reference)
         .def("set", [](Parameters& params, const std::string& name, float value) {
             return params(name, ParameterValue(value));
-        }, py::return_value_policy::reference)
+        }, nb::rv_policy::reference)
       .def("set", [](Parameters& params, const std::string& name, std::string value) {
             return params(name, ParameterValue(value));
-        }, py::return_value_policy::reference)
+        }, nb::rv_policy::reference)
        .def("__str__", [](const Parameters& params) {
             std::stringstream ss;
             params.selfDisplay(ss);

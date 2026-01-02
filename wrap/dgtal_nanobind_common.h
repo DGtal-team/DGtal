@@ -14,33 +14,36 @@
  *
  **/
 
-// This file should be included in all cpp files using pybind11
+// This file should be included in all cpp files using nanobind
 // to avoid -Wodr violation (Warning).
-// See https://github.com/pybind/pybind11/issues/1055
-#ifndef DGTAL_PYBIND11_COMMON_H
-#define DGTAL_PYBIND11_COMMON_H
+#ifndef DGTAL_NANOBIND_COMMON_H
+#define DGTAL_NANOBIND_COMMON_H
 
 #if defined (_MSC_VER) and !defined(ssize_t)
     // ssize_t is not standard, only posix which is not supported by MSVC
     #define ssize_t ptrdiff_t
 #endif
 
-#include <pybind11/pybind11.h>
-#include <pybind11/functional.h>
-#include <pybind11/stl_bind.h>
-#include <pybind11/stl.h>
+#include <nanobind/nanobind.h>
+#include <nanobind/stl/function.h>
+#include <nanobind/stl/bind_map.h>
+#include <nanobind/stl/shared_ptr.h>
+#include <nanobind/stl/string.h>
+#include <nanobind/stl/vector.h>
+#include <nanobind/stl/list.h>
+#include <nanobind/operators.h>
 
 #include "topology/KhalimskyPreSpaceND_types_py.h" // For KPreSpace2D
 #include "topology/CubicalComplex_types_py.h" // For CellMap2|3D
 
-// To avoid automatic conversion to dictionaries from pybind11/stl.h
-// Later, we use py::bind_map to create bindings.
-PYBIND11_MAKE_OPAQUE(DGtal::Python::CellMap2D);
-PYBIND11_MAKE_OPAQUE(DGtal::Python::CellMap3D);
+// To avoid automatic conversion to dictionaries from nanobind STL bindings
+// Later, we use nb::bind_map to create bindings.
+NB_MAKE_OPAQUE(DGtal::Python::CellMap2D);
+NB_MAKE_OPAQUE(DGtal::Python::CellMap3D);
 
-namespace pybind11 { namespace detail {
+namespace nanobind { namespace detail {
 
-    // Specialize py::details::type_caster for KhalimskyPreSpaceND::AnyCellCollection.
+    // Specialize type_caster for KhalimskyPreSpaceND::AnyCellCollection.
     template<typename CellType>
     struct type_caster<
     typename DGtal::Python::KPreSpace2D::AnyCellCollection<CellType>>
@@ -52,7 +55,7 @@ namespace pybind11 { namespace detail {
         : list_caster<DGtal::Python::KPreSpace3D::AnyCellCollection<CellType>,
         CellType> { };
 
-}} //namespace pybind11::detail
+}} //namespace nanobind::detail
 
 
 #endif

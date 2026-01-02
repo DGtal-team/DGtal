@@ -1,17 +1,16 @@
 option(DGTAL_WRAP_PYTHON "Compile python wrappings" OFF)
 if(DGTAL_WRAP_PYTHON)
-  # Fetch pybind11
+  # Find Python first (required by nanobind)
+  find_package(Python COMPONENTS Interpreter Development.Module Development.SABIModule REQUIRED)
+  
+  # Fetch nanobind
   include(FetchContent)
   FetchContent_Declare(
-    pybind11
-    GIT_REPOSITORY https://github.com/pybind/pybind11
-    GIT_TAG v2.9
+    nanobind
+    GIT_REPOSITORY https://github.com/wjakob/nanobind
+    GIT_TAG v2.2.0
   )
-  FetchContent_GetProperties(pybind11)
-  if(NOT pybind11_POPULATED)
-    FetchContent_Populate(pybind11)
-    add_subdirectory(${pybind11_SOURCE_DIR} ${pybind11_BINARY_DIR})
-  endif()
+  FetchContent_MakeAvailable(nanobind)
 
   option(DGTAL_BUILD_TESTS_PYTHON "Enable python testing" ON)
   if(NOT DGTAL_BUILD_TESTS AND DGTAL_BUILD_TESTS_PYTHON)

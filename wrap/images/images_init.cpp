@@ -14,13 +14,13 @@
  *
  **/
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 
-namespace py = pybind11;
+namespace nb = nanobind;
 
-void init_ImageContainerBySTLVector(py::module &);
+void init_ImageContainerBySTLVector(nb::module_ &);
 
-void init_dgtal_images(py::module & mparent) {
+void init_dgtal_images(nb::module_ & mparent) {
     auto m = mparent.def_submodule("images");
     init_ImageContainerBySTLVector(m);
 }

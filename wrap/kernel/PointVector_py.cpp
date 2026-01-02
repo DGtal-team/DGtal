@@ -14,15 +14,16 @@
  *
  **/
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 
 #include "PointVector_types_py.h" // For Python::Point2D
 #include "PointVector_declare_py.h"
 
-namespace py = pybind11;
+namespace nb = nanobind;
+using namespace nanobind::literals;
 using namespace DGtal;
 
-void init_PointVector(py::module & m) {
+void init_PointVector(nb::module_ & m) {
     using Point2D = Python::Point2D;
     using Point3D = Python::Point3D;
     using RealPoint2D = Python::RealPoint2D;

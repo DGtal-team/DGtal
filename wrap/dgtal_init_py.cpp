@@ -14,17 +14,17 @@
  *
  **/
 
-#include "dgtal_pybind11_common.h"
-namespace py = pybind11;
+#include "dgtal_nanobind_common.h"
+namespace nb = nanobind;
 
-void init_dgtal_kernel(py::module &);
-void init_dgtal_base(py::module &);
-void init_dgtal_topology(py::module &);
-void init_dgtal_images(py::module &);
-void init_dgtal_io(py::module &);
-void init_dgtal_helpers(py::module&);
+void init_dgtal_kernel(nb::module_ &);
+void init_dgtal_base(nb::module_ &);
+void init_dgtal_topology(nb::module_ &);
+void init_dgtal_images(nb::module_ &);
+void init_dgtal_io(nb::module_ &);
+void init_dgtal_helpers(nb::module_&);
 
-PYBIND11_MODULE(_dgtal, m) {
+NB_MODULE(_dgtal, m) {
     m.doc() = "Digital Geometry Tools and Algorithms.";
     init_dgtal_kernel(m);
     init_dgtal_base(m);

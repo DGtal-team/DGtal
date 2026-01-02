@@ -14,15 +14,16 @@
  *
  **/
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 
 #include "DGtal/base/Common.h"
 
-namespace py = pybind11;
+namespace nb = nanobind;
+using namespace nanobind::literals;
 using namespace DGtal;
 
-void init_orientation(py::module &m) {
-    py::enum_<Orientation>(m, "Orientation")
+void init_orientation(nb::module_ &m) {
+    nb::enum_<Orientation>(m, "Orientation")
         .value("INSIDE", INSIDE)
         .value("ON", ON)
         .value("OUTSIDE", OUTSIDE);

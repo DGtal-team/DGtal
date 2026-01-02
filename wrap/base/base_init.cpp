@@ -14,12 +14,12 @@
  *
  **/
 
-#include "dgtal_pybind11_common.h"
+#include "dgtal_nanobind_common.h"
 
-namespace py = pybind11;
-void init_orientation(py::module &);
+namespace nb = nanobind;
+void init_orientation(nb::module_ &);
 
-void init_dgtal_base(py::module & mparent) {
+void init_dgtal_base(nb::module_ & mparent) {
     auto m = mparent.def_submodule("base");
     init_orientation(m);
 }
