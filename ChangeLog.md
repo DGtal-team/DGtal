@@ -8,7 +8,7 @@
 ## BugFixes
 
 - *IO*
-  - Fixing typo in the 3d viewer documentation (David Coeurjolly, [#18xx](https://github.com/DGtal-team/DGtal/pull/18xx))
+  - Fixing typo in the 3d viewer documentation (David Coeurjolly, [#1831](https://github.com/DGtal-team/DGtal/pull/1831))
 
 # DGtal 2.1.0
 
