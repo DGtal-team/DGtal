@@ -29,6 +29,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <algorithm>
 #include <vector>
 
 #include "DGtal/base/Common.h"
@@ -106,9 +107,28 @@ int main()
   for(auto s: surfelsdepth)
     dfnodes.push_back(embedder(s));
   
-  polyscope::registerCurveNetworkLine("BF", bfnodes)-> addNodeScalarQuantity("id", id);
-  polyscope::registerCurveNetworkLine("DF", dfnodes)-> addNodeScalarQuantity("id", id);
+  std::vector<double> distbf, distdf;
+  for(auto i = 1 ; i < surfels.size(); ++i)
+  {
+    distbf.push_back( ( embedder(surfels[i]) - embedder(surfels[i-1])).norm());
+    distdf.push_back( ( embedder(surfelsdepth[i]) - embedder(surfelsdepth[i-1])).norm());
+  }
   
+  auto ps=  polyscope::registerCurveNetworkLine("BF", bfnodes);
+  ps->addNodeScalarQuantity("id", id);
+  ps->addEdgeScalarQuantity("dist", distbf);
+  auto ps2=polyscope::registerCurveNetworkLine("DF", dfnodes);
+  ps2->addNodeScalarQuantity("id", id);
+  ps2->addEdgeScalarQuantity("dist", distdf);
+  
+  trace.info()<<"Counting the number of consecutive pairs with distance <=  1.0"<< std::endl;
+  trace.info()<<"BF strategy = "<< std::count_if(distbf.begin(), distbf.end(), [](double a){ return a-0.000001 <= 1.0;})<< std::endl;
+  trace.info()<<"DF strategy = "<< std::count_if(distdf.begin(), distdf.end(), [](double a){ return a-0.000001 <= 1.0;})<< std::endl;
+
+  trace.info()<<"Counting the number of consecutive pairs with distance <=  \sqrt{2}/2"<< std::endl;
+  trace.info()<<"BF strategy = "<< std::count_if(distbf.begin(), distbf.end(), [](double a){ return a-0.000001 <= sqrt(2.0)/2.0;})<< std::endl;
+  trace.info()<<"DF strategy = "<< std::count_if(distdf.begin(), distdf.end(), [](double a){ return a-0.000001 <= sqrt(2.0)/2.0;})<< std::endl;
+
   viewer.show();
 }
 
