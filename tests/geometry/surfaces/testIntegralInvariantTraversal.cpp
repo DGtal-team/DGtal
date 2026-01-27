@@ -53,7 +53,7 @@ typedef ShortcutsGeometry<Z3i::KSpace> SHG3;
 int main()
 {
   auto params = SH3::defaultParameters() | SHG3::defaultParameters() |  SHG3::parametersGeometryEstimation();
-  params( "polynomial", "goursat" )( "gridstep", 2. )( "surfaceTraversal", "BreadthFirst" );
+  params( "polynomial", "goursat" )( "gridstep", 1. )( "surfaceTraversal", "BreadthFirst" );
   auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
   auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
   auto binary_image    = SH3::makeBinaryImage( digitized_shape, params );
@@ -108,7 +108,6 @@ int main()
   
   polyscope::registerCurveNetworkLine("BF", bfnodes)-> addNodeScalarQuantity("id", id);
   polyscope::registerCurveNetworkLine("DF", dfnodes)-> addNodeScalarQuantity("id", id);
-  
   
   viewer.show();
 }
