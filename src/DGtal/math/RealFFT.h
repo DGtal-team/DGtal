@@ -408,7 +408,7 @@ class RealFFT< HyperRectDomain<TSpace>, T >
      * Otherwise, consider using doFFT(), forwardFFT() or backwardFFT() directly.
      *
      * @warning For planners other than @a FFTW_ESTIMATE and if no plan has been generated before,
-     *    the spatial and frequency image will be overwriten. See doFFT(), forwardFFT() or backwardFFT()
+     *    the spatial and frequency image will be overwritten. See doFFT(), forwardFFT() or backwardFFT()
      *    if it is not the wanted behavior.
      */
     void createPlan( unsigned flags, int way );
@@ -436,8 +436,8 @@ class RealFFT< HyperRectDomain<TSpace>, T >
      *       extra-memory cost.
      *
      * @warning Since this class uses an in-place algorithm,
-     *          if @a way is equal to FFTW_FORWARD then the spatial image will be overwriten,
-     *      and if @a way is equal to FFTW_BACKWARD then the frequency image will be overwriten.
+     *          if @a way is equal to FFTW_FORWARD then the spatial image will be overwritten,
+     *      and if @a way is equal to FFTW_BACKWARD then the frequency image will be overwritten.
      */
     void doFFT( unsigned flags = FFTW_ESTIMATE, int way = FFTW_FORWARD, bool normalized = false );
 
@@ -454,7 +454,7 @@ class RealFFT< HyperRectDomain<TSpace>, T >
      *        a temporary image will be allocated in order to find an optimal transformation plan.
      *
      * @warning Since this class uses an in-place algorithm,
-     *          the spatial image will be overwriten during the transformation.
+     *          the spatial image will be overwritten during the transformation.
      */
     void forwardFFT( unsigned flags = FFTW_ESTIMATE );
 
@@ -479,7 +479,7 @@ class RealFFT< HyperRectDomain<TSpace>, T >
      *        a temporary image will be allocated in order to find an optimal transformation plan.
      *
      * @warning Since this class uses an in-place algorithm,
-     *          the frequency image will be overwriten during the transformation.
+     *          the frequency image will be overwritten during the transformation.
      */
     void backwardFFT( unsigned flags = FFTW_ESTIMATE, bool normalized = true );
 

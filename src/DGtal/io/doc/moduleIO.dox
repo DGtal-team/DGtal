@@ -104,7 +104,7 @@ Hence, for image writers,  some  functors may return a DGtal::Color or a scalar 
 |            | Raw     | raw binary file format for any type | the functor should return the same type as specified in the template parameter of RawWriter::exportRaw | RawWriter     |                                                          |
 
 
-@note Since DGtal doesn't integrate ITK by default, ITK image should by writen directly using the ITKWriter class.
+@note Since DGtal doesn't integrate ITK by default, ITK image should be written directly using the ITKWriter class.
 @code
   Image image;
   DGtal::ITKReader<Image>::exportITK("example.mha", image);

@@ -124,7 +124,7 @@ namespace DGtal
    * in the wider range [curve.begin(), curve.end()). 
    *
    * Moreover, a part of a digital curve may be processed either
-   * as an independant (open) digital curve or as a part whose 
+   * as an independent (open) digital curve or as a part whose 
    * segmentation at the ends depends of the underlying digital 
    * curve. That's why 3 processing modes are available:
    * - "Truncate" (default), the extension of the last segment 
