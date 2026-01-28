@@ -439,7 +439,7 @@ while ( ! visitor.finished() )
     /**
        Push backs some node in the queue. The node should have been
        ignored previously at some point. Useful when the distance is
-       not truely a distance function.
+       not truly a distance function.
        @param node a pair Vertex, distance.
      */
     void pushAgain( const Node & node );

@@ -44,11 +44,11 @@ A Docker file is included in the repository in order to allow the users to build
 To build the Docker image, Docker should have been installed in the system (to [install Docker](https://docs.docker.com/engine/install/)) download the *Dockerfile* inside the [DGtal repository](https://github.com/DGtal-team/DGtal), in the same directory where the Dockerfile is located execute    
 
 ```shell
-docker build -t dgtal:lastest .
+docker build -t dgtal:latest .
 ```
 To run an interactive terminal inside the docker container and see the examples 
 ```shell
-docker run -it --user=digital dgtal:lastest bash
+docker run -it --user=digital dgtal:latest bash
 cd /home/digital/git/DGtal/build/examples
 ```
 

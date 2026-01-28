@@ -45,7 +45,7 @@ The library handles 3D scenes movement and allows to attributes of displayed obj
 First to use the PolyscopeViewer stream, you need to include the following headers:
  *
 @code
- #include "DGtal/io/3dViewers/PolyscopeViewer.h"
+ #include "DGtal/io/viewers/PolyscopeViewer.h"
 @endcode
  *
 The following code snippet defines three points and a rectangular
