@@ -118,7 +118,7 @@ struct A { ...
 // ambiguity on the role of parameter a and its life-time. Here
 // a's lifetime should be longer than the construction. Generally
 // the ambiguity is removed by adding comments or, for the
-// experienced developper, by looking at other parts of the code.
+-// experienced developer, by looking at other parts of the code.
 
 // Only aliasing, but for a long lifetime.
 struct B1 {
@@ -129,7 +129,7 @@ struct B1 {
 };
 @endcode
 
-Sometimes it is very important that the developper that uses
+Sometimes it is very important that the developer that uses
 the library is conscious that an object, say \a b, may require
 that an instance \a a given as parameter should have a lifetime
 longer than \a b itself (case for an instance of \a B1
@@ -327,7 +327,7 @@ user forward an Alias<T> parameter.
 
     // ------------------------- Private Datas --------------------------------
   private:
-    /// Characterizes the type of the input parameter at clone instanciation.
+    /// Characterizes the type of the input parameter at clone instantiation.
     const Parameter myParam;
     /// Stores the address of the input parameter for further use.
     const void* const myPtr;

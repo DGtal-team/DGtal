@@ -425,7 +425,7 @@ DGtal::OrderedAlphabet::duvalPPtoDSS
   while ( ( j < e ) && ( lessOrEqual( w[ i ], w[ j ] ) ) ) {
 
     //This 'if/else if' is added to compute the vector defined by
-    //the Christoffel word, this is usefull in order to compute the
+    //the Christoffel word, this is useful in order to compute the
     //leaning points.
     if (order( w[ j ] ) == 1)
       ++slope1;

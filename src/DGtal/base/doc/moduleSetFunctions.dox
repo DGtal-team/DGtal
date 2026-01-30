@@ -187,7 +187,7 @@ if ( isEqual( ( A | B ) - ( A & B ), A ^ B ) )
 else                        std::cout << "erreur" << std::endl; 
 \endcode
 
-@section dgtal_setfunctions_sec5 For developpers: a traits class for containers
+@section dgtal_setfunctions_sec5 For developers: a traits class for containers
 
 In order to have set operations that can be indifferently applied to
 many kind of containers, we use a mechanism called traits. The class

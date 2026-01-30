@@ -112,7 +112,7 @@ git push origin yourbranch
 @endcode
 
 
-The merge between the two repositories is done by another developper 
+The merge between the two repositories is done by another developer 
 after a pull request. 
 To make a pull request, go to http://github.com/yourlogin/DGtal, 
 click on "Pull Request". Then, choose the two branches you would like 
@@ -239,7 +239,7 @@ Let suppose you have  edited some files and that you figure out that these modif
 @code
 git stash
 @endcode
-will put all your edits (uncommited edits) into a patch stack (and remove them from your working copy). Then, you can create your new local branch and "pop" your edit from the stack to reapply the changes. E.g.:
+will put all your edits (uncommitted edits) into a patch stack (and remove them from your working copy). Then, you can create your new local branch and "pop" your edit from the stack to reapply the changes. E.g.:
 @code
 git pull //up-to-date branch "main"
 //...
@@ -255,7 +255,7 @@ git stash pop
 git commit -a -m "...." //commit to new branch
 @endcode
 To cleanup your stack: "git stash clear"
-@note In the previous example, it wouldn't have  been possible to create/checkout a new branch since your current branch contained uncommited edits.
+@note In the previous example, it wouldn't have  been possible to create/checkout a new branch since your current branch contained uncommitted edits.
  
 
 

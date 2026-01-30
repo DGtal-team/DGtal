@@ -507,7 +507,7 @@ Shortcuts::Point is Z3i::KSpace::Point.
   - Shortcuts::getSurfelRange: returns the surfels of a digital surface in the specified traversal order.
   - Shortcuts::getCellRange: returns the k-dimensional cells of a digital surface in a the default traversal order (be careful, when it is not surfels, the order corresponds to the surfel order, and then to the incident cells).
   - Shortcuts::getIdxSurfelRange: returns the indexed surfels of an indexed digital surface in the specified traversal order.
-  - Shortcuts::getPointelRange: returns the pointels of a digital surface in the default order and optionnaly the map Pointel -> Index giving the indices of each pointel, or simply the pointels around a surfel.
+  - Shortcuts::getPointelRange: returns the pointels of a digital surface in the default order and optionally the map Pointel -> Index giving the indices of each pointel, or simply the pointels around a surfel.
   - Shortcuts::saveOBJ: several overloaded functions that save geometric elements as an OBJ file. You may save a digital surface as an OBJ file, with optionally positions, normals and colors information
 
 -# Shortcuts::RealVectors methods
@@ -521,7 +521,7 @@ Shortcuts::Point is Z3i::KSpace::Point.
   - Shortcuts::makePrimalSurfaceMesh: builds the primal polygonal surface of a digital surface (which may contain non-manifold edges)
   - Shortcuts::makeDualPolygonalSurface: builds the dual polygonal surface of a  digital surface
   - Shortcuts::makeSurfaceMesh: load a surface mesh from file
-  - Shortcuts::saveOBJ: saves a triangulated or polygonal surface or a mesh as an OBJ file, with optionnaly normals and colors information.
+  - Shortcuts::saveOBJ: saves a triangulated or polygonal surface or a mesh as an OBJ file, with optionally normals and colors information.
 
 -# ShortcutsGeometry::Mesh utilities
   - Shortcuts::parametersUtilities: parameters related to colormaps.
@@ -570,7 +570,7 @@ Shortcuts::Point is Z3i::KSpace::Point.
 
 -# AT Approximation services
   - ShortcutsGeometry::parametersATApproximation: parameters related to piecewise-smooth AT approximation.
-  - ShortcutsGeometry::getATVectorFieldApproximation: returns the piecewise-smooth approximation of the given vector field, and optionnaly returns the locii of discontinuity
+  - ShortcutsGeometry::getATVectorFieldApproximation: returns the piecewise-smooth approximation of the given vector field, and optionally returns the locii of discontinuity
 
 -# Misc. services
   - ShortcutsGeometry::getScalarsAbsoluteDifference: return the range of scalars that is the difference of two range of scalars

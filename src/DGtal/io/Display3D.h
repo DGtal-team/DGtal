@@ -484,7 +484,7 @@ namespace DGtal {
        *
        * If the name requested already exists; another one is
        * computed as follows:
-       * - If the token {i} is present, replace the first occurence with 
+       * - If the token {i} is present, replace the first occurrence with 
        *   the first available index, starting from one.
        * - Otherwise, appends "_i" where i the first available index, 
        *   starting from one.
@@ -605,7 +605,7 @@ namespace DGtal {
  
       // @brief Draws a Domain
       //
-      // Note: the default name has a special hex code in the begining
+      // Note: the default name has a special hex code in the beginning
       // so that string based view-order draws domain in the background
       std::string draw(const HyperRectDomain<Space>& domain, const std::string& uname = "\xff Domain_{i}");
 

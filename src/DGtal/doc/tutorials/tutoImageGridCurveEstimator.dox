@@ -78,7 +78,7 @@ Several length estimators have been implemented in DGtal,
 but we are using in what follows the one based on a greedy segmentation 
 of the curve into digital straight segments (DSS). 
 
-Since the DSS recognition algoritm deals with digital points, 
+Since the DSS recognition algorithm deals with digital points, 
 we get the points range of the grid curve @a c. 
 
 @snippet tutorial-examples/imageGridCurveEstimator.cpp imageGridCurveEstimator-getRange

@@ -45,7 +45,7 @@ The library handles 3D scenes movement and allows to attributes of displayed obj
 First to use the PolyscopeViewer stream, you need to include the following headers:
  *
 @code
- #include "DGtal/io/3dViewers/PolyscopeViewer.h"
+ #include "DGtal/io/viewers/PolyscopeViewer.h"
 @endcode
  *
 The following code snippet defines three points and a rectangular
@@ -300,7 +300,7 @@ std::string name1 = viewer.draw(p1, "Point name"); // name1 = "Point name"
 std::string name2 = viewer.draw(p2, "Point name"); // name2 = "Point name_1"
 @endcode 
 
-It is possible to specify where the counter will be placed with the "{i}" token (only first occurence is replaced). For KCell, the token "{d}" can also be used for dimension. 
+It is possible to specify where the counter will be placed with the "{i}" token (only first occurrence is replaced). For KCell, the token "{d}" can also be used for dimension. 
 
 @code
 Point p1( 0, 0, 0 );

@@ -626,7 +626,7 @@ namespace functors
    * Aim: Functor that subsamples an initial domain by given a grid
    * size and a shift vector. By this way, for a given point
    * considered in a new domain, it allows to recover the point
-   * coordinates in the source domain.  Such functor can be usefull to
+   * coordinates in the source domain.  Such functor can be useful to
    * apply basic image subsampling in any dimensions by using
    * ImageAdapter class.
    *
@@ -724,7 +724,7 @@ namespace functors
     }
 
     /**
-     * This method can be usefull to directely recover the new domain
+     * This method can be useful to directely recover the new domain
      * associated to the resulting subsampled domain.
      * @return the new subsampled domain.
      */

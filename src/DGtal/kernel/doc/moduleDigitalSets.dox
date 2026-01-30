@@ -131,7 +131,7 @@ them and how to test if a point belongs to the set.
   Point p1(  -10, -10  );
   Point p2(  10, 10  );
   Domain domain( p1, p2 );
-  // instanciating set within this domain.
+  // instantiating set within this domain.
   SpecificSet mySet( domain );
   Point c(  0, 0  );
   mySet.insert( c ); // inserting point (0,0)

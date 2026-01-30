@@ -277,7 +277,7 @@ and to provide a distance value for all the points of this set:
 - FMM::initFromBelsRange()
 - FMM::initFromIncidentPointsRange()
 
-Finally, we instanciate the FMM class and we perform the whole computation:  
+Finally, we instantiate the FMM class and we perform the whole computation:  
 
 @snippet geometry/volumes/distance/exampleFMM3D.cpp FMMUsage3D
 

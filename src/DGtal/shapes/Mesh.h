@@ -551,7 +551,7 @@ namespace DGtal
      *
      * @param[out] aMesh the mesh in which the new tube mesh will be created.
      * @param[in] aSkeleton the set of points which defines the tube skeleton.
-     * @param[in] aVectOfRadius the vector containing all circular sections (if it contains not enougth it value, the next values will be taken from the begining of the vector).
+     * @param[in] aVectOfRadius the vector containing all circular sections (if it contains not enough values, the next values will be taken from the beginning of the vector).
      * @param[in] angleStep the circular precision of the tube approximation.
      * @param[in] aMeshColor the color given to the generated tube mesh.
      *

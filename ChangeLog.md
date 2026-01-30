@@ -1,3 +1,15 @@
+# DGtal 2.1.1-dev
+
+## Changes
+
+- *Documentation*
+  - Many typos fixed in documentation using Github Copilot. (David Coeurjolly, [#1829](https://github.com/DGtal-team/DGtal/pull/1829))
+
+## BugFixes
+
+- *IO*
+  - Fixing typo in the 3d viewer documentation (David Coeurjolly, [#1831](https://github.com/DGtal-team/DGtal/pull/1831))
+
 # DGtal 2.1.0
 
 ## New features

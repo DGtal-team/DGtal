@@ -400,7 +400,7 @@ namespace DGtal
     /**
        @return the current primitive recognized by this computer,
        which is a ParallelStrip of diagonal width smaller than the one
-       specified at instanciation.
+       specified at instantiation.
 
        @note The returned primitive has the form \f$\mu \le \vec{N}
        \cdot \vec{X} \le \mu + \epsilon\f$. It is guaranteed that its diagonal
