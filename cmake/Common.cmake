@@ -102,7 +102,7 @@ else()
   option(DGTAL_BUILD_SHARED_LIBS "Build shared libraries." OFF)
 endif()
 
-option(DGTAL_DGTAL_DEBUG_VERBOSE "Verbose debug messages." OFF)
+option(DGTAL_DEBUG_VERBOSE "Verbose debug messages." OFF)
 option(DGTAL_VERBOSE "Verbose messages." OFF)
 option(DGTAL_COLOR_WITH_ALPHA_ARITH "Consider alpha channel in color arithmetical operations." OFF)
 option(DGTAL_NO_ESCAPED_CHAR_IN_TRACE "Avoid printing special color and font weight terminal escaped char in program output." OFF)
