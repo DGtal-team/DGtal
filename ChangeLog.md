@@ -1,5 +1,10 @@
 # DGtal 2.1.1-dev
 
+## New features
+
+- *Project*
+  - pre-commit hooks have been activated for sanity checks on files before running the git commit (David Coeurjolly,  [#1835](https://github.com/DGtal-team/DGtal/pull/1835))
+
 ## Changes
 
 - *Documentation*
@@ -10,14 +15,17 @@
 - *IO*
   - Fixing typo in the 3d viewer documentation (David Coeurjolly, [#1831](https://github.com/DGtal-team/DGtal/pull/1831))
 
+- *Build*
+  - Fixing old `DEBUG_VERBOSE` to `DGTAL_DEBUG_VERBOSE` (David Coeurjolly,  [#1834](https://github.com/DGtal-team/DGtal/pull/1834))
+
 # DGtal 2.1.0
 
 ## New features
 
 - *DGtal project*
-  - The default branch for the `DGtal-team/DGtal` project has been switched from `master` to `main`. To update your local copy of DGtal, use the following instructions  (David Coeurjolly, [#1812](https://github.com/DGtal-team/DGtal/pull/1812)): 
+  - The default branch for the `DGtal-team/DGtal` project has been switched from `master` to `main`. To update your local copy of DGtal, use the following instructions  (David Coeurjolly, [#1812](https://github.com/DGtal-team/DGtal/pull/1812)):
 ```
-git branch -m master main                                                                  
+git branch -m master main
 git fetch origin
 git branch -u origin/main main
 git remote set-head origin -a
@@ -59,7 +67,7 @@ git remote set-head origin -a
   - QuickHull could sometimes output that its output was not full dimensional since the computation of affine dimension was randomized. Now QuickHull relies on an exact computation of affine dimension (Jacques-Olivier Lachaud, [#1803](https://github.com/DGtal-team/DGtal/pull/1803))
   - Silencing a warning in the Naive3DDSSComputer.ih file. (David Coeurjolly, [#1815](https://github.com/DGtal-team/DGtal/pull/1815))
   - Fix issue in `testAffineBasis` that may produce errors for some compilers (David Coeurjolly, [#1826](https://github.com/DGtal-team/DGtal/pull/1826))
-  
+
 - *Build*
   - Version is now extracted from the `VERSION` file for CMake and Python builds (Bastien Doignies, [#1810](https://github.com/DGtal-team/DGtal/pull/1810))
   - Eigen is now properly fetched when DGTAL_ITK_WITH_EIGEN is set (Bastien Doignies, [#1818](https://github.com/DGtal-team/DGtal/pull/1818))
@@ -69,7 +77,6 @@ git remote set-head origin -a
   - Adding option not to install targets to avoid crashes when boost is fetched through multiple channels ([#1809](https://github.com/DGtal-team/DGtal/pull/1809))
   - Cleaning up the Github Actions reuses (Bastien Doignies, [#1793](https://github.com/DGtal-team/DGtal/pull/1793))
   - Add cache to github actions (Bastien Doignies, [#1805](https://github.com/DGtal-team/DGtal/pull/1805))
-  - Fixing old `DEBUG_VERBOSE` to `DGTAL_DEBUG_VERBOSE` (David Coeurjolly,  [#17xx](https://github.com/DGtal-team/DGtal/pull/17xx))
 
 - *IO*
   - Error is raised if the polyscope viewer is used without the DGTAL_WITH_POLYSCOPE_VIEWER flag (David Coeurjolly, [#1814](https://github.com/DGtal-team/DGtal/pull/1814))
@@ -93,12 +100,12 @@ git remote set-head origin -a
   - Remove GMP dependency (Bastien Doignies, [#1769](https://github.com/DGtal-team/DGtal/pull/1769))
   - New Boost BigInteger Backend (Bastien Doignies, [#1769](https://github.com/DGtal-team/DGtal/pull/1769))
 
-- *IO*  
+- *IO*
   - New Polyscope-based 3D viewer (Bastien Doignies, [#1775](https://github.com/DGtal-team/DGtal/pull/1775))
   - Remove old QGLViewer and Qt dependency (Bastien Doignies, [#1775](https://github.com/DGtal-team/DGtal/pull/1775))
   - Add reading material indices  (aka indicies to [MTL](https://fr.wikipedia.org/wiki/Material_Template_Library) entries) in SurfaceMeshReader::readOBJ
     (Jacques-Olivier Lachaud, [#1788](https://github.com/DGtal-team/DGtal/pull/1788))
-    
+
 - *Python*
   - New python bindings for Shortcuts and ShortcutsGeometry (Bastien Doignies, [#1782](https://github.com/DGtal-team/DGtal/pull/1782))
 
@@ -110,7 +117,7 @@ git remote set-head origin -a
 - *General*
   - C++20 support and new minimal standard (Bastien Doignies, [#1757](https://github.com/DGtal-team/DGtal/pull/1757))
   - Remove deprecated classes and functions (Bastien Doignies, [#1765](https://github.com/DGtal-team/DGtal/pull/1765))
-  
+
 - *Geometry*
   - Add CNC computer to Shortcuts (Bastien Doignies, [#1781](https://github.com/DGtal-team/DGtal/pull/1781))
   - Add VoronoiMap (and DistanceTransformation) to Shortcuts (Bastien, Doignies, [#1784](https://github.com/DGtal-team/DGtal/pull/1784))
@@ -123,7 +130,7 @@ git remote set-head origin -a
   - Add a cmake option to use the ITK EIGEN configuration to solve the issue [#347](https://github.com/DGtal-team/DGtalTools/issues/437) of DGTalTools. (Bertrand Kerautret, [#1759](https://github.com/DGtal-team/DGtal/pull/1759)
   - Building tests does not build the benchmarks anymore (Bastien Doignies, [#1772](https://github.com/DGtal-team/DGtal/pull/1772)
   - Add a cmake option to build benchmark (Bastien Doignies, [#1772](https://github.com/DGtal-team/DGtal/pull/1772)
-  - Fix compilation typo in tutorial-examples (shortcuts-geometry)  (Bertrand Kerautret, [#1787] (https://github.com/DGtal-team/DGtal/pull/1787)) 
+  - Fix compilation typo in tutorial-examples (shortcuts-geometry)  (Bertrand Kerautret, [#1787] (https://github.com/DGtal-team/DGtal/pull/1787))
 
 - *Documentation*
   - Refactoring of the documentation structure (David Coeurjolly, [#1762](https://github.com/DGtal-team/DGtal/pull/1762))
@@ -168,13 +175,13 @@ git remote set-head origin -a
   - Bug fix in ArithmeticalDSSComputerOnSurfels (Tristan Roussillon, [#1742](https://github.com/DGtal-team/DGtal/pull/1742))
 
 - *Topology*
-  - Fixing images in the Cubical Complex documentation page (David Coeurjolly, [#1748](https://github.com/DGtal-team/DGtal/pull/1748)) 
+  - Fixing images in the Cubical Complex documentation page (David Coeurjolly, [#1748](https://github.com/DGtal-team/DGtal/pull/1748))
 
 # DGtal 1.4.1
 
 ## New features / critical changes
 
-- *Geometry*	
+- *Geometry*
   - Add P-convexity, another characterization of full convexity,
     which is faster to compute (Jacques-Olivier Lachaud,
     [#1736](https://github.com/DGtal-team/DGtal/pull/1736))
@@ -194,7 +201,7 @@ git remote set-head origin -a
   - Minor update of the DEC package documentation (David Coeurjolly, [#1734](https://github.com/DGtal-team/DGtal/pull/1734))
 
 
-	
+
 # DGtal 1.4
 
 ## New features / critical changes
@@ -205,8 +212,8 @@ git remote set-head origin -a
     conan.io, especially on Windows, new `ENABLE_CONAN` cmake
     option to activate this. (David Coeurjolly,
     [#1689](https://github.com/DGtal-team/DGtal/pull/1689))
-  - Faster build using CPM for dependency download and ccache with the cmake `USE_CCACHE=YES`option 
-    (ccache must be installed). (David Coeurjolly, [#1696](https://github.com/DGtal-team/DGtal/pull/1696)) 
+  - Faster build using CPM for dependency download and ccache with the cmake `USE_CCACHE=YES`option
+    (ccache must be installed). (David Coeurjolly, [#1696](https://github.com/DGtal-team/DGtal/pull/1696))
   - Better documentation style using doxygen-awesome.css. (David Coeurjolly,
     [#1697](https://github.com/DGtal-team/DGtal/pull/1697))
 
@@ -222,8 +229,8 @@ git remote set-head origin -a
     [#1721](https://github.com/DGtal-team/DGtal/pull/1721))
   - Add CMake option DGTAL_WRAP_PYTHON (Pablo Hernandez-Cerdan,
     [#1700](https://github.com/DGtal-team/DGtal/pull/1700))
-  - Upgrade of the conan scripts (for windows build) to conan 2, removing the ENABLE_CONAN option 
-    (documentation update instead) (David Coeurjolly, 
+  - Upgrade of the conan scripts (for windows build) to conan 2, removing the ENABLE_CONAN option
+    (documentation update instead) (David Coeurjolly,
     [#1729](https://github.com/DGtal-team/DGtal/pull/1729))
 
 - *IO*
@@ -274,8 +281,8 @@ git remote set-head origin -a
     Hull files (David Coeurjolly, [#1716](https://github.com/DGtal-team/DGtal/pull/1716))
   - Activate and fix CTest tests on windows system. (Bertrand Kerautret,
     [#1706](https://github.com/DGtal-team/DGtal/pull/1706))
-  - For now, removing Cairo deps install on windows (6hours long build 
-    with conan in the windows debug mode). (David Coeurjolly, 
+  - For now, removing Cairo deps install on windows (6hours long build
+    with conan in the windows debug mode). (David Coeurjolly,
     [#1705](https://github.com/DGtal-team/DGtal/pull/1705))
   - Fix conan file upload issue and log message. (Bertrand Kerautret,
     [#1704](https://github.com/DGtal-team/DGtal/pull/1704))
@@ -313,16 +320,16 @@ git remote set-head origin -a
     [#1717](https://github.com/DGtal-team/DGtal/pull/1717))
   - Fix const attribute that shouldn't be in FreemanChain (Colin Weill--Duflos,
 	  [#1723](https://github.com/DGtal-team/DGtal/pull/1723))
-  - Fix seg fault due to recent compilers in FrechetShortcut (Bertrand Kerautret, 
+  - Fix seg fault due to recent compilers in FrechetShortcut (Bertrand Kerautret,
      Isabelle Sivignon [#1726](https://github.com/DGtal-team/DGtal/pull/1726))
-  - Fix FrechetShortcut to enable the parameter error to be equal to 0 and add new 
+  - Fix FrechetShortcut to enable the parameter error to be equal to 0 and add new
     tests in testFrechetShortcut (Isabelle Sivignon, [#1726](https://github.com/DGtal-team/DGtal/pull/1726))
 
 
 - *IO*
   - Fix of the `getHSV` method in the `Color` class. (David Coeurjolly,
     [#1674](https://github.com/DGtal-team/DGtal/pull/1674))
-  - Fix of `SurfaceMeshWriter::writeIsoLinesOBJ` 
+  - Fix of `SurfaceMeshWriter::writeIsoLinesOBJ`
     (Jacques-Olivier Lachaud, [#1701](https://github.com/DGtal-team/DGtal/pull/1701))
   - Fix of the `PointListReader::getPolygonsFromInputStream` (Xun Gong,
     [#1708](https://github.com/DGtal-team/DGtal/pull/1708))
@@ -736,7 +743,7 @@ git remote set-head origin -a
     (Jacques-Olivier Lachaud,[#1470](https://github.com/DGtal-team/DGtal/pull/1470))
 
 - *io*
-  - The GenericWriter can now export in 3D ITK format (nii, mha,  mhd,  tiff).  
+  - The GenericWriter can now export in 3D ITK format (nii, mha,  mhd,  tiff).
     (Bertrand Kerautret [#1485](https://github.com/DGtal-team/DGtal/pull/1485))
   - New Viridis ColorGradientPreset and clean of  useless template specializations in
     the GenericWriter for color image. (Bertrand Kerautret
@@ -912,7 +919,7 @@ git remote set-head origin -a
   - Fix apple clang  compilation issue with a workaround to the
     ConstIteratorAdapter class that does not satisfy the _is_forward concept of the STL:
     using boost::first_max_element instead std::max_element.
-    (Bertrand Kerautret, [#1437](https://github.com/DGtal-team/DGtal/pull/1437))  
+    (Bertrand Kerautret, [#1437](https://github.com/DGtal-team/DGtal/pull/1437))
   - Abort compilation at configure time when the compiler is gcc 10.1 due to compiler bug.
     Fix issue #1501.
     (Pablo Hernandez-Cerdan, [#1506](https://github.com/DGtal-team/DGtal/pull/1506))
