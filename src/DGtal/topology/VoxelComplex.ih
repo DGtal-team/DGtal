@@ -466,8 +466,8 @@ DGtal::VoxelComplex<TKSpace, TCellContainer>::K_2(
         trace.info() << " conditionI = " << conditionI
                      << " : is_empty || is_disconnected =  " << is_empty
                      << " && " << is_disconnected << std::endl;
-        trace.info() << " conditionII = " << conditionII << " : " << bb[0]
-                     << " && " << bb[1] << " && " << bb[2] << " && " << bb[3]
+        trace.info() << " conditionII = " << conditionII << " : " << static_cast<bool>(bb[0])
+                     << " && " << static_cast<bool>(bb[1]) << " && " << static_cast<bool>(bb[2]) << " && " << static_cast<bool>(bb[3])
                      << std::endl;
         trace.info() << " is_critical = " << is_critical
                      << " conditionI || conditionII : " << conditionI << " || "

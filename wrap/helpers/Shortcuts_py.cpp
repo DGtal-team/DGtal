@@ -436,13 +436,13 @@ void bind_voronoimap(py::module& mg) {
             return SHG3::getDistanceTransformation<1>(d, points, params);
         });
     mg.def("makeL1VoronoiMap", [](const CountedPtr<SH3::Domain>& d, const std::vector<SHG3::Point>& points, const Parameters& params) {
-            return SHG3::getDistanceTransformation<1>(d, points, params);
+            return SHG3::getDistanceTransformation<1>(*d, points, params);
         });
     mg.def("makeL2VoronoiMap", [](const SH3::Domain& d, const std::vector<SHG3::Point>& points, const Parameters& params) {
             return SHG3::getDistanceTransformation<2>(d, points, params);
         });
     mg.def("makeL2VoronoiMap", [](const CountedPtr<SH3::Domain>& d, const std::vector<SHG3::Point>& points, const Parameters& params) {
-            return SHG3::getDistanceTransformation<2>(d, points, params);
+            return SHG3::getDistanceTransformation<2>(*d, points, params);
         });
     
     mg.def("getL1DistanceToClosestSite", [](const SH3::Domain& points, const std::vector<SHG3::Point>& sites, const Parameters& params) {

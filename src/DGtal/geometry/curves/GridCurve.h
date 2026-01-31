@@ -84,7 +84,7 @@ namespace DGtal
      
     @tparam TKSpace Khalimsky space, a model of CCellularGridSpaceND
     
-    Using the namespace Z2i, defined in StdDefs.h, you can instanciate a grid curve as follows:
+    Using the namespace Z2i, defined in StdDefs.h, you can instantiate a grid curve as follows:
     @snippet geometry/curves/exampleGridCurve2d.cpp GridCurveDeclaration
 
      This object provides several IO services. 

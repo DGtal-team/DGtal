@@ -60,7 +60,6 @@ see @ref passing_functorholder.
 Finally, export the result:
 @snippet kernel/examplePointFunctorHolder.cpp examplePointFunctorHolder-DTvis
 @image html examplePointFunctorHolder.png  "Distance transformation of Mickey"
-@image latex examplePointFunctorHolder.png  "Distance transformation of Mickey"
 It has never been so easy to calculate the distance map to Mickey!
 
 @subsection functorholder_aim Aim
@@ -349,7 +348,7 @@ snippet, you can simply use another expression you know the result type will
 be the same as the actual return expression.
 
 @note
-Going further, if writting such simplier expression is difficult, you can
+Going further, if writing such simpler expression is difficult, you can
 use [<tt>std::declval</tt>](https://en.cppreference.com/w/cpp/utility/declval) function that constructs a fake instance of any given type:
 @snippet exampleFunctorHolder.cpp Returning a FunctorHolder using trailing return and declval
 
@@ -850,7 +849,6 @@ Finally, an image can be easily defined from a functor with a syntax like:
 @snippet exampleConstImageFunctorHolder.cpp example1
 resulting in:
 \image html ConstImageFunctorHolder_example1.png "Image generated from a point-dependent lambda."
-\image latex ConstImageFunctorHolder_example1.png "Image generated from a point-dependent lambda." width=5cm
  */
 
 } // namespace functors

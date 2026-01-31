@@ -29,6 +29,8 @@ namespace DGtal {
   embedding mechanism to convert digital objects to structures in @f$
   \mathbb{R}^n@f$.
 
+@warning Do not forget to enable Polyscope at the `cmake` step, e.g. with `cmake .. -DGTAL_WITH_POLYSCOPE_VIEWER=true`.
+
 
 \section DGtalGLV_PolyscopeViewer Interactive visualization from PolyscopeViewer
 
@@ -43,7 +45,7 @@ The library handles 3D scenes movement and allows to attributes of displayed obj
 First to use the PolyscopeViewer stream, you need to include the following headers:
  *
 @code
- #include "DGtal/io/3dViewers/PolyscopeViewer.h"
+ #include "DGtal/io/viewers/PolyscopeViewer.h"
 @endcode
  *
 The following code snippet defines three points and a rectangular
@@ -76,7 +78,6 @@ The *show()* method enters the visualization loop and should be call after all o
 drawn with the viewer. You should obtain the following visualization:
 
 \image html simple3dVisu1.png "Digital point visualization  with PolyscopeViewer."
-\image latex simple3dVisu1.png "Digital point visualization  with PolyscopeViewer." width=5cm
 
 
 \subsection  DGtalGLV_PolyscopeViewer_Rendering Interactive change of rendering   
@@ -127,9 +128,7 @@ visibility such as scene extents or transparency mode.
 * You should obtain the two following visualizations (see example: <a href="io_2viewers_2viewer3D-3-objects_8cpp-example.html">viewer3D-3-objects.cpp</a>):
 
  \image html visu6-18Adj.png " 6-18 digital Adjacencies visualization  with PolyscopeViewer."
- \image latex visu6-18Adj.png " 6-18 digital Adjacencies visualization with PolyscopeViewer." width=5cm
  \image html visu18-6Adj.png " 18-6 digital Adjacencies visualization  with PolyscopeViewer."
- \image latex visu18-6Adj.png " 18-6 digital Adjacencies visualization  with PolyscopeViewer."  width=5cm
 
 
 * Note that digital set was displayed with transparency by setting a custom color within the viewer.
@@ -203,11 +202,8 @@ viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
 * we obtain the following visualizations:
 *
 \image html visuModeDefault.png "(a) Default visualization of a digital point sets with the associated domain "
-\image latex visuModeDefault.png "(a) Default visualization of a digital point sets with the associated domain " width=5cm
  \image html  visuModePavingGridsDomain.png "(b) visualization using Paving and Grid mode for the domain."
- \image latex  visuModePavingGridsDomain.png "(b) visualization using Paving and Grid mode for the domain." width=5cm
  \image html  visuModeBalls.png "(c) visualization using Balls mode for the voxels."
- \image latex  visuModeBalls.png "(c) visualization using Balls mode for the voxels." width=5cm
 
 
 \section  DGtalGLV_Custom Changing the style for displaying drawable elements.
@@ -225,7 +221,6 @@ Colors can also be set programatically;
 The example <a  href="io_2viewers_2viewer3D-5-colors_8cpp-example.html"> viewer3D-5-colors.cpp </a> illustrates some possible customs :
 
 \image html visuModeCustom.png "Example of several custom display." 
-\image latex visuModeCustom.png "Example of several custom display." width=5cm
 
 
 If colors depend on values, please see section about adding properties to object instead of manually setting colors. 
@@ -259,11 +254,8 @@ we can add, for instance, two different clipping planes:
 @endcode
 
 \image html visuClippingAll.png "(a) visualization of the initial set."  
-\image latex visuClippingAll.png "(a) visualization of the initial set." width=5cm
  \image html  visuClipping1.png "(b) visualization after adding the first clipping plane (0,1,0.3,-10)."
- \image latex  visuClipping1.png "(b) visualization after adding the first clipping plane (0,1,0.3,-10)."  width=5cm
  \image html  visuClipping2.png "(c) visualization after adding a second clipping plane (1,0,0,-4.9) ."
-\image latex  visuClipping2.png "(c) visualization after adding a second clipping plane (1,0,0,-4.9) ." width=5cm
 
 
 It also possible to edit the clipping plane directly in the viewer (under View/Slice Planes) which allows to
@@ -276,13 +268,11 @@ With the PolyscopeViewer class it is possible to display 2D slice image from a v
 @snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DImagesExtractImages
 
 \image html  viewer3D-8.png  "Example of 2D image visualization" 
-\image latex  viewer3D-8.png  "Example of 2D image visualization" width=5cm
 
 \section DGtalGLV_Images3D Adding 3D image visualization
 
 In the same way a 3D image can be displayed. By following the same stream operator, you will obtain such examples of display:
 \image html  viewer3D-9.png  "Example of 3D image visualization with also digital sets." 
-\image latex  viewer3D-9.png  "Example of 3D image visualization with also digital sets." width=5cm
 
 See more details in the example:  <a
 href="io_2viewers_2viewer3D-9-3Dimages_8cpp-example.html"
@@ -310,7 +300,7 @@ std::string name1 = viewer.draw(p1, "Point name"); // name1 = "Point name"
 std::string name2 = viewer.draw(p2, "Point name"); // name2 = "Point name_1"
 @endcode 
 
-It is possible to specify where the counter will be placed with the "{i}" token (only first occurence is replaced). For KCell, the token "{d}" can also be used for dimension. 
+It is possible to specify where the counter will be placed with the "{i}" token (only first occurrence is replaced). For KCell, the token "{d}" can also be used for dimension. 
 
 @code
 Point p1( 0, 0, 0 );
@@ -352,7 +342,6 @@ Both methods can be used together and within loops:
 These properties can be shown or hidden and their appearance modified directly in the graphical user interface. 
 
 \image html  viewer3DQuantities.png  "Example of adding quantities to an object. Objects were shifted and quantities hidden to enhance visibility." 
-\image latex  viewer3DQuantities.png  "Example of adding quantities to an object. Objects were shifted and quantities hidden to enhance visibility." width=5cm
 
 It is also possible to add a last parameter to WithQuantity and addQuantity which is the element targeted by the quantity. For example, for a surface mesh, we may want to set the quantities at the vertices rather than on the faces when solving PDEs. However, the correct numbers of values should be supplied (eg. one per vertex and not one per face). Unfortunately, not every combination is supported (see table below). By default, it will use the scale corresponding to the dimension of the element (ie. right-most side in the "Supported Scale" column).
 

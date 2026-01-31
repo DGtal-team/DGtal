@@ -47,11 +47,8 @@ dimension 2, we simply denote @f$ A_r(x) @f$ such quantity (represented in
 orange color on the following figure).
 
 @image html integral2D.png "Integral invariant computation in dimension 2."
-@image latex integral2D.png "Integral invariant computation in dimension 2." width=5cm
 @image html integral3D.png "Integral invariant computation in dimension 3."
-@image latex integral3D.png "Integral invariant computation in dimension 3." width=5cm
 @image html notations_integral.png "Notations."
-@image latex notations_integral.png "Notations." width=5cm
 
 \subsection subsectIntegralInvariant Integral Invariant for curvature computation
 
@@ -197,15 +194,10 @@ The only change is on the typedef of Functor/Estimator (see below):
 Here is some results in 2d and 3d :
 
 @image html example-integralinvariant2D.png "Curvature mapped on a Flower2D"
-@image latex example-integralinvariant2D.png "Curvature mapped on a Flower2D" width=5cm
 @image html snapshot-mean-zero.png "Mean curvature mapped on a Goursat's surface"
-@image latex snapshot-mean-zero.png "Mean curvature mapped on a Goursat's surface" width=5cm
 @image html snapshot-K-zero.png "Gaussian curvature mapped on a Goursat's surface"
-@image latex snapshot-K-zero.png "Gaussian curvature mapped on a Goursat's surface" width=5cm
 @image html Bunny_128_mean.png "Mean curvature mapped on a Stanford bunny (credit is given to the Stanford Computer Graphics Laboratory https://graphics.stanford.edu/data/3Dscanrep/)"
-@image latex Bunny_128_mean.png "Mean curvature mapped on a Stanford bunny (credit is given to the Stanford Computer Graphics Laboratory https://graphics.stanford.edu/data/3Dscanrep/)" width=5cm
 @image html Bunny_64_k1.png "First principal curvature direction mapped on a Stanford bunny (credit is given to the Stanford Computer Graphics Laboratory https://graphics.stanford.edu/data/3Dscanrep/)"
-@image latex Bunny_64_k1.png "First principal curvature direction mapped on a Stanford bunny (credit is given to the Stanford Computer Graphics Laboratory https://graphics.stanford.edu/data/3Dscanrep/)" width=5cm
 
 */
 

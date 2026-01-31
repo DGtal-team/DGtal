@@ -71,7 +71,7 @@ namespace DGtal {
 
    @subsection dgtal_graph_def_2_1 Instanciating graphs
 
-   The instanciation of graphs (like any object) is dependent on the
+   The instantiation of graphs (like any object) is dependent on the
    chosen graph model. For instance, to instantiate a MetricAdjacency
    or an Object, you can consult \ref moduleDigitalTopology. To
    instantiate a DigitalSurface, you may consult \ref
@@ -80,7 +80,7 @@ namespace DGtal {
    Here is a simple example for creating a 2D digital object seen with
    the (4,8) adjacency (in example \ref graph/graphTraversal.cpp)
 
-   @snippet graph/graphTraversal.cpp graphTraversal-graph-instanciation
+   @snippet graph/graphTraversal.cpp graphTraversal-graph-instantiation
 
    The last line above checks that Object are finite graphs.
 
@@ -92,7 +92,6 @@ namespace DGtal {
    @snippet graph/graphTraversal.cpp graphTraversal-graph-enumeration
 
    @image html graphTraversal-enum.png "Coloring vertices of an object graph according to the enumeration order."
-   @image latex graphTraversal-enum.png "Coloring vertices of an object graph according to the enumeration order." width=0.5\textwidth
 
 
    @subsection dgtal_graph_def_2_3 Enumerating edges of a graph
@@ -169,7 +168,6 @@ namespace DGtal {
    @snippet graph/graphTraversal.cpp graphTraversal-graph-dfs-range
 
    @image html graphTraversal-dfs-range.png "Coloring vertices of an object graph according to their order given by a depth-first traversal."
-   @image latex graphTraversal-dfs-range.png "Coloring vertices of an object graph according to their order given by a depth-first traversal." width=0.5\textwidth
 
 
 */

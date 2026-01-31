@@ -155,7 +155,7 @@ namespace DGtal
      // Each B1, B2 or B3 uses A, but we do not know if A will be copied
      // or just referenced by only looking at the declaration of
      // the method. Generally the ambiguity is removed by adding
-     // comments or, for the experienced developper, by looking at
+     // comments or, for the experienced developer, by looking at
      // other parts of the code.
 
      // Only aliasing, but for a long lifetime.
@@ -183,7 +183,7 @@ namespace DGtal
      };
      @endcode
 
-     Sometimes it is also very important that the developper that uses
+     Sometimes it is also very important that the developer that uses
      the library is conscious that an object, say \a b, may require
      that an instance \a a given as parameter should have a lifetime
      longer than \a b itself (case for an instance of \a B1
@@ -241,7 +241,7 @@ namespace DGtal
      @endcode
 
      A last question could be why are we not just passing the instance
-     of A by value. This, for sure, would tell the developper that the
+     of A by value. This, for sure, would tell the developer that the
      instance is duplicated somehow. The problem is that it induces
      generally two duplications, and not only one ! It may be possible
      that the compiler optimizes things nicely but it is unclear if
@@ -493,7 +493,7 @@ namespace DGtal
 
     // ------------------------- Private Datas --------------------------------
   private:
-    /// Characterizes the type of the input parameter at clone instanciation.
+    /// Characterizes the type of the input parameter at clone instantiation.
     const Parameter myParam;
     /// Stores the address of the input parameter for further use.
     const void* const myPtr;

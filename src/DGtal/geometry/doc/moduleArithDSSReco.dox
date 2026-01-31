@@ -40,11 +40,9 @@ Any DSL such that \f$ \omega = \max(|a|,|b|) \f$ (resp. \f$ \omega = |a| + |b| \
 
 For instance, the naive DSL \f$ D(2,5,0,5) \f$ is depicted below: 
 @image html NaiveDSL.png "Example of Naive DSL"
-@image latex NaiveDSL.png "Example of Naive DSL" width=5cm
 
 The standard DSL \f$ D(2,5,0,7) \f$ is thicker: 
 @image html StandardDSL.png "Standard DSL of same slope and same intercept"
-@image latex StandardDSL.png "Standard DSL of same slope and same intercept" width=5cm
 
 From now on, let us assume that \f$ \omega \f$ is either equal to \f$\max(|a|,|b|) \f$ (naive case) 
 or to \f$ |a| + |b| \f$ (standard case).  
@@ -82,7 +80,6 @@ to the same set of points. This representation is thus interesting, since it
 includes an orientation preferably chosen to iterate over the DSL points from any point 
 belonging to the DSL. 
 @image html StandardDSL.png "D(2,5,0) and D(-2,-5,-5) represents the same set of points"
-@image latex StandardDSL.png "D(2,5,0) and D(-2,-5,-5) represents the same set of points" width=5cm
 
 \note Note that you must use method ArithmeticalDSL.negate() to get a representation from another one. 
 Note also that method ArithmeticalDSL.equalsTo() compare two representations
@@ -128,13 +125,10 @@ Vectors mySteps.first (\f$ v \f$), mySteps.second (\f$ w \f$) and myShift (\f$ s
 are depicted in black.  
  
 @image html ArithmeticalDSL-8-0-5-8.png "Naive DSL D(5,8,0)"
-@image latex ArithmeticalDSL-8-0-5-8.png "Naive DSL D(5,8,0)" width=5cm
 
 @image html ArithmeticalDSL-8-1-8-5.png "Naive DSL D(8,5,0)"
-@image latex ArithmeticalDSL-8-1-8-5.png "Naive DSL D(8,5,0)" width=5cm
 
 @image html ArithmeticalDSL-8-2-8-m5.png "Naive DSL D(8,-5,0)"
-@image latex ArithmeticalDSL-8-2-8-m5.png "Naive DSL D(8,-5,0)" width=5cm
 
 Other octants and specific cases are generated in exampleArithmeticalDSL.cpp. 
 
@@ -240,7 +234,6 @@ In addition, you can draw either the points of a DSS or its bounding box with Bo
 The result of this short example taken from exampleArithmeticalDSS.cpp is presented below: 
 
 @image html NaiveDSS8.png "A simply 8-connected naive DSS with its bounding box"
-@image latex NaiveDSS8.png "A simply 8-connected naive DSS with its bounding box" width=5cm
 
 See \ref moduleBoard2D to read more about the drawing mechanism. 
 
@@ -252,10 +245,8 @@ as a sequence of edge-connected squares ("Paving" or "Both" mode)
 or as a polygonal line ("Grid" mode). 
 
 @image html StandardDSS4bis.png "A simply 4-standard DSS with its bounding box"
-@image latex StandardDSS4bis.png "A simply 4-standard DSS with its bounding box" width=5cm
 
 @image html StandardDSS4.png "Another view of the same DSS"
-@image latex StandardDSS4.png "Another view of the same DSS" width=5cm
 
 In order to use classes NaiveDSS8 and StandardDSS4, you must include the following file: 
 @snippet geometry/curves/exampleArithmeticalDSS.cpp ArithmeticalDSSHeader
@@ -377,14 +368,12 @@ Let us consider that \f$ S \f$ and \f$ M \f$ are defined as follows:
 @snippet geometry/curves/exampleArithmeticalDSS.cpp ArithmeticalDSSUpdateInit
 
 @image html NaiveDSS8ExtInit.png "Extension to the red point"
-@image latex NaiveDSS8ExtInit.png "Extension to the red point" width=5cm
 
-The extention is simply done as follows: 
+The extension is simply done as follows: 
 @snippet geometry/curves/exampleArithmeticalDSS.cpp ArithmeticalDSSUpdateExtension
 
 In this case, the return value is true and the resulting DSS is: 
 @image html NaiveDSS8ExtDone.png "Extended DSS"
-@image latex NaiveDSS8ExtDone.png "Extended DSS" width=5cm
 
 \subsection moduleArithDSSReco-DSSRec-Retraction Retraction
 
@@ -401,7 +390,6 @@ to the front of the DSS. Conversely, ArithmeticalDSS::retractBack() reverts the 
 by ArithmeticalDSS::extendBack() to the back of the DSS. You can keep in mind the following diagram
 to remember the rationale of the methods name.   
 @image html BackFrontFigure.png "Operations applied to the back and front of a DSS"
-@image latex BackFrontFigure.png "Operations applied to the back and front of a DSS" width=5cm
 
 To sum up, we list below the update methods of ArithmeticalDSS: 
 - extension tests:

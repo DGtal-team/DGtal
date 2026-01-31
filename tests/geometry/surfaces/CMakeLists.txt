@@ -38,7 +38,7 @@ if (   DGTAL_WITH_CGAL )
 endif()
 
 
-if (  DGTAL_WITH_POLYSCOPE )
+if (  DGTAL_WITH_POLYSCOPE_VIEWER )
   set(POLYSCOPE_VIEWER_TESTS_SRC
     testLocalConvolutionNormalVectorEstimator
     testTensorVotingViewer)

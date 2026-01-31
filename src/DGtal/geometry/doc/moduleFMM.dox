@@ -28,7 +28,6 @@ If the front evolves in the normal direction at unit speed, the arrival time at 
 the distance of \f$ x \f$ to the initial front.  
 
 @image html FMM-interface.png "Arrival time and distance to the initial front"
-@image latex FMM-interface.png "Arrival time and distance to the initial front" width=5cm
 
 That is why FMM can be used to compute a (signed) distance field from an initial point set (which may be located around 
 an interface or not).   
@@ -54,7 +53,6 @@ put into the so-called @b candidate @b point @b set.
 The accepted point set and the candidate point set are depicted below. See \ref sectmoduleFMM11 for details
 about how these sets are stored.
 @image html FMM-diagram.png "Upwind update of the accepted point set"
-@image latex FMM-diagram.png "Upwind update of the accepted point set" width=5cm
 
 For each candidate point, a tentative value is computed for its distance, 
 using only the values of the accepted points lying in its neighborhood. 
@@ -200,7 +198,6 @@ raise an execution error.
 Here is the computed distance field: 
 
 @image html DTbyFMM-25.png "Approximation by the FMM of the Euclidean distance field from a given point"
-@image latex DTbyFMM-25.png "Approximation by the FMM of the Euclidean distance field from a given point" width=5cm
 
 \note The computed distance field is a (convergent) estimation. See \ref moduleVolumetric for an exact Euclidean distance transform. 
 
@@ -280,7 +277,7 @@ and to provide a distance value for all the points of this set:
 - FMM::initFromBelsRange()
 - FMM::initFromIncidentPointsRange()
 
-Finally, we instanciate the FMM class and we perform the whole computation:  
+Finally, we instantiate the FMM class and we perform the whole computation:  
 
 @snippet geometry/volumes/distance/exampleFMM3D.cpp FMMUsage3D
 
@@ -291,7 +288,6 @@ to the digital surface.
 The result is displayed below. 
 
 @image html exampleFMM3D.png "Signed distance field computed in a narrow band around a digital surface. "
-@image latex exampleFMM3D.png "Signed distance field computed in a narrow band around a digital surface. " width=5cm
 
 
 

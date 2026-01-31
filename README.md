@@ -2,7 +2,7 @@
 
 Main website: [https://dgtal.org](https://dgtal.org)
 
-[![CI (linux/macOS/windows) - PR](https://github.com/DGtal-team/DGtal/actions/workflows/build-PR-master.yml/badge.svg)](https://github.com/DGtal-team/DGtal/actions/workflows/build-PR-master.yml) [![Nightly-build documentation and deploy](https://github.com/DGtal-team/DGtal/actions/workflows/deployDoc-master.yml/badge.svg)](https://github.com/DGtal-team/DGtal/actions/workflows/deployDoc-master.yml)
+[![CI (linux/macOS/windows) - PR](https://github.com/DGtal-team/DGtal/actions/workflows/build-PR-main.yml/badge.svg)](https://github.com/DGtal-team/DGtal/actions/workflows/build-PR-main.yml) [![Nightly-build documentation and deploy](https://github.com/DGtal-team/DGtal/actions/workflows/deployDoc-main.yml/badge.svg)](https://github.com/DGtal-team/DGtal/actions/workflows/deployDoc-main.yml)[![Deploy to pypi](https://github.com/DGtal-team/DGtal/actions/workflows/pythonBindings-Pypi.yml/badge.svg)](https://github.com/DGtal-team/DGtal/actions/workflows/pythonBindings-Pypi.yml)
 
 Description
 ===========
@@ -44,11 +44,11 @@ A Docker file is included in the repository in order to allow the users to build
 To build the Docker image, Docker should have been installed in the system (to [install Docker](https://docs.docker.com/engine/install/)) download the *Dockerfile* inside the [DGtal repository](https://github.com/DGtal-team/DGtal), in the same directory where the Dockerfile is located execute    
 
 ```shell
-docker build -t dgtal:lastest .
+docker build -t dgtal:latest .
 ```
 To run an interactive terminal inside the docker container and see the examples 
 ```shell
-docker run -it --user=digital dgtal:lastest bash
+docker run -it --user=digital dgtal:latest bash
 cd /home/digital/git/DGtal/build/examples
 ```
 
@@ -58,6 +58,7 @@ More Information
 * Project homepage http://dgtal.org
 * Related DGtalTools project: http://dgtal.org/dgtaltools, [DGtalTools](https://github.com/DGtal-team/DGtalTools), [DGtalTools-contrib](https://github.com/DGtal-team/DGtalTools-contrib)
 
+* Release 2.1 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17910944.svg)](https://doi.org/10.5281/zenodo.17910944)
 * Release 2.0 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.15838861.svg)](https://doi.org/10.5281/zenodo.15838861)
 * Release 1.4 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11550945.svg)](https://doi.org/10.5281/zenodo.11550945)
 * Release 1.3 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7331486.svg)](https://doi.org/10.5281/zenodo.7331486)

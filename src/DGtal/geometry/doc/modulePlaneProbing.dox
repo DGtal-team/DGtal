@@ -66,13 +66,11 @@ a \e fixed point outside the set at the top of the tetrahedron (the blue circle)
 are \e inside the digital set will be denoted by disks while points that are \e
 outside by circles.
 
-@image html plane-probing-start-frame.png "Left: the base triangle. Right: the base frame at the begining."
-@image latex plane-probing-start-frame.png "Left: the base triangle. Right: the base frame at the begining." width=8cm
+@image html plane-probing-start-frame.png "Left: the base triangle. Right: the base frame at the beginning."
 
 We now describe the update procedure in more details, see the next figure.
 
 @image html plane-probing-update-H.png "From left to right: before the update, H-neighborhood in red, filtering through \b InPlane, closest criterion, after the update"
-@image latex plane-probing-update-H.png "From left to right: before the update, H-neighborhood in red, filtering through \b InPlane, closest criterion, after the update" width=8cm
 
 At a given iteration, the update step consists of the following substeps:
 1. computing the candidate set (in red),
@@ -105,7 +103,6 @@ This approach allows to start the algorithm on any surfel (at least 4 points
 inside the digital set) and is more general than the previous one.
 
 @image html plane-probing-illustration-cube.png "The two tetrahedra are displayed in red and blue. The points p and q are the \e bases of the two tetrahedra."
-@image latex plane-probing-illustration-cube.png "The two tetrahedra are displayed in red and blue. The points p and q are the \e bases of the two tetrahedra." width=5cm
 
 This approach is internally based on a new predicate \b NotAbove that is able to tell whether a digital point
 \f$ x \f$ has a height that is smaller or greater than the one of \f$ q \f$. It is easy to see that it can be implemented using ray-casting and the \b InPlane predicate. It naturally increases the number

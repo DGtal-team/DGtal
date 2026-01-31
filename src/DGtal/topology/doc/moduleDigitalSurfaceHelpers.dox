@@ -55,7 +55,6 @@ namespace DGtal {
     @endcode  
 
    @image html ctopo2a.png "Start surfel before a tracking (in red)."
-   @image latex ctopo2a.png "Start surfel before a tracking (in red)." width=0.5\textwidth
 
     
     Then you can extract the sequence of consecutive surfels:
@@ -87,14 +86,12 @@ namespace DGtal {
    You will obtain the following ordered sequence of surfels: 
 
    @image html ctopo2b.png "Tracking of a closed 2D contour."
-   @image latex ctopo2b.png "Tracking of a closed 2D contour." width=0.5\textwidth
 
 
    The resulting sequence of surfels does not necessary present an
    open contour (try for instance image "samples/circleR10modif.pgm"):
 
    @image html ctopo2c.png  "Tracking of an open 2D contour."
-   @image latex ctopo2c.png  "Tracking of an open 2D contour." width=0.5\textwidth
    
    @section dgtal_helpsurf_sec2 Tracking a 3D boundary to build a surface.
 
@@ -118,7 +115,6 @@ namespace DGtal {
    You can obtain for instance the following visualisation:
    
    @image html ctopo3dSurfel.png "Tracking surfaces in 3D (start surfel in green)."
-   @image latex ctopo3dSurfel.png "Tracking surfaces in 3D (start surfel in green)." width=0.5\textwidth
    
    Since in 3D there are several choice for the direction used to
    exctract surfel boundary, we can specify the constant direction
@@ -133,7 +129,6 @@ namespace DGtal {
    After extracting the two surfels cut you may obtain the following visualisation:
    
    @image html ctopo3dSurfelCut.png "Tracking surfaces and slices in 3D (start surfel in green)."
-   @image latex ctopo3dSurfelCut.png "Tracking surfaces and slices in 3D (start surfel in green)." width=0.5\textwidth
    
 
 
@@ -187,7 +182,6 @@ After processing a simple display of each resulting connecting component you can
 
 
 @image html KSurfelsConnectedOrientExt.png "Visualisation of connected set of SignedKhalimskySpaceND"
-@image latex KSurfelsConnectedOrientExt.png "Visualisation of connected set of SignedKhalimskySpaceND" width=0.5\textwidth
 
 
 
@@ -208,7 +202,6 @@ and you will get the resulting cell display:
 
 
 @image html KSurfelsConnectedDefaultOrient.png "Visualisation of connected set of oriented surfels of a KhalimskySpaceND."
-@image latex KSurfelsConnectedDefaultOrient.png "Visualisation of connected set of oriented surfels of a KhalimskySpaceND." width=0.5\textwidth
 
 
 
@@ -218,7 +211,7 @@ and you will get the resulting cell display:
 
  The helper class Surface also proposes some methods to fill the
  interior/exterior of a digital set of 1-SCell which can be defined from
- an oriented FreemanChain. These methods can be usefull in particular
+ an oriented FreemanChain. These methods can be useful in particular
  to reconstruct images (as given for instance in the tool of
  freeman2pgm given in  <a  href="https://github.com/DGtal-team/DGtalTools">DGtalTools</a>.). 
  

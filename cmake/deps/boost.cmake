@@ -201,15 +201,38 @@ add_library(boost INTERFACE)
 
 add_library(Boost::boost ALIAS boost)
 set(boost_export_list )
+set(boost_dirs)
+
 foreach (name ${BOOST_INCLUDE_LIBRARIES})
-    target_link_libraries(boost INTERFACE Boost::${name})
+    target_link_libraries(boost 
+        INTERFACE 
+        Boost::${name}
+    )
+
+    if (EXISTS ${Boost_SOURCE_DIR}/libs/${name})
+        list(APPEND boost_dirs "${Boost_SOURCE_DIR}/libs/${name}")
+        target_include_directories(boost
+            INTERFACE
+              $<INSTALL_INTERFACE:${DGTAL_INSTALL_DEPS_DESTINATION}/boost/${name}/include>
+        )
+    endif()
     list(APPEND boost_export_list boost_${name})
 endforeach()
 
+# numeric_conversion seems to be named 'numeric'... 
+# Also, 'numeric' has sublibraries, hence no include folder directly 
+if (EXISTS ${Boost_SOURCE_DIR}/libs/numeric)
+    list(APPEND boost_dirs "${Boost_SOURCE_DIR}/libs/numeric")
+    target_include_directories(boost
+        INTERFACE
+          $<INSTALL_INTERFACE:${DGTAL_INSTALL_DEPS_DESTINATION}/boost/numeric/conversion/include>
+    )
+endif()
+
 # Install boost files when installing library
-install(DIRECTORY ${BOOST_INCLUDE_DIRS} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/DGtal/3rdParties/)
 install(TARGETS boost ${boost_export_list} EXPORT boost)
-install(EXPORT boost DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/boost NAMESPACE Boost::)
+install(EXPORT boost FILE BoostConfig.cmake DESTINATION ${DGTAL_INSTALL_CMAKE_DESTINATION} NAMESPACE Boost::)
+install(DIRECTORY ${boost_dirs} DESTINATION ${DGTAL_INSTALL_DEPS_DESTINATION}/boost)
 
 # Export target Boost::headers
 export(TARGETS

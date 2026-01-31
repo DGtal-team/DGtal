@@ -397,7 +397,7 @@ public:
   /**
      Returns the current primitive recognized by this computer,
      which is a ParallelStrip of axis width smaller than the one
-     specified at instanciation.
+     specified at instantiation.
   */
   Primitive primitive() const;
 

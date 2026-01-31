@@ -1,4 +1,33 @@
-# DGtal 2.1.beta
+# DGtal 2.1.1-dev
+
+## Changes
+
+- *Documentation*
+  - Many typos fixed in documentation using Github Copilot. (David Coeurjolly, [#1829](https://github.com/DGtal-team/DGtal/pull/1829))
+
+## BugFixes
+
+- *IO*
+  - Fixing typo in the 3d viewer documentation (David Coeurjolly, [#1831](https://github.com/DGtal-team/DGtal/pull/1831))
+
+# DGtal 2.1.0
+
+## New features
+
+- *DGtal project*
+  - The default branch for the `DGtal-team/DGtal` project has been switched from `master` to `main`. To update your local copy of DGtal, use the following instructions  (David Coeurjolly, [#1812](https://github.com/DGtal-team/DGtal/pull/1812)): 
+```
+git branch -m master main                                                                  
+git fetch origin
+git branch -u origin/main main
+git remote set-head origin -a
+```
+- *Kernel*
+  - New DigitalSet model with SVO or SVDAG (Sparse Voxel Octree w/o acyclic graph features) for efficient representation of large digital objects (Bastien Doignies, [#1808](https://github.com/DGtal-team/DGtal/pull/1808))
+
+- *Geometry*
+  - Add a generic quick hull variant that can process arbitrary input lattice points and outputs their convex hull, even if it is not full dimensional (Jacques-Olivier Lachaud, [#1803](https://github.com/DGtal-team/DGtal/pull/1803))
+  - Add affine geometry module for determining the affine dimension of a subset of points or a set of vectors, and for providing bases and orthogonal bases in reduced-echelon form or in LLL-form (Jacques-Olivier Lachaud, [#1803](https://github.com/DGtal-team/DGtal/pull/1803))
 
 ## New features
 
@@ -9,10 +38,21 @@
 
 - *IO*
   - Polyscope viewer upgraded from 2.4 to 2.5 (David Coeurjolly,  [#1796](https://github.com/DGtal-team/DGtal/pull/1796)). Reverting to 2.4  due to build issues (David Coeurjolly,  [#1797](https://github.com/DGtal-team/DGtal/pull/1797))
+  - The DGTAL_BUILD_POLYSCOPE_EXAMPLES option has been removed. If the polyscope viewer is enabled (DGTAL_WITH_POLYSCOPE_VIEWER), the polyscope examples are automatically built (David Coeurjolly, [#1814](https://github.com/DGtal-team/DGtal/pull/1814))
+
+- *Geometry*
+  - ConvexityHelper::computeLatticePolytope can now output exact lattice polytopes for k-dimensional sets of points in dD, whenever k in 0,1,d-1,d (Jacques-Olivier Lachaud, [#1803](https://github.com/DGtal-team/DGtal/pull/1803))
+
+- *Build*
+  - New DGtal::DGtal target, eg. main target to use DGtal in external projects (Bastien Doignies, [#1818](https://github.com/DGtal-team/DGtal/pull/1818))
+
+- *Python*
+  - Build backend upgraded to scikit-build-core (Bastien Doignies, [#1804](https://github.com/DGtal-team/DGtal/pull/1804))
+  - New CI for pypi deployement with cibuildwheel (Bastien Doignies, [#1804](https://github.com/DGtal-team/DGtal/pull/1804))
 
 - *Documentation*
-  - Refactoring of the volumetric examples in the Shortcuts (David Coeurjolly,  [#1807](https://github.com/DGtal-team/DGtal/pull/1807)).
-
+  - Refactoring of the volumetric examples in the Shortcuts (David Coeurjolly, [#1807](https://github.com/DGtal-team/DGtal/pull/1807))
+  - Removing the doxygen image includes for the latex target (David Coeurjolly, [#1811](https://github.com/DGtal-team/DGtal/pull/1811))
 
 ## Bug fixes
 
@@ -21,20 +61,30 @@
 
 - *Geometry*
   - Fix issue [#1797](https://github.com/DGtal-team/DGtal/pull/1797), assertions raised in testCellGeometry and testDigitalConvexity because of improper digital space extent (Jacques-Olivier Lachaud, [#1801](https://github.com/DGtal-team/DGtal/pull/1801))
-
+  - QuickHull could sometimes output that its output was not full dimensional since the computation of affine dimension was randomized. Now QuickHull relies on an exact computation of affine dimension (Jacques-Olivier Lachaud, [#1803](https://github.com/DGtal-team/DGtal/pull/1803))
+  - Silencing a warning in the Naive3DDSSComputer.ih file. (David Coeurjolly, [#1815](https://github.com/DGtal-team/DGtal/pull/1815))
+  - Fix issue in `testAffineBasis` that may produce errors for some compilers (David Coeurjolly, [#1826](https://github.com/DGtal-team/DGtal/pull/1826))
+  
 - *Build*
   - Version is now extracted from the `VERSION` file for CMake and Python builds (Bastien Doignies, [#1810](https://github.com/DGtal-team/DGtal/pull/1810))
+  - Eigen is now properly fetched when DGTAL_ITK_WITH_EIGEN is set (Bastien Doignies, [#1818](https://github.com/DGtal-team/DGtal/pull/1818))
   - Replacing the global compilation flags when `DGTAL_WARNINGS_AS_ERRORS` is set, with per target `target_compile_options` to avoid errors on Boost warnings (David Coeurjolly,  [#1793](https://github.com/DGtal-team/DGtal/pull/1793))
   - Fixing the `make install` command for boost (issue #1794) (Bastien Doignies, [#1793](https://github.com/DGtal-team/DGtal/pull/1793))
+  - Add and fix install commands for polyscope dependencies (Bastien Doignies, [#1815](https://github.com/DGtal-team/DGtal/pull§1815))
   - Adding option not to install targets to avoid crashes when boost is fetched through multiple channels ([#1809](https://github.com/DGtal-team/DGtal/pull/1809))
   - Cleaning up the Github Actions reuses (Bastien Doignies, [#1793](https://github.com/DGtal-team/DGtal/pull/1793))
   - Add cache to github actions (Bastien Doignies, [#1805](https://github.com/DGtal-team/DGtal/pull/1805))
   - Fixing old `DEBUG_VERBOSE` to `DGTAL_DEBUG_VERBOSE` (David Coeurjolly,  [#1834](https://github.com/DGtal-team/DGtal/pull/1834))
 
-- *Python*
-  - Build backend upgraded to scikit-build-core (Bastien Doignies, [#1804](https://github.com/DGtal-team/DGtal/pull/1804))
-  - New CI for pypi deployement with cibuildwheel (Bastien Doignies, [#1804](https://github.com/DGtal-team/DGtal/pull/1804))
+- *IO*
+  - Error is raised if the polyscope viewer is used without the DGTAL_WITH_POLYSCOPE_VIEWER flag (David Coeurjolly, [#1814](https://github.com/DGtal-team/DGtal/pull/1814))
+  - Replacing  DGTAL_WITH_POLYSCOPE with DGTAL_WITH_POLYSCOPE_VIEWER flags (David Coeurjolly, [#1814](https://github.com/DGtal-team/DGtal/pull/1814))
 
+- *Topology*
+  - Fixing compiler issue on iostream overload in VoxelComplex.ih, see [#1820](https://github.com/DGtal-team/DGtal/issues/1820),  (David Coeurjolly, [#1823](https://github.com/DGtal-team/DGtal/pull/1823))
+
+- *Kernel*
+  - Fixing missing typename in DigitalSetByOctree.ih and SVOReader.ih,  (Jacques-Olivier Lachaud, [#1824](https://github.com/DGtal-team/DGtal/pull/1824))
 
 # DGtal 2.0
 

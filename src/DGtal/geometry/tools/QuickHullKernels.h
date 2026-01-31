@@ -50,6 +50,7 @@
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/kernel/IntegerConverter.h"
 #include "DGtal/math/linalg/SimpleMatrix.h"
+#include "DGtal/geometry/tools/AffineGeometry.h"
 
 namespace DGtal
 {
@@ -114,11 +115,12 @@ namespace DGtal
                     bool remove_duplicates )
     {
       typedef std::size_t Size;
-      std::vector< OutputValue > input;
-      while ( itb != ite ) {
-        const auto ip = *itb++;
-        input.push_back( F( ip ) );
-      }
+      // Compute size
+      Size n = 0;
+      for ( auto it = itb; it != ite; ++it ) ++n;
+      std::vector< OutputValue > input( n );
+      for ( Size i = 0; i < n; i++ )
+        input[ i ] = F( *itb++ );
       if ( ! remove_duplicates ) {
         output_values.swap( input );
         input2output.resize( input.size() );
@@ -195,6 +197,8 @@ namespace DGtal
     typedef std::array< Index, dim >   CombinatorialPlaneSimplex;
     static const Dimension dimension = dim;
 
+    typedef ConvexHullCommonKernel< dim, TCoordinateInteger, TInternalInteger > Self;
+    typedef ConvexHullCommonKernel< dim-1, TCoordinateInteger, TInternalInteger > LowerSelf;
     /// Converter to outer coordinate integers or lattice points / vector
     typedef IntegerConverter< dim, CoordinateInteger > Outer; 
     /// Converter to inner internal integers or lattice points / vector
@@ -245,7 +249,7 @@ namespace DGtal
     /// Computes an halfspace from dimension points specified by \a
     /// simplex with vertices in a range \a vpoints of
     /// Point. Orientation is induced by the order of the points. If
-    /// the simplex is degenrated, the half-space is invalid and has
+    /// the simplex is degenerated, the half-space is invalid and has
     /// null normal.
     ///
     /// @param[in] vpoints a range of points over which the simplex is defined.
@@ -257,18 +261,10 @@ namespace DGtal
     compute( const std::vector< CoordinatePoint >& vpoints,
              const CombinatorialPlaneSimplex& simplex )
     {
-      typedef DGtal::SimpleMatrix< InternalScalar, dimension, dimension > Matrix;
-      Matrix A;
-      InternalVector N;
-      for ( Dimension i = 1; i < dimension; i++ )
-        for ( Dimension j = 0; j < dimension; j++ )
-          A.setComponent( i-1, j,
-                          Inner::cast( vpoints[ simplex[ i ] ][ j ]
-                                       - vpoints[ simplex[ 0 ] ][ j ] ) );
-      for ( Dimension j = 0; j < dimension; j++ )
-        N[ j ] = A.cofactor( dimension-1, j );
+      // More robust method than SimpleMatrix::cofactor and faster for higher dimension.
+      InternalVector N; // null normal
       const InternalPoint ip = Inner::cast( vpoints[ simplex[ 0 ] ] );
-      // c = N.dot( vpoints[ simplex[ 0 ] ] );
+      functions::getOrthogonalVector( N, vpoints, simplex );
       return HalfSpace { N, N.dot( ip ) };
     }
     
@@ -376,10 +372,9 @@ namespace DGtal
     : public ConvexHullCommonKernel< dim, TCoordinateInteger, TInternalInteger >
   {
     typedef ConvexHullCommonKernel< dim, TCoordinateInteger, TInternalInteger > Base;
+    typedef ConvexHullIntegralKernel< dim, TCoordinateInteger, TInternalInteger > Self;
+    typedef ConvexHullIntegralKernel< dim-1, TCoordinateInteger, TInternalInteger > LowerSelf;
     // inheriting types
-    // using typename Base::Point;
-    // using typename Base::Vector;
-    // using typename Base::Scalar;
     using typename Base::CoordinatePoint;
     using typename Base::CoordinateVector;
     using typename Base::CoordinateScalar;
@@ -508,6 +503,8 @@ namespace DGtal
     : public ConvexHullCommonKernel< dim+1, TCoordinateInteger, TInternalInteger >
   {
     typedef ConvexHullCommonKernel< dim+1, TCoordinateInteger, TInternalInteger > Base;
+    typedef DelaunayIntegralKernel< dim, TCoordinateInteger, TInternalInteger > Self;
+    typedef DelaunayIntegralKernel< dim-1, TCoordinateInteger, TInternalInteger > LowerSelf;
     // inheriting types
     // using typename Base::Point;
     // using typename Base::Vector;
@@ -632,12 +629,12 @@ namespace DGtal
      Each floating point input coordinate `x` is converted to an integer
      through the following formula `(Integer) round( x * precision )`,
      where `precision` is the floating point value given at
-     instanciation of the kernel.
+     instantiation of the kernel.
 
      Each output floating point coordinate is built from integer
      coordinates `a` through the formula `( (double) a ) / precision`,
      where `precision` is the floating point value given at
-     instanciation of the kernel.
+     instantiation of the kernel.
 
      @see \ref moduleQuickHull
 
@@ -658,6 +655,8 @@ namespace DGtal
     : public ConvexHullCommonKernel< dim, TCoordinateInteger, TInternalInteger >
   {
     typedef ConvexHullCommonKernel< dim, TCoordinateInteger, TInternalInteger > Base;
+    typedef ConvexHullRationalKernel< dim, TCoordinateInteger, TInternalInteger > Self;
+    typedef ConvexHullRationalKernel< dim-1, TCoordinateInteger, TInternalInteger > LowerSelf;
     // inheriting types
     // using typename Base::Point;
     // using typename Base::Vector;
@@ -742,7 +741,7 @@ namespace DGtal
     /// @note Each floating point input coordinate `x` is converted to an integer
     /// through the following formula `(Integer) round( x * precision )`,
     /// where `precision` is the floating point value given at
-    /// instanciation of the kernel.
+    /// instantiation of the kernel.
     template < typename InputPoint>
     void makeInput( std::vector< CoordinatePoint >& processed_points,
                     IndexRange& input2comp, IndexRange& comp2input,
@@ -776,7 +775,7 @@ namespace DGtal
     /// @note Each output floating point coordinate is built from integer
     /// coordinates `a` through the formula `( (double) a ) / precision`,
     /// where `precision` is the floating point value given at
-    /// instanciation of the kernel.
+    /// instantiation of the kernel.
     template < typename OutputPoint>
     void convertPointTo( const CoordinatePoint& p, OutputPoint& out_p ) const
     {
@@ -804,12 +803,12 @@ namespace DGtal
      Each floating point input coordinate `x` is converted to an integer
      through the following formula `(Integer) round( x * precision )`,
      where `precision` is the floating point value given at
-     instanciation of the kernel.
+     instantiation of the kernel.
 
      Each output floating point coordinate is built from integer
      coordinates `a` through the formula `( (double) a ) / precision`,
      where `precision` is the floating point value given at
-     instanciation of the kernel.
+     instantiation of the kernel.
 
      @see \ref moduleQuickHull
 
@@ -830,6 +829,8 @@ namespace DGtal
     : public ConvexHullCommonKernel< dim+1, TCoordinateInteger, TInternalInteger >
   {
     typedef ConvexHullCommonKernel< dim+1, TCoordinateInteger, TInternalInteger > Base;
+    typedef DelaunayRationalKernel< dim, TCoordinateInteger, TInternalInteger > Self;
+    typedef DelaunayRationalKernel< dim-1, TCoordinateInteger, TInternalInteger > LowerSelf;
     // inheriting types
     // using typename Base::Point;
     // using typename Base::Vector;
@@ -917,7 +918,7 @@ namespace DGtal
     /// @note Each floating point input coordinate `x` is converted to
     /// an integer through the following formula `(Integer) round( x *
     /// precision )`, where `precision` is the floating point value
-    /// given at instanciation of the kernel. A new coordinate is
+    /// given at instantiation of the kernel. A new coordinate is
     /// added so that the point is lifted onto the "norm" paraboloid.
     template < typename InputPoint>
     void makeInput( std::vector< CoordinatePoint >& processed_points,
@@ -958,7 +959,7 @@ namespace DGtal
     /// @note Each output floating point coordinate is built from
     /// integer coordinates `a` through the formula `( (double) a ) /
     /// precision`, where `precision` is the floating point value
-    /// given at instanciation of the kernel. The last coordinate is
+    /// given at instantiation of the kernel. The last coordinate is
     /// not used since it was just related to the lifting of the point
     /// onto the "norm" paraboloid, as classically done when computing
     /// the Delaunay triangulation from a convex hull.

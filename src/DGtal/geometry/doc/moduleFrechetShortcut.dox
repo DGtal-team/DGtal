@@ -71,7 +71,6 @@ the Fréchet distance takes into account the course of the curves.
 
 
 @image html hausdorff.png "Difference between the Fréchet distance and the Hausdorff distance" 
-@image latex hausdorff.png "Difference between the Fréchet distance and the Hausdorff distance" width=5cm
 
 
 \subsection subsectCurve Curve simplification problem 
@@ -94,7 +93,6 @@ of the vertices of @f$ P @f$, and the computation of @f$ P' @f$ comes down to th
 selection of "shortcuts" @f$ p_ip_j @f$. 
 
 @image html curve_simplification.png "The red curve P' is a simplification of the blue curve P" 
-@image latex curve_simplification.png "The red curve P' is a simplification of the blue curve P" width=5cm
 
 
 All in all, to <b>find @f$ P' @f$ an @f$ \varepsilon @f$-simplification of</b> @f$ P @f$ we
@@ -116,7 +114,6 @@ In other words, the shortcuts of any @f$ \frac{\varepsilon}{2} @f$-simplificatio
 shortcuts of a @f$ \varepsilon @f$-simplification.  
 
 @image html local.png "Illustration of the local property." 
-@image latex local.png "Illustration of the local property." width=5cm
 
 
 \section FS_sectAlgo Guaranteed algorithm using an approximated distance 
@@ -133,17 +130,14 @@ longest backpath in the direction @f$\overrightarrow{p_ip_j}@f$.
 
 
 @image html def_width_backpath.png "Illustration of the definition of the width and the backpath length."
-@image latex def_width_backpath.png "Illustration of the definition of the width and the backpath length."
 
 @image html def_width_backpath_2.png "When a new point is considered, the width and backpath lengths may totally change."
-@image latex def_width_backpath_2.png "When a new point is considered, the width and backpath lengths may totally change."
 
 We have the following property from @cite Abam1247103 : 
 
 The Fréchet error of a shortcut @f$p_ip_j@f$ satisfies:
 
 @image html approx_distance.png ""
-@image latex approx_distance.png ""
 
 Using this Fréchet distance approximation to greedily compute a shortcut requires a fast update of the quantities 
 @f$\omega(i,j)@f$ and @f$b(i,j)@f$ when a new point is taken into account. This is not an easy task since these values can change drastically as illustrated above.  
@@ -164,7 +158,6 @@ All in all, the update of the cone and the decision are both done in
 constant time. 
 
 @image html update_width.png "The cone (dark gray) is computed incrementally as the intersection of the light gray cones."
-@image latex update_width.png "The cone (dark gray) is computed incrementally as the intersection of the light gray cones."
 
 
 \subsection subsectBackpath Updating the backpath length efficiently
@@ -175,21 +168,18 @@ ckeck if there exists a backpath longer than a threshold in the direction
 Let us first give some definitions: 
 
 @image html definition1.png ""
-@image latex definition1.png ""
 
 
 To do so, we consider a set of points named
 *occulters* which are the furthest points for a given direction:  
 
 @image html definition_occulter.png ""
-@image latex definition_occulter.png ""
 
 
 We can prove easily (see @cite sivignon2011) that the
 origin of the longest backpath is an occulter.
 
 @image html occulters.png "Occulters for the direction @e d in red. Green arrows represent backpathes: the length of the plain arrows is to be checked, whereas we know that the backpathes represented by dashed arrows are not the longest ones."
-@image latex occulters.png "Occulters for the direction @e d in red. Green arrows represent backpathes: the length of the plain arrows is to be checked, whereas we know that the backpathes represented by dashed arrows are not the longest ones."
 
 
 Considering whether the last movement @f$\overrightarrow{p_jp_{j+1}}@f$ is forward or backward in the direction @f$\overrightarrow{p_ip_j}@f$, we can decide if there is a new backpath possibly
@@ -197,7 +187,6 @@ longer than the threshold or not. This is done according to Algorithm 2
 below. 
 
 @image html algo2.png ""
-@image latex algo2.png ""
 
 
 According to Algorithm 1 we see that Algorithm 2 must be applied for any
@@ -212,7 +201,6 @@ cluster.
 
 @image html clusters.png "Left: The directions of the plane are clustered into 8 octants. For instance, direction
 @e d is in octant 0. Right: Illustration of the positive (or forward) elementary shifts for each octant."
-@image latex clusters.png "Left: The directions of the plane are clustered into 8 octants. For instance, direction @e d is in octant 0. Right: Illustration of the positive (or forward) elementary shifts for each octant."
 
 
 If we now go back to Algorithm 2, we see that the result of the test lines 2-3 is
@@ -239,16 +227,13 @@ figures below for the octant @f$0@f$:
 * in the white area, the order changes, as illustrated below. 
   
 @image html zones.png ""
-@image latex zones.png ""
 
 @image html ordre_projections.png "For two points @e p and @e q and a direction @e &alpha;: on  the left, @e q is @e after @e p, and is the active occulter for direction @e &alpha;, whereas on the right, @e p is after @e q and is the active occulter."
-@image latex ordre_projections.png "For two points @e p and @e q and a direction @e &alpha;: on  the left, @e q is @e after @e p, and is the active occulter for direction @e &alpha;, whereas on the right, @e p is after @e q and is the active occulter."
 
 Algorithm 3 below puts together these observations to update the list of
 active occulters for one octant. 
 
 @image html algo3.png ""
-@image latex algo3.png ""
 
 
 
@@ -295,7 +280,6 @@ computed by our algorithm is upper bounded by a function of the optimal
 solution: 
 
 @image html lemma3.png ""
-@image latex lemma3.png ""
 
 For more details about this proof, please refer to @cite sivignon2011.
 

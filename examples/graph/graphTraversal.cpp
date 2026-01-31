@@ -57,7 +57,7 @@ using namespace DGtal;
 
 int main( int /* argc */, char** /* argv */ )
 {
-  //! [graphTraversal-graph-instanciation]
+  //! [graphTraversal-graph-instantiation]
   using namespace Z2i;
   Point p1( -41, -36 ), p2( 18, 18 );
   Domain domain( p1, p2 );
@@ -71,7 +71,7 @@ int main( int /* argc */, char** /* argv */ )
   typedef Object4_8 Graph;
   typedef Point Vertex;
   BOOST_CONCEPT_ASSERT(( concepts::CUndirectedSimpleGraph< Graph > ));
-  //! [graphTraversal-graph-instanciation]
+  //! [graphTraversal-graph-instantiation]
 
   HueShadeColorMap<int> cmap_hue( 0, 400, 10 );
   GradientColorMap<int> cmap_grad( 0, 52);

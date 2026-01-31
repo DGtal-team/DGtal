@@ -90,13 +90,13 @@ As explained in \ref moduleFMM, we must define
  
 @snippet tutorial-examples/FMMErosion.cpp FMMErosionFMMTypes
 
-Then, we construct and initalize the two external data structures, i.e. 
+Then, we construct and initialize the two external data structures, i.e. 
 the set of points and the image of distance values. We arbitrarily set 
 the distance values of all the inner points to \f$ 0.5 \f$.  
 
 @snippet tutorial-examples/FMMErosion.cpp FMMErosionFMMInit
 
-Finally, we instanciate the FMM class and perform the computation as follows: 
+Finally, we instantiate the FMM class and perform the computation as follows: 
 
 @snippet tutorial-examples/FMMErosion.cpp FMMErosionFMM
 

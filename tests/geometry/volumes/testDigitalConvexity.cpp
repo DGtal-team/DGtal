@@ -36,6 +36,8 @@
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/geometry/volumes/CellGeometry.h"
 #include "DGtal/geometry/volumes/DigitalConvexity.h"
+#include "DGtal/geometry/tools/AffineGeometry.h"
+#include "DGtal/geometry/tools/AffineBasis.h"
 #include "DGtalCatch.h"
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -197,7 +199,7 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
   typedef KSpace::Space                    Space;
   typedef HyperRectDomain< Space >         Domain;
   typedef DigitalConvexity< KSpace >       DConvexity;
-
+  
   Domain     domain( Point( 0, 0, 0 ), Point( 3, 3, 3 ) );
   DConvexity dconv( Point( -1, -1, -1 ), Point( 4, 4, 4 ) );
 
@@ -249,6 +251,8 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
     unsigned int nbfg     = 0;
     unsigned int nbffast  = 0;
     unsigned int nb0123   = 0;
+    unsigned int nbdim3   = 0;
+    unsigned int nbfull   = 0;
     for ( unsigned int i = 0; i < nb; ++i )
       {
         Point a( rand() % 5, rand() % 5, rand() % 5 );
@@ -256,6 +260,9 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
         Point c( rand() % 5, rand() % 5, rand() % 5 );
         Point d( rand() % 5, rand() % 5, rand() % 5 );
         if ( ! dconv.isSimplexFullDimensional( { a, b, c, d } ) ) continue;
+        nbfull += 1;
+        auto dim = functions::computeAffineDimension( std::vector<Point>{ a, b, c, d } );
+        nbdim3 += ( dim == 3 ) ? 1 : 0;
         auto tetra = dconv.makeSimplex( { a, b, c, d } );
         std::vector< Point > X;
         tetra.getPoints( X );
@@ -267,10 +274,14 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
         bool cvxfg    = dconv.isFullyConvex( X, false );
         bool cvxffast = dconv.isFullyConvexFast( X );
         if ( cvxf != cvxfg || cvxf != cvxffast) {
-          std::cout << "[" << cvx0 << cvx1 << cvx2 << cvx3 << "] "
-                    << "[" << cvxf << "] [" << cvxfg
-                    << "] [" << cvxffast << "]"
-                    << a << b << c << d << std::endl;
+          bool cvxfc =  dconv.FC( X ).size() == X.size();
+          std::cout << "[0123 " << cvx0 << cvx1 << cvx2 << cvx3 << "] "
+                    << "[K " << cvxf << "] [M " << cvxfg
+                    << "] [MF " << cvxffast << "] [FC " << cvxfc << "] "
+                    << a << b << c << d << "\n";
+          std::cout << "X=";
+          for ( auto p : X ) std::cout << " " << p;
+          std::cout << "\n";
         }
         nbsimplex += 1;
         nb0       += cvx0 ? 1 : 0;
@@ -285,6 +296,9 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
       }
     THEN( "All valid tetrahedra are 0-convex." ) {
       REQUIRE( nb0 == nbsimplex );
+    }
+    THEN( "All full dimensional simplices have affine dimension 3" ) {
+      REQUIRE( nbfull == nbdim3 );
     }
     THEN( "There are less 1-convex, 2-convex and 3-convex than 0-convex." ) {
       REQUIRE( nb1 < nb0 );
@@ -736,6 +750,7 @@ SCENARIO( "DigitalConvexity< Z3 > envelope", "[envelope][3d]" )
               S.insert( Point( rand() % 10, rand() % 10, rand() % 10 ) );
             std::vector< Point > X( S.cbegin(), S.cend() );
             auto Z = dconv.envelope( X );
+            CAPTURE( X );
             CAPTURE( dconv.depthLastEnvelope() );
             REQUIRE( dconv.isFullyConvex( Z ) );
           }
@@ -1187,4 +1202,42 @@ SCENARIO( "DigitalConvexity< Z3 > full subconvexity and full covering of triangl
     }
   }
   
+}
+
+SCENARIO( "DigitalConvexity< Z3 > envelope bug", "[envelope][3d]" )
+{
+  typedef KhalimskySpaceND<3,int>          KSpace;
+  typedef KSpace::Point                    Point;
+  typedef DigitalConvexity< KSpace >       DConvexity;
+  typedef AffineGeometry< Point >          Affine;
+  typedef AffineBasis< Point >             Basis;
+
+  DConvexity dconv( Point( -36, -36, -36 ), Point( 36, 36, 36 ) );
+
+  WHEN( "Using basis B = (1, 0, -2) (1, 0, -1)" ) {
+    std::vector< Point > b = { Point( 0, 0, 0), Point(1, 0, -2), Point(1, 0, -1) };
+    const auto [ o, B ] = Affine::affineBasis( b );
+    Point e  = functions::computeIndependentVector( B );
+    Basis AB( Point( 0,0 ), b, Basis::Type::ECHELON_REDUCED );
+    bool parallel = AB.isParallel( e );
+    const auto [ d, L, r ] = AB.decomposeVector( e );
+    CAPTURE( B ); 
+    CAPTURE( AB.basis() ); 
+    CAPTURE( d ); 
+    CAPTURE( L );
+    CAPTURE( r );
+    CAPTURE( e );
+    REQUIRE( ! parallel );
+    REQUIRE( r != Point::zero );
+  }
+  
+  WHEN( "Computing the envelope Z of a digital set X with direct algorithm" ) {
+    std::vector< Point > X = { Point(5, 1, 9), Point(8, 1, 8), Point(9, 1, 1) };
+    auto Z = dconv.envelope( X );
+    THEN( "Z is fully convex" ){
+      CAPTURE( X );
+      CAPTURE( dconv.depthLastEnvelope() );
+      REQUIRE( dconv.isFullyConvex( Z ) );
+    }
+  }
 }

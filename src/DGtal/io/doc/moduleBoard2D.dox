@@ -65,7 +65,6 @@ full code is in dgtalBoard2D-1-points.cpp.
 This program outputs this image.
 
 \image html dgtalboard-1-points.png "Drawing points with Board."
-\image latex dgtalboard-1-points.png "Drawing points with Board." width=5cm
 
 It is clear that the order in which you display elements has an
 influence on the exported graphics.
@@ -93,7 +92,6 @@ parameter.
  \endcode
 
 \image html dgtalboard-2-sets-1.png "Digital set drawing with Board."
-\image latex dgtalboard-2-sets-1.png "Digital set drawing with Board." width=6cm
 
 \subsection dgtal_dgtalboard_sec13 Mode selection: the example of digital objects
 
@@ -138,10 +136,8 @@ chosen for the object. The full code is in dgtalBoard2D-2-sets.cpp.
 
 <table>
 <tr><td> \image html dgtalboard-2-sets-2.png "(4,8)-object"
- \image latex dgtalboard-2-sets-2.png "(4,8)-object" width=5cm
  </td>
 <td> \image html dgtalboard-2-sets-3.png "(8,4)-object"
- \image latex dgtalboard-2-sets-3.png "(8,4)-object" width=5cm
  </td></tr>
 </table>
 
@@ -182,7 +178,7 @@ The simplest way is to use instances of the following classes:
 - CustomColors: to change pen color and fill color.
 - CustomPenColor: to change only pen color.
 - CustomFillColor: to change only fill color.
-- CustomPen: to change pen color and fill color, but also optionnaly in this order the line width, the line style, the line cap, the line join.
+- CustomPen: to change pen color and fill color, but also optionally in this order the line width, the line style, the line cap, the line join.
 
 An instance of one of this class is then attached to the drawable
 element by creating an instance of CustomStyle. Do not worry
@@ -222,7 +218,6 @@ This program (see full source at dgtalBoard2D-3-custom-classes.cpp)
 outputs the following graphics.
 
 \image html dgtalboard-3-custom-classes.png "Custom drawing."
-\image latex dgtalboard-3-custom-classes.png "Custom drawing." width=5cm
 
 
 Combining several @e CustomStyles, the main DGtal logo can be generated as follows.:
@@ -273,7 +268,6 @@ The custom style is then attached to drawable element by creating an instance of
 This program (see full source at dgtalBoard2D-3-custom-points.cpp) outputs the following graphics.
 
 \image html dgtalboard-3-custom-points.png "Custom drawing of point."
-\image latex dgtalboard-3-custom-points.png "Custom drawing of point." width=6cm
 
 \subsection dgtal_dgtalboard_sec17 Using colormaps in Board2D streams
 
@@ -313,7 +307,6 @@ An interesting point of the exemple below is how we specify a custom style for a
 This program (see full source at dgtalBoard2D-4-colormaps.cpp) outputs the following graphics.
 
 \image html dgtalboard-4-colormaps.png "Colormap example."
-\image latex dgtalboard-4-colormaps.png "Colormap example." width=5cm
 
 More precisely, several styles may be applied before some drawable element is displayed. They are called in this order.
   1. the default style (always applied)
@@ -330,7 +323,6 @@ Therefore, if you change the drawing \b mode of a drawable element and if you wi
 Another example involving ArithmeticalDSS is greedy-dss-decomposition.cpp. It outputs the following graphics:
 
 \image html dgtalboard-5-greedy-dss.png "Greedy DSS Decomposition "
-\image latex dgtalboard-5-greedy-dss.png "Greedy DSS Decomposition" width=5cm
 
 \subsection dgtal_dgtalboard_sec18 Compiling TikZ files
 
@@ -472,7 +464,6 @@ The Board2D remembers what is the current style for a given drawable element typ
   LibBoard is a  C++ library for simple Postscript, SVG, and XFig drawings.
 
 @image html logo_Board.png
-@image latex logo_Board.png  "LibBoard Logo" width=4cm
 (Copyleft, LGPL) 2007 S&eacute;bastien Fourey - GREYC ENSICAEN
 
 It allows simple drawings in:

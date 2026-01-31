@@ -19,7 +19,7 @@
 /**
  * @file Linearizer.h
  * @author Roland Denis (\c roland.denis@univ-smb.fr )
- * LAboratory of MAthematics - LAMA (CNRS, UMR 5127), University of Savoie, France
+ * Laboratory of Mathematics - LAMA (CNRS, UMR 5127), University of Savoie, France
  *
  * @date 2015/06/18
  *
@@ -82,7 +82,7 @@ namespace DGtal
    *
    * This is a static class that provides point linearization (point to index) and de-linearization (index to point) for storages working on HyperRectDomain.
    *
-   * The storage order can be specified by template (default is colum-major ordered).
+   * The storage order can be specified by template (default is column-major ordered).
    *
    * Example:
    * @code

@@ -153,7 +153,6 @@ Voronoi cell if @a v on the segment. Such predicate can be illustrated
 as follows:
 
 @image html hiddenBy.png "HiddenBy predicate in dimension 2 for the l_2 metric (the predicate returns true in this case)."
-@image latex hiddenBy.png  "HiddenBy predicate in dimension 2 for the l_2 metric (the predicate returns true in this case)."
 
 This predicate (with the @a closest() one as discussed above) is
 crucial for separable VoronoiMap/DistanceTransformation

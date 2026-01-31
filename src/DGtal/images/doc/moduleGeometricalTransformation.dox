@@ -100,11 +100,9 @@ e2) or with backward which can be used with ConstImageAdapter or ImageAdapter:
 
 Below image presents result for froward model and image "Church.pgm"
 \image html church_forward.jpg
-\image latex church_forward.jpg
 
 and for backward as well:
 \image html church_backward.jpg
-\image latex church_backward.jpg
 
 
 \subsection secRigid3D Rigid transformations in 3D discrete space
@@ -141,11 +139,9 @@ e2) or with backward which can be used with ConstImageAdapter or ImageAdapter:
 
 Below image presents result for froward model and image "cat10.vol"
 \image html cat10_forward.jpg
-\image latex cat10_forward.jpg
 
 and for backward as well:
 \image html cat10_backward.jpg
-\image latex cat10_backward.jpg
 
 */
  }

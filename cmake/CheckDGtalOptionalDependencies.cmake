@@ -115,6 +115,13 @@ if (DGTAL_WITH_ITK)
     target_link_libraries(DGtal PUBLIC ${ITK_LIBRARIES})
     set(DGtalLibDependencies ${DGtalLibDependencies} ${ITK_LIBRARIES})
     target_compile_definitions(DGtal PUBLIC  -DDGTAL_WITH_ITK)
+
+    if (DGTAL_WITH_EIGEN_ITK)
+      set(Eigen3_DIR ${ITKInternalEigen3_DIR})
+      find_package(Eigen3 REQUIRED CONFIG)
+      set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3::Eigen)
+      target_link_libraries(DGtal PUBLIC Eigen3::Eigen)
+    endif()
     
     # -------------------------------------------------------------------------
     # ITK 5.0 adds "/usr/lib/x86_64-linux-gnu/include" to include path which 
@@ -207,13 +214,12 @@ endif()
 # Look for Polyscope.
 # -----------------------------------------------------------------------------
 set(POLYSCOPE_FOUND_DGTAL 0)
-if (DGTAL_WITH_POLYSCOPE_VIEWER OR DGTAL_BUILD_POLYSCOPE_EXAMPLES)
+if (DGTAL_WITH_POLYSCOPE_VIEWER)
   include(polyscope)
 
   target_link_libraries(DGtal PUBLIC polyscope)
-  target_compile_definitions(DGtal PUBLIC -DDGTAL_WITH_POLYSCOPE)
+  target_compile_definitions(DGtal PUBLIC -DDGTAL_WITH_POLYSCOPE_VIEWER)
   set(POLYSCOPE_FOUND_DGTAL 1)
-  set(DGTAL_WITH_POLYSCOPE 1)
   set(DGTAL_WITH_POLYSCOPE_VIEWER 1)
 endif()
 

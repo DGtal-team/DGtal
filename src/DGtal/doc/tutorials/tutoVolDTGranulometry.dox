@@ -51,15 +51,12 @@ important role for shape description. For short, given a shape @f$
 
 
 @image html export-accflower.png  "Granulometry function on a 2D shape"
-@image latex export-accflower.png  "Granulometry function on  2D shape"
 
 @image html Al-thickness.png  "Granulometry function on  Al object"
-@image latex Al-thickness.png  "Granulometry function on  Al object"
 
 
 @image html volumetricThickness.png "Granulometry function on
 interior/exterior of a porous material (snow sample, courtesy of GAME-CNRM/CEN and ESRF)
-@image latex volumetricThickness.png "Granulometry function on
 interior/exterior of a porous material (snow sample, courtesy of GAME-CNRM/CEN and ESRF)
 
 

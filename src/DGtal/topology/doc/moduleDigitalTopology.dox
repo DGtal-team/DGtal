@@ -83,11 +83,9 @@ namespace DGtal {
    (Rosenfeld). 
    
    @image html DiskWithAdj4.png  "Illustration of a Digital Object with the 4-adjacency"
-   @image latex DiskWithAdj4.png  "Illustration of a Digital Object with the 4-adjacency" width=5cm
 
 
    @image html DiskWithAdj8.png  "Illustration of a Digital Object with the 8-adjacency" 
-   @image latex DiskWithAdj8.png  "Illustration of a Digital Object with the 8-adjacency" width=5cm
   
    \subsection dgtal_topology_sec1_2   6-, 18- and 26- adjacencies in Z3
   
@@ -141,7 +139,7 @@ namespace DGtal {
    Adjacencies are used at many places as a basis for more complex
    operations. To keep genericity and efficiency, adjacencies should
    satisfy the concept concepts::CAdjacency. They are specialized only at
-   instanciation as argument to templates. A model of concepts::CAdjacency should
+   instantiation as argument to templates. A model of concepts::CAdjacency should
    define the following inner types:
   
    - Space: the space of the adjacency.
@@ -297,11 +295,9 @@ namespace DGtal {
 @endcode
  
 @image html visuBorderExtraction.png  "Border extraction visualisation" 
-@image latex visuBorderExtraction.png  "Border extraction visualisation" width=5cm
 see example @ref 3dBorderExtraction.cpp
 
 @image html visuBorderExtraction2.png  "Border extraction visualisation from imported volume " 
-@image latex visuBorderExtraction2.png  "Border extraction visualisation" width=5cm
 see example: @ref 3dBorderExtractionImg.cpp
    
    
@@ -422,7 +418,6 @@ Finally the result can simply be displayed using PolyscopeViewer:
 
  We obtain the following result:
    @image html visuThinning.png  "Resulting 3d thinning  with the 6_26 object"
-   @image latex DiskWithAdj4.png  "Resulting 3d thinning  with the 6_26 object" width=5cm	
 
 
    \section dgtal_topology_sec4 Neighborhood configurations, predicates and look up tables.

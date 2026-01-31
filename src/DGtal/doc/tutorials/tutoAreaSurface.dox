@@ -83,7 +83,7 @@ As discussed in the introduction, we will use a normal vector
 estimator to compute the surface area of our object. We will use
 IntegralInvarianceCovarianceEstimator (II) who, with the good functor
 (can be found in IIGeometricFunctors namespace/file ). DGtal offers
-also some other normal vector estimators, so feel free to use wich one
+also some other normal vector estimators, so feel free to use which one
 you want.
 
 The main idea is to choose the functor you want
@@ -103,7 +103,7 @@ To extract the surfel normal vector, we need to use some method from the KSpace 
 
 
 6. Is the surface area estimation multigrid convergent ? As you can
-see at the begining of the file, we set the gridstep @f$ h @f$ to
+see at the beginning of the file, we set the gridstep @f$ h @f$ to
 1. If you change this value @f$ h \le 1 @f$, how the estimation of the
 surface area changes ?
 

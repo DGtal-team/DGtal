@@ -9,7 +9,10 @@ set(DGTAL_TESTS_SRC
   testConvexHull2D
   testConvexHull2DThickness
   testConvexHull2DReverse
-  testQuickHull)
+  testQuickHull
+  testGenericLatticeConvexHull
+  testAffineGeometry
+  testAffineBasis)  
 
 set(DGTAL_TESTS_VSRC
   testSphericalAccumulatorViewer)
@@ -19,7 +22,7 @@ foreach(FILE ${DGTAL_TESTS_SRC})
 endforeach()
 
 
-if (DGTAL_WITH_POLYSCOPE)
+if (DGTAL_WITH_POLYSCOPE_VIEWER)
   foreach(FILE ${DGTAL_TESTS_VSRC})
     DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
   endforeach()

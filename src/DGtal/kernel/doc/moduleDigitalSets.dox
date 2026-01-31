@@ -74,6 +74,13 @@ set).
   @c std::unordered_set is expected to be 20% - 50% faster when accessing
   or inserting points in the set.
 
+- DigitalSetByOctree: it is a container that stores voxels in an octree. 
+  This container is most useful when storing a large number of voxels. 
+  Once all the voxels have been inserted, it is possible to convert in place 
+  the structure into a Sparse Voxel Directed Acyclic Graph, which greatly 
+  compresses the structure. It is common to achieve rates below one bit 
+  per voxel, down to one hundredth of a bit per voxel. However, conventional 
+  operations are relatively slow, on the order of \f$ O(\log DomainSize) \f$.
 
 You may choose yourself your representation of digital set, or let
 DGtal chooses for you the best suited representation with the class
@@ -124,7 +131,7 @@ them and how to test if a point belongs to the set.
   Point p1(  -10, -10  );
   Point p2(  10, 10  );
   Domain domain( p1, p2 );
-  // instanciating set within this domain.
+  // instantiating set within this domain.
   SpecificSet mySet( domain );
   Point c(  0, 0  );
   mySet.insert( c ); // inserting point (0,0)
