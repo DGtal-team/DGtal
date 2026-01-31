@@ -719,7 +719,7 @@ namespace DGtal
         {
           myImageCache->incCacheMissRead();
           Domain d;
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
           trace.info()<<"+";
 #endif 
           d = findSubDomain(aPoint);

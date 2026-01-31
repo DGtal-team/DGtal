@@ -662,7 +662,7 @@ namespace DGtal
       // If basis has already d independent vectors, then there is no
       // other independent vector.
       if ( basis.size() >= dimension ) return Point::zero;
-      // At least one trivial canonic vector should be independant.
+      // At least one trivial canonic vector should be independent.
       Dimension k = 0;
       for ( ; k < dimension; k++ )
         {
@@ -698,7 +698,7 @@ namespace DGtal
       // If basis has already d independent vectors, then there is no
       // other independent vector.
       if ( basis.size() >= dimension ) return TOtherPoint::zero;
-      // At least one trivial canonic vector should be independant.
+      // At least one trivial canonic vector should be independent.
       Dimension k = 0;
       for ( ; k < dimension; k++ )
         {

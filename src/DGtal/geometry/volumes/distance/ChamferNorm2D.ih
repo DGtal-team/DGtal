@@ -78,7 +78,7 @@ DGtal::experimental::ChamferNorm2D<TSpace>::ChamferNorm2D(const unsigned int N)
   //Sorting
   std::sort(myDirections.begin(), myDirections.end(), myLessThanAngular);
 
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   //Display
   trace.info()<< "Constructing mask: "<<std::endl;
   std::copy( myDirections.begin(), myDirections.end(), std::ostream_iterator<Vector>(std::cout, "\n"));
@@ -273,7 +273,7 @@ DGtal::experimental::ChamferNorm2D<TSpace>::shrinkPSubMask(ConstIterator aBegin,
   ASSERT(aDimension == 1);
   ASSERT(aP[aDimension] != aQ[aDimension]);
   
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   trace.info()<<"Checking "<<*aBegin<<" -- "<< *aEnd << "  adimension="<<aDimension << " P="<<aP<<" Q="<<aQ<<std::endl;
 #endif
 

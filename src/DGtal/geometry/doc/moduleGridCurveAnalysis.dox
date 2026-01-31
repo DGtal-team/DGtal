@@ -224,7 +224,7 @@ must be constructed from the same input parameters
 so that they can detect segments of the same class. 
 
 These methods are useful in segmentation algorithms when 
-new segment computers must be created. An independant factory 
+new segment computers must be created. An independent factory 
 is not required since a segment computer is a factory 
 for instances of its own type.  
 
@@ -477,7 +477,7 @@ Obviously, [beginIt, endIt) has to be a valid range included
 in the wider range [curve.begin(), curve.end()). 
 
 Moreover, a part of a digital curve may be processed either
-as an independant (open) digital curve or as a part whose 
+as an independent (open) digital curve or as a part whose 
 segmentation at the ends depends of the underlying digital 
 curve. That's why 3 processing modes are available:
 - "Truncate" (default), the extension of the last segment 

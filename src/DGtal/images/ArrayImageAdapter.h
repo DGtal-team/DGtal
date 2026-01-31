@@ -189,7 +189,7 @@ namespace DGtal
        *
        * The full domain will be the same as the copied ArrayImageAdapter. Only the viewable domain will be modified.
        *
-       * @warning Since this class in only a view on a independant storage, it does a shallow copy.
+       * @warning Since this class in only a view on a independent storage, it does a shallow copy.
        *
        * @param other         An another ArrayImageAdapter instance.
        * @param aViewDomain   A new viewable domain for this image.
