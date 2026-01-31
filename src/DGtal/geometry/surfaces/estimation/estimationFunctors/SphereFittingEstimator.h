@@ -208,7 +208,7 @@ namespace DGtal
         else
           myFit->addNeighbor(point);
         
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
         trace.info() <<"#";
 #endif
       }
@@ -222,7 +222,7 @@ namespace DGtal
       {
         myFit->finalize();
 
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
         trace.info() <<std::endl;
         
         //Test if the fitting ended without errors

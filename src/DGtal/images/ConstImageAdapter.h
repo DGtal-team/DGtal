@@ -140,7 +140,7 @@ public:
             myImagePtr(&anImage), mySubDomainPtr(&aDomain), myFD(&aFD), myFV(&aFV)
     {
       defaultValue = 0;
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
         trace.warning() << "ConstImageAdapter Ctor fromRef " << std::endl;
 #endif
     }
@@ -158,7 +158,7 @@ public:
     */
     ConstImageAdapter & operator= ( const ConstImageAdapter & other )
     {
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
         trace.warning() << "ConstImageAdapter assignment " << std::endl;
 #endif
         if (&other != this)
@@ -296,7 +296,7 @@ private:
      * Default constructor.
      */
     ConstImageAdapter() {
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
         trace.warning() << "ConstImageAdapter Ctor default " << std::endl;
 #endif
     }

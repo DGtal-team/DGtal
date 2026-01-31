@@ -1,10 +1,10 @@
 set(VERBOSE_DGTAL 0)
-set(DEBUG_VERBOSE_DGTAL 0)
+set(DGTAL_DEBUG_VERBOSE_DGTAL 0)
 set(COLOR_WITH_ALPHA_ARITH_DGTAL 0)
 
 if (DGTAL_DEBUG_VERBOSE)
-  set(DEBUG_VERBOSE_DGTAL 1)
-  target_compile_definitions(DGtal PUBLIC -DDEBUG_VERBOSE)
+  set(DGTAL_DEBUG_VERBOSE_DGTAL 1)
+  target_compile_definitions(DGtal PUBLIC -DDGTAL_DEBUG_VERBOSE)
   message(STATUS "Debug verbose mode activated")
 endif()
 

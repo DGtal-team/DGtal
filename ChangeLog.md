@@ -24,6 +24,7 @@
   - Adding option not to install targets to avoid crashes when boost is fetched through multiple channels ([#1809](https://github.com/DGtal-team/DGtal/pull/1809))
   - Cleaning up the Github Actions reuses (Bastien Doignies, [#1793](https://github.com/DGtal-team/DGtal/pull/1793))
   - Add cache to github actions (Bastien Doignies, [#1805](https://github.com/DGtal-team/DGtal/pull/1805))
+  - Fixing old `DEBUG_VERBOSE` to `DGTAL_DEBUG_VERBOSE` (David Coeurjolly,  [#17xx](https://github.com/DGtal-team/DGtal/pull/17xx))
 
 - *Python*
   - Build backend upgraded to scikit-build-core (Bastien Doignies, [#1804](https://github.com/DGtal-team/DGtal/pull/1804))
