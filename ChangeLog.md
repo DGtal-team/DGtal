@@ -1,5 +1,10 @@
 # DGtal 2.1.1-dev
 
+## New features
+
+- *Project*
+  - pre-commit hooks have been activated for sanity checks on files before running the git commit (David Coeurjolly,  [#1835](https://github.com/DGtal-team/DGtal/pull/1835))
+
 ## Changes
 
 - *Documentation*
@@ -10,14 +15,17 @@
 - *IO*
   - Fixing typo in the 3d viewer documentation (David Coeurjolly, [#1831](https://github.com/DGtal-team/DGtal/pull/1831))
 
+- *Build*
+  - Fixing old `DEBUG_VERBOSE` to `DGTAL_DEBUG_VERBOSE` (David Coeurjolly,  [#1834](https://github.com/DGtal-team/DGtal/pull/1834))
+
 # DGtal 2.1.0
 
 ## New features
 
 - *DGtal project*
-  - The default branch for the `DGtal-team/DGtal` project has been switched from `master` to `main`. To update your local copy of DGtal, use the following instructions  (David Coeurjolly, [#1812](https://github.com/DGtal-team/DGtal/pull/1812)): 
+  - The default branch for the `DGtal-team/DGtal` project has been switched from `master` to `main`. To update your local copy of DGtal, use the following instructions  (David Coeurjolly, [#1812](https://github.com/DGtal-team/DGtal/pull/1812)):
 ```
-git branch -m master main                                                                  
+git branch -m master main
 git fetch origin
 git branch -u origin/main main
 git remote set-head origin -a
@@ -28,11 +36,6 @@ git remote set-head origin -a
 - *Geometry*
   - Add a generic quick hull variant that can process arbitrary input lattice points and outputs their convex hull, even if it is not full dimensional (Jacques-Olivier Lachaud, [#1803](https://github.com/DGtal-team/DGtal/pull/1803))
   - Add affine geometry module for determining the affine dimension of a subset of points or a set of vectors, and for providing bases and orthogonal bases in reduced-echelon form or in LLL-form (Jacques-Olivier Lachaud, [#1803](https://github.com/DGtal-team/DGtal/pull/1803))
-
-## New features
-
-- *Project*
-  - pre-commit hooks have been activated for sanity checks on files before running the git commit (David Coeurjolly,  [#1835](https://github.com/DGtal-team/DGtal/pull/1835))
 
 ## Changes
 
@@ -64,7 +67,7 @@ git remote set-head origin -a
   - QuickHull could sometimes output that its output was not full dimensional since the computation of affine dimension was randomized. Now QuickHull relies on an exact computation of affine dimension (Jacques-Olivier Lachaud, [#1803](https://github.com/DGtal-team/DGtal/pull/1803))
   - Silencing a warning in the Naive3DDSSComputer.ih file. (David Coeurjolly, [#1815](https://github.com/DGtal-team/DGtal/pull/1815))
   - Fix issue in `testAffineBasis` that may produce errors for some compilers (David Coeurjolly, [#1826](https://github.com/DGtal-team/DGtal/pull/1826))
-  
+
 - *Build*
   - Version is now extracted from the `VERSION` file for CMake and Python builds (Bastien Doignies, [#1810](https://github.com/DGtal-team/DGtal/pull/1810))
   - Eigen is now properly fetched when DGTAL_ITK_WITH_EIGEN is set (Bastien Doignies, [#1818](https://github.com/DGtal-team/DGtal/pull/1818))
@@ -74,7 +77,6 @@ git remote set-head origin -a
   - Adding option not to install targets to avoid crashes when boost is fetched through multiple channels ([#1809](https://github.com/DGtal-team/DGtal/pull/1809))
   - Cleaning up the Github Actions reuses (Bastien Doignies, [#1793](https://github.com/DGtal-team/DGtal/pull/1793))
   - Add cache to github actions (Bastien Doignies, [#1805](https://github.com/DGtal-team/DGtal/pull/1805))
-  - Fixing old `DEBUG_VERBOSE` to `DGTAL_DEBUG_VERBOSE` (David Coeurjolly,  [#1834](https://github.com/DGtal-team/DGtal/pull/1834))
 
 - *IO*
   - Error is raised if the polyscope viewer is used without the DGTAL_WITH_POLYSCOPE_VIEWER flag (David Coeurjolly, [#1814](https://github.com/DGtal-team/DGtal/pull/1814))
