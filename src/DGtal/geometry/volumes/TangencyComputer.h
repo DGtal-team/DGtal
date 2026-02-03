@@ -178,6 +178,28 @@ namespace DGtal
         myQ        = std::priority_queue< Node, std::vector< Node >, Comparator >();
   }
 
+      /// Clears the object solely at the given range of points, and
+      /// prepares it for a shortest path computation. Avoids complete
+      /// reinitialization if a first computation was only local and
+      /// touched only this range of points.
+      ///
+      /// @param visited the range of points that was visited in a
+      /// first computation pass.
+      ///
+      /// @note Complexity is O(card(visited)), while clear has linear
+      /// complexity wrt the total number of points.
+      void clearVisited( const std::vector<std::size_t>& visited )
+      {
+        const auto nb = size();
+        for ( auto v : visited )
+          {
+            myAncestor[ v ] = nb;
+            myDistance[ v ] = std::numeric_limits<double>::infinity();
+            myVisited [ v ] = false;
+          }
+        myQ = std::priority_queue< Node, std::vector< Node >, Comparator >();
+      }
+
       /// Adds the point with index \a i as a source point
       /// @param[in] i any valid index
       /// @note Must be done before starting computations.
