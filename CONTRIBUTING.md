@@ -48,6 +48,66 @@ tests.
 More information are described in the
 [DGtal documentation](http://dgtal.org/doc/stable/moduleFAQGit.html).
 
+## Setting up Pre-commit Hooks
+
+DGtal uses [pre-commit](https://pre-commit.com/) to ensure code quality and consistency. Before making contributions, we highly recommend setting up pre-commit hooks:
+
+### Installation
+
+1. **Install pre-commit** (if not already installed):
+   ```bash
+   pip install pre-commit
+   ```
+
+2. **Install the hooks** in your local repository:
+   ```bash
+   cd /path/to/DGtal
+   pre-commit install
+   ```
+
+### What the hooks do
+
+The current pre-commit configuration (`/.pre-commit-config.yaml`) includes:
+- Removes trailing whitespace
+- Ensures files end with a newline
+- Validates YAML syntax
+- Prevents large files from being committed
+- Checks for broken symlinks
+- Detects case conflicts in filenames
+
+### Running hooks manually
+
+To run all hooks on all files:
+```bash
+pre-commit run --all-files
+```
+
+To run hooks on specific files:
+```bash
+pre-commit run --files path/to/your/files
+```
+
+### Updating hooks
+
+To update to the latest versions of the hooks:
+```bash
+pre-commit autoupdate
+pre-commit run --all-files
+```
+
+### Skipping hooks (not recommended)
+
+If you absolutely need to skip hooks (not recommended for regular development):
+```bash
+git commit --no-verify -m "Commit message"
+```
+
+### Troubleshooting
+
+- If hooks fail, fix the reported issues and try committing again
+- For persistent issues, you can temporarily disable specific hooks in `/.pre-commit-config.yaml`
+- Ensure you're using a compatible Python version (3.6+)
+
 ## Code Structure
 
 ### Folders
