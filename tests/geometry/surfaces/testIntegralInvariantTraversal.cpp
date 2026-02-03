@@ -60,7 +60,7 @@ int main()
   auto binary_image    = SH3::makeBinaryImage( digitized_shape, params );
   auto K               = SH3::getKSpace( params );
   auto embedder        = SH3::getSCellEmbedder(K);
-  
+
   trace.info()<<"Binary image "<< *binary_image<< std::endl;
 
   auto surface         = SH3::makeLightDigitalSurface( binary_image, K, params );
@@ -69,25 +69,25 @@ int main()
 
   //Computing some differential quantities
   params("r-radius", 3.0);
-  
+
   trace.beginBlock("II SHG3 (BreadthFirst)");
   auto normals   = SHG3::getIINormalVectors(binary_image,surfels,params);
   trace.endBlock();
-  
+
   //Duplicating params and surfel range
   auto paramsdepth= SH3::defaultParameters()  | SHG3::defaultParameters();
   paramsdepth( "surfaceTraversal", "DepthFirst" )("r-radius",3.0);
   auto surfelsdepth = SH3::getSurfelRange( surface, paramsdepth  );
-  
+
   trace.beginBlock("II (DepthFirst)");
   auto normalsdepth  = SHG3::getIINormalVectors(binary_image,surfelsdepth,paramsdepth);
   trace.endBlock();
-  
+
   std::vector<unsigned int> id(surfels.size());
   auto cpt=0;
   for(auto &v: id)
     v=cpt++;
-  
+
   PolyscopeViewer viewer;
   std::string objectName = "Surfels BF";
   viewer.draw(surfels, objectName);
@@ -106,26 +106,26 @@ int main()
   std::vector<Z3i::RealPoint> dfnodes;
   for(auto s: surfelsdepth)
     dfnodes.push_back(embedder(s));
-  
+
   std::vector<double> distbf, distdf;
   for(auto i = 1 ; i < surfels.size(); ++i)
   {
     distbf.push_back( ( embedder(surfels[i]) - embedder(surfels[i-1])).norm());
     distdf.push_back( ( embedder(surfelsdepth[i]) - embedder(surfelsdepth[i-1])).norm());
   }
-  
+
   auto ps=  polyscope::registerCurveNetworkLine("BF", bfnodes);
   ps->addNodeScalarQuantity("id", id);
   ps->addEdgeScalarQuantity("dist", distbf);
   auto ps2=polyscope::registerCurveNetworkLine("DF", dfnodes);
   ps2->addNodeScalarQuantity("id", id);
   ps2->addEdgeScalarQuantity("dist", distdf);
-  
+
   trace.info()<<"Counting the number of consecutive pairs with distance <=  1.0"<< std::endl;
   trace.info()<<"BF strategy = "<< std::count_if(distbf.begin(), distbf.end(), [](double a){ return a-0.000001 <= 1.0;})<< std::endl;
   trace.info()<<"DF strategy = "<< std::count_if(distdf.begin(), distdf.end(), [](double a){ return a-0.000001 <= 1.0;})<< std::endl;
 
-  trace.info()<<"Counting the number of consecutive pairs with distance <=  \sqrt{2}/2"<< std::endl;
+  trace.info()<<"Counting the number of consecutive pairs with distance <=  sqrt{2}/2"<< std::endl;
   trace.info()<<"BF strategy = "<< std::count_if(distbf.begin(), distbf.end(), [](double a){ return a-0.000001 <= sqrt(2.0)/2.0;})<< std::endl;
   trace.info()<<"DF strategy = "<< std::count_if(distdf.begin(), distdf.end(), [](double a){ return a-0.000001 <= sqrt(2.0)/2.0;})<< std::endl;
 
