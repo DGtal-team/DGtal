@@ -144,7 +144,7 @@ Beside these options, user can also specify these options:
  (default: OFF). If set to ON, verbose
  messages are traced out.
 
-- \e DEBUG_VERBOSE (ON/OFF): to define the \e DEBUG_VERBOSE variable
+- \e DGTAL_DEBUG_VERBOSE (ON/OFF): to define the \e DGTAL_DEBUG_VERBOSE variable
  (default: OFF). If set to ON, verbose
 debug messages are traced out.
 
