@@ -41,12 +41,12 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 
 struct A {
-  A( int _a ) : a( _a ) 
+  A( int _a ) : a( _a )
   {
     ++nb;
     trace.info() << "#" << nb << " A::A( int ), a is " << a << std::endl;
   }
-  A( const A& other ) : a( other.a ) 
+  A( const A& other ) : a( other.a )
   {
     ++nb;
     trace.info() << "#" << nb << " A::A( const A& ), a is " << a << std::endl;

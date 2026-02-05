@@ -50,7 +50,7 @@ void usage()
 int main( int argc, char** argv )
 {
   typedef double Data;
-  if ( argc < 4 ) 
+  if ( argc < 4 )
     {
       usage();
       return 1;

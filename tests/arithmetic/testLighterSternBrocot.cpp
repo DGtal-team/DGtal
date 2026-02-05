@@ -100,7 +100,7 @@ bool testReducedFraction()
   SB::display( trace.info(), f1 );
   trace.info() << std::endl;
   ++nb; nbok += ok ? 1 : 0;
-  trace.info() << "(" << nbok << "/" << nb << ") " 
+  trace.info() << "(" << nbok << "/" << nb << ") "
                << " cfrac"
                << std::endl;
   const auto depth = cf1.size();
@@ -112,7 +112,7 @@ bool testReducedFraction()
       cf1.resize( depth - k );
       ok = equalCFrac<Quotient>( cf1, cf1_red );
       ++nb; nbok += ok ? 1 : 0;
-      trace.info() << "(" << nbok << "/" << nb << ") " 
+      trace.info() << "(" << nbok << "/" << nb << ") "
                    << "reduced(" << k << ")=";
       SB::display( trace.info(), fr );
       std::cerr << std::endl;
@@ -145,7 +145,7 @@ bool testInitFraction()
   trace.info() << std::endl;
   nbok += ( ( p == f1.p() ) && ( q == f1.q() ) ) ? 1 : 0;
   ++nb;
-  trace.info() << "(" << nbok << "/" << nb << ") " 
+  trace.info() << "(" << nbok << "/" << nb << ") "
                << "( ( p == f1.p() ) && ( q == f1.q() ) )"
                << std::endl;
   trace.info() << "- nbFractions = " << SB::instance().nbFractions << std::endl;
@@ -353,7 +353,7 @@ bool testPattern()
   trace.info() << "(" << nbok << "/" << nb << ") covering middle Subpatterns." << endl;
   trace.endBlock();
 
-  
+
   // GREATEST INCLUDED SUBPATTERN
   // ODD PATTERN
   trace.beginBlock ( "Testing block: greatest included subpatterns of ODD pattern." );
@@ -557,7 +557,7 @@ bool testPattern()
                << " L(0)=" << pat_even.L( 0 )
                << " U(1)=" << pat_even.U( 1 )
                << " L(1)=" << pat_even.L( 1 ) << endl;
-                                        
+
   return nbok == nb;
 }
 
@@ -591,12 +591,12 @@ bool testStandardDSLQ0()
       Point P = D2.lowestY( x );
       ++nb; nbok += D2( P ) && ( ! D2( P - Vector2I(0,1) ) ) ? 1 : 0;
       trace.info() << "(" << nbok << "/" << nb << ") "
-                   << "D2(P) && ! D2(P-y) P=" << P << " r(P)=" << D2.r( P ) 
+                   << "D2(P) && ! D2(P-y) P=" << P << " r(P)=" << D2.r( P )
                    << endl;
       P = D2.uppermostY( x );
       ++nb; nbok += D2( P ) && ( ! D2( P + Vector2I(0,1) ) ) ? 1 : 0;
       trace.info() << "(" << nbok << "/" << nb << ") "
-                   << "D2(P) && ! D2(P+y) P=" << P << " r(P)=" << D2.r( P ) 
+                   << "D2(P) && ! D2(P+y) P=" << P << " r(P)=" << D2.r( P )
                    << endl;
     }
   for ( Integer y = -5; y < 30; ++y )
@@ -604,12 +604,12 @@ bool testStandardDSLQ0()
       Point P = D2.lowestX( y );
       ++nb; nbok += D2( P ) && ( ! D2( P - Vector2I(1,0) ) ) ? 1 : 0;
       trace.info() << "(" << nbok << "/" << nb << ") "
-                   << "D2(P) && ! D2(P-x) P=" << P << " r(P)=" << D2.r( P ) 
+                   << "D2(P) && ! D2(P-x) P=" << P << " r(P)=" << D2.r( P )
                    << endl;
       P = D2.uppermostX( y );
       ++nb; nbok += D2( P ) && ( ! D2( P + Vector2I(1,0) ) ) ? 1 : 0;
       trace.info() << "(" << nbok << "/" << nb << ") "
-                   << "D2(P) && ! D2(P+x) P=" << P << " r(P)=" << D2.r( P ) 
+                   << "D2(P) && ! D2(P+x) P=" << P << " r(P)=" << D2.r( P )
                    << endl;
     }
 
@@ -618,8 +618,8 @@ bool testStandardDSLQ0()
 
 template <typename DSL>
 bool checkSubStandardDSLQ0( const DSL & D,
-                            const typename DSL::Point & A, 
-                            const typename DSL::Point & B ) 
+                            const typename DSL::Point & A,
+                            const typename DSL::Point & B )
 {
   typedef typename DSL::Integer Integer;
   typedef typename DSL::ConstIterator ConstIterator;
@@ -632,9 +632,9 @@ bool checkSubStandardDSLQ0( const DSL & D,
   dss.init( it );
   while ( ( dss.end() != it_end )
           && ( dss.extendFront() ) ) {}
-  bool ok = S.a() == dss.a() 
-    &&  S.b() == dss.b() 
-    &&  S.mu() == dss.mu(); 
+  bool ok = S.a() == dss.a()
+    &&  S.b() == dss.b()
+    &&  S.mu() == dss.mu();
   if ( ! ok )
     {
       trace.info() << "-------------------------------------------------------"
@@ -743,7 +743,7 @@ bool testContinuedFraction()
   Fraction f;
   std::vector<Quotient> quotients;
   std::vector<Quotient> qcfrac;
-  std::back_insert_iterator< Fraction > itout = 
+  std::back_insert_iterator< Fraction > itout =
     std::back_inserter( f );
   unsigned int size = ( rand() % 20 ) + 10;
   for ( unsigned int i = 0; i < size; ++i )
@@ -759,7 +759,7 @@ bool testContinuedFraction()
     qcfrac.push_back( (*it).first );
   // f.getCFrac( qcfrac );
   bool ok = equalCFrac( quotients, qcfrac );
-  
+
   trace.info() << ( ok ? "(OK)" : "(ERR)" );
   for ( unsigned int i = 0; i < quotients.size(); ++i )
     std::cerr << " " << quotients[ i ];
@@ -779,7 +779,7 @@ bool testContinuedFractions()
   trace.beginBlock ( "Testing block: continued fraction." );
   for ( unsigned int i = 0; i < nbtests; ++i )
     {
-      ++nb; nbok += testContinuedFraction<SB>() ? 1 : 0; 
+      ++nb; nbok += testContinuedFraction<SB>() ? 1 : 0;
       trace.info() << "(" << nbok << "/" << nb << ")"
                    << " continued fractions." << std::endl;
     }
@@ -788,7 +788,7 @@ bool testContinuedFractions()
 }
 
 template <typename LSB>
-bool 
+bool
 testTrivial( const string & lsb )
 {
   typedef typename LSB::Fraction Fraction;
@@ -800,10 +800,10 @@ testTrivial( const string & lsb )
     std::cerr << "pat = " << pat.rE() << " depth=" << pat.slope().k()
               << std::endl;
     Pattern spat = pat.previousPattern();
-    std::cerr << "spat= " << spat.rE() << " depth=" << spat.slope().k() 
+    std::cerr << "spat= " << spat.rE() << " depth=" << spat.slope().k()
               << std::endl;
     Pattern sspat = spat.previousPattern();
-    std::cerr << "sspat= " << sspat.rE() << " depth=" << sspat.slope().k() 
+    std::cerr << "sspat= " << sspat.rE() << " depth=" << sspat.slope().k()
               << std::endl;
   }
   {
@@ -811,10 +811,10 @@ testTrivial( const string & lsb )
     std::cerr << "pat = " << pat.rE() << " depth=" << pat.slope().k()
               << std::endl;
     Pattern spat = pat.previousPattern();
-    std::cerr << "spat= " << spat.rE() << " depth=" << spat.slope().k() 
+    std::cerr << "spat= " << spat.rE() << " depth=" << spat.slope().k()
               << std::endl;
     Pattern sspat = spat.previousPattern();
-    std::cerr << "sspat= " << sspat.rE() << " depth=" << sspat.slope().k() 
+    std::cerr << "sspat= " << sspat.rE() << " depth=" << sspat.slope().k()
               << std::endl;
   }
   return true;
@@ -824,7 +824,7 @@ testTrivial( const string & lsb )
    Bug report of I. Sivignon.
 */
 template <typename SB>
-bool 
+bool
 testAncestors()
 {
   typedef typename SB::Fraction Fraction;
@@ -833,7 +833,7 @@ testAncestors()
 
   // Instanciation d'un DSL
   DSL D(1077,1495,6081);
-  
+
   // Definition du sous-segment [AB] et calcul des caractéristiques
   Point A(3,-3);
   Point B(4,-2);
@@ -843,13 +843,13 @@ testAncestors()
   std::cerr << D1 << std::endl;
   return D1.slope() == Fraction( 1, 1 );
 }
-  
+
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
 int main( int , char** )
 {
-  typedef LighterSternBrocot< DGtal::int64_t,DGtal::int32_t, 
+  typedef LighterSternBrocot< DGtal::int64_t,DGtal::int32_t,
                               DGtal::StdMapRebinder > SB;
   typedef LightSternBrocot<DGtal::int64_t,DGtal::int32_t> SB2;
   typedef SternBrocot<DGtal::int64_t,DGtal::int32_t> SB3;
@@ -858,7 +858,7 @@ int main( int , char** )
 
   BOOST_CONCEPT_ASSERT(( concepts::CPositiveIrreducibleFraction< Fraction > ));
   BOOST_CONCEPT_ASSERT(( boost::InputIterator< ConstIterator > ));
-  
+
   testTrivial<SB>( "LrSB" );
   testTrivial<SB2>( "LSB" );
   testTrivial<SB3>( "SB" );

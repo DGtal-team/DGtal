@@ -1,6 +1,6 @@
-/** 
- * @file moduleHeatLaplaceOperator.dox 
- * @author Thomas Caissard (\c thomas.caissard@liris.cnrs.fr ) 
+/**
+ * @file moduleHeatLaplaceOperator.dox
+ * @author Thomas Caissard (\c thomas.caissard@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2017/09/28
@@ -26,9 +26,9 @@ namespace DGtal {
 
 Let \f$M\f$ be a smooth manifold. The linear operator \f$\Delta : C^2(\partial
 M) \rightarrow C^2(\partial M)\f$ (where \f$C^2(\partial M)\f$ is the set of
-twice differentiable function acting on \f$\partial M\f$) defined by 
+twice differentiable function acting on \f$\partial M\f$) defined by
 \f[ \Delta u = \nabla^2 u = \nabla \cdot \nabla u, \f] is called the Laplace--Beltrami
-operator. 
+operator.
 @note The sign of the operator is arbitrary, and one may found in the
 litterature the alternative definition \f$-\nabla \cdot \nabla u\f$ for
 \f$\Delta u\f$.
@@ -70,7 +70,7 @@ shapes: \f[ p(t,x,y) \mathrel{\mathop{\sim}\limits_{t \rightarrow 0}} \frac{e^{-
 \frac{d(x,y)^2}{4 t}}}{(4\pi t)^{\frac{d}{2}}} \f] where \f$d(\cdot,\cdot)\f$
 corresponds to the intrinsic geodesic distance. This approximation is not robust
 in practice and very sensitive to both geodesic distance approximation and
-numerical errors \cite Crane2013. Fortunately we know from Belkin et al. \cite BelkinN08 
+numerical errors \cite Crane2013. Fortunately we know from Belkin et al. \cite BelkinN08
 that in small time asymptotics, the geodesic
 distance can be approximated by the \f$l_2\f$ distance: \f[ p(t,x,y)
 \mathrel{\mathop{\sim}\limits_{t \rightarrow 0}} \tilde{p}(t,x,y) := \frac{e^{ -
@@ -88,7 +88,7 @@ u(x))dy. \f]
 \section secDiscre The Discretization on Digital Surfaces
 
 We adapt the formulation of Belkin et al. on digital surfaces (see \cite CaissardDGCI2017).
-In the continuous heat kernel formulation, the parameter \f$t\f$ must tend to zero. 
+In the continuous heat kernel formulation, the parameter \f$t\f$ must tend to zero.
 On digital surfaces, we set \f$t\f$ as a function of the grid step \f$h\f$, denoted
 \f$t_h\f$, that tends to zero as \f$h\f$ tends to zero.
 

@@ -288,4 +288,3 @@ TEST_CASE_METHOD( TestImage3D, "Checking ArrayImageAdapter with ImageContainerBy
   auto image_view = makeArrayImageAdapterFromImage( image, subDomain );
   checkThat(image_view);
 }
-

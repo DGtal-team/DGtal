@@ -10,14 +10,14 @@
  * This file is part of the DGtal library.
  */
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  * Do not forget to add an entry in src/DGtal/base/Config.h.in !
  */
 namespace DGtal {
 //----------------------------------------
 /*!
-@page tutoImageManipulations   Tutorial "Image -> ImageAdapter: some simple image manipulations" 
+@page tutoImageManipulations   Tutorial "Image -> ImageAdapter: some simple image manipulations"
 @writers Bertrand Kerautret
 
 [TOC]
@@ -26,7 +26,7 @@ namespace DGtal {
 @section sectPreliminaryTutoImageManipulations Preliminary
 
 The GenericReader and GenericWriter class allow you to import/export
-different image formats depending of the optional DGtal dependancies (ITK).  
+different image formats depending of the optional DGtal dependancies (ITK).
 
 @todo Exercise
 Construct a simple file format converter starting from this file template:
@@ -54,9 +54,9 @@ namespace po = boost::program_options;
 
 int main( int argc, char** argv )
 {
-  
+
   typedef ImageContainerBySTLVector<Z2i::Domain, unsigned char>  Image2D;
-  
+
   // parse command line ----------------------------------------------
   po::options_description general_opt ( "Allowed options are: " );
   general_opt.add_options()
@@ -105,7 +105,7 @@ different functors.
 
 
 
-@subsection subsectCropIntroTutoImageManipulations Image cropping 
+@subsection subsectCropIntroTutoImageManipulations Image cropping
 
 The ImageAdapter and ConstImageAdapter can be very efficient to define
 for instance a cropped image (see documentation given in the @ref
@@ -165,7 +165,7 @@ should obtain the following image:
 
 @subsubsection subsubsectHintsImageExtractionIntroTutoImageManipulations Hints:
 - To construct the domain of the resulting image you can use a projector:
-\code 
+\code
   DGtal::functors::Projector<Z2i::Space >  proj(2);
   DGtal::Z2i::Domain domain2D(proj(image3d.domain().lowerBound()),
                               proj(image3d.domain().upperBound()));
@@ -180,13 +180,13 @@ should obtain the following image:
 The functor Point2DEmbedderIn3D defined in the BasicPointFunctors
 class allows to embed a point of an 2D domain into a 3D one. By
 this way you can extract a 2D image from a 3D volume just by using
-this functor as pointFunctor in the ConstImageAdapter. 
+this functor as pointFunctor in the ConstImageAdapter.
 
 To construct a Point2DEmbedderIn3D you have to give the domain of the
-3d image, the origin point with an upper point on axis1 and on axis2. 
+3d image, the origin point with an upper point on axis1 and on axis2.
 
 
-@todo Exercise: 
+@todo Exercise:
 Construct a program able to extract an 2D image from a given
 volume and 3 3D points. For instance you can to extract the 2D image defined by the
 points:
@@ -216,13 +216,10 @@ the previous image you should obtain:
 /**
   Example of tutorial 5: ImageAdapter: some simple image manipulations
    @see @ref tutoImageManipulations
-  \image html slice20Lobster.png " Result of slice image number 20 on Z axis."  
+  \image html slice20Lobster.png " Result of slice image number 20 on Z axis."
   @example tutorial-examples/2DSliceImageFromVol.cpp
 **/
- 
+
 
 
 }
-
-
-

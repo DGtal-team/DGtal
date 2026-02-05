@@ -23,9 +23,9 @@
  *
  * @date 2010/10/29
  *
- * \brief Implementation of an adapter for erase and insert 
- * methods of STL containers so that they not only 
- * work for iterator type, but also for reverse_iterator type.  
+ * \brief Implementation of an adapter for erase and insert
+ * methods of STL containers so that they not only
+ * work for iterator type, but also for reverse_iterator type.
  *
  * Header file for module OpInSTLContainers.cpp
  *
@@ -55,17 +55,17 @@ namespace DGtal
 // that cannot be performed with a reverse_iterator type
 
   /////////////////////////////////////////////////////////////////////////////
-  /** 
+  /**
    * Description of struct 'OpInSTLContainers' <p>
-   * \brief Aim: Implementation of an adapter for erase and insert 
-   * methods of STL containers so that they not only 
-   * work for the iterator type, but also for the reverse_iterator type.  
-   * 
+   * \brief Aim: Implementation of an adapter for erase and insert
+   * methods of STL containers so that they not only
+   * work for the iterator type, but also for the reverse_iterator type.
+   *
 @code
 //      anIterator = aContainer.erase(anIterator);
 //does not compile if anIterator has type 'std::reverse_iterator'
 //erase only takes parameter of type 'std::iterator'
-        anIterator = 
+        anIterator =
         DGtal::OpInSTLContainers<Container,Iterator>
              ::erase(aContainer, anIterator);
 @endcode
@@ -75,14 +75,14 @@ namespace DGtal
 
     //default (iterator type)
     template <typename Container, typename Iterator>
-    struct OpInSTLContainers 
+    struct OpInSTLContainers
     {
-      static Iterator erase(Container& aContainer,Iterator& anIterator) 
+      static Iterator erase(Container& aContainer,Iterator& anIterator)
       {
         return aContainer.erase(anIterator);
       }
 
-      static Iterator insert(Container& aContainer,Iterator& anIterator) 
+      static Iterator insert(Container& aContainer,Iterator& anIterator)
       {
         return aContainer.insert(anIterator);
       }
@@ -92,30 +92,30 @@ namespace DGtal
     //specialisation for reverse_iterator type
     template <typename Container>
     struct OpInSTLContainers<
-      Container, 
-      std::reverse_iterator<typename Container::iterator> > 
+      Container,
+      std::reverse_iterator<typename Container::iterator> >
     {
       typedef typename Container::iterator Iterator;
       typedef std::reverse_iterator<typename Container::iterator> ReverseIterator;
 
       static ReverseIterator erase(
                   Container& aContainer,
-                  ReverseIterator& anIterator) 
+                  ReverseIterator& anIterator)
       {
-        //base iterator pointing to the same element 
+        //base iterator pointing to the same element
         Iterator base = (++anIterator).base();
         //base iterator pointing to the element that
-        //followed the erased element 
+        //followed the erased element
 	base = aContainer.erase(base);
         //reverse iterator pointing to the element that
-        //preceded the erased element  
+        //preceded the erased element
         return ReverseIterator(base);
       }
 
       static ReverseIterator insert(
                   Container& aContainer,
-                  ReverseIterator& anIterator, 
-                  const typename Container::value_type& aValue) 
+                  ReverseIterator& anIterator,
+                  const typename Container::value_type& aValue)
       {
         Iterator base = aContainer.insert(anIterator.base(), aValue);
         return ReverseIterator(base);

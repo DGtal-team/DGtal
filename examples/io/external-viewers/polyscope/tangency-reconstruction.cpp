@@ -292,14 +292,14 @@ void computePlanes()
                   std::vector< Point > X { v[ 0 ], v[ 1 ], v[ 2 ] };
                   auto P = dconv.makePolytope( X );
                   if ( dconv.isFullySubconvex( P, TC.cellCover() ) )
-                      // // && TC.arePointsCotangent( v[ 0 ], v[ 1 ], v[ 2 ] ) ) 
+                      // // && TC.arePointsCotangent( v[ 0 ], v[ 1 ], v[ 2 ] ) )
                     {
                       vertices[ i   ] = v[ 0 ];
                       vertices[ i+1 ] = v[ 1 ];
                       vertices[ i+2 ] = v[ 2 ];
                     }
                 }
-            }          
+            }
           }
           i += 3;
           // }
@@ -319,9 +319,9 @@ void displayMidReconstruction()
       auto ext_vox = K.exteriorVoxel( surfels[ i ] );
       auto int_p   = voxelPoint2RealPoint( int_vox ); //K.uCoords( int_vox ) );
       auto ext_p   = voxelPoint2RealPoint( ext_vox ); //K.uCoords( ext_vox ) );
-      const double     s = intercepts[ i ] + 0.001; 
+      const double     s = intercepts[ i ] + 0.001;
       const RealPoint  q = ( 1.0 - s ) * int_p + s * ext_p;
-      const double    ds = outer_intercepts[ i ] + 0.001; 
+      const double    ds = outer_intercepts[ i ] + 0.001;
       const RealPoint dq = ( 1.0 - ds ) * ext_p + ds * int_p;
       mid_dual_positions[ i ] = 0.5*(q+dq);
     }
@@ -336,7 +336,7 @@ void displayReconstruction()
       auto ext_vox = K.exteriorVoxel( surfels[ i ] );
       auto int_p   = voxelPoint2RealPoint( int_vox ); //K.uCoords( int_vox ) );
       auto ext_p   = voxelPoint2RealPoint( ext_vox ); //K.uCoords( ext_vox ) );
-      const double    s = intercepts[ i ] + 0.001; 
+      const double    s = intercepts[ i ] + 0.001;
       const RealPoint q = ( 1.0 - s ) * int_p + s * ext_p;
       dual_positions[ i ] = q;
     }
@@ -374,7 +374,7 @@ void displayOuterReconstruction()
       auto ext_vox = K.exteriorVoxel( surfels[ i ] );
       auto int_p   = voxelPoint2RealPoint( int_vox ); //K.uCoords( int_vox ) );
       auto ext_p   = voxelPoint2RealPoint( ext_vox ); //K.uCoords( ext_vox ) );
-      const double    s = outer_intercepts[ i ] + 0.001; 
+      const double    s = outer_intercepts[ i ] + 0.001;
       const RealPoint q = ( 1.0 - s ) * ext_p + s * int_p;
       outer_dual_positions[ i ] = q;
     }
@@ -545,7 +545,7 @@ void updateReconstructionFromTangentConeTriangles( int vertex_idx )
   hull.computeConvexHull();
   std::vector< Point > positions;
   hull.getVertexPositions( positions );
-  
+
   std::vector< IndexRange > facet_vertices;
   bool ok = hull.getFacetVertices( facet_vertices );
   if ( ! ok ) trace.error() << "Bad facet computation" << std::endl;
@@ -649,7 +649,7 @@ void  updateReconstructionFromLocalTangentDelaunayComplex( int vertex_idx)
   for ( auto idx : local_X_idx )
     local_X.push_back( TC.point( idx ) );
   DGtal::LatticeSetByIntervals< Space > local_LS;
-  if ( local_tangency ) 
+  if ( local_tangency )
     local_LS = DGtal::LatticeSetByIntervals< Space >( local_X.cbegin(), local_X.cend(), 0 ).starOfPoints();
 
   typedef ConvexCellComplex< Point >::Index       cccIndex;
@@ -657,7 +657,7 @@ void  updateReconstructionFromLocalTangentDelaunayComplex( int vertex_idx)
   bool ok = CvxHelper::computeDelaunayCellComplex( dcomplex, local_X, false );
   if ( ! ok )
     trace.error() << "Input set of points is not full dimensional." << std::endl;
-  
+
   dcomplex.requireFaceGeometry();
   // Filter cells
   std::vector< bool > is_cell_tangent( dcomplex.nbCells(), false );
@@ -745,7 +745,7 @@ void updateOuterReconstructionFromLocalTangentDelaunayComplex( int vertex_idx)
   bool ok = CvxHelper::computeDelaunayCellComplex( dcomplex, local_X, false );
   if ( ! ok )
     trace.error() << "Input set of points is not full dimensional." << std::endl;
-  
+
   dcomplex.requireFaceGeometry();
   // Filter cells
   std::vector< bool > is_cell_tangent( dcomplex.nbCells(), false );
@@ -804,7 +804,7 @@ void computeLocalTangentDelaunayComplex( int vertex_idx)
   for ( auto idx : local_X_idx )
     local_X.push_back( TC.point( idx ) );
   DGtal::LatticeSetByIntervals< Space > local_LS;
-  if ( local_tangency ) 
+  if ( local_tangency )
     local_LS = DGtal::LatticeSetByIntervals< Space >( local_X.cbegin(), local_X.cend(), 0 ).starOfPoints();
 
   typedef ConvexCellComplex< Point >::Index       cccIndex;
@@ -813,7 +813,7 @@ void computeLocalTangentDelaunayComplex( int vertex_idx)
   if ( ! ok )
     trace.error() << "Input set of points is not full dimensional." << std::endl;
   dcomplex.requireFaceGeometry();
-  
+
   // Filter cells
   std::vector< bool > is_cell_tangent( dcomplex.nbCells(), false );
   if ( remove_empty_cells )
@@ -878,11 +878,11 @@ void computeLocalTangentDelaunayComplex( int vertex_idx)
         del_inner_points.push_back( voxelPoint2RealPoint( p_ ) );
     }
   Time = trace.endBlock();
-  
+
   psCloudInnerDelaunay = polyscope::registerPointCloud( "Inner Delaunay points",
                                                         del_inner_points );
   psCloudInnerDelaunay->setPointRadius( gridstep / 200.0 );
-  
+
   psDelaunay = polyscope::registerSurfaceMesh("Delaunay surface",
                                               del_positions, del_faces);
   updateReconstructionFromLocalTangentDelaunayComplex( vertex_idx );
@@ -905,7 +905,7 @@ void computeGlobalTangentDelaunayComplex()
 
   // Reorder vertices of faces
   dcomplex.requireFaceGeometry();
-  
+
   // Filter cells
   std::vector< bool > is_cell_tangent( dcomplex.nbCells(), false );
   for ( cccIndex c = 0; c < dcomplex.nbCells(); ++c )
@@ -915,7 +915,7 @@ void computeGlobalTangentDelaunayComplex()
       if ( P.countUpTo( (Integer)Y.size()+1 ) >= (Integer)Y.size()+1 ) continue;
       is_cell_tangent[ c ] = dconv.isFullySubconvex( P, LS );
     }
-    
+
   // Get faces
   std::vector< std::vector<SH3::SurfaceMesh::Vertex> > del_faces;
   std::vector< RealPoint >   del_positions;
@@ -986,7 +986,7 @@ void computeGlobalTangentDelaunayComplex()
       updateReconstructionFromCells( X, cells.toPointRange() );
     }
   trace.endBlock();
-      
+
   psCloudInnerDelaunay = polyscope::registerPointCloud( "Inner Delaunay points",
                                                         del_inner_points );
   psCloudInnerDelaunay->setPointRadius( gridstep / 200.0 );
@@ -1008,7 +1008,7 @@ void myCallback()
     // Only authorize selection on the input surface and the reconstruction
     auto surf = polyscope::getSurfaceMesh("Input surface");
     goodSelection = goodSelection || (selectedSurface == surf);
-    const auto nv = selectedSurface->nVertices(); 
+    const auto nv = selectedSurface->nVertices();
     // Validate that it its a face index
     if ( goodSelection )
       {
@@ -1108,7 +1108,7 @@ int main( int argc, char* argv[] )
   std::string polynomial = std::string( argv[ 1 ] );
   const double h         = argc >= 3 ? atof( argv[ 2 ] ) : 1.0;
   const double bounds    = argc >= 4 ? atof( argv[ 3 ] ) : 10.0;
-  
+
   CountedPtr<SH3::BinaryImage> binary_image ( nullptr );
   if ( input_polynomial )
     {
@@ -1125,14 +1125,14 @@ int main( int argc, char* argv[] )
 					  SH3::Domain(K.lowerBound(),K.upperBound()),
 					  params );
     }
-  else 
+  else
     {
       //params( "thresholdMin", vm[ "min" ].as<int>() );
       // params( "thresholdMax", vm[ "max" ].as<int>() );
       binary_image = SH3::makeBinaryImage( filename, params );
       K            = SH3::getKSpace( binary_image );
     }
-  
+
   // auto binary_image    = SH3::makeBinaryImage(filename, params );
   // K                    = SH3::getKSpace( binary_image, params );
   auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
@@ -1153,27 +1153,27 @@ int main( int argc, char* argv[] )
   outer_intercepts = std::vector< double >( surfels.size(), 0.0 );
   auto primalSurface   = SH3::makePrimalSurfaceMesh(surface);
   SH3::Surfel2Index s2i;
-  auto dualSurface     = SH3::makeDualPolygonalSurface( s2i, surface );  
+  auto dualSurface     = SH3::makeDualPolygonalSurface( s2i, surface );
   //Need to convert the faces
   std::vector<std::vector<SH3::SurfaceMesh::Vertex>> faces;
   std::vector<RealPoint> positions;
   for(size_t face= 0 ; face < primalSurface->nbFaces(); ++face)
     faces.push_back(primalSurface->incidentVertices( face ));
-  
+
   //Recasting to vector of vertices
   positions = primalSurface->positions();
-  
+
   surfmesh = SurfMesh(positions.begin(),
                       positions.end(),
                       faces.begin(),
                       faces.end());
   for(size_t face= 0 ; face < dualSurface->nbFaces(); ++face)
     dual_faces.push_back( dualSurface->verticesAroundFace( face ));
-    
+
     //Recasting to vector of vertices
   for ( size_t vtx = 0; vtx < dualSurface->nbVertices(); ++vtx )
     dual_positions.push_back( dualSurface->position( vtx ) );
-    
+
   dual_surfmesh = SurfMesh(dual_positions.begin(),
                            dual_positions.end(),
                            dual_faces.begin(),
@@ -1202,7 +1202,7 @@ int main( int argc, char* argv[] )
   outer_LS    = DGtal::LatticeSetByIntervals< Space >
     ( outer_digital_points.cbegin(), outer_digital_points.cend(), 0 ).starOfPoints();
   trace.info() << "#outer_lattice_cover = " << outer_LS.size() << std::endl;
-  
+
   // Initialize polyscope
   polyscope::init();
 
@@ -1211,7 +1211,7 @@ int main( int argc, char* argv[] )
   displayOuterReconstruction();
   // psDualMesh = polyscope::registerSurfaceMesh("Input dual surface", dual_positions, dual_faces);
 
-  
+
   // Set the callback function
   polyscope::state::userCallback = myCallback;
   polyscope::show();

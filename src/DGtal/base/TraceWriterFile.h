@@ -21,7 +21,7 @@
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/02/17
- * 
+ *
  * Header file for module TraceWriterFile.cpp
  *
  * This file is part of the DGtal library.
@@ -44,33 +44,33 @@
 #include "DGtal/base/TraceWriter.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal 
+namespace DGtal
 {
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // class TraceWriterFile
-  /** 
+  /**
    * Description of class 'TraceWriterFile' <p>
-   * Aim: 
+   * Aim:
    */
   class TraceWriterFile: public TraceWriter
   {
     // ----------------------- Standard services ------------------------------
   public:
 
-    
+
     /**
      * Constructor.
-     * @param aoutputStream the current output Stream 
+     * @param aoutputStream the current output Stream
      *
      */
     TraceWriterFile(std::ostream &aoutputStream) : TraceWriter(aoutputStream) {};
-  
+
 
 
 
     /**
-     * Destructor. 
+     * Destructor.
      */
     ~TraceWriterFile() {};
 
@@ -101,7 +101,7 @@ namespace DGtal
      * @return the prefix
      */
     std::string  prefixInfo()  {return "";}
-    
+
     /**
      * Create an Error Prefix
      * @return the prefix
@@ -113,14 +113,14 @@ namespace DGtal
      * @return the prefix
      */
     std::string  prefixEmphase() {return "";}
-    
+
     /**
      * Create an Reset postfix
      * @return the postix
      */
     std::string  postfixReset() {return "";}
 
-   
+
   private:
 
     /**
@@ -137,7 +137,7 @@ namespace DGtal
      * Forbidden by default.
      */
     TraceWriterFile & operator=( const TraceWriterFile & other );
-  
+
   }; // end of class TraceWriterFile
 
 
@@ -150,7 +150,7 @@ namespace DGtal
   std::ostream&
   operator<<( std::ostream & out, const TraceWriterFile & object );
 
-  
+
 } // namespace DGtal
 
 

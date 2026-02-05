@@ -48,28 +48,28 @@ bool testStatistics()
 {
   unsigned int nbok = 0;
   unsigned int nb = 3;
-  
+
   trace.beginBlock ( "Testing Statistics ..." );
 
   Statistic<double> stat;
-  
+
   for(unsigned int k=0; k < 1000; k++)
     stat.addValue((double)k);
-  
+
   stat.terminate();
-  
+
   trace.info() << "Mean value = "<<stat.mean()  << std::endl;
-  nbok += (stat.mean()==499.5) ? 1 : 0; 
+  nbok += (stat.mean()==499.5) ? 1 : 0;
   trace.info() << "Variance value = "<<stat.variance()<<std::endl;
   trace.info() << "Max value = "<<stat.max()<<std::endl;
-  nbok += (stat.max()==999) ? 1 : 0; 
+  nbok += (stat.max()==999) ? 1 : 0;
   trace.info() << "Min value = "<<stat.min()<<std::endl;
-  nbok += (stat.min()==0)  ? 1 : 0; 
- 
+  nbok += (stat.min()==0)  ? 1 : 0;
+
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
@@ -81,34 +81,34 @@ bool testStatisticsSaving()
 {
   unsigned int nbok = 0;
   unsigned int nb = 4;
-  
+
   trace.beginBlock ( "Testing Statistics with saving option ..." );
 
   Statistic<double> stat(true);
-  
-  
+
+
   for(unsigned int k=0; k < 100; k++)
     stat.addValue(99);
   stat.addValue(88);
   for(unsigned int k=0; k < 100; k++)
     stat.addValue(77);
-  
+
   stat.terminate();
-  
+
   trace.info() << "Mean value = "<<stat.mean()  << std::endl;
-  nbok += (stat.mean()==88) ? 1 : 0; 
+  nbok += (stat.mean()==88) ? 1 : 0;
   trace.info() << "Variance value = "<<stat.variance()<<std::endl;
   trace.info() << "Max value = "<<stat.max()<<std::endl;
-  nbok += (stat.max()==99) ? 1 : 0; 
+  nbok += (stat.max()==99) ? 1 : 0;
   trace.info() << "Min value = "<<stat.min()<<std::endl;
-  nbok += (stat.min()==77)  ? 1 : 0; 
+  nbok += (stat.min()==77)  ? 1 : 0;
   trace.info() << "Median value = "<<stat.median()<<std::endl;
-  nbok += (stat.median()==88)  ? 1 : 0; 
- 
+  nbok += (stat.median()==88)  ? 1 : 0;
+
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 

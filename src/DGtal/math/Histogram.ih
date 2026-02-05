@@ -58,10 +58,10 @@ inline
 void
 DGtal::Histogram<TQuantity, TBinner>::clear()
 {
-  if ( myBinner != 0 ) 
+  if ( myBinner != 0 )
     {
       delete myBinner;
-      myBinner = 0; 
+      myBinner = 0;
     }
   myHistogram.clear();
   myCumulativeHistogram.clear();
@@ -119,7 +119,7 @@ template <typename TQuantity, typename TBinner>
 inline
 typename DGtal::Histogram<TQuantity, TBinner>::Bin
 DGtal::Histogram<TQuantity, TBinner>::bin( Quantity q ) const
-{ 
+{
   ASSERT( isValid() );
   return (*myBinner)( q );
 }
@@ -182,7 +182,7 @@ inline
 double
 DGtal::Histogram<TQuantity, TBinner>::pdf( Bin b ) const
 {
-  return NumberTraits<Bin>::castToDouble( nb( b ) ) 
+  return NumberTraits<Bin>::castToDouble( nb( b ) )
     / NumberTraits<Size>::castToDouble( area() );
 }
 //-----------------------------------------------------------------------------
@@ -191,7 +191,7 @@ inline
 double
 DGtal::Histogram<TQuantity, TBinner>::cdf( Bin b ) const
 {
-  return NumberTraits<Bin>::castToDouble( accumulation( b ) ) 
+  return NumberTraits<Bin>::castToDouble( accumulation( b ) )
     / NumberTraits<Size>::castToDouble( area() );
 }
 //-----------------------------------------------------------------------------
@@ -256,7 +256,7 @@ DGtal::Histogram<TQuantity, TBinner>::prepare( Bin aSize )
 template <typename TQuantity, typename TBinner>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		  const Histogram<TQuantity, TBinner> & object )
 {
   object.selfDisplay( out );
@@ -265,5 +265,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

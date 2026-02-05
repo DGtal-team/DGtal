@@ -28,18 +28,18 @@
  */
 
 /**
-   This example shows how to use GridCurve as a sequence of 2-scells in a 3d Khalimsky space. 
+   This example shows how to use GridCurve as a sequence of 2-scells in a 3d Khalimsky space.
 
 @verbatim
 $ ./examples/geometry/curves/exampleGridCurve3d-2
 @endverbatim
 
-Note that the data type you want to display may be passed as argument as follows: 
+Note that the data type you want to display may be passed as argument as follows:
 @verbatim
 $ ./examples/geometry/curves/exampleGridCurve3d-2 gridcurve
 @endverbatim
 
-This command line produces the following output: 
+This command line produces the following output:
 
 @image html exampleGridCurveCat.png "Slice of a digital surface"
 @image latex exampleGridCurveCat.png "Slice of a digital surface"
@@ -85,11 +85,11 @@ int main( int argc, char** argv )
 {
   trace.info() << "exampleGridCurve3d-2: the type of data to be displayed "
 	       << "may be given as argument as follows: "
-	       << argv[0] << " inner" << endl; 
+	       << argv[0] << " inner" << endl;
   trace.info() << "Available types are: gridcurve (default), inner, outer, incident" << endl;
 
   string type = (argc > 1) ? string(argv[1]) : "gridcurve";
-  trace.info() << "Chosen type: " << type << endl; 
+  trace.info() << "Chosen type: " << type << endl;
 
   //vol reading and digital set construction
   trace.beginBlock( "Reading vol file into an image." );

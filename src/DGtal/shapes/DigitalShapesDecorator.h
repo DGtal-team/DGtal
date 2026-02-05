@@ -171,7 +171,7 @@ namespace DGtal
         myUpperBound[i] = std::max(myUpperBound[i], b->getUpperBound()[i]);
       }
 
-      v_shapes.push_back(shape); 
+      v_shapes.push_back(shape);
     }
 
     /**
@@ -195,7 +195,7 @@ namespace DGtal
         myUpperBound[i] = std::min(myUpperBound[i], b->getUpperBound()[i]);
       }
 
-      v_shapes.push_back(shape); 
+      v_shapes.push_back(shape);
     }
 
     /**

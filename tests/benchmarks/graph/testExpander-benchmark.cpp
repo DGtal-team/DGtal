@@ -69,13 +69,13 @@ bool testExpander()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   // ------------------------------ Types ------------------------------
   typedef SpaceND< 3 > Z3;
   typedef Z3::Point Point;
   typedef Point::Coordinate Coordinate;
-  typedef HyperRectDomain< Z3 > Domain; 
-  typedef Domain::ConstIterator DomainConstIterator; 
+  typedef HyperRectDomain< Z3 > Domain;
+  typedef Domain::ConstIterator DomainConstIterator;
 
   typedef MetricAdjacency< Z3, 1 > MetricAdj6;
   typedef MetricAdjacency< Z3, 2 > MetricAdj18;
@@ -111,7 +111,7 @@ bool testExpander()
   ostringstream sstr;
   sstr << "Creating 3D ball( r < " << radius << " ) ...";
   trace.beginBlock ( sstr.str() );
-  for ( DomainConstIterator it = domain.begin(); 
+  for ( DomainConstIterator it = domain.begin();
   it != domain.end();
   ++it )
     {
@@ -125,7 +125,7 @@ bool testExpander()
   ObjectType ball( dt6_18, ball_set );
   ObjectType ball2( ball );
   INBLOCK_TEST( ball.size() == 523155 );
-  trace.info() << "ball.size() = " << ball.size() 
+  trace.info() << "ball.size() = " << ball.size()
          << " 4/3*pi*r^3 = " << ( 4.0*M_PI*radius*radius*radius/3.0 )
          << endl;
   trace.info() << "ball  = " << ball << endl;
@@ -148,7 +148,7 @@ bool testExpander()
       trace.info() << expander << std::endl;
       expander.nextLayer();
     }
-  nbok += expander.distance() <= sqrt(3.0)*radius ? 1 : 0; 
+  nbok += expander.distance() <= sqrt(3.0)*radius ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "expander.distance() = " << expander.distance()
@@ -162,14 +162,14 @@ bool testExpander()
       trace.info() << expander2 << std::endl;
       expander2.nextLayer();
     }
-  nbok += expander2.distance() <= sqrt(2.0)*M_PI*radius ? 1 : 0; 
+  nbok += expander2.distance() <= sqrt(2.0)*M_PI*radius ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "expander2.distance() = " << expander2.distance()
          << " <= " << sqrt(2.0)*M_PI*radius << std::endl;
   trace.endBlock();
 
-  
+
   return nbok == nb;
 }
 

@@ -96,7 +96,7 @@ There is two layout options. Choose one of them and configure Doxygen accordingl
 <div class="tabbed">
 
 - <b class="tab-title">1️⃣ Base Theme </b>
-    Comes with the typical Doxygen titlebar. Optionally the treeview in the sidebar can be enabled. 
+    Comes with the typical Doxygen titlebar. Optionally the treeview in the sidebar can be enabled.
 
     Required files: `doxygen-awesome.css`
 
@@ -127,7 +127,7 @@ There is two layout options. Choose one of them and configure Doxygen accordingl
 
 </div>
 
-**Caution**: 
+**Caution**:
 - This theme is not compatible with the `FULL_SIDEBAR = YES` option provided by Doxygen!
 - `HTML_COLORSTYLE` must be set to `LIGHT` since Doxygen 1.9.5!
 

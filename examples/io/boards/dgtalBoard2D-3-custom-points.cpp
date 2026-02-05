@@ -83,9 +83,9 @@ int main()
   Color dgreen( 0, 192, 0 );
   Color blue( 0, 0, 255 );
   Color dblue( 0, 0, 192 );
-  
+
   Board2D board;
-  board << domain 
+  board << domain
   << CustomStyle( p1.className(), new MyDrawStyleCustomColor( red, dred ) )
   << p1
   << CustomStyle( p2.className(), new MyDrawStyleCustomColor( green, dgreen ) )
@@ -102,7 +102,7 @@ int main()
   board.saveCairo("dgtalBoard2D-3-custom-points-cairo.ps", Board2D::CairoPS);
   board.saveCairo("dgtalBoard2D-3-custom-points-cairo.svg", Board2D::CairoSVG);
 #endif
-  
+
   trace.endBlock();
   return 0;
 }

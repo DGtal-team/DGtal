@@ -457,5 +457,3 @@ TEST_CASE( "Checking RealFFT on a 4D image in double precision.", "[4D][double]"
   cmpTranslatedFFT( image );
 }
 #endif
-
-

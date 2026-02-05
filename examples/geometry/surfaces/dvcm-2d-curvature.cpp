@@ -88,19 +88,19 @@ int main( int /* argc */, char** /* argv */ )
   //string inputSDP = examplesPath + "samples/ellipse-20-7-0.4.sdp";
   //string inputSDP = examplesPath + "samples/accflower-20-5-5-0.1.sdp";
   string inputSDP = examplesPath + "samples/circle-43.sdp";
-  trace.info() << "Reading input 2d discrete points file: " << inputSDP; 
+  trace.info() << "Reading input 2d discrete points file: " << inputSDP;
   KSpace ks; ks.init( Point( -1000, -1000 ), Point( 1000, 1000 ), true );
-  Curve curve( ks ); 
+  Curve curve( ks );
   fstream inputStream( inputSDP.c_str(), ios::in);
   curve.initFromVectorStream(inputStream);
   inputStream.close();
-  DigitalSurfaceContainer* container 
+  DigitalSurfaceContainer* container
     = new DigitalSurfaceContainer( ks,  SurfelAdjacency<KSpace::dimension>( true ) );
   LinelRange range = curve.getSCellsRange();
   for ( LinelRange::ConstIterator it = range.begin(), itE = range.end(); it != itE; ++it )
     container->surfelSet().insert( *it );
   CountedConstPtrOrConstPtr<Surface> ptrSurface( new Surface( container ) ); // acquired
-  trace.info() << " [done] " << std::endl ; 
+  trace.info() << " [done] " << std::endl ;
   const double R = 40;
   trace.info() << "Big radius   R = " << R << std::endl;
   const double r = 20;
@@ -125,11 +125,11 @@ int main( int /* argc */, char** /* argv */ )
     {
       double curv = estimator.eval( it );
       curv = std::min( T, curv );
-      board << CustomStyle( it->className(), 
+      board << CustomStyle( it->className(),
                             new CustomColors( colormap( curv ),  colormap( curv ) ) )
             << *it;
       std::cout << curv << std::endl;
-    }      
+    }
   board.saveSVG("dvcm-curvature.svg");
 
   return 0;

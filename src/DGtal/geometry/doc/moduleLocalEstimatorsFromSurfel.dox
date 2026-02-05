@@ -74,7 +74,7 @@ several functors:
 - functors::ElementaryConvolutionNormalVectorEstimator: Normal vector estimation
   based on weighted average of surfel elementary normal vectors (@cite lenoir1996, @cite papier1998)
 
- 
+
 - functors::TensorVotingFeatureExtraction implements a functor to
   detect feature points on a digital surface using tensor voting
   strategy (see @cite tensor-voting-ParkLL12).  More precisely, the
@@ -86,13 +86,13 @@ several functors:
   the accumulated tensor votes.
 
 - functors::SphereFittingEstimator: this functor requires the
-  DGTAL_WITH_PONCA flag ([Ponca](https://poncateam.github.io/ponca/) is fetched automatically). 
+  DGTAL_WITH_PONCA flag ([Ponca](https://poncateam.github.io/ponca/) is fetched automatically).
   The functor performs a sphere fitting on the neighborhood following
   @cite mellado2012growing . The output of the estimator is a structure
   containing the fitted sphere parameters (e.g. its center and
   radius). Please refer to @cite mellado2012growing for details on the
   @e tau, @e kappa and @e eta parameters.
-  
+
 - functors::MongeJetFittingGaussianCurvatureEstimator,
   functors::MongeJetFittingMeanCurvatureEstimator,
   functors::MongeJetFittingNormalVectorEstimator,

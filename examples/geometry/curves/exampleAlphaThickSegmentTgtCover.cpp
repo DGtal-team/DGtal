@@ -81,8 +81,8 @@ int main()
   std::vector<Z2i::RealPoint> aContour = PointListReader<Z2i::RealPoint>::getPointsFromFile (file);
 
   // displaying contour
-  aBoard << SetMode(aContour[0].className(), "Grid"); 
-  aBoard2 << SetMode(aContour[0].className(), "Grid"); 
+  aBoard << SetMode(aContour[0].className(), "Grid");
+  aBoard2 << SetMode(aContour[0].className(), "Grid");
   std::vector<LibBoard::Point> poly;
   for (unsigned int i = 0; i< aContour.size(); i++)  poly.push_back(LibBoard::Point(aContour[i][0], aContour[i][1]));
   aBoard.setPenColor(DGtal::Color(200, 200, 200));
@@ -97,8 +97,8 @@ int main()
   //! [SaturatedAlphaThickCoverComputerSeg]
   AlphaThickSegmentComputer2D computer(4, functions::Hull2D::EuclideanThickness);
   AlphaSegmentation segmentator(circulator, circulator, computer);
-  //! [SaturatedAlphaThickCoverComputerSeg]  
-  
+  //! [SaturatedAlphaThickCoverComputerSeg]
+
   //! [SaturatedAlphaThickCoverDisplay]
   AlphaSegmentation::SegmentComputerIterator i = segmentator.begin();
   AlphaSegmentation::SegmentComputerIterator end = segmentator.end();
@@ -115,18 +115,18 @@ int main()
   trace.beginBlock ( "Example of AlphaThickSegment tangential cover obtained for a single point" );
 
   // Displaying Tangential cover associated to a single point:
-  
+
   //! [SaturatedAlphaThickCoverSingleInit]
   unsigned int index = 80;
   firstMaximalSegment(computer, circulator+index, circulator, circulator);
   AlphaThickSegmentComputer2D first (computer);
   lastMaximalSegment(computer, circulator+index, circulator, circulator);
   AlphaThickSegmentComputer2D last (computer);
-  //! [SaturatedAlphaThickCoverSingleInit]  
-  
+  //! [SaturatedAlphaThickCoverSingleInit]
+
   aBoard2.setPenColor(DGtal::Color::Blue);
   aBoard2.fillCircle((*(circulator+index))[0], (*(circulator+index))[1], 1.0);
-  //! [SaturatedAlphaThickCoverDisplaySingle]  
+  //! [SaturatedAlphaThickCoverDisplaySingle]
   while(first.end() != last.end()){
     aBoard2 << SetMode(first.className(), "BoundingBox");
     aBoard2 << first;
@@ -134,12 +134,12 @@ int main()
   }
   aBoard2 << last;
   //! [SaturatedAlphaThickCoverDisplaySingle]
-  
+
   stringstream name;
   name << "exampleAlphaThickSegmentTgtCoverPoint" << index<< ".eps";
   aBoard2.saveEPS(name.str().c_str());
   trace.endBlock();
-  
+
 
 
 

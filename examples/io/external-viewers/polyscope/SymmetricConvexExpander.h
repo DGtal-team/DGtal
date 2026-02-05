@@ -64,7 +64,7 @@ namespace DGtal
   class SymmetricConvexExpander
   {
     BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< TKSpace > ));
- 
+
   public:
     typedef DigitalConvexity<TKSpace>       Self;
     typedef TKSpace                         KSpace;
@@ -79,14 +79,14 @@ namespace DGtal
     typedef std::vector<Point>              PointRange;
     typedef std::vector<Vector>             VectorRange;
     typedef std::unordered_set<Point>       PointSet;
-    
+
     static const Dimension dimension = KSpace::dimension;
 
     typedef std::pair< Point, Integer >     Node;
 
     // Inversion order since priority queue output max element.
     struct NodeComparator {
-      /// Default constructor. 
+      /// Default constructor.
       NodeComparator() = default;
       // p < q iff p.second < q.second
       bool operator()( const Node& p, const Node& q ) const
@@ -100,7 +100,7 @@ namespace DGtal
     /// Constructor from predicate and symmetry center point.
     SymmetricConvexExpander( const PointPredicate& predicate,
                              const Point& kcenter,
-                             const Point& lo, 
+                             const Point& lo,
                              const Point& hi )
       : myPredicate( &predicate ), myConvexity( lo, hi )
     {
@@ -111,7 +111,7 @@ namespace DGtal
     {
       return (*myPredicate)( p );
     }
-    
+
     void init( const Point& kcenter )
     {
       myKCenter = kcenter;
@@ -151,7 +151,7 @@ namespace DGtal
                   Point q = points[ i ];
                   q[ k ]  = z1;
                   points[ i+n ]    = q;
-                }                  
+                }
             }
         }
       // Keep only the points that satisfy the predicate.
@@ -194,7 +194,7 @@ namespace DGtal
         }
       return false;
     }
-    
+
     /**
        @return a const reference on the current visited vertex. The
        node is a pair <Vertex,Data> where the second term is the
@@ -263,8 +263,8 @@ namespace DGtal
     {
       return myQ.empty();
     }
-    
-    
+
+
     Point symmetric( const Point& p ) const
     {
       return myKCenter - p;
@@ -287,7 +287,7 @@ namespace DGtal
 
     /// The digital convexity object
     DigitalConvexity< KSpace > myConvexity;
-    
+
     /// Symmetry center (with doubled coordinates to represent half-integers).
     Point myKCenter;
 
@@ -304,10 +304,10 @@ namespace DGtal
     bool myPerfectSymmetry;
     /// Upper bound on the max distance of perfect symmetry.
     Integer myPerfectSymmetryRadius;
-    
+
   };
 
-  
+
 } // namespace DGtal
 
 

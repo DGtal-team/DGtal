@@ -16,8 +16,8 @@
 
 /**
  * @file DigitalSetByOctree.ih
- * @author Bastien DOIGNIES 
- * LIRIS 
+ * @author Bastien DOIGNIES
+ * LIRIS
  *
  * @date 2025/09/05
  *
@@ -25,19 +25,19 @@
  *
  * This file is part of the DGtal library.
  */
-namespace DGtal 
+namespace DGtal
 {
   template<class Space>
-  void DigitalSetByOctree<Space>::OctreeIterator::findNextLeaf() 
+  void DigitalSetByOctree<Space>::OctreeIterator::findNextLeaf()
   {
-    while (myMemory.size() != 0) 
+    while (myMemory.size() != 0)
     {
       TraversalMemory& m = myMemory.back();
       // Find next unexplored child. Invalid index means no child was explored yet
       CellIndex k = (m.currentChildIdx == INVALID_IDX) ? 0 : (m.currentChildIdx + 1);
-      for (; k < CELL_COUNT; ++k) 
+      for (; k < CELL_COUNT; ++k)
       {
-        if (myContainer->myNodes[m.lvl][m.idx].children[k] != INVALID_IDX) 
+        if (myContainer->myNodes[m.lvl][m.idx].children[k] != INVALID_IDX)
         {
           // Update explored child
           m.currentChildIdx = k;
@@ -45,8 +45,8 @@ namespace DGtal
         }
       }
 
-      if (k < CELL_COUNT) 
-      { 
+      if (k < CELL_COUNT)
+      {
         // Child found, go down
         if (myMemory.back().lvl == myContainer->myNodes.size() - 1) break;
 
@@ -56,21 +56,21 @@ namespace DGtal
         newMemory.idx = myContainer->myNodes[m.lvl][m.idx].children[k];
         newMemory.currentChildIdx = INVALID_IDX;
         myMemory.push_back(std::move(newMemory));
-      } 
-      else 
+      }
+      else
       { // No more child unexplored, go back to parent
         myMemory.pop_back();
       }
     }
-    if (myMemory.size() != 0) 
+    if (myMemory.size() != 0)
     {
       // For leaves, find first non 0 index
       auto& mem = myMemory.back();
-      if (mem.currentChildIdx == INVALID_IDX) 
+      if (mem.currentChildIdx == INVALID_IDX)
       {
-        for (CellIndex k = 0; k < CELL_COUNT; ++k) 
+        for (CellIndex k = 0; k < CELL_COUNT; ++k)
         {
-          if (myContainer->myNodes[mem.lvl][mem.idx].children[k] != 0) 
+          if (myContainer->myNodes[mem.lvl][mem.idx].children[k] != 0)
           {
             mem.currentChildIdx = k;
             break;
@@ -81,28 +81,28 @@ namespace DGtal
   }
 
   template<class Space>
-  DigitalSetByOctree<Space>::DigitalSetByOctree(const Domain& dom) 
+  DigitalSetByOctree<Space>::DigitalSetByOctree(const Domain& dom)
   {
     const auto lb = dom.lowerBound();
     const auto ub = dom.upperBound();
     auto size = ub - lb;
-    
+
     // Enforce cubical domain with side that are powers of 2
     CellIndex newSize = 1;
-    for (DimIndex d = 0; d < D; ++d) 
+    for (DimIndex d = 0; d < D; ++d)
     {
-      if (!(size[d] & (size[d] - 1))) 
+      if (!(size[d] & (size[d] - 1)))
       {
         newSize = (newSize > size[d]) ? newSize : size[d];
-      } 
-      else 
+      }
+      else
       {
         CellIndex s = 1 << (static_cast<CellIndex>(std::ceil(std::log2(size[d]))));
         newSize = (newSize > s) ? newSize : s;
       }
     }
 
-    for (DimIndex d = 0; d < D; ++d) 
+    for (DimIndex d = 0; d < D; ++d)
       size[d] = newSize;
 
     size_t lvl = static_cast<size_t>(std::ceil(std::log2(newSize)));
@@ -114,49 +114,49 @@ namespace DGtal
   }
 
   template<class Space>
-  HyperRectDomain<Space> DigitalSetByOctree<Space>::splitDomain(const Domain& domain, const DimIndex* sides) 
+  HyperRectDomain<Space> DigitalSetByOctree<Space>::splitDomain(const Domain& domain, const DimIndex* sides)
   {
           auto lb = domain.lowerBound();
     const auto ub = domain.upperBound();
     const auto size = (ub - lb) / 2;
     for (DimIndex d = 0; d < D; ++d)
         lb[d] += sides[d] * size[d];
-    
+
     return Domain(lb, lb + size);
   }
 
   template<class Space>
-  void DigitalSetByOctree<Space>::insert(const Point& p) 
+  void DigitalSetByOctree<Space>::insert(const Point& p)
   {
     if (!myAdmissibleDomain->isInside(p)) return;
-    
-    if (myState == State::OCTREE) 
+
+    if (myState == State::OCTREE)
     {
       Domain domain = *myDomain;
       CellIndex nodeIdx = 0;
-      
-      for (size_t i = 0; i < myNodes.size() - 1; ++i) 
+
+      for (size_t i = 0; i < myNodes.size() - 1; ++i)
       {
         const auto lb = domain.lowerBound();
         const auto ub = domain.upperBound();
         const Point middle = domain.lowerBound() + (ub - lb) / 2;
         CellIndex childIdx = 0;
         DimIndex sides[D]{};
-        for (DimIndex d = 0; d < D; ++d) 
+        for (DimIndex d = 0; d < D; ++d)
         {
           sides[d]  = (p[d] >= middle[d]);
           childIdx += sides[d] * (1 << d);
         }
         domain = splitDomain(domain, sides);
-        if (myNodes[i][nodeIdx].children[childIdx] == INVALID_IDX) 
+        if (myNodes[i][nodeIdx].children[childIdx] == INVALID_IDX)
         {
           myNodes[i + 1].push_back(Node());
           myNodes[i][nodeIdx].children[childIdx] = myNodes[i + 1].size() - 1;
         }
         nodeIdx = myNodes[i][nodeIdx].children[childIdx];
       }
-      // This octree does not create nodes for leaves. 
-      // We treat them separately and use children field as 
+      // This octree does not create nodes for leaves.
+      // We treat them separately and use children field as
       // a binary array to indicate whether a voxel is stored or not
       const auto lb = domain.lowerBound();
       const auto ub = domain.upperBound();
@@ -174,36 +174,36 @@ namespace DGtal
 
   template<class Space>
   typename DigitalSetByOctree<Space>::OctreeIterator
-  DigitalSetByOctree<Space>::find(const Point& p) const 
+  DigitalSetByOctree<Space>::find(const Point& p) const
   {
     if (!myAdmissibleDomain->isInside(p)) return end();
 
     Domain domain = *myDomain;
     std::vector<TraversalMemory> traversal;
     CellIndex nodeIdx = 0;
-    
+
     TraversalMemory root;
     root.lvl = 0;
     root.idx = 0;
     root.domain = domain;
     traversal.push_back(root);
-    
-    for (size_t i = 0; i < myNodes.size() - 1; ++i) 
+
+    for (size_t i = 0; i < myNodes.size() - 1; ++i)
     {
       const auto lb = domain.lowerBound();
       const auto ub = domain.upperBound();
       const Point middle = domain.lowerBound() + (ub - lb) / 2;
       CellIndex childIdx = 0;
       DimIndex sides[D]{};
-      for (DimIndex d = 0; d < D; ++d) 
+      for (DimIndex d = 0; d < D; ++d)
       {
         sides[d]  = (p[d] >= middle[d]);
         childIdx += sides[d] * (1 << d);
       }
-      
-      if (myNodes[i][nodeIdx].children[childIdx] == INVALID_IDX) 
+
+      if (myNodes[i][nodeIdx].children[childIdx] == INVALID_IDX)
         return end();
-      
+
       domain = splitDomain(domain, sides);
       nodeIdx = myNodes[i][nodeIdx].children[childIdx];
       TraversalMemory memory;
@@ -211,16 +211,16 @@ namespace DGtal
       memory.lvl = i + 1;
       memory.idx = nodeIdx;
       memory.currentChildIdx = INVALID_IDX;
-      
+
       traversal.back().currentChildIdx = childIdx;
       traversal.push_back(memory);
     }
-    
+
     const auto lb = domain.lowerBound();
     const auto ub = domain.upperBound();
     const Point middle = domain.lowerBound() + (ub - lb) / 2;
     CellIndex childIdx = 0;
-    for (DimIndex d = 0; d < D; ++d) 
+    for (DimIndex d = 0; d < D; ++d)
     {
       childIdx += (p[d] >= middle[d]) * (1 << (D - d - 1));
     }
@@ -231,45 +231,45 @@ namespace DGtal
   }
 
   template<class Space>
-  size_t DigitalSetByOctree<Space>::erase(const Iterator& it) 
+  size_t DigitalSetByOctree<Space>::erase(const Iterator& it)
   {
     if (it.myMemory.size() == 0) return 0;
 
-    if (myState == State::OCTREE) 
+    if (myState == State::OCTREE)
     {
       std::vector<std::pair<CellIndex, CellIndex>> reindex;
       bool childRemoved = true;
       auto mem = it.myMemory;
-      while (!mem.empty()) 
+      while (!mem.empty())
       {
         const auto& tmem = mem.back();
         if (childRemoved) // Can disconnect parent from the child
-        { 
+        {
             CellIndex child = myNodes[tmem.lvl][tmem.idx].children[tmem.currentChildIdx];
             myNodes[tmem.lvl][tmem.idx].children[tmem.currentChildIdx] = INVALID_IDX;
-            
+
             // Reindex children because one was removed in previous layer
-            for (CellIndex i = 0; i < myNodes[tmem.lvl].size(); ++i) 
+            for (CellIndex i = 0; i < myNodes[tmem.lvl].size(); ++i)
             {
               auto& node = myNodes[tmem.lvl][i];
-              for (CellIndex j = 0; j < CELL_COUNT; ++j) 
+              for (CellIndex j = 0; j < CELL_COUNT; ++j)
               {
-                if (node.children[j] != INVALID_IDX && node.children[j] >= child) 
+                if (node.children[j] != INVALID_IDX && node.children[j] >= child)
                   node.children[j] --;
               }
             }
         }
 
         size_t count = 0;
-        for (CellIndex i = 0; i < CELL_COUNT; ++i) 
+        for (CellIndex i = 0; i < CELL_COUNT; ++i)
             count += (myNodes[tmem.lvl][tmem.idx].children[i] != INVALID_IDX);
 
-        if (count == 0) 
+        if (count == 0)
         {
             myNodes[tmem.lvl].erase(myNodes[tmem.lvl].begin() + tmem.idx);
             childRemoved = true;
-        } 
-        else 
+        }
+        else
         {
             childRemoved = false;
         }
@@ -282,18 +282,18 @@ namespace DGtal
   }
 
   template<class Space>
-  void DigitalSetByOctree<Space>::convertToDAG() 
+  void DigitalSetByOctree<Space>::convertToDAG()
   {
     std::vector<size_t> correspondances;
-    for (CellIndex i = myNodes.size() - 1; i > 0; --i) 
+    for (CellIndex i = myNodes.size() - 1; i > 0; --i)
     {
       std::vector<Node> newNodes;
       std::map<std::array<CellIndex, CELL_COUNT>, size_t> signatures;
       std::vector<size_t> newCorrespondances(myNodes[i].size(), 0);
-      
+
       for (CellIndex j = 0; j < myNodes[i].size(); ++j) {
         std::array<CellIndex, CELL_COUNT> signature = {};
-        
+
         if (correspondances.size() != 0) // Mostly leaves
         {
           for (CellIndex k = 0; k < CELL_COUNT; ++k) {
@@ -302,19 +302,19 @@ namespace DGtal
 
             signature[k] = myNodes[i][j].children[k];
           }
-        } 
-        else 
+        }
+        else
         {
           for (CellIndex k = 0; k < CELL_COUNT; ++k)
             signature[k] = myNodes[i][j].children[k];
         }
-        
+
         auto it = signatures.find(signature);
-        if (it != signatures.end()) 
+        if (it != signatures.end())
         {
           newCorrespondances[j] = it->second;
-        } 
-        else 
+        }
+        else
         {
           newNodes.push_back(myNodes[i][j]);
           signatures[signature] = newNodes.size() - 1;
@@ -325,37 +325,37 @@ namespace DGtal
       correspondances = newCorrespondances;
     }
     // New pointers for root lvl:
-    if (correspondances.size() != 0) 
+    if (correspondances.size() != 0)
     {
-      for (CellIndex k = 0; k < CELL_COUNT; ++k) 
+      for (CellIndex k = 0; k < CELL_COUNT; ++k)
       {
-        if (myNodes[0][0].children[k] != INVALID_IDX) 
+        if (myNodes[0][0].children[k] != INVALID_IDX)
           myNodes[0][0].children[k] = correspondances[myNodes[0][0].children[k]];
       }
     }
-  
+
     shrinkToFit();
     myState = State::DAG;
   }
 
   template<class Space>
-  void DigitalSetByOctree<Space>::dumpOctree() const 
+  void DigitalSetByOctree<Space>::dumpOctree() const
   {
-    for (size_t i = 0; i < myNodes.size(); ++i) 
+    for (size_t i = 0; i < myNodes.size(); ++i)
     {
       trace.info() << "===" << i << "===\n";
-      for (size_t j = 0; j < myNodes[i].size(); j++) 
+      for (size_t j = 0; j < myNodes[i].size(); j++)
       {
         trace.info() << "  -> " << j << "\n";
         std::bitset<CELL_COUNT> bits;
-        for (size_t k = 0; k < CELL_COUNT; k++) 
+        for (size_t k = 0; k < CELL_COUNT; k++)
         {
           trace.info() << "\t" << k << ": ";
-          if (myNodes[i][j].children[k] == INVALID_IDX) 
+          if (myNodes[i][j].children[k] == INVALID_IDX)
           {
             trace.info() << "N.A." << "\n";
-          } 
-          else 
+          }
+          else
           {
             trace.info() << myNodes[i][j].children[k] << "\n";
             bits[k] = 1;
@@ -370,26 +370,26 @@ namespace DGtal
   template<class Space>
   template<class Func>
   auto DigitalSetByOctree<Space>::computeFunction(
-      DigitalSetByOctree<Space>::OctreeIterator start, 
+      DigitalSetByOctree<Space>::OctreeIterator start,
       DigitalSetByOctree<Space>::OctreeIterator end,
-      CellIndex range, 
+      CellIndex range,
       const Func& f
-  ) 
+  )
   {
     using ResultType = decltype(f({}, {}));
     std::map<ComputationCacheKey, ResultType> cache;
     std::vector<ResultType> rslt;
     Point neighborSize;
     for (DimIndex d = 0; d < D; ++d) neighborSize[d] = range;
-    for (; start != end; ++start) 
+    for (; start != end; ++start)
     {
-      // Shift so the position is at the minimum 
+      // Shift so the position is at the minimum
       const auto pos = *start;
       const auto shiftedPos = pos - myDomain->lowerBound();
       // Find parent depth that contains the whole neighborhood
-      // This is the maximum over dimension, of how many prefix 
+      // This is the maximum over dimension, of how many prefix
       // bits of position, position - range, position + range
-      // have in common. 
+      // have in common.
       CellIndex lvl = 0;
       for (DimIndex d = 0; d < D; ++d) {
         const CellIndex coord = static_cast<CellIndex>(shiftedPos[d]);
@@ -397,7 +397,7 @@ namespace DGtal
         const CellIndex coord_max = coord + range;
         // Parent in common, for this dimension, this can be higher than
         // the depth of the tree for points on the border.
-        const CellIndex l = std::max(boost::core::bit_width(coord ^ coord_min), 
+        const CellIndex l = std::max(boost::core::bit_width(coord ^ coord_min),
                                      boost::core::bit_width(coord ^ coord_max));
         lvl = std::max(lvl, std::min(l, static_cast<CellIndex>(myNodes.size())));
       }
@@ -406,30 +406,30 @@ namespace DGtal
       key.parentLvl = parent.lvl;
       key.parentIdx = parent.idx;
       key.code.resize(D * lvl);
-      for (CellIndex i = 0; i < lvl; ++i) 
+      for (CellIndex i = 0; i < lvl; ++i)
       {
         const size_t idx = start.myMemory.size() - i - 1;
-        for (DimIndex d = 0; d < D; ++d) 
+        for (DimIndex d = 0; d < D; ++d)
         {
           key.code[d + i * D] = SIDES_FROM_INDEX[start.myMemory[idx].currentChildIdx][d];
         }
       }
       const auto it = cache.find(key);
-      if (it != cache.end()) 
+      if (it != cache.end())
       {
         // Cache hit, get value
         rslt.push_back(it->second);
-      } 
-      else 
+      }
+      else
       {
         std::vector<Point> neighborhood;
-        
+
         // Gather neighborhood
         const Domain neighborhoodDomain(pos - neighborSize, pos + neighborSize);
-        for (auto dIt = neighborhoodDomain.begin(); dIt != neighborhoodDomain.end(); ++dIt) 
+        for (auto dIt = neighborhoodDomain.begin(); dIt != neighborhoodDomain.end(); ++dIt)
         {
           const auto ptIt = *dIt;
-          if (operator()(ptIt)) 
+          if (operator()(ptIt))
               neighborhood.push_back(ptIt);
         }
         const auto feval = f(pos, neighborhood);

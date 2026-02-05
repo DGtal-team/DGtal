@@ -61,7 +61,7 @@ namespace DGtal
        @brief Aim: defines the concept of quantity in DGtal.
 
        #  Refinement of
-       -  CLabel 
+       -  CLabel
        -  boost::LessThanComparable
 
        #  Associated types
@@ -76,7 +76,7 @@ namespace DGtal
 
        | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
        |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-       |               |            | | | | | | | 
+       |               |            | | | | | | |
 
 
        #  Invariants

@@ -52,40 +52,40 @@ void basicFunctorsConceptChecking()
   BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctor, TArg, TRes > ));
 }
 /**
- * Simple test. 
+ * Simple test.
  *
  */
 bool testBasicFunctors()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing basic functors ..." );
-  
+
   //default functor
   {
-    functors::Identity f; 
-    int a = 5; 
-    nbok += ( f(a) == 5 ) ? 1 : 0; 
+    functors::Identity f;
+    int a = 5;
+    nbok += ( f(a) == 5 ) ? 1 : 0;
     nb++;
   }
 
   {//constant functor
     const int v = -1;
     DGtal::functors::ConstValue<int> f(v);
-    char c = 'a'; 
-    nbok += ( f(c) == v ) ? 1 : 0; 
+    char c = 'a';
+    nbok += ( f(c) == v ) ? 1 : 0;
     nb++;
-    double d = 5.2; 
-    nbok += ( f(d) == v ) ? 1 : 0; 
+    double d = 5.2;
+    nbok += ( f(d) == v ) ? 1 : 0;
     nb++;
   }
 
   //cast functor
   {
     functors::Cast<int> f;
-    char c = 'a'; 
-    nbok += ( f(c) == 97 ) ? 1 : 0; 
+    char c = 'a';
+    nbok += ( f(c) == 97 ) ? 1 : 0;
     nb++;
   }
 
@@ -109,7 +109,7 @@ bool testBasicFunctors()
   //composer quantizer
   {
     //need to explicitely specialized because there are several
-    // overloaded versions of std::floor 
+    // overloaded versions of std::floor
     double (*pF)(double) = &floor;
     double (*pC)(double) = &ceil;
     std::function<double(double)> f = pF;
@@ -119,72 +119,72 @@ bool testBasicFunctors()
     //composer
     typedef DGtal::functors::Composer< std::function<double(double)>,
     functors::Cast<int>, int > Quantizer;
-    double d = 5.2; 
+    double d = 5.2;
 
-    Quantizer q(f, o); 
-    nbok += ( q(d) == 5 ) ? 1 : 0; 
+    Quantizer q(f, o);
+    nbok += ( q(d) == 5 ) ? 1 : 0;
     nb++;
 
-    Quantizer q2(c, o); 
-    nbok += ( q2(d) == 6 ) ? 1 : 0; 
+    Quantizer q2(c, o);
+    nbok += ( q2(d) == 6 ) ? 1 : 0;
     nb++;
   }
 
   //binary to unary functor
   {
-    int i = -5; 
+    int i = -5;
     // With function and bind:
     std::function<int(int)> b = std::bind(std::minus<int>(), std::placeholders::_1, 0);
     //i - 0
-    nbok += ( b(i) == -5 ) ? 1 : 0; 
+    nbok += ( b(i) == -5 ) ? 1 : 0;
     nb++;
     // With a lambda:
     auto b2 = [](int v) -> int {
       return v + 2;
     };
     //i + 2
-    nbok += ( b2(i) == -3 ) ? 1 : 0; 
+    nbok += ( b2(i) == -3 ) ? 1 : 0;
     nb++;
   }
 
   {//thresholder
-    int i = -3; 
+    int i = -3;
     DGtal::functors::Thresholder< int > t;
-    nbok += ( t(i) == true ) ? 1 : 0; 
-    nb++;    
+    nbok += ( t(i) == true ) ? 1 : 0;
+    nb++;
     DGtal::functors::Thresholder< int, true, true > t1;
-    nbok += ( t1(i) == true ) ? 1 : 0; 
-    nb++;    
+    nbok += ( t1(i) == true ) ? 1 : 0;
+    nb++;
     DGtal::functors::Thresholder< int, true, false > t2;
-    nbok += ( t2(0) == false ) ? 1 : 0; 
-    nb++;    
+    nbok += ( t2(0) == false ) ? 1 : 0;
+    nb++;
     DGtal::functors::Thresholder< int, false, true > t3;
-    nbok += ( t3(i) == false ) ? 1 : 0; 
-    nb++;    
+    nbok += ( t3(i) == false ) ? 1 : 0;
+    nb++;
     DGtal::functors::Thresholder< int, false, false > t4;
-    nbok += ( t4(i) == false ) ? 1 : 0; 
-    nb++;    
+    nbok += ( t4(i) == false ) ? 1 : 0;
+    nb++;
   }
 
   {//interval thresholder
     const int low = 1;
-    const int up = 5; 
+    const int up = 5;
     DGtal::functors::IntervalThresholder< int > t(low, up);
-    nbok += ( t(0) == false ) ? 1 : 0; 
-    nb++;    
+    nbok += ( t(0) == false ) ? 1 : 0;
+    nb++;
     for (int i = low; i <= up; ++i)
       {
-	nbok += ( t(i) == true ) ? 1 : 0; 
-	nb++;    
+	nbok += ( t(i) == true ) ? 1 : 0;
+	nb++;
       }
-    nbok += ( t(6) == false ) ? 1 : 0; 
-    nb++;    
+    nbok += ( t(6) == false ) ? 1 : 0;
+    nb++;
   }
 
 
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
@@ -200,7 +200,7 @@ int main( int argc, char** argv )
   trace.info() << endl;
 
   //concept checking
-  basicFunctorsConceptChecking<functors::Identity,int,int>(); 
+  basicFunctorsConceptChecking<functors::Identity,int,int>();
   basicFunctorsConceptChecking<DGtal::functors::ConstValue<int>,int,int >();
   basicFunctorsConceptChecking<functors::Cast<int>,short,int >();
   basicFunctorsConceptChecking<DGtal::functors::Thresholder<int>,int,bool >();

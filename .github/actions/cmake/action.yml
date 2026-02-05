@@ -15,7 +15,7 @@ inputs:
     description: "Type of build Release or Debug"
     default: "Release"
 
-  build-config: 
+  build-config:
     description: "Additionnal configuration to give to cmake"
     default: ""
 
@@ -52,7 +52,7 @@ runs:
         echo "DGTAL_PATH=$(echo '${{ inputs.dgtal }}' | sed s/\\\\/\\//g)" >> "$GITHUB_ENV"
         echo "DGTAL_BUILD_PATH=$(echo '${{ inputs.build-dir }}' | sed s/\\\\/\\//g)" >> "$GITHUB_ENV"
         echo "CPM_SOURCE_CACHE=$(echo '${{ inputs.cpm-cache }}' | sed s/\\\\/\\//g)" >> "$GITHUB_ENV"
-    
+
     - name: "Caching and Restoring CMake deps"
       uses: actions/cache@v4
       with:
@@ -80,13 +80,13 @@ runs:
 
     - name: Configure CMake
       shell: bash
-      working-directory: ${{ inputs.build-dir }} 
+      working-directory: ${{ inputs.build-dir }}
       run: |
         cmake $DGTAL_PATH -DCMAKE_BUILD_TYPE=${{ inputs.build-type }} -DDGTAL_RANDOMIZED_TESTING_WHITELIST="${{ inputs.test-whitelist }}" -DDGTAL_RANDOMIZED_TESTING_THRESHOLD="${{ inputs.test-threshold }}" ${{ inputs.build-config }}
 
     - name: Build
       shell: bash
-      working-directory: ${{ inputs.build-dir }} 
+      working-directory: ${{ inputs.build-dir }}
       run:  cmake --build . --config ${{ inputs.build-type }} --parallel 3
 
     - name: System-wide install on linux

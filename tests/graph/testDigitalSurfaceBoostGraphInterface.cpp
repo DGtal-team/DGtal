@@ -72,7 +72,7 @@ struct surfel_position {
   }
 };
 
-typedef boost::property< boost::vertex_index_t, std::size_t, 
+typedef boost::property< boost::vertex_index_t, std::size_t,
                          boost::property<surfel_position_t, surfel_position> > VertexProperties;
 
 
@@ -89,7 +89,7 @@ struct my_vertex_copier {
   VertexIndexMap & myIndexMap;
 
   my_vertex_copier(const Graph1& g1, Graph2& g2, VertexIndexMap & indexMap )
-    : myG1( g1 ), 
+    : myG1( g1 ),
       graph_vertex_index( boost::get( boost::vertex_index_t(), g2 ) ),
       graph_vertex_position( boost::get( surfel_position_t(), g2) ),
       myIndexMap( indexMap )
@@ -133,7 +133,7 @@ bool testDigitalSurfaceBoostGraphInterface()
   typedef MPolynomial<3, Ring> Polynomial3;
   typedef MPolynomialReader<3, Ring> Polynomial3Reader;
   typedef ImplicitPolynomial3Shape<Space> ImplicitShape;
-  typedef GaussDigitizer<Space,ImplicitShape> DigitalShape; 
+  typedef GaussDigitizer<Space,ImplicitShape> DigitalShape;
 
   // Implicit shape is an ellipse
   trace.beginBlock( "Constructing implicit shape." );
@@ -143,11 +143,11 @@ bool testDigitalSurfaceBoostGraphInterface()
   double step = 0.4;
   Polynomial3 P;
   Polynomial3Reader reader;
-  std::string::const_iterator iter 
+  std::string::const_iterator iter
     = reader.read( P, poly_str.begin(), poly_str.end() );
   if ( iter != poly_str.end() )
     {
-      std::cerr << "ERROR: I read only <" 
+      std::cerr << "ERROR: I read only <"
                 << poly_str.substr( 0, iter - poly_str.begin() )
                 << ">, and I built P=" << P << std::endl;
       return 1;
@@ -163,7 +163,7 @@ bool testDigitalSurfaceBoostGraphInterface()
   // Construct the Khalimsky space from the image domain
   trace.beginBlock ( "Construct the Khalimsky space from the image domain ..." );
   KSpace K;
-  bool space_ok = K.init( domain.lowerBound(), 
+  bool space_ok = K.init( domain.lowerBound(),
                           domain.upperBound(), true // necessary
                           );
   if (!space_ok)
@@ -185,7 +185,7 @@ bool testDigitalSurfaceBoostGraphInterface()
   MySetOfSurfels theSetOfSurfels( K, surfAdj );
   Surfel bel = Surfaces<KSpace>::findABel( K, dshape, 100000 );
   Surfaces<KSpace>::trackBoundary( theSetOfSurfels.surfelSet(),
-                                   K, surfAdj, 
+                                   K, surfAdj,
                                    dshape, bel );
   MyDigitalSurface digSurf( theSetOfSurfels );
   trace.info() << "Digital surface has " << digSurf.size() << " surfels."
@@ -237,7 +237,7 @@ bool testDigitalSurfaceBoostGraphInterface()
           vp = boost::vertices( digSurf ); vp.first != vp.second; ++vp.first, ++nbV )
     {
       uint64_t d = boost::get( propDistanceMap, *vp.first );
-      if ( d > maxD ) 
+      if ( d > maxD )
         {
           maxD = d;
           furthest = *vp.first;
@@ -245,10 +245,10 @@ bool testDigitalSurfaceBoostGraphInterface()
     }
   trace.info() << "- d[ " << start << " ] = " << boost::get( propDistanceMap, start ) << std::endl;
   trace.info() << "- d[ " << furthest << " ] = " << maxD << std::endl;
-  ++nb; nbok += ( nbV == digSurf.size() ) ? 1 : 0; 
+  ++nb; nbok += ( nbV == digSurf.size() ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "nb vertices is ok" << std::endl;
-  ++nb; nbok += ( maxD == 12 ) ? 1 : 0; 
+  ++nb; nbok += ( maxD == 12 ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "maxD == 12" << std::endl;
   trace.endBlock();
@@ -265,7 +265,7 @@ bool testDigitalSurfaceBoostGraphInterface()
       boost::color_map( propColorMap ) // this map is used internally when computing connected components.
       );
   trace.info() << "- nbComponents = " << nbComp << std::endl;
-  ++nb; nbok += ( nbComp == 1 ) ? 1 : 0; 
+  ++nb; nbok += ( nbComp == 1 ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "nbComp == 1" << std::endl;
   trace.endBlock();
@@ -282,11 +282,11 @@ bool testDigitalSurfaceBoostGraphInterface()
   vertices_size_type idxV = 0;
   // The weight is smaller for edges traversing plane z=0 than anywhere else.
   // The min cut thus cuts the sphere in two approximate halves.
-  for ( std::pair<vertex_iterator, vertex_iterator> 
+  for ( std::pair<vertex_iterator, vertex_iterator>
           vp = boost::vertices( digSurf ); vp.first != vp.second; ++vp.first, ++idxV )
     {
       vertex_descriptor v1 = *vp.first;
-      vertexIndexMap[ v1 ] = idxV; 
+      vertexIndexMap[ v1 ] = idxV;
       for ( std::pair<out_edge_iterator, out_edge_iterator>
               ve = boost::out_edges( v1, digSurf ); ve.first != ve.second; ++ve.first )
         {
@@ -299,7 +299,7 @@ bool testDigitalSurfaceBoostGraphInterface()
               weightMap[ digSurf.opposite( *ve.first ) ] = weight;
             }
         }
-    }  
+    }
   // get the parity map for assigning a set to each vertex.
   typedef std::map< vertex_descriptor, bool > StdParityMap;
   StdParityMap parityMap;
@@ -315,7 +315,7 @@ bool testDigitalSurfaceBoostGraphInterface()
   trace.info() << "- total weight = " << total_weight << std::endl;
   uint64_t nb0 = 0;
   uint64_t nb1 = 0;
-  for ( std::pair<vertex_iterator, vertex_iterator> 
+  for ( std::pair<vertex_iterator, vertex_iterator>
            vp = boost::vertices( digSurf ); vp.first != vp.second; ++vp.first, ++idxV )
      {
        vertex_descriptor v1 = *vp.first;
@@ -323,13 +323,13 @@ bool testDigitalSurfaceBoostGraphInterface()
        if ( parityMap[ v1 ] ) ++nb1;
        else ++nb0;
      }
-  ++nb; nbok += ( total_weight < 1.0 ) ? 1 : 0; 
+  ++nb; nbok += ( total_weight < 1.0 ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") "
-               << "total_weight < 1.0" 
+               << "total_weight < 1.0"
                << ", nb0=" << nb0 << " nb1=" << nb1 << std::endl;
   trace.info() << "- parity[ " << start << " ] = " << parityMap[ start ] << std::endl;
   trace.info() << "- parity[ " << furthest << " ] = " << parityMap[ furthest ] << std::endl;
-  ++nb; nbok += ( parityMap[ start ] != parityMap[ furthest ] ) ? 1 : 0; 
+  ++nb; nbok += ( parityMap[ start ] != parityMap[ furthest ] ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "parityMap[ start ] != parityMap[ furthest ]" << std::endl;
   trace.endBlock();
@@ -363,8 +363,8 @@ bool testDigitalSurfaceBoostGraphInterface()
       edge_descriptor rev_e = digSurf.opposite( e );
       vertex_descriptor v1 = boost::source( e, digSurf );
       vertex_descriptor v2 = boost::target( e, digSurf );
-      ASSERT( boost::source( rev_e, digSurf ) == v2 ); 
-      ASSERT( boost::target( rev_e, digSurf ) == v1 ); 
+      ASSERT( boost::source( rev_e, digSurf ) == v2 );
+      ASSERT( boost::target( rev_e, digSurf ) == v1 );
       if ( v1 < v2 )
         {
           KSpace::SCell sep = digSurf.separator( *ve.first );
@@ -374,7 +374,7 @@ bool testDigitalSurfaceBoostGraphInterface()
           reversedEdgeMap[ e ] = digSurf.opposite( e );
           reversedEdgeMap[ digSurf.opposite( e ) ] = e;
         }
-    }  
+    }
   trace.info() << "- nb edges = " << nbEdges << std::endl;
   distanceMap.clear();
   colorMap.clear();
@@ -382,10 +382,10 @@ bool testDigitalSurfaceBoostGraphInterface()
     boost::boykov_kolmogorov_max_flow // boykov kolmogorov max flow algorithm.
     ( digSurf, // the graph
       propEdgeCapacityMap, propEdgeResidualCapacityMap,
-      propReversedEdgeMap, propPredecessorMap, propColorMap, propDistanceMap, propVertexIndexMap, 
+      propReversedEdgeMap, propPredecessorMap, propColorMap, propDistanceMap, propVertexIndexMap,
       start, furthest );
   trace.info() << "- max flow = " << max_flow << std::endl;
-  ++nb; nbok += ( abs( max_flow - total_weight ) < 0.0000001 ) ? 1 : 0; 
+  ++nb; nbok += ( abs( max_flow - total_weight ) < 0.0000001 ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "max_flow == min_cut, Duality max-flow/min-cut." << std::endl;
   trace.endBlock();
@@ -402,16 +402,16 @@ bool testDigitalSurfaceBoostGraphInterface()
   typedef boost::graph_traits< BGraph >::vertex_iterator vertex_iterator_2;
   typedef boost::property_map< BGraph, surfel_position_t>::type GraphSurfelPositionMap;
   GraphSurfelPositionMap surfelPos( boost::get( surfel_position_t(), bG) );
-  for ( std::pair<vertex_iterator_2, vertex_iterator_2> 
+  for ( std::pair<vertex_iterator_2, vertex_iterator_2>
            vp = boost::vertices( bG ); vp.first != vp.second; ++vp.first )
      {
        vertex_descriptor_2 v1 = *vp.first;
        surfel_position pos = boost::get( surfelPos, v1 );
        trace.info() << "- " << v1 << " was at " << pos.myP << std::endl;
      }
-  ++nb; nbok += boost::num_vertices( bG ) == boost::num_vertices( digSurf ) ? 1 : 0; 
+  ++nb; nbok += boost::num_vertices( bG ) == boost::num_vertices( digSurf ) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ") "
-               << "after copy: Boost graph has " << num_vertices( bG ) 
+               << "after copy: Boost graph has " << num_vertices( bG )
                << " vertices." << std::endl;
   trace.endBlock();
 

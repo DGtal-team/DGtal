@@ -1,17 +1,17 @@
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  */
 namespace DGtal {
 
 /**
-   
+
 @page moduleDigitalSurfaces  Digital surfaces
 
 @writers Jacques-Olivier Lachaud
 
 Part of the \ref packageTopology.
-  
+
 This part of the manual describes how to define digital surfaces,
 closed or open. A lot of the ideas, concepts, algorithms,
 documentation and code is a backport from \e ImaGene
@@ -125,7 +125,7 @@ ASSERT( v == qx && v == qy && v == qz ); // same as qx, qy, qz
 @endcode
 
 The direct orientation to some cell \e s is the one that gives a
-positively oriented cell in the boundary or coboundary of \e s. 
+positively oriented cell in the boundary or coboundary of \e s.
 
 You may now for instance define the digital surface that lies in
 the boundary of some digital shape \f$ S \subset Z^n \f$ as the set
@@ -134,9 +134,9 @@ S. Algebraically, \e S is the formal of its positively oriented
 spels, and its \e boundary is obtained by applying the boundary
 operator on \e S.
 
-@image html digital-surface-BdryOp-1s.png "Using the boundary operator to compute the boundary of a digital shape S." 
-@image html digital-surface-BdryOp-2s.png "The boundary operator is linear with cells, thus we compute spel by spel." 
-@image html digital-surface-BdryOp-3s.png "The boundary operator is linear with cells, thus we compute spel by spel." 
+@image html digital-surface-BdryOp-1s.png "Using the boundary operator to compute the boundary of a digital shape S."
+@image html digital-surface-BdryOp-2s.png "The boundary operator is linear with cells, thus we compute spel by spel."
+@image html digital-surface-BdryOp-3s.png "The boundary operator is linear with cells, thus we compute spel by spel."
 @image html digital-surface-BdryOp-4s.png "Opposite cells cancel each other."
 @image html digital-surface-BdryOp-5s.png "This is the resulting set of surfels (in blue and magenta."
 
@@ -144,7 +144,7 @@ Defining a digital surface as a set of surfels is not enough for
 geometry. Indeed we need to relate surfels together so as to have a
 topology on the digital surface. The first step is to transform the
 digital surface into a graph.
- 
+
 @note From a properly oriented @f$n-1@f$-cell (i.e. a surfel), one can retrieve the coordinates
  in @f$Z^n@f$ of the associated interior / exterior grid points (voxel in 3d) using the KhalimskySpaceND::interiorVoxel
  and KhalimskySpaceND::exteriorVoxel methods.
@@ -161,7 +161,7 @@ configuration", symbolized below:
    O | X    X: interior spels               O a X
    - + -    O: exterior spels               b + c
    X | O    - and |: surfels a,b,c,d        X d O
-            +: n-2-cell 
+            +: n-2-cell
 @endverbatim
 
 A bel adjacency makes a deterministic choice to connect b to d and a
@@ -169,7 +169,7 @@ to c when interior, and b to a and c to d when exterior. This
 choice has to be made along each possible pair of directions when
 going nD. In DGtal, this is encoded with the class SurfelAdjacency.
 
-@image html digital-surface-IntAdjacency.png "Interior adjacency on digital surfaces in 2D" 
+@image html digital-surface-IntAdjacency.png "Interior adjacency on digital surfaces in 2D"
 
 The following snippet shows the interior surfel adjacency
 (i.e. (6,18)-surfaces).
@@ -183,7 +183,7 @@ closed surfaces). More precisely, it has exactly 2 adjacent surfels
 along directions different from the orthogonal direction of the
 surfel.
 
-@image html digital-surface-SurfaceTracking2.png "Any surfel in 3D has 4 adjacent surfels." 
+@image html digital-surface-SurfaceTracking2.png "Any surfel in 3D has 4 adjacent surfels."
 
 In fact, we can be even more precise. We can use orientation to
 orient the adjacencies consistently. Given two surfels sharing an
@@ -193,7 +193,7 @@ have thus that there are @f$n-1@f$ adjacent cells in the direct
 orientation (positive) and @f$n-1@f$ adjacent cells in the indirect
 orientation (negative). The direct adjacent surfels look like:
 
-@image html digital-surface-SurfaceTracking.png "Any surfel in 3D has 2 adjacent surfels in the direct orientation." 
+@image html digital-surface-SurfaceTracking.png "Any surfel in 3D has 2 adjacent surfels in the direct orientation."
 
 The class SurfelNeighborhood is the base class for computing
 adjacent surfels. You may use it as follow, but generally this
@@ -258,7 +258,7 @@ and by tracking (see volTrackBoundary.cpp).
 @snippet topology/volTrackBoundary.cpp volTrackBoundary-ExtractingSurface
 
 On the lobser.vol volume, volScanBoundary.cpp extracts 155068 surfels
-in 3866ms, while volTrackBoundary.cpp extracts 148364 surfels in 351ms. 
+in 3866ms, while volTrackBoundary.cpp extracts 148364 surfels in 351ms.
 
 @verbatim
 # Commands
@@ -287,7 +287,7 @@ set of surface components, how to get 2D contours as slices onto a
 You may also use the template class DigitalSurface2DSlice, which,
 given a tracker on a digital surface, computes and store a 2d slice
 on the associated surface. You may after visit the slice with
-iterators or circulators. 
+iterators or circulators.
 @code
 // Tracker is a type of tracker on some digital surface.
 typedef DigitalSurface2DSlice<Tracker> MySlice;
@@ -530,8 +530,8 @@ for each face it lists the coordinates of its vertices.
 
 @code
 // MyDigitalSurface is a DigitalSurface realization.
-// digSurf is any object of type MyDigitalSurface. 
-// K is a cellular space. 
+// digSurf is any object of type MyDigitalSurface.
+// K is a cellular space.
 MyDigitalSurface::FaceSet all_faces = digSurf.allFaces();
 for ( auto it = all_faces.begin(), it_end = all_faces.end(); it != it_end; ++it )
   {
@@ -542,7 +542,7 @@ for ( auto it = all_faces.begin(), it_end = all_faces.end(); it != it_end; ++it 
       std::cerr << " " << K.sKCoords( vtx[ i ] );
     std::cerr << std::endl;
   }
-@endcode 
+@endcode
 
 DigitalSurface provides you with many methods to get faces from
 edges or vertices and reciprocally.
@@ -555,7 +555,7 @@ edges or vertices and reciprocally.
   containing this vertex [v]: 0 in 2D, 4 in 3D, 12 in 4D, 2(n-1)(n-2)
   in nD. Since DGtal 1.0, in 3D, the 4 faces may be ordered
   counterclockwise around the vertex (seen from the exterior), if the
-  user specifies it. 
+  user specifies it.
 - DigitalSurface::head (Arc): the head vertex of the given arc
 - DigitalSurface::tail (Arc): the tail vertex of the given arc
 - DigitalSurface::opposite (Arc): the opposite arc of the given arc
@@ -648,10 +648,10 @@ Shapes<Domain>::addNorm2Ball( aSet, Point( 0, 0, 0 ), 3 );
 DSContainer dsc( K, aSet ) );
 IDSurface   idx_dig_surf( dsc );
 // The surface topology is now completely built.
-std::cout << dsurf.nbVertices() << std::endl; // 174 
-std::cout << dsurf.nbEdges()    << std::endl; // 348 
-std::cout << dsurf.nbFaces()    << std::endl; // 176 
-std::cout << dsurf.Euler()      << std::endl; //   2 
+std::cout << dsurf.nbVertices() << std::endl; // 174
+std::cout << dsurf.nbEdges()    << std::endl; // 348
+std::cout << dsurf.nbFaces()    << std::endl; // 176
+std::cout << dsurf.Euler()      << std::endl; //   2
 \endcode
 
 @note We recall that, as for a DigitalSurface, an
@@ -684,7 +684,7 @@ index, a pointel from its face index.
 - IndexedDigitalSurface::getArc: gets the arc index of the given (oriented) linel (i.e. its separator).
 - IndexedDigitalSurface::getFace: gets a face index of the given pointel (i.e. its pivot). Note that several faces may have the same pivot (up to four).
 
-An indexed digital surface associates positions to its vertices (see IndexedDigitalSurface::position and IndexedDigitalSurface::positions). 
+An indexed digital surface associates positions to its vertices (see IndexedDigitalSurface::position and IndexedDigitalSurface::positions).
 
 Then, most the services of DigitalSurface described in \ref
 dgtal_digsurf_sec4 are available in IndexedDigitalSurface.

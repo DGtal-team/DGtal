@@ -35,7 +35,7 @@ This module thus extends to the 3D case the recognition of \b digital
 
 For now, these problems are solved thanks to two algorithms: the COBA
 algorithm by Charrier and Buzer \cite Charrier_2008_dgci and the Chord
-algorithm by Gerard, Debled-Rennesson and Zimmermann 
+algorithm by Gerard, Debled-Rennesson and Zimmermann
 @cite Gerard_2005_dam .
 
 More precisely, these modules tackle \e naive \e digital \e planes (with or

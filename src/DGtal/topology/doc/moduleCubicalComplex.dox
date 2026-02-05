@@ -1,11 +1,11 @@
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  */
 namespace DGtal {
 
 /**
-   
+
 @page moduleCubicalComplex  Cubical Complex
 
 @writers Jacques-Olivier Lachaud
@@ -13,12 +13,12 @@ namespace DGtal {
 @since 0.9.1
 
 Part of the \ref packageTopology.
-  
+
 This part of the manual describes how to represent and process
-arbitrary cubical complexes. 
+arbitrary cubical complexes.
 
 @note Collapse operation is a backport from \e ImaGene.
-@cite ImaGene 
+@cite ImaGene
 
 [TOC]
 
@@ -34,7 +34,7 @@ in some Khalimsky space. Two cells of \a C are \b incident if and only
 if they are incident in the Khalimsky space. A cubical complex
 provides many services related to set of (unsigned) cells living in a
 Khalimsky space: incidence operations, closure, star, link, cell set
-operations, cell set relations, collapse operation. 
+operations, cell set relations, collapse operation.
 
 
 @note In opposition to the usual definition of simplical complex, we
@@ -207,7 +207,7 @@ empty intersection:
   @snippet topology/cubical-complex-illustrations.cpp cubical-complex-illustrations-int
 
   @image html cubical-complex-illustrations-int.png "Interior of \a X, displayed in cyan."
-  
+
 - CubicalComplex::boundary: returns the (topological) boundary of this
   complex \a X, i.e. the closure of \a X minus the interior of \a
   X. It is worthy to note that the boundary complex may contain cells
@@ -216,7 +216,7 @@ empty intersection:
   @snippet topology/cubical-complex-illustrations.cpp cubical-complex-illustrations-bd
 
   @image html cubical-complex-illustrations-bd.png "Boundary of \a X, displayed in magenta."
-  
+
 - CubicalComplex::getInteriorAndBoundary: returns both the boundary
   and the interior of X, faster then computing both separately if you
   need both.
@@ -237,7 +237,7 @@ CC X( K );            // creates the cubical complex
 CC Xc  = ~X;          // closing of X
 CC Xco = *Xc;         // opening of Xc (interior of X).
 CC Xbd = Xc - Xco;    // boundary of X.
-CC Xbd2= X.boundary();// same result for pure complex. 
+CC Xbd2= X.boundary();// same result for pure complex.
 \endcode
 
 You have the following operations:
@@ -327,7 +327,7 @@ c) attach a cubical complex \f$X\f$ to be thinned:
 d) run the algorithm (here two iterations):
 @snippet topology/cubicalComplexThinning.cpp thinn
 
-@image html ComplexBeforeThinning.png "The starting complex X before thinning." 
+@image html ComplexBeforeThinning.png "The starting complex X before thinning."
 
 @image html ParDirCollapse_2.png  "The starting complex X after two iterations of ParDirCollapse."
 
@@ -341,7 +341,7 @@ To run SurfaceCollapse we apply steps a--c for ParDirCollapse and then we apply 
 d) run the algorithm:
 @snippet topology/cubicalComplexThinning.cpp thinnSurface
 
-@image html ParDirCollapse_collapseSurface.png "The starting complex X after SurfaceCollapse." 
+@image html ParDirCollapse_collapseSurface.png "The starting complex X after SurfaceCollapse."
 
 The last scheme, so-called IsthmusCollapse is similar to SurfaceCollapse. The only difference is that after each
 iteration of ParDirCollapse, we mark as non-collapsible those faces which are of dimension dim\f$(X) - 1\f$ and not
@@ -354,7 +354,7 @@ To run SurfaceCollapse we apply steps a--c for ParDirCollapse and then we apply 
 d) run the algorithm:
 @snippet topology/cubicalComplexThinning.cpp thinnIsthmus
 
-@image html ParDirCollapse_collapseIsthmus.png "The starting complex X after IsthmusCollapse." 
+@image html ParDirCollapse_collapseIsthmus.png "The starting complex X after IsthmusCollapse."
 
 For more details see the example topology/cubicalComplexThinning.cpp.
 

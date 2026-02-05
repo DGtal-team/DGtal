@@ -171,7 +171,7 @@ TEST_CASE("Basic voxelization test", "[voxelization]")
     voxelizer.voxelize(outputSet, Point(5,0,0), Point(0,5,0), Point(0,0,5));
     REQUIRE( outputSet.size() == 21 );
   }
-  
+
   // ---------------------------------------------------------
   SECTION("6-sep voxelization of a OFF cube mesh")
   {
@@ -181,11 +181,11 @@ TEST_CASE("Basic voxelization test", "[voxelization]")
     Z3i::Domain domain( Point().diagonal(-30), Point().diagonal(30));
     DigitalSet outputSet(domain);
     MeshVoxelizer6 voxelizer;
-    
+
     CAPTURE(inputMesh.nbFaces());
-    
+
     voxelizer.voxelize(outputSet, inputMesh, 10.0 );
-   
+
     CAPTURE(outputSet.size());
     //hard coded test.
     REQUIRE( outputSet.size() == 2562 );
@@ -199,11 +199,11 @@ TEST_CASE("Basic voxelization test", "[voxelization]")
     Z3i::Domain domain( Point().diagonal(-30), Point().diagonal(30));
     DigitalSet outputSet(domain);
     MeshVoxelizer26 voxelizer;
-    
+
     CAPTURE(inputMesh.nbFaces());
-    
+
     voxelizer.voxelize(outputSet, inputMesh, 10.0 );
-   
+
     CAPTURE(outputSet.size());
     //hard coded test.
     REQUIRE( outputSet.size() == 4162 );

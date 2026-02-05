@@ -1,5 +1,5 @@
 # ConfigExamples.h instanciation.
-configure_file(${PROJECT_SOURCE_DIR}/examples/ConfigExamples.h.in 
+configure_file(${PROJECT_SOURCE_DIR}/examples/ConfigExamples.h.in
   ${PROJECT_BINARY_DIR}/examples/ConfigExamples.h)
 
 # For DGtal_add_example function

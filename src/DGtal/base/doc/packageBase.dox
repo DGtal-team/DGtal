@@ -42,7 +42,7 @@ namespace DGtal {
 
 @b Package @b Overview
 
-This package gathers many concepts and stand-alone classes that are used in other packages.   
+This package gathers many concepts and stand-alone classes that are used in other packages.
 
 @b Modules
 

@@ -1,5 +1,5 @@
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  */
 namespace DGtal {
@@ -8,7 +8,7 @@ namespace DGtal {
 @page moduleIO Image and digital object import/export
 @authors David Coeurjolly, Bertrand Kerautret, Martial Tola, Pierre Gueth
 
-This part of the manual describes how to import and export images and main DGtal objects from/to various formats. 
+This part of the manual describes how to import and export images and main DGtal objects from/to various formats.
 
 [TOC]
 
@@ -32,14 +32,14 @@ interval [@a min,@a max].
 
 For example, RandomColorMap returns a random color for each value
 @a v. More complex colormaps (GradientColorMap, HueShadeColorMap, ...)
-offer better colormap for scientific visualisation purposes. 
+offer better colormap for scientific visualisation purposes.
 
 
-\image html colormaps.png "Example of predefined colormaps" 
+\image html colormaps.png "Example of predefined colormaps"
 
 Beside colormaps, TickedColorMap is a colormap adapter that adds ticks. For example, you can adapt a Black-Red gradient colormap to add regular white ticks (see usage in @ref testTickedColorMap.cpp):
 
-\image html testTicked-gradient-regular.png "Colormaps with regular ticks" 
+\image html testTicked-gradient-regular.png "Colormaps with regular ticks"
 Ticks can be regularly spaced or explicitly given by the user.
 
 
@@ -49,7 +49,7 @@ In some situations, we may have to convert colors into   scalar
 values (see below). In this case, basic conversion functors are
 available in the DGtal::functors namespace. For
 example, you would find in this namespace a DGtal::functors::RedChannel converter or a
-DGtal::functors::MeanChannels converter. 
+DGtal::functors::MeanChannels converter.
 
 Hence, to implement a functor taking values and returning the red
 channel of a colormap, you just have to compose the two functors with
@@ -79,7 +79,7 @@ concepts. First of all:
 
  - Image @b writers are classes templated by an image type and a functor to convert image values to the value type of the writer file format.
 
-Hence, for image writers,  some  functors may return a DGtal::Color or a scalar value depending on the writer. 
+Hence, for image writers,  some  functors may return a DGtal::Color or a scalar value depending on the writer.
 
 
 
@@ -110,8 +110,8 @@ Hence, for image writers,  some  functors may return a DGtal::Color or a scalar 
   DGtal::ITKReader<Image>::exportITK("example.mha", image);
 @endcode
 
-  
-For scalar value format (PGM, Vol, Longvol, Raw, ...), the associated template class have a default functor type. Hence, if you just want to cast your image values to the file format value type (e.g. "unsigned char" for Vol), do not specify any functor. 
+
+For scalar value format (PGM, Vol, Longvol, Raw, ...), the associated template class have a default functor type. Hence, if you just want to cast your image values to the file format value type (e.g. "unsigned char" for Vol), do not specify any functor.
 
 
 
@@ -123,7 +123,7 @@ by default by the image container) and a functor type (by default set to
 the DefaultFunctor type).
 
 To use it you need first to include the following header:
-@code 
+@code
    #include "DGtal/io/writers/GenericWriter.h"
    #include "DGtal/helpers/StdDefs.h"
    typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned char> Image3D;
@@ -154,13 +154,13 @@ image type, you can use a less generic writer with the stream operator and the s
 given type).
 
 
-To write color images, you need to use a functor which transform a scalar value into a Color. 
+To write color images, you need to use a functor which transform a scalar value into a Color.
 You can use the previous \ref colormaps :
-@code 
+@code
 typedef DGtal::ImageContainerBySTLVector<Z2i::Domain, double > Image2D;
 DGtal::HueShadeColorMap<double>  hueColorMap (-50.0, 50.0);
 //...
-DGtal::GenericWriter<Image2D, 2, double, DGtal::HueShadeColorMap<double> >::exportFile("aFilename.ppm", anImage, hueColorMap );   
+DGtal::GenericWriter<Image2D, 2, double, DGtal::HueShadeColorMap<double> >::exportFile("aFilename.ppm", anImage, hueColorMap );
 @endcode
 
 
@@ -205,7 +205,7 @@ RawReader::importRaw8).
 
 
 
-@code 
+@code
    #include "DGtal/io/readers/GenericReader.h"
    #include "DGtal/helpers/StdDefs.h"
    typedef DGtal::ImageContainerBySTLMap<DGtal::Z3i::Domain, unsigned int> Image3D;
@@ -216,7 +216,7 @@ Use the same import function for both 2D or 3D images:
 @code
    Image3D an3Dimage= DGtal::GenericReader<Image3D>::import("example.vol");
    Image2D an2Dimage= DGtal::GenericReader<Image2D>::import("example.pgm");
-@endcode 
+@endcode
 
 
 
@@ -268,7 +268,7 @@ DGtal readers/writers.
 
 The static class \c PointListReader allows to read discrete
 points represented in simple file where each line represent a
-single point. 
+single point.
 
 
 
@@ -282,7 +282,7 @@ The mesh importation can be done automatically from the extension file name by u
 @snippet io/meshFromOFF.cpp ImportOFFfile
 
 You can also export a Mesh object by using the operator
-(">>"). 
+(">>").
 
 \subsection svoio Sparse Voxel Octree and Sparse Voxel Direct Acyclic Graphs
 
@@ -303,7 +303,7 @@ The reader allows an octree to be read in a different space of the same dimensio
 
 The SVO file format is comprised of a header in ascii, and data in binary.
 
-The header is written in ascii. Each line represents a different fields, whose name is space and case sensitive and for which the value is separated by a ':'. The value is written in ASCII format, and surrounding whitespace (spaces, tabs, carriage returns) is trimmed. There is no specified order, but we recommand following the order bellow. The header ends with a single '.' on a separated line. The expected fields are: 
+The header is written in ascii. Each line represents a different fields, whose name is space and case sensitive and for which the value is separated by a ':'. The value is written in ASCII format, and surrounding whitespace (spaces, tabs, carriage returns) is trimmed. There is no specified order, but we recommand following the order bellow. The header ends with a single '.' on a separated line. The expected fields are:
 - 'Format': always 'SVO'.
 - 'Version': unsigned integer, for now only '1' is supported.
 - 'Size': unsigned integer representing the number of voxels stored.
@@ -339,7 +339,7 @@ The data is always written in binary in little-endian order (regardless of host 
 \subsection importDigitalSet Importing a 3D digital set from volume file:
 
 Importing and visualizing a digital set from a vol file can be done in
-few code lines. (see. digitalSetFromVol.cpp). 
+few code lines. (see. digitalSetFromVol.cpp).
 
 First we select the Image type with \c int:
 
@@ -358,20 +358,20 @@ Then the initial image is imported:
  Image image = VolReader<Image>::importVol(inputFilename);
 @endcode
 
-Afterwards the set is thresholded in ]0,255[: 
+Afterwards the set is thresholded in ]0,255[:
 
 @code
   Z3i::DigitalSet set3d (image.domain());
   SetFromImage<Z3i::DigitalSet>::append<Image>(set3d, image, 0,255);
   PolyscopeViewer<> viewer;
   viewer << set3d << image.domain();
-  viewer.show(); 
+  viewer.show();
 @endcode
 
 
 Then you will obtain the following visualisation:
 
-\image html visuDigitalSet3D.png "3D digital set from volumetric file (.vol)" 
+\image html visuDigitalSet3D.png "3D digital set from volumetric file (.vol)"
 
 
 \subsection importPointList Import 3D point list from file
@@ -379,7 +379,7 @@ Then you will obtain the following visualisation:
 The example digitalSetFromPointList.cpp shows a simple example of 3d set importation:
 
 @code
-vector<Z3i::Point> vectPoints=  PointListReader<Z3i::Point>::getPointsFromFile(inputFilename); 
+vector<Z3i::Point> vectPoints=  PointListReader<Z3i::Point>::getPointsFromFile(inputFilename);
   for(unsigned int i=0; i<vectPoints.size();i++){
     viewer << vectPoints.at(i);
   }
@@ -391,8 +391,8 @@ We can change the way to select the coordinate field:
   vPos.push_back(0);
   vPos.push_back(2);
   vPos.push_back(1);
-  vectPoints=  PointListReader<Z3i::Point>::getPointsFromFile(inputFilename, vPos); 
-  viewer << Color(255,0,0); 
+  vectPoints=  PointListReader<Z3i::Point>::getPointsFromFile(inputFilename, vPos);
+  viewer << Color(255,0,0);
   for(unsigned int i=0; i<vectPoints.size();i++){
     viewer << vectPoints.at(i);
   }
@@ -400,7 +400,7 @@ We can change the way to select the coordinate field:
 
 You may obtain the following visualisation:
 
-\image html visuPointList.png "Visualisation of 3d imported point list " 
+\image html visuPointList.png "Visualisation of 3d imported point list "
 
 \subsection importMesh3D Import 3D mesh from OFF file
 
@@ -430,6 +430,3 @@ You can also import large scale mesh, like the one of classic Angel scan ( avail
 */
 
 }
-
-
-

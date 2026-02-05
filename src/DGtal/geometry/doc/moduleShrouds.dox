@@ -15,7 +15,7 @@ Part of the \ref packageGeometry.
 
 This part of the manual describes classes and functions related to the
 regularization of digital surfaces using the "Shrouds" algorithm, by
-Nielson et al \cite nielson2003shrouds. 
+Nielson et al \cite nielson2003shrouds.
 
 On binary 3D images, the "Shrouds" algorithm builds a smooth surface
 that separates the interior voxels from the exterior voxels. It starts from
@@ -28,7 +28,7 @@ squared curvature and the separation property is obtained by forcing
 each vertex to lie on its unit edge joining an interior voxel to an
 exterior voxel (i.e. the edge that is dual to the surfel). The 2D
 problems are intertwined since each vertex is shared by two
-slices. 
+slices.
 
 @note This method is limited to closed surface reconstruction, in
 opposition to the method presented in \ref moduleRegularization.
@@ -62,7 +62,7 @@ contours. During the regularization, the "Shrouds" algorithm principle
 is to move the point \f$ X[s] \f$ associated to each surfel \a s in a
 constrained way : it can only move on the unit segment that is
 orthogonal to the surfel, otherwise said the point is constrained to
-lie on the edge dual to the primal surfel. 
+lie on the edge dual to the primal surfel.
 
 The "Shrouds" algorithm minimizes a global energy that is determined
 by the positions of each point on its two contours. The user can
@@ -74,12 +74,12 @@ squared curvature of the output surface
 one gives the best results.
 
 The snake energy \f$ E^{snk} \f$ and the squared curvature energy \f$
-E^{\kappa^2} \f$ are defined per slice on each 2D contour. 
+E^{\kappa^2} \f$ are defined per slice on each 2D contour.
 
 For a slice contour \f$ C=(x(s),y(s)) \f$ and boundary constraints, we define:
 
-\f[ 
-E^{snk}(C) = \int_C \alpha (x'(s)^2 + y'(s)^2) + \beta (x''(s)^2 + y''(s)^2) ds, 
+\f[
+E^{snk}(C) = \int_C \alpha (x'(s)^2 + y'(s)^2) + \beta (x''(s)^2 + y''(s)^2) ds,
 \f]
 
 and

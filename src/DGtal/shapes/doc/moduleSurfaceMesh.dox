@@ -11,7 +11,7 @@
 * This file is part of the DGtal library.
 */
 
-/* 
+/*
 * Useful to avoid writing DGtal:: in front of every class.
 * Do not forget to add an entry in src/DGtal/base/Config.h.in !
 */
@@ -24,7 +24,7 @@ namespace DGtal {
 @since 1.1
 
 Part of \ref packageShapes
-  
+
 This part of the manual describes how to represent and manipulate
 generic polygonal surfaces embedded in \f$ \mathbb{R}^3 \f$. The class
 \ref SurfaceMesh proposes an index-based data structure that encodes
@@ -64,7 +64,7 @@ First, write the following typedefs:
 
 @snippet examples/shapes/exampleSurfaceMesh.cpp exampleSurfaceMesh-typedef
 
-Then, there are several ways for creating a surface mesh (see \ref exampleSurfaceMesh.cpp for several examples): 
+Then, there are several ways for creating a surface mesh (see \ref exampleSurfaceMesh.cpp for several examples):
 
 - by hand with a range of points for each vertex and a range of
   indices for of each polygonal face (see SurfaceMesh::SurfaceMesh and
@@ -225,7 +225,7 @@ calling MeshHelpers::surfaceMesh2Mesh.
 You can also output OBJ file (if available, with vertex normal
 information) using class SurfaceMeshWriter::writeOBJ, with some
 specialization allowing you to color faces. Edge lines and iso-lines
-can also be output as OBJ in same class. 
+can also be output as OBJ in same class.
 
 The snippet below shows how to output the distances computed in \ref
 SurfMesh_sec3 as a surface colored per face with three isolines
@@ -235,7 +235,7 @@ corresponding to relative distances 0.25, 0.5 and 0.75.
 
 @image html spot-bft-isolines.png "SurfaceMesh faces colored according to distance to bluest vertex and three isodistance lines"
 
-\section SurfMesh_sec8 Flipping edges 
+\section SurfMesh_sec8 Flipping edges
 
 Since 1.4, you may modify a SurfaceMesh through flips. Only (oriented)
 edges that are incident to a triangle on the right and a triangle on
@@ -273,7 +273,7 @@ The following methods are useful for flipping an edge:
           \ /                 \|/
            k                   k
   \endverbatim
-  
+
   @note Almost all information is recomputed locally. Only vertex
   normals are not updated after a flip, as well as neighbor faces of
   faces are not recomputed. You may recompute face neighborhoods at
@@ -286,7 +286,7 @@ The following methods are useful for flipping an edge:
   other vertices of the quadrilateral. So in the flip example above,
   it returns (k,l) if k < l or (l,k) otherwise.
 
-  
+
 The following code builds a Schwarz lantern, and then flips all
 flippable edges that are longer than their flipped edge.
 

@@ -93,7 +93,7 @@ int main()
   //! [ExampleViewer3D2DImagesDisplayImages]
   //
 
- 
+
   viewer.show();
   return 0;
 }

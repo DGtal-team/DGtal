@@ -1,12 +1,12 @@
 include(CMakePackageConfigHelpers)
 
 # On system where boost is fetched through multiples sources, there can
-# be some confusion as to which version is linked. 
+# be some confusion as to which version is linked.
 # For some unknown reason, DGtal can be linked with targets not declared
-# within this project, thus not necessarly in the export set; causing 
+# within this project, thus not necessarly in the export set; causing
 # CMake to issue an error.
 # We tried fixing this in multiples ways but none of them but no parameters
-# that can be passed to CMake worked. 
+# that can be passed to CMake worked.
 # We therefore add a mecanism to disable install/export targets (note that
 # other file might be required) that resolves the problem, although this is quite ugly...
 option(DGTAL_ENABLE_TARGET_INSTALL "Enable DGtal file installation" ON)
@@ -33,8 +33,8 @@ if (${DGTAL_ENABLE_TARGET_INSTALL})
     DESTINATION ${DGTAL_INSTALL_CMAKE_DESTINATION}
   )
 
-  install(TARGETS 
-    DGtal 
+  install(TARGETS
+    DGtal
     # Dependancies also built by the project
     EXPORT DGtalTargets
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -43,10 +43,10 @@ if (${DGTAL_ENABLE_TARGET_INSTALL})
     INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
   )
 
-  # Export file locally also, so the DGtalConfig.cmake 
-  # in the build/ directory can work 
-  export(TARGETS 
-    DGtal 
+  # Export file locally also, so the DGtalConfig.cmake
+  # in the build/ directory can work
+  export(TARGETS
+    DGtal
     NAMESPACE DGtal::
     FILE DGtalTargets.cmake
   )
@@ -59,7 +59,7 @@ if (${DGTAL_ENABLE_TARGET_INSTALL})
 endif()
 
 
-# Install headers 
+# Install headers
 # Note : this also copies a few .cpp and CMakeLists but simplifies the code here
 install(DIRECTORY
   "${PROJECT_SOURCE_DIR}/src/Board"
@@ -115,7 +115,7 @@ write_basic_package_version_file(
 configure_package_config_file(
   ${PROJECT_SOURCE_DIR}/cmake/DGtalConfig.cmake.in
   "${CMAKE_CURRENT_BINARY_DIR}/DGtalConfig.cmake"
-  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake 
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake
   NO_CHECK_REQUIRED_COMPONENTS_MACRO
 )
 
@@ -139,7 +139,7 @@ install(FILES
   DESTINATION ${DGTAL_INSTALL_CMAKE_DESTINATION}
 )
 
-# Also export find dependency files (no export commands for this) 
+# Also export find dependency files (no export commands for this)
 foreach(file IN LISTS _find_cmake_files)
   file(COPY ${file} DESTINATION ${CMAKE_BINARY_DIR})
 endforeach()

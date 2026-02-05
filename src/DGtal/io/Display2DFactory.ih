@@ -58,7 +58,7 @@ DGtal::Display2DFactory::drawDECSignedKhalimskyCell(DGtal::Board2D& board, const
     //and not instantiated at each call.
     using Embedder = DGtal::CanonicSCellEmbedder<KPS>;
     const Embedder embedder( K );
-    
+
     const Embedder::RealPoint coords = embedder( sk );
     const double x = coords[0];
     const double y = coords[1];

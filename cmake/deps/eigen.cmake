@@ -17,7 +17,7 @@ option(DGTAL_WITH_EIGEN_ITK "Use the EIGEN configuration of ITK (effective only 
 
 if (DGTAL_WITH_ITK AND DGTAL_WITH_EIGEN_ITK)
    message(STATUS "Using EIGEN from ITK project, to avoid any eigen conflit version we strongly recommand to compile ITK using cmake option -DITK_USE_SYSTEM_EIGEN:BOOL=on ")
-   return()    
+   return()
 endif()
 
 if(TARGET Eigen3::Eigen)

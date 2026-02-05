@@ -67,20 +67,20 @@ TEST_CASE( "Testing CompressedVolWriter" )
   typedef ImageContainerBySTLVector<Domain, unsigned char> Image;
   Image image(domain);
   image.setValue(Point(5,5,5), 42);
-  
+
   SECTION("Testing API of CompressedVol")
   {
     VolWriter< ImageContainerBySTLVector<Domain, unsigned char> >::exportVol("test.vol", image, false);
     VolWriter< ImageContainerBySTLVector<Domain, unsigned char> >::exportVol("testz.vol", image);
     REQUIRE( image.isValid() );
   }
-  
+
   SECTION("Testing write/read of CompressedVolWriter")
   {
     Image read = VolReader<Image>::importVol("test.vol");
     trace.info()<<read<<std::endl;
     REQUIRE( (checkImage(image,read) == true)) ;
-    
+
     Image readz = VolReader<Image>::importVol("testz.vol");
     trace.info()<<readz<<std::endl;
     REQUIRE( (checkImage(image,readz) == true)) ;
@@ -93,7 +93,7 @@ TEST_CASE( "Testing CompressedLongvol" )
   typedef ImageContainerBySTLVector<Domain, DGtal::uint64_t> Image;
   Image image(domain);
   image.setValue(Point(1,1,1), 0X8899AABBCCDDEEFFull);
-  
+
   SECTION("Testing API of CompressedVolWriter")
     {
       LongvolWriter< ImageContainerBySTLVector<Domain, DGtal::uint64_t> >::exportLongvol("test.lvol", image, false);
@@ -101,12 +101,12 @@ TEST_CASE( "Testing CompressedLongvol" )
       LongvolWriter< ImageContainerBySTLVector<Domain, DGtal::uint64_t> >::exportLongvol("testz.lvol", image);
       REQUIRE( image.isValid() );
     }
-  
+
   SECTION("Testing write/read of CompressedVolWriter")
     {
       Image read = LongvolReader<Image>::importLongvol("test.lvol");
       REQUIRE( (checkImage(image,read) == true)) ;
- 
+
       Image readz = LongvolReader<Image>::importLongvol("testz.lvol");
       REQUIRE( (checkImage(image,readz) == true)) ;
     }

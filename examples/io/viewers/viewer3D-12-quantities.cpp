@@ -70,15 +70,15 @@ int main() {
             surfels, "Mean Curv", mean_curvs
             ),
           "Gauss Curve", gauss_curvs
-          ), 
+          ),
         "Normal", normals
         );
     //! [ExampleViewer3DQuantitiesStream]
-    
+
     //! [ExampleViewer3DQuantitiesAddQuantity]
     // Option 2: draw first then add quantities (Surfels 1 in viewer)
     //  This requires to obtain or set object name
-    std::string objectName = "Surfels 1"; 
+    std::string objectName = "Surfels 1";
     viewer.draw(surfels, objectName); // Draws the object independantly
     viewer.addQuantity(objectName, "Mean Curv", mean_curvs);
     viewer.addQuantity(objectName, "Gauss Curv", gauss_curvs);
@@ -110,4 +110,3 @@ int main() {
     viewer.show();
     return 0;
  }
-

@@ -99,7 +99,7 @@ DGtal::functors::Point2ShapePredicate<TSurface,isUpward,isClosed>
   std::string closure = (isClosed)?
           "closed":"open";
   out << "(" << orientation << ", " << closure << ")\n";
- 
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -108,10 +108,9 @@ DGtal::functors::Point2ShapePredicate<TSurface,isUpward,isClosed>
 template <typename TSurface, bool isUpward, bool isClosed>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
                     const DGtal::functors::Point2ShapePredicate<TSurface,isUpward,isClosed> & object )
 {
   object.selfDisplay( out );
   return out;
 }
-

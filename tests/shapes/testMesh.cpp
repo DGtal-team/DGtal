@@ -154,7 +154,7 @@ bool testMesh()
   bool boundingBoxOK = (bb.first == Point(20,10)) && (bb.second == Point(26,18));
   trace.info() << "bouding box=" << bb.first <<  " " << bb.second << "(should be (20,10) (26,18)" <<std::endl;
   trace.endBlock();
-  
+
   trace.beginBlock ( "Testing mesh subdivision  ..." );
   Mesh<RealPoint> aMeshR;
   RealPoint pr0 (0,0);
@@ -168,7 +168,7 @@ bool testMesh()
   trace.info() << "nb vertices after subdivision: " << aMeshR.nbVertex() << " (should be 4)"<<std::endl;
   trace.info() << "nb faces after subdivision: " << aMeshR.nbFaces() << " (should be 3)" <<std::endl;
   trace.info() << "New point: " << aMeshR.getVertex(aMeshR.nbVertex()-1) << "(should be: "<< RealPoint(2.0/3.0, 1.0/3.0) << ") "<<  std::endl;
-  bool okSubDivide =  aMeshR.nbVertex()==4 && aMeshR.nbFaces()==3 && 
+  bool okSubDivide =  aMeshR.nbVertex()==4 && aMeshR.nbFaces()==3 &&
                       aMeshR.getVertex(aMeshR.nbVertex()-1) == RealPoint(2.0/3.0, 1.0/3.0);
   trace.info() << (okSubDivide ? "[subdivise OK]":"[subdivise fail]" ) << std::endl;
   trace.endBlock();
@@ -216,7 +216,7 @@ bool testMesh()
   RealPoint pc4 (1,-1);
   aMeshClean.addVertex(pc3);aMeshClean.addVertex(pc0);   aMeshClean.addVertex(pc1);   aMeshClean.addVertex(pc2);
   aMeshClean.addVertex(pc4);
-  
+
   aMeshClean.addTriangularFace(1,2,3);
   aMeshClean.addTriangularFace(4,1,2);
   aMeshClean.removeIsolatedVertices();
@@ -228,7 +228,7 @@ bool testMesh()
   trace.info() << "(should be 3) "<< (okClean2? "[ok]": "[error]") << std::endl;
   trace.endBlock();
 
-  
+
   ok = ok & okMeshConstruct &&  okMeshIterators && okMeshColor && okMeshCopy && boundingBoxOK &&
        okSubDivide && okQuadToTrans && okRemoveFace && okClean && okClean2;
 

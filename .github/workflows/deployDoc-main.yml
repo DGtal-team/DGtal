@@ -17,7 +17,7 @@ jobs:
 
     - name: Set up
       run: |
-          sudo apt update 
+          sudo apt update
           sudo apt-get install  graphviz texlive-base doxygen
 
     - name: Create Build Environment

@@ -342,7 +342,7 @@ SCENARIO( "ConvexityHelper< 3 > unit tests",
         REQUIRE( X[ 0 ] == Point(-6, 2,-1) );
         REQUIRE( X[ 1 ] == Point( 9,-3, 4) );
       }
-    }    
+    }
   }
   GIVEN( "Given a degenerated 1d simplex { (1,0,-1), Point(4,-1,-2), Point(10,-3,-4) } " ) {
     std::vector<Point> V
@@ -398,7 +398,7 @@ SCENARIO( "ConvexityHelper< 3 > unit tests",
         REQUIRE( X[ 2 ] == Point( 1, 0, 1) );
         REQUIRE( X[ 3 ] == Point( 2, 1, 0) );
       }
-    }    
+    }
   }
   GIVEN( "Given a degenerated 2d simplex { (2,1,0), (1,0,1), (1,5,1), (0,3,2) } " ) {
     std::vector<Point> V
@@ -429,7 +429,7 @@ SCENARIO( "ConvexityHelper< 3 > unit tests",
       }
     }
   }
-} 
+}
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -471,7 +471,7 @@ SCENARIO( "ConvexityHelper< 3 > triangle tests",
 	nbi_ok   += ( nbi_P == 0 && nbi_T == 0 ) ? 1 : 0;
 	if ( ( nb_ok != nb_total ) || ( nbi_ok != nb_total ) ) break;
       }
-    CAPTURE( a ); CAPTURE( b ); CAPTURE( c ); CAPTURE( n );    
+    CAPTURE( a ); CAPTURE( b ); CAPTURE( c ); CAPTURE( n );
     CAPTURE( P ); CAPTURE( T );
     CAPTURE( nb_P ); CAPTURE( nb_T ); CAPTURE( nbi_P ); CAPTURE( nbi_T );
     WHEN( "Computing their tightiest polytope or triangle" ) {
@@ -492,7 +492,7 @@ SCENARIO( "ConvexityHelper< 3 > triangle tests",
     Vector n;
     int nb_total = 0;
     int nb_ok    = 0;
-    int nbi_ok   = 0;    
+    int nbi_ok   = 0;
     int nb_P = 0, nb_T = 0, nbi_P = 0, nbi_T = 0;
     for ( int i = 0; i < 20; i++ )
       {
@@ -519,7 +519,7 @@ SCENARIO( "ConvexityHelper< 3 > triangle tests",
 	nbi_ok   += ( nbi_P == nbi_T ) ? 1 : 0;
 	if ( ( nb_ok != nb_total ) || ( nbi_ok != nb_total ) ) break;
       }
-    CAPTURE( a ); CAPTURE( b ); CAPTURE( c ); CAPTURE( n );    
+    CAPTURE( a ); CAPTURE( b ); CAPTURE( c ); CAPTURE( n );
     CAPTURE( P ); CAPTURE( T );
     CAPTURE( nb_P ); CAPTURE( nb_T ); CAPTURE( nbi_P ); CAPTURE( nbi_T );
     WHEN( "Computing their tightiest polytope or triangle, dilated by a cube" ) {
@@ -569,7 +569,7 @@ SCENARIO( "ConvexityHelper< 3 > degenerated triangle tests",
 	nbi_ok   += ( nbi_P == 0 && nbi_T == 0 ) ? 1 : 0;
 	if ( ( nb_ok != nb_total ) || ( nbi_ok != nb_total ) ) break;
       }
-    CAPTURE( a ); CAPTURE( b ); CAPTURE( c ); CAPTURE( n );    
+    CAPTURE( a ); CAPTURE( b ); CAPTURE( c ); CAPTURE( n );
     CAPTURE( P ); CAPTURE( T );
     CAPTURE( nb_P ); CAPTURE( nb_T ); CAPTURE( nbi_P ); CAPTURE( nbi_T );
     WHEN( "Computing their tightiest polytope or triangle" ) {
@@ -590,7 +590,7 @@ SCENARIO( "ConvexityHelper< 3 > degenerated triangle tests",
     Vector n;
     int nb_total = 0;
     int nb_ok    = 0;
-    int nbi_ok   = 0;    
+    int nbi_ok   = 0;
     int nb_P = 0, nb_T = 0, nbi_P = 0, nbi_T = 0;
     for ( int i = 0; i < 20; i++ )
       {
@@ -617,7 +617,7 @@ SCENARIO( "ConvexityHelper< 3 > degenerated triangle tests",
 	nbi_ok   += ( nbi_P == nbi_T ) ? 1 : 0;
 	if ( ( nb_ok != nb_total ) || ( nbi_ok != nb_total ) ) break;
       }
-    CAPTURE( a ); CAPTURE( b ); CAPTURE( c ); CAPTURE( n );    
+    CAPTURE( a ); CAPTURE( b ); CAPTURE( c ); CAPTURE( n );
     CAPTURE( P ); CAPTURE( T );
     CAPTURE( nb_P ); CAPTURE( nb_T ); CAPTURE( nbi_P ); CAPTURE( nbi_T );
     WHEN( "Computing their tightiest polytope or triangle, dilated by a cube" ) {
@@ -786,4 +786,3 @@ SCENARIO( "ConvexityHelper< 3 > open triangle unit tests",
   REQUIRE( PCS.size() == 21 );
   REQUIRE( POS.size() == 3 );
 }
-  

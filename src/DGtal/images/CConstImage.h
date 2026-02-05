@@ -59,12 +59,12 @@ namespace DGtal
  * which is a refinement of CPointFunctor.
  *
 # Refinement of CTrivialConstImage
-   
+
 #  Associated types
     - \e Domain: type of the image domain, model of concept CDomain
     - \e ConstRange: type of range of image values,
     model of concept CConstBidirectionalRangeFromPoint
-    
+
 #  Notation
 - \e X : A type that is a model of CConstImage
 - \e x, \e y  : Object of type X
@@ -76,7 +76,7 @@ namespace DGtal
 
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
 |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-|Accessor to the domain |x.domain() | |const Domain & | | returns a const reference to the image domain | | O(1) | 
+|Accessor to the domain |x.domain() | |const Domain & | | returns a const reference to the image domain | | O(1) |
 |Accessor to the range of the image values | x.constRange() | | ConstRange | | returns a constant range | | O(1) |
 
 
@@ -85,7 +85,7 @@ namespace DGtal
 
 #  Model
    ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, ImageContainerByHashTree
-  
+
 #  Notes
 
    */

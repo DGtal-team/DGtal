@@ -40,5 +40,3 @@ namespace DGtal {
       "@TABLE_DIR@/isthmusicityTwo_table26_6.zlib";
   } // isthmusicity namespace
 } // DGtal namespace
-
-

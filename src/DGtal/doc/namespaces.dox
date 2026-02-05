@@ -37,4 +37,3 @@
 /*! \namespace DGtal::Z3i
  *  \brief \p Z3i this namespace gathers  the standard of types for 3D imagery.
 */
-

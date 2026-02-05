@@ -3,8 +3,8 @@
  * @file   Transforms.cpp
  * @author Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb>
  * @date   Sat Aug 18 2007
- * 
- * @brief  
+ *
+ * @brief
  */
 /*
  * \@copyright This File is part of the Board library which is
@@ -27,13 +27,13 @@ namespace LibBoard {
 
 //
 // Transform
-// 
+//
 
 double
 Transform::rounded( double x ) const
 {
   return Transform::round( 1000000*x ) / 1000000;
-} 
+}
 
 double
 Transform::mapX( double x ) const
@@ -56,7 +56,7 @@ Transform::apply( double & x, double & y ) const
 
 //
 // TransformEPS
-// 
+//
 
 double
 TransformEPS::mapY( double y ) const
@@ -75,7 +75,7 @@ TransformEPS::setBoundingBox( const Rect & rect,
     // _deltaX = - rect.left;
     _deltaX = 0.5 * 210 * ppmm - ( rect.left + 0.5 * rect.width );
     // _deltaY = - ( rect.top - rect.height );
-    _deltaY = 0.5 * 297 * ppmm - ( rect.top - 0.5 * rect.height );  
+    _deltaY = 0.5 * 297 * ppmm - ( rect.top - 0.5 * rect.height );
     _height = rect.height;
   } else {
     const double w = pageWidth - 2 * margin;
@@ -86,14 +86,14 @@ TransformEPS::setBoundingBox( const Rect & rect,
       _scale = w * ppmm / rect.width;
     }
     _deltaX = 0.5 * pageWidth * ppmm - _scale * ( rect.left + 0.5 * rect.width );
-    _deltaY = 0.5 * pageHeight * ppmm - _scale * ( rect.top - 0.5 * rect.height );  
+    _deltaY = 0.5 * pageHeight * ppmm - _scale * ( rect.top - 0.5 * rect.height );
     _height = pageHeight * ppmm;
   }
 }
 
 //
 // TransformFIG
-// 
+//
 
 double
 TransformFIG::rounded( double x ) const
@@ -127,7 +127,7 @@ TransformFIG::setBoundingBox( const Rect & rect,
     _scale = fig_ppmm / ppmm;
     _deltaX = 0.5 * 210 * fig_ppmm - _scale * ( rect.left + 0.5 * rect.width );
     //_deltaX = - rect.left;
-    _deltaY = 0.5 * 297 * fig_ppmm - _scale * ( rect.top - 0.5 * rect.height );  
+    _deltaY = 0.5 * 297 * fig_ppmm - _scale * ( rect.top - 0.5 * rect.height );
     // _deltaY = - rect.top;
     // _deltaY = - ( rect.top - rect.height );
     //_height = rect.height;
@@ -141,7 +141,7 @@ TransformFIG::setBoundingBox( const Rect & rect,
       _scale = ( w * fig_ppmm ) / rect.width;
     }
     _deltaX = 0.5 * pageWidth * fig_ppmm - _scale * ( rect.left + 0.5 * rect.width );
-    _deltaY = 0.5 * pageHeight * fig_ppmm - _scale * ( rect.top - 0.5 * rect.height );  
+    _deltaY = 0.5 * pageHeight * fig_ppmm - _scale * ( rect.top - 0.5 * rect.height );
     _height = pageHeight * fig_ppmm;
   }
   // float ppmm = (1200/25.4);
@@ -170,13 +170,13 @@ TransformFIG::mapDepth( int depth ) const
 
 //
 // TransformSVG
-// 
+//
 
 double
 TransformSVG::rounded( double x ) const
 {
   return Transform::round( 100*x ) / 100.0f;
-} 
+}
 
 double
 TransformSVG::mapY( double y ) const
@@ -195,7 +195,7 @@ void
 TransformSVG::setBoundingBox( const Rect & rect,
             const double pageWidth,
             const double pageHeight,
-            const double margin )  
+            const double margin )
 {
   if ( pageWidth <= 0 || pageHeight <= 0 ) {
     _scale = 1.0f;
@@ -222,13 +222,13 @@ TransformSVG::setBoundingBox( const Rect & rect,
 #ifdef DGTAL_WITH_CAIRO
 //
 // TransformCairo
-// 
+//
 
 double
 TransformCairo::rounded( double x ) const
 {
   return Transform::round( 100*x ) / 100.0f;
-} 
+}
 
 double
 TransformCairo::mapY( double y ) const
@@ -247,7 +247,7 @@ void
 TransformCairo::setBoundingBox( const Rect & rect,
             const double pageWidth,
             const double pageHeight,
-            const double margin )  
+            const double margin )
 {
   if ( pageWidth <= 0 || pageHeight <= 0 ) {
     _scale = 1.0f;

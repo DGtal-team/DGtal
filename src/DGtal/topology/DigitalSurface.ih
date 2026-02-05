@@ -67,10 +67,10 @@ DGtal::DigitalSurface<TDigitalSurfaceContainer>::DigitalSurface
   if ( ! myContainer->empty() )
     {
       Surfel s = *( myContainer->begin() );
-      myTracker = myContainer->newTracker( s ); 
+      myTracker = myContainer->newTracker( s );
       myUmbrellaComputer.init( *myTracker, 0, false, 1 );
     }
-  else 
+  else
     myTracker = 0;
 }
 //-----------------------------------------------------------------------------
@@ -86,7 +86,7 @@ DGtal::DigitalSurface<TDigitalSurfaceContainer>::DigitalSurface
       myTracker = myContainer->newTracker( s );
       myUmbrellaComputer.init( *myTracker, 0, false, 1 );
     }
-  else 
+  else
     myTracker = 0;
 }
 //-----------------------------------------------------------------------------
@@ -302,7 +302,7 @@ facesAroundVertex( const Vertex & v, bool order_ccw_in_3d ) const
 	    it != it_end; ++it )
 	{
 	  FaceRange faces_of_arc = facesAroundArc( *it );
-	  output_it = 
+	  output_it =
 	    std::copy( faces_of_arc.begin(), faces_of_arc.end(), output_it );
 	}
       return faces;
@@ -342,14 +342,14 @@ opposite( const Arc & a ) const
   uint8_t code = myTracker->adjacent( s, a.k, a.epsilon );
   ASSERT( code != 0 );
   if ( code == 2 ) return Arc( s, a.k, ! a.epsilon );
-  else 
+  else
     {
       bool orientation = container().space().sDirect( a.base, a.k );
       unsigned int i = myTracker->orthDir();
-      return Arc( s, i, 
+      return Arc( s, i,
 		  ( orientation == a.epsilon )
 		  != container().space().sDirect( s, i ) );
-    } 
+    }
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer>
@@ -399,7 +399,7 @@ facesAroundArc( const Arc & a ) const
       faces.push_back( computeFace( state ) );
     }
   return faces;
-  
+
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer>
@@ -482,19 +482,19 @@ computeFace( UmbrellaState state ) const
   unsigned int code;
   do
     {
-      // std::cerr << "       + s/surf " 
+      // std::cerr << "       + s/surf "
       //           << myUmbrellaComputer.state().surfel<< std::endl;
       ++nb;
       code = myUmbrellaComputer.previous();
       if ( code == 0 ) break; // face is open
-      if ( myUmbrellaComputer.state() < state ) 
+      if ( myUmbrellaComputer.state() < state )
         state = myUmbrellaComputer.state();
     }
   while ( myUmbrellaComputer.surfel() != start );
   if ( code == 0 ) // open face
     { // Going back to count the number of incident vertices.
       nb = 0;
-      do 
+      do
         {
           // std::cerr << "       + c/surf "
           //           << myUmbrellaComputer.state().surfel<< std::endl;
@@ -523,7 +523,7 @@ separator( const Arc & a ) const
 // DGtal::DigitalSurface<TDigitalSurfaceContainer>::
 // separator( const Face & f ) const
 // {
-//   return container().space().sIncident( f.state.surfel, f.state.k, 
+//   return container().space().sIncident( f.state.surfel, f.state.k,
 //                                         f.state.epsilon );
 // }
 //-----------------------------------------------------------------------------
@@ -533,7 +533,7 @@ typename DGtal::DigitalSurface<TDigitalSurfaceContainer>::SCell
 DGtal::DigitalSurface<TDigitalSurfaceContainer>::
 pivot( const Face & f ) const
 {
-  SCell sep = container().space().sIncident( f.state.surfel, f.state.k, 
+  SCell sep = container().space().sIncident( f.state.surfel, f.state.k,
                                              f.state.epsilon );
   return container().space().sDirectIncident( sep, f.state.j );
 }
@@ -594,7 +594,7 @@ exportSurfaceAs3DOFF ( std::ostream & out ) const
           itf = faces.begin(), itf_end = faces.end();
         itf != itf_end; ++itf )
     {
-      if ( itf->isClosed() ) 
+      if ( itf->isClosed() )
         { nbe += itf->nbVertices; ++nbf; }
       else
         { nbe += itf->nbVertices - 1; }
@@ -611,14 +611,14 @@ exportSurfaceAs3DOFF ( std::ostream & out ) const
     {
       Point p = K.sKCoords( *it );
       out << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
-      // double areaD = NumberTraits<Coordinate>::castToDouble(area)*2.0; 
+      // double areaD = NumberTraits<Coordinate>::castToDouble(area)*2.0;
     }
   // Outputs closed faces.
   for ( typename FaceSet::const_iterator
           itf = faces.begin(), itf_end = faces.end();
         itf != itf_end; ++itf )
     {
-      if ( itf->isClosed() ) 
+      if ( itf->isClosed() )
         {
           out << itf->nbVertices;
           VertexRange vtcs = verticesAroundFace( *itf );
@@ -659,7 +659,7 @@ exportEmbeddedSurfaceAs3DOFF
           itf = faces.begin(), itf_end = faces.end();
         itf != itf_end; ++itf )
     {
-      if ( itf->isClosed() ) 
+      if ( itf->isClosed() )
         { nbe += itf->nbVertices; ++nbf; }
       else
         { nbe += itf->nbVertices - 1; }
@@ -677,14 +677,14 @@ exportEmbeddedSurfaceAs3DOFF
     {
       RealPoint p( cembedder( K.unsigns( *it ) ) );
       out << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
-      // double areaD = NumberTraits<Coordinate>::castToDouble(area)*2.0; 
+      // double areaD = NumberTraits<Coordinate>::castToDouble(area)*2.0;
     }
   // Outputs closed faces.
   for ( typename FaceSet::const_iterator
           itf = faces.begin(), itf_end = faces.end();
         itf != itf_end; ++itf )
     {
-      if ( itf->isClosed() ) 
+      if ( itf->isClosed() )
         {
           out << itf->nbVertices;
           VertexRange vtcs = verticesAroundFace( *itf );
@@ -696,7 +696,7 @@ exportEmbeddedSurfaceAs3DOFF
         }
     }
 }
-  
+
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer>
 template <typename CellEmbedder>
@@ -733,7 +733,7 @@ exportEmbeddedSurfaceAs3DNOFF
           itf = faces.begin(), itf_end = faces.end();
         itf != itf_end; ++itf )
     {
-      if ( itf->isClosed() ) 
+      if ( itf->isClosed() )
         { nbe += itf->nbVertices; ++nbf; }
       else
         { nbe += itf->nbVertices - 1; }
@@ -758,14 +758,14 @@ exportEmbeddedSurfaceAs3DNOFF
       if ( norm != 0.0 ) v /= norm;
       out << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << " "
           << v[ 0 ] << " " << v[ 1 ] << " " << v[ 2 ] << std::endl;
-      // double areaD = NumberTraits<Coordinate>::castToDouble(area)*2.0; 
+      // double areaD = NumberTraits<Coordinate>::castToDouble(area)*2.0;
     }
   // Outputs closed faces.
   for ( typename FaceSet::const_iterator
           itf = faces.begin(), itf_end = faces.end();
         itf != itf_end; ++itf )
     {
-      if ( itf->isClosed() ) 
+      if ( itf->isClosed() )
         {
           out << itf->nbVertices;
           VertexRange vtcs = verticesAroundFace( *itf );
@@ -778,7 +778,7 @@ exportEmbeddedSurfaceAs3DNOFF
     }
 }
 
-//-----------------------------------------------------------------------------  
+//-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer>
 template <typename SCellEmbedderWithGradientMap>
 void
@@ -814,7 +814,7 @@ exportAs3DNOFF
           itf = faces.begin(), itf_end = faces.end();
         itf != itf_end; ++itf )
     {
-      if ( itf->isClosed() ) 
+      if ( itf->isClosed() )
         { nbe += itf->nbVertices; ++nbf; }
       else
         { nbe += itf->nbVertices - 1; }
@@ -838,14 +838,14 @@ exportAs3DNOFF
       if ( norm != 0.0 ) v /= norm;
       out << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << " "
           << v[ 0 ] << " " << v[ 1 ] << " " << v[ 2 ] << std::endl;
-      // double areaD = NumberTraits<Coordinate>::castToDouble(area)*2.0; 
+      // double areaD = NumberTraits<Coordinate>::castToDouble(area)*2.0;
     }
   // Outputs closed faces.
   for ( typename FaceSet::const_iterator
           itf = faces.begin(), itf_end = faces.end();
         itf != itf_end; ++itf )
     {
-      if ( itf->isClosed() ) 
+      if ( itf->isClosed() )
         {
           out << itf->nbVertices;
           VertexRange vtcs = verticesAroundFace( *itf );
@@ -858,7 +858,7 @@ exportAs3DNOFF
     }
 }
 
-//-----------------------------------------------------------------------------  
+//-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer>
 template <typename CellEmbedder>
 void
@@ -884,7 +884,7 @@ exportEmbeddedIteratedSurfaceAs3DNOFF
           itf = faces.begin(), itf_end = faces.end();
         itf != itf_end; ++itf )
     {
-      if ( itf->isClosed() ) 
+      if ( itf->isClosed() )
         { nbe += itf->nbVertices; ++nbf; }
       else
         { nbe += itf->nbVertices - 1; }
@@ -908,14 +908,14 @@ exportEmbeddedIteratedSurfaceAs3DNOFF
       if ( norm != 0.0 ) v /= norm;
       out << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << " "
           << v[ 0 ] << " " << v[ 1 ] << " " << v[ 2 ] << std::endl;
-      // double areaD = NumberTraits<Coordinate>::castToDouble(area)*2.0; 
+      // double areaD = NumberTraits<Coordinate>::castToDouble(area)*2.0;
     }
   // Outputs closed faces.
   for ( typename FaceSet::const_iterator
           itf = faces.begin(), itf_end = faces.end();
         itf != itf_end; ++itf )
     {
-      if ( itf->isClosed() ) 
+      if ( itf->isClosed() )
         {
           out << itf->nbVertices;
           VertexRange vtcs = verticesAroundFace( *itf );
@@ -927,7 +927,7 @@ exportEmbeddedIteratedSurfaceAs3DNOFF
         }
     }
 }
-  
+
 
 
 
@@ -937,7 +937,7 @@ exportEmbeddedIteratedSurfaceAs3DNOFF
 template <typename TDigitalSurfaceContainer>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		  const DigitalSurface<TDigitalSurfaceContainer> & object )
 {
   object.selfDisplay( out );
@@ -946,5 +946,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

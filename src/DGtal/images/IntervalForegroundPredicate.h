@@ -58,18 +58,18 @@ namespace DGtal {
    *
    * This class is a model of concepts::CPointPredicate.
    *
-   * @tparam Image an model of CImageContainer concept. 
+   * @tparam Image an model of CImageContainer concept.
    */
   template <typename Image>
   class IntervalForegroundPredicate
   {
   public:
     BOOST_CONCEPT_ASSERT(( concepts::CConstImage<Image> ));
-    
-    typedef typename Image::Value Value;
-    typedef typename Image::Point Point; 
 
-    /** 
+    typedef typename Image::Value Value;
+    typedef typename Image::Point Point;
+
+    /**
      * Constructor. This functor can be used to threshold image values
      * in the interval ]minVal,maxVal].
      *
@@ -78,19 +78,19 @@ namespace DGtal {
      * @param maxVal the maximum value (last value considered).
      */
     IntervalForegroundPredicate(ConstAlias<Image> aImage,
-                                const Value minVal, 
-                                const Value maxVal): 
+                                const Value minVal,
+                                const Value maxVal):
       myImage(&aImage), myMaxVal(maxVal), myMinVal(minVal) {};
-    
-    /** 
+
+    /**
      * @return True if the point belongs to the value interval.
      */
     bool operator()(const typename Image::Point &aPoint) const
     {
       return ((*myImage)(aPoint) > myMinVal) && ((*myImage)(aPoint) <= myMaxVal);
     }
-    
-    /** 
+
+    /**
      * @return True if the point belongs to the value interval.
      */
     bool operator()(const typename Image::ConstRange::ConstIterator &it) const
@@ -98,15 +98,15 @@ namespace DGtal {
       return ((*it) > myMinVal) && ((*it) <= myMaxVal);
     }
 
-  
+
   private:
     const Image* myImage;
     Value myMaxVal;
     Value myMinVal;
-    
+
   protected:
     IntervalForegroundPredicate();
-    
+
   };
 
 } // namespace functors

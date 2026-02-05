@@ -109,7 +109,7 @@ namespace ConceptUtils
   template<typename T>
   struct SameType<T,T>
   { static const bool value = true; };
-  
+
   /**
    * Type deduction will fail unless the arguments have the same type.
    */
@@ -141,22 +141,22 @@ namespace ConceptUtils
   { static const bool value = false; };
   template<>
   struct CheckUnknown<TagUnknown>
-  { static const bool value = true; };  
-  
+  { static const bool value = true; };
+
   /**
    * Test if T is equal to TagTrue or TagFalse.
    */
   template<typename T>
   struct CheckTrueOrFalse
   { static const bool value = CheckTrue<T>::value||CheckFalse<T>::value; };
-  
+
   /**
    * Test if T is a tag (ie equal to TagTrue or TagFalse, or TagUnknown)
    */
   template<typename T>
   struct CheckTag
-  { static const bool value = CheckTrueOrFalse<T>::value||CheckUnknown<T>::value; };  
-  
+  { static const bool value = CheckTrueOrFalse<T>::value||CheckUnknown<T>::value; };
+
   /**
      Type deduction will fail unless the argument type is exactly TagTrue.
      @param tag the type to check.

@@ -75,7 +75,7 @@ bool testDSLSubsegment(Integer modb)
 
   // Draw random value for b in [0,modb]
   Integer b( rand() % modb +1);
-  
+
   // Draw random value for a in [0,b]
   Integer a( rand() % b +1);
   // Draw a new a while a and b are not coprime (do not divide by
@@ -85,21 +85,21 @@ bool testDSLSubsegment(Integer modb)
 
   // Draw random value for mu in [0,2modb]
   Integer mu = rand() % (2*modb);
-  
+
   Integer l = 200; // max length of the DSSs
 
   // Draw random values for the subsegment first extremity abscissa
   Integer xf = rand() % modb;
-  
+
   trace.beginBlock("Draw random values for a,b,mu and abscissa of the first point");
-  trace.info() << "a b mu xf:" << a << " " << b << " " << mu << " " << xf << std::endl; 
+  trace.info() << "a b mu xf:" << a << " " << b << " " << mu << " " << xf << std::endl;
   trace.endBlock();
   trace.info() << std::endl;
-  
+
   int error1 = 0;
   // Consider the subsegment S of the line (a,b,mu), with xf <= x < xf+l
   // Test all the subsegments of S
-  
+
   trace.beginBlock("Compare DSLSubsegment/Farey fan with ArithmeticalDSS algorithm");
   for(unsigned int i = 0; i<l; i++)
     for(unsigned int j = i+1; j<l; j++)
@@ -111,18 +111,18 @@ bool testDSLSubsegment(Integer modb)
 	Integer y2 = ic.floorDiv(a*x2+mu,b);
 	Point A = Point(x1,y1);
 	Point B = Point(x2,y2);
-	
+
 	// DSLSubsegment with Farey Fan (O(log(n))
 	DSLSubseg DSLsub(a,b,mu,A,B,"farey");
-	
-	
+
+
 	// ArithmeticalDSS recognition algorithm (O(n))
 	DSSIterator  it(a,b,-mu,A);
 	ArithDSS myDSS(*it, *it);
-	++it; 
+	++it;
 	while ( (*it)[0] <=x2 && myDSS.extendFront(*it))
 	  { ++it; }
-	
+
 	// If results are different, count an error
 	if(DSLsub.getA() != myDSS.a() || DSLsub.getB() != myDSS.b() || DSLsub.getMu() != - myDSS.mu())
 	  error1 ++;
@@ -143,23 +143,23 @@ bool testDSLSubsegment(Integer modb)
 	Integer y2 = ic.floorDiv(a*x2+mu,b);
 	Point A = Point(x1,y1);
 	Point B = Point(x2,y2);
-	
+
 	// DSLSubsegment with local CH (O(log(n))
 	DSLSubseg DSLsubCH(a,b,mu,A,B,"localCH");
-	
+
 	// DSLSubsegment with Farey Fan (O(log(n))
 	DSLSubseg DSLsubF(a,b,mu,A,B,"farey");
-	
-	
+
+
 	// If results are different, count an error
-	if(DSLsubCH.getA() != DSLsubF.getA() || DSLsubCH.getB() != DSLsubF.getB() || DSLsubCH.getMu() != DSLsubF.getMu())	
+	if(DSLsubCH.getA() != DSLsubF.getA() || DSLsubCH.getB() != DSLsubF.getB() || DSLsubCH.getMu() != DSLsubF.getMu())
 	  error2 ++;
-	
+
       }
   trace.info() << error2 << " errors." << std::endl;
   trace.endBlock();
   trace.info() << std::endl;
-  
+
   int error3 = 0;
   trace.beginBlock("Compare DSLSubsegment/FareyFan with ReversedSmartDSS for 4-connected DSL");
   for(unsigned int i = 0; i<l; i++)
@@ -167,36 +167,36 @@ bool testDSLSubsegment(Integer modb)
       {
 	Integer x1 = xf+i;
 	Integer x2 = xf+j;
-	
+
 	DSL D( a, b, mu );
 	PointDSL AA = D.lowestY( x1 );
-	PointDSL BB = D.lowestY( x2 );	
-	
+	PointDSL BB = D.lowestY( x2 );
+
 	// ReversedSmartDSS algorithm
 	DSL S = D.reversedSmartDSS(AA,BB);
-	
+
 	// DSLSubsegment algorithm for 4-connected DSL.
 	// Application of an horizontal shear transform
 	Point A2 = AA;
 	A2[0] += A2[1];
 	Point B2 = BB;
 	B2[0] += B2[1];
-		
+
 	// DSLSubsegment algorithm works with the definition 0  <= ab -by + mu <
-	// b whereas reversedSmartDSS uses  mu <= ab-by < mu + b 
-	// => -mu is introduced in order to compare the results  
-	
+	// b whereas reversedSmartDSS uses  mu <= ab-by < mu + b
+	// => -mu is introduced in order to compare the results
+
 	DSLSubseg D2(a,a+b,-mu,A2,B2,"farey");
 	// The result is (aa,getB()-aa, nu)
 	// Compare results of DSLsubseg4 and reversedSmartDSS
 	if(!(D2.getA()==S.a() && (D2.getB()-D2.getA())==S.b() && D2.getMu()==-S.mu()))
 	  error3 ++;
-	
+
       }
   trace.info() << error3 << " errors." << std::endl;
   trace.endBlock();
   trace.info() << std::endl;
-  
+
   return (error1==0 && error2==0 && error3==0);
 
 }
@@ -217,14 +217,14 @@ int main()
 
   Integer i = 1000;
   srand((unsigned int)time(NULL));
-  
+
   bool res = testDSLSubsegment<Integer,Fraction>(i);
-  
+
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
-  
+
   return res ? 0 : 1;
-  
+
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

@@ -64,7 +64,7 @@ polyscope::PointCloud   *psVertices[4];
 polyscope::PointCloud   *psBoundary0[4];
 polyscope::CurveNetwork *psBoundary1[4];
 polyscope::SurfaceMesh  *psBoundary2[4];
-polyscope::Group        *group[4]; 
+polyscope::Group        *group[4];
 
 std::random_device rd;
 std::mt19937 g(rd());
@@ -144,7 +144,7 @@ int main( int argc, char* argv[] )
                                              radius,
                                              int( round( radius+0.5 ) ),
                                              adim );
-  
+
   // Compute convex hull
   QHull hull;
   bool ok = hull.compute( X );
@@ -186,8 +186,8 @@ int main( int argc, char* argv[] )
           psBoundary2[k]->addToGroup( proj[k] ); // add by name
         }
     }
-  
+
   polyscope::show();
   return EXIT_SUCCESS;
-  
+
 }

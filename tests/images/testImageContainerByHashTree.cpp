@@ -68,7 +68,7 @@ bool test_setVal (experimental::ImageContainerByHashTree<Domain , T, DGtal::uint
       //count ++;
       container.setValue ( key, iRand ( 0, 100 ) );
       if ( checkAfterEachSet )
-  { 
+  {
     if ( !container.checkIntegrity() )
       {
         trace.info() << "test_set: failure in phase 1" << std::endl

@@ -1,5 +1,5 @@
 /**
- * @file 
+ * @file
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -52,8 +52,8 @@ DGtal+[polyscope](https://polyscope.run) examples \ref
 dgtalCalculus.cpp, \ref dgtalCalculus-single.cpp and \ref dgtalCalculus-poisson.cpp. To build these examples, enable the `DGTAL_WITH_POLYSCOPE_VIEWER` variable (e.g. `cmake .. -DDGTAL_WITH_POLYSCOPE_VIEWER=ON`).
 
 @warning The implementation heavily relies on implicit operators with many Eigen based small matrice constructions, which has a huge overhead in Debug mode. Please consider to build the examples in Release (*e.g.* `CMAKE_BUILD_TYPE` variable) for high performance on large geometrical objects.
- 
- 
+
+
 
 \section sectPolygonalCalculusIntro Introduction
 
@@ -84,13 +84,13 @@ std::vector<RealPoint> positions={ {0,0,0},{20,0,0},{20,10,0},{10,8,5}, {0,15,1}
 std::vector<std::vector<size_t>> faces={{ 0,1,2,3,4 }};
 
 mesh = SurfMesh(positions.begin(),positions.end(),faces.begin(),faces.end());
-  
+
 PolygonalCalculus<SurfMesh> calculus(mesh);
 @endcode
 
 we obtain a  SurfaceMesh instance with a unique face and its associated PolygonalCalculus object.
 
- Example| Example 
+ Example| Example
 --|--
 @image html images/poly/face.png "" | @image html images/poly/face_rot.png ""
 
@@ -114,17 +114,17 @@ default, the positions of the surface mesh vertices (@a positions @a in the
 previous example) is used. If you want to update the embedding (could
 be useful on digital surfaces), the user can specify the mapping
 `(Face,Vertex)->RealPoint`. Please refer to
-PolygonalCalculus<SurfMesh>::setEmbedder for an example. 
+PolygonalCalculus<SurfMesh>::setEmbedder for an example.
 
 @note As the Face id is a parameter of the embedder, a given vertex
 can have different embeddings for all its incident faces.
 
 
- 
+
 \subsection susub1 Basic operators
- 
- 
- 
+
+
+
 
 We first describe some standard per face operators. Note that for all
 extrinsic operators that require the vertex position in @f$
@@ -148,7 +148,7 @@ Operator  | Output | Description
 
 \subsubsection subderiv Derivative operators
 
-Derivative operators act on a scalar field defined on the vertex of the face. 
+Derivative operators act on a scalar field defined on the vertex of the face.
 
 
 Operator  | Output | Description
@@ -160,7 +160,7 @@ Operator  | Output | Description
 
 A*phi | D*phi (discrete 1-form)
 --| --
-@image html images/poly/A_phi.png "" | @image html images/poly/D_phi.png "" 
+@image html images/poly/A_phi.png "" | @image html images/poly/D_phi.png ""
 
 
 gradient | co-gradient | corrected normal
@@ -197,7 +197,7 @@ a vector in @f$\mathbb{R}^3@f$  | a vector in @f$\mathbb{R}^3@f$ | Flat (1-form)
 \subsection sublap Inner Product and Laplace-Beltrami Operators
 
 
-For 0-forms, the inner product is the classical one induced by the @f$ l_2@f$ norm. For 1-forms, the inner product is given by PolygonalCalculus<SurfMesh>::M() (useful to define the Laplace-Beltrami operator). 
+For 0-forms, the inner product is the classical one induced by the @f$ l_2@f$ norm. For 1-forms, the inner product is given by PolygonalCalculus<SurfMesh>::M() (useful to define the Laplace-Beltrami operator).
 
 Operator  | Output | Description
 ------------- | ------------- | ----
@@ -208,15 +208,15 @@ Operator  | Output | Description
 
  In this section, we describe operators acting on directional fields (Levi-Civita connection, covariant
  gradient of a vector field --first-order derivative on VF--,  and connection laplacian). Pleas refer to @cite degoes2020discrete, section 5, for details.
- 
+
  As an example, these operators can be used to interpolate vector fields as illustrated in @ref moduleVectorsInHeat.
- 
+
 @image html images/poly/transport_to_face.png "Transport of a vertex based vector field to face tangent plane"
 
 \subsubsection sectcovOP Covariant Gradient and Projection
 
 Since these operators are themselves matrices they cannot be constructed in the same way as the others ( Operator builder Matrix * function restricted to face Vector ), you need the specify the local vector field as well, in the same format as in @cite degoes2020discrete,
-i.e. 
+i.e.
 \f{eqnarray*}{
     u_{f} = [u_{v_1}^t \ldots u_{v_{nf}}^t]^t
 \f}
@@ -232,7 +232,7 @@ Operator  | Output | Description
 Using the same format for vector fields as above, we can define a Vector Laplacian operator per face.
 Operator  | Output | Description
 ------------- | ------------- | ----
-`calculus.connectionLaplacian(f,lambda)`  | \f$ 2n_f\times 2n_f\f$ | Vector Laplacian defined as the associated Matrix with the Dirichlet energy for vector valued 0-forms (lambda is a regularization parameter, see @cite degoes2020discrete) at face f, PSD matrix 
+`calculus.connectionLaplacian(f,lambda)`  | \f$ 2n_f\times 2n_f\f$ | Vector Laplacian defined as the associated Matrix with the Dirichlet energy for vector valued 0-forms (lambda is a regularization parameter, see @cite degoes2020discrete) at face f, PSD matrix
 
 
 \section sectPolygonalCalculusGlo Global calculus
@@ -240,12 +240,12 @@ Operator  | Output | Description
 Given a scalar function defined on a generic surface mesh vertices, all previously mentioned operators can be applied to obtain consistent quantities on the overall mesh. For instance, from the  \ref dgtalCalculus.cpp example using Shortcuts and ShortcutsGeometry to set up the surface:
 
 
-Surface  | Phi | Gradient | Gradient+co-gradient 
+Surface  | Phi | Gradient | Gradient+co-gradient
 --|--|--|--
 @image html images/poly/init.png "" | @image html images/poly/goursat_phi.png "" | @image html images/poly/goursat_grad.png "" | @image html images/poly/goursat_gradcograd.png ""
 
 
-To solve some global PDE (e.g. Laplace/Poisson problems, see below), one can combine the local operators into a global one, gathering the contributions of each face. 
+To solve some global PDE (e.g. Laplace/Poisson problems, see below), one can combine the local operators into a global one, gathering the contributions of each face.
 
 For example, the PolygonalCalculus<SurfMesh>::globalLaplaceBeltrami() method outputs a global (sparse) Laplace-Beltrami operator which can later be used for diffusion.
 
@@ -257,9 +257,9 @@ used when one solves a weak problem and wishes to get a pointwise
 per-vertex solution.
 
 
- 
+
 \section sectCorrected Corrected Calculus using Estimated Normal Vectors
- 
+
 On digital surfaces, solving PDE on original embedding with axis aligned quad surfaces may fail to correctly capture the surface metric.
  As discussed in @cite coeurjolly2022simple, given an estimation of the tangent bundle of the discrete surface (for instance using
  estimated normal vectors from @ref moduleIntegralInvariant, or @ref moduleVCM, cf @ref moduleShortcuts),
@@ -269,16 +269,16 @@ Geodesic distances without correction | Geodesic distances with correction
  --|--
 @image html images/poly/corrected-without.png "" | @image html images/poly/corrected-with.png ""
 
- 
+
 The functor functors::EmbedderFromNormalVectors can be used to implicitly project Face vertices onto the prescribed tangent plane. A classical usage is the following one:
- 
+
  @code
  //A surface mesh. Eg. primal surface of a digital surface
  SurfaceMesh< Z3i::RealPoint, Z3i::RealVector > surfmesh(...);
 
  //Per face normal vector estimation
  std::vector<Z3i::RealVector> ii_normals = ....
- 
+
  //New embedder using tangent plane projection of face vertices
  functors::EmbedderFromNormalVectors<Z3i::RealPoint, Z3i::RealVector> embedderFromNormals(ii_normals,surfmesh);
 
@@ -287,58 +287,58 @@ The functor functors::EmbedderFromNormalVectors can be used to implicitly projec
  calculus->setEmbedder( embedderFromNormals );
  @endcode
  A complete code is given in the @ref dgtalCalculus-geodesic.cpp example.
- 
+
  \section secLap Example: Solving a Laplace problem
- 
+
  Let suppose we want to solve the following Laplace problem for data interpolation:
  \f{eqnarray*}{
  \Delta_\Omega u& = 0  \\
  & s.t. u = g \text{ on } \partial\Omega
  \f}
- 
+
  We want to solve that problem on a polygonal mesh @f$\Omega@f$
  (digital surface here) with a boundary and some scalar values attached
  to boundary vertices, or sampled on the object surface.
- 
+
  Furthermore, the discrete version of the Laplace problem boils down to
  a simple linear problem using on the discrete Laplace-Beltrami sparse
  matrix.
- 
+
  We also use class DirichletConditions to enforce Dirichlet boundary
  conditions on the system.
- 
+
  The overall code is:
  \snippet dgtalCalculus-poisson.cpp PolyDEC-init
- 
+
  Leading to the following results (see \ref dgtalCalculus-poisson.cpp):
- 
+
  Surface  | Boundary condition @f$ g@f$ | Solution @f$ u @f$
  --|--|--
  @image html images/poly/poisson-surf.png "" | @image html images/poly/poisson-g.png "" | @image html images/poly/poisson-u.png ""
  @image html images/poly/bunny-init.png "" | @image html images/poly/bunny-g.png "" | @image html images/poly/bunny-u.png ""
  @image html images/poly/cat-init.png "" | @image html images/poly/cat-g.png "" | @image html images/poly/cat-u.png ""
- 
+
  \subsection Global Vector Calculus
- 
+
  Global Vector Laplace/Poisson problems can also be solved by the same way, using instead PolygonalCalculus<SurfMesh>::globalConnectionLaplace() and PolygonalCalculus<SurfMesh>::doubledGlobalLumpedMassMatrix(). One can find examples of such use in the \ref VectorsInHeat class.
- 
- 
- 
- 
- 
+
+
+
+
+
 \section sectMisc Miscellaneous
 
 \subsection sectPolygonalCalculusHP Cache mechanisms and high-performance computing
 
  The PolygonalCalculus class has two cache mechanisms:
- 
+
 - An external cache strategy to store a given operator into a compact container. Typical use case is when the user wants to precompute a given operator, store it and efficiently reuse it while iterating over the faces. We detail this construction below.
 - The second one is a global internal cache strategy that will store @b all per face operators on the fly. In that case, each operator returning a DenseMatrix is stored in a cache the first time the `calculus.operator(f)` is called. Typical use case is when the user wants to use many times a large set of different operators. To enable this strategy, you can use the `calculus.enableInternalGlobalCache()`, or from the last parameter of the class constructor (boolean set to true). E.g.
    @code
 PolygonalCalculus<SH3::RealPoint,SH3::RealVector> calculus(surfmesh,true);  //global internal cache enabled.
    @endcode
    By default, this behavior is disabled as it is memory expensive (all operators are explicitly stored when used for the first time), and may not have a huge running time impact for some applications. An example is given in the \ref dgtalCalculus-bunny.cpp. Once enabled, the class API remains the same, everything is transperent to the user.
- 
+
 We describe here the first external cache strategy. For the sake of readability, each operator has been implemented implicitly. For example, the @e M @e  operator per face is given by
 @code
 DenseMatrix M(const Face f, const double lambda=1.0) const
@@ -347,12 +347,12 @@ DenseMatrix M(const Face f, const double lambda=1.0) const
   auto Pf=P(f);
   return faceArea(f) * Uf.transpose()*Uf + lambda * Pf.transpose()*Pf;
 }
-@endcode 
-which could be time consuming as the internal operators may be computed several times. 
+@endcode
+which could be time consuming as the internal operators may be computed several times.
 
 For high performance computations, we provide a generic cache mechanism to explicitly store all per face operators of a surface mesh (stored in a random access container).
 
-A typical usage is 
+A typical usage is
 @code
 auto cacheSharp    = getOperatorCacheMatrix( [&](Face f){ return(calculus.sharp(f);} );
 auto cachefaceArea = getOperatorCacheMatrix( [&](Face f){ return(calculus.faceArea(f);} );
@@ -362,9 +362,9 @@ auto cacheP        = getOperatorCacheMatrix( [&](Face f){ return(calculus.P(f);}
 Then, cached operators can be accessed and combined:
 @code
 auto Mf =   cachefaceArea[f] * cacheU[f].transpose()*cacheU[f] + lambda * cacheP[f].transpose() * cacheP[f];
-@endcode 
+@endcode
 
- 
+
 
 */
 

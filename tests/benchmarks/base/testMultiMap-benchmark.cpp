@@ -49,7 +49,7 @@
 #include "DGtal/base/LabelledMap.h"
 
 // Before 1.47, random number generation in boost.
-// Since 1.47, random number generation in boost::random. 
+// Since 1.47, random number generation in boost::random.
 #define BOOST_MAJOR_VERSION  (BOOST_VERSION / 100000)
 #define BOOST_MINOR_VERSION  (( BOOST_VERSION / 100) % 1000)
 #define BOOST_SUBMINOR_VERSION  (BOOST_VERSION % 100)
@@ -98,7 +98,7 @@ public:
   {
     delete[] _data;
   }
-  inline 
+  inline
   void clear()
   {
     for ( unsigned int l = 0; l < L; ++l )
@@ -112,15 +112,15 @@ public:
   {
     return ( ( l * X ) + x ) * Y + y;
   }
-  inline 
+  inline
   const Value & value( unsigned int l, unsigned int x, unsigned int y ) const
   {
     return _data[ offset( l, x, y ) ];
   }
-  inline 
+  inline
   unsigned int erase( unsigned int l, unsigned int x, unsigned int y )
   {
-    size_t offs = offset( l, x, y ); 
+    size_t offs = offset( l, x, y );
     if ( _data[ offs ] != _invalid )
       {
         _data[ offs ] = _invalid;
@@ -129,12 +129,12 @@ public:
     return 0;
   }
 
-  inline 
+  inline
   void setValue( const Value & val, unsigned int l, unsigned int x, unsigned int y )
   {
     _data[ offset( l, x, y ) ] = val;
   }
-  inline 
+  inline
   void setValueNoNewLabel( const Value & val, unsigned int l, unsigned int x, unsigned int y )
   {
     _data[ offset( l, x, y ) ] = val;
@@ -144,8 +144,8 @@ public:
   {
     return value( l, x, y ) != _invalid;
   }
-  inline 
-  void getLabels( std::vector<unsigned int> & labels, 
+  inline
+  void getLabels( std::vector<unsigned int> & labels,
                   unsigned int x, unsigned int y ) const
   {
     labels.clear();
@@ -161,7 +161,7 @@ public:
       if ( hasLabel( l, x, y ) ) ++nb;
     return nb;
   }
-  inline 
+  inline
   void display ( ostream & , unsigned int , unsigned int , unsigned int  )
   {}
 
@@ -211,7 +211,7 @@ public:
     return x * Y + y;
   }
 
-  inline 
+  inline
   void clear()
   {
     for ( unsigned int x = 0; x < X; ++x )
@@ -219,23 +219,23 @@ public:
         _data[ offset( x, y ) ].clear();
   }
 
-  inline 
+  inline
   const Value & value( unsigned int l, unsigned int x, unsigned int y )
   {
     return _data[ offset( x, y ) ][ l ];
   }
-  inline 
+  inline
   unsigned int erase( unsigned int l, unsigned int x, unsigned int y )
   {
     return static_cast<unsigned int>(_data[ offset( x, y ) ].erase( l ));
   }
 
-  inline 
+  inline
   void setValue( const Value & val, unsigned int l, unsigned int x, unsigned int y )
   {
     _data[ offset( x, y ) ][ l ] = val;
   }
-  inline 
+  inline
   void setValueNoNewLabel( const Value & val, unsigned int l, unsigned int x, unsigned int y )
   {
     _data[ offset( x, y ) ][ l ] = val;
@@ -245,12 +245,12 @@ public:
   {
     return _data[ offset( x, y ) ].count( l ) != 0;
   }
-  inline 
-  void getLabels( std::vector<unsigned int> & labels, 
+  inline
+  void getLabels( std::vector<unsigned int> & labels,
                   unsigned int x, unsigned int y ) const
   {
     labels.clear();
-    for ( ConstIterator it = _data[ offset( x, y ) ].begin(), 
+    for ( ConstIterator it = _data[ offset( x, y ) ].begin(),
             it_end = _data[ offset( x, y ) ].end();
           it != it_end; ++it )
       labels.push_back( (*it).first );
@@ -260,7 +260,7 @@ public:
   {
     return static_cast<unsigned int>(_data[ offset( x, y ) ].size());
   }
-  inline 
+  inline
   void display ( ostream & , unsigned int , unsigned int , unsigned int  )
   {}
 
@@ -331,7 +331,7 @@ public:
     return x * Y + y;
   }
 
-  inline 
+  inline
   void clear()
   {
       for ( unsigned int y = 0; y < Y; ++y )
@@ -339,11 +339,11 @@ public:
           _data[ offset( x, y ) ].clear();
   }
 
-  inline 
+  inline
   const Value & value( unsigned int l, unsigned int x, unsigned int y )
   {
     MyList & list = _data[ offset( x, y ) ];
-    Iterator it = list.begin(), it_end = list.end(); 
+    Iterator it = list.begin(), it_end = list.end();
     for ( ; it != it_end; ++it )
       {
         if ( it->first == l ) return it->second;
@@ -352,12 +352,12 @@ public:
     list.emplace_front( std::make_pair( l, Value() ) );
     return list.front().second;
   }
-  inline 
+  inline
   unsigned int erase( unsigned int l, unsigned int x, unsigned int y )
   {
     MyList & list = _data[ offset( x, y ) ];
     Iterator it_prev = list.before_begin();
-    Iterator it = list.begin(), it_end = list.end(); 
+    Iterator it = list.begin(), it_end = list.end();
     for ( ; it != it_end; ++it )
       {
         if ( it->first == l )
@@ -370,56 +370,56 @@ public:
     return 0;
   }
 
-  inline 
+  inline
   void setValue( const Value & val, unsigned int l, unsigned int x, unsigned int y )
   {
     MyList & list = _data[ offset( x, y ) ];
-    Iterator it = list.begin(), it_end = list.end(); 
+    Iterator it = list.begin(), it_end = list.end();
     for ( ; it != it_end; ++it )
       {
-        if ( it->first == l ) 
+        if ( it->first == l )
           {
             it->second = val;
             return;
           }
       }
-    if ( it == it_end ) 
+    if ( it == it_end )
         list.emplace_front( std::make_pair( l, val ) );
   }
-  inline 
+  inline
   void setValueNoNewLabel( const Value & val, unsigned int l, unsigned int x, unsigned int y )
   {
     MyList & list = _data[ offset( x, y ) ];
-    Iterator it = list.begin(), it_end = list.end(); 
+    Iterator it = list.begin(), it_end = list.end();
     for ( ; it != it_end; ++it )
       {
-        if ( it->first == l ) 
+        if ( it->first == l )
           {
             it->second = val;
             return;
           }
       }
-    if ( it == it_end ) 
+    if ( it == it_end )
       list.emplace_front( std::make_pair( l, val ) );
   }
   inline
   bool hasLabel( unsigned int l, unsigned int x, unsigned int y ) const
   {
     const MyList & list = _data[ offset( x, y ) ];
-    ConstIterator it = list.begin(), it_end = list.end(); 
+    ConstIterator it = list.begin(), it_end = list.end();
     for ( ; it != it_end; ++it )
       {
         if ( it->first == l ) return true;
       }
     return false;
   }
-  inline 
-  void getLabels( std::vector<unsigned int> & labels, 
+  inline
+  void getLabels( std::vector<unsigned int> & labels,
                   unsigned int x, unsigned int y ) const
   {
     labels.clear();
     const MyList & list = _data[ offset( x, y ) ];
-    ConstIterator it = list.begin(), it_end = list.end(); 
+    ConstIterator it = list.begin(), it_end = list.end();
     for ( ; it != it_end; ++it )
       {
         labels.push_back( (*it).first );
@@ -429,13 +429,13 @@ public:
   unsigned int nbLabels( unsigned int x, unsigned int y ) const
   {
     const MyList & list = _data[ offset( x, y ) ];
-    ConstIterator it = list.begin(), it_end = list.end(); 
+    ConstIterator it = list.begin(), it_end = list.end();
     unsigned int n = 0;
     for ( ; it != it_end; ++it )
       ++n;
     return n;
   }
-  inline 
+  inline
   void display ( ostream & , unsigned int , unsigned int , unsigned int  )
   {}
 
@@ -503,7 +503,7 @@ public:
     return x * Y + y;
   }
 
-  inline 
+  inline
   void clear()
   {
       for ( unsigned int y = 0; y < Y; ++y )
@@ -511,25 +511,25 @@ public:
           _data[ offset( x, y ) ].clear();
   }
 
-  inline 
+  inline
   const Value & value( unsigned int l, unsigned int x, unsigned int y ) const
   {
     return _data[ offset( x, y ) ].fastAt( l );
   }
 
-  inline 
+  inline
   void setValue( const Value & val, unsigned int l, unsigned int x, unsigned int y )
   {
     _data[ offset( x, y ) ][ l ] = val;
   }
 
-  inline 
+  inline
   unsigned int erase( unsigned int l, unsigned int x, unsigned int y )
   {
     return _data[ offset( x, y ) ].erase( l );
   }
 
-  inline 
+  inline
   void setValueNoNewLabel( const Value & val, unsigned int l, unsigned int x, unsigned int y )
   {
     _data[ offset( x, y ) ].fastAt( l ) = val;
@@ -541,8 +541,8 @@ public:
     return _data[ offset( x, y ) ].count( l );
   }
 
-  inline 
-  void getLabels( std::vector<unsigned int> & labels, 
+  inline
+  void getLabels( std::vector<unsigned int> & labels,
                   unsigned int x, unsigned int y ) const
   {
     _data[ offset( x, y ) ].labels().getLabels( labels );
@@ -582,7 +582,7 @@ public:
 // {
 //   BOOST_RANDOM_NAMESPACE::mt19937 rng;         // produces randomness out of thin air
 //   rng.seed( 0 );
-//   BOOST_RANDOM_NAMESPACE::uniform_smallint<> diceL(0, L-1);  
+//   BOOST_RANDOM_NAMESPACE::uniform_smallint<> diceL(0, L-1);
 //   BOOST_RANDOM_NAMESPACE::uniform_01<> diceDouble;
 //   BOOST_RANDOM_NAMESPACE::geometric_distribution<> diceNbLabels( proba_label ); // Y
 //   // E(Y) = (1-p)/p,  Var(Y) = (1-p)/p^2
@@ -624,7 +624,7 @@ generateData( MapLXY & m, unsigned int L, double proba_no_label, double proba_la
 {
   boost::random::mt19937 rng;         // produces randomness out of thin air
   rng.seed( 0 );
-  boost::random::uniform_smallint<> diceL(0, L-1);  
+  boost::random::uniform_smallint<> diceL(0, L-1);
   boost::random::uniform_01<> diceDouble;
   boost::random::geometric_distribution<> diceNbLabels( proba_label ); // Y
   // E(Y) = (1-p)/p,  Var(Y) = (1-p)/p^2
@@ -660,11 +660,11 @@ generateData( MapLXY & m, unsigned int L, double proba_no_label, double proba_la
 {
   boost::mt19937 rng;         // produces randomness out of thin air
   rng.seed( 0 );
-  boost::uniform_smallint<> diceL(0, L-1);  
+  boost::uniform_smallint<> diceL(0, L-1);
   boost::uniform_01<> diceDouble;
   boost::geometric_distribution<> nbLabelsDist( proba_label ); // Y
   boost::variate_generator
-    <boost::mt19937&, 
+    <boost::mt19937&,
      boost::geometric_distribution<> > diceNbLabels( rng, nbLabelsDist);
   // E(Y) = (1-p)/p,  Var(Y) = (1-p)/p^2
   std::cerr << "E(Y)=" << ( (1-proba_label)/proba_label )
@@ -694,7 +694,7 @@ generateData( MapLXY & m, unsigned int L, double proba_no_label, double proba_la
 #endif
 
 template <typename MapLXY>
-double 
+double
 sumAllData( MapLXY & m )
 {
   unsigned int X = m.X;
@@ -713,7 +713,7 @@ sumAllData( MapLXY & m )
 }
 
 template <typename MapLXY>
-double 
+double
 sumOneData( MapLXY & m, unsigned int l )
 {
   unsigned int X = m.X;
@@ -739,8 +739,8 @@ locateThreeData( MapLXY & m, unsigned int l1, unsigned int l2, unsigned int l3 )
   for ( unsigned int y = 0; y < Y; ++y )
     for ( unsigned int x = 0; x < X; ++x )
       {
-        if ( ( m.hasLabel( l1, x, y ) ) 
-             && ( m.hasLabel( l2, x, y ) ) 
+        if ( ( m.hasLabel( l1, x, y ) )
+             && ( m.hasLabel( l2, x, y ) )
              && ( m.hasLabel( l3, x, y ) ) )
           ++loc3;
       }
@@ -749,7 +749,7 @@ locateThreeData( MapLXY & m, unsigned int l1, unsigned int l2, unsigned int l3 )
 }
 
 template <typename MapLXY>
-unsigned int 
+unsigned int
 eraseOneData( MapLXY & m, unsigned int l )
 {
   unsigned int X = m.X;
@@ -769,7 +769,7 @@ void generateStatsMultiMapXY( const string & name,
                                const unsigned int L,
                                const unsigned int X,
                                const unsigned int Y,
-                               double PROBA_NO_LABEL, 
+                               double PROBA_NO_LABEL,
                                double PROBA_LABEL )
 {
   typedef typename MapLXY::ValueType Value;
@@ -815,14 +815,14 @@ void generateStatsMultiMapXY( const string & name,
   long tclear = trace.endBlock();
   trace.endBlock();
 
-  std::cout << name << " " << L << " " << X << " " << Y 
+  std::cout << name << " " << L << " " << X << " " << Y
             << " " << PROBA_NO_LABEL << " " << PROBA_LABEL
-            << " " << sizeof(Value) << " " << sizeof(Value*) << " " << mem 
-            << " " << tgen << " " << tmem 
-            << " " << tsumall << " " << tsum0  << " " << tsum15 
-            << " " << tthree << " " << terase9  << " " << tclear 
+            << " " << sizeof(Value) << " " << sizeof(Value*) << " " << mem
+            << " " << tgen << " " << tmem
+            << " " << tsumall << " " << tsum0  << " " << tsum15
+            << " " << tthree << " " << terase9  << " " << tclear
             << " " << sumAll << " " << sum0  << " " << sum15
-            << " " << nbThree << " " << nbErased 
+            << " " << nbThree << " " << nbErased
             << std::endl;
 }
 
@@ -847,8 +847,8 @@ int main( int /*argc*/, char** /*argv*/ )
 	      << "\t tested image size: 500  500"<<std::endl
 	      <<"Probability that there is no data at all at an image position (Bernouilli distribution): 0.5"
 	      << "Probability for the geometric distribution of the number of data per image position (E(Y)=(1-p)/p, Var(Y)=(1-p)/p^2 :0.5"<< std::endl;
-  
-  
+
+
 
   unsigned int X =  100;
   unsigned int Y =  100;
@@ -862,20 +862,20 @@ int main( int /*argc*/, char** /*argv*/ )
 
   typedef DynArrayLXY<Value> MyArrayLXY;
   MyArrayLXY* anArrayLXY = new MyArrayLXY( L, X, Y, -1.0 );
-  generateStatsMultiMapXY( "DynArrayLXY<double>", 
+  generateStatsMultiMapXY( "DynArrayLXY<double>",
                          *anArrayLXY, L, X, Y, PROB_NO_DATA, PROB_ONE_DATA );
   delete anArrayLXY;
 
   typedef DynArrayXYOfMap<Value> MyArrayXYOfMap;
   MyArrayXYOfMap* anArrayXYOfMap = new MyArrayXYOfMap( L, X, Y );
-  generateStatsMultiMapXY( "DynArrayXYOfMap<double>", 
+  generateStatsMultiMapXY( "DynArrayXYOfMap<double>",
                          *anArrayXYOfMap, L, X, Y, PROB_NO_DATA, PROB_ONE_DATA );
   delete anArrayXYOfMap;
 
 #if __GXX_EXPERIMENTAL_CXX0X__  && ( __GNUC__ >= 4 ) && ( __GNUC_MINOR__ >= 6 )
   typedef DynArrayXYOfList<Value> MyArrayXYOfList;
   MyArrayXYOfList* anArrayXYOfList = new MyArrayXYOfList( L, X, Y );
-  generateStatsMultiMapXY( "DynArrayXYOfList<double>", 
+  generateStatsMultiMapXY( "DynArrayXYOfList<double>",
                          *anArrayXYOfList, L, X, Y, PROB_NO_DATA, PROB_ONE_DATA );
   delete anArrayXYOfList;
 #endif

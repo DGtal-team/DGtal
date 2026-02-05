@@ -49,78 +49,78 @@ namespace DGtal
 {
   namespace functors
   {
-    /** 
+    /**
      * Basic color to scalar functor which returns the red channel.
-     * 
-     * 
+     *
+     *
      */
-    struct RedChannel 
+    struct RedChannel
     {
       inline
       unsigned char operator() (const Color &aCol) const
       {
-        return aCol.red(); 
+        return aCol.red();
       }
     };
 
-    /** 
+    /**
      * Basic color to scalar functor which returns the blue channel.
-     * 
-     * 
+     *
+     *
      */
-    struct BlueChannel 
+    struct BlueChannel
     {
       inline
       unsigned char operator() (const Color &aCol) const
       {
-        return aCol.blue(); 
+        return aCol.blue();
       }
     };
 
-    /** 
+    /**
      * Basic color to scalar functor which returns the Green channel.
-     * 
-     * 
+     *
+     *
      */
-    struct GreenChannel 
+    struct GreenChannel
     {
       inline
       unsigned char operator() (const Color &aCol) const
       {
-        return aCol.green(); 
+        return aCol.green();
       }
     };
 
-    /** 
+    /**
      * Basic color to scalar functor which returns the mean of the three
      * channel values.
-     * 
+     *
      */
-    struct MeanChannels 
+    struct MeanChannels
     {
       inline
       unsigned char operator() (const Color &aCol) const
       {
-        return static_cast<unsigned char>(  ((int)aCol.green() + (int)aCol.blue() + (int)aCol.red()) / 3); 
+        return static_cast<unsigned char>(  ((int)aCol.green() + (int)aCol.blue() + (int)aCol.red()) / 3);
       }
     };
 
-    /** 
+    /**
      * Basic color to scalar functor which returns the code of the RGB color (DGtal_uint32 casted into TValue) .
-     * 
+     *
      */
     template<typename TValue>
     struct ColorRGBEncoder
     {
       typedef TValue Value;
-      
+
       inline
       Value operator() (const Color &aCol) const
       {
-        return static_cast<Value> (aCol.getRGB()); 
+        return static_cast<Value> (aCol.getRGB());
       }
     };
-    
+
   } //namespace functors
 } // namespace DGtal
 

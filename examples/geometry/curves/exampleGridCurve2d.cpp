@@ -29,7 +29,7 @@
 
 
 /**
-   This snippet shows how to construct, scan and display a 2d grid curve. 
+   This snippet shows how to construct, scan and display a 2d grid curve.
 
 @see \ref moduleGridCurveAnalysis
 
@@ -54,23 +54,23 @@
 
 using namespace std;
 using namespace DGtal;
-using namespace Z2i; 
+using namespace Z2i;
 
 ///////////////////////////////////////////////////////////////////////////////
 //! [GridCurveGenericFunctionDisplayAll]
 template <typename CI>
-void displayAll( const CI& ciBegin, const CI& ciEnd ) 
+void displayAll( const CI& ciBegin, const CI& ciEnd )
 {
-  if ( isNotEmpty(ciBegin, ciEnd) ) 
+  if ( isNotEmpty(ciBegin, ciEnd) )
   { //if the range is not empty
-    CI i( ciBegin); 
-    do 
+    CI i( ciBegin);
+    do
     {
       trace.info() << *i;
       i++;
     } while (i != ciEnd);
-    trace.info() << endl;    
-  }    
+    trace.info() << endl;
+  }
 }
 //! [GridCurveGenericFunctionDisplayAll]
 
@@ -85,20 +85,20 @@ int main( int argc, char** argv )
 
   string square = examplesPath + "samples/smallSquare.dat";
   string S = examplesPath + "samples/contourS.fc";
-  
+
     // domain
     Point lowerBound( -50, -50 );
     Point upperBound( 50, 50 );
 
   //! [GridCurveDeclaration]
   //default construction
-  Curve c1; 
+  Curve c1;
 
   //from a Khalimsky space
-  K2 ks; ks.init( lowerBound, upperBound, true ); 
-  Curve c2( ks ); 
+  K2 ks; ks.init( lowerBound, upperBound, true );
+  Curve c2( ks );
   //! [GridCurveDeclaration]
-  
+
   trace.emphase() << "Input" << endl;
   trace.info() << "\t from a data file " << endl;
   {
@@ -120,7 +120,7 @@ int main( int argc, char** argv )
     {
      if ( (*it - o ).norm1() <= 30 ) set.insertNew( *it );
     }
-    
+
     //! [GridCurveFromDigitalSet]
     vector<SCell> contour;                           //contour
     SurfelAdjacency<K2::dimension> sAdj( true );     //adjacency
@@ -131,17 +131,17 @@ int main( int argc, char** argv )
     c2.initFromSCellsVector( contour );
     //! [GridCurveFromDigitalSet]
   }
-  
-  trace.info() << "\t from a FreemanChain (from a file) " << endl; 
+
+  trace.info() << "\t from a FreemanChain (from a file) " << endl;
   {
     fstream inputStream;
     inputStream.open (S.c_str(), ios::in);
     FreemanChain<int> fc(inputStream);
     inputStream.close();
 
-    Curve c; 
+    Curve c;
     //! [GridCurveFromFreemanChain]
-    c.initFromPointsRange( fc.begin(), fc.end() ); 
+    c.initFromPointsRange( fc.begin(), fc.end() );
     //! [GridCurveFromFreemanChain]
 
   }
@@ -156,8 +156,8 @@ int main( int argc, char** argv )
   trace.info() << "\t into a data file " << endl;
   {
     //! [GridCurveToDataFile]
-    ofstream outputStream("myGridCurve.dat"); 
-    if (outputStream.is_open()) 
+    ofstream outputStream("myGridCurve.dat");
+    if (outputStream.is_open())
       c2.writeVectorToStream(outputStream);
     outputStream.close();
     //! [GridCurveToDataFile]
@@ -167,21 +167,21 @@ int main( int argc, char** argv )
     //! [GridCurveToGraphics]
     Board2D aBoard;
     aBoard.setUnit(Board2D::UCentimeter);
-    aBoard << c2; 
+    aBoard << c2;
     aBoard.saveEPS( "myGridCurve.eps", Board2D::BoundingBox, 5000 );
     //! [GridCurveToGraphics]
   }
-  
-  trace.info() << "\t into a FreemanChain " << endl; 
+
+  trace.info() << "\t into a FreemanChain " << endl;
   {
     //! [GridCurveToFreemanChain]
-    typedef FreemanChain<Curve::KSpace::Integer> FreemanChain; 
+    typedef FreemanChain<Curve::KSpace::Integer> FreemanChain;
     FreemanChain fc;
-    FreemanChain::readFromPointsRange( c1.getPointsRange(), fc ); 
+    FreemanChain::readFromPointsRange( c1.getPointsRange(), fc );
     trace.info() << "\t" << fc << endl;
     //! [GridCurveToFreemanChain]
   }
-  
+
   trace.emphase() << "Ranges Ouput" << endl;
   {
     Board2D aBoard;
@@ -192,79 +192,79 @@ int main( int argc, char** argv )
     Domain aDomain( low,up );
 
     {//1cellsRange
-      Curve::SCellsRange r = c1.getSCellsRange(); 
-      
+      Curve::SCellsRange r = c1.getSCellsRange();
+
       trace.info() << r << endl;
-      
-      aBoard << SetMode(aDomain.className(), "Grid") << aDomain; 
-      aBoard << r; 
+
+      aBoard << SetMode(aDomain.className(), "Grid") << aDomain;
+      aBoard << r;
       aBoard.saveEPS( "My1CellsRange.eps", Board2D::BoundingBox, 5000 );
-      aBoard.clear(); 
+      aBoard.clear();
     }
     {//IncidentPointsRange
       //! [GridCurveIncidentPointsRangeIO]
-      Curve::IncidentPointsRange r = c1.getIncidentPointsRange(); 
-      
+      Curve::IncidentPointsRange r = c1.getIncidentPointsRange();
+
       trace.info() << r << endl;
-      
-      aBoard << SetMode(aDomain.className(), "Grid") << aDomain; 
-      aBoard << r; 
+
+      aBoard << SetMode(aDomain.className(), "Grid") << aDomain;
+      aBoard << r;
       aBoard.saveEPS( "MyIncidentPointsRange.eps", Board2D::BoundingBox, 5000 );
       //! [GridCurveIncidentPointsRangeIO]
-      aBoard.clear(); 
+      aBoard.clear();
     }
     {//CodesRange
-      Curve::CodesRange r = c1.getCodesRange(); 
-      
+      Curve::CodesRange r = c1.getCodesRange();
+
       trace.info() << r << endl;
     }
   }
-  
+
   trace.emphase() << "Ranges Iterators" << endl;
   {
-    typedef Curve::CodesRange Range; 
-    Range r = c1.getCodesRange(); 
-    
+    typedef Curve::CodesRange Range;
+    Range r = c1.getCodesRange();
+
     //! [GridCurveRangeIterators]
     trace.info() << "\t iterate over the range" << endl;
-    Range::ConstIterator it = r.begin(); 
-    Range::ConstIterator itEnd = r.end(); 
+    Range::ConstIterator it = r.begin();
+    Range::ConstIterator itEnd = r.end();
     for ( ; it != itEnd; ++it)
     {
       trace.info() << *it;
     }
     trace.info() << endl;
-    
+
     trace.info() << "\t iterate over the range in the reverse way" << endl;
-    Range::ConstReverseIterator rit = r.rbegin(); 
-    Range::ConstReverseIterator ritEnd = r.rend(); 
-    for ( ; rit != ritEnd; ++rit) 
+    Range::ConstReverseIterator rit = r.rbegin();
+    Range::ConstReverseIterator ritEnd = r.rend();
+    for ( ; rit != ritEnd; ++rit)
     {
       trace.info() << *rit;
     }
     trace.info() << endl;
-      
+
     trace.info() << "\t iterate over the range in a circular way" << endl;
     Range::ConstCirculator c = r.c();
-    //set the starting element wherever you want... 
-    for (unsigned i = 0; i < 20; ++i) ++c; 
+    //set the starting element wherever you want...
+    for (unsigned i = 0; i < 20; ++i) ++c;
     //... and circulate
     Range::ConstCirculator cend( c );
-    do 
+    do
     {
       trace.info() << *c;
       c++;
     } while (c!=cend);
     trace.info() << endl;
-    //! [GridCurveRangeIterators]    
-    
+    //! [GridCurveRangeIterators]
+
     trace.info() << "\t Generic function working with any (circular)iterator" << endl;
-    displayAll<Range::ConstIterator>(r.begin(),r.end()); 
-    displayAll<Range::ConstReverseIterator>(r.rbegin(),r.rend()); 
-    displayAll<Range::ConstCirculator>(r.c(),r.c()); 
-    
+    displayAll<Range::ConstIterator>(r.begin(),r.end());
+    displayAll<Range::ConstReverseIterator>(r.rbegin(),r.rend());
+    displayAll<Range::ConstCirculator>(r.c(),r.c());
+
   }
-  
+
   trace.endBlock();
   return 0;
 }

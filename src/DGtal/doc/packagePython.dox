@@ -26,7 +26,7 @@
  * This file is part of the DGtal library.
  */
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  * Do not forget to add an entry in src/DGtal/base/Config.h.in !
  */
@@ -34,7 +34,7 @@ namespace DGtal {
 //----------------------------------------
 /*!
 @page packagePython DGtal python binding
-   
+
 
 @managers David Coeurjolly
 @since 1.2
@@ -54,20 +54,20 @@ pip install dgtal
 
 For most use case, it is sufficient to install the library from its pypy repository.
 
-@code 
+@code
 pip install dgtal
 @endcode
 
 If it fails, it is also possible to build from sources. See []. In short:
 
 @code
-git clone 
+git clone
 cd DGtal && mkdir build && cd build
 cmake .. -DDGTAL_WRAP_PYTHON=ON
 @endcode
 
-Which build the necessary shared library and copy the few plain python code; which may 
-need to be further installed depending on your installation. 
+Which build the necessary shared library and copy the few plain python code; which may
+need to be further installed depending on your installation.
 
 To import the module and access its functionalities:
 
@@ -124,7 +124,7 @@ print("Euler characteristic: "+str(ccomplex.euler()))
 
 This example loads a binary image and computes integral invariant estimators and displays them within an interactive viewer. It mostly follows Shortcuts examples with a one-to-one mapping. A few other utilities are provided not to loop over elements in python.
 
-This example requires [polyscope](https://polyscope.run/py/) to be installed 
+This example requires [polyscope](https://polyscope.run/py/) to be installed
 
 @code{.py}
 from dgtal import *
@@ -183,9 +183,9 @@ ps.show()
 
 @section documentation_python Documentation
 
-@subsection base_topology_kernel Base, Topology and Kernel 
+@subsection base_topology_kernel Base, Topology and Kernel
 
-In this section, we provide a list of functions and classes that can be used in python. You may find more documentation and example usage by calling the help function on these classes (eg. help(dgtal.Object4_8)). The python constructor column shows how objects can be inferred through their parameters (for example, point dimension and type from the data parameter). Often, this is done through factories that are written in python. 
+In this section, we provide a list of functions and classes that can be used in python. You may find more documentation and example usage by calling the help function on these classes (eg. help(dgtal.Object4_8)). The python constructor column shows how objects can be inferred through their parameters (for example, point dimension and type from the data parameter). Often, this is done through factories that are written in python.
 
 | Python class(es)                                                        | C++ class(es)                                      | Python constructor                                               |
 |-------------------------------------------------------------------------|----------------------------------------------------|------------------------------------------------------------------|
@@ -279,4 +279,3 @@ Looping through objects is slow in python and digital objects may be large. For 
 
 */
 }
-

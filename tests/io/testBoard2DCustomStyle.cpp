@@ -30,7 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
-  
+
 #include "DGtal/kernel/SpaceND.h"
 #include "DGtal/kernel/domains/HyperRectDomain.h"
 #include "DGtal/kernel/sets/DigitalSetBySTLVector.h"
@@ -70,16 +70,16 @@ bool testBoard2DCustomStyle()
   unsigned int nb = 0;
 
   typedef SpaceND<2> Z2;
- 
+
   typedef HyperRectDomain<Z2> Domain;
   typedef Z2::Point Point;
   Point p1(  -10, -10  );
   Point p2(  10, 10  );
   Domain domain( p1, p2 );
   typedef DigitalSetSelector
-    < Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet; 
+    < Domain, BIG_DS + HIGH_ITER_DS + HIGH_BEL_DS >::Type SpecificSet;
   SpecificSet mySet( domain );
- 
+
   Point c(  0, 0  );
   mySet.insert( c );
   Point d(  5, 2  );
@@ -90,21 +90,21 @@ bool testBoard2DCustomStyle()
 
   Board2D board;
   board.setUnit(LibBoard::Board::UCentimeter);
-  
+
   board << SetMode( domain.className(), "Grid" ) << domain
-  << domain 
+  << domain
   << mySet;
   board.saveSVG("testcustom-prev.svg");
 
   board.clear();
 
   board << SetMode( domain.className(), "Grid" ) << domain
-  << domain 
+  << domain
   << CustomStyle( mySet.className(), new MyDrawStyleCustomGreen )
   << mySet;
   board.saveSVG("testcustom-next.svg");
 
- 
+
   return nbok == nb;
 }
 

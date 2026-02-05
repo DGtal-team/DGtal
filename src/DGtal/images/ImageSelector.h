@@ -69,7 +69,7 @@ namespace DGtal
   /**
    * Description of template class 'ImageSelector' <p>
    * \brief Aim:  Automatically defines an adequate image type according
-   * to the hints given by the user.  
+   * to the hints given by the user.
    */
   template <typename Domain,  typename Value, int Preferences = 0 >
   struct ImageSelector

@@ -28,8 +28,8 @@
  */
 
 /**
-   This example shows the basic usage of a 4-connected standard segment computer, 
-an object devoted to the on-line recognition of 4-connected standard DSSs.  
+   This example shows the basic usage of a 4-connected standard segment computer,
+an object devoted to the on-line recognition of 4-connected standard DSSs.
 
 @see \ref moduleArithDSSReco
 
@@ -55,7 +55,7 @@ using namespace DGtal;
 
 int main()
 {
-  
+
 
   using namespace Z2i;
 
@@ -65,9 +65,9 @@ int main()
   // Iterator on the container
   typedef Container::const_iterator ConstIterator;
   // StandardDSS4 computer
-  typedef StandardDSS4Computer<ConstIterator> DSSComputer;  
+  typedef StandardDSS4Computer<ConstIterator> DSSComputer;
   // Construction of the computer
-  DSSComputer theDSSComputer;    
+  DSSComputer theDSSComputer;
   //! [ArithmeticalDSSComputerStandardCtor]
 
   // Input points
@@ -83,7 +83,7 @@ int main()
   contour.push_back(Z2::Point(6,2));
   contour.push_back(Z2::Point(6,3));
   contour.push_back(Z2::Point(6,4));
-    
+
   //! [ArithmeticalDSSComputerStandardExtension]
   // Add points while it is possible
   theDSSComputer.init( contour.begin() );
@@ -95,7 +95,7 @@ int main()
   cout << theDSSComputer << endl;
 
   //! [ArithmeticalDSSComputerStandardPrimitive]
-  DSSComputer::Primitive theDSS = theDSSComputer.primitive();  
+  DSSComputer::Primitive theDSS = theDSSComputer.primitive();
   //! [ArithmeticalDSSComputerStandardPrimitive]
 
   // Trace to the standard output

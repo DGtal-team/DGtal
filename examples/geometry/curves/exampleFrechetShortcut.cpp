@@ -29,7 +29,7 @@
 
 
 /**
-   This snippet segments a digital curve into Frechet shortcuts.  
+   This snippet segments a digital curve into Frechet shortcuts.
 
 @see \ref moduleFrechetShortcut and \ref moduleGridCurveAnalysis
 
@@ -66,7 +66,7 @@ int main( int argc, char** argv )
 
   std::string filename;
   double error;
-  
+
   if(argc == 1)
     {
       trace.info() << "Use default file and error value\n";
@@ -86,39 +86,39 @@ int main( int argc, char** argv )
       }
   ifstream instream; // input stream
   instream.open (filename.c_str(), ifstream::in);
-  
 
-  
+
+
   Curve c; //grid curve
   c.initFromVectorStream(instream);
-  
+
   Board2D board;
-  
+
   // Display the pixels as arrows range to show the way the curve is scanned
   board << c.getArrowsRange();
-  
+
   trace.beginBlock("Simple example");
 
   //! [FrechetShortcutUsage]
-  Curve::PointsRange r = c.getPointsRange(); 
-  
+  Curve::PointsRange r = c.getPointsRange();
+
   typedef FrechetShortcut<Curve::PointsRange::ConstIterator,int> Shortcut;
-  
+
   // Computation of one shortcut
   Shortcut s(error);
-  
+
   s.init( r.begin() );
   while ( ( s.end() != r.end() )
   	  &&( s.extendFront() ) ) {}
-  
+
 
 
   // Computation of a greedy segmentation
-  
+
   typedef GreedySegmentation<Shortcut> Segmentation;
-  
+
   Segmentation theSegmentation( r.begin(), r.end(), Shortcut(error) );
-  
+
   // the segmentation is computed here
   Segmentation::SegmentComputerIterator it = theSegmentation.begin();
   Segmentation::SegmentComputerIterator itEnd = theSegmentation.end();
@@ -126,14 +126,14 @@ int main( int argc, char** argv )
   for ( ; it != itEnd; ++it) {
     s=Shortcut(*it);
     trace.info() << s << std::endl;
-    board << s; 
+    board << s;
   }
-  
-  board.saveEPS("FrechetShortcutExample.eps", Board2D::BoundingBox, 5000 ); 
+
+  board.saveEPS("FrechetShortcutExample.eps", Board2D::BoundingBox, 5000 );
 
   //! [FrechetShortcutUsage]
   #ifdef DGTAL_WITH_CAIRO
-    board.saveCairo("FrechetShortcutExample.png"); 
+    board.saveCairo("FrechetShortcutExample.png");
   #endif
 
 

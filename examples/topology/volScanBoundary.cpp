@@ -16,20 +16,20 @@
  * outside the object of interest, it is easy to determine the set of
  * surfels by a simple scanning of the space. This is done for you by
  * static methods Surfaces::uMakeBoundary and Surfaces::sMakeBoundary.
- * 
+ *
  * @see \ref dgtal_digsurf_sec2_1
- * 
+ *
  * On the lobser.vol volume, volScanBoundary.cpp extracts 155068 surfels
  * in 3866ms
- * 
+ *
  * @verbatim
  * # Commands
  * $ ./examples/topology/volScanBoundary ../examples/samples/lobster.vol 50 255
  * @endverbatim
- * 
+ *
  * @image html volTrackBoundary-lobster.png "Digital surface that is the boundary of a (6,18)-connected component in image lo bster.vol, extracted by scanning the whole space in 3866ms."
- * 
- * \example topology/volScanBoundary.cpp 
+ *
+ * \example topology/volScanBoundary.cpp
  */
 
 
@@ -122,4 +122,3 @@ int main( int argc, char** argv )
   return 0;
   //! [volScanBoundary-DisplayingSurface]
 }
-

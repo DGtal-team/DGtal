@@ -46,13 +46,13 @@ using namespace DGtal;
 namespace DGtal {
   template <typename KSpace, typename PointPredicate>
   bool
-  testImplicitDigitalSurface( const KSpace & K, 
+  testImplicitDigitalSurface( const KSpace & K,
                               const PointPredicate & pp,
                               const typename KSpace::Surfel & bel )
   {
     typedef ImplicitDigitalSurface<KSpace,PointPredicate> Boundary;
     typedef typename Boundary::SurfelConstIterator ConstIterator;
-    
+
     unsigned int nbok = 0;
     unsigned int nb = 0;
     trace.beginBlock ( "Testing block ... ImplicitDigitalSurface" );
@@ -76,7 +76,7 @@ namespace DGtal {
     trace.endBlock();
     return nbok == nb;
   }
-  
+
 
   template <typename TPoint3>
   struct ImplicitDigitalEllipse3 {
@@ -114,7 +114,7 @@ int main( int , char** )
     {
       ImplicitDigitalEllipse ellipse( 180.0, 135.0, 102.0 );
       Surfel bel = Surfaces<KSpace>::findABel( K, ellipse, 10000 );
-      res = 
+      res =
         testImplicitDigitalSurface<KSpace, ImplicitDigitalEllipse>
         ( K, ellipse, bel );
     }

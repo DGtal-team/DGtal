@@ -52,7 +52,7 @@ inline
 DGtal::GrayscaleColorMap<Value>::GrayscaleColorMap
 ( const GrayscaleColorMap<Value> & other )
   : myMin( other.myMin ), myMax( other.myMax )
-{ 
+{
   ASSERT_MSG(myMin < myMax, "Max should be strictly greather than Min in a colormap.");
 }
 
@@ -112,7 +112,7 @@ inline
 void
 DGtal::GrayscaleColorMap<Value>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[GrayscaleColorMap " 
+  out << "[GrayscaleColorMap "
       << " min=" << myMin
       << " max=" << myMax
       << " ]";
@@ -151,7 +151,7 @@ DGtal::GrayscaleColorMap<Value>::getColor( const Value & min,
 template <typename Value>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
       const GrayscaleColorMap<Value> & object )
 {
   object.selfDisplay( out );
@@ -160,5 +160,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

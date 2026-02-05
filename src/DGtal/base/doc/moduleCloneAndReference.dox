@@ -1,10 +1,10 @@
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  */
 namespace DGtal {
 
 /*!
-   
+
 @page moduleCloneAndReference Parameter passing, cloning and referencing
 
 @writers Jacques-Olivier Lachaud
@@ -81,7 +81,7 @@ parameter to \c f through the following mechanism:
   constructor/method of an object. It is \b unclear whether the <b>
   lifetime of the argument should exceed the lifetime of \c f
   </b>. This fact is clarified generally by the documentation.
- 
+
 The preceding discussion shows that standard parameter passing is \e
 ambiguous by nature, since each parameter passing method has several
 meanings. The user is forced to checked carefully the documentation
@@ -157,22 +157,22 @@ Otherwise, deletion is automatic for \c T or \c CowPtr<T> member. Furthermore, a
 |member deletion:|  automatic   |  \b manual | automatic |
 |conversion:| automatic: `b(a)` |  address: `b(&a)`| automatic: `b(a)` |
 
-\note When choosing a `Clone<T>` parameter, the \e programmer should really consider using a `CowPtr<T>` member to store it, since it is the most versatile and optimizable variant. The only advantage of the two others storing methods (\c T  and  \c T*) is that there is one less indirection. 
+\note When choosing a `Clone<T>` parameter, the \e programmer should really consider using a `CowPtr<T>` member to store it, since it is the most versatile and optimizable variant. The only advantage of the two others storing methods (\c T  and  \c T*) is that there is one less indirection.
 
 @code
 struct BigFatA { ... };
 
 struct B {
   // versatile constructor. Accepts 5 different versions.
-  B( Clone<BigFatA> a ) : myOwnFat( a ) {}  
+  B( Clone<BigFatA> a ) : myOwnFat( a ) {}
   void f() { myOwnFat->do(); }
   CowPtr<BigFatA> myOwnFat;
 };
 
 BigFatA a1;
 B b1( a1 ); // cloned
-B b2( new BigFatA( "I am the one " ) ); // acquired 
-CountedPtr<BigFatA> counted_ptr = new BigFatA( "I am the other one" ); 
+B b2( new BigFatA( "I am the one " ) ); // acquired
+CountedPtr<BigFatA> counted_ptr = new BigFatA( "I am the other one" );
 B b3( counted_ptr ); // O(1) since lazy duplication (waiting for a write).
 B b4( BigFatA( "Moving one" ) ); // this one is created directly in b4 (with c++11).
 @endcode
@@ -192,8 +192,8 @@ struct B {
 
 BigFatA a1;
 B b1( a1 ); // cloned
-B b2( new BigFatA( "I am the one " ) ); // acquired 
-CountedPtr<BigFatA> counted_ptr = new BigFatA( "I am the other one" ); 
+B b2( new BigFatA( "I am the one " ) ); // acquired
+CountedPtr<BigFatA> counted_ptr = new BigFatA( "I am the other one" );
 B b3( counted_ptr ); // duplicated
 B b4( BigFatA( "Moving one" ) ); // this one is created directly in b4 (with c++11).
 @endcode
@@ -210,7 +210,7 @@ A parameter `( Alias<T> cT )` accepts several types of arguments constructed fro
 |To: \c T*         | Shared. O(1)  | Shared. O(1)  |                |                     |
 |To: @link CountedPtrOrPtr CountedPtrOrPtr<T>@endlink| Shared. O(1)| Shared. O(1)| Shared. O(1), \b secure | Shared. O(1), \b secure |
 
-\note When choosing an `Alias<T>` parameter, the \e programmer should really consider using a `CountedPtrOrPtr<T>` member to store it, since it is the most secure-able variant. The only advantage of the two others storing methods (\c T&  and  \c T*) is that there is one less boolean test and indirection. 
+\note When choosing an `Alias<T>` parameter, the \e programmer should really consider using a `CountedPtrOrPtr<T>` member to store it, since it is the most secure-able variant. The only advantage of the two others storing methods (\c T&  and  \c T*) is that there is one less boolean test and indirection.
 
 \note A conversion to a \c T* requires the use of the address operator (\c operator&) by the \e developer. If argument is `Alias<T> a`, and member name is `b`:
 
@@ -237,7 +237,7 @@ BigFatA a1;
 B b1( a1 ); // aliased (unsecure)
 BigFatA adr = new BigFatA( "I am the one " )
 B b2( adr ); // aliased
-CountedPtr<BigFatA> counted_ptr = new BigFatA( "I am the other one" ); 
+CountedPtr<BigFatA> counted_ptr = new BigFatA( "I am the other one" );
 B b3( counted_ptr ); // secure aliased
 delete counted_ptr; // b3 is still fine.
 delete adr;
@@ -254,7 +254,7 @@ A parameter `( ConstAlias<T> cT )` accepts several types of arguments constructe
 |To: \c const T*   | Shared. O(1)  | Shared. O(1)  |                |            |   |
 |To: \link CountedConstPtrOrConstPtr CountedConstPtrOrConstPtr<T>\endlink|Shared. O(1)|Shared. O(1)|Shared. O(1), \b secure|Shared. O(1), \b secure| Shared. O(1), \b secure|
 
-\note When choosing a `ConstAlias<T>` parameter, the \e programmer should really consider using a `CountedConstPtrOrConstPtr<T>` member to store it, since it is the most secure-able variant. The only advantage of the two others storing methods (\c const \c T&  and \c const \c T*) is that there is one less boolean test and indirection. 
+\note When choosing a `ConstAlias<T>` parameter, the \e programmer should really consider using a `CountedConstPtrOrConstPtr<T>` member to store it, since it is the most secure-able variant. The only advantage of the two others storing methods (\c const \c T&  and \c const \c T*) is that there is one less boolean test and indirection.
 
 \note A conversion to a `const T*` requires the use of the address operator (\c operator&) by the \e developer. If argument is `ConstAlias<T> a`, and member name is `b`:
 
@@ -279,7 +279,7 @@ BigFatA a1;
 B b1( a1 ); // const-aliased (unsecure)
 BigFatA adr = new BigFatA( "I am the one " )
 B b2( adr ); // aliased
-CountedPtr<BigFatA> counted_ptr = new BigFatA( "I am the other one" ); 
+CountedPtr<BigFatA> counted_ptr = new BigFatA( "I am the other one" );
 B b3( counted_ptr ); // secure aliased
 delete counted_ptr; // b3 is still fine.
 delete adr;

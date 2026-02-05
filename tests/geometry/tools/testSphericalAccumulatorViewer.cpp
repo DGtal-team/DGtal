@@ -60,7 +60,7 @@ void testSphericalViewer()
   PolyscopeViewer<> viewer;
   Vector a,b,c,d;
   viewer << accumulator;
-  
+
   trace.info() << "Bin values: ";
   for(SphericalAccumulator<Vector>::ConstIterator it=accumulator.begin(), itend=accumulator.end();
       it != itend;

@@ -45,7 +45,7 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 TEST_CASE( "Testing LpMetric" )
 {
-  
+
   BOOST_CONCEPT_ASSERT(( concepts::CMetricSpace<LpMetric<Z2i::Space>> ));
 
   LpMetric<Z2i::Space> l2_2D(2.0);
@@ -53,7 +53,7 @@ TEST_CASE( "Testing LpMetric" )
   LpMetric<Z2i::Space> l55_2D(5.5);
   Z2i::Space::RealPoint a(0,0), b(1.0,1.0), c(0.5,0.5);
   Z3i::Space::RealPoint aa(0,0,0), bb(1.0,1.0,1.0);
-  
+
   SECTION("Testing LpMetric distance values")
     {
       CAPTURE( l55_2D) ;

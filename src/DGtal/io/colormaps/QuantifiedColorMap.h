@@ -99,9 +99,9 @@ namespace DGtal
   public:
     /// the colormap that is quantified
     ColorMap myColorMap;
-    /// the maximum number of colors 
+    /// the maximum number of colors
     int myNbColors;
-    
+
   };
 
   /// Template function to simplify the build of QuantifiedColorMap object.

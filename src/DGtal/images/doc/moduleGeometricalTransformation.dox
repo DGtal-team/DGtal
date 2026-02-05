@@ -73,7 +73,7 @@ DGtal contains both models, and below snippets of code present how to
 apply them for a 2D image. In order to illustrate how to use discrete
 rigid transformation we are going to:
 
-a) add those includes: 
+a) add those includes:
 @snippet images/exampleRigidtransformation2d.cpp include
 
 b) define these types:
@@ -112,7 +112,7 @@ rotation around any arbitrary axis with exception for
 \f$(0,0,0)\f$. Usage is analogous to the 2D implementation and can be
 illustrated in the following steps:
 
-a) add those includes: 
+a) add those includes:
 @snippet images/exampleRigidtransformation3d.cpp include
 
 b) define these types:
@@ -145,10 +145,3 @@ and for backward as well:
 
 */
  }
-
-
-
-
-
-
-

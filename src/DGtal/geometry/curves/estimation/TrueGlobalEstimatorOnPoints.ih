@@ -59,7 +59,7 @@ template <typename CIt, typename PShape, typename PShapeFunctor>
 inline
 void
 DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>
-::attach(const ParametricShape& aShape) 
+::attach(const ParametricShape& aShape)
 {
   if ( myFunctorPtr != nullptr )
     delete myFunctorPtr;
@@ -69,7 +69,7 @@ DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>
 // ------------------------------------------------------------------------
 template <typename CIt, typename PShape, typename PShapeFunctor>
 inline
-typename DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::Quantity 
+typename DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::Quantity
 DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval() const
 {
   ASSERT(isValid());
@@ -79,7 +79,7 @@ DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval() const
 // ------------------------------------------------------------------------
 template <typename CIt, typename PShape, typename PShapeFunctor>
 inline
-typename DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::Quantity 
+typename DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::Quantity
 DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::eval(const ConstIterator& itb,
     const ConstIterator& ite,
     const double h) const
@@ -103,5 +103,3 @@ DGtal::TrueGlobalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::isValid() const
 {
     return myFunctorPtr != nullptr;
 }
-
-

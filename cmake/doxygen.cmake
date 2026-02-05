@@ -19,4 +19,3 @@ endif()
 
 ## Installation target
 install(DIRECTORY ${PROJECT_SOURCE_DIR}/doc/html DESTINATION ${INSTALL_DOC_PATH})
-

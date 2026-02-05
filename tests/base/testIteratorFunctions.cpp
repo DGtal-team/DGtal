@@ -48,7 +48,7 @@ struct Tool
 {
   static void add(Container& c, const T& obj)
   {
-    c.push_back(obj); 
+    c.push_back(obj);
   }
 };
 
@@ -59,7 +59,7 @@ struct Tool<std::forward_list<int>, T>
 {
   static void add(std::forward_list<int>& c, const T& obj)
   {
-    c.push_front(obj); 
+    c.push_front(obj);
   }
 };
 
@@ -73,50 +73,50 @@ bool testAdvance(Container c)
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Advance..." );
 
   ///////////////
   typedef typename Container::iterator I;
-  typedef typename IteratorCirculatorTraits<I>::Category Category;  
+  typedef typename IteratorCirculatorTraits<I>::Category Category;
   trace.info() << typeid(Category()).name() << std::endl;
 
   ///////////////
-  Tool<Container,int>::add(c,1);  
-  Tool<Container,int>::add(c,2);  
-  Tool<Container,int>::add(c,3);  
-  Tool<Container,int>::add(c,4);  
-  Tool<Container,int>::add(c,5);  
+  Tool<Container,int>::add(c,1);
+  Tool<Container,int>::add(c,2);
+  Tool<Container,int>::add(c,3);
+  Tool<Container,int>::add(c,4);
+  Tool<Container,int>::add(c,5);
 
   //classical iterator
-  I res = c.begin(); 
+  I res = c.begin();
   while ((nb+1) < 5)
     {
-      ++res; 
-      I i = c.begin(); 
-      DGtal::advanceIterator(i, (nb+1)); 
+      ++res;
+      I i = c.begin();
+      DGtal::advanceIterator(i, (nb+1));
       if ( (i != c.begin()) && ( i == res ) )
-	nbok++;  
-      nb++; 
+	nbok++;
+      nb++;
       trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
     }
 
   //circulator
-  Circulator<I> cres = Circulator<I>(c.begin(), c.begin(), c.end()); 
+  Circulator<I> cres = Circulator<I>(c.begin(), c.begin(), c.end());
   while ((nb+1) < 5)
     {
-      ++cres; 
-      Circulator<I> ci = Circulator<I>(c.begin(), c.begin(), c.end()); 
-      DGtal::advanceIterator(ci, (nb+1)); 
-      if ( (ci != Circulator<I>(c.begin(), c.begin(), c.end())) 
+      ++cres;
+      Circulator<I> ci = Circulator<I>(c.begin(), c.begin(), c.end());
+      DGtal::advanceIterator(ci, (nb+1));
+      if ( (ci != Circulator<I>(c.begin(), c.begin(), c.end()))
 	   && ( ci == cres ) )
-	nbok++;  
-      nb++; 
+	nbok++;
+      nb++;
       trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
     }
 
   trace.endBlock();
-  
+
   return (nbok == nb);
 }
 
@@ -130,110 +130,110 @@ bool testSize(Container c)
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Size..." );
 
   ///////////////
   typedef typename Container::iterator I;
-  typedef typename IteratorCirculatorTraits<I>::Category Category;  
+  typedef typename IteratorCirculatorTraits<I>::Category Category;
   trace.info() << typeid(Category()).name() << std::endl;
 
-  trace.info() << "empty underlying range" << std::endl; 
+  trace.info() << "empty underlying range" << std::endl;
   if ( rangeSize(c.begin(), c.end()) == 0 )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   if ( rangeSize( Circulator<I>(c.begin(), c.begin(), c.end()),
 		  Circulator<I>(c.end(), c.begin(), c.end()) ) == 0 )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   if ( subRangeSize(c.begin(), c.end()) == 0 )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   if ( subRangeSize( Circulator<I>(c.begin(), c.begin(), c.end()),
 		     Circulator<I>(c.end(), c.begin(), c.end()) ) == 0 )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
   ///////////////
-  Tool<Container,int>::add(c,5);  
+  Tool<Container,int>::add(c,5);
 
-  trace.info() << "underlying range of one element" << std::endl; 
+  trace.info() << "underlying range of one element" << std::endl;
   if ( rangeSize(c.begin(), c.end()) == 1 )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   if ( rangeSize( Circulator<I>(c.begin(), c.begin(), c.end()),
 		  Circulator<I>(c.begin(), c.begin(), c.end()) ) == 1 )
-    nbok++;  
+    nbok++;
   nb++;
 
   ///////////////
-  Tool<Container,int>::add(c,1);  
-  Tool<Container,int>::add(c,2);  
-  Tool<Container,int>::add(c,3);  
-  Tool<Container,int>::add(c,4);  
-  Tool<Container,int>::add(c,5);  
-  Tool<Container,int>::add(c,6);  
+  Tool<Container,int>::add(c,1);
+  Tool<Container,int>::add(c,2);
+  Tool<Container,int>::add(c,3);
+  Tool<Container,int>::add(c,4);
+  Tool<Container,int>::add(c,5);
+  Tool<Container,int>::add(c,6);
 
-  trace.info() << "two equal iterators" << std::endl; 
+  trace.info() << "two equal iterators" << std::endl;
   if ( rangeSize(c.begin(), c.begin()) == 0 )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   if ( subRangeSize(c.begin(), c.begin()) == 0 )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   if ( subRangeSize( Circulator<I>(c.begin(), c.begin(), c.end()),
 		     Circulator<I>(c.begin(), c.begin(), c.end()) ) == 0 )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
 
-  trace.info() << "whole range (of 7 elements)" << std::endl; 
+  trace.info() << "whole range (of 7 elements)" << std::endl;
   if ( rangeSize(c.begin(), c.end()) == 7 )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   if ( rangeSize( Circulator<I>(c.begin(), c.begin(), c.end()),
 		  Circulator<I>(c.begin(), c.begin(), c.end()) ) == 7 )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
   /////////////////
-  I itb = c.begin(); ++itb; 
-  I ite = itb; 
-  ite++; ite++; ite++;  ite++; 
+  I itb = c.begin(); ++itb;
+  I ite = itb;
+  ite++; ite++; ite++;  ite++;
 
-  trace.info() << "subrange (of 4 elements)" << std::endl; 
+  trace.info() << "subrange (of 4 elements)" << std::endl;
   if ( rangeSize(itb, ite) == 4 )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   if ( rangeSize( Circulator<I>(itb, c.begin(), c.end()),
 		  Circulator<I>(ite, c.begin(), c.end()) ) == 4 )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   if ( subRangeSize(itb, ite) == 4 )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   if ( subRangeSize( Circulator<I>(itb, c.begin(), c.end()),
 		     Circulator<I>(ite, c.begin(), c.end()) ) == 4 )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
 
   trace.endBlock();
-  
+
   return (nbok == nb);
 }
 
@@ -248,165 +248,165 @@ bool testMiddle(Container c)
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Middle iterator..." );
 
   ///////////////
   typedef typename Container::iterator I;
-  typedef typename IteratorCirculatorTraits<I>::Category Category;  
+  typedef typename IteratorCirculatorTraits<I>::Category Category;
   trace.info() << typeid(Category()).name() << std::endl;
 
-  trace.info() << "empty underlying range" << std::endl; 
+  trace.info() << "empty underlying range" << std::endl;
   if ( rangeMiddle(c.begin(), c.end()) == c.begin() )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   if ( rangeMiddle( Circulator<I>(c.begin(), c.begin(), c.end()),
-		    Circulator<I>(c.begin(), c.begin(), c.end()) ) 
-       == Circulator<I>(c.begin(), c.begin(), c.end()) ) 
-    nbok++;  
+		    Circulator<I>(c.begin(), c.begin(), c.end()) )
+       == Circulator<I>(c.begin(), c.begin(), c.end()) )
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   if ( subRangeMiddle(c.begin(), c.end()) == c.begin() )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   if ( subRangeMiddle( Circulator<I>(c.begin(), c.begin(), c.end()),
-		       Circulator<I>(c.end(), c.begin(), c.end()) ) 
-       == Circulator<I>(c.begin(), c.begin(), c.end()) ) 
-    nbok++;  
+		       Circulator<I>(c.end(), c.begin(), c.end()) )
+       == Circulator<I>(c.begin(), c.begin(), c.end()) )
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
   ///////////////
-  Tool<Container,int>::add(c,5);  
+  Tool<Container,int>::add(c,5);
 
-  trace.info() << "underlying range of one element" << std::endl; 
+  trace.info() << "underlying range of one element" << std::endl;
   if ( rangeMiddle(c.begin(), c.end()) == c.begin() )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   if ( rangeMiddle( Circulator<I>(c.begin(), c.begin(), c.end()),
-		    Circulator<I>(c.begin(), c.begin(), c.end()) ) 
+		    Circulator<I>(c.begin(), c.begin(), c.end()) )
        == Circulator<I>(c.begin(), c.begin(), c.end()) )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
   ///////////////
-  Tool<Container,int>::add(c,1);  
-  Tool<Container,int>::add(c,2);  
-  Tool<Container,int>::add(c,3);  
-  Tool<Container,int>::add(c,4);  
-  Tool<Container,int>::add(c,5);  
-  Tool<Container,int>::add(c,6);  
-  Tool<Container,int>::add(c,5);  
+  Tool<Container,int>::add(c,1);
+  Tool<Container,int>::add(c,2);
+  Tool<Container,int>::add(c,3);
+  Tool<Container,int>::add(c,4);
+  Tool<Container,int>::add(c,5);
+  Tool<Container,int>::add(c,6);
+  Tool<Container,int>::add(c,5);
 
-  trace.info() << "two equal iterators" << std::endl; 
+  trace.info() << "two equal iterators" << std::endl;
   if ( rangeMiddle(c.begin(), c.begin()) == c.begin() )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   if ( subRangeMiddle(c.begin(), c.begin()) == c.begin() )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   if ( subRangeMiddle( Circulator<I>(c.begin(), c.begin(), c.end()),
-		       Circulator<I>(c.begin(), c.begin(), c.end()) ) 
+		       Circulator<I>(c.begin(), c.begin(), c.end()) )
        == Circulator<I>(c.begin(), c.begin(), c.end()) )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
   ///////////////
   I itb = c.begin();
-  I ite = itb; 
-  ite++; ite++; ite++;  
-  ite++; ite++; ite++; ite++;  
-  I res1 = itb; 
-  res1++; res1++; res1++; 
-  I res2 = res1; 
-  res1++;  
+  I ite = itb;
+  ite++; ite++; ite++;
+  ite++; ite++; ite++; ite++;
+  I res1 = itb;
+  res1++; res1++; res1++;
+  I res2 = res1;
+  res1++;
 
-  trace.info() << "whole range with odd number of elements" << std::endl; 
+  trace.info() << "whole range with odd number of elements" << std::endl;
   if ( rangeMiddle(c.begin(), ite) == res2 )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   if ( rangeMiddle( Circulator<I>(c.begin(), c.begin(), ite),
-		    Circulator<I>(c.begin(), c.begin(), ite) ) 
+		    Circulator<I>(c.begin(), c.begin(), ite) )
        == Circulator<I>(res2, c.begin(), ite) )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
-  trace.info() << "whole range with even number of elements" << std::endl; 
+  trace.info() << "whole range with even number of elements" << std::endl;
   if ( rangeMiddle(c.begin(), c.end()) == res1 )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   if ( rangeMiddle( Circulator<I>(c.begin(), c.begin(), c.end()),
-		    Circulator<I>(c.begin(), c.begin(), c.end()) ) 
+		    Circulator<I>(c.begin(), c.begin(), c.end()) )
        == Circulator<I>(res1, c.begin(), c.end()) )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
   ///////////////
-  ite = itb; 
-  itb++;  
-  ite++; ite++; ite++;  
-  ite++; ite++; ite++;  
- 
-  trace.info() << "subrange with odd number of elements" << std::endl; 
+  ite = itb;
+  itb++;
+  ite++; ite++; ite++;
+  ite++; ite++; ite++;
+
+  trace.info() << "subrange with odd number of elements" << std::endl;
   if ( rangeMiddle(itb, ite) == res2 )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   if ( rangeMiddle( Circulator<I>(itb, c.begin(), c.end()),
-		    Circulator<I>(ite, c.begin(), c.end()) ) 
+		    Circulator<I>(ite, c.begin(), c.end()) )
        == Circulator<I>(res2, c.begin(), c.end()) )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   if ( subRangeMiddle(itb, ite) == res2 )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   if ( subRangeMiddle( Circulator<I>(itb, c.begin(), c.end()),
-		       Circulator<I>(ite, c.begin(), c.end()) ) 
+		       Circulator<I>(ite, c.begin(), c.end()) )
        == Circulator<I>(res2, c.begin(), c.end()) )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
   ///////////////
-  ite++; 
+  ite++;
 
-  trace.info() << "subrange with even number of elements" << std::endl; 
+  trace.info() << "subrange with even number of elements" << std::endl;
   if ( rangeMiddle(itb, ite) == res1 )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   if ( rangeMiddle( Circulator<I>(itb, c.begin(), c.end()),
-		    Circulator<I>(ite, c.begin(), c.end()) ) 
+		    Circulator<I>(ite, c.begin(), c.end()) )
        == Circulator<I>(res1, c.begin(), c.end()) )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   if ( subRangeMiddle(itb, ite) == res1 )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   if ( subRangeMiddle( Circulator<I>(itb, c.begin(), c.end()),
-		       Circulator<I>(ite, c.begin(), c.end()) ) 
+		       Circulator<I>(ite, c.begin(), c.end()) )
        == Circulator<I>(res1, c.begin(), c.end()) )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
   trace.endBlock();
-  
+
   return (nbok == nb);
 }
 
@@ -416,7 +416,7 @@ bool testMiddle(Container c)
 template<typename IC>
 bool testIsNotEmpty(const IC& itb, const IC& ite, const bool& aFlagIsNotEmpty)
 {
-  return (isNotEmpty(itb,ite) == aFlagIsNotEmpty ); 
+  return (isNotEmpty(itb,ite) == aFlagIsNotEmpty );
 }
 
 /**
@@ -429,111 +429,111 @@ bool testRange(Container c)
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "empty / not empty..." );
 
   ///////////////
   typedef typename Container::iterator I;
-  typedef typename IteratorCirculatorTraits<I>::Category Category;  
+  typedef typename IteratorCirculatorTraits<I>::Category Category;
   trace.info() << typeid(Category()).name() << std::endl;
 
-  trace.info() << "empty underlying range" << std::endl; 
+  trace.info() << "empty underlying range" << std::endl;
   if ( testIsNotEmpty(c.begin(), c.end(), false) )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
-  if ( testIsNotEmpty(Circulator<I>(c.begin(), c.begin(), c.end()), 
+  if ( testIsNotEmpty(Circulator<I>(c.begin(), c.begin(), c.end()),
 		      Circulator<I>(c.begin(), c.begin(), c.end()), false) )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
-  if ( testIsNotEmpty(ReverseIterator<Circulator<I> >(Circulator<I>(c.begin(), c.begin(), c.end())), 
+  if ( testIsNotEmpty(ReverseIterator<Circulator<I> >(Circulator<I>(c.begin(), c.begin(), c.end())),
 		      ReverseIterator<Circulator<I> >(Circulator<I>(c.begin(), c.begin(), c.end())), false) )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
   ///////////////
-  Tool<Container,int>::add(c,5);  
+  Tool<Container,int>::add(c,5);
 
-  trace.info() << "underlying range of one element" << std::endl; 
+  trace.info() << "underlying range of one element" << std::endl;
   if ( testIsNotEmpty(c.begin(), c.end(), true) )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
-  if ( testIsNotEmpty(Circulator<I>(c.begin(), c.begin(), c.end()), 
+  if ( testIsNotEmpty(Circulator<I>(c.begin(), c.begin(), c.end()),
 		      Circulator<I>(c.begin(), c.begin(), c.end()), true) )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
-  if ( testIsNotEmpty(ReverseIterator<Circulator<I> >(Circulator<I>(c.begin(), c.begin(), c.end())), 
+  if ( testIsNotEmpty(ReverseIterator<Circulator<I> >(Circulator<I>(c.begin(), c.begin(), c.end())),
 		      ReverseIterator<Circulator<I> >(Circulator<I>(c.begin(), c.begin(), c.end())), true) )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
   ///////////////
-  Tool<Container,int>::add(c,1);  
-  Tool<Container,int>::add(c,2);  
-  Tool<Container,int>::add(c,3);  
-  Tool<Container,int>::add(c,4);  
-  Tool<Container,int>::add(c,5);  
-  Tool<Container,int>::add(c,6);  
-  Tool<Container,int>::add(c,5);  
+  Tool<Container,int>::add(c,1);
+  Tool<Container,int>::add(c,2);
+  Tool<Container,int>::add(c,3);
+  Tool<Container,int>::add(c,4);
+  Tool<Container,int>::add(c,5);
+  Tool<Container,int>::add(c,6);
+  Tool<Container,int>::add(c,5);
 
-  trace.info() << "two equal iterators" << std::endl; 
+  trace.info() << "two equal iterators" << std::endl;
   if ( testIsNotEmpty(c.begin(), c.begin(), false) )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
-  if ( testIsNotEmpty(Circulator<I>(c.begin(), c.begin(), c.end()), 
+  if ( testIsNotEmpty(Circulator<I>(c.begin(), c.begin(), c.end()),
 		      Circulator<I>(c.begin(), c.begin(), c.end()), true) )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
   ///////////////
-  I itb = c.begin(); itb++; 
-  I ite = itb; 
-  ite++; ite++;  
+  I itb = c.begin(); itb++;
+  I ite = itb;
+  ite++; ite++;
   ite++; ite++;
 
-  trace.info() << "whole range" << std::endl; 
+  trace.info() << "whole range" << std::endl;
   if ( testIsNotEmpty(c.begin(), c.end(), true) )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
-  if ( testIsNotEmpty(Circulator<I>(itb, c.begin(), c.end()), 
+  if ( testIsNotEmpty(Circulator<I>(itb, c.begin(), c.end()),
 		      Circulator<I>(itb, c.begin(), c.end()), true) )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
-  if ( testIsNotEmpty(ReverseIterator<Circulator<I> >(Circulator<I>(itb, c.begin(), c.end())), 
+  if ( testIsNotEmpty(ReverseIterator<Circulator<I> >(Circulator<I>(itb, c.begin(), c.end())),
 		      ReverseIterator<Circulator<I> >(Circulator<I>(itb, c.begin(), c.end())), true) )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
- 
-  trace.info() << "subrange" << std::endl; 
+
+  trace.info() << "subrange" << std::endl;
   if ( testIsNotEmpty(itb, ite, true) )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
-  if ( testIsNotEmpty(Circulator<I>(itb, c.begin(), c.end()), 
+  if ( testIsNotEmpty(Circulator<I>(itb, c.begin(), c.end()),
 		      Circulator<I>(ite, c.begin(), c.end()), true) )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
-  if ( testIsNotEmpty(ReverseIterator<Circulator<I> >(Circulator<I>(itb, c.begin(), c.end())), 
+  if ( testIsNotEmpty(ReverseIterator<Circulator<I> >(Circulator<I>(itb, c.begin(), c.end())),
 		      ReverseIterator<Circulator<I> >(Circulator<I>(ite, c.begin(), c.end())), true) )
-    nbok++;  
+    nbok++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
 
   trace.endBlock();
-  
+
   return (nbok == nb);
 }
 
@@ -549,21 +549,21 @@ int main( int argc, char** argv )
   trace.info() << endl;
 
   std::forward_list<int> fl;
-  std::list<int> bl; 
-  std::vector<int> v; 
+  std::list<int> bl;
+  std::vector<int> v;
 
-  bool res = 
-    testAdvance(fl) && 
-    testAdvance(bl) && 
+  bool res =
+    testAdvance(fl) &&
+    testAdvance(bl) &&
     testAdvance(v) &&
-    testMiddle(fl) && 
-    testMiddle(bl) && 
+    testMiddle(fl) &&
+    testMiddle(bl) &&
     testMiddle(v) &&
-    testSize(fl) && 
-    testSize(bl) && 
+    testSize(fl) &&
+    testSize(bl) &&
     testSize(v) &&
-    testRange(fl) && 
-    testRange(bl) && 
+    testRange(fl) &&
+    testRange(bl) &&
     testRange(v);
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;

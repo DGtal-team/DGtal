@@ -1,11 +1,11 @@
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  */
 namespace DGtal {
 
 /**
-   
+
 @page moduleSetFunctions  Set operations on arbitrary containers
 
 @writers Jacques-Olivier Lachaud
@@ -13,7 +13,7 @@ namespace DGtal {
 @since 0.9.1
 
 Part of the \ref packageBase.
-  
+
 This part of the manual describes how to perform set operations
 (union, intersection, difference, symmetric difference) on arbitrary
 containers.
@@ -69,7 +69,7 @@ on your containers. The following snippet shows an example:
 using namespace DGtal::functions::setops;
 
 typedef std::list<int> Container; // could be boost::unordered_set<int>, etc
-int S1[ 10 ] = { 4, 15, 20, 17, 9, 7, 13, 12, 1, 3 }; 
+int S1[ 10 ] = { 4, 15, 20, 17, 9, 7, 13, 12, 1, 3 };
 int S2[ 6 ]  = { 17, 14, 19, 2, 3, 4 };
 Container A( S1, S1 + 10 );
 Container B( S2, S2 + 6 );
@@ -103,7 +103,7 @@ int S1[ 10 ] = { 1, 3, 4, 7, 9, 12, 13, 15, 17, 20 };
 int S2[ 6 ]  = { 2, 3, 4, 14, 17, 19 };
 Container A( S1, S1 + 10 );
 Container B( S2, S2 + 6 );
-Container AorB = makeUnion<Container,true>( A, B ); 
+Container AorB = makeUnion<Container,true>( A, B );
 \endcode
 
 @section dgtal_setfunctions_sec3  Benchmark for set operations
@@ -178,13 +178,13 @@ int S1[ 10 ] = { 1, 3, 4, 7, 9, 12, 13, 15, 17, 20 };
 int S2[ 6 ]  = { 2, 3, 4, 14, 17, 19 };
 Container A( S1, S1 + 10 );
 Container B( S2, S2 + 6 );
-if ( isSubset( A, A | B ) ) std::cout << "ok" << std::endl; 
-else                        std::cout << "erreur" << std::endl; 
-if ( isSubset( A & B, B ) ) std::cout << "ok" << std::endl; 
-else                        std::cout << "erreur" << std::endl; 
+if ( isSubset( A, A | B ) ) std::cout << "ok" << std::endl;
+else                        std::cout << "erreur" << std::endl;
+if ( isSubset( A & B, B ) ) std::cout << "ok" << std::endl;
+else                        std::cout << "erreur" << std::endl;
 if ( isEqual( ( A | B ) - ( A & B ), A ^ B ) )
-                            std::cout << "ok" << std::endl; 
-else                        std::cout << "erreur" << std::endl; 
+                            std::cout << "ok" << std::endl;
+else                        std::cout << "erreur" << std::endl;
 \endcode
 
 @section dgtal_setfunctions_sec5 For developers: a traits class for containers

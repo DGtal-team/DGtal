@@ -42,15 +42,15 @@ using namespace std;
 using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
-// Functions for testing class ConvexHull2D 
+// Functions for testing class ConvexHull2D
 ///////////////////////////////////////////////////////////////////////////////
 
 TEST_CASE( "Testing MelkmanConvexHull insertion from front and back using reverse()" )
 {
   typedef PointVector<2, double_t> Point;
-  typedef InHalfPlaneBySimple3x3Matrix<Point, double> Functor;  
-  DGtal::MelkmanConvexHull<Point, Functor> ch; 
-  
+  typedef InHalfPlaneBySimple3x3Matrix<Point, double> Functor;
+  DGtal::MelkmanConvexHull<Point, Functor> ch;
+
   // sequence of points splited from test testConvexHull2D_Thickness:
   //  using  reverse() should produce the same convex hull.
 
@@ -67,20 +67,20 @@ TEST_CASE( "Testing MelkmanConvexHull insertion from front and back using revers
   ch.add(Point(103.2, 53.4));
   ch.add(Point(104.2, 53.2));
   ch.add(Point(104.0, 54.2));
-  
+
   Point pHV,qHV,sHV, pE,qE,sE;
-   
-  const double thicknessHV = DGtal::functions::Hull2D::computeHullThickness( ch.begin(), ch.end(), 
+
+  const double thicknessHV = DGtal::functions::Hull2D::computeHullThickness( ch.begin(), ch.end(),
                                                  DGtal::functions::Hull2D::HorizontalVerticalThickness,
                                                  pHV, qHV, sHV);
-  
-  const double thicknessE  = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
+
+  const double thicknessE  = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(),
                                                  DGtal::functions::Hull2D::EuclideanThickness,
                                                  pE, qE, sE);
 
   CAPTURE( thicknessHV );
   CAPTURE( thicknessE  );
-  
+
   SECTION("Testing antipodal points of ConvexHull2D")
     {
       REQUIRE( pHV == Point(101.2, 48.2) );
@@ -94,11 +94,11 @@ TEST_CASE( "Testing MelkmanConvexHull insertion from front and back using revers
       REQUIRE( sE == Point(102.3, 52.3) );
     }
   ch.reverse();
-    
-  const double thicknessEb = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
+
+  const double thicknessEb = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(),
                                                  DGtal::functions::Hull2D::EuclideanThickness,
                                                  pE, qE, sE);
-   
+
   CAPTURE( thicknessEb );
 
   SECTION("Testing same antipodal points after hull reversing ")

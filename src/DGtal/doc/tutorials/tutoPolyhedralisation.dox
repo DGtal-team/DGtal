@@ -1,10 +1,10 @@
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  */
 namespace DGtal {
 
 /**
-   
+
 @page tutoPolyhedralisation  Tutorial: making a polyhedron from a digital object
 
 @writers Jacques-Olivier Lachaud
@@ -19,7 +19,7 @@ surface) from a digital object. It uses several ingredients of DGtal:
 - digital surface: to connect all boundary elements of the digital object as a graph (class DigitalSurface)
 - graph visitor: to define neighborhoods on the digital object boundary (class BreadthFirstVisitor)
 - digital plane computer: to recognize points of the boundary that belongs to the same plane (class ChordGenericNaivePlaneComputer)
-- umbrellas: to decompose the digital surface into cells 
+- umbrellas: to decompose the digital surface into cells
 - viewers: to see intermediate and final results of our algorithm (class PolyscopeViewer)
 
 [TOC]
@@ -149,7 +149,7 @@ typedef PolyscopeViewer<Space,KSpace> MyViewer3D;
 MyViewer3D viewer( ks );
 viewer << Color::White;
 viewer << *( digSurf.begin() ); // surfel pointed by the begin iterator.
-viewer.show(); 
+viewer.show();
 \endcode
 
 Update this code to display the whole surface, just by iterating on
@@ -164,7 +164,7 @@ viewer.drawAsSimplified();
 \section tutoPolyhedralisation_sec5 Recognizing planar zones on the object
 
 We need two different elements to decompose the boundary of our object
-into planar zones. 
+into planar zones.
 
 - The first one is a way to determine if a set of points is planar. We
   will use the class ChordGenericNaivePlaneComputer to carry out this
@@ -241,7 +241,7 @@ could use other embeddings: (1) use the four pointels of each surfel,
 
 Ok, this is not an easy task, the smallest decomposition is even
 NP-hard in the general case. We use the following heuristic, which is
-reasonnably costly. First, we associate an integer to each surfel, and we initialize it to zero. 
+reasonnably costly. First, we associate an integer to each surfel, and we initialize it to zero.
 
 \code
 // Initialisation
@@ -370,7 +370,7 @@ of its round plane.
 \code
 MyViewer3D viewer( ks );
 viewer.drawAsSimplified();
-for ( std::map<Surfel,RoundPlane*>::const_iterator 
+for ( std::map<Surfel,RoundPlane*>::const_iterator
         it = v2plane.begin(), itE = v2plane.end();
         it != itE; ++it )
   {
@@ -379,7 +379,7 @@ for ( std::map<Surfel,RoundPlane*>::const_iterator
     viewer << rplane->second;
     viewer << v;
   }
-viewer.show(); 
+viewer.show();
 
 \endcode
 
@@ -445,8 +445,8 @@ easily done by iterating over the vector `roundPlanes`. We store the
 normal vector `N` and the offset `mu` into the `RoundPlane`.
 
 \code
-  for ( std::vector<RoundPlane*>::iterator 
-          it = roundPlanes.begin(), itE = roundPlanes.end(); 
+  for ( std::vector<RoundPlane*>::iterator
+          it = roundPlanes.begin(), itE = roundPlanes.end();
         it != itE; ++it )
     {
       NaivePlaneComputer& computer = (*it)->first;
@@ -465,7 +465,7 @@ neighboring plane.
 
 \code
   std::map<Surfel, RealPoint> coordinates;
-  for ( std::map<Surfel,RoundPlane*>::const_iterator 
+  for ( std::map<Surfel,RoundPlane*>::const_iterator
           it = v2plane.begin(), itE = v2plane.end();
         it != itE; ++it )
     {

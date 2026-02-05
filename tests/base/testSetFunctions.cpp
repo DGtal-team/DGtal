@@ -54,7 +54,7 @@ TEMPLATE_TEST_CASE( "SetFunctions module unit tests", "[set_functions]",
                     std::unordered_set<int> )
 
 {
-  int S1[ 10 ] = { 4, 15, 20, 17, 9, 7, 13, 12, 1, 3 }; 
+  int S1[ 10 ] = { 4, 15, 20, 17, 9, 7, 13, 12, 1, 3 };
   int S2[ 6 ]  = { 17, 14, 19, 2, 3, 4 };
   TestType C1( S1, S1 + 10 );
   TestType C2( S2, S2 + 6 );
@@ -116,8 +116,8 @@ TEMPLATE_TEST_CASE( "SetFunctions benchmark operator | (sequences)", "[set_funct
                     std::vector<int> )
 {
   typedef typename TestType::size_type Size;
-  std::set<int> S1; 
-  std::set<int> S2; 
+  std::set<int> S1;
+  std::set<int> S2;
   for ( int i = 0; i < NB; ++i ) S1.insert( randomNB(  ) );
   for ( int i = 0; i < NB; ++i ) S2.insert( randomNB(  ) );
   TestType A( S1.begin(), S1.end() );
@@ -125,7 +125,7 @@ TEMPLATE_TEST_CASE( "SetFunctions benchmark operator | (sequences)", "[set_funct
   TestType AorB;
   std::random_device rd;
   std::mt19937 g(rd());
-  
+
   std::shuffle( A.begin(), A.end(), g);
   std::shuffle( B.begin(), B.end(), g);
 
@@ -144,9 +144,9 @@ TEMPLATE_TEST_CASE( "SetFunctions benchmark operator | (sets)", "[set_functions]
                     std::unordered_set<int> )
 {
   typedef typename TestType::size_type Size;
-  std::set<int> S1; 
+  std::set<int> S1;
   for ( int i = 0; i < NB; ++i ) S1.insert( randomNB(  ) );
-  std::set<int> S2; 
+  std::set<int> S2;
   for ( int i = 0; i < NB; ++i ) S2.insert( randomNB(  ) );
   TestType A( S1.begin(), S1.end() );
   TestType B( S2.begin(), S2.end() );
@@ -167,16 +167,16 @@ TEMPLATE_TEST_CASE( "SetFunctions benchmark operator & (sequences)", "[set_funct
                     std::vector<int> )
 {
   typedef typename TestType::size_type Size;
-  std::set<int> S1; 
+  std::set<int> S1;
   for ( int i = 0; i < NB; ++i ) S1.insert( randomNB(  ) );
-  std::set<int> S2; 
+  std::set<int> S2;
   for ( int i = 0; i < NB; ++i ) S2.insert( randomNB(  ) );
   TestType A( S1.begin(), S1.end() );
   TestType B( S2.begin(), S2.end() );
   TestType AandB;
   std::random_device rd;
   std::mt19937 g(rd());
-  
+
   std::shuffle( A.begin(), A.end(), g );
   std::shuffle( B.begin(), B.end(), g );
 
@@ -195,9 +195,9 @@ TEMPLATE_TEST_CASE( "SetFunctions benchmark operator & (sets)", "[set_functions]
                     std::unordered_set<int> )
 {
   typedef typename TestType::size_type Size;
-  std::set<int> S1; 
+  std::set<int> S1;
   for ( int i = 0; i < NB; ++i ) S1.insert( randomNB(  ) );
-  std::set<int> S2; 
+  std::set<int> S2;
   for ( int i = 0; i < NB; ++i ) S2.insert( randomNB(  ) );
   TestType A( S1.begin(), S1.end() );
   TestType B( S2.begin(), S2.end() );
@@ -219,16 +219,16 @@ TEMPLATE_TEST_CASE( "SetFunctions benchmark operator - (sequences)", "[set_funct
                     std::vector<int> )
 {
   typedef typename TestType::size_type Size;
-  std::set<int> S1; 
+  std::set<int> S1;
   for ( int i = 0; i < NB; ++i ) S1.insert( randomNB(  ) );
-  std::set<int> S2; 
+  std::set<int> S2;
   for ( int i = 0; i < NB; ++i ) S2.insert( randomNB(  ) );
   TestType A( S1.begin(), S1.end() );
   TestType B( S2.begin(), S2.end() );
   TestType AminusB;
   std::random_device rd;
   std::mt19937 g(rd());
-  
+
   std::shuffle( A.begin(), A.end(), g );
   std::shuffle( B.begin(), B.end(), g );
 
@@ -248,9 +248,9 @@ TEMPLATE_TEST_CASE( "SetFunctions benchmark operator - (sets)", "[set_functions]
                     std::unordered_set<int> )
 {
   typedef typename TestType::size_type Size;
-  std::set<int> S1; 
+  std::set<int> S1;
   for ( int i = 0; i < NB; ++i ) S1.insert( randomNB(  ) );
-  std::set<int> S2; 
+  std::set<int> S2;
   for ( int i = 0; i < NB; ++i ) S2.insert( randomNB(  ) );
   TestType A( S1.begin(), S1.end() );
   TestType B( S2.begin(), S2.end() );
@@ -273,16 +273,16 @@ TEMPLATE_TEST_CASE( "SetFunctions benchmark operator ^ (sequences)", "[set_funct
                     std::vector<int> )
 {
   typedef typename TestType::size_type Size;
-  std::set<int> S1; 
+  std::set<int> S1;
   for ( int i = 0; i < NB; ++i ) S1.insert( randomNB(  ) );
-  std::set<int> S2; 
+  std::set<int> S2;
   for ( int i = 0; i < NB; ++i ) S2.insert( randomNB(  ) );
   TestType A( S1.begin(), S1.end() );
   TestType B( S2.begin(), S2.end() );
   TestType AxorB;
   std::random_device rd;
   std::mt19937 g(rd());
-  
+
   std::shuffle( A.begin(), A.end(), g );
   std::shuffle( B.begin(), B.end(), g );
 
@@ -301,9 +301,9 @@ TEMPLATE_TEST_CASE( "SetFunctions benchmark operator ^ (sets)", "[set_functions]
                     std::unordered_set<int> )
 {
   typedef typename TestType::size_type Size;
-  std::set<int> S1; 
+  std::set<int> S1;
   for ( int i = 0; i < NB; ++i ) S1.insert( randomNB(  ) );
-  std::set<int> S2; 
+  std::set<int> S2;
   for ( int i = 0; i < NB; ++i ) S2.insert( randomNB(  ) );
   TestType A( S1.begin(), S1.end() );
   TestType B( S2.begin(), S2.end() );
@@ -318,7 +318,3 @@ TEMPLATE_TEST_CASE( "SetFunctions benchmark operator ^ (sets)", "[set_functions]
   Size size_AxorB    = AxorB.size();
   REQUIRE( size_AxorB   <= std::max( size_A, size_B ) );
 }
-
-
-
-

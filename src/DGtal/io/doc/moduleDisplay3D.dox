@@ -20,7 +20,7 @@ namespace DGtal {
 
   The semi-abstract template class Display3D defines the stream
   mechanism to display 3d primitive (like PointVector,
-  DigitalSetBySTLSet, Object ...). The PolyscopeViewer class permits 
+  DigitalSetBySTLSet, Object ...). The PolyscopeViewer class permits
   an interactive visualization (based on Polyscope (OpenGL backend)).
 
   Display3D have two template parameters which correspond to the
@@ -34,10 +34,10 @@ namespace DGtal {
 
 \section DGtalGLV_PolyscopeViewer Interactive visualization from PolyscopeViewer
 
-The class PolyscopeViewer is a wrapper around the Polyscope library ( https://polyscope.run ).  
-It permits displaying geometrical data such as Point, Lines and (volumetric) meshes. 
-The library handles 3D scenes movement and allows to attributes of displayed objects 
-(such as colors and colormaps). The graphical interface is based on ImGUI 
+The class PolyscopeViewer is a wrapper around the Polyscope library ( https://polyscope.run ).
+It permits displaying geometrical data such as Point, Lines and (volumetric) meshes.
+The library handles 3D scenes movement and allows to attributes of displayed objects
+(such as colors and colormaps). The graphical interface is based on ImGUI
 (https://github.com/ocornut/imgui) which can be  further extended.
 
  *
@@ -74,21 +74,21 @@ Then we can display some 3D primitives:
  viewer.show();
 @endcode
 
-The *show()* method enters the visualization loop and should be call after all object are 
+The *show()* method enters the visualization loop and should be call after all object are
 drawn with the viewer. You should obtain the following visualization:
 
 \image html simple3dVisu1.png "Digital point visualization  with PolyscopeViewer."
 
 
-\subsection  DGtalGLV_PolyscopeViewer_Rendering Interactive change of rendering   
+\subsection  DGtalGLV_PolyscopeViewer_Rendering Interactive change of rendering
 
 Polyscope has its own default rendering settings. Many parameters can be changed either
 programatically or at runtime directly within the viewer. This includes camera parameters
-(up direction, far/near plane, ...), materials of objects, lighting and many more. See 
-polyscope documentation for available options (https://polyscope.run). 
+(up direction, far/near plane, ...), materials of objects, lighting and many more. See
+polyscope documentation for available options (https://polyscope.run).
 
 @note Some rendered image of this documentation may have altered parameters to improve
-visibility such as scene extents or transparency mode.  
+visibility such as scene extents or transparency mode.
 
 * \section DGtalGLV_VisualizationDigitalSet Visualization of DigitalSet and digital objects
 *
@@ -109,7 +109,7 @@ visibility such as scene extents or transparency mode.
 *
 * \section  DGtalGLV_ModeEx  Drawmode selection: the example of digital objects in 3D
 *
-*  As for Board2D, a mode can be chosen to display elements. The viewer has several 
+*  As for Board2D, a mode can be chosen to display elements. The viewer has several
 *  methods to adjust how objects are drawn.
 *
 *@code
@@ -189,7 +189,7 @@ It is also possible to change the mode for displaying the voxels: (see image (c)
 @code
 // Domain AND points are drawn as balls
 // Grid mode was not removed, domain grid are also drawn
-viewer.drawAsBalls(); 
+viewer.drawAsBalls();
 viewer << domain;
 viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
 @endcode
@@ -209,8 +209,8 @@ viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
 \section  DGtalGLV_Custom Changing the style for displaying drawable elements.
 
 As for Board2D, it is possible to custom the way to display 3D elements. By default, the colors of elements are given by
-the viewer and can cycle through some of them. They can be changed directly in the user interface of the viewer. 
-Colors can also be set programatically; 
+the viewer and can cycle through some of them. They can be changed directly in the user interface of the viewer.
+Colors can also be set programatically;
 
 @code
   viewer << Color(250, 0,0); // Alternatively: viewer.drawColor(color);
@@ -220,10 +220,10 @@ Colors can also be set programatically;
 
 The example <a  href="io_2viewers_2viewer3D-5-colors_8cpp-example.html"> viewer3D-5-colors.cpp </a> illustrates some possible customs :
 
-\image html visuModeCustom.png "Example of several custom display." 
+\image html visuModeCustom.png "Example of several custom display."
 
 
-If colors depend on values, please see section about adding properties to object instead of manually setting colors. 
+If colors depend on values, please see section about adding properties to object instead of manually setting colors.
 
 \section DGtalGLV_CLipping Adding clipping planes
 
@@ -253,13 +253,13 @@ we can add, for instance, two different clipping planes:
  viewer << ClippingPlane(0,1,0.3,-10);
 @endcode
 
-\image html visuClippingAll.png "(a) visualization of the initial set."  
+\image html visuClippingAll.png "(a) visualization of the initial set."
  \image html  visuClipping1.png "(b) visualization after adding the first clipping plane (0,1,0.3,-10)."
  \image html  visuClipping2.png "(c) visualization after adding a second clipping plane (1,0,0,-4.9) ."
 
 
 It also possible to edit the clipping plane directly in the viewer (under View/Slice Planes) which allows to
-change colors, positions and if they are drawn or not. 
+change colors, positions and if they are drawn or not.
 
 \section DGtalGLV_Images Adding 2D image visualization in 3D
 
@@ -267,12 +267,12 @@ With the PolyscopeViewer class it is possible to display 2D slice image from a v
 
 @snippet io/viewers/viewer3D-8-2DSliceImages.cpp ExampleViewer3D2DImagesExtractImages
 
-\image html  viewer3D-8.png  "Example of 2D image visualization" 
+\image html  viewer3D-8.png  "Example of 2D image visualization"
 
 \section DGtalGLV_Images3D Adding 3D image visualization
 
 In the same way a 3D image can be displayed. By following the same stream operator, you will obtain such examples of display:
-\image html  viewer3D-9.png  "Example of 3D image visualization with also digital sets." 
+\image html  viewer3D-9.png  "Example of 3D image visualization with also digital sets."
 
 See more details in the example:  <a
 href="io_2viewers_2viewer3D-9-3Dimages_8cpp-example.html"
@@ -282,43 +282,43 @@ href="io_2viewers_2viewer3D-9-3Dimages_8cpp-example.html"
 
 \section DGtalGLV_Groups Object names and groups
 
-Each object that is drawn with the Display3D class is given a name as a string. This serves as a unique identifier and may also be used by viewers as user interface elements. It is possible to 
-specify the name of an object with the *draw* function (internally, the stream operator will call 
+Each object that is drawn with the Display3D class is given a name as a string. This serves as a unique identifier and may also be used by viewers as user interface elements. It is possible to
+specify the name of an object with the *draw* function (internally, the stream operator will call
 this function).
 
 @code
 Point p1( 0, 0, 0 );
 viewer.draw(p1, "Point name");
-@endcode 
+@endcode
 
-In order to ensure uniqueness, the given may be altered if necessary. For example: 
+In order to ensure uniqueness, the given may be altered if necessary. For example:
 
 @code
 Point p1( 0, 0, 0 );
 Point p2( 1, 1, 1 );
 std::string name1 = viewer.draw(p1, "Point name"); // name1 = "Point name"
 std::string name2 = viewer.draw(p2, "Point name"); // name2 = "Point name_1"
-@endcode 
+@endcode
 
-It is possible to specify where the counter will be placed with the "{i}" token (only first occurrence is replaced). For KCell, the token "{d}" can also be used for dimension. 
+It is possible to specify where the counter will be placed with the "{i}" token (only first occurrence is replaced). For KCell, the token "{d}" can also be used for dimension.
 
 @code
 Point p1( 0, 0, 0 );
 Point p2( 1, 1, 1 );
 std::string name1 = viewer.draw(p1, "Point_{i}_name"); // name1 = "Point_1_name"
 std::string name2 = viewer.draw(p1, "Point_{i}_name"); // name2 = "Point_2_name"
-@endcode 
+@endcode
 
-%A common pattern when using the DGtal library is to iterate over a set of object, and then perform a computation and draw them (see tests/geometry/surfaces/testLocalConvolutionNormalVectorEstimator.cpp). 
-However, this would imply having one object for each draw command, which can bloat the user interface and would make the viewer slow. It also limits the ability to have colormaps, since each 
-value would be scattered across multiple objects. For this reason, a special variable can be set: 
+%A common pattern when using the DGtal library is to iterate over a set of object, and then perform a computation and draw them (see tests/geometry/surfaces/testLocalConvolutionNormalVectorEstimator.cpp).
+However, this would imply having one object for each draw command, which can bloat the user interface and would make the viewer slow. It also limits the ability to have colormaps, since each
+value would be scattered across multiple objects. For this reason, a special variable can be set:
 
 @code
 viewer.allowReuseList = true;
 @endcode
 
 This will group new objects into the current list. However, this might fail if
-rendered objects change types (eg. alternating drawing lines and points). 
+rendered objects change types (eg. alternating drawing lines and points).
 Therefore, the lists where the new objects should be pushed must be set manually with:
 
 @code
@@ -327,21 +327,21 @@ viewer.setCurrentList(name);
 
 \section DGtalGLV_Properties Adding quantities to objects
 
-The class Display3D supports adding properties to objects. These properties can be colors, scalar values or vector information. These can be useful to display curvature information and/or computed normals. There are two ways to add these quantities. The first one is with the stream API, which is most useful for quick display of a couple of quantities: 
+The class Display3D supports adding properties to objects. These properties can be colors, scalar values or vector information. These can be useful to display curvature information and/or computed normals. There are two ways to add these quantities. The first one is with the stream API, which is most useful for quick display of a couple of quantities:
 
-@snippet io/viewers/viewer3D-12-quantities.cpp ExampleViewer3DQuantitiesStream 
+@snippet io/viewers/viewer3D-12-quantities.cpp ExampleViewer3DQuantitiesStream
 
 The second approach, as powerful as the first one, requires the name of the object, but is more comfortable when the quantities are obtained after drawing.
 
-@snippet io/viewers/viewer3D-12-quantities.cpp ExampleViewer3DQuantitiesAddQuantity 
+@snippet io/viewers/viewer3D-12-quantities.cpp ExampleViewer3DQuantitiesAddQuantity
 
 Both methods can be used together and within loops:
 
 @snippet io/viewers/viewer3D-12-quantities.cpp ExampleViewer3DQuantitiesLoop
 
-These properties can be shown or hidden and their appearance modified directly in the graphical user interface. 
+These properties can be shown or hidden and their appearance modified directly in the graphical user interface.
 
-\image html  viewer3DQuantities.png  "Example of adding quantities to an object. Objects were shifted and quantities hidden to enhance visibility." 
+\image html  viewer3DQuantities.png  "Example of adding quantities to an object. Objects were shifted and quantities hidden to enhance visibility."
 
 It is also possible to add a last parameter to WithQuantity and addQuantity which is the element targeted by the quantity. For example, for a surface mesh, we may want to set the quantities at the vertices rather than on the faces when solving PDEs. However, the correct numbers of values should be supplied (eg. one per vertex and not one per face). Unfortunately, not every combination is supported (see table below). By default, it will use the scale corresponding to the dimension of the element (ie. right-most side in the "Supported Scale" column).
 
@@ -354,10 +354,10 @@ It is also possible to add a last parameter to WithQuantity and addQuantity whic
 
 \section DGtalGLV_Ext Extending the viewer
 
-The viewer supports extensions that allow us to interact with the viewer at runtime. By default, 
-PolyscopeViewer shows what object is clicked; but one may want to add custom UI, or enhance 
+The viewer supports extensions that allow us to interact with the viewer at runtime. By default,
+PolyscopeViewer shows what object is clicked; but one may want to add custom UI, or enhance
 displayed information when an element is clicked. For this purpose, it is possible to set a
-callback that will be triggered upon three events: attach (only once), UI and clicks. 
+callback that will be triggered upon three events: attach (only once), UI and clicks.
 
 @code
 class MyCustomCallback : public typename Display3D<Space, KSpace>::Callback {

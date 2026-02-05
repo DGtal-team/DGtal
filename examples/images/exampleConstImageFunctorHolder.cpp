@@ -77,7 +77,7 @@ int main()
       }
   );
   //! [example2]
-  
+
   aBoard.clear();
   DGtal::Display2DFactory::drawImage<HueShadeDouble>(aBoard, image2, 0, 225);
   aBoard.saveSVG("ConstImageFunctorHolder_example2.svg");
@@ -89,7 +89,7 @@ int main()
       [&image1, &image2] (Point const& pt) { return image1(pt) + image2(pt); }
   );
   //! [example3]
-  
+
   aBoard.clear();
   DGtal::Display2DFactory::drawImage<HueShadeDouble>(aBoard, image3, 0, 225);
   aBoard.saveSVG("ConstImageFunctorHolder_example3.svg");

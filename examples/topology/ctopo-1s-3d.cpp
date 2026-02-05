@@ -30,11 +30,11 @@
 /**
  * A simple example of cellular grid space with several cells
  * instantiated and visualized in 3D. This program outputs this image.
- * 
+ *
  * @see \ref dgtal_ctopo_sec6
- *  
+ *
  * @image html ctopo-1s-3d.png
- * 
+ *
  * \example topology/ctopo-1s-3d.cpp
  */
 

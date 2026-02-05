@@ -10,14 +10,14 @@
  * This file is part of the DGtal library.
  */
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  * Do not forget to add an entry in src/DGtal/base/Config.h.in !
  */
 namespace DGtal {
 //----------------------------------------
 /*!
-@page moduleFrechetShortcut Fréchet Shortcuts 
+@page moduleFrechetShortcut Fréchet Shortcuts
 @writers Isabelle Sivignon
 
 [TOC]
@@ -26,9 +26,9 @@ namespace DGtal {
 
 
 The algorithm implemented in the class FrechetShortcut is the one
-presented in the article @cite sivignon2011.  
+presented in the article @cite sivignon2011.
 We present here the basic ideas of the algorithm and at the end, give
-pointers to the relative structures used in the implementation.    
+pointers to the relative structures used in the implementation.
 
 Given a polygonal curve, the curve simplification problem consists in
 computing another polygonal curve that (i) approximates the original
@@ -37,7 +37,7 @@ vertices as possible. This problem arises in a wide range of
 applications, such as geographic information systems (GIS), computer
 graphics or computer vision, where the management of the level of
 details is of crucial importance to save memory space or to speed-up
-analysis algorithms. 
+analysis algorithms.
 
 Given a 4- or 8-connected digital curve and a maximum error, we propose an algorithm that
 computes a simplification of the curve (a polygonal curve) such that the Fréchet distance
@@ -46,39 +46,39 @@ error. The Fréchet distance is known to nicely measure the similarity
 between two curves. It can be intuitively defined considering a man
 walking his dog. Each protagonist walks along a path, and controls its
 speed independently, but cannot go backwards. The Fréchet distance
-between the two pathes is the minimal length of the leash required. 
- 
+between the two pathes is the minimal length of the leash required.
+
 The algorithm implemented uses an approximation of the Fréchet distance,
 but a guarantee over the quality of the simplification is
 proved. Moreover, even if the theoretical complexity of the algorithm is
-in O(n log(n)), experiments show a linear behaviour in practice. 
+in O(n log(n)), experiments show a linear behaviour in practice.
 
 \subsection subsectFrechet Fréchet distance
 
 Given two curves @f$ f @f$ and @f$ g @f$ specified by functions @f$ f:[0,1] \rightarrow
-\mathbb{R}^2  @f$ and  @f$g:[0,1] \rightarrow \mathbb{R}^2 @f$, and two       
-non-decreasing continuous functions @f$ \alpha:[0,1] \rightarrow [0,1] @f$ and 
+\mathbb{R}^2  @f$ and  @f$g:[0,1] \rightarrow \mathbb{R}^2 @f$, and two
+non-decreasing continuous functions @f$ \alpha:[0,1] \rightarrow [0,1] @f$ and
 @f$ \beta:[0,1] \rightarrow [0,1] @f$ with
 @f$ \alpha(0)=0,\alpha(1)=1,\beta(0)=0,\beta(1)=1 @f$, the **Fréchet distance**
-@f$ \delta_F(f,g) @f$ between two curves f and g is defined as 
+@f$ \delta_F(f,g) @f$ between two curves f and g is defined as
 
 @f$ \delta_F(f,g)=\inf_{\alpha,\beta} \max_{0\leq t \leq 1}
 d(f(\alpha(t)),g(\beta(t))) @f$
 
 As illustrated in the figure below, contrary to the Hausdorff distance
 denoted by @f$ \delta_H(f,g) @f$,
-the Fréchet distance takes into account the course of the curves. 
+the Fréchet distance takes into account the course of the curves.
 
 
-@image html hausdorff.png "Difference between the Fréchet distance and the Hausdorff distance" 
+@image html hausdorff.png "Difference between the Fréchet distance and the Hausdorff distance"
 
 
-\subsection subsectCurve Curve simplification problem 
+\subsection subsectCurve Curve simplification problem
 
 Given a polygonal curve @f$ P=\langle p_1,\dots p_n\rangle @f$, A curve
 @f$ P'=\langle p_{i_1},\dots p_{i_k}\rangle @f$  with @f$ 1=i_1 < \dots < i_k=n @f$
 is said to @b simplify the curve @f$ P @f$. @f$ P(i,j) @f$ denotes the subpath
-from @f$ p_i @f$ to @f$ p_j @f$. 
+from @f$ p_i @f$ to @f$ p_j @f$.
 
 Given a pair of indices @f$ 1 \leq i \leq j
 \leq n @f$, @f$ \delta_F(p_ip_j,P) @f$ denotes the Fréchet
@@ -86,13 +86,13 @@ distance between the segment
 @f$ p_ip_j @f$ and the
 part @f$ P(i,j) @f$ of the curve. For the sake of clarity, the simplified notation
 @f$ error(i,j) =  \delta_F(p_ip_j,P) @f$ will sometimes be used. We also
-say that @f$ p_ip_j @f$ is a @b shortcut.  
+say that @f$ p_ip_j @f$ is a @b shortcut.
 
 In other words, the vertices of @f$ P' @f$ form a subset
 of the vertices of @f$ P @f$, and the computation of @f$ P' @f$ comes down to the
-selection of "shortcuts" @f$ p_ip_j @f$. 
+selection of "shortcuts" @f$ p_ip_j @f$.
 
-@image html curve_simplification.png "The red curve P' is a simplification of the blue curve P" 
+@image html curve_simplification.png "The red curve P' is a simplification of the blue curve P"
 
 
 All in all, to <b>find @f$ P' @f$ an @f$ \varepsilon @f$-simplification of</b> @f$ P @f$ we
@@ -100,23 +100,23 @@ have to:
 
 -# <b>Find shortcuts @f$ p_ip_j @f$ such that @f$ error(i,j) = \delta_F(p_ip_j,P) \leq \varepsilon @f$</b>
 -# <b>Minimize the number of vertices of @f$ P' @f$</b>.
-   
+
 
 The following nice local property of the Fréchet distance proved in
 @cite DBLP:journals/algorithmica/AgarwalHMW05 will be very useful to
 prove a guarantee on the quality of the result produced by our
-algorithm (see illustration below): 
+algorithm (see illustration below):
 
 Let @f$ P=\{p_1, p_2, \dots , p_n\} @f$ be a polygonal curve. \\ For all @f$ i, j, l, r, 1 \leq i\leq l \leq r \leq j \leq
-n @f$, @f$ error(l,r) \leq 2 error(i,j) @f$. 
+n @f$, @f$ error(l,r) \leq 2 error(i,j) @f$.
 
 In other words, the shortcuts of any @f$ \frac{\varepsilon}{2} @f$-simplification cannot strictly enclose the
-shortcuts of a @f$ \varepsilon @f$-simplification.  
+shortcuts of a @f$ \varepsilon @f$-simplification.
 
-@image html local.png "Illustration of the local property." 
+@image html local.png "Illustration of the local property."
 
 
-\section FS_sectAlgo Guaranteed algorithm using an approximated distance 
+\section FS_sectAlgo Guaranteed algorithm using an approximated distance
 
 \subsection FS_subsectDef Definitions and overall algorithm
 
@@ -126,36 +126,36 @@ Fréchet distance proposed in @cite Abam1247103. More precisely, they show that
 @f$error(i,j)@f$ can be upper and lower bounded by functions of two values
 namely @f$\omega(i,j)@f$ and @f$b(i,j)@f$. @f$\omega(i,j)@f$ is the width of the points of
 @f$P(i,j)@f$ in the direction @f$\overrightarrow{p_ip_j}@f$. @f$b(i,j)@f$ is the length of the
-longest backpath in the direction @f$\overrightarrow{p_ip_j}@f$. 
+longest backpath in the direction @f$\overrightarrow{p_ip_j}@f$.
 
 
 @image html def_width_backpath.png "Illustration of the definition of the width and the backpath length."
 
 @image html def_width_backpath_2.png "When a new point is considered, the width and backpath lengths may totally change."
 
-We have the following property from @cite Abam1247103 : 
+We have the following property from @cite Abam1247103 :
 
 The Fréchet error of a shortcut @f$p_ip_j@f$ satisfies:
 
 @image html approx_distance.png ""
 
-Using this Fréchet distance approximation to greedily compute a shortcut requires a fast update of the quantities 
-@f$\omega(i,j)@f$ and @f$b(i,j)@f$ when a new point is taken into account. This is not an easy task since these values can change drastically as illustrated above.  
+Using this Fréchet distance approximation to greedily compute a shortcut requires a fast update of the quantities
+@f$\omega(i,j)@f$ and @f$b(i,j)@f$ when a new point is taken into account. This is not an easy task since these values can change drastically as illustrated above.
 
 \subsection subsectWidth Updating the width efficiently
 
 Instead of updating @f$\omega(i,j)@f$, it is enough to consider the maximal
 distance between any point of @f$P(i,j)@f$ and the vector
 @f$\overrightarrow{p_ip_j}@f$. This is done using the algorithm of Chan
-and Chin @cite Chan687965 illustrated below: 
+and Chin @cite Chan687965 illustrated below:
 
-Given an origin point @f$p_i"@f$ and a set of points @f$P(i,j)@f$ we 
+Given an origin point @f$p_i"@f$ and a set of points @f$P(i,j)@f$ we
 construct the set @f$S_{ij}@f$ of straight lines @f$l@f$ going through @f$p_i@f$ such that @f$\max_{p \in P(i,j)}d(p,l) \leq r@f$. As a
-result, deciding whether @f$d_{max}(i,j)@f$ is lower than @f$r@f$ or not is equivalent to checking whether the straight line @f$(p_i,p_j)@f$ belongs to 
-@f$S_{ij}@f$ or not.  
+result, deciding whether @f$d_{max}(i,j)@f$ is lower than @f$r@f$ or not is equivalent to checking whether the straight line @f$(p_i,p_j)@f$ belongs to
+@f$S_{ij}@f$ or not.
 
 All in all, the update of the cone and the decision are both done in
-constant time. 
+constant time.
 
 @image html update_width.png "The cone (dark gray) is computed incrementally as the intersection of the light gray cones."
 
@@ -164,14 +164,14 @@ constant time.
 
 This update is trickier. When a new point @f$p_{j+1}@f$ is considered, we want to
 ckeck if there exists a backpath longer than a threshold in the direction
-@f$\overrightarrow{p_ip_j}@f$. 
-Let us first give some definitions: 
+@f$\overrightarrow{p_ip_j}@f$.
+Let us first give some definitions:
 
 @image html definition1.png ""
 
 
 To do so, we consider a set of points named
-*occulters* which are the furthest points for a given direction:  
+*occulters* which are the furthest points for a given direction:
 
 @image html definition_occulter.png ""
 
@@ -184,7 +184,7 @@ origin of the longest backpath is an occulter.
 
 Considering whether the last movement @f$\overrightarrow{p_jp_{j+1}}@f$ is forward or backward in the direction @f$\overrightarrow{p_ip_j}@f$, we can decide if there is a new backpath possibly
 longer than the threshold or not. This is done according to Algorithm 2
-below. 
+below.
 
 @image html algo2.png ""
 
@@ -196,7 +196,7 @@ the case of digital curves. Indeed for a digital curve, the set of
 elementary shifts @f$\overrightarrow{p_jp_{j+1}}@f$ is well defined and it is actually possible to
 cluster the set of directions such that given an elementary shift @f$e@f$,
 this shift is either forward (positive) or backward (negative) for all the directions of the
-cluster. 
+cluster.
 
 
 @image html clusters.png "Left: The directions of the plane are clustered into 8 octants. For instance, direction
@@ -205,33 +205,33 @@ cluster.
 
 If we now go back to Algorithm 2, we see that the result of the test lines 2-3 is
 the same for all the directions of a given octant. This test can thus be
-done jointly for all the directions of an octant.  
+done jointly for all the directions of an octant.
  Nevertheless, to
-determine if a new point @f$p_k@f$ is the new active occulter (the furthest 
+determine if a new point @f$p_k@f$ is the new active occulter (the furthest
 point for the direction studied), the projection of the current active
-occulter and the point @f$p_k@f$ on a direction are compared: the furthest  
+occulter and the point @f$p_k@f$ on a direction are compared: the furthest
 of the two points is the active occulter. There, for any two points
 @f$p_k@f$ and @f$q@f$ the result of this
-comparison is not the same for 
+comparison is not the same for
 all the directions of a given octant. This fact is illustrated in the
-figures below for the octant @f$0@f$: 
+figures below for the octant @f$0@f$:
 
 * for any point @f$q@f$
-  in the grey area, and for any direction in octant 
-  @f$0@f$, @f$q@f$ is after @f$p@f$. 
+  in the grey area, and for any direction in octant
+  @f$0@f$, @f$q@f$ is after @f$p@f$.
 
 * for any point @f$q@f$
-  in the dashed area, and for any direction in octant 
-  @f$0@f$, @f$p@f$ is after @f$q@f$. 
+  in the dashed area, and for any direction in octant
+  @f$0@f$, @f$p@f$ is after @f$q@f$.
 
-* in the white area, the order changes, as illustrated below. 
-  
+* in the white area, the order changes, as illustrated below.
+
 @image html zones.png ""
 
 @image html ordre_projections.png "For two points @e p and @e q and a direction @e &alpha;: on  the left, @e q is @e after @e p, and is the active occulter for direction @e &alpha;, whereas on the right, @e p is after @e q and is the active occulter."
 
 Algorithm 3 below puts together these observations to update the list of
-active occulters for one octant. 
+active occulters for one octant.
 
 @image html algo3.png ""
 
@@ -245,16 +245,16 @@ longest backpath is tested for each new point, which defines a new
 direction. Moreover, we see from Algorithm 2 line
 6 that for each negative shift, we can have as many backpathes as
 active occulters. All in all, testing individually all the possible
-backpathes when a new point is added is too expensive. 
+backpathes when a new point is added is too expensive.
 To solve this problem, we propose to maintain a ``set'' of the directions
 for which there exists a backpath of length greater than the error
-@f$\varepsilon@f$. 
+@f$\varepsilon@f$.
 
 This set actually consists in a list of intervals: for a given backpath
 of length *l* and a given error @f$\varepsilon@f$, the interval of
 directions for which the projection of the backpath is longer than
 @f$\varepsilon@f$ is computed easily. The union of all these intervals is
-stored.  
+stored.
 
 
 \section sectQuality Quality of the result and complexity analysis
@@ -263,21 +263,21 @@ stored.
 
 An important issue when designing an algorithm that is known not to be
 optimal is to prove that the result of this algorithm is not so
-far from the optimal. 
+far from the optimal.
 In this work, the optimal solution is to compute the
 @f$\varepsilon@f$-simplification of a digital curve P according to the
-Fréchet distance with a minimum number of vertices. 
+Fréchet distance with a minimum number of vertices.
 The algorithm we propose here is not optimal for
 two reasons:
 
 * it is greedy: the simplification is computed from a given starting
   point, in a given scanning order.
 
-* the distance used is an approximation of the Fréchet distance. 
+* the distance used is an approximation of the Fréchet distance.
 
 However, we prove that the number of vertices of the simplified curve
 computed by our algorithm is upper bounded by a function of the optimal
-solution: 
+solution:
 
 @image html lemma3.png ""
 
@@ -290,21 +290,21 @@ The theoretical complexity of this algorithm is
 @f$n_i@f$ is the number of intervals used to store the directions for which
 there exist a backpath of length greater than the error.  @f$n_i@f$ is upper
 bounded by @f$n@f$. Nevertheless, experiments on noisy shapes show that the
-general behaviour of the algorithm in linear in time. 
+general behaviour of the algorithm in linear in time.
 
 
 \section FS_sectImplementation Implementation in DGtal
 
 
-In DGtal, the FrechetShortcut should be used with a Curve object, using its PointsRange, as in the example below: 
-   
+In DGtal, the FrechetShortcut should be used with a Curve object, using its PointsRange, as in the example below:
+
 @snippet geometry/curves/exampleFrechetShortcut.cpp FrechetShortcutUsage
 
 
-The function FrechetShortcut::extendFront() is called when a new point is added to the current shortcut. It calls FrechetShortcut::updateWidth() and FrechetShortcut::updateBackpath(). 
+The function FrechetShortcut::extendFront() is called when a new point is added to the current shortcut. It calls FrechetShortcut::updateWidth() and FrechetShortcut::updateBackpath().
 
-The function FrechetShortcut::updateWidth() implements the update of the width @f$\omega(i,j)@f$ and uses the subclass 
-FrechetShortcut::Cone for the cone definition and manipulation.  
+The function FrechetShortcut::updateWidth() implements the update of the width @f$\omega(i,j)@f$ and uses the subclass
+FrechetShortcut::Cone for the cone definition and manipulation.
 
 The length of the longest backpath is managed in the function FrechetShortcut::updateBackpath(). It updates a vector of $8$ backpaths, one per each octant. The subclass FrechetShortcut::Backpath contains all the necessary structures
 - FrechetShortcut::Backpath::myQuad is the octant number

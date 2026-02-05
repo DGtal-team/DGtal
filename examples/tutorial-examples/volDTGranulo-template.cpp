@@ -21,9 +21,9 @@
  *
  *
  * @date 2010/10/17
- * 
+ *
  * @brief An example of generating a grid curve from a parametric shape
- * and estimating its length. 
+ * and estimating its length.
  *
  * This file is part of the DGtal library.
  */
@@ -63,7 +63,7 @@ int main(int argc, char ** argv)
   //Load a vol image and store it into a ImageContainerBySTLVector
   //
   // ...
-  //  
+  //
 
 
   ////////////////
@@ -77,14 +77,14 @@ int main(int argc, char ** argv)
 
   // - iterate over the loaded image domain and send strictly positive
   // values to the viewer
-  // 
+  //
   // If needed, to not forget to a viewer.allowReuseList to group values togethe
   // Do not forget a viewer.show(); when you're done.
 
 
   ////////////////
   //Distance transformation
-  
+
   //Create a Point Predicate from the input image and a thresholder
   // (see SimpleThresholdForegroundPredicate)
 
@@ -107,7 +107,7 @@ int main(int argc, char ** argv)
   //! [volGranulo-cmap]
   //Create the colormap from the maximal distance value
   //and a GradientColorMap
-  DT::Value maxDT = (*boost::first_max_element(distancemap.constRange().begin(), 
+  DT::Value maxDT = (*boost::first_max_element(distancemap.constRange().begin(),
                                        distancemap.constRange().end()));
   GradientColorMap<DT::Value> gradient( 0, maxDT);
   gradient.addColor(DGtal::Color::Blue);
@@ -116,33 +116,33 @@ int main(int argc, char ** argv)
   gradient.addColor(DGtal::Color::Red);
   //! [volGranulo-cmap]
 
-  
- 
+
+
   //////////////////
   //Granulometry
 
 
   //Create an empty image with the same size as the input one
-  
+
   //...
 
 
   //Compute the granulometry function
-  
+
   //...
 
-  
+
   //Export the granulometry map to a vol
   //! [volGranulo-export]
-  VolWriter<Image, CastFunctor<unsigned char> >::exportVol("granulo.vol", imageGranulo);     
+  VolWriter<Image, CastFunctor<unsigned char> >::exportVol("granulo.vol", imageGranulo);
   //! [volGranulo-export]
-  
+
 
 
   ////////////////
   //Visualization 3
   //
   //  Create a visualization of the granulometry function
-  
+
   return 0;
 }

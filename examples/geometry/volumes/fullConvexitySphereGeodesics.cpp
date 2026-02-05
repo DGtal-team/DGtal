@@ -32,9 +32,9 @@
    This example shows how to use tangency to compute exact or
    approximate geodesic shortest paths on 3D digital objects, here a
    unit sphere digitized at your chosen gridstep.
-   
+
    @see \ref dgtal_dconvexityapp_sec25
-   
+
    For instance, you may call it with a digitization gridstep 0.0625
    and parameter 1.8 (greater than sqrt(3), so guarantees exact
    shortest paths).
@@ -176,7 +176,7 @@ int main( int argc, char** argv )
                                            SH3::Domain(K.lowerBound(),K.upperBound()),
                                            params );
   trace.endBlock();
-  
+
   trace.beginBlock( "Build mesh from primal surface" );
   // Compute surface
   auto surface = SH3::makeDigitalSurface( binary_image, K, params );
@@ -193,12 +193,12 @@ int main( int argc, char** argv )
   trace.info() << "#pointels=" << pointels.size() << std::endl;
   vertices = SH3::RealPoints( pointels.size() );
   std::transform( pointels.cbegin(), pointels.cend(), vertices.begin(),
-                  [&] (const SH3::Cell& c) { return h * embedder( c ); } ); 
+                  [&] (const SH3::Cell& c) { return h * embedder( c ); } );
   // Build faces
   for ( auto&& surfel : *surface )
     {
       const auto primal_surfel_vtcs = SH3::getPointelRange( K, surfel );
-      std::vector< Index > face;	      
+      std::vector< Index > face;
       for ( auto&& primal_vtx : primal_surfel_vtcs )
         face.push_back( c2i[ primal_vtx ] );
       faces.push_back( face );
@@ -217,7 +217,7 @@ int main( int argc, char** argv )
       if ( lattice_points[ i ] < lattice_points[ lowest ] ) lowest = i;
       if ( lattice_points[ uppest ] < lattice_points[ i ] ) uppest = i;
     }
-  
+
   // Extracts shortest paths to a target
   typedef TangencyComputer< KSpace >::Index tcIndex;
   trace.beginBlock( "Compute geodesics" );
@@ -248,4 +248,3 @@ int main( int argc, char** argv )
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-

@@ -10,41 +10,41 @@
  * This file is part of the DGtal library.
  */
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  * Do not forget to add an entry in src/DGtal/base/Config.h.in !
  */
 namespace DGtal {
 //----------------------------------------
 /*!
-@page tutoImageGridVolume3dVolViewer   Tutorial "Image -> Region -> Volume ->  3dVolViewer : a simple 3D volume viewer in less than 50 lines" 
+@page tutoImageGridVolume3dVolViewer   Tutorial "Image -> Region -> Volume ->  3dVolViewer : a simple 3D volume viewer in less than 50 lines"
 @author Bertrand Kerautret
 
 
-  This part of the manual describes a simple tool written in less 
+  This part of the manual describes a simple tool written in less
   than 50 lines which allows to perform a simple 3D volume
   viewer.
-   
+
   The viewer is based on PolyscopeViewer and the input file is simply a ".vol" and all voxels contained
   in an interval can be displayed in 3D. The source program 3dVolViewer.cpp can be found in the DGtalTools project. We give here a rapid description of the main parts of the simple viewer.
-   
-  First we set the program option using boost 
+
+  First we set the program option using boost
    @code
-   namespace po = boost::program_options;   
+   namespace po = boost::program_options;
     general_opt.add_options()
     ("help,h", "display this message")
     ("input-file,i", po::value<std::string>(), "volume file" " (default: standard input)")
-    ("thresholdMin,m",  po::value<int>()->default_value(0), "threshold min to define binary shape" ) 
+    ("thresholdMin,m",  po::value<int>()->default_value(0), "threshold min to define binary shape" )
     ("thresholdMax,M",  po::value<int>()->default_value(255), "threshold max to define binary shape" )
-    ("transparency,t",  po::value<uint>()->default_value(255), "transparency") ; 
+    ("transparency,t",  po::value<uint>()->default_value(255), "transparency") ;
    @endcode
-   
+
    Then argument are parsed and stored:
    @code
    po::variables_map vm;
-   po::store(po::parse_command_line(argc, argv, general_opt), vm);  
-   po::notify(vm);     
-   
+   po::store(po::parse_command_line(argc, argv, general_opt), vm);
+   po::notify(vm);
+
    string inputFilename = vm["input-file"].as<std::string>();
    int thresholdMin = vm["thresholdMin"].as<int>();
    int thresholdMax = vm["thresholdMax"].as<int>();
@@ -67,33 +67,33 @@ namespace DGtal {
    @code
    viewer.allowReuseList = true; // Groups all voxels together
    for(Domain::ConstIterator it = domain.begin(), itend=domain.end(); it!=itend; ++it){
-      unsigned char  val= image( (*it) );     
+      unsigned char  val= image( (*it) );
       if(val<=thresholdMax && val >=thresholdMin){
           viewer << WithQuantity(*it, "value", val);
-     }     
+     }
    }
    viewer.show()
    @endcode
 
    By executing the following command line from the build directory of DGtalTools:
-   
+
    @code
    ./visualisation/3dVolViewer -i ../examples/samples/lobster.vol  -m 30 -M 255 -t 10
    @endcode
    You will get the following visualisation:
 
-   \image html visuVol3D.png " Example of visualisation obtained with  3dVolViewer"  width=5cm 
-   
+   \image html visuVol3D.png " Example of visualisation obtained with  3dVolViewer"  width=5cm
+
 
    You can also add a clipping plane:
 
-   @code 
+   @code
    viewer << ClippingPlane(0,0,-1, 20);
    @endcode
 
    You will get the following visualisation:
 
-   \image html visuVol3Dclipping.png " Example of visualisation obtained with  3dVolViewer"  width=5cm 
+   \image html visuVol3Dclipping.png " Example of visualisation obtained with  3dVolViewer"  width=5cm
 
 
 

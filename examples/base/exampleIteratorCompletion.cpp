@@ -60,7 +60,7 @@ public:
   typedef DGtal::HyperRectDomain<Space>   Domain; // The image domain type
   typedef typename Space::Point           Point;  // The associated point type
   typedef DGtal::Linearizer<Domain, DGtal::ColMajorStorage>    Linearizer; ///< Linearization of the points.
-  
+
   // Contructor
   MyImage( Domain const& aDomain = Domain() )
     : myDomain(aDomain), myData( new T[ myDomain.size() ] )
@@ -75,7 +75,7 @@ public:
 //! [MyImageHeader]
 
 //! [CImageBasicInterface]
- 
+
   // Unary Functor
   Value operator() ( Point const& aPoint ) const
     {
@@ -141,7 +141,7 @@ public:
     {
       return myData + myDomain.size();
     }
-  
+
 //! [BasicIteratorInterface]
 
 //! [PrivateMembers]
@@ -163,7 +163,7 @@ namespace DGtal
       typedef MyImage<T, N> Self;
       typedef T*            Iterator;
       typedef T const*      ConstIterator;
-      
+
       class DistanceFunctor
         {
         public:
@@ -183,7 +183,7 @@ namespace DGtal
         private:
           Domain myDomain;
         };
-      
+
     };
 }
 //! [IteratorCompletionTraits]
@@ -199,7 +199,7 @@ int main()
   typedef My2DImage::Value    Value;
   typedef My2DImage::Domain   Domain;
   typedef My2DImage::Point    Point;
-  
+
   // Checks CImage concept
   BOOST_CONCEPT_ASSERT( (DGtal::concepts::CImage<My2DImage>) );
 

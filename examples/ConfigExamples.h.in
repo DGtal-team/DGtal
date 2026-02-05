@@ -2,7 +2,7 @@
 * @file   ConfigExamples.h
 * @author David COEURJOLLY <David Coeurjolly <david.coeurjolly@liris.cnrs.fr>>
 * @date   29 Jul. 2010
-* @brief  Configuration header for example files. 
+* @brief  Configuration header for example files.
 *
 **/
 
@@ -10,4 +10,3 @@
 
 ///Path to the DGtal test suite.
 const std::string examplesPath= "@PROJECT_SOURCE_DIR@/examples/";
-

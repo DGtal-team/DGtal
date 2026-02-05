@@ -55,12 +55,12 @@ namespace DGtal {
   Description of \b concept '\b CSurfelPredicate' <p>
   @ingroup Concepts
   @brief Aim: Defines a predicate on a surfel.
-     
+
   Associates a boolean to surfels.
 
-  # Refinement of 
+  # Refinement of
   CPredicate< T, T::Surfel >.
-    
+
   # Associated types:
   - Surfel: specifies the type for an element of the domain (inner
   type).
@@ -73,10 +73,10 @@ namespace DGtal {
   # Notes#
   */
   template <typename T>
-  struct CSurfelPredicate : CPredicate< T, typename T::Surfel> 
+  struct CSurfelPredicate : CPredicate< T, typename T::Surfel>
   {
   }; // end of concept CSurfelPredicate
-  
+
 } // namespace concepts
 } // namespace DGtal
 

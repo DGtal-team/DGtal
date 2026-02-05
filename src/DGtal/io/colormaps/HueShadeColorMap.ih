@@ -56,7 +56,7 @@ inline
 DGtal::HueShadeColorMap<Value,DefaultCycles>::HueShadeColorMap
 ( const HueShadeColorMap<Value,DefaultCycles> & other )
   : myMin( other.myMin ), myMax( other.myMax ), myCycles( other.myCycles )
-{ 
+{
   ASSERT_MSG(myMin < myMax, "Max should be strictly greather than Min in a colormap.");
 }
 
@@ -126,7 +126,7 @@ inline
 void
 DGtal::HueShadeColorMap<Value,DefaultCycles>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[HueShadeColorMap " 
+  out << "[HueShadeColorMap "
       << " min=" << myMin
       << " max=" << myMax
       << " cycles=" << myCycles
@@ -170,7 +170,7 @@ DGtal::HueShadeColorMap<Value,DefaultCycles>::getColor
 template <typename Value, int DefaultCycles>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
       const HueShadeColorMap<Value,DefaultCycles> & object )
 {
   object.selfDisplay( out );
@@ -183,6 +183,3 @@ DGtal::operator<< ( std::ostream & out,
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - private :
-
-
-

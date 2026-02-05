@@ -3,7 +3,7 @@
 # -----------------------------------------------------------------------------
 cmake_minimum_required (VERSION 3.20)
 
-# Reading version 
+# Reading version
 file(READ "VERSION" version_file_raw)
 string(REGEX REPLACE "[\r\n]" "" version_file "${version_file_raw}")
 string(REGEX MATCHALL "([0-9]+)" version_parts ${version_file})

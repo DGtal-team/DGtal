@@ -11,7 +11,7 @@
  * This file is part of the DGtal library.
  */
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  * Do not forget to add an entry in src/DGtal/base/Config.h.in !
  */
@@ -49,7 +49,7 @@ set).
   specific properties for your set. The container is the standard
   simple associative container \c std::set (a model of
   boost::SimpleAssociativeContainer). All find, insertion and deletion
-  requests are \f$ O(\log n) \f$ complexity. Internal order can be 
+  requests are \f$ O(\log n) \f$ complexity. Internal order can be
   changed by specifiing another Compare functor as template parameter.
 
 - DigitalSetBySTLVector: this representation is suited for very small
@@ -74,12 +74,12 @@ set).
   @c std::unordered_set is expected to be 20% - 50% faster when accessing
   or inserting points in the set.
 
-- DigitalSetByOctree: it is a container that stores voxels in an octree. 
-  This container is most useful when storing a large number of voxels. 
-  Once all the voxels have been inserted, it is possible to convert in place 
-  the structure into a Sparse Voxel Directed Acyclic Graph, which greatly 
-  compresses the structure. It is common to achieve rates below one bit 
-  per voxel, down to one hundredth of a bit per voxel. However, conventional 
+- DigitalSetByOctree: it is a container that stores voxels in an octree.
+  This container is most useful when storing a large number of voxels.
+  Once all the voxels have been inserted, it is possible to convert in place
+  the structure into a Sparse Voxel Directed Acyclic Graph, which greatly
+  compresses the structure. It is common to achieve rates below one bit
+  per voxel, down to one hundredth of a bit per voxel. However, conventional
   operations are relatively slow, on the order of \f$ O(\log DomainSize) \f$.
 
 You may choose yourself your representation of digital set, or let

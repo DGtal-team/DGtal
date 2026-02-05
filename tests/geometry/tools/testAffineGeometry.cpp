@@ -132,7 +132,7 @@ makeRandomRealPointsFromDirVectors( int nb, const vector< Point>& V )
 
 SCENARIO( "AffineGeometry< Point2i > unit tests", "[affine_subset][2i]" )
 {
-  typedef SpaceND< 2, int >                Space;      
+  typedef SpaceND< 2, int >                Space;
   typedef Space::Point                     Point;
   typedef AffineGeometry< Point >            Affine;
   GIVEN( "Given X = { (0,0), (-4,-1), (16,4), (-3,5), (7,3), (5, -2) } of affine dimension 2" ) {
@@ -158,7 +158,7 @@ SCENARIO( "AffineGeometry< Point2i > unit tests", "[affine_subset][2i]" )
 
 SCENARIO( "AffineGeometry< Point2d > unit tests", "[affine_subset][2d]" )
 {
-  typedef SpaceND< 2, int >                Space;      
+  typedef SpaceND< 2, int >                Space;
   typedef Space::RealPoint                 Point;
   typedef AffineGeometry< Point >            Affine;
   GIVEN( "Given X = { (0,0), (-4,-1), (16,4), (-3,5), (7,3), (5, -2) } of affine dimension 2" ) {
@@ -215,7 +215,7 @@ SCENARIO( "AffineGeometry< Point2d > unit tests", "[affine_subset][2d]" )
 
 SCENARIO( "AffineGeometry< Point2i > orthogonal tests", "[orthogonal_vector][2i]" )
 {
-  typedef SpaceND< 2, int >                Space;      
+  typedef SpaceND< 2, int >                Space;
   typedef Space::Point                     Point;
   typedef AffineGeometry< Point >          Affine;
   GIVEN( "Given basis B = { (7,3) } " ) {
@@ -239,7 +239,7 @@ SCENARIO( "AffineGeometry< Point2i > orthogonal tests", "[orthogonal_vector][2i]
 
 SCENARIO( "AffineGeometry< Point3i > unit tests", "[affine_subset][3i]" )
 {
-  typedef SpaceND< 3, int >                Space;      
+  typedef SpaceND< 3, int >                Space;
   typedef Space::Point                     Point;
   typedef AffineGeometry< Point >            Affine;
   GIVEN( "Given X = { (1, 0, 0), (2, 1, 0), (3, 1, 1), (3, 2, 0), (5, 2, 2), (4, 2, 1)} of affine dimension 2" ) {
@@ -296,7 +296,7 @@ SCENARIO( "AffineGeometry< Point3i > unit tests", "[affine_subset][3i]" )
 
 SCENARIO( "AffineGeometry< Point3i > orthogonal tests", "[orthogonal_vector][3i]" )
 {
-  typedef SpaceND< 3, int >                Space;      
+  typedef SpaceND< 3, int >                Space;
   typedef Space::Point                     Point;
   typedef AffineGeometry< Point >          Affine;
   GIVEN( "Given basis B = { (7,3,1), (2,-5,1) } " ) {
@@ -349,7 +349,7 @@ SCENARIO( "AffineGeometry< Point3i > orthogonal tests", "[orthogonal_vector][3i]
 
 SCENARIO( "AffineGeometry< Point4i > unit tests", "[affine_subset][4i]" )
 {
-  typedef SpaceND< 4, int >                Space;      
+  typedef SpaceND< 4, int >                Space;
   typedef Space::Point                     Point;
   GIVEN( "Given X a set of randomly generated points by adding linear combinations of 1 lattice vectors" ) {
     std::vector< Point > V = { Point{ 3, 1, 0, 2 } };
@@ -418,7 +418,7 @@ SCENARIO( "AffineGeometry< Point4d > unit tests", "[affine_subset][4d]" )
 {
   // NB: 1e-10 in tolerance is ok for these examples.
   // max norm of rejected vectors are 2e-12.
-  typedef SpaceND< 4, int >                Space;      
+  typedef SpaceND< 4, int >                Space;
   typedef Space::RealPoint                 Point;
   GIVEN( "Given X a set of randomly generated points by adding linear combinations of 1 lattice vectors" ) {
     std::vector< Point > V = { Point{ 3, 1, 0, 2 } };
@@ -484,7 +484,7 @@ SCENARIO( "AffineGeometry< Point4d > unit tests", "[affine_subset][4d]" )
 
 SCENARIO( "AffineGeometry< Point4i > orthogonal tests", "[orthogonal_vector][4i]" )
 {
-  typedef SpaceND< 4, int >                Space;      
+  typedef SpaceND< 4, int >                Space;
   typedef Space::Point                     Point;
   typedef AffineGeometry< Point >          Affine;
   GIVEN( "Given basis B = { (7,3,1,0), (2,-5,1,2), (-1,2,2,-3) } " ) {
@@ -579,4 +579,3 @@ SCENARIO( "AffineGeometry< Z3 > orthogonality", "[affine_geom][3d]" )
     }
   }
 }
-

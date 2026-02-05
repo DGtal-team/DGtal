@@ -51,15 +51,15 @@ bool testHullFunctions2D()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
-  typedef PointVector<2,DGtal::int32_t> Point; 
-  typedef std::vector<Point> Container; 
+
+  typedef PointVector<2,DGtal::int32_t> Point;
+  typedef std::vector<Point> Container;
 
   //orientation functor and predicate
-  typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::int32_t> OrientationFunctor; 
+  typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::int32_t> OrientationFunctor;
   OrientationFunctor orientationFunctor;
-  PredicateFromOrientationFunctor2<OrientationFunctor> 
-    predicate( orientationFunctor ); 
+  PredicateFromOrientationFunctor2<OrientationFunctor>
+    predicate( orientationFunctor );
 
   //functions namespace
   using namespace functions::Hull2D;
@@ -68,110 +68,110 @@ bool testHullFunctions2D()
 
   trace.info() << "zero point" << endl;
   {
-    Container input, output; 
-    openGrahamScan( input.begin(), input.end(), back_inserter( output ), predicate ); 
+    Container input, output;
+    openGrahamScan( input.begin(), input.end(), back_inserter( output ), predicate );
     if (output.size() == 0)
-      nbok++; 
-    nb++; 
+      nbok++;
+    nb++;
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   }
 
   trace.info() << "one point" << endl;
   {
-    Container input, output; 
-    input.push_back( Point(1,1) ); 
-    openGrahamScan( input.begin(), input.end(), back_inserter( output ), predicate ); 
+    Container input, output;
+    input.push_back( Point(1,1) );
+    openGrahamScan( input.begin(), input.end(), back_inserter( output ), predicate );
     if ( (output.size() == 1) &&
 	 (output.back() == Point(1,1)) )
-      nbok++; 
-    nb++; 
+      nbok++;
+    nb++;
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   }
 
   trace.info() << "two points" << endl;
   {
-    Container input, output; 
-    input.push_back( Point(1,1) ); 
-    input.push_back( Point(1,2) ); 
-    openGrahamScan( input.begin(), input.end(), back_inserter( output ), predicate ); 
+    Container input, output;
+    input.push_back( Point(1,1) );
+    input.push_back( Point(1,2) );
+    openGrahamScan( input.begin(), input.end(), back_inserter( output ), predicate );
     if ( (output.size() == 2) &&
 	 (output.at(0) == Point(1,1)) &&
 	 (output.at(1) == Point(1,2)) )
-      nbok++; 
-    nb++; 
+      nbok++;
+    nb++;
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   }
 
   trace.info() << "three points" << endl;
-  { 
-    Container input, output; 
+  {
+    Container input, output;
 
     //three points CCW-oriented
-    input.push_back( Point(0,0) ); 
-    input.push_back( Point(5,0) ); 
-    input.push_back( Point(10,5) ); 
+    input.push_back( Point(0,0) );
+    input.push_back( Point(5,0) );
+    input.push_back( Point(10,5) );
     copy( input.begin(), input.end(), ostream_iterator<Point>( cout, " " ) );
-    cout << endl; 
+    cout << endl;
 
-    openGrahamScan( input.begin(), input.end(), back_inserter( output ), predicate ); 
+    openGrahamScan( input.begin(), input.end(), back_inserter( output ), predicate );
 
     copy( output.begin(), output.end(), ostream_iterator<Point>( cout, " " ) );
-    cout << endl; 
+    cout << endl;
 
     if ( (output.size() == 3) &&
 	 (output.at(0) == Point(0,0)) &&
 	 (output.at(1) == Point(5,0)) &&
 	 (output.at(2) == Point(10,5)) )
-      nbok++; 
-    nb++; 
+      nbok++;
+    nb++;
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
     //three points CW-oriented
-    output.clear(); 
+    output.clear();
     input.at(2) = Point(10,-5);
     copy( input.begin(), input.end(), ostream_iterator<Point>( cout, " " ) );
-    cout << endl; 
+    cout << endl;
 
-    openGrahamScan( input.begin(), input.end(), back_inserter( output ), predicate ); 
+    openGrahamScan( input.begin(), input.end(), back_inserter( output ), predicate );
 
     copy( output.begin(), output.end(), ostream_iterator<Point>( cout, " " ) );
-    cout << endl; 
+    cout << endl;
 
     if ( (output.size() == 2) &&
-	 (output.at(0) == Point(0,0)) && 
+	 (output.at(0) == Point(0,0)) &&
 	 (output.at(1) == Point(10,-5)) )
-      nbok++; 
-    nb++; 
+      nbok++;
+    nb++;
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   }
 
   trace.info() << "several points" << endl;
   {
-    Container input, output; 
-    input.push_back( Point(0,5) ); 
-    input.push_back( Point(0,0) ); 
-    input.push_back( Point(1,1) ); 
-    input.push_back( Point(2,4) ); 
-    input.push_back( Point(3,9) ); 
-    input.push_back( Point(4,16) ); 
+    Container input, output;
+    input.push_back( Point(0,5) );
+    input.push_back( Point(0,0) );
+    input.push_back( Point(1,1) );
+    input.push_back( Point(2,4) );
+    input.push_back( Point(3,9) );
+    input.push_back( Point(4,16) );
     input.push_back( Point(5,0) );
- 
-    openGrahamScan( (input.begin()+1), input.end(), back_inserter( output ), predicate ); 
+
+    openGrahamScan( (input.begin()+1), input.end(), back_inserter( output ), predicate );
     if ( (output.size() == 2) &&
 	 (output.at(0) == Point(0,0)) &&
 	 (output.at(1) == Point(5,0)) )
-      nbok++; 
-    nb++; 
+      nbok++;
+    nb++;
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
-    output.clear(); 
-    openGrahamScan( input.begin(), input.end(), back_inserter( output ), predicate ); 
+    output.clear();
+    openGrahamScan( input.begin(), input.end(), back_inserter( output ), predicate );
     if ( (output.size() == 3) &&
 	 (output.at(0) == Point(0,5)) &&
 	 (output.at(1) == Point(0,0)) &&
 	 (output.at(2) == Point(5,0)) )
-      nbok++; 
-    nb++; 
+      nbok++;
+    nb++;
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   }
@@ -182,80 +182,80 @@ bool testHullFunctions2D()
 
   trace.info() << "zero point" << endl;
   {
-    Container input, output; 
-    closedGrahamScanFromVertex( input.begin(), input.end(), back_inserter( output ), predicate ); 
+    Container input, output;
+    closedGrahamScanFromVertex( input.begin(), input.end(), back_inserter( output ), predicate );
     if (output.size() == 0)
-      nbok++; 
-    nb++; 
+      nbok++;
+    nb++;
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   }
 
   trace.info() << "one point" << endl;
   {
-    Container input, output; 
-    input.push_back( Point(1,1) ); 
-    closedGrahamScanFromVertex( input.begin(), input.end(), back_inserter( output ), predicate ); 
+    Container input, output;
+    input.push_back( Point(1,1) );
+    closedGrahamScanFromVertex( input.begin(), input.end(), back_inserter( output ), predicate );
     if ( (output.size() == 1) &&
   	 (output.back() == Point(1,1)) )
-      nbok++; 
-    nb++; 
+      nbok++;
+    nb++;
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   }
 
   trace.info() << "two points" << endl;
   {
-    Container input, output; 
-    input.push_back( Point(1,1) ); 
-    input.push_back( Point(1,2) ); 
-    closedGrahamScanFromVertex( input.begin(), input.end(), back_inserter( output ), predicate ); 
+    Container input, output;
+    input.push_back( Point(1,1) );
+    input.push_back( Point(1,2) );
+    closedGrahamScanFromVertex( input.begin(), input.end(), back_inserter( output ), predicate );
     if ( (output.size() == 2) &&
   	 (output.at(0) == Point(1,1)) &&
   	 (output.at(1) == Point(1,2)) )
-      nbok++; 
-    nb++; 
+      nbok++;
+    nb++;
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   }
 
   trace.info() << "three points" << endl;
-  { 
+  {
     //three points CCW-oriented
-    Container input, output; 
-    input.push_back( Point(0,0) ); 
-    input.push_back( Point(5,0) ); 
-    input.push_back( Point(10,5) ); 
+    Container input, output;
+    input.push_back( Point(0,0) );
+    input.push_back( Point(5,0) );
+    input.push_back( Point(10,5) );
     copy( input.begin(), input.end(), ostream_iterator<Point>( cout, " " ) );
-    cout << endl; 
+    cout << endl;
 
-    closedGrahamScanFromVertex( input.begin(), input.end(), back_inserter( output ), predicate ); 
+    closedGrahamScanFromVertex( input.begin(), input.end(), back_inserter( output ), predicate );
 
     copy( output.begin(), output.end(), ostream_iterator<Point>( cout, " " ) );
-    cout << endl; 
+    cout << endl;
 
     if ( (output.size() == 3) &&
   	 (output.at(0) == Point(0,0)) &&
   	 (output.at(1) == Point(5,0)) &&
   	 (output.at(2) == Point(10,5)) )
-      nbok++; 
-    nb++; 
+      nbok++;
+    nb++;
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   }
 
   trace.info() << "taking into account the first point" << endl;
-  { 
-    Container input, output; 
-    input.push_back( Point(0,-1) ); 
-    input.push_back( Point(1,0) ); 
-    input.push_back( Point(1,5) ); 
-    input.push_back( Point(-5,5) ); 
-    input.push_back( Point(-5,0) ); 
-    input.push_back( Point(-2,1) ); 
+  {
+    Container input, output;
+    input.push_back( Point(0,-1) );
+    input.push_back( Point(1,0) );
+    input.push_back( Point(1,5) );
+    input.push_back( Point(-5,5) );
+    input.push_back( Point(-5,0) );
+    input.push_back( Point(-2,1) );
     copy( input.begin(), input.end(), ostream_iterator<Point>( cout, " " ) );
-    cout << endl; 
+    cout << endl;
 
-    closedGrahamScanFromVertex( input.begin(), input.end(), back_inserter( output ), predicate ); 
+    closedGrahamScanFromVertex( input.begin(), input.end(), back_inserter( output ), predicate );
 
     copy( output.begin(), output.end(), ostream_iterator<Point>( cout, " " ) );
-    cout << endl; 
+    cout << endl;
 
     if ( (output.size() == 5) &&
   	 (output.at(0) == Point(0,-1)) &&
@@ -263,8 +263,8 @@ bool testHullFunctions2D()
   	 (output.at(2) == Point(1,5)) &&
   	 (output.at(3) == Point(-5,5))&&
   	 (output.at(4) == Point(-5,0)) )
-      nbok++; 
-    nb++; 
+      nbok++;
+    nb++;
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   }
 
@@ -274,92 +274,92 @@ bool testHullFunctions2D()
 
   trace.info() << "zero point" << endl;
   {
-    Container input, output; 
-    closedGrahamScanFromAnyPoint( input.begin(), input.end(), back_inserter( output ), predicate ); 
+    Container input, output;
+    closedGrahamScanFromAnyPoint( input.begin(), input.end(), back_inserter( output ), predicate );
     if (output.size() == 0)
-      nbok++; 
-    nb++; 
+      nbok++;
+    nb++;
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   }
 
   trace.info() << "one point" << endl;
   {
-    Container input, output; 
-    input.push_back( Point(1,1) ); 
-    closedGrahamScanFromAnyPoint( input.begin(), input.end(), back_inserter( output ), predicate ); 
+    Container input, output;
+    input.push_back( Point(1,1) );
+    closedGrahamScanFromAnyPoint( input.begin(), input.end(), back_inserter( output ), predicate );
     if ( (output.size() == 1) &&
   	 (output.back() == Point(1,1)) )
-      nbok++; 
-    nb++; 
+      nbok++;
+    nb++;
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   }
 
   trace.info() << "two points" << endl;
   {
-    Container input, output; 
-    input.push_back( Point(1,1) ); 
-    input.push_back( Point(1,2) ); 
-    closedGrahamScanFromAnyPoint( input.begin(), input.end(), back_inserter( output ), predicate ); 
+    Container input, output;
+    input.push_back( Point(1,1) );
+    input.push_back( Point(1,2) );
+    closedGrahamScanFromAnyPoint( input.begin(), input.end(), back_inserter( output ), predicate );
     if ( (output.size() == 2) &&
   	 (output.at(0) == Point(1,1)) &&
   	 (output.at(1) == Point(1,2)) )
-      nbok++; 
-    nb++; 
+      nbok++;
+    nb++;
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   }
 
   trace.info() << "three points" << endl;
-  { 
+  {
     //three points CCW-oriented
-    Container input, output; 
-    input.push_back( Point(0,0) ); 
-    input.push_back( Point(5,0) ); 
-    input.push_back( Point(10,5) ); 
+    Container input, output;
+    input.push_back( Point(0,0) );
+    input.push_back( Point(5,0) );
+    input.push_back( Point(10,5) );
     copy( input.begin(), input.end(), ostream_iterator<Point>( cout, " " ) );
-    cout << endl; 
+    cout << endl;
 
-    closedGrahamScanFromAnyPoint( input.begin(), input.end(), back_inserter( output ), predicate ); 
+    closedGrahamScanFromAnyPoint( input.begin(), input.end(), back_inserter( output ), predicate );
 
     copy( output.begin(), output.end(), ostream_iterator<Point>( cout, " " ) );
-    cout << endl; 
+    cout << endl;
 
     if ( (output.size() == 3) &&
   	 (output.at(0) == Point(0,0)) &&
   	 (output.at(1) == Point(5,0)) &&
   	 (output.at(2) == Point(10,5)) )
-      nbok++; 
-    nb++; 
+      nbok++;
+    nb++;
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   }
 
   trace.info() << "taking into account the first point" << endl;
-  { 
-    Container input, output; 
-    input.push_back( Point(3,2) ); 
-    input.push_back( Point(2,2) ); 
-    input.push_back( Point(2,1) ); 
-    input.push_back( Point(1,1) );  
+  {
+    Container input, output;
+    input.push_back( Point(3,2) );
+    input.push_back( Point(2,2) );
+    input.push_back( Point(2,1) );
+    input.push_back( Point(1,1) );
     input.push_back( Point(0,1) );
-    input.push_back( Point(0,0) ); 
-    input.push_back( Point(9,0) ); 
-    input.push_back( Point(9,6) ); 
-    input.push_back( Point(8,6) ); 
-    input.push_back( Point(8,5) ); 
+    input.push_back( Point(0,0) );
+    input.push_back( Point(9,0) );
+    input.push_back( Point(9,6) );
+    input.push_back( Point(8,6) );
+    input.push_back( Point(8,5) );
     input.push_back( Point(7,5) );
-    input.push_back( Point(7,4) ); 
-    input.push_back( Point(6,4) ); 
-    input.push_back( Point(5,4) ); 
-    input.push_back( Point(5,3) ); 
+    input.push_back( Point(7,4) );
+    input.push_back( Point(6,4) );
+    input.push_back( Point(5,4) );
+    input.push_back( Point(5,3) );
     input.push_back( Point(4,3) );
-    input.push_back( Point(4,2) ); 
+    input.push_back( Point(4,2) );
 
     copy( input.begin(), input.end(), ostream_iterator<Point>( cout, " " ) );
-    cout << endl; 
+    cout << endl;
 
-    closedGrahamScanFromAnyPoint( input.begin(), input.end(), back_inserter( output ), predicate ); 
+    closedGrahamScanFromAnyPoint( input.begin(), input.end(), back_inserter( output ), predicate );
 
     copy( output.begin(), output.end(), ostream_iterator<Point>( cout, " " ) );
-    cout << endl; 
+    cout << endl;
 
     if ( (output.size() == 5) &&
   	 (output.at(0) == Point(0,0)) &&
@@ -367,13 +367,13 @@ bool testHullFunctions2D()
   	 (output.at(2) == Point(9,6)) &&
   	 (output.at(3) == Point(8,6)) &&
 	 (output.at(4) == Point(0,1)) )
-      nbok++; 
-    nb++; 
+      nbok++;
+    nb++;
     trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   }
 
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 

@@ -402,7 +402,7 @@ inline
 bool
 DGtal::PlaneProbingParallelepipedEstimator<TPredicate, mode>::inPlane (const Point& aPoint) const
 {
-  return myNotAbovePredicate.inPlane(aPoint); 
+  return myNotAbovePredicate.inPlane(aPoint);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -452,5 +452,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

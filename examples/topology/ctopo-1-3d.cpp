@@ -45,7 +45,7 @@
  *
  * @see \ref dgtal_helpsurf_sec2
  *
- *  @image html ctopo3dSurfelCut.png 
+ *  @image html ctopo3dSurfelCut.png
  *
  * \example topology/ctopo-2-3d.cpp
  *

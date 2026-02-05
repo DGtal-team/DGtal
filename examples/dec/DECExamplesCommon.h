@@ -81,4 +81,3 @@ inline DGtal::Z2i::DigitalSet generateDoubleRingSet(const DGtal::Z2i::Domain& do
 }
 
 #endif
-

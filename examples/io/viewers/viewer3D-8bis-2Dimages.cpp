@@ -64,7 +64,7 @@ int main()
   polyscope::options::programName = "examples/io/viewers: viewer3D-8bis-2Dimages";
   PolyscopeViewer viewer;
 
-  
+
 
   std::string inputFilename = examplesPath + "samples/lobster.vol";
   Image3D imageVol = VolReader<Image3D>::importVol(inputFilename);
@@ -109,5 +109,3 @@ int main()
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

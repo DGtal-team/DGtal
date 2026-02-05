@@ -3,7 +3,7 @@
  * @file   PSFonts.cpp
  * @author Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb>
  * @date   Sat Aug 18 2007
- * 
+ *
  * @brief  The Point structure.
  */
 /*

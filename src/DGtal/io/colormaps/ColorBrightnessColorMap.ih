@@ -44,7 +44,7 @@ inline
 DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::ColorBrightnessColorMap
 ( const PValue & minV,  const PValue & maxV, const Color color )
   : myMin( minV ), myMax( maxV ), myColor( color )
-{  
+{
   ASSERT_MSG(myMin < myMax, "Max should be strictly greather than Min in a colormap.");
 }
 
@@ -114,13 +114,13 @@ inline
 void
 DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[ColorBrightnessColorMap " 
+  out << "[ColorBrightnessColorMap "
       << " min=" << myMin
       << " max=" << myMax
-      << " color=(" 
+      << " color=("
       << myColor.red() << ","
-      << myColor.green() << ","  
-      << myColor.blue() << ") "   
+      << myColor.green() << ","
+      << myColor.blue() << ") "
       << " ]";
 }
 
@@ -165,7 +165,7 @@ DGtal::ColorBrightnessColorMap<PValue,PDefaultColor>::getColor( const Color colo
 template <typename PValue, int PDefaultColor>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
       const ColorBrightnessColorMap<PValue,PDefaultColor> & object )
 {
   object.selfDisplay( out );
@@ -178,5 +178,3 @@ DGtal::operator<< ( std::ostream & out,
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - private :
-
-

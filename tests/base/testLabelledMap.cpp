@@ -85,7 +85,7 @@ checkErase( VContainer1 & v, LContainer2 & l,
     {
       unsigned int idx = rand() % ( l.max_size() );
       erase( v, l, idx );
-      //std::cout << "  (" << i << "/" << nb << ") l=" << l << std::endl; 
+      //std::cout << "  (" << i << "/" << nb << ") l=" << l << std::endl;
     }
   return isEqual( v, l );
 }
@@ -115,50 +115,50 @@ int main()
   MyLabelledMap l;
   map<unsigned int, double> v;
   ++nb; nbok += isEqual( v, l ) ? 1 : 0;
-  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
+  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl;
   insert( v, l, 3, 4.5 );
   ++nb; nbok += isEqual( v, l ) ? 1 : 0;
-  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
+  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl;
   insert( v, l, 0, 10.1 );
   ++nb; nbok += isEqual( v, l ) ? 1 : 0;
-  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
+  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl;
   insert( v, l, 1, 3.7 );
   ++nb; nbok += isEqual( v, l ) ? 1 : 0;
-  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
+  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl;
   insert( v, l, 2, 8.4 );
   insert( v, l, 1, 2.1 );
   ++nb; nbok += isEqual( v, l ) ? 1 : 0;
-  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
+  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl;
   display( std::cout, v );
   insert( v, l, 1, -3.0 );
   ++nb; nbok += isEqual( v, l ) ? 1 : 0;
-  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
+  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl;
   insert( v, l, 15, -13.1 );
   ++nb; nbok += isEqual( v, l ) ? 1 : 0;
-  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
+  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl;
   insert( v, l, 2, -7.1 );
   ++nb; nbok += isEqual( v, l ) ? 1 : 0;
-  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
+  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl;
   // MyLabelledMap::Iterator it = l.insert( l.begin(), std::make_pair( 7, 4.4 ) );
-  // std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
+  // std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl;
   // it = l.insert( it, std::make_pair( 9, 5.5 ) );
   // l.insert( it, std::make_pair( 9, 10.5 ) );
-  // std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
+  // std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl;
   ++nb; nbok += checkInsert( v, l, 1000 ) ? 1 : 0;
-  std::cout << "(" << nbok << "/" << nb << ") 1000 insertions l=" << l << std::endl; 
+  std::cout << "(" << nbok << "/" << nb << ") 1000 insertions l=" << l << std::endl;
   ++nb; nbok += checkErase( v, l, 1000 ) ? 1 : 0;
-  std::cout << "(" << nbok << "/" << nb << ") 1000 deletions l=" << l << std::endl; 
+  std::cout << "(" << nbok << "/" << nb << ") 1000 deletions l=" << l << std::endl;
   trace.endBlock();
   trace.beginBlock ( "Testing LabelledMap" );
   ++nb; nbok += checkInsert( v, l, 10 ) ? 1 : 0;
-  std::cout << "(" << nbok << "/" << nb << ") 10 deletions l=" << l << std::endl; 
+  std::cout << "(" << nbok << "/" << nb << ") 10 deletions l=" << l << std::endl;
   std::pair< MyLabelledMap::Iterator,
              MyLabelledMap::Iterator > pair1 = l.equal_range( 7 );
   std::cout << "Range(7)=[" << (*pair1.first).first << "," << (*pair1.second).first << ")" << std::endl;
   ++nb; nbok += ( pair1.first == l.lower_bound( 7 ) ) ? 1 : 0;
   ++nb; nbok += ( pair1.second == l.upper_bound( 7 ) ) ? 1 : 0;
-  std::cout << "(" << nbok << "/" << nb << ") equal_range, lower_bound." << std::endl; 
-  
+  std::cout << "(" << nbok << "/" << nb << ") equal_range, lower_bound." << std::endl;
+
   trace.endBlock();
 
   // Test related to pull request #973 about copy constructor & operator when using at less 3 blocks.
@@ -170,7 +170,7 @@ int main()
     {
       for (unsigned int i = 0; i < size; ++i)
         ll[i] = i;
-      
+
       MyOtherLabelledMap ll_ccopy(ll);
       MyOtherLabelledMap ll_ocopy; ll_ocopy = ll;
 
@@ -187,7 +187,7 @@ int main()
 
       ++nb; nbok += csuccess ? 1 : 0;
       std::cout << "(" << nbok << "/" << nb << ") ll_copy_constructed=" << ll_ccopy << std::endl;
-      
+
       ++nb; nbok += osuccess ? 1 : 0;
       std::cout << "(" << nbok << "/" << nb << ") ll_copied=" << ll_ocopy << std::endl;
     }

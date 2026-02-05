@@ -166,7 +166,7 @@ namespace DGtal
       // ------------------------- private data --------------------------------
 
     private:
-      
+
       const TTiledImage *myti;
 
       // ------------------------- iterator services --------------------------------

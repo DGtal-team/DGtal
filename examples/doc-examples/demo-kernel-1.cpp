@@ -59,7 +59,7 @@ int main()
   MyPoint p3(5,1);
   MyDomain domain(p1,p2);
   // 2D display
-  Board2D board; 
+  Board2D board;
   board << domain;
   board << p1 << p2 << p3;
   board.saveSVG("demo-kernel-1.svg");

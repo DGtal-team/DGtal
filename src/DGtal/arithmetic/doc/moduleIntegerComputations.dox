@@ -1,11 +1,11 @@
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  */
 namespace DGtal {
 
 /*!
-   
+
 @page moduleIntegerComputations  Integer computations
 
 @writers Jacques-Olivier Lachaud

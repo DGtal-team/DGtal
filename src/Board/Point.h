@@ -3,7 +3,7 @@
  * @file   Point.h
  * @author Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb>
  * @date   Sat Aug 18 2007
- * 
+ *
  * @brief  The Point structure.
  */
 /*
@@ -22,25 +22,25 @@ namespace LibBoard {
 
 /**
  * The Point structure.
- * @brief Struct representing a 2D point. 
+ * @brief Struct representing a 2D point.
  */
 struct Point {
 
   double x;      /**< The point's first coordinate */
   double y;      /**< The point's second coordinate */
 
-  /** 
+  /**
    * Point constructor.
-   * 
+   *
    */
-  Point():x(0.0),y(0.0) { } 
+  Point():x(0.0),y(0.0) { }
 
-  /** 
+  /**
    * Point constructor.
-   * 
+   *
    * @param other point to copy
    */
-  Point( const Point & other ):x(other.x),y(other.y) { } 
+  Point( const Point & other ):x(other.x),y(other.y) { }
 
   /**
    * Default assignment operator.
@@ -49,40 +49,40 @@ struct Point {
    */
   Point &operator=( const Point & other ) = default;
 
-  /** 
+  /**
    * Point constructor.
-   * 
+   *
    * @param xc The point's first coordinate.
    * @param yc The point's second coordinate.
    */
-  Point( double xc, double yc ):x(xc),y(yc) { } 
-  
-  /** 
+  Point( double xc, double yc ):x(xc),y(yc) { }
+
+  /**
    * Rotate the point with a given angle around the origin (0,0)
-   * 
+   *
    * @param angle The rotation angle.
    */
   inline Point & rotate( double angle );
 
-  /** 
+  /**
    * Get the values of the x and y values.
-   * 
+   *
    * @param xout Reference to the x to be set.
    * @param yout Reference to the y to be set.
    */
   inline void get( double & xout, double & yout ) const;
-  
-  /** 
+
+  /**
    * Rotate the point with a given angle around the origin (0,0)
-   * 
+   *
    * @param angle The rotation angle.
-   * 
+   *
    * @return The rotated point.
    */
   inline Point rotated( double angle ) const;
 
   inline Point & rotate( double angle, const Point & center );
-  
+
   inline Point  rotated( double angle, const Point & center ) const;
 
   inline Point & operator+=( const Point & other );
@@ -90,13 +90,13 @@ struct Point {
   inline Point & operator-=( const Point & other );
 
   inline Point & operator*=( double s );
-  
+
   inline Point & operator/=( double s );
 
   inline Point operator-();
-  
+
   inline double norm() const;
-  
+
 };
 
 inline void
@@ -189,7 +189,7 @@ operator!=( const Point & a, const Point & b )
 Point &
 Point::rotate( double angle )
 {
-  double newx = cos( angle ) * Point::x - sin( angle ) * Point::y; 
+  double newx = cos( angle ) * Point::x - sin( angle ) * Point::y;
   double newy = sin( angle ) * Point::x + cos( angle ) * Point::y;
   x = newx;
   y = newy;
@@ -231,4 +231,3 @@ Point Point::operator-()
 } // mamespace BoardLib
 
 #endif // _POINT_H_
-

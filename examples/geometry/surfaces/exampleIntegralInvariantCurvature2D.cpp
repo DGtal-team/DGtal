@@ -114,7 +114,7 @@ int main( int argc, char** argv )
     MyIICurvatureFunctor curvatureFunctor; /// Functor used to convert volume -> curvature
     curvatureFunctor.init( h, re_convolution_kernel ); // Initialisation for a grid step and a given Euclidean radius of convolution kernel
 
-    MyIICurvatureEstimator curvatureEstimator( curvatureFunctor ); 
+    MyIICurvatureEstimator curvatureEstimator( curvatureFunctor );
     curvatureEstimator.attach( KSpaceShape, digShape ); /// Setting a KSpace and a predicate on the object to evaluate
     curvatureEstimator.setParams( re_convolution_kernel/h ); /// Setting the digital radius of the convolution kernel
     curvatureEstimator.init( h, abegin, aend ); /// Initialisation for a given h

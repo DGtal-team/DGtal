@@ -27,8 +27,8 @@
 
 
 /**
- *  Example of viewing dual surfaces in PolyscopeViewer.  
- *  \image html viewDualSurface.png " " 
+ *  Example of viewing dual surfaces in PolyscopeViewer.
+ *  \image html viewDualSurface.png " "
  *  \example io/viewDualSurface.cpp
  **/
 
@@ -164,7 +164,7 @@ void viewPolygons
           P[2] = rescale( points[ i ][ 2 ] );
           pts3d.push_back( P );
         }
-      
+
       viewer.drawPolygon( pts3d );
     }
 }
@@ -400,7 +400,7 @@ int main( int argc, char** argv )
   DGtal::Color fillColor( 200, 200, 220, 255 );
   DGtal::Color surfelColor( 255, 0, 0, 150 );
   DGtal::Color voxelColor( 150, 150, 0, 150 );
-  
+
   // Create lists for display:
   // List will inherit current parameters of viewer
   viewer << surfelColor;

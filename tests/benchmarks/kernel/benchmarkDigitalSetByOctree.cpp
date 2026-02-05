@@ -29,14 +29,14 @@ struct BenchInfo
     const auto polys = SH3::getPolynomialList();
     const double steps[]  = { 1.00, 0.50, 0.25 };
     const double noises[] = { 0.00, 0.10  };
-    
+
     for (const auto& poly : polys) {
       for (const auto& step : steps) {
         for (const auto& noise : noises) {
 
           auto params = SH3::defaultParameters();
-          params( "polynomial", poly.second ) 
-                ( "gridstep", step) 
+          params( "polynomial", poly.second )
+                ( "gridstep", step)
                 ( "noise", noise);
 
           auto ishape = SH3::makeImplicitShape3D(params);
@@ -73,7 +73,7 @@ TEST_CASE_METHOD(BenchInfo, "Benchmarking DigitalSetByOctree using Catch2", "[ca
   const auto& name   = names[i];
   const auto& domain = domains[i];
   const auto& pts    = shapes[i];
-  
+
   Octree tree(domain);
   for (const auto& pt : pts) {
     tree.insert(pt);
@@ -118,7 +118,7 @@ TEST_CASE_METHOD(BenchInfo, "Benchmarking DigitalSetByOctree using Catch2", "[ca
   std::cout << "\t Voxel count (dag)   : " << count << std::endl;
   std::cout << std::endl;
 
-  BENCHMARK("Counting number of voxel: " + name) 
+  BENCHMARK("Counting number of voxel: " + name)
   {
     tree.computeFunction(tree.begin(), tree.end(), 1, CountingFunction);
   };

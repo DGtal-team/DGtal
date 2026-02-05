@@ -1,11 +1,11 @@
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  */
 namespace DGtal {
 
 /**
-   
+
 @page moduleShortcuts  Shortcuts
 
 @writers Jacques-Olivier Lachaud, Bastien Doignies, David Coeurjolly
@@ -13,7 +13,7 @@ namespace DGtal {
 @since 1.0
 
 Part of the \ref packageTutorials.
-  
+
 This part of the manual describes how to use shortcuts to quickly
 create shapes and surfaces, to traverse surfaces, to save/load images
 and shapes, and to analyze their geometry.
@@ -314,7 +314,7 @@ on a mesh model to estimate its mean, Gaussian or principals curvature.
 
 @subsubsection dgtal_shortcuts_ssec2_2_13 -> digitize -> True principal curvatures
 
-This example requires ShortcutsGeometry. You can easily get the expected principal curvatures and principal directions onto a digitized implicit shape. 
+This example requires ShortcutsGeometry. You can easily get the expected principal curvatures and principal directions onto a digitized implicit shape.
 
 \snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_2_13s
 
@@ -363,7 +363,7 @@ auto params          = SH2::defaultParameters();
 
 @subsection dgtal_shortcuts_ssec2b_1 Load pgm file -> ...
 
-@subsubsection dgtal_shortcuts_ssec2b_1_1 -> threshold -> save pgm 
+@subsubsection dgtal_shortcuts_ssec2b_1_1 -> threshold -> save pgm
 
 \code
 auto g_image = SH2::makeGrayScaleImage( examplesPath + "samples/contourS.pgm" );
@@ -376,9 +376,9 @@ auto ok      = SH2::saveBinaryImage   ( b_image, "contourS-128.pgm" );
 
 Commands are constructed as \b prefix + \b type name. Most of them are
 static methods and are overloaded to accept different set of
-parameters. 
+parameters.
 
-@subsection dgtal_shortcuts_ssec3_1 Prefixes 
+@subsection dgtal_shortcuts_ssec3_1 Prefixes
 
 - \b make + `Type`: means that it will create a new object of type
   `Type` and returns it as a \e smart \e pointer onto it. Depending on
@@ -386,7 +386,7 @@ parameters.
   object, \b build an empty/not object according to parameters.
 
 - \b make + `Type` + \b s: means that it will create new objects of type
-  `Type` and returns them as a vector of \e smart \e pointers onto it. 
+  `Type` and returns them as a vector of \e smart \e pointers onto it.
 
 - \b make + `Spec` + `Type`: means that it will create a new object of
   type `Type` with some specialized meaning according to `Spec` and
@@ -411,7 +411,7 @@ Shortcuts::Point is Z3i::KSpace::Point.
 - Shortcuts::RealPoint: represents a point with floating-point coordinates.
 - Shortcuts::RealVector: represents a vector with floating-point coordinates.
 - Shortcuts::Domain: represents an (hyper-)rectangular digital domain.
-- Shortcuts::Integer: represents integer numbers (for Point coordinates and Vector components) 
+- Shortcuts::Integer: represents integer numbers (for Point coordinates and Vector components)
 - Shortcuts::Space: represents a digital space (generally a SpaceND)
 - Shortcuts::KSpace: represents a cellular grid space (generally a KhalimskySpaceND)
 
@@ -430,7 +430,7 @@ Shortcuts::Point is Z3i::KSpace::Point.
   -> bool than an implicit digital shape.
 
 - Shortcuts::GrayScaleImage: represents an 8-bits gray-scale image as an array of
-  bytes (unsigned char). 
+  bytes (unsigned char).
 
 - Shortcuts::FloatImage: represents a float image as an array of
   floats.
@@ -466,7 +466,7 @@ Shortcuts::Point is Z3i::KSpace::Point.
   - Shortcuts::defaultParameters: returns the set of all shorcut parameters.
 
 -# Shortcuts::ImplicitShape3D methods
-  - Shortcuts::getPolynomialList: returns the list of polynomial shapes predefined for implicit shapes 
+  - Shortcuts::getPolynomialList: returns the list of polynomial shapes predefined for implicit shapes
   - Shortcuts::parametersImplicitShape3D: parameters related to 3D implicit shapes (polynomial)
   - Shortcuts::makeImplicitShape3D: builds a 3D implicit shape
 
@@ -500,7 +500,7 @@ Shortcuts::Point is Z3i::KSpace::Point.
   - Shortcuts::parametersDigitalSurface: parameters related to digital surfaces (surfel adjacency, components, internal heuristics)
   - Shortcuts::getCellEmbedder: returns the canonic cell embedder of the given (indexed or not) digital surface
   - Shortcuts::getSCellEmbedder: returns the canonic signed cell embedder of the given (indexed or not) digital surface.
-  - Shortcuts::makeLightDigitalSurface: creates a light connected surface around a (random) big enough component of a binary image 
+  - Shortcuts::makeLightDigitalSurface: creates a light connected surface around a (random) big enough component of a binary image
   - Shortcuts::makeLightDigitalSurfaces: creates the vector of all light digital surfaces of the binary image or any one of its big components, can also output representant surfels
   - Shortcuts::makeDigitalSurface: creates an arbitrary (connected or not) digital surface from a binary image, from a digitized implicit shape or from an indexed digital surface.
   - Shortcuts::makeIdxDigitalSurface: creates an indexed digital surfaces that represents all the boundaries of a binary image or any one of its big components, or any given collection of surfels, or from light digital surface(s).
@@ -515,8 +515,8 @@ Shortcuts::Point is Z3i::KSpace::Point.
 
 -# Shortcuts::Mesh services
   - Shortcuts::parametersMesh: parameters related to mesh, triangulated or polygonal surfaces.
-  - Shortcuts::makeTriangulatedSurface: builds the dual triangulated surface approximating an arbitrary digital surface, or the triangulated surface covering a given mesh, or subdivide a polygonal surface into a triangulated surface, or builds the marching cubes triangulated surface approximating an isosurface in a gray-scale image. 
-  - Shortcuts::makePolygonalSurface: builds a polygonal surface from a mesh, or builds the marching cubes polygonal surface approximating an isosurface in a gray-scale image. 
+  - Shortcuts::makeTriangulatedSurface: builds the dual triangulated surface approximating an arbitrary digital surface, or the triangulated surface covering a given mesh, or subdivide a polygonal surface into a triangulated surface, or builds the marching cubes triangulated surface approximating an isosurface in a gray-scale image.
+  - Shortcuts::makePolygonalSurface: builds a polygonal surface from a mesh, or builds the marching cubes polygonal surface approximating an isosurface in a gray-scale image.
   - Shortcuts::makePrimalPolygonalSurface: builds the primal polygonal surface of a (manifold) digital surface
   - Shortcuts::makePrimalSurfaceMesh: builds the primal polygonal surface of a digital surface (which may contain non-manifold edges)
   - Shortcuts::makeDualPolygonalSurface: builds the dual polygonal surface of a  digital surface
@@ -536,7 +536,7 @@ Shortcuts::Point is Z3i::KSpace::Point.
   - Shortcuts::outputDualDigitalSurfaceAsObj: outputs any digital surface in standard OBJ file format as its dual polygonal or triangulated mesh.
 
 -#  Shape Geometry services
-  - ShortcutsGeometry::parametersShapeGeometry: parameters related to implicit shape geometry. 
+  - ShortcutsGeometry::parametersShapeGeometry: parameters related to implicit shape geometry.
   - ShortcutsGeometry::getPositions: returns the positions on the 3D implicit shape close to the specified surfels.
   - ShortcutsGeometry::getNormalVectors: returns the vectors normal to the 3D implicit shape close to the specified surfels.
   - ShortcutsGeometry::getMeanCurvatures: returns the mean curvatures along the 3D implicit shape close to the specified surfels.
@@ -549,7 +549,7 @@ Shortcuts::Point is Z3i::KSpace::Point.
 
 -# Geometry Estimation services
   - ShortcutsGeometry::parametersGeometryEstimation: parameters related to geometric estimators.
-  - ShortcutsGeometry::getTrivialNormalVectors: returns the trivial (Trivial) normal vectors to the given surfel range  
+  - ShortcutsGeometry::getTrivialNormalVectors: returns the trivial (Trivial) normal vectors to the given surfel range
   - ShortcutsGeometry::getCTrivialNormalVectors: returns the convolved trivial (CTrivial) normal vectors to the given surfel range
   - ShortcutsGeometry::getVCMNormalVectors: returns the Voronoi Covariance Measure (VCM) normal vectors to the given surfel range
   - ShortcutsGeometry::getIINormalVectors: returns the Integral Invariant (II) normal vectors to the given surfel range (embedded in a binary image or a digitized implicit shape)
@@ -586,7 +586,7 @@ In all methods, \b out parameters are listed before \b in parameters.
 Also, methods whose result can be influenced by global parameters are
 parameterized through a Parameters object. Hence static methods follow this pattern:
 
-\a <return-type> Shortcuts::`fonction-name` ( [ \a <out-parameter(s)> ], [ \a <in-parameter(s)> ], [ Parameters params ] ) 
+\a <return-type> Shortcuts::`fonction-name` ( [ \a <out-parameter(s)> ], [ \a <in-parameter(s)> ], [ Parameters params ] )
 
 The simplest way to get default values for global parameters is to
 start with a line:

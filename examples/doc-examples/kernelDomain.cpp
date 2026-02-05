@@ -55,22 +55,22 @@ using namespace DGtal;
 int main()
 {
   trace.beginBlock ( "Example kernelDomain" );
-  
-  typedef DGtal::Z2i::Space MySpace; 
-  
+
+  typedef DGtal::Z2i::Space MySpace;
+
   //Point lying in the Z2i::Space
   typedef MySpace::Point MyPoint;
-  
+
   MyPoint p(13,-5);
-  
+
   trace.info() << "Point p="<<p<<endl;
-  
+
   //We create a domain
   typedef HyperRectDomain<MySpace> MyDomain;
   MyPoint a(-3,-4);
   MyPoint b(10,4);
   MyDomain domain(a,b);
-  
+
   //We trace  domain information
   trace.info() <<"Domain domain="<<domain<<endl;
 
@@ -85,10 +85,10 @@ int main()
     trace.info() << "C is inside the domain"<<endl;
   else
     trace.info() << "C is outside the domain"<<endl;
-    
+
   board << c;
   board.saveSVG("kernel-domain-point.svg");
-  
+
 
   //PointVector example
   MyPoint q;
@@ -98,7 +98,7 @@ int main()
   trace.info()<<"Q="<<q<<endl;
 
   MyPoint r;
-  for(MyPoint::Iterator it=r.begin(), itend=r.end() ; 
+  for(MyPoint::Iterator it=r.begin(), itend=r.end() ;
       it != itend;
       ++it)
     (*it) = coord;
@@ -107,10 +107,10 @@ int main()
 
   //We scan the domain
   for( MyDomain::ConstIterator it = domain.begin(), itend = domain.end();
-       it != itend;   
+       it != itend;
        ++it)
     trace.info() << "Processing point"<< (*it) << endl;
-   
+
 
   board.clear();
   board << domain;
@@ -122,7 +122,7 @@ int main()
 
   board << (*itPrec); //We display the first point as a pixel.
   for( MyDomain::ConstIterator itend = domain.end();
-       it != itend;   
+       it != itend;
        ++it, ++itPrec)
     {
       shift =   (*it) -(*itPrec);

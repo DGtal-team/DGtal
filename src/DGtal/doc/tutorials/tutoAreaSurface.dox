@@ -5,7 +5,7 @@
  * This file is part of the DGtal library.
  */
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  * Do not forget to add an entry in src/DGtal/base/Config.h.in !
  */
@@ -25,7 +25,7 @@ experiment the following DGtal features
 - Convert it to a Digital Shape (GaussDigitizer)
 
 - Extract Digital border of a digital shape (LightImplicitDigitalSurface / DigitalSurface)
- 
+
 - Use an differential quantity estimator (IntegralInvariantCovarianceEstimator + a functor)
 
 [TOC]
@@ -38,14 +38,14 @@ When analyzing 3D border of a shape, the surface area plays an
 important role for shape description. A way to estimate the area of a surface is to compute the difference between the normal of the shape and the normal of the digital point.
 Given a shape @f$
 \mathcal{X}@f$, the surface area function can be estimated with :
-@f[ 
+@f[
  \hat{AreaSurface (X)} = \sum_x ( \textbf{n_e}(x) . \textbf{n_s}(\hat{x}) )
 @f]
 where @f$ \textbf{n_e}(x) @f$ denotes the normal vector estimated at position @f$ x \in \mathcal{X} @f$,
 @f$ \textbf{n_s}(\hat{x}) @f$ the normal vector of surface element (surfel) @f$ \hat{x}  \in Dig_h{\mathcal{X}} @f$, and @f$ . @f$ the dot product.
 
 
-@section AS_tutosectLoadVol Import volumetric image an visualization 
+@section AS_tutosectLoadVol Import volumetric image an visualization
 
 Let start with shape construction. First of all, create a source
 file with the following includes (or copy the AreaSurfaceEstimation-template.cpp

@@ -48,9 +48,9 @@ using namespace DGtal;
 bool testUmbrellaComputer()
 {
   using namespace Z3i;
-  
+
   typedef ImplicitBall<Space> EuclideanShape;
-  typedef GaussDigitizer<Space,EuclideanShape> DigitalShape; 
+  typedef GaussDigitizer<Space,EuclideanShape> DigitalShape;
   typedef LightImplicitDigitalSurface<KSpace,DigitalShape> Boundary;
   typedef Boundary::SurfelConstIterator ConstIterator;
   //typedef Boundary::Tracker Tracker;
@@ -67,12 +67,12 @@ bool testUmbrellaComputer()
   EuclideanShape ball( c, 2 ); // ball r=4
   DigitalShape shape;
   shape.attach( ball );
-  shape.init( RealPoint( -10.0, -10.0, -10.0 ), 
+  shape.init( RealPoint( -10.0, -10.0, -10.0 ),
 	      RealPoint( 10.0, 10.0, 10.0 ), 1.0 );
   // Creating cellular grid space around.
   Domain domain = shape.getDomain();
   KSpace K;
-  nbok += K.init( domain.lowerBound(), domain.upperBound(), true ) ? 1 : 0; 
+  nbok += K.init( domain.lowerBound(), domain.upperBound(), true ) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "K.init() is ok" << std::endl;
@@ -114,7 +114,7 @@ bool testUmbrellaComputer()
     bel = umbrella.surfel();
   } while ( bel != init_bel );
   nb++; nbok += nb_forward == nb_backward ? 1 : 0;
-  
+
   trace.info() << "(" << nbok << "/" << nb << ") "
                << " nb_forward(" << nb_forward
 	       << ") == nb_backward(" << nb_backward << ")"
@@ -137,9 +137,9 @@ bool testUmbrellaComputer()
 bool testCombinatorialSurface()
 {
   using namespace Z3i;
-  
+
   typedef ImplicitBall<Space> EuclideanShape;
-  typedef GaussDigitizer<Space,EuclideanShape> DigitalShape; 
+  typedef GaussDigitizer<Space,EuclideanShape> DigitalShape;
   typedef LightImplicitDigitalSurface<KSpace,DigitalShape> Boundary;
   typedef Boundary::SurfelConstIterator ConstIterator;
   //typedef Boundary::Tracker Tracker;
@@ -159,12 +159,12 @@ bool testCombinatorialSurface()
   EuclideanShape ball( c, 8 ); // ball r=4
   DigitalShape shape;
   shape.attach( ball );
-  shape.init( RealPoint( -2.0, -3.0, -10.0 ), 
+  shape.init( RealPoint( -2.0, -3.0, -10.0 ),
 	      RealPoint( 10.0, 10.0, 10.0 ), 1.0 );
   // Creating cellular grid space around.
   Domain domain = shape.getDomain();
   KSpace K;
-  nbok += K.init( domain.lowerBound(), domain.upperBound(), true ) ? 1 : 0; 
+  nbok += K.init( domain.lowerBound(), domain.upperBound(), true ) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "K.init() is ok" << std::endl;
@@ -209,7 +209,7 @@ bool testCombinatorialSurface()
       for ( unsigned int i = 0; i < arcs.size(); ++i, ++nbarcs )
         {
           const Arc & arc = arcs[ i ];
-          MyDigitalSurface::FaceRange 
+          MyDigitalSurface::FaceRange
             faces = digSurf.facesAroundArc( arc );
           for ( unsigned int j = 0; j < faces.size(); ++j, ++nbfaces )
             {
@@ -217,11 +217,11 @@ bool testCombinatorialSurface()
               // search vertex in face.
               MyDigitalSurface::VertexRange
                 vertices = digSurf.verticesAroundFace( face );
-              unsigned int k = 0; 
+              unsigned int k = 0;
               while ( ( k < vertices.size() ) && ( vertices[ k ] != vtx ) )
                 ++k;
               ++nb;
-              if ( k == vertices.size() ) 
+              if ( k == vertices.size() )
                 trace.info() << "Error at vertex " << vtx
                              << ". Vertex not found in incident face."
                              << std::endl;

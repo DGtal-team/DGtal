@@ -10,7 +10,7 @@
  * This file is part of the DGtal library.
  */
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  * Do not forget to add an entry in src/DGtal/base/Config.h.in !
  */
@@ -27,11 +27,11 @@ When implementing digital geometry algorithms, the choice of integer
 type to implement or approximate @f$Z@f$ is crucial in many situations. In
 DGtal, objects, datastructure and algorithms are orthogonal to this
 choice in the sense that the user can specify the best
-Integer type for his own pruposes. 
+Integer type for his own pruposes.
 
 First of all, approximation with built-in integer types with bounded
 ranges can be considered. For example, DGtal::int32_t defines OS
-independent 32 bits signed integers. 
+independent 32 bits signed integers.
 
 If more precision is required, DGtal::BigInteger defines arbitrary precision
 integers. In this case, performances can be impacted.
@@ -55,7 +55,7 @@ Concept name   | Short description | Model examples
  concepts::CUnsignedNumber|Unsigned numbers  | DGtal::uint32_t,...
  concepts::CBoundedNumber | Numbers with bounded capacity | DGtal::int64_t, ... (but not BigInteger)
  concepts::CIntegralNumber | Integral numbers | DGtal::int64_t, BigInteger,...
- 
+
 When we want to perform some computations on these numbers, we may use
 the following concepts:
 
@@ -65,7 +65,7 @@ Concept name   | Short description | Model examples
  concepts::CCommutativeRing | the model can be associated to a commutative ring (operators +,-,*, ....)                  | DGtal::int32_t, double, ....
  concepts::CEuclideanRing | Refinement of concepts::CCommutativeRing with a "/" operator | DGtal::int32_t, double, .....
  concepts::CInteger | Refinement of both concepts::CEuclideanRing and concepts::CIntegralNumber | DGtal::int32_t, .....
- 
+
 
 
 @section basicinteger Basic integer types and NumberTraits

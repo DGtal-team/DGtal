@@ -11,7 +11,7 @@
 * This file is part of the DGtal library.
 */
 
-/* 
+/*
 * Useful to avoid writing DGtal:: in front of every class.
 * Do not forget to add an entry in src/DGtal/base/Config.h.in !
 */
@@ -24,7 +24,7 @@ namespace DGtal {
 @since 0.9.4
 
 Part of \ref packageTopology and  \ref packageShapes
-  
+
 This part of the manual describes how to represent combinatorial
 surfaces, generally embedded in \f$\mathbb{R}^3\f$. The underlying
 combinatorial topological structure is the classical half-edge data
@@ -62,7 +62,7 @@ The classical half-edge data structure is implemented in the class HalfEdgeDataS
 
 @note Large parts of this class are taken from
 https://github.com/yig/halfedge, written by Yotam Gingold.
- 
+
 
 \subsection HEM_sec1_1 Creating a half-edge data structure
 
@@ -84,7 +84,7 @@ along one edge:
 
 All elements within the half-edge data structure are numbered,
 starting from 0. Furthermore, the indices of vertices and triangles
-are the same as the one given at initialization. 
+are the same as the one given at initialization.
 
 So, for instance, in the code above, triangle 0 is incident to
 vertices 0, 1, 2 and triangle 1 is incident to vertices 2, 1, 3.
@@ -114,7 +114,7 @@ neighboring vertices or faces:
 
 - HalfEdgeDataStructure::halfEdge : given a half-edge index, returns
   the half-edge itself.
- 
+
 Then, each half-edge can give you its associated vertex, face, edge, opposite and next half-edge:
 
 - HalfEdgeDataStructure::HalfEdge::toVertex : the end vertex of this
@@ -167,7 +167,7 @@ It is worthy to note the following elements in this representation:
 
 Since 1.1, there is a limited support for classical flip, split and
 merge operations. For now, it is limited to triangulated half-edge
-date structures, i.e. a face is bordered by three half-edges. 
+date structures, i.e. a face is bordered by three half-edges.
 
 - HalfEdgeDataStructure::isFlippable tells if some edge is flippable,
   i.e. it is bordered by two valid triangles;
@@ -204,7 +204,7 @@ to represent its topology and its geometry is simply given by
 precising coordinates for each vertex. The class TriangulatedSurface
 represents this geometric object. You may also associate other
 information to each vertex of the surface, through
-TriangulatedSurface::VertexPropertyMap objects. 
+TriangulatedSurface::VertexPropertyMap objects.
 
 A triangulated surface is a model of graph
 (concepts::CUndirectedSimpleGraph) so you may use graph
@@ -368,7 +368,7 @@ face. We exploit the fact that vertices, edges and faces are all
 numbered consecutively starting from 0. The following methods returns
 property maps:
 
-- TriangulatedSurface::makeVertexMap<T> : creates a map associating a value of type T to each vertex. 
+- TriangulatedSurface::makeVertexMap<T> : creates a map associating a value of type T to each vertex.
 - TriangulatedSurface::makeEdgeMap<T> : creates a map associating a value of type T to each edge.
 - TriangulatedSurface::makeFaceMap<T> : creates a map associating a value of type T to each face.
 - TriangulatedSurface::positions : returns an alias to the map giving the position of each vertex.
@@ -424,7 +424,7 @@ For visualization, you may also directly stream a Mesh into a PolyscopeViewer.
 \subsection HEM_sec2_8 Modifying operations: flip, split, merge
 
 Since 1.1, there is a limited support for classical flip, split and
-merge operations for triangulated surfaces. 
+merge operations for triangulated surfaces.
 
 - TriangulatedSurface::isFlippable tells if some edge is flippable,
   i.e. it is bordered by two valid triangles;
@@ -575,7 +575,7 @@ File MeshHelpers.h provides two methods to convert a Mesh into a
 PolygonalSurface and conversely.
 
 - MeshHelpers::mesh2PolygonalSurface builds a polygonal surface (class PolygonalSurface)
-  from an arbitrary mesh (class Mesh). 
+  from an arbitrary mesh (class Mesh).
 
 - MeshHelpers::polygonalSurface2TriangulatedSurface builds a polygonal
   surface from a triangulated surface (faces are triangulated
@@ -631,7 +631,7 @@ face. We exploit the fact that vertices, edges and faces are all
 numbered consecutively starting from 0. The following methods returns
 property maps:
 
-- PolygonalSurface::makeVertexMap<T> : creates a map associating a value of type T to each vertex. 
+- PolygonalSurface::makeVertexMap<T> : creates a map associating a value of type T to each vertex.
 - PolygonalSurface::makeEdgeMap<T> : creates a map associating a value of type T to each edge.
 - PolygonalSurface::makeFaceMap<T> : creates a map associating a value of type T to each face.
 - PolygonalSurface::positions : returns an alias to the map giving the position of each vertex.
@@ -693,7 +693,7 @@ manifold structure of digital surfaces and the intermediate representation Trian
 
 @verbatim
 # Commands
-$ ./examples/shapes/viewMarchingCubes  ../examples/samples/lobster.vol 40 255 0 
+$ ./examples/shapes/viewMarchingCubes  ../examples/samples/lobster.vol 40 255 0
 New Block [Reading vol file into an image.]
 EndBlock [Reading vol file into an image.] (509.444 ms)
 New Block [Construct the Khalimsky space from the image domain.]
@@ -720,7 +720,7 @@ manifold structure of digital surfaces and the intermediate representation Polyg
 
 @verbatim
 # Commands
-$ ./examples/shapes/viewMarchingCubes  ../examples/samples/lobster.vol 40 255 0 
+$ ./examples/shapes/viewMarchingCubes  ../examples/samples/lobster.vol 40 255 0
 New Block [Reading vol file into an image.]
 EndBlock [Reading vol file into an image.] (510.243 ms)
 New Block [Construct the Khalimsky space from the image domain.]
@@ -738,5 +738,5 @@ EndBlock [Making triangulated surface. ] (2380.92 ms)
 
 \example shapes/viewPolygonalMarchingCubes.cpp
 */
-  
+
 }

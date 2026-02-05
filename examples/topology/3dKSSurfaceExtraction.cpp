@@ -32,8 +32,8 @@
  *  KhalimskyCell. This program outputs these images:
  *
  *  @see \ref dgtal_helpsurf_sec3
- *  
- *  @image html KSurfelsConnectedOrientExt.png 
+ *
+ *  @image html KSurfelsConnectedOrientExt.png
  *  \example  topology/3dKSSurfaceExtraction.cpp
  */
 

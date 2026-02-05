@@ -66,7 +66,7 @@ DGtal::ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy>::re
       aValue = myImagePtr->operator()(aPoint);
       return true;
     }
-    
+
     return false;
 }
 
@@ -89,24 +89,24 @@ DGtal::ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy>::wr
       myWritePolicy->writeInPage(myImagePtr, aPoint, aValue);
       return true;
     }
-    
+
     return false;
 }
 
 template <typename TImageContainer, typename TImageFactory, typename TReadPolicy, typename TWritePolicy>
 inline
-void 
+void
 DGtal::ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy>::update(const Domain &aDomain)
 {
     ImageContainer *myImagePtr = myReadPolicy->getPageToDetach();
-    
+
     if (myImagePtr)
     {
       myWritePolicy->flushPage(myImagePtr);
-      
+
       myImageFactoryPtr->detachImage(myImagePtr);
     }
-    
+
     myReadPolicy->updateCache(aDomain);
 }
 
@@ -125,5 +125,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

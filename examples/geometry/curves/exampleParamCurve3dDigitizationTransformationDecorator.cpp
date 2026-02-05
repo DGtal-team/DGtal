@@ -116,7 +116,7 @@ int main()
    viewer.drawColor ( Color ( 0, 0, 255, 128 ) );
   viewer << digitalCurve.at ( i );
  }
- 
+
  viewer.show();
  return 0;
 }

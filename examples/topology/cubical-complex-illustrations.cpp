@@ -28,7 +28,7 @@
  */
 
 /**
- * Source of examples used to generate illustrations of Cubical Complex module documention.   
+ * Source of examples used to generate illustrations of Cubical Complex module documention.
  * @see @ref   moduleCubicalComplex
  * @image html cubical-complex-illustrations-X.png "One of the generated illustration: displaying a 2D cubical complex on a Board."
  * @example topology/cubical-complex-illustrations.cpp
@@ -71,11 +71,11 @@ int main( int /* argc */, char** /* argv */ )
   X.insertCell( K.uSpel( Point(4,2) ) );
   X.close();
   trace.endBlock();
-  
+
   trace.beginBlock( "Displays Cubical Complex" );
   Board2D board;
   board << domain;
-  board << CustomStyle( X.className(), 
+  board << CustomStyle( X.className(),
                         new CustomColors( Color(80,80,100), Color(180,180,200) ) )
         << X;
   board.saveTikZ( "cubical-complex-illustrations-X.tikz" );
@@ -87,7 +87,7 @@ int main( int /* argc */, char** /* argv */ )
   S.insertCell( K.uCell( Point( 5, 4 ) ) ); // a linel
   S.insertCell( K.uCell( Point( 4, 4 ) ) ); // a pointel
   S.insertCell( K.uCell( Point( 7, 5 ) ) ); // a pixel
-  board << CustomStyle( X.className(), 
+  board << CustomStyle( X.className(),
                         new CustomColors( Color::Black, Color(60,60,60) ) )
         << S;
   board.saveTikZ( "cubical-complex-illustrations-S.tikz" );
@@ -96,10 +96,10 @@ int main( int /* argc */, char** /* argv */ )
 
   //! [cubical-complex-illustrations-closure]
   board << domain;
-  board << CustomStyle( X.className(), 
+  board << CustomStyle( X.className(),
                         new CustomColors( Color(80,80,100), Color(180,180,200) ) )
         << X;
-  board << CustomStyle( X.className(), 
+  board << CustomStyle( X.className(),
                         new CustomColors( Color::Red, Color(255,120,120) ) )
         << X.closure( S );
   board.saveTikZ( "cubical-complex-illustrations-closure.tikz" );
@@ -108,10 +108,10 @@ int main( int /* argc */, char** /* argv */ )
 
   //! [cubical-complex-illustrations-star]
   board << domain;
-  board << CustomStyle( X.className(), 
+  board << CustomStyle( X.className(),
                         new CustomColors( Color(80,80,100), Color(180,180,200) ) )
         << X;
-  board << CustomStyle( X.className(), 
+  board << CustomStyle( X.className(),
                         new CustomColors( Color::Blue, Color(120,120,255) ) )
         << X.star( S );
   board.saveTikZ( "cubical-complex-illustrations-star.tikz" );
@@ -120,10 +120,10 @@ int main( int /* argc */, char** /* argv */ )
 
   //! [cubical-complex-illustrations-link]
   board << domain;
-  board << CustomStyle( X.className(), 
+  board << CustomStyle( X.className(),
                         new CustomColors( Color(80,80,100), Color(180,180,200) ) )
         << X;
-  board << CustomStyle( X.className(), 
+  board << CustomStyle( X.className(),
                         new CustomColors( Color::Green, Color(120,255,120) ) )
         << X.link( S );
   board.saveTikZ( "cubical-complex-illustrations-link.tikz" );
@@ -132,10 +132,10 @@ int main( int /* argc */, char** /* argv */ )
 
   //! [cubical-complex-illustrations-bd]
   board << domain;
-  board << CustomStyle( X.className(), 
+  board << CustomStyle( X.className(),
                         new CustomColors( Color(80,80,100), Color(180,180,200) ) )
         << X;
-  board << CustomStyle( X.className(), 
+  board << CustomStyle( X.className(),
                         new CustomColors( Color::Magenta, Color(255,120,255) ) )
         << X.boundary();
   board.saveTikZ( "cubical-complex-illustrations-bd.tikz" );
@@ -144,10 +144,10 @@ int main( int /* argc */, char** /* argv */ )
 
   //! [cubical-complex-illustrations-int]
   board << domain;
-  board << CustomStyle( X.className(), 
+  board << CustomStyle( X.className(),
                         new CustomColors( Color(80,80,100), Color(180,180,200) ) )
         << X;
-  board << CustomStyle( X.className(), 
+  board << CustomStyle( X.className(),
                         new CustomColors( Color::Cyan, Color(120,255,255) ) )
         << X.interior();
   board.saveTikZ( "cubical-complex-illustrations-int.tikz" );
@@ -156,7 +156,7 @@ int main( int /* argc */, char** /* argv */ )
 
   //! [cubical-complex-illustrations-collapse]
   board << domain;
-  board << CustomStyle( X.className(), 
+  board << CustomStyle( X.className(),
                         new CustomColors( Color(80,80,100), Color(180,180,200) ) )
         << X;
   Cell p1 = K.uCell( Point(2,2) );
@@ -165,10 +165,10 @@ int main( int /* argc */, char** /* argv */ )
   X[ p2 ] = CC::FIXED;
   CC::DefaultCellMapIteratorPriority P;
   functions::collapse( X, X.begin(), X.end(), P, true, true, true );
-  board << CustomStyle( X.className(), 
+  board << CustomStyle( X.className(),
                         new CustomColors( Color(255,120,20), Color(255,150,50) ) )
         << X
-        << CustomStyle( p1.className(), 
+        << CustomStyle( p1.className(),
                         new CustomColors( Color::Blue, Color(120,120,255) ) )
         << p1 << p2;
   board.saveTikZ( "cubical-complex-illustrations-collapse.tikz" );

@@ -146,7 +146,7 @@ namespace DGtal
     {
       return static_cast<DGtal::int64_t>(aT);
     }
-    
+
     /** @brief
      * Cast method to DGtal::uint64_t (for I/O or board export uses
      * only).
@@ -300,7 +300,7 @@ namespace DGtal
       {
         return static_cast<DGtal::int64_t>(aT);
       }
-      
+
       /** @brief
        * Cast method to DGtal::uint64_t (for I/O or board export uses
        * only).
@@ -504,7 +504,7 @@ namespace DGtal
       return static_cast<DGtal::uint64_t>(aT);
     }
 
-    
+
     /** @brief
      * Cast method to double (for I/O or board export uses
      * only).
