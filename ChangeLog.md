@@ -9,6 +9,7 @@
 
 - *Documentation*
   - Many typos fixed in documentation using Github Copilot. (David Coeurjolly, [#1829](https://github.com/DGtal-team/DGtal/pull/1829))
+  - Global spellcheck and pre-commit. (David Coeurjolly, [#1837](https://github.com/DGtal-team/DGtal/pull/1837))
 
 ## BugFixes
 
