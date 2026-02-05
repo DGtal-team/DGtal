@@ -151,7 +151,7 @@ namespace DGtal
       T =  myOrigin -  v1;
 
       //Calculate u parameter and test bound
-      u = T.dot( P );  /* inv_det;
+      u = T.dot( P );  // *inv_det;
 
       if (det >  NumberTraits<Component>::ZERO)
         {
@@ -202,7 +202,7 @@ namespace DGtal
       return true;
     }
 
-        /**
+      /**
      * Ray-Quad intersection predicate
      * (calls two ray-triangle intersections).
      *
