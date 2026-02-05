@@ -17,7 +17,7 @@
 #pragma once
 
 /**
- * @file StandardDSS6Computer.h 
+ * @file StandardDSS6Computer.h
  * @brief Dynamic recognition of a 3d-digital straight segment (DSS).
  * @author Tristan Roussillon (\c
  * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
@@ -143,12 +143,12 @@ namespace DGtal
      */
     StandardDSS6Computer & operator= ( const StandardDSS6Computer & other );
 
-    /** 
+    /**
      * @return a default-constructed instance of Self.
      */
     Self getSelf() const;
 
-    /** 
+    /**
      * @return a default-constructed instance of Reverse.
      */
     Reverse getReverse() const;
@@ -172,7 +172,7 @@ namespace DGtal
      * @param other the object to compare with.
      * @return 'true' either if the leaning points perfectly match
      * or if the first leaning points match to the last ones
-     * (same DSS scanned in the reverse way) 
+     * (same DSS scanned in the reverse way)
      * and 'false' otherwise
      */
     bool operator==( const StandardDSS6Computer & other ) const;
@@ -192,28 +192,28 @@ namespace DGtal
 
     // ----------------------- Interface --------------------------------------
   public:
-     
+
 
     /**
-     * Tests whether the current DSS can be extended at the front. 
-     * Computes the parameters of the extended DSS if yes. 
+     * Tests whether the current DSS can be extended at the front.
+     * Computes the parameters of the extended DSS if yes.
      * with the adding point if true.
      * @return 'true' if yes, 'false' otherwise.
      */
     bool extendFront();
-    
-    
-    /** 
-     * Tests whether the 3d DSS can be extended at the front. 
+
+
+    /**
+     * Tests whether the 3d DSS can be extended at the front.
      *
      * @return 'true' if yes, 'false' otherwise
-     */   
+     */
     bool isExtendableFront();
 
     // ------------------------- Accessors ------------------------------
 
     /**
-     * Computes the parameters 
+     * Computes the parameters
      * (direction, intercept, thickness)
      * of the DSS
      * @param direction direction
@@ -230,7 +230,7 @@ namespace DGtal
 
 
     /**
-     *  
+     *
      * @return begin iterator of the 3d DSS range.
      */
     ConstIterator begin() const;
@@ -268,7 +268,7 @@ namespace DGtal
     // ------------------ Display ------------------------------------------
 
   public:
-    
+
     /**
      * @return the style name used for drawing this object.
      */
@@ -280,7 +280,7 @@ namespace DGtal
      */
     void selfDisplay ( std::ostream & out ) const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
 
     /// projectors
@@ -293,13 +293,13 @@ namespace DGtal
 
     /// begin and end iterators
     ConstIterator myBegin, myEnd;
-    
 
-    // ------------------------- Private Datas --------------------------------
+
+    // ------------------------- Private Data --------------------------------
 
   private:
 
-    
+
   }; // end of class StandardDSS6Computer
 
 

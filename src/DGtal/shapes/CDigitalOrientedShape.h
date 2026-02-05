@@ -59,57 +59,57 @@ Description of \b concept '\b CDigitalOrientedShape' <p>
      models should provide an orientation method  for  points on a
      SpaceND.  Returned value type corresponds to  DGtal::Orientation.
 
-     
+
  # Refinement of
-    
+
  # Associated types
      - Point: type for digital points.
 
  # Notation
      - \a X : A type that is a model of CDigitalOrientedShape
      - \a x, \a y : object of type X
-    
+
  # Definitions
-    
- # Valid expressions and semantics 
-    
+
+ # Valid expressions and semantics
+
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
 |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
 | Orientation method | x.orientation( aPoint) |aPoint of type const Point & | Orientation | | return the orientation of a point @c aPoint according to the shape. Orientation values can be {INSIDE,ON,OUTSIDE} | | |
-    
+
  # Invariants
-    
+
  # Models
-      Parametric and implicit shapes in the DGtal shape factory, 
+      Parametric and implicit shapes in the DGtal shape factory,
 
  # Notes#
 
 @tparam T the type that should be a model of CDigitalOrientedShape.
    */
-  template <typename T> 
+  template <typename T>
   struct CDigitalOrientedShape
   {
     // ----------------------- Concept checks ------------------------------
   public:
     // 1. define first provided types (i.e. inner types), like
     typedef typename T::Point Point;
-   
+
     // 2. then check the presence of data members, operators and methods with
     BOOST_CONCEPT_USAGE( CDigitalOrientedShape )
     {
       ConceptUtils::sameType( myA, myX.orientation( p ));
     }
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     T myX; // only if T is default constructible.
     Orientation myA;
     Point p;
-    
+
     // ------------------------- Internals ------------------------------------
   private:
-    
+
   }; // end of concept CDigitalOrientedShape
-  } 
+  }
 } // namespace DGtal
 
 //                                                                           //

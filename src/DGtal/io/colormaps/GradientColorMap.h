@@ -227,7 +227,7 @@ namespace DGtal
 
     /**
      * Computes the color associated with a value in a given range.
-     * 
+     *
      * @pre min and max values must be different.
      * @param colors The gradients boundary colors.
      * @param min The lower bound of the value range.
@@ -241,10 +241,10 @@ namespace DGtal
              const PValue & max,
              PValue value );
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------

@@ -19,7 +19,7 @@
 /**
  * @file VoxelComplex.h
  * @author Pablo Hernandez-Cerdan (\c pablo.hernandez.cerdan@outlook.com)
- * Insitute of Fundamental Sciences, Massey University, New Zealand.
+ * Institute of Fundamental Sciences, Massey University, New Zealand.
  *
  * @date 2018/01/01
  *
@@ -435,7 +435,7 @@ class VoxelComplex : public CubicalComplex<TKSpace, TCellContainer> {
      * @param verbose flag for verbose output
      *
      * @return <is_critical, 2-clique>
-     * @note A,B can be swaped with same result.
+     * @note A,B can be swapped with same result.
      */
     std::pair<bool, Clique> K_2(const Cell &A, const Cell &B,
                                 bool verbose = false) const;

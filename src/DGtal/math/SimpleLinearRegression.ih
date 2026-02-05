@@ -146,7 +146,7 @@ DGtal::SimpleLinearRegression::SimpleLinearRegression( double eps_zero )
 }
 
 /**
- * Clear all datas.
+ * Clear all data.
  */
 inline
 void
@@ -192,7 +192,7 @@ DGtal::SimpleLinearRegression::computeRegression()
       myU.push_back( u );
       myNormU2 += u * u;
     }
-  
+
   return true;
 }
 

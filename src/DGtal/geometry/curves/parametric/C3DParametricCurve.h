@@ -104,7 +104,7 @@ public:
         ConceptUtils::sameType( x , self.xp ( 0.1f ) );
         ConceptUtils::sameType( x , self.x ( 0.1f ) );
     }
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
 protected:
     T self;
     RealPoint x;
@@ -166,11 +166,11 @@ public:
   {
     ConceptUtils::sameType( curve, self.curve );
   }
-  // ------------------------- Private Datas --------------------------------
+  // ------------------------- Private Data --------------------------------
 protected:
   T self;
   typename T::TypeCurve curve;
-  // ------------------------- Private Datas --------------------------------
+  // ------------------------- Private Data --------------------------------
   // ------------------------- Internals ------------------------------------
 }; // end of concept 3DParametricCurve
 

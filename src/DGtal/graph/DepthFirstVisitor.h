@@ -62,19 +62,19 @@ namespace DGtal
   Description of template class 'DepthFirstVisitor' <p> \brief
   Aim: This class is useful to perform a depth-first exploration
   of a graph given a starting point or set (called initial core).
- 
+
   The expander implements a depth-first algorithm on the graph of
   adjacencies. It can be used not only to detect connected
   component but also to identify the layers of the object located
   at a given distance of a starting set.
- 
+
   The \b core of the expander is at the beginning the set of points
   at distance 0. In this visitor, the distance attached to visited
   nodes correspond to the depth of the node in the breadth-first
-  traveral.
- 
+  traversal.
+
   @tparam TGraph the type of the graph (models of CUndirectedSimpleLocalGraph).
- 
+
   @code
      Graph g( ... );
      Graph::Vertex p( ... );
@@ -82,15 +82,15 @@ namespace DGtal
      while ( ! visitor.finished() )
        {
          DepthFirstVisitor<Graph>::Node node = visitor.current();
-         std::cout << "Vertex " << node.first 
+         std::cout << "Vertex " << node.first
                    << " at distance " << node.second << std::endl;
          visitor.expand();
        }
      @endcode
-    
+
    @see testDepthFirstVisitor.cpp
    */
-  template < typename TGraph, 
+  template < typename TGraph,
              typename TMarkSet = typename TGraph::VertexSet >
   class DepthFirstVisitor
   {
@@ -156,14 +156,14 @@ namespace DGtal
        of vertices provides the initial core of the depth first
        traversal. These vertices will all have a topological depth.
        0.
-       
+
        @tparam VertexIterator any type of single pass iterator on vertices.
        @param graph the graph in which the depth first traversal takes place.
-       @param b the begin iterator in a container of vertices. 
-       @param e the end iterator in a container of vertices. 
+       @param b the begin iterator in a container of vertices.
+       @param e the end iterator in a container of vertices.
     */
     template <typename VertexIterator>
-    DepthFirstVisitor( ConstAlias<Graph> graph, 
+    DepthFirstVisitor( ConstAlias<Graph> graph,
                          VertexIterator b, VertexIterator e );
 
 
@@ -182,7 +182,7 @@ namespace DGtal
 
        NB: valid only if not 'finished()'.
      */
-    const Node & current() const; 
+    const Node & current() const;
 
     /**
        Goes to the next vertex but ignores the current vertex for
@@ -213,7 +213,7 @@ namespace DGtal
      */
     template <typename VertexPredicate>
     void expand( const VertexPredicate & authorized_vtx );
-    
+
     /**
        @return 'true' if all possible elements have been visited.
      */
@@ -239,7 +239,7 @@ namespace DGtal
        @return the current set of visited vertices (a subset of marked
        vertices; excludes the marked vertices yet to be visited).
        Note that if 'finished()' is true, then 'markedVertices()' is
-       equal to 'visitedVertices()' and should thus be preferred. 
+       equal to 'visitedVertices()' and should thus be preferred.
 
        NB: computational cost is a copy of the set of marked vertices
        then as many deletion as the number of marked vertices yet to
@@ -265,9 +265,9 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     /**
@@ -321,7 +321,7 @@ namespace DGtal
    */
   template <typename TGraph, typename TMarkSet >
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
                const DepthFirstVisitor<TGraph, TMarkSet > & object );
 
 } // namespace DGtal

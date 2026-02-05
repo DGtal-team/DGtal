@@ -72,7 +72,7 @@ namespace DGtal
   * @tparam TLinearAlgebra any back-end for performing linear algebra,
   * default is EigenLinearAlgebraBackend.
   *
-  * \code 
+  * \code
   * // Typical use (with appropriate definitions for types and variables).
   * typedef DiscreteExteriorCalculusFactory<EigenLinearAlgebraBackend> CalculusFactory;
   * const auto calculus = CalculusFactory::createFromNSCells<2>( surfels.begin(), surfels.end() );
@@ -99,7 +99,7 @@ namespace DGtal
     static const Dimension dimension = KSpace::dimension;
 
     /// Specifies how to merge the different values of 0-form v at cell vertices when
-    /// outputing the 0-form v for a range of cells (either pointels, linels, surfels).
+    /// outputting the 0-form v for a range of cells (either pointels, linels, surfels).
     enum CellOutputPolicy { Average, ///< compute average values at cell vertices
                             Minimum, ///< compute minimum value at cell vertices,
                             Maximum, ///< compute maximum value at cell vertices
@@ -147,9 +147,9 @@ namespace DGtal
     /// the derivative operator for primal 1-forms
     PrimalDerivative1     primal_D1;
     /// The primal vertex to edge average operator
-    PrimalDerivative0     M01; 
+    PrimalDerivative0     M01;
     /// The primal edge to face average operator
-    PrimalDerivative1     M12; 
+    PrimalDerivative1     M12;
     /// The antiderivative of primal 2-forms
     PrimalAntiderivative2 primal_AD2;
     /// The alpha-weighted identity operator for primal 2-forms (stored for performance)
@@ -172,7 +172,7 @@ namespace DGtal
 
   public:
     // The map Surfel -> Index that gives the index of the surfel in 2-forms.
-    Surfel2IndexMap       surfel2idx;  
+    Surfel2IndexMap       surfel2idx;
     /// The map Surfel -> double telling the smallest epsilon for
     /// which the surfel was a discontinuity.
     SmallestEpsilonMap    smallest_epsilon_map;
@@ -193,7 +193,7 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
     /// @name Standard services
     /// @{
-    
+
     /// Prepare an AT-solver from a valid calculus.
     ///
     /// @param aCalculus any valid calculus
@@ -259,7 +259,7 @@ namespace DGtal
     {
       return ptrCalculus->kFormLength(order, PRIMAL);
     }
-    
+
     /// @}
 
 
@@ -301,7 +301,7 @@ namespace DGtal
 	{
 	  Index idx = surfel2idx[ *it ];
 	  for ( Dimension k = 0; k < N; ++k )
-	    g2[ k ].myContainer( idx ) = input[ i ][ k ]; 
+	    g2[ k ].myContainer( idx ) = input[ i ][ k ];
 	}
       // u = g at the beginning
       if ( verbose >= 2 )
@@ -340,7 +340,7 @@ namespace DGtal
       for ( auto it = itB; it != itE; ++it, ++i )
 	{
 	  Index idx = surfel2idx[ *it ];
-          g2[ 0 ].myContainer( idx ) = input[ i ]; 
+          g2[ 0 ].myContainer( idx ) = input[ i ];
 	}
       // u = g at the beginning
       if ( verbose >= 2 )
@@ -353,7 +353,7 @@ namespace DGtal
       normalize_u2 = false;
     }
 
-    
+
     /// Given a map Surfel -> ScalarVector, initializes forms g, u and
     /// v of the AT solver. Note that there are as many 2-forms u/g as the
     /// number of dimensions of ScalarVector.
@@ -382,7 +382,7 @@ namespace DGtal
       for ( Index index = 0; index < size(2); index++)
         {
           const SCell& cell = g2[ 0 ].getSCell( index );
-          const auto   it   = input.find( cell );  
+          const auto   it   = input.find( cell );
           const auto   n    = ( it != input.end() ) ? it->second : zero;
           nbok             += ( it != input.end() ) ? 1 : 0;
           for ( Dimension k = 0; k < N; ++k )
@@ -421,7 +421,7 @@ namespace DGtal
       for ( Index index = 0; index < size(2); index++)
         {
           const SCell& cell = g2[ 0 ].getSCell( index );
-          const auto   it   = input.find( cell );  
+          const auto   it   = input.find( cell );
           const auto   n    = ( it != input.end() ) ? *it : zero;
           nbok             += ( it != input.end() ) ? 1 : 0;
           g2[ 0 ].myContainer( index ) = n;
@@ -530,7 +530,7 @@ namespace DGtal
     }
 
     /// @}
-    
+
     // ----------------------- Optimization services ------------------------------
   public:
     /// @name Optimization services
@@ -612,7 +612,7 @@ namespace DGtal
       if ( verbose >= 1 ) {
 	std::ostringstream sstr;
 	sstr << "******* Solving AT for epsilon = " << eps << " **********";
-	trace.beginBlock( sstr.str() ); 
+	trace.beginBlock( sstr.str() );
       }
       setEpsilon( eps );
       for ( unsigned int i = 0; i < iter_max; ++i )
@@ -676,7 +676,7 @@ namespace DGtal
 	trace.endBlock();
       return ok;
     }
-    
+
     /// Forces the normalization of the vector u, meaning for all
     /// index i, \f$ \sum_{k=0}^{K-1} u[k][i]^2 = 1 \f$. Can be useful
     /// in some applications where you are looking for unitary vector
@@ -730,13 +730,13 @@ namespace DGtal
       return std::make_tuple( m1, m2, ma );
     }
 
-    
+
     /// @return the discontinuity function v as a primal 0-form.
     PrimalForm0 getV0() const
     {
       return v0;
     }
-    
+
     /// @return the discontinuity function v as a primal 1-form.
     PrimalForm1 getV1() const
     {
@@ -755,7 +755,7 @@ namespace DGtal
     {
       return u2[ k ];
     }
-    
+
     /// Given a range of surfels [itB,itE), returns in \a output the
     /// regularized vector field u.
     ///
@@ -818,7 +818,7 @@ namespace DGtal
     ///
     /// @param[in] itB the start of the range of cells.
     /// @param[in] itE past the end of the range of cells.
-    /// @param[in] policy the chosen policy for outputing v values for a given cell.
+    /// @param[in] policy the chosen policy for outputting v values for a given cell.
     template <typename ScalarFieldOutput, typename CellRangeConstIterator>
     void
     getOutputScalarFieldV0( ScalarFieldOutput& output,
@@ -892,7 +892,7 @@ namespace DGtal
             }
         }
     }
-    
+
     /// Computes the map that stores for each surfel the smallest
     /// epsilon for which the surfel was in the discontinuity zone
     /// (more precisely, the surfel has at least two vertices that
@@ -935,8 +935,8 @@ namespace DGtal
     }
 
     /// @}
-    
-    
+
+
     // ----------------------- Interface --------------------------------------
   public:
     /// @name Interface services
@@ -965,7 +965,7 @@ namespace DGtal
     }
 
     /// @}
-    
+
     // ------------------------- Hidden services ------------------------------
   protected:
 
@@ -992,7 +992,7 @@ namespace DGtal
     }
 
     /// @}
-    
+
     // ------------------------- Internals ------------------------------------
   private:
 

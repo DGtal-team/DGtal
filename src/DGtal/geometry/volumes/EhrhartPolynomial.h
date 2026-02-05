@@ -56,7 +56,7 @@ namespace DGtal
     Description of class 'EhrhartPolynomial' <p> \brief Aim: This
     class implements the class Ehrhart Polynomial which is related to
     lattice point enumeration in bounded lattice polytopes.
-    
+
     @see testEhrhartPolynomial.cpp
 
     @tparam TSpace an arbitrary model of CSpace, which tells in which space live bounded lattice polytopes.
@@ -77,12 +77,12 @@ namespace DGtal
     typedef LagrangeInterpolation< Integer >     Lagrange;
     typedef typename Lagrange::Polynomial        Polynomial;
     typedef std::size_t                          Size;
-    
+
     // ----------------------- Standard services ------------------------------
   public:
 
     /**
-     * Destructor. 
+     * Destructor.
      */
     ~EhrhartPolynomial() = default;
 
@@ -100,7 +100,7 @@ namespace DGtal
     {
       init( polytope );
     }
-                          
+
     /**
      * Copy constructor.
      * @param other the object to clone.
@@ -174,24 +174,24 @@ namespace DGtal
     {
       return myE( t ) % myD;
     }
-    
+
     // @param t the dilation factor for this polytope P
     // @return the number of lattice points interior to t * P
     // @note Use reciprocity formula (-1)^d E(-t)
-    Integer countInterior( Integer t ) const { 
-      return myE.degree() % 2 == 0 
-        ?  ( myE( -t ) / myD ) 
-        :  - ( myE( -t ) / myD ); 
+    Integer countInterior( Integer t ) const {
+      return myE.degree() % 2 == 0
+        ?  ( myE( -t ) / myD )
+        :  - ( myE( -t ) / myD );
     }
 
     // @param t the dilation factor for this polytope P
     // @return 0 if everything is correct.
-    Integer remainderInterior( Integer t ) const { 
-      return myE.degree() % 2 == 0 
-        ?  ( myE( -t ) % myD ) 
-        :  - ( myE( -t ) % myD ); 
+    Integer remainderInterior( Integer t ) const {
+      return myE.degree() % 2 == 0
+        ?  ( myE( -t ) % myD )
+        :  - ( myE( -t ) % myD );
     }
-      
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -213,15 +213,15 @@ namespace DGtal
     {
       return myD != NumberTraits< Integer >::ZERO;
     }
-  
-    // ------------------------- Datas ----------------------------------------
+
+    // ------------------------- Data ----------------------------------------
   protected:
 
     /// The Ehrhart polynomial (integral numerator part)
     Polynomial myE;
     /// The (integral) denominator of the Ehrhart polynomial
     Integer    myD;
-  
+
   };
 
   /**
@@ -234,14 +234,14 @@ namespace DGtal
    */
   template <typename TSpace, typename TInteger>
   std::ostream&
-  operator<<( std::ostream & that_stream, 
+  operator<<( std::ostream & that_stream,
               const EhrhartPolynomial< TSpace, TInteger > & that_object_to_display )
   {
     that_object_to_display.selfDisplay( that_stream );
     return that_stream;
   }
-  
-  
+
+
 } // namespace DGtal
 
 

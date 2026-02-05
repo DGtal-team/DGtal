@@ -98,7 +98,7 @@ public:
         T t0(calculus);
         T t1(calculus, container);
     }
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
 private:
     Container container;
     Calculus calculus;

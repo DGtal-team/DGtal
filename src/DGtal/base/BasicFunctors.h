@@ -157,7 +157,7 @@ namespace DGtal
           return std::round( value );
         }
     };
-  
+
   /** @brief Functor that rounds to the nearest integer.
    *
    * This specialization deduces the value type at evaluation.
@@ -190,7 +190,7 @@ namespace DGtal
           return std::floor( value );
         }
     };
-  
+
   /** @brief Functor that rounds down.
    *
    * This specialization deduces the value type at evaluation.
@@ -208,7 +208,7 @@ namespace DGtal
           return std::floor( value );
         }
     };
-  
+
   /** @brief Functor that rounds up.
    *
    * @tparam T  Type to be rounded. If not specified (void), the type is deduced at evaluation.
@@ -223,7 +223,7 @@ namespace DGtal
           return std::ceil( value );
         }
     };
-  
+
   /** @brief Functor that rounds up.
    *
    * This specialization deduces the value type at evaluation.
@@ -256,7 +256,7 @@ namespace DGtal
           return std::trunc( value );
         }
     };
-  
+
   /** @brief Functor that rounds towards zero.
    *
    * This specialization deduces the value type at evaluation.
@@ -338,7 +338,7 @@ namespace DGtal
      * value
      */
     Value myValue;
-    
+
   };
 
   /**
@@ -437,7 +437,7 @@ namespace DGtal
     Composer(const Composer& other): myF1(other.myF1), myF2(other.myF2) {}
 
     /**
-     * Assignement Operator
+     * Assignment Operator
      * @param other object to copy
      */
     Composer& operator=(const Composer& other)
@@ -648,7 +648,7 @@ struct Thresholder<T,true,true>
     }
 
     /**
-       Assignement
+       Assignment
        @param other the object to copy
        @return reference to the current object
      */
@@ -898,7 +898,7 @@ private:
    * \brief Aim: Functor allowing to rescale a value.
    * Values of the initial scale [initMin,initMax] are rescaled to the new scale [newMin,newMax].
    *
-   * @tparam TInputType the type of values on the inital scale.
+   * @tparam TInputType the type of values on the initial scale.
    * @tparam TOutputType the type of values on the new scale.
    */
   template<typename TInputType, typename TOutputType>
@@ -972,7 +972,7 @@ private:
 
     ///Temporary variable
     double myCoef;
-  private: 
+  private:
     ///Temporary variable
     double myCoef2;
   };

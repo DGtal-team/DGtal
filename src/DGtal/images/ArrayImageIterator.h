@@ -172,7 +172,7 @@ namespace DGtal
 
       /** Move assignment constructor with type interoperability.
        *
-       * @tparam TOtherIterableClass  The type of the other iteratable class (auto-deduced).
+       * @tparam TOtherIterableClass  The type of the other iterable class (auto-deduced).
        * @param other An another iterator whose iterable class pointer is convertible to the current iterable class pointer type.
        * @return a reference to this class instance.
        */
@@ -212,7 +212,7 @@ namespace DGtal
        */
       bool isValid() const;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
     private:
       IterableClass* myIterableClassPtr; ///< Pointer to the iterable class.
       Domain myFullDomain;  ///< Full domain of the image.
@@ -285,4 +285,3 @@ namespace DGtal
 
 #undef ArrayImageIterator_RECURSES
 #endif // else defined(ArrayImageIterator_RECURSES)
-

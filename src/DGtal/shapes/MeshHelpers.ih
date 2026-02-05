@@ -192,7 +192,7 @@ DGtal::MeshHelpers::digitalSurface2DualTriangulatedSurface
   typedef typename CellEmbedder::Value                 SPoint;
   typedef typename TriangulatedSurface< SPoint >::Index SIndex;
   BOOST_STATIC_ASSERT(( SKSpace::dimension == 3 ));
-  
+
   trisurf.clear();
   // Numbers all vertices and add them to the triangulated surface.
   const SKSpace & K = dsurf.container().space();
@@ -247,7 +247,7 @@ DGtal::MeshHelpers::digitalSurface2DualPolygonalSurface
   typedef typename CellEmbedder::Value                 Point;
   typedef typename PolygonalSurface< Point >::PolygonalFace PolygonalFace;
   BOOST_STATIC_ASSERT(( KSpace::dimension == 3 ));
-  
+
   polysurf.clear();
   // Numbers all vertices and add them to the polygonal surface.
   const KSpace & K = dsurf.container().space();
@@ -289,7 +289,7 @@ DGtal::MeshHelpers::digitalSurface2PrimalPolygonalSurface
   typedef typename CellEmbedder::Value                 Point;
   typedef typename PolygonalSurface< Point >::PolygonalFace PolygonalFace;
   BOOST_STATIC_ASSERT(( KSpace::dimension == 3 ));
-  
+
   polysurf.clear();
   cellmap.clear();
   // Numbers all vertices and add them to the polygonal surface.
@@ -303,7 +303,7 @@ DGtal::MeshHelpers::digitalSurface2PrimalPolygonalSurface
       }
     }
   }
-  
+
   // Outputs all faces
   for ( auto&& s : dsurf ) {
     auto primal_vertices = Surfaces<KSpace>::getPrimalVertices( K, s, true );
@@ -311,7 +311,7 @@ DGtal::MeshHelpers::digitalSurface2PrimalPolygonalSurface
     std::transform( primal_vertices.cbegin(), primal_vertices.cend(), face.begin(),
 		    [ &cellmap ] ( const Cell& v ) { return cellmap[ v ]; } );
     polysurf.addPolygonalFace( face );
-  }      
+  }
   return polysurf.build();
 }
 
@@ -334,7 +334,7 @@ DGtal::MeshHelpers::digitalSurface2PrimalSurfaceMesh
   typedef typename CellEmbedder::Value                 Point;
   typedef typename SurfaceMesh<typename CellEmbedder::Value,typename CellEmbedder::Value>::Vertex Vertex;
   BOOST_STATIC_ASSERT(( KSpace::dimension == 3 ));
-  
+
   cellmap.clear();
   std::vector<Point> positions;
   size_t cpt=0;
@@ -371,12 +371,12 @@ DGtal::MeshHelpers::exportOBJ
   const TriangulatedSurface<Point>& trisurf )
 {
   output <<  "# DGtal::MeshHelpers::exportOBJ(std::ostream&,const TriangulatedSurface<Point>&)" << std::endl;
-  // Outputing vertices
+  // Outputting vertices
   for ( auto i : trisurf ) {
     Point p  = trisurf.position( i );
     output << "v " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
   }
-  // Outputing faces
+  // Outputting faces
   auto faces = trisurf.allFaces();
   for ( auto f : faces   ) {
     output << "f";
@@ -394,12 +394,12 @@ DGtal::MeshHelpers::exportOBJ
   const PolygonalSurface<Point>& polysurf )
 {
   output <<  "# DGtal::MeshHelpers::exportOBJ(std::ostream&,const PolygonalSurface<Point>&)" << std::endl;
-  // Outputing vertices
+  // Outputting vertices
   for ( auto i : polysurf ) {
     Point p  = polysurf.position( i );
     output << "v " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
   }
-  // Outputing faces
+  // Outputting faces
   auto faces = polysurf.allFaces();
   for ( auto f : faces   ) {
     output << "f";
@@ -453,15 +453,15 @@ DGtal::MeshHelpers::exportOBJwithFaceNormalAndColor
   std::ofstream output_mtl( mtl_filename.c_str() );
   output_mtl << "#  MTL format"<< std::endl;
   output_mtl << "# generated from MeshWriter from the DGTal library"<< std::endl;
-  // Outputing vertices
+  // Outputting vertices
   for ( auto p : surf.positions() ) {
     output_obj << "v " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
   }
-  // Outputing faces
+  // Outputting faces
   // Taking care of normals
   bool has_normals = ( surf.nbFaces() == normals.size() );
   if ( has_normals ) {
-    // Overrides mesh normal 
+    // Overrides mesh normal
     for (typename SurfaceMesh::Face f = 0; f < surf.nbFaces(); ++f) {
       const auto& p = normals[ f ];
       output_obj << "vn " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
@@ -496,7 +496,7 @@ DGtal::MeshHelpers::exportOBJwithFaceNormalAndColor
   for (typename SurfaceMesh::Face f = 0; f < surf.nbFaces(); ++f) {
     output_obj << "usemtl material_"
 	       << ( has_material ? mapMaterial[ diffuse_colors[ f ] ] : idxMaterial )
-	       << std::endl; 
+	       << std::endl;
     output_obj << "f";
     auto vertices = surf.incidentVertices(f);
     if ( has_normals ) {
@@ -529,12 +529,12 @@ DGtal::MeshHelpers::exportOBJwithFaceNormalAndColor
   std::ofstream output_mtl( mtl_filename.c_str() );
   output_mtl << "#  MTL format"<< std::endl;
   output_mtl << "# generated from MeshWriter from the DGTal library"<< std::endl;
-  // Outputing vertices
+  // Outputting vertices
   for ( auto i : polysurf ) {
     auto p  = polysurf.position( i );
     output_obj << "v " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
   }
-  // Outputing faces
+  // Outputting faces
   auto faces = polysurf.allFaces();
   // Taking care of normals
   bool has_normals = ( faces.size() == normals.size() );
@@ -565,7 +565,7 @@ DGtal::MeshHelpers::exportOBJwithFaceNormalAndColor
   for ( auto f : faces ) {
     output_obj << "usemtl material_"
 	       << ( has_material ? mapMaterial[ diffuse_colors[ f ] ] : idxMaterial )
-	       << std::endl; 
+	       << std::endl;
     output_obj << "f";
     auto vertices = polysurf.verticesAroundFace( f );
     if ( has_normals ) {
@@ -582,5 +582,3 @@ DGtal::MeshHelpers::exportOBJwithFaceNormalAndColor
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

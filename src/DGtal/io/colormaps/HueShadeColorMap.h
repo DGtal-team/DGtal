@@ -60,7 +60,7 @@ namespace DGtal
    * colormap, maybe aka rainbow color map. This color map is suitable, for
    * example, to colorize distance functions. By default, only one hue cycle is
    * used.
-   * 
+   *
    * The HueShadeColorMap can be used either as a functor object (the value
    * range is given at the object's construction) which converts a value  into a
    * Color structure, or it can be used through a static method taking
@@ -81,7 +81,7 @@ namespace DGtal
    *   Color lightBlue2 = HueShadeColorMap<float>::getColor(0.0f,1.0f,0.5f);
    * }
    * @endcode
-   * 
+   *
    * @tparam PValue The type of the range values.
    * @tparam DefaultCycles The default number of cycles (used as a default
    *         parameter by the constructor).
@@ -91,15 +91,15 @@ namespace DGtal
     {
 
     public:
-    
+
     typedef PValue Value;
 
     // ----------------------- Standard services ------------------------------
     public:
 
-    /** 
+    /**
      * Constructor.
-     * 
+     *
      * @param min The lower bound of the value range.
      * @param max The upper bound of the value range.
      * @param cycles The number of cycles in the colormap.
@@ -107,16 +107,16 @@ namespace DGtal
     HueShadeColorMap( const PValue & min,
           const PValue & max,
           const unsigned int cycles = DefaultCycles );
-    
-    /** 
+
+    /**
      * Computes the color associated with a value in a given range.
-     * 
+     *
      * @param value A value within the value range.
-     * @return A color whose hue linearly depends on the 
+     * @return A color whose hue linearly depends on the
      * position of [value] within the current range.
      */
     Color operator()( const PValue & value ) const;
-      
+
     /**
      * Destructor.
      */
@@ -150,14 +150,14 @@ namespace DGtal
      */
     bool isValid() const;
 
-    /** 
+    /**
      * Returns the lower bound of the value range.
      *
      * @return The lower bound of the value range.
      */
     const PValue & min() const;
 
-    /** 
+    /**
      * Returns the upper bound of the value range.
      *
      * @return The upper bound of the value range.
@@ -165,9 +165,9 @@ namespace DGtal
     const PValue & max() const;
 
 
-    /** 
+    /**
      * Sets the number of cycles of hue shade.
-     * 
+     *
      * @param cycles Number of cycles.
      */
     void setCycles( int cycles );
@@ -175,25 +175,25 @@ namespace DGtal
     // ----------------------- Static methods ---------------------------------
 
 
-    /** 
+    /**
      * Computes the color associated with a value in a given range.
-     * 
+     *
      * @param cycles The number of (rainbow) cycles.
-     * @param min The lower bound of the value range.  
+     * @param min The lower bound of the value range.
      * @param max The upper bound of the value range.
      * @param value A value within the value range.
-     * @return A color whose hue linearly depends on the 
-     * position of [value] within the range [min]..[max]. 
+     * @return A color whose hue linearly depends on the
+     * position of [value] within the range [min]..[max].
      */
     static Color getColor( const unsigned int cycles,
              const PValue & min,
              const PValue & max,
              const PValue & value );
-    
-    // ------------------------- Protected Datas ------------------------------
+
+    // ------------------------- Protected Data ------------------------------
     private:
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
     private:
 
     // ------------------------- Hidden services ------------------------------
@@ -202,7 +202,7 @@ namespace DGtal
     PValue myMin;    /**< The lower bound of the value range.  */
     PValue myMax;           /**< The lower bound of the value range.  */
     unsigned int myCycles;  /**< The number of cycles in the color map. */
-    
+
     /**
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
@@ -226,7 +226,7 @@ namespace DGtal
   template <typename PValue, int DefaultCycles >
     std::ostream&
     operator<< ( std::ostream & out, const HueShadeColorMap<PValue,DefaultCycles> & object );
-  
+
 } // namespace DGtal
 
 

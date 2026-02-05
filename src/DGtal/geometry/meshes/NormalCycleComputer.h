@@ -81,12 +81,12 @@ namespace DGtal
     typedef std::vector< RealPoint >                     RealPoints;
     typedef std::vector< RealVector >                    RealVectors;
     typedef std::vector< RealTensor >                    RealTensors;
-    typedef typename SurfaceMesh::Size                   Size; 
+    typedef typename SurfaceMesh::Size                   Size;
     typedef typename SurfaceMesh::Index                  Index;
     typedef typename SurfaceMesh::Vertex                 Vertex;
     typedef typename SurfaceMesh::Face                   Face;
 
-    
+
     /// Constructor from mesh.
     /// @param aMesh any simplified mesh that is referenced in this object.
     NormalCycleComputer( ConstAlias< SurfaceMesh > aMesh );
@@ -105,14 +105,14 @@ namespace DGtal
     /// @return the \f$ \tilde{\mu}^{X,Y} \f$ normal cycle measure,
     /// i.e. the anisotropic tensor curvature measure with swapped eigenvectors.
     TensorMeasure computeMuXYs() const;
-    
+
     //-------------------------------------------------------------------------
   public:
     /// @name Formulas for estimating curvatures from measures
     /// @{
 
     /// @param mu0 the mu0 measure (i.e. area) of some set
-    /// @param mu1 the mu1 measure (i.e. twice the mean curvature measue) of the same set
+    /// @param mu1 the mu1 measure (i.e. twice the mean curvature measure) of the same set
     /// @return the estimated mean curvature on this set.
     static
     Scalar meanCurvature( Scalar mu0, Scalar mu1 )
@@ -121,7 +121,7 @@ namespace DGtal
     }
 
     /// @param mu0 the mu0 measure (i.e. area) of some set
-    /// @param mu2 the mu2 measure (i.e. the Gaussian curvature measue) of the same set
+    /// @param mu2 the mu2 measure (i.e. the Gaussian curvature measure) of the same set
     /// @return the estimated Gaussian curvature on this set.
     static
     Scalar GaussianCurvature( Scalar mu0, Scalar mu2 )
@@ -130,7 +130,7 @@ namespace DGtal
     }
 
     /// @param mu0 the mu0 measure (i.e. area) of some set
-    /// @param muXY the anisotropic muXY measure (i.e. the second fundamental form measue) of the same set
+    /// @param muXY the anisotropic muXY measure (i.e. the second fundamental form measure) of the same set
     /// @param N the normal vector at the location of the set
     ///
     /// @return a tuple (K1,K2,D1,D2) where K1 and K2 are two
@@ -138,7 +138,7 @@ namespace DGtal
     /// associated principal directions.
     static
     std::tuple< Scalar, Scalar, RealVector, RealVector >
-    principalCurvatures( Scalar mu0, RealTensor muXY, const RealVector& N ) 
+    principalCurvatures( Scalar mu0, RealTensor muXY, const RealVector& N )
     {
       muXY += muXY.transpose();
       muXY *= 0.5;
@@ -154,19 +154,19 @@ namespace DGtal
                               ( mu0 != 0.0 ) ? -L[ 0 ] / mu0 : 0.0,
                               V.column( 1 ),
                               V.column( 0 ) );
-    }    
+    }
     /// @}
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
-    
+
     /// A reference to the mesh over which computations are done.
     const SurfaceMesh& myMesh;
-    
 
-    
+
+
   }; // end of class NormalCycleComputer
-    
+
 } // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -179,4 +179,3 @@ namespace DGtal
 
 #undef NormalCycleComputer_RECURSES
 #endif // else defined(NormalCycleComputer_RECURSES)
-

@@ -118,7 +118,7 @@ namespace DGtal
      */
     inline explicit CountedConstPtrOrConstPtr( const T* p = 0, bool isCountedPtr = true )
       : myAny(0), myIsCountedPtr( isCountedPtr )
-    { 
+    {
       if ( isCountedPtr ) {
 	if (p) myAny = static_cast<void*>( new Counter( const_cast<T*>( p ) ) );
       }
@@ -131,10 +131,10 @@ namespace DGtal
      * object is released (and possibly freed if the reference count
      * was 1), otherwise, if this pointer object was \b simple, the
      * destructor does nothing.
-     */ 
+     */
     ~CountedConstPtrOrConstPtr()
     {
-      if ( myIsCountedPtr ) release(); 
+      if ( myIsCountedPtr ) release();
     }
 
     /**
@@ -146,8 +146,8 @@ namespace DGtal
      */
     CountedConstPtrOrConstPtr( const CountedPtr<T> & r ) noexcept
       : myIsCountedPtr( true )
-    { 
-      acquire( r.myCounter ); 
+    {
+      acquire( r.myCounter );
     }
 
     /**
@@ -161,9 +161,9 @@ namespace DGtal
      */
     CountedConstPtrOrConstPtr(const CountedConstPtrOrConstPtr& r) noexcept
       : myIsCountedPtr( r.myIsCountedPtr )
-    { 
+    {
       if ( myIsCountedPtr )
-	acquire( r.counterPtr() ); 
+	acquire( r.counterPtr() );
       else
 	myAny = r.myAny;
     }
@@ -179,9 +179,9 @@ namespace DGtal
      */
     CountedConstPtrOrConstPtr(const CountedPtrOrPtr<T>& r) noexcept
       : myIsCountedPtr( r.myIsCountedPtr )
-    { 
+    {
       if ( myIsCountedPtr )
-	acquire( r.counterPtr() ); 
+	acquire( r.counterPtr() );
       else
 	myAny = r.myAny;
     }
@@ -234,7 +234,7 @@ namespace DGtal
      * Assignment with smart pointer (CountedPtr). If 'this' was \b
      * smart, then the shared pointer is released. Then this pointer
      * object becomes also \b smart and acquires \a r (no
-     * duplication). 
+     * duplication).
      *
      * @param r the other smart pointer to clone.
      *
@@ -266,7 +266,7 @@ namespace DGtal
 
     /**
        Equality operator ==
-       
+
        @param other any other pointer.
        @return 'true' if pointed address is equal to \a other.
     */
@@ -277,7 +277,7 @@ namespace DGtal
 
     /**
        Inequality operator !=
-       
+
        @param other any other pointer.
        @return 'true' if 'this' points to a different address than \a other.
     */
@@ -287,7 +287,7 @@ namespace DGtal
     }
 
     /**
-     * Dereferencing operator. 
+     * Dereferencing operator.
      *
      * @return a reference on the object of type \a T that is \b smartly
      * or \b simply pointed by 'this'.
@@ -295,14 +295,14 @@ namespace DGtal
      * @pre 'isValid()' is true
      */
     const T& operator*()  const noexcept
-    { 
+    {
       // Travis is too slow in Debug mode with this ASSERT.
       ASSERT( isValid() );
-      return myIsCountedPtr ? ( * counterPtr()->ptr ) : ( * ptr() ); 
+      return myIsCountedPtr ? ( * counterPtr()->ptr ) : ( * ptr() );
     }
 
     /**
-     * Member access operator. 
+     * Member access operator.
      *
      * @return a pointer on the object of type \a T that is \b smartly
      * or \b simply pointed by 'this' or 0 if the object is not valid
@@ -311,14 +311,14 @@ namespace DGtal
      * @pre 'isValid()' is true
      */
     const T* operator->() const noexcept
-    { 
+    {
       // Travis is too slow in Debug mode with this ASSERT.
       ASSERT( isValid() );
       return myIsCountedPtr ? counterPtr()->ptr : ptr();
     }
 
     /**
-     * Secured member access operator. 
+     * Secured member access operator.
      *
      * @return a pointer on the object of type \a T that is \b smartly
      * or \b simply pointed by 'this' or 0 if the object is not valid
@@ -326,7 +326,7 @@ namespace DGtal
      */
     const T* get()        const noexcept
     {
-      return myIsCountedPtr ? ( myAny ? counterPtr()->ptr : 0 ) : ptr(); 
+      return myIsCountedPtr ? ( myAny ? counterPtr()->ptr : 0 ) : ptr();
     }
 
     /**
@@ -349,8 +349,8 @@ namespace DGtal
      * 'this' object is \b simple.
      */
     unsigned int count() const
-    { 
-      return myIsCountedPtr ? counterPtr()->count : 0; 
+    {
+      return myIsCountedPtr ? counterPtr()->count : 0;
     }
 
     /**
@@ -363,14 +363,14 @@ namespace DGtal
      * @note Use with care.
      * @pre 'isValid()' and, if \b smart, 'unique()'.
      */
-    inline const T* drop() 
+    inline const T* drop()
     { // Gives back the pointer without deleting him. Delete only the counter.
       ASSERT( isValid() );
       if ( myIsCountedPtr ) {
         ASSERT( unique() );
 	T* tmp = counterPtr()->ptr;
 	delete counterPtr();
-	myAny = 0; 
+	myAny = 0;
 	return tmp;
       } else {
 	return ptr();
@@ -385,17 +385,17 @@ private:
     /// If \c true, 'this' pointer object is \b smart, otherwise it is \b simple.
     bool myIsCountedPtr;
 
-	    
+
     /**
      * @pre 'this' pointer object is \b smart.
      *
      * @return the (possibly shared) counter pointed by \ref myAny.
      */
     inline Counter* counterPtr() const
-    { 
+    {
       // Travis is too slow in Debug mode with this ASSERT.
       ASSERT( myIsCountedPtr );
-      return static_cast<Counter*>( myAny ); 
+      return static_cast<Counter*>( myAny );
     }
 
     /**
@@ -404,10 +404,10 @@ private:
      * @return the address pointed by \ref myAny.
      */
     inline T* ptr() const
-    { 
+    {
       // Travis is too slow in Debug mode with this ASSERT.
       ASSERT( ! myIsCountedPtr );
-      return static_cast<T*>( myAny ); 
+      return static_cast<T*>( myAny );
     }
 
     /**
@@ -463,9 +463,9 @@ private:
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------

@@ -112,7 +112,7 @@ namespace DGtal
     /**
      * Leave a current block, decrease the indentation level and display the associate keyword
      *
-     * @return  the ellapsed time in the block in milliseconds (Class Clock).
+     * @return  the elapsed time in the block in milliseconds (Class Clock).
      */
     double endBlock();
 
@@ -170,9 +170,9 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     ///The indentation level
     unsigned int myCurrentLevel;

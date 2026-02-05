@@ -54,48 +54,48 @@ namespace DGtal
   class Board2D;
   namespace concepts
   {
-   
+
     /////////////////////////////////////////////////////////////////////////////
     // class CDrawableWithBoard2D
     /**
        Description of \b concept '\b CDrawableWithBoard2D' <p>
        @ingroup Concepts
-     
+
        @brief Aim:  The concept CDrawableWithBoard2D specifies what are the classes
        that admit an export with Board2D.
 
        An object x satisfying this concept may then be used as:
-     
+
        \code
        Board2D board;
        board << CustomStyle( x.className(), x.defaultStyle() )
              << x;
-       \endcode 
-   
+       \endcode
+
        # Refinement of
-   
+
        # Associated types
-   
+
        # Notation
        - \a X : A type that is a model of CDrawableWithBoard2D
        - \a x, \a y  : Object of type X
        - \a m  : a string of characters
-   
+
        # Definitions
-   
+
        # Valid expressions and semantics
-   
+
        | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
        |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
        |the default draw style | x.defaultStyle( m ="" ) | \a mode \a m: \c std::string | DrawableWithBoard2D | | returns a dynamic allocation of the default style for the model \a X in mode \a m | | |
        |the name of the model  | x.className()           |  | std::string | | returns a string telling the name of the model | | |
-       |the way the objet \a x is drawn | x.setStyle(Board2D &board) | | | | draws the object \c x on the \a board stream | | |
-   
+       |the way the object \a x is drawn | x.setStyle(Board2D &board) | | | | draws the object \c x on the \a board stream | | |
+
        # Invariants
-   
+
        # Models
        ArithmeticalDSSComputer, FreemanChain, HyperRectDomain, ImageContainerByHashTree, ImageContainerBySTLVector, PointVector, DigitalSetBySTLSet,DigitalSetBySTLVector, Object
-   
+
        # Notes
        @todo ImageContainerByHashTree does not implement setStyle(Board2D &).
        @todo ImageContainerByHashTree does not implement defaultStyle(std::string&)const.
@@ -115,13 +115,13 @@ namespace DGtal
         concepts::ConceptUtils::sameType( myD, defaultStyle( myT) );
       }
 
-      // ------------------------- Private Datas --------------------------------
+      // ------------------------- Private Data --------------------------------
     private:
       T myT;
       DrawableWithBoard2D *myD;
       Board2D myB;
       std::string myS;
-    
+
       // ------------------------- Internals ------------------------------------
     private:
 

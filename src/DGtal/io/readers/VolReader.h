@@ -57,10 +57,10 @@ namespace DGtal
    * Description of template class 'VolReader' <p>
    * \brief Aim: implements methods to read a "Vol" file format.
    *
-   * The main import method "importVol" returns an instance of the template 
+   * The main import method "importVol" returns an instance of the template
    * parameter TImageContainer.
    *
-   * The private methods have been backported from the SimpleVol project 
+   * The private methods have been backported from the SimpleVol project
    * (see http://liris.cnrs.fr/david.coeurjolly).
    *
    * Example usage:
@@ -79,12 +79,12 @@ namespace DGtal
    * ...
    * @endcode
    *
-   * @tparam TImageContainer the image container to use. 
+   * @tparam TImageContainer the image container to use.
    *
    * @tparam TFunctor the type of functor used in the import (by default set to functors::Cast< TImageContainer::Value>) .
    * @see testVolReader.cpp
    */
-  template <typename TImageContainer,  
+  template <typename TImageContainer,
 	    typename TFunctor = functors::Cast< typename TImageContainer::Value > >
   struct VolReader
   {
@@ -93,27 +93,27 @@ namespace DGtal
     typedef TImageContainer ImageContainer;
     typedef typename TImageContainer::Value Value;
     typedef TFunctor Functor;
-    
-    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, unsigned char, Value > )) ;    
+
+    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, unsigned char, Value > )) ;
 
     BOOST_STATIC_ASSERT(ImageContainer::Domain::dimension == 3);
 
 
-    /** 
-     * Main method to import a Vol into an instance of the 
+    /**
+     * Main method to import a Vol into an instance of the
      * template parameter ImageContainer.
-     * 
+     *
      * @param filename the file name to import.
      * @param aFunctor the functor used to import and cast the source
      * image values into the type of the image container value (by
      * default set to functors::Cast < TImageContainer::Value > .
      *
- 
+
      * @return an instance of the ImageContainer.
      */
-    static ImageContainer importVol(const std::string & filename, 
+    static ImageContainer importVol(const std::string & filename,
                                     const Functor & aFunctor =  Functor());
-    
+
   private:
 
     typedef unsigned char voxel;
@@ -138,7 +138,7 @@ namespace DGtal
         type( strdup(h.type) ), value( strdup(h.value) ) {};
       //! Default constructor
       HeaderField() : type(NULL), value(NULL) {};
-      //! Assignement operator
+      //! Assignment operator
       const HeaderField &operator = (const HeaderField &h) {
         free( type );
         free( value );
@@ -159,14 +159,14 @@ namespace DGtal
     static const char *getHeaderValue( const char *type, const HeaderField * header );
 
     //! Returns non-zero if failure
-    static     int getHeaderValueAsInt( const char *type, int *dest , const HeaderField * header); 
-    
+    static     int getHeaderValueAsInt( const char *type, int *dest , const HeaderField * header);
+
     //! Internal method which returns the index of a field or -1 if not found.
     static int getHeaderField( const char *type, const HeaderField * header ) ;
-    
+
     //! Global list of required fields in a .vol file
     static const char *requiredHeaders[];
-   
+
   }; // end of class VolReader
 
 

@@ -82,7 +82,7 @@ namespace DGtal
      * @param y0 the y-coordinate of the flower center.
      * @param r the radius of the flower.
      * @param smallr the variable small radius of the flower.
-     * @param k the number of flower extremeties.
+     * @param k the number of flower extremities.
      * @param phi the phase of the flower (in radian).
      */
     Flower2D( const double x0, const double y0,
@@ -96,7 +96,7 @@ namespace DGtal
      * @param aPoint the flower center.
      * @param r the radius of the flower.
      * @param smallr the variable small radius of the flower.
-     * @param k the number of flower extremeties.
+     * @param k the number of flower extremities.
      * @param phi the phase of the flower (in radian).
      */
     Flower2D( const RealPoint& aPoint,
@@ -216,7 +216,7 @@ namespace DGtal
     double myVarRadius;
 
     /**
-     * the number of flower extremeties.
+     * the number of flower extremities.
      */
     unsigned int myK;
 

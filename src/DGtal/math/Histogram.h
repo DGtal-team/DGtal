@@ -93,7 +93,7 @@ namespace DGtal
        @return the number of bins of this binner.
     */
     inline Bin size() const
-    { 
+    {
       return myNb;
     }
 
@@ -119,7 +119,7 @@ namespace DGtal
     continuous variable.
 
     @code
-    std::vector<double> v; 
+    std::vector<double> v;
     ...
     Statistic<double> stats;
     stats.addValues( v.begin(), v.end() );
@@ -164,7 +164,7 @@ namespace DGtal
        (number of samples), \a s (variance of samples).
     */
     enum Formula { SquareRoot /**< Rule is k=sqrt(n) */,
-                   Sturges /**< Rule is k=ceil(log_2(n)+1) */, 
+                   Sturges /**< Rule is k=ceil(log_2(n)+1) */,
                    Rice /**< Rule is k=ceil(n^(1/3)) */,
                    Scott /**< Rule is h=3.5s/(n^(1/3)) */ };
     // ----------------------- Standard services ------------------------------
@@ -279,7 +279,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
     /// The binner that places quantities into a bin.
     const Binner* myBinner;
@@ -288,7 +288,7 @@ namespace DGtal
     /// The cumulative histogram data.
     Container myCumulativeHistogram;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------

@@ -73,11 +73,11 @@ namespace DGtal
      * symmetric unit ball.
      *
      * As discussed in @cite dcoeurjo_metric14  and in @ref moduleVolumetric, we have the
-     * following properties: 
+     * following properties:
      *
      * - distance between two points is in @f$ O(log(n))@f$
-     * - hiddenBy predicate is in @f$ O(log^2(n))@f$ 
-     * - closest predicate is in @f$ O(log(n))@f$ 
+     * - hiddenBy predicate is in @f$ O(log^2(n))@f$
+     * - closest predicate is in @f$ O(log(n))@f$
      *
      * @tparam TSpace a model CSpace of dimension 2.
      *
@@ -98,7 +98,7 @@ namespace DGtal
       typedef typename Space::Vector Vector;
       ///Type for points
       typedef typename Space::Point Point;
-    
+
       ///Container for set of directions
       typedef std::vector< Vector > Directions;
       typedef typename Directions::const_iterator ConstIterator;
@@ -110,8 +110,8 @@ namespace DGtal
 
       ///Vector components type
       typedef typename Vector::Component Abscissa;
-    
-    
+
+
       /**
        * Constructor from a number N.  Will generate a partial mask with
        * @a aN directions (from Farey fractions). Weights are set to
@@ -122,7 +122,7 @@ namespace DGtal
        */
       ChamferNorm2D(const unsigned int aN);
 
-      /** Constructor from direction and noraml vector sets.
+      /** Constructor from direction and normal vector sets.
        *
        * @param aDirectionSet the set of vectors of the chamfer norm
        * mask. This set should correspond to the vectors of the chamfer
@@ -131,14 +131,14 @@ namespace DGtal
        *
        * @param aNormalDirectionSet for each cone, the associated normal
        * vector.
-       * 
+       *
        * @param [in] norm the normalization factor associated with th
        * mask (default is 1.0)
        */
       ChamferNorm2D(const Directions &aDirectionSet,
                     const Directions &aNormalDirectionSet,
-                    const Value norm = 1.0 );   
-    
+                    const Value norm = 1.0 );
+
       /**
        * Destructor.
        */
@@ -154,8 +154,8 @@ namespace DGtal
           return  (( a[0]*b[1] - a[1]*b[0] ) > 0);
         }
       };
-    
-  
+
+
       /****
        * @brief Vector comparator (1st quadrant)
        */
@@ -194,7 +194,7 @@ namespace DGtal
                             ConstIterator aBegin ,
                             ConstIterator aEnd ) const;
 
-  
+
       /**
        * Returns the cone associated to a direction (iterator @a it) in
        * the whole mask.
@@ -221,8 +221,8 @@ namespace DGtal
        * @returns the normal associated with a cone (aCone, aCone+1)
        */
       Vector getNormalFromCone(ConstIterator aCone) const;
-    
-  
+
+
       /**
        * Return the canonical ray for a given ray.
        *
@@ -232,7 +232,7 @@ namespace DGtal
        * @return Vector |aRay[i]|
        **/
       Vector canonicalRay(const Vector &aRay) const;
-    
+
       // ----------------------- CMetricSpace concept -----------------------------------
       /**
        * Returns the distance for the chamfer norm between P and Q.
@@ -243,7 +243,7 @@ namespace DGtal
        * @return the distance between P and Q.
        */
       Value operator()(const Point &P, const Point &Q) const;
-    
+
       /**
        * Returns the raw distance for the chamfer norm between P and Q.
        * For chamfer norm, it corresponds to un-normalized distance
@@ -256,7 +256,7 @@ namespace DGtal
        */
       RawValue rawDistance(const Point &P, const Point &Q) const;
 
-    
+
       /**
        * Given an origin and two points, this method decides which one
        * is closest to the origin. This method should be faster than
@@ -282,7 +282,7 @@ namespace DGtal
           else
             return ClosestBOTH;
       }
-    
+
       /**
        * Copy constructor.
        * @param other the object to clone.
@@ -292,8 +292,8 @@ namespace DGtal
         this->myDirections = other.myDirections;
         this->myNormals = other.myNormals;
       }
-    
-    
+
+
       /**
        * Assignment.
        * @param other the object to copy.
@@ -309,7 +309,7 @@ namespace DGtal
       // ----------- CSeparableMetric concept -----------------------------------
 
       /**
-       * Compute the intersection between (@a aP,@a aQ) and 
+       * Compute the intersection between (@a aP,@a aQ) and
        * (@a Lmin, @a Lmax). More precisely, if we suppose that
        *
        * @pre  We have @f$ Lmin[aDimension] < Lmax[aDimension]@f$
@@ -329,7 +329,7 @@ namespace DGtal
       Abscissa getLowerRayIntersection(const Vector &aP, const Vector &aQ,
                                        const Point &Lmin, const Point &Lmax,
                                        const Dimension aDimension) const ;
-    
+
       /**
        * Compute the intersection between (@a aP,@a aQ) and
        * (@a Lmin, @a Lmax). More precisely, if we suppose that
@@ -351,15 +351,15 @@ namespace DGtal
       Abscissa getUpperRayIntersection(const Vector &aP, const Vector &aQ,
                                        const Point &Lmin, const Point &Lmax,
                                        const Dimension aDimension) const ;
-    
-    
-    
+
+
+
       /**
        * Considering a vertical configuration (aDimension == 1, P[!dimension]<= Lmin[!dimension]),
        * This method returns the cone (ConstIterator, ConstIterator+1) at @a P which contains
-       * the Voronoi Edge of P and Q. 
+       * the Voronoi Edge of P and Q.
        *
-       * @pre  We have aP[aDimension] != aQ[aDimension  (no alignement)
+       * @pre  We have aP[aDimension] != aQ[aDimension  (no alignment)
        *
        * This method runs in O(log^2(n)), n being the number of directions in the mask.
        *
@@ -385,8 +385,8 @@ namespace DGtal
                                    const Dimension aDimension,
                                    Point &midPoint,
                                    Point &nextMidPoint) const ;
-    
-    
+
+
       /**
        *
        * This method returns the cone (ConstIterator, ConstIterator+1)
@@ -415,9 +415,9 @@ namespace DGtal
                             const Dimension aDimension,
                             Point &midPoint,
                             Point &nextMidPoint) const ;
-    
-    
-    
+
+
+
       /**
        * Returns the lower abscissa of the Voronoi edge between u and
        * v along the span (startingPoint,endPoint).
@@ -435,9 +435,9 @@ namespace DGtal
                                            const Point &startingPoint,
                                            const Point &endPoint,
                                            const Dimension dim) const;
-    
-    
-    
+
+
+
       /**
        * The main hiddenBy predicate. (in @f$ O(log^2(n))@f$).
        *
@@ -457,8 +457,8 @@ namespace DGtal
                     const Point &endPoint,
                     const Dimension dim) const;
 
-                                         
-                                         
+
+
       // ------------------------- Directions iterators ------------------------------
       /**
        * @return the begin iterator to the mask direction set
@@ -467,7 +467,7 @@ namespace DGtal
       {
         return myDirections.begin();
       }
-    
+
       /**
        * @return the end iterator to the mask direction set
        */
@@ -475,7 +475,7 @@ namespace DGtal
       {
         return myDirections.end();
       }
-    
+
       /**
        * @return the mask size
        */
@@ -484,7 +484,7 @@ namespace DGtal
       {
         return myDirections.size();
       }
-    
+
       // ------------------------- Other services ------------------------------
       /**
        * Writes/Displays the object on an output stream.
@@ -522,14 +522,14 @@ namespace DGtal
 
       ///Static constant
       BOOST_STATIC_CONSTANT(Abscissa, myInfinity = 32562);
-    
+
       ///Normalization factor
       Value myNorm;
-    
+
     }; // end of class ChamferNorm2D
 
   }//namespace experimental
-  
+
   /**
    * Overloads 'operator<<' for displaying objects of class 'ChamferNorm2D'.
    * @param out the output stream where the object is written.
@@ -538,9 +538,9 @@ namespace DGtal
    */
   template <typename T>
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
                const experimental::ChamferNorm2D<T> & object );
- 
+
 } // namespace DGtal
 
 

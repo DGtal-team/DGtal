@@ -61,30 +61,30 @@ namespace DGtal
   // template class MelkmanConvexHull
   /**
    * \brief Aim: This class implements the on-line algorithm
-   * of Melkman for the computation of the convex hull of 
-   * a simple polygonal line (without self-intersection) 
+   * of Melkman for the computation of the convex hull of
+   * a simple polygonal line (without self-intersection)
    * [Melkman, 1987: \cite Melkman1987].
    *
-   * This algorithm is based on a deque, which stores the vertices 
-   * of the convex hull (for convenience, the first and last vertex 
-   * contained in the deque are the same point). Since we assume 
+   * This algorithm is based on a deque, which stores the vertices
+   * of the convex hull (for convenience, the first and last vertex
+   * contained in the deque are the same point). Since we assume
    * that the input points form a simple polygonal line, a new point
    * cannot be located in the cone formed by the first and last edges
    * of the current convex hull. As a consequence, it is enough to update
-   * the convex hull by a Graham scan from the front and/or from the back 
-   * of the deque; it is never required to remove/insert points in the middle 
-   * of the container. See \ref moduleHull2D for more details. 
+   * the convex hull by a Graham scan from the front and/or from the back
+   * of the deque; it is never required to remove/insert points in the middle
+   * of the container. See \ref moduleHull2D for more details.
    *
    * @see functions::Hull2D::updateHullWithAdaptedStack
-   * 
-   * Note that if the input points do not form a simple polygonal line, 
-   * the behavior is not defined. 
+   *
+   * Note that if the input points do not form a simple polygonal line,
+   * the behavior is not defined.
    *
    * @tparam TPoint a model of point
    * @tparam TOrientationFunctor a model of COrientationFunctor2
    * (whose inner type 'Point' match to 'TPoint')
    */
-  template <typename TPoint, 
+  template <typename TPoint,
 	    typename TOrientationFunctor >
   class MelkmanConvexHull
   {
@@ -99,35 +99,35 @@ namespace DGtal
     /**
      * Type of point
      */
-    typedef TPoint Point; 
+    typedef TPoint Point;
     /**
      * Type of orientation functor
      */
     typedef TOrientationFunctor Functor;
-    BOOST_CONCEPT_ASSERT(( concepts::COrientationFunctor2<Functor> )); 
+    BOOST_CONCEPT_ASSERT(( concepts::COrientationFunctor2<Functor> ));
     //the two types of points must be the same
-    BOOST_STATIC_ASSERT (( boost::is_same< Point, typename Functor::Point >::value )); 
+    BOOST_STATIC_ASSERT (( boost::is_same< Point, typename Functor::Point >::value ));
 
     /**
      * Type of predicate devoted to the backward scan
      */
-    typedef PredicateFromOrientationFunctor2<Functor,false,false> BackwardPredicate; 
+    typedef PredicateFromOrientationFunctor2<Functor,false,false> BackwardPredicate;
     /**
      * Type of predicate devoted to the forward scan
      */
-    typedef PredicateFromOrientationFunctor2<Functor,true,false> ForwardPredicate; 
+    typedef PredicateFromOrientationFunctor2<Functor,true,false> ForwardPredicate;
 
     /**
      * Type of iterator on the convex hull vertices
      */
-    typedef typename std::deque<Point>::const_iterator ConstIterator; 
+    typedef typename std::deque<Point>::const_iterator ConstIterator;
 
     // ----------------------- Standard services ------------------------------
   public:
 
-    MelkmanConvexHull( Alias<Functor> aFunctor); 
-    MelkmanConvexHull(); 
-    
+    MelkmanConvexHull( Alias<Functor> aFunctor);
+    MelkmanConvexHull();
+
     /**
      * Default copy constructor.
      *
@@ -139,10 +139,10 @@ namespace DGtal
   public:
 
     /**
-     * Consider a new point and possibly update the convex hull. 
+     * Consider a new point and possibly update the convex hull.
      * @param aPoint an extra point
-     * @post if @a aPoint lies outside the current convex hull, 
-     * this hull is then updated with @a aPoint as a vertex. 
+     * @post if @a aPoint lies outside the current convex hull,
+     * this hull is then updated with @a aPoint as a vertex.
      */
     void add ( const Point& aPoint );
 
@@ -150,14 +150,14 @@ namespace DGtal
      * Begin iterator
      * @return either a const iterator pointing past-the-end
      * if the container is empty or a const iterator pointing
-     * after the first point otherwise. 
-     * Rationale: we do not want to iterate over the same point, 
-     * duplicated at the begin and at the end of the container.  
+     * after the first point otherwise.
+     * Rationale: we do not want to iterate over the same point,
+     * duplicated at the begin and at the end of the container.
      */
     ConstIterator begin() const;
 
     /**
-     * End iterator 
+     * End iterator
      * @return a const iterator to the end of the container
      */
     ConstIterator end() const;
@@ -175,7 +175,7 @@ namespace DGtal
     bool isValid() const;
 
     /**
-     * Assignement Operator
+     * Assignment Operator
      *
      * @param mch the object to copy.
      * @return a reference on 'this'.
@@ -183,21 +183,21 @@ namespace DGtal
     Self & operator= ( const Self & mch );
 
     /**
-     * @return the @a i-th point of the convex hull queue. 
+     * @return the @a i-th point of the convex hull queue.
      * @param i the index of the considered point.
      */
     const Point & operator[](unsigned int i) const;
-    
+
     /**
-     * @return the nomber of points constituing the convex hull.
+     * @return the number of points constituing the convex hull.
      **/
     size_t size() const;
-    
+
     /**
      * clear the current content of the convex hull.
      **/
     void clear();
-    
+
     /**
      * Reverse the convex hull container allowing to change the order
      * of adding points from the front or from the back in reference
@@ -207,21 +207,21 @@ namespace DGtal
     void reverse();
 
 
-    // ------------------------- Private Datas --------------------------------
-  private: 
+    // ------------------------- Private Data --------------------------------
+  private:
     /**
      * Used to define a default functor to allow default constructor
      **/
     Functor myDefaultFunctor{};
     /**
      * Deque container, which stores the vertices of the convex hull
-     * NB: the first and last point is the same. 
+     * NB: the first and last point is the same.
      */
-    std::deque<Point> myContainer; 
+    std::deque<Point> myContainer;
     /**
      * Predicate devoted to the backward scan
      */
-    BackwardPredicate myBackwardPredicate; 
+    BackwardPredicate myBackwardPredicate;
     /**
      * Predicate devoted to the forward scan
      */
@@ -229,11 +229,11 @@ namespace DGtal
     /**
      * first point used to reverse the convexhull container.
      **/
-    Point myFirstPoint; 
+    Point myFirstPoint;
 
     // ------------------------- Internals ------------------------------------
   private:
-    
+
   }; // end of class MelkmanConvexHull
 
   /**
@@ -252,29 +252,29 @@ namespace DGtal
   {
     /**
      * @brief Procedure that retrieves the vertices
-     * of the hull of a set of 2D points given by 
-     * the range [ @a itb , @a ite ). 
+     * of the hull of a set of 2D points given by
+     * the range [ @a itb , @a ite ).
      * This procedure follows the well-known Melkman algorithm
      * [Melkman, 1979 : \cite Melkman1987]
      *
      * @see MelkmanConvexHull
      *
      * @param itb begin iterator
-     * @param ite end iterator 
+     * @param ite end iterator
      * @param res output iterator used to export the retrieved points
-     * @param aFunctor aFunctor  
-     * 
+     * @param aFunctor aFunctor
+     *
      * @tparam ForwardIterator a model of forward and readable iterator
-     * @tparam OutputIterator a model of incrementable and writable iterator   
+     * @tparam OutputIterator a model of incrementable and writable iterator
      * @tparam Functor a model of COrientationFunctor2
      */
-    template <typename ForwardIterator, 
-	      typename OutputIterator, 
+    template <typename ForwardIterator,
+	      typename OutputIterator,
 	      typename Functor >
-    void melkmanConvexHullAlgorithm(const ForwardIterator& itb, 
-				    const ForwardIterator& ite,  
-				    OutputIterator res, 
-				    Functor& aFunctor ); 
+    void melkmanConvexHullAlgorithm(const ForwardIterator& itb,
+				    const ForwardIterator& ite,
+				    OutputIterator res,
+				    Functor& aFunctor );
   } //namespace Hull2D
   } //namespace functions
 

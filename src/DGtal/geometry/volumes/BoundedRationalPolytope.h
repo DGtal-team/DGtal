@@ -66,12 +66,12 @@ namespace DGtal
      included in a finite bounding box.
 
      It is a model of boost::CopyConstructible,
-     boost::DefaultConstructible, boost::Assignable. 
+     boost::DefaultConstructible, boost::Assignable.
 
      @tparam TSpace an arbitrary model of CSpace.
    */
   template < typename TSpace >
-  class BoundedRationalPolytope 
+  class BoundedRationalPolytope
   {
     BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
 
@@ -83,7 +83,7 @@ namespace DGtal
     typedef typename Space::Vector          Vector;
     typedef std::vector<Vector>             InequalityMatrix;
     typedef std::vector<Integer>            InequalityVector;
-    typedef HyperRectDomain< Space >        Domain; 
+    typedef HyperRectDomain< Space >        Domain;
     typedef ClosedIntegerHalfPlane< Space > HalfSpace;
     typedef DGtal::BigInteger               BigInteger;
 
@@ -115,7 +115,7 @@ namespace DGtal
       * @return the output stream after the writing.
       */
       friend std::ostream&
-      operator<< ( std::ostream & out, 
+      operator<< ( std::ostream & out,
                    const UnitCell & object )
       {
         out << "{";
@@ -124,7 +124,7 @@ namespace DGtal
         return out;
       }
     };
-    
+
 
     /// A simple class to represent a rational value p/q, where p and
     /// q are integers.
@@ -136,7 +136,7 @@ namespace DGtal
       /// @param b the denominator of the rational
       inline Rational( Integer a, Integer b ) : p( a ), q( b ) {}
     };
-    
+
     /// @name Standard services (construction, initialization, assignment)
     /// @{
 
@@ -146,7 +146,7 @@ namespace DGtal
     ~BoundedRationalPolytope() = default;
 
     /**
-     * Constructor. 
+     * Constructor.
      */
     BoundedRationalPolytope();
 
@@ -156,7 +156,7 @@ namespace DGtal
      */
     BoundedRationalPolytope ( const Self & other ) = default;
 
-    
+
     /**
      * Constructs the polytope from a simplex given as an initializer_list.
      *
@@ -168,10 +168,10 @@ namespace DGtal
      * (3/4,2/4), (1/4,7/4), (6/4,6/4) }`.
      */
     BoundedRationalPolytope( std::initializer_list<Point> l );
-    
+
     /**
      * Constructs the polytope from a simplex given as a range
-     * [itB,itE) of lattice points.  
+     * [itB,itE) of lattice points.
      *
      * @tparam PointIterator any model of forward iterator on Point.
      * @param d the common denominator of all given lattice point coordinates.
@@ -249,7 +249,7 @@ namespace DGtal
 	       HalfSpaceIterator itB, HalfSpaceIterator itE,
                bool valid_edge_constraints = false,
                bool check_duplicate_constraints = false );
-    
+
     /**
      * Initializes the polytope from a simplex given as a range [itB,itE) of points.
      *
@@ -269,7 +269,7 @@ namespace DGtal
      */
     template <typename PointIterator>
     bool init( Integer d, PointIterator itB, PointIterator itE );
-    
+
     /**
      * Assignment.
      * @param other the object to copy.
@@ -279,14 +279,14 @@ namespace DGtal
 
     /// Clears the polytope.
     void clear();
-    
+
     /// @}
 
     // ----------------------- Accessor services ------------------------------
   public:
     /// @name Accessor services
     /// @{
-    
+
     /// @return the lattice domain of the current polytope.
     const Domain& getDomain() const;
 
@@ -305,7 +305,7 @@ namespace DGtal
     /// coordinates must be divided by this value, or otherwise said,
     /// constraints are multiplied by this factor.
     Integer denominator() const;
-    
+
     /// @param i the index of the half-space constraint between 0 and
     /// `nbHalfSpaces()` (excluded).
     ///
@@ -329,7 +329,7 @@ namespace DGtal
 
     /// @return the matrix A in the polytope representation \f$ Ax \le B \f$.
     const InequalityMatrix& getA() const;
-    
+
     /// @return the vector B in the polytope representation \f$ Ax \le B \f$.
     const InequalityVector& getB() const;
     /// @return the vector I telling if inequalities are large in the
@@ -342,9 +342,9 @@ namespace DGtal
     /// constraints (n-k cells for k >= 2) in-between face constraints
     /// (n-1 cells) that change orthants.
     bool canBeSummed() const;
-    
+
     /// @}
-    
+
     // ----------------------- Check point services ------------------------------
   public:
 
@@ -385,7 +385,7 @@ namespace DGtal
     bool isBoundary( const Point& p ) const;
 
     /// @}
-    
+
     // ----------------------- Modification services ------------------------------
   public:
 
@@ -395,16 +395,16 @@ namespace DGtal
     /// @return the interior (in the topological sense) of this
     /// polytope, by making all constraints strict.
     BoundedRationalPolytope interiorPolytope() const;
-      
+
     /**
        Cut the polytope by the given half space `a.x <= b` or `a.x <
        b` where `a` is some axis vector.
-              
+
        @param k the dimension of the axis vector \f$ +/- e_k \f$
        @param pos 'true' is positive, 'false' is negative for the axis vector \f$ +/- e_k \f$
        @param b any integer number
        @param large tells if the inequality is large (true) or strict (false).
-       
+
        @return the index of the constraint in the polytope.
 
     */
@@ -412,7 +412,7 @@ namespace DGtal
 
     /**
        Cut the polytope by the given half space `a.x <= b` or `a.x < b`.
-              
+
        @param a any integer vector
        @param b any integer number
        @param large tells if the inequality is large (true) or strict (false).
@@ -420,7 +420,7 @@ namespace DGtal
        half-spaces that represents constraints on edges (n-2 cells)
        lying between two faces (n-1 cells) pointing to different
        orthants are still valid after this operation.
-       
+
        @return the index of the constraint in the polytope.
 
        @note For now complexity is O(n) where n=A.rows() because it
@@ -432,7 +432,7 @@ namespace DGtal
 
     /**
        Cuts the lattice polytope with the given half-space constraint.
-       
+
        @param hs any half-space constraint.
        @param large tells if the inequality is large (true) or strict (false).
        @param valid_edge_constraint when 'true', tells that the
@@ -448,7 +448,7 @@ namespace DGtal
      */
     unsigned int cut( const HalfSpace & hs, bool large = true,
 		      bool valid_edge_constraint = false );
-    
+
     /**
        Swaps the content of this object with other. O(1) complexity.
        @param other any other BoundedRationalPolytope.
@@ -493,7 +493,7 @@ namespace DGtal
 
     /// @name Enumeration services (counting, get points in polytope)
     /// @{
-    
+
     /**
      * Computes the number of integer points lying within the polytope.
      *
@@ -509,7 +509,7 @@ namespace DGtal
      * @return the number of integer points lying within the interior of the polytope.
      *
      * @note Quite slow: obtained by checking every point of the polytope domain.
-     * 
+     *
      * @note `count() <= countInterior() + countBoundary()` with
      * equality when the polytope is closed.
      */
@@ -521,7 +521,7 @@ namespace DGtal
      * @return the number of integer points lying on the boundary of the polytope.
      *
      * @note Quite slow: obtained by checking every point of the polytope domain.
-     * 
+     *
      * @note `count() <= countInterior() + countBoundary()` with
      * equality when the polytope is closed.
      */
@@ -541,7 +541,7 @@ namespace DGtal
 
     /**
      * Computes the number of integer points within the polytope up to
-     * some maximum number \a max. 
+     * some maximum number \a max.
      *
      * @note For instance, a d-dimensional simplex that contains no
      * integer points in its interior contains only d+1 points. If
@@ -601,8 +601,8 @@ namespace DGtal
     void insertPoints( PointSet& pts_set ) const;
 
     /// @}
-    
-    
+
+
     // ----------------------- Interface --------------------------------------
   public:
     /// @name Interface services
@@ -629,7 +629,7 @@ namespace DGtal
 
     /// @}
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
     // Denominator for constraints, i.e. \f$ q A x \le B \f$.
     Integer           q;
@@ -646,7 +646,7 @@ namespace DGtal
     // Indicates if Minkowski sums with segments will be valid
     bool myValidEdgeConstraints;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
 
@@ -664,14 +664,14 @@ namespace DGtal
     /// from 2 points.
     /// @param a any point
     /// @param b any point
-    /// @return 'true' 
+    /// @return 'true'
     bool internalInitFromSegment3D( Point a, Point b );
 
     /// In 2D, builds a valid lattice polytope with empty interior
     /// from 2 points.
     /// @param a any point
     /// @param b any point
-    /// @return 'true' 
+    /// @return 'true'
     bool internalInitFromSegment2D( Point a, Point b );
 
     /// Computes the lattice domain from the given rational domain,
@@ -688,7 +688,7 @@ namespace DGtal
     /// @param d a domain where integer coordinates (x,y,z) means
     /// lattice coordinates.
     Domain computeRationalDomain( const Domain& d );
-    
+
   }; // end of class BoundedRationalPolytope
 
   namespace detail {
@@ -721,7 +721,7 @@ namespace DGtal
       ///
       /// @todo For higher dimensions, one should add constraint for
       /// extremal faces, etc.
-      static void 
+      static void
       addEdgeConstraint( Polytope& , unsigned int , unsigned int ,
 			 const std::vector<Point>& )
       {
@@ -739,12 +739,12 @@ namespace DGtal
 	return Vector::zero;
       }
     };
-    
+
     /**
        Description of template class 'BoundedRationalPolytopeSpecializer'
        <p> \brief Aim: 3D specialization for
        BoundedRationalPolytope to add dimension specific static methods.
-       
+
        @tparam TInteger any model of integer.
     */
     template <typename TInteger>
@@ -764,8 +764,8 @@ namespace DGtal
       /// @param[in,out] P any polytope.
       /// @param[in] i any index in the vector of points \a pts.
       /// @param[in] j any index in the vector of points \a pts.
-      /// @param[in] pts a vector of points defining a simplex. 
-      static void 
+      /// @param[in] pts a vector of points defining a simplex.
+      static void
       addEdgeConstraint( Polytope& P, unsigned int i, unsigned int j,
 			 const std::vector<Point>& pts )
       {
@@ -799,7 +799,7 @@ namespace DGtal
 
   /// @name Functions related to BoundedRationalPolytope (output, dilation, Minkowski sum)
   /// @{
-  
+
   /**
    * Overloads 'operator<<' for displaying objects of class 'BoundedRationalPolytope'.
    * @param out the output stream where the object is written.
@@ -808,7 +808,7 @@ namespace DGtal
    */
   template <typename TSpace>
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
                const BoundedRationalPolytope<TSpace> & object );
 
 
@@ -819,7 +819,7 @@ namespace DGtal
    */
   template <typename TSpace>
   BoundedRationalPolytope<TSpace>
-  operator* ( typename BoundedRationalPolytope<TSpace>::Integer t, 
+  operator* ( typename BoundedRationalPolytope<TSpace>::Integer t,
               const BoundedRationalPolytope<TSpace> & P );
 
   /**
@@ -829,9 +829,9 @@ namespace DGtal
    */
   template <typename TSpace>
   BoundedRationalPolytope<TSpace>
-  operator* ( typename BoundedRationalPolytope<TSpace>::Rational r, 
+  operator* ( typename BoundedRationalPolytope<TSpace>::Rational r,
               const BoundedRationalPolytope<TSpace> & P );
-    
+
 
   /**
    * Minkowski sum of polytope \a P with unit segment \a s aligned with some axis.
@@ -858,7 +858,7 @@ namespace DGtal
               typename BoundedRationalPolytope<TSpace>::UnitCell c );
 
   /// @}
-  
+
 } // namespace DGtal
 
 

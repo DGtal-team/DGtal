@@ -77,7 +77,7 @@ namespace DGtal
    * - constant normal and reverse iterators from C++11 if the class provides cbegin and cend methods.
    *
    * Each derived class of IteratorCompletion must specialize IteratorCompletionTraits in order to provide
-   * enough informations on his iterators, especially a distance functor between a given point and the begin iterator.
+   * enough information on his iterators, especially a distance functor between a given point and the begin iterator.
    *
    * @tparam TDerived Type of the derived class (CRTP).
    *
@@ -90,7 +90,7 @@ namespace DGtal
    * @snippet exampleIteratorCompletion.cpp MyImageHeader
    * As you can see, the MyImage class inherits from IteratorCompletion templated with his own type (CRTP).
    * The public inheritance is necessary is order to make visible the methods and typedefs provided by IteratorCompletion.
-   * 
+   *
    * Then, we add the basic interface needed for images:
    * @snippet exampleIteratorCompletion.cpp CImageBasicInterface
    * and the minimal iterator accessors:
@@ -98,9 +98,9 @@ namespace DGtal
    *
    * The class is finally closed with the private members:
    * @snippet exampleIteratorCompletion.cpp PrivateMembers
-   * 
+   *
    * A specialization of IteratorCompletionTraits is needed in order to provide IteratorCompletion with
-   * the Iterator and ConstIterator type, and a DistanceFunctor that returns the distance from the begin 
+   * the Iterator and ConstIterator type, and a DistanceFunctor that returns the distance from the begin
    * iterator to a given point (see SimpleRandomAccessRangeFromPoint and SimpleRandomAccessConstRangeFromPoint):
    * @snippet exampleIteratorCompletion.cpp IteratorCompletionTraits
    *
@@ -234,4 +234,3 @@ namespace DGtal
 
 #undef IteratorCompletion_RECURSES
 #endif // else defined(IteratorCompletion_RECURSES)
-

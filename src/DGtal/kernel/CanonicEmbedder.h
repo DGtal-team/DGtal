@@ -77,7 +77,7 @@ namespace DGtal
 
     // ----------------------- Standard services ------------------------------
   public:
-    
+
     /**
      * Destructor.
      */
@@ -107,7 +107,7 @@ namespace DGtal
     /**
        Map a digital point to its corresponding point in the Euclidean
        space.
-       
+
        @param dp any digital point in the digital space.
        @return its canconical embedding in the Euclidean space.
     */
@@ -116,7 +116,7 @@ namespace DGtal
     /**
        Map a digital point to its corresponding point in the Euclidean
        space.
-       
+
        @param dp any digital point in the digital space.
        @return its canconical embedding in the Euclidean space.
     */
@@ -139,9 +139,9 @@ public:
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
 private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
 private:
 
     // ------------------------- Hidden services ------------------------------

@@ -68,8 +68,8 @@ namespace DGtal
 /////////////////////////////////////////////////////////////////////////////
 // class Naive3DDSSComputer
 /**
- * \brief Aim: This class is a wrapper around ArithmeticalDSSComputer that is devoted 
- * to the dynamic recognition of digital straight segments in 2D (DSS), along any 
+ * \brief Aim: This class is a wrapper around ArithmeticalDSSComputer that is devoted
+ * to the dynamic recognition of digital straight segments in 2D (DSS), along any
  * sequence of digital points.
  *
  * Naive3DDSSComputer projects 3d curve onto three orthogonal planes. Then each projection
@@ -78,7 +78,7 @@ namespace DGtal
  * have same projection onto one of the orthogonal 2d planes.
  *
  * @tparam TIterator type of iterator on 3d digital points,
- * readable and forward. 
+ * readable and forward.
  * @tparam TInteger type of integers used for the computation of remainders,
  * which is a model of CInteger.
  * @tparam connectivity of the projected DSS
@@ -87,7 +87,7 @@ namespace DGtal
  * each 2d projection onto orthogonal planes means that 3d curve is 26-connected. While 4-adjacency
  * means that 3d curve is 6-connected.
  *
- * This class is a model of CForwardSegmentComputer. 
+ * This class is a model of CForwardSegmentComputer.
  * It is also default constructible, copy constructible, assignable and equality comparable.
  *
  * @see exampleNaive3DDSSComputer.cpp
@@ -277,7 +277,7 @@ class Naive3DDSSComputer
     const ArithmeticalDSSComputer2d & arithmeticalDSS2dYZ () const;
 
     /**
-       @param i the axis orthogonal to the plane 
+       @param i the axis orthogonal to the plane
        i = 0 -> YZ-plane
        i = 1 -> XZ-plane
        i = 2 -> XY-plane
@@ -285,9 +285,9 @@ class Naive3DDSSComputer
        algorithm along the plane orthogonal to the \a i-th axis.
     */
     const ArithmeticalDSSComputer2d & arithmeticalDSS2d( Dimension i ) const;
-    
+
     /**
-       @param i the axis orthogonal to the plane 
+       @param i the axis orthogonal to the plane
        i = 0 -> YZ-plane
        i = 1 -> XZ-plane
        i = 2 -> XY-plane
@@ -324,7 +324,7 @@ class Naive3DDSSComputer
      */
     bool extendFront ( ArithmeticalDSSComputer2d & DSS2D, bool & blocked );
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
 
     /// Projector for XY-plane.
@@ -340,14 +340,14 @@ class Naive3DDSSComputer
     ArithmeticalDSSComputer2d myXZalgo;
     /// 2d-arithmeticalDSS recognition algorithms for YZ-plane.
     ArithmeticalDSSComputer2d myYZalgo;
-    
+
     /**
      * Used internally to store information which 2d-arithemticalDSS
      * should not be any more extended. This happened when two successive 3D points
      * have same projections onto respective 2d plane.
      */
     bool blockXY, blockXZ, blockYZ;
-    
+
     /// begin and end iterators
     ConstIterator myBegin, myEnd;
 }; // end of class Naive3DDSSComputer

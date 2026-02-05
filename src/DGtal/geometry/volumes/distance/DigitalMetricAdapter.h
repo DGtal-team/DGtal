@@ -90,20 +90,20 @@ namespace DGtal
 
     ///RawValue type
     typedef Value RawValue;
-    
-       
-    /** 
+
+
+    /**
      * Constructor from a CMetricSpace model.
-     * 
+     *
      * @param aMetric  the metric to adapt.
      */
     DigitalMetricAdapter(ConstAlias<Metric> aMetric):
       myMetric(&aMetric) {}
 
-    
-    /** 
+
+    /**
      * Copy Constructor
-     * 
+     *
      * @param anotherMetric the digital metric adapter to copy.
      */
     DigitalMetricAdapter(const DigitalMetricAdapter &anotherMetric)
@@ -111,7 +111,7 @@ namespace DGtal
        if (this != &anotherMetric)
          this->myMetric = anotherMetric.myMetric;
     }
-      
+
 
     /**
      * Destructor.
@@ -134,9 +134,9 @@ namespace DGtal
       return *this;
     }
 
-    /** 
+    /**
      * Distance operator.
-     * 
+     *
      * @param [in] p a first point.
      * @param [in] q a second point.
      * @return the casted distance from p to q
@@ -146,9 +146,9 @@ namespace DGtal
       return static_cast<Value>( std::ceil ( NumberTraits<typename Metric::Value>::castToDouble( myMetric->operator()(p,q))));
     }
 
-    /** 
+    /**
      * RawDistance operator.
-     * 
+     *
      * @param [in] p a first point.
      * @param [in] q a second point.
      * @return the casted distance from p to q
@@ -158,9 +158,9 @@ namespace DGtal
       return this->operator()(p,q);
     }
 
-    /** 
+    /**
      * closest operator.
-     * 
+     *
      * @param [in] a the origin point.
      * @param [in] p a first point.
      * @param [in] q a second point.
@@ -177,7 +177,7 @@ namespace DGtal
       return DGtal::ClosestBOTH;
     }
 
-  
+
 
     /**
      * Writes/Displays the object on an output stream.
@@ -194,13 +194,13 @@ namespace DGtal
      */
     bool isValid() const { return (myMetric != NULL); }
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     const Metric *myMetric;
-    
+
     // ------------------------- Hidden services ------------------------------
   protected:
 

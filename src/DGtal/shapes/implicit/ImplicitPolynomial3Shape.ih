@@ -79,7 +79,7 @@ operator=( const ImplicitPolynomial3Shape & other )
     myFzy= other.myFzy;
     myFzz= other.myFzz;
 
-    myUpPolynome = other.myUpPolynome;	
+    myUpPolynome = other.myUpPolynome;
     myLowPolynome = other.myLowPolynome;
   }
   return *this;
@@ -177,7 +177,7 @@ gradient( const RealPoint &aPoint ) const
  * k=-(∇F ∗ H (F ) ∗ ∇F T − |∇F |^2 *Trace(H (F ))/2|∇F |^3
  * we define it as positive for a sphere
  * @return the mean curvature value of the polynomial at \a aPoint.
- * 
+ *
 */
 template <typename TSpace>
 inline
@@ -228,7 +228,7 @@ gaussianCurvature( const RealPoint &aPoint ) const
   const double Fyz = myFyz( x )( y )( z );
   const double Fzz = myFzz( x )( y )( z );
   const double Ax2 = ( Fyz * Fyz - Fyy * Fzz ) * Fx2;
-  const double Ay2 = ( Fxz * Fxz - Fxx * Fzz ) * Fy2; 
+  const double Ay2 = ( Fxz * Fxz - Fxx * Fzz ) * Fy2;
   const double Az2 = ( Fxy * Fxy - Fxx * Fyy ) * Fz2;
   const double Axy = ( Fxy * Fzz - Fxz * Fyz ) * Fx * Fy;
   const double Axz = ( Fxz * Fyy - Fxy * Fyz ) * Fx * Fz;
@@ -331,16 +331,16 @@ DGtal::ImplicitPolynomial3Shape<TSpace>::principalDirections
 
 /**
  *@param aPoint any point in the Euclidean space.
- *@param accuracy refers to the precision 
- *@param maxIter refers to the maximum iterations the fonction user authorises
+ *@param accuracy refers to the precision
+ *@param maxIter refers to the maximum iterations the function user authorises
  *@param gamma refers to the step
  *@return the nearest point on the surface to the one given in parameter.
  */
 template <typename TSpace>
 inline
-typename DGtal::ImplicitPolynomial3Shape<TSpace>::RealPoint 
+typename DGtal::ImplicitPolynomial3Shape<TSpace>::RealPoint
 DGtal::ImplicitPolynomial3Shape<TSpace>::nearestPoint
-( const RealPoint &aPoint, const double accuracy, 
+( const RealPoint &aPoint, const double accuracy,
   const int maxIter, const double gamma ) const
 {
    RealPoint X = aPoint;
@@ -400,5 +400,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

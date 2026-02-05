@@ -72,17 +72,17 @@ namespace DGtal
      V[ 1 ] is the data of the second set label.
      ...
 
-     if less than 4 datas and N = 3
+     if less than 4 data and N = 3
      +------+------+------+------+------+
      |labels| V[0] | V[1] | ...  |  0   |
      +------+------+------+------+------+
 
-     if only 4 datas and N = 3
+     if only 4 data and N = 3
      +------+------+------+------+------+
      |labels| V[0] | V[1] | V[2] | V[3] |
      +------+------+------+------+------+
 
-     if more than 4 datas and N = 3, M = 4
+     if more than 4 data and N = 3, M = 4
      +------+------+------+------+------+        +------+------+------+------+------+
      |labels| V[0] | V[1] | V[2] | ptr --------> | V[3] | V[4] | V[5] | V[6] | ptr --------> ...
      +------+------+------+------+------+        +------+------+------+------+------+
@@ -97,14 +97,14 @@ namespace DGtal
      Such a structure is useful when:
      - the expected size of this container is small, but may sometimes increase.
      - the user wishes sometimes to insert a new data or erase another data.
-     - the user wishes to have an access to the datas that is as fast as possible given a valid label.
+     - the user wishes to have an access to the data that is as fast as possible given a valid label.
      - one wishes to limit as possible the memory usage.
      - generally this structure is embedded as the data of a big array.
 
      Model of boost::PairAssociativeContainer and
      boost::SimpleAssociativeContainer.
 
-     @tparam TData the type for the datas stored in the list.
+     @tparam TData the type for the data stored in the list.
      @tparam L the maximum number of labels.
      @tparam TWord the integer used to store the labels (if L >= log_2( digits( TWord ) ) then several consecutive words are stored.), e.g. DGtal::uint8_t.
      @tparam N the number of data stored in the first block.
@@ -178,7 +178,7 @@ namespace DGtal
     /// Internal structure.
     struct __FirstBlock {
       inline
-      __FirstBlock() 
+      __FirstBlock()
       { data.nextBlock = 0; }
 
       inline
@@ -243,7 +243,7 @@ namespace DGtal
 	  }
       }
 
-      inline 
+      inline
       void erase( size_t idx, size_t size )
       {
 	// std::cerr << "__FirstBlock::erase(" << idx << ")"
@@ -258,7 +258,7 @@ namespace DGtal
             data.nextBlock = 0;
 	  }
 	else if ( size == N + 2 )
-	  { 
+	  {
 	    if ( idx < N )
 	      {
 		std::copy( datas + idx + 1, datas + N, datas + idx );
@@ -306,7 +306,7 @@ namespace DGtal
       Data & insert( size_t idx, size_t size, const Data & v )
       {
         ASSERT( idx <= size );
-	if ( idx >= M ) 
+	if ( idx >= M )
 	  {
 	    if ( next == 0 )
 	      {
@@ -321,12 +321,12 @@ namespace DGtal
                 return next->insert( idx - M, size - M, v );
               }
 	  }
-	else 
+	else
 	  { // idx < M
             if ( size <= ( M - 1) ) // ( size < ( M - 1) )
               {
                 ASSERT( next == 0 );
-                std::copy_backward( datas + idx, datas + size, 
+                std::copy_backward( datas + idx, datas + size,
                                     datas + size + 1 );
                 return ( datas[ idx ] = v );
               }
@@ -353,10 +353,10 @@ namespace DGtal
 	  }
       }
 
-      inline 
+      inline
       __AnyBlock* erase( size_t idx, size_t size )
       {
-	// std::cerr << "__AnyBlock::erase(" << idx << "," << size << ")" 
+	// std::cerr << "__AnyBlock::erase(" << idx << "," << size << ")"
 	// 	  << " this=" << this
 	// 	  << " next=" << next
 	// 	  << std::endl;
@@ -422,7 +422,7 @@ namespace DGtal
 	 Constructor from first block and index. Used by class LabelledMap.
       */
       BlockIterator( __FirstBlock & block, unsigned int idx, unsigned int size );
-      
+
     public:
       /**
 	 Default destructor.
@@ -446,60 +446,60 @@ namespace DGtal
        * @return a reference on 'this'.
        */
       Self & operator= ( const Self & other );
-      
+
       /**
 	 Dereference operator.
 	 @return the current data of the iterator, if valid.
       */
       Reference operator*() const;
-     
+
       /**
 	 Pointer dereference operator.
 	 @return a non-mutable pointer on the current data.
-      */  
+      */
       Pointer operator->() const;
-      
-      /** 
+
+      /**
 	  Pre-increment operator.
 	  @return a reference to itself.
       */
       Self& operator++();
-      
-      /** 
+
+      /**
 	  Post-increment operator.
 	  @return a reference to itself.
       */
       Self operator++( int );
 
-      /** 
+      /**
 	  Addition operator. Moves the iterator at position + \a n.
 	  @param n any positive integer
 	  @return a reference to itself.
       */
       Self& operator+=( DifferenceType n );
 
-      /** 
+      /**
 	  Positive offset dereference operator. Moves the iterator at position + \a n.
 	  @param n any positive integer
 	  @return a reference to itself.
       */
       Reference operator[]( DifferenceType n ) const;
-    
+
       /**
 	 Equality operator.
 	 @param other any other iterator.
 	 @return 'true' iff the iterators points on the same element.
       */
       bool operator==( const Self & other ) const;
-      
+
       /**
 	 Inequality operator.
 	 @param other any other iterator.
 	 @return 'true' iff the iterators points on different elements.
       */
       bool operator!=( const Self & other ) const;
-      
-      
+
+
     };
 
 
@@ -540,7 +540,7 @@ namespace DGtal
          Used by class LabelledMap.
       */
       BlockConstIterator( const __FirstBlock & block, unsigned int idx, unsigned int size );
-      
+
     public:
       /**
 	 Default destructor.
@@ -564,60 +564,60 @@ namespace DGtal
        * @return a reference on 'this'.
        */
       Self & operator= ( const Self & other );
-      
+
       /**
 	 Dereference operator.
 	 @return the current data of the iterator, if valid.
       */
       Reference operator*() const;
-     
+
       /**
 	 Pointer dereference operator.
 	 @return a non-mutable pointer on the current data.
-      */  
+      */
       Pointer operator->() const;
-      
-      /** 
+
+      /**
 	  Pre-increment operator.
 	  @return a reference to itself.
       */
       Self& operator++();
-      
-      /** 
+
+      /**
 	  Post-increment operator.
 	  @return a reference to itself.
       */
       Self operator++( int );
 
-      /** 
+      /**
 	  Addition operator. Moves the iterator at position + \a n.
 	  @param n any positive integer
 	  @return a reference to itself.
       */
       Self& operator+=( DifferenceType n );
 
-      /** 
+      /**
 	  Positive offset dereference operator. Moves the iterator at position + \a n.
 	  @param n any positive integer
 	  @return a reference to itself.
       */
       Reference operator[]( DifferenceType n ) const;
-    
+
       /**
 	 Equality operator.
 	 @param other any other iterator.
 	 @return 'true' iff the iterators points on the same element.
       */
       bool operator==( const Self & other ) const;
-      
+
       /**
 	 Inequality operator.
 	 @param other any other iterator.
 	 @return 'true' iff the iterators points on different elements.
       */
       bool operator!=( const Self & other ) const;
-      
-      
+
+
     };
 
     // ----------------------- Iterator services ------------------------------
@@ -630,7 +630,7 @@ namespace DGtal
     public:
       friend class LabelledMap;
       typedef ConstIterator Self;
-      // The following line is removed so that gcc-4.2 and gcc-4.6 compiles. 
+      // The following line is removed so that gcc-4.2 and gcc-4.6 compiles.
       //typedef typename LabelledMap<TData, L, TWord, N, M>::Value Value;
       typedef const Value* Pointer;
       /// Note the trick here. The reference is a rvalue. Works only for const iterator.
@@ -648,8 +648,8 @@ namespace DGtal
 
     private:
       /// ConstIterator to visit keys.
-      LabelsConstIterator myLabelsIt; 
-      /// ConstIterator to visit datas.
+      LabelsConstIterator myLabelsIt;
+      /// ConstIterator to visit data.
       BlockConstIterator myBlockIt;
 
     protected:
@@ -681,27 +681,27 @@ namespace DGtal
        * @return a reference on 'this'.
        */
       Self & operator= ( const Self & other );
-      
+
       /**
 	 Dereference operator.
 	 @return the current data of the iterator, if valid.
       */
       Reference operator*() const;
-     
+
       /**
 	 Pointer dereference operator.
          \b Warning: Not thread-safe !! Use operator* instead.
 	 @return a non-mutable pointer on the current data.
-      */  
+      */
       Pointer operator->() const;
-      
-      /** 
+
+      /**
 	  Pre-increment operator.
 	  @return a reference to itself.
       */
       Self& operator++();
-      
-      /** 
+
+      /**
 	  Post-increment operator.
 	  @return a reference to itself.
       */
@@ -713,7 +713,7 @@ namespace DGtal
 	 @return 'true' iff the iterators points on the same element.
       */
       bool operator==( const Self & other ) const;
-      
+
       /**
 	 Inequality operator.
 	 @param other any other iterator.
@@ -725,7 +725,7 @@ namespace DGtal
       Data & _data() const;
       const Data & _const_data() const;
     };
-    
+
     /// non-mutable class via iterators.
     typedef ConstIterator Iterator;
     /// Key comparator class. Always natural ordering.
@@ -747,7 +747,7 @@ namespace DGtal
       }
     };
 
-    
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -764,10 +764,10 @@ namespace DGtal
 
     /**
        Constructor from range.
-       
+
        @tparam InputIterator model of boost::InputIterator whose
        value type is convertible to Value.
-       
+
        @param first an iterator on the first value of the range.
        @param last an iterator after the last value of the range.
     */
@@ -795,7 +795,7 @@ namespace DGtal
     const LabelsType & labels() const;
 
     /**
-       The number of datas stored in the structure. O(1) complexity.
+       The number of data stored in the structure. O(1) complexity.
      */
     SizeType size() const;
 
@@ -805,12 +805,12 @@ namespace DGtal
     bool empty() const;
 
     /**
-       The maximum number of datas storable in the structure.
+       The maximum number of data storable in the structure.
      */
     SizeType max_size() const;
 
     /**
-       The number of datas currently allocated in the structure.
+       The number of data currently allocated in the structure.
      */
     SizeType capacity() const;
 
@@ -831,7 +831,7 @@ namespace DGtal
 
        After the call to this member function, the elements in this
        container are those which were in mp before the call, and the
-       elements of mp are those which were in this. 
+       elements of mp are those which were in this.
 
        NB: not exactly standard ! The iterators pointing on the first
        block change roles ! The other references and pointers remain
@@ -840,12 +840,12 @@ namespace DGtal
     void swap( Self & other );
 
     /**
-       Removes all the datas stored in the structure. 
+       Removes all the data stored in the structure.
      */
     void clear();
 
     /**
-       Follows std::count. 
+       Follows std::count.
 
        @param key any label
        @return 0 if the key is not present in container, 1 otherwise.
@@ -891,11 +891,11 @@ namespace DGtal
        return a pair<iterator,bool>).  Note that the data is
        associated to key only if key was not present in the container.
 
-       @param val a pair<key,data>. 
+       @param val a pair<key,data>.
 
        @return a pair <iterator,bool> where iterator points on the
        pair (key,data) while the boolean is true if a new element was
-       indeed created. 
+       indeed created.
 
        NB: This method is provided to follow the
        std::AssociativeContainer concept. You are discourage to use
@@ -923,10 +923,10 @@ namespace DGtal
        Insertion from range. Insert all values in the range. Be
        careful that if a value in the container has the same key as a
        value in the range, then the mapped data is not changed.
-       
+
        @tparam InputIterator model of boost::InputIterator whose
        value type is convertible to Value.
-       
+
        @param first an iterator on the first value of the range.
        @param last an iterator after the last value of the range.
     */
@@ -942,7 +942,7 @@ namespace DGtal
 
     /**
        Erases the element of key \a key.
-       
+
        @param key any key (in 0..L-1)
        @return the number of elements deleted (0 or 1).
     */
@@ -996,7 +996,7 @@ namespace DGtal
 
     /**
        Get range of equal elements.
-       
+
        Returns the bounds of a range that includes all the elements in
        the container with a key that compares equal to x. Here, the range will
        include one element at most.
@@ -1148,7 +1148,7 @@ namespace DGtal
 
 
     /**
-       Removes all the datas stored in the block structure. 
+       Removes all the data stored in the block structure.
        @param size must be the current size of the block structure.
      */
     void blockClear( size_t size );
@@ -1184,7 +1184,7 @@ namespace DGtal
     Data & blockInsert( size_t idx, size_t block_size, const Data & data );
 
     /**
-       Removal of a data at a given position. Following datas are shifted.
+       Removal of a data at a given position. Following data are shifted.
 
        @param idx the index of the data in the container.
        @pre idx < size()
@@ -1220,16 +1220,16 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
-    /// Stores the labels for this sequence of datas.
+    /// Stores the labels for this sequence of data.
     LabelsType myLabels;
 
     /**
-       Stores the first block of datas.
+       Stores the first block of data.
     */
     __FirstBlock myFirstBlock;
 
@@ -1248,7 +1248,7 @@ namespace DGtal
    * @param object the object of class 'LabelledMap' to write.
    * @return the output stream after the writing.
 
-   @tparam TData the type for the datas stored in the list.
+   @tparam TData the type for the data stored in the list.
    @tparam N the number of data stored in the first block.
    @tparam M the number of data stored in the further blocks.
 
@@ -1256,7 +1256,7 @@ namespace DGtal
   template  <typename TData, unsigned int L, typename TWord,
              unsigned int N, unsigned int M>
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
                const LabelledMap<TData, L, TWord, N, M> & object );
 
   namespace detail {
@@ -1265,11 +1265,11 @@ namespace DGtal
        Functor used to compute the best parameters for minimizing the
        memory usage of a LabelledMap structure.
     */
-    struct LabelledMapMemFunctor 
-    { 
+    struct LabelledMapMemFunctor
+    {
       double _p; double _q;
       unsigned int _sL;
-      unsigned int _sV;      
+      unsigned int _sV;
       unsigned int _sP;
       unsigned int _sA;
       LabelledMapMemFunctor( double p, double q,
@@ -1277,15 +1277,15 @@ namespace DGtal
                              unsigned int sP, unsigned int sA )
         : _p( p ), _q( q ), _sL( sL ), _sV( sV ), _sP( sP ), _sA( sA )
       {}
-      
+
       inline
       double fctNM( unsigned int N, unsigned int M ) const
       {
         double alpha0 = _sL + _sV * ( N+1 );
         double beta0 = _sV * M + _sA + _sP;
-        return alpha0 
-          + beta0 * _q * pow(1.0 - _p, (double)N+1) 
-          * ( 1.0 + pow(1.0 - _p, (double)M-1 ) 
+        return alpha0
+          + beta0 * _q * pow(1.0 - _p, (double)N+1)
+          * ( 1.0 + pow(1.0 - _p, (double)M-1 )
               / ( 1.0 - pow(1.0 - _p, (double)M ) ) );
       }
       inline
@@ -1293,9 +1293,9 @@ namespace DGtal
       {
         double alpha0 = _sL + _sV * ( N+1 );
         double beta0 = _sV * M + _sA + _sP;
-        return alpha0 
-          + beta0 * q * pow(1.0 - p, (double)N+1) 
-          * ( 1.0 + pow(1.0 - p, (double)M-1 ) 
+        return alpha0
+          + beta0 * q * pow(1.0 - p, (double)N+1)
+          * ( 1.0 + pow(1.0 - p, (double)M-1 )
               / ( 1.0 - pow(1.0 - p, (double)M ) ) );
       }
 
@@ -1305,18 +1305,18 @@ namespace DGtal
        Tries to find the best values N and M which will minimized the
        memory usage of a LabelledMap, for the distribution specified by
        the parameters.
-     
+
        @tparam TData the type of data that will be stored.
 
        @param L the total number of labels.
 
        @param prob_no_data Probability that there is no data at this location.
-     
+
        @param prob_one_data If there is a possibility to have a data,
        this probability is used to define a geometric distribution that
        defines the number of data (ie valid labels) at this place. The
        smaller, the higher is the expectation. 0.5 means E(X) = 1.
-     
+
        @return the pair (N,M) that minimizes the memory usage of a
        LabelledMap for the given distribution.
     */

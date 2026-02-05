@@ -59,8 +59,8 @@ namespace DGtal
    * @ingroup Concepts
    * Aim: designs the concept of bounded shapes in DGtal (shape for
    * which upper and lower bounding bounds are available).
-   * 
-   * <p> Refinement of 
+   *
+   * <p> Refinement of
    *
    * <p> Associated types
    *   - RealPoint: type for real points (to characterize upper/lower bounds).
@@ -71,22 +71,22 @@ namespace DGtal
    *
    * <p> Definitions
    *
-   * <p> Valid expressions and 
-  
-   
-   
-   
-   
+   * <p> Valid expressions and
+
+
+
+
+
    | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
    |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
    | Get Lower bound | \e getLowerBound()|  |  RealPoint     |            |   compute and return the lower bound of the shape bounding box   | | |
    | Get Upper bound | \e getUpperBound()|  |  RealPoint     |            |   compute and return the upper bound of the shape bounding box   | | |
-   
+
     *
    * <p> Invariants#
    *
    * <p> Models#
-   * 
+   *
    *   Implicit and Parametric shapes of the shape factory.
    *
    *
@@ -97,22 +97,22 @@ namespace DGtal
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    
+
     typedef typename TShape::RealPoint RealPoint;
-    
+
      BOOST_CONCEPT_USAGE( CEuclideanBoundedShape )
     {
       // Shape should have a getUpperBound() returning a Point.
       ConceptUtils::sameType( myP, myT.getUpperBound() );
       // Shape should have a getLowerBound() returning a Point.
-      ConceptUtils::sameType( myP, myT.getLowerBound() );    
+      ConceptUtils::sameType( myP, myT.getLowerBound() );
     }
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     TShape myT;
     RealPoint myP;
-    
+
   }; // end of concept CEuclideanBoundedShape
   }
 } // namespace DGtal

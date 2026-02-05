@@ -55,7 +55,7 @@ namespace DGtal
     /// Negates the components of the input vector.
     ///
     /// @tparam TComponent the scalar type of each component.
-    /// @param[in,out] V the vector as input, outputed as -V.
+    /// @param[in,out] V the vector as input, outputted as -V.
     template <typename TComponent>
     void
     negate( std::vector<TComponent> &V );
@@ -136,7 +136,7 @@ namespace DGtal
     std::vector< typename DGtal::ArithmeticConversionTraits<T,U>::type >
     apply( const std::vector<T>& a, const std::vector<U>& b,
            Op2 op2 );
-    
+
     /// Overloaded squared L2-norm operator for a vector of numbers.
     ///
     /// @tparam T the number type of the input vector.
@@ -149,7 +149,7 @@ namespace DGtal
     template <typename T>
     T
     squaredNormL2( const std::vector<T>& a );
-    
+
     /// Overloaded L1-norm operator for a vector of numbers.
     ///
     /// @tparam T the number type of the input vector.
@@ -171,7 +171,7 @@ namespace DGtal
     template <typename T>
     T
     normLoo( const std::vector<T>& a );
-    
+
     /// Overloaded squared L2-norm operator for a vector of numbers.
     ///
     /// @tparam TOutput the desired number type for output.
@@ -192,7 +192,7 @@ namespace DGtal
     /// specifies the static  dimension of the space and thus the number
     /// of elements  of the Point or Vector.
     ///
-    /// @tparam TEuclideanRing speficies the number type assoicated to an
+    /// @tparam TEuclideanRing specifies the number type associated to an
     /// Euclidean domain (or Euclidean ring) algebraic structure
     /// (commutative unitary ring with no zero divisors and with a division
     /// operator but not necessarily an inverse for the multiplication
@@ -217,7 +217,7 @@ namespace DGtal
     void
     getSquaredNormL2( TOutput& n,
                       const DGtal::PointVector<dim,TEuclideanRing,TContainer>& a );
-    
+
     /// Computes the determinant of a squared matrix with integer or
     /// floating-point coefficients using Bareiss method.  Complexity
     /// is in O(n^3) if you assume O(1) for each arithmetic operation.
@@ -323,7 +323,7 @@ namespace DGtal
     std::vector< std::vector< TComponent > >
     computeLLLBasis( const std::vector< std::vector< TComponent > >& B,
                      TDouble delta = 0.75 );
-    
+
     /// Computes the \f$ \delta \f$-LLL-reduced lattice of the input lattice B
     /// (represented as an integer matrix B whose rows are the lattice
     /// vectors), using the LLL algorithm.
@@ -398,8 +398,8 @@ namespace DGtal
     template <typename TComponent>
     TComponent
     extendedGcd( std::vector<TComponent> &C, const std::vector<TComponent> &A );
-    
-    
+
+
     /// Computes a basis of the orthogonal lattice to the vector \a N,
     /// i.e. it has n-1 vectors if N had n components. It essentially
     /// follows
@@ -451,7 +451,7 @@ namespace DGtal
     template <typename TComponent>
     std::size_t
     shortenBasis( std::vector< std::vector< TComponent > >& B );
-    
+
   } // namespace functions
 
 } // namespace DGtal

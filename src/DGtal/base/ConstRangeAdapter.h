@@ -50,7 +50,7 @@
 #include "boost/concept_check.hpp"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal 
+namespace DGtal
 {
 
 
@@ -60,24 +60,24 @@ namespace DGtal
 
   /**
    * @brief Aim: model of CConstBidirectionalRange that adapts any range of elements
-   * bounded by two iterators [itb, ite) and provides services to 
-   * (circularly)iterate over it (in a read-only manner). 
+   * bounded by two iterators [itb, ite) and provides services to
+   * (circularly)iterate over it (in a read-only manner).
    *
    * @tparam TIterator the type of the iterator to adapt
-   * (at least bidirectional). 
+   * (at least bidirectional).
    *
-   * Moreover, the provided (circular)iterator is adapted 
-   * with a functor f given at construction so that 
-   * operator* calls f(\*it), instead of calling directly 
+   * Moreover, the provided (circular)iterator is adapted
+   * with a functor f given at construction so that
+   * operator* calls f(\*it), instead of calling directly
    * operator* of the underlying iterator it.
    *
    * @tparam TFunctor the type of functor that transforms
    * the pointed element into another one
    *
-   * @tparam TReturnType the type of the element returned by the underlying functor. 
+   * @tparam TReturnType the type of the element returned by the underlying functor.
    *
    * NB: the underlying functor is stored in the range as aliasing pointer
-   * in order to avoid copies. As a consequence the pointed object must exist 
+   * in order to avoid copies. As a consequence the pointed object must exist
    * and must not be deleted during the use of the range.
    *
    * @see ConstIteratorAdapter BasicFunctors.h BasicPointFunctors.h SCellsFunctors.h
@@ -90,15 +90,15 @@ namespace DGtal
   BOOST_CONCEPT_ASSERT(( boost_concepts::BidirectionalTraversalConcept<TIterator> ));
 
     // ------------------------- inner types --------------------------------
-  public: 
-  
-    typedef ConstIteratorAdapter<TIterator,TFunctor,TReturnType> ConstIterator; 
+  public:
+
+    typedef ConstIteratorAdapter<TIterator,TFunctor,TReturnType> ConstIterator;
     typedef ReverseIterator<ConstIterator> ConstReverseIterator;
 
     typedef Circulator<ConstIterator> ConstCirculator;
     typedef ReverseIterator<ConstCirculator> ConstReverseCirculator;
 
-    typedef typename IteratorCirculatorTraits<ConstIterator>::Difference Difference; 
+    typedef typename IteratorCirculatorTraits<ConstIterator>::Difference Difference;
     // ------------------------- standard services --------------------------------
 
     /**
@@ -109,7 +109,7 @@ namespace DGtal
      * @param aFunctor functor used to adapt on-the-fly the elements of the range
      *
      */
-    ConstRangeAdapter(const TIterator& itb, const TIterator& ite, 
+    ConstRangeAdapter(const TIterator& itb, const TIterator& ite,
 		      const TFunctor& aFunctor )
       : myBegin(itb), myEnd(ite), myFunctor(&aFunctor), myFlagIsOwned(false) {}
 
@@ -121,7 +121,7 @@ namespace DGtal
      * @param aFunctorPtr pointer on a functor used to adapt on-the-fly the elements of the range
      *
      */
-    ConstRangeAdapter(const TIterator& itb, const TIterator& ite, 
+    ConstRangeAdapter(const TIterator& itb, const TIterator& ite,
 		      const TFunctor* aFunctorPtr )
       : myBegin(itb), myEnd(ite), myFunctor(aFunctorPtr), myFlagIsOwned(true) {}
 
@@ -130,20 +130,20 @@ namespace DGtal
      * @param other the iterator to clone.
      */
     ConstRangeAdapter( const ConstRangeAdapter & other )
-      : myBegin(other.myBegin), myEnd(other.myEnd), myFlagIsOwned(other.myFlagIsOwned) 
-      { 
+      : myBegin(other.myBegin), myEnd(other.myEnd), myFlagIsOwned(other.myFlagIsOwned)
+      {
   if (myFlagIsOwned)
     myFunctor = new TFunctor( *other.myFunctor ); //owned copy
   else
     myFunctor = other.myFunctor; //copy of the alias
-      }    
+      }
 
     /**
      * Destructor. Does nothing.
      */
-    ~ConstRangeAdapter() 
+    ~ConstRangeAdapter()
       {
-        if (myFlagIsOwned) delete myFunctor; 
+        if (myFlagIsOwned) delete myFunctor;
       }
 
     /**
@@ -157,21 +157,21 @@ namespace DGtal
      */
     Difference size() const
       {
-	typedef typename IteratorCirculatorTraits<TIterator>::Category Category; 
+	typedef typename IteratorCirculatorTraits<TIterator>::Category Category;
 	return size( myBegin, myEnd, Category() );
       }
-  
+
     // ------------------------- display --------------------------------
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
-    void selfDisplay ( std::ostream & out ) const 
+    void selfDisplay ( std::ostream & out ) const
     {
-      out << "[ConstRangeAdapter]" << std::endl; 
-      out << "\t"; 
-      std::copy( this->begin(), this->end(), std::ostream_iterator<TReturnType>(out, ", ") ); 
-      out << std::endl; 
+      out << "[ConstRangeAdapter]" << std::endl;
+      out << "\t";
+      std::copy( this->begin(), this->end(), std::ostream_iterator<TReturnType>(out, ", ") );
+      out << std::endl;
     }
 
     /**
@@ -181,30 +181,30 @@ namespace DGtal
     {
       return "ConstRangeAdapter";
     }
-  
+
 
     // ------------------------- private data --------------------------------
-  private: 
+  private:
     /**
      * Begin underlying iterator
      */
-    TIterator myBegin; 
+    TIterator myBegin;
     /**
      * End underlying iterator
      */
-    TIterator myEnd; 
+    TIterator myEnd;
     /**
      * Pointer on the underlying functor
      */
-    const TFunctor* myFunctor; 
+    const TFunctor* myFunctor;
     /**
      * bool equal to true if @a myFunctor is owned
      */
-    bool myFlagIsOwned; 
+    bool myFlagIsOwned;
 
     // ------------------------- private methods --------------------------------
    private:
-  
+
     /**
      * Assignment.
      * @param other the iterator to copy.
@@ -248,8 +248,8 @@ namespace DGtal
     }
 
     /**
-     * Circulator service. 
-     * Prodives a circulator 
+     * Circulator service.
+     * Provides a circulator
      * such that *c() == *begin()
      * @return a circulator
      * @see rc method
@@ -259,7 +259,7 @@ namespace DGtal
     }
 
     /**
-     * Circulator service. 
+     * Circulator service.
      * Provides a reverse circulator
      * such that *rc() == *c() == *begin()
      * @return a reverse circulator
@@ -269,11 +269,11 @@ namespace DGtal
     ConstReverseCirculator rc() const {
       //implemented so that *rc() == *c()
       ConstCirculator tmp = this->c();
-      ++tmp; 
+      ++tmp;
       return ConstReverseCirculator( tmp );
     }
 
-  private: 
+  private:
 
     /**
      * Get the size of [@a itb, @a ite)
@@ -284,7 +284,7 @@ namespace DGtal
      */
     Difference size(const TIterator& itb, const TIterator& ite,  RandomAccessCategory) const
       {
-	return (ite-itb); 
+	return (ite-itb);
       }
 
     /**
@@ -296,11 +296,11 @@ namespace DGtal
      */
     Difference size(const TIterator& itb, const TIterator& ite,  BidirectionalCategory) const
       {
-	TIterator it = itb; 
+	TIterator it = itb;
 	unsigned int d = 0;
 	for ( ; it != ite; ++it, ++d)
 	  {}
-	return d; 
+	return d;
       }
 
   }; //end class ConstRangeAdapter
@@ -315,9 +315,9 @@ namespace DGtal
   std::ostream&
   operator<< ( std::ostream & out, const ConstRangeAdapter<TIterator, TFunctor, TReturnType> & object )
    {
-     object.selfDisplay( out ); 
-     return out; 
-   } 
+     object.selfDisplay( out );
+     return out;
+   }
 
   /** //To move elsewhere ?
    * Overloads 'operator<<' for displaying STL pairs.
@@ -329,9 +329,9 @@ namespace DGtal
   std::ostream&
   operator<< ( std::ostream & out, const std::pair<A, B> & object )
    {
-     out << object.first << "|" << object.second; 
-     return out; 
-   } 
+     out << object.first << "|" << object.second;
+     return out;
+   }
 } // namespace DGtal
 
   ///////////////////////////////////////////////////////////////////////////////

@@ -148,7 +148,7 @@ public:
               ConstAlias< std::vector< PairIterators > > masks );
 
   /**
-  * Intitialize the convolver using masks - allow to use the optimization with adjacent cells.
+  * Initialize the convolver using masks - allow to use the optimization with adjacent cells.
   *
   * Stores the kernel implicitly: choose this init if you have not a lot of memory available or if your kernel size is big.
   *
@@ -211,7 +211,7 @@ public:
               OutputIterator & result ) const;
 
   /**
-  * Convolve the kernel at all positions of the range [itBegin, itEnd[ and applies the functor \a functor on results outputed sequentially with \a result iterator.
+  * Convolve the kernel at all positions of the range [itBegin, itEnd[ and applies the functor \a functor on results outputted sequentially with \a result iterator.
   *
   * @param[in] itbegin (iterator of the) first surfel of the shape where the convolution is computed.
   * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the convolution is computed.
@@ -272,7 +272,7 @@ public:
                               OutputIterator & result ) const;
 
   /**
-  * Convolve the kernel at all positions of the range [itBegin, itEnd[ and applies the functor \a functor on results outputed sequentially with \a result iterator.
+  * Convolve the kernel at all positions of the range [itBegin, itEnd[ and applies the functor \a functor on results outputted sequentially with \a result iterator.
   *
   * @param[in] itbegin (iterator of the) first surfel of the shape where the covariance matrix is computed.
   * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the covariance matrix is computed.
@@ -324,7 +324,7 @@ protected:
   void fillMoments( Quantity* aMomentMatrix, const Spel & aSpel, double direction ) const;
 
 #ifdef _MSC_VER
-  // For Visual Studio, to be defined as a static const, it has to be intialized into the header file
+  // For Visual Studio, to be defined as a static const, it has to be initialized into the header file
   static const int nbMoments = 6; ///< the number of moments is dependent to the dimension. In 2D, they are 6 moments such that p+q <= 2 (see method fillMoments())
 #else
   static const int nbMoments; ///< the number of moments is dependent to the dimension. In 2D, they are 6 moments such that p+q <= 2 (see method fillMoments())
@@ -386,7 +386,7 @@ protected:
 
 
 
-  // ------------------------- Private Datas --------------------------------
+  // ------------------------- Private Data --------------------------------
 
 private:
 
@@ -513,7 +513,7 @@ public:
               ConstAlias< std::vector< PairIterators > > masks );
 
   /**
-  * Intitialize the convolver using masks - allow to use the optimization with adjacent cells.
+  * Initialize the convolver using masks - allow to use the optimization with adjacent cells.
   *
   * Stores the kernel implicitly: choose this init if you have not a lot of memory available or if your kernel size is big.
   *
@@ -576,7 +576,7 @@ public:
               OutputIterator & result ) const;
 
   /**
-  * Convolve the kernel at all positions of the range [itBegin, itEnd[ and applies the functor \a functor on results outputed sequentially with \a result iterator.
+  * Convolve the kernel at all positions of the range [itBegin, itEnd[ and applies the functor \a functor on results outputted sequentially with \a result iterator.
   *
   * @param[in] itbegin (iterator of the) first surfel of the shape where the convolution is computed.
   * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the convolution is computed.
@@ -637,7 +637,7 @@ public:
                               OutputIterator & result ) const;
 
   /**
-  * Convolve the kernel at all positions of the range [itBegin, itEnd[ and applies the functor \a functor on results outputed sequentially with \a result iterator.
+  * Convolve the kernel at all positions of the range [itBegin, itEnd[ and applies the functor \a functor on results outputted sequentially with \a result iterator.
   *
   * @param[in] itbegin (iterator of the) first surfel of the shape where the covariance matrix is computed.
   * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the covariance matrix is computed.
@@ -689,7 +689,7 @@ protected:
   void fillMoments( Quantity* aMomentMatrix, const Spel & aSpel, double direction ) const;
 
 #ifdef _MSC_VER
-  // For Visual Studio, to be defined as a static const, it has to be intialized into the header file
+  // For Visual Studio, to be defined as a static const, it has to be initialized into the header file
   static const int nbMoments = 6; ///< the number of moments is dependent to the dimension. In 2D, they are 6 moments such that p+q <= 2. (see method fillMoments())
 #else
   static const int nbMoments; ///< the number of moments is dependent to the dimension. In 2D, they are 6 moments such that p+q <= 2. (see method fillMoments())
@@ -751,7 +751,7 @@ protected:
 
 
 
-  // ------------------------- Private Datas --------------------------------
+  // ------------------------- Private Data --------------------------------
 
 private:
 
@@ -883,7 +883,7 @@ public:
               ConstAlias< std::vector< PairIterators > > masks );
 
   /**
-  * Intitialize the convolver using masks - allow to use the optimization with adjacent cells.
+  * Initialize the convolver using masks - allow to use the optimization with adjacent cells.
   *
   * Stores the kernel implicitly: choose this init if you have not a lot of memory available or if your kernel size is big.
   *
@@ -946,7 +946,7 @@ public:
               OutputIterator & result ) const;
 
   /**
-  * Convolve the kernel at all positions of the range [itBegin, itEnd[ and applies the functor \a functor on results outputed sequentially with \a result iterator.
+  * Convolve the kernel at all positions of the range [itBegin, itEnd[ and applies the functor \a functor on results outputted sequentially with \a result iterator.
   *
   * @param[in] itbegin (iterator of the) first surfel of the shape where the convolution is computed.
   * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the convolution is computed.
@@ -1007,7 +1007,7 @@ public:
                               OutputIterator & result ) const;
 
   /**
-  * Convolve the kernel at all positions of the range [itBegin, itEnd[ and applies the functor \a functor on results outputed sequentially with \a result iterator.
+  * Convolve the kernel at all positions of the range [itBegin, itEnd[ and applies the functor \a functor on results outputted sequentially with \a result iterator.
   *
   * @param[in] itbegin (iterator of the) first surfel of the shape where the covariance matrix is computed.
   * @param[in] itend (iterator of the) last (excluded) surfel of the shape where the covariance matrix is computed.
@@ -1060,7 +1060,7 @@ protected:
   void fillMoments ( Quantity * aMomentMatrix, const Spel & aSpel, double direction ) const;
 
 #ifdef _MSC_VER
-  // For Visual Studio, to be defined as a static const, it has to be intialized into the header file
+  // For Visual Studio, to be defined as a static const, it has to be initialized into the header file
   static const int nbMoments = 10; ///< the number of moments is dependent to the dimension. In 3D, they are 10 moments such that p+q+s <= 2 (see method fillMoments())
 #else
   static const int nbMoments; ///< the number of moments is dependent to the dimension. In 3D, they are 10 moments such that p+q+s <= 2 (see method fillMoments())
@@ -1121,7 +1121,7 @@ protected:
                                    Quantity * lastOuterMoments = defaultOuterMoments ) const;
 
 
-  // ------------------------- Private Datas --------------------------------
+  // ------------------------- Private Data --------------------------------
 
 private:
 

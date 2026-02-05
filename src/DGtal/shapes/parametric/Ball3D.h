@@ -151,7 +151,7 @@ namespace DGtal
      * @param p any point in the space.
      *
      * @return the couple of angles parameters Teta && Phi which are
-     * respectivly between [-Pi/2,Pi/2) and [-Pi,Pi] corresponding to
+     * respectively between [-Pi/2,Pi/2) and [-Pi,Pi] corresponding to
      * this point for the shape.
      */
     AngularCoordinates parameter( const RealPoint & p ) const;

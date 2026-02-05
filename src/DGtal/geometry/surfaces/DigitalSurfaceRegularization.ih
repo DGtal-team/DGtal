@@ -93,7 +93,7 @@ void DGtal::DigitalSurfaceRegularization<T>::cacheInit()
   auto params  = SH3::defaultParameters() | SHG3::defaultParameters();
   mySurfels.clear();
   mySurfels = SH3::getSurfelRange( myDigitalSurface, params );
-  
+
   myPointelIndex.clear();
   //Collecting the input points
   auto pointels        = SH3::getPointelRange(myPointelIndex,myDigitalSurface);
@@ -101,19 +101,19 @@ void DGtal::DigitalSurfaceRegularization<T>::cacheInit()
   myOriginalPositions.clear();
   std::transform(pointels.begin(), pointels.end(), std::back_inserter(myOriginalPositions),
                  [embedder](SH3::Cell &pointel ) {return embedder(pointel);  } );
-  
+
   //Init the regularized positions.
   myRegularizedPositions.resize(myOriginalPositions.size());
   std::copy(myOriginalPositions.begin(), myOriginalPositions.end(), myRegularizedPositions.begin());
-  
+
   //Allocating Gradient vector
   myGradient.clear();
   myGradientAlign.clear();
   myGradient.resize(myOriginalPositions.size());
   myGradientAlign.resize(myOriginalPositions.size());
-  
+
   /////
-  ///Cacheing some topological information
+  ///Caching some topological information
   auto polySurf        = SH3::makeDualPolygonalSurface(mySurfelIndex,myDigitalSurface);
   myFaces = polySurf->allFaces() ;  //All faces of the dual digital surface
   auto dsurf_faces = myDigitalSurface->allClosedFaces(); // Faces of digital surface (umbrellas)
@@ -122,14 +122,14 @@ void DGtal::DigitalSurfaceRegularization<T>::cacheInit()
   std::transform( dsurf_faces.cbegin(), dsurf_faces.cend(),
                  dsurf_pointels.begin(),
                  [&] ( const SH3::DigitalSurface::Face f ) { return myK.unsigns(myDigitalSurface->pivot( f )); } );
-  
-  
+
+
   myNumberAdjEdgesToPointel.resize(myOriginalPositions.size(),0);
-  
+
   // Precompute all relations for align energy
   myAlignPointelsIdx.resize( mySurfels.size() * 4 );
   myAlignPointels.resize( mySurfels.size() * 4 );
-  
+
   for(size_t i = 0; i < mySurfels.size(); ++i)
   {
     auto pointelsAround = myDigitalSurface->facesAroundVertex(mySurfels[i],true);
@@ -143,7 +143,7 @@ void DGtal::DigitalSurfaceRegularization<T>::cacheInit()
       myNumberAdjEdgesToPointel[ cell_p ] ++;
     }
   }
-  
+
   // Precompute all relations for fairness energy
   myNbAdjacent.resize( myFaces.size() );
   for(size_t faceId=0 ; faceId < myFaces.size(); ++faceId)
@@ -212,10 +212,10 @@ DGtal::DigitalSurfaceRegularization<T>::computeGradient()
 {
   double energy= 0.0;
   auto zero = SH3::RealPoint(0,0,0);
-  
+
   ASSERT_MSG(myInit, "The init() method must be called before computing the gradient");
   ASSERT_MSG(myNormals.size() != 0, "Some normal vectors must be attached to the digital surface before computing the gradient");
-  
+
   //data attachment term
   for(size_t i = 0; i < myOriginalPositions.size(); ++i)
   {
@@ -225,7 +225,7 @@ DGtal::DigitalSurfaceRegularization<T>::computeGradient()
     //reset for align
     myGradientAlign[i] = zero;
   }
-  
+
   //align
   auto it = myAlignPointelsIdx.cbegin();
   for(size_t i = 0; i < mySurfels.size(); ++i)
@@ -254,7 +254,7 @@ DGtal::DigitalSurfaceRegularization<T>::computeGradient()
     ASSERT(myNumberAdjEdgesToPointel[i] >0);
     myGradient[i] += 2.0*myBeta * myGradientAlign[i] / (double)myNumberAdjEdgesToPointel[i];
   }
-  
+
   //fairness
   auto itP  = myFairnessPointelsIdx.cbegin();
   auto itNb = myNbAdjacent.cbegin();
@@ -273,7 +273,7 @@ DGtal::DigitalSurfaceRegularization<T>::computeGradient()
     energy          += myGamma * delta_f.squaredNorm() ;
     myGradient[ idx ] += 2.0*myGamma * delta_f;
   }
-  
+
   return energy;
 }
 ///////////////////////////////////////////////////////////////////////////////
@@ -284,7 +284,7 @@ DGtal::DigitalSurfaceRegularization<T>::computeGradientLocalWeights()
 {
   double energy= 0.0;
   auto zero = SH3::RealPoint(0,0,0);
-  
+
   ASSERT_MSG(myInit, "The init() method must be called before computing the gradient");
   ASSERT_MSG(myNormals.size() != 0, "Some normal vectors must be attached to the digital surface before computing the gradient");
 
@@ -297,7 +297,7 @@ DGtal::DigitalSurfaceRegularization<T>::computeGradientLocalWeights()
     //reset for align
     myGradientAlign[i] = zero;
   }
-  
+
   //align
   auto it = myAlignPointelsIdx.cbegin();
   for(size_t i = 0; i < mySurfels.size(); ++i)
@@ -328,7 +328,7 @@ DGtal::DigitalSurfaceRegularization<T>::computeGradientLocalWeights()
     ASSERT(myNumberAdjEdgesToPointel[i] >0);
     myGradient[i] += 2.0*(*myBetas)[i] * myGradientAlign[i] / (double)myNumberAdjEdgesToPointel[i];
   }
-  
+
   //fairness
   auto itP  = myFairnessPointelsIdx.cbegin();
   auto itNb = myNbAdjacent.cbegin();
@@ -347,7 +347,7 @@ DGtal::DigitalSurfaceRegularization<T>::computeGradientLocalWeights()
     energy          += (*myGammas)[ idx ] * delta_f.squaredNorm() ;
     myGradient[ idx ] += 2.0*(*myGammas)[ idx ] * delta_f;
   }
-  
+
   return energy;
 }
 
@@ -371,28 +371,28 @@ DGtal::DigitalSurfaceRegularization<T>::regularize(const unsigned int nbIters,
       energy = computeGradient();
     else
       energy = computeGradientLocalWeights();
-    
+
     double gradnorm=0.0;
     for(auto &v: myGradient)
       gradnorm = std::max(gradnorm, v.norm());
-    
+
     if (myVerbose)
       trace.info()<< "Step " << i
                   << " dt=" << mydt
                   << " energy = " << energy
                   << " gradnorm= " << gradnorm << std::endl;
-    
-    
+
+
     //Naive linesearch by doubling the learning rate
     if ( ! first_iter )
       mydt *= ( energy > last_energy ) ? 0.5 : 1.1;
-    
+
     //Stopping criterion
     if ( mydt < epsilon ) return energy;
-    
+
     last_energy = energy;
     first_iter  = false;
-    
+
     //One step advection
     SHG3::RealVector v;
     for(size_t ii=0; ii < myRegularizedPositions.size(); ++ii)
@@ -416,4 +416,3 @@ DGtal::operator<< ( std::ostream & out,
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-

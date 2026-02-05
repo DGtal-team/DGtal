@@ -168,9 +168,9 @@ namespace DGtal
      */
     std::string className() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     //the two points that uniquely define the straight line
     /**

@@ -170,7 +170,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------
@@ -208,7 +208,7 @@ namespace DGtal
   operator+(const KForm<Calculus, order, duality>& form_a, const KForm<Calculus, order, duality>& form_b);
 
   /**
-   * Overloads 'operator-' for substracting objects of class 'KForm'.
+   * Overloads 'operator-' for subtracting objects of class 'KForm'.
    * @param form_a left operant
    * @param form_b right operant
    * @return form_a - form_b.

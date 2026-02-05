@@ -71,7 +71,7 @@ namespace DGtal
        | Name     | Expression       | Type requirements | Return type    | Precondition | Semantics                                          | Post condition | Complexity |
        |----------|------------------|-------------------|----------------|--------------|----------------------------------------------------|----------------|------------|
        | creation | \e x.\c outputIterator() |                   | OutputIterator |              | Returns an output iterator on the range first element |                |            |
-     
+
 
        #  Invariants
 
@@ -98,7 +98,7 @@ namespace DGtal
       {
         concepts::ConceptUtils::sameType( myOutput, myX.outputIterator( ) );
       }
-      // ------------------------- Private Datas --------------------------------
+      // ------------------------- Private Data --------------------------------
     private:
       T myX; // do not require T to be default constructible.
       OutputIterator myOutput;

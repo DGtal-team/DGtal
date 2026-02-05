@@ -61,14 +61,14 @@ namespace DGtal
      not. To be valid, it must be connected to some digital surface
      and a starting surfel.
 
-     It provides the following inner types: 
+     It provides the following inner types:
 
      - ConstIterator
      - ConstReverseIterator
      - ConstCirculator
      - ConstReverseCirculator
 
-     And the following (circular)iterator services: 
+     And the following (circular)iterator services:
 
      - begin() : begin ConstIterator
      - end() : end ConstIterator
@@ -76,7 +76,7 @@ namespace DGtal
      - rend() : end ConstReverseIterator
      - c() : ConstCirculator
      - rc() : ConstReverseCirculator
-     
+
      You can use these services to iterate over the elements. Note
      that c() and rc() are defined so as to start on the same surfel
      (when dereferenced). The same is true for cstart() and
@@ -128,7 +128,7 @@ namespace DGtal
        tracker is moved to the first surfel when traversing in the
        direct orientation. If the contour is closed, the tracker is
        returned at the same position.
-       
+
        @param i a direction different from the orthogonal direction of
        the current surfel of the tracker.
 
@@ -141,13 +141,13 @@ namespace DGtal
 
     /**
        Initializes the slice from a tracker \a tracker and a direction \a i.
-      
+
        @param tracker a pointer on a tracker, which will be moved to
        build the slice. More precisely, if the contour is open, the
        tracker is moved to the first surfel when traversing in the
        direct orientation. If the contour is closed, the tracker is
        returned at the same position.
-       
+
        @param i a direction different from the orthogonal direction of
        the current surfel of the tracker.
 
@@ -190,43 +190,43 @@ namespace DGtal
 
     // ------------------------- iterator services ----------------------------
   public:
-    
+
     /**
      * Iterator service.
      * @return begin iterator
      */
     ConstIterator begin() const;
-    
+
     /**
      * Iterator service.
      * @return end iterator
      */
     ConstIterator end() const;
-    
+
     /**
      * Iterator service.
      * @return rbegin iterator
      */
     ConstReverseIterator rbegin() const;
-    
+
     /**
      * Iterator service.
      * @return rend iterator
      */
     ConstReverseIterator rend() const;
-    
+
     /**
      * Circulator service.
      * @return a circulator
      */
     ConstCirculator c() const;
-    
+
     /**
      * Circulator service.
      * @return a reverse circulator
      */
     ConstReverseCirculator rc() const;
-    
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -242,9 +242,9 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     /// The container that stores the surfels of this slice.
     std::deque<Surfel> mySurfels;
