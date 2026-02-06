@@ -17,4 +17,6 @@ repos:
       args: [
           "--ignore-words",
           ".codespell.ignore-words.txt",
+          "--skip",
+          "*.pgm"
         ]

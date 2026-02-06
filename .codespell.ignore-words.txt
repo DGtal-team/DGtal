@@ -1,1 +1,6 @@
 LAMA
+nd
+aOther
+aRay
+aPoint
+aPoints
