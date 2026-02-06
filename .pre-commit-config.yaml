@@ -18,5 +18,5 @@ repos:
           "--ignore-words",
           ".codespell.ignore-words.txt",
           "--skip",
-          "*.pgm"
+          "*.pgm,*.bib"
         ]
