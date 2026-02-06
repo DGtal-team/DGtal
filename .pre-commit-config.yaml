@@ -10,3 +10,11 @@ repos:
     -   id: check-added-large-files
     -   id: check-symlinks
     -   id: check-case-conflict
+- repo: https://github.com/codespell-project/codespell
+  rev: v2.4.1
+  hooks:
+    - id: codespell
+      args: [
+          "--ignore-words",
+          ".codespell.ignore-words.txt",
+        ]
