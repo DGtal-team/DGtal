@@ -48,7 +48,7 @@ subset of \f$\mathbb{R}^3\f$ and \f$d_K\f$ the \a distance \a function to \a K,
 i.e. the map \f$ d_K(x) := \min_{p\in K} \|p-x\| \f$. A point
 \a p where the previous minimum is reached is called a
 \a projection of \a x on \a K. Almost every point admits a single
-projection on \a K, thus definining a map \f$ p_K: \mathbb{R}^3 \to K \f$ almost
+projection on \a K, thus defining a map \f$ p_K: \mathbb{R}^3 \to K \f$ almost
 everywhere. The \a R-\a offset of \a K is the \a R-sublevel set of
 \f$ d_K\f$, i.e. the set \f$K^R:=d_K^{-1}(]-\infty, R[)\f$. The VCM maps any
 integrable function \f$\chi:\mathbb{R}^3 \to \mathbb{R}^+\f$ to the matrix

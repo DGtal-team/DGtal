@@ -41,7 +41,7 @@ straightforwardly:
   use a temporary container.
 - if your set is represented with some unordered_set variant, you must
   build intermediate vectors.
-- if you wish to perform set operations on keys of datas stored in two
+- if you wish to perform set operations on keys of data stored in two
   maps, you have also to specify the comparison operator.
 - if you are in templated class where the Container type is generic
   (could be a set or unordered_set for instance) then your code must

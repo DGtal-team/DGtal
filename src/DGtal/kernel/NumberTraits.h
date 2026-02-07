@@ -444,7 +444,7 @@ namespace DGtal
     static inline
     ReturnType min() noexcept
     {
-      FATAL_ERROR_MSG(false, "UnBounded interger type does not support min() function");
+      FATAL_ERROR_MSG(false, "UnBounded integer type does not support min() function");
       return zero();
     }
 
@@ -452,7 +452,7 @@ namespace DGtal
     static inline
     ReturnType max() noexcept
     {
-      FATAL_ERROR_MSG(false, "UnBounded interger type does not support max() function");
+      FATAL_ERROR_MSG(false, "UnBounded integer type does not support max() function");
       return zero();
     }
 
@@ -460,7 +460,7 @@ namespace DGtal
     static inline
     unsigned int digits() noexcept
     {
-      FATAL_ERROR_MSG(false, "UnBounded interger type does not support digits() function");
+      FATAL_ERROR_MSG(false, "UnBounded integer type does not support digits() function");
       return 0;
     }
 

@@ -58,7 +58,7 @@ struct D34 {
 
 bool testSeparableMetricAdapter()
 {
-  trace.beginBlock ( "Testing Type instanciation ..." );
+  trace.beginBlock ( "Testing Type instantiation ..." );
 
   //Distance type
   typedef ExactPredicateLpSeparableMetric<Z2i::Space, 2> Distance;

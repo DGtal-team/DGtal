@@ -306,7 +306,7 @@ bool testDigitalSurfaceBoostGraphInterface()
   boost::associative_property_map< StdParityMap > propParityMap( parityMap );
 
   weight_type total_weight =
-    boost::stoer_wagner_min_cut // boost wagner stoer min cut algorithm.
+    boost::stoer_wagner_min_cut // boost wagner store min cut algorithm.
     ( digSurf, // the graph
       propWeightMap, // the mapping edge -> weight
       boost::parity_map( propParityMap ) // this map stores the vertex assignation

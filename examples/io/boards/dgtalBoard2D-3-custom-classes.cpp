@@ -34,7 +34,7 @@
  * elements. You just have to create an instance of CustomColors,
  * CustomPenColor, CustomFillColor or CustomPen and you attach this
  * style to your drawable element type with an instance of CustomStyle
- * outputed in the Board2D stream.
+ * outputted in the Board2D stream.
  *   \image html  dgtalboard-3-custom-classes.png  "visualization of resulting export."
  */
 

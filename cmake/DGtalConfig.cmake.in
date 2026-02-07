@@ -31,7 +31,7 @@ if (@LIBIGL_FOUND_DGTAL@)
   set(DGtalLibDependencies ${DGtalLibDependencies} igl::core)
 endif()
 
-#### Optionnal dependencies  ####
+#### Optional dependencies  ####
 
 if(@ITK_FOUND_DGTAL@) #if ITK_FOUND_DGTAL
   set (DGTAL_WITH_ITK 1)

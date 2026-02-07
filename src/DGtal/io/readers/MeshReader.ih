@@ -434,7 +434,7 @@ importOBJFile( const std::string & filename, DGtal::Mesh<TPoint> & mesh,
                << " #V=" << vertices.size()
                << " #F=" << faces.size() << std::endl;
   if ( input.bad() )
-    trace.warning() << "[MeshReader::readOBJ] Some I/O error occured."
+    trace.warning() << "[MeshReader::readOBJ] Some I/O error occurred."
                     << " Proceeding but the mesh may be damaged." << std::endl;
   for (auto const &s : vertices)
   {

@@ -204,9 +204,9 @@ public:
     typename DSS::Point3d directionZ3;
     RealVector direction;
     typename DSS::PointR3d intercept;
-    typename DSS::PointR3d thikness;
+    typename DSS::PointR3d thickness;
 
-    aDSS.getParameters ( directionZ3, intercept, thikness );
+    aDSS.getParameters ( directionZ3, intercept, thickness );
     direction[0] = directionZ3[0];
     direction[1] = directionZ3[1];
     direction[2] = directionZ3[2];

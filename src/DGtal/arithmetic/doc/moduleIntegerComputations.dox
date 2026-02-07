@@ -31,7 +31,7 @@ concepts CInteger, as well as its semantic. See also \ref
 moduleNumber.
 
 These types provide the standard arithmetic operators +, -, *, /, %,
-arithmetic comparisons <, <=, >=, >, ==, !=, assignements =, +=, *=,
+arithmetic comparisons <, <=, >=, >, ==, !=, assignments =, +=, *=,
 -=, /=, %=.
 
 \section dgtal_integer_computations_sec2 More elaborate computations with integers
@@ -61,12 +61,12 @@ We list below the main methods:
   IntegerComputer::getFloorCeilDiv
 
 - static greatest common divisor IntegerComputer::staticGcd (for an
-  exceptionnal computation), or non-static greatest common divisor
+  exceptional computation), or non-static greatest common divisor
   IntegerComputer::gcd and IntegerComputer::getGcd (for many gcd computations).
 
 - continued fraction development: two versions of
-  IntegerComputer::getCFrac(), one where quotients are outputed in a
-  vector, the other where quotients are outputed through a templated
+  IntegerComputer::getCFrac(), one where quotients are outputted in a
+  vector, the other where quotients are outputted through a templated
   output iterator.
 
 - convergents of a fraction specified by its quotients: IntegerComputer::convergents()

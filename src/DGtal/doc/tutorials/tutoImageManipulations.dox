@@ -26,7 +26,7 @@ namespace DGtal {
 @section sectPreliminaryTutoImageManipulations Preliminary
 
 The GenericReader and GenericWriter class allow you to import/export
-different image formats depending of the optional DGtal dependancies (ITK).
+different image formats depending of the optional DGtal dependencies (ITK).
 
 @todo Exercise
 Construct a simple file format converter starting from this file template:

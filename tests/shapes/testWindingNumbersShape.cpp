@@ -56,7 +56,7 @@ TEST_CASE( "Testing WindingNumbersShape" )
       BOOST_CONCEPT_ASSERT( (DGtal::concepts::CEuclideanOrientedShape<WNShape>) );
     }
 
-  SECTION("Simple testof the API")
+  SECTION("Simple test of the API")
   {
     Eigen::MatrixXd points(4,3);
     points << 0,0,0,

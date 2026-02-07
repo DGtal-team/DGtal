@@ -41,7 +41,7 @@ operations, cell set relations, collapse operation.
 do not require that all faces of a cell of \a C belong also to \a C.
 
 @note A digital surface is not a cubical complex, because it does not
-contain explicitely cells of dimension lower than n-1 and because it
+contain explicitly cells of dimension lower than n-1 and because it
 requires some sort of orientation. However, it is easy to build an
 ExplicitDigitalSurface or a LightExplicitDigitalSurface from a
 CubicalComplex that stores a set of d-1-cells. You just need to create
@@ -127,7 +127,7 @@ incident in the Khalimsky space. From this relation, one can define
 faces, co-faces, as well as the boundary and co-boundary of a cell.
 
 You have methods to get the faces, the co-faces, the direct faces or
-co-faces of a cell \a c, which are outputed with an output iterator:
+co-faces of a cell \a c, which are outputted with an output iterator:
 
 - CubicalComplex::faces: outputs the faces of \a c, i.e. all cells of
   lesser dimension than \a c and incident to \a c. You may specify
@@ -249,7 +249,7 @@ You have the following operations:
 - operator-= : assignment set difference with another complex.
 - operator^  : symmetric set difference of two complexes.
 - operator^= : assignment symmetric set difference with another complex.
-- operator~  : closing of a complex (smallest closed complex containg input complex).
+- operator~  : closing of a complex (smallest closed complex containing input complex).
 - operator*  : opening of a complex (greatest open complex contained in input complex).
 
 And the following relations:
@@ -325,7 +325,7 @@ c) attach a cubical complex \f$X\f$ to be thinned:
 @snippet topology/cubicalComplexThinning.cpp init
 
 d) run the algorithm (here two iterations):
-@snippet topology/cubicalComplexThinning.cpp thinn
+@snippet topology/cubicalComplexThinning.cpp thin
 
 @image html ComplexBeforeThinning.png "The starting complex X before thinning."
 

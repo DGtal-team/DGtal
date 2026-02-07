@@ -110,7 +110,7 @@ are depicted below.
 
  @image html 1cellsRange.png  "Range of 1-cells"
  @image html PointsRange.png  "Points of integer coordinates associated to 0-cells"
- @image html MidPointsRange.png  "Points of half-integer coordinates accociated to 1-cells"
+ @image html MidPointsRange.png  "Points of half-integer coordinates associated to 1-cells"
  @image html InnerPointsRange.png "Points of integer coordinates associated to the 2-cells directly incident to the 1-cells"
  @image html OuterPointsRange.png "Points of integer coordinates associated to the 2-cells indirectly incident to the 1-cells"
  @image html IncidentPointsRange.png "Points of integer coordinates associated to the 2-cells incident to the 1-cells"
@@ -304,10 +304,10 @@ infinite loops are avoided as follows:
 Like any model of concepts::CIncrementalSegmentComputer, a model of
 concepts::CForwardSegmentComputer can control its own extension
 so that P remains true. However, contrary to models
-of concepts::CIncrementalSegmentComputer, it garantees that
+of concepts::CIncrementalSegmentComputer, it guarantees that
 for each iterator it from begin() to end(), P must be true for
 the range [it, end()). This last constraint, together with
-the previous contraint on the range [begin(), it), implies
+the previous constraint on the range [begin(), it), implies
 that P is true for any subrange.
 This property is necessary to be able to incrementally check
  whether a segment is maximal (not included in a greater segment)

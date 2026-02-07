@@ -213,7 +213,7 @@ The following global geometric services are provided:
 
 - the average of the length of edges with SurfaceMesh::averageEdgeLength
 
-You may also perturbate the mesh positions with uniform or non uniform
+You may also perturb the mesh positions with uniform or non uniform
 random noise: with SurfaceMesh::perturbateWithUniformRandomNoise and
 SurfaceMesh::perturbateWithAdaptiveUniformRandomNoise;
 

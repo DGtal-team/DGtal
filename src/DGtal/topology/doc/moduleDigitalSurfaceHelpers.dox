@@ -39,7 +39,7 @@ namespace DGtal {
    in file <a href="topology_2ctopo-2_8cpp-example.html">ctopo-2.cpp </a>.
 
 
-   The first step to extract the surfel boudary of a 2D digital set is
+   The first step to extract the surfel boundary of a 2D digital set is
    to obtain an initial boundary surfel:
    @code
       aCell = Surfaces<Z2i::KSpace>::findABel(ks, set2d);
@@ -117,7 +117,7 @@ namespace DGtal {
    @image html ctopo3dSurfel.png "Tracking surfaces in 3D (start surfel in green)."
 
    Since in 3D there are several choice for the direction used to
-   exctract surfel boundary, we can specify the constant direction
+   extract surfel boundary, we can specify the constant direction
    need to drive the surfel extraction:
 
    @code
@@ -327,7 +327,7 @@ use the FreemanChain method getInterPixelLinels (step 2).
 
 If you succeed the exercise you will obtain the following pgm image:
 
-  @image html resulExerciceHelpSurface.png "Awaited result of exercice with the main region filled in white and holes represented in gray."
+  @image html resulExerciceHelpSurface.png "Awaited result of exercise with the main region filled in white and holes represented in gray."
 
 
 */

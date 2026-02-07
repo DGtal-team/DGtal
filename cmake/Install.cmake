@@ -3,11 +3,11 @@ include(CMakePackageConfigHelpers)
 # On system where boost is fetched through multiples sources, there can
 # be some confusion as to which version is linked.
 # For some unknown reason, DGtal can be linked with targets not declared
-# within this project, thus not necessarly in the export set; causing
+# within this project, thus not necessarily in the export set; causing
 # CMake to issue an error.
 # We tried fixing this in multiples ways but none of them but no parameters
 # that can be passed to CMake worked.
-# We therefore add a mecanism to disable install/export targets (note that
+# We therefore add a mechanism to disable install/export targets (note that
 # other file might be required) that resolves the problem, although this is quite ugly...
 option(DGTAL_ENABLE_TARGET_INSTALL "Enable DGtal file installation" ON)
 if (${DGTAL_ENABLE_TARGET_INSTALL})
@@ -35,7 +35,7 @@ if (${DGTAL_ENABLE_TARGET_INSTALL})
 
   install(TARGETS
     DGtal
-    # Dependancies also built by the project
+    # Dependencies also built by the project
     EXPORT DGtalTargets
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}

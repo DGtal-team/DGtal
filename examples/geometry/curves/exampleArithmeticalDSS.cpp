@@ -364,7 +364,7 @@ void exampleUpdate()
 
   trace.info() << S << std::endl;
 
-  // Comparaison ----------------------------------------------------
+  // Comparison ----------------------------------------------------
   //! [ArithmeticalDSSUpdateConclu]
   //this segment and the previous copy should be equal:
   if ( !S.equalsTo(copyOfS) ) throw std::exception();

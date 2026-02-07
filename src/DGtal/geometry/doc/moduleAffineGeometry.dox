@@ -349,7 +349,7 @@ AffineBasis::Type.
     (d,L,R) \f$, such that: \f$ d (p - o) = L \cdot B + R \f$, where R
     is independent from this basis \f$ B=(b_0, \ldots, b_i) \f$, with
     origin \a o. \a d is a scalar, \f$ L/d \f$ are the rational
-    coordinates of \f$ (p-o) \f$ in the basis, \a R is the remainer
+    coordinates of \f$ (p-o) \f$ in the basis, \a R is the remainder
     vector. Note that \a R is not null whenever \a p does not belong
     to the affine space.
 

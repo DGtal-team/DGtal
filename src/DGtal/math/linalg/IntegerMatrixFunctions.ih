@@ -197,7 +197,7 @@ DGtal::functions::getDeterminantBareiss
       while ( ( piv < TN ) && ( M[ piv ][ k ] == zero ) ) ++piv;
       if ( piv == TN ) { result = zero; return; }
       if ( piv != k )
-        { // swaping 2 rows => change determinant sign
+        { // swapping 2 rows => change determinant sign
           M[ piv ].swap( M[ k ] );
           change_sign = ! change_sign;
         }
@@ -258,7 +258,7 @@ DGtal::functions::getDeterminantBareiss
       while ( ( piv < n ) && ( M[ piv ][ k ] == zero ) ) ++piv;
       if ( piv == n ) { result = zero; return; }
       if ( piv != k )
-        { // swaping 2 rows => change determinant sign
+        { // swapping 2 rows => change determinant sign
           M[ piv ].swap( M[ k ] );
           change_sign = ! change_sign;
         }

@@ -15,7 +15,6 @@ repos:
   hooks:
     - id: codespell
       args: [
-          "-s",
           "-w",
           "--ignore-words",
           ".codespell.ignore-words.txt",

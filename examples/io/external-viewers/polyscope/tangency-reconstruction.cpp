@@ -1148,7 +1148,7 @@ int main( int argc, char* argv[] )
   std::set< Point > O;
   for ( auto s : surfels )  O.insert( K.exteriorVoxel( s ) );
   outer_digital_points = std::vector<Point>( O.cbegin(), O.cend() );
-  // initializa intercepts
+  // initialize intercepts
   intercepts       = std::vector< double >( surfels.size(), 0.0 );
   outer_intercepts = std::vector< double >( surfels.size(), 0.0 );
   auto primalSurface   = SH3::makePrimalSurfaceMesh(surface);

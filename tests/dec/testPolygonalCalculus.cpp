@@ -145,7 +145,7 @@ TEST_CASE( "Testing PolygonalCalculus" )
 
   }
 
-  SECTION("Structural propertes")
+  SECTION("Structural properties")
   {
     PolygonalCalculus< RealPoint,RealVector >::Face f = 0;
     auto nf =  boxCalculus.faceDegree(f);
@@ -307,7 +307,7 @@ TEST_CASE( "Testing PolygonalCalculus and DirichletConditions" )
 
   // Builds calculus and solve a Poisson problem with Dirichlet boundary conditions
   PolyDEC calculus( surfmesh );
-  // Laplace opeartor
+  // Laplace operator
   PolyDEC::SparseMatrix L = calculus.globalLaplaceBeltrami();
   // value on boundary
   PolyDEC::Vector g = calculus.form0();

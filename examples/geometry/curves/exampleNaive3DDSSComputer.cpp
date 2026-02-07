@@ -103,8 +103,8 @@ int main()
   //! [Naive3DDSSComputerStandardParams]
   DSSComputer::Point3d directionZ3;
   DSSComputer::PointR3d intercept;
-  DSSComputer::PointR3d thikness;
-  theDSSComputer.getParameters ( directionZ3, intercept, thikness );
+  DSSComputer::PointR3d thickness;
+  theDSSComputer.getParameters ( directionZ3, intercept, thickness );
   //! [Naive3DDSSComputerStandardParams]
 
   return 1;

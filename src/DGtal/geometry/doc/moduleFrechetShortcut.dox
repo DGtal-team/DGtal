@@ -46,7 +46,7 @@ error. The Fréchet distance is known to nicely measure the similarity
 between two curves. It can be intuitively defined considering a man
 walking his dog. Each protagonist walks along a path, and controls its
 speed independently, but cannot go backwards. The Fréchet distance
-between the two pathes is the minimal length of the leash required.
+between the two paths is the minimal length of the leash required.
 
 The algorithm implemented uses an approximation of the Fréchet distance,
 but a guarantee over the quality of the simplification is
@@ -163,7 +163,7 @@ constant time.
 \subsection subsectBackpath Updating the backpath length efficiently
 
 This update is trickier. When a new point @f$p_{j+1}@f$ is considered, we want to
-ckeck if there exists a backpath longer than a threshold in the direction
+check if there exists a backpath longer than a threshold in the direction
 @f$\overrightarrow{p_ip_j}@f$.
 Let us first give some definitions:
 
@@ -314,7 +314,7 @@ The length of the longest backpath is managed in the function FrechetShortcut::u
 - FrechetShortcut::Backpath::updateOcculters() implements Algorithm 3
 - the list of interval used to memorize the directions for which there exist a too long backpath is implemented through FrechetShortcut::Backpath::myForbiddenIntervals using the Boost Interval Container Library (http://www.boost.org/doc/libs/1_52_0/libs/icl). It is updated with the function FrechetShortcut::Backpath::updateIntervals().
 
-An output using the Board mecanism is provided (see example above to output an eps file).
+An output using the Board mechanism is provided (see example above to output an eps file).
 
 */
 

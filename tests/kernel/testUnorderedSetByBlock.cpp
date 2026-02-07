@@ -213,7 +213,7 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 32 bits bl
   }
 
 
-  THEN( "Conparisons and valid assignments between iterator and const_iterator should be seamless for the user" ) {
+  THEN( "Comparisons and valid assignments between iterator and const_iterator should be seamless for the user" ) {
     BlockUnorderedSet::iterator        itB  = blkSet.begin();
     BlockUnorderedSet::const_iterator citB  = blkSet.begin();
     BlockUnorderedSet::const_iterator citBp = blkSet.cbegin();
@@ -401,7 +401,7 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 32 bits 
   }
 
 
-  THEN( "Conparisons and valid assignments between iterator and const_iterator should be seamless for the user" ) {
+  THEN( "Comparisons and valid assignments between iterator and const_iterator should be seamless for the user" ) {
     BlockUnorderedSet::iterator        itB  = blkSet.begin();
     BlockUnorderedSet::const_iterator citB  = blkSet.begin();
     BlockUnorderedSet::const_iterator citBp = blkSet.cbegin();
@@ -589,7 +589,7 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 2, int > unit tests with 64 bits bl
   }
 
 
-  THEN( "Conparisons and valid assignments between iterator and const_iterator should be seamless for the user" ) {
+  THEN( "Comparisons and valid assignments between iterator and const_iterator should be seamless for the user" ) {
     BlockUnorderedSet::iterator        itB  = blkSet.begin();
     BlockUnorderedSet::const_iterator citB  = blkSet.begin();
     BlockUnorderedSet::const_iterator citBp = blkSet.cbegin();
@@ -778,7 +778,7 @@ SCENARIO( "UnorderedSetByBlock< PointVector< 3, int64 > unit tests with 64 bits 
   }
 
 
-  THEN( "Conparisons and valid assignments between iterator and const_iterator should be seamless for the user" ) {
+  THEN( "Comparisons and valid assignments between iterator and const_iterator should be seamless for the user" ) {
     BlockUnorderedSet::iterator        itB  = blkSet.begin();
     BlockUnorderedSet::const_iterator citB  = blkSet.begin();
     BlockUnorderedSet::const_iterator citBp = blkSet.cbegin();

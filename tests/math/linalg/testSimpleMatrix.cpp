@@ -137,7 +137,7 @@ bool testArithm()
 
   trace.endBlock();
 
-  trace.beginBlock ( "Testing substraction ..." );
+  trace.beginBlock ( "Testing subtraction ..." );
   nbok += ((m34d - m34dbis) == ressub) ? 1 : 0;
   nb++;
   trace.info()<<ressub<<std::endl;

@@ -19,7 +19,7 @@
 /**
  * @file HueShadeColorMap.h
  * @author Sebastien Fourey (\c Sebastien.Fourey@greyc.ensicaen.fr )
- * Groupe de Recherche en Informatique, Image, Automatique et Instrumentation de Caen - GREYC (CNRS, UMR 6072), ENSICAEN, France
+ * GREYC (CNRS, UMR 6072), ENSICAEN, France
  *
  * @date 2010/07/19
  *

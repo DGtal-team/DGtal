@@ -49,7 +49,7 @@ DGtal::RandomColorMap::RandomColorMap(const unsigned int &aFirstIndex, const uns
 {
   myMin = aFirstIndex;
   myMax  = aLastIndex;
-  ASSERT_MSG(myMin < myMax, "Max should be strictly greather than Min in a colormap.");
+  ASSERT_MSG(myMin < myMax, "Max should be strictly greater than Min in a colormap.");
   myGradientMap = new GradientColorMap<unsigned int> (aFirstIndex, aLastIndex);
   myGradientMap->addColor(aFirstColor);
   myGradientMap->addColor(aLastColor);
@@ -114,7 +114,7 @@ DGtal::RandomColorMap::operator=(const DGtal::RandomColorMap & anOther)
 if ( &anOther != this ) {
     myMin = anOther.myMin;
     myMax = anOther.myMax;
-    ASSERT_MSG(myMin < myMax, "Max should be strictly greather than Min in a colormap.");
+    ASSERT_MSG(myMin < myMax, "Max should be strictly greater than Min in a colormap.");
     myColorIndex = anOther.myColorIndex;
     myFreeColorIndex= anOther.myFreeColorIndex;
     myGradientMap = new GradientColorMap<unsigned int> (myMin, myMax);

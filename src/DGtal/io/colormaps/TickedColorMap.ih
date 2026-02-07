@@ -47,7 +47,7 @@ DGtal::TickedColorMap<Value,CMAP>::TickedColorMap
   const Color & color )
   : myMin( amin ), myMax( amax ), myTickColor( color )
 {
-  ASSERT_MSG(myMin < myMax, "Max should be strictly greather than Min in a colormap.");
+  ASSERT_MSG(myMin < myMax, "Max should be strictly greater than Min in a colormap.");
   myColorMap = new ColorMap(myMin,myMax);
 }
 
@@ -58,7 +58,7 @@ DGtal::TickedColorMap<Value,CMAP>::TickedColorMap
   const Color & color )
   : myMin( other.min() ), myMax( other.max() ), myTickColor( color )
 {
-  ASSERT_MSG(myMin < myMax, "Max should be strictly greather than Min in a colormap.");
+  ASSERT_MSG(myMin < myMax, "Max should be strictly greater than Min in a colormap.");
   myColorMap = new ColorMap( other );
 }
 
@@ -69,7 +69,7 @@ DGtal::TickedColorMap<Value,CMAP>::TickedColorMap
 ( const TickedColorMap<Value,CMAP> & other )
   : myMin( other.myMin ), myMax( other.myMax ), myTickColor( other.myTickColor )
 {
-  ASSERT_MSG(myMin < myMax, "Max should be strictly greather than Min in a colormap.");
+  ASSERT_MSG(myMin < myMax, "Max should be strictly greater than Min in a colormap.");
 }
 
 template <typename Value, typename CMAP>
@@ -87,7 +87,7 @@ DGtal::TickedColorMap<Value,CMAP>::operator=
   if ( &other != this ) {
     myMin = other.myMin;
     myMax = other.myMax;
-    ASSERT_MSG(myMin < myMax, "Max should be strictly greather than Min in a colormap.");
+    ASSERT_MSG(myMin < myMax, "Max should be strictly greater than Min in a colormap.");
     myTickColor = other.myTickColor;
     myTicks = other.myTicks;
   }

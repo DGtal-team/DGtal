@@ -207,7 +207,7 @@ Operator  | Output | Description
 \subsection sectcovOPL Operators on directional fields and Connection Laplacian
 
  In this section, we describe operators acting on directional fields (Levi-Civita connection, covariant
- gradient of a vector field --first-order derivative on VF--,  and connection laplacian). Pleas refer to @cite degoes2020discrete, section 5, for details.
+ gradient of a vector field --first-order derivative on VF--,  and connection laplacian). Please refer to @cite degoes2020discrete, section 5, for details.
 
  As an example, these operators can be used to interpolate vector fields as illustrated in @ref moduleVectorsInHeat.
 
@@ -337,7 +337,7 @@ The functor functors::EmbedderFromNormalVectors can be used to implicitly projec
    @code
 PolygonalCalculus<SH3::RealPoint,SH3::RealVector> calculus(surfmesh,true);  //global internal cache enabled.
    @endcode
-   By default, this behavior is disabled as it is memory expensive (all operators are explicitly stored when used for the first time), and may not have a huge running time impact for some applications. An example is given in the \ref dgtalCalculus-bunny.cpp. Once enabled, the class API remains the same, everything is transperent to the user.
+   By default, this behavior is disabled as it is memory expensive (all operators are explicitly stored when used for the first time), and may not have a huge running time impact for some applications. An example is given in the \ref dgtalCalculus-bunny.cpp. Once enabled, the class API remains the same, everything is transparent to the user.
 
 We describe here the first external cache strategy. For the sake of readability, each operator has been implemented implicitly. For example, the @e M @e  operator per face is given by
 @code

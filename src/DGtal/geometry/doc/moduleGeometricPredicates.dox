@@ -158,7 +158,7 @@ Two useful classes have been implemented:
    - Simple2x2DetComputer, which merely computes \f$ (Q_x - P_x)(R_y - P_y) - (Q_y - P_y)(R_x - P_x) \f$.
    - AvnaimEtAl2x2DetSignComputer, an implementation of [Avnaim et.al., 1997 : \cite AvnaimEtAlAlgorithmica1997]
      that returns the sign of the determinant without increasing the size of the matrix entries.
-   - Filtered2x2DetComputer, which is a lazy adapter of any other determinant computer: the adaptee is only used
+   - Filtered2x2DetComputer, which is a lazy adapter of any other determinant computer: the adapted is only used
      for determinants close to zero.
 
 Most classes are template classes parametrized by a type for the points
@@ -181,22 +181,22 @@ only require integers of \f$ b+1 \f$ bits.
 \subsection subsectmoduleGeometricPredicates13 How to avoid overflows ?
 
 For coordinates of \f$ 30 \f$ bits, lying within the range \f$ ]-2^{30}; 2^{30}[ \f$,
-we recommand to use InHalfPlaneBySimple3x3Matrix with DGtal::int64_t as result type.
+we recommend to use InHalfPlaneBySimple3x3Matrix with DGtal::int64_t as result type.
 @snippet geometry/tools/determinant/exampleInHalfPlane.cpp FunctorDefinition30
 
 For coordinates of \f$ 52 \f$ bits, lying within the range \f$ ]-2^{52}; 2^{52}[ \f$,
-we recommand to use InHalfPlaneBy2x2DetComputer with a lazy implementation of
+we recommend to use InHalfPlaneBy2x2DetComputer with a lazy implementation of
 [Avnaim et.al., 1997 : \cite AvnaimEtAlAlgorithmica1997] using the \f$ 53 \f$ bits of
 the mantissa of the double-precision floating-point data type.
 @snippet geometry/tools/determinant/exampleInHalfPlane.cpp FunctorDefinition52
 
 For coordinates of \f$ 62 \f$ bits, lying within the range \f$ ]-2^{62}; 2^{62}[ \f$,
-we recommand to use InHalfPlaneBy2x2DetComputer with an implementation of
+we recommend to use InHalfPlaneBy2x2DetComputer with an implementation of
 [Avnaim et.al., 1997 : \cite AvnaimEtAlAlgorithmica1997] using DGtal::int64_t as
 a working type.
 @snippet geometry/tools/determinant/exampleInHalfPlane.cpp FunctorDefinition62
 
-For greater coordinates, we recommand to use InHalfPlaneBy2x2DetComputer
+For greater coordinates, we recommend to use InHalfPlaneBy2x2DetComputer
 together with Simple2x2DetComputer using DGtal::BigInteger as integral types.
 @snippet geometry/tools/determinant/exampleInHalfPlane.cpp FunctorDefinition62plus
 

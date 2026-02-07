@@ -121,7 +121,7 @@ bool testExpander()
     }
   trace.endBlock();
 
-  trace.beginBlock ( "Testing Object instanciation and smart copy  ..." );
+  trace.beginBlock ( "Testing Object instantiation and smart copy  ..." );
   ObjectType ball( dt6_18, ball_set );
   ObjectType ball2( ball );
   INBLOCK_TEST( ball.size() == 4139 );

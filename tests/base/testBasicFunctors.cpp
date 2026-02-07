@@ -108,7 +108,7 @@ bool testBasicFunctors()
 
   //composer quantizer
   {
-    //need to explicitely specialized because there are several
+    //need to explicitly specialized because there are several
     // overloaded versions of std::floor
     double (*pF)(double) = &floor;
     double (*pC)(double) = &ceil;

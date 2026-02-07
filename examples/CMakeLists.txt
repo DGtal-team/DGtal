@@ -1,4 +1,4 @@
-# ConfigExamples.h instanciation.
+# ConfigExamples.h instantiation.
 configure_file(${PROJECT_SOURCE_DIR}/examples/ConfigExamples.h.in
   ${PROJECT_BINARY_DIR}/examples/ConfigExamples.h)
 

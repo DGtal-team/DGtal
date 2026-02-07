@@ -268,7 +268,7 @@ $ ./examples/topology/volTrackBoundary ../examples/samples/lobster.vol 50 255
 
 @image html volTrackBoundary-lobster.png "Digital surface that is the boundary of a (6,18)-connected component in image lobster.vol, extracted by tracking from an initial surfel in 351ms."
 
-In the case you know \b beforehands that your surface is closed
+In the case you know \b beforehand that your surface is closed
 (i.e. without boundary), you should use preferentially
 Surfaces::trackClosedBoundary. This technique only follows direct
 adjacent surfels and extracts the whole surface when it is
@@ -394,7 +394,7 @@ cases:
 
 1. The digital surface is big and you do not wish to keep it in
 memory. This is probably the case when tracking some implicit
-function and outputing it in some stream.
+function and outputting it in some stream.
 2. The digital surface is likely to evolve (i.e. the predicate do
 not give the same response at a point/surfel depending on when
 it is called).

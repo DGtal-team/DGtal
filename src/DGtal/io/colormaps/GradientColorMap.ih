@@ -17,7 +17,7 @@
 /**
  * @file GradientColorMap.ih
  * @author Sebastien Fourey (\c Sebastien.Fourey@greyc.ensicaen.fr )
- * Groupe de Recherche en Informatique, Image, Automatique et Instrumentation de Caen - GREYC (CNRS, UMR 6072), ENSICAEN, France
+ * GREYC (CNRS, UMR 6072), ENSICAEN, France
  *
  * @date 2010/07/19
  *
@@ -52,7 +52,7 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
   const Color lastColor )
   : myMin( minV ), myMax( maxV )
 {
-  ASSERT_MSG(myMin < myMax, "Max should be strictly greather than Min in a colormap.");
+  ASSERT_MSG(myMin < myMax, "Max should be strictly greater than Min in a colormap.");
   switch ( preset ) {
   case CMAP_GRAYSCALE:
     myColors.push_back( Color::Black );
@@ -124,7 +124,7 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
 ( const GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastColor> & other )
   : myMin( other.myMin ), myMax( other.myMax ), myColors( other.myColors )
 {
-    ASSERT_MSG(myMin < myMax, "Max should be strictly greather than Min in a colormap.");
+    ASSERT_MSG(myMin < myMax, "Max should be strictly greater than Min in a colormap.");
 }
 
 template <typename PValue,
@@ -147,7 +147,7 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
   if ( &other != this ) {
     myMin = other.myMin;
     myMax = other.myMax;
-    ASSERT_MSG(myMin < myMax, "Max should be strictly greather than Min in a colormap.");
+    ASSERT_MSG(myMin < myMax, "Max should be strictly greater than Min in a colormap.");
     myColors = other.myColors;
   }
   return *this;
@@ -271,7 +271,7 @@ DGtal::GradientColorMap<PValue,PDefaultPreset,PDefaultFirstColor,PDefaultLastCol
   const Value & max,
   Value value )
 {
-  ASSERT_MSG(min < max, "Max should be strictly greather than Min in a colormap.");
+  ASSERT_MSG(min < max, "Max should be strictly greater than Min in a colormap.");
   if ( colors.size() < 2 )
     return DGtal::Color::None;
   if ( std::is_floating_point<PValue>::value

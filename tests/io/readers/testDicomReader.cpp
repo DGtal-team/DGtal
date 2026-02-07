@@ -149,7 +149,7 @@ bool testIOException()
     Image3D image = DicomReader< Image3D >::importDicom( filename );
   }
   catch(exception& e) {
-    trace.info() << "Exception catched. Message : " << e.what()<<endl;
+    trace.info() << "Exception caught. Message : " << e.what()<<endl;
     return true;
   }
 

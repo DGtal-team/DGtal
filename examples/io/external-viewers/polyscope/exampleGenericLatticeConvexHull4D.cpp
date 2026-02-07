@@ -126,7 +126,7 @@ int main( int argc, char* argv[] )
   typedef Space::Point                       Point4;
 
   std::cout << "Usage: " << argv[ 0 ] << " [R=30] [N=30] [D=2]\n";
-  std::cout << "Computes the convex hull of N 4D points within a ball of radius R, these points belonging to a lattice of chosen dimension 0<=D<=3. The output is projected along the 4 canonic projections onto 3D space. You cannot choose D=4 since we cannot diplay the result in 3D.\n";
+  std::cout << "Computes the convex hull of N 4D points within a ball of radius R, these points belonging to a lattice of chosen dimension 0<=D<=3. The output is projected along the 4 canonic projections onto 3D space. You cannot choose D=4 since we cannot display the result in 3D.\n";
   double radius = argc > 1 ? atof( argv[ 1 ] ) : 30.0;
   int    nb     = argc > 2 ? atoi( argv[ 2 ] ) : 30;
   int    adim   = argc > 3 ? atoi( argv[ 3 ] ) : 2;

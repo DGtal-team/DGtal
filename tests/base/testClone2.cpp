@@ -118,9 +118,9 @@ namespace DGtal {
 
     //inline operator CountedPtr<T>() { return CountedPtr<T>( myCowPtr.get() ); }
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     /// The copy-on-write pointer to the T object that is to be duplicated.
     CowPtr<T> myCowPtr;

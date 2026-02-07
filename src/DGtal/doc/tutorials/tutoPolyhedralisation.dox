@@ -93,12 +93,12 @@ around the image and only references the image.
 
 Up to now, the digital object is just a characteristic function,
 without any structure nor boundary. Digital surfaces are defined as
-inter voxel elemnts between face adjacent voxels, such that one is
+inter voxel elements between face adjacent voxels, such that one is
 inside and the other is outside the digital object. It is thus natural
 to enrich the usual digital space \f$ \mathbb{Z}^d \f$ with lower
 dimensional cells. That is exactly the purpose of class
 KhalimskySpaceND. That kind of space allows to represent cells of
-arbitary dimension (see moduleCellularTopology). By convention, \a
+arbitrary dimension (see moduleCellularTopology). By convention, \a
 voxels are cells of maximal dimension `d`, \a surfels are `d`-1
 dimensional cells, etc. Note also that surfels are oriented. It is
 because a surfel indicates not only a boundary element, but also in
@@ -174,7 +174,7 @@ into planar zones.
   width. Hence it recognizes naive planes when the axis width is 1.
 
 - The second element is a way to visit the points onto the object
-  boundary in a reasonnable way, so that planar pieces are not too
+  boundary in a reasonable way, so that planar pieces are not too
   elongated. We adopt a simple approach to produce as "round" as
   possible planar pieces. The digital surface is a model of graph
   (concept CUndirectedSimpleGraph) and we may perform several
@@ -196,7 +196,7 @@ vertex (\ref BreadthFirstVisitor::expand) or if you continue to the
 next vertex but you block the expansion of the visitor through the
 current vertex (BreadthFirstVisitor::ignore). We use the visitor layer
 by layer (i.e. vertices with same distance). Here is a skeleton code
-for extracting a "round" and planar neighborhood aroud surfel
+for extracting a "round" and planar neighborhood around surfel
 `start_surfel`. We call this plane the \b round \b plane around `start_surfel`.
 
 \code
@@ -241,7 +241,7 @@ could use other embeddings: (1) use the four pointels of each surfel,
 
 Ok, this is not an easy task, the smallest decomposition is even
 NP-hard in the general case. We use the following heuristic, which is
-reasonnably costly. First, we associate an integer to each surfel, and we initialize it to zero.
+reasonably costly. First, we associate an integer to each surfel, and we initialize it to zero.
 
 \code
 // Initialisation
@@ -254,7 +254,7 @@ Secondly, for each surfel, we compute its round plane. Then we
 increment the counter of each surfel that belongs to this round
 plane. You must reuse the code computing the round plane
 (\ref tutoPolyhedralisation_sec5), but you must not only store the points
-of the layer bu also the surfels of the layer. This gives something
+of the layer but also the surfels of the layer. This gives something
 like that.
 
 \code
@@ -318,7 +318,7 @@ this round plane, and are in turn marked. We process until the queue
 is empty.
 
 In order to store the round planes (and other information like its
-color for display), you shoud define a structure like
+color for display), you should define a structure like
 
 \code
 template <typename T1, typename T2, typename T3>

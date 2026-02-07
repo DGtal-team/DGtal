@@ -48,7 +48,7 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Iteration accross the end of a range
+ * Iteration across the end of a range
  */
 template<typename Iterator>
 bool testOffset(const Iterator& itb, const Iterator& ite, const vector<int>& groundTruth)
@@ -109,7 +109,7 @@ bool basicForwardTest(const Container& cont)
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   //copy
   Circulator<I> circ2 = circ1;
-  //assignement
+  //assignment
   circ0 = circ1;
   //pre/post-incrementation
   circ1++;

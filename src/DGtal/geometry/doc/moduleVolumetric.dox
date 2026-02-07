@@ -246,7 +246,7 @@ larger domains.
 
 @note Associative containers with O(1) amortized insertion like
 `std::unordered_set` lead to higher construction time without a clear
-improvment on the overall performances.
+improvement on the overall performances.
 
 The VoronoiMapComplete class can also be applied on toroidal domains
 (see @ref toricVol).

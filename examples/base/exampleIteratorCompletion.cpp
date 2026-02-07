@@ -61,7 +61,7 @@ public:
   typedef typename Space::Point           Point;  // The associated point type
   typedef DGtal::Linearizer<Domain, DGtal::ColMajorStorage>    Linearizer; ///< Linearization of the points.
 
-  // Contructor
+  // Constructor
   MyImage( Domain const& aDomain = Domain() )
     : myDomain(aDomain), myData( new T[ myDomain.size() ] )
     {}

@@ -31,7 +31,7 @@ combinatorial topological structure is the classical half-edge data
 structure (or doubly connected cell list). We also provide a
 triangulated surface representation that is based on an half-edge data
 structure. A more general polygonal surface is provided and is also
-based on the same half-edge data sructure. In the latter case, faces
+based on the same half-edge data structure. In the latter case, faces
 of the surface can be arbitrary simple polygons.
 
 [TOC]

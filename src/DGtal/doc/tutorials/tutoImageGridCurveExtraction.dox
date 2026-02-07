@@ -109,7 +109,7 @@ SurfelAdjacency<2> sAdj( false );
 @endcode
 
 
-you will obtain the followings contours:
+you will obtain the following contours:
 
 
  @image html images/fcExtraction2.png
@@ -171,7 +171,7 @@ To import the image and create digital set you need to include the following hea
 @snippet tutorial-examples/freemanChainFromImage.cpp freemanChainFromImage-ImageSetIncludes
 
 
-To track the frontier of the digital set and create the digital set you nedd to include:
+To track the frontier of the digital set and create the digital set you need to include:
 
 @snippet tutorial-examples/freemanChainFromImage.cpp freemanChainFromImage-trackingFCIncludes
 

@@ -61,8 +61,8 @@ bool mainTest()
 
   trace.beginBlock ( "Main operators..." );
 
-  //operateur constructeur, copie, affectation
-  trace.info() << "constructor, copy, assignement, equality" << std::endl;
+  //operateur constructeur, copy, affectation
+  trace.info() << "constructor, copy, assignment, equality" << std::endl;
 
   DSS dss(0, 1,
 	  Point(0,0), Point(1,0),
@@ -1171,7 +1171,7 @@ bool unionComparisonTest(int modb, int modx, unsigned int nbtries)
 		  //after x2.
 		  //Integer x3 = x1 + (rand() % (x2-x1+1))*elemMove;
 
-		  // Disonnected DSSs: The beginning of the second subsegment is randomly set after x2.
+		  // Disconnected DSSs: The beginning of the second subsegment is randomly set after x2.
 		  //Integer x3 = x2 + (rand() % (modb))*elemMove;
 
 		  // General Case

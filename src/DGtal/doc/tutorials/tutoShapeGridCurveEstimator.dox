@@ -32,7 +32,7 @@ Please have a look to shapeGridCurveEstimator.cpp to get the complete source cod
 \section secttutoShapeGridCurveEstimator0 Implicit Gauss digitization of a Euclidean shape
 
 Let us assume that a flower-like shape has been instantiated.
-We now implicitely consider its digitization according to the Gauss scheme
+We now implicitly consider its digitization according to the Gauss scheme
 (set of digital points lying inside the shape).
 
 @snippet tutorial-examples/shapeGridCurveEstimator.cpp shapeGridCurveEstimator-dig
@@ -74,7 +74,7 @@ element that is lying between these two points.
 @note A DGtal::InputException is raised if the method fails
 to find two different points.
 
-From one boundary 1-cell, the contour is then implicitely
+From one boundary 1-cell, the contour is then implicitly
 tracked as follows:
 
 @snippet tutorial-examples/shapeGridCurveEstimator.cpp shapeGridCurveEstimator-tracking
@@ -154,7 +154,7 @@ For instance, the data of the following plot come from this tool:
 Here are the basic includes:
 @snippet tutorial-examples/shapeGridCurveEstimator.cpp shapeGridCurveEstimator-basicIncludes
 
-In order to generate an implicite or parametric shape, you need this:
+In order to generate an implicit or parametric shape, you need this:
 @snippet tutorial-examples/shapeGridCurveEstimator.cpp shapeGridCurveEstimator-shapeIncludes
 
 To retrieve its contour, you should add:

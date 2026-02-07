@@ -126,7 +126,7 @@ The local morphological dilation as well as the final
 morphological opening, which is an erosion followed by a
 dilation, are left as an exercise.
 
-\subsection subsecttutoFMMErosion31  Excercise
+\subsection subsecttutoFMMErosion31  Exercise
 
 Your challenge is to code:
 

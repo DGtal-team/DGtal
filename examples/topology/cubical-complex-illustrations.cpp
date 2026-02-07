@@ -28,7 +28,7 @@
  */
 
 /**
- * Source of examples used to generate illustrations of Cubical Complex module documention.
+ * Source of examples used to generate illustrations of Cubical Complex module documentation.
  * @see @ref   moduleCubicalComplex
  * @image html cubical-complex-illustrations-X.png "One of the generated illustration: displaying a 2D cubical complex on a Board."
  * @example topology/cubical-complex-illustrations.cpp

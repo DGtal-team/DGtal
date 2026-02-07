@@ -120,10 +120,10 @@ defining a digital surface from a implicit digital ellipse.
 
 We then define some types (note that we use the @e  DGTAL_WITH_CGAL define to
 make sure that the user has enabled CGAL). Since local functors based
-on Monge Jet Fitting and CGAL do not require any weigths, we just
+on Monge Jet Fitting and CGAL do not require any weights, we just
 consider a constant weight functor returning 1.0 for each surfel. For
 the functors::ElementaryConvolutionNormalVectorEstimator, we consider a Gaussian
-kernel with @f$ \sigma=2.0@f$. Please aslo note that the distance
+kernel with @f$ \sigma=2.0@f$. Please also note that the distance
 visitor is based on a Euclidean @f$ l_2@f$ metric:
 
 @snippet exampleEstimatorFromSurfelFunctors.cpp SurfelFunctorsType

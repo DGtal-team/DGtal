@@ -68,7 +68,7 @@ See @ref moduleGeometricPredicates for more details about geometric predicates.
 - a strictly negative value for clockwise oriented points
 
 @note In this example, the predicate is an object that adapts the functor in
-order to return 'true' for striclty positive values. The last two template
+order to return 'true' for strictly positive values. The last two template
 arguments means that neither the strictly negative values, nor the null values
 are accepted.
 
@@ -214,9 +214,9 @@ second one is given from the normal projection on the edge of the same
 antipodal pairs. The two definitions are illustrated on the following figures:
 
 
-@image html exampleConvexHullHV.png  "Example of the definitiion of horizontal/vertical thickness defined from the convex hull antipodal pair ((P,Q), S)."
+@image html exampleConvexHullHV.png  "Example of the definition of horizontal/vertical thickness defined from the convex hull antipodal pair ((P,Q), S)."
 
-@image html exampleConvexHullEucl.png  "Example of the definitiion of Euclidean thickness defined from the convex hull antipodal pair ((P,Q), S)."
+@image html exampleConvexHullEucl.png  "Example of the definition of Euclidean thickness defined from the convex hull antipodal pair ((P,Q), S)."
 
 
 To compute the thickness of a convex hull you have simply to call the computeHullThickness procedure:

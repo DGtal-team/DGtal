@@ -606,7 +606,7 @@ namespace DGtal
 			  double n_oo_max = 1e-4,
 			  unsigned int iter_max = 10 )
     {
-      (void)n_oo_max;//paramerter not used
+      (void)n_oo_max;//parameter not used
 
       bool ok = true;
       if ( verbose >= 1 ) {

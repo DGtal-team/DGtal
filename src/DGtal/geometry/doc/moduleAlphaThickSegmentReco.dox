@@ -83,7 +83,7 @@ point on the front of the current segment and the value of
 vertical/horizontal thickness are computed in linear time by using the
 rotating caliper algorithm (see @ref subsectmoduleHull2D14).  The Buzer optimisation
 \cite lilianComputing2007 to update the convex hull thickness with a coast
-of \f$O(log\ n) \f$ or the linear time point substraction are not yet
+of \f$O(log\ n) \f$ or the linear time point subtraction are not yet
 implemented.  Note that you can use also the Euclidean thickness (see
 illustration below) also defined from the rotating caliper algorithm.
 

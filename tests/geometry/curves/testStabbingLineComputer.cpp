@@ -68,7 +68,7 @@ bool testStabbingLineComputer(const TCurve& curve)
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
-  trace.beginBlock ( "Constructors, copy, assignement" );
+  trace.beginBlock ( "Constructors, copy, assignment" );
   {
     Range r = curve.getIncidentPointsRange(); //range
 

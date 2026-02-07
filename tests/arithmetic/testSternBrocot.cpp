@@ -792,7 +792,7 @@ testAncestors()
   typedef StandardDSLQ0<Fraction> DSL;
   typedef typename DSL::Point Point;
 
-  // Instanciation d'un DSL
+  // Instantiation d'un DSL
   DSL D(1077,1495,6081);
 
   // Definition du sous-segment [AB] et calcul des caractéristiques

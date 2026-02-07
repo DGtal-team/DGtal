@@ -56,7 +56,7 @@ namespace DGtal {
     unsigned int nbok = 0;
     unsigned int nb = 0;
     trace.beginBlock ( "Testing block ... LightImplicitDigitalSurface" );
-    trace.beginBlock ( "LightImplicitDigitalSurface instanciation" );
+    trace.beginBlock ( "LightImplicitDigitalSurface instantiation" );
     Boundary boundary( K, pp,
                        SurfelAdjacency<KSpace::dimension>( true ), bel );
     trace.endBlock();

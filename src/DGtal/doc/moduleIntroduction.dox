@@ -45,7 +45,7 @@ The core of DGtal is built on a small set of concepts:
 
 concepts::CSpace: The concept of digital space
 describes digital spaces of arbitrary dimension, with user-chosen integer types.
-See \ref moduleNumber and \ref moduleSpacePointVectorDomain of \ref packageKernel for more infomation.
+See \ref moduleNumber and \ref moduleSpacePointVectorDomain of \ref packageKernel for more information.
 The only available model of this concept is SpaceND, which defines fundamental
 types associated to a digital space like the type of point or vector lying in the space, etc.
 The point is a key geometrical element since digital geometry algorithms often deal with
@@ -59,7 +59,7 @@ The main difference is that the former is not-mutable, basically used to bound t
 part where the computations have to be performed, while the latter is mutable.
 A key model of domain is HyperRectDomain, which is used to bound usual images.
 DigitalSetBySTLVector and DigitalSetBySTLSet are two models of digital set.
-See \ref moduleDigitalSets of \ref packageKernel for more infomation.
+See \ref moduleDigitalSets of \ref packageKernel for more information.
 
 With a digital topology, ie. a couple of adjacency relations,
 describing how points are close to each others,
@@ -98,7 +98,7 @@ input argument in order to iterate on the values from a given location.
 The concept of image provides extra services to update values.
 Any model of concepts::CImage must have a method setValue() taking a point and a value as input arguments.
 In addition, their inner range must have outputIterator() and routputIterator() methods
-returning output iterators, which provides a way of incrementaly filling an image
+returning output iterators, which provides a way of incrementally filling an image
 between two points of its domain.
 Different models of image are available: ImageContainerBySTLVector,
 ImageContainerBySTLMap, experimental::ImageContainerByHashTree and

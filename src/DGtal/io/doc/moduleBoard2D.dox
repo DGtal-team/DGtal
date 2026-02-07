@@ -103,7 +103,7 @@ may or may not be represented with its adjacency
 relations. Otherwise said, one may wish to see the set, another
 may wish to see the graph.
 
-You may choose a \b mode for a drawable element by outputing on
+You may choose a \b mode for a drawable element by outputting on
 the stream a SetMode object. You just have to specify the
 classname (the easiest way is to call the method \c className()
 on an instance of the correct type) and the desired mode (a
@@ -273,7 +273,7 @@ This program (see full source at dgtalBoard2D-3-custom-points.cpp) outputs the f
 
 You can use colormaps in conjunction with custom styles for Board2D. Several classes represent colormaps: CColorMap, ColorBrightnessColorMap, GradientColorMap, GrayscaleColorMap, HueShadeColorMap, SimpleDistanceColorMap (see \ref moduleIO). You can use any of them to produce colors. Here, we define a simple colormap going from blue to red then yellow. Then, each pixel of the digital set \c shape_set (see above) is displayed with a fill color that depends on its distance to the point \c c1.
 
-An interesting point of the exemple below is how we specify a custom style for a \b specific \b mode of some drawable element (here a Point). We just add "/"+ModeName to the name of the style.
+An interesting point of the example below is how we specify a custom style for a \b specific \b mode of some drawable element (here a Point). We just add "/"+ModeName to the name of the style.
 
  \code
   // Creating colormap.

@@ -83,7 +83,7 @@ drawn with the viewer. You should obtain the following visualization:
 \subsection  DGtalGLV_PolyscopeViewer_Rendering Interactive change of rendering
 
 Polyscope has its own default rendering settings. Many parameters can be changed either
-programatically or at runtime directly within the viewer. This includes camera parameters
+programmatically or at runtime directly within the viewer. This includes camera parameters
 (up direction, far/near plane, ...), materials of objects, lighting and many more. See
 polyscope documentation for available options (https://polyscope.run).
 
@@ -150,7 +150,7 @@ As for \c Board2D the object can be displayed with different possible mode:
 | ADJACENCIES     | Draws adjacencies relations | Objects                                                      | viewer.drawAdjacencies(true \| false)  |
 | SIMPLIFIED      | Draws quad instead of prism | 2D Signed KCells                                             | viewer.drawAsSimplified(true \| false) |
 
-\subsection DGtalGLV_ModeExamplesDomain Examples with Objet modes
+\subsection DGtalGLV_ModeExamplesDomain Examples with Object modes
 
 The file <a href="io_2viewers_2viewer3D-4-modes_8cpp-example.html" >  viewer3D-4-modes.cpp </a> illustrates several  possible modes to display these objects:
 
@@ -210,7 +210,7 @@ viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
 
 As for Board2D, it is possible to custom the way to display 3D elements. By default, the colors of elements are given by
 the viewer and can cycle through some of them. They can be changed directly in the user interface of the viewer.
-Colors can also be set programatically;
+Colors can also be set programmatically;
 
 @code
   viewer << Color(250, 0,0); // Alternatively: viewer.drawColor(color);

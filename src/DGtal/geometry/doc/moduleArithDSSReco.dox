@@ -121,7 +121,7 @@ ArithmeticalDSLKernel contains the part of the code that depends on the arithmet
 
 Below, three naive DSLs are depicted in the first three octants.
 Vectors mySteps.first (\f$ v \f$), mySteps.second (\f$ w \f$) and myShift (\f$ s \f$),
- are repectively depicted in blue, green and red. The two vectors of the orthonormal basis
+ are respectively depicted in blue, green and red. The two vectors of the orthonormal basis
 are depicted in black.
 
 @image html ArithmeticalDSL-8-0-5-8.png "Naive DSL D(5,8,0)"
@@ -525,7 +525,7 @@ choice is to do this in following way:
 
 
 Note that the 3D extension provides a similar interface, but also allows for filtration of DSSes. In the below example,
-each DSS of length lower equal 7 is not taken into account durin the estimation:
+each DSS of length lower equal 7 is not taken into account during the estimation:
 
 @snippet geometry/curves/estimation/exampleLMST3D.cpp LambdaMST3DHeader
 

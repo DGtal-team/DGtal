@@ -225,7 +225,7 @@ for ( std::pair<vertex_iterator, vertex_iterator> vp = boost::vertices( g );
   Note that \c propColorMap is given a \b named parameter with a call
   to boost::color_map. This is the method used in the Boost Graph
   Library to give handle parameters, especially when the algorithm
-  requires a lot of parameters, some of them being optionnal. This is explained in section
+  requires a lot of parameters, some of them being optional. This is explained in section
   (http://www.boost.org/doc/libs/1_52_0/libs/graph/doc/bgl_named_params.html).
 
 @note You may of course use the VertexMap rebind mechanism when
@@ -289,7 +289,7 @@ examples of using Boost Graph algorithms (max-flow and min-cut).
 
    The file \ref ObjectBoostGraphInterface.h defines the boost
    graph traits for any kind of Object (see
-   Object). With those definitios, an Object is a model of
+   Object). With those definitions, an Object is a model of
    VertexListGraphConcept, AdjacencyGraphConcept,
    IncidenceGraphConcept, EdgeListGraphConcept.
    You may use an Object as a graph in any Boost Graph Library

@@ -122,7 +122,7 @@ bool testIOException()
     }
   catch(exception& e)
     {
-      trace.info() << "Exception catched. Message : "<< e.what()<<endl;
+      trace.info() << "Exception caught. Message : "<< e.what()<<endl;
     }
 
 

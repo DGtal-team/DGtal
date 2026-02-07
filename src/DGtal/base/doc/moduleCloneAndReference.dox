@@ -103,7 +103,7 @@ The \b programmer should explicit its \e intent to the user in an unambiguous wa
 
 \section moduleCloneAndReference_sec2 Parameter passing with Clone, Alias and ConstAlias
 
-Classes Clone, Alias, and ConstAlias are defined in order to accept several arguments from the \e user. Symmetrically, they may be automatically converted into several types for the \e programmer. Not all combinations are allowed, but several optimizations are made, most notably by avoiding duplication if possible, by performing lazy duplication, or by moving objects. Furthermore, even for long-term aliasing, the \e user may choose at compile time between either an unsecure or secure aliasing method, depending on its application.
+Classes Clone, Alias, and ConstAlias are defined in order to accept several arguments from the \e user. Symmetrically, they may be automatically converted into several types for the \e programmer. Not all combinations are allowed, but several optimizations are made, most notably by avoiding duplication if possible, by performing lazy duplication, or by moving objects. Furthermore, even for long-term aliasing, the \e user may choose at compile time between either an insecure or secure aliasing method, depending on its application.
 
 Therefore, those three classes are useful both from an efficiency and pragmatic point of view.
 
@@ -123,7 +123,7 @@ We propose the following ways to pass parameters without ambiguity:
 | any type/object                | `f( T& t )`        | `f( Alias<T> t )`  |
 | User must be careful of argument lifetime| no       | yes                |
 
-\note Parameter passing by \b pointer may be used in place of references in the first column, altough this is not encouraged. Indeed, you have to think about your parameter passing by pointer to determine whether it is truely an immediate use or an implicit \c Clone<T*>. You may use a parameter passing by \b pointer in the following cases:
+\note Parameter passing by \b pointer may be used in place of references in the first column, although this is not encouraged. Indeed, you have to think about your parameter passing by pointer to determine whether it is truly an immediate use or an implicit \c Clone<T*>. You may use a parameter passing by \b pointer in the following cases:
 - you wish to alias / const-alias an object that may be \e null (0) in some cases, like in an optional object association. In this case, you should use a \b pointer member.
 - you are manipulating arrays: pointers relate to cells of your array and are in fact \e iterators passed by value. Perhaps consider a typedef to remove ambiguity.
 
@@ -234,7 +234,7 @@ struct B {
 };
 
 BigFatA a1;
-B b1( a1 ); // aliased (unsecure)
+B b1( a1 ); // aliased (insecure)
 BigFatA adr = new BigFatA( "I am the one " )
 B b2( adr ); // aliased
 CountedPtr<BigFatA> counted_ptr = new BigFatA( "I am the other one" );
@@ -276,7 +276,7 @@ struct B {
 };
 
 BigFatA a1;
-B b1( a1 ); // const-aliased (unsecure)
+B b1( a1 ); // const-aliased (insecure)
 BigFatA adr = new BigFatA( "I am the one " )
 B b2( adr ); // aliased
 CountedPtr<BigFatA> counted_ptr = new BigFatA( "I am the other one" );

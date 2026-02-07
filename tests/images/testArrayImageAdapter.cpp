@@ -166,7 +166,7 @@ void checkImage( TImage& anImage )
   auto const fn = [] (size_t i, Coordinate x) { return cos( static_cast<Value>(pow(100, i)*x ) ); };
 
   // Fill with function
-  SECTION( "Filling with point dependant function" )
+  SECTION( "Filling with point dependent function" )
     {
       fillImageWithPointFn( ref_image, fn );
       fillImageWithPointFn( anImage, fn );
@@ -182,7 +182,7 @@ void checkImage( TImage& anImage )
     }
 
   // Fast filling with function
-  SECTION( "Fast filling with point dependant function" )
+  SECTION( "Fast filling with point dependent function" )
     {
       fastFillImageWithPointFn( ref_image, fn );
       fastFillImageWithPointFn( anImage, fn );
@@ -197,7 +197,7 @@ void checkImage( TImage& anImage )
       REQUIRE( std::equal( ref_image.begin(), ref_image.end(), anImage.begin() ) );
 
       // Increment with function
-      SECTION( "Incrementing with point dependant function" )
+      SECTION( "Incrementing with point dependent function" )
         {
           incrementImageWithPointFn( ref_image, fn );
           incrementImageWithPointFn( anImage, fn );
@@ -214,7 +214,7 @@ void checkImage( TImage& anImage )
         }
 
       // Partial increment with function
-      SECTION( "Partial increment with point dependant function" )
+      SECTION( "Partial increment with point dependent function" )
         {
           auto sub_image = makeArrayImageAdapterFromImage( anImage, sub_domain );
           incrementImageWithPointFn( ref_image, fn, sub_domain );
@@ -223,7 +223,7 @@ void checkImage( TImage& anImage )
         }
 
       // Fast partial fill with function
-      SECTION( "Fast partial filling with point dependand function" )
+      SECTION( "Fast partial filling with point dependent function" )
         {
           auto sub_image = makeArrayImageAdapterFromImage( anImage, sub_domain );
           fillImageWithPointFn( ref_image, fn,  sub_domain );

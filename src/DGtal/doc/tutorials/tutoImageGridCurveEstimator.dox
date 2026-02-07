@@ -34,7 +34,7 @@ an image object:
  @image html images/imageDomainTuto2.png  "S gray level image"
 
 
-First of all, we implicitely extract a digital set from an image,
+First of all, we implicitly extract a digital set from an image,
 using a simple threshold on gray level values:
 
 @snippet tutorial-examples/imageGridCurveEstimator.cpp imageGridCurveEstimator-predicate

@@ -182,7 +182,7 @@ int main( int argc, char** argv )
     //! [GridCurveToFreemanChain]
   }
 
-  trace.emphase() << "Ranges Ouput" << endl;
+  trace.emphase() << "Ranges Output" << endl;
   {
     Board2D aBoard;
     aBoard.setUnit(Board2D::UCentimeter);

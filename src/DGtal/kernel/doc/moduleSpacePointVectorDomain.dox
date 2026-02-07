@@ -68,7 +68,7 @@ typedef DGtal::SpaceND<3, DGtal::Integer> MySpaceBigInteger;
 @endcode
 
 In the latter example, we construct a digital space using
-multiprecision intergers. For details, see the documentation
+multiprecision integers. For details, see the documentation
 page @ref moduleNumber.
 
 
@@ -98,7 +98,7 @@ Point p(13,-5);
 
 Beside the type `Point` (defined as a specialization of the class
 PointVector),  SpaceND (or Z2i::Space) provides several other types
-and methodes such as
+and methods such as
  - types associated to the canonical vector space  (SpaceND::Point, SpaceND::Vector,...)
  - types and methods for subspace and subcospace construction
  - ...

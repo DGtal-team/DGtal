@@ -263,7 +263,7 @@ first- and second-order partial derivatives of a 2-variate polynomial.
 @snippet math/polynomial2-derivative.cpp polynomial2-derivative-process
 
 
-\subsection dgtal_mpolynomial_sec1_6 Computing euclidean division and greatest commond divisor (gcd)
+\subsection dgtal_mpolynomial_sec1_6 Computing euclidean division and greatest common divisor (gcd)
 
 Finally, there exist functions euclidDiv() (parameters f, g, q, r), requiring
 parameters f, g of type const MPolynomial <1, K> & and q, r of type
@@ -340,7 +340,7 @@ MPolynomial<3, double> P = //...
   @endcode
 
   This function takes 69ms for a step 0.01, for 8000000 evaluations.
-The C version where the function is explicitely compiled takes 22ms.
+The C version where the function is explicitly compiled takes 22ms.
 
 \section dgtal_mpolynomial_sec3 Input and output for multivariate polynomials
 

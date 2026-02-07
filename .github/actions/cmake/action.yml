@@ -16,7 +16,7 @@ inputs:
     default: "Release"
 
   build-config:
-    description: "Additionnal configuration to give to cmake"
+    description: "Additional configuration to give to cmake"
     default: ""
 
   cpm-cache:
@@ -64,7 +64,7 @@ runs:
       run: |
         cmake -E make_directory $DGTAL_BUILD_PATH
 
-    - name: Install additionnal dependancies (windows)
+    - name: Install additional dependencies (windows)
       if: ${{ runner.os == 'Windows' }}
       shell: bash
       working-directory: ${{ inputs.build-dir }}

@@ -1042,7 +1042,7 @@ struct Image : public Rectangle {
   /**
    * Returns the generic name of the shape (e.g., Circle, Rectangle, etc.)
    *
-   * @return objet name
+   * @return object name
    */
   const std::string & name() const;
 

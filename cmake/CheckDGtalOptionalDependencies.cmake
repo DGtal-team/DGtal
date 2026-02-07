@@ -129,7 +129,7 @@ if (DGTAL_WITH_ITK)
     # When linking with DGTal, a cmake Error is raised
     #  "Imported target "DGtal::DGtal" includes non-existent path"
     #
-    # In case the name is not the same accross unix distributions and windows
+    # In case the name is not the same across unix distributions and windows
     # we filter out all directories that do not exist on the system
     # --------------------------------------------------------------------------
     set(FILTERED_ITK_INCLUDE_DIRS "")

@@ -334,7 +334,7 @@ The following snippet shows that a 4D ball is indeed fully convex.
 
 
 @note This method for checking full convexity is slightly slower than
-the method using the Minkowski sum on the polytope contraints, but it
+the method using the Minkowski sum on the polytope constraints, but it
 works in arbitrary dimension and for arbitrary digital set.
 
 Simplex services:
@@ -671,7 +671,7 @@ Polytope P { Point(4,4), a, b, c };
 Then the interface of BoundedRationalPolytope is almost the same as
 the one of BoundedLatticePolytope (see \ref dgtal_dconvexity_sec21 ).
 
-The classs BoundedRationalPolytope offers dilatation by an arbitrary
+The class BoundedRationalPolytope offers dilatation by an arbitrary
 rational, e.g. as follows
 
 \code

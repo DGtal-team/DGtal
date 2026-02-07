@@ -183,7 +183,7 @@ This range is not only a model of concepts::CBidirectionalRangeFromPoint, but al
 of concepts::CBidirectionalRangeWithWritableIteratorFromPoint. That is why, it must have two methods:
 `outputIterator` and `routputIterator` returning output iterators. Moreover,
 it must have overloaded versions of these methods taking a point as input argument.
-Thus, these output iterators are useful in order to incrementaly fill (a part of) an image.
+Thus, these output iterators are useful in order to incrementally fill (a part of) an image.
 For instance, you can fill an image from the values of another one
 (assumed to have the same domain) as follows:
 
@@ -253,7 +253,7 @@ and use the `setValue` method of the class.
 
 experimental::ImageContainerByHashTree is an experimental image
 container implementing a pointerless nD-tree structure. In dimension 2
-and 3, this structure is similar to quadtree and octree repsectively
+and 3, this structure is similar to quadtree and octree respectively
 in which hierarchical links between a node and its children is given
 by prefix of a binary representation of the node coordinates using
 Morton keys. Finally, data values are stored in the structure in a
@@ -267,7 +267,7 @@ For more details, please refer to @cite Lewiner2009a
 
 ImageAdapter, ConstImageAdapter are perfect swiss-knifes to transform
 and adapt images (change their domain definition, change their value
-types, ...). These classses are parametrized by several types and
+types, ...). These classes are parametrized by several types and
 functor in order to adapt the behavior of image getters/setters (@a operator() and @a
 setValue methods). These adapted behaviors are computed on-the-fly
 when calling these methods.
@@ -388,7 +388,7 @@ Domain (i.e. a subdomain) but work directly (for reading and writing
 processes) thanks to an alias (i.e. a pointer) on the original Image
 given in argument.
 
-This class requires an additional templare paremter:
+This class requires an additional templare parameter:
 * @a TFunctoVm1: functor to convert adapted image values to the original
  image values.
 
@@ -462,7 +462,7 @@ From there, we can use all the previous features or, for example, use available 
 \section dgtalImagesFunctions Useful classes and functions
 
 In addition to the image containers and the image adapters described in the previous sections,
-there are also image proxys:
+there are also image proxies:
 
 Image is a light proxy on image containers based on a COW pointer.
 It can be constructed, copied, assigned, deleted without any special care.

@@ -84,7 +84,7 @@ Next, use the cmake command to generate your Unix Makefile project
 cmake ..
 @endcode
 
-Many options can be specified to add functionnalities or control the build of DGtal. A
+Many options can be specified to add functionalities or control the build of DGtal. A
 full list is available below. As an example, you can activate the use of 3D viewer and
 parallelization by adding the following options:
 @code
@@ -151,10 +151,10 @@ debug messages are traced out.
 
 - \e  DGTAL_BUILD_SHARED_LIBS (ON/OFF): to build the lib as a shared library (default: OFF) but \b must be \b OFF actually on \b Windows
 
-\section cmakeDGtalDeps DGtal Optionnal Dependencies
+\section cmakeDGtalDeps DGtal Optional Dependencies
 
 When building DGtal only mandatory dependencies are fetched and setup. However,
-some functionnalities may require additionnal dependencies as specified in their
+some functionalities may require additional dependencies as specified in their
 documentation. We list here options to build DGtal accordingly:
 
 - \e DGTAL_WITH_OPENMP (ON/OFF): build DGtal with openmp (requires compiler supports)

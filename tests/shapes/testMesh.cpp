@@ -53,7 +53,7 @@ bool testMesh()
 
   trace.beginBlock ( "Testing Mesh  ..." );
   bool ok = true;
-  trace.beginBlock ( "Testing Mesh contruction  ..." );
+  trace.beginBlock ( "Testing Mesh construction  ..." );
   Mesh<Point> aMesh;
   Point p0=Point(0,0);
   Point p1=Point(0,1);
@@ -148,11 +148,11 @@ bool testMesh()
 
   trace.endBlock();
 
-  trace.beginBlock ( "Testing Mesh Bouding box and scale change  ..." );
+  trace.beginBlock ( "Testing Mesh Bounding box and scale change  ..." );
   aMesh.rescale(2);
   std::pair<Point, Point> bb = aMesh.getBoundingBox();
   bool boundingBoxOK = (bb.first == Point(20,10)) && (bb.second == Point(26,18));
-  trace.info() << "bouding box=" << bb.first <<  " " << bb.second << "(should be (20,10) (26,18)" <<std::endl;
+  trace.info() << "bounding box=" << bb.first <<  " " << bb.second << "(should be (20,10) (26,18)" <<std::endl;
   trace.endBlock();
 
   trace.beginBlock ( "Testing mesh subdivision  ..." );
@@ -223,7 +223,7 @@ bool testMesh()
 
   trace.info() << "nb vertex after clean: " << aMeshClean.nbVertex() ;
   bool okClean =  aMeshClean.nbVertex() == 4;
-  trace.info() << "get firt vertex index of second face : " << aMeshClean.nbVertex() ;
+  trace.info() << "get first vertex index of second face : " << aMeshClean.nbVertex() ;
   bool okClean2 =  aMeshClean.getFace(1)[0] == 3;
   trace.info() << "(should be 3) "<< (okClean2? "[ok]": "[error]") << std::endl;
   trace.endBlock();
@@ -240,7 +240,7 @@ bool testMesh()
 
 
 /**
- * Test mesh generation from static fonctions.
+ * Test mesh generation from static functions.
  */
 bool testMeshGeneration()
 {
@@ -270,8 +270,8 @@ bool testMeshGeneration()
   //! [testMeshCreateTubeMesh]
 
   trace.endBlock();
-  trace.info() << "Nb faces: "<< aMesh.nbFaces() << " (sould be 320)" << std::endl;
-  trace.info() << "Nb vertices: "<< aMesh.nbVertex() << " (sould be 352)" << std::endl;
+  trace.info() << "Nb faces: "<< aMesh.nbFaces() << " (should be 320)" << std::endl;
+  trace.info() << "Nb vertices: "<< aMesh.nbVertex() << " (should be 352)" << std::endl;
   bool okMeshTube1 = aMesh.nbFaces() == 320 && aMesh.nbVertex() == 352;
 
   trace.beginBlock ( "Testing Tube generation (bis with variable raidii  ..." );
@@ -283,8 +283,8 @@ bool testMeshGeneration()
   Mesh<Z3i::RealPoint>::createTubularMesh(aMeshBis, aSkeleton, vectRadii, 0.2, DGtal::Color::Green);
 
   trace.endBlock();
-  trace.info() << "Nb faces: "<< aMeshBis.nbFaces() << " (sould be 320)" << std::endl;
-  trace.info() << "Nb vertices: "<< aMeshBis.nbVertex() << " (sould be 352)" << std::endl;
+  trace.info() << "Nb faces: "<< aMeshBis.nbFaces() << " (should be 320)" << std::endl;
+  trace.info() << "Nb vertices: "<< aMeshBis.nbVertex() << " (should be 352)" << std::endl;
 
   std::ofstream ofbis ("tubeVariableRadiiGeneratedFromTestMesh.off");
   DGtal::MeshWriter<Z3i::RealPoint>::export2OFF(ofbis, aMeshBis, true);
@@ -312,8 +312,8 @@ bool testMeshGeneration()
   Mesh<Z3i::RealPoint>::createMeshFromHeightSequence(aMesh, heightSequence, 3, 10, 10, 3, DGtal::Color::Yellow);
   //! [testMeshCreateSequenceMesh]
 
-  trace.info() << "Nb faces: "<< aMesh.nbFaces() << " (sould be 324)" << std::endl;
-  trace.info() << "Nb vertices: "<< aMesh.nbVertex() << " (sould be 361)" << std::endl;
+  trace.info() << "Nb faces: "<< aMesh.nbFaces() << " (should be 324)" << std::endl;
+  trace.info() << "Nb vertices: "<< aMesh.nbVertex() << " (should be 361)" << std::endl;
   bool okMeshTube1AndHF = aMesh.nbFaces() == 324 && aMesh.nbVertex() == 361;
 
   //! [testMeshExport]

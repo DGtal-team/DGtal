@@ -143,7 +143,7 @@ bool simpleTest2x2DetComputer(DetComputer aComputer)
 }
 
 /**
- * Function that retuns 'true' if @a x1 and @a x2
+ * Function that returns 'true' if @a x1 and @a x2
  * have the same sign:
  * - both strictly positive
  * - both strictly negative

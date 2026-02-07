@@ -146,7 +146,7 @@ readOBJ( std::istream & input, SurfaceMesh & smesh, Materials& materials )
                << " #VN=" << normals.size()
                << " #F=" << faces.size() << std::endl;
   if ( input.bad() )
-    trace.warning() << "[SurfaceMeshReader::readOBJ] Some I/O error occured."
+    trace.warning() << "[SurfaceMeshReader::readOBJ] Some I/O error occurred."
                     << " Proceeding but the mesh may be damaged." << std::endl;
   bool ok = smesh.init( vertices.begin(), vertices.end(),
                         faces.begin(), faces.end() );

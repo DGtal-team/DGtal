@@ -298,7 +298,7 @@ TEST_CASE_METHOD(Fixture_object_diamond_with_hole, "Breadth first visit and sear
       CHECK( maxD == 6 );
       trace.endBlock();
 
-      THEN( "Test Wagner Stoer min-cut"){
+      THEN( "Test Wagner Store min-cut"){
 
         using vertices_size_type = boost::graph_traits<Graph>::vertices_size_type ; // ie Object::Size
         using edge_descriptor = boost::graph_traits<Graph>::edge_descriptor ; // ie Object::Edge
@@ -341,7 +341,7 @@ TEST_CASE_METHOD(Fixture_object_diamond_with_hole, "Breadth first visit and sear
         boost::associative_property_map< StdParityMap > propParityMap( parityMap );
 
         weight_type total_weight =
-          boost::stoer_wagner_min_cut // boost wagner stoer min cut algorithm.
+          boost::stoer_wagner_min_cut // boost wagner store min cut algorithm.
           ( obj_fixture, // the graph
             propWeightMap, // the mapping edge -> weight
             boost::parity_map( propParityMap ) // this map stores the vertex assignation

@@ -845,7 +845,7 @@ int main( int /*argc*/, char** /*argv*/ )
   static const unsigned int L = 16;
   trace.info()<< "Test several multi-map structures and compute some statistics." <<std::endl << "With parameter: "<<std::endl
 	      << "\t tested image size: 500  500"<<std::endl
-	      <<"Probability that there is no data at all at an image position (Bernouilli distribution): 0.5"
+	      <<"Probability that there is no data at all at an image position (Bernoulli distribution): 0.5"
 	      << "Probability for the geometric distribution of the number of data per image position (E(Y)=(1-p)/p, Var(Y)=(1-p)/p^2 :0.5"<< std::endl;
 
 

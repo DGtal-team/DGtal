@@ -135,7 +135,7 @@ bool testExceptions(const string &filename)
 
   try {
     c.initFromVectorStream(instream);
-    trace.info() << "no exception catched!?" << endl;
+    trace.info() << "no exception caught!?" << endl;
     return false;
   }  catch (DGtal::ConnectivityException& e) {
     trace.info() << e.what() << endl;

@@ -94,7 +94,7 @@ In the implemented version the buffer has size three times the value of \f$ K_{N
 time the buffer is flushed a part of the digital curve is created (see the two first nested loops in the code
 above). Also, the implemented version can treat closed curves and collect useful metadata.
 
-\subsection metData Additional Information
+\subsection metadata Additional Information
 
 The digitization implemented in NaiveParametricCurveDigitizer3D can collect, for each point of
 the output digital curve, information like

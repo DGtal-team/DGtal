@@ -1174,7 +1174,7 @@ DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number a, Number b, Number
 	if(type.compare("localCH")==0)
 	  this->DSLSubsegmentLocalCH(a,b,mu,A,B);
 	else
-	  throw std::invalid_argument("ERROR: Unknow string to specify the algorithm. \"farey\" is used hereafter.");
+	  throw std::invalid_argument("ERROR: Unknown string to specify the algorithm. \"farey\" is used hereafter.");
     }
   catch(std::invalid_argument & e)
     {

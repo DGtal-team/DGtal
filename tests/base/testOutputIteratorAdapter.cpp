@@ -104,7 +104,7 @@ bool testPairs()
     typedef IteratorAdapter<Map::iterator, functors::Pair2ndMutator<string>, string> Adapter;
   BOOST_CONCEPT_ASSERT(( boost::ForwardIterator<Adapter> ));
 
-  //writting
+  //writing
   Adapter  a( m.begin(), f );
   copy(v.begin(), v.end(), a);
   bool flag1 = std::equal( m.begin(), m.end(), m2.begin() );

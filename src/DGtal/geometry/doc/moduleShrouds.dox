@@ -94,7 +94,7 @@ curvature of the surface or its 3D elastic and thin plate energy.
 Apart from area energy, energies \f$ E^{snk}(C) \f$ and \f$
 E^{\kappa^2}(C) \f$ are not convex and movement constraints on \f$ X
 \f$ make things worse. We propose here dedicated finite difference
-algorithms giving a reasonnable gradient descent for the
+algorithms giving a reasonable gradient descent for the
 regularization process, together with randomization at the beginning.
 
 \section moduleShrouds_sec2 Main usage with squared curvature energy

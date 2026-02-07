@@ -58,8 +58,7 @@ bool mainTest()
 
   trace.beginBlock ( "Main operators..." );
 
-  //operateur constructeur, copie, affectation
-  trace.info() << "constructor, copy, assignement, equality" << std::endl;
+  trace.info() << "constructor, copy, assignment, equality" << std::endl;
 
   DSL dsl(0, 1, 0);
   DSL dsl2 = dsl;

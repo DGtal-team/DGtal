@@ -47,15 +47,15 @@ std::mt19937 g(rd());
 std::uniform_real_distribution<double> uniform(-1.0, 1.0);
 
 template <typename RealPoint>
-void perturbate( RealPoint& x, double perturbation )
+void perturb( RealPoint& x, double perturbation )
 {
   for ( auto& c : x ) c += uniform( g ) * perturbation;
 }
 
 template <typename RealPoint>
-void perturbate( std::vector< RealPoint >& X, double perturbation )
+void perturb( std::vector< RealPoint >& X, double perturbation )
 {
-  for ( auto& x : X ) perturbate( x, perturbation );
+  for ( auto& x : X ) perturb( x, perturbation );
 }
 
 template < typename Point >
@@ -183,7 +183,7 @@ SCENARIO( "AffineGeometry< Point2d > unit tests", "[affine_subset][2d]" )
   GIVEN( "Given a perturbated X = { (0,0), (-4,-1), (16,4), (-3,5), (7,3), (5, -2) } of affine dimension 2 by U[-1e-4,1e-4]" ) {
     std::vector<Point> X
       = { Point(0,0), Point(-4,-1), Point(16,4), Point(-3,5), Point(7,3), Point(5, -2) };
-    perturbate( X, 1e-4 );
+    perturb( X, 1e-4 );
     auto I = Affine::affineSubset( X, 1e-12 );
     THEN( "It has an affine basis of 3 points [0,1,x]" ) {
       CAPTURE( I );
@@ -193,7 +193,7 @@ SCENARIO( "AffineGeometry< Point2d > unit tests", "[affine_subset][2d]" )
   GIVEN( "Given a perturbated X = { (0,0), (-4,-1), (-8,-2), (8,2), (16,4), (200,50) } of affine dimension 1 by U[-1e-4,1e-4]" ) {
     std::vector<Point> X
       = { Point(0,0), Point(-4,-1), Point(-8,-2), Point(8,2), Point(16,4), Point(200,50) };
-    perturbate( X, 1e-4 );
+    perturb( X, 1e-4 );
     auto I = Affine::affineSubset( X, 1e-12 );
     THEN( "It has an affine basis of 3 points [0,1,x]" ) {
       CAPTURE( I );
@@ -203,7 +203,7 @@ SCENARIO( "AffineGeometry< Point2d > unit tests", "[affine_subset][2d]" )
   GIVEN( "Given a perturbated X = { (0,0), (-4,-1), (-8,-2), (8,2), (16,4), (200,50) } of affine dimension 1 by U[-1e-11,1e-11]" ) {
     std::vector<Point> X
       = { Point(0,0), Point(-4,-1), Point(-8,-2), Point(8,2), Point(16,4), Point(200,50) };
-    perturbate( X, 1e-11 );
+    perturb( X, 1e-11 );
     auto I = Affine::affineSubset( X, 1e-7 );
     THEN( "It has an affine basis of 2 points [0,1] if tolerance is 1e-7" ) {
       CAPTURE( X );

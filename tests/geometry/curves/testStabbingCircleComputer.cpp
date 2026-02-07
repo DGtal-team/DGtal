@@ -177,7 +177,7 @@ bool testStabbingCircleComputer(const TCurve& curve)
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
-  trace.beginBlock ( "Constructors, copy, assignement" );
+  trace.beginBlock ( "Constructors, copy, assignment" );
   {
     Range r = curve.getIncidentPointsRange(); //range
 
@@ -257,7 +257,7 @@ bool testStabbingCircleComputer(const TCurve& curve)
 }
 
 /**
- * Recogition of randomly generated digital circles
+ * Recognition of randomly generated digital circles
  */
 bool testRecognition()
 {

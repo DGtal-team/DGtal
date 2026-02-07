@@ -52,7 +52,7 @@ bool testCopyAndAssignement(const Ptr& aPtr)
   Ptr p1(aPtr); //copy
   Ptr p2(0); //construction
   Ptr p3 = p2; //copy
-  p3 = aPtr; //assignement
+  p3 = aPtr; //assignment
 
   if (aPtr.isOwning())
     {

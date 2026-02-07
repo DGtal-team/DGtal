@@ -31,7 +31,7 @@
 
 /**
  *  A simple example illustrating the extraction of the sequence of
- *  surfels boudary. This program outputs this image.
+ *  surfels boundary. This program outputs this image.
  *
  *  @see \ref dgtal_helpsurf_sec1
  *

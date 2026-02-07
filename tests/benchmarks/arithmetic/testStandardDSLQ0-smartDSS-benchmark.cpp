@@ -101,7 +101,7 @@ bool testSubStandardDSLQ0( unsigned int nbtries,
   long double CPUTime;
   CPUTime =  ((double)timeEnd-(double)timeBegin)/((double)CLOCKS_PER_SEC);
 
-  //std::cout << "SmartDSS: CPU Time ellapsed = " << CPUTime << " - Time/test = = " << (long double) CPUTime/(nbtries*5*10) << std::endl;
+  //std::cout << "SmartDSS: CPU Time elapsed = " << CPUTime << " - Time/test = = " << (long double) CPUTime/(nbtries*5*10) << std::endl;
 
   std::cout << modx  << " " << (long double) CPUTime/(nbtries*5*10) << std::endl;
 

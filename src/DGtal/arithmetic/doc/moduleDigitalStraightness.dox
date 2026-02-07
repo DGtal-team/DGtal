@@ -38,7 +38,7 @@ It is well known that this set of digital points is a simple
 
 The \b slope of the DSL is \f$ a/b \f$, while \f$ \mu \f$ is the \b
 shift at origin. The \e remainder of the DSL is the value \f$ ax-by
-\f$. \b Upper \b leaning \b points have remainer \f$ \mu \f$ while \b
+\f$. \b Upper \b leaning \b points have remainder \f$ \mu \f$ while \b
 lower \b leaning \b points have value \f$ \mu + |a| +|b|-1 \f$.
 
 

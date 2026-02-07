@@ -102,7 +102,7 @@ int main( int argc, char* argv[] )
   hull.getFacetVertices( facets );
   // Finite facets precede infinite facets => keep only finite facets
   facets.resize( hull.nbFiniteFacets() );
-  // To viusalize the result, we build a surface mesh in R3 lying in
+  // To visualize the result, we build a surface mesh in R3 lying in
   // the plane z=0 and composed of the Delaunay cells.
   typedef DGtal::SpaceND< 3, int > Z3;
   std::vector< Z3::RealPoint > positions3d;

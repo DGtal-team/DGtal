@@ -73,7 +73,7 @@ bool testCountedPtrOrPtrMemory()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  trace.beginBlock ( "Testing CountedPtrOrPtr memory managment..." );
+  trace.beginBlock ( "Testing CountedPtrOrPtr memory management..." );
 
   trace.beginBlock ( "An invalid CountedPtrOrPtr does not create any instance." );
   {

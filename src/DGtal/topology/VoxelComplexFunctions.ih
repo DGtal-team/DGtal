@@ -55,7 +55,7 @@ asymetricThinningScheme(
     > Skel,
     bool verbose )
 {
-  if(verbose) trace.beginBlock("Asymetric Thinning Scheme");
+  if(verbose) trace.beginBlock("Asymmetric Thinning Scheme");
 
   using Cell = typename TComplex::Cell;
   using Data = typename TComplex::Data;
@@ -244,7 +244,7 @@ persistenceAsymetricThinningScheme(
     X = Y;
 
     /*** Modify K (the set of voxels to conserve) ***/
-    // Insert in K (inmutable set) only if the NEW critical cells of this generation (Y-K) are:
+    // Insert in K (immutable set) only if the NEW critical cells of this generation (Y-K) are:
     // a) Part of the Skeleton (Skel) user wants to preserve.
     // b) persistent enough.
 

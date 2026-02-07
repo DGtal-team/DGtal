@@ -87,7 +87,7 @@ TEST_CASE( "Checking CInteger models")
   trace.endBlock();
 
   trace.beginBlock ( "Checking NumberTraits on  built-in OS dependent types ..." );
-  trace.warning() << "If digits() returns 0, the type is not considered in specilizations"<<endl;
+  trace.warning() << "If digits() returns 0, the type is not considered in specializations"<<endl;
   trace.info() << "  - digits int = " << NumberTraits<int>::digits()<< std::endl;
   trace.info() << "  - digits unsigned int = " << NumberTraits<unsigned int>::digits()<< std::endl;
   trace.info() << "  - digits long int = " << NumberTraits<long int>::digits()<< std::endl;

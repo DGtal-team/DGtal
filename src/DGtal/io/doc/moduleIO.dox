@@ -246,7 +246,7 @@ Version: 3
 .
 @endcode
 
- - a binary chunck with linearized image values. In "Version 2" of Vol and Longvol, the binary chunck is simply a raw
+ - a binary chunk with linearized image values. In "Version 2" of Vol and Longvol, the binary chunk is simply a raw
 export of image values (little endian for Longvol entries). In
 "Version 3", the binary values are compressed using zlib (default
 version when using the DGtal reader and writer).
@@ -286,9 +286,9 @@ You can also export a Mesh object by using the operator
 
 \subsection svoio Sparse Voxel Octree and Sparse Voxel Direct Acyclic Graphs
 
-The static classes \c SVOReader and \c SVOWriter allow to import and export \c DigitalSetByOctree from and to files. In order to maintain an efficient data representation, DGtal uses a custom file format described below. Both SVO and SVDag are stored using the same file fomat.
+The static classes \c SVOReader and \c SVOWriter allow to import and export \c DigitalSetByOctree from and to files. In order to maintain an efficient data representation, DGtal uses a custom file format described below. Both SVO and SVDag are stored using the same file format.
 
-Theses classes can be used as follows to import or export SVO:
+These classes can be used as follows to import or export SVO:
 
 @code
     // Writes the Octree
@@ -303,7 +303,7 @@ The reader allows an octree to be read in a different space of the same dimensio
 
 The SVO file format is comprised of a header in ascii, and data in binary.
 
-The header is written in ascii. Each line represents a different fields, whose name is space and case sensitive and for which the value is separated by a ':'. The value is written in ASCII format, and surrounding whitespace (spaces, tabs, carriage returns) is trimmed. There is no specified order, but we recommand following the order bellow. The header ends with a single '.' on a separated line. The expected fields are:
+The header is written in ascii. Each line represents a different fields, whose name is space and case sensitive and for which the value is separated by a ':'. The value is written in ASCII format, and surrounding whitespace (spaces, tabs, carriage returns) is trimmed. There is no specified order, but we recommend following the order below. The header ends with a single '.' on a separated line. The expected fields are:
 - 'Format': always 'SVO'.
 - 'Version': unsigned integer, for now only '1' is supported.
 - 'Size': unsigned integer representing the number of voxels stored.
@@ -327,7 +327,7 @@ Compression: 1
 .
 @endcode
 
-The data is always written in binary in little-endian order (regardless of host system). When compressed, data is compressed using zlib algorithm with the best compression level (9). The data is layed out as follows:
+The data is always written in binary in little-endian order (regardless of host system). When compressed, data is compressed using zlib algorithm with the best compression level (9). The data is laid out as follows:
 - 8 bytes: 'SizeSize', the number of bytes array length occupies in memory
 - 8 bytes: 'PtrSize', the number of bytes array indices occupies in memory
 - [SizeSize] bytes: 'Depth', the depth of the underlying tree.

@@ -125,13 +125,13 @@ shape and the ball centered on the border of the shape using
 IntegralInvariantCovarianceEstimator. This offers us the possibility to extract
 many differential quantities as: <b>3d Gaussian curvature</b>, <b>first</b> and
 <b>second principal curvatures</b>, as well <b>first and second principal
-curvature directions</b>, <b>normal vector</b> or <b>tangeant vector</b>
+curvature directions</b>, <b>normal vector</b> or <b>tangent vector</b>
 (functors::IIGaussianCurvature3DFunctor, etc. See
 file DGtal/geometry/surfaces/estimation/IIGeometricFunctors.h or namespace \link DGtal::functors functors\endlink for the entire list).
 
 \subsubsection subsubsectFunctors Integral Invariant functors
 
-All functors defined in IIGeometricFunctors.h have the same inititialization process: you
+All functors defined in IIGeometricFunctors.h have the same initialization process: you
 need to use the default constructor, and initialize them with <tt>init()</tt>
 method. They will ask for a grid step (@f$ h @f$) and the <b>Euclidean radius</b>
 of the kernel ball (@f$ r @f$).

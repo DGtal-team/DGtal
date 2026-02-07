@@ -354,7 +354,7 @@ It is completely similar with the previous example, just replace the kernel by D
 
 
 A number of public data is stored in object QuickHull and is
-meaningfull after a convex hull computation:
+meaningful after a convex hull computation:
 
 - QuickHull::input2comp the surjective mapping giving for each input point index its index in the point range processed by quick hull
 

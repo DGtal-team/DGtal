@@ -49,7 +49,7 @@ typedef Shortcuts<Z2i::KSpace> SH2;
 typedef Shortcuts<Z3i::KSpace> SH3;
 \endcode
 
-The general philosophy of the shorcut module is to choose reasonnable
+The general philosophy of the shortcut module is to choose reasonable
 data structures in order to minimize the number of lines to build
 frequent digital geometry code. For instance, the following lines
 build a shape that represents the digitization of an ellipsoid.
@@ -158,7 +158,7 @@ This example requires ShortcutsGeometry. It shows how tu use the integral invari
 <tr><td>
 \image html al-H-II-blender-small.png "Rendering of Al Capone with estimated mean curvatures (blue is negative, white zero, red is positive, scale is [-0.5, 0.5]). "
 <td></td>
-\image html al-G-II-blender-small.png "Rendering of Al Capone with estimated Gaus curvatures (blue is negative, white zero, red is positive, scale is [-0.25, 0.25]). "
+\image html al-G-II-blender-small.png "Rendering of Al Capone with estimated Gauss curvatures (blue is negative, white zero, red is positive, scale is [-0.25, 0.25]). "
 </td></tr>
 </table>
 
@@ -423,7 +423,7 @@ Shortcuts::Point is Z3i::KSpace::Point.
   ImplicitShape3D as a predicate Point -> bool (isInside), and adds some
   services: getLowerBound, getUpperBound, embed, round, getDomain,
   gridSteps, resolution. Note that pixels/voxels are not stored
-  explicitly, so the resolution may be arbirary high.
+  explicitly, so the resolution may be arbitrary high.
 
 - Shortcuts::BinaryImage: represents a black and white image as an array of
   bits. It is generally a faster representation of a predicate Point
@@ -463,7 +463,7 @@ Shortcuts::Point is Z3i::KSpace::Point.
 @subsection dgtal_shortcuts_ssec3_3 Main methods
 
 -# General methods
-  - Shortcuts::defaultParameters: returns the set of all shorcut parameters.
+  - Shortcuts::defaultParameters: returns the set of all shortcut parameters.
 
 -# Shortcuts::ImplicitShape3D methods
   - Shortcuts::getPolynomialList: returns the list of polynomial shapes predefined for implicit shapes

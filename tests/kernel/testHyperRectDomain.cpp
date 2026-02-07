@@ -137,8 +137,8 @@ TEST_CASE( "Simple HyperRectDomain", "[domain][4D]" )
   REQUIRE( myHyperRectDomainBis.size() == 20 );
   trace.endBlock();
 
-  // Test Assignement
-  trace.beginBlock("Test Assignement");
+  // Test Assignment
+  trace.beginBlock("Test Assignment");
   HyperRectDomain<Space4Type> myHyperRectDomainTer;
   myHyperRectDomainTer = myHyperRectDomain;
   trace.info() << "Domain = " << myHyperRectDomainTer << std::endl;
@@ -343,7 +343,7 @@ TEST_CASE( "Iterator 4D BigInteger", "[iterator][4D][BigInteger]" )
   trace.endBlock();
 }
 
-TEST_CASE( "STL compatiblity", "[iterator][4D][STL]" )
+TEST_CASE( "STL compatibility", "[iterator][4D][STL]" )
 {
   typedef SpaceND<4> TSpace4D;
   typedef TSpace4D::Point Point4D;

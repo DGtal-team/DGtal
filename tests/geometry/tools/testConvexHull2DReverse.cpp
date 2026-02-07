@@ -51,7 +51,7 @@ TEST_CASE( "Testing MelkmanConvexHull insertion from front and back using revers
   typedef InHalfPlaneBySimple3x3Matrix<Point, double> Functor;
   DGtal::MelkmanConvexHull<Point, Functor> ch;
 
-  // sequence of points splited from test testConvexHull2D_Thickness:
+  // sequence of points split from test testConvexHull2D_Thickness:
   //  using  reverse() should produce the same convex hull.
 
   ch.add(Point(102.2, 50.2));

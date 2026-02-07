@@ -224,7 +224,7 @@ Putting everything together gives some \f$ O(N \log N +
 k(v+N+\log(D))\log^2(D)) \f$. Neglecting \a v gives \f$ O( N (\log N +
 k \log^3 D ) ) \f$.
 
-We have runned the following benchmark to estimate the average speed
+We have run the following benchmark to estimate the average speed
 of COBA algorithm. For each experiment, 1000 naive planes were
 randomly chosen. Then, for an input diameter \a D, \a N points are
 randomly chosen in the parallelepiped D x D x D, such that they belong
@@ -282,12 +282,12 @@ are favored axes when iterating (vertices are not randomly picked up),
 this technique has indeed the drawback of favoring "slice planes",
 which are not very useful.
 
-@note \b Exercice 1. Randomize the greedy plane recognition. The
+@note \b Exercise 1. Randomize the greedy plane recognition. The
 simplest approach is first to put all vertices into a vector, then
 suffle it with STL algorithms. And then iterate over this shuffled
 set.
 
-@note \b Exercice 2. Enhance the polyhedrization by selecting first
+@note \b Exercise 2. Enhance the polyhedrization by selecting first
 the vertices that induces the biggest planes. This is much slower than
 above, but will give nicer results. For each vertex, computes its best
 plane by breadth-first traversal. Stores the obtained size (or better
@@ -295,7 +295,7 @@ moments). Do that for each vertex independently. Put them in a
 priority queue, the first to be popped should be the ones with the
 biggest size. The remaining of the algorithm is unchanged.
 
-\section moduleCOBANaivePlaneRecognition_sec6 What if you do not know the main axis beforehands ?
+\section moduleCOBANaivePlaneRecognition_sec6 What if you do not know the main axis beforehand ?
 
 In this case, you should use the class COBAGenericNaivePlaneComputer. You use
 it similarly to COBANaivePlaneComputer, but you do not need to specify a main

@@ -326,7 +326,7 @@ bool testConvexHullCompThickness()
   trace.info() << "Expected Euclidean Thickness  = " << awaitedThE << std::endl;
   aBoard.saveEPS("testConvexHull2D_Thickness.eps");
 
-  // testing tickness after changing begin points.
+  // testing thickness after changing begin points.
    std::vector<Z2i::RealPoint> hull {
     {804.56832227024199, -68.471176393526704},
     {804.96020257363512, -69.494933490400683},

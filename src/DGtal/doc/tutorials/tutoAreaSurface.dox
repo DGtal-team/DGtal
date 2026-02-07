@@ -95,7 +95,7 @@ the II estimator on all the digital surface:
 - Evaluate the estimator on all surfel of the border of the shape
 - Compute for all surfel the dot product of the estimated euclidean normal vector (result of the estimator) and the surfel normal vector (see below)
 
-To extract the surfel normal vector, we need to use some method from the KSpace (see KhalimskySpaceND for all methods avalaible):
+To extract the surfel normal vector, we need to use some method from the KSpace (see KhalimskySpaceND for all methods available):
 
 - sOrthDir( surfel ) returns the orthogonal direction of a surfel.
 - sDirectIncident( surfel, orthDir ) returns the direct incident surfel of a given surfel and a direction

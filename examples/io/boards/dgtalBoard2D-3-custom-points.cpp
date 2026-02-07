@@ -34,7 +34,7 @@
  * elements. It is a matter of creating a custom style class which
  * gives in its method \c setStyle the specific style
  * parameters. Then, you attach this style to your drawable elements
- * with an instance of CustomStyle outputed in the Board2D
+ * with an instance of CustomStyle outputted in the Board2D
  * stream.
  *   \image html  dgtalboard-3-custom-points.png  "visualization of resulting export."
  */

@@ -30,7 +30,7 @@ twice differentiable function acting on \f$\partial M\f$) defined by
 \f[ \Delta u = \nabla^2 u = \nabla \cdot \nabla u, \f] is called the Laplace--Beltrami
 operator.
 @note The sign of the operator is arbitrary, and one may found in the
-litterature the alternative definition \f$-\nabla \cdot \nabla u\f$ for
+literature the alternative definition \f$-\nabla \cdot \nabla u\f$ for
 \f$\Delta u\f$.
 
 For example, in \f$ \mathbb{R}^d \f$, the operator is the sum of the
@@ -156,7 +156,7 @@ template parameter. We use here the dual operator. The function takes as input
 the grid size \f$ h \f$, the time parameter for the convolution \f$ t_h \f$ and
 a variance multiplier for the integration \f$ K \f$.
 
-@note As mentionned earlier, the time parameter is generaly set to \f$ t_h = k
+@note As mentioned earlier, the time parameter is generally set to \f$ t_h = k
 \cdot h^\alpha \f$ where \f$k\f$ is a constant depending on the input shape
 which roughly corresponds to the size of the Gaussian kernel in the euclidean
 space (here \f$k = 0.1\f$ for the unit sphere).

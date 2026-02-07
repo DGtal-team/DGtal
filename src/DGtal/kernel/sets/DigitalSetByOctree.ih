@@ -284,7 +284,7 @@ namespace DGtal
   template<class Space>
   void DigitalSetByOctree<Space>::convertToDAG()
   {
-    std::vector<size_t> correspondances;
+    std::vector<size_t> correspondences;
     for (CellIndex i = myNodes.size() - 1; i > 0; --i)
     {
       std::vector<Node> newNodes;
@@ -294,11 +294,11 @@ namespace DGtal
       for (CellIndex j = 0; j < myNodes[i].size(); ++j) {
         std::array<CellIndex, CELL_COUNT> signature = {};
 
-        if (correspondances.size() != 0) // Mostly leaves
+        if (correspondences.size() != 0) // Mostly leaves
         {
           for (CellIndex k = 0; k < CELL_COUNT; ++k) {
             if (myNodes[i][j].children[k] != INVALID_IDX)
-              myNodes[i][j].children[k] = correspondances[myNodes[i][j].children[k]];
+              myNodes[i][j].children[k] = correspondences[myNodes[i][j].children[k]];
 
             signature[k] = myNodes[i][j].children[k];
           }
@@ -322,15 +322,15 @@ namespace DGtal
        }
       }
       myNodes[i] = newNodes;
-      correspondances = newCorrespondances;
+      correspondences = newCorrespondances;
     }
     // New pointers for root lvl:
-    if (correspondances.size() != 0)
+    if (correspondences.size() != 0)
     {
       for (CellIndex k = 0; k < CELL_COUNT; ++k)
       {
         if (myNodes[0][0].children[k] != INVALID_IDX)
-          myNodes[0][0].children[k] = correspondances[myNodes[0][0].children[k]];
+          myNodes[0][0].children[k] = correspondences[myNodes[0][0].children[k]];
       }
     }
 

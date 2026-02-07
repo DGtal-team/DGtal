@@ -212,7 +212,7 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::compute3DTriangle
       PHS.emplace_back(  w, w.dot( c ) );
     }
   else
-    { // Compute additionnal constraints on edges so that the
+    { // Compute additional constraints on edges so that the
       // Minkowski sum with axis-aligned edges is valid.
       for ( Integer d = -1; d <= 1; d += 2 )
 	for ( Dimension k = 0; k < dim; k++ )

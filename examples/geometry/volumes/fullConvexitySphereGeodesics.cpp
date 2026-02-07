@@ -72,7 +72,7 @@ It computes all shortest paths to the lowest point of the digitized
 sphere, outputs the maximal distance (so less than pi), and checks
 that the furthest point is indeed antipodal to the source point. Two
 OBJ files named "sphere1-geodesics.obj "and
-"sphere1-geodesics-iso.obj" are also outputed, and you may use them to
+"sphere1-geodesics-iso.obj" are also outputted, and you may use them to
 render the result like below.
 
 <table>

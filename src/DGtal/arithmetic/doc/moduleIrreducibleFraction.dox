@@ -195,7 +195,7 @@ We wish to have amortized O(1) complexity for these operations. Therefore, we ta
 
 This approach is implemented in the class SternBrocot::Fraction (see also class SternBrocot).
 We construct on demand parts of the Stern-Brocot tree structure.
-For instance, if one wish to manipule fraction 8/3, the following
+For instance, if one wish to manipulate fraction 8/3, the following
 nodes of the tree are computed once and for all: 0/1, 1/0, 1/1, 2/1,
 1/2, 3/1, 1/3, 5/2, 2/5, 8/3, 3/8.
 
