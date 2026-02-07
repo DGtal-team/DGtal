@@ -27,8 +27,8 @@
  */
 
 /**
-   This example outputs a greedy segmentation of an open and 6-connected 3d digital curve into DSSs. 
-   
+   This example outputs a greedy segmentation of an open and 6-connected 3d digital curve into DSSs.
+
 @verbatim
 $ ./examples/geometry/curves/exampleArithDSS3d
 @endverbatim
@@ -71,18 +71,18 @@ int main()
 
   typedef PointVector<3,int> Point;
   typedef std::vector<Point>::iterator Iterator;
-  typedef StandardDSS6Computer<Iterator,int,4> SegmentComputer;  
+  typedef StandardDSS6Computer<Iterator,int,4> SegmentComputer;
   typedef GreedySegmentation<SegmentComputer> Decomposition;
 
-  string inputFilename = examplesPath + "samples/sinus.dat"; 
-  vector<Point> sequence = PointListReader<Point>::getPointsFromFile(inputFilename); 
+  string inputFilename = examplesPath + "samples/sinus.dat";
+  vector<Point> sequence = PointListReader<Point>::getPointsFromFile(inputFilename);
 
 
   SegmentComputer algo;
   Decomposition theDecomposition(sequence.begin(), sequence.end(), algo);
-  
+
   ///////////////////////////////////
-  //display  
+  //display
   Point p;
 
 #ifdef DGTAL_WITH_POLYSCOPE_VIEWER
@@ -98,17 +98,16 @@ int main()
     SegmentComputer currentSegmentComputer(*i);
      #ifdef DGTAL_WITH_POLYSCOPE_VIEWER
        viewer.drawAsBalls();
-       viewer << currentSegmentComputer;  
+       viewer << currentSegmentComputer;
        viewer.defaultStyle();
-       viewer << currentSegmentComputer;  
+       viewer << currentSegmentComputer;
     #endif
     c++;
-  } 
-  
-  
+  }
+
+
   #ifdef DGTAL_WITH_POLYSCOPE_VIEWER
     viewer.show();
   #endif
-    
-}
 
+}

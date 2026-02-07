@@ -61,30 +61,30 @@ namespace DGtal
   /**
    * @brief Aim:
    * On-line recognition of a digital straight segment (DSS)
-   * defined as a sequence of connected grid edges such that 
-   * there is at least one straight line that separates the centers 
-   * of the two incident pixels of each grid edge. 
+   * defined as a sequence of connected grid edges such that
+   * there is at least one straight line that separates the centers
+   * of the two incident pixels of each grid edge.
    *
-   * @note On either side, the pixels centers are included. 
+   * @note On either side, the pixels centers are included.
    * The class of segments considered here is thus larger
-   * than the one considered in ArithmeticalDSSComputer 
-   * (the equivalence would be true if the pixels centers 
+   * than the one considered in ArithmeticalDSSComputer
+   * (the equivalence would be true if the pixels centers
    * were included on one side but excluded on the other side)
    *
    * The algorithm computes and maintains the preimage
    * of the whole set of separating straight lines in linear time
-   * using Preimage2D and the algorithm of O'Rourke (1981). 
+   * using Preimage2D and the algorithm of O'Rourke (1981).
    *
    * @note Joseph O'Rourke, An on-line algorithm for fitting straight lines between data ranges,
-  Communications of the ACM, Volume 24, Issue 9, September 1981, 574--578. 
+  Communications of the ACM, Volume 24, Issue 9, September 1981, 574--578.
    *
-   * This class is a model of the concept CBidirectionalSegmentComputer. 
+   * This class is a model of the concept CBidirectionalSegmentComputer.
    *
    * It should be used with the Curve object (defined in StdDefs.h)
    * and its IncidentPointsRange as follows:
    * @snippet geometry/curves/exampleStabbingLineComputer.cpp StabbingLineComputerUsage
    *
-   * @tparam TConstIterator ConstIterator type on STL pairs of 2D points 
+   * @tparam TConstIterator ConstIterator type on STL pairs of 2D points
   *
    * @see testStabbingLineComputer.cpp  exampleStabbingLineComputer.cpp  Preimage2D ArithmeticalDSSComputer
    */
@@ -94,13 +94,13 @@ namespace DGtal
 
   public:
 
-    //requiered types
+    //required types
     typedef TConstIterator ConstIterator;
-    typedef StabbingLineComputer<ConstIterator> Self; 
+    typedef StabbingLineComputer<ConstIterator> Self;
     typedef StabbingLineComputer<ReverseIterator<ConstIterator> > Reverse;
 
     //point type
-    typedef typename IteratorCirculatorTraits<ConstIterator>::Value Pair; 
+    typedef typename IteratorCirculatorTraits<ConstIterator>::Value Pair;
     typedef typename Pair::first_type Point;
 
     //Pair::first_type and Pair::second_type should be the same type;
@@ -109,9 +109,9 @@ namespace DGtal
                            ::value ) );
 
     //preimage
-    typedef StraightLineFrom2Points<Point> StraightLine; 
-    typedef Preimage2D<StraightLine> Preimage; 
-    typedef CowPtr<Preimage> PreimagePtr; 
+    typedef StraightLineFrom2Points<Point> StraightLine;
+    typedef Preimage2D<StraightLine> Preimage;
+    typedef CowPtr<Preimage> PreimagePtr;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -153,16 +153,16 @@ namespace DGtal
     */
     bool operator!=( const Self & other) const;
 
-    /** 
-     * @return a default-constructed instance of Self 
-     */    
+    /**
+     * @return a default-constructed instance of Self
+     */
     Self getSelf() const;
 
     /**
      * @return a default-constructed instance of Reverse.
      */
-     Reverse getReverse() const; 
-    
+     Reverse getReverse() const;
+
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -208,7 +208,7 @@ namespace DGtal
     /**
      * @return the preimage
      */
-    
+
     PreimagePtr getPreimage() const;
 
     /**
@@ -223,9 +223,9 @@ namespace DGtal
      * @param gamma  (returned) intercept
      */
     void getParameters(double& alpha, double& beta, double& gamma) const;
-    
+
     /**
-     * Projects the point ( @a x , @a y ) onto the 
+     * Projects the point ( @a x , @a y ) onto the
      * straight line of parameters ( @a alpha , @a beta , @a gamma )
      * @param x  (returned) x-coordinate of the point
      * @param y  (returned) y-coordinate of the point
@@ -233,7 +233,7 @@ namespace DGtal
      * @param beta  y-component of the direction vector
      * @param gamma  intercept
      */
-    void projects(double& x, double& y, 
+    void projects(double& x, double& y,
                 const double& alpha, const double& beta, const double& gamma) const;
 
     // ----------------------- growth operations --------------------------------------
@@ -332,15 +332,15 @@ namespace DGtal
      * @return the dyn. alloc. default style for this object.
      */
     //DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
-    
+
     /**
      * @return the style name used for drawing this object.
      */
     std::string className() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     /**
      * segment begin iterator.
@@ -353,17 +353,17 @@ namespace DGtal
     /**
      * Pointer to the preimage.
      */
-    PreimagePtr myPreimagePtr; 
+    PreimagePtr myPreimagePtr;
     /**
-     * Flag equal to 'true' if the segment contains at least two pairs 
-     * (the orientation is known) and 'false' otherwise. 
+     * Flag equal to 'true' if the segment contains at least two pairs
+     * (the orientation is known) and 'false' otherwise.
      */
-    bool myFlagIsInit; 
+    bool myFlagIsInit;
     /**
-     * Flag equal to 'true' if the pairs of points are clockwise oriented, 
+     * Flag equal to 'true' if the pairs of points are clockwise oriented,
      * 'false' otherwise.
      */
-    bool myFlagIsCW; 
+    bool myFlagIsCW;
 
     // ------------------------- Hidden services ------------------------------
   protected:
@@ -371,12 +371,12 @@ namespace DGtal
 
   private:
 
-    
+
 
     // ------------------------- Internals ------------------------------------
   private:
-    
-    // ------------------------- Private Datas --------------------------------
+
+    // ------------------------- Private Data --------------------------------
   private:
 
   }; // end of class StabbingLineComputer

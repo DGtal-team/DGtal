@@ -48,9 +48,9 @@ bool testAngleLinearMinimizer()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing AngleLinearMinimizer ." );
-   
+
   AngleLinearMinimizer alm;
   alm.init(10);
   alm.setIsCurveOpen(true);
@@ -65,7 +65,7 @@ bool testAngleLinearMinimizer()
     vi.oldValue = val;
     vi.min = val + valDecMin[i];
     vi.max = val + valDecMax[i];
-    vi.distToNext = 4.0;    
+    vi.distToNext = 4.0;
     alm.rw(i)=vi;
   }
   //! [optimization]
@@ -73,25 +73,25 @@ bool testAngleLinearMinimizer()
   double aPrecision=0.00001;
   while(delta >aPrecision){
     delta= alm.optimize();
-    cerr << "sum of displacements " << delta << endl; 
+    cerr << "sum of displacements " << delta << endl;
   }
   //! [optimization]
   cout << "# index distPos valInit valOpt valMin valMax  " << endl;
   double currentPos=0.0;
   cout << -1 << " "<< -4 << " " << 9+valDec[9]  <<  " " << alm.ro(9).value
        << " " << alm.ro(9).min << " " << alm.ro(9).max << endl ;
-      
+
   for(unsigned int i=0; i<10; i++){
     AngleLinearMinimizer::ValueInfo vi= alm.ro(i);
     cout << i << " "<< currentPos << " " << i+ valDec[i] <<  " " << vi.value
 	 << " " << vi.min << " " << vi.max << endl ;
-    currentPos+=vi.distToNext;    
+    currentPos+=vi.distToNext;
   }
-  nbok += (abs(1.59999-alm.ro(0).value)<0.00001) && (abs(1.6-alm.ro(1).value)<0.00001) ? 1 : 0; 
+  nbok += (abs(1.59999-alm.ro(0).value)<0.00001) && (abs(1.6-alm.ro(1).value)<0.00001) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
- 
+
   Board2D aBoard;
   aBoard << alm;
   aBoard.saveEPS("tmp.eps");

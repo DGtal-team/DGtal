@@ -27,7 +27,7 @@ public:
      * ## Tables
      *
      * The table content is scrollable if the table gets too wide.
-     * 
+     *
      * | first_column | second_column | third_column | fourth_column | fifth_column | sixth_column | seventh_column | eighth_column | ninth_column |
      * |--------------|---------------|--------------|---------------|--------------|--------------|----------------|---------------|--------------|
      * | 1            | 2             | 3            | 4             | 5            | 6            | 7              | 8             | 9            |
@@ -39,7 +39,7 @@ public:
      * | ![doxygen](testimage.png) | ← the image should not be inverted in dark-mode |
      *
      * Complex [Doxygen tables](https://www.doxygen.nl/manual/tables.html) are also supported as seen in @ref multi_row "this example":
-     * 
+     *
      * <table>
      * <caption id="multi_row">Complex table</caption>
      * <tr><th>Column 1                      <th>Column 2        <th>Column 3
@@ -61,7 +61,7 @@ public:
      *     <li>Item 2
      *   </ul>
      * </table>
-     * 
+     *
      * A table can be centered with the `<center>` html tag:
      * <center>
      * | Foo         | Bar            | Baz                       | FooBar      |
@@ -91,10 +91,10 @@ public:
      *
      * ## Quotes
      *
-     * > Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt 
-     * > ut labore et dolore magna aliqua. Vitae proin sagittis nisl rhoncus mattis rhoncus urna neque viverra. 
-     * > Velit sed ullamcorper morbi tincidunt ornare. 
-     * > 
+     * > Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
+     * > ut labore et dolore magna aliqua. Vitae proin sagittis nisl rhoncus mattis rhoncus urna neque viverra.
+     * > Velit sed ullamcorper morbi tincidunt ornare.
+     * >
      * > Lorem ipsum dolor sit amet consectetur adipiscing elit duis.
      * *- jothepro*
      *
@@ -153,4 +153,3 @@ public:
 };
 
 }
-

@@ -1,17 +1,17 @@
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  */
 namespace DGtal {
 
 /*!
-   
+
 @page moduleDigitalStraightness  Patterns, digital straight lines and subsegments
 
 @writers Jacques-Olivier Lachaud
 
 Part of the \ref packageArithmetic.
-  
+
 This part of the manual describes digital straightness from a
 combinatoric and arithmetic point of view.  It tells you how to create
 patterns, digital straight lines in the first quadrant, and how to
@@ -38,7 +38,7 @@ It is well known that this set of digital points is a simple
 
 The \b slope of the DSL is \f$ a/b \f$, while \f$ \mu \f$ is the \b
 shift at origin. The \e remainder of the DSL is the value \f$ ax-by
-\f$. \b Upper \b leaning \b points have remainer \f$ \mu \f$ while \b
+\f$. \b Upper \b leaning \b points have remainder \f$ \mu \f$ while \b
 lower \b leaning \b points have value \f$ \mu + |a| +|b|-1 \f$.
 
 
@@ -72,7 +72,7 @@ Pattern::rE and Pattern::rEs.
 @snippet arithmetic/pattern.cpp pattern-process
 
 @verbatim
-$ ./examples/arithmetic/pattern 11 17 
+$ ./examples/arithmetic/pattern 11 17
 0010010100101001010010100101
 $ ./examples/arithmetic/pattern 11 17 SUB
 ((00|1)|(0|0101)(0|0101)(0|0101)(0|0101)(0|0101))
@@ -92,7 +92,7 @@ E(z_{2k-1}), E(z_{2k})=E(z_{2k-2}) E(z_{2k-1})^{u_{2k}}. \f$
 Let us look again at the pattern of 11/17. First, the convergents are:
 
 @verbatim
-$ ./examples/arithmetic/convergents 11 17 
+$ ./examples/arithmetic/convergents 11 17
 z = [0,1,1,1,5]
 z_0 = 0 / 1
 z_1 = 1 / 1
@@ -119,8 +119,8 @@ of class Pattern).
 
 \subsection dgtal_digstraighness_sec3_1 Creating a digital straight line
 
-For now, you may only instantiate digital straight lines whose 
-slope is in the first quadrant. If \f$ (a,b,\mu) \f$ are the 
+For now, you may only instantiate digital straight lines whose
+slope is in the first quadrant. If \f$ (a,b,\mu) \f$ are the
 characteristics of the line, then \f$ a \ge 0, b \ge 0 \f$.
 
 @code
@@ -142,17 +142,17 @@ indeed a model of concepts::CPointPredicate.
 The \e Point type is PointVector<2,Fraction::Integer>.
 
 You may visit the DSL from left to right with iterators
-of type StandardDSLQ0::ConstIterator. You just precise the 
+of type StandardDSLQ0::ConstIterator. You just precise the
 starting point with StandardDSLQ0::begin and the point after
 the last with StandardDSLQ0::end.
 
-You can compare if a point precedes another point (to the left) 
+You can compare if a point precedes another point (to the left)
 on the DSL with methods StandardDSLQ0::before and StandardDSLQ0::beforeOrEqual.
 
 \subsection dgtal_digstraighness_sec3_3 Getting several characteristics
 
 You have access to the following information:
-- characteristics \f$(a,b,\mu)\f$ with StandardDSLQ0::a, StandardDSLQ0::b, 
+- characteristics \f$(a,b,\mu)\f$ with StandardDSLQ0::a, StandardDSLQ0::b,
   StandardDSLQ0::mu
 - value \f$\mu+a+b-1\f$ with StandardDSLQ0::mup
 - slope as irreducible fraction with StandardDSLQ0::slope
@@ -164,7 +164,7 @@ You have access to the following information:
 
 \subsection dgtal_digstraighness_sec3_4 Getting points on a DSL
 
-For convenience, you have the following methods to determine points 
+For convenience, you have the following methods to determine points
 belonging to a DSL:
 - given an x-coordinate, find the point with lowest y-coordinate on the DSL with StandardDSLQ0::lowestY
 - given an x-coordinate, find the point with uppermost y-coordinate on the DSL with StandardDSLQ0::uppermostY
@@ -180,15 +180,15 @@ In fact, these algorithms return the DSL which covers [A,B] and whose
 characteristics are minimal.
 
 - method StandardDSLQ0::smartDSS, given this DSL, \e A and \e B, returns this
-  minimal DSL in time proportional to the sum of the quotients of 
+  minimal DSL in time proportional to the sum of the quotients of
   the output DSL.
 
 - method StandardDSLQ0::reversedSmartDSS, given this DSL, \e A and \e B, returns this
-  minimal DSL in time proportional to the difference of depth between the input and 
+  minimal DSL in time proportional to the difference of depth between the input and
   the output slope.
 
 You may have a look at the following programs to check these algorithms
-(the many variants come from the different choices for the algorithm 
+(the many variants come from the different choices for the algorithm
 and the fraction type):
 
 - testStandardDSLQ0-smartDSS-benchmark.cpp

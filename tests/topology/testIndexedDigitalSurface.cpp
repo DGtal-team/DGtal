@@ -106,7 +106,7 @@ SCENARIO( "IndexedDigitalSurface< DigitalSetBoundary > build tests", "[idxdsurf]
       REQUIRE( vertices.size() == 174 );
       REQUIRE( distances.size() == 174 );
       REQUIRE( distances.back() == 13 );
-    }      
+    }
   }
 }
 

@@ -22,5 +22,3 @@ set(DGTAL_EXAMPLES_POLYSCOPE_SRC
 foreach(FILE ${DGTAL_EXAMPLES_POLYSCOPE_SRC})
     DGtal_add_example(${FILE})
 endforeach()
-
-

@@ -34,7 +34,7 @@
    property that their points lies in the naive/standard plane defined
    by its vertices. It uses DigitalConvexity::relativeEnvelope for
    computations.
-   
+
 
  \example geometry/volumes/checkFullConvexityTheorems.cpp
  */
@@ -97,7 +97,7 @@ checkSkelStarCvxHFullConvexity( int width )
   typedef DGtal::KhalimskySpaceND< Space::dimension, Integer > KSpace;
   typedef DGtal::DigitalConvexity< KSpace > DConvexity;
   typedef typename KSpace::Point  Point;
-  
+
   // Generate a random polytope in the specified domain
   Point lo = Point::zero;
   Point hi = Point::diagonal( width );
@@ -202,8 +202,8 @@ checkProjectionFullConvexity( int width )
   for ( Dimension a = 0; a < Space::dimension; a++ )
     {
       ProjPoint plo, phi;
-      project( plo, lo, a ); 
-      project( phi, hi, a ); 
+      project( plo, lo, a );
+      project( phi, hi, a );
       ProjDConvexity pdconv( plo, phi );
       std::vector< ProjPoint > PE;
       projectRange( PE, E, a );
@@ -260,7 +260,7 @@ checkFullConvexityCharacterization( int width )
   int   n = Space::dimension + rand() % 17;
   makeRandomRange( X, n, width );
   auto  P  = dconv.makePolytope( X );
-  P.getPoints( Y );  
+  P.getPoints( Y );
   const bool cvx = dconv.is0Convex( Y );
   const bool fc = dconv.isFullyConvex( Y );
   bool  proj_fc = true;
@@ -270,8 +270,8 @@ checkFullConvexityCharacterization( int width )
   for ( Dimension a = 0; a < Space::dimension; a++ )
     {
       ProjPoint plo, phi;
-      project( plo, lo, a ); 
-      project( phi, hi, a ); 
+      project( plo, lo, a );
+      project( phi, hi, a );
       ProjDConvexity pdconv( plo, phi );
       std::vector< ProjPoint > PE;
       projectRange( PE, Y, a );

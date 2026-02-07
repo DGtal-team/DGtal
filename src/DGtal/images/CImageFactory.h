@@ -109,7 +109,7 @@ public:
     {
     }
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
 private:
     T myT; // do not require T to be default constructible.
     OutputImage * myOI;

@@ -31,7 +31,7 @@ digraph GMath {
 
     subgraph cluster_ext {
 	rank = same;
-        
+
 
         subgraph cluster_kernel {
                  style=filled;
@@ -68,9 +68,9 @@ digraph GMath {
                  label="std";
 
        }
-       
+
     }
-    
+
    subgraph cluster_math_cc {
 	rank = same;
 
@@ -121,7 +121,7 @@ digraph GMath {
         color=lightgrey;
         node [style=filled,color=white];
         label="Math (main concepts)";
-        
+
         CBinner [ label="CBinner" URL="\ref concepts::CBinner" ] ;
     }
 }
@@ -130,7 +130,7 @@ digraph GMath {
     CBinner -> boost_is_integral [label="use",style=dashed] ;
     CBinner -> boost_is_unsigned [label="use",style=dashed] ;
 
-    
+
 	subgraph cluster_models {
         	 style=filled;
 		 color="#ccffcc";
@@ -152,7 +152,7 @@ digraph GMath {
   SimpleMatrix -> CStaticMatrix;
   SimpleMatrix -> CDenseMatrix;
 
-        
+
 }
 @enddot
 

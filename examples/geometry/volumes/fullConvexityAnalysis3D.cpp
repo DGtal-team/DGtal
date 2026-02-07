@@ -31,9 +31,9 @@
 /**
    This example shows how to analyze the local geometry of 3D digital
    sets with full convexity over cubical neighborhoods.
-   
+
    @see \ref dgtal_dconvexityapp_sec1
-   
+
    For instance, you may call it to analyse image Al.100.vol at scale 2 as
 
 \verbatim
@@ -46,7 +46,7 @@ fullConvexityAnalysis3D 2 ${DGTAL}/examples/samples/Al.100.vol
 \verbatim
 fullConvexityAnalysis3D 2 ${DGTAL}/examples/samples/Al.100.vol
 \endverbatim
- 
+
    The result is saved in 'geom-scale-cvx.obj'. You will obtain images
    like below, where green means convex, blue means concave, white is
    planar and red is atypical (see \cite lachaud_dgmm_2021 for details).
@@ -150,10 +150,10 @@ struct Analyzer {
           }
         else geom = it->second;
         result.push_back( geom );
-        i++; 
+        i++;
       }
     trace.info() << "nb_cvx=" << nb_cvx << " nb_ccvx=" << nb_ccvx << std::endl;
-    return result;    
+    return result;
   }
 
   template < typename ImagePtr >
@@ -257,7 +257,7 @@ int main( int argc, char** argv )
   int         M = argc > 4 ? atoi( argv[ 4 ] ) : 255;
 
   auto   params  = SH3::defaultParameters();
-  
+
   // Domain creation from two bounding points.
   trace.info() << "Building set or importing vol ... ";
   KSpace K;
@@ -291,7 +291,7 @@ int main( int argc, char** argv )
         }
       else
         surfel2idx[ s ] = it->second;
-    } 
+    }
   trace.info() << "Shape has " << points.size() << " interior boundary points"
                << std::endl;
   if ( N != 0 )
@@ -324,7 +324,7 @@ int main( int argc, char** argv )
                  << s;
           i++;
         }
-      viewer.show();  
+      viewer.show();
     }
   else
     {
@@ -337,7 +337,7 @@ int main( int argc, char** argv )
           Color( 50, 255, 255, 255), Color( 100, 255, 255, 255),
           Color( 150, 255, 255, 255), Color( 200, 255, 255, 255 ),
           Color( 255, 255, 255, 255 ) };
-      Color color_atypical( 255, 0, 0, 255 ); 
+      Color color_atypical( 255, 0, 0, 255 );
       Color colors_cvx[ 5 ] =
         { Color( 0, 255, 0, 255 ), Color( 50, 255, 50, 255 ),
           Color( 100, 255, 100, 255 ), Color( 150, 255, 150, 255 ),
@@ -369,10 +369,9 @@ int main( int argc, char** argv )
                  << s;
           i++;
         }
-      viewer.show();  
-    }      
+      viewer.show();
+    }
   return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-

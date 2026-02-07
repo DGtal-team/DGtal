@@ -62,13 +62,13 @@ namespace DGtal
    * This class just defines fundamental types associated to a digital
    * space in dimension n. For instance, it specifies the type of a
    * Point lying in this space, the type of a Vector or the type of subspace.
-   * 
+   *
    * @tparam dim static constant of type DGtal::Dimension that
    * specifies the static  dimension of the space.
    * @tparam TInteger specifies the integer number type to use as a
    * ring for the computations or as coordinates type. Integer must be
-   * a model of concepts::CInteger and concepts::CSignedInteger concepts.  
-   * 
+   * a model of concepts::CInteger and concepts::CSignedInteger concepts.
+   *
    * Example of use:
    *
 @code
@@ -80,7 +80,7 @@ namespace DGtal
 //"int" arithmetic ring.
 
 typedef SpaceND<4, int> Space4Int;
-   
+
 //We deduce the type to represent points in this space
 typedef Space4::Point Point4Int;
 
@@ -96,26 +96,26 @@ Point4Int a= {2, 3 , -5 , 6};
   {
     //Integer must be a model of the concept CInteger.
     BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
- 
+
   public:
     ///Arithmetic ring induced by (+,-,*) and Integer numbers.
     typedef TInteger Integer;
     ///Unsigned version of the Integers.
     typedef typename NumberTraits<Integer>::UnsignedVersion UnsignedInteger;
-    
+
     ///Type used to represent sizes in the digital space.
     typedef size_t Size;
-     
+
     ///Points in DGtal::SpaceND.
     typedef PointVector<dim,Integer> Point;
-  
+
     ///Vectors in DGtal::SpaceND.
     typedef PointVector<dim,Integer> Vector;
-    
+
     ///Point with "double" as  coordinate type with the same dimension
     ///as SpaceND.
     typedef PointVector<dim, double> RealPoint;
-    
+
     ///Point with "double" as  coordinate type with the same dimension
     ///as SpaceND.
     typedef PointVector<dim, double> RealVector;
@@ -127,7 +127,7 @@ Point4Int a= {2, 3 , -5 , 6};
 
     ///Copy of the type used for the  dimension.
     typedef DGtal::Dimension Dimension;
-    
+
     ///static constants to store the dimension.
     static const Dimension dimension=dim;
 
@@ -137,7 +137,7 @@ Point4Int a= {2, 3 , -5 , 6};
     {
       typedef SpaceND < dim - codimension, Integer > Type;
     };
-   
+
     ///Define the type of a subspace.
     template <Dimension subdimension>
     struct Subspace

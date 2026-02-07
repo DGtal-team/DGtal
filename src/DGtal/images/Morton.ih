@@ -34,7 +34,7 @@
 
 namespace DGtal
   {
-   
+
   template  <typename HashKey, typename Point >
   Morton<HashKey,Point>::Morton()
   {

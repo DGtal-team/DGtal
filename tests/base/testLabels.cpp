@@ -111,21 +111,21 @@ int main()
   MyLabels l;
   MyBitset v;
   ++nb; nbok += isEqual( v, l ) ? 1 : 0;
-  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
+  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl;
   insert( v, l, 15 );
   insert( v, l, 4 );
   ++nb; nbok += isEqual( v, l ) ? 1 : 0;
-  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
+  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl;
   insert( v, l, 62 );
   insert( v, l, 4 );
   insert( v, l, 78 );
   insert( v, l, 31 );
   insert( v, l, 32 );
   ++nb; nbok += isEqual( v, l ) ? 1 : 0;
-  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
+  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl;
   checkInsert( v, l, 40 );
   ++nb; nbok += isEqual( v, l ) ? 1 : 0;
-  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl; 
+  std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl;
   checkErase( v, l, 200 );
   ++nb; nbok += isEqual( v, l ) ? 1 : 0;
   std::cout << "(" << nbok << "/" << nb << ") l=" << l << std::endl;
@@ -140,28 +140,28 @@ int main()
   typedef Labels<32, DGtal::uint32_t> MySmallLabels;
   typedef MySmallLabels::ConstIterator SmallLabelsConstIterator;
   typedef std::bitset<32> MySmallBitset;
-  
+
   trace.beginBlock ( "Testing one word long Labels" );
   MySmallLabels ll;
   MySmallBitset vv;
 
   ++nb; nbok += isEqual( vv, ll ) ? 1 : 0;
-  std::cout << "(" << nbok << "/" << nb << ") small_l=" << ll << std::endl; 
+  std::cout << "(" << nbok << "/" << nb << ") small_l=" << ll << std::endl;
 
   insert( vv, ll, 15 );
   insert( vv, ll, 4 );
   insert( vv, ll, 31 );
   ++nb; nbok += isEqual( vv, ll ) ? 1 : 0;
-  std::cout << "(" << nbok << "/" << nb << ") small_l=" << ll << std::endl; 
+  std::cout << "(" << nbok << "/" << nb << ") small_l=" << ll << std::endl;
 
   erase( vv, ll, 15 );
   ++nb; nbok += isEqual( vv, ll ) ? 1 : 0;
-  std::cout << "(" << nbok << "/" << nb << ") small_l=" << ll << std::endl; 
-  
+  std::cout << "(" << nbok << "/" << nb << ") small_l=" << ll << std::endl;
+
   // Check insertion at index 0
   insert( vv, ll, 0 );
   ++nb; nbok += isEqual( vv, ll ) ? 1 : 0;
-  std::cout << "(" << nbok << "/" << nb << ") small_l=" << ll << std::endl; 
+  std::cout << "(" << nbok << "/" << nb << ") small_l=" << ll << std::endl;
 
   // Check bit count computation
   ++nb; nbok += ll.count() == 3 ? 1 : 0;
@@ -172,7 +172,7 @@ int main()
   for ( SmallLabelsConstIterator it = ll.begin(), it_end = ll.end(); it != it_end; ++cnt, ++it) {}
   ++nb; nbok += cnt == 3 ? 1 : 0;
   std::cout << "(" << nbok << "/" << nb << ") small_l bit count with iterators=" << cnt << std::endl;
-  
+
   trace.endBlock();
 
   return ( nb == nbok ) ? 0 : 1;

@@ -53,38 +53,38 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class Simple2x2DetComputer
   /**
-   * \brief Aim: Small class useful to compute the determinant of a 2x2 matrix 
-   * from its four coefficients, ie. 
-   \f$ 
+   * \brief Aim: Small class useful to compute the determinant of a 2x2 matrix
+   * from its four coefficients, ie.
+   \f$
    \begin{vmatrix}
    a & x \\
    b & y
-   \end{vmatrix} 
+   \end{vmatrix}
    \f$
    *
-   * This class, which is a model of C2x2DetComputer, 
+   * This class, which is a model of C2x2DetComputer,
    * just computes the quantity \f$ ay - bx \f$.
    *
-   * In order to use Simple2x2DetComputer in its incremental form: 
-   * - first, you must set the first column vector, 
-   * ie. \f$ a \f$ and \f$ b \f$, using method 
-   * Simple2x2DetComputer::init(). 
-   * - then, you must call method Simple2x2DetComputer::operator() on the 
-   * second column vector, ie. \f$ x \f$ and \f$ y \f$. 
+   * In order to use Simple2x2DetComputer in its incremental form:
+   * - first, you must set the first column vector,
+   * ie. \f$ a \f$ and \f$ b \f$, using method
+   * Simple2x2DetComputer::init().
+   * - then, you must call method Simple2x2DetComputer::operator() on the
+   * second column vector, ie. \f$ x \f$ and \f$ y \f$.
    *
-   * Note that since a substantial part of the execution time comes from 
-   * the allocation/desallocation of integers, we follow the same strategy 
-   * used in IntegerComputer: the user instantiates once this object and 
-   * computes the determinant several times with it. 
+   * Note that since a substantial part of the execution time comes from
+   * the allocation/desallocation of integers, we follow the same strategy
+   * used in IntegerComputer: the user instantiates once this object and
+   * computes the determinant several times with it.
    *
-   * @tparam TArgumentInteger a model of CEuclideanRing for the input coefficients of the 
+   * @tparam TArgumentInteger a model of CEuclideanRing for the input coefficients of the
    * 2x2 matrix
-   * @tparam TResultInteger a model of CEuclideanRing for the result. It must be 
-   * either unbounded or twice as big as TArgumentInteger, ie. if TArgumentInteger is 
+   * @tparam TResultInteger a model of CEuclideanRing for the result. It must be
+   * either unbounded or twice as big as TArgumentInteger, ie. if TArgumentInteger is
    * a type coded on b bits, TResultInteger must be coded on 2b+1 bits
-   * 
-   * Note that if you use the same type for the arguments and the result, 
-   * the code may fail to provide the exact result because of a possible overflow. 
+   *
+   * Note that if you use the same type for the arguments and the result,
+   * the code may fail to provide the exact result because of a possible overflow.
    *
    * @see AvnaimEtAl2x2DetSignComputer
    */
@@ -96,32 +96,32 @@ namespace DGtal
     /**
      * Type of integer for the input coefficients of the 2x2 matrix
      */
-    typedef TArgumentInteger ArgumentInteger; 
-    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<ArgumentInteger> )); 
+    typedef TArgumentInteger ArgumentInteger;
+    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<ArgumentInteger> ));
     /**
      * DGtal alias of type ArgumentInteger
      */
-    typedef ArgumentInteger Integer; 
+    typedef ArgumentInteger Integer;
     /**
      * STL alias of type ArgumentInteger
      */
-    typedef ArgumentInteger argument_type; 
+    typedef ArgumentInteger argument_type;
 
     /**
      * Type of integer for the returned determinant
      */
-    typedef TResultInteger ResultInteger; 
-    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<ArgumentInteger> )); 
+    typedef TResultInteger ResultInteger;
+    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<ArgumentInteger> ));
 
     /**
      * DGtal alias type of ResultInteger
      */
-    typedef ResultInteger Value; 
+    typedef ResultInteger Value;
     /**
      * STL alias of type ResultInteger
      */
     typedef ResultInteger result_type;
- 
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -164,7 +164,7 @@ namespace DGtal
      * @pre init must be called before
      * @param aX 0-component of the second column vector
      * @param aY 1-component of the second column vector
-     * @return the 2x2 matrix determinant, ie. 
+     * @return the 2x2 matrix determinant, ie.
      * @a myAX . @a aY - @a myBY . @a aX
      */
     ResultInteger operator()(const ArgumentInteger& aX, const ArgumentInteger& aY) const;
@@ -178,7 +178,7 @@ namespace DGtal
      * @return determinant of the 2x2 matrix that consists
      * of the two above column vectors, ie. @a aA . @a aY - @a aB . @a aX
      */
-    ResultInteger operator()(const ArgumentInteger& aA, const ArgumentInteger& aB, 
+    ResultInteger operator()(const ArgumentInteger& aA, const ArgumentInteger& aB,
 			     const ArgumentInteger& aX, const ArgumentInteger& aY);
 
     /**
@@ -193,26 +193,26 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     /**
-     * Data member used to store 
+     * Data member used to store
      * the 0-component of the first column vector, ie. a.
      */
-    ResultInteger myA; 
+    ResultInteger myA;
     /**
      * Data member used to store
      * the 1-component of the first column vector, ie. b.
      */
-    ResultInteger myB; 
+    ResultInteger myB;
     /**
      * Data member used to store the product ay
      */
-    mutable ResultInteger myAY; 
+    mutable ResultInteger myAY;
     /**
      * Data member used to store the product bx
      */
-    mutable ResultInteger myBX; 
+    mutable ResultInteger myBX;
 
     // ------------------------- Hidden services ------------------------------
   protected:

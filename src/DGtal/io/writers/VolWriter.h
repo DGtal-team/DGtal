@@ -71,20 +71,20 @@ namespace DGtal
     typedef TImage Image;
     typedef typename TImage::Value Value;
     typedef TFunctor Functor;
-    
-    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, Value, unsigned char> )) ;    
+
+    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, Value, unsigned char> )) ;
     BOOST_STATIC_ASSERT(TImage::Domain::dimension == 3);
 
-    /** 
+    /**
      * Export an Image with the Vol format.
-     * 
+     *
      * @param filename name of the output file
      * @param aImage the image to export
      * @param compressed boolean to decide wether the vol must be compressed or not
      * @param aFunctor functor used to cast image values
      * @return true if no errors occur.
      */
-    static bool exportVol(const std::string & filename, const Image &aImage, 
+    static bool exportVol(const std::string & filename, const Image &aImage,
                           const bool compressed=true,
                           const Functor & aFunctor = Functor());
   };

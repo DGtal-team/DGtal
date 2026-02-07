@@ -67,7 +67,7 @@ int main()
   DGtal::Z2i::Domain domain2DZ(transTo2DdomainFunctorZ(imageVol.domain().lowerBound()),
              transTo2DdomainFunctorZ(imageVol.domain().upperBound()));
 
-  // Define the functor to associate 2D coordinates to the 3D one by giving the direction Z (2) and the slide numnber (10):
+  // Define the functor to associate 2D coordinates to the 3D one by giving the direction Z (2) and the slide number (10):
   DGtal::functors::Projector<DGtal::Z3i::Space> aSliceFunctorZ(10); aSliceFunctorZ.initAddOneDim(2);
 
   // We can now obtain the slice image (a ConstImageAdapter):
@@ -80,7 +80,7 @@ int main()
   DGtal::Z2i::Domain domain2DY(transTo2DdomainFunctorY(imageVol.domain().lowerBound()),
              transTo2DdomainFunctorY(imageVol.domain().upperBound()));
 
-  // Define the functor to associate 2D coordinates to the 3D one by giving the direction Y (1) and the slide numnber (50):
+  // Define the functor to associate 2D coordinates to the 3D one by giving the direction Y (1) and the slide number (50):
   DGtal::functors::Projector<DGtal::Z3i::Space> aSliceFunctorY(50); aSliceFunctorY.initAddOneDim(1);
 
   // We can now obtain the slice image (a ConstImageAdapter):
@@ -93,7 +93,7 @@ int main()
   //! [ExampleViewer3D2DImagesDisplayImages]
   //
 
- 
+
   viewer.show();
   return 0;
 }

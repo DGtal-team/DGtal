@@ -55,9 +55,9 @@
 namespace DGtal
 {
   namespace detail {
-    
+
     // ------------------------ POINT RELATED SERVICES -----------------------
-    
+
     /// Compute the center of the bounding box containing the given points.
     /// @tparam Point any type of points
     /// @param[in] points a range of points
@@ -149,7 +149,7 @@ namespace DGtal
         output2input.resize( output_values.size() );
         for ( Size i = 0; i < input2output.size(); i++ )
           output2input[ input2output[ i ] ] = i;
-      }      
+      }
     }
 
   } // namespace detail {
@@ -200,10 +200,10 @@ namespace DGtal
     typedef ConvexHullCommonKernel< dim, TCoordinateInteger, TInternalInteger > Self;
     typedef ConvexHullCommonKernel< dim-1, TCoordinateInteger, TInternalInteger > LowerSelf;
     /// Converter to outer coordinate integers or lattice points / vector
-    typedef IntegerConverter< dim, CoordinateInteger > Outer; 
+    typedef IntegerConverter< dim, CoordinateInteger > Outer;
     /// Converter to inner internal integers or lattice points / vector
     typedef IntegerConverter< dim, InternalInteger >   Inner;
-    
+
     class HalfSpace {
       friend struct ConvexHullCommonKernel< dim, CoordinateInteger, InternalInteger >;
       InternalVector N; ///< the normal vector
@@ -215,7 +215,7 @@ namespace DGtal
       const InternalVector& internalNormal() const    { return N; }
       InternalScalar internalIntercept() const { return c; }
     };
-    
+
     /// Default constructor.
     ConvexHullCommonKernel() = default;
 
@@ -236,7 +236,7 @@ namespace DGtal
              Index idx_below )
     {
       HalfSpace hs = compute( vpoints, simplex );
-      if ( hs.N != InternalVector::zero ) 
+      if ( hs.N != InternalVector::zero )
         {
           const InternalPoint  ip = Inner::cast( vpoints[ idx_below ] );
           const InternalScalar nu = hs.N.dot( ip );
@@ -267,7 +267,7 @@ namespace DGtal
       functions::getOrthogonalVector( N, vpoints, simplex );
       return HalfSpace { N, N.dot( ip ) };
     }
-    
+
     /// @param H the half-space
     /// @return the normal to this facet.
     CoordinateVector normal( const HalfSpace& H ) const
@@ -281,7 +281,7 @@ namespace DGtal
     {
       return Outer::cast( H.c );
     }
-    
+
     /// Equivalent of the dot product of the normals of the half-spaces.
     ///
     /// @param H1 an half-space
@@ -298,7 +298,7 @@ namespace DGtal
     /// @param H1 an half-space
     /// @param H2 an half-space
     ///
-    /// @return 'true' if the half-spaces have the smae members.
+    /// @return 'true' if the half-spaces have the same members.
     ///
     /// @note two half-spaces may be not equal but may represent the
     /// same set of points. For instance `H1={{1,0},3}` and
@@ -307,7 +307,7 @@ namespace DGtal
     {
       return H1.c == H2.c && H1.N == H2.N;
     }
-    
+
     /// @param H the half-space
     /// @param p any point
     /// @return the (signed) height of \a p wrt this plane.
@@ -339,13 +339,13 @@ namespace DGtal
     /// @param p any point
     /// @return 'true' iff p lies on this plane.
     bool on( const HalfSpace& H, const CoordinatePoint& p ) const
-    { return height( H, p ) == 0; } 
-    
-    
+    { return height( H, p ) == 0; }
+
+
   }; //   template < Dimension dim >  struct ConvexHullIntegralKernel {
 
 
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // template class ConvexHullIntegralKernel
   /**
@@ -399,7 +399,7 @@ namespace DGtal
     using Base::above;
     using Base::aboveOrOn;
     using Base::on;
-    
+
     /// Default constructor.
     ConvexHullIntegralKernel() = default;
 
@@ -418,7 +418,7 @@ namespace DGtal
       (void) hs; // unused parameter
       return false;
     }
-    
+
     /// Transforms a range \a input_points of input points to a range
     /// \a processed_points of points adapted to a processing by
     /// QuickHull convex hull algorithm. Keep the mapping information
@@ -429,12 +429,12 @@ namespace DGtal
     ///
     /// @param[out] processed_points the range of points prepared for
     /// a process by QuickHull.
-    /// 
+    ///
     /// @param[out] input2comp the surjective mapping between
     /// the \a input_points range and the \a processed_points range
     /// used for computation.
     ///
-    /// @param[out] comp2input the injective mapping between the 
+    /// @param[out] comp2input the injective mapping between the
     /// \a processed_points range used for computation and the \a
     /// input_points range.
     ///
@@ -485,9 +485,9 @@ namespace DGtal
      Delaunay triangulation.
 
      @see \ref moduleQuickHull
-     
+
      @tparam dim the dimension of the space of processed points.
-     
+
      @tparam TCoordinateInteger the integer type that represents
      coordinates of lattice points, a model of concepts::CInteger.
 
@@ -551,7 +551,7 @@ namespace DGtal
     {
       return hs.internalNormal()[ dimension - 1 ] >= InternalScalar( 0 );
     }
-    
+
     /// Transforms a range \a input_points of input points to a range
     /// \a processed_points of points adapted to a processing by
     /// QuickHull convex hull algorithm. Keep the mapping information
@@ -566,12 +566,12 @@ namespace DGtal
     ///
     /// @param[out] processed_points the range of points prepared for
     /// a process by QuickHull.
-    /// 
+    ///
     /// @param[out] input2comp the surjective mapping between
     /// the \a input_points range and the \a processed_points range
     /// used for computation.
     ///
-    /// @param[out] comp2input the injective mapping between the 
+    /// @param[out] comp2input the injective mapping between the
     /// \a processed_points range used for computation and the \a
     /// input_points range.
     ///
@@ -612,7 +612,7 @@ namespace DGtal
       for ( Dimension k = 0; k < dimension-1; k++ )
         out_p[ k ] = p[ k ];
     }
-        
+
   }; //   template < Dimension dim >  struct DelaunayIntegralKernel {
 
 
@@ -625,7 +625,7 @@ namespace DGtal
      approximated with rational points with fixed precision (a given
      number of bits). All remaining computations are exact, as long as
      there is no overflow.
-     
+
      Each floating point input coordinate `x` is converted to an integer
      through the following formula `(Integer) round( x * precision )`,
      where `precision` is the floating point value given at
@@ -639,7 +639,7 @@ namespace DGtal
      @see \ref moduleQuickHull
 
      @tparam dim the dimension of the space of processed points.
-     
+
      @tparam TCoordinateInteger the integer type that represents
      coordinates of lattice points, a model of concepts::CInteger.
 
@@ -688,11 +688,11 @@ namespace DGtal
 
     /// The precision as the common denominator for all rational points.
     double precision;
-    
+
     /// Constructor with specified precision
     ///
     /// @param[in] aPrecision the chosen precision as the common
-    /// denominator of all rationals (by defaut, 1024).
+    /// denominator of all rationals (by default, 1024).
     ConvexHullRationalKernel( double aPrecision = 1024. )
       : precision( aPrecision ) {}
 
@@ -708,10 +708,10 @@ namespace DGtal
     /// corresponds to an infinite facet.
     bool isHalfSpaceFacetInfinite( const HalfSpace& hs ) const
     {
-      (void) hs; // unused parameter      
+      (void) hs; // unused parameter
       return false;
     }
-    
+
     /// Transforms a range \a input_points of input points to a range
     /// \a processed_points of points adapted to a processing by
     /// QuickHull convex hull algorithm. Keep the mapping information
@@ -722,12 +722,12 @@ namespace DGtal
     ///
     /// @param[out] processed_points the range of points prepared for
     /// a process by QuickHull.
-    /// 
+    ///
     /// @param[out] input2comp the surjective mapping between
     /// the \a input_points range and the \a processed_points range
     /// used for computation.
     ///
-    /// @param[out] comp2input the injective mapping between the 
+    /// @param[out] comp2input the injective mapping between the
     /// \a processed_points range used for computation and the \a
     /// input_points range.
     ///
@@ -782,8 +782,8 @@ namespace DGtal
       for ( Dimension k = 0; k < dimension; k++ )
         out_p[ k ] = ( (double) p[ k ] ) / precision;
     }
-    
-    
+
+
   }; //   template < Dimension dim >  struct ConvexHullRationalKernel {
 
 
@@ -813,7 +813,7 @@ namespace DGtal
      @see \ref moduleQuickHull
 
      @tparam dim the dimension of the space of processed points.
-     
+
      @tparam TCoordinateInteger the integer type that represents
      coordinates of lattice points, a model of concepts::CInteger.
 
@@ -862,11 +862,11 @@ namespace DGtal
 
     /// The precision as the common denominator for all rational points.
     double precision;
-    
+
     /// Constructor with specified precision
     ///
     /// @param[in] aPrecision the chosen precision as the common
-    /// denominator of all rationals (by defaut, 1024).
+    /// denominator of all rationals (by default, 1024).
     DelaunayRationalKernel( double aPrecision = 1024. )
       : precision( aPrecision ) {}
 
@@ -899,12 +899,12 @@ namespace DGtal
     ///
     /// @param[out] processed_points the range of points prepared for
     /// a process by QuickHull.
-    /// 
+    ///
     /// @param[out] input2comp the surjective mapping between
     /// the \a input_points range and the \a processed_points range
     /// used for computation.
     ///
-    /// @param[out] comp2input the injective mapping between the 
+    /// @param[out] comp2input the injective mapping between the
     /// \a processed_points range used for computation and the \a
     /// input_points range.
     ///
@@ -969,11 +969,11 @@ namespace DGtal
       for ( Dimension k = 0; k < dimension - 1; k++ )
         out_p[ k ] = ( (double) p[ k ] ) / precision;
     }
-    
+
   }; //   template < Dimension dim >  struct DelaunayRationalKernel {
 
-  
-  
+
+
 } // namespace DGtal {
 
 #endif // !defined QuickHullKernels_h

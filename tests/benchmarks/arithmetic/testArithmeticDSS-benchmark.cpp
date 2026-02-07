@@ -48,8 +48,8 @@ using namespace DGtal;
 
 template <typename DSL>
 bool checkSubArithmeticDSS( const DSL & D,
-                            const typename DSL::Point & A, 
-                            const typename DSL::Point & B ) 
+                            const typename DSL::Point & A,
+                            const typename DSL::Point & B )
 {
   typedef typename DSL::Integer Integer;
   typedef typename DSL::ConstIterator ConstIterator;
@@ -63,7 +63,7 @@ bool checkSubArithmeticDSS( const DSL & D,
           && ( dss.extendFront() ) ) {}
   std::cout << D.a() << " " << D.b() << " " << D.mu() << " "
             << dss.a() << " " << dss.b() << " " << dss.mu() << " "
-            << A[0] << " " << A[1] << " " << B[0] << " " << B[1] 
+            << A[0] << " " << A[1] << " " << B[0] << " " << B[1]
             << std::endl;
 
   return true;
@@ -106,9 +106,9 @@ bool checkSubArithmeticDSS( const DSL & D,
 // }
 
 template <typename Fraction>
-bool testSubStandardDSLQ0( unsigned int nbtries, 
-                           typename Fraction::Integer moda, 
-                           typename Fraction::Integer modb, 
+bool testSubStandardDSLQ0( unsigned int nbtries,
+                           typename Fraction::Integer moda,
+                           typename Fraction::Integer modb,
                            typename Fraction::Integer modx )
 {
   typedef StandardDSLQ0<Fraction> DSL;

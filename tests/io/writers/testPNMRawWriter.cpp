@@ -59,7 +59,7 @@ using namespace DGtal;
  */
 bool testPNMWriter()
 {
-  
+
   trace.beginBlock ( "Testing block ..." );
 
   typedef SpaceND<2> TSpace;
@@ -109,7 +109,7 @@ bool testPNMWriter()
   board.saveSVG("export-hue-twice.svg");
 
   trace.endBlock();
-  
+
   return true;
 }
 
@@ -125,28 +125,28 @@ bool testRWIssue254()
   Point a ( 0, 0);
   Point b ( 15, 15);
   typedef ImageSelector<Domain, unsigned char>::Type Image;
-  Domain domain(a,b); 
+  Domain domain(a,b);
   Image image(domain);
   for(unsigned int i=0 ; i < 256; i++)
     image[i] = i;
 
   PGMWriter<Image>::exportPGM("export-gray-first.pgm",image);
-  
+
   Image imageRead = PGMReader<Image>::importPGM("export-gray-first.pgm");
 
   PGMWriter<Image>::exportPGM("export-gray-second.pgm",imageRead);
 
   trace.info() << image<<std::endl;
   trace.info() << imageRead<<std::endl;
-  
-  
+
+
   bool ok = true;
   for(Image::Domain::ConstIterator it = image.domain().begin(),
 	itend = image.domain().end();
       it != itend;
       ++it)
     ok = (image(*it) == imageRead(*it));
-    
+
   trace.endBlock();
   return ok;
 }
@@ -161,7 +161,7 @@ int main( int argc, char** argv )
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << std::endl;
-  
+
   bool res = testPNMWriter() && testRWIssue254(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << std::endl;
   trace.endBlock();

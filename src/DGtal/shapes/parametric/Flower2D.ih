@@ -56,7 +56,7 @@ inline
 DGtal::Flower2D<T>::Flower2D(const RealPoint &aPoint, const double radius,
            const double varRadius,
            const unsigned int k, const double phi)
-  : myCenter(aPoint), myRadius(radius), myVarRadius(varRadius), 
+  : myCenter(aPoint), myRadius(radius), myVarRadius(varRadius),
     myK(k), myPhi(phi)
 {}
 
@@ -93,7 +93,7 @@ DGtal::Flower2D<T>::parameter( const RealPoint & p ) const
  */
 template <typename T>
 inline
-typename DGtal::Flower2D<T>::RealPoint 
+typename DGtal::Flower2D<T>::RealPoint
 DGtal::Flower2D<T>::x( const double t ) const
 {
   const double r = myRadius + myVarRadius * cos(myK*t + myPhi);
@@ -112,7 +112,7 @@ DGtal::Flower2D<T>::x( const double t ) const
  */
 template <typename T>
 inline
-typename DGtal::Flower2D<T>::RealVector 
+typename DGtal::Flower2D<T>::RealVector
 DGtal::Flower2D<T>::xp( const double t ) const
 {
   const double r = myRadius + myVarRadius * cos(myK*t + myPhi);
@@ -182,7 +182,7 @@ DGtal::Flower2D<T>::isValid() const
 template <typename T>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
       const Flower2D<T> & object )
 {
   object.selfDisplay( out );
@@ -191,5 +191,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

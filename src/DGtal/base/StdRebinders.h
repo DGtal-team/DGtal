@@ -62,7 +62,7 @@ namespace DGtal
        MapKeyToNode myMap;
      };
 
-     main() 
+     main()
      {
        Example<StdMapRebinder> example;
        ...

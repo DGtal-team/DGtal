@@ -72,14 +72,14 @@ bool testCompareEstimator(const std::string &name, const Shape & aShape, double 
 
   trace.beginBlock ( ( "Testing CompareEstimator on digitization of "
            + name ). c_str() );
-  
+
   // Creates a digitizer on the window (xLow, xUp).
   RealPoint xLow( -10.0, -10.0 );
   RealPoint xUp( 10.0, 10.0 );
-  GaussDigitizer<Space,Shape> dig;  
+  GaussDigitizer<Space,Shape> dig;
   dig.attach( aShape ); // attaches the shape.
-  dig.init( xLow, xUp, h ); 
-  
+  dig.init( xLow, xUp, h );
+
   // The domain size is given by the digitizer according to the window
   // and the step.
   Domain domain = dig.getDomain();
@@ -107,8 +107,8 @@ bool testCompareEstimator(const std::string &name, const Shape & aShape, double 
       typedef Range::ConstIterator ConstIteratorOnPoints;
       Range r = gridcurve.getPointsRange();//building range
 
-      unsigned int nb = 0; 
-      unsigned int nbok = 0; 
+      unsigned int nb = 0;
+      unsigned int nbok = 0;
       //curvature
       typedef ParametricShapeCurvatureFunctor< Shape > Curvature;
       typedef TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Curvature  >  TrueCurvature;
@@ -122,57 +122,57 @@ bool testCompareEstimator(const std::string &name, const Shape & aShape, double 
       trace.info()<< "True curvature comparison at "<< *r.begin() << " = "
 		  << Comparator::compare(curvatureEstimator,curvatureEstimatorBis, r.begin(), h)
 		  << std::endl;
-      
+
       typename Comparator::OutputStatistic error =
 	      Comparator::compare(curvatureEstimator, curvatureEstimatorBis,
                             r.begin(), r.end(), h);
-      
+
       trace.info() << "Nb samples= "<< error.samples()<<std::endl;
       trace.info() << "Error mean= "<< error.mean()<<std::endl;
       trace.info() << "Error max= "<< error.max()<<std::endl;
       nbok += ( ( ( (unsigned int)error.samples() ) == r.size())
                 && (error.max() == 0) )
-        ? 1 : 0; 
+        ? 1 : 0;
       nb++;
-      trace.info() << nbok << "/" << nb << std::endl; 
+      trace.info() << nbok << "/" << nb << std::endl;
 
       //tangents
       typedef ParametricShapeTangentFunctor< Shape > Tangent;
       typedef TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Tangent  >  TrueTangent;
 
-      typedef ArithmeticalDSSComputer<ConstIteratorOnPoints,KSpace::Integer,4> 
+      typedef ArithmeticalDSSComputer<ConstIteratorOnPoints,KSpace::Integer,4>
   SegmentComputer;
       typedef TangentFromDSSEstimator<SegmentComputer> Functor;
-      typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor> 
+      typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,Functor>
   MSTangentEstimator;
 
       SegmentComputer sc;
-      Functor f; 
-      
-      TrueTangent tang1;
-      MSTangentEstimator tang2(sc, f); 
+      Functor f;
 
-      tang1.attach( aShape ); 
+      TrueTangent tang1;
+      MSTangentEstimator tang2(sc, f);
+
+      tang1.attach( aShape );
       tang2.init( r.begin(), r.end() );
-      
+
       typedef CompareLocalEstimators< TrueTangent, MSTangentEstimator> ComparatorTan;
 
-      trace.info()<< "Tangent comparison at "<< *r.begin() << " = " 
+      trace.info()<< "Tangent comparison at "<< *r.begin() << " = "
 		  << ComparatorTan::compareVectors( tang1, tang2, r.begin(), h)
-		  << std::endl; 
-      
+		  << std::endl;
+
       typename ComparatorTan::OutputVectorStatistic error2
 	      = ComparatorTan::compareVectors(tang1, tang2, r.begin(), r.end(), h);
-      
+
       trace.info()<< "Nb samples= "<< error2.samples()<<std::endl;
       trace.info()<< "Error mean= "<< error2.mean()<<std::endl;
       trace.info()<< "Error max= "<< error2.max()<<std::endl;
-      nbok += (error.samples() == r.size())?1:0; 
+      nbok += (error.samples() == r.size())?1:0;
       nb++;
-      trace.info() << nbok << "/" << nb << std::endl; 
-      ok += (nb == nbok); 
+      trace.info() << nbok << "/" << nb << std::endl;
+      ok += (nb == nbok);
 
-     }    
+     }
     catch ( InputException& e )
       {
   std::cerr << "[testCompareEstimator]"
@@ -182,7 +182,7 @@ bool testCompareEstimator(const std::string &name, const Shape & aShape, double 
   trace.emphase() << ( ok ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return ok;
-  
+
 }
 
 

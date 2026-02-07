@@ -166,7 +166,7 @@ bool
 DGtal::functors::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,DGtal::functors::AndBoolFct2>
 ::operator()( const Point & p ) const
 {
-  return ( (myPred1->operator()( p )) &&  (myPred2->operator()( p )) );  
+  return ( (myPred1->operator()( p )) &&  (myPred2->operator()( p )) );
 }
 //------------------------------------------------------------------------------
 template <typename TPointPredicate1, typename TPointPredicate2>
@@ -183,7 +183,7 @@ bool
 DGtal::functors::BinaryPointPredicate<TPointPredicate1,TPointPredicate2,DGtal::functors::OrBoolFct2>
 ::operator()( const Point & p ) const
 {
-  return ( (myPred1->operator()( p )) ||  (myPred2->operator()( p )) );  
+  return ( (myPred1->operator()( p )) ||  (myPred2->operator()( p )) );
 }
 //------------------------------------------------------------------------------
 template <typename TPointFunctor, typename TPredicate>

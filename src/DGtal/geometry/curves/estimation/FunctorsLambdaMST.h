@@ -52,18 +52,18 @@ namespace DGtal
 /**
 * Description: Extension of namespace functors by functors related to L-MST.
 * \brief Aim: Provide various lambda functions and others L-MST related functors.
-* 
+*
 * A lambda function \f$\lambda()\f$ - maps from [0,1] \f$\in \mathbb{R}_+\f$ with F(0) = F(1) = 0
 * and F() > 0 elsewhere and need to satisfy convexity/concavity property.
 * For more information see J.-O. Lachaud et el \cite LachaudIVC2007.
-* 
+*
 */
 namespace functors
 {
   /**
    *  Polynomial lambda functor \cite LachaudIVC2007.
    * \f$ 64 ( -x^6 + 3 x^5 - 3 x^4 + x^3 ) \f$
-   * 
+   *
    */
   struct Lambda64Function
   {
@@ -77,7 +77,7 @@ namespace functors
   /**
    * Sine Lambda functor \cite LachaudIVC2007.
    * \f$ \sin x \pi \f$
-   * 
+   *
    */
   struct LambdaSinFromPiFunction
   {
@@ -90,7 +90,7 @@ namespace functors
   /**
    * Exponential Lambda functor \cite LachaudIVC2007.
    * \f$ \frac{2}{\exp ( 15 (x- \frac{1}{2} ) ) + \exp(15(\frac{1}{2}-x)) } \f$
-   * 
+   *
    */
   struct LambdaExponentialFunction
   {
@@ -103,7 +103,7 @@ namespace functors
 
 /**
  * Description of class 'TangentFromDSS2DFunctor' -- model of CLMSTTangentFromDSS.
- * Aim: Provide a functor which calculate from digital straight segment 
+ * Aim: Provide a functor which calculate from digital straight segment
  * its direction and eccentricity around a given point.
  * @tparam DSS digital straight segment recognition algorithm
  * @tparam LambdaFunction model of CLambdaFunctor @see CLambdaFunctor.h
@@ -116,7 +116,7 @@ class TangentFromDSS2DFunctor
 public:
   typedef PointVector<2, double> RealVector;
   typedef DSS TDSS;
-  
+
   struct Value
   {
     RealVector first;
@@ -129,8 +129,8 @@ public:
       return *this;
     }
   };
-  
-  
+
+
   // ----------------------- Interface --------------------------------------
 public:
   /**
@@ -158,13 +158,13 @@ public:
     return result;
   }
 private:
-  // ------------------------- Private Datas --------------------------------
+  // ------------------------- Private Data --------------------------------
   LambdaFunction lambdaFunctor;
 };
 
 /**
  * Description of class 'TangentFromDSS3DFunctor' -- model of CLMSTTangentFromDSS.
- * Aim: Provide a functor which calculate from digital straight segment 
+ * Aim: Provide a functor which calculate from digital straight segment
  * its direction and eccentricity around a given point.
  * @tparam DSS digital straight segment recognition algorithm
  * @tparam LambdaFunction model of CLambdaFunctor @see CLambdaFunctor.h
@@ -189,7 +189,7 @@ public:
       return *this;
     }
   };
-  
+
   // ----------------------- Interface --------------------------------------
   /**
    * Calculate a direction of the 2D DSS and an eccentricity of a given point in
@@ -204,15 +204,15 @@ public:
     typename DSS::Point3d directionZ3;
     RealVector direction;
     typename DSS::PointR3d intercept;
-    typename DSS::PointR3d thikness;
-    
-    aDSS.getParameters ( directionZ3, intercept, thikness );
+    typename DSS::PointR3d thickness;
+
+    aDSS.getParameters ( directionZ3, intercept, thickness );
     direction[0] = directionZ3[0];
     direction[1] = directionZ3[1];
     direction[2] = directionZ3[2];
-    
+
     result.second = lambdaFunctor ( (double)indexOfPointInDSS / (double)dssLen );
-    
+
     double norm = direction.norm();
     if ( norm != 0. )
       direction /= norm;
@@ -220,8 +220,8 @@ public:
     return result;
   }
 private:
-  // ------------------------- Private Datas --------------------------------
-  //! 
+  // ------------------------- Private Data --------------------------------
+  //!
   LambdaFunction lambdaFunctor;
 };
 

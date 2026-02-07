@@ -24,7 +24,7 @@ namespace DGtal {
 - related classes: \ref ATSolver2D
 - related examples: \ref exampleSurfaceATNormals.cpp
 
-@section AT_s1 The Ambrosio-Tortorelli functional  
+@section AT_s1 The Ambrosio-Tortorelli functional
 
 The Ambrosio-Tortorelli functional (AT) is a classical relaxation of the
 Mumford-Shah functional  \cite ambrosio1990approximation. Its purpose is to construct a piecewise
@@ -63,8 +63,8 @@ The AT functional has been extended to vector data in \cite Focardi2001variation
 We present a discrete calculus model of AT that works for any
 2-dimensional cell complex. For more information on discrete calculus,
 discrete exterior calculus or discrete differential calculus, see module \ref
-moduleDECIntroduction, report \cite desbrun2005discrete, 
-lecture \cite goes2013digital, or the book \cite Grady2010discrete . 
+moduleDECIntroduction, report \cite desbrun2005discrete,
+lecture \cite goes2013digital, or the book \cite Grady2010discrete .
 
 Our model is suited to a grid domain representing a 2D image made
 of pixels or a digital surface in 3D.
@@ -92,7 +92,7 @@ The AT functional  is a sum of quadratic terms, independently,
 but not simultaneously, convex in \f$ u \f$ and \f$ v \f$. It must have
 null derivative at optimum. We thus propose to alternatively solve for
 \f$ u \f$, then \f$ v \f$. The derivatives can be given explicitly as
-linear systems. 
+linear systems.
 To simplify notations, let \f$ \mathbf{A} := \mathbf{d_0} \f$,
 \f$  \mathbf{B} := \mathbf{d_1} \f$,
 \f$ \mathbf{A'} := \bar{\mathbf{\star}} \bar{\mathbf{d_1}} \mathbf{\star} \f$

@@ -111,7 +111,7 @@ bool testLocalConvolutionNormalVectorEstimator ()
 
     LpMetric<Z3i::Space> l1(1.0);
     CanonicSCellEmbedder<KSpace> embedder(digSurf.container().space());
-    
+
     typedef DGtal::functors::ElementaryConvolutionNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace>> Functor;
     typedef LocalEstimatorFromSurfelFunctorAdapter<MyDigitalSurfaceContainer, LpMetric<Z3i::Space>,
                                                    Functor, ConvFunctor> MyEstimator;
@@ -120,15 +120,15 @@ bool testLocalConvolutionNormalVectorEstimator ()
 
     MyEstimator myNormalEstimator;
     myNormalEstimator.attach(digSurf);
-    myNormalEstimator.setParams(l1, estimator, kernel, 5.0); 
+    myNormalEstimator.setParams(l1, estimator, kernel, 5.0);
     myNormalEstimator.init(1.0, digSurf.begin(), digSurf.end());
-    
+
     MyEstimator::Quantity res = myNormalEstimator.eval ( it );
     trace.info() << "Normal vector at begin() : "<< res << std::endl;
-    
+
     DGtal::PolyscopeViewer<Space,KSpace> viewer(ks);
     viewer.allowReuseList = true; // Enable auto grouping, which is to some extend, way better
-    
+
     // KCell will be rendered as quads (not signed)
     viewer.newQuadList("Constant estimator");
     for ( MyDigitalSurface::ConstIterator itbis = digSurf.begin(),itend=digSurf.end();
@@ -143,13 +143,13 @@ bool testLocalConvolutionNormalVectorEstimator ()
     typedef DGtal::functors::GaussianKernel ConvFunctorGaussian;
     typedef LocalEstimatorFromSurfelFunctorAdapter<MyDigitalSurfaceContainer, LpMetric<Z3i::Space>,
                                                    Functor, ConvFunctorGaussian> MyEstimatorGaussian;
-    
+
     ConvFunctorGaussian kernelGaussian(14.0);
     Functor estimatorGaussian(embedder, 1.0); // Passed by alias, can't reuse previous
 
     MyEstimatorGaussian myNormalEstimatorG;
     myNormalEstimatorG.attach(digSurf);
-    myNormalEstimatorG.setParams(l1, estimatorGaussian, kernelGaussian, 15.0); 
+    myNormalEstimatorG.setParams(l1, estimatorGaussian, kernelGaussian, 15.0);
     myNormalEstimatorG.init(1.0, digSurf.begin(), digSurf.end());
 
     MyEstimatorGaussian::Quantity res2 = myNormalEstimatorG.eval ( it );
@@ -183,7 +183,7 @@ int main ( int argc, char** argv )
     bool res = testLocalConvolutionNormalVectorEstimator (); // && ... other tests
     trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
     trace.endBlock();
-    
+
     return (res ? 0:1);
 }
 //                                                                           //

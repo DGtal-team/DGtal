@@ -140,7 +140,7 @@ namespace
  * As a consequence, the type of the returned FunctorHolder cannot be guessed
  * easily and the use of the `auto` keyword is thus mandatory.
  *
- * More informations can be found in the dedicate module page about
+ * More information can be found in the dedicate module page about
  * @ref moduleFunctors .
  *
  * @see holdFunctor
@@ -151,7 +151,7 @@ template <
 >
 class FunctorHolder
 {
-  // ------------------------- Private Datas --------------------------------
+  // ------------------------- Private Data --------------------------------
 private:
 
   FunctorStorage myFunctor; ///< The callable object.
@@ -273,7 +273,7 @@ namespace {
  * @param   fn        The callable object to be holded.
  * @return  a FunctorHolder instance with appropriate storage type depending on the given object.
  *
- * @see FunctorHolder and @ref moduleFunctors for more informations
+ * @see FunctorHolder and @ref moduleFunctors for more information
  */
 template <typename Function>
 inline auto holdFunctor(Function && fn)

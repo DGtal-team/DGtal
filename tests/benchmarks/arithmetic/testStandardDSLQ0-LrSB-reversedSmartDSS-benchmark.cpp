@@ -48,8 +48,8 @@ using namespace DGtal;
 
 template <typename DSL>
 bool checkSubStandardDSLQ0( const DSL & D,
-                            const typename DSL::Point & A, 
-                            const typename DSL::Point & B ) 
+                            const typename DSL::Point & A,
+                            const typename DSL::Point & B )
 {
   DSL S = D.reversedSmartDSS( A, B );
   std::cout << D.a() << " " << D.b() << " " << D.mu() << " "
@@ -60,9 +60,9 @@ bool checkSubStandardDSLQ0( const DSL & D,
 }
 
 template <typename Fraction>
-bool testSubStandardDSLQ0( unsigned int nbtries, 
-                           typename Fraction::Integer moda, 
-                           typename Fraction::Integer modb, 
+bool testSubStandardDSLQ0( unsigned int nbtries,
+                           typename Fraction::Integer moda,
+                           typename Fraction::Integer modb,
                            typename Fraction::Integer modx )
 {
   typedef StandardDSLQ0<Fraction> DSL;

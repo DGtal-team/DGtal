@@ -72,7 +72,7 @@ namespace DGtal
    * the estimated quantity is computed applying a functor on the
    * surfel set.
    *
-   * More precisely, this adapter needs a model of CMetricSpace to define 
+   * More precisely, this adapter needs a model of CMetricSpace to define
    * the neighborhood and a model of CLocalEstimatorFromSurfelFunctor
    * to perform the local estimator computation. When sent to the
    * functor, the surfels are weighted using the distance from the
@@ -98,7 +98,7 @@ namespace DGtal
    *  @tparam TConvolutionFunctor type of  functor on double
    *  [0,1]->[0,1] to implement the response of a symmetric convolution kernel.
    */
-  template <typename TDigitalSurfaceContainer, typename TMetric, 
+  template <typename TDigitalSurfaceContainer, typename TMetric,
             typename TFunctorOnSurfel, typename TConvolutionFunctor>
   class LocalEstimatorFromSurfelFunctorAdapter
   {
@@ -143,8 +143,8 @@ namespace DGtal
     ///Surfel type
     typedef typename DigitalSurfaceContainer::Surfel Surfel;
 
-    
-    
+
+
   private:
 
     ///Embedded and type definitions
@@ -153,7 +153,7 @@ namespace DGtal
     typedef typename Embedder::RealPoint            RealPoint;
     typedef std::function< Value ( Point ) > MetricToPoint;
     typedef functors::Composer<Embedder, MetricToPoint, Value> VertexFunctor;
-    typedef DistanceBreadthFirstVisitor< Surface, 
+    typedef DistanceBreadthFirstVisitor< Surface,
                                          VertexFunctor> Visitor;
 
 
@@ -191,7 +191,7 @@ namespace DGtal
       mySurface(other.mySurface), myFunctor(other.myFunctor), myMetric(other.myMetric),
       myEmbedder(other.myEmbedder), myConvFunctor(other.myConvFunctor)
     {  }
-    
+
 
     /**
      * Assignment.
@@ -208,7 +208,7 @@ namespace DGtal
       myConvFunctor = other.myConvFunctor;
       return *this;
     }
-    
+
     /**
      * Destructor.
      */
@@ -218,7 +218,7 @@ namespace DGtal
   public:
 
     /**
-     @return the gridstep. 
+     @return the gridstep.
      @pre must be called after init
     */
     Scalar h() const;

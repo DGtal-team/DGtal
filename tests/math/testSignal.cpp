@@ -67,7 +67,7 @@ bool testSignal()
       trace.info() << conv_signal << endl;
     }
   trace.endBlock();
-  
+
   return true;
 }
 

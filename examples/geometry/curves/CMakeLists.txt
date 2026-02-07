@@ -43,4 +43,3 @@ if (  DGTAL_WITH_POLYSCOPE_VIEWER)
   endforeach()
 
 endif()
-

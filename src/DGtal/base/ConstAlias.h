@@ -227,7 +227,7 @@ namespace DGtal
 
     /**
        Constructor from a const reference to a copy-on-write pointer on T. Deleted.
-       
+
        Const-aliasing a copy-on-write pointer has no meaning. Consider Clone instead.
     */
     ConstAlias( const CowPtr<T>& ) = delete;
@@ -259,7 +259,7 @@ namespace DGtal
 
     /**
        Constructor from right-reference value. Delete.
-        
+
        Const-aliasing a rvalue ref has no meaning. Consider Clone instead.
     */
     ConstAlias( T&& ) = delete;
@@ -342,7 +342,7 @@ namespace DGtal
       }
     }
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     /// Characterizes the type of the input parameter at clone instantiation.
     const Parameter myParam;

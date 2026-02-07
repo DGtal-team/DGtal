@@ -62,7 +62,7 @@ namespace DGtal {
       Scalar myR;
 
     public:
-      HatFunction( Scalar v0, Scalar r ) 
+      HatFunction( Scalar v0, Scalar r )
         : myV0( v0 ), myV0OverR( v0 / r ), myR( r ) {}
       Scalar operator()( Scalar d ) const
       { // d >= 0
@@ -86,7 +86,7 @@ namespace DGtal {
       Scalar myR;
 
     public:
-      BallConstantFunction( Scalar v0, Scalar r ) 
+      BallConstantFunction( Scalar v0, Scalar r )
         : myV0( v0 ), myR( r ) {}
       Scalar operator()( Scalar d ) const
       {// d >= 0

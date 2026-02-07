@@ -63,23 +63,23 @@ TEST_CASE( "Testing VectorsInHeat" )
     { 3, 2, 6, 7 } ,
     { 2, 0, 4, 6 } ,
     { 4, 5, 8, 9 } };
-  
+
   Mesh box(positions.cbegin(), positions.cend(),
            faces.cbegin(), faces.cend());
-  
+
   PolygonalCalculus<RealPoint,RealVector> boxCalculus(box);
-  
-  
+
+
   SECTION("Construction and basic operators")
   {
     VectorsInHeat<PolygonalCalculus<RealPoint,RealVector>> heat(boxCalculus);
     REQUIRE( heat.isValid() == false );
-    
+
     trace.beginBlock("init solvers");
     heat.init(0.1);
     trace.endBlock();
     REQUIRE( heat.isValid()  );
-    
+
     heat.addSource(0,Eigen::Vector3d(0.1,0.2,0.3));
     std::vector<VectorsInHeat<PolygonalCalculus<RealPoint,RealVector>>::Vector> d = heat.compute();
     REQUIRE( d.size() == positions.size() );

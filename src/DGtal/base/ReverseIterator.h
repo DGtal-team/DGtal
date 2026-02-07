@@ -76,11 +76,11 @@ namespace DGtal
 
    public:
 
-      typedef typename IteratorCirculatorTraits<Iterator>::Type Type; 
+      typedef typename IteratorCirculatorTraits<Iterator>::Type Type;
 
       ReverseIterator() {}
 
-      explicit ReverseIterator(Iterator x) 
+      explicit ReverseIterator(Iterator x)
           : super_t(x) {}
 
       template<class OtherIterator>
@@ -93,7 +93,7 @@ namespace DGtal
 
    private:
       typename super_t::reference dereference() const { return *boost::prior(this->base()); }
-    
+
       void increment() { --this->base_reference(); }
       void decrement() { ++this->base_reference(); }
 

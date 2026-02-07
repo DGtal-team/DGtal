@@ -85,7 +85,7 @@ DistanceBreadthFirstVisitor( const Graph & g,
 //-----------------------------------------------------------------------------
 template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
 inline
-const typename DGtal::DistanceBreadthFirstVisitor<TGraph,TVertexFunctor,TMarkSet>::Graph & 
+const typename DGtal::DistanceBreadthFirstVisitor<TGraph,TVertexFunctor,TMarkSet>::Graph &
 DGtal::DistanceBreadthFirstVisitor<TGraph,TVertexFunctor,TMarkSet>::
 graph() const
 {
@@ -103,7 +103,7 @@ finished() const
 //-----------------------------------------------------------------------------
 template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
 inline
-const typename DGtal::DistanceBreadthFirstVisitor<TGraph,TVertexFunctor,TMarkSet>::Node & 
+const typename DGtal::DistanceBreadthFirstVisitor<TGraph,TVertexFunctor,TMarkSet>::Node &
 DGtal::DistanceBreadthFirstVisitor<TGraph,TVertexFunctor,TMarkSet>::
 current() const
 {
@@ -126,7 +126,7 @@ getCurrentLayer( TBackInsertionSequence & layer )
     {
       layer.push_back( current() );
       myQueue.pop();
-    } 
+    }
   while ( ( ! finished() ) && ( node.second == current().second ) );
   for ( typename TBackInsertionSequence::const_iterator it = layer.begin(),
           itE = layer.end();
@@ -167,7 +167,7 @@ ignoreLayer()
   do
     {
       ignore();
-    } 
+    }
   while ( ! finished() && ( node.second == current().second ) );
 }
 //-----------------------------------------------------------------------------
@@ -185,7 +185,7 @@ expand()
   tmp.reserve( myGraph->bestCapacity() );
   std::back_insert_iterator<VertexList> write_it = std::back_inserter( tmp );
   myGraph->writeNeighbors( write_it, node.first );
-  for ( typename VertexList::const_iterator it = tmp.begin(), 
+  for ( typename VertexList::const_iterator it = tmp.begin(),
           it_end = tmp.end(); it != it_end; ++it )
     {
       vtx = *it;
@@ -209,7 +209,7 @@ expandLayer()
   do
     {
       expand();
-    } 
+    }
   while ( ! finished() && ( node.second == current().second ) );
 }
 //-----------------------------------------------------------------------------
@@ -228,7 +228,7 @@ expand( const VertexPredicate & authorized_vtx )
   tmp.reserve( myGraph->bestCapacity() );
   std::back_insert_iterator<VertexList> write_it = std::back_inserter( tmp );
   myGraph->writeNeighbors( write_it, node.first, authorized_vtx );
-  for ( typename VertexList::const_iterator it = tmp.begin(), 
+  for ( typename VertexList::const_iterator it = tmp.begin(),
           it_end = tmp.end(); it != it_end; ++it )
     {
       vtx = *it;
@@ -253,7 +253,7 @@ expandLayer( const VertexPredicate & authorized_vtx )
   do
     {
       expand( authorized_vtx );
-    } 
+    }
   while ( ! finished() && ( node.second == current().second ) );
 }
 //-----------------------------------------------------------------------------
@@ -275,7 +275,7 @@ terminate()
 //-----------------------------------------------------------------------------
 template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
 inline
-const typename DGtal::DistanceBreadthFirstVisitor<TGraph,TVertexFunctor,TMarkSet>::MarkSet & 
+const typename DGtal::DistanceBreadthFirstVisitor<TGraph,TVertexFunctor,TMarkSet>::MarkSet &
 DGtal::DistanceBreadthFirstVisitor<TGraph,TVertexFunctor,TMarkSet>::
 markedVertices() const
 {
@@ -349,7 +349,7 @@ isValid() const
 template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
                     const DistanceBreadthFirstVisitor<TGraph,TVertexFunctor,TMarkSet> & object )
 {
   object.selfDisplay( out );
@@ -358,5 +358,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

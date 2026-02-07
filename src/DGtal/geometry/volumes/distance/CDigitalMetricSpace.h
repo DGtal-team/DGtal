@@ -50,7 +50,7 @@ namespace DGtal
 {
  namespace concepts
   {
- 
+
 /////////////////////////////////////////////////////////////////////////////
 // class CDigitalMetricSpace
 /**
@@ -84,7 +84,7 @@ CInteger).
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-|       |            |                   |               |              |           |                |            | 
+|       |            |                   |               |              |           |                |            |
 
 # Invariants
 

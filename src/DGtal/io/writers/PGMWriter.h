@@ -76,7 +76,7 @@ namespace DGtal
    * Image image(a,b);
    * ... //Do something in image
    * PGMWriter<Image>::exportPPM("export.pgm",image);
-   * 
+   *
    * @endcode
    *
    * @tparam TImage the Image type.
@@ -91,43 +91,43 @@ namespace DGtal
     typedef TImage Image;
     typedef typename TImage::Value Value;
     typedef TFunctor Functor;
-    
-    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, Value, unsigned char> )) ;    
-    
-    BOOST_STATIC_ASSERT( (TImage::Domain::dimension == 2) || 
+
+    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, Value, unsigned char> )) ;
+
+    BOOST_STATIC_ASSERT( (TImage::Domain::dimension == 2) ||
        (TImage::Domain::dimension == 3));
 
-    /** 
-     * Export an Image with PGM format. 
-     * 
+    /**
+     * Export an Image with PGM format.
+     *
      * @param filename name of the output file
      * @param aImage the image to export
      * @param aFunctor  functor used to cast image values
-     * @param saveASCII used to save image with ASCII pixel value and with white space. 
-     *        (default= false since ASCII mode is not efficient).     
+     * @param saveASCII used to save image with ASCII pixel value and with white space.
+     *        (default= false since ASCII mode is not efficient).
      * @param topbotomOrder 'true' if the image scan should start from the top.
-     * 
+     *
      * @return true if no errors occur.
      */
-    static bool exportPGM(const std::string & filename, const Image &aImage, 
-			  const Functor & aFunctor = Functor(),  
+    static bool exportPGM(const std::string & filename, const Image &aImage,
+			  const Functor & aFunctor = Functor(),
 			  bool saveASCII=false, bool topbotomOrder=true);
-  
 
-    /** 
+
+    /**
      * Export an Image with PGM3D format.
-     * 
+     *
      * @param filename name of the output file
      * @param aImage the image to export
      * @param aFunctor  functor used to cast image values
-     * @param saveASCII used to save image with ASCII pixel value and with white space. 
-     *        (default= false since ASCII mode is not efficient).     
-     * 
+     * @param saveASCII used to save image with ASCII pixel value and with white space.
+     *        (default= false since ASCII mode is not efficient).
+     *
      * @return true if no errors occur.
      */
-    static bool exportPGM3D(const std::string & filename, const Image &aImage, 
+    static bool exportPGM3D(const std::string & filename, const Image &aImage,
 			    const Functor & aFunctor = Functor(), bool saveASCII=false);
-    
+
   };
 }//namespace
 

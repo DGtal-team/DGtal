@@ -28,7 +28,7 @@
  */
 
 /**
-   This example shows the basic usage of a naive 3D DSS recognition. 
+   This example shows the basic usage of a naive 3D DSS recognition.
 
 @see \ref moduleArithDSSReco
 
@@ -55,18 +55,18 @@ using namespace DGtal;
 int main()
 {
   using namespace Z3i;
-  
+
   //! [Naive3DDSSComputerStandardCtor]
   // Container of digital points
   typedef std::vector<Z3::Point> Container;
   // Iterator on the container
   typedef Container::const_iterator ConstIterator;
   // Naive3DDSS computer
-  typedef Naive3DDSSComputer< ConstIterator, int, 8 > DSSComputer;  
+  typedef Naive3DDSSComputer< ConstIterator, int, 8 > DSSComputer;
   // Construction of the computer
-  DSSComputer theDSSComputer;    
+  DSSComputer theDSSComputer;
   //! [Naive3DDSSComputerStandardCtor]
-  
+
   // Input points
   Container contour;
   contour.push_back(Z3::Point(18,25,18));
@@ -80,33 +80,33 @@ int main()
   contour.push_back(Z3::Point(10,25,26));
   contour.push_back(Z3::Point(9,25,27));
   contour.push_back(Z3::Point(8,25,28));
-  
+
   //! [Naive3DDSSComputerStandardExtension]
   // Add points while it is possible
   theDSSComputer.init( contour.begin() );
   while ( ( theDSSComputer.end() != contour.end() ) &&
     ( theDSSComputer.extendFront() ) ) {}
     //! [Naive3DDSSComputerStandardExtension]
-    
+
   // Trace to the standard output
   theDSSComputer.selfDisplay( cout );
-  
+
   //! [Naive3DDSSComputerStandardPrimitiveValid]
-  theDSSComputer.validArithmeticalDSS2d( 0 );  
+  theDSSComputer.validArithmeticalDSS2d( 0 );
   //! [Naive3DDSSComputerStandardPrimitiveValid]
-  
+
   //! [Naive3DDSSComputerStandardPrimitive]
-  DSSComputer::ArithmeticalDSSComputer2d theDSS = theDSSComputer.arithmeticalDSS2d( 0 );  
+  DSSComputer::ArithmeticalDSSComputer2d theDSS = theDSSComputer.arithmeticalDSS2d( 0 );
   //! [Naive3DDSSComputerStandardPrimitive]
-  
-  
+
+
   //! [Naive3DDSSComputerStandardParams]
   DSSComputer::Point3d directionZ3;
   DSSComputer::PointR3d intercept;
-  DSSComputer::PointR3d thikness;
-  theDSSComputer.getParameters ( directionZ3, intercept, thikness );
+  DSSComputer::PointR3d thickness;
+  theDSSComputer.getParameters ( directionZ3, intercept, thickness );
   //! [Naive3DDSSComputerStandardParams]
-  
+
   return 1;
 }
 //                                                                           //

@@ -93,10 +93,10 @@ makeRandomLatticePointsFromDirVectors( int nb, const vector< Point>& V )
 SCENARIO( "GenericLatticeConvexHull< ConvexHullIntegralKernel< 2 > > unit tests", "[genquickhull][integral_kernel][2d]" )
 {
   typedef GenericLatticeConvexHull< 2, int > CvxHull;
-  typedef SpaceND< 2, int >                Space;      
+  typedef SpaceND< 2, int >                Space;
   typedef Space::Point                     Point;
 
-  
+
   GIVEN( "Given a set { } " ) {
     std::vector<Point> V = { };
     CvxHull hull;
@@ -150,7 +150,7 @@ SCENARIO( "GenericLatticeConvexHull< ConvexHullIntegralKernel< 2 > > unit tests"
 SCENARIO( "GenericLatticeConvexHull< ConvexHullIntegralKernel< 3 > > unit tests", "[genquickhull][integral_kernel][3d]" )
 {
   typedef GenericLatticeConvexHull< 3, int > CvxHull;
-  typedef SpaceND< 3, int >                Space;      
+  typedef SpaceND< 3, int >                Space;
   typedef Space::Point                     Point;
 
   std::vector< Point > V1 = { Point{ 5,-2, 1 } };
@@ -159,7 +159,7 @@ SCENARIO( "GenericLatticeConvexHull< ConvexHullIntegralKernel< 3 > > unit tests"
   std::vector< Point > X2 = makeRandomLatticePointsFromDirVectors( 20, V2 );
   std::vector< Point > V3 = { Point{ 5,-2, 1 }, Point{ -3, 4, 2 }, Point{ 1, -7, 11 } };
   std::vector< Point > X3 = makeRandomLatticePointsFromDirVectors( 20, V3 );
-  
+
   GIVEN( "Given a 1-d lattice set in Z3 " ) {
     CvxHull hull;
     bool ok = hull.compute( X1 );

@@ -77,9 +77,9 @@ namespace DGtal
      @tparam TSpace an arbitrary 2-dimensional model of CSpace.
      @tparam TSequence a model of boost::Sequence whose elements are points (TSpace::Point). Default is list of points.
    */
-  template < typename TSpace, 
+  template < typename TSpace,
              typename TSequence = std::list< typename TSpace::Point > >
-  class LatticePolytope2D 
+  class LatticePolytope2D
   {
     BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 2 ));
@@ -94,7 +94,7 @@ namespace DGtal
     typedef typename Space::Point Point;
     typedef typename Space::Vector Vector;
     typedef IntegerComputer<Integer> MyIntegerComputer;
-    typedef HyperRectDomain< Space > Domain; 
+    typedef HyperRectDomain< Space > Domain;
     typedef ClosedIntegerHalfPlane< Space > HalfSpace;
 
     typedef typename ClockwiseVertexSequence::value_type value_type;
@@ -115,7 +115,7 @@ namespace DGtal
     // The sequence must contain points.
     BOOST_STATIC_ASSERT
     (( concepts::ConceptUtils::SameType< Value, Point >::value ));
-    
+
     // Point2I and Point should be the same type.
     typedef typename MyIntegerComputer::Point2I Point2I;
     typedef typename MyIntegerComputer::Vector2I Vector2I;
@@ -288,14 +288,14 @@ namespace DGtal
      * @see centroid( const Integer & ) const
      */
     Point3I centroid() const;
-    
+
     /**
        This form is faster than centroid if you have already computed the area.
 
        if the area of this polygon is not 0, computes centroid, else,
        if the polygon is reduced to 2 points, computes the middle of
        the straight line segment, else returns the point itself.
-     
+
        The centroid is a 2D rational point but it is represented as a
        3D integer point (a/d,b/d) corresponds to (a,b,d).
 
@@ -316,14 +316,14 @@ namespace DGtal
 
     /**
        @return the exact number of digital points in the polygon
-       interior. 
+       interior.
 
-       Calls numberBoundaryPoints and twiceArea. Uses Pick's formula. 
+       Calls numberBoundaryPoints and twiceArea. Uses Pick's formula.
 
        NB: complexity in O(n log(D) ), where n is the number of vertices.
     */
     Integer numberInteriorPoints() const;
- 
+
     // ----------------------- halfspace services -------------------------------
   public:
 
@@ -345,12 +345,12 @@ namespace DGtal
 
        @return the couple (number of vertices that are in \a hs, number of vertices).
      */
-    SizeCouple findCut( Iterator & it_next_is_outside, Iterator & it_next_is_inside, 
+    SizeCouple findCut( Iterator & it_next_is_outside, Iterator & it_next_is_inside,
                         const HalfSpace & hs );
 
     /**
        Cuts the lattice polytope with the given half-space constraint.
-       
+
        @param hs any half-space constraint.
        @return 'true' if the polygon was modified, 'false' otherwise.
 
@@ -375,7 +375,7 @@ namespace DGtal
        Computes the constraint of the form N.P<=c whose supporting
        line passes through A and B such that the point \a inP
        satisfies the constraint.
-       
+
        @param A any point.
        @param B any point different from A.
        @param inP any point not on the straight line (AB).
@@ -401,7 +401,7 @@ namespace DGtal
     void getIncludedDigitalPoints( DigitalSet & aSet ) const;
 
     // ----------------------- Helper methods ----------------------------------
-    
+
     /**
        Given a point \a inPt on the boundary of \a hs1, computes the
        closest integer points along the boundary of \a hs1 that are
@@ -415,7 +415,7 @@ namespace DGtal
        between \a inPt and \a outPt.
 
        @param inPt (in/out) as input, a point on \a hs1, as output, a
-       point on \a hs1 satisfying \a hs2. @pre \a inPt must belong to \a hs1.
+       point on \a hs1 satisfying \a hs2. @pre \a inPt  must belong to \a hs1.
 
        @param outPt (returns) a point on \a hs1 not satisfying \a hs2.
 
@@ -426,7 +426,7 @@ namespace DGtal
        exact. In this case, outPt is equal to inPt and is at the
        intersection of the two half-space boundaries.
      */
-    bool getFirstPointsOfHull( Vector & v, 
+    bool getFirstPointsOfHull( Vector & v,
                                Point & inPt, // must belong to hs1.
                                Point & outPt,
                                const HalfSpace & hs1,
@@ -438,40 +438,40 @@ namespace DGtal
        down, along the constraint N2.p <= c2 while the vertices
        satisfy the constraint N3.p <= c3. The vertices of the two
        borders are stored at the end of inPts and outPts.
-       
+
        @param inPts (in, out) as input, contains the first point, as
        output the sequence of points satisfying \a hs2 and \a hs3.
-       
+
        @param outPts (in, out) as input, contains the first point, as
        output the sequence of points not satisfying \a hs2 and satisfying
        \a hs3.
-       
+
        @param BV the Bezout vector of the vector between inPts[ 0 ] and outPts[ 0 ].
-       
+
        @param hs2 the half-space that is approached by the two sequences of points.
        @param hs3 the limiting half-space which defines the bounds of
        the approximation.
     */
     void getAllPointsOfHull( std::vector<Point> & inPts,
                              std::vector<Point> & outPts,
-                             const Vector & BV, 
+                             const Vector & BV,
                              const HalfSpace & hs2,
                              const HalfSpace & hs3 ) const;
 
     /**
        Compute the convex hull of grid points satisfying the
        constraints N1.P<=c1, N2.P<=c2 and N3.P>=c3.
-       
+
        N2.P<=c2 corresponds to the cut two parts of computation: from
        constraint 1 to constraint 3 and from constraint 3 to
        constraint 1.
-       
-       The computed vertices are outputed with the output iterator @a itOut.
+
+       The computed vertices are outputted with the output iterator @a itOut.
 
        @a pointRefC1 and @a pointRefC3 corresponds to grid point lying on
        the supporting lines of C1 and of C3 resp.
-       
-     
+
+
        NB: the method also computes grid point satisfying N1.P<=c1 and
        N3.P>=c3 but not satisfying N2.P<=c2. The algorithm uses
        these points that's why they appear in the code.
@@ -487,7 +487,7 @@ namespace DGtal
     */
     template <typename OutputIterator>
     OutputIterator computeConvexHullBorder( OutputIterator itOut,
-                                            const Point & pointRefC1, 
+                                            const Point & pointRefC1,
                                             const Point & pointRefC3,
                                             const HalfSpace & hs1,
                                             const HalfSpace & hs2,
@@ -520,13 +520,13 @@ namespace DGtal
     std::string className() const;
 
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
     // The (circular) sequence of vertices along the lattice polytope.
     // The vertices are ordered \b clockwise.
     ClockwiseVertexSequence myVertices;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     /// A utility object to perform computation on integers. Need not
     /// to be copied when cloning this object. Avoids many dynamic
@@ -554,7 +554,7 @@ namespace DGtal
    */
   template <typename TSpace, typename TSequence>
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
                const LatticePolytope2D<TSpace,TSequence> & object );
 
 } // namespace DGtal

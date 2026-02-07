@@ -55,8 +55,8 @@ TEST_CASE( "Testing WindingNumbersShape" )
     {
       BOOST_CONCEPT_ASSERT( (DGtal::concepts::CEuclideanOrientedShape<WNShape>) );
     }
-  
-  SECTION("Simple testof the API")
+
+  SECTION("Simple test of the API")
   {
     Eigen::MatrixXd points(4,3);
     points << 0,0,0,
@@ -83,7 +83,7 @@ TEST_CASE( "Testing WindingNumbersShape" )
     auto ori2 = wnshape.orientation(q);
     REQUIRE( ori2 == DGtal::INSIDE);
   }
-    
+
  SECTION("Tesing with the GaussDigitizer")
  {
      Eigen::MatrixXd points(4,3);

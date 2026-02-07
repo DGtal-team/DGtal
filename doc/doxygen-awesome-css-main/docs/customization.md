@@ -91,7 +91,7 @@ If you miss a configuration option or find a bug, please consider [opening an is
 The theme overrides most colors with the `--primary-color-*` variables.
 
 But there is a few small images and graphics that the theme cannot adjust or replace. To make these blend in better with
-the rest, it is recommended to adjust the [doxygen color settings](https://www.doxygen.nl/manual/customize.html#minor_tweaks_colors) 
+the rest, it is recommended to adjust the [doxygen color settings](https://www.doxygen.nl/manual/customize.html#minor_tweaks_colors)
 to something that matches the chosen color-scheme.
 
 For the default color-scheme, these values work out quite well:

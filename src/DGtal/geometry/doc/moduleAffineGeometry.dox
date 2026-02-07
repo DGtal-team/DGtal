@@ -1,11 +1,11 @@
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  */
 namespace DGtal {
 
 /**
-   
+
 @page moduleAffineGeometry Affine geometry of points and vectors
 
 @writers Jacques-Olivier Lachaud
@@ -127,7 +127,7 @@ numbers (default tolerance: between -1e-12 and 1e-12 is zero).
 This example (similar to exampleAffineGeometry.cpp) shows how to
 process the affine geometry of a set of points that is not full
 dimensional.
-  
+
 @code
 #include "DGtal/base/Common.h"
 #include "DGtal/kernel/PointVector.h"
@@ -168,12 +168,12 @@ int main()
   Point n = functions::computeOrthogonalVectorToBasis( B );
   std::cout << "Orthogonal(X) =: n = " << n << "\n";
   Point ns = functions::computeSimplifiedVector( n );
-  std::cout << "Orthogonal(X)/gcd =: ns = " << ns << "\n";  
+  std::cout << "Orthogonal(X)/gcd =: ns = " << ns << "\n";
   for ( auto i = 0; i < B.size(); i++ )
     std::cout << "B[" << i << "] . ns = " << B[i] << " . " << ns
               << " == " << B[i].dot(ns) << " (should be 0)\n";
 }
-@endcode  
+@endcode
 
 outputs
 \verbatim
@@ -221,7 +221,7 @@ The same services are provided as AffineGeometry static methods:
   - AffineGeometry::affineDimension( const std::vector<TInputPoint>&
     X, const double tolerance ) Given a range of points \a X, returns
     the affine dimension of its spanned affine subspace.
-  
+
   - AffineGeometry::affineSubset( const std::vector<TInputPoint>& X,
     const double tolerance ) Given a range of points \a X, returns a
     subset of these points that form an affine basis of \a
@@ -234,7 +234,7 @@ The same services are provided as AffineGeometry static methods:
     subset of these points that form an affine basis of \a
     X[I]. Equivalently it is a simplex whose affine space spans all
     the points of \a X[I].
-                  
+
 * <b> affine basis and independent vectors </b>
 
   The computed bases are in row echelon form (see <a
@@ -328,7 +328,7 @@ AffineBasis::Type.
     going through \a origin and orthogonal to the lattice vector \a
     normal.
 
-    
+
 * <b> Standard services </b>
 
   - AffineBasis::dimension() returns the dimension of the spanned affine subspace.
@@ -339,7 +339,7 @@ AffineBasis::Type.
 
   - AffineBasis::isParallel  returns 'true' iff the
     vectors \a w lies in this affine space.
-  
+
   - AffineBasis::isOnAffineSpace returns 'true' iff the
     point \a p lies in this affine space.
 
@@ -349,7 +349,7 @@ AffineBasis::Type.
     (d,L,R) \f$, such that: \f$ d (p - o) = L \cdot B + R \f$, where R
     is independent from this basis \f$ B=(b_0, \ldots, b_i) \f$, with
     origin \a o. \a d is a scalar, \f$ L/d \f$ are the rational
-    coordinates of \f$ (p-o) \f$ in the basis, \a R is the remainer
+    coordinates of \f$ (p-o) \f$ in the basis, \a R is the remainder
     vector. Note that \a R is not null whenever \a p does not belong
     to the affine space.
 

@@ -20,7 +20,7 @@
    More generally, you may also want to look at
    - the STL main page: http://www.sgi.com/tech/stl/index.html
    - the BOOST concept check main page http://www.boost.org/libs/concept_check/concept_check.htm
-   - the BOOST iterator library main page http://www.boost.org/doc/libs/1_52_0/libs/iterator/doc/index.html 
+   - the BOOST iterator library main page http://www.boost.org/doc/libs/1_52_0/libs/iterator/doc/index.html
    - the BOOST graph library main page http://www.boost.org/doc/libs/1_52_0/libs/graph/doc/index.html
    - the BOOST graph concepts main page http://www.boost.org/doc/libs/1_52_0/libs/graph/doc/graph_concepts.html
    - the BOOST type traits main page http://www.boost.org/doc/libs/1_52_0/libs/type_traits/doc/html/index.html
@@ -67,7 +67,7 @@ namespace boost {
 
   /// Go to http://www.sgi.com/tech/stl/Generator.html
   template <class Func, class Return>
-  struct Generator{};  
+  struct Generator{};
   /// Go to http://www.sgi.com/tech/stl/UnaryFunction.html
   template <class Func, class Return, class Arg>
   struct UnaryFunction{};
@@ -183,4 +183,3 @@ namespace boost {
   struct is_unsigned {};
 
 }
-

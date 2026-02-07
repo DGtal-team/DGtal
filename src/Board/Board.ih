@@ -3,8 +3,8 @@
  * @file
  * @author Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb>
  * @date   Sat Aug 18 2007
- * 
- * @brief Definition of inline methods of the Board class.  
+ *
+ * @brief Definition of inline methods of the Board class.
  */
 /*
  * \@copyright This File is part of the Board library which is
@@ -36,7 +36,7 @@ Board::setLineCap( Shape::LineCap cap )
   _state.lineCap = cap;
   return *this;
 }
-  
+
 inline
 Board &
 Board::setLineJoin( Shape::LineJoin join )
@@ -49,7 +49,7 @@ inline
 void
 Board::fillGouraudTriangle( const double x1, const double y1,
           const DGtal::Color & color1,
-          const double x2, const double y2, 
+          const double x2, const double y2,
           const DGtal::Color & color2,
           const double x3, const double y3,
           const DGtal::Color & color3,
@@ -59,14 +59,14 @@ Board::fillGouraudTriangle( const double x1, const double y1,
   fillGouraudTriangle( Point( x1, y1 ), color1,
            Point( x2, y2 ), color2,
            Point( x3, y3 ), color3,
-           divisions, depthValue );           
+           divisions, depthValue );
 }
 
 inline
 void
 Board::fillGouraudTriangle( const double x1, const double y1,
           const float brightness1,
-          const double x2, const double y2, 
+          const double x2, const double y2,
           const float brightness2,
           const double x3, const double y3,
           const float brightness3,

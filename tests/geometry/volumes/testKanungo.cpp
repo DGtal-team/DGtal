@@ -51,21 +51,21 @@ bool testKanungo2D()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing 2DNoise ..." );
-  
+
   Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(128,128));
-  
+
   Z2i::DigitalSet set(domain);
-  
+
   Shapes<Z2i::Domain>::addNorm2Ball( set , Z2i::Point(64,64), 30);
-  
+
   Board2D board;
   board << domain << set;
   board.saveSVG("input-set-kanungo.svg");
-  
+
   board.clear();
-  
+
   //Noisification
   KanungoNoise<Z2i::DigitalSet, Z2i::Domain> nosifiedObject(set,domain,0.5);
   board << domain ;
@@ -73,8 +73,8 @@ bool testKanungo2D()
     if (nosifiedObject( * it ))
       board << *it;
   board.saveSVG("output-set-kanungo-0.5.svg");
-  
-  
+
+
   board.clear();
   //Noisification
   KanungoNoise<Z2i::DigitalSet, Z2i::Domain> nosifiedObject2(set,domain,0.1);
@@ -83,13 +83,13 @@ bool testKanungo2D()
     if (nosifiedObject2( * it ))
       board << *it;
   board.saveSVG("output-set-kanungo-0.1.svg");
-  
+
   nbok ++;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 

@@ -11,7 +11,7 @@
  * This file is part of the DGtal library.
  */
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  * Do not forget to add an entry in src/DGtal/base/Config.h.in !
  */
@@ -21,7 +21,7 @@ namespace DGtal {
 @page packageTopologyConcepts2 Topology Concepts and Models (part II, digital surfaces, surfel predicates)
 @writers Jacques-Olivier Lachaud
 
- @dot   
+ @dot
 digraph GTOPOLOGY {
     rankdir= BT
 
@@ -34,7 +34,7 @@ digraph GTOPOLOGY {
                  node [style=filled,color=white];
                  label="base";
 
-                 CPredicate [ label="CPredicate" URL="\ref concepts::CPredicate" ]; 
+                 CPredicate [ label="CPredicate" URL="\ref concepts::CPredicate" ];
         }
         subgraph cluster_2 {
                  style=filled;
@@ -60,7 +60,7 @@ digraph GTOPOLOGY {
                  node [style=filled,color=white];
                  label="kernel";
 
-                 CDigitalSet [ label="CDigitalSet" URL="\ref concepts::CDigitalSet" ]; 
+                 CDigitalSet [ label="CDigitalSet" URL="\ref concepts::CDigitalSet" ];
         }
         subgraph cluster_5 {
                  style=filled;
@@ -71,14 +71,14 @@ digraph GTOPOLOGY {
                  boost_CopyConstructible [ label="boost::CopyConstructible" URL="\ref boost::CopyConstructible" ];
         }
     }
-  
+
     subgraph cluster_0 {
         style=filled;
         color=lightgrey;
         node [style=filled,color=white];
         label="topology (main concepts)";
 
-        CDigitalSurfaceContainer [ label="CDigitalSurfaceContainer" URL="\ref concepts::CDigitalSurfaceContainer" ]; 
+        CDigitalSurfaceContainer [ label="CDigitalSurfaceContainer" URL="\ref concepts::CDigitalSurfaceContainer" ];
         CDigitalSurfaceTracker [ label="CDigitalSurfaceTracker" URL="\ref concepts::CDigitalSurfaceTracker" ];
         CSurfelPredicate [ label="CSurfelPredicate" URL="\ref concepts::CSurfelPredicate" ];
         CCellularGridSpaceND [ label="CCellularGridSpaceND" URL="\ref concepts::CCellularGridSpaceND" ];
@@ -89,7 +89,7 @@ digraph GTOPOLOGY {
     CDigitalSurfaceContainer -> CCellularGridSpaceND [label="use",style=dashed];
     CUndirectedSimpleGraph -> CUndirectedSimpleLocalGraph;
     CSurfelPredicate -> CPredicate;
-  
+
     subgraph cluster_models {
         style=filled;
         color="#ccffcc";
@@ -104,7 +104,7 @@ digraph GTOPOLOGY {
 
             DigitalSurface [ label="DigitalSurface" URL="\ref DigitalSurface" ];
             IndexedDigitalSurface [ label="IndexedDigitalSurface" URL="\ref IndexedDigitalSurface" ] ;
-        }   
+        }
 
         subgraph cluster_models_1 {
             style=filled;

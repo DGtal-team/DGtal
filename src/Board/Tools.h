@@ -3,8 +3,8 @@
  * @file   Tools.h
  * @author Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb>
  * @date   Nov 2008
- * 
- * @brief 
+ *
+ * @brief
  */
 /*
  * \@copyright This File is part of the Board library which is
@@ -24,32 +24,32 @@ namespace LibBoard {
 
   /**
    * A "prefixable" message stream
-   * 
+   *
    */
   class MessageStream {
   public:
-    
+
     inline MessageStream( std::ostream & out, const char * prefix  );
-    
-    template<typename T> 
+
+    template<typename T>
     inline MessageStream operator<<( const T & v );
-    
+
   private:
-    std::ostream & _out;    
+    std::ostream & _out;
     const char * _prefix;
   };
-  
+
   extern MessageStream error;
   extern MessageStream warning;
   extern MessageStream notice;
-  
+
   MessageStream::MessageStream( std::ostream & out, const char * prefix )
     : _out( out ),
       _prefix( prefix )
   {
   }
 
-  template<typename T> 
+  template<typename T>
   MessageStream MessageStream::operator<<( const T & v )
   {
     if ( _prefix )
@@ -67,11 +67,10 @@ namespace LibBoard {
 #endif // defined( _MSC_VER )
 
 inline void secured_strncpy( char * dst, const char * src, size_t count );
-inline void secured_ctime( char * str, const time_t * t, size_t count ); 
+inline void secured_ctime( char * str, const time_t * t, size_t count );
 
 }
 
 #include "Tools.ih"
 
 #endif /* _SHAPE_H_ */
-

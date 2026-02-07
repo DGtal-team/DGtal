@@ -71,7 +71,7 @@ operator=( const GaussDigitizer & other )
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TEuclideanShape>
 inline
-void 
+void
 DGtal::GaussDigitizer<TSpace,TEuclideanShape>
 ::attach( ConstAlias<EuclideanShape> shape )
 {
@@ -80,9 +80,9 @@ DGtal::GaussDigitizer<TSpace,TEuclideanShape>
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TEuclideanShape>
 inline
-void 
+void
 DGtal::GaussDigitizer<TSpace,TEuclideanShape>
-::init( const RealPoint & xLow, const RealPoint & xUp, 
+::init( const RealPoint & xLow, const RealPoint & xUp,
   typename RealVector::Component gridStep )
 {
   myPointEmbedder.init( gridStep );
@@ -92,9 +92,9 @@ DGtal::GaussDigitizer<TSpace,TEuclideanShape>
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TEuclideanShape>
 inline
-void 
+void
 DGtal::GaussDigitizer<TSpace,TEuclideanShape>
-::init( const RealPoint & xLow, const RealPoint & xUp, 
+::init( const RealPoint & xLow, const RealPoint & xUp,
   const RealVector & aGridSteps )
 {
   myPointEmbedder.init( aGridSteps );
@@ -120,7 +120,7 @@ DGtal::GaussDigitizer<TSpace,TEuclideanShape>
 {
   return Domain( getLowerBound(), getUpperBound() );
 }
- 
+
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TEuclideanShape>
 inline
@@ -241,7 +241,7 @@ DGtal::GaussDigitizer<TSpace,TEuclideanShape>::isValid() const
 template <typename TSpace, typename TEuclideanShape>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
       const GaussDigitizer<TSpace,TEuclideanShape> & object )
 {
   object.selfDisplay( out );
@@ -250,5 +250,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

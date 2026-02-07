@@ -56,27 +56,27 @@ Description of \b concept '\b CImplicitFunction' <p>
 
 @brief Aim: Describes any function of the form f(x), where x is
      some real point in the given space, and f(x) is some value.
-     
+
  # Associated types
      - RealPoint: the type for the domain
      - Value: the type for the range
 
  # Notation
      - \c X : A type that is a model of CImplicitFunction
-     - \c f : objet of type X
-     - \c a : objet of type RealPoint
-    
+     - \c f : object of type X
+     - \c a : object of type RealPoint
+
  # Definitions
-    
+
  # Valid expressions and semantics
-     
+
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
 |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
 |Function call  | \c f( \c a )|                    | Value       |                  | Evaluates the function \c f at point \c a | | |
 
 
  # Invariants
-    
+
  # Models
      ImplicitBall, ImplicitPolynomial3Shape, ImplicitHyperCube, ImplicitRoundedHyperCube, ImplicitNorm1Ball
 
@@ -85,8 +85,8 @@ Description of \b concept '\b CImplicitFunction' <p>
 
 @tparam T the type that should be a model of CImplicitFunction.
    */
-  template <typename T> 
-  struct CImplicitFunction 
+  template <typename T>
+  struct CImplicitFunction
   {
     // ----------------------- Concept checks ------------------------------
   public:
@@ -95,9 +95,9 @@ Description of \b concept '\b CImplicitFunction' <p>
     typedef typename T::Value Value;
     // possibly check these types so as to satisfy a concept with
     BOOST_CONCEPT_ASSERT(( boost::UnaryFunction< T, Value, RealPoint > ));
-    
+
   }; // end of concept CImplicitFunction
-  } 
+  }
 } // namespace DGtal
 
 //                                                                           //

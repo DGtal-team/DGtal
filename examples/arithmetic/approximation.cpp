@@ -28,7 +28,7 @@ z = 4 / 3 =~ 1.333333333333333
 z = 9523805234895 / 7142853926171 =~ 1.33333333333338
 z = 9523805234895 / 7142853926171
 
-$ ./examples/arithmetic/approximation 3.141592654 
+$ ./examples/arithmetic/approximation 3.141592654
 z = 3 / 1 =~ 3
 z = 22 / 7 =~ 3.142857142857143
 z = 333 / 106 =~ 3.141509433962264
@@ -113,4 +113,3 @@ int main( int argc, char** argv )
   //! [approximation-process]
   return 0;
 }
-

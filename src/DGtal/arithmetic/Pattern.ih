@@ -206,14 +206,14 @@ DGtal::Pattern<TFraction>::
 U( Quotient k ) const
 {
   ASSERT( ! slope().null() );
-  if ( k == NumberTraits<Quotient>::ZERO ) 
+  if ( k == NumberTraits<Quotient>::ZERO )
     return Point2I( NumberTraits<Integer>::ZERO,
                     NumberTraits<Integer>::ZERO );
-  else if ( k == NumberTraits<Quotient>::ONE ) 
-    return Point2I( slope().q(), 
+  else if ( k == NumberTraits<Quotient>::ONE )
+    return Point2I( slope().q(),
                     slope().p() );
-  else 
-    return Point2I( slope().q() * ((Integer) k ), 
+  else
+    return Point2I( slope().q() * ((Integer) k ),
                     slope().p() * ((Integer) k) );
 }
 //-----------------------------------------------------------------------------
@@ -227,7 +227,7 @@ L( Quotient k ) const
   Point2I pL( NumberTraits<Integer>::ONE,
              -NumberTraits<Integer>::ONE ); // (1,-1)
   pL += bezout();
-  if ( k == NumberTraits<Quotient>::ZERO ) 
+  if ( k == NumberTraits<Quotient>::ZERO )
     return pL;
   else
     return pL + U( k );
@@ -239,8 +239,8 @@ typename DGtal::Pattern<TFraction>::Vector2I
 DGtal::Pattern<TFraction>::
 bezout() const
 {
-  return slope().odd() 
-    ? U( 1 ) - previousPattern().U( 1 ) 
+  return slope().odd()
+    ? U( 1 ) - previousPattern().U( 1 )
     : previousPattern().U( 1 );
 }
 //-----------------------------------------------------------------------------
@@ -259,10 +259,10 @@ DGtal::Pattern<TFraction>
 DGtal::Pattern<TFraction>::
 previousPattern() const
 {
-  ASSERT( ( ! slope().null() ) ); 
+  ASSERT( ( ! slope().null() ) );
   // && ( slope().p() != NumberTraits<Quotient>::ZERO ) );
   return Self( slope().previousPartial() );
-    
+
   // if ( slope().k() > NumberTraits<Quotient>::ZERO )
   //   return Self( slope().previousPartial() );
   // else // if ( slope().k() == NumberTraits<Quotient>::ZERO )
@@ -283,14 +283,14 @@ getSmallestCoveringSubpattern( Pattern & subpattern,
 {
   bool different = false;
   Integer l = length();
-  
+
   ASSERT( ( 0 <= posA ) && ( posA < posB ) && ( posB <= l ) );
   if ( slope().p() == 0 || slope().q() == 0 ) // trivial pattern
     {
       ASSERT( posA == 0 && posB == 1 );
       subpattern = *this;
       nb = 1;
-      startPos = Vector2I( NumberTraits<Integer>::ZERO, 
+      startPos = Vector2I( NumberTraits<Integer>::ZERO,
                            NumberTraits<Integer>::ZERO );
       different = false;
     }
@@ -300,9 +300,9 @@ getSmallestCoveringSubpattern( Pattern & subpattern,
       Integer prevL = prevP.length();
       Integer k1 = posA / prevL;
       // Integer r1 = posA % prevL;
-      if ( posB > slope().u() * prevL )  
+      if ( posB > slope().u() * prevL )
         { // B at extremity in the E( z_{n-2} ) part
-          nb = (int32_t) 
+          nb = (int32_t)
             ( NumberTraits<Quotient>::castToInt64_t( slope().u() )
               - NumberTraits<Integer>::castToInt64_t( k1 ) ); // number of E( z_{n-1} ) from A.
           // subpattern is E( z_{n-1} )^nb E( z_{n-2} )
@@ -314,7 +314,7 @@ getSmallestCoveringSubpattern( Pattern & subpattern,
       else
         { // B within some pattern E( z_{n-1} )
           Integer k2 = ( posB + prevL - 1 ) / prevL;
-          nb = (int32_t) NumberTraits<Integer>::castToInt64_t( k2 - k1 ); 
+          nb = (int32_t) NumberTraits<Integer>::castToInt64_t( k2 - k1 );
           ASSERT( nb > 0 );
           // subpattern is E( z_{n-1} )^nb
           subpattern = prevP;
@@ -328,12 +328,12 @@ getSmallestCoveringSubpattern( Pattern & subpattern,
       Integer prevL = prevP.length();
       Integer k1 = ( l - posB ) / prevL;
       // Integer r1 = ( l - posB ) % prevL;
-      if ( ( l - posA ) > slope().u() * prevL )  
+      if ( ( l - posA ) > slope().u() * prevL )
         { // A at extremity in the E( z_{n-2} ) part
-          nb = (int32_t) 
+          nb = (int32_t)
             ( NumberTraits<Quotient>::castToInt64_t( slope().u() )
               - NumberTraits<Integer>::castToInt64_t( k1 ) ); // number of E( z_{n-1} ) from B.
-          // subpattern is E( z_{n-2} ) E( z_{n-1} )^nb 
+          // subpattern is E( z_{n-2} ) E( z_{n-1} )^nb
           // slope().selfDisplay( std::cerr );
           // std::cerr << " nb=" << nb << " ";
           // slope().father( nb ).selfDisplay( std::cerr );
@@ -347,7 +347,7 @@ getSmallestCoveringSubpattern( Pattern & subpattern,
       else
         { // A within some pattern E( z_{n-1} )
           Integer k2 = ( l - posA + prevL - 1 ) / prevL;
-          nb = (int32_t) NumberTraits<Integer>::castToInt64_t( k2 - k1 ); 
+          nb = (int32_t) NumberTraits<Integer>::castToInt64_t( k2 - k1 );
           ASSERT( nb > 0 );
           // subpattern is E( z_{n-1} )^nb
           subpattern = prevP;
@@ -377,7 +377,7 @@ getGreatestIncludedSubpattern( Pattern & subpattern,
       ASSERT( posA == 0 && posB == 1 );
       subpattern = *this;
       nb = 1;
-      startPos = Vector2I( NumberTraits<Integer>::ZERO, 
+      startPos = Vector2I( NumberTraits<Integer>::ZERO,
                            NumberTraits<Integer>::ZERO );
       null_pattern = false;
     }
@@ -396,7 +396,7 @@ getGreatestIncludedSubpattern( Pattern & subpattern,
             }
           else
             { // subpattern is E( z_{n-1} )^nb E( z_{n-2} )
-              nb = (int32_t) 
+              nb = (int32_t)
                 ( NumberTraits<Quotient>::castToInt64_t( slope().u() )
                   - NumberTraits<Integer>::castToInt64_t( k1 ) ); // number of E( z_{n-1} ) from A.
               subpattern = Self( slope().father( nb ) );
@@ -408,7 +408,7 @@ getGreatestIncludedSubpattern( Pattern & subpattern,
       else
         { // B within some pattern E( z_{n-1} ) or strictly in E ( z_{n-2} )
           Integer k2 = posB / prevL;
-          nb = (int32_t) NumberTraits<Integer>::castToInt64_t( k2 - k1 ); 
+          nb = (int32_t) NumberTraits<Integer>::castToInt64_t( k2 - k1 );
           // subpattern is E( z_{n-1} )^nb or null
           if ( nb < 0 ) nb = 0;
           subpattern = nb == 0 ? Pattern() : prevP;
@@ -423,7 +423,7 @@ getGreatestIncludedSubpattern( Pattern & subpattern,
       Integer k1 = ( l - posB + prevL - 1 ) / prevL;
       if ( posA == 0 )
         { // A at left extremity of the E( z_{n-2} ) part
-          // subpattern is E( z_{n-2} ) E( z_{n-1} )^nb 
+          // subpattern is E( z_{n-2} ) E( z_{n-1} )^nb
           if ( ( l - posB ) > slope().u() * prevL )
             {
               subpattern = Fraction();
@@ -445,7 +445,7 @@ getGreatestIncludedSubpattern( Pattern & subpattern,
       else
         { // A within some pattern E( z_{n-1} ) or strictly in E ( z_{n-2} )
           Integer k2 = ( l - posA ) / prevL;
-          nb = (int32_t) NumberTraits<Integer>::castToInt64_t( k2 - k1 ); 
+          nb = (int32_t) NumberTraits<Integer>::castToInt64_t( k2 - k1 );
           // subpattern is E( z_{n-1} )^nb or null
           if ( nb < 0 ) nb = 0;
           subpattern = nb == 0 ? Pattern() : prevP;
@@ -495,7 +495,7 @@ DGtal::Pattern<TFraction>::isValid() const
 template <typename TFraction>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
                     const Pattern<TFraction> & object )
 {
   object.selfDisplay( out );
@@ -504,5 +504,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

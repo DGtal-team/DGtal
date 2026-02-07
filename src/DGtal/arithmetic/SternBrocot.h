@@ -80,7 +80,7 @@ namespace DGtal
     typedef TInteger Integer;
     typedef TQuotient Quotient;
     typedef SternBrocot<Integer,Quotient> Self;
-    
+
     BOOST_CONCEPT_ASSERT(( concepts::CInteger< Integer > ));
 
   public:
@@ -112,8 +112,8 @@ namespace DGtal
          @param descendant_right1 the node that is the right descendant or 0 (if none exist).
          @param inverse1 the node that is its inverse.
        */
-      Node( Integer p1, Integer q1, Quotient u1, Quotient k1, 
-	    Node* ascendant_left1, Node* ascendant_right1, 
+      Node( Integer p1, Integer q1, Quotient u1, Quotient k1,
+	    Node* ascendant_left1, Node* ascendant_right1,
 	    Node* descendant_left1, Node* descendant_right1,
 	    Node* inverse1 );
 
@@ -141,7 +141,7 @@ namespace DGtal
        @brief This fraction is a model of CPositiveIrreducibleFraction.
 
        It represents a positive irreducible fraction, i.e. some p/q
-       qith gcd(p,q)=1. It is an inner class of SternBrocot. This
+       with gcd(p,q)=1. It is an inner class of SternBrocot. This
        representation of a fraction is simply a pointer to the
        corresponding node in this tree.
     */
@@ -162,21 +162,21 @@ namespace DGtal
       typedef const value_type & const_reference;
 
     private:
-      Node* myNode; 
+      Node* myNode;
 
     public:
-      /** 
+      /**
           Any fraction p/q. Complexity is in \f$ \sum_i
           u_i \f$, where u_i are the partial quotients of p/q.
-          
+
           @param aP the numerator (>=0)
           @param aQ the denominator (>=0)
-          
+
           @param ancestor (optional) any ancestor of aP/aQ in the tree
           (for speed-up).
-          
+
           Construct the corresponding fraction in the Stern-Brocot tree.
-          
+
           NB: Complexity is bounded by \f$ 2 \sum_i u_i \f$, where u_i
           are the partial quotients of aP/aQ.
       */
@@ -217,9 +217,9 @@ namespace DGtal
       /// @return its right descendant (construct it if it does not exist yet).
       Fraction right() const;
       /// @return 'true' if it is an even fraction, i.e. its depth k() is even.
-      bool even() const; 
+      bool even() const;
       /// @return 'true' if it is an odd fraction, i.e. its depth k() is odd.
-      bool odd() const; 
+      bool odd() const;
       /**
 	 @return the father of this fraction in O(1), ie [u0,...,uk]
 	 => [u0,...,uk - 1]
@@ -268,7 +268,7 @@ namespace DGtal
          Useful to create output iterators, for instance with
 
          @code
-         typedef ... Fraction; 
+         typedef ... Fraction;
          Fraction f;
          std::back_insert_iterator<Fraction> itout = std::back_inserter( f );
          @endcode
@@ -286,7 +286,7 @@ namespace DGtal
          See push_back for creating output iterators.
 
          @param quotient the pair \f$(m,k+1)\f$.
-      */         
+      */
       void pushBack( const std::pair<Quotient, Quotient> & quotient );
 
       /**
@@ -296,7 +296,7 @@ namespace DGtal
 	 @param f1 (returns) the left part of the split.
 	 @param f2 (returns) the right part of the split.
       */
-      void getSplit( Fraction & f1, Fraction & f2 ) const; 
+      void getSplit( Fraction & f1, Fraction & f2 ) const;
 
       /**
 	 Berstel splitting formula, O(1) time complexity. This
@@ -309,8 +309,8 @@ namespace DGtal
 	 @param f2 (returns) the right part of the split (right pattern).
 	 @param nb2 (returns) the number of repetition of the right pattern
       */
-      void getSplitBerstel( Fraction & f1, Quotient & nb1, 
-			    Fraction & f2, Quotient & nb2 ) const; 
+      void getSplitBerstel( Fraction & f1, Quotient & nb1,
+			    Fraction & f2, Quotient & nb2 ) const;
 
       /**
 	 @param quotients (returns) the coefficients of the continued
@@ -371,7 +371,7 @@ namespace DGtal
 
       /**
          @return a const iterator pointing on the beginning of the sequence of quotients of this fraction.
-         NB: \f$ O(\sum_i u_i) \f$ operation. 
+         NB: \f$ O(\sum_i u_i) \f$ operation.
       */
       ConstIterator begin() const;
 
@@ -380,16 +380,16 @@ namespace DGtal
          NB: O(1) operation.
       */
       ConstIterator end() const;
-      
+
       /**
 	 @param g any fraction
 	 @return the median of 'this' and g
        */
 
       Fraction median(const Fraction & g) const;
-      
 
-      /** 
+
+      /**
        * Compute the fraction of smallest denominator strictly between
        * this fraction and other fraction. Assumes that "this" fraction is
        * smaller than "other" fraction.
@@ -398,10 +398,10 @@ namespace DGtal
        * NB: \f$ O(k) \f$ where \f$ k \f$ is the depth of the output fraction.
        */
       Fraction simplestFractionInBetween(const Fraction & other) const;
-	
+
     };
 
-  
+
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -422,7 +422,7 @@ namespace DGtal
     /** The fraction 1/0 */
     static Fraction oneOverZero();
 
-    /** 
+    /**
 	Any fraction p/q. Complexity is in \f$ \sum_i
 	u_i \f$, where u_i are the partial quotients of p/q.
 
@@ -431,7 +431,7 @@ namespace DGtal
 
 	@param ancestor (optional) any ancestor of p/q in the tree
 	(for speed-up).
-	
+
 	@return the corresponding fraction in the Stern-Brocot tree.
 
         NB: Complexity is bounded by \f$ 2 \sum_i u_i \f$, where u_i
@@ -459,9 +459,9 @@ namespace DGtal
     /// The total number of fractions in the current tree.
     Quotient nbFractions;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     /// Singleton class.
     static SternBrocot* singleton;
@@ -507,7 +507,7 @@ namespace DGtal
    */
   // template <typename TInteger, typename TQuotient>
   // std::ostream&
-  // operator<< ( std::ostream & out, 
+  // operator<< ( std::ostream & out,
   //              const typename SternBrocot<TInteger, TQuotient>::Fraction & object );
 
 } // namespace DGtal

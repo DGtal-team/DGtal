@@ -90,7 +90,7 @@ to be geometrically more meaningful.  For instance if \a S is a
 digitization of a smooth surface \a X, one may take for \b u a local
 average of the naive normals of \a X.
 
-The general theory was proposed by Lachaud, Romon and Thibert in 
+The general theory was proposed by Lachaud, Romon and Thibert in
 \cite lachaud:hal-02193774. It deals with piecewise \f$ C^{1,1} \f$
 surfaces, with piecewise \f$ C^1 \f$ corrected normal vector field.  A
 specialized version restricted to polygonal meshes equipped with a
@@ -140,7 +140,7 @@ Curvature measures formula per triangle/edge/vertex are provided in
 class NormalCycleFormula (for the curvatures measures induced by the
 Normal Cycle) and in class CorrectedNormalCurrentFormula (for the
 curvatures measures induced by corrected normal currents with
-interpolated corrected normal vector field). 
+interpolated corrected normal vector field).
 
 However one generally wishes to compute the measures over a mesh in a
 ball of given center and radius.  It is then more convenient to use
@@ -163,7 +163,7 @@ We will compute curvature measures onto a SurfaceMesh object. Here, we
 build a torus of big radius 3 and small radius 1, with a
 discretization of 20x20.
 
-\code 
+\code
 SM smesh = SMH::makeTorus( 3.0, 1.0, RealPoint { 0.0, 0.0, 0.0 }, 20, 20, 0,
                            SMH::NormalsType::NO_NORMALS );
 \endcode
@@ -190,7 +190,7 @@ ball radius of `R`:
 
 \snippet geometry/meshes/curvature-measures-nc-3d.cpp curvature-measures-estimations
 
-This is is the result for a measuring ball radius of 0.5 onto the torus shape. 
+This is is the result for a measuring ball radius of 0.5 onto the torus shape.
 \verbatim
 Expected mean curvatures: min=0.25 max=0.625
 Computed mean curvatures: min=0.189446 max=0.772277
@@ -242,13 +242,13 @@ We will compute curvature measures onto a SurfaceMesh object. Here, we
 build a torus of big radius 3 and small radius 1, with a
 discretization of 20x20.
 
-\code 
+\code
 SM smesh = SMH::makeTorus( 3.0, 1.0, RealPoint { 0.0, 0.0, 0.0 }, 20, 20, 0,
                            SMH::NormalsType::VERTEX_NORMALS );
 \endcode
 
 @warning It is necessary here to equip the mesh with normals, since the
-Corrected NormalCurrent needs a corrected vector field to compute curvatures. 
+Corrected NormalCurrent needs a corrected vector field to compute curvatures.
 
 Here we just provide the corrected normal vector field \f$ \mathbf{u}
 \f$ as a normal vector per vertex, the field is then linearly
@@ -340,7 +340,7 @@ Curvature estimates are displayed with a colormap [-0.625 ... 0
 \verbatim
 ./examples/geometry/meshes/curvature-measures-nc-3d lantern 20 20 0.5
 \endverbatim
-outputs 
+outputs
 \verbatim
 Expected mean curvatures: min=0.25 max=0.25
 Computed mean curvatures: min=0.795695 max=1.41211
@@ -449,7 +449,7 @@ The only difference in the above examples is the way the SurfaceMesh object is c
 
 \snippet geometry/meshes/obj-curvature-measures-icnc-3d.cpp curvature-measures-SurfaceMesh
 
-Remember that a SurfaceMesh object may represent a non-manifold polygonal surface. 
+Remember that a SurfaceMesh object may represent a non-manifold polygonal surface.
 
 Once the mesh is created, you just need to ensure that the SurfaceMesh
 object has a normal vector attached to each of its vertex. This can be
@@ -485,7 +485,7 @@ Corrected Normal Currents are well adapted to digital surface
 geometric analysis. Indeed, we can have good estimates of the normal
 vector field of a digital surface (see \ref ShortcutsGeometry), which
 will be used as the corrected normal vector field associated to
-the current. 
+the current.
 
 As examples of digital surfaces, we show how to estimate curvatures on
 a digitization of polynomial surfaces, then on the boundary of a voxel
@@ -636,7 +636,7 @@ We plot below accuracy as a function of the computation time (in ms).
 | II  Gaussian curvature  | 151374 | 0.0433595 | 0.00983477|31635 (mean+Gaussian) |    |
 | ICNC Gaussian curvature | 151374 | 0.0194384 | 0.00262745|38582 (mean+Gaussian) |19322 |
 
-@note Both CNC curvature estimators are twice to five times more accurate than II curvature estimates. About speed, asymptotically, most of the time taken by CNC is for computing II normal vectors. Finally, as shown by pictures, CNC curvature estimates are much more stable than II curvature estimates, which tend to oscillate around the correct value. 
+@note Both CNC curvature estimators are twice to five times more accurate than II curvature estimates. About speed, asymptotically, most of the time taken by CNC is for computing II normal vectors. Finally, as shown by pictures, CNC curvature estimates are much more stable than II curvature estimates, which tend to oscillate around the correct value.
 
 */
 }

@@ -46,7 +46,7 @@ energyArea()
       for ( Dimension i = 0; i < 3; ++i )
 	{
 	  if ( i == k )  continue; // not a valid slice
-	  const Scalar dn  = myNextD[ i ][ v ]; 	
+	  const Scalar dn  = myNextD[ i ][ v ];
 	  const Scalar dp  = myPrevD[ i ][ v ];
 	  const Scalar  l  = 0.5 * ( dn + dp ); // local length
 	  area *= l;
@@ -70,11 +70,11 @@ energySnake()
       for ( Dimension i = 0; i < 3; ++i )
 	{
 	  if ( i == k )  continue; // not a valid slice
-	  const Scalar dn  = myNextD[ i ][ v ]; 	
+	  const Scalar dn  = myNextD[ i ][ v ];
 	  const Scalar dp  = myPrevD[ i ][ v ];
 	  const Scalar  l  = 0.5 * ( dn + dp ); // local length
-	  const Scalar cn = 2.0 / ( dn*dn+dn*dp ); 
-	  const Scalar cp = 2.0 / ( dp*dn+dp*dp ); 
+	  const Scalar cn = 2.0 / ( dn*dn+dn*dp );
+	  const Scalar cp = 2.0 / ( dp*dn+dp*dp );
 	  const Scalar ci = 2.0 / ( dp*dn );
 	  const RealPoint vn = position( myNext[ i ][ v ] );
 	  const RealPoint vp = position( myPrev[ i ][ v ] );
@@ -93,7 +93,7 @@ energySnake()
 template < typename TDigitalSurfaceContainer >
 double
 DGtal::ShroudsRegularization< TDigitalSurfaceContainer >::
-energySquaredCurvature() 
+energySquaredCurvature()
 {
   parameterize();
   double E = 0.0;
@@ -104,11 +104,11 @@ energySquaredCurvature()
       for ( Dimension i = 0; i < 3; ++i )
 	{
 	  if ( i == k )  continue; // not a valid slice
-	  const Scalar dn  = myNextD[ i ][ v ]; 	
+	  const Scalar dn  = myNextD[ i ][ v ];
 	  const Scalar dp  = myPrevD[ i ][ v ];
 	  const Scalar  l  = 0.5 * ( dn + dp ); // local length
-	  const Scalar cn = 2.0 / ( dn*dn+dn*dp ); 
-	  const Scalar cp = 2.0 / ( dp*dn+dp*dp ); 
+	  const Scalar cn = 2.0 / ( dn*dn+dn*dp );
+	  const Scalar cp = 2.0 / ( dp*dn+dp*dp );
 	  const Scalar ci = 2.0 / ( dp*dn );
 	  const RealPoint vn = position( myNext[ i ][ v ] );
 	  const RealPoint vp = position( myPrev[ i ][ v ] );
@@ -141,10 +141,10 @@ oneStepAreaMinimization( const double randomization )
       for ( Dimension i = 0; i < 3; ++i )
 	{
 	  if ( i == k )  continue; // not a valid slice
-	  const Scalar dn  = myNextD[ i ][ v ]; 	
-	  const Scalar dp  = myPrevD[ i ][ v ]; 	
-	  const Scalar cn = 2.0 / ( dn*dn+dn*dp ); 
-	  const Scalar cp = 2.0 / ( dp*dn+dp*dp ); 
+	  const Scalar dn  = myNextD[ i ][ v ];
+	  const Scalar dp  = myPrevD[ i ][ v ];
+	  const Scalar cn = 2.0 / ( dn*dn+dn*dp );
+	  const Scalar cp = 2.0 / ( dp*dn+dp*dp );
 	  const Scalar ci = 2.0 / ( dp*dn );
 	  const RealPoint vn = position( myNext[ i ][ v ] );
 	  const RealPoint vp = position( myPrev[ i ][ v ] );
@@ -157,7 +157,7 @@ oneStepAreaMinimization( const double randomization )
 	  coef  += ci * ( myInsV[ v ][ k ] - myOutV[ v ][ k ] );
 	}
       newT[ v ] = ( right - left ) / coef
-	+ ( (double) rand() / (double) RAND_MAX - 0.49 ) * randomization; 
+	+ ( (double) rand() / (double) RAND_MAX - 0.49 ) * randomization;
     }
   // Weak damping since problem is convex.
   auto X     = positions();
@@ -201,17 +201,17 @@ oneStepSnakeMinimization
 	  const auto    cn = c2_all( vn_i );
 	  const auto    cp = c2_all( vp_i );
 	  const RealPoint Xnn = position( vnn_i.first );
-	  const RealPoint  Xn = position( vn_i.first );	    
+	  const RealPoint  Xn = position( vn_i.first );
 	  const RealPoint   X = position( v );
 	  const RealPoint Xpp = position( vpp_i.first );
-	  const RealPoint  Xp = position( vp_i.first );	    
+	  const RealPoint  Xp = position( vp_i.first );
 	  right += beta * ( - get<0>( c ) * get<0>( cn ) * Xnn[ k ]
 			    + ( get<0>( c ) * get<1>( cn )
 				+ get<1>( c ) * get<0>( c ) ) * Xn[ k ]
 			    + ( get<2>( c ) * get<1>( cp )
 				+ get<1>( c ) * get<2>( c ) ) * Xp[ k ]
 			    - get<2>( c ) * get<2>( cp ) * Xpp[ k ] )
-	    + alpha * ( get<0>( c ) * Xn[ k ] + get<2>( c ) * Xp[ k ] ); 
+	    + alpha * ( get<0>( c ) * Xn[ k ] + get<2>( c ) * Xp[ k ] );
 	  Scalar a = get<0>( c ) * get<2>( cn ) + get<1>( c ) * get<1>( c )
 	    + get<2>( c ) * get<0>( cp );
 	  left  += ( beta * a + alpha * get<1>( c ) ) * myInsV[ v ][ k ];
@@ -220,7 +220,7 @@ oneStepSnakeMinimization
 	}
       // Possibly randomization to avoid local minima.
       newT[ v ] = ( right - left ) / coef
-	+ ( (double) rand() / (double) RAND_MAX - 0.49 ) * randomization; 
+	+ ( (double) rand() / (double) RAND_MAX - 0.49 ) * randomization;
     }
   auto X     = positions();
   // Damping between old and new positions.
@@ -265,7 +265,7 @@ oneStepSquaredCurvatureMinimization
 	  const auto    cn = c2_all( vn_i );
 	  const auto    cp = c2_all( vp_i );
 	  const RealPoint xnn = position( vnn_i.first );
-	  const RealPoint  xn = position( vn_i.first );	    
+	  const RealPoint  xn = position( vn_i.first );
 	  const RealPoint   x = position( v );
 	  const RealPoint xpp = position( vpp_i.first );
 	  const RealPoint  xp = position( vp_i.first );
@@ -291,9 +291,9 @@ oneStepSquaredCurvatureMinimization
 	    - get<1>( c ) * y_2 + get<2>( c ) * yp_2;
 
           (void)y_4; //not used FIXME: JOL
-          
+
 	  // We linearize Euler-Lagrange
-	  // EL = 24*x'^3*x''^3*y' 
+	  // EL = 24*x'^3*x''^3*y'
 	  // + x'''*( - 13*x'^4*x''*y' - 14*x'^2*x''*y'^3 - x''*y'^5 )
 	  // + y'''*( 8*x'^5*x'' + 4*x'^3*x''*y'^2 - 4*x'*x''*y'^4 )
 	  // + x''''*( x'^5*y' + 2*x'^3*y'^3 + x'*y'^5 )
@@ -301,7 +301,7 @@ oneStepSquaredCurvatureMinimization
 	  // + y''^2*( -54*x'^3*x''*y' + 18*x'*x''*y'^3 )
 	  // + y''^3*( 3*x'^4 - 21*x'^2*y'^2 )
 	  // + y''''*( - x'^6 - 2*x'^4*y'^2 - x'^2*y'^4 )
-	  
+
 	  const Scalar x_1_pow2 = x_1 * x_1;
 	  const Scalar x_1_pow3 = x_1_pow2 * x_1;
 	  const Scalar x_1_pow4 = x_1_pow2 * x_1_pow2;
@@ -344,13 +344,13 @@ oneStepSquaredCurvatureMinimization
 	    - get<1>( c ) * y_4_fact;
 	  right += - y_4_fact * ( get<0>( c ) * yn_2 + get<2>( c ) * yp_2 );
 	  right += - gbl_y_2_fact * ( get<0>( c ) * xn[ k ] + get<2>( c ) * xp[ k ] );
-	  left += -get<1>( c ) * gbl_y_2_fact * myInsV[ v ][ k ];	    
+	  left += -get<1>( c ) * gbl_y_2_fact * myInsV[ v ][ k ];
 	  coef += -get<1>( c ) * gbl_y_2_fact * ( myOutV[ v ][ k ] - myInsV[ v ][ k ] );
-	  
+
 	}
       // Possible randomization to avoid local minima.
       newT[ v ] = ( right - left ) / coef
-	+ ( (double) rand() / (double) RAND_MAX - 0.49 ) * randomization; 
+	+ ( (double) rand() / (double) RAND_MAX - 0.49 ) * randomization;
     }
   // Damping between old and new positions.
   // Move vertices slightly toward optimal solution (since the

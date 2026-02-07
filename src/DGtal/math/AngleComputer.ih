@@ -50,7 +50,7 @@
  * @return the corresponding angle in [0:2pi[
  */
 inline
-float 
+float
 DGtal::AngleComputer::cast( float i )
 {
   while ( i < 0.0f ) i += (float) (M_PI*2.0);
@@ -58,7 +58,7 @@ DGtal::AngleComputer::cast( float i )
   return i;
 }
 
-    
+
 /**
  * Less comparator modulo. Be careful, modulo comparisons have no
  * sense when the absolute difference of the values are around pi.
@@ -84,10 +84,10 @@ DGtal::AngleComputer::less( float i, float j )
  *
  * @param j any angle in [0:2pi[
  * @param i any angle in [0:2pi[
- * @return the value j - i, always positive. 
+ * @return the value j - i, always positive.
  */
 inline
-float 
+float
 DGtal::AngleComputer::posDiff( float j, float i )
 {
   return ( i <= j ) ? j - i : j + (float)(M_PI*2.0) - i;
@@ -98,10 +98,10 @@ DGtal::AngleComputer::posDiff( float j, float i )
  *
  * @param j any angle in [0:2pi[
  * @param i any angle in [0:2pi[
- * @return the value j - i, always positive. 
+ * @return the value j - i, always positive.
  */
 inline
-float 
+float
 DGtal::AngleComputer::deviation( float j, float i )
 {
   return less( i, j ) ? posDiff( j, i ) : -posDiff( i, j );
@@ -116,7 +116,7 @@ DGtal::AngleComputer::deviation( float j, float i )
  * @return the smallest angle of [i] and [j] in a window 'pi'.
  */
 inline
-float 
+float
 DGtal::AngleComputer::min( float i, float j )
 {
   return less( i, j ) ? i : j;
@@ -130,7 +130,7 @@ DGtal::AngleComputer::min( float i, float j )
  * @return the greatest angle of [i] and [j] in a window 'pi'.
  */
 inline
-float 
+float
 DGtal::AngleComputer::max( float i, float j )
 {
   return less( i, j ) ? j : i;
@@ -143,7 +143,7 @@ DGtal::AngleComputer::max( float i, float j )
  * @return the corresponding angle in [0:2pi[
  */
 inline
-double 
+double
 DGtal::AngleComputer::cast( double i )
 {
   while ( i < 0.0 ) i += (float)(M_PI*2.0);
@@ -151,7 +151,7 @@ DGtal::AngleComputer::cast( double i )
   return i;
 }
 
-    
+
 /**
  * Less comparator modulo. Be careful, modulo comparisons have no
  * sense when the absolute difference of the values are around pi.
@@ -177,10 +177,10 @@ DGtal::AngleComputer::less( double i, double j )
  *
  * @param j any angle in [0:2pi[
  * @param i any angle in [0:2pi[
- * @return the value j - i, always positive. 
+ * @return the value j - i, always positive.
  */
 inline
-double 
+double
 DGtal::AngleComputer::posDiff( double j, double i )
 {
   return ( i <= j ) ? j - i : j + (float)(M_PI*2.0) - i;
@@ -191,10 +191,10 @@ DGtal::AngleComputer::posDiff( double j, double i )
  *
  * @param j any angle in [0:2pi[
  * @param i any angle in [0:2pi[
- * @return the value j - i, always positive. 
+ * @return the value j - i, always positive.
  */
 inline
-double 
+double
 DGtal::AngleComputer::deviation( double j, double i )
 {
   return less( i, j ) ? posDiff( j, i ) : -posDiff( i, j );
@@ -209,7 +209,7 @@ DGtal::AngleComputer::deviation( double j, double i )
  * @return the smallest angle of [i] and [j] in a window 'pi'.
  */
 inline
-double 
+double
 DGtal::AngleComputer::min( double i, double j )
 {
   return less( i, j ) ? i : j;
@@ -223,7 +223,7 @@ DGtal::AngleComputer::min( double i, double j )
  * @return the greatest angle of [i] and [j] in a window 'pi'.
  */
 inline
-double 
+double
 DGtal::AngleComputer::max( double i, double j )
 {
   return less( i, j ) ? j : i;
@@ -234,5 +234,3 @@ DGtal::AngleComputer::max( double i, double j )
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

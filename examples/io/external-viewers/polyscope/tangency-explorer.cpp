@@ -246,14 +246,14 @@ void computePlanes()
                   std::vector< Point > X { v[ 0 ], v[ 1 ], v[ 2 ] };
                   auto P = dconv.makePolytope( X );
                   if ( dconv.isFullySubconvex( P, LS ) )
-                      // // && TC.arePointsCotangent( v[ 0 ], v[ 1 ], v[ 2 ] ) ) 
+                      // // && TC.arePointsCotangent( v[ 0 ], v[ 1 ], v[ 2 ] ) )
                     {
                       vertices[ i   ] = v[ 0 ];
                       vertices[ i+1 ] = v[ 1 ];
                       vertices[ i+2 ] = v[ 2 ];
                     }
                 }
-            }          
+            }
           }
           i += 3;
           // }
@@ -308,7 +308,7 @@ void computeSymmetricConvexSet()
   SymmetricConvexExpander< KSpace, UnorderedPointSetPredicate > SCE
     ( predS, selected_kpoint, lo, up );
   while ( SCE.advance( enforceFC ) )
-    if ( PSym && ! SCE.myPerfectSymmetry 
+    if ( PSym && ! SCE.myPerfectSymmetry
          && SCE.current().second >= SCE.myPerfectSymmetryRadius )
       break;
   std::cout << "#symcvx=" << SCE.myPoints.size() << std::endl;
@@ -328,8 +328,8 @@ struct TriangleContext
   Scalar  max_d;  // the maximum of d_P
   Scalar  min_d;  // the minimum distance between all pair of points in {P,A,B,C}
   Scalar  best;   // the current best D=d_P(A)+d_P(B)+d_P(C)+d_A(B)+d_A(C)+d_B(C)
-  Scalar  cur_qA; 
-  Scalar  cur_qAB; 
+  Scalar  cur_qA;
+  Scalar  cur_qAB;
 };
 
 Scalar bestTriangleAB( TriangleContext& ctx,
@@ -370,7 +370,7 @@ Scalar bestTriangleA( TriangleContext& ctx,
   const Point a = TC.point( ctx.cone_P[ A ] );
   for ( cur_B = A + 1; cur_B < ctx.cone_P.size(); cur_B++ )
     {
-      const Scalar d_PB = ctx.d_P[ cur_B ]; 
+      const Scalar d_PB = ctx.d_P[ cur_B ];
       if ( d_PB < ctx.min_d ) continue;
       const Point     b = TC.point( ctx.cone_P[ cur_B ] );
       const Scalar d_AB = ( b - a ).norm();
@@ -464,7 +464,7 @@ void myCallback()
             selected_kpoint = digital_points[ vertex_idx ] * 2;
             std::ostringstream otext;
             otext << "Selected vertex = " << vertex_idx
-                  << " pos=" << selected_kpoint; 
+                  << " pos=" << selected_kpoint;
             ImGui::Text( "%s", otext.str().c_str() );
           }
         else if ( idx - nv < nf )
@@ -477,7 +477,7 @@ void myCallback()
             selected_kpoint /= 2;
             std::ostringstream otext;
             otext << "Selected face = " << face_idx
-                  << " pos=" << selected_kpoint; 
+                  << " pos=" << selected_kpoint;
             ImGui::Text( "%s", otext.str().c_str() );
           }
         else
@@ -513,13 +513,13 @@ int main( int argc, char* argv[] )
   auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
   auto primalSurface   = SH3::makePrimalSurfaceMesh(surface);
   SH3::Surfel2Index s2i;
-  auto dualSurface     = SH3::makeDualPolygonalSurface( s2i, surface );  
+  auto dualSurface     = SH3::makeDualPolygonalSurface( s2i, surface );
   //Need to convert the faces
   std::vector<std::vector<SH3::SurfaceMesh::Vertex>> faces;
   std::vector<RealPoint> positions;
   for(size_t face= 0 ; face < primalSurface->nbFaces(); ++face)
     faces.push_back(primalSurface->incidentVertices( face ));
-  
+
   //Recasting to vector of vertices
   positions = primalSurface->positions();
 
@@ -531,11 +531,11 @@ int main( int argc, char* argv[] )
   std::vector<RealPoint> dual_positions;
   for(size_t face= 0 ; face < dualSurface->nbFaces(); ++face)
     dual_faces.push_back( dualSurface->verticesAroundFace( face ));
-    
+
     //Recasting to vector of vertices
   for ( size_t vtx = 0; vtx < dualSurface->nbVertices(); ++vtx )
     dual_positions.push_back( dualSurface->position( vtx ) );
-    
+
   dual_surfmesh = SurfMesh(dual_positions.begin(),
                            dual_positions.end(),
                            dual_faces.begin(),
@@ -560,7 +560,7 @@ int main( int argc, char* argv[] )
   // Make predicate for pointel-based digital surface
   unorderedSet = std::unordered_set< Point >( digital_points.cbegin(),
                                               digital_points.cend() );
-  
+
   // Initialize polyscope
   polyscope::init();
 

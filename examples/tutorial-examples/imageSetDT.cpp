@@ -21,7 +21,7 @@
  *
  *
  * @date 2010/12/01
- * 
+ *
  * An example of DT computation from a digital set extracted from an image.
  *
  * This file is part of the DGtal library.
@@ -69,14 +69,14 @@ int main()
 
   //! [ImageSetDT-image]
   std::string filename =  examplesPath + "samples/contourS.pgm";
-  Image image = DGtal::PGMReader<Image>::importPGM(filename); 
+  Image image = DGtal::PGMReader<Image>::importPGM(filename);
   DGtal::trace.info() << "Imported image: "<<image<<std::endl;
   //! [ImageSetDT-image]
 
 
   //! [ImageSetDT-board1]
   DGtal::Board2D aBoard;
-  aBoard << image.domain();  
+  aBoard << image.domain();
   aBoard.saveSVG("imageDomainTuto.svg");
   aBoard.clear();
   Display2DFactory::drawImage<Gray>(aBoard, image, (unsigned char)0, (unsigned char)255);
@@ -85,7 +85,7 @@ int main()
 
 
   Z2i::DigitalSet mySet(image.domain());
-  DigitalSetInserter<Z2i::DigitalSet> inserter(mySet); 
+  DigitalSetInserter<Z2i::DigitalSet> inserter(mySet);
   setFromImage(image, inserter, 1, 135);
   aBoard.clear();
   aBoard << mySet.domain()
@@ -94,20 +94,20 @@ int main()
 
 
   //! [ImageSetDT-DT]
-  typedef functors::IntervalForegroundPredicate<Image> Binarizer; 
-  Binarizer b(image,1, 135); 
+  typedef functors::IntervalForegroundPredicate<Image> Binarizer;
+  Binarizer b(image,1, 135);
   typedef DGtal::DistanceTransformation<Z2i::Space, Binarizer, Z2i::L2Metric> DTL2;
   DTL2 dt(&image.domain(),&b, &Z2i::l2Metric );
   //! [ImageSetDT-DT]
- 
+
 
   //! [ImageSetDT-DTvis]
-  DTL2::Value maxDT = (*boost::first_max_element(dt.constRange().begin(), 
+  DTL2::Value maxDT = (*boost::first_max_element(dt.constRange().begin(),
                                                  dt.constRange().end(), std::less<DTL2::Value>() ));
   typedef DGtal::HueShadeColorMap<DTL2::Value,2> HueTwice;
 
   aBoard.clear();
-  Display2DFactory::drawImage<HueTwice>(aBoard, dt, (DTL2::Value)0, 
+  Display2DFactory::drawImage<HueTwice>(aBoard, dt, (DTL2::Value)0,
                                         (DTL2::Value)maxDT);
   aBoard.saveEPS("imageDomainTuto3.eps");
   //! [ImageSetDT-DTvis]

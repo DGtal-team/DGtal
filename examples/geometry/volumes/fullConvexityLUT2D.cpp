@@ -22,12 +22,12 @@
  *
  * @date 2021/06/22
  *
- * An example file named fullConvexityLUT2D. 
+ * An example file named fullConvexityLUT2D.
  *
  * This file is part of the DGtal library.
  */
 
-/** 
+/**
  * This example creates precomputed
  * tables for determining whether some 3x3 neighborhood of a point is
  * fully convex, collapsible, etc. More precisely it produces the
@@ -36,13 +36,13 @@
  *
  * - table-fcvx-with-center : 'true' iff the center point and its
  *   neighbor points are fully convex ;
- * - table-fcvx-without-center" : 'true' iff the neighbor points 
+ * - table-fcvx-without-center" : 'true' iff the neighbor points
  *   without the center point are fully convex ;
- * - table-complementary-fcvx-with-center : 'true' iff the center point 
+ * - table-complementary-fcvx-with-center : 'true' iff the center point
  *   and the complementary points of its neighbor points are fully convex ;
  * - table-complementary-fcvx-without-center : 'true' iff the complementary
  *   points of the neighbor points are full convex ;
- * - table-fcvx-regular : 'true' if the point is \b regular, meaning that 
+ * - table-fcvx-regular : 'true' if the point is \b regular, meaning that
  *   the center point and its neighbor points are fully convex, while the
  *   complementary points of the neighbor points are fully convex ;
  * - table-fcvx-collapsible : 'true' if the point is \b collapsible,
@@ -125,7 +125,7 @@ displaySimplicityTable( Board2D & board,
 	  {
 	    Point q = base + (*it);
 	    if ( *it == c ) {
-              if ( with ) 
+              if ( with )
                 board << CustomStyle( q.className(),
                                       simple
                                       ? new CustomColors( Color( 0, 0, 0 ),
@@ -139,7 +139,7 @@ displaySimplicityTable( Board2D & board,
                                                           Color( 200, 255, 200 ) )
                                       : new CustomColors( Color( 0, 0, 0 ),
                                                           Color( 255, 200, 200 ) ) );
-                
+
             } else {
               bool in_cfg  = cfg & mask;
               bool display = complement ? ( ! in_cfg ) : in_cfg;
@@ -170,7 +170,7 @@ displaySimplicityTable( Board2D & board,
 int main( )
 {
   DConv dconv( Point::diagonal( -5 ), Point::diagonal( 5 ) );
-  
+
   trace.beginBlock ( "Generate 2d tables" );
   ConfigMap table_with    ( 256, false );
   ConfigMap table_without ( 256, false );

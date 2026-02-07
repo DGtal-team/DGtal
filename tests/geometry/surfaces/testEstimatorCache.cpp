@@ -65,7 +65,7 @@ bool testEstimatorCache(double h)
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-    
+
   typedef ImplicitBall<Z3i::Space> ImplicitShape;
   typedef GaussDigitizer<Z3i::Space, ImplicitShape> DigitalShape;
   typedef LightImplicitDigitalSurface<Z3i::KSpace,DigitalShape> Boundary;
@@ -102,7 +102,7 @@ bool testEstimatorCache(double h)
   trace.endBlock();
 
   trace.beginBlock( "Curvature estimator computation ...");
-  
+
   VisitorRange range( new Visitor( surf, *surf.begin() ));
   VisitorConstIterator ibegin = range.begin();
   VisitorConstIterator iend = range.end();
@@ -126,11 +126,11 @@ bool testEstimatorCache(double h)
   VisitorRange range2( new Visitor( surf, *surf.begin() ));
   VisitorConstIterator ibegin2 = range2.begin();
   VisitorConstIterator iend2 = range2.end();
-  
+
   typedef EstimatorCache<MyIICurvatureEstimator> GaussianCache;
 
   BOOST_CONCEPT_ASSERT(( concepts::CSurfelLocalEstimator<GaussianCache> ));
-    
+
   GaussianCache cache( curvatureEstimator );
   cache.init( h, ibegin2, iend2 );
   trace.info() << "Number of cached values = "<< cache.size()<<std::endl;
@@ -179,12 +179,12 @@ bool testEstimatorCache(double h)
   trace.endBlock();
 
 
-  
-  nbok += ok ? 1 : 0; 
+
+  nbok += ok ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "cache == eval" << std::endl;
-  
+
   return nbok == nb;
 }
 

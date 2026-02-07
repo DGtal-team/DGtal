@@ -145,8 +145,8 @@ SCENARIO( "IntegralIntervals< int > set operations tests", "[intervals]" )
   THEN( "Set operations on intervals are correct" ) {
     REQUIRE( X_cup_Y.size()   ==  A_cup_B.size() );
     REQUIRE( X_cap_Y.size()   ==  A_cap_B.size() );
-    REQUIRE( X_minus_Y.size() ==  A_minus_B.size() ); 
-    REQUIRE( X_delta_Y.size() ==  A_delta_B.size() ); 
+    REQUIRE( X_minus_Y.size() ==  A_minus_B.size() );
+    REQUIRE( X_delta_Y.size() ==  A_delta_B.size() );
   }
   THEN( "Inclusions are correct" ) {
     REQUIRE( A_cup_B.includes( A_cup_B ) );

@@ -54,12 +54,12 @@ namespace DGtal
   /**
    * Description of template class 'ImageFactoryFromImage' <p>
    * \brief Aim: implements a factory to produce images from a "bigger/original" one according to a given domain.
-   * 
+   *
    * @tparam TImageContainer an image container type (model of CImage).
-   * 
+   *
    * The factory images production (images are copied, so it's a creation process) is done with the function 'requestImage'
    * so the deletion must be done with the function 'detachImage'.
-   * 
+   *
    * The update of the original image is done with the function 'flushImage'.
    */
   template <typename TImageContainer>
@@ -69,15 +69,15 @@ namespace DGtal
     // ----------------------- Types ------------------------------
 
   public:
-    typedef ImageFactoryFromImage<TImageContainer> Self; 
-    
+    typedef ImageFactoryFromImage<TImageContainer> Self;
+
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( concepts::CImage<TImageContainer> ));
 
     ///Types copied from the container
     typedef TImageContainer ImageContainer;
     typedef typename ImageContainer::Domain Domain;
-    
+
     ///New types
     typedef ImageContainer OutputImage;
 
@@ -99,18 +99,18 @@ namespace DGtal
      * Does nothing
      */
     ~ImageFactoryFromImage() {}
-    
+
   private:
-    
+
     ImageFactoryFromImage( const ImageFactoryFromImage & other );
-    
+
     ImageFactoryFromImage & operator=( const ImageFactoryFromImage & other );
 
     // ----------------------- Interface --------------------------------------
   public:
 
     /////////////////// Domains //////////////////
-      
+
     /**
      * Returns a reference to the underlying image domain.
      *
@@ -123,7 +123,7 @@ namespace DGtal
 
     /////////////////// Accessors //////////////////
 
-    
+
     /////////////////// API //////////////////
 
     /**
@@ -143,28 +143,28 @@ namespace DGtal
 
     /**
      * Returns a pointer of an OutputImage created with the Domain aDomain.
-     * 
+     *
      * @param aDomain the domain.
-     * 
+     *
      * @return an ImagePtr.
      */
     OutputImage * requestImage(const Domain &aDomain)
     {
       OutputImage* outputImage = new OutputImage(aDomain);
-      
+
       typename Domain::Iterator it = outputImage->domain().begin();
       typename Domain::Iterator it_end = outputImage->domain().end();
       for (; it != it_end; ++it)
       {
         outputImage->setValue(*it, (*myImagePtr)(*it));
       }
-        
+
       return outputImage;
     }
-    
+
     /**
      * Flush (i.e. write/synchronize) an OutputImage.
-     * 
+     *
      * @param outputImage the OutputImage.
      */
     void flushImage(OutputImage* outputImage)
@@ -176,10 +176,10 @@ namespace DGtal
         myImagePtr->setValue(*it, (*outputImage)(*it));
       }
     }
-    
+
     /**
      * Free (i.e. delete) an OutputImage.
-     * 
+     *
      * @param outputImage the OutputImage.
      */
     void detachImage(OutputImage* outputImage)
@@ -187,14 +187,14 @@ namespace DGtal
       delete outputImage;
     }
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
     /**
      * Default constructor.
      */
     //ImageFactoryFromImage() {}
-    
-    // ------------------------- Private Datas --------------------------------
+
+    // ------------------------- Private Data --------------------------------
   protected:
 
     /// Alias on the image container

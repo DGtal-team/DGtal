@@ -54,7 +54,7 @@ class testDigitalSetToCellularGridConverter
 {
   typedef Flower2D< Space > MyEuclideanShape;
   typedef map<Cell, CubicalCellData>   Map;
-  typedef CubicalComplex< KSpace, Map > CC;  
+  typedef CubicalComplex< KSpace, Map > CC;
   typedef GaussDigitizer< Space, MyEuclideanShape > MyGaussDigitizer;
 private:
   KSpace K;
@@ -70,7 +70,7 @@ public:
     K.init (  domainShape.lowerBound(), domainShape.upperBound(), true );
     DigitalSet aSet ( domainShape );
     Shapes<Domain>::digitalShaper ( aSet, digShape );
-    
+
     CC complex ( K );
     complex.construct < DigitalSet > ( aSet );
     return true;

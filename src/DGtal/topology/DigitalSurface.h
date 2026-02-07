@@ -58,9 +58,9 @@
 namespace boost
 {
   /**
-     This is the kind of boost graph that a digital surface (see DGtal::DigitalSurface) can mimick.
+     This is the kind of boost graph that a digital surface (see DGtal::DigitalSurface) can mimic.
   */
-  struct DigitalSurface_graph_traversal_category 
+  struct DigitalSurface_graph_traversal_category
     : public virtual adjacency_graph_tag,
       public virtual vertex_list_graph_tag,
       public virtual incidence_graph_tag,
@@ -88,18 +88,18 @@ namespace DGtal
   (globally) or of a surfel (locally) is in its direct incidence,
   while the exterior side is in its indirect incidence. You can obtain
   the normal vector to a surfel pointing outside as follows:
- 
+
   \code
   // S is the current digital surface
   // v is a vertex / surfel
-  auto& K = S.container().space(); 
+  auto& K = S.container().space();
   auto  j = K.sOrthDir( v );
   bool  d = K.sDirect( v, j );
   // N is the normal vector pointing outside.
   auto  N = K.sCoords( K.sIncident( v, j, ! d ) )   // outside voxel
             - K.sCoords( K.sIncident( v, j, d ) );  // inside voxel
   \endcode
-  
+
   For geometric analysis or visualization, it is often interesting
   to look at the "dual" of the digital surface. n-1-cells form now
   vertices, n-2-cells are edges, n-3-cells are faces, and so on.  A
@@ -114,7 +114,7 @@ namespace DGtal
   oriented arcs turning around some pivot cell). In 3D, this dual
   digital surface is a combinatorial 2-manifold, open or not
   depending whether the digital surface is open or closed. For
-  instance, arcs may have 0 or 1 incident face. 
+  instance, arcs may have 0 or 1 incident face.
 
   We construct this dual digital surface with umbrellas, which are
   sequences of adjacent n-1-cells turning around a n-3-cell, called
@@ -161,7 +161,7 @@ namespace DGtal
     typedef typename DigitalSurfaceContainer::SCell SCell;
     typedef typename DigitalSurfaceContainer::Surfel Surfel;
     typedef typename DigitalSurfaceContainer::SurfelConstIterator ConstIterator;
-    typedef typename DigitalSurfaceContainer::DigitalSurfaceTracker DigitalSurfaceTracker; 
+    typedef typename DigitalSurfaceContainer::DigitalSurfaceTracker DigitalSurfaceTracker;
     typedef typename KSpace::Point     Point;
     typedef typename KSpace::Vector    Vector;
     typedef typename KSpace::SurfelSet SurfelSet;
@@ -188,18 +188,18 @@ namespace DGtal
        An edge is a unordered pair of vertices. To make comparisons
        easier, the smallest vertex is stored before the greatest
        vertex. Note that loops are legal.
-    */ 
+    */
     struct Edge {
       /// The two vertices.
       Vertex vertices[ 2 ];
-      /** 
+      /**
           Constructor from vertices.
           @param v1 the first vertex.
           @param v2 the second vertex.
       */
       Edge( const Vertex & v1, const Vertex & v2 )
       {
-        if ( v1 <= v2 ) 
+        if ( v1 <= v2 )
           {
             vertices[ 0 ] = v1;
             vertices[ 1 ] = v2;
@@ -226,7 +226,7 @@ namespace DGtal
 
     // ----------------------- CombinatorialSurface --------------------------
   public:
-    
+
     /// This define a utility class for computing umbrellas.
     typedef UmbrellaComputer<DigitalSurfaceTracker> Umbrella;
     /// The state of an umbrella is a triplet (surfel, separator,
@@ -236,7 +236,7 @@ namespace DGtal
     /// Defines an arc on the digital surface, i.e. an arrow between
     /// two adjacent surfels.
     struct Arc {
-      Vertex base;  ///< base surfel 
+      Vertex base;  ///< base surfel
       Dimension k;  ///< direction toward the head surfel
       bool epsilon; ///< orientation toward the head surfel
       /**
@@ -248,43 +248,43 @@ namespace DGtal
 	: base( theTail ), k( aK ), epsilon( aEpsilon ) {}
       inline bool operator==( const Arc & other ) const
       {
-	return ( base == other.base ) 
+	return ( base == other.base )
 	  && ( k == other.k ) && ( epsilon == other.epsilon );
       }
       inline bool operator<( const Arc & other ) const
       {
-	return ( base < other.base ) 
-	  || ( ( base == other.base ) 
-	       && ( ( k < other.k ) 
-		    || ( ( k == other.k ) 
+	return ( base < other.base )
+	  || ( ( base == other.base )
+	       && ( ( k < other.k )
+		    || ( ( k == other.k )
 			 && ( epsilon < other.epsilon ) ) ) );
       }
       inline bool operator!=( const Arc & other ) const
       {
-	return ( base != other.base ) 
+	return ( base != other.base )
 	  || ( k != other.k ) || ( epsilon != other.epsilon );
       }
     };
 
-    /** 
+    /**
         Defines a face on the digital surface, i.e. an umbrella (open
         or closed) around a pivot cell (n-3-cell). To be able to
         compare faces, the face is characterized by one of its
         possible states. If the face is closed, the representative
         state is the smallest one. If the face is open, the
         representative state is the first (applying previous() does
-        not move). 
+        not move).
     */
     struct Face {
       UmbrellaState state; ///< stores a state from which the whole
 			   ///< umbrella can be recomputed.
       unsigned int nbVertices; ///< number of vertices incident to face.
       bool closed;         ///< tells if the face is closed or open.
-      inline Face( const UmbrellaState & aState, 
+      inline Face( const UmbrellaState & aState,
                    unsigned int nb, bool aIsClosed )
         : state( aState ), nbVertices( nb ), closed( aIsClosed )
       {}
-      inline bool isClosed() const 
+      inline bool isClosed() const
       { return closed; }
       inline bool operator==( const Face & other ) const
       {
@@ -294,9 +294,9 @@ namespace DGtal
       {
 	return state < other.state;
       }
- 
+
     };
-    
+
     /// The range of arcs is defined as a vector.
     typedef std::vector<Arc> ArcRange;
     /// The range of faces is defined as a vector.
@@ -309,7 +309,7 @@ namespace DGtal
 
     // ----------------------- Standard services ------------------------------
   public:
-    
+
     /**
      * Destructor.
      */
@@ -356,7 +356,7 @@ namespace DGtal
 
     // ----------------- UndirectedSimpleGraph realization --------------------
   public:
-    
+
     /**
        @return a ConstIterator on the first surfel in the container.
 
@@ -370,17 +370,17 @@ namespace DGtal
 
      @code
      // This snippet may NOT work.
-     const ConstIterator itb = mySurface.begin(); 
+     const ConstIterator itb = mySurface.begin();
      const ConstIterator ite = mySurface.end();
-     for ( ConstIterator itX = itb; itX != ite; ++itX ) 
-     { 
-       for ( ConstIterator itY = itb; itY != ite; ++itY ) 
+     for ( ConstIterator itX = itb; itX != ite; ++itX )
+     {
+       for ( ConstIterator itY = itb; itY != ite; ++itY )
        { // compute something with *itX and *itY.
          // But itX == itY at each step ! }
        // now itX == itY == ite !
        }
      @endcode
-     
+
      You may use this range only once ! This is because the iterators
      are only single pass. If you wish to visit twice the range, you
      must indeed creates two ranges by calling begin() twice (end() is
@@ -388,13 +388,13 @@ namespace DGtal
 
      @code
      // This snippet does ALWAYS work.
-     for ( ConstIterator itX = mySurface.begin(), 
+     for ( ConstIterator itX = mySurface.begin(),
                          itXEnd = mySurface.end();
-           itX != itXEnd; ++itX ) 
+           itX != itXEnd; ++itX )
      {
-       for ( ConstIterator itY = mySurface.begin(), 
+       for ( ConstIterator itY = mySurface.begin(),
                            itYEnd = mySurface.end();
-             itY != itYEnd; ++itY ) 
+             itY != itYEnd; ++itY )
          { // compute something with *itX and *itY. }
      }
      @endcode
@@ -453,12 +453,12 @@ namespace DGtal
        (e.g. back_insert_iterator<std::vector<Vertex> >).
 
        @tparam VertexPredicate any type of predicate taking a Vertex as input.
-  
+
        @param[in,out] it any output iterator on Vertex (*it++ should
        be allowed), which specifies where neighbors are written.
 
        @param[in] v any vertex of this graph
-       
+
        @param[in] pred the predicate for selecting neighbors.
 
        @pre container().isInside( v )
@@ -502,7 +502,7 @@ namespace DGtal
     */
     FaceRange facesAroundVertex( const Vertex & v,
 				 bool order_ccw_in_3d = false ) const;
-    
+
     /**
       @param a any arc (s,t)
       @return the vertex t
@@ -523,7 +523,7 @@ namespace DGtal
 
     /**
        [tail] and [head] should be adjacent surfel.
-       
+
        @param tail the vertex at the tail of the arc.
        @param head the vertex at the head of the arc.
        @return the arc (tail, head)
@@ -609,7 +609,7 @@ namespace DGtal
 
     /**
        Writes/Displays the object on an output stream in OFF file
-       format. Cells are embbeded onto their default centroid.
+       format. Cells are embedded onto their default centroid.
 
        @param out the output stream where the object is written.
      */
@@ -657,7 +657,7 @@ namespace DGtal
     template <typename SCellEmbedderWithGradientMap>
     void exportAs3DNOFF( std::ostream & out,
                          const SCellEmbedderWithGradientMap & scembedder ) const;
- 
+
     /**
        Writes/Displays the object on an output stream in NOFF file
        format. Surface spels are embedded by [cembedder]. Normals are also
@@ -670,9 +670,9 @@ namespace DGtal
     void exportEmbeddedIteratedSurfaceAs3DNOFF ( std::ostream & out,
                                                  const CellEmbedder & cembedder ) const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     /// a smart pointer on the container.
@@ -708,7 +708,7 @@ namespace DGtal
    */
   template <typename TDigitalSurfaceContainer>
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
 	       const DigitalSurface<TDigitalSurfaceContainer> & object );
 
 } // namespace DGtal

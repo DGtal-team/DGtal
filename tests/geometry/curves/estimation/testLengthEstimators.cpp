@@ -15,7 +15,7 @@
  **/
 
 /**
- * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr ) 
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
  * France
  *
@@ -79,7 +79,7 @@ bool testLengthEstimatorsOnBall(double radius, double h)
 {
 
   // Types
-  typedef SpaceND<2,int> Space;  
+  typedef SpaceND<2,int> Space;
   typedef Ball2D<Space> Shape;
   typedef Space::Point Point;
   typedef Space::RealPoint RealPoint;
@@ -99,9 +99,9 @@ bool testLengthEstimatorsOnBall(double radius, double h)
   // Window for the estimation
   RealPoint xLow ( -radius-1, -radius-1 );
   RealPoint xUp( radius+1, radius+1 );
-  GaussDigitizer<Space,Shape> dig;  
+  GaussDigitizer<Space,Shape> dig;
   dig.attach( aShape ); // attaches the shape.
-  dig.init( xLow, xUp, h ); 
+  dig.init( xLow, xUp, h );
   // The domain size is given by the digitizer according to the window
   // and the step.
   Domain domain = dig.getDomain();
@@ -116,11 +116,11 @@ bool testLengthEstimatorsOnBall(double radius, double h)
     }
 
   SurfelAdjacency<KSpace::dimension> SAdj( true );
-  SCell bel; 
-  try 
+  SCell bel;
+  try
     {
       bel = Surfaces<KSpace>::findABel( K, dig, 10000 );
-    }    
+    }
   catch ( InputException& e )
     {
       std::cerr << " "
@@ -138,8 +138,8 @@ bool testLengthEstimatorsOnBall(double radius, double h)
     trace.info() << "#grid curve created, h=" << h << endl;
 
     //ranges
-    ArrowsRange ra = gridcurve.getArrowsRange(); 
-    PointsRange rp = gridcurve.getPointsRange(); 
+    ArrowsRange ra = gridcurve.getArrowsRange();
+    PointsRange rp = gridcurve.getPointsRange();
 
     ////////////////////////////////////////estimations
     double trueValue = M_PI*2*radius;
@@ -153,12 +153,12 @@ bool testLengthEstimatorsOnBall(double radius, double h)
 
     trace.info() << "#Estimations" <<std::endl;
     trace.info() << "#h true naive 1-sqrt(2) BLUE RosenProffitt DSS MLP FP " <<std::endl;
-    trace.info() << h << " " << trueValue  
-                 << " " << l1length.eval(rp.c(), rp.c(), h) 
-                 << " " << locallength.eval(ra.begin(), ra.end(), h) 
-                 << " " << BLUElength.eval(ra.begin(), ra.end(), h) 
+    trace.info() << h << " " << trueValue
+                 << " " << l1length.eval(rp.c(), rp.c(), h)
+                 << " " << locallength.eval(ra.begin(), ra.end(), h)
+                 << " " << BLUElength.eval(ra.begin(), ra.end(), h)
                  << " " << RosenProffittlength.eval(ra.begin(), ra.end(), h)
-                 << " " << DSSlength.eval(rp.c(), rp.c(), h) 
+                 << " " << DSSlength.eval(rp.c(), rp.c(), h)
                  << " " << MLPlength.eval(rp.c(), rp.c(), h)
                  << " " << FPlength.eval(rp.c(), rp.c(), h)
      << std::endl;
@@ -192,9 +192,9 @@ bool testDisplay(double radius, double h)
   // Window for the estimation
   RealPoint xLow ( -radius-1, -radius-1 );
   RealPoint xUp( radius+1, radius+1 );
-  GaussDigitizer<Z2i::Space,Shape> dig;  
+  GaussDigitizer<Z2i::Space,Shape> dig;
   dig.attach( aShape ); // attaches the shape.
-  dig.init( xLow, xUp, h ); 
+  dig.init( xLow, xUp, h );
   // The domain size is given by the digitizer according to the window
   // and the step.
   Domain domain = dig.getDomain();
@@ -208,7 +208,7 @@ bool testDisplay(double radius, double h)
       return false;
     }
   try {
-      
+
     // Extracts shape boundary
     SurfelAdjacency<KSpace::dimension> SAdj( true );
     SCell bel = Surfaces<KSpace>::findABel( K, dig, 10000 );
@@ -220,46 +220,46 @@ bool testDisplay(double radius, double h)
     GridCurve<KSpace> gridcurve;
     gridcurve.initFromPointsVector( points );
     trace.info() << "#grid curve created, h=" << h << endl;
-    
+
     //ranges
-    ArrowsRange ra = gridcurve.getArrowsRange(); 
-    PointsRange rp = gridcurve.getPointsRange(); 
-    SCellsRange rc = gridcurve.getSCellsRange(); 
-    
+    ArrowsRange ra = gridcurve.getArrowsRange();
+    PointsRange rp = gridcurve.getPointsRange();
+    SCellsRange rc = gridcurve.getSCellsRange();
+
     //Explicit reshaping for drawing purposes
     Z2i::DigitalSet set(domain);
     Shapes<Z2i::Domain>::euclideanShaper( set, Shape(Point(0,0), radius/h));
-         
+
     Board2D board;
-    
+
     board << domain << set;
     board.saveSVG( "Ranges-Set.svg" );
-    
+
     board.clear();
     board << domain;
-    board << rp; 
+    board << rp;
     // for( PointsRange::ConstIterator it =rp.begin(), ite=rp.end();
     //      it != ite; ++it)
     //   board << (*it);
     board.saveSVG( "Ranges-Points.svg" );
-    
+
 
     board.clear();
     board << domain;
-    board << rc; 
+    board << rc;
     // for( SCellsRange::ConstIterator it =rc.begin(), ite=rc.end();
     //      it != ite; ++it)
     //   board << (*it);
     board.saveSVG( "Ranges-SCells.svg" );
-    
+
 
     board.clear();
     board << domain;
-    board << ra; 
+    board << ra;
     // Z2i::Space::Vector shift;
     // board.setPenColor( Color::Black );
     // for(  ArrowsRange::ConstIterator it = ra.begin(), itend = ra.end();
-    //       it != itend;   
+    //       it != itend;
     //       ++it)
     //   {
     //     shift =   (*it).second ;
@@ -267,7 +267,7 @@ bool testDisplay(double radius, double h)
     //   }
     board.saveSVG( "Ranges-Arrows.svg" );
 
-  }    
+  }
   catch ( InputException& e )
     {
       std::cerr << " "
@@ -291,7 +291,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  double r = 5; 
+  double r = 5;
   bool res = testLengthEstimatorsOnBall(r,1)
     && testLengthEstimatorsOnBall(r,0.1)
     && testLengthEstimatorsOnBall(r,0.01)

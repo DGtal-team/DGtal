@@ -30,10 +30,10 @@
 /**
  *   Example of polynom read from user input.
  *
- * @see \ref modulePolynomial  
+ * @see \ref modulePolynomial
  *
  * @verbatim
- * $ ./examples/math/polynomial-read               
+ * $ ./examples/math/polynomial-read
  * Type any multi-variate polynomial, then press return.
  * Examples: xyz^3-4yz, (x+y+z)*(x-y-z)^2.
  * (x-3)^2 + (y-2)^2 - 4
@@ -76,12 +76,12 @@ int main( int /*argc*/, char** /*argv*/ )
     getline( cin, str );
     if ( cin.good() && ( ! str.empty() ) )
       {
-	std::string::const_iterator iter 
+	std::string::const_iterator iter
 	  = reader.read( P, str.begin(), str.end() );
 	bool ok = iter == str.end();
 	if ( ! ok )
 	  {
-	    std::cerr << "ERROR: I read only <" 
+	    std::cerr << "ERROR: I read only <"
 		      << str.substr( 0, iter - str.begin() )
 		      << ">, and I built P=" << P << std::endl;
 	  }

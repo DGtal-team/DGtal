@@ -74,14 +74,14 @@ namespace DGtal
     typedef typename TImage::Value Value;
     typedef TFunctor Functor;
     typedef DGtal::uint64_t ValueLongvol;
-    
-    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, Value, ValueLongvol> )) ;    
-    
-    
-    /** 
+
+    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, Value, ValueLongvol> )) ;
+
+
+    /**
      * Export an Image with the Longvol format. A DGtal::IOException
      * is thrown in case of io problems.
-     * 
+     *
      * @param filename name of the output file
      * @param aImage the image to export
      * @param compressed boolean to decide wether the vol must be compressed or not
@@ -91,16 +91,16 @@ namespace DGtal
     static bool exportLongvol(const std::string & filename, const Image &aImage,
                               const bool compressed = true,
                               const Functor & aFunctor = Functor());
-    
-    
-  private: 
-    
-    /** 
+
+
+  private:
+
+    /**
      * Generic write word (binary mode) in little-endian.
-     * 
+     *
      * @param outs output stream.
      * @param value value to write.
-     * 
+     *
      * @return modified stream.
      */
     template <typename Word>
@@ -111,7 +111,7 @@ namespace DGtal
         outs.put( static_cast <char> (value & 0xFF) );
       return outs;
     }
-    
+
   };
 }//namespace
 

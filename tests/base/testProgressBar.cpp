@@ -48,9 +48,9 @@ using namespace DGtal;
  *
  */
 bool testProgressBar()
-{  
+{
   trace.beginBlock ( "Testing progress ..." );
-  
+
   ///Running a progressbar
   for(unsigned int i=0; i <= 10  ; ++i)
     {
@@ -61,7 +61,7 @@ bool testProgressBar()
     }
   trace.info() << std::endl;
   trace.endBlock();
-  
+
  return true;
 }
 

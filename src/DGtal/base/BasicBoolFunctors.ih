@@ -79,5 +79,3 @@ DGtal::functors::ImpliesBoolFct2::operator()( bool b1, bool b2 ) const
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

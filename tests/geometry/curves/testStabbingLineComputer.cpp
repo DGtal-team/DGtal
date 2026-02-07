@@ -67,72 +67,72 @@ bool testStabbingLineComputer(const TCurve& curve)
 
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
-  trace.beginBlock ( "Constructors, copy, assignement" );
+
+  trace.beginBlock ( "Constructors, copy, assignment" );
   {
     Range r = curve.getIncidentPointsRange(); //range
 
     StabbingLineComputer<ConstIterator> s1, s2, s3;
-    s2.init(r.begin()); 
-    s3.init(++r.begin()); 
-    StabbingLineComputer<ConstIterator> s4(s2); 
+    s2.init(r.begin());
+    s3.init(++r.begin());
+    StabbingLineComputer<ConstIterator> s4(s2);
     StabbingLineComputer<ConstIterator> s5(s3);
-    s3 = s1; 
-    
-    trace.info() << s1.isValid() << s1 << endl; 
-    trace.info() << s2.isValid() << s2 << endl; 
-    trace.info() << s3.isValid() << s3 << endl; 
-    trace.info() << s4.isValid() << s4 << endl; 
-    trace.info() << s5.isValid() << s5 << endl; 
+    s3 = s1;
+
+    trace.info() << s1.isValid() << s1 << endl;
+    trace.info() << s2.isValid() << s2 << endl;
+    trace.info() << s3.isValid() << s3 << endl;
+    trace.info() << s4.isValid() << s4 << endl;
+    trace.info() << s5.isValid() << s5 << endl;
 
     bool myFlag = (!s1.isValid())&&(!s3.isValid())
     &&(s2.isValid())&&(s4.isValid())&&(s5.isValid())
     &&(s2 == s4)&&(s3 != s5)&&(s1 == s3)&&(s2 != s5);
 
-    nbok += myFlag ? 1 : 0; 
+    nbok += myFlag ? 1 : 0;
     nb++;
   }
   trace.endBlock();
-  
+
   trace.beginBlock ( "Extension operations" );
   {
     Range r = curve.getIncidentPointsRange(); //range
 
     StabbingLineComputer<ConstIterator> s, t;
 
-    trace.info() << "forward extension " << endl; 
-    ConstIterator itBegin (r.begin()); 
-    ConstIterator itEnd (r.end()); 
+    trace.info() << "forward extension " << endl;
+    ConstIterator itBegin (r.begin());
+    ConstIterator itEnd (r.end());
     s.init( itBegin+1 );
     while ( (s.end() != itEnd) && (s.isExtendableFront()) && (s.extendFront()) ) {}
-    trace.info() << s << endl; 
-    double a, b, c; 
-    s.getParameters(a,b,c); 
-    trace.info() << a << " " << b << " " << c << endl; 
+    trace.info() << s << endl;
+    double a, b, c;
+    s.getParameters(a,b,c);
+    trace.info() << a << " " << b << " " << c << endl;
 
-    t.init( (itBegin + (itEnd - itBegin)/2) ); 
-    while ( (t.end() != itEnd) && (t.extendFront()) 
+    t.init( (itBegin + (itEnd - itBegin)/2) );
+    while ( (t.end() != itEnd) && (t.extendFront())
          && (t.begin() != itBegin) && (t.extendBack()) ) {}
-    trace.info() << t << endl; 
+    trace.info() << t << endl;
 
-    trace.info() << "backward extension " << endl; 
-    typename StabbingLineComputer<ConstIterator>::Reverse rs = s.getReverse(); 
-    ConstReverseIterator ritBegin (t.end()); 
-    ConstReverseIterator ritEnd (r.rend()); 
+    trace.info() << "backward extension " << endl;
+    typename StabbingLineComputer<ConstIterator>::Reverse rs = s.getReverse();
+    ConstReverseIterator ritBegin (t.end());
+    ConstReverseIterator ritEnd (r.rend());
     rs.init( ritBegin );
     while ( (rs.end() != ritEnd) && (rs.isExtendableFront()) && (rs.extendFront()) ) {}
-    trace.info() << rs << endl; 
-    double ap, bp, cp; 
-    rs.getParameters(ap,bp,cp); 
-    trace.info() << ap << " " << bp << " " << cp << endl; 
+    trace.info() << rs << endl;
+    double ap, bp, cp;
+    rs.getParameters(ap,bp,cp);
+    trace.info() << ap << " " << bp << " " << cp << endl;
 
-    typename StabbingLineComputer<ConstIterator>::Reverse rt = t.getReverse(); 
-    rt.init( (ritBegin + (ritEnd - ritBegin)/2) ); 
+    typename StabbingLineComputer<ConstIterator>::Reverse rt = t.getReverse();
+    rt.init( (ritBegin + (ritEnd - ritBegin)/2) );
     while ( (rt.begin() != ritBegin) && (rt.extendBack())
          && (rt.end() != ritEnd) && (rt.extendFront()) ) {}
-    trace.info() << rt << endl; 
+    trace.info() << rt << endl;
 
-    trace.info() << "comparison... " << endl; 
+    trace.info() << "comparison... " << endl;
     bool myFlag = ( (s == t)&&(rs == rt) )
     && ( s.Uf() == rs.Uf() )
     && ( s.Ul() == rs.Ul() )
@@ -141,13 +141,13 @@ bool testStabbingLineComputer(const TCurve& curve)
     && (a == ap)
     && (b == bp)
     && (c == cp)
-    ; 
+    ;
 
-    nbok += myFlag ? 1 : 0; 
+    nbok += myFlag ? 1 : 0;
     nb++;
   }
   trace.endBlock();
-  
+
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   return nbok == nb;
 }
@@ -165,24 +165,24 @@ bool drawingTestStabbingLineComputer(const TCurve& curve)
   Range r = curve.getIncidentPointsRange(); //range
 
   StabbingLineComputer<ConstIterator> s;
-  ConstIterator itEnd (r.end()); 
+  ConstIterator itEnd (r.end());
   s.init( r.begin() );
   while ( (s.end() != itEnd) && (s.extendFront()) ) {}
 
-  double a, b, c; 
-  s.getParameters(a,b,c); 
+  double a, b, c;
+  s.getParameters(a,b,c);
 
-  Board2D board; 
-  board << r << s; 
-  board.saveEPS("StabbingLineComputerdrawingTest.eps"); 
-  return true; 
+  Board2D board;
+  board << r << s;
+  board.saveEPS("StabbingLineComputerdrawingTest.eps");
+  return true;
 }
 
 void testStabbingLineComputerConceptChecking()
 {
-   typedef std::pair<PointVector<2,int>, PointVector<2,int> > Pair; 
-   typedef std::vector<Pair>::const_iterator ConstIterator; 
-   typedef StabbingLineComputer<ConstIterator> GeomDSS; 
+   typedef std::pair<PointVector<2,int>, PointVector<2,int> > Pair;
+   typedef std::vector<Pair>::const_iterator ConstIterator;
+   typedef StabbingLineComputer<ConstIterator> GeomDSS;
    BOOST_CONCEPT_ASSERT(( concepts::CDrawableWithBoard2D<GeomDSS> ));
    BOOST_CONCEPT_ASSERT(( concepts::CBidirectionalSegmentComputer<GeomDSS> ));
 }
@@ -193,37 +193,37 @@ bool testSegmentation(const TCurve& curve)
 
   typedef typename TCurve::IncidentPointsRange Range; //range
   Range r = curve.getIncidentPointsRange(); //range
-  
+
   typedef typename Range::ConstIterator ConstIterator; //iterator
   typedef StabbingLineComputer<ConstIterator> SegmentComputer; //segment computer
-  
-  unsigned int nbok = 0;
-  unsigned int nb = 0;  
 
-  
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+
+
   trace.beginBlock ( "Greedy segmentation" );
   {
     typedef GreedySegmentation<SegmentComputer> Segmentation;
     Segmentation theSegmentation( r.begin(), r.end(), SegmentComputer() );
-    
-    Board2D board; 
-    board << r; 
-      
+
+    Board2D board;
+    board << r;
+
     typename Segmentation::SegmentComputerIterator it = theSegmentation.begin();
     typename Segmentation::SegmentComputerIterator itEnd = theSegmentation.end();
-    unsigned int n = 0; 
-    unsigned int suml = 0; 
+    unsigned int n = 0;
+    unsigned int suml = 0;
     for ( ; it != itEnd; ++it, ++n) {
-      board << (*it); 
+      board << (*it);
       for (ConstIterator i = it->begin(); i != it->end(); ++i)
-        suml += 1; 
+        suml += 1;
     }
-    
-    board.saveEPS("StabbingLineComputerGreedySegmentationTest.eps", Board2D::BoundingBox, 5000 ); 
+
+    board.saveEPS("StabbingLineComputerGreedySegmentationTest.eps", Board2D::BoundingBox, 5000 );
 
     trace.info() << r.size() << ";" << n << ";" << suml << endl;
     //comparison with the results gave by another program
-    nbok += ((r.size()==85)&&(n==10)&&(suml==94)) ? 1 : 0; 
+    nbok += ((r.size()==85)&&(n==10)&&(suml==94)) ? 1 : 0;
     nb++;
   }
   trace.endBlock();
@@ -232,30 +232,30 @@ bool testSegmentation(const TCurve& curve)
   {
     typedef SaturatedSegmentation<SegmentComputer> Segmentation;
     Segmentation theSegmentation( r.begin(), r.end(), SegmentComputer() );
-    
-    Board2D board; 
-    board << r; 
-    
+
+    Board2D board;
+    board << r;
+
     typename Segmentation::SegmentComputerIterator it = theSegmentation.begin();
     typename Segmentation::SegmentComputerIterator itEnd = theSegmentation.end();
-    unsigned int n = 0; 
-    unsigned int suml = 0; 
+    unsigned int n = 0;
+    unsigned int suml = 0;
     for ( ; it != itEnd; ++it, ++n) {
-      board << (*it); 
+      board << (*it);
       for (ConstIterator i = it->begin(); i != it->end(); ++i)
-        suml += 1; 
+        suml += 1;
     }
-    
-    board.saveEPS("StabbingLineComputerSaturatedSegmentationTest.eps", Board2D::BoundingBox, 5000 ); 
+
+    board.saveEPS("StabbingLineComputerSaturatedSegmentationTest.eps", Board2D::BoundingBox, 5000 );
 
     trace.info() << r.size() << ";" << n << ";" << suml << endl;
     //comparison with the results gave by another program
-    nbok += ((r.size()==85)&&(n==25)&&(suml==255)) ? 1 : 0; 
+    nbok += ((r.size()==85)&&(n==25)&&(suml==255)) ? 1 : 0;
     nb++;
   }
   trace.endBlock();
-  
-  
+
+
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   return (nbok == nb);
 }
@@ -270,37 +270,37 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res; 
-  
+  bool res;
+
   {//concept checking
     testStabbingLineComputerConceptChecking();
   }
-  
+
   {//basic operations
     std::string filename = testPath + "samples/DSS.dat";
     ifstream instream; // input stream
     instream.open (filename.c_str(), ifstream::in);
-    
-    typedef KhalimskySpaceND<2,int> KSpace; 
+
+    typedef KhalimskySpaceND<2,int> KSpace;
     GridCurve<KSpace> c; //grid curve
     c.initFromVectorStream(instream);
 
     res = testStabbingLineComputer(c)
-  && drawingTestStabbingLineComputer(c); 
+  && drawingTestStabbingLineComputer(c);
   }
-  
+
   {//segmentations
     std::string filename = testPath + "samples/sinus2D4.dat";
     ifstream instream; // input stream
     instream.open (filename.c_str(), ifstream::in);
-    
-    typedef KhalimskySpaceND<2,int> KSpace; 
+
+    typedef KhalimskySpaceND<2,int> KSpace;
     GridCurve<KSpace> c; //grid curve
     c.initFromVectorStream(instream);
-    
-    res = res && testSegmentation(c); 
+
+    res = res && testSegmentation(c);
   }
-  
+
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

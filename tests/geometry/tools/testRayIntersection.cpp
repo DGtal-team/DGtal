@@ -59,56 +59,56 @@ bool testRayIntersection()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing RayTriangle ..." );
-  
+
   typedef RayIntersectionPredicate<Point> Ray;
   Ray  ray(Point(0,0,0), Point(1,1,1));
 
   trace.info() << "Ray intersection with 222-triangle  "<<std::endl;
-  nbok += ray(Point(2,0,0),Point(0,0,2),Point(0,2,0)) ? 1 : 0; 
+  nbok += ray(Point(2,0,0),Point(0,0,2),Point(0,2,0)) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true " << std::endl;
 
   trace.info() << "Ray intersection with reversed 222-triangle "<<std::endl;
-  nbok += ray(Point(2,0,0),Point(0,2,0),Point(0,0,2)) ? 1 : 0; 
+  nbok += ray(Point(2,0,0),Point(0,2,0),Point(0,0,2)) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true (no culling) " << std::endl;
 
   Ray  ray2(Point(100,0,0), Point(1,1,1));
   trace.info() << "Ray intersection wrong ray with 222-triangle"<<std::endl;
-  nbok += !ray2(Point(2,0,0),Point(0,2,0),Point(0,0,2)) ? 1 : 0; 
+  nbok += !ray2(Point(2,0,0),Point(0,2,0),Point(0,0,2)) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "false (no intersection)" << std::endl;
-   
+
 
   Ray  ray3(Point(0,0,0), Point(-1,-1,-1));
   trace.info() << "Ray intersection reversed ray with 222-triangle "<<std::endl;
-  nbok += !ray3(Point(2,0,0),Point(0,2,0),Point(0,0,2)) ? 1 : 0; 
+  nbok += !ray3(Point(2,0,0),Point(0,2,0),Point(0,0,2)) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "false (reversed ray)" << std::endl;
 
 
   trace.info() << "Ray intersection with -2-2-2-triangle "<<std::endl;
-  nbok += !ray(Point(-2,0,0),Point(0,-2,0),Point(0,0,-2)) ? 1 : 0; 
+  nbok += !ray(Point(-2,0,0),Point(0,-2,0),Point(0,0,-2)) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "false (reversed triangle)" << std::endl;
 
   Ray  ray4(Point(2,2,0), Point(-1,-1,0));
   trace.info() << "Ray intersection in plane  "<<std::endl;
-  nbok += !ray4(Point(0,0,0),Point(0,1,0),Point(1,1,0)) ? 1 : 0; 
+  nbok += !ray4(Point(0,0,0),Point(0,1,0),Point(1,1,0)) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "false (in plane)" << std::endl;
 
 
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
@@ -116,17 +116,17 @@ bool testRayQuadIntersection()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing RayQuad ..." );
 
   using namespace Z3i;
-  
+
   typedef RayIntersectionPredicate<Point> Ray;
   Ray  ray(Point(0,0,0), Point(1,1,1));
 
   trace.info() << "Ray intersection with huge quad   "<<std::endl;
   nbok += ray(Point(10,0,0),Point(10,100,0),
-              Point(10,0,100),Point(10,100,100) ) ? 1 : 0; 
+              Point(10,0,100),Point(10,100,100) ) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true " << std::endl;
@@ -134,14 +134,14 @@ bool testRayQuadIntersection()
 
   trace.info() << "Ray intersection with far quad   "<<std::endl;
   nbok += !ray(Point(10,0,0),Point(10,1,0),
-               Point(10,0,1),Point(10,1,1) ) ? 1 : 0; 
+               Point(10,0,1),Point(10,1,1) ) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "false " << std::endl;
   trace.info()<<std::endl;
 
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
@@ -149,38 +149,38 @@ bool testRaySurfelIntersection()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing RaySurfel ..." );
 
   using namespace Z3i;
-  
+
   KSpace k;
 
   k.init(Point(0,0,0), Point(10,10,10), true);
-  
+
   typedef RayIntersectionPredicate<KSpace::Cell::Point> Ray;
-  Ray  ray(KSpace::Cell::Point(0,0,0), 
+  Ray  ray(KSpace::Cell::Point(0,0,0),
            KSpace::Cell::Point(2,1,1));
 
   KSpace::Surfel surf =  k.sCell( Point( 2,1,1) );
   KSpace::Surfel surf2 =  k.sCell( Point( 2,7,7) );
-  
+
   trace.info() << "Ray intersection with surf   "<<std::endl;
-  nbok += ray(surf)  ? 1 : 0; 
+  nbok += ray(surf)  ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "true " << std::endl;
   trace.info()<<std::endl;
-  
+
   trace.info() << "Ray intersection with surf2  "<<std::endl;
-  nbok += !ray(surf2 ) ? 1 : 0; 
+  nbok += !ray(surf2 ) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "false " << std::endl;
   trace.info()<<std::endl;
 
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
@@ -211,19 +211,19 @@ bool testRaySurface()
 
 
   trace.beginBlock(" Ray shooting the shape");
-  
+
   RayIntersectionPredicate<Z3i::KSpace::Cell::Point> ray(Z3i::KSpace::Cell::Point(0,0,0),
                                                          Z3i::KSpace::Cell::Point(2,2,2));
 
   RayIntersectionPredicate<Z3i::KSpace::Cell::Point> ray2(Z3i::KSpace::Cell::Point(0,0,0),
                                                           Z3i::KSpace::Cell::Point(1,0,0));
 
-  MyDigitalSurface::ConstIterator it = std::find_if(surf.begin(), surf.end(), ray); 
+  MyDigitalSurface::ConstIterator it = std::find_if(surf.begin(), surf.end(), ray);
   trace.info() << "Ray shooting returns : "<< *it<<std::endl;
 
-  MyDigitalSurface::ConstIterator it2 = std::find_if(surf.begin(), surf.end(), ray2); 
+  MyDigitalSurface::ConstIterator it2 = std::find_if(surf.begin(), surf.end(), ray2);
   trace.info() << "Ray shooting returns : "<< *it2<<std::endl;
-  
+
   trace.endBlock();
   trace.endBlock();
 
@@ -241,7 +241,7 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testRayIntersection<Z3i::Point>() 
+  bool res = testRayIntersection<Z3i::Point>()
     && testRayIntersection<Z3i::RealPoint>()
     && testRayQuadIntersection()
     && testRaySurfelIntersection()

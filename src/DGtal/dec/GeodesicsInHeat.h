@@ -73,19 +73,19 @@ namespace DGtal
     typedef typename PolygonalCalculus::LinAlg LinAlgBackend;
     typedef DirichletConditions< LinAlgBackend > Conditions;
     typedef typename Conditions::IntegerVector IntegerVector;
-    
+
     /**
      * Default constructor.
      */
     GeodesicsInHeat() = delete;
-    
+
     /// Constructor from an existing polygonal calculus. T
     /// @param calculus a instance of PolygonalCalculus
     GeodesicsInHeat(ConstAlias<PolygonalCalculus> calculus): myCalculus(&calculus)
     {
       myIsInit=false;
     }
-    
+
     /**
      * Destructor.
      */
@@ -118,9 +118,9 @@ namespace DGtal
     GeodesicsInHeat & operator= ( GeodesicsInHeat && other ) = delete;
 
 
-    
+
     // ----------------------- Interface --------------------------------------
-   
+
     /// Initialize the solvers with @a dt as timestep for the heat
     /// diffusion and @a lambda parameter for the polygonal calculus,
     /// which guarantee definiteness for positive @a lambda.
@@ -141,7 +141,7 @@ namespace DGtal
       SparseMatrix laplacian = myCalculus->globalLaplaceBeltrami( lambda );
       SparseMatrix mass      = myCalculus->globalLumpedMassMatrix();
       myHeatOpe              = mass - dt*laplacian;
-    
+
       // from https://geometry-central.net
       // NOTE: In theory, it should not be necessary to shift the Laplacian: the Polydec Laplace is always PSD. However, when the
       // matrix is only positive SEMIdefinite, some solvers may not work (ie Eigen's Cholesky solver doesn't work, but
@@ -149,11 +149,11 @@ namespace DGtal
       SparseMatrix Id = SparseMatrix(myCalculus->nbVertices(),myCalculus->nbVertices());
       Id.setIdentity();
       laplacian += 1e-6 * Id;
-      
+
       //Prefactorizing
       myPoissonSolver.compute( laplacian );
       myHeatSolver.compute   ( myHeatOpe );
-      
+
       //empty source
       mySource    = Vector::Zero(myCalculus->nbVertices());
 
@@ -176,7 +176,7 @@ namespace DGtal
       // Prefactoring
       myHeatDirichletSolver.compute( heatOpe_d );
     }
-    
+
     /** Adds a source point at a vertex @e aV
      * @param aV the Vertex
      **/
@@ -186,14 +186,14 @@ namespace DGtal
       myLastSourceIndex = aV;
       mySource( aV ) = 1.0;
     }
-    
+
     /** Removes all source Diracs.
      */
     void clearSource()
     {
       mySource = Vector::Zero(myCalculus->nbVertices());
     }
-    
+
     /**
      * @returns the source point vector.
      **/
@@ -202,8 +202,8 @@ namespace DGtal
       FATAL_ERROR_MSG(myIsInit, "init() method must be called first");
       return mySource;
     }
-    
-    
+
+
     /// Main computation of the Geodesic In Heat
     /// @returns the estimated geodesic distances from the sources.
     Vector compute() const
@@ -227,7 +227,7 @@ namespace DGtal
       Vector divergence    = Vector::Zero(myCalculus->nbVertices());
       auto cpt=0;
       auto surfmesh = myCalculus->getSurfaceMeshPtr();
-      
+
       // Heat, normalization and divergence per face
       for(typename PolygonalCalculus::MySurfaceMesh::Index f=0; f< myCalculus->nbFaces(); ++f)
         {
@@ -242,7 +242,7 @@ namespace DGtal
           // ∇heat / ∣∣∇heat∣∣
           Vector grad = -myCalculus->gradient(f) * faceHeat;
           grad.normalize();
-      
+
           // div
           DenseMatrix   oneForm = myCalculus->flat(f)*grad;
           Vector divergenceFace = myCalculus->divergence( f ) * oneForm;
@@ -253,7 +253,7 @@ namespace DGtal
               ++cpt;
             }
         }
-      
+
       // Last Poisson solve
       Vector distVec = myPoissonSolver.solve(divergence);
       ASSERT(myPoissonSolver.info()==Eigen::Success);
@@ -263,24 +263,24 @@ namespace DGtal
       //shifting the distances to get 0 at sources
       return distVec - sourceval*Vector::Ones(myCalculus->nbVertices());
     }
-    
-    
+
+
     /// @return true if the calculus is valid.
     bool isValid() const
     {
       return myIsInit && myCalculus->isValid();
     }
-    
+
     // ----------------------- Private --------------------------------------
 
   private:
-    
+
     ///The underlying PolygonalCalculus instance
     const PolygonalCalculus *myCalculus;
 
     /// The operator for heat diffusion.
     SparseMatrix myHeatOpe;
-    
+
     ///Poisson solver
     Solver myPoissonSolver;
 
@@ -292,7 +292,7 @@ namespace DGtal
 
     ///Vertex index to the last source point (to shift the distances)
     Vertex myLastSourceIndex;
-  
+
     ///Validitate flag
     bool myIsInit;
 
@@ -305,11 +305,11 @@ namespace DGtal
 
     /// The boundary characteristic vector
     IntegerVector myBoundary;
-    
+
     ///Heat solver with Dirichlet boundary conditions.
     Solver myHeatDirichletSolver;
-  
-  
+
+
   }; // end of class GeodesicsInHeat
 } // namespace DGtal
 

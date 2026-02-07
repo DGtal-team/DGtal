@@ -102,7 +102,7 @@ namespace DGtal
    LighterSternBrocot::Node*. For instance, StdMapRebinder is fine.
 
   */
-  template <typename TInteger, typename TQuotient, 
+  template <typename TInteger, typename TQuotient,
             typename TMap = StdMapRebinder>
   class LightSternBrocot
   {
@@ -111,7 +111,7 @@ namespace DGtal
     typedef TQuotient Quotient;
     typedef TMap Map;
     typedef LightSternBrocot<TInteger,TQuotient,TMap> Self;
-    
+
     BOOST_CONCEPT_ASSERT(( concepts::CInteger< Integer > ));
 
     struct Node;
@@ -143,7 +143,7 @@ namespace DGtal
          @param ascendant A pointer to the node that is the preceding
          principal convergent.
        */
-      Node( Integer p1, Integer q1, Quotient u1, Quotient k1, 
+      Node( Integer p1, Integer q1, Quotient u1, Quotient k1,
 	    Node* ascendant );
 
       /// the numerator;
@@ -177,14 +177,14 @@ namespace DGtal
       inline bool isSameDepthLeft() const {
         return odd();
       }
-      
+
     };
 
     /**
        @brief This fraction is a model of CPositiveIrreducibleFraction.
 
        It represents a positive irreducible fraction, i.e. some p/q
-       qith gcd(p,q)=1. It is an inner class of
+       with gcd(p,q)=1. It is an inner class of
        LightSternBrocot. This representation of a fraction is simply
        a pointer to the corresponding node in this tree, plus a
        boolean indicating if it is bigger than 1/1.
@@ -209,18 +209,18 @@ namespace DGtal
     private:
       /// The pointer to the corresponding node in the Stern-Brocot
       /// tree, i.e. the node p/q if p <= q or the node q/p otherwise.
-      Node* myNode; 
+      Node* myNode;
       /// When 'true', the fraction is greater than 1/1 (to its right).
       bool mySup1;
 
-    public:      
-      /** 
+    public:
+      /**
           Creates the fraction aP/aQ. Complexity is in O(n) where n is the depth
           of continued fraction of aP/aQ.
-          
+
           @param aP the numerator (>=0)
           @param aQ the denominator (>=0)
-          
+
           @param start (optional) unused in this representation.
       */
       Fraction( Integer aP, Integer aQ,
@@ -279,11 +279,11 @@ namespace DGtal
       /// @return its right descendant (construct it if it does not exist yet).
       Fraction right() const;
       /// @return 'true' if it is an even fraction, i.e. its depth k() is even.
-      bool even() const; 
+      bool even() const;
       /// @return 'true' if it is an odd fraction, i.e. its depth k() is odd.
-      bool odd() const; 
+      bool odd() const;
       /**
-	 @return the ancestor of this fraction in O(1), ie 
+	 @return the ancestor of this fraction in O(1), ie
          [u0,...,u_{k-1},uk] => [u0,...,u_{k-1}] if u_{k-1} > 1,
          => [u0,...,u_{k-2}] otherwise.
       */
@@ -342,7 +342,7 @@ namespace DGtal
          Useful to create output iterators, for instance with
 
          @code
-         typedef ... Fraction; 
+         typedef ... Fraction;
          Fraction f;
          std::back_insert_iterator<Fraction> itout = std::back_inserter( f );
          @endcode
@@ -360,7 +360,7 @@ namespace DGtal
          See push_back for creating output iterators.
 
          @param quotient the pair \f$(m,k+1)\f$.
-      */         
+      */
       void pushBack( const std::pair<Quotient, Quotient> & quotient );
 
       /**
@@ -370,7 +370,7 @@ namespace DGtal
 	 @param f1 (returns) the left part of the split.
 	 @param f2 (returns) the right part of the split.
       */
-      void getSplit( Fraction & f1, Fraction & f2 ) const; 
+      void getSplit( Fraction & f1, Fraction & f2 ) const;
 
       /**
 	 Berstel splitting formula, O(1) time complexity. This
@@ -383,8 +383,8 @@ namespace DGtal
 	 @param f2 (returns) the right part of the split (right pattern).
 	 @param nb2 (returns) the number of repetition of the right pattern
       */
-      void getSplitBerstel( Fraction & f1, Quotient & nb1, 
-			    Fraction & f2, Quotient & nb2 ) const; 
+      void getSplitBerstel( Fraction & f1, Quotient & nb1,
+			    Fraction & f2, Quotient & nb2 ) const;
 
       /**
 	 @param quotients (returns) the coefficients of the continued
@@ -445,7 +445,7 @@ namespace DGtal
 
       /**
          @return a const iterator pointing on the beginning of the sequence of quotients of this fraction.
-         NB: \f$ O(\sum_i u_i) \f$ operation. 
+         NB: \f$ O(\sum_i u_i) \f$ operation.
       */
       ConstIterator begin() const;
 
@@ -477,14 +477,14 @@ namespace DGtal
     /** The fraction 1/0 */
     static Fraction oneOverZero();
 
-    /** 
+    /**
 	Creates the fraction p/q.
 
 	@param p the numerator (>=0)
 	@param q the denominator (>=0)
 
 	@param ancestor (optional) unused in this representation.
-	
+
 	@return the corresponding fraction in the Stern-Brocot tree.
 
         NB: Complexity is bounded by \a n where \a n is the depth of
@@ -512,16 +512,16 @@ namespace DGtal
     /// The total number of fractions in the current tree.
     Quotient nbFractions;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     /// Singleton class.
     static LightSternBrocot* singleton;
 
 
-    // ------------------------- Datas ----------------------------------------
+    // ------------------------- Data ----------------------------------------
   private:
 
     Node* myZeroOverOne;
@@ -567,7 +567,7 @@ namespace DGtal
    */
   // template <typename TInteger, typename TQuotient, typename TMap>
   // std::ostream&
-  // operator<< ( std::ostream & out, 
+  // operator<< ( std::ostream & out,
   //              const typename LightSternBrocot<TInteger, TQuotient, TMap>::Fraction & object );
 
 } // namespace DGtal

@@ -59,7 +59,7 @@ namespace DGtal {
      regions in an image. It can be used with ExplicitDigitalSurface
      or LightExplicitDigitalSurface so as to define a digital
      surface. Such surfaces may of course be open.
-     
+
      @tparam TKSpace any model of cellular space
      @tparam TImage any model of Image
   */
@@ -80,20 +80,20 @@ namespace DGtal {
     BOOST_STATIC_ASSERT
     (( concepts::ConceptUtils::SameType< typename KSpace::Point,
        typename Image::Point>::value ));
-                                                 
+
 
     // ----------------------- Standard services ------------------------------
   public:
-  
+
     /**
      * Destructor.
      */
     ~FrontierPredicate();
-  
+
     /**
        Constructor. The frontier will be defined only with the image
        domain. The space must be large enough to contain the frontier.
-       
+
        @param aSpace a cellular grid space (referenced).
        @param anImage any image (referenced).
        @param l1 a label in the image that defines the inner region.
@@ -101,7 +101,7 @@ namespace DGtal {
     */
     FrontierPredicate( ConstAlias<KSpace> aSpace, ConstAlias<Image> anImage,
                        const Value & l1, const Value & l2 );
-  
+
     /**
      * Copy constructor.
      * @param other the object to clone.
@@ -116,8 +116,8 @@ namespace DGtal {
     FrontierPredicate& operator=( const FrontierPredicate & other );
 
     /**
-       Predicate operator. 
-       
+       Predicate operator.
+
        @param s any surfel
 
        @return 'true' iff s has its inner voxel that has label
@@ -125,7 +125,7 @@ namespace DGtal {
        myLabel2 in image myImage.
     */
     bool operator()( const Surfel & s ) const;
-    
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -141,7 +141,7 @@ namespace DGtal {
      */
     bool isValid() const;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     /// the cellular space where lies the image.
@@ -170,7 +170,7 @@ namespace DGtal {
    */
   template <typename TKSpace, typename TImage>
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
                const DGtal::functors::FrontierPredicate<TKSpace,TImage> & object );
 
 

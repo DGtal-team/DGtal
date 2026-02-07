@@ -56,13 +56,13 @@ DGtal::FrechetShortcut<TIterator, TInteger>::Backpath::Backpath()
 //creation of a backPath
 template <typename TIterator, typename TInteger>
 inline
-DGtal::FrechetShortcut<TIterator, TInteger>::Backpath::Backpath(const FrechetShortcut<TIterator,TInteger> *s,int q): myS(s),myQuad(q),myFlag(false)  
+DGtal::FrechetShortcut<TIterator, TInteger>::Backpath::Backpath(const FrechetShortcut<TIterator,TInteger> *s,int q): myS(s),myQuad(q),myFlag(false)
 {
 }
 
 template <typename TIterator, typename TInteger>
 inline
-DGtal::FrechetShortcut<TIterator, TInteger>::Backpath::Backpath(const Backpath & other): myS(other.myS),myQuad(other.myQuad),myFlag(other.myFlag),myOcculters(other.myOcculters),myForbiddenIntervals(other.myForbiddenIntervals)  
+DGtal::FrechetShortcut<TIterator, TInteger>::Backpath::Backpath(const Backpath & other): myS(other.myS),myQuad(other.myQuad),myFlag(other.myFlag),myOcculters(other.myOcculters),myForbiddenIntervals(other.myForbiddenIntervals)
 {
 }
 
@@ -93,18 +93,18 @@ void DGtal::FrechetShortcut<TIterator, TInteger>::Backpath::reset()
 //destruction of a backPath
 template <typename TIterator, typename TInteger>
 inline
-DGtal::FrechetShortcut<TIterator, TInteger>::Backpath::~Backpath()              
-{ }      
+DGtal::FrechetShortcut<TIterator, TInteger>::Backpath::~Backpath()
+{ }
 
 template <typename TIterator, typename TInteger>
 inline
 void DGtal::FrechetShortcut<TIterator, TInteger>::Backpath::updateBackPathFirstQuad(int d, const ConstIterator& it)
-{  
-  
+{
+
   myIt = it;
 
   switch(d)
-    {    
+    {
     case 0:
     case 1:
     case 2:
@@ -119,35 +119,35 @@ void DGtal::FrechetShortcut<TIterator, TInteger>::Backpath::updateBackPathFirstQ
     case 6:
       {
 	addNegativePoint();
-	break; 
+	break;
       }
     }
 }
 
-// update the list of active occulters 
+// update the list of active occulters
 template <typename TIterator, typename TInteger>
 inline
 void DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::updateOcculters()
 {
-    
+
   // The potential new occulter is the last-but-one point
   Point p = Point(*(myIt-1));
-    
-  
+
+
   Point pi,v;
   Vector dir = Tools::chainCode2Vect(myQuad);
   Vector dir_ortho = Tools::chainCode2Vect((myQuad+6)%8);
-  
-  
+
+
   Point u1,u2;
   u1 = dir;
   u2 = Tools::chainCode2Vect((myQuad+1)%8);;
-  
+
   double angle_min=0;
   double angle_max=M_PI_4;
   bool occ = false;
   bool ok = true;
-  
+
   IntegerComputer<TInteger> ic;
 
   if(myOcculters.size()==0)
@@ -159,17 +159,17 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::updateOcculters()
   else
     {
       typename occulter_list::iterator iter=myOcculters.begin();
-    
+
       iter = myOcculters.begin();
       for(typename occulter_list::size_type  i=0; i < myOcculters.size() && ok ; ++i)
       	{
 	  pi = Point(*(iter->first));
 	  v = p-pi;
-	  
+
 	  // pi is after p for all directions -> p is not an occulter
 	  if(ic.dotProduct(v,u1) < 0 && ic.dotProduct(v,u2) <0)
 	  {
-	    ok = false; 
+	    ok = false;
 	    occ = false;
 	    }
 	  else
@@ -187,7 +187,7 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::updateOcculters()
 	      if(ic.dotProduct(v,u1) > 0 && ic.dotProduct(v,u2) <= 0)
 		{
 		  double alpha = Tools::angleVectVect(v,dir_ortho);
-		  
+
 		  if(alpha >= iter->second.angle_min && alpha <=
 		     iter->second.angle_max)
 		    {
@@ -202,7 +202,7 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::updateOcculters()
 		  else
 		    if(alpha > iter->second.angle_max)
 		      {
-			//pi is not an occulter anymore 
+			//pi is not an occulter anymore
 			iter = myOcculters.erase(iter);
 			occ=true;
 			angle_min = 0;
@@ -210,13 +210,13 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::updateOcculters()
 		      }
 		  // if alpha < iter->second.angle_min, pi does not
 		  // change, p may be an occulter -> do nothing
-		} 
+		}
 	      else // scalar_product(v,u1) < 0 && scalar_product(v,u2) > 0
 		// p is after pi on [alpha,pi/4], before pi on [0,alpha]
 		{
 		  double alpha = Tools::angleVectVect(v,dir_ortho);
 		  alpha = M_PI - alpha;
-		  
+
 		  if(alpha >= iter->second.angle_min && alpha <=
 		     iter->second.angle_max)
 		    {
@@ -230,7 +230,7 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::updateOcculters()
 		  else
 		    if(alpha < iter->second.angle_min)
 		      {
-			//pi is not an occulter anymore 
+			//pi is not an occulter anymore
 			iter = myOcculters.erase(iter);
 			occ=true;
 			angle_min = 0;
@@ -240,21 +240,21 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Backpath::updateOcculters()
 		      iter++;
 		  // if(alpha > iter->second.angle_max), pi does not
 		  // change, p may be an occulter -> do nothing
-		  
+
 		}
 	}
     }
-  
+
   if(occ)
     {
       occulter_attributes new_occ;
       new_occ.angle_min = angle_min;
       new_occ.angle_max = angle_max;
       myOcculters.insert(myOcculters.end(),std::pair<const ConstIterator,occulter_attributes>(myIt-1,new_occ));
-  
+
     }
-  
-  
+
+
 }
 
 
@@ -265,33 +265,33 @@ inline
 void DGtal::FrechetShortcut<TIterator,  TInteger>::Backpath::updateIntervals()
 {
   Point p = Point(*myIt);
-  
+
   Point pi,v;
   Vector dir,dir1;
-  
+
   IntegerComputer<TInteger> ic;
 
   for(typename occulter_list::iterator iter =
-	myOcculters.begin(); iter!=myOcculters.end() ;++iter)	
+	myOcculters.begin(); iter!=myOcculters.end() ;++iter)
     {
       pi = Point(*(iter->first));
-      
+
       v = p-pi;
-      
+
       dir = Tools::chainCode2Vect(myQuad);
       dir1 = Tools::chainCode2Vect((myQuad+1)%8);
-      
+
       if(ic.dotProduct(v,dir)<0 || ic.dotProduct(v,dir1)<0)
 	{
 	  if(v.norm()>=myS->myError/sqrt(2.0F))
-	    { 
+	    {
 	      if(ic.crossProduct(dir,v)<=0)
 		{
 		  v[0] = -v[0];
 		  v[1] = -v[1];
 		}
 	      double angle_v = Tools::angleVectVect(v,dir);
-	      
+
 	      double tmp = acos((double) myS->myError/(sqrt(2.0F)*v.norm()));
 	      double angle1 = -tmp+angle_v;
 	      double angle2 = tmp+angle_v;
@@ -299,15 +299,15 @@ void DGtal::FrechetShortcut<TIterator,  TInteger>::Backpath::updateIntervals()
 		angle1 = 0;
 	      if(angle2 > M_PI_4)
 		angle2 = M_PI_4;
-	      
+
 	      // Define a new interval of forbidden angles and insert it in the list.
 	      boost::icl::interval<double>::type s = boost::icl::interval<double>::closed(angle1,angle2);
 	      myForbiddenIntervals.insert(s);
-	      	      
+
 	    }
 	}
     }
-  
+
 }
 
 
@@ -328,30 +328,30 @@ void DGtal::FrechetShortcut<TIterator, TInteger>::Backpath::addPositivePoint()
 
 /************************************************************/
 
- 
+
 template <typename TIterator, typename TInteger>
 inline
 void DGtal::FrechetShortcut<TIterator, TInteger>::Backpath::addNegativePoint()
 {
-  
+
   // if we were on a monotone backpath, do nothing, the backpath
   // continues
-  // otherwise it is the beggining of a new monotone backpath,
+  // otherwise it is the beginning of a new monotone backpath,
   // possibly a locally maximal occulting point
-  
+
   //trace.info() << "add negative point" << std::endl;
-  
+
   if(!myFlag)
     {
       myFlag=true;
       updateOcculters();
-      updateIntervals(); 
+      updateIntervals();
     }
   else
     {
       updateIntervals();
     }
-  
+
 
 }
 ///////////////////////////////////////////////////////////////////////////
@@ -380,11 +380,11 @@ template <typename TIterator, typename TInteger>
 inline
 DGtal::FrechetShortcut<TIterator,TInteger>::Cone::Cone(double angle0, double angle1)
 {
-  
-  // angle0 and angle1 are ordered in direct orientation such that the
-  // angle made by the two directions is lower than PI.  
 
-  
+  // angle0 and angle1 are ordered in direct orientation such that the
+  // angle made by the two directions is lower than PI.
+
+
   // case angle0-angle1 = PI -> infinite cone
   if(fabs(fabs(angle0-angle1)-M_PI) < PRECISION)
     {
@@ -412,12 +412,12 @@ DGtal::FrechetShortcut<TIterator,TInteger>::Cone::Cone(double angle0, double ang
 	if(angle0>angle1)
 	  {
 	    myMin = angle0;
-	    myMax = angle1; 
+	    myMax = angle1;
 	  }
 	else
 	  {
 	    myMin = angle1;
-	    myMax = angle0; 
+	    myMax = angle0;
 	  }
       }
   myInf = false;
@@ -429,7 +429,7 @@ DGtal::FrechetShortcut<TIterator,TInteger>::Cone::Cone(double x, double y, doubl
 {
   double angle0 = Tools::computeAngle(x, y, x0, y0);
   double angle1 = Tools::computeAngle(x, y, x1, y1);
-  
+
   assert(angle0 != -1 && angle1 != -1);
 
   *this = Cone(angle0,angle1);
@@ -475,17 +475,17 @@ inline
 void DGtal::FrechetShortcut<TIterator,TInteger>::Cone::intersectCones(Cone c)
 {
   Cone res;
-  
+
   // computes the intersection between the self cone and one half of another cone
   res = intersectConesSimple(c);
-  
+
   // if they are disjoint, try the intersection with the other half
   if(res.isEmpty())
     {
       Cone sym = c.symmetricalCone();
       res = intersectConesSimple(sym);
     }
-  
+
   *this = res;
 }
 
@@ -496,18 +496,18 @@ inline
 typename DGtal::FrechetShortcut<TIterator,TInteger>::Cone DGtal::FrechetShortcut<TIterator,TInteger>::Cone::intersectConesSimple(Cone c)
 {
   Cone res;
-  
+
   // if the cone is infinite, the new cone is c
   if(myInf)
     {
       res = c;
       res.myInf = false;
     }
-  else    
+  else
     // the directions of the new cone are not included in the old one
     if(!Tools::isBetween(c.myMin, myMin, myMax, 2*M_PI) && !Tools::isBetween(c.myMax, myMin,
 							 myMax,
-							 2*M_PI)) 
+							 2*M_PI))
       {
 	// first possibility: the cones are disjoint
 	if(!Tools::isBetween(myMin, c.myMin, c.myMax, 2*M_PI) && !Tools::isBetween(myMax, c.myMin,
@@ -527,7 +527,7 @@ typename DGtal::FrechetShortcut<TIterator,TInteger>::Cone DGtal::FrechetShortcut
       else
 	res = Cone(myMin,c.myMax);
 
-  
+
   return res;
 }
 
@@ -540,10 +540,10 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::Cone::selfDisplay ( std::ostrea
     out << "Infinite" << std::endl;
   else
     out << "[Cone min = " << myMin << " max = " << myMax << "]" << std::endl;
-  out << "[End Cone]" <<  std::endl; 
+  out << "[End Cone]" <<  std::endl;
 }
 
-        
+
 /////////////////////////////////////////////////////////////////////////////
 /// FrechetShortcut class
 /////////////////////////////////////////////////////////////////////////////
@@ -557,7 +557,7 @@ DGtal::FrechetShortcut<TIterator,TInteger>::FrechetShortcut()
 {
   myError = 0;
   myCone = Cone();
-  
+
   for(int i=0;i<8;i++)
     {
       //backpath b(i,0);
@@ -575,7 +575,7 @@ DGtal::FrechetShortcut<TIterator,TInteger>::FrechetShortcut(double error)
 
   myError = error;
   myCone = Cone();
-  
+
   for(int i=0;i<8;i++)
     {
       //backpath  b(i,error);
@@ -609,17 +609,17 @@ DGtal::FrechetShortcut<TIterator,TInteger>  DGtal::FrechetShortcut<TIterator,TIn
 
 template <typename TIterator, typename TInteger>
 inline
-DGtal::FrechetShortcut<TIterator,TInteger>::FrechetShortcut (const FrechetShortcut<TIterator,TInteger> & other ) : myError(other.myError), myBackpath(other.myBackpath),    myCone(other.myCone), myBegin(other.myBegin), myEnd(other.myEnd){    
+DGtal::FrechetShortcut<TIterator,TInteger>::FrechetShortcut (const FrechetShortcut<TIterator,TInteger> & other ) : myError(other.myError), myBackpath(other.myBackpath),    myCone(other.myCone), myBegin(other.myBegin), myEnd(other.myEnd){
   resetBackpath();
   resetCone();
-  
+
 }
 
 template <typename TIterator, typename TInteger>
 inline
 DGtal::FrechetShortcut<TIterator,TInteger> & DGtal::FrechetShortcut<TIterator,TInteger>::operator=(const FrechetShortcut<TIterator,TInteger> & other)
 {
-  
+
   if(this != &other)
     {
       myError = other.myError;
@@ -665,10 +665,10 @@ bool
 DGtal::FrechetShortcut<TIterator,TInteger>::extendFront()
 {
   bool flag = (updateWidth() && updateBackpath());
-  
+
   if(flag)
     ++myEnd;
-  
+
   return flag;
 }
 
@@ -678,14 +678,14 @@ inline
 bool
 DGtal::FrechetShortcut<TIterator,TInteger>::isExtendableFront()
 {
-  
+
   return (testUpdateWidth() && testUpdateBackpath());
-  
+
 }
 
 template <typename TIterator, typename TInteger>
 inline
-typename DGtal::FrechetShortcut<TIterator,TInteger>::Cone 
+typename DGtal::FrechetShortcut<TIterator,TInteger>::Cone
 DGtal::FrechetShortcut<TIterator,TInteger>::computeNewCone()
 {
   double x0, y0,x1,y1;
@@ -697,11 +697,11 @@ DGtal::FrechetShortcut<TIterator,TInteger>::computeNewCone()
 
   if(firstP == newP)
     return newCone;
-  
+
   // compute the tangent points defined by the first point and the
   // circle C(newP,error)
 
-  
+
   bool intersect = Tools::circleTangentPoints(firstP[0],firstP[1], newP[0], newP[1], myError/(sqrt(2.0F)), &x0, &y0,
                                               &x1, &y1);
 
@@ -713,17 +713,17 @@ DGtal::FrechetShortcut<TIterator,TInteger>::computeNewCone()
       if(fabs(x0-x1) < PRECISION && fabs(y0-y1) < PRECISION)
 	{
 	  double angle = Tools::computeAngle(firstP[0],firstP[1],newP[0],newP[1]);
-	  
+
 	  // the cone is reduced to a line
 	  c = Cone(angle,angle);
 	}
       else
 	c = Cone(firstP[0],firstP[1],x0,y0,x1,y1);
 
-      newCone.intersectCones(c); 
+      newCone.intersectCones(c);
     }
 
-  
+
   return newCone;
 
 }
@@ -735,7 +735,7 @@ inline
 bool DGtal::FrechetShortcut<TIterator,TInteger>::testUpdateWidth()
 {
   Cone c = computeNewCone();
-  
+
   Point firstP = Point(*myBegin);
   Point newP = Point(*(myEnd+1));
 
@@ -750,7 +750,7 @@ bool DGtal::FrechetShortcut<TIterator,TInteger>::testUpdateWidth()
       }
   else
     return false;
-  
+
 }
 
 
@@ -767,9 +767,9 @@ bool DGtal::FrechetShortcut<TIterator,TInteger>::testUpdateBackpath()
       BackpathSave.push_back(b);
     }
 
-  // Check whether the next point could be added or not with respect to the backpath 
+  // Check whether the next point could be added or not with respect to the backpath
   bool flag = updateBackpath();
-  
+
   // Copy back the values of backpath before the test.
   for(unsigned int i=0;i<8;i++)
     myBackpath[i] = Backpath(BackpathSave[i]);
@@ -785,14 +785,14 @@ inline
 bool DGtal::FrechetShortcut<TIterator,TInteger>::updateWidth()
 {
   Cone c = computeNewCone();
-  
+
   myCone = c;
-  
+
   Point firstP = Point(*myBegin);
   Point newP = Point(*(myEnd+1));
 
   bool flag = true;
-  
+
   if(!(c.isEmpty()))
     if(c.myInf)
       flag = true;
@@ -805,7 +805,7 @@ bool DGtal::FrechetShortcut<TIterator,TInteger>::updateWidth()
       }
   else
     flag = false;
-  
+
   return flag;
 }
 
@@ -815,15 +815,15 @@ bool DGtal::FrechetShortcut<TIterator,TInteger>::updateBackpath()
 {
   Point prevP = Point(*myEnd);
   Point P = Point(*(myEnd+1));
-  
+
   int d = Tools::computeChainCode(prevP,P);
-  
+
   for(unsigned int j=0;j<8;j++)
     myBackpath[j].updateBackPathFirstQuad(Tools::rot(d,j),myEnd+1);
-      
-  
+
+
   return isBackpathOk();
-  
+
 }
 
 template <typename TIterator, typename TInteger>
@@ -831,35 +831,35 @@ inline
 bool DGtal::FrechetShortcut<TIterator,TInteger>::isBackpathOk()
 {
   // compute the quadrant of the direction of P(i,j)
-  
+
   Point firstP = Point(*myBegin);
   Point P = Point(*(myEnd+1));
-  
+
   int q = Tools::computeOctant(firstP,P);
-  
-  
+
+
   // to handle non simple curves (a point is visited twice)
   if(firstP==P)
     return true;
-  
+
   // compute the direction vector pipj
   Point v;
   v[0] = P[0]-firstP[0];
   v[1] = P[1]-firstP[1];
-  
+
   // compute the angle between the direction vector and the elementary
   // direction (defined by the quadrant)
   Point dir_elem = Tools::chainCode2Vect(q);
-  
+
   double angle = Tools::angleVectVect(v,dir_elem);
-  
+
    boost::icl::interval_set<double> intervals = myBackpath[q].myForbiddenIntervals;
 
    if(boost::icl::contains(intervals,angle))
     return false;
-  
+
   return true;
-  
+
 }
 
 
@@ -879,7 +879,7 @@ void DGtal::FrechetShortcut<TIterator,TInteger>::resetCone()
 {
   myCone.myMin = 0;
   myCone.myMax = 2*M_PI; // default cone is the whole space
-  myCone.myInf = true;  
+  myCone.myInf = true;
 }
 
 
@@ -920,12 +920,12 @@ inline
 void
 DGtal::FrechetShortcut<TIterator,TInteger>::selfDisplay ( std::ostream & out) const
 {
-  
+
   out << "[FrechetShortcut]" <<  std::endl;
   out << "(Begin, End)=";
   out << "("<< Point(*myBegin) << ", " << Point(*myEnd) << ")\n";
   out << "[End FrechetShortcut]" << std::endl;
-  
+
 }
 
 // Implementation of inline functions                                        //
@@ -933,7 +933,7 @@ DGtal::FrechetShortcut<TIterator,TInteger>::selfDisplay ( std::ostream & out) co
 template <typename TIterator, typename TInteger>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		    const DGtal::FrechetShortcut<TIterator,TInteger> & object )
 {
   object.selfDisplay( out );
@@ -945,5 +945,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

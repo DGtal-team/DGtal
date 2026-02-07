@@ -122,7 +122,7 @@ public:
     myX.pushSurfel( myCA, myDist );
   }
 
-  // ------------------------- Private Datas --------------------------------
+  // ------------------------- Private Data --------------------------------
 private:
   T myX; // do not require T to be default constructible.
   Surfel myA;

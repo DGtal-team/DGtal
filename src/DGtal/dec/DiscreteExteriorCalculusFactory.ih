@@ -125,7 +125,7 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::accumul
 template <typename TLinearAlgebraBackend, typename TInteger>
 template <typename KSpace, typename CellsAccum, typename MeasureAccum>
 void
-DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::accumulateAllLowerIncidentCells(const KSpace& kspace, const typename CellsAccum::key_type& cell, CellsAccum& cells_accum, 
+DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::accumulateAllLowerIncidentCells(const KSpace& kspace, const typename CellsAccum::key_type& cell, CellsAccum& cells_accum,
     CellsAccum& local_accum, MeasureAccum& cell_to_measure, const double measure)
 {
     typedef typename KSpace::Cells Cells;
@@ -229,7 +229,7 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
 template <typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Dimension dimEmbedded, typename TNSCellConstIterator, typename TSCellMeasureFunctor>
 DGtal::DiscreteExteriorCalculus<dimEmbedded, TNSCellConstIterator::value_type::Point::dimension, TLinearAlgebraBackend, TInteger>
-DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createFromNSCells(const TNSCellConstIterator& begin, const TNSCellConstIterator& end, 
+DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createFromNSCells(const TNSCellConstIterator& begin, const TNSCellConstIterator& end,
     const TSCellMeasureFunctor& normalFunctor, const double h, const bool add_border)
 {
     BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<TNSCellConstIterator> ));
@@ -330,5 +330,3 @@ DGtal::DiscreteExteriorCalculusFactory<TLinearAlgebraBackend, TInteger>::createF
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

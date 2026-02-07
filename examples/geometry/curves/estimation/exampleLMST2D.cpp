@@ -68,7 +68,7 @@ int main()
   typedef SaturatedSegmentation<SegmentComputer> Segmentation;
   LambdaMST2D < Segmentation > lmst;
   //! [LambdaMST2DStandardCtor]
-  
+
   // Input points
   Container contour;
   contour.push_back(Point(18,18));
@@ -82,24 +82,24 @@ int main()
   contour.push_back(Point(10,26));
   contour.push_back(Point(9,27));
   contour.push_back(Point(8,28));
-  
+
   //! [LambdaMST2DTangential]
   // Initialization of tangential cover
   Segmentation segmenter ( contour.begin(), contour.end(), SegmentComputer() );
   lmst.attach ( segmenter );
   //! [LambdaMST2DTangential]
-  
+
   //! [LambdaMST2DPoint]
   for ( ConstIterator it = contour.begin(); it != contour.end(); ++it )
     lmst.eval ( *it );
   //! [LambdaMST2DPoint]
-  
+
   //! [LambdaMST2DFast]
   lmst.init ( contour.begin(), contour.end() );
   std::vector < RealVector > tangent;
   lmst.eval < back_insert_iterator< vector < RealVector > > > ( contour.begin(), contour.end(),  back_inserter ( tangent ) );
   //! [LambdaMST2DFast]
-  
+
   return 0;
 }
 //                                                                           //

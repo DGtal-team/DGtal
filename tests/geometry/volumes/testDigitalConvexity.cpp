@@ -199,7 +199,7 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex tetrahedra", "[convex_simplices][
   typedef KSpace::Space                    Space;
   typedef HyperRectDomain< Space >         Domain;
   typedef DigitalConvexity< KSpace >       DConvexity;
-  
+
   Domain     domain( Point( 0, 0, 0 ), Point( 3, 3, 3 ) );
   DConvexity dconv( Point( -1, -1, -1 ), Point( 4, 4, 4 ) );
 
@@ -474,7 +474,7 @@ SCENARIO( "DigitalConvexity< Z3 > full subconvexity of segments and triangles", 
                 nb_subconvex += ok ? 1 : 0;
                 nb_total     += 1;
                 if ( ! ok ) {
-                  trace.info() << "****** SEGMENT NOT SUBCONVEX ******" << std::endl; 
+                  trace.info() << "****** SEGMENT NOT SUBCONVEX ******" << std::endl;
                   trace.info() << "splx v =" << a << b << c << d << std::endl;
                   trace.info() << "simplex=" << simplex << std::endl;
                   trace.info() << "seg v  =" << pts[ i ] << pts[ j ] << std::endl;
@@ -495,7 +495,7 @@ SCENARIO( "DigitalConvexity< Z3 > full subconvexity of segments and triangles", 
                   nb_subconvex += ok ? 1 : 0;
                   nb_total     += 1;
                   if ( ! ok ) {
-                    trace.info() << "****** TRIANGLE NOT SUBCONVEX ****" << std::endl; 
+                    trace.info() << "****** TRIANGLE NOT SUBCONVEX ****" << std::endl;
                     trace.info() << "splx v =" << a << b << c << d << std::endl;
                     trace.info() << "simplex=" << simplex << std::endl;
                     trace.info() << "tri v  =" << pts[ i ] << pts[ j ]
@@ -661,7 +661,7 @@ SCENARIO( "DigitalConvexity< Z2 > sub-convexity of polyhedra", "[full_subconvexi
   auto  P = dconv.makePolytope( X, true );
   auto CG = dconv.makeCellCover( P, 0, 2 );
   auto  L = dconv.StarCvxH( X, 0 );
-  REQUIRE( CG.nbCells() == L.size() );  
+  REQUIRE( CG.nbCells() == L.size() );
   for ( unsigned int i = 0; i < k; i++ )
     for ( unsigned int j = i+1; j < k; j++ )
       {
@@ -797,7 +797,7 @@ SCENARIO( "DigitalConvexity< Z2 > envelope", "[envelope][2d]" )
   typedef DigitalConvexity< KSpace >       DConvexity;
 
   DConvexity dconv( Point( -360, -360 ), Point( 360, 360 ) );
-  
+
   WHEN( "Computing the envelope Z of two points" ) {
     THEN( "it requires at most one iteration" ){
       for ( int k = 0; k < 10; k++ )
@@ -820,13 +820,13 @@ SCENARIO( "DigitalConvexity< Z2 > relative envelope", "[rel_envelope][2d]" )
   typedef DigitalConvexity< KSpace >       DConvexity;
 
   DConvexity dconv( Point( -360, -360 ), Point( 360, 360 ) );
-  
+
   std::vector< Point > X { Point( -10, -7 ), Point( 10, 7 ) };
   std::vector< Point > Y { Point( -11, -6 ), Point( 9, 8 ) };
   std::sort( X.begin(), X.end() );
   std::sort( Y.begin(), Y.end() );
-  X = dconv.envelope( X ); 
-  Y = dconv.envelope( Y ); 
+  X = dconv.envelope( X );
+  Y = dconv.envelope( Y );
   REQUIRE( dconv.isFullyConvex( X ) );
   REQUIRE( dconv.isFullyConvex( Y ) );
   WHEN( "Computing the envelope of X relative to Y and Y relative to X" ) {
@@ -871,13 +871,13 @@ SCENARIO( "DigitalConvexity< Z3 > relative envelope", "[rel_envelope][3d]" )
   typedef DigitalConvexity< KSpace >       DConvexity;
 
   DConvexity dconv( Point( -360, -360, -360 ), Point( 360, 360, 360 ) );
-  
+
   std::vector< Point > X { Point( -61, -20, -8 ), Point( 43, 25, 9 ) };
   std::vector< Point > Y { Point( -50, -27, -10 ), Point( 40, 37, 17 ) };
   std::sort( X.begin(), X.end() );
   std::sort( Y.begin(), Y.end() );
-  X = dconv.envelope( X ); 
-  Y = dconv.envelope( Y ); 
+  X = dconv.envelope( X );
+  Y = dconv.envelope( Y );
   REQUIRE( dconv.isFullyConvex( X ) );
   REQUIRE( dconv.isFullyConvex( Y ) );
   WHEN( "Computing the envelope of X relative to Y and Y relative to X" ) {
@@ -941,10 +941,10 @@ SCENARIO( "DigitalConvexity< Z3 > full subconvexity of triangles", "[subconvexit
                   bool ok1  = dconv.isFullySubconvex( tri1, cover );
                   bool ok2  = dconv.isFullySubconvex( pts[ i ], pts[ j ], pts[ k ], ls );
                   nb_subconvex1 += ok1 ? 1 : 0;
-                  nb_subconvex2 += ok2 ? 1 : 0;		  
+                  nb_subconvex2 += ok2 ? 1 : 0;
                   nb_total      += 1;
                   if ( ! ok1 ) {
-                    trace.info() << "****** TRIANGLE NOT SUBCONVEX ****" << std::endl; 
+                    trace.info() << "****** TRIANGLE NOT SUBCONVEX ****" << std::endl;
                     trace.info() << "splx v =" << a << b << c << d << std::endl;
                     trace.info() << "simplex=" << simplex << std::endl;
                     trace.info() << "tri v  =" << pts[ i ] << pts[ j ]
@@ -952,7 +952,7 @@ SCENARIO( "DigitalConvexity< Z3 > full subconvexity of triangles", "[subconvexit
                     trace.info() << "tri1=" << tri1 << std::endl;
                   }
                   if ( ! ok2 ) {
-                    trace.info() << "****** TRIANGLE 3D NOT SUBCONVEX ****" << std::endl; 
+                    trace.info() << "****** TRIANGLE 3D NOT SUBCONVEX ****" << std::endl;
                     trace.info() << "splx v =" << a << b << c << d << std::endl;
                     trace.info() << "simplex=" << simplex << std::endl;
                     trace.info() << "tri v  =" << pts[ i ] << pts[ j ]
@@ -960,7 +960,7 @@ SCENARIO( "DigitalConvexity< Z3 > full subconvexity of triangles", "[subconvexit
                   }
                 }
           nb_ok_tri1 += ( nb_subconvex1 == nb_total ) ? 1 : 0;
-          nb_ok_tri2 += ( nb_subconvex2 == nb_total ) ? 1 : 0;	  
+          nb_ok_tri2 += ( nb_subconvex2 == nb_total ) ? 1 : 0;
         }
       }
     THEN( "All triangles of a tetrahedron should be subconvex to it." ) {
@@ -1015,7 +1015,7 @@ SCENARIO( "DigitalConvexity< Z3 > full subconvexity of points and triangles", "[
 	      bool ok1  = dconv.isFullySubconvex( tri1, cover );
 	      bool ok2  = dconv.isFullySubconvex( p, q, r, ls );
 	      nb_subconvex1 += ok1 ? 1 : 0;
-	      nb_subconvex2 += ok2 ? 1 : 0;		  
+	      nb_subconvex2 += ok2 ? 1 : 0;
 	      if ( ok1 != ok2 ) {
 		std::cout << "***** FULL SUBCONVEXITY ERROR ON TRIANGLE ****" << std::endl;
 		std::cout << "splx v =" << a << b << c << d << std::endl;
@@ -1037,7 +1037,7 @@ SCENARIO( "DigitalConvexity< Z3 > full subconvexity of points and triangles", "[
       REQUIRE( nb_ok_tri == nb_total );
     }
   }
-  
+
 }
 
 SCENARIO( "DigitalConvexity< Z3 > full covering of segments", "[full_cover][3d]" )
@@ -1091,7 +1091,7 @@ SCENARIO( "DigitalConvexity< Z3 > full covering of triangles", "[full_cover][3d]
   {
     Point a( 0, 0, 0 );
     Point b( 2, 1, 0 );
-    Point c( 2, 2, 0 );  
+    Point c( 2, 2, 0 );
     auto LS = dconv.CoverCvxH( a, b, c );
     auto P  = LS.toPointRange();
     CAPTURE( P );
@@ -1100,7 +1100,7 @@ SCENARIO( "DigitalConvexity< Z3 > full covering of triangles", "[full_cover][3d]
   {
     Point a( 0, 0, 1 );
     Point b( 2, 1, 0 );
-    Point c( 2, 2, 0 );  
+    Point c( 2, 2, 0 );
     auto LS = dconv.CoverCvxH( a, b, c );
     auto P  = LS.toPointRange();
     CAPTURE( P );
@@ -1109,7 +1109,7 @@ SCENARIO( "DigitalConvexity< Z3 > full covering of triangles", "[full_cover][3d]
   {
     Point a( 1, 0, 0 );
     Point b( 0, 1, 0 );
-    Point c( 0, 0, 1 );  
+    Point c( 0, 0, 1 );
     auto LS = dconv.CoverCvxH( a, b, c );
     auto P  = LS.toPointRange();
     CAPTURE( P );
@@ -1172,9 +1172,9 @@ SCENARIO( "DigitalConvexity< Z3 > full subconvexity and full covering of triangl
 		  if ( dconv.isFullyCovered( q, r, ls ) ) nb_ok_seg += 1;
 		  else nb_ko_seg += 1;
 		}
-	      
+
 	      nb_subconvex += ok1 ? 1 : 0;
-	      nb_covered   += ok2 ? 1 : 0;		  
+	      nb_covered   += ok2 ? 1 : 0;
 	      bool ok = ok1 == ok2;
 	      if ( ! ok )
 		{
@@ -1201,7 +1201,7 @@ SCENARIO( "DigitalConvexity< Z3 > full subconvexity and full covering of triangl
       REQUIRE( nb_ko_seg == 0 );
     }
   }
-  
+
 }
 
 SCENARIO( "DigitalConvexity< Z3 > envelope bug", "[envelope][3d]" )
@@ -1221,16 +1221,16 @@ SCENARIO( "DigitalConvexity< Z3 > envelope bug", "[envelope][3d]" )
     Basis AB( Point( 0,0 ), b, Basis::Type::ECHELON_REDUCED );
     bool parallel = AB.isParallel( e );
     const auto [ d, L, r ] = AB.decomposeVector( e );
-    CAPTURE( B ); 
-    CAPTURE( AB.basis() ); 
-    CAPTURE( d ); 
+    CAPTURE( B );
+    CAPTURE( AB.basis() );
+    CAPTURE( d );
     CAPTURE( L );
     CAPTURE( r );
     CAPTURE( e );
     REQUIRE( ! parallel );
     REQUIRE( r != Point::zero );
   }
-  
+
   WHEN( "Computing the envelope Z of a digital set X with direct algorithm" ) {
     std::vector< Point > X = { Point(5, 1, 9), Point(8, 1, 8), Point(9, 1, 1) };
     auto Z = dconv.envelope( X );

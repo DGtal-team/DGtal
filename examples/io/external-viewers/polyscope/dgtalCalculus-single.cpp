@@ -66,7 +66,7 @@ void initPhi()
 {
   phiEigen.resize(5);
   phiEigen << 1.0, 2.0, 0.0, 5.0 ,1.5;
-  
+
   psMesh->addVertexScalarQuantity("Phi", phiEigen);
   psVertices->addScalarQuantity("Phi", phiEigen);
 }
@@ -83,7 +83,7 @@ void initQuantities()
   std::vector<double> faceArea;
 
   PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Face f = 0; //Id of the face
- 
+
   PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector grad = calculus.gradient(f) * phiEigen;
   gradients.push_back( grad );
 
@@ -91,28 +91,28 @@ void initQuantities()
   cogradients.push_back( cograd );
 
   normals.push_back(calculus.faceNormalAsDGtalVector(f));
-  
+
   PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector vA = calculus.vectorArea(f);
   vectorArea.push_back({vA(0) , vA(1), vA(2)});
-  
+
   faceArea.push_back( calculus.faceArea(f));
   centroids.push_back( calculus.centroidAsDGtalPoint(f) );
-  
+
   PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector dPhi = calculus.D(f)*phiEigen;
   PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector av = calculus.A(f)*phiEigen;
-  
+
   psMesh->addFaceVectorQuantity("Gradients", gradients);
   psMesh->addFaceVectorQuantity("co-Gradients", cogradients);
   psMesh->addFaceVectorQuantity("Normals", normals);
   psMesh->addFaceScalarQuantity("Face area", faceArea);
   psMesh->addFaceVectorQuantity("Vector area", vectorArea);
-  
+
   psBoundary->addEdgeScalarQuantity("d0*phi", dPhi);
   psBoundary->addEdgeScalarQuantity("A*phi", av);
-  
+
   //Face centroid
   polyscope::registerPointCloud("Centroids", centroids);
-  
+
   //Flat Sharp
   PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector v(3);
   v << 50,-50,-100;
@@ -121,7 +121,7 @@ void initQuantities()
 
   PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector flat = calculus.flat(f)*v;
   psBoundary->addEdgeScalarQuantity("flat (1-form)", flat);
-  
+
   PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector sharp = calculus.sharp(f)*flat;
   std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector> sharpRes={sharp};
   psMesh->addFaceVectorQuantity("Sharp", sharpRes);
@@ -139,19 +139,19 @@ int main()
 
   // Initialize polyscope
   polyscope::init();
-  
+
   psVertices = polyscope::registerPointCloud("Vertices", positions);
-    
+
   std::vector<std::array<size_t,2>> edges={{0,1},{1,2},{2,3},{3,4},{4,0} };
   psBoundary = polyscope::registerCurveNetwork("Edges", positions, edges);
-  
-  
+
+
   psMesh = polyscope::registerSurfaceMesh("Single face", positions, faces);
 
   initPhi();
   initQuantities();
-  
+
   polyscope::show();
   return EXIT_SUCCESS;
-  
+
 }

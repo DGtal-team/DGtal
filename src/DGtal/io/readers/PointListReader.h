@@ -43,7 +43,7 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
-#include "DGtal/geometry/curves/FreemanChain.h" 
+#include "DGtal/geometry/curves/FreemanChain.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -52,7 +52,7 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // class PointListReader
   /**
-   * Description of class 'PointListReader' <p> 
+   * Description of class 'PointListReader' <p>
    *  \brief Aim: Implements method to read a set of points represented in each line of a file.
    *
    *
@@ -60,15 +60,15 @@ namespace DGtal
    * each elements is represented in a single line. Blank line or line beginning with
    * "#" are skipped.
    *
-   *  
+   *
    * Simple example:
-   * 
+   *
    *  @code
    *  #include "DGtal/helpers/StdDefs.h"
-   *  .... 
-   *  string filename= "testFile.dat"; 
+   *  ....
+   *  string filename= "testFile.dat";
    *  vector<Z2i::Point> vectPoints = PointListReader<Z2i::Point>::getPointsFromFile(filename);
-   * @endcode 
+   * @endcode
    * and you can specifying the point position:
    *  @code
    vector<unsigned int> vIndice;
@@ -76,7 +76,7 @@ namespace DGtal
    vIndice.push_back(2); // select for Y coordinate the third position number of the line.
    vector<Z2i::Point> vectPoints = PointListReader<Z2i::Point>::getPointsFromFile(filename,vectPos);
    *  @endcode
-   *   
+   *
    * @see testPointListReader.cpp
    **/
 
@@ -86,81 +86,81 @@ namespace DGtal
     // ----------------------- Standard services ------------------------------
   public:
 
-    /** 
+    /**
      * Main method to import a vector containing a list of points
-     * defined in a file where each line defines a point. 
+     * defined in a file where each line defines a point.
      * Blank line or line beginning with
      * "#" are skipped.
-     * 
+     *
      * @param in the input stream.
      * @param aVectPosition used to specify the position of indices of
      * value points  (default set to 0,..,dimension).
      * @return a vector containing the set of points.
      **/
-    static std::vector< TPoint>  
-    getPointsFromInputStream (std::istream &in, 
+    static std::vector< TPoint>
+    getPointsFromInputStream (std::istream &in,
             std::vector<unsigned int> aVectPosition=std::vector<unsigned int>());
-  
 
-    /** 
+
+    /**
      * Main method to import a vector containing a list of points
      * defined in a file where each line defines a point.  Blank line
      * or line beginning with "#" are skipped.
      *
-     * @param filename a filename 
+     * @param filename a filename
      * @param aVectPosition used to specify the position of indices of
-     * value points  (optional: default set to 0,..,dimension) 
+     * value points  (optional: default set to 0,..,dimension)
      * @return a vector containing the set of points.
      **/
-    static std::vector< TPoint>  
-    getPointsFromFile (const std::string &filename, 
+    static std::vector< TPoint>
+    getPointsFromFile (const std::string &filename,
            std::vector<unsigned int>  aVectPosition=std::vector<unsigned int>());
-  
 
 
 
 
-    /** 
+
+    /**
      * Import a vector containing all polygons defined on each line of
      * a given file.
-     * 
-     * 
-     * @param [in] filename input filename 
+     *
+     *
+     * @param [in] filename input filename
      * @return a vector containing the vector of polygons.
      **/
-  
-    static std::vector<std::vector< TPoint> >  
+
+    static std::vector<std::vector< TPoint> >
     getPolygonsFromFile (const std::string &filename);
-  
-  
-    /** 
+
+
+    /**
      * Import a vector containing all polygons defined on each line of
      * a given istream.
-     * 
-     * 
-     * @param in the input stream.  
+     *
+     *
+     * @param in the input stream.
      * @return a vector containing the vector of polygons.
      **/
-    static std::vector<std::vector< TPoint> >  
+    static std::vector<std::vector< TPoint> >
     getPolygonsFromInputStream ( std::istream &in );
-  
-  
 
 
-    /** 
+
+
+    /**
      * Main method to FreemanChain contours.  Each line of the file
      * should represent a FreemanChain
-     * 
+     *
      * @param [in] filename  the input filename
-   
+
      * @return the vector containing the set of FreemanChain.
      **/
-    template < typename TInteger > 
-    static std::vector< FreemanChain< TInteger > > 
+    template < typename TInteger >
+    static std::vector< FreemanChain< TInteger > >
     getFreemanChainsFromFile (const std::string &filename);
-  
-  
-  
+
+
+
 
   }; // end of class PointListReader
 

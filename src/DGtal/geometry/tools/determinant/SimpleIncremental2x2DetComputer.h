@@ -53,39 +53,39 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class SimpleIncremental2x2DetComputer
   /**
-   * \brief Aim: Small class useful to compute, in an incremental way, 
-   * the determinant of a 2x2 matrix from its four coefficients, ie. 
-   \f$ 
+   * \brief Aim: Small class useful to compute, in an incremental way,
+   * the determinant of a 2x2 matrix from its four coefficients, ie.
+   \f$
    \begin{vmatrix}
    a & x \\
    b & y
-   \end{vmatrix} 
+   \end{vmatrix}
    \f$
    *
-   * This class is a model of C2x2DetComputer.  
+   * This class is a model of C2x2DetComputer.
    *
-   * It should be used to compute the determinant \f$ ay - bx \f$, for various 
-   * \f$ x, y \f$ and given \f$ a \f$ and \f$ b \f$. 
-   * Let us assume that the determinant \f$ \delta_i = ay_i - bx_i \f$ is computed. 
-   * The determinant \f$ \delta_j = ay_j - bx_j \f$ is then computed incrementally 
-   * as follows: \f$ \delta_j = a(y_j - y_i) - b(x_j - x_i) \f$. The computation 
+   * It should be used to compute the determinant \f$ ay - bx \f$, for various
+   * \f$ x, y \f$ and given \f$ a \f$ and \f$ b \f$.
+   * Let us assume that the determinant \f$ \delta_i = ay_i - bx_i \f$ is computed.
+   * The determinant \f$ \delta_j = ay_j - bx_j \f$ is then computed incrementally
+   * as follows: \f$ \delta_j = a(y_j - y_i) - b(x_j - x_i) \f$. The computation
    * is simplified if the differences \f$ (x_j - x_i) \f$ and \f$ (y_j - y_i) \f$
-   * are equal to 0 or 1, as it may occur in digital geometry. 
-   * 
-   * In order to use SimpleIncremental2x2DetComputer 
-   * - first, you must set the first column vector, ie. \f$ a \f$ and \f$ b \f$, using method 
-   * SimpleIncremental2x2DetComputer::init(). 
-   * - then, you must call method SimpleIncremental2x2DetComputer::operator() on the 
-   * second column vector, ie. \f$ x \f$ and \f$ y \f$. 
+   * are equal to 0 or 1, as it may occur in digital geometry.
    *
-   * @tparam TArgumentInteger a model of CEuclideanRing for the input coefficients of the 
+   * In order to use SimpleIncremental2x2DetComputer
+   * - first, you must set the first column vector, ie. \f$ a \f$ and \f$ b \f$, using method
+   * SimpleIncremental2x2DetComputer::init().
+   * - then, you must call method SimpleIncremental2x2DetComputer::operator() on the
+   * second column vector, ie. \f$ x \f$ and \f$ y \f$.
+   *
+   * @tparam TArgumentInteger a model of CEuclideanRing for the input coefficients of the
    * 2x2 matrix
-   * @tparam TResultInteger a model of CEuclideanRing for the result. It must be 
-   * either unbounded or twice as big as TArgumentInteger, ie. if TArgumentInteger is 
+   * @tparam TResultInteger a model of CEuclideanRing for the result. It must be
+   * either unbounded or twice as big as TArgumentInteger, ie. if TArgumentInteger is
    * a type coded on b bits, TResultInteger must be coded on 2b+1 bits
    *
-   * Note that if you use the same type for the arguments and the result, 
-   * the code may fail to provide the exact result because of a possible overflow. 
+   * Note that if you use the same type for the arguments and the result,
+   * the code may fail to provide the exact result because of a possible overflow.
    *
    * @see Simple2x2DetComputer
    */
@@ -97,32 +97,32 @@ namespace DGtal
     /**
      * Type of integer for the input coefficients of the 2x2 matrix
      */
-    typedef TArgumentInteger ArgumentInteger; 
-    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<ArgumentInteger> )); 
+    typedef TArgumentInteger ArgumentInteger;
+    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<ArgumentInteger> ));
     /**
      * DGtal alias of type ArgumentInteger
      */
-    typedef ArgumentInteger Integer; 
+    typedef ArgumentInteger Integer;
     /**
      * STL alias of type ArgumentInteger
      */
-    typedef ArgumentInteger argument_type; 
+    typedef ArgumentInteger argument_type;
 
     /**
      * Type of integer for the returned determinant
      */
-    typedef TResultInteger ResultInteger; 
-    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<ArgumentInteger> )); 
+    typedef TResultInteger ResultInteger;
+    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<ArgumentInteger> ));
 
     /**
      * DGtal alias type of ResultInteger
      */
-    typedef ResultInteger Value; 
+    typedef ResultInteger Value;
     /**
      * STL alias of type ResultInteger
      */
     typedef ResultInteger result_type;
- 
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -165,7 +165,7 @@ namespace DGtal
      * @pre init must be called before
      * @param aX 0-component of the second column vector
      * @param aY 1-component of the second column vector
-     * @return the 2x2 matrix determinant, ie. 
+     * @return the 2x2 matrix determinant, ie.
      * @a myAY . @a aY - @a myBX . @a aX
      */
     ResultInteger operator()(const ArgumentInteger& aX, const ArgumentInteger& aY) const;
@@ -179,7 +179,7 @@ namespace DGtal
      * @return determinant of the 2x2 matrix that consists
      * of the two above column vectors, ie. @a aA . @a aY - @a aB . @a aX
      */
-    ResultInteger operator()(const ArgumentInteger& aA, const ArgumentInteger& aB, 
+    ResultInteger operator()(const ArgumentInteger& aA, const ArgumentInteger& aB,
 			     const ArgumentInteger& aX, const ArgumentInteger& aY);
 
 
@@ -195,64 +195,64 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     /**
-     * Data member used to store 
+     * Data member used to store
      * the 0-component of the first column vector, ie. a.
      */
-    ResultInteger myA; 
+    ResultInteger myA;
     /**
      * Data member used to store
      * the 1-component of the first column vector, ie. b.
      */
-    ResultInteger myB; 
+    ResultInteger myB;
     /**
      * Data member used to store the product a.y
      */
-    mutable ResultInteger myAY; 
+    mutable ResultInteger myAY;
     /**
      * Data member used to store the product b.x
      */
-    mutable ResultInteger myBX; 
+    mutable ResultInteger myBX;
     /**
      * Data member used to store the determinant, ie. ay - bx
      */
-    mutable ResultInteger myDet; 
+    mutable ResultInteger myDet;
     /**
-     * Data member used to store 
+     * Data member used to store
      * the 0-component of the second column vector, ie. x.
      */
-    mutable ResultInteger myX; 
+    mutable ResultInteger myX;
     /**
      * Data member used to store
      * the 1-component of the second column vector, ie. y.
      */
-    mutable ResultInteger myY; 
+    mutable ResultInteger myY;
     /**
      * Data member used to store the difference between the last
-     * 0-component of the second column vector and a new one. 
+     * 0-component of the second column vector and a new one.
      */
-    mutable ResultInteger myDX; 
+    mutable ResultInteger myDX;
     /**
      * Data member used to store the difference between the last
-     * 1-component of the second column vector and a new one. 
+     * 1-component of the second column vector and a new one.
      */
-    mutable ResultInteger myDY; 
+    mutable ResultInteger myDY;
     /**
-     * Data member used to store the product a.dy. 
+     * Data member used to store the product a.dy.
      */
-    mutable ResultInteger myADY; 
+    mutable ResultInteger myADY;
     /**
-     * Data member used to store the product b.dx. 
+     * Data member used to store the product b.dx.
      */
-    mutable ResultInteger myBDX; 
+    mutable ResultInteger myBDX;
     /**
      * Data member used to store the partial determinant, ie. a.dy - b.dx
      */
-    mutable ResultInteger myDDet; 
+    mutable ResultInteger myDDet;
 
-    const ResultInteger myZero; 
+    const ResultInteger myZero;
     // ------------------------- Hidden services ------------------------------
   protected:
 

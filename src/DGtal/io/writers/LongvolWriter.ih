@@ -48,7 +48,7 @@ namespace DGtal {
                                     const Functor  & aFunctor)
   {
     DGtal::IOException dgtalio;
-    
+
     std::ofstream out;
     typename I::Domain domain = aImage.domain();
     const typename I::Domain::Point &upBound = domain.upperBound();
@@ -57,12 +57,12 @@ namespace DGtal {
     typename I::Domain::Vector size =  (upBound - lowBound) + p;
     typename I::Domain::Vector center = lowBound + ((upBound - lowBound)/2);
     typename I::Value val;
-    
+
     try
     {
       std::stringstream main;
       out.open(filename.c_str(), std::ios::out | std::ios::binary);
-      
+
       //Longvol format
       out << "Center-X: " << center[0] <<std::endl;
       out << "Center-Y: " << center[1] <<std::endl;
@@ -79,10 +79,10 @@ namespace DGtal {
       else
       out << "Version: 2"<<std::endl;
       out << "."<<std::endl;
-      
+
       out.close();
       out.open(filename.c_str(),std::ios_base::binary | std::ios_base::app);
-      
+
       //We scan the domain
       for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
           it!=itend;
@@ -91,7 +91,7 @@ namespace DGtal {
         val = aImage( (*it) );
         write_word(main,aFunctor(val));
       }
-      
+
       if (compressed)
       {
         boost::iostreams::filtering_streambuf<boost::iostreams::input> out_compressed;
@@ -105,16 +105,16 @@ namespace DGtal {
         out << main.str();
         out.close();
       }
-      
-      
+
+
       }
       catch( ... )
       {
         std::cout << "LongVol writer IO error on export " << filename << std::endl;
         throw dgtalio;
       }
-      
+
       return true;
       }
-      
+
       }//namespace

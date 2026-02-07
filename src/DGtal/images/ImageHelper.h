@@ -83,12 +83,12 @@ namespace DGtal
    * @tparam P any model of concepts::CPointPredicate
    */
   template<typename I, typename O, typename P>
-  void setFromPointsRangeAndPredicate(const I& itb, const I& ite, const O& ito, const P& aPred); 
+  void setFromPointsRangeAndPredicate(const I& itb, const I& ite, const O& ito, const P& aPred);
 
   /**
    * Fill a set through the inserter @a ito
    * with the points of the range [@a itb , @a ite )
-   * such that their associated value 
+   * such that their associated value
    * (returned by @a aFunctor ) is less than or
    * equal to @a aThreshold
    *
@@ -103,15 +103,15 @@ namespace DGtal
    * @tparam F any model of CPointFunctor
    */
   template<typename I, typename O, typename F>
-  void setFromPointsRangeAndFunctor(const I& itb, const I& ite, 
-				    const O& ito, const F& aFunctor, 
-				    const typename F::Value& aThreshold = 0); 
+  void setFromPointsRangeAndFunctor(const I& itb, const I& ite,
+				    const O& ito, const F& aFunctor,
+				    const typename F::Value& aThreshold = 0);
 
   /**
    * Fill a set through the inserter @a ito
-   * with the points lying within the domain 
-   * of the image @a aImg whose value 
-   * (in the image) is less than or equal to 
+   * with the points lying within the domain
+   * of the image @a aImg whose value
+   * (in the image) is less than or equal to
    * @a aThreshold
    *
    * @param aImg any image
@@ -122,16 +122,16 @@ namespace DGtal
    * @tparam O any model of output iterator
    */
   template<typename I, typename O>
-  void setFromImage(const I& aImg, 
-		    const O& ito, 
-		    const typename I::Value& aThreshold = 0); 
+  void setFromImage(const I& aImg,
+		    const O& ito,
+		    const typename I::Value& aThreshold = 0);
 
   /**
    * Fill a set through the inserter @a ito
-   * with the points lying within the domain 
-   * of the image @a aImg whose value 
+   * with the points lying within the domain
+   * of the image @a aImg whose value
    * (in the image) lies between @a low and @a up
-   * (both included) 
+   * (both included)
    *
    * @param aImg any image
    * @param ito set inserter
@@ -142,10 +142,10 @@ namespace DGtal
    * @tparam O any model of output iterator
    */
   template<typename I, typename O>
-  void setFromImage(const I& aImg, 
-		    const O& ito, 
+  void setFromImage(const I& aImg,
+		    const O& ito,
 		    const typename I::Value& low,
-		    const typename I::Value& up); 
+		    const typename I::Value& up);
 
 
   /**
@@ -161,8 +161,8 @@ namespace DGtal
    * @tparam Im any model of CImage
    */
   template<typename It, typename Im>
-  void imageFromRangeAndValue(const It& itb, const It& ite, Im& aImg, 
-			      const typename Im::Value& aValue = 0); 
+  void imageFromRangeAndValue(const It& itb, const It& ite, Im& aImg,
+			      const typename Im::Value& aValue = 0);
 
   /**
    * Set the values of @a aImg at @a aValue
@@ -176,11 +176,11 @@ namespace DGtal
    * @tparam I any model of CImage
    */
   template<typename R, typename I>
-  void imageFromRangeAndValue(const R& aRange, I& aImg, 
-			      const typename I::Value& aValue = 0); 
+  void imageFromRangeAndValue(const R& aRange, I& aImg,
+			      const typename I::Value& aValue = 0);
 
   /**
-   * In a window corresponding to the domain of @a aImg, 
+   * In a window corresponding to the domain of @a aImg,
    * copy the values of @a aFun into @a aImg
    *
    * @param aImg (returned) image
@@ -190,7 +190,7 @@ namespace DGtal
    * @tparam F any model of CPointFunctor
    */
   template<typename I, typename F>
-  void imageFromFunctor(I& aImg, const F& aFun); 
+  void imageFromFunctor(I& aImg, const F& aFun);
 
   /**
    * Copy the values of @a aImg2 into @a aImg1 .
@@ -202,11 +202,11 @@ namespace DGtal
    * @tparam I2 any model of CConstImage
    */
   template<typename I1, typename I2>
-  void imageFromImage(I1& aImg1, const I2& aImg2); 
+  void imageFromImage(I1& aImg1, const I2& aImg2);
 
   /**
    * Insert @a aPoint in @a aSet and if (and only if)
-   * @a aPoint is a newly inserted point. 
+   * @a aPoint is a newly inserted point.
    * Then set @a aValue at @a aPoint in @a aImg.
    *
    * @param aImg an image
@@ -214,45 +214,45 @@ namespace DGtal
    * @param aPoint a point
    * @param aValue a value
    *
-   * @return 'true' if a new point was inserted in @a aSet 
+   * @return 'true' if a new point was inserted in @a aSet
    * but 'false' if the same point already exist in @a aSet
    *
    * @tparam I any model of CImage
    * @tparam S any model of CDigitalSet
    *
-   * The general behavior is like: 
+   * The general behavior is like:
    * @code
-    bool found = true; 
+    bool found = true;
     if ( aSet.find( aPoint ) == aSet.end() )
       { //if not found
-	found = false; 
+	found = false;
 	aSet.insert( aPoint );
-	aImg.setValue( aPoint, aValue ); 
-      }      
-    return !found; 
-   * @endcode
-   * 
-   * However, this code is specialized if 
-   * I is an ImageContainerBySTLMap and 
-   * S is a @link DigitalSetFromMap DigitalSetFromMap\<I\>@endlink as follows: 
-   * @code
-   std::pair<P, V> 
-   pair( aPoint, aValue );  
-   std::pair<Iterator, bool> res 
-   = aImg.insert( pair ); 
-   return res.second;  
+	aImg.setValue( aPoint, aValue );
+      }
+    return !found;
    * @endcode
    *
-   * @see ImageContainerBySTLMap DigitalSetFromMap 
+   * However, this code is specialized if
+   * I is an ImageContainerBySTLMap and
+   * S is a @link DigitalSetFromMap DigitalSetFromMap\<I\>@endlink as follows:
+   * @code
+   std::pair<P, V>
+   pair( aPoint, aValue );
+   std::pair<Iterator, bool> res
+   = aImg.insert( pair );
+   return res.second;
+   * @endcode
+   *
+   * @see ImageContainerBySTLMap DigitalSetFromMap
    * @see insertAndAlwaysSetValue
    */
   template<typename I, typename S>
-  bool insertAndSetValue(I& aImg, S& aSet, 
-			 const typename I::Point& aPoint, 
-			 const typename I::Value& aValue ); 
+  bool insertAndSetValue(I& aImg, S& aSet,
+			 const typename I::Point& aPoint,
+			 const typename I::Value& aValue );
 
   /**
-   * Insert @a aPoint in @a aSet and 
+   * Insert @a aPoint in @a aSet and
    * set @a aValue at @a aPoint in @a aImg.
    *
    * @param aImg an image
@@ -260,44 +260,44 @@ namespace DGtal
    * @param aPoint a point
    * @param aValue a value
    *
-   * @return 'true' if a new point was inserted in @a aSet 
+   * @return 'true' if a new point was inserted in @a aSet
    * but 'false' if the same point already exist in @a aSet
    *
    * @tparam I any model of CImage
    * @tparam S any model of CDigitalSet
    *
-   * The general behavior is like: 
+   * The general behavior is like:
    * @code
-    bool found = false; 
+    bool found = false;
     if ( aSet.find( aPoint ) != aSet.end() )
-      found = true;       
+      found = true;
     //always set value
     aSet.insert( aPoint );
-    aImg.setValue( aPoint, aValue ); 
-    return !found; 
-   * @endcode
-   * 
-   * However, this code is specialized if 
-   * I is an ImageContainerBySTLMap and 
-   * S is a @link DigitalSetFromMap DigitalSetFromMap\<I\>@endlink as follows: 
-   * @code
-   std::pair<P, V> 
-   pair( aPoint, aValue );  
-   std::pair<Iterator, bool> res 
-   = aImg.insert( pair );
-   bool flag = res.second; 
-   if (flag == false) //set value even in this case
-   res.first->second = aValue;
-   return flag; 
+    aImg.setValue( aPoint, aValue );
+    return !found;
    * @endcode
    *
-   * @see ImageContainerBySTLMap DigitalSetFromMap 
+   * However, this code is specialized if
+   * I is an ImageContainerBySTLMap and
+   * S is a @link DigitalSetFromMap DigitalSetFromMap\<I\>@endlink as follows:
+   * @code
+   std::pair<P, V>
+   pair( aPoint, aValue );
+   std::pair<Iterator, bool> res
+   = aImg.insert( pair );
+   bool flag = res.second;
+   if (flag == false) //set value even in this case
+   res.first->second = aValue;
+   return flag;
+   * @endcode
+   *
+   * @see ImageContainerBySTLMap DigitalSetFromMap
    * @see insertAndSetValue
    */
   template<typename I, typename S>
-  bool insertAndAlwaysSetValue(I& aImg, S& aSet, 
-			       const typename I::Point& aPoint, 
-			       const typename I::Value& aValue ); 
+  bool insertAndAlwaysSetValue(I& aImg, S& aSet,
+			       const typename I::Point& aPoint,
+			       const typename I::Value& aValue );
 
   /**
    * Read the value contained in @a aImg at @a aPoint
@@ -308,29 +308,29 @@ namespace DGtal
    * @param aPoint a point
    * @param aValue (returned) value
    *
-   * @return 'true' if a new point is found and the value read 
+   * @return 'true' if a new point is found and the value read
    * but 'false' otherwise
    *
    * @tparam I any model of CConstImage
    * @tparam S any model of CDigitalSet
    *
-   * The general behavior is like: 
-   * @code
-   * @endcode
-   * 
-   * However, this code is specialized if 
-   * I is an ImageContainerBySTLMap and 
-   * S is a @link DigitalSetFromMap DigitalSetFromMap\<I\>@endlink as follows: 
+   * The general behavior is like:
    * @code
    * @endcode
    *
-   * @see ImageContainerBySTLMap DigitalSetFromMap 
+   * However, this code is specialized if
+   * I is an ImageContainerBySTLMap and
+   * S is a @link DigitalSetFromMap DigitalSetFromMap\<I\>@endlink as follows:
+   * @code
+   * @endcode
+   *
+   * @see ImageContainerBySTLMap DigitalSetFromMap
    * @see insertAndSetValue
    */
   template<typename I, typename S>
-  bool findAndGetValue(const I& aImg, const S& aSet, 
-		       const typename I::Point& aPoint, 
-		       typename I::Value& aValue ); 
+  bool findAndGetValue(const I& aImg, const S& aSet,
+		       const typename I::Point& aPoint,
+		       typename I::Value& aValue );
 
 
 
@@ -350,21 +350,21 @@ namespace DGtal
 
     typedef typename Image::Point Point;
     typedef TValue Value;
-    
+
     BOOST_CONCEPT_ASSERT(( concepts::CConstImage<Image> ));
     BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<PointPredicate> ));
     BOOST_CONCEPT_ASSERT(( concepts::CQuantity<Value> ));
-    
+
     /*BOOST_CONCEPT_USAGE(ImageToConstantFunctor)
     {
         Point p1;
         typename PointPredicate::Point p2;
         ConceptUtils::sameType( p1, p2 );
     }*/
-    
-    /** 
-     * 
-     * 
+
+    /**
+     *
+     *
      * @param[in] anImage image
      * @param[in] aPointPred predicate on points
      * @param[in] aVal const value when functor answer true.
@@ -379,11 +379,11 @@ namespace DGtal
         myVal(aVal),
         reverse(reverseValues)
     {}
-    
-    /** 
-     * 
+
+    /**
+     *
      * @param[in] aPoint point to evaluate.
-     * 
+     *
      * @return val between _ZERO_ or aVal
      */
     Value operator()( const Point &aPoint ) const
@@ -420,10 +420,10 @@ namespace DGtal
     }
 
     private:
-    
+
     /// const pointor to an image
     const Image *myImage;
-    
+
     /// const pointor to a predicate on points
     const PointPredicate *myPointPred;
 
@@ -437,7 +437,7 @@ namespace DGtal
 
 
 
- 
+
 } // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////

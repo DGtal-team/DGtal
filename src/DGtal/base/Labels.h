@@ -54,7 +54,7 @@ namespace DGtal
   // template class Labels
   /**
      Description of template class 'Labels' <p>
-     \brief Aim: Stores a set of labels in {O..L-1} as a sequence of bits. 
+     \brief Aim: Stores a set of labels in {O..L-1} as a sequence of bits.
 
      This class is useful to stores a set of numbers as a
      characteristic set. It is very similar to a bitset, except it
@@ -123,7 +123,7 @@ namespace DGtal
       Label myWordLabel;///< index of first label of the current word.
       Label myLabel;    ///< current label
       Word myWord;      ///< current word (modified until 0).
-      
+
     public:
       /**
 	 Default destructor.
@@ -136,7 +136,7 @@ namespace DGtal
       ConstEnumerator();
 
       /**
-	 Constructor from word address. 
+	 Constructor from word address.
          @param address is some Labels.myLabels
          @param firstWord is 0 (begin) or __DGTAL_LABELS_NBWORDS (end)
       */
@@ -154,37 +154,37 @@ namespace DGtal
        * @return a reference on 'this'.
        */
       Self & operator= ( const Self & other );
-      
+
       /**
 	 Dereference operator.
 	 @return the current value of the iterator, if valid.
       */
       Reference operator*() const;
-     
+
       /**
 	 Pointer dereference operator.
 	 @return a non-mutable pointer on the current value.
-      */  
+      */
       Pointer operator->() const;
-      
-      /** 
+
+      /**
 	  Pre-increment operator.
 	  @return a reference to itself.
       */
-      Self& operator++();      
-      /** 
+      Self& operator++();
+      /**
 	  Post-increment operator.
 	  @return a reference to itself.
       */
       Self operator++( int );
-    
+
       /**
 	 Equality operator.
 	 @param other any other iterator.
 	 @return 'true' iff the iterators points on the same element.
       */
       bool operator==( const Self & other ) const;
-      
+
       /**
 	 Inequality operator.
 	 @param other any other iterator.
@@ -235,7 +235,7 @@ namespace DGtal
     /**
        If val is true, inserts l in the set, otherwise removes it.
        @param l any label in 0..L-1
-       @param val either true or false. 
+       @param val either true or false.
        @return a reference on this.
     */
     Self& set ( Label l, bool val = true );
@@ -275,7 +275,7 @@ namespace DGtal
        As output, labels[0] contains the label of index 0, labels[1]
        the label of index 1, and so on.
 
-       @param labels (modified) the (ordered) labels set. 
+       @param labels (modified) the (ordered) labels set.
     */
     void getLabels( std::vector<Label> & labels ) const;
 
@@ -294,7 +294,7 @@ namespace DGtal
        @return an iterator pointing after the last valid label.
     */
     ConstIterator end() const;
-    
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -310,9 +310,9 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------

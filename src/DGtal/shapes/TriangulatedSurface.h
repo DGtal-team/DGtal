@@ -249,7 +249,7 @@ namespace DGtal
     /// @return (setter) a reference to the topological structure of the
     /// triangulated surface (an half-edge data structure).
     HalfEdgeDataStructure& heds() { return myHEDS; }
-    
+
     /// @return (getter) a const reference to the topological structure of the
     /// triangulated surface (an half-edge data structure).
     const HalfEdgeDataStructure& heds() const { return myHEDS; }
@@ -365,7 +365,7 @@ namespace DGtal
      *
      * @param it the output iterator
      *
-     * @param v the vertex whose neighbors will be writen
+     * @param v the vertex whose neighbors will be written
      */
     template <typename OutputIterator>
     void
@@ -564,7 +564,7 @@ namespace DGtal
        (t,u,s,v), (t,u,s), (t,s,v)
     */
     VertexRange verticesOfFacesAroundArc( const Arc a ) const;
-      
+
     // ----------------------- Other services ---------------------------------
   public:
 
@@ -654,7 +654,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
     /// Indicates if the half-edge structure has been created/updated.
     bool isHEDSValid;
@@ -665,7 +665,7 @@ namespace DGtal
     /// Stores the triangles.
     TriangleStorage myTriangles;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------

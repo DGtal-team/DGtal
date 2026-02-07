@@ -469,7 +469,7 @@ table_folder: str
 
 persistence: int
     if >0, performs a persistence algorithm that prunes
-    branches that are not persistant (less important).
+    branches that are not persistent (less important).
 
 TODO remove or fix
 distance_transform: str

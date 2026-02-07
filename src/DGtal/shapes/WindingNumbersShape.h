@@ -23,7 +23,7 @@
  * Laboratoire d'InfoRmatique en Image et Systemes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2023/06/14
- 
+
  *
  * This file is part of the DGtal library.
  */
@@ -63,14 +63,14 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   /**
    Description of template class 'WindingNumbersShape'
-   
+
    \brief Aim: model of a CEuclideanOrientedShape from an implicit
    function from an oriented point cloud. The implicit function is given by the
    generalized winding number  of the oriented point cloud  @cite barill2018fast .
    We use the libIGL implementation.
-   
+
    @see testWindingNumberShape,  windingNumberShape
-   
+
    @tparam TSPace the digital space type (a model  of CSpace)
    */
   template<typename TSpace>
@@ -81,10 +81,10 @@ namespace DGtal
     using RealPoint   = typename Space::RealPoint;
     using RealVector  = typename Space::RealVector;
     using Orientation = DGtal::Orientation;
-    
+
     //Removing Default constructor
     WindingNumbersShape() = delete;
-    
+
     /// Construct a WindingNumberShape Euclidean shape from an oriented point cloud.
     /// This constructor estimates the @a area @a  of each point using CGAL.
     ///
@@ -119,7 +119,7 @@ namespace DGtal
           trace.warning()<<"[WindingNumberShape] Too few points to use CGAL point_areas. Using the constant area setting."<<std::endl;
         }
     }
-    
+
     /// Construct a WindingNumberShape Euclidean shape from an oriented point cloud.
     /// For this constructor, the @a area @a of each point is given by the user.
     ///
@@ -135,15 +135,15 @@ namespace DGtal
       myPointAreas = areas;
       igl::octree(*myPoints,myO_PI,myO_CH,myO_CN,myO_W);
     }
-    
-    
+
+
     /// Set the @a area @a map for each point.
     /// @param areas a Eigen vector of estimated area for each input point.
     void setPointAreas(ConstAlias<Eigen::VectorXd> areas)
     {
       myPointAreas = areas;
     }
-    
+
     /// Orientation of a point using the winding number value from
     /// an oriented pointcloud.
     ///
@@ -160,7 +160,7 @@ namespace DGtal
       auto singlePoint = orientationBatch(queries, threshold);
       return singlePoint[0];
     }
-    
+
     /// Orientation of a set of points (queries) using the winding number value from
     /// an oriented pointcloud.
     ///
@@ -174,8 +174,8 @@ namespace DGtal
       std::vector<Orientation> results( queries.rows(), DGtal::OUTSIDE );
 
       rawWindingNumberBatch(queries, W);
-     
-      //Reformating the output
+
+      //Reformatting the output
       for(auto i=0u; i < queries.rows(); ++i)
       {
         if (std::abs(W(i)) < threshold )
@@ -188,9 +188,9 @@ namespace DGtal
       }
       return results;
     }
-    
 
-    /// Returns the raw value of the Winding Number funciton at a set of points (queries).
+
+    /// Returns the raw value of the Winding Number function at a set of points (queries).
     ///
     /// @param queries [in] a "nx3" matrix with the query points in space.
     /// @param W [out] a vector with all windung number values.
@@ -200,19 +200,19 @@ namespace DGtal
       Eigen::MatrixXd O_CM;
       Eigen::VectorXd O_R;
       Eigen::MatrixXd O_EC;
-      
+
       //Computing the WN values
       igl::fast_winding_number(*myPoints,*myNormals,myPointAreas,myO_PI,myO_CH,2,O_CM,O_R,O_EC);
       igl::fast_winding_number(*myPoints,*myNormals,myPointAreas,myO_PI,myO_CH,O_CM,O_R,O_EC,queries,2,W);
     }
-    
+
     ///Const alias to the points
     CountedConstPtrOrConstPtr<Eigen::MatrixXd> myPoints;
     ///Const alias to the normals
     CountedConstPtrOrConstPtr<Eigen::MatrixXd> myNormals;
     ///Const alias to point area measure
     Eigen::VectorXd myPointAreas;
-    
+
     ///libIGL octree for fast queries data structure
     std::vector<std::vector<int > > myO_PI;
     ///libIGL octree for fast queries data structure
@@ -221,8 +221,8 @@ namespace DGtal
     Eigen::MatrixXd myO_CN;
     ///libIGL octree for fast queries data structure
     Eigen::VectorXd myO_W;
-    
-    
+
+
   };
 }
 

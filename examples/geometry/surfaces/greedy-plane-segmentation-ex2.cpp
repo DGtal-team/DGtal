@@ -42,7 +42,7 @@
 
    Colors for each plane are chosen randomly. Surfels in the same plane have the same color.
 
-@see \ref moduleCOBANaivePlaneRecognition_sec5 (solution of exercice 2)
+@see \ref moduleCOBANaivePlaneRecognition_sec5 (solution of exercise 2)
 
 @verbatim
 # naive plane: width=1/1

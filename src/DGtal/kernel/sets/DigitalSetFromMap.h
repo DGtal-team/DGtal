@@ -62,9 +62,9 @@ namespace DGtal
      Description of template class 'DigitalSetFromMap' <p>
 
      \brief Aim: An adapter for viewing an associative image container
-     like ImageContainerBySTLMap as a simple digital set. 
-     This class is merely based on an aliasing pointer on the image, 
-     which must exists elsewhere.  
+     like ImageContainerBySTLMap as a simple digital set.
+     This class is merely based on an aliasing pointer on the image,
+     which must exists elsewhere.
 
      Model of CDigitalSet.
 
@@ -77,20 +77,20 @@ namespace DGtal
 
     typedef TMapImage Image;
     typedef Image Container;
-    typedef std::pair<const typename Image::Point, 
+    typedef std::pair<const typename Image::Point,
 		      typename Image::Value> Pair;
-    typedef DigitalSetFromMap<Image> Self; 
+    typedef DigitalSetFromMap<Image> Self;
 
     // -------------------------- required types ------------------------------
     typedef typename Image::Domain Domain;
     typedef typename Domain::Point Point;
     typedef typename Domain::Size Size;
 
-    typedef functors::Pair1st<Point> Functor; 
+    typedef functors::Pair1st<Point> Functor;
     typedef ConstIteratorAdapter<typename Image::ConstIterator, Functor, Point> ConstIterator;
     typedef ConstIteratorAdapter<typename Image::ConstIterator, Functor, Point> Iterator;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
 
     /**
@@ -104,7 +104,7 @@ namespace DGtal
     Functor myFun;
 
     /**
-     * Default value for point insertion 
+     * Default value for point insertion
      */
     typename Image::Value myDefault;
 
@@ -121,10 +121,10 @@ namespace DGtal
      * Link the adapter to an existing image.
      *
      * @param aImage any associative image container.
-     * @param aDefaultValue value assigned to new points 
-     * in the underlying image (0 by default). 
+     * @param aDefaultValue value assigned to new points
+     * in the underlying image (0 by default).
      */
-    DigitalSetFromMap( Image& aImage, 
+    DigitalSetFromMap( Image& aImage,
 		       const typename Image::Value& aDefaultValue = 0);
 
     /**
@@ -163,7 +163,7 @@ namespace DGtal
      * @return 'true' iff the set is empty (no element).
      */
     bool empty() const;
-     
+
     /**
      * Adds point [p] to this set.
      *
@@ -209,7 +209,7 @@ namespace DGtal
 
     /**
      * Removes point [p] from the set.
-     * 
+     *
      * @param p the point to remove.
      * @return the number of removed elements (0 or 1).
      */
@@ -217,7 +217,7 @@ namespace DGtal
 
     /**
      * Removes the point pointed by [it] from the set.
-     * 
+     *
      * @param it an iterator on this set.
      * Note: generally faster than giving just the point.
      */
@@ -284,7 +284,7 @@ namespace DGtal
     /**
      * set union to left.
      * @param aSet any other set.
-     * @tparam TDigitalSet a model of digital set. 
+     * @tparam TDigitalSet a model of digital set.
      */
     template< typename TDigitalSet >
     Self & operator+=
@@ -301,7 +301,7 @@ namespace DGtal
 
     // ----------------------- Other Set services -----------------------------
   public:
-    
+
     /**
      * Fill a given set through the output iterator @a ito
      * with the complement of this set in the domain.
@@ -309,18 +309,18 @@ namespace DGtal
      * @tparam TOutputIterator a model of output iterator
      */
     template< typename TOutputIterator >
-    void computeComplement(TOutputIterator& ito) const; 
+    void computeComplement(TOutputIterator& ito) const;
 
     /**
      * Builds the complement in the domain of the set [other_set] in
      * this.
      *
      * @param otherSet defines the set whose complement is assigned to 'this'.
-     * @tparam TDigitalSet a model of digital set. 
+     * @tparam TDigitalSet a model of digital set.
      */
     template< typename TDigitalSet >
-    void assignFromComplement( const TDigitalSet & otherSet ); 
-    
+    void assignFromComplement( const TDigitalSet & otherSet );
+
     /**
      * Computes the bounding box of this set.
      *
@@ -349,7 +349,7 @@ namespace DGtal
 
 
   public:
-    
+
 
 
     // --------------- CDrawableWithBoard2D realization ---------------------

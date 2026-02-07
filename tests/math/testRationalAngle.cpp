@@ -46,12 +46,12 @@ using namespace DGtal;
 bool testRationalAngle()
 {
   typedef RationalAngle<DGtal::int32_t > Angle;
-  
+
   Angle a1(8,-12);
   Angle a2(4,6);
 
   trace.info() << (a1==a2) << std::endl;
-  
+
   trace.info() << (a1<a2) << std::endl;
 
   Angle a1rot,a2rot;
@@ -63,14 +63,14 @@ bool testRationalAngle()
 
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing block ..." );
-  nbok += true ? 1 : 0; 
+  nbok += true ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 

@@ -123,10 +123,10 @@ int main()
   Surfel surf = *digSurf.begin();
   MyTracker* tracker1 = digSurf.container().newTracker( surf );
   MyTracker* tracker2 = digSurf.container().newTracker( surf );
-  // Extract the bondary contour associated to the initial surfel in
+  // Extract the boundary contour associated to the initial surfel in
   // its first direction
   My2DSlice slice1( tracker1, *(ks.sDirs( surf )) );
-  // Extract the bondary contour associated to the initial surfel in
+  // Extract the boundary contour associated to the initial surfel in
   // its second direction
   My2DSlice slice2( tracker2, *++(ks.sDirs( surf )) );
   delete tracker1;

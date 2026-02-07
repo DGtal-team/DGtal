@@ -1,5 +1,5 @@
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  */
 namespace DGtal {
@@ -28,7 +28,7 @@ namespace DGtal {
    Library
    (http://www.boost.org/doc/libs/1_52_0/libs/property_map/doc/property_map.html)
    to associate data with vertices or edges in a very efficient and
-   generic way. 
+   generic way.
 
    For these reasons, it would be interesting that DGtal graphs match
    boost graph concepts. However, this cannot be done in full
@@ -36,7 +36,7 @@ namespace DGtal {
    only finite graphs are handled by boost graphs. Furthermore, it is
    tricky to have light boost graphs (i.e. graphs constructed
    on-the-fly), because boost graphs require multipass iterators on
-   vertices and edges. 
+   vertices and edges.
 
    For now, the only models that are wrapped to satisfy boost
    graph concepts are:
@@ -86,7 +86,7 @@ namespace DGtal {
 #include <boost/graph/breadth_first_search.hpp>
 ...
 @endcode
-   
+
   A model of boost graph must satisfy a given number of traits (to
   define types) as well as functions acting on these types. This is
   done through specialization of boost::graph_traits. This is done for
@@ -110,7 +110,7 @@ BOOST_CONCEPT_ASSERT(( boost::VertexListGraphConcept<Graph> ));
 BOOST_CONCEPT_ASSERT(( boost::AdjacencyGraphConcept<Graph> ));
 BOOST_CONCEPT_ASSERT(( boost::IncidenceGraphConcept<Graph> ));
 BOOST_CONCEPT_ASSERT(( boost::EdgeListGraphConcept<Graph> ));
-@endcode  
+@endcode
 
    @subsection dgtal_graph_boost_2_2 The boost graph way of visiting vertices
 
@@ -121,7 +121,7 @@ BOOST_CONCEPT_ASSERT(( boost::EdgeListGraphConcept<Graph> ));
 
 @code
 Graph g(...); // your instance of digital surface
-for ( std::pair<vertex_iterator, vertex_iterator> vp = boost::vertices( g ); 
+for ( std::pair<vertex_iterator, vertex_iterator> vp = boost::vertices( g );
       vp.first != vp.second; ++vp.first )
   {
      vertex_descriptor v1 = *vp.first;
@@ -138,13 +138,13 @@ for ( std::pair<vertex_iterator, vertex_iterator> vp = boost::vertices( g );
 
 @code
 unsigned int nbEdges = 0;
-for ( std::pair<edge_iterator, edge_iterator> ve = boost::edges( g ); 
+for ( std::pair<edge_iterator, edge_iterator> ve = boost::edges( g );
       ve.first != ve.second; ++ve.first, ++nbEdges )
   {
     edge_descriptor e = *ve.first;
     vertex_descriptor v1 = boost::source( e, g );
     vertex_descriptor v2 = boost::target( e, g );
-    trace.info() << "Edge " << nbEdges << " is " 
+    trace.info() << "Edge " << nbEdges << " is "
                  << v1 << " -> " << v2 << std::endl;
   }
 @endcode
@@ -157,12 +157,12 @@ for ( std::pair<edge_iterator, edge_iterator> ve = boost::edges( g );
    vertices. The following snippet shows how it works.
 
 @code
-for ( std::pair<vertex_iterator, vertex_iterator> vp = boost::vertices( g ); 
+for ( std::pair<vertex_iterator, vertex_iterator> vp = boost::vertices( g );
       vp.first != vp.second; ++vp.first )
   {
     vertex_descriptor v1 = *vp.first;
     trace.info() << "Neighbors of " << v1 << " are";
-    for ( std::pair<out_edge_iterator, out_edge_iterator> ve = boost::out_edges( v1, g ); 
+    for ( std::pair<out_edge_iterator, out_edge_iterator> ve = boost::out_edges( v1, g );
           ve.first != ve.second; ++ve.first )
       {
         vertex_descriptor v2 = boost::target( *ve.first, g );
@@ -197,7 +197,7 @@ for ( std::pair<vertex_iterator, vertex_iterator> vp = boost::vertices( g );
   // get the property map for coloring vertices (used for not visiting twice the same vertex).
   typedef std::map< vertex_descriptor, boost::default_color_type > StdColorMap; // the container type
   StdColorMap colorMap;                                                         // the container instance (will store computations).
-  boost::associative_property_map< StdColorMap > propColorMap( colorMap );      // a facade aroundcolorMap 
+  boost::associative_property_map< StdColorMap > propColorMap( colorMap );      // a facade aroundcolorMap
 
   // get the property map for labelling vertices (the mapping Vertex -> Size that stores the component label for each vertex)
   typedef std::map< vertex_descriptor, vertices_size_type > StdComponentMap;
@@ -225,7 +225,7 @@ for ( std::pair<vertex_iterator, vertex_iterator> vp = boost::vertices( g );
   Note that \c propColorMap is given a \b named parameter with a call
   to boost::color_map. This is the method used in the Boost Graph
   Library to give handle parameters, especially when the algorithm
-  requires a lot of parameters, some of them being optionnal. This is explained in section
+  requires a lot of parameters, some of them being optional. This is explained in section
   (http://www.boost.org/doc/libs/1_52_0/libs/graph/doc/bgl_named_params.html).
 
 @note You may of course use the VertexMap rebind mechanism when
@@ -266,11 +266,11 @@ creating your property map, as follows.
 @code
   unsigned int maxD = 0;
   vertex_descriptor furthest = start;
-  for ( std::pair<vertex_iterator, vertex_iterator> vp = boost::vertices( g ); 
+  for ( std::pair<vertex_iterator, vertex_iterator> vp = boost::vertices( g );
         vp.first != vp.second; ++vp.first )
     {
       unsigned int d = boost::get( propDistanceMap, *vp.first );
-      if ( d > maxD ) 
+      if ( d > maxD )
         {
           maxD = d;
           furthest = *vp.first;
@@ -289,7 +289,7 @@ examples of using Boost Graph algorithms (max-flow and min-cut).
 
    The file \ref ObjectBoostGraphInterface.h defines the boost
    graph traits for any kind of Object (see
-   Object). With those definitios, an Object is a model of
+   Object). With those definitions, an Object is a model of
    VertexListGraphConcept, AdjacencyGraphConcept,
    IncidenceGraphConcept, EdgeListGraphConcept.
    You may use an Object as a graph in any Boost Graph Library

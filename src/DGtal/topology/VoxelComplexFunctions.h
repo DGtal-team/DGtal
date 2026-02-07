@@ -133,7 +133,7 @@ namespace DGtal
      * If you need to have a
      * std::function<bool(const Clique &)> signature
      * (for using it in thinning algorithms), use a lambda:
-     * subsitute skelRandom (for example) for:
+     * substitute skelRandom (for example) for:
      * @code
      * auto selectDistMax =
      * [&dist_map](const Clique & clique){
@@ -282,7 +282,7 @@ namespace DGtal
      * If you need to have a
      * std::function<bool(const Complex & vc, const Cell & c )> signature
      * (for using it in thinning algorithms), use a lambda to capture values:
-     * subsitute skelIsthmus (for example) for:
+     * substitute skelIsthmus (for example) for:
      * @code
      * auto skelWithTableIsthmus =
      * [&table, &pointToMaskMap](const Complex & vc, const Cell & cell){

@@ -40,18 +40,18 @@
 template <typename TI, typename TO>
 inline
 DGtal::SimpleIncremental2x2DetComputer<TI,TO>::SimpleIncremental2x2DetComputer()
-  : myA (NumberTraits<ResultInteger>::ZERO),  
-    myB (NumberTraits<ResultInteger>::ZERO), 
-    myAY (NumberTraits<ResultInteger>::ZERO),  
+  : myA (NumberTraits<ResultInteger>::ZERO),
+    myB (NumberTraits<ResultInteger>::ZERO),
+    myAY (NumberTraits<ResultInteger>::ZERO),
     myBX (NumberTraits<ResultInteger>::ZERO),
-    myDet (NumberTraits<ResultInteger>::ZERO),  
-    myX (NumberTraits<ResultInteger>::ZERO),  
-    myY (NumberTraits<ResultInteger>::ZERO),  
-    myDX (NumberTraits<ResultInteger>::ZERO),  
-    myDY (NumberTraits<ResultInteger>::ZERO),  
-    myADY (NumberTraits<ResultInteger>::ZERO),  
-    myBDX (NumberTraits<ResultInteger>::ZERO),  
-    myDDet (NumberTraits<ResultInteger>::ZERO), 
+    myDet (NumberTraits<ResultInteger>::ZERO),
+    myX (NumberTraits<ResultInteger>::ZERO),
+    myY (NumberTraits<ResultInteger>::ZERO),
+    myDX (NumberTraits<ResultInteger>::ZERO),
+    myDY (NumberTraits<ResultInteger>::ZERO),
+    myADY (NumberTraits<ResultInteger>::ZERO),
+    myBDX (NumberTraits<ResultInteger>::ZERO),
+    myDDet (NumberTraits<ResultInteger>::ZERO),
     myZero (NumberTraits<ResultInteger>::ZERO)
 {
 }
@@ -60,17 +60,17 @@ DGtal::SimpleIncremental2x2DetComputer<TI,TO>::SimpleIncremental2x2DetComputer()
 template <typename TI, typename TO>
 inline
 DGtal::SimpleIncremental2x2DetComputer<TI,TO>::SimpleIncremental2x2DetComputer(const DGtal::SimpleIncremental2x2DetComputer<TI,TO>& aOther)
-  : myA (aOther.myA),  
-    myB (aOther.myB), 
-    myAY (aOther.myAY),  
-    myBX (aOther.myBX), 
+  : myA (aOther.myA),
+    myB (aOther.myB),
+    myAY (aOther.myAY),
+    myBX (aOther.myBX),
     myDet (aOther.myDet),
-    myX (aOther.myX),  
-    myY (aOther.myY), 
-    myDX (aOther.myDX),  
-    myDY (aOther.myDY), 
-    myADY (aOther.myADY),  
-    myBDX (aOther.myBDX), 
+    myX (aOther.myX),
+    myY (aOther.myY),
+    myDX (aOther.myDX),
+    myDY (aOther.myDY),
+    myADY (aOther.myADY),
+    myBDX (aOther.myBDX),
     myDDet (aOther.myDDet),
     myZero (aOther.myZero)
 {
@@ -79,25 +79,25 @@ DGtal::SimpleIncremental2x2DetComputer<TI,TO>::SimpleIncremental2x2DetComputer(c
 // ---------------------------------------------------------------------------
 template <typename TI, typename TO>
 inline
-DGtal::SimpleIncremental2x2DetComputer<TI,TO>& 
+DGtal::SimpleIncremental2x2DetComputer<TI,TO>&
 DGtal::SimpleIncremental2x2DetComputer<TI,TO>::operator=(const DGtal::SimpleIncremental2x2DetComputer<TI,TO>& aOther)
 {
   if (this != &aOther)
     {
-      myA = aOther.myA; 
-      myB = aOther.myB; 
-      myAY = aOther.myAY; 
-      myBX = aOther.myBX; 
-      myDet = aOther.myDet; 
-      myX = aOther.myX; 
-      myY = aOther.myY; 
-      myDX = aOther.myDX; 
-      myDY = aOther.myDY; 
-      myADY = aOther.myADY; 
-      myBDX = aOther.myBDX; 
-      myDDet = aOther.myDDet; 
+      myA = aOther.myA;
+      myB = aOther.myB;
+      myAY = aOther.myAY;
+      myBX = aOther.myBX;
+      myDet = aOther.myDet;
+      myX = aOther.myX;
+      myY = aOther.myY;
+      myDX = aOther.myDX;
+      myDY = aOther.myDY;
+      myADY = aOther.myADY;
+      myBDX = aOther.myBDX;
+      myDDet = aOther.myDDet;
     }
-  return *this; 
+  return *this;
 }
 
 // ---------------------------------------------------------------------------
@@ -110,16 +110,16 @@ DGtal::SimpleIncremental2x2DetComputer<TI,TO>::~SimpleIncremental2x2DetComputer(
 // ---------------------------------------------------------------------------
 template <typename TI, typename TO>
 inline
-void 
+void
 DGtal::SimpleIncremental2x2DetComputer<TI,TO>::init(const ArgumentInteger& aA, const ArgumentInteger& aB)
 {
   //memorize the first column vector
-  myA = static_cast<ResultInteger>(aA); 
+  myA = static_cast<ResultInteger>(aA);
   myB = static_cast<ResultInteger>(aB);
   //clear members used to memorize old values
-  myX = NumberTraits<ResultInteger>::ZERO; 
-  myY = NumberTraits<ResultInteger>::ZERO;  
-  myDet = NumberTraits<ResultInteger>::ZERO; 
+  myX = NumberTraits<ResultInteger>::ZERO;
+  myY = NumberTraits<ResultInteger>::ZERO;
+  myDet = NumberTraits<ResultInteger>::ZERO;
 }
 
 // ---------------------------------------------------------------------------
@@ -129,45 +129,45 @@ typename DGtal::SimpleIncremental2x2DetComputer<TI,TO>::ResultInteger
 DGtal::SimpleIncremental2x2DetComputer<TI,TO>::operator()(const ArgumentInteger& aX, const ArgumentInteger& aY) const
 {
   //compute the difference with the last second column vector
-  myDX = aX - static_cast<ResultInteger>(myX); 
-  myDY = aY - static_cast<ResultInteger>(myY); 
+  myDX = aX - static_cast<ResultInteger>(myX);
+  myDY = aY - static_cast<ResultInteger>(myY);
 
   //memorize the second column vector for the next computation
-  myX = aX; 
-  myY = aY; 
+  myX = aX;
+  myY = aY;
 
   if (myDX == NumberTraits<ResultInteger>::ZERO)
     {
-      partialComputation(); 
+      partialComputation();
     }
   else if (myDX == NumberTraits<ResultInteger>::ONE)
-    { 
-      myDet -= myB; 
-      partialComputation(); 
+    {
+      myDet -= myB;
+      partialComputation();
     }
   else if (myDX == -NumberTraits<ResultInteger>::ONE)
-    { 
+    {
       myDet += myB;
-      partialComputation(); 
+      partialComputation();
     }
   else
     {
       myBDX = myB * myDX;
       myDet -= myBDX;
-      partialComputation(); 
+      partialComputation();
     }
-  return myDet; 
+  return myDet;
 }
 
 // ---------------------------------------------------------------------------
 template <typename TI, typename TO>
 inline
 typename DGtal::SimpleIncremental2x2DetComputer<TI,TO>::ResultInteger
-DGtal::SimpleIncremental2x2DetComputer<TI,TO>::operator()(const ArgumentInteger& aA, const ArgumentInteger& aB, 
+DGtal::SimpleIncremental2x2DetComputer<TI,TO>::operator()(const ArgumentInteger& aA, const ArgumentInteger& aB,
 							  const ArgumentInteger& aX, const ArgumentInteger& aY)
 {
-  init(aA,aB); 
-  return operator()(aX, aY); 
+  init(aA,aB);
+  return operator()(aX, aY);
 }
 
 
@@ -180,11 +180,11 @@ DGtal::SimpleIncremental2x2DetComputer<TI,TO>::partialComputation() const
   if (myDY != NumberTraits<ResultInteger>::ZERO)
     {
       if (myDY == NumberTraits<ResultInteger>::ONE)
-	{ 
+	{
 	  myDet += myA;
 	}
       else if (myDY == -NumberTraits<ResultInteger>::ONE)
-	{ 
+	{
 	  myDet -= myA;
 	}
       else
@@ -221,7 +221,7 @@ DGtal::SimpleIncremental2x2DetComputer<TI,TO>::isValid() const
 template <typename TI, typename TO>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		    const SimpleIncremental2x2DetComputer<TI,TO> & object )
 {
   object.selfDisplay( out );
@@ -230,5 +230,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

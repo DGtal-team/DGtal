@@ -59,7 +59,7 @@ namespace DGtal
   // template class KanungoNoise
   /**
    * Description of template class 'KanungoNoise' <p>
-   * \brief Aim: From a point predicate (model of concepts::CPointPredicate), this class 
+   * \brief Aim: From a point predicate (model of concepts::CPointPredicate), this class
    * constructs another point predicate as a noisy version of the input one.
    *
    * The noise model used here, called Kanungo noise, can be defined as follows:
@@ -69,7 +69,7 @@ namespace DGtal
    * @f[ \alpha^d @f]
    * for @f$ 0< \alpha < 1@f$ specified at construction step.
    *
-   * @note This class explicitely stores the noisy point predicate in a digital set container
+   * @note This class explicitly stores the noisy point predicate in a digital set container
    * model. Furthermore, the distance is given by the DistanceTransformation class with the
    * Eucliean metric (the distance is computed on both true and false points from the point
    * predicate in the given domain).
@@ -90,19 +90,19 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( concepts::CDomain< TDomain > ));
     BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<TPointPredicate> ));
     BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TDigitalSetContainer> ));
-    
+
     ///Object type
     typedef TPointPredicate PointPredicate;
-    
+
     ///Point type
     typedef typename TDomain::Point Point;
-    
+
     ///Domain type
     typedef TDomain Domain;
-    
+
     ///DigitalSet type
     typedef TDigitalSetContainer DigitalSet;
-   
+
     /**
      * Constructor.
      * This constructor will compute the distance transformations and the explicit
@@ -115,7 +115,7 @@ namespace DGtal
     KanungoNoise(ConstAlias<PointPredicate> aPredicate,
                  ConstAlias<Domain> aDomain,
                  const double anAlpha);
-     
+
     /**
      * Destructor.
      */
@@ -128,7 +128,7 @@ namespace DGtal
      * Forbidden by default.
      */
     KanungoNoise & operator= ( const KanungoNoise & other );
-    
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -140,8 +140,8 @@ namespace DGtal
      *
      **/
     bool operator()(const Point &aPoint) const;
-    
-    
+
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -174,18 +174,18 @@ namespace DGtal
 
        // ------------------------- Internals ------------------------------------
   private:
-    ///Pointeur to the object
+    ///Pointer to the object
     const PointPredicate &myPredicate;
-    
+
     ///Explicit set to store the noisfied object points
     DigitalSet * mySet;
-    
-    ///Pointeur to the domain
+
+    ///Pointer to the domain
     const Domain & myDomain;
-    
+
     ///Noise parameter
     double myAlpha;
-    
+
   }; // end of class KanungoNoise
 
 

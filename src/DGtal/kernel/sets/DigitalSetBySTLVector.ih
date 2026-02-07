@@ -98,7 +98,7 @@ DGtal::DigitalSetBySTLVector<Domain>::operator=
  */
 template <typename Domain>
 inline
-const Domain & 
+const Domain &
 DGtal::DigitalSetBySTLVector<Domain>::domain() const
 {
   return *myDomain;
@@ -106,7 +106,7 @@ DGtal::DigitalSetBySTLVector<Domain>::domain() const
 
 template <typename Domain>
 inline
-DGtal::CowPtr<Domain> 
+DGtal::CowPtr<Domain>
 DGtal::DigitalSetBySTLVector<Domain>::domainPointer() const
 {
   return myDomain;
@@ -137,7 +137,7 @@ DGtal::DigitalSetBySTLVector<Domain>::empty() const
 {
   return myVector.empty();
 }
-     
+
 /**
  * Adds point [p] to this set.
  *
@@ -151,7 +151,7 @@ DGtal::DigitalSetBySTLVector<Domain>::insert( const Point & p )
 {
   // ASSERT( domain().isInside( p ) );
   Iterator it = find( p );
-  if ( it == end() ) 
+  if ( it == end() )
     myVector.push_back( p );
 }
 
@@ -223,7 +223,7 @@ DGtal::DigitalSetBySTLVector<Domain>::insertNew
 
 /**
  * Removes point [p] from the set.
- * 
+ *
  * @param p the point to remove.
  * @return the number of removed elements (0 or 1).
  */
@@ -243,7 +243,7 @@ DGtal::DigitalSetBySTLVector<Domain>::erase( const Point & p )
 
 /**
  * Removes the point pointed by [it] from the set.
- * 
+ *
  * @param it an iterator on this set.
  * @pre it should point on a valid element ( it != end() ).
  * Note: generally faster than giving just the point.
@@ -254,9 +254,9 @@ void
 DGtal::DigitalSetBySTLVector<Domain>::erase( Iterator it )
 {
   //take a mutable iterator
-  typename std::iterator_traits<Iterator>::difference_type d = it - this->begin();   
+  typename std::iterator_traits<Iterator>::difference_type d = it - this->begin();
   typename std::vector<Point>::iterator it2 = myVector.begin() + d;
-  //swap  
+  //swap
   *it2 = myVector.back();
   myVector.pop_back();
 }
@@ -273,17 +273,17 @@ inline
 void
 DGtal::DigitalSetBySTLVector<Domain>::erase( Iterator first, Iterator last )
 {
-  while ( ( last != end() ) 
+  while ( ( last != end() )
     && ( first != last ) )
     {
       //take a mutable iterator
-      typename std::iterator_traits<Iterator>::difference_type d = first - this->begin();   
+      typename std::iterator_traits<Iterator>::difference_type d = first - this->begin();
       typename std::vector<Point>::iterator first2 = myVector.begin() + d;
       //swap
       *first2 = myVector.back();
       myVector.pop_back();
       //advance
-      first++; 
+      first++;
     }
   if ( first != last )
     while ( first != end() )
@@ -308,7 +308,7 @@ DGtal::DigitalSetBySTLVector<Domain>::clear()
  */
 template <typename Domain>
 inline
-typename DGtal::DigitalSetBySTLVector<Domain>::ConstIterator 
+typename DGtal::DigitalSetBySTLVector<Domain>::ConstIterator
 DGtal::DigitalSetBySTLVector<Domain>::find( const Point & p ) const
 {
   const ConstIterator it_end = end();
@@ -323,7 +323,7 @@ DGtal::DigitalSetBySTLVector<Domain>::find( const Point & p ) const
  */
 template <typename Domain>
 inline
-typename DGtal::DigitalSetBySTLVector<Domain>::Iterator 
+typename DGtal::DigitalSetBySTLVector<Domain>::Iterator
 DGtal::DigitalSetBySTLVector<Domain>::find( const Point & p )
 {
   const Iterator it_end = end();
@@ -338,7 +338,7 @@ DGtal::DigitalSetBySTLVector<Domain>::find( const Point & p )
  */
 template <typename Domain>
 inline
-typename DGtal::DigitalSetBySTLVector<Domain>::ConstIterator 
+typename DGtal::DigitalSetBySTLVector<Domain>::ConstIterator
 DGtal::DigitalSetBySTLVector<Domain>::begin() const
 {
   return myVector.begin();
@@ -349,7 +349,7 @@ DGtal::DigitalSetBySTLVector<Domain>::begin() const
  */
 template <typename Domain>
 inline
-typename DGtal::DigitalSetBySTLVector<Domain>::ConstIterator 
+typename DGtal::DigitalSetBySTLVector<Domain>::ConstIterator
 DGtal::DigitalSetBySTLVector<Domain>::end() const
 {
   return myVector.end();
@@ -361,7 +361,7 @@ DGtal::DigitalSetBySTLVector<Domain>::end() const
  */
 template <typename Domain>
 inline
-typename DGtal::DigitalSetBySTLVector<Domain>::Iterator 
+typename DGtal::DigitalSetBySTLVector<Domain>::Iterator
 DGtal::DigitalSetBySTLVector<Domain>::begin()
 {
   return myVector.begin();
@@ -373,7 +373,7 @@ DGtal::DigitalSetBySTLVector<Domain>::begin()
  */
 template <typename Domain>
 inline
-typename DGtal::DigitalSetBySTLVector<Domain>::Iterator 
+typename DGtal::DigitalSetBySTLVector<Domain>::Iterator
 DGtal::DigitalSetBySTLVector<Domain>::end()
 {
   return myVector.end();
@@ -401,7 +401,7 @@ DGtal::DigitalSetBySTLVector<Domain>::container()
  */
 template <typename Domain>
 inline
-DGtal::DigitalSetBySTLVector<Domain> & 
+DGtal::DigitalSetBySTLVector<Domain> &
 DGtal::DigitalSetBySTLVector<Domain>
 ::operator+=( const DigitalSetBySTLVector<Domain> & aSet )
 {
@@ -412,7 +412,7 @@ DGtal::DigitalSetBySTLVector<Domain>
       std::stable_sort( myVector.begin(), myVector.end() );
       std::vector<Point> new_vector;
       new_vector.reserve( size() + other.size() );
-      std::set_union( begin(), end(), other.begin(), other.end(), 
+      std::set_union( begin(), end(), other.begin(), other.end(),
           std::back_insert_iterator< std::vector<Point> >
           ( new_vector ) );
       myVector.swap( new_vector );
@@ -433,7 +433,7 @@ DGtal::DigitalSetBySTLVector<Domain>
 
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Other Set services -----------------------------
-    
+
 
 template <typename Domain>
 template <typename TOutputIterator>
@@ -475,7 +475,7 @@ DGtal::DigitalSetBySTLVector<Domain>::assignFromComplement
     ++itPoint;
   }
 }
-    
+
 /**
  * Computes the bounding box of this set.
  *
@@ -556,7 +556,7 @@ DGtal::DigitalSetBySTLVector<Domain>::className() const
 template <typename Domain>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
         const DigitalSetBySTLVector<Domain> & object )
 {
   object.selfDisplay( out );
@@ -565,5 +565,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

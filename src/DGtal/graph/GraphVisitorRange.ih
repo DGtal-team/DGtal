@@ -105,7 +105,7 @@ inline
 void
 DGtal::GraphVisitorRange<TGraphVisitor>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[GraphVisitorRange in_traversal=" 
+  out << "[GraphVisitorRange in_traversal="
       << ( myVisitor.unique() ? "no" : "yes" ) << " ]";
 }
 
@@ -129,7 +129,7 @@ DGtal::GraphVisitorRange<TGraphVisitor>::isValid() const
 template <typename TGraphVisitor>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		  const GraphVisitorRange<TGraphVisitor> & object )
 {
   object.selfDisplay( out );
@@ -138,5 +138,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

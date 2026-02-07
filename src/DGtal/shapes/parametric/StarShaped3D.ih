@@ -80,7 +80,7 @@ DGtal::StarShaped3D<TSpace>::normal( const AngularCoordinates& t ) const
 
 
 /**
- * @param t is a couple of Teta && Phi which are 2 angles respectively between [0,2PI] and [0,Pi] 
+ * @param t is a couple of Teta && Phi which are 2 angles respectively between [0,2PI] and [0,Pi]
  *
  * @return the mean curvature at point (x(t),y(t),z(t)), positive
  * is convex, negative is concave when shape is to the left and
@@ -113,7 +113,7 @@ DGtal::StarShaped3D<TSpace>::meanCurvature( const AngularCoordinates& t ) const
 
   return ( E*N - 2.*F*M + G*L ) / ( 2.* (E*G - F*F) );
 }
-  
+
 
 
 
@@ -152,7 +152,7 @@ DGtal::StarShaped3D<TSpace>::gaussianCurvature( const AngularCoordinates& t ) co
 
   return ( L*N - M*M ) / ( E*G - F*F );
 }
-  
+
 
 
 /**
@@ -214,8 +214,8 @@ DGtal::StarShaped3D<TSpace>::surfacelength( const AngularCoordinates& t1, Angula
     {
       const double tSecond = step2 * j;
       const RealPoint xtp (  x( std::make_pair( t1.first + tFirst - step1 ,t1.second + tSecond - step2 )));
-      const RealPoint xt1p1( x( std::make_pair( t1.first + tFirst,         t1.second + tSecond ))); 
-      const RealPoint xt1p(  x( std::make_pair( t1.first + tFirst,         t1.second + tSecond - step2 ))); 
+      const RealPoint xt1p1( x( std::make_pair( t1.first + tFirst,         t1.second + tSecond )));
+      const RealPoint xt1p(  x( std::make_pair( t1.first + tFirst,         t1.second + tSecond - step2 )));
 
       l += sqrt( (xt1p[0] - xtp[0]) * (xt1p[0] - xtp[0]) +
                  (xt1p[1] - xtp[1]) * (xt1p[1] - xtp[1]) +

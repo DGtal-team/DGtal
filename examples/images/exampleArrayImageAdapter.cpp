@@ -154,9 +154,9 @@ void moduleImages_example()
   aBoard.clear();
   Display2DFactory::drawImage<HueShadeDouble>(aBoard, image, 0, domain.size()-1);
   aBoard.saveSVG("ArrayImageAdapter_subImage_modifByDomain.svg");
-  
+
   trace.endBlock();
-  
+
   trace.beginBlock("modifying subImage through image iterator");
 //! [ArrayImageAdapterForSubImage_modifByImage]
   for ( auto it = subImage.begin(), it_end = subImage.end(); it != it_end; ++it )
@@ -169,7 +169,7 @@ void moduleImages_example()
   aBoard.clear();
   Display2DFactory::drawImage<HueShadeDouble>(aBoard, image, 0, domain.size()-1);
   aBoard.saveSVG("ArrayImageAdapter_subImage_modifByImage.svg");
-  
+
   trace.endBlock();
 
   trace.beginBlock("subImage from an ImageContainerBySTLVector");
@@ -190,7 +190,7 @@ void moduleImages_example()
 //! [ArrayImageAdapterFromImageSTL_alternate]
 
   trace.endBlock();
-  
+
   trace.beginBlock("using std::copy on ArrayImageAdapter");
 //! [ArrayImageAdapterFromImageSTL_copy]
   std::copy( subImage.cbegin(), subImage.cend(), subImageSTL.begin() );
@@ -199,7 +199,7 @@ void moduleImages_example()
   aBoard.clear();
   Display2DFactory::drawImage<HueShadeDouble>(aBoard, anIterableImage, 0, domain.size()-1);
   aBoard.saveSVG("ArrayImageAdapter_subImage_copyToImageSTL.svg");
-  
+
   trace.endBlock();
 
   delete[] data;

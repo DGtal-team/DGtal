@@ -52,7 +52,7 @@ namespace DGtal
   /**
    * Possible properties of digital topologies.
    */
-  enum DigitalTopologyProperties { UNKNOWN_DT = 0, 
+  enum DigitalTopologyProperties { UNKNOWN_DT = 0,
            NOT_JORDAN_DT = 1,
            JORDAN_DT = 2 };
 
@@ -100,15 +100,15 @@ namespace DGtal
     typedef TBackgroundAdjacency BackgroundAdjacency;
     typedef typename ForegroundAdjacency::Point Point;
     // should be the same as Point.
-    typedef typename BackgroundAdjacency::Point BackPoint; 
-    
+    typedef typename BackgroundAdjacency::Point BackPoint;
+
     BOOST_CONCEPT_ASSERT(( concepts::CAdjacency< ForegroundAdjacency > ));
     BOOST_CONCEPT_ASSERT(( concepts::CAdjacency< BackgroundAdjacency > ));
-    
+
     /**
      * Opposite topology type.
      */
-    typedef DigitalTopology<BackgroundAdjacency,ForegroundAdjacency> 
+    typedef DigitalTopology<BackgroundAdjacency,ForegroundAdjacency>
     ReverseTopology;
 
 
@@ -124,7 +124,7 @@ namespace DGtal
      * @param props an hint of the properties of this digital
      * topology, default is UNKNOWN.
      */
-    DigitalTopology( ConstAlias<ForegroundAdjacency> aKappa, 
+    DigitalTopology( ConstAlias<ForegroundAdjacency> aKappa,
          ConstAlias<BackgroundAdjacency> aLambda,
          DigitalTopologyProperties props = UNKNOWN_DT );
 
@@ -177,9 +177,9 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     /**
      * a const reference to the adjacency object chosen for the
@@ -232,7 +232,7 @@ namespace DGtal
    */
   template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
          const DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency> & object );
 
 } // namespace DGtal

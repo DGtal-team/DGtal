@@ -67,7 +67,7 @@ namespace DGtal
       K_NEXT = 5;
       BUFFER_SIZE = K_NEXT * 3;
   }
-  
+
   template <typename T>
   inline
   void NaiveParametricCurveDigitizer3D<T>::attach ( ConstAlias<T> p_curve )
@@ -281,7 +281,7 @@ namespace DGtal
   {
     out << "[NaiveParametricCurveDigitizer3D]";
   }
-  
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -304,5 +304,3 @@ operator<< ( std::ostream & out, const DGtal::NaiveParametricCurveDigitizer3D<T>
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

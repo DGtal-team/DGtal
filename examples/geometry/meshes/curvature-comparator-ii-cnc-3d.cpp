@@ -140,7 +140,7 @@ int main( int argc, char* argv[] )
   //! [curvature-comparator-Typedefs]
   std::string  poly = argv[ 1 ]; // polynomial
   const double    B = argc > 2 ? atof( argv[ 2 ] ) : 1.0; // max ||_oo bbox
-  const double    h = argc > 3 ? atof( argv[ 3 ] ) : 1.0; // gridstep  
+  const double    h = argc > 3 ? atof( argv[ 3 ] ) : 1.0; // gridstep
   std::string  mode = argc > 4 ? argv[ 4 ] : "Const"; // either Const or Interp
   bool interpolated = mode == "Interp";
   if ( interpolated )
@@ -153,14 +153,14 @@ int main( int argc, char* argv[] )
   // Choose depth-first traversal to speed-up II computations.
   params( "surfaceTraversal", "DepthFirst" );
   params( "t-ring", 3 );
-  params( "polynomial", poly )( "gridstep", h ); 
+  params( "polynomial", poly )( "gridstep", h );
   params( "minAABB", -B )( "maxAABB", B );
   params( "offset", 3.0 );
   auto shape       = SH::makeImplicitShape3D( params );
   auto K           = SH::getKSpace( params );
   auto dshape      = SH::makeDigitizedImplicitShape3D( shape, params );
   auto bimage      = SH::makeBinaryImage( dshape, params );
-  if ( bimage == nullptr ) 
+  if ( bimage == nullptr )
     {
       trace.error() <<  "Unable to read polynomial <"
                     << poly.c_str() << ">" << std::endl;
@@ -183,7 +183,7 @@ int main( int argc, char* argv[] )
   std::vector< double > GII  = SHG::getIIGaussianCurvatures( bimage, surfels, params );
   auto ii_t = trace.endBlock();
   //! [curvature-comparator-ii]
-  
+
   //! [curvature-comparator-SurfaceMesh]
   SM smesh;
   std::vector< SM::Vertices > faces;
@@ -191,11 +191,11 @@ int main( int argc, char* argv[] )
   auto pointels = SH::getPointelRange( c2i, surface );
   auto vertices = SH::RealPoints( pointels.size() );
   std::transform( pointels.cbegin(), pointels.cend(), vertices.begin(),
-                  [&] (const SH::Cell& cell) { return h * embedder( cell ); } ); 
+                  [&] (const SH::Cell& cell) { return h * embedder( cell ); } );
   for ( auto&& surfel : surfels )
     {
       const auto primal_surfel_vtcs = SH::getPointelRange( K, surfel );
-      SM::Vertices face;	      
+      SM::Vertices face;
       for ( auto&& primal_vtx : primal_surfel_vtcs )
         face.push_back( c2i[ primal_vtx ] );
       faces.push_back( face );
@@ -216,7 +216,7 @@ int main( int argc, char* argv[] )
   //! [curvature-comparator-CNC]
   // Builds a CorrectedNormalCurrentComputer object onto the SurfaceMesh object
   CNC cnc( smesh );
-  // Estimates normal vectors using Integral Invariant Normal estimator 
+  // Estimates normal vectors using Integral Invariant Normal estimator
   trace.beginBlock( "Computing II normal vectors" );
   auto face_normals = SHG::getIINormalVectors( bimage, surfels, params );
   double cnc_tn = trace.endBlock();
@@ -247,7 +247,7 @@ int main( int argc, char* argv[] )
     }
   //! [curvature-comparator-estimations]
   double cnc_t = trace.endBlock();
-  
+
   //! [curvature-comparator-check]
   auto HII_min_max = std::minmax_element( HII.cbegin(), HII.cend() );
   auto GII_min_max = std::minmax_element( GII.cbegin(), GII.cend() );

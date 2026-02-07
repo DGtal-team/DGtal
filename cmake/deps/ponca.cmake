@@ -26,4 +26,3 @@ export(TARGETS
     NAMESPACE Ponca::
     FILE PoncaTargets.cmake
 )
-

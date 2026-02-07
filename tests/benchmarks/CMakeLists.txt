@@ -20,7 +20,7 @@ add_subdirectory(images)
 # add_subdirectory(shapes)
 # add_subdirectory(dec)
 
-# Run all benchmarks. Can not be called 'benchmarks' 
+# Run all benchmarks. Can not be called 'benchmarks'
 # because it conflicts with the library
 add_custom_target(dgtal_benchmark
     COMMAND ${DGTAL_benchmark_exe_list}

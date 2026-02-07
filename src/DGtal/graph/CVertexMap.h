@@ -48,7 +48,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 // @since 0.8 In DGtal::concepts
-namespace DGtal { 
+namespace DGtal {
   namespace concepts {
 
   /////////////////////////////////////////////////////////////////////////////
@@ -58,38 +58,38 @@ namespace DGtal {
   @ingroup Concepts
   \brief Aim: models of CVertexMap concept implement mapping
   between graph vertices and values.
-  
+
   This concept is associated with concepts related to graph  in
   DGtal (CUndirectedSimpleLocalGraph and CUndirectedSimpleGraph). Associates a value to each vertex of a graph.
-  
+
   # Associated types
   - Vertex : specifies the type for an element of the domain (inner type).
   - Value : specifies the type for a value (inner type).
-   
+
   #  Notation
   - \a X : A type that is a model of CVertexMap
   - \a x : Object of type X
   - \a v : Object of type Vertex
   - \a val : Object of type Value
-   
+
   # Definitions
-   
-   
+
+
   #  Valid expressions and
-   
+
   | Name      | Expression              | Type requirements                           | Return type | Precondition | Semantics                                 | Post condition | Complexity |
   |-----------|-------------------------|---------------------------------------------|-------------|--------------|-------------------------------------------|----------------|------------|
   | Set value | x.setValue(vertex, val) | vertex of type Vertex and val of type Value | void        |              | set a given value val to a given vertex v |                |            |
   | Accessor  | x(vertex)               | vertex of type Vertex                       | Value       |              | Access to the value at vertex             |                |            |
-   
-   
+
+
   #  Invariants
-     
+
   #  Models
   - ImageContainerBySTLVector, ImageContainerBySTLMap,
   ImageContainerByITKImage, ImageContainerByHashTree
-  - Any adapted type from STLMapToVertexMapAdapter  
-   
+  - Any adapted type from STLMapToVertexMapAdapter
+
   # Notes#
   */
   template <typename T>
@@ -101,22 +101,22 @@ namespace DGtal {
     // 1. define first provided types (i.e. inner types), like
     typedef typename T::Vertex Vertex;
     typedef typename T::Value Value;
-    
+
     // 2. then check the presence of data members, operators and methods with
     BOOST_CONCEPT_USAGE( CVertexMap )
     {
       ConceptUtils::sameType( myValue, myX.operator()(myVertex) );
       myX.setValue(myVertex, myValue);
     }
-    
-    // ------------------------- Private Datas --------------------------------
+
+    // ------------------------- Private Data --------------------------------
   private:
     T myX;
     Vertex myVertex;
     Value myValue;
-    
+
   }; // end of concept CVertexMap
-  
+
 } // namespace concepts
 } // namespace DGtal
 

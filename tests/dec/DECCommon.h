@@ -461,7 +461,7 @@ test_hodge_sign()
         const DGtal::Z3i::DigitalSet set(domain);
         const Calculus calculus = CalculusFactory::createFromDigitalSet(set);
         typedef DGtal::Z3i::Point Point;
-        
+
         // primal point, dual cell
         FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uFirst(Point(0,0,0)), DGtal::PRIMAL ) == 1 );
         FATAL_ERROR( calculus.hodgeSign( calculus.myKSpace.uFirst(Point(0,0,0)), DGtal::DUAL ) == 1 );
@@ -553,4 +553,3 @@ test_backend(const int& ntime, const int& maxdim)
 }
 
 #endif
-

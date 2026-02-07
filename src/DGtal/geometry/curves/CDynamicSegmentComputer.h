@@ -54,37 +54,37 @@ namespace DGtal
   /**
 Description of \b concept '\b CDynamicSegmentComputer' <p>
      @ingroup Concepts
-     @brief Aim: Defines the concept describing a dynamic segment computer,  
-    ie. a model of CSegment that can extend and retract itself 
-    (in the direction that is relative to the underlying iterator).  
-     
- # Refinement of CForwardSegmentComputer 
-    
+     @brief Aim: Defines the concept describing a dynamic segment computer,
+    ie. a model of CSegment that can extend and retract itself
+    (in the direction that is relative to the underlying iterator).
+
+ # Refinement of CForwardSegmentComputer
+
  # Associated types the same as CForwardSegmentComputer
-  
+
  # Notation
      - \a X : A type that is a model of CDynamicSegmentComputer
      - \a x : object of type X
-  
+
  # Definitions
-    
- # Valid expressions and 
+
+ # Valid expressions and
 
 
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
 |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-| Retraction    |x.retractBack() |              |bool         |                  | returns 'tru' if ++x.begin() != x.end() (and increments the begin iterator), 'false' otherwise ||| 
+| Retraction    |x.retractBack() |              |bool         |                  | returns 'tru' if ++x.begin() != x.end() (and increments the begin iterator), 'false' otherwise |||
 
 
  # Invariants#
-    
+
  # Models#
-    
+
  # Notes#
 
 @tparam T the type that should be a model of CDynamicSegmentComputer.
    */
-  template <typename T> 
+  template <typename T>
   struct CDynamicSegmentComputer : concepts::CForwardSegmentComputer<T>
   {
     // ----------------------- Concept checks ------------------------------
@@ -94,14 +94,14 @@ Description of \b concept '\b CDynamicSegmentComputer' <p>
     {
       concepts::ConceptUtils::sameType( myB, myX.retractBack() );
     }
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     T myX; // only if T is default constructible.
-    bool myB; 
-  
+    bool myB;
+
     // ------------------------- Internals ------------------------------------
   private:
-    
+
   }; // end of concept CDynamicSegmentComputer
   }
 } // namespace DGtal

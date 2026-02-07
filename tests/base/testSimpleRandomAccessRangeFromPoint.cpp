@@ -444,4 +444,3 @@ TEST_CASE( "Testing SimpleRandomAccess(Const)RangeFromPoint from ImageContainerB
       REQUIRE( std::equal( range.begin(), range.end(), refImage.begin() ) );
     }
 }
-

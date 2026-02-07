@@ -14,14 +14,14 @@
  *
  **/
 
-/** 
+/**
  * @file MeasureOfStraightLines.ih
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/03/04
- * 
- * Implementation of inline methods defined in MeasureOfStraightLines.h 
+ *
+ * Implementation of inline methods defined in MeasureOfStraightLines.h
  *
  * This file is part of the DGtal library.
  */
@@ -67,7 +67,7 @@ DGtal::MeasureOfStraightLines:: ~MeasureOfStraightLines()
  * @param out the output stream where the object is written.
  */
 inline
-void 
+void
 DGtal::MeasureOfStraightLines::selfDisplay( std::ostream & out ) const
 {
   out << "[MeasureOfStraightLines]";
@@ -78,7 +78,7 @@ DGtal::MeasureOfStraightLines::selfDisplay( std::ostream & out ) const
  * @return 'true' if the object is valid, 'false' otherwise.
  */
 inline
-bool 
+bool
 DGtal::MeasureOfStraightLines::isValid() const
 {
   return true;
@@ -87,7 +87,7 @@ DGtal::MeasureOfStraightLines::isValid() const
 ///
 /// Compute the measure associated to the Edge (a0,b0) -- (a1,b1) in the (a,b)-space
 ///
-inline double 
+inline double
 DGtal::MeasureOfStraightLines::computeMeasureEdge ( double a0,double b0, double a1, double b1 )
 {
   //double measure=0;
@@ -120,7 +120,7 @@ DGtal::MeasureOfStraightLines::computeMeasureEdge ( double a0,double b0, double 
  *
  * @param aValue the new epsilon value
  */
-inline void 
+inline void
 DGtal::MeasureOfStraightLines::setEpsilon(const double aValue)
 {
   myEpsilon = aValue;
@@ -136,19 +136,19 @@ DGtal::MeasureOfStraightLines::setEpsilon(const double aValue)
  *
  * @return the measure value (positive value)
  */
-inline double 
+inline double
 DGtal::MeasureOfStraightLines::computeMeasure(const std::vector<double> &a,
 					      const std::vector<double> &b)
 {
   double measure = 0;
 
   ASSERT(a.size() == b.size());
-  
+
   for (unsigned int i=0 ; i < a.size() ; i++)
     {
-      measure += computeMeasureEdge ( a[i], b[i], 
+      measure += computeMeasureEdge ( a[i], b[i],
 				      a[ ( i+1 ) % a.size()],b[ ( i+1 ) %a.size()] );
-    } 
+    }
 
   return measure;
 }
@@ -160,7 +160,7 @@ DGtal::MeasureOfStraightLines::computeMeasure(const std::vector<double> &a,
  *
  * @return the measure value (positive value)
  */
-inline double 
+inline double
 DGtal::MeasureOfStraightLines::computeCentroidA(const std::vector<double> &a,
 						const std::vector<double> &b)
 {
@@ -168,14 +168,14 @@ DGtal::MeasureOfStraightLines::computeCentroidA(const std::vector<double> &a,
   double C_a = 0;
 
   ASSERT(a.size() == b.size());
-  
+
   for (unsigned int i=0 ; i < a.size() ; i++)
     {
-      measure += computeMeasureEdge( a[i], b[i], 
+      measure += computeMeasureEdge( a[i], b[i],
 				     a[ ( i+1 ) % a.size()],b[ ( i+1 ) %a.size()] );
-      C_a += computeCentroidEdge_a ( a[i], b[i], 
+      C_a += computeCentroidEdge_a ( a[i], b[i],
 				     a[ ( i+1 ) % a.size()],b[ ( i+1 ) %a.size()] );
-    } 
+    }
 
   return C_a/measure;
 }
@@ -187,7 +187,7 @@ DGtal::MeasureOfStraightLines::computeCentroidA(const std::vector<double> &a,
  *
  * @return the measure value (positive value)
  */
-inline double 
+inline double
 DGtal::MeasureOfStraightLines::computeCentroidB(const std::vector<double> &a,
 						const std::vector<double> &b)
 {
@@ -195,14 +195,14 @@ DGtal::MeasureOfStraightLines::computeCentroidB(const std::vector<double> &a,
   double C_b = 0;
 
   ASSERT(a.size() == b.size());
-  
+
   for (unsigned int i=0 ; i < a.size() ; i++)
     {
-      measure += computeMeasureEdge( a[i], b[i], 
+      measure += computeMeasureEdge( a[i], b[i],
 				     a[ ( i+1 ) % a.size()],b[ ( i+1 ) %a.size()] );
-      C_b += computeCentroidEdge_b ( a[i], b[i], 
+      C_b += computeCentroidEdge_b ( a[i], b[i],
 				     a[ ( i+1 ) % a.size()],b[ ( i+1 ) %a.size()] );
-    } 
+    }
 
   return C_b/measure;
 }
@@ -214,7 +214,7 @@ DGtal::MeasureOfStraightLines::computeCentroidB(const std::vector<double> &a,
 ///
 ///
 inline
-double 
+double
 DGtal::MeasureOfStraightLines::__computeCentroidSquare_b ( double x1, double y1, double x2,double y2 )
 {
   double val;
@@ -241,7 +241,7 @@ DGtal::MeasureOfStraightLines::sign ( const double a )
 /// (internal function)
 ///
 inline
-double 
+double
 DGtal::MeasureOfStraightLines::__computeCentroidEdgeApprox_b ( double a0, double b0,double a1,double b1 )
 {
   double measure,y2;
@@ -281,7 +281,7 @@ DGtal::MeasureOfStraightLines::__computeCentroidEdgeApprox_b ( double a0, double
 /// (internal function)
 ///
 inline
-double 
+double
 DGtal::MeasureOfStraightLines::__computeCentroidTriApprox_b ( double a0, double b0,double a1,double b1 )
 {
   int signe = sign ( a0*b1 - a1*b0 );
@@ -323,7 +323,7 @@ DGtal::MeasureOfStraightLines::__computeCentroidTriApprox_b ( double a0, double 
 /// Compute the centroid on 'b' on the triangle (0,0)-(a0,b0)-(a1,b1)
 ///
 inline
-double 
+double
 DGtal::MeasureOfStraightLines::computeCentroidEdge_b ( double a0,double b0, double a1, double b1 )
 {
   //double measure=0;
@@ -352,7 +352,7 @@ DGtal::MeasureOfStraightLines::computeCentroidEdge_b ( double a0,double b0, doub
 /// Compute the centroid on 'a' on the triangle (0,0)-(a0,b0)-(a1,b1)
 ///
 inline
-double 
+double
 DGtal::MeasureOfStraightLines::computeCentroidEdge_a ( double a0,double b0, double a1, double b1 )
 {
   //double measure=0;
@@ -389,7 +389,7 @@ DGtal::MeasureOfStraightLines::computeCentroidEdge_a ( double a0,double b0, doub
  */
 inline
 std::ostream&
-DGtal::operator<<( std::ostream & out, 
+DGtal::operator<<( std::ostream & out,
 		   const DGtal::MeasureOfStraightLines & object )
 {
   object.selfDisplay( out );
@@ -398,5 +398,3 @@ DGtal::operator<<( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

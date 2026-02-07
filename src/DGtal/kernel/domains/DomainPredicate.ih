@@ -63,15 +63,15 @@ DGtal::functors::DomainPredicate<TDomain>
 {
   if (this != &other)
     {
-      myDomain = other.myDomain; 
+      myDomain = other.myDomain;
     }
-  return *this; 
+  return *this;
 }
 
 //------------------------------------------------------------------------------
 template <typename TDomain>
 inline
-const TDomain & 
+const TDomain &
 DGtal::functors::DomainPredicate<TDomain>
 ::domain() const
 {
@@ -90,5 +90,3 @@ DGtal::functors::DomainPredicate<TDomain>
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

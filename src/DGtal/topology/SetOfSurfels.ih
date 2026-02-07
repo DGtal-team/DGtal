@@ -47,11 +47,11 @@ DGtal::SetOfSurfels<TKSpace,TSurfelSet>::Tracker
 template <typename TKSpace, typename TSurfelSet>
 inline
 DGtal::SetOfSurfels<TKSpace,TSurfelSet>::Tracker
-::Tracker( ConstAlias<DigitalSurfaceContainer> aSurface, 
+::Tracker( ConstAlias<DigitalSurfaceContainer> aSurface,
            const Surfel & s )
   : mySurface( aSurface ), myNeighborhood()
 {
-  myNeighborhood.init( & surface().space(), 
+  myNeighborhood.init( & surface().space(),
                        & surface().surfelAdjacency(),
                        s );
 }
@@ -124,7 +124,7 @@ template <typename TKSpace, typename TSurfelSet>
 inline
 DGtal::SetOfSurfels<TKSpace,TSurfelSet>::SetOfSurfels
 ( const SetOfSurfels & other )
-  : myKSpace( other.myKSpace ), 
+  : myKSpace( other.myKSpace ),
     mySurfelSet( other.mySurfelSet ),
     mySurfelPredicate( other.mySurfelPredicate ),
     mySurfelAdjacency( other.mySurfelAdjacency )
@@ -137,7 +137,7 @@ DGtal::SetOfSurfels<TKSpace,TSurfelSet>::SetOfSurfels
 (  ConstAlias<KSpace> aKSpace,
    const Adjacency & adj,
    SurfelSet aSetOfSurfels )
-  : myKSpace( aKSpace ), mySurfelSet( aSetOfSurfels ), 
+  : myKSpace( aKSpace ), mySurfelSet( aSetOfSurfels ),
     mySurfelPredicate( mySurfelSet ),
     mySurfelAdjacency( adj )
 {
@@ -162,8 +162,8 @@ DGtal::SetOfSurfels<TKSpace,TSurfelSet>::surfelSet() const
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TSurfelSet>
 inline
-const 
-typename DGtal::SetOfSurfels<TKSpace,TSurfelSet>::Adjacency & 
+const
+typename DGtal::SetOfSurfels<TKSpace,TSurfelSet>::Adjacency &
 DGtal::SetOfSurfels<TKSpace,TSurfelSet>::surfelAdjacency() const
 {
   return mySurfelAdjacency;
@@ -171,7 +171,7 @@ DGtal::SetOfSurfels<TKSpace,TSurfelSet>::surfelAdjacency() const
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TSurfelSet>
 inline
-typename DGtal::SetOfSurfels<TKSpace,TSurfelSet>::Adjacency & 
+typename DGtal::SetOfSurfels<TKSpace,TSurfelSet>::Adjacency &
 DGtal::SetOfSurfels<TKSpace,TSurfelSet>::surfelAdjacency()
 {
   return mySurfelAdjacency;
@@ -179,8 +179,8 @@ DGtal::SetOfSurfels<TKSpace,TSurfelSet>::surfelAdjacency()
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TSurfelSet>
 inline
-const 
-typename DGtal::SetOfSurfels<TKSpace,TSurfelSet>::SurfelPredicate & 
+const
+typename DGtal::SetOfSurfels<TKSpace,TSurfelSet>::SurfelPredicate &
 DGtal::SetOfSurfels<TKSpace,TSurfelSet>::surfelPredicate() const
 {
   return mySurfelPredicate;
@@ -191,7 +191,7 @@ DGtal::SetOfSurfels<TKSpace,TSurfelSet>::surfelPredicate() const
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TSurfelSet>
 inline
-const typename DGtal::SetOfSurfels<TKSpace,TSurfelSet>::KSpace & 
+const typename DGtal::SetOfSurfels<TKSpace,TSurfelSet>::KSpace &
 DGtal::SetOfSurfels<TKSpace,TSurfelSet>::space() const
 {
   return myKSpace;
@@ -240,7 +240,7 @@ DGtal::SetOfSurfels<TKSpace,TSurfelSet>::empty() const
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TSurfelSet>
 inline
-typename DGtal::SetOfSurfels<TKSpace,TSurfelSet>::DigitalSurfaceTracker* 
+typename DGtal::SetOfSurfels<TKSpace,TSurfelSet>::DigitalSurfaceTracker*
 DGtal::SetOfSurfels<TKSpace,TSurfelSet>::newTracker
 ( const Surfel & s ) const
 {
@@ -292,7 +292,7 @@ DGtal::SetOfSurfels<TKSpace,TSurfelSet>::isValid() const
 template <typename TKSpace, typename TSurfelSet>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		  const SetOfSurfels<TKSpace,TSurfelSet> & object )
 {
   object.selfDisplay( out );
@@ -301,5 +301,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

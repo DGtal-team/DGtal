@@ -37,7 +37,7 @@
    You specify integer types with 4th parameter in `int64`, `bigint`, or `allbigint`.
 
 \verbatim
-# 1000 5D points in digital ball of radius 1e8, using int64 for lattice points 
+# 1000 5D points in digital ball of radius 1e8, using int64 for lattice points
 # and BigInteger for internal computations
 ./examples/geometry/tools/checkLatticeBallQuickHull 5 1000 1e8 bigint
 \endverbatim
@@ -214,5 +214,4 @@ int main( int argc, char* argv[] )
       }
     }
   return ok ? 0 : 1;
-} 
-  
+}

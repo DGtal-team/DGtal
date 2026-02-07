@@ -154,7 +154,7 @@ int main()
       it!=itend;
       ++it){
 
-    // Could be better with "WithQuantity", but there is a filter that is 
+    // Could be better with "WithQuantity", but there is a filter that is
     // not easy to emulate with colormaps
     double valDist= dtL2( (*it) );
     Color c= gradient(valDist);
@@ -172,4 +172,3 @@ int main()
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-

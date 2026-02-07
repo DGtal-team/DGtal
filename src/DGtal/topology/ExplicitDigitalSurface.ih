@@ -47,7 +47,7 @@ DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Tracker
 template <typename TKSpace, typename TSurfelPredicate>
 inline
 DGtal::ExplicitDigitalSurface<TKSpace,TSurfelPredicate>::Tracker
-::Tracker( ConstAlias<DigitalSurfaceContainer> aSurface, 
+::Tracker( ConstAlias<DigitalSurfaceContainer> aSurface,
            const Surfel & s )
   : mySurface( aSurface ), myNeighborhood()
 {
@@ -330,5 +330,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

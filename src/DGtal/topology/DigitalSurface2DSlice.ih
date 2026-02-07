@@ -51,14 +51,14 @@ DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::
 template <typename TDigitalSurfaceTracker>
 inline
 DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::
-DigitalSurface2DSlice( DigitalSurfaceTracker* tracker, 
+DigitalSurface2DSlice( DigitalSurfaceTracker* tracker,
                        Dimension i )
 {
   init( tracker, i );
 }
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceTracker>
-bool 
+bool
 DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::
 init( DigitalSurfaceTracker* tracker, Dimension i )
 {
@@ -85,7 +85,7 @@ init( DigitalSurfaceTracker* tracker, Dimension i )
   myIsClosed = code != 0;
   unsigned int shift = 0;
   if ( ! myIsClosed )
-    { // open slice 
+    { // open slice
       tracker->move( start_s );
       j = i;
       current_s = start_s;
@@ -134,7 +134,7 @@ start() const
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceTracker>
 inline
-typename DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::ConstReverseIterator 
+typename DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::ConstReverseIterator
 DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::
 rstart() const
 {
@@ -251,7 +251,7 @@ DGtal::DigitalSurface2DSlice<TDigitalSurfaceTracker>::isValid() const
 template <typename TDigitalSurfaceTracker>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		  const DigitalSurface2DSlice<TDigitalSurfaceTracker> & object )
 {
   object.selfDisplay( out );
@@ -260,5 +260,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

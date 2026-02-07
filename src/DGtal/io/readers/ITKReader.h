@@ -113,14 +113,14 @@ namespace DGtal
      * First an ImageContainerByITKImage is constructed by using the
      * source type of the input ITK image, and in a second step the
      * resulting image type is adapted to the TImage type with the use
-     * of a default ITKIOTrait::DefaultReadFunctor.  
+     * of a default ITKIOTrait::DefaultReadFunctor.
      *
      * @param filename name of the input file.
      * @param shiftDomainUsingOrigin  shift the image domain according to the physical information of the source image)
      * @return read image
      */
     static Image importITK(const std::string & filename, bool shiftDomainUsingOrigin);
-    
+
 
     /**
      * Get the type of the ITK image.
@@ -138,7 +138,7 @@ namespace DGtal
     static inline ImageContainerByITKImage<Domain, PixelType>
     readDGtalITKImage(const std::string & filename, bool shiftDomainUsingOrigin=true);
 
-    
+
     template <typename Image, typename Domain, typename OrigValue,
               typename TFunctor, typename Value>
     struct Aux
@@ -158,8 +158,8 @@ namespace DGtal
       readDGtalImageFromITKtypes( const std::string & filename,
 				  const TFunctor & aFunctor, bool shiftDomainUsingOrigin=true);
     };
-    
-    
+
+
     /**
      * Read an DGtal image of type TypeDGtalImage with a format supported by
      * ITK. (used by importITK)

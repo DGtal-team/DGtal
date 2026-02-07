@@ -78,7 +78,7 @@ namespace DGtal
      ConvexityHelper::computeDelaunayCellComplex.
 
      @tparam TPoint an arbitrary model of Point.
- 
+
      @see moduleQuickHull
   */
   template < typename TPoint >
@@ -101,13 +101,13 @@ namespace DGtal
     typedef PointVector< dimension, Scalar > Vector;
     typedef PointVector< dimension, double > RealPoint;
     typedef PointVector< dimension, double > RealVector;
-    
+
     // ----------------------- standard services ---------------------------
   public:
     /// @name Standard services
     /// @{
 
-    /// Defaut constructor.
+    /// Default constructor.
     ConvexCellComplex()
     { clear(); }
 
@@ -124,11 +124,11 @@ namespace DGtal
       true_face_normal.clear();
       true_face_intercept.clear();
     }
-    
+
     /// @return the number of finite cells with maximal dimension
     Size nbCells() const
     { return cell_faces.size(); }
-    /// @return the number of unoriented cells of codimension 1 
+    /// @return the number of unoriented cells of codimension 1
     Size nbFaces() const
     { return true_face_cell.size(); }
     /// @return the number of vertices
@@ -140,7 +140,7 @@ namespace DGtal
   public:
     /// @name Primal structure topology services
     /// @{
-    
+
     /// @return the index of the infinite cell.
     Cell infiniteCell() const
     { return INFINITE_CELL; }
@@ -149,8 +149,8 @@ namespace DGtal
     /// @return 'true' is the cell is infinite
     bool isInfinite( const Cell c ) const
     { return c == INFINITE_CELL; }
-      
-    
+
+
     /// @param[in] f any face
     /// @return its opposite face
     Face opposite( const Face f ) const
@@ -160,7 +160,7 @@ namespace DGtal
     /// @return its range of faces.
     const FaceRange& cellFaces( const Cell c ) const
     { return cell_faces[ c ]; }
-    
+
     /// Lazy computation of cell vertices from face vertices if they
     /// were not given.
     ///
@@ -187,7 +187,7 @@ namespace DGtal
           computeCellVertices( c );
       return cell_vertices;
     }
-    
+
     /// @param[in] f any face
     /// @return its vertices (in order depending on the side of the face)
     VertexRange faceVertices( const Face f ) const
@@ -221,7 +221,7 @@ namespace DGtal
           result.push_back( v );
       return result;
     }
-    
+
     /// @}
     // -------------------- primal structure geometry services ---------------------
   public:
@@ -250,7 +250,7 @@ namespace DGtal
                       [&] ( Vertex v ) { return this->position( v ); } );
       return pts;
     }
-    
+
     /// @param[in] v any vertex
     /// @return the vertex position
     Point position( const Vertex v ) const
@@ -280,7 +280,7 @@ namespace DGtal
       return x;
     }
 
-    
+
     /// @param[in] c any valid cell
     /// @return the cell barycenter.
     RealPoint cellBarycenter( const Cell c ) const
@@ -345,19 +345,19 @@ namespace DGtal
       if ( f.second ) return  true_face_intercept[ f.first ];
       else            return -true_face_intercept[ f.first ];
     }
-      
+
     /// @return 'true' iff the face geometry is computed.
     bool hasFaceGeometry() const
-    { return has_face_geometry; } 
+    { return has_face_geometry; }
 
     /// Forces the computation of face geometry.
-    void requireFaceGeometry() 
+    void requireFaceGeometry()
     {
       if ( ! hasFaceGeometry() )
         computeFaceGeometry();
     }
 
-    /// Release ressources allocated to face geometry.
+    /// Release resources allocated to face geometry.
     void unrequireFaceGeometry()
     {
       has_face_geometry = false;
@@ -365,13 +365,13 @@ namespace DGtal
       true_face_intercept.clear();
     }
 
-    
+
     /// @}
-    // ----------------------- datas for primal structure ----------------------
+    // ----------------------- data for primal structure ----------------------
   public:
     /// @name Data for primal structure
     /// @{
-    
+
     // for each cell, gives its faces
     std::vector< FaceRange >   cell_faces;
     // for each cell, gives its vertices
@@ -391,7 +391,7 @@ namespace DGtal
     std::vector< Vector > true_face_normal;
     /// Contains the intercept of each 'true' face.
     std::vector< Scalar > true_face_intercept;
-    
+
     /// @}
     // ----------------------- Interface ----------------------
   public:
@@ -522,7 +522,7 @@ namespace DGtal
                    return orient > 0;
                  } );
     }
-    
+
     /// @}
 
   };  // class ConvexCellComplex
@@ -540,11 +540,10 @@ namespace DGtal
     object.selfDisplay( out );
     return out;
   }
-  
+
 } // namespace DGtal
 
 #endif // !defined ConvexCellComplex_h
 
 #undef ConvexCellComplex_RECURSES
 #endif // else defined(ConvexCellComplex_RECURSES)
-

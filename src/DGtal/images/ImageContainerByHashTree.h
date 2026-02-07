@@ -83,28 +83,28 @@ namespace DGtal
    * provided by the container.
    *
    * The parent of a given key can be found by simply shifting to the
-   * left the key's bits by it's dimension.  exemples: for an octree
+   * left the key's bits by it's dimension.  examples: for an octree
    * (N = 3) the parent key of the key 1110100001 is 1110100.  for a
    * quadtree (N = 2) the parent key of the key 10010111 is 100101.
    *
    * It is then easy to determine, for a N-Dimmensionnal container,
    * all the children keys of a given key, by concatenating any
    * combination of N bits at the right side of the key (least
-   * important bits).  exemple: for a quadtree (N = 2) 1010100,
+   * important bits).  example: for a quadtree (N = 2) 1010100,
    * 1010101, 1010110 and 1010111 are the children of 10101.
    *
-   * In order to disgard any ambiguous case, we need to make the
+   * In order to discard any ambiguous case, we need to make the
    * assertion that the root of the hash is at key 1.  Else we would
    * have to deal with the problem of the key 00000..0 which would
    * have one of it's children equal to 0 and so on...  This means
    * that we need to set the key's N*maxDepth bit to 1 after
-   * interleaving the corrdinates bit for key generation.
+   * interleaving the coordinates bit for key generation.
    *
    * Note that not any combination of bits is valid. We saw the
-   * exemple of the key 0, and there are other cases of
+   * example of the key 0, and there are other cases of
    * invalidity. For a key to be valid, the last set bit (most
    * important set bit) must be at a position of the form k*N with N
-   * the Dimmension of the Domain and k a positive integer.  exemples:
+   * the Dimension of the Domain and k a positive integer.  examples:
    * for an octree(N = 3) 1, 1000, 1010111 are valid keys, whereas 0,
    * 10, 11101 are not !
    *
@@ -149,11 +149,11 @@ namespace DGtal
     typedef Point Vertex;
 
     /// static constants
-    BOOST_STATIC_CONSTANT( Dimension, dimension = Domain::dimension); 
+    BOOST_STATIC_CONSTANT( Dimension, dimension = Domain::dimension);
     BOOST_STATIC_CONSTANT( Dimension, dim = Domain::dimension);
-    typedef POW<2, dimension> PowHelper;  
-    BOOST_STATIC_CONSTANT( unsigned int, NbChildrenPerNode = PowHelper::VALUE); 
-    BOOST_STATIC_CONSTANT( HashKey, ROOT_KEY = static_cast<THashKey>(1)); 
+    typedef POW<2, dimension> PowHelper;
+    BOOST_STATIC_CONSTANT( unsigned int, NbChildrenPerNode = PowHelper::VALUE);
+    BOOST_STATIC_CONSTANT( HashKey, ROOT_KEY = static_cast<THashKey>(1));
 
     /// domain should be rectangular
     //(since constructed from two points as a bounding box)
@@ -239,7 +239,7 @@ namespace DGtal
 
     // TODO
     // /*
-    //  * Copy contructor.
+    //  * Copy constructor.
     //  *
     //  * @param other object to copy.
     //  */
@@ -374,8 +374,8 @@ namespace DGtal
 
     /**
      * Returns the size of a dimension (the container represents a
-     * line, a square, a cube, etc. depending on the dimmension so no
-     * need for distinctions between width, height, ect.)
+     * line, a square, a cube, etc. depending on the dimension so no
+     * need for distinctions between width, height, etc.)
      * @return the dimension size
      */
     inline unsigned int getSpanSize() const
@@ -395,7 +395,7 @@ namespace DGtal
     /**
      *  Returns true if the key is valid.  A key is valid if the the
      * most important bit that is equal to 1 is at a position of the
-     * type dim*k with dim the dimmension of the container (template
+     * type dim*k with dim the dimension of the container (template
      * parameter) and k a strictly positive integer.
      * @param key the key
      * @return the boolean result
@@ -450,12 +450,12 @@ namespace DGtal
     void printInternalState(std::ostream& out, unsigned int nbBits = 0) const;
 
     /**
-     * Prints informations about the state of the container without
+     * Prints information about the state of the container without
      * displaying the data:
      *
-     *     - Nunber of elements in the tree.
+     *     - Number of elements in the tree.
      *     - Amount of unused disk space due to blanks in the hash table.
-     *     - The dimmension.
+     *     - The dimension.
      *     - The number of bits of the HashKey.
      *     - The size of the image.
      *     - The average and the maximum amount of collisions.
@@ -706,7 +706,7 @@ namespace DGtal
   public:
     /**
      * Returns a pointer to the node corresponding to the key. If it
-     * does'nt exist, returns 0.  This method is called VERY often,
+     * doesn't exist, returns 0.  This method is called VERY often,
      * and thus should operate as fast as possible.
      * @param key The key.
      * @return the pointer to the node corresponding to the key.
@@ -732,7 +732,7 @@ namespace DGtal
     bool removeNode(HashKey key);
 
     /**
-     * Recusrively calls RemoveNode on the key and its children.
+     * Recursively calls RemoveNode on the key and its children.
      * @param key The key.
      * @param nbRecursions the number of recursions performed.
      */
@@ -743,7 +743,7 @@ namespace DGtal
      * Set the (maximum) depth of the tree and precompute a mask used
      * for some calculations.  The depth of the tree must be known
      * because accessing the data from coordinates depends on it.
-     * @param depth the maxumum depth.
+     * @param depth the maximum depth.
      */
     void setDepth(unsigned int depth);
 

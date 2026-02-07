@@ -53,7 +53,7 @@ SCENARIO( "TangencyComputer::ShortestPaths 3D tests", "[shortest_paths][3d][tang
   typedef Shortcuts< KSpace > SH3;
   typedef Space::Point        Point;
   typedef std::size_t         Index;
-  
+
   SECTION( "Computing shortest paths on a 3D unit sphere digitized at gridstep 0.25" )
     {
       // Make digital sphere
@@ -71,7 +71,7 @@ SCENARIO( "TangencyComputer::ShortestPaths 3D tests", "[shortest_paths][3d][tang
       std::vector< Point >    lattice_points;
       auto pointels = SH3::getPointelRange( surface );
       for ( auto p : pointels ) lattice_points.push_back( K.uCoords( p ) );
-      REQUIRE( pointels.size() == 296 ); 
+      REQUIRE( pointels.size() == 296 );
       // Find lowest and uppest point.
       const Index nb = lattice_points.size();
       Index   lowest = 0;
@@ -110,7 +110,7 @@ SCENARIO( "TangencyComputer::ShortestPaths 3D tests", "[shortest_paths][3d][tang
       // AND_THEN( "The furthest point is also the antipodal point" )
       REQUIRE( last == uppest );
       // AND_THEN( "The furthest point is at distance close but lower than pi" )
-      REQUIRE( last_distance*h >= 2.8 ); 
+      REQUIRE( last_distance*h >= 2.8 );
       REQUIRE( last_distance*h <= 3.14159265358979323844 );
       // Compute approximate shortest paths
       SP = TC.makeShortestPaths( 0 );
@@ -125,10 +125,9 @@ SCENARIO( "TangencyComputer::ShortestPaths 3D tests", "[shortest_paths][3d][tang
       // THEN( "The furthest point is also the antipodal point" )
       REQUIRE( last == lowest );
       // AND_THEN( "The furthest point is at distance close but lower than pi" )
-      REQUIRE( last_distance_opt*h >= 2.8 ); 
+      REQUIRE( last_distance_opt*h >= 2.8 );
       REQUIRE( last_distance_opt*h <= 3.14159265358979323844 );
       // AND_THEN( "This distance is greater or equal to the exacts shortest path" )
       REQUIRE( last_distance_opt*h >= last_distance*h );
     }
-}  
-
+}

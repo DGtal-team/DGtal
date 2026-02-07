@@ -47,11 +47,11 @@ DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::Tracker
 template <typename TKSpace, typename TDigitalSet>
 inline
 DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::Tracker
-::Tracker( ConstAlias<DigitalSurfaceContainer> aSurface, 
+::Tracker( ConstAlias<DigitalSurfaceContainer> aSurface,
            const Surfel & s )
   : mySurface( aSurface ), myNeighborhood()
 {
-  myNeighborhood.init( & surface().space(), 
+  myNeighborhood.init( & surface().space(),
                        & surface().surfelAdjacency(),
                        s );
 }
@@ -127,7 +127,7 @@ template <typename TKSpace, typename TDigitalSet>
 inline
 DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::DigitalSetBoundary
 ( const DigitalSetBoundary & other )
-  : myKSpace( other.myKSpace ), myDigitalSet( other.myDigitalSet ), 
+  : myKSpace( other.myKSpace ), myDigitalSet( other.myDigitalSet ),
     mySurfelAdjacency( other.mySurfelAdjacency ),
     mySurfels( other. mySurfels )
 {
@@ -136,7 +136,7 @@ DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::DigitalSetBoundary
 template <typename TKSpace, typename TDigitalSet>
 inline
 DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::DigitalSetBoundary
-( ConstAlias<KSpace> aKSpace, 
+( ConstAlias<KSpace> aKSpace,
   const DigitalSet & aSet,
   const Adjacency & adj )
   : myKSpace( aKSpace ), myDigitalSet( aSet ), mySurfelAdjacency( adj )
@@ -146,8 +146,8 @@ DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::DigitalSetBoundary
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TDigitalSet>
 inline
-const 
-typename DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::Adjacency & 
+const
+typename DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::Adjacency &
 DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::surfelAdjacency() const
 {
   return mySurfelAdjacency;
@@ -155,7 +155,7 @@ DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::surfelAdjacency() const
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TDigitalSet>
 inline
-typename DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::Adjacency & 
+typename DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::Adjacency &
 DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::surfelAdjacency()
 {
   return mySurfelAdjacency;
@@ -163,8 +163,8 @@ DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::surfelAdjacency()
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TDigitalSet>
 inline
-const 
-typename DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::DigitalSet & 
+const
+typename DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::DigitalSet &
 DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::digitalSet() const
 {
   return myDigitalSet;
@@ -175,7 +175,7 @@ DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::digitalSet() const
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TDigitalSet>
 inline
-const typename DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::KSpace & 
+const typename DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::KSpace &
 DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::space() const
 {
   return myKSpace;
@@ -192,11 +192,11 @@ DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::isInside
   if ( myKSpace.sIsMax( s, k ) || myKSpace.sIsMin( s, k ) )
     return false;
   // p1 must be in the set and p2 must not be in the set.
-  SCell spel1 = myKSpace.sDirectIncident( s, k ); 
+  SCell spel1 = myKSpace.sDirectIncident( s, k );
   Point p1 = myKSpace.sCoords( spel1 );
   if ( myDigitalSet.find( p1 ) != myDigitalSet.end() )
     {
-      SCell spel2 = myKSpace.sIndirectIncident( s, k ); 
+      SCell spel2 = myKSpace.sIndirectIncident( s, k );
       Point p2 = myKSpace.sCoords( spel2 );
       return ! ( myDigitalSet.find( p2 ) != myDigitalSet.end() );
     }
@@ -237,7 +237,7 @@ DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::empty() const
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TDigitalSet>
 inline
-typename DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::DigitalSurfaceTracker* 
+typename DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::DigitalSurfaceTracker*
 DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::newTracker
 ( const Surfel & s ) const
 {
@@ -267,7 +267,7 @@ DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::computeSurfels()
   Surfaces<KSpace>::sWriteBoundary( output_it,
                                     myKSpace,
                                     myDigitalSet,
-                                    myKSpace.lowerBound(), 
+                                    myKSpace.lowerBound(),
                                     myKSpace.upperBound() );
 }
 
@@ -306,7 +306,7 @@ DGtal::DigitalSetBoundary<TKSpace,TDigitalSet>::isValid() const
 template <typename TKSpace, typename TDigitalSet>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		  const DigitalSetBoundary<TKSpace,TDigitalSet> & object )
 {
   object.selfDisplay( out );
@@ -315,5 +315,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

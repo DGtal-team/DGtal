@@ -63,10 +63,10 @@ namespace DGtal
   struct SetFromImage
   {
     typedef TSet Set;
-   
+
     BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<Set> ));
-         
-    /** 
+
+    /**
      * Append an Image value set  to an existing Set (maybe empty).
      * @pre the ForegroundPredicate instance must have been created on the image aImage.
      *
@@ -78,12 +78,12 @@ namespace DGtal
      */
     template<typename Image, typename ForegroundPredicate>
     static
-    void append(Set &aSet, 
+    void append(Set &aSet,
 		const ForegroundPredicate &isForeground,
-		typename Image::Domain::ConstIterator itBegin, 
+		typename Image::Domain::ConstIterator itBegin,
 		typename Image::Domain::ConstIterator itEnd);
-  
-    /** 
+
+    /**
      * Append an Image value set  to an existing Set (maybe empty).
      * This method will construct a default ForegroundPredicate
      * instance as a simple thresholding (SimpleForegroundPredicate)
@@ -95,22 +95,22 @@ namespace DGtal
      * @param maxVal maximum value of the thresholding
      * @param itBegin starting point in the input image Domain.
      * @param itEnd ending point in the input image domain.
-     * 
+     *
      */
     template<typename Image>
     static
     void append(Set &aSet, const Image &aImage,
 		const typename Image::Value minVal,
 		const typename Image::Value maxVal,
-		typename Image::Domain::ConstIterator itBegin, 
+		typename Image::Domain::ConstIterator itBegin,
 		typename Image::Domain::ConstIterator itEnd)
     {
       functors::IntervalForegroundPredicate<Image> isForeground(aImage,minVal,maxVal);
-      
+
       append(aSet, isForeground,itBegin,itEnd);
     }
 
-    /** 
+    /**
      * Append an Image value set  to an existing Set (maybe empty).
      * @pre the ForegroundPredicate instance must have been created on
      * the image @a aImage.
@@ -129,7 +129,7 @@ namespace DGtal
       append<Image,ForegroundPredicate>(aSet,isForeground,domain.begin(),domain.end());
     }
 
-    /** 
+    /**
      * Append an Image value set  to an existing Set (maybe empty).
      * This method will construct a default ForegroundPredicate
      * instance as a simple thresholding (SimpleForegroundPredicate)
@@ -143,7 +143,7 @@ namespace DGtal
      */
     template<typename Image>
     static
-    void append(Set &aSet, const Image &aImage, 
+    void append(Set &aSet, const Image &aImage,
 		const typename Image::Value minVal,
 		const typename Image::Value maxVal)
     {

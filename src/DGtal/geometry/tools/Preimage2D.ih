@@ -42,7 +42,7 @@
 template <typename Shape>
 inline
 DGtal::Preimage2D<Shape>::Preimage2D(
-  const Point & firstPoint, 
+  const Point & firstPoint,
   const Point & secondPoint,
   const Shape & aShape ): myShape(aShape)
 {
@@ -85,14 +85,14 @@ inline
 bool
 DGtal::Preimage2D<Shape>::operator==( const Preimage2D & other ) const
 {
-  if ( (std::equal(myPHull.begin(),myPHull.end(),other.myPHull.begin()) 
+  if ( (std::equal(myPHull.begin(),myPHull.end(),other.myPHull.begin())
       &&std::equal(myQHull.begin(),myQHull.end(),other.myQHull.begin()))
-    || (std::equal(myPHull.begin(),myPHull.end(),other.myPHull.rbegin()) 
+    || (std::equal(myPHull.begin(),myPHull.end(),other.myPHull.rbegin())
       &&std::equal(myQHull.begin(),myQHull.end(),other.myQHull.rbegin()))
      )
     return true;
-  else 
-    return false;  
+  else
+    return false;
 }
 
 template <typename Shape>
@@ -100,14 +100,14 @@ inline
 bool
 DGtal::Preimage2D<Shape>::operator!=( const Preimage2D & other ) const
 {
-  return !(*this == other); 
+  return !(*this == other);
 }
 
 template <typename Shape>
 inline
 bool
 DGtal::Preimage2D<Shape>::isLeftExteriorAtTheFront(
-    const Point & aP, 
+    const Point & aP,
     const Point & /*aQ*/)
 {
   //critical points
@@ -118,20 +118,20 @@ DGtal::Preimage2D<Shape>::isLeftExteriorAtTheFront(
   myShape.init(*PHullBack, *QHullFront);
   PHullBackQHullFrontPred p1( myShape );
 
-  return (!p1(aP)); 
+  return (!p1(aP));
 }
 
 template <typename Shape>
 inline
 bool
 DGtal::Preimage2D<Shape>::isLeftExteriorAtTheBack(
-    const Point & /*aP*/, 
+    const Point & /*aP*/,
     const Point & aQ)
 {
   //critical points
   ForwardIterator QHullFront = myQHull.begin();
   BackwardIterator PHullBack = myPHull.rbegin();
-  
+
   //predicates definition from critical shapes
   myShape.init(*QHullFront, *PHullBack);
   QHullFrontPHullBackPred p2( myShape );
@@ -143,7 +143,7 @@ template <typename Shape>
 inline
 bool
 DGtal::Preimage2D<Shape>::isRightExteriorAtTheFront(
-    const Point & /*aP*/, 
+    const Point & /*aP*/,
     const Point & aQ)
 {
   //critical points
@@ -154,32 +154,32 @@ DGtal::Preimage2D<Shape>::isRightExteriorAtTheFront(
   myShape.init(*QHullBack, *PHullFront);
   QHullBackPHullFrontPred p2( myShape );
 
-  return (!p2(aQ)); 
+  return (!p2(aQ));
 }
 
 template <typename Shape>
 inline
 bool
 DGtal::Preimage2D<Shape>::isRightExteriorAtTheBack(
-    const Point & aP, 
+    const Point & aP,
     const Point & /*aQ*/)
 {
   //critical points
   ForwardIterator PHullFront = myPHull.begin();
   BackwardIterator QHullBack = myQHull.rbegin();
-  
+
   //predicates definition from critical shapes
   myShape.init(*PHullFront, *QHullBack);
   PHullFrontQHullBackPred p1( myShape );
 
-  return (!p1(aP)); 
+  return (!p1(aP));
 }
 
 template <typename Shape>
 inline
 bool
 DGtal::Preimage2D<Shape>::canBeAddedAtTheFront(
-    const Point & aP, 
+    const Point & aP,
     const Point & aQ)
 {
   //critical points
@@ -201,7 +201,7 @@ template <typename Shape>
 inline
 bool
 DGtal::Preimage2D<Shape>::canBeAddedAtTheBack(
-    const Point & aP, 
+    const Point & aP,
     const Point & aQ)
 {
 
@@ -210,7 +210,7 @@ DGtal::Preimage2D<Shape>::canBeAddedAtTheBack(
   BackwardIterator QHullBack = myQHull.rbegin();
   ForwardIterator QHullFront = myQHull.begin();
   BackwardIterator PHullBack = myPHull.rbegin();
-  
+
   //predicates definition from critical shapes
   myShape.init(*PHullFront, *QHullBack);
   PHullFrontQHullBackPred p1( myShape );
@@ -225,7 +225,7 @@ template <typename Shape>
 inline
 bool
 DGtal::Preimage2D<Shape>::addFront(
-    const Point & aP, 
+    const Point & aP,
     const Point & aQ)
 {
 
@@ -236,13 +236,13 @@ DGtal::Preimage2D<Shape>::addFront(
   ForwardIterator QHullFront = myQHull.begin();
   BackwardIterator QHullBack = myQHull.rbegin();
   ForwardIterator PHullFront = myPHull.begin();
-    
+
   //predicates definition from critical shapes
   myShape.init(*PHullBack, *QHullFront);
   PHullBackQHullFrontPred p1( myShape );
   myShape.init(*QHullBack, *PHullFront);
   QHullBackPHullFrontPred p2( myShape );
-  
+
   if ( p1(aP) && p2(aQ) ) {
     if ( p2(aP) ) {   //constraint involved by aP
 
@@ -275,7 +275,7 @@ DGtal::Preimage2D<Shape>::addFront(
     } //else nothing to do
 
   } else isEmpty = true;
-  
+
   return (!isEmpty);
 }
 
@@ -283,7 +283,7 @@ template <typename Shape>
 inline
 bool
 DGtal::Preimage2D<Shape>::addBack(
-    const Point & aP, 
+    const Point & aP,
     const Point & aQ)
 {
 
@@ -294,7 +294,7 @@ DGtal::Preimage2D<Shape>::addBack(
   BackwardIterator QHullBack = myQHull.rbegin();
   ForwardIterator QHullFront = myQHull.begin();
   BackwardIterator PHullBack = myPHull.rbegin();
-  
+
   //predicates definition from critical shapes
   myShape.init(*PHullFront, *QHullBack);
   PHullFrontQHullBackPred p1( myShape );
@@ -358,25 +358,25 @@ DGtal::Preimage2D<Shape>::update(
     myShape.init(p,q);
     Predicate pred( myShape );
 
-    while ( (anIterator != anEndIterator) && 
+    while ( (anIterator != anEndIterator) &&
             (pred(aPoint)) ) {
 
       //deletion
       anIterator--;
 
-      anIterator = 
+      anIterator =
         DGtal::OpInSTLContainers<Container,Iterator>
              ::erase(aContainer, anIterator);
 
       //update of pred
-      q = p;  
+      q = p;
       anIterator++;
       if (anIterator != anEndIterator) {
         p = *anIterator;
         myShape.init(p,q);
         pred = Predicate( myShape );
       }
-    }  
+    }
   }
 
 }
@@ -398,13 +398,13 @@ DGtal::Preimage2D<Shape>::selfDisplay ( std::ostream & out ) const
 {
   out << "[Preimage2D]\n";
   out << "first part: \n";
-  for (ConstForwardIterator i = myPHull.begin(); 
+  for (ConstForwardIterator i = myPHull.begin();
        i != myPHull.end(); ++i) {
     out << *i << ", ";
   }
   out << "\n";
   out << "second part: \n";
-  for (ConstForwardIterator i = myQHull.begin(); 
+  for (ConstForwardIterator i = myQHull.begin();
        i != myQHull.end(); ++i) {
     out << *i << ", ";
   }
@@ -455,8 +455,8 @@ template <typename Shape>
 inline
 void
 DGtal::Preimage2D<Shape>::getSeparatingStraightLine(
-  double& alpha, 
-  double& beta, 
+  double& alpha,
+  double& beta,
   double& gamma) const
 {
   //critical points
@@ -466,37 +466,37 @@ DGtal::Preimage2D<Shape>::getSeparatingStraightLine(
   Point localLl = Ll();
 
   //parameters
-  typedef typename Point::Coordinate Coordinate; 
-  
+  typedef typename Point::Coordinate Coordinate;
+
   double a = -NumberTraits<Coordinate>::castToDouble(localLl[1]-localUf[1]);
   double b = NumberTraits<Coordinate>::castToDouble(localLl[0]-localUf[0]);
-  double c = -NumberTraits<Coordinate>::castToDouble(localUf[0])*a 
+  double c = -NumberTraits<Coordinate>::castToDouble(localUf[0])*a
                      -NumberTraits<Coordinate>::castToDouble(localUf[1])*b;
-  
+
   double ap = -NumberTraits<Coordinate>::castToDouble(localUl[1]-localLf[1]);
   double bp = NumberTraits<Coordinate>::castToDouble(localUl[0]-localLf[0]);
-  double cp = -NumberTraits<Coordinate>::castToDouble(localLf[0])*ap 
+  double cp = -NumberTraits<Coordinate>::castToDouble(localLf[0])*ap
                       -NumberTraits<Coordinate>::castToDouble(localLf[1])*bp;
 
-  double x, y; 
-  double det = (ap*b-bp*a); 
+  double x, y;
+  double det = (ap*b-bp*a);
   if (det != 0)
   {
     //intersection point
     x = -(b*cp-bp*c)/det;
-    y = -(a*cp-ap*c)/(-det); 
+    y = -(a*cp-ap*c)/(-det);
     //normalisation of (ap,bp) with respect to (a,b)
-    double l = std::sqrt(a*a + b*b); 
-    double lp = std::sqrt(ap*ap + bp*bp); 
-    double apn = ap/lp*l; 
-    double bpn = bp/lp*l; 
+    double l = std::sqrt(a*a + b*b);
+    double lp = std::sqrt(ap*ap + bp*bp);
+    double apn = ap/lp*l;
+    double bpn = bp/lp*l;
     //slope bisector of (UfLl) and (UlLf)
-    alpha = (a+apn)/2.0; 
-    beta = (b+bpn)/2.0; 
+    alpha = (a+apn)/2.0;
+    beta = (b+bpn)/2.0;
     //intercept
     gamma = -alpha*x - beta*y;
   }
-  else 
+  else
   {//parallel case
     alpha = a;
     beta = b;
@@ -511,7 +511,7 @@ DGtal::Preimage2D<Shape>::getSeparatingStraightLine(
 template <typename Shape>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
       const Preimage2D<Shape> & object )
 {
   object.selfDisplay( out );
@@ -520,5 +520,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

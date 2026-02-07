@@ -42,11 +42,11 @@ inline
 void
 DGtal::InHalfPlaneBy2x2DetComputer<TP,TDC>::init( const Point& aP, const Point& aQ )
 {
-  myA = static_cast<ArgumentInteger>( aP[0] ); 
-  myB = static_cast<ArgumentInteger>( aP[1] ); 
+  myA = static_cast<ArgumentInteger>( aP[0] );
+  myB = static_cast<ArgumentInteger>( aP[1] );
 
-  myDetComputer.init( static_cast<ArgumentInteger>( aQ[0] ) - myA,  
-		      static_cast<ArgumentInteger>( aQ[1] ) - myB ); 
+  myDetComputer.init( static_cast<ArgumentInteger>( aQ[0] ) - myA,
+		      static_cast<ArgumentInteger>( aQ[1] ) - myB );
 }
 
 // ----------------------------------------------------------------------------
@@ -55,7 +55,7 @@ inline
 void
 DGtal::InHalfPlaneBy2x2DetComputer<TP,TDC>::init( const PointArray& aA )
 {
-  init( aA[0], aA[1] ); 
+  init( aA[0], aA[1] );
 }
 
 // ----------------------------------------------------------------------------
@@ -64,8 +64,8 @@ inline
 typename DGtal::InHalfPlaneBy2x2DetComputer<TP,TDC>::Value
 DGtal::InHalfPlaneBy2x2DetComputer<TP,TDC>::operator()( const Point& aR ) const
 {
-  return myDetComputer( static_cast<ArgumentInteger>( aR[0] ) - myA, 
-			static_cast<ArgumentInteger>( aR[1] ) - myB ); 
+  return myDetComputer( static_cast<ArgumentInteger>( aR[0] ) - myA,
+			static_cast<ArgumentInteger>( aR[1] ) - myB );
 }
 
 // ----------------------------------------------------------------------------
@@ -94,7 +94,7 @@ DGtal::InHalfPlaneBy2x2DetComputer<TP,TDC>::isValid() const
 template <typename TP, typename TDC>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		    const InHalfPlaneBy2x2DetComputer<TP,TDC> & object )
 {
   object.selfDisplay( out );
@@ -103,5 +103,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

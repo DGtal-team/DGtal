@@ -1,4 +1,4 @@
-set(DGTAL_BENCH_SRC 
+set(DGTAL_BENCH_SRC
     testChordNaivePlaneComputer-benchmark
     testCOBAGenericNaivePlaneComputer-benchmark
     testCOBANaivePlaneComputer-benchmark

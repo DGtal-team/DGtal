@@ -60,10 +60,10 @@ namespace DGtal
      Aim: A model of CDigitalSurfaceContainer which defines the digital
      surface as the boundary of an implicitly define shape. Compute
      once the boundary of the surface with a tracking.
-     
+
      @tparam TKSpace a model of CCellularGridSpaceND: the type chosen
      for the cellular grid space.
-     
+
      @tparam TPointPredicate a model of concepts::CPointPredicate: this functor
      defines the inside of a shape on points where it is true.
    */
@@ -94,7 +94,7 @@ namespace DGtal
 	 @param aSurface the container describing the surface.
 	 @param s the surfel on which the tracker is initialized.
       */
-      Tracker( ConstAlias<DigitalSurfaceContainer> aSurface, 
+      Tracker( ConstAlias<DigitalSurfaceContainer> aSurface,
                const Surfel & s );
 
       /**
@@ -121,25 +121,25 @@ namespace DGtal
 	 @param s the surfel on which the tracker is moved.
       */
       void move( const Surfel & s );
-      
+
       /**
 	 Computes the surfel adjacent to 'current()' in the direction
-	 [d] along orientation [pos]. 
-	 
+	 [d] along orientation [pos].
+
 	 @param s (modified) set to the adjacent surfel in the specified
 	 direction @a d and orientation @a pos if it exists. Otherwise
 	 unchanged (method returns 0 in this case).
-	 
+
 	 @param d any direction different from 'orthDir()'.
-	 
+
 	 @param pos when 'true' look in positive direction along
 	 [track_dir] axis, 'false' look in negative direction.
-	 
+
 	 @return the move code (n=0-3). When 0: no adjacent surfel,
 	 otherwise 1-3: adjacent surfel is n-th follower.
       */
       uint8_t adjacent( Surfel & s, Dimension d, bool pos ) const;
-      
+
     private:
       /// a reference to the digital surface container on which is the
       /// tracker.
@@ -161,7 +161,7 @@ namespace DGtal
     typedef typename KSpace::Size Size;
     // Model of concepts::CPointPredicate
     typedef TPointPredicate PointPredicate;
-    
+
     BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< KSpace > ));
     BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate< PointPredicate > ));
 
@@ -260,7 +260,7 @@ namespace DGtal
     /**
        @param s any surfel of the space.
        @pre 'isInside( s )'
-       @return a dyn. alloc. pointer on a tracker positionned at @a s.
+       @return a dyn. alloc. pointer on a tracker positioned at @a s.
     */
     DigitalSurfaceTracker* newTracker( const Surfel & s ) const;
 
@@ -285,15 +285,15 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     /// a reference to the cellular space.
     const KSpace & myKSpace;
     /// a reference to the point predicate defining the shape.
     const PointPredicate & myPointPredicate;
-    /// the surfel adjacency used to determine neighbors. 
+    /// the surfel adjacency used to determine neighbors.
     Adjacency mySurfelAdjacency;
     /// a vector storing all the surfels of the boundary.
     SurfelStorage mySurfels;
@@ -338,13 +338,13 @@ namespace DGtal
 
      @tparam TKSpace a model of CCellularGridSpaceND: the type chosen
      for the cellular grid space.
-     
+
      @tparam TPointPredicate a model of CDigitalSet: the type chosen for
      the set of digital points.
    */
   template <typename TKSpace, typename TPointPredicate>
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
 	       const ImplicitDigitalSurface<TKSpace, TPointPredicate> & object );
 
 } // namespace DGtal

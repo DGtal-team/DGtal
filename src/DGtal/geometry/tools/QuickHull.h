@@ -80,7 +80,7 @@ namespace DGtal
   /// #include "DGtal/shapes/SurfaceMesh.h"
   /// #include "DGtal/io/writers/SurfaceMeshWriter.h"
   /// #include "QuickHull.h"
-  /// 
+  ///
   /// using namespace DGtal::Z3i;
   /// int main( int argc, char* argv[] )
   /// {
@@ -116,7 +116,7 @@ namespace DGtal
   ///     ::writeOBJ( out, mesh );
   ///   out.close();
   ///   return 0;
-  /// } 
+  /// }
   /// @endcode
   ///
   /// @note In opposition with the usual QuickHull implementation, this
@@ -188,7 +188,7 @@ namespace DGtal
       }
       void display( std::ostream& out ) const
       {
-        const auto N = H.internalNormal(); 
+        const auto N = H.internalNormal();
         out << "[Facet iN=(" << N[0];
         for ( Dimension i = 1; i < N.dimension; i++ ) out << "," << N[ i ];
         out << ") c=" << H.internalIntercept() << " b=" << below << " n={";
@@ -253,7 +253,7 @@ namespace DGtal
   public:
     /// @name Standard services (construction, initialization, accessors)
     /// @{
-  
+
     /// Default constructor
     /// @param[in] K_ a kernel for computing facet geometries.
     /// @param[in] dbg the trace level, from 0 (no) to 3 (very verbose).
@@ -266,7 +266,7 @@ namespace DGtal
     /// InvalidConvexHull
     Status status() const
     { return myStatus; }
-  
+
     /// Clears the object.
     void clear()
     {
@@ -283,13 +283,13 @@ namespace DGtal
       timings.clear();
     }
 
-    
+
     /// @return an estimation of the current memory occupation of this object.
     Size memory() const
     {
       // int debug_level;
       Size M = sizeof( kernel ) + sizeof( int );
-      // std::vector< Point > points;    
+      // std::vector< Point > points;
       M += sizeof( std::vector< Point > )
         + points.capacity() * sizeof( Point );
       M += sizeof( std::vector< Index > )
@@ -321,12 +321,12 @@ namespace DGtal
     }
 
     /// @return the number of points used as input.
-    Size nbPoints() const 
+    Size nbPoints() const
     { return points.size(); }
 
     /// @return the number of facets of the convex hull.
     /// @pre status() >= Status::FacetsCompleted
-    Size nbFacets() const 
+    Size nbFacets() const
     {
       ASSERT( status() >= Status::FacetsCompleted
               && status() <= Status::AllCompleted );
@@ -335,7 +335,7 @@ namespace DGtal
 
     /// @return the number of vertices of the convex hull.
     /// @pre status() >= Status::VerticesCompleted
-    Size nbVertices() const 
+    Size nbVertices() const
     {
       ASSERT( status() >= Status::VerticesCompleted
               && status() <= Status::AllCompleted );
@@ -344,7 +344,7 @@ namespace DGtal
 
     /// @return the number of finite facets of the convex hull.
     /// @pre status() >= Status::VerticesCompleted
-    Size nbFiniteFacets() const 
+    Size nbFiniteFacets() const
     {
       ASSERT( status() >= Status::VerticesCompleted
               && status() <= Status::AllCompleted );
@@ -353,19 +353,19 @@ namespace DGtal
 
     /// @return the number of infinite facets of the convex hull.
     /// @pre status() >= Status::VerticesCompleted
-    Size nbInfiniteFacets() const 
+    Size nbInfiniteFacets() const
     {
       ASSERT( status() >= Status::VerticesCompleted
               && status() <= Status::AllCompleted );
       return nb_infinite_facets;
     }
-    
+
     /// @}
     // -------------------------- Convex hull services ----------------------------
   public:
     /// @name Initialization services
     /// @{
-    
+
     /// Sets the input data for the QuickHull convex hull algorithm,
     /// which is a range of points.
     ///
@@ -417,7 +417,7 @@ namespace DGtal
                         << " not a full dimensional simplex" << std::endl;
           myStatus = Status::NotFullDimensional;
           return false;
-        }          
+        }
       CombinatorialPlaneSimplex splx;
       for ( Index j = 0; j < dimension; ++j )
         splx[ j ] = full_splx[ j ];
@@ -434,7 +434,7 @@ namespace DGtal
   public:
     /// @name Convex hull services
     /// @{
-    
+
     /// Computes the convex hull of the given range of points until a
     /// specified \a target:
     ///
@@ -496,7 +496,7 @@ namespace DGtal
         }
       return false;
     }
-  
+
     /// Computes the initial full dimensional simplex from the input data.
     ///
     /// @return 'true' iff the input data contains d+1 points in general
@@ -516,7 +516,7 @@ namespace DGtal
     /// algorithm. If everything went well, the status is
     /// Status::FacetsCompleted afterwards.
     ///
-    /// @pre the status shoud be Status::SimplexCompleted
+    /// @pre the status should be Status::SimplexCompleted
     /// (computeInitialSimplex should have been called).
     ///
     /// @return 'true' except if the status is not Initialized when
@@ -547,7 +547,7 @@ namespace DGtal
     /// matches the orientation of the facet. If everything went well, the
     /// status is Status::VerticesCompleted afterwards.
     ///
-    /// @pre the status shoud be Status::FacetsCompleted (computeFacets should have
+    /// @pre the status should be Status::FacetsCompleted (computeFacets should have
     /// been called).
     ///
     /// @return 'true' except if the status is not FacetsCompleted when called.
@@ -558,14 +558,14 @@ namespace DGtal
 
       // Renumber infinite facets in case of Delaunay triangulation computation.
       renumberInfiniteFacets();
-      
+
       // Builds the maps v2p: vertex -> point, and p2v : point -> vertex.
       facet_counter = IndexRange( MAX_NB_VPF, 0 );
       v2p.clear();
       p2v.resize( points.size() );
       std::vector< IndexRange > p2f( points.size() );
       for ( Index f = 0; f < facets.size(); ++f ) {
-        for ( auto&& p : facets[ f ].on_set ) p2f[ p ].push_back( f ); 
+        for ( auto&& p : facets[ f ].on_set ) p2f[ p ].push_back( f );
       }
 
       // vertices belong to at least d facets
@@ -580,7 +580,7 @@ namespace DGtal
         else p2v[ p ] = UNASSIGNED;
       }
 
-      // Display debug informations
+      // Display debug information
       if ( debug_level >= 1 ) {
         trace.info() << "#vertices=" << v2p.size() << " #facets=" << facets.size()
                   << std::endl;
@@ -592,7 +592,7 @@ namespace DGtal
       return true;
     }
 
-    
+
     /// @}
     // -------------------------- Output services ----------------------------
   public:
@@ -657,7 +657,7 @@ namespace DGtal
       point_to_vertex = p2v;
       return true;
     }
-    
+
     /// @param[out] facet_vertices the range giving for each facet the
     /// indices of its vertices.
     ///
@@ -699,14 +699,14 @@ namespace DGtal
       }
       return true;
     }
-    
-    
+
+
     /// @}
     // -------------------------- Check hull services ----------------------------
   public:
     /// @name Check hull services
     /// @{
-    
+
     /// Global validity check of the convex hull after processing.
     ///
     /// @note Be careful, this function is much slower than computing
@@ -740,7 +740,7 @@ namespace DGtal
       return ok;
     }
 
-    /// @return 'true' if all facets are consistent with their neighors
+    /// @return 'true' if all facets are consistent with their neighbors
     bool checkFacets()
     {
       Size   nb = 0;
@@ -787,18 +787,18 @@ namespace DGtal
       if ( nbok != processed_points.size() ) myStatus = Status::InvalidConvexHull;
       return nbok == processed_points.size();
     }
-  
+
     /// @}
-    // ------------------------ public datas --------------------------
+    // ------------------------ public data --------------------------
   public:
-    /// @name public datas
+    /// @name public data
     /// @{
-  
+
   public:
     /// Kernel that is duplicated for computing facet geometries.
     mutable Kernel kernel;
     /// debug_level from 0:no to 2
-    int debug_level; 
+    int debug_level;
     /// the set of points, indexed as in the array.
     std::vector< Point > points;
     /// the surjective mapping between the input range and the output
@@ -827,18 +827,18 @@ namespace DGtal
     std::vector< double > timings;
     /// Counts the number of facets with a given number of vertices.
     std::vector< Size > facet_counter;
-    
+
     /// @}
-    // ------------------------ protected datas --------------------------
+    // ------------------------ protected data --------------------------
   protected:
-    /// @name protected datas
+    /// @name protected data
     /// @{
-  
+
     /// The status of the object: Uninitialized, InputInitialized,
     /// SimplexCompleted, FacetsCompleted, VerticesCompleted,
     /// InvalidRidge, InvalidConvexHull, NotFullDimensional
     Status myStatus;
-  
+
     /// @}
     // --------------------- protected services --------------------------
   protected:
@@ -862,13 +862,13 @@ namespace DGtal
     /// @return 'true' iff p is above F or on F.
     bool aboveOrOn( const Facet& F, const Point& p ) const
     { return kernel.aboveOrOn( F.H, p ); }
-    
+
     /// @param F any valid facet
     /// @param p any point
     /// @return 'true' iff p lies on F.
     bool on( const Facet& F, const Point& p ) const
     { return kernel.on( F.H, p ); }
-    
+
     /// Cleans and renumber the facets so that no one belongs to
     /// deleted_facets.
     void cleanFacets()
@@ -930,8 +930,8 @@ namespace DGtal
       nb_finite_facets   = i;
       nb_infinite_facets = facets.size() - nb_finite_facets;
     }
-    
-  
+
+
     /// Process top facet in queue Q as in Quickhull algorithm, and
     /// updates the queue accordingly (top facet poped, new facets
     /// pushed).
@@ -1003,7 +1003,7 @@ namespace DGtal
           }
           M.insert( N );
         }
-      } // while ( ! E.empty() ) 
+      } // while ( ! E.empty() )
       if ( debug_level >= 1 ) {
         trace.info() << "#Visible=" << V.size() << " #Horizon=" << H.size()
                   << " furthest_v=" << furthest_v << std::endl;
@@ -1030,7 +1030,7 @@ namespace DGtal
             facets[ H[i].first ].display( trace.error() );
             trace.error() << "- facet " << H[i].second << " ";
             facets[ H[i].second ].display( trace.error() );
-          }                    
+          }
           Index nf = newFacet();
           new_facets.push_back( nf );
           facets[ nf ] = makeFacet( base, facets[ H[i].first ].below );
@@ -1056,7 +1056,7 @@ namespace DGtal
               }
             }
         }
-      // For each new facet 
+      // For each new facet
       for ( Index i = 0; i < new_facets.size(); i++ )
         { // link the new facet to its neighbors
           for ( Index j = i + 1; j < new_facets.size(); j++ )
@@ -1099,7 +1099,7 @@ namespace DGtal
       // Update processed points
       processed_points.push_back( furthest_v );
       for ( auto v : outside_pts ) processed_points.push_back( v );
-      
+
       // Delete the facets in V
       for ( auto&& v : V ) {
         if ( debug_level >= 2 ) {
@@ -1121,7 +1121,7 @@ namespace DGtal
       if ( debug_level >= 1 ) {
         trace.info() << "[CHECK INVARIANT] " << processed_points.size()
                      << " / " << points.size() << " points processed." << std::endl;
-        bool okh = checkHull(); 
+        bool okh = checkHull();
         if ( ! okh )
           trace.error() << "[computeFacet] Invalid convex hull" << std::endl;
         bool okf = checkFacets();
@@ -1132,7 +1132,7 @@ namespace DGtal
 
       return status() == Status::SimplexCompleted;
     }
-  
+
     /// @return true if the facet is valid
     bool checkFacet( Index f ) const
     {
@@ -1179,7 +1179,7 @@ namespace DGtal
       }
       return ok;
     }
-  
+
     /// @return an unused facet index
     Index newFacet()
     {
@@ -1207,7 +1207,7 @@ namespace DGtal
       facets[ if1 ].addNeighbor( if2 );
       facets[ if2 ].addNeighbor( if1 );
     }
-    
+
     /// Makes two distinct facets \a if1 and \a if2 no more neighbors
     /// @param if1 a valid facet index
     /// @param if2 a valid facet index
@@ -1241,7 +1241,7 @@ namespace DGtal
       }
       return if2;
     }
-  
+
     /// Checks if two distinct facets are parallel (i.e. should be merged).
     /// @param if1 a valid facet index
     /// @param if2 a valid facet index
@@ -1257,7 +1257,7 @@ namespace DGtal
         if ( ! on( f2, points[ v ] ) ) return false;
       return true;
     }
-  
+
     /// Checks if two facets are neighbors by looking at the points on their boundary.
     ///
     /// @param if1 a valid facet index
@@ -1278,7 +1278,7 @@ namespace DGtal
         }
       return nb >= ( dimension - 1 );
     }
-  
+
     /// Builds a facet from a base convex set of at least d different
     /// points and a point below.
     ///
@@ -1354,7 +1354,7 @@ namespace DGtal
       return result;
     }
 
-  
+
     /// Filters each vertex on the facet \a f to keep only the ones that
     /// are on or below the neighboring facets
     /// @note intended for debugging purposes.
@@ -1372,11 +1372,11 @@ namespace DGtal
           else {
             on_set[ i ] = on_set.back();
             on_set.pop_back();
-          }                        
+          }
         }
       std::sort( on_set.begin(), on_set.end() );
     }
-  
+
     /// @return a full dimensional simplex as a vector of d + 1 distinct
     /// indices of input points, or an empty vector if none was found.
     IndexRange pickInitialSimplex() const
@@ -1479,13 +1479,13 @@ namespace DGtal
             if ( assignment[ v ] == UNASSIGNED && above( f, points[ v ] ) ) {
               f.outside_set.push_back( v );
               assignment[ v ] = fi;
-            } 
+            }
           }
       }
       for ( Index v = 0; v < points.size(); v++ )
         if ( assignment[ v ] == UNASSIGNED )
           processed_points.push_back( v );
-      
+
       // Display some information
       if ( debug_level >= 2 ) {
         for ( auto&& f : facets ) f.display( trace.info() );
@@ -1494,7 +1494,7 @@ namespace DGtal
       if ( debug_level >= 1 ) {
         trace.info() << "[CHECK INVARIANT] " << processed_points.size()
                      << " / " << points.size() << " points processed." << std::endl;
-        bool okh = checkHull(); 
+        bool okh = checkHull();
         if ( ! okh )
           trace.error() << "[computeInitialSimplex] Invalid convex hull" << std::endl;
         bool okf = checkFacets();
@@ -1504,7 +1504,7 @@ namespace DGtal
       }
       return status() == Status::SimplexCompleted;
     }
-    
+
     /// @}
     // ----------------------- Interface --------------------------------------
   public:
@@ -1531,7 +1531,7 @@ namespace DGtal
       //   for ( auto v : v2p ) out << points[ v2p[ v ] ] << std::endl;
       // }
     }
-  
+
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
@@ -1542,7 +1542,7 @@ namespace DGtal
         && status() <= Status::AllCompleted;
     }
     /// @}
-  
+
   };
 
   /**
@@ -1560,7 +1560,7 @@ namespace DGtal
     object.selfDisplay( out );
     return out;
   }
-  
+
 } // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1572,4 +1572,3 @@ namespace DGtal
 
 #undef QuickHull_RECURSES
 #endif // else defined(QuickHull_RECURSES)
-  

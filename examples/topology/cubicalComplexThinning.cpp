@@ -116,9 +116,9 @@ int main( int, char** )
     thinning.attach ( &complex );
 //! [init]
 
-//! [thinn]
+//! [thin]
     thinning.eval ( 2 );
-//! [thinn]
+//! [thin]
     drawComplex<CC> ( board, complex );
     board.saveEPS ( "ParDirCollapse_2.eps" );
   trace.endBlock();

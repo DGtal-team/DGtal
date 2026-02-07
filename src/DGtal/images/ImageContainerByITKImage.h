@@ -80,7 +80,7 @@ namespace DGtal
      * Description of template class 'ImageContainerByITKImage' <p>
      * \brief Aim: implements a model of CImageContainer using a ITK Image.
      *
-     * Using this container, you can switch from DGtal alogrithms to
+     * Using this container, you can switch from DGtal algorithms to
      * ITK processing pipeline.
      * The Ownership of the underlying ITK image is shared between the wrapper
      * and the ITK pipeline.
@@ -368,7 +368,7 @@ namespace DGtal
       // ------------------------- PhysicalPoint interface ----------------------
 
       /**
-       * Get PhysicalPoints from a domain point in DGtal and viceversa.
+       * Get PhysicalPoints from a domain point in DGtal and vice-versa.
        *
        * Remember that GetOrigin() in ITK is the physical location of
        * the index {0,0...}. Not the location of the start index of the region.
@@ -405,7 +405,7 @@ namespace DGtal
        */
       inline void setImageSpacing(const ImageSpacing& s) const;
 
-      // ------------------------- Private Datas --------------------------------
+      // ------------------------- Private Data --------------------------------
     private:
 
       // ------------------------- Hidden services ------------------------------

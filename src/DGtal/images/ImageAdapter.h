@@ -64,9 +64,9 @@ namespace DGtal
  * It uses a given Domain (i.e. a subdomain) but work directly (for
  * reading and writing processes) thanks to an alias (i.e. a pointer) on the
  * original Image given in argument.
- * 
+ *
  * ImageAdapter class is also a model of CImage.
- * 
+ *
  * Caution :
  *  - the type of value of Point for the ImageAdapter Domain must also
  * be the same than the type of value of Point for the original
@@ -79,25 +79,25 @@ namespace DGtal
  * @tparam TFunctorV the functor f that transforms the value into another one during reading process
  * @tparam TFunctorVm1 the functor f-1 that transforms the value into another one during writing process
  *
- * The values associated to accessing the point values are adapted  
- * with a functor g and a functor f given at construction so that 
- * operator() calls f(img(g(aPoint))), instead of calling directly 
+ * The values associated to accessing the point values are adapted
+ * with a functor g and a functor f given at construction so that
+ * operator() calls f(img(g(aPoint))), instead of calling directly
  * operator() of the underlying image img.
- * 
- * The values associated to writing the points are adapted  
- * with a functor g and a functor f-1 given at construction so that 
+ *
+ * The values associated to writing the points are adapted
+ * with a functor g and a functor f-1 given at construction so that
  * setValue() is img.setValue(g(aPoint), f-1(aValue))
- * 
+ *
  * The use is the same that for ConstImageAdapter so
- * here is the construction of a simple ConstImageAdapter that 
- * is a thresholded view of the initial scalar image: 
+ * here is the construction of a simple ConstImageAdapter that
+ * is a thresholded view of the initial scalar image:
  *
  * @snippet images/exampleConstImageAdapter.cpp ConstImageAdapterForThresholderImage_creation
  *
  * NB: the underlying image as well as the 3 functors
  * are stored in the adapter as aliasing pointer
- * in order to avoid copies.  
- * The pointed objects must exist and must not be deleted 
+ * in order to avoid copies.
+ * The pointed objects must exist and must not be deleted
  * during the use of the adapter
  */
 template <typename TImageContainer,
@@ -112,12 +112,12 @@ class ImageAdapter
     // ----------------------- Types ------------------------------
 
 public:
-    typedef ImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV, TFunctorVm1> Self; 
+    typedef ImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV, TFunctorVm1> Self;
 
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( concepts::CImage<TImageContainer> ));
     BOOST_CONCEPT_ASSERT(( concepts::CDomain<TNewDomain> ));
-   
+
     typedef TNewDomain Domain;
     typedef typename TNewDomain::Point Point;
     typedef TNewValue Value;
@@ -129,16 +129,16 @@ public:
     ///Types copied from the container
     typedef TImageContainer ImageContainer;
 
-    typedef DefaultConstImageRange<Self> ConstRange; 
-    typedef DefaultImageRange<Self> Range; 
+    typedef DefaultConstImageRange<Self> ConstRange;
+    typedef DefaultImageRange<Self> Range;
 
     // ----------------------- Standard services ------------------------------
 
 public:
 
     ImageAdapter(
-                 ImageContainer &anImage, 
-                 ConstAlias<Domain>       aDomain, 
+                 ImageContainer &anImage,
+                 ConstAlias<Domain>       aDomain,
                  ConstAlias<TFunctorD>    aFD,
                  ConstAlias<TFunctorV>    aFV,
                  ConstAlias<TFunctorVm1>  aFVm1
@@ -238,14 +238,14 @@ public:
     Value operator()(const Point & aPoint) const
     {
       ASSERT(this->domain().isInside(aPoint));
-      
+
       typename TImageContainer::Point point = myFD->operator()(aPoint);
       if (myImagePtr->domain().isInside(point))
 	return myFV->operator()(myImagePtr->operator()(point));
       else
 	return defaultValue;
     }
-    
+
 
 
     /////////////////// Set values //////////////////
@@ -261,7 +261,7 @@ public:
     void setValue(const Point &aPoint, const  Value &aValue)
     {
         ASSERT(this->domain().isInside(aPoint));
-        
+
         myImagePtr->setValue(myFD->operator()(aPoint), myFVm1->operator()(aValue));
     }
 
@@ -293,23 +293,23 @@ public:
     {
         return myImagePtr;
     }
-    
+
     /**
-     * Allows to define a default value returned when point 
-     * transformed by domain functor does not belongs to 
+     * Allows to define a default value returned when point
+     * transformed by domain functor does not belongs to
      * image domain.
      */
     void setDefaultValue ( Value aValue )
     {
       defaultValue = aValue;
     }
-    
+
     Value getDefaultValue () const
     {
       return defaultValue;
     }
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
 private:
     /**
      * Default constructor.
@@ -319,18 +319,18 @@ private:
         trace.warning() << "ImageAdapter Ctor default " << std::endl;
 #endif
     }
-    
-    // ------------------------- Private Datas --------------------------------
+
+    // ------------------------- Private Data --------------------------------
 protected:
 
     /// Alias on the image container
     ImageContainer * myImagePtr;
-    
+
     /**
      * The image SubDomain
      */
     const Domain *mySubDomainPtr;
-    
+
     /**
      * Aliasing pointer on the underlying Domain functor
      */
@@ -340,12 +340,12 @@ protected:
      * Aliasing pointer on the underlying Value functor
      */
     const TFunctorV* myFV;
-    
+
     /**
      * Aliasing pointer on the underlying "m-1" Value functor
      */
     const TFunctorVm1* myFVm1;
-    
+
     /**
      *  Default value returned when point transformed by image functor does not belongs to image.
      *  Initial value is 0.

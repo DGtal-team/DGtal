@@ -222,7 +222,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
 
     /**
@@ -260,7 +260,7 @@ namespace DGtal
                                 const Abscissa &upper) const;
 
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
 
@@ -333,7 +333,7 @@ namespace DGtal
      *
      * @param aPoint aPoint
      * @param aQ another point
-     * @param aWq wieght of øa aQ
+     * @param aWq weight of øa aQ
      *
      * @return the power distance
      */
@@ -419,7 +419,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
 
 
@@ -447,7 +447,7 @@ namespace DGtal
                                 const Abscissa &upper) const;
 
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Internals ------------------------------------

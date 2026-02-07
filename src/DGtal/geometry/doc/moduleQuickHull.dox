@@ -1,11 +1,11 @@
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  */
 namespace DGtal {
 
 /**
-   
+
 @page moduleQuickHull QuickHull algorithm in arbitrary dimension for convex hull and Delaunay cell complex computation
 
 @writers Jacques-Olivier Lachaud
@@ -13,7 +13,7 @@ namespace DGtal {
 @since 1.2
 
 Part of the \ref packageGeometry.
-  
+
 This part of the manual describes the DGtal implementation of the
 famous "QuickHull" algorithm by Barber et al. \cite barber1996 , and
 how to use it to compute convex hulls and Delaunay convex cell
@@ -24,7 +24,7 @@ decompositions.
 
 The following programs are related to this documentation:
 exampleLatticeBallQuickHull3D.cpp ,
-exampleLatticeBallDelaunay2D.cpp , 
+exampleLatticeBallDelaunay2D.cpp ,
 exampleRationalBallQuickHull3D.cpp ,
 exampleRationalBallDelaunay3D.cpp ,
 exampleQuickHull3D.cpp ,
@@ -178,11 +178,11 @@ OBJ file.
 
 <table>
 <tr>
-<td> 
+<td>
 \image html qhull-lattice-ball-12_5-s.png "Convex hull of lattice ball with radius 12.5"
-</td><td> 
+</td><td>
 \image html qhull-lattice-ball-25-s.png "Convex hull of lattice ball with radius 25"
-</td><td> 
+</td><td>
 \image html qhull-lattice-ball-50-s.png "Convex hull of lattice ball with radius 50"
 </td>
 </tr>
@@ -200,7 +200,7 @@ quickhull core  = 3214 ms.
 compute vertices= 255 ms.
 total time      = 7913 ms.
 \endverbatim
- 
+
 @note Half of the time is spent on removing duplicated input
 points. If you know that your range of points does not contain
 duplicates, you can specify it to QuickHull::setInput.
@@ -228,7 +228,7 @@ and QuickHull::computeConvexHull):
 
 The \b precision is the denominator used for representing rational
 coordinates. Real points with `double` precision are rounded to these
-nearest rational coordinates. 
+nearest rational coordinates.
 
 @note Different real points may be rounded to the same rational point.
 
@@ -248,20 +248,20 @@ that represents the convex hull boundary and save it as OBJ file.
 
 <table>
 <tr>
-<td> 
+<td>
 \image html qhull-rational-ball-10_5-p1-s.png "Convex hull of rational ball with radius 10.5 with precision 1"
-</td><td> 
+</td><td>
 \image html qhull-rational-ball-10_5-p2-s.png "Convex hull of rational ball with radius 10.5 with precision 2"
-</td><td> 
+</td><td>
 \image html qhull-rational-ball-10_5-p4-s.png "Convex hull of rational ball with radius 10.5 with precision 4"
 </td>
 </tr>
 <tr>
-<td> 
+<td>
 \image html qhull-rational-ball-10_5-p16-s.png "Convex hull of rational ball with radius 10.5 with precision 16"
-</td><td> 
+</td><td>
 \image html qhull-rational-ball-10_5-p128-s.png "Convex hull of rational ball with radius 10.5 with precision 128"
-</td><td> 
+</td><td>
 \image html qhull-rational-ball-10_5-p1024-s.png "Convex hull of rational ball with radius 10.5 with precision 1024"
 </td>
 </tr>
@@ -280,7 +280,7 @@ quickhull core  = 3271 ms.
 compute vertices= 239 ms.
 total time      = 7882 ms.
 \endverbatim
- 
+
 @note Half of the time is spent on removing duplicated input
 points. If you know that your range of points does not contain
 duplicates, you can specify it to QuickHull::setInput.
@@ -323,9 +323,9 @@ facet numbered `hull.nbFiniteFacets()`.
 
 <table>
 <tr>
-<td> 
+<td>
 \image html qhull-delaunay2d-ball-20-100.png "Delaunay cell decomposition of 100 randomly chosen points in a lattice ball with radius 20"
-</td><td> 
+</td><td>
 \image html qhull-delaunay2d-ball-20-1000.png "Delaunay cell decomposition of 1000 randomly chosen points in a lattice ball with radius 20"
 </td>
 </tr>
@@ -343,7 +343,7 @@ quickhull core  = 19316 ms.
 compute vertices= 1109 ms.
 total time      = 20723 ms.
 \endverbatim
- 
+
 
 @subsection dgtal_quickhull_sec24 Delaunay cell complex of rational points (2D)
 
@@ -354,7 +354,7 @@ It is completely similar with the previous example, just replace the kernel by D
 
 
 A number of public data is stored in object QuickHull and is
-meaningfull after a convex hull computation:
+meaningful after a convex hull computation:
 
 - QuickHull::input2comp the surjective mapping giving for each input point index its index in the point range processed by quick hull
 
@@ -461,9 +461,9 @@ You can have a look at exampleLatticeBallDelaunay3D.cpp for a complete example, 
 
 <table>
 <tr>
-<td> 
+<td>
 \image html qhull-delaunay3d-ball-5.jpg "Delaunay cell decomposition of randomly chosen points in a 3D lattice ball with radius 5"
-</td><td> 
+</td><td>
 \image html qhull-delaunay3d-ball-10.jpg "Delaunay cell decomposition of randomly chosen points in a 3D lattice ball with radius 10"
 </td>
 </tr>
@@ -499,7 +499,7 @@ floating-point point coordinates.
 
 <table>
 <tr>
-<td> 
+<td>
 \image html exampleQuickHull3D-bunny-input.jpg "Coarse model of Stanford bunny"
 </td><td>
 \image html exampleQuickHull3D-bunny-both.jpg "Its convex hull with a precision 100"
@@ -529,7 +529,7 @@ Delaunay cell complex of a range of real points, by specifying a precision.
 typedef ConvexityHelper< 3 > Helper;
 typedef Helper::RealPoint    RealPoint;
 std::vector<RealPoint> V
-= { RealPoint(0,0,0), RealPoint(-2.77,0,0), RealPoint(2.77,0,0), 
+= { RealPoint(0,0,0), RealPoint(-2.77,0,0), RealPoint(2.77,0,0),
     RealPoint(0,-2.77,0), RealPoint(0,2.77,0),
     RealPoint(0,0,-2.77), RealPoint(0,0,2.77) };
 ConvexCellComplex< RealPoint > complex;
@@ -540,7 +540,7 @@ You can have a look at exampleRationalBallDelaunay3D.cpp for a complete example,
 
 \image html exampleRationalBallDelaunay3D-100.jpg "Delaunay cell decomposition of 100 randomly chosen points in a 3D ball with radius 10, with precision 100 and retraction 0.25"
 
-@section dgtal_quickhull_sec4 Generic convex hulls 
+@section dgtal_quickhull_sec4 Generic convex hulls
 
 Since 2.0, you can compute the convex hull of any input set of point
 \a X in any dimension, whatever the affine dimension of \a X. The core
@@ -580,7 +580,7 @@ object holds the convex hull in its following public data members:
 
 - GenericLatticeConvexHull::vertex2point The indices of the vertices
   of the convex hull in the input set.
-  
+
 - GenericLatticeConvexHull::projected_points The set of projected
   input points, indexed as in the input, converted into the chosen
   coordinate type. If the affine dimension \a k is equal to the
@@ -613,7 +613,7 @@ class.
 \image html genqhull-4d-affdim2.jpg "Convex hull of 100 4D points of affine dimension 2, projected along the 4 main axes." width=90%
 
 
-  
+
 You may also count the number of lattice points within the convex
 polytope spanned by the computed convex hull.
 
@@ -648,17 +648,17 @@ Since 2.0, the QuickHull and ConvexityHelper classes have been slightly improved
   big as possible initial simplex, but if no simplex was found, it
   uses \ref AffineGeometry to determine the exact affine dimension of the input.
 
-  
+
 - ConvexityHelper handles a more general family of degenerated convex
   hulls. ConvexityHelper::computeLatticePolytope and
   Computelatticepolytope can now compute convex hulls of:
-  
+
   - 0D and 1D affine dimension in dD
   - d-1D and dD affine dimension in dD
-  
+
   Before this version, only 2D affine dimension in 3D was possible.
-  
-  @see ConvexityHelper::computeDegeneratedLatticePolytope, ConvexityHelper::computeDegeneratedConvexHullVertices 
+
+  @see ConvexityHelper::computeDegeneratedLatticePolytope, ConvexityHelper::computeDegeneratedConvexHullVertices
 
 - method ConvexHullCommonKernel::compute( const std::vector<
   CoordinatePoint >& vpoints, const CombinatorialPlaneSimplex& simplex
@@ -672,7 +672,7 @@ Since 2.0, the QuickHull and ConvexityHelper classes have been slightly improved
   running times as before in 2D and 3D.
 
   For instance, in 6D, quickhull is almost twice faster than before.
-  
+
 */
 
 } //  namespace DGtal

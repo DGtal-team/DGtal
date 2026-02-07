@@ -46,7 +46,7 @@
 #include "DGtal/topology/CCellularGridSpaceND.h"
 //////////////////////////////////////////////////////////////////////////////
 
-// @since 0.8 In DGtal::concepts 
+// @since 0.8 In DGtal::concepts
 namespace DGtal {
   namespace concepts {
 
@@ -118,7 +118,7 @@ public:
     ConceptUtils::sameType( myRP, myX( myP ) );
     ConceptUtils::sameType( myK, myX.space() );
   }
-  // ------------------------- Private Datas --------------------------------
+  // ------------------------- Private Data --------------------------------
 private:
   T myX; // do not require T to be default constructible.
   SCell myP;

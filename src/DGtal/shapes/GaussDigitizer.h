@@ -65,7 +65,7 @@ namespace DGtal
      shape, i.e. its intersection with some \f$ h_1 Z \times h_2 Z
      \times \cdots \times h_n Z \f$. Note that the real point (0,...,0)
      is mapped onto the digital point (0,...,0).
-     
+
      GaussDigitizer is a model of CDigitalEuclideanShape and
      CDigitalBoundedShape. It is thus a model of concepts::CPointPredicate.
      A Gauss digitizer owns a RegularPointEmbedder, a model of CPointEmbedder.
@@ -91,7 +91,7 @@ namespace DGtal
     typedef RegularPointEmbedder<Space> PointEmbedder;
 
     BOOST_CONCEPT_ASSERT(( concepts::CEuclideanOrientedShape<TEuclideanShape> ));
-   
+
     /**
      * Destructor.
      */
@@ -126,7 +126,7 @@ namespace DGtal
        @param gridStep the grid step (distance between two embedded
        adjacent digital points) identical in every direction.
     */
-    void init( const RealPoint & xLow, const RealPoint & xUp, 
+    void init( const RealPoint & xLow, const RealPoint & xUp,
                typename RealVector::Component gridStep );
 
     /**
@@ -140,7 +140,7 @@ namespace DGtal
 
        @param gridSteps the grid steps in each direction.
     */
-    void init( const RealPoint & xLow, const RealPoint & xUp, 
+    void init( const RealPoint & xLow, const RealPoint & xUp,
          const RealVector & gridSteps );
 
     /**
@@ -153,7 +153,7 @@ namespace DGtal
        @see init
     */
     Domain getDomain() const;
-    
+
     /**
        @param p any point in the Euclidean space.
        @return the digital point floor( p / gridSteps ).
@@ -183,16 +183,16 @@ namespace DGtal
      */
     RealPoint embed( const Point & p ) const;
 
-    /** 
+    /**
      * Orientation method to match with CDigitalOrientedShape concept.
-     * 
+     *
      * @param p  a digital point
-     * 
+     *
      * @return negative orientation if the point is inside the shape,
      * 0 if it is on the shape and positive orientation otherwise.
      */
     Orientation orientation(const Point &p) const
-    { 
+    {
       return myEShape->orientation(embed(p));
     }
 
@@ -215,7 +215,7 @@ namespace DGtal
        @see init
     */
     const Point & getUpperBound() const;
-    
+
     /**
        @return the resolution in each direction.
     */
@@ -242,7 +242,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
     /// The referenced shape or 0 if not initialized.
     CountedConstPtrOrConstPtr<EuclideanShape> myEShape;
@@ -250,12 +250,12 @@ namespace DGtal
     /// The embedder
     RegularPointEmbedder<Space> myPointEmbedder;
 
-    /// Digital lowest point 
+    /// Digital lowest point
     Point myLowerPoint;
 
-    /// Digital uppest point 
+    /// Digital uppest point
     Point myUpperPoint;
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------
@@ -275,7 +275,7 @@ namespace DGtal
    */
   template <typename TSpace, typename TEuclideanShape>
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
          const GaussDigitizer<TSpace,TEuclideanShape> & object );
 
 } // namespace DGtal

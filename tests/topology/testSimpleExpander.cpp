@@ -259,7 +259,7 @@ bool testLayers()
   board << SetMode( domain.className(), "Grid" ) << domain;
   board << SetMode( house4.className(), "DrawAdjacencies" ) << house4;
   ObjectExpanderReverseTopo expander(houseCompl4, Point(0, 0));
-  board << CustomStyle( expander.core().className(), 
+  board << CustomStyle( expander.core().className(),
       new CustomFillColor( cmap_grad( 0 ) ) )
   << expander.core();
   while (!expander.finished())
@@ -268,10 +268,10 @@ bool testLayers()
       it != expander.end();
       ++it )
   std::cout << " " << *it;
-      board << CustomStyle( expander.layer().className(), 
+      board << CustomStyle( expander.layer().className(),
           new CustomFillColor( cmap_grad( expander.distance() ) ) )
       << expander.layer();
-      
+
       expander.nextLayer();
     }
   board.saveSVG("house-layers4-4.svg");
@@ -281,7 +281,7 @@ bool testLayers()
   board << SetMode( domain.className(), "Grid" ) << domain;
   board << SetMode( house4.className(), "DrawAdjacencies" ) << house4;
   ObjectExpander expander8(houseCompl8, Point(0, 0));
-  board << CustomStyle( expander.core().className(), 
+  board << CustomStyle( expander.core().className(),
       new CustomFillColor( cmap_grad( 0 ) ) )
   << expander8.core();
   while (!expander8.finished())
@@ -290,8 +290,8 @@ bool testLayers()
       it != expander8.end();
       ++it )
   std::cout << " " << *it;
-      
-      board << CustomStyle( expander8.layer().className(), 
+
+      board << CustomStyle( expander8.layer().className(),
           new CustomFillColor
           ( cmap_grad( expander8.distance() ) ) )
       << expander8.layer();

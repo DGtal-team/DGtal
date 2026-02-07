@@ -41,16 +41,15 @@
 template<typename Set>
 template<typename Image, typename ForegroundPredicate>
 inline
-void 
+void
 DGtal::SetFromImage<Set>::append(Set &aSet,
          const ForegroundPredicate &isForeground,
-         typename Image::Domain::ConstIterator itBegin, 
+         typename Image::Domain::ConstIterator itBegin,
          typename Image::Domain::ConstIterator itEnd)
 {
   //BOOST_CONCEPT_ASSERT(( CImage<Image> ));
-  
+
   for( ; itBegin != itEnd;  ++itBegin)
     if (isForeground(*itBegin))
       aSet.insert( *itBegin);
 }
-

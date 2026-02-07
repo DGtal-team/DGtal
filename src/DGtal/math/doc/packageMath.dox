@@ -48,14 +48,14 @@ This package gathers various mathematical subpackages and modules. For
 now, it consists essentially in a module for defining multivariate
 polynomials, and some classes for simple statistic analysis.
 
-@b Modules 
+@b Modules
 - \subpage modulePolynomial (Jacques-Olivier Lachaud, Felix Fontein)
 
 @b Package @b Concepts @b Overview
  - \subpage packageMathConcepts
 
 @b Related @b documentation @b pages
- - Classes that computes the determinant of small matrices are available in \ref packageGeometry. See \ref moduleGeometricPredicates. 
+ - Classes that computes the determinant of small matrices are available in \ref packageGeometry. See \ref moduleGeometricPredicates.
 
 @b Related @b examples
 

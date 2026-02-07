@@ -150,8 +150,8 @@ SCENARIO( "BoundedRationalPolytope< Z2 > unit tests", "[rational_polytope][2d]" 
       THEN( "#( 3P Cap Z2 ) <= #( Q Cap Z2 ) < #( 4P Cap Z2 )" ) {
 	Polytope R = 3 * P;
 	Polytope S = 4 * P;
-	auto   nbQ = Q.count(); 
-	auto   nbR = R.count(); 
+	auto   nbQ = Q.count();
+	auto   nbR = R.count();
 	auto   nbS = S.count();
 	CAPTURE( nbR );
 	CAPTURE( nbQ );
@@ -220,10 +220,10 @@ SCENARIO( "BoundedRationalPolytope< Z3 > unit tests", "[rational_polytope][3d]" 
       }
     }
     WHEN( "Considering an increasing series f_i = 3/2, 2, 9/4, 3, 11/3, the number of inside points of f_i * P is increasing" ) {
-      Polytope Q1 = Polytope::Rational( 3 , 2 ) * P;      
-      Polytope Q2 = Polytope::Rational( 2 , 1 ) * P;      
-      Polytope Q3 = Polytope::Rational( 9 , 4 ) * P;      
-      Polytope Q4 = Polytope::Rational( 3 , 1 ) * P;      
+      Polytope Q1 = Polytope::Rational( 3 , 2 ) * P;
+      Polytope Q2 = Polytope::Rational( 2 , 1 ) * P;
+      Polytope Q3 = Polytope::Rational( 9 , 4 ) * P;
+      Polytope Q4 = Polytope::Rational( 3 , 1 ) * P;
       Polytope Q5 = Polytope::Rational( 11, 3 ) * P;
       auto    nb  = P .count();
       auto    nb1 = Q1.count();

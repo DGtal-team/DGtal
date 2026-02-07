@@ -87,7 +87,7 @@ inline
 void
 DGtal::FrontInsertionSequenceToStackAdapter<TSequence>::push(const Value& aValue)
 {
-  myContainerPtr->push_front(aValue); 
+  myContainerPtr->push_front(aValue);
 }
 
 // ----------------------------------------------------------------------------
@@ -96,7 +96,7 @@ inline
 void
 DGtal::FrontInsertionSequenceToStackAdapter<TSequence>::pop()
 {
-  myContainerPtr->pop_front(); 
+  myContainerPtr->pop_front();
 }
 
 // ----------------------------------------------------------------------------
@@ -125,7 +125,7 @@ DGtal::FrontInsertionSequenceToStackAdapter<TSequence>::isValid() const
 template <typename TSequence>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		  const FrontInsertionSequenceToStackAdapter<TSequence> & object )
 {
   object.selfDisplay( out );
@@ -135,12 +135,10 @@ DGtal::operator<< ( std::ostream & out,
 
 template <typename TSequence>
 inline
-DGtal::FrontInsertionSequenceToStackAdapter<TSequence> 
+DGtal::FrontInsertionSequenceToStackAdapter<TSequence>
 DGtal::frontStack ( TSequence& aSequence )
 {
-  return FrontInsertionSequenceToStackAdapter<TSequence>( aSequence ); 
+  return FrontInsertionSequenceToStackAdapter<TSequence>( aSequence );
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

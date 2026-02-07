@@ -143,7 +143,7 @@ namespace DGtal
        Mean curvature estimation.
        This computation is based on the hessian formula of the mean curvature
        k=(∇F ∗ H (F ) ∗ ∇F T − |∇F |^2 *Trace(H (F ))/2|∇F |^3
-        
+
        @pre @a a Point must be close to the surface.
 
        @param aPoint any point in the Euclidean space.
@@ -154,10 +154,10 @@ namespace DGtal
 
 
     /**
-       Gaussian curvature estimation at @a aPoint 
-       @pre @a aPoint must be close to the surface. 
+       Gaussian curvature estimation at @a aPoint
+       @pre @a aPoint must be close to the surface.
 
-       Uses the formula \f$ G = -det(M) / \|\nabla f\|^4 \f$, 
+       Uses the formula \f$ G = -det(M) / \|\nabla f\|^4 \f$,
        where \f$ M := \left[ \begin{array}{cccc} f_{xx}& f_{xy} & f_{xz} & f_x \\
        f_{xy}& f_{yy} & f_{yz} & f_y \\
        f_{xz}& f_{yz} & f_{zz} & f_z \\
@@ -191,7 +191,7 @@ namespace DGtal
 
        @note Principal directions are not reliable around umbilic
        points, i.e. where principal curvatures are the same.
-       
+
        @cite albin2016computational
     */
     inline
@@ -202,8 +202,8 @@ namespace DGtal
        Perform a gradient descent in order to move a point @a aPoint
        closer to the implicit surface f(x)=0. More precisely, we use a
        sequence: x_n = x_(n-1) - gamma * f(x) * gradient(x_(n-1))/ ||gradient(x_(n-1))||^2
-       The descent is stopped if @a maxIter is reached or if | f(x_n) | < accuracy. 
-       
+       The descent is stopped if @a maxIter is reached or if | f(x_n) | < accuracy.
+
        @param aPoint any point in the Euclidean space.
        @param accuracy distance criterion to stop the descent.
        @param maxIter fixes the maximum number of steps.
@@ -211,9 +211,9 @@ namespace DGtal
        @return the nearest point on the surface to the one given in parameter.
     */
     inline
-    RealPoint  nearestPoint(  const RealPoint &aPoint, 
-                              const double accuracy = 0.0001, 
-                              const int maxIter     = 20, 
+    RealPoint  nearestPoint(  const RealPoint &aPoint,
+                              const double accuracy = 0.0001,
+                              const int maxIter     = 20,
                               const double gamma    = 0.5 ) const;
 
 
@@ -233,9 +233,9 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     /// The 3-polynomial defining the implicit shape.
     Polynomial3 myPolynomial;

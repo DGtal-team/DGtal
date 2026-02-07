@@ -91,11 +91,10 @@ int main( int argc, char** argv )
   Integer d = a*X[ 0 ] + b*X[ 1 ];
   if ( c != d )
     {
-      std::cerr << "[Internal Error] Output of extended Euclid algorithm is incorrect: " << d << " != " << c 
+      std::cerr << "[Internal Error] Output of extended Euclid algorithm is incorrect: " << d << " != " << c
                 << ". This should not happen." << std::endl;
       return 3;
     }
   //! [extended-euclid-process]
   return 0;
 }
-

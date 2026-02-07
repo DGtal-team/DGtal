@@ -67,11 +67,11 @@ namespace DGtal
 
      It is also a model of CUndirectedSimpleLocalGraph, so as to be able
      to visit itself with a BreadthFirstVisitor. The "Light" or
-     lazyness is implemented this way.
+     laziness is implemented this way.
 
      @tparam TKSpace a model of CCellularGridSpaceND: the type chosen
      for the cellular grid space.
-     
+
      @tparam TSurfelPredicate a model of CSurfelPredicate: this
      functor defines the digital surface as a characteristic function
      returning true iff the surfel belongs to it.
@@ -84,17 +84,17 @@ namespace DGtal
 
      @code
      // This snippet does NOT work.
-     const SurfelConstIterator itb = mySurface.begin(); 
+     const SurfelConstIterator itb = mySurface.begin();
      const SurfelConstIterator ite = mySurface.end();
-     for ( SurfelConstIterator itX = itb; itX != ite; ++itX ) 
-     { 
-       for ( SurfelConstIterator itY = itb; itY != ite; ++itY ) 
+     for ( SurfelConstIterator itX = itb; itX != ite; ++itX )
+     {
+       for ( SurfelConstIterator itY = itb; itY != ite; ++itY )
        { // compute something with *itX and *itY.
          // But itX == itY at each step ! }
        // now itX == itY == ite !
        }
      @endcode
-     
+
      You may use this range only once ! This is because the iterators
      are only single pass. If you wish to visit twice the range, you
      must indeed creates two ranges by calling begin() twice (end() is
@@ -102,17 +102,17 @@ namespace DGtal
 
      @code
      // This snippet does ALWAYS work.
-     for ( SurfelConstIterator itX = mySurface.begin(), 
+     for ( SurfelConstIterator itX = mySurface.begin(),
                                itXEnd = mySurface.end();
-           itX != itXEnd; ++itX ) 
+           itX != itXEnd; ++itX )
      {
-       for ( SurfelConstIterator itY = mySurface.begin(), 
+       for ( SurfelConstIterator itY = mySurface.begin(),
                                  itYEnd = mySurface.end();
-             itY != itYEnd; ++itY ) 
+             itY != itYEnd; ++itY )
          { // compute something with *itX and *itY. }
      }
      @endcode
-     
+
    */
   template <typename TKSpace, typename TSurfelPredicate>
   class LightExplicitDigitalSurface
@@ -141,7 +141,7 @@ namespace DGtal
 	 @param aSurface the container describing the surface.
 	 @param s the surfel on which the tracker is initialized.
       */
-      Tracker( ConstAlias<DigitalSurfaceContainer> aSurface, 
+      Tracker( ConstAlias<DigitalSurfaceContainer> aSurface,
                const Surfel & s );
 
       /**
@@ -168,25 +168,25 @@ namespace DGtal
 	 @param s the surfel on which the tracker is moved.
       */
       void move( const Surfel & s );
-      
+
       /**
 	 Computes the surfel adjacent to 'current()' in the direction
-	 [d] along orientation [pos]. 
-	 
+	 [d] along orientation [pos].
+
 	 @param s (modified) set to the adjacent surfel in the specified
 	 direction @a d and orientation @a pos if it exists. Otherwise
 	 unchanged (method returns 0 in this case).
-	 
+
 	 @param d any direction different from 'orthDir()'.
-	 
+
 	 @param pos when 'true' look in positive direction along
 	 [track_dir] axis, 'false' look in negative direction.
-	 
+
 	 @return the move code (n=0-3). When 0: no adjacent surfel,
 	 otherwise 1-3: adjacent surfel is n-th follower.
       */
       uint8_t adjacent( Surfel & s, Dimension d, bool pos ) const;
-      
+
     private:
       /// a reference to the digital surface container on which is the
       /// tracker.
@@ -223,7 +223,7 @@ namespace DGtal
 
     // ----------------- UndirectedSimplePreGraph types ------------------
     typedef Surfel Vertex;
-    typedef SCellSet VertexSet;  
+    typedef SCellSet VertexSet;
     template <typename Value>
     struct VertexMap {
       typedef typename KSpace::template SurfelMap<Value>::Type Type;
@@ -308,7 +308,7 @@ namespace DGtal
     /**
        @param s any surfel of the space.
        @pre 'isInside( s )'
-       @return a dyn. alloc. pointer on a tracker positionned at @a s.
+       @return a dyn. alloc. pointer on a tracker positioned at @a s.
     */
     DigitalSurfaceTracker* newTracker( const Surfel & s ) const;
 
@@ -319,7 +319,7 @@ namespace DGtal
 
     // ----------------- CUndirectedSimplePreGraph realization -----------------
   public:
-    
+
     /**
        @param v any vertex of this graph
        @return the number of neighbors of this Vertex/Surfel.
@@ -351,12 +351,12 @@ namespace DGtal
        (e.g. back_insert_iterator<std::vector<Vertex> >).
 
        @tparam VertexPredicate any type of predicate taking a Vertex as input.
-  
+
        @param[in,out] it any output iterator on Vertex (*it++ should
        be allowed), which specifies where neighbors are written.
 
        @param[in] v any vertex of this graph
-       
+
        @param[in] pred the predicate for selecting neighbors.
     */
     template <typename OutputIterator, typename VertexPredicate>
@@ -390,15 +390,15 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     /// a reference to the cellular space.
     const KSpace & myKSpace;
     /// a reference to the surfel predicate defining the shape.
     const SurfelPredicate & mySurfelPredicate;
-    /// the surfel adjacency used to determine neighbors. 
+    /// the surfel adjacency used to determine neighbors.
     Adjacency mySurfelAdjacency;
     /// a surfel belonging to the surface.
     Surfel mySurfel;
@@ -433,13 +433,13 @@ namespace DGtal
 
      @tparam TKSpace a model of CCellularGridSpaceND: the type chosen
      for the cellular grid space.
-     
+
      @tparam TSurfelPredicate a model of CDigitalSet: the type chosen for
      the set of digital points.
    */
   template <typename TKSpace, typename TSurfelPredicate>
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
 	       const LightExplicitDigitalSurface<TKSpace, TSurfelPredicate> & object );
 
 } // namespace DGtal

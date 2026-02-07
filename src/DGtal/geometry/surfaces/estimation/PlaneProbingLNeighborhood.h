@@ -56,7 +56,7 @@ namespace DGtal
   // template class PlaneProbingLNeighborhood
   /**
    * Description of template class 'PlaneProbingLNeighborhood' <p>
-   * \brief Aim: Represents a way to probe the L-neighborhood, 
+   * \brief Aim: Represents a way to probe the L-neighborhood,
    * see \cite Lu2022 for details.
    *
    * \tparam TPredicate the probing predicate, a model of concepts::CPointPredicate.
@@ -77,30 +77,30 @@ namespace DGtal
     using HexagonState        = typename PlaneProbingNeighborhood<TPredicate>::HexagonState;
     using UpdateOperation     = typename PlaneProbingNeighborhood<TPredicate>::UpdateOperation;
 
-    using Index                 = typename PlaneProbingNeighborhood<TPredicate>::Index;  
+    using Index                 = typename PlaneProbingNeighborhood<TPredicate>::Index;
     using PointOnProbingRay     = typename PlaneProbingNeighborhood<TPredicate>::PointOnProbingRay;
     using GridPoint             = typename detail::GridPoint<Integer, Index>;
     using GridPointOnProbingRay = typename detail::GridPointOnProbingRay<Integer, Index>;
-    
+
     // ----------------------- Internal type -------------------------------
-  private: 
+  private:
     /**
      * Description of data structure 'ClosestGridPoint' <p>
-     * \brief Aim: Used to store the closest grid point associated 
+     * \brief Aim: Used to store the closest grid point associated
      * to a vertex of the triangle and two extra boolean values
-     * about the local configuration at that vertex. 
-     * 
-     * More precisely, given a triplet of vectors \f$ (m_k)_{0 \leq k \leq 2} \f$ 
-     * and a point \f$ q \f$, let us denote \f$ v \f$ the vertex equal to 
+     * about the local configuration at that vertex.
+     *
+     * More precisely, given a triplet of vectors \f$ (m_k)_{0 \leq k \leq 2} \f$
+     * and a point \f$ q \f$, let us denote \f$ v \f$ the vertex equal to
      * \f$ q - m_k \f$. The first boolean value is 'true' iff
-     * the predicate returns 'true' on \f$ v - m_{k+1} \f$ and,  
+     * the predicate returns 'true' on \f$ v - m_{k+1} \f$ and,
      * similarly, the second boolean value is 'true' iff
      * the predicate returns 'true' on \f$ v - m_{k+2} \f$
-     * (the indices are taken modulo 3). 
-     */    
+     * (the indices are taken modulo 3).
+     */
     struct ClosestGridPoint
     {
-      /** 
+      /**
        * Default constructor.
        */
       ClosestGridPoint () = default;
@@ -116,13 +116,13 @@ namespace DGtal
 			const bool& aFirst, const bool& aSecond )
 	: myGridPoint(aGridPoint), myPair(std::make_pair(aFirst,aSecond)) {}
 
-      GridPoint myGridPoint; /**< a grid point, which can be invalid 
+      GridPoint myGridPoint; /**< a grid point, which can be invalid
 				 if no grid point belong to the underlying surface */
 
-      std::pair<bool,bool> myPair; /**< pair of boolean values that encode 
+      std::pair<bool,bool> myPair; /**< pair of boolean values that encode
 				       the local configuration */
     };
-    
+
     // ----------------------- Standard services ------------------------------
   public:
     /**
@@ -172,7 +172,7 @@ namespace DGtal
 
     // ----------------------- Plane-Probing services ------------------------------
   public:
-    
+
     /**
      * Computes the current state of the neighborhood.
      * This is the function that is overloaded for the different probing modes.
@@ -187,17 +187,17 @@ namespace DGtal
      * @return the update operation to apply.
      */
     UpdateOperation closestCandidate () override;
-    
-    // ------------------------- Protected Datas ------------------------------
+
+    // ------------------------- Protected Data ------------------------------
   protected:
 
     std::vector<ClosestGridPoint> myGrids; /**< closest point and additional useful data stored at each vertex. */
-    
+
     // ------------------------- Helpers to find a closest point --------------
   protected:
-    
+
     /**
-     * Computes the closest candidate point in a given grid identified by the 
+     * Computes the closest candidate point in a given grid identified by the
      * index of the associated vertex.
      *
      * @param aIdx
@@ -219,20 +219,20 @@ namespace DGtal
      * Finds a closest point on a given ray using a linear search.
      *
      * @param aRay a ray.
-     * @param aBound a bound that limits the search range. 
+     * @param aBound a bound that limits the search range.
      * @return a closest point on the ray.
      */
     GridPointOnProbingRay closestOnBoundedRayLinearWithPredicate (GridPointOnProbingRay const& aRay, Integer const& aBound) const;
-    
+
     /**
      * Finds a closest point on a given ray using a binary search.
      *
      * @param aRay a ray.
-     * @param aBound a bound that limits the search range. 
+     * @param aBound a bound that limits the search range.
      * @return a closest point on the ray.
      */
-    GridPointOnProbingRay closestOnBoundedRayLogWithPredicate (GridPointOnProbingRay const& aRay, Integer const& aBound) const; 
-   
+    GridPointOnProbingRay closestOnBoundedRayLogWithPredicate (GridPointOnProbingRay const& aRay, Integer const& aBound) const;
+
     /**
      * Constructs an update operation from the closest candidate point.
      *
@@ -240,10 +240,10 @@ namespace DGtal
      * @return the update operation.
      */
     UpdateOperation getOperationFromGridPoint (GridPoint const& aClosest) const;
-   
+
     /**
-     * Update a grid after a triangle update. This procedure is called at the 
-     * beginning of every call to hexagonState, which must prepare the computations. 
+     * Update a grid after a triangle update. This procedure is called at the
+     * beginning of every call to hexagonState, which must prepare the computations.
      *
      * @param aIdx
      */

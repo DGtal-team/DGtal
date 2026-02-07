@@ -65,7 +65,7 @@ namespace DGtal
 
      A typical usage is:
 
-     \code 
+     \code
      typedef DirichletConditions< EigenLinearAlgebraBackend > DC;
      DC::SparseMatrix  A = ...; // the matrix of the linear system
      DC::DenseVector   b = ...; // contains right-hand side and boundary conditions
@@ -75,7 +75,7 @@ namespace DGtal
      std::vector<DC::Index>  boundary_nodes  = { 12, 17, 25, 38, ... };
      std::vector<DC::Scalar> boundary_values = { 10.0, 20.0, 15.0, 7.0, ... };
      for ( int i = 0; i < boundary_nodes.size(); i++ )
-     { 
+     {
         auto j = boundary_nodes[ i ];
         p[ j ] = 1;
         u[ j ] = boundary_values[ i ];
@@ -126,7 +126,7 @@ namespace DGtal
     ///
     /// @pre `#row(A) = #col(A) = #col(p)`
     /// @return the (smaller) linear matrix \f$ A_d \f$ to prefactor.
-    static 
+    static
     SparseMatrix dirichletOperator( const SparseMatrix& A,
                                     const IntegerVector& p )
     {
@@ -170,7 +170,7 @@ namespace DGtal
     DenseVector dirichletVector( const SparseMatrix& A,
                                  const DenseVector& b,
                                  const IntegerVector& p,
-                                 const DenseVector& u ) 
+                                 const DenseVector& u )
     {
       ASSERT( A.cols() == A.rows() );
       ASSERT( p.rows() == A.rows() );
@@ -202,7 +202,7 @@ namespace DGtal
     static
     DenseVector dirichletSolution( const DenseVector& xd,
                                    const IntegerVector& p,
-                                   const DenseVector& u ) 
+                                   const DenseVector& u )
     {
       DenseVector  x( p.rows() );
       Index j = 0;
@@ -239,4 +239,3 @@ namespace DGtal
 
 #undef DirichletConditions_RECURSES
 #endif // else defined(DirichletConditions_RECURSES)
-  

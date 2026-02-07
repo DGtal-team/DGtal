@@ -72,7 +72,7 @@ template <typename TRealPoint, typename TRealVector>
 bool
 DGtal::SurfaceMeshWriter<TRealPoint, TRealVector>::
 writeOBJ( std::string            objfile,
-          const SurfaceMesh &    smesh, 
+          const SurfaceMesh &    smesh,
           const Colors&          diffuse_colors,
           const Color&           ambient_color,
           const Color&           diffuse_color,
@@ -87,7 +87,7 @@ writeOBJ( std::string            objfile,
     }
   else
     {
-      mtlfile  = objfile.substr(0, lastindex) + ".mtl"; 
+      mtlfile  = objfile.substr(0, lastindex) + ".mtl";
     }
   std::ofstream output_obj( objfile.c_str() );
   output_obj << "#  OBJ format" << std::endl;
@@ -138,7 +138,7 @@ writeOBJ( std::string            objfile,
     {
       output_obj << "usemtl material_"
                  << ( has_material ? mapMaterial[ diffuse_colors[ idx_f ] ] : idxMaterial )
-                 << std::endl; 
+                 << std::endl;
       output_obj << "f";
       for ( auto v : f )
         if ( smesh.vertexNormals().empty() )
@@ -231,15 +231,15 @@ writeIsoLinesOBJ( std::string            objfile,
           if ( ! ebv0 && ! ebv1 ) continue;
           std::vector<RealPoint> crossings;
           if ( ebv0 ) {
-            const Scalar tbv0 = t( vb, vv0, iso_value );   
+            const Scalar tbv0 = t( vb, vv0, iso_value );
             crossings.push_back( (1.0 - tbv0)*xb + tbv0*xv0 );
           }
           if ( ebv1 ) {
-            const Scalar tbv1 = t( vb, vv1, iso_value );   
+            const Scalar tbv1 = t( vb, vv1, iso_value );
             crossings.push_back( (1.0 - tbv1)*xb + tbv1*xv1 );
           }
           if ( ev0v1 ) {
-            const Scalar tv0v1 = t( vv0, vv1, iso_value );   
+            const Scalar tv0v1 = t( vv0, vv1, iso_value );
             crossings.push_back( (1.0 - tv0v1)*xv0 + tv0v1*xv1 );
           }
           if ( crossings.size() < 2 )
@@ -309,15 +309,15 @@ writeIsoLinesOBJ( std::string            objfile,
               if ( ! ebv0 && ! ebv1 ) continue;
               std::vector<RealPoint> crossings;
               if ( ebv0 ) {
-                const Scalar tbv0 = t( vb, vv0, iso_value );   
+                const Scalar tbv0 = t( vb, vv0, iso_value );
                 crossings.push_back( (1.0 - tbv0)*xb + tbv0*xv0 );
               }
               if ( ebv1 ) {
-                const Scalar tbv1 = t( vb, vv1, iso_value );   
+                const Scalar tbv1 = t( vb, vv1, iso_value );
                 crossings.push_back( (1.0 - tbv1)*xb + tbv1*xv1 );
               }
               if ( ev0v1 ) {
-                const Scalar tv0v1 = t( vv0, vv1, iso_value );   
+                const Scalar tv0v1 = t( vv0, vv1, iso_value );
                 crossings.push_back( (1.0 - tv0v1)*xv0 + tv0v1*xv1 );
               }
               if ( crossings.size() < 2 )

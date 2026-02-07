@@ -30,7 +30,7 @@
 /**
  * A simple example illustrating different way to scan a Khalimsky
  * space. This program outputs these images:
- * 
+ *
  * @see \ref dgtal_ctopo_sec8
  *
  * <table>
@@ -66,35 +66,35 @@ int main( int argc, char** argv )
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
-  
-  
+
+
   Board2D boardScan1; // for 2D display
   Board2D boardScan2; // for 2D display
-  
+
 
   Z2i::KSpace K;
   Z2i::Point plow(0,0);
   Z2i::Point pup(3,2);
-  
+
   Z2i::Domain dom (plow, pup);
   boardScan1 << SetMode( dom.className(), "Paving" )
         << dom;
   boardScan2 << SetMode( dom.className(), "Paving" )
         << dom;
-  
-  K.init( dom.lowerBound(),dom.upperBound(), true );
-  
 
-  
+  K.init( dom.lowerBound(),dom.upperBound(), true );
+
+
+
  Z2i::KSpace::Cell q = K.uSpel(plow);
  Z2i::KSpace::Cell p = K.uSpel(plow);
- 
-  
+
+
  Z2i::Vector shift;
  Z2i::KSpace::Cell prec=p;
  bool first=true;
- // Simple way to scan Khalimsky space 
- do 
+ // Simple way to scan Khalimsky space
+ do
    {
      boardScan1 << p;
      if(first){
@@ -104,14 +104,14 @@ int main( int argc, char** argv )
      }
      // Drawing the scan arrows
      boardScan1.setPenColor( Color( 30, 30, 200 ));
-     shift =   K.uCoords(p)-K.uCoords(prec);  
+     shift =   K.uCoords(p)-K.uCoords(prec);
       Display2DFactory::draw(boardScan1, shift, K.uCoords(prec));
-     prec=p;     
+     prec=p;
    }
- while ( K.uNext( p, K.uFirst(p), K.uLast(p) ) ); 
- 
- 
- 
+ while ( K.uNext( p, K.uFirst(p), K.uLast(p) ) );
+
+
+
 
  // Other way to scan Khalimsky space by controlling axis order
  Z2i::Vector shiftq;
@@ -136,16 +136,15 @@ int main( int argc, char** argv )
          precq = q;
        }
    }
- 
+
  boardScan1.saveSVG("khalimskySpaceScanner1.svg");
  boardScan1.saveFIG("khalimskySpaceScanner1.fig");
- 
+
  boardScan2.saveSVG("khalimskySpaceScanner2.svg");
  boardScan2.saveFIG("khalimskySpaceScanner2.fig");
-  
+
   return 0;
 
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-

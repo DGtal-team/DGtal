@@ -325,7 +325,7 @@ user forward an Alias<T> parameter.
         }
     }
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     /// Characterizes the type of the input parameter at clone instantiation.
     const Parameter myParam;

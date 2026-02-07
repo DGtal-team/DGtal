@@ -10,7 +10,7 @@
  * This file is part of the DGtal library.
  */
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  * Do not forget to add an entry in src/DGtal/base/Config.h.in !
  */
@@ -70,7 +70,7 @@ In the DGtal structure, an Image is an mapping Points<->Values for a set of poin
 @note Supported 2D export format: EPS, SVG, FIG, TIKZ (+ PNG and PDF if libcairo is installed).
 
 
-\section secttutoImageRegionDT3 Distance transformation 
+\section secttutoImageRegionDT3 Distance transformation
 
 We illustrate now the Euclidean distance transformation (DT) computation on an image region.
 
@@ -85,7 +85,7 @@ In this example, the object (a.k.a. foreground) is implicitly defined as the set
 @snippet tutorial-examples/imageSetDT.cpp ImageSetDT-DT
 
 
-We can now export the result using a Hue shade color map. Since Image containers are consistent with some STL concepts, we can use the std::max_element function to extract the maximal value form the DT map. 
+We can now export the result using a Hue shade color map. Since Image containers are consistent with some STL concepts, we can use the std::max_element function to extract the maximal value form the DT map.
 
 @snippet tutorial-examples/imageSetDT.cpp ImageSetDT-DTvis
 

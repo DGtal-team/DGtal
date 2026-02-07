@@ -668,7 +668,7 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Position DGtal::DSLSubsegment<T
   else
     if(v > 0)
       return BELOW;
-  
+
   return ABOVE;
 
 }
@@ -816,12 +816,12 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::Integer DGtal::DSLSubsegment<TI
       myRay = smartRayOfSmallestSlope(fp,fq,gp,gq,r);
       myPosition = positionWrtRay(myRay,alpha,beta);
 
-      
+
  // #ifdef DEBUG
  //             std::cout << "height " << r << " Ray " << myRay.x << " " << myRay.y << std::endl;
  // 	     std::cout << "myPosition " << myPosition << std::endl;
  // #endif
-      
+
 
       if(myPosition == ONTO)
 	*flagRayFound = true;
@@ -878,7 +878,7 @@ typename DGtal::DSLSubsegment<TInteger,TNumber>::RayC DGtal::DSLSubsegment<TInte
   boost::ignore_unused_variable_warning( n );
   BOOST_CONCEPT_ASSERT((concepts::CInteger<Number>));
   Number alpha = slope(fp, fq,r,a,b,mu);
-  
+
 
   Integer smallestSlope = smartRayOfSmallestSlope(fp,fq,gp,gq,r).x;
 
@@ -1166,7 +1166,7 @@ template <typename TInteger, typename TNumber>
 inline
 DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number a, Number b, Number mu, Point &A, Point &B, std::string type)
 {
-  try 
+  try
     {
       if(type.compare("farey")==0)
 	this->DSLSubsegmentFareyFan(a,b,mu,A,B);
@@ -1174,7 +1174,7 @@ DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegment(Number a, Number b, Number
 	if(type.compare("localCH")==0)
 	  this->DSLSubsegmentLocalCH(a,b,mu,A,B);
 	else
-	  throw std::invalid_argument("ERROR: Unknow string to specify the algorithm. \"farey\" is used hereafter.");
+	  throw std::invalid_argument("ERROR: Unknown string to specify the algorithm. \"farey\" is used hereafter.");
     }
   catch(std::invalid_argument & e)
     {
@@ -1256,7 +1256,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegmentFareyFan(Number a, Num
 
       Integer resAlphaP=0, resAlphaQ=0, resBetaP=0;
       findSolutionWithoutFractions(fp,fq, gp, gq, r, n, &resAlphaP, &resAlphaQ, &resBetaP, found);
-  
+
       myA = resAlphaP;
       myB = resAlphaQ;
       myMu = resBetaP - myA*A[0] + myB*A[1];
@@ -1343,7 +1343,7 @@ void DGtal::DSLSubsegment<TInteger,TNumber>::lowerConvexHull(Vector &l, Integer 
 
 
 
-// Contructor calling the localConvexHull approx instead of the walk in the Farey Fan -> should be a new class.
+// Constructor calling the localConvexHull approx instead of the walk in the Farey Fan -> should be a new class.
 template <typename TInteger, typename TNumber>
 inline
 void DGtal::DSLSubsegment<TInteger,TNumber>::DSLSubsegmentLocalCH(Number a, Number b, Number mu, Point &A, Point &B)

@@ -53,14 +53,14 @@ struct LogFct{
     return log(a);
   }
 };
-  
+
 
 TEST_CASE( "Testing MeaningfulScaleAnalysis" )
 {
-  
+
   Profile<LogFct> sp (Profile<LogFct>::MEAN);
   sp.init(6);
-  
+
   SECTION("Testing noise level detect of Profile")
     {
       sp.addValue(0,22);
@@ -68,10 +68,10 @@ TEST_CASE( "Testing MeaningfulScaleAnalysis" )
       sp.addValue(2,8);
       sp.addValue(3,17);
       sp.addValue(4,7);
-      sp.addValue(5,2);      
+      sp.addValue(5,2);
 
       MeaningfulScaleAnalysis<Profile<LogFct>> msa(sp);
-      std::vector< std::pair<unsigned int, unsigned int> > interval;      
+      std::vector< std::pair<unsigned int, unsigned int> > interval;
       msa.computeMeaningfulScales(interval, 1);
       msa.getSlopeFromMeaningfulScales(0,0,2);
       msa.lowerBoundedNoiseLevel(0,10,2,2,2);

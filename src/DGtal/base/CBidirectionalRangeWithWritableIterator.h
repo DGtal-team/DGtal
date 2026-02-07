@@ -102,7 +102,7 @@ namespace DGtal
       {
         concepts::ConceptUtils::sameType( myOutput, myX.routputIterator( ) );
       }
-      // ------------------------- Private Datas --------------------------------
+      // ------------------------- Private Data --------------------------------
     private:
       T myX; // do not require T to be default constructible.
       ReverseOutputIterator myOutput;

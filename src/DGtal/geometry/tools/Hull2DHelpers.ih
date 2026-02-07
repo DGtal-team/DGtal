@@ -45,14 +45,14 @@ namespace DGtal
   {
     namespace Hull2D
     {
-      
+
       //----------------------------------------------------------------------------
       template <typename Stack, typename Point, typename Predicate>
       inline
       void updateHullWithStack(Stack& aStack, const Point& aNewPoint, const Predicate& aPredicate)
       {
         BOOST_CONCEPT_ASSERT(( concepts::CStack<Stack> ));
-        
+
         Point Q = aStack.top();
         aStack.pop();
         if (aStack.size() != 0)
@@ -70,7 +70,7 @@ namespace DGtal
             aStack.push(Q);
           }
       }
-      
+
       //----------------------------------------------------------------------------
       template <typename Stack, typename Point, typename Predicate>
       inline
@@ -78,7 +78,7 @@ namespace DGtal
       {
         updateHullWithStack( aStack, aNewPoint, aPredicate );
       }
-      
+
       //----------------------------------------------------------------------------
       template <typename Stack, typename ForwardIterator, typename Predicate>
       inline
@@ -89,7 +89,7 @@ namespace DGtal
         BOOST_CONCEPT_ASSERT(( concepts::CStack<Stack> ));
         BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<ForwardIterator> ));
         BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ForwardIterator> ));
-        
+
         //for all points
         for(ForwardIterator it = itb; it != ite; ++it)
           {
@@ -107,7 +107,7 @@ namespace DGtal
               }
           }//end for all points
       }
-      
+
       //----------------------------------------------------------------------------
       template <typename Stack, typename ForwardIterator, typename Predicate>
       inline
@@ -117,7 +117,7 @@ namespace DGtal
       {
         buildHullWithStack( aStack, itb, ite, aPredicate );
       }
-      
+
       //----------------------------------------------------------------------------
       template <typename ForwardIterator, typename OutputIterator, typename Predicate>
       inline
@@ -129,17 +129,17 @@ namespace DGtal
         typedef typename IteratorCirculatorTraits<ForwardIterator>::Value Point;
         BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> ));
         BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,Point> ));
-        
+
         //container
         std::deque<Point> container;
-        
+
         //hull computation
         buildHullWithAdaptedStack( backStack(container), itb, ite, aPredicate );
-        
+
         //Copy
         std::copy(container.begin(), container.end(), res);
       }
-      
+
       //----------------------------------------------------------------------------
       template <typename ForwardIterator, typename OutputIterator, typename Predicate>
       inline
@@ -151,20 +151,20 @@ namespace DGtal
         typedef typename IteratorCirculatorTraits<ForwardIterator>::Value Point;
         BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> ));
         BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,Point> ));
-        
+
         //container
         std::deque<Point> container;
-        
+
         //hull computation
         buildHullWithAdaptedStack( backStack(container), itb, ite, aPredicate);
-        
+
         //we update the hull to take into account the starting point
         if ( container.size() > 3 )
           updateHullWithAdaptedStack( backStack(container), container.front(), aPredicate );
-        
+
         std::copy(container.begin(), container.end(), res);
       }
-      
+
       //----------------------------------------------------------------------------
       template <typename ForwardIterator, typename OutputIterator, typename Predicate>
       inline
@@ -176,13 +176,13 @@ namespace DGtal
         typedef typename IteratorCirculatorTraits<ForwardIterator>::Value Point;
         BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> ));
         BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,Point> ));
-        
+
         //container
         std::deque<Point> container;
-        
+
         //hull computation
         buildHullWithAdaptedStack( backStack(container), itb, ite, aPredicate);
-        
+
         //we update the hull to take into account the starting point
         if ( container.size() > 3 )
           {
@@ -191,7 +191,7 @@ namespace DGtal
             container.push_back( container.front() );
             container.pop_front();
           }
-        
+
         //while the last two points and the first one are not correctly oriented, we update the hull
         while ( (container.size() > 3)&&
                 !aPredicate( *boost::next(container.rbegin()), container.back(), container.front() ) )
@@ -201,11 +201,11 @@ namespace DGtal
             container.push_back( container.front() );
             container.pop_front();
           }
-        
+
         std::copy(container.begin(), container.end(), res);
       }
-      
-      
+
+
       //----------------------------------------------------------------------------
       template <typename ForwardIterator,
                 typename OutputIterator,
@@ -223,29 +223,29 @@ namespace DGtal
         BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> ));
         BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,Point> ));
         BOOST_CONCEPT_ASSERT(( concepts::CPolarPointComparator2D<PolarComparator> ));
-        
+
         if ( itb != ite )
           {
             //container
             std::vector<Point> container;
             std::copy( itb, ite, std::back_inserter( container ) );
-          
+
             //find an extremal point
             //NB: we choose the point of greatest x-coordinate
             //so that the sort step (by a polar comparator)
             //returns a weakly externally visible polygon
             typename std::vector<Point>::iterator itMax
               = std::max_element( container.begin(), container.end() );
-          
+
             //sort around this point
             aPolarComparator.setPole( *itMax );
             std::sort( container.begin(), container.end(), aPolarComparator );
-          
+
             //scan from an extremal point
             closedGrahamScanFromVertex( container.begin(), container.end(), res, aPredicate );
           }
       }
-      
+
       //----------------------------------------------------------------------------
       template <typename ForwardIterator,
                 typename OutputIterator,
@@ -258,17 +258,17 @@ namespace DGtal
         BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<ForwardIterator> ));
         BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ForwardIterator> ));
         typedef typename IteratorCirculatorTraits<ForwardIterator>::Value Point;
-        
+
         //define a default comparator
         typedef typename Point::Coordinate Integer;
         typedef AvnaimEtAl2x2DetSignComputer<Integer> DetComputer;
         typedef functors::PolarPointComparatorBy2x2DetComputer<Point, DetComputer> Comparator;
         Comparator comparator;
-        
+
         //call overloaded version
         grahamConvexHullAlgorithm( itb, ite, res, aPredicate, comparator );
       }
-      
+
       //----------------------------------------------------------------------------
       template <typename ForwardIterator,
                 typename OutputIterator,
@@ -283,29 +283,29 @@ namespace DGtal
         typedef typename IteratorCirculatorTraits<ForwardIterator>::Value Point;
         BOOST_CONCEPT_ASSERT(( boost_concepts::IncrementableIteratorConcept<OutputIterator> ));
         BOOST_CONCEPT_ASSERT(( boost_concepts::WritableIteratorConcept<OutputIterator,Point> ));
-        
+
         if ( itb != ite )
           {
             //containers
             std::vector<Point> container;
             std::copy( itb, ite, std::back_inserter( container ) );
             std::vector<Point> upperHull, lowerHull;
-          
+
             //sort according to the x-coordinate
             std::sort( container.begin(), container.end() );
-          
+
             //lower hull computation
             openGrahamScan( container.begin(), container.end(), std::back_inserter(lowerHull), aPredicate );
-          
+
             //upper hull computation
             openGrahamScan( container.rbegin(), container.rend(), std::back_inserter(upperHull), aPredicate );
-          
+
             //lower hull output
             typename std::vector<Point>::iterator lowerHullStart = lowerHull.begin();
             if ( lowerHull.front() == upperHull.back() )
               lowerHullStart++;
             std::copy( lowerHullStart, lowerHull.end(), res );
-          
+
             //upper hull output
             typename std::vector<Point>::iterator upperHullStart = upperHull.begin();
             if ( lowerHull.back() == upperHull.front() )
@@ -313,12 +313,12 @@ namespace DGtal
             std::copy( upperHullStart, upperHull.end(), res );
           }
       }
-      
-      
-      
+
+
+
       template <typename ForwardIterator>
       inline
-      double computeHullThickness(const ForwardIterator &itb, 
+      double computeHullThickness(const ForwardIterator &itb,
                                   const ForwardIterator &ite,
                                   const ThicknessDefinition &def)
       {
@@ -331,9 +331,9 @@ namespace DGtal
       template <typename ForwardIterator,
                 typename TInputPoint>
       inline
-      double computeHullThickness(const ForwardIterator &itb, 
+      double computeHullThickness(const ForwardIterator &itb,
                                   const ForwardIterator &ite,
-                                  const ThicknessDefinition &def, 
+                                  const ThicknessDefinition &def,
                                   TInputPoint& antipodalEdgeP,
                                   TInputPoint& antipodalEdgeQ,
                                   TInputPoint& antipodalVertexR)
@@ -376,12 +376,12 @@ namespace DGtal
           antipodalEdgeQ = aConvexHull[i+1];
         }
         i++;
-        while(i < size){        
-          if(getAngle(aConvexHull[i], aConvexHull[i+1], 
+        while(i < size){
+          if(getAngle(aConvexHull[i], aConvexHull[i+1],
                       aConvexHull[j], aConvexHull[j+1])< M_PI - angleTolerance){
             j++;
-          }else{            
-            th = getThicknessAntipodalPair(aConvexHull[i], aConvexHull[i+1], 
+          }else{
+            th = getThicknessAntipodalPair(aConvexHull[i], aConvexHull[i+1],
                                            aConvexHull[j], def);
             if(th<resThickness){
               resThickness = th;
@@ -389,10 +389,10 @@ namespace DGtal
               antipodalEdgeP = aConvexHull[i];
               antipodalEdgeQ = aConvexHull[i+1];
             }
-            if(isCoLinearOpp(aConvexHull[i], aConvexHull[i+1], 
+            if(isCoLinearOpp(aConvexHull[i], aConvexHull[i+1],
                           aConvexHull[j], aConvexHull[j+1])   ){
-              
-              th = getThicknessAntipodalPair(aConvexHull[i], aConvexHull[i+1], 
+
+              th = getThicknessAntipodalPair(aConvexHull[i], aConvexHull[i+1],
                                              aConvexHull[j+1], def);
               if(th<resThickness){
                 resThickness = th;
@@ -406,8 +406,8 @@ namespace DGtal
         }
         return resThickness;
       }
-      
-            
+
+
       template<typename TInputPoint>
       inline
       double getAngle(const TInputPoint &a, const TInputPoint &b, const TInputPoint &c, const TInputPoint &d)
@@ -419,8 +419,8 @@ namespace DGtal
         double ang = atan2(det, dot);
         return ( ang < -angleTolerance) ? 2*M_PI+ang : ang;
       }
- 
- 
+
+
       template<typename TInputPoint>
       inline
       bool isCoLinearOpp(const TInputPoint& a, const TInputPoint& b,
@@ -431,7 +431,7 @@ namespace DGtal
                ang  > M_PI - angleTolerance ;
       }
 
-      
+
 
       template<typename TInputPoint>
       inline
@@ -446,37 +446,37 @@ namespace DGtal
           return computeEuclideanDistance(p, q, r, isInside);
         }
       }
-      
+
       template< typename TInputPoint>
       inline
       double
-      computeHProjDistance(const TInputPoint &a, const TInputPoint &b, const TInputPoint &c, 
+      computeHProjDistance(const TInputPoint &a, const TInputPoint &b, const TInputPoint &c,
                            bool &isInside )
       {
         if(a[1]==b[1])
           {
             return std::numeric_limits<double>::max();
           }
-        else 
+        else
           {
             auto k = -(a[0]-b[0])*c[1]-(b[0]*a[1]-a[0]*b[1]);
             isInside =    ( a[1] <= c[1] && c[1] <= b[1] )
                        || ( b[1] <= c[1] && c[1] <= a[1] );
             return std::abs((k/static_cast<double>(b[1]-a[1])) - c[0]);
           }
-      }      
-      
+      }
+
       template< typename TInputPoint>
-      inline 
+      inline
       double
-      computeVProjDistance(const TInputPoint &a, const TInputPoint &b, 
+      computeVProjDistance(const TInputPoint &a, const TInputPoint &b,
                            const TInputPoint &c, bool &isInside )
       {
         if(a[0]==b[0])
           {
             return std::numeric_limits<double>::max();
           }
-        else 
+        else
           {
             auto k = -(b[1]-a[1])*c[0]-(b[0]*a[1]-a[0]*b[1]);
             isInside =    ( a[0] <= c[0] && c[0] <= b[0] )
@@ -485,11 +485,11 @@ namespace DGtal
           }
       }
 
-      
+
     template< typename TInputPoint>
-    inline 
+    inline
     double
-    computeEuclideanDistance(const TInputPoint &a, const TInputPoint &b, const TInputPoint &c, 
+    computeEuclideanDistance(const TInputPoint &a, const TInputPoint &b, const TInputPoint &c,
                             bool &isInside )
     {
       auto dy =  b[1]-a[1];
@@ -501,12 +501,10 @@ namespace DGtal
     }
 
 
-      
+
     } // namespace convexHull2D
   } // namespace functions
 } // namespace DGtal
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

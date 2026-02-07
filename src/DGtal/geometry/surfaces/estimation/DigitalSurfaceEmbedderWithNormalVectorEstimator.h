@@ -93,7 +93,7 @@ namespace DGtal
     typedef typename NormalVectorEstimator::Quantity Quantity;
 
     BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType< RealVector, Quantity >::value ));
-    
+
     typedef DigitalSurfaceEmbedderWithNormalVectorEstimatorGradientMap<DigitalSurfaceEmbedder,NormalVectorEstimator> GradientMap;
 
 
@@ -184,9 +184,9 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     ///A pointer on the digital surface

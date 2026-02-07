@@ -51,7 +51,7 @@ void
 DGtal::PredicateFromOrientationFunctor2<TOrientationFunctor,acceptNeg,acceptZero>
 ::init (const Point& aPoint1, const Point& aPoint2 )
 {
-  myFunctorPtr->init( aPoint1, aPoint2 ); 
+  myFunctorPtr->init( aPoint1, aPoint2 );
 }
 
 // ------------------------------------------------------------------------
@@ -61,7 +61,7 @@ bool
 DGtal::PredicateFromOrientationFunctor2<TOrientationFunctor,acceptNeg,acceptZero>
 ::operator() (const Point& aPoint ) const
 {
-  return myThresholder( myFunctorPtr->operator()( aPoint ) ); 
+  return myThresholder( myFunctorPtr->operator()( aPoint ) );
 }
 
 // ------------------------------------------------------------------------
@@ -71,8 +71,8 @@ bool
 DGtal::PredicateFromOrientationFunctor2<TOrientationFunctor,acceptNeg,acceptZero>
 ::operator() (const Point& aPoint1, const Point& aPoint2, const Point& aPoint3 ) const
 {
-  myFunctorPtr->init( aPoint1, aPoint2 ); 
-  return myThresholder( myFunctorPtr->operator()( aPoint3 ) ); 
+  myFunctorPtr->init( aPoint1, aPoint2 );
+  return myThresholder( myFunctorPtr->operator()( aPoint3 ) );
 }
 
 // ------------------------------------------------------------------------
@@ -82,11 +82,11 @@ void
 DGtal::PredicateFromOrientationFunctor2<TOrientationFunctor,acceptNeg,acceptZero>
 ::selfDisplay ( std::ostream & out ) const
 {
-  out << "[PredicateFromOrientationFunctor2<"; 
-  if (isValid()) 
-    out << (*myFunctorPtr);  
+  out << "[PredicateFromOrientationFunctor2<";
+  if (isValid())
+    out << (*myFunctorPtr);
   else
-    out << "NULL"; 
+    out << "NULL";
   out << ">]";
 }
 
@@ -108,7 +108,7 @@ DGtal::PredicateFromOrientationFunctor2<TOrientationFunctor,acceptNeg,acceptZero
 template <typename TOrientationFunctor, bool acceptNeg, bool acceptZero>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		    const PredicateFromOrientationFunctor2<TOrientationFunctor, acceptNeg, acceptZero> & object )
 {
   object.selfDisplay( out );
@@ -117,5 +117,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

@@ -59,7 +59,7 @@ namespace DGtal
    *
    * The adapted metric can thus be used in separable algorithms such as
    * VoronoiMap or PowerMap. The adapted metric makes sense only if the input
-   * metric as the @e monotinicity propertery (see  @cite Hirata1996  or @cite Maurer2003PAMI): In
+   * metric as the @e monotinicity property (see  @cite Hirata1996  or @cite Maurer2003PAMI): In
    * dimension 2, consider two points @f$ p(x,y)@f$,
    * @f$q(x',y')@f$ with @f$x<x'@f$. Let @f$r( x'',0)@f$ be a point on the
    * x-axis such that @f$d(p,r) = d(q,r)@f$ and @f$ s(u,0)@f$ be another

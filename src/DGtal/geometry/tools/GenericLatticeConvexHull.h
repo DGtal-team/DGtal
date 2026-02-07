@@ -96,7 +96,7 @@ namespace DGtal
       /// Clears the object as if no computations have been made.
       void clear()
       {
-        hull.clear(); 
+        hull.clear();
         proj_points.clear();
         polytope.clear();
         lower_kernels.clear();
@@ -126,7 +126,7 @@ namespace DGtal
         auto& facets    = ptr_gen_qhull->facets;
         auto& dilation  = ptr_gen_qhull->projected_dilation;
         auto& aff_basis = ptr_gen_qhull->affine_basis;
-        
+
         Basis basis;
         if ( dimension != ptr_gen_qhull->dimension )
           { // Build the affine basis spanning the convex hull affine space.
@@ -144,7 +144,7 @@ namespace DGtal
           }
         // Build projected points on affine basis
         dilation  = basis.projectPoints( proj_points, X );
-          
+
         // Compute convex hull using quickhull.
         bool ok_input = hull.setInput( proj_points, false );
         bool ok_hull  = hull.computeConvexHull( QHull::Status::VerticesCompleted );
@@ -202,7 +202,7 @@ namespace DGtal
             u = u.sup( p );
           }
         Domain domain( l, u );
-        
+
         // Initialize polytope
         std::vector< ConvexHullHalfSpace > HS;
         std::vector< PolytopeHalfSpace >   PHS;
@@ -260,7 +260,7 @@ namespace DGtal
         if ( polytope.nbHalfSpaces() == 0 ) return -1;
         return polytope.countInterior();
       }
-      
+
       /// Computes the number of integer points lying on the boundary of the polytope.
       ///
       /// @return the number of integer points lying on the boundary of the polytope.
@@ -280,9 +280,9 @@ namespace DGtal
         if ( polytope.nbHalfSpaces() == 0 ) return -1;
         return polytope.countBoundary();
       }
-      
+
       /// Computes the number of integer points within the polytope up to
-      /// some maximum number \a max. 
+      /// some maximum number \a max.
       ///
       /// @note For instance, a d-dimensional simplex that contains no
       /// integer points in its interior contains only d+1 points. If
@@ -307,7 +307,7 @@ namespace DGtal
         return polytope.countUpTo( max );
       }
 
-      
+
       Computer*            ptr_gen_qhull; ///< the pointer on the parent computer
       LowerKernels         lower_kernels; ///< the computers of lower dimension
       QHull                hull; ///< the quick hull object that computes the convex hull
@@ -315,7 +315,7 @@ namespace DGtal
       LatticePolytope      polytope; ///< the polytope corresponding to the convex hull
     };
 
-    
+
     template < Dimension dim,
                typename TCoordinateInteger,
                typename TInternalInteger >
@@ -347,7 +347,7 @@ namespace DGtal
       {
         proj_points.clear();
       }
-      
+
       /// @tparam TInputPoint any type of input points.
       /// @param I a range of indices specifying an affine subset of \a X.
       /// @param X the range of input points.
@@ -369,7 +369,7 @@ namespace DGtal
         auto& dilation  = ptr_gen_qhull->projected_dilation;
         auto& aff_basis = ptr_gen_qhull->affine_basis;
         facets.clear(); // no facets
-        
+
         if ( (I.size()-1) != dimension )
           { // This kernel is not adapted => lower dimension is either
             // 0, ie. 1 point, or -1, ie. 0 points.
@@ -465,7 +465,7 @@ namespace DGtal
       {
         return nb_in_hull >= 2 ? nb_in_hull - 2 : 0;
       }
-      
+
       /// Computes the number of integer points lying on the boundary of the polytope.
       ///
       /// @return the number of integer points lying on the boundary of the polytope.
@@ -473,9 +473,9 @@ namespace DGtal
       {
         return nb_in_hull >= 2 ? 2 : nb_in_hull;
       }
-      
+
       /// Computes the number of integer points within the polytope up to
-      /// some maximum number \a max. 
+      /// some maximum number \a max.
       ///
       /// @note For instance, a d-dimensional simplex that contains no
       /// integer points in its interior contains only d+1 points. If
@@ -493,10 +493,10 @@ namespace DGtal
 
       Computer*            ptr_gen_qhull; ///< the pointer on the parent computer
       std::vector< Point > proj_points; ///< the projected points, as points in lower dimension
-      Integer              nb_in_hull; ///< the number of lattice points in the convex hull.                   
+      Integer              nb_in_hull; ///< the number of lattice points in the convex hull.
     };
   }
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // template class GenericLatticeConvexHull
 
@@ -535,12 +535,12 @@ namespace DGtal
 
     static const Size  dimension  = Point::dimension;
 
-    
+
     // ----------------------- standard services --------------------------
   public:
     /// @name Standard services (construction, initialization, accessors)
     /// @{
-  
+
     /// Default constructor
     /// @param[in] K_ a kernel for computing facet geometries.
     /// @param[in] dbg the trace level, from 0 (no) to 3 (very verbose).
@@ -565,13 +565,13 @@ namespace DGtal
       polytope_computed  = false;
     }
     /// @}
-    
+
     // -------------------------- Convex hull services ----------------------------
   public:
 
     /// @name convex hull services
     /// @{
-    
+
     /// Sets the input data for the QuickHull convex hull algorithm,
     /// which is a range of points.
     ///
@@ -624,7 +624,7 @@ namespace DGtal
     {
       if ( ! polytope_computed )
         polytope_computed = generic_computers.makePolytope();
-      if ( ! polytope_computed ) return -1; 
+      if ( ! polytope_computed ) return -1;
       return generic_computers.count();
     }
 
@@ -647,10 +647,10 @@ namespace DGtal
     {
       if ( ! polytope_computed )
         polytope_computed = generic_computers.makePolytope();
-      if ( ! polytope_computed ) return -1; 
+      if ( ! polytope_computed ) return -1;
       return generic_computers.countInterior();
       }
-    
+
     /// Computes the number of integer points lying on the boundary of the polytope.
     ///
     /// @return the number of integer points lying on the boundary of the polytope.
@@ -670,12 +670,12 @@ namespace DGtal
     {
       if ( ! polytope_computed )
         polytope_computed = generic_computers.makePolytope();
-      if ( ! polytope_computed ) return -1; 
+      if ( ! polytope_computed ) return -1;
       return generic_computers.countBoundary();
     }
-    
+
     /// Computes the number of integer points within the polytope up to
-    /// some maximum number \a max. 
+    /// some maximum number \a max.
     ///
     /// @note For instance, a d-dimensional simplex that contains no
     /// integer points in its interior contains only d+1 points. If
@@ -699,13 +699,13 @@ namespace DGtal
     {
       if ( ! polytope_computed )
         polytope_computed = generic_computers.makePolytope();
-      if ( ! polytope_computed ) return -1; 
+      if ( ! polytope_computed ) return -1;
       return generic_computers.countUpTo( max );
     }
 
-    
+
     /// @}
-    
+
     // ----------------------- Interface --------------------------------------
   public:
     /// @name Interface
@@ -723,7 +723,7 @@ namespace DGtal
           << " #F=" << facets.size()
           << "]";
     }
-  
+
     /// Checks the validity/consistency of the object.
     /// @return 'true' if the object has made a convex hull computation, 'false' otherwise.
     bool isValid() const
@@ -732,16 +732,16 @@ namespace DGtal
     }
     /// @}
 
-    // ------------------------ public datas --------------------------
+    // ------------------------ public data --------------------------
   public:
-    /// @name public datas
+    /// @name public data
     /// @{
-  
+
   public:
     /// The main quickhull kernel that is used for convex hull computations.
     Kernel kernel;
     /// debug_level from 0:no to 2:verbose
-    int debug_level; 
+    int debug_level;
     /// The delegate computation kernel that can take care of all kind
     /// of convex hulls, full dimensional or degenerated.
     GenericComputers generic_computers;
@@ -767,7 +767,7 @@ namespace DGtal
     /// When 'true', the polytope has been computed.
     bool                       polytope_computed { false };
     /// @}
-    
+
   };
 
   /// Overloads 'operator<<' for displaying objects of class 'GenericLatticeConvexHull'.
@@ -795,7 +795,7 @@ namespace DGtal
     object.selfDisplay( out );
     return out;
   }
-  
+
 } // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////

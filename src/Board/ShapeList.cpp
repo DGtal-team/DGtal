@@ -413,7 +413,7 @@ ShapeList::minDepth() const
 }
 
 #if defined( min )
-#undef min 
+#undef min
 #define _HAS_MSVC_MIN_ true
 #endif
 

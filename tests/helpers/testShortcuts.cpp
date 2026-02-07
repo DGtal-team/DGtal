@@ -56,7 +56,7 @@ SCENARIO( "Shortcuts< K3 > pointel ordering", "[shortcuts][pointel]" )
   auto K               = SH3::getKSpace( params );
   auto embedder        = SH3::getCellEmbedder( K );
   auto surface         = SH3::makeLightDigitalSurface( binary_image, K, params );
-  
+
   GIVEN( "A digital surface, its associated polygonal surface, and its pointel range" ) {
     SH3::Cell2Index c2i;
     auto polySurf        = SH3::makePrimalPolygonalSurface( c2i, surface );

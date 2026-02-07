@@ -58,7 +58,7 @@ Integer getRandomInteger( const Integer & first, const Integer & after_last )
  */
 template <typename Integer, typename NaivePlaneComputer>
 bool
-checkPlane( Integer a, Integer b, Integer c, Integer d, 
+checkPlane( Integer a, Integer b, Integer c, Integer d,
             int diameter, unsigned int nbtries )
 {
   typedef typename NaivePlaneComputer::Point Point;
@@ -83,8 +83,8 @@ checkPlane( Integer a, Integer b, Integer c, Integer d,
   unsigned int nbok = 0;
   while ( nb != nbtries )
     {
-      p[ 0 ] = getRandomInteger<PointInteger>( -diameter+1, diameter ); 
-      p[ 1 ] = getRandomInteger<PointInteger>( -diameter+1, diameter ); 
+      p[ 0 ] = getRandomInteger<PointInteger>( -diameter+1, diameter );
+      p[ 1 ] = getRandomInteger<PointInteger>( -diameter+1, diameter );
       p[ 2 ] = getRandomInteger<PointInteger>( -diameter+1, diameter );
       x = (Integer) p[ 0 ];
       y = (Integer) p[ 1 ];
@@ -93,7 +93,7 @@ checkPlane( Integer a, Integer b, Integer c, Integer d,
       case 0: p[ 0 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
       case 1: p[ 1 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
       case 2: p[ 2 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
-      } 
+      }
       bool ok_ext = plane.isExtendable( p ); // should be ok
       bool ok = plane.extend( p ); // should be ok
       ++nb; nbok += ok_ext ? 1 : 0;
@@ -115,8 +115,8 @@ checkPlane( Integer a, Integer b, Integer c, Integer d,
   // Checks that points outside the naive plane are correctly recognized as outliers.
   while ( nb != (nbtries * 11 ) / 10 )
     {
-      p[ 0 ] = getRandomInteger<PointInteger>( -diameter+1, diameter ); 
-      p[ 1 ] = getRandomInteger<PointInteger>( -diameter+1, diameter ); 
+      p[ 0 ] = getRandomInteger<PointInteger>( -diameter+1, diameter );
+      p[ 1 ] = getRandomInteger<PointInteger>( -diameter+1, diameter );
       p[ 2 ] = getRandomInteger<PointInteger>( -diameter+1, diameter );
       x = (Integer) p[ 0 ];
       y = (Integer) p[ 1 ];
@@ -125,8 +125,8 @@ checkPlane( Integer a, Integer b, Integer c, Integer d,
       case 0: p[ 0 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
       case 1: p[ 1 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
       case 2: p[ 2 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
-      } 
-      PointInteger tmp = getRandomInteger<PointInteger>( 2, 5 ) 
+      }
+      PointInteger tmp = getRandomInteger<PointInteger>( 2, 5 )
         * (2*getRandomInteger<PointInteger>( 0, 2 ) - 1 );
       p[ axis ] += tmp;
       bool ok_ext = ! plane.isExtendable( p ); // should *not* be ok
@@ -155,7 +155,7 @@ checkPlane( Integer a, Integer b, Integer c, Integer d,
  */
 template <typename Integer, typename GenericNaivePlaneComputer>
 bool
-checkGenericPlane( Integer a, Integer b, Integer c, Integer d, 
+checkGenericPlane( Integer a, Integer b, Integer c, Integer d,
                    int diameter, unsigned int nbtries )
 {
   typedef typename GenericNaivePlaneComputer::Point Point;
@@ -180,8 +180,8 @@ checkGenericPlane( Integer a, Integer b, Integer c, Integer d,
   unsigned int nbok = 0;
   while ( nb != nbtries )
     {
-      p[ 0 ] = getRandomInteger<PointInteger>( -diameter+1, diameter ); 
-      p[ 1 ] = getRandomInteger<PointInteger>( -diameter+1, diameter ); 
+      p[ 0 ] = getRandomInteger<PointInteger>( -diameter+1, diameter );
+      p[ 1 ] = getRandomInteger<PointInteger>( -diameter+1, diameter );
       p[ 2 ] = getRandomInteger<PointInteger>( -diameter+1, diameter );
       x = (Integer) p[ 0 ];
       y = (Integer) p[ 1 ];
@@ -190,7 +190,7 @@ checkGenericPlane( Integer a, Integer b, Integer c, Integer d,
       case 0: p[ 0 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
       case 1: p[ 1 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
       case 2: p[ 2 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
-      } 
+      }
       bool ok_ext = plane.isExtendable( p ); // should be ok
       bool ok = plane.extend( p ); // should be ok
       ++nb; nbok += ok_ext ? 1 : 0;
@@ -212,8 +212,8 @@ checkGenericPlane( Integer a, Integer b, Integer c, Integer d,
   // Checks that points outside the naive plane are correctly recognized as outliers.
   while ( nb != (nbtries * 11 ) / 10 )
     {
-      p[ 0 ] = getRandomInteger<PointInteger>( -diameter+1, diameter ); 
-      p[ 1 ] = getRandomInteger<PointInteger>( -diameter+1, diameter ); 
+      p[ 0 ] = getRandomInteger<PointInteger>( -diameter+1, diameter );
+      p[ 1 ] = getRandomInteger<PointInteger>( -diameter+1, diameter );
       p[ 2 ] = getRandomInteger<PointInteger>( -diameter+1, diameter );
       x = (Integer) p[ 0 ];
       y = (Integer) p[ 1 ];
@@ -222,8 +222,8 @@ checkGenericPlane( Integer a, Integer b, Integer c, Integer d,
       case 0: p[ 0 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
       case 1: p[ 1 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
       case 2: p[ 2 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
-      } 
-      PointInteger tmp = getRandomInteger<PointInteger>( 2, 5 ) 
+      }
+      PointInteger tmp = getRandomInteger<PointInteger>( 2, 5 )
         * (2*getRandomInteger<PointInteger>( 0, 2 ) - 1 );
       p[ axis ] += tmp;
       bool ok_ext = ! plane.isExtendable( p ); // should *not* be ok
@@ -258,16 +258,16 @@ checkPlanes( unsigned int nbplanes, int diameter, unsigned int nbtries )
   unsigned int nbok = 0;
   for ( unsigned int nbp = 0; nbp < nbplanes; ++nbp )
     {
-      Integer a = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 ); 
-      Integer b = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 ); 
-      Integer c = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 ); 
-      Integer d = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 ); 
+      Integer a = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 );
+      Integer b = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 );
+      Integer c = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 );
+      Integer d = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 );
       if ( ( a != 0 ) || ( b != 0 ) || ( c != 0 ) )
         {
           ++nb; nbok += checkPlane<Integer, NaivePlaneComputer>( a, b, c, d, diameter, nbtries ) ? 1 : 0;
           if ( nb != nbok )
             {
-              std::cerr << "[ERROR] for plane " << a << " * x + " 
+              std::cerr << "[ERROR] for plane " << a << " * x + "
                         << b << " * y + " << c << " * z = " << d << std::endl;
               break;
             }
@@ -307,12 +307,12 @@ bool testCOBANaivePlaneComputer()
   Point pt1( Point( 8, 1, 3 ) );
   bool pt1_inside = plane.extend( pt1 );
   ++nb; nbok += pt1_inside == true ? 1 : 0;
-  trace.info() << "(" << nbok << "/" << nb << ") add " << pt1 
+  trace.info() << "(" << nbok << "/" << nb << ") add " << pt1
                << " Plane=" << plane << std::endl;
   Point pt2( Point( 2, 7, 1 ) );
   bool pt2_inside = plane.extend( pt2 );
   ++nb; nbok += pt2_inside == true ? 1 : 0;
-  trace.info() << "(" << nbok << "/" << nb << ") add " << pt2 
+  trace.info() << "(" << nbok << "/" << nb << ") add " << pt2
                << " Plane=" << plane << std::endl;
 
   Point pt3( Point( 0, 5, 17 ) );
@@ -342,24 +342,24 @@ bool testCOBANaivePlaneComputer()
                << " Plane2=" << plane2 << std::endl;
 
   ++nb; nbok += checkPlane<Integer,NaivePlaneComputer>( 11, 5, 19, 20, 100, 100 ) ? 1 : 0;
-  trace.info() << "(" << nbok << "/" << nb 
+  trace.info() << "(" << nbok << "/" << nb
                << ") checkPlane<Integer,NaivePlaneComputer>( 11, 5, 19, 20, 100, 100 )"
                << std::endl;
 
   ++nb; nbok += checkGenericPlane<Integer,GenericNaivePlaneComputer>( 11, 5, 19, 20, 100, 100 ) ? 1 : 0;
-  trace.info() << "(" << nbok << "/" << nb 
+  trace.info() << "(" << nbok << "/" << nb
                << ") checkGenericPlane<Integer,GenericNaivePlaneComputer>( 11, 5, 19, 20, 100, 100 )"
                << std::endl;
   ++nb; nbok += checkGenericPlane<Integer,GenericNaivePlaneComputer>( 17, 33, 7, 10, 100, 100 ) ? 1 : 0;
-  trace.info() << "(" << nbok << "/" << nb 
+  trace.info() << "(" << nbok << "/" << nb
                << ") checkGenericPlane<Integer,GenericNaivePlaneComputer>( 17, 33, 7, 10, 100, 100 )"
                << std::endl;
   ++nb; nbok += checkPlane<Integer,NaivePlaneComputer>( 15, 8, 13, 15, 100, 100 ) ? 1 : 0;
-  trace.info() << "(" << nbok << "/" << nb 
+  trace.info() << "(" << nbok << "/" << nb
                << ") checkPlane<Integer,NaivePlaneComputer>( 15, 8, 13, 15, 100, 100 )"
                << std::endl;
   ++nb; nbok += checkGenericPlane<Integer,GenericNaivePlaneComputer>( 15, 8, 13, 15, 100, 100 ) ? 1 : 0;
-  trace.info() << "(" << nbok << "/" << nb 
+  trace.info() << "(" << nbok << "/" << nb
                << ") checkGenericPlane<Integer,GenericNaivePlaneComputer>( 15, 8, 13, 15, 100, 100 )"
                << std::endl;
   trace.endBlock();
@@ -367,9 +367,9 @@ bool testCOBANaivePlaneComputer()
 }
 
 template <typename NaivePlaneComputer>
-bool 
+bool
 checkManyPlanes( unsigned int diameter,
-                 unsigned int nbplanes, 
+                 unsigned int nbplanes,
                  unsigned int nbpoints )
 {
   unsigned int nbok = 0;
@@ -379,7 +379,7 @@ checkManyPlanes( unsigned int diameter,
   ss << "Testing block: Diameter is " << diameter << ". Check " << nbplanes << " planes with " << nbpoints << " points each.";
   trace.beginBlock ( ss.str() );
   ++nb; nbok += checkPlanes<Integer,NaivePlaneComputer>( nbplanes, diameter, nbpoints ) ? 1 : 0;
-  trace.info() << "(" << nbok << "/" << nb 
+  trace.info() << "(" << nbok << "/" << nb
                << ") checkPlanes<Integer,NaivePlaneComputer>()"
                << std::endl;
   trace.endBlock();
@@ -405,7 +405,7 @@ unsigned int maxDiameter( unsigned int min, unsigned int max )
 template <typename GenericNaivePlaneComputer>
 bool
 checkExtendWithManyPoints( unsigned int diameter,
-                           unsigned int nbplanes, 
+                           unsigned int nbplanes,
                            unsigned int nbpoints )
 {
   unsigned int nbok = 0;
@@ -418,10 +418,10 @@ checkExtendWithManyPoints( unsigned int diameter,
   trace.beginBlock( "checkExtendWithManyPoints" );
   for ( unsigned int j = 0; j < nbplanes; ++j )
     {
-      Integer a = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 ); 
-      Integer b = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 ); 
-      Integer c = getRandomInteger<Integer>( (Integer) 1, (Integer) diameter / 2 ); 
-      Integer d = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 ); 
+      Integer a = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 );
+      Integer b = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 );
+      Integer c = getRandomInteger<Integer>( (Integer) 1, (Integer) diameter / 2 );
+      Integer d = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 );
       GenericNaivePlaneComputer plane;
       Dimension axis;
       if ( ( a >= b ) && ( a >= c ) )       axis = 0;
@@ -433,8 +433,8 @@ checkExtendWithManyPoints( unsigned int diameter,
       for ( unsigned int i = 0; i < nbpoints; ++i )
         {
           Point p;
-          p[ 0 ] = getRandomInteger<PointInteger>( -diameter+1, diameter ); 
-          p[ 1 ] = getRandomInteger<PointInteger>( -diameter+1, diameter ); 
+          p[ 0 ] = getRandomInteger<PointInteger>( -diameter+1, diameter );
+          p[ 1 ] = getRandomInteger<PointInteger>( -diameter+1, diameter );
           p[ 2 ] = getRandomInteger<PointInteger>( -diameter+1, diameter );
           Integer x = (Integer) p[ 0 ];
           Integer y = (Integer) p[ 1 ];
@@ -447,7 +447,7 @@ checkExtendWithManyPoints( unsigned int diameter,
           pts.push_back( p );
         }
       ++nb; nbok += plane.isExtendable( pts.begin(), pts.end() ); // should be ok
-      trace.info() << "(" << nbok << "/" << nb 
+      trace.info() << "(" << nbok << "/" << nb
                    << ") plane.isExtendable( pts.begin(), pts.end() )"
                    << std::endl;
       Point & any0 = pts[ getRandomInteger<int>( 0, pts.size() ) ];
@@ -458,18 +458,18 @@ checkExtendWithManyPoints( unsigned int diameter,
       pts.push_back( any2 + Point(0,0,1) );
       bool check = ! plane.isExtendable( pts.begin(), pts.end() ); // should not be ok
       ++nb; nbok += check ? 1 : 0;
-      trace.info() << "(" << nbok << "/" << nb 
+      trace.info() << "(" << nbok << "/" << nb
                    << ") ! plane.isExtendable( pts.begin(), pts.end() )"
                    << std::endl;
       if ( ! check )
         trace.warning() << plane << " last=" << pts.back() << std::endl
                         << "a=" << a << " b=" << b << " c=" << c << " d=" << d << std::endl;
       ++nb; nbok += plane.extend( pts.begin(), pts.end() - 3 ); // should be ok
-      trace.info() << "(" << nbok << "/" << nb 
+      trace.info() << "(" << nbok << "/" << nb
                    << ") plane.extend( pts.begin(), pts.end() - 3)"
                    << std::endl;
       ++nb; nbok += ! plane.extend( pts.end() - 3, pts.end() ); // should not be ok
-      trace.info() << "(" << nbok << "/" << nb 
+      trace.info() << "(" << nbok << "/" << nb
                    << ") ! plane.extend( pts.end() - 3, pts.end() )"
                    << std::endl;
     }
@@ -486,7 +486,7 @@ int main( int /*argc*/, char** /*argv*/ )
 
   // Max diameter is ~20 for int32_t, ~500 for int64_t, any with BigInteger.
   trace.beginBlock ( "Testing class COBANaivePlaneComputer" );
-  bool res = true 
+  bool res = true
     && testCOBANaivePlaneComputer()
     && checkManyPlanes<COBANaivePlaneComputer<Z3, DGtal::int32_t> >( 20, 100, 200 )
     && checkManyPlanes<COBANaivePlaneComputer<Z3, DGtal::int64_t> >( 500, 100, 200 )

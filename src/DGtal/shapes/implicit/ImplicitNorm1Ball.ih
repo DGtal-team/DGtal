@@ -82,7 +82,7 @@ DGtal::ImplicitNorm1Ball<T>::isValid() const
 template <typename T>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
       const ImplicitNorm1Ball<T> & object )
 {
   object.selfDisplay( out );
@@ -91,5 +91,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

@@ -96,7 +96,7 @@ std::pair<PC::Vector,PC::Vector> FixBoundaryParametrization(const std::vector<Ve
   double totalBoundaryLength = 0;
   for (Vertex i = 0;i<nb;i++)
     totalBoundaryLength += surfmesh.distance(boundary[(i+1)%nb],boundary[i]);
-  
+
   double partialSum = 0;
   for (Vertex i = 0;i<nb;i++)
   {
@@ -144,49 +144,49 @@ void VisualizeParametrizationOnCircle(const DenseMatrix& UV)
 DenseMatrix HarmonicParametrization()
 {
   auto n = surfmesh.nbVertices();
-  
+
   std::cout<<"Nb boundary edges = "<< surfmesh.computeManifoldBoundaryEdges().size()<<std::endl;
   std::vector<chain> chains = surfmesh.computeManifoldBoundaryChains();
   //choose longest chain as boundary of the parametrization
   std::cout<<"Nb boundaries  = "<< chains.size() << std::endl;
-  
+
   auto B = *std::max_element(chains.begin(),chains.end(),[] (const chain& A,const chain& B) {return A.size() < B.size();});
-  
+
   //Visualization of the boundary edges
   std::vector<RealPoint> pos;
   for(const auto v: B)
     pos.push_back(surfmesh.position(v));
   polyscope::registerCurveNetworkLoop("Longest boundary", pos);
-  
+
   IntegerVector boundary = IntegerVector::Zero(n);
   for (Vertex v : B)
     boundary(v) = 1;
-  
+
   std::pair<PC::Vector,PC::Vector> uv_b = FixBoundaryParametrization(B);//maps boundary to circle
-  
+
   calculus = new PC(surfmesh);
-  
+
   //Impose dirichlet boundary condition to laplace problem
   PC::Vector Z = PC::Vector::Zero(n);
   SparseMatrix L = calculus->globalLaplaceBeltrami();
   SparseMatrix L_d = Conditions::dirichletOperator( L, boundary );
-  
+
   PC::Solver solver;
   solver.compute(L_d);
-  
+
   PC::Vector b_u = Conditions::dirichletVector( L, Z,boundary, uv_b.first );
   PC::Vector b_v = Conditions::dirichletVector( L, Z,boundary, uv_b.second );
-  
+
   PC::Vector rslt_u_d = solver.solve(b_u);
   PC::Vector rslt_v_d = solver.solve(b_v);
-  
+
   PC::Vector rslt_u = Conditions::dirichletSolution(rslt_u_d,boundary,uv_b.first);
   PC::Vector rslt_v = Conditions::dirichletSolution(rslt_v_d,boundary,uv_b.second);
-  
+
   DenseMatrix uv(n,2);
   uv.col(0) = rslt_u;
   uv.col(1) = rslt_v;
-  
+
   return uv;
 }
 
@@ -224,32 +224,32 @@ void initQuantities()
 {
   trace.beginBlock("Basic quantities");
   PolygonalCalculus<SH3::RealPoint,SH3::RealVector> calculus(surfmesh);
-  
+
   std::vector<PC::Vector> gradients;
   std::vector<PC::Vector> cogradients;
   std::vector<PC::Real3dPoint> normals;
   std::vector<PC::Real3dPoint> vectorArea;
   std::vector<PC::Real3dPoint> centroids;
-  
+
   std::vector<double> faceArea;
-  
+
   for(auto f=0; f < surfmesh.nbFaces(); ++f)
   {
     PC::Vector grad = calculus.gradient(f) * phi(f);
     gradients.push_back( grad );
-    
+
     PC::Vector cograd =  calculus.coGradient(f) * phi(f);
     cogradients.push_back( cograd );
-    
+
     normals.push_back(calculus.faceNormalAsDGtalVector(f));
-    
+
     PC::Vector vA = calculus.vectorArea(f);
     vectorArea.push_back({vA(0) , vA(1), vA(2)});
-    
+
     faceArea.push_back( calculus.faceArea(f));
   }
   trace.endBlock();
-  
+
   psMesh->addFaceVectorQuantity("Gradients", gradients);
   psMesh->addFaceVectorQuantity("co-Gradients", cogradients);
   psMesh->addFaceVectorQuantity("Normals", normals);
@@ -266,9 +266,9 @@ void computeGeodesics()
   auto nv = surfmesh.nbVertices();
   auto ael = surfmesh.averageEdgeLength();
   GHM.init(ael*ael);//init vector heat method solvers
-  
+
   X_0.resize(nv,0);//extrinsic Source vectors
-  
+
   //Random Sources
   for(auto i=0; i < nbSources; ++i)
   {
@@ -291,9 +291,9 @@ void computeHeatVectors()
   auto nv = surfmesh.nbVertices();
   auto ael = surfmesh.averageEdgeLength();
   VHM.init(ael*ael);//init vector heat method solvers
-  
+
   X_0.resize(nv,Vector::Zero(3));//extrinsic Source vectors
-  
+
   //Random Sources
   for(auto i=0; i < nbSources; ++i)
   {
@@ -324,7 +324,7 @@ void myCallback()
   {
     //compute parametrization
     DenseMatrix UV = HarmonicParametrization();
-    
+
     //visualize parametrization on 2D circle
     VisualizeParametrizationOnCircle(UV);
     psMesh->addVertexParameterizationQuantity("Harmonic parametrization",UV)->setEnabled(true);
@@ -334,13 +334,13 @@ void myCallback()
 int main()
 {
   std::string inputFilename(examplesPath + "samples/bunnyheadhole.obj" );
-  
+
   Mesh<RealPoint> a3DMesh;
   a3DMesh << inputFilename;
 
   for(auto it = a3DMesh.faceBegin(), itend = a3DMesh.faceEnd(); it != itend; ++it)
     faces.push_back(*it);
-  
+
   //Need to convert the faces
   surfmesh = SurfMesh(a3DMesh.vertexBegin(),
                       a3DMesh.vertexEnd(),
@@ -352,7 +352,7 @@ int main()
 
   // Initialize polyscope
   polyscope::init();
-  
+
   // Set the callback function
   polyscope::state::userCallback = myCallback;
   polyscope::show();

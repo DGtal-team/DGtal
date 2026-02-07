@@ -77,8 +77,8 @@ namespace DGtal
     typedef TConstIteratorOnPoints ConstIterator;
 
     typedef TParametricShape ParametricShape;
-    typedef typename ParametricShape::RealPoint RealPoint; 
-    
+    typedef typename ParametricShape::RealPoint RealPoint;
+
     typedef TParametricShapeFunctor ParametricShapeFunctor;
     typedef typename ParametricShapeFunctor::Quantity Quantity;
 
@@ -128,7 +128,7 @@ namespace DGtal
      * @param h grid size (must be > 0).
      * @return the estimated quantity from itb till ite (excluded)
      */
-    Quantity eval(const ConstIterator& itb, 
+    Quantity eval(const ConstIterator& itb,
         const ConstIterator& ite,
         const double h = 1.) const;
 
@@ -138,7 +138,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     ///Parametric quantity functor

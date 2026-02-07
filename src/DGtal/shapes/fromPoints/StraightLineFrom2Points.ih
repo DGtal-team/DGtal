@@ -54,7 +54,7 @@ template <typename TPoint>
 inline
 void
 DGtal::StraightLineFrom2Points<TPoint>::init(
-        const Point& aFirstPoint, 
+        const Point& aFirstPoint,
         const Point& aSecondPoint)
 {
   myP = aFirstPoint;
@@ -65,7 +65,7 @@ DGtal::StraightLineFrom2Points<TPoint>::init(
 template <typename TPoint>
 inline
 DGtal::StraightLineFrom2Points<TPoint>::StraightLineFrom2Points(
-        const Point& aFirstPoint, 
+        const Point& aFirstPoint,
         const Point& aSecondPoint):
         myP(aFirstPoint),
         myQ(aSecondPoint)
@@ -103,7 +103,7 @@ DGtal::StraightLineFrom2Points<TPoint>::signedDistance(const Point& aP) const
 {
   Vector pq = myQ - myP;
   Vector pr = aP - myP;
-  //computation of det(pq, pr) 
+  //computation of det(pq, pr)
   //(= twice the parallelogram area)
   return ((pq[0] * pr[1]) - (pq[1] * pr[0]));
 }
@@ -136,5 +136,3 @@ DGtal::StraightLineFrom2Points<TPoint>::isValid() const
 {
     return true;
 }
-
-

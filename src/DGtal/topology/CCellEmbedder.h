@@ -111,12 +111,12 @@ public:
   {
     checkConstConstraints();
   }
-  
+
   void checkConstConstraints() const
   { // operator()
     ConceptUtils::sameType( myRP, myX( myP ) );
   }
-  // ------------------------- Private Datas --------------------------------
+  // ------------------------- Private Data --------------------------------
 private:
   T myX; // do not require T to be default constructible.
   Cell myP;

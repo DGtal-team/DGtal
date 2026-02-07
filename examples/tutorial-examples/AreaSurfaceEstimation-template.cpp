@@ -28,15 +28,15 @@ int main( int argc, char** argv )
 	double areaSurfaceEstimated = 0.0;
 
 	trace.beginBlock( "Make parametric shape..." );
-	
+
 
 	trace.endBlock();
 
 	trace.beginBlock( "Make digital shape..." );
 
-	
+
 	trace.endBlock();
-	
+
 	trace.beginBlock( "Make digital surface..." );
 
 

@@ -49,7 +49,7 @@ template < typename TGraph, typename TMarkSet >
 inline
 DGtal::BreadthFirstVisitor<TGraph,TMarkSet>
 ::BreadthFirstVisitor( const BreadthFirstVisitor & other )
-  : myGraph( other.myGraph ), 
+  : myGraph( other.myGraph ),
     myMarkedVertices( other.myMarkedVertices ),
     myQueue( other.myQueue )
 {
@@ -90,7 +90,7 @@ DGtal::BreadthFirstVisitor<TGraph,TMarkSet>
 //-----------------------------------------------------------------------------
 template < typename TGraph, typename TMarkSet >
 inline
-const typename DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::Graph & 
+const typename DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::Graph &
 DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::graph() const
 {
   return myGraph;
@@ -106,7 +106,7 @@ DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::finished() const
 //-----------------------------------------------------------------------------
 template < typename TGraph, typename TMarkSet >
 inline
-const typename DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::Node & 
+const typename DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::Node &
 DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::current() const
 {
   ASSERT( ! finished() );
@@ -129,13 +129,13 @@ DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::expand()
 {
   ASSERT( ! finished() );
   Node node = myQueue.front();
-  Data d = node.second + 1; 
+  Data d = node.second + 1;
   myQueue.pop();
   VertexList tmp;
   tmp.reserve( myGraph.bestCapacity() );
   std::back_insert_iterator<VertexList> write_it = std::back_inserter( tmp );
   myGraph.writeNeighbors( write_it, node.first );
-  for ( typename VertexList::const_iterator it = tmp.begin(), 
+  for ( typename VertexList::const_iterator it = tmp.begin(),
           it_end = tmp.end(); it != it_end; ++it )
     {
       typename MarkSet::const_iterator mark_it = myMarkedVertices.find( *it );
@@ -156,7 +156,7 @@ DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::expand
 {
   ASSERT( ! finished() );
   Node node = myQueue.front();
-  Data d = node.second + 1; 
+  Data d = node.second + 1;
   myQueue.pop();
   VertexList tmp;
   tmp.reserve( myGraph.bestCapacity() );
@@ -164,7 +164,7 @@ DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::expand
   myGraph.writeNeighbors( write_it,
                           node.first,
                           authorized_vtx );
-  for ( typename VertexList::const_iterator it = tmp.begin(), 
+  for ( typename VertexList::const_iterator it = tmp.begin(),
           it_end = tmp.end(); it != it_end; ++it )
     {
       typename MarkSet::const_iterator mark_it = myMarkedVertices.find( *it );
@@ -193,7 +193,7 @@ DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::terminate()
 //-----------------------------------------------------------------------------
 template < typename TGraph, typename TMarkSet >
 inline
-const typename DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::MarkSet & 
+const typename DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::MarkSet &
 DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::markedVertices() const
 {
   return myMarkedVertices;
@@ -216,7 +216,7 @@ DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::visitedVertices() const
       visitedVtx.erase( mark_it );
     }
   return visitedVtx;
-  // JOL: 2012/11/21: Cannot do this since method is const.  
+  // JOL: 2012/11/21: Cannot do this since method is const.
   //
   // Roll completely the queue so as to remove these vertices from the
   // set of visited vertices.
@@ -269,7 +269,7 @@ DGtal::BreadthFirstVisitor<TGraph,TMarkSet>::isValid() const
 template < typename TGraph, typename TMarkSet >
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
                     const BreadthFirstVisitor<TGraph,TMarkSet> & object )
 {
   object.selfDisplay( out );
@@ -278,5 +278,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

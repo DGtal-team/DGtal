@@ -91,7 +91,7 @@ int main( int /* argc */, char** /* argv */ )
     ++nb; nbok += ok ? 1 : 0;
   }
   trace.endBlock();
-  
+
   trace.beginBlock ( "Build polynomial shape -> digitize -> extract ground-truth geometry." );
   {
     auto params          = SH3::defaultParameters() | SHG3::defaultParameters();
@@ -141,7 +141,7 @@ int main( int /* argc */, char** /* argv */ )
     auto pointels        = SH3::getPointelRange( c2i, surface );
     SH3::RealPoints pos( pointels.size() );
     std::transform( pointels.cbegin(), pointels.cend(), pos.begin(),
-        	    [&] (const SH3::Cell& c) { return h * embedder( c ); } ); 
+        	    [&] (const SH3::Cell& c) { return h * embedder( c ); } );
     auto ppos     = SHG3::getPositions( implicit_shape, pos, params );
     bool ok       = SH3::saveOBJ( surface,
         			  [&] (const SH3::Cell& c){ return ppos[ c2i[ c ] ];},
@@ -207,7 +207,7 @@ int main( int /* argc */, char** /* argv */ )
     ++nb; nbok += ( ok_t && ok_ii && ok_err ) ? 1 : 0;
   }
   trace.endBlock();
-    
+
   trace.beginBlock ( "Build polynomial shape -> digitize -> build digital surface -> save primal surface with VCM normals as obj." );
   {
     auto params          = SH3::defaultParameters() | SHG3::defaultParameters();
@@ -251,7 +251,7 @@ int main( int /* argc */, char** /* argv */ )
     auto match           = SH3::getRangeMatch           ( def_surfels, surfels );
     auto normals         = SH3::getMatchedRange         ( ii_normals, match );
     for ( SH3::Idx i = 0; i < colors.size(); i++ )
-      colors[ i ] = cmap( ii_mean_curv[ match[ i ] ] ); 
+      colors[ i ] = cmap( ii_mean_curv[ match[ i ] ] );
     bool ok_H  = SH3::saveOBJ( surface, SH3::RealVectors(), colors, "goursat-imp-H-ii.obj" );
     //! [dgtal_shortcuts_ssec2_2_10s]
     ++nb; nbok += ( ok_H && ii_mean_curv.size() == ii_mean_curv2.size() ) ? 1 : 0;
@@ -274,7 +274,7 @@ int main( int /* argc */, char** /* argv */ )
       auto pointels        = SH3::getPointelRange( c2i, surface );
       SH3::RealPoints pos( pointels.size() );
       std::transform( pointels.cbegin(), pointels.cend(), pos.begin(),
-        	      [&] (const SH3::Cell& c) { return h * embedder( c ); } ); 
+        	      [&] (const SH3::Cell& c) { return h * embedder( c ); } );
       auto ppos       = SHG3::getPositions( implicit_shape, pos, params );
       auto fname      = std::string( "goursat-quad-" ) + std::to_string( h ) + std::string( ".obj" );
       bool ok         = SH3::saveOBJ( surface,
@@ -308,7 +308,7 @@ int main( int /* argc */, char** /* argv */ )
     auto embedder        = SH3::getSCellEmbedder( K );
     SH3::RealPoints positions( surfels.size() );
     std::transform( surfels.cbegin(), surfels.cend(), positions.begin(),
-        	    [&] (const SH3::SCell& c) { return embedder( c ); } ); 
+        	    [&] (const SH3::SCell& c) { return embedder( c ); } );
     bool ok              = SH3::saveOBJ( surface, vcm_normals, SH3::Colors(),
         				 "goursat-primal-vcm.obj" );
     bool ok2             = SH3::saveVectorFieldOBJ( positions, vcm_normals, 0.05, SH3::Colors(),
@@ -338,7 +338,7 @@ int main( int /* argc */, char** /* argv */ )
     auto embedder        = SH3::getSCellEmbedder( K );
     SH3::RealPoints positions( surfels.size() );
     std::transform( surfels.cbegin(), surfels.cend(), positions.begin(),
-        	    [&] (const SH3::SCell& c) { return embedder( c ); } ); 
+        	    [&] (const SH3::SCell& c) { return embedder( c ); } );
     SH3::saveOBJ( surface, SH3::RealVectors(), SH3::Colors(),
 			       "goursat-primal.obj" );
     // output principal curvatures and directions
@@ -394,7 +394,7 @@ int main( int /* argc */, char** /* argv */ )
     ++nb; nbok += ok_k2;
   }
   trace.endBlock();
-  
+
 #if defined(DGTAL_WITH_EIGEN)
   trace.beginBlock ( "Load vol file -> build main digital surface -> II normals -> AT regularization -> save OBJ with colored normals." );
   {
@@ -413,7 +413,7 @@ int main( int /* argc */, char** /* argv */ )
                                                            ii_normals, params );
     // Output normals as colors depending on directions
     SH3::Colors colors( surfels.size() );
-    for ( size_t i = 0; i < surfels.size(); i++ ) 
+    for ( size_t i = 0; i < surfels.size(); i++ )
       colors[ i ] = SH3::Color( (unsigned char) 255.0*fabs( at_normals[ i ][ 0 ] ),
                                 (unsigned char) 255.0*fabs( at_normals[ i ][ 1 ] ),
                                 (unsigned char) 255.0*fabs( at_normals[ i ][ 2 ] ) );
@@ -443,9 +443,9 @@ int main( int /* argc */, char** /* argv */ )
     ++nb; nbok += ok3 ? 1 : 0;
   }
   trace.endBlock();
-  
+
 #endif // defined(WITH_EIGEN)
-  
+
 #if DGTAL_WITH_POLYSCOPE
   trace.beginBlock( "Load vol file -> Compute VoronoiMap -> Display in Viewer" );
   {
@@ -453,14 +453,14 @@ int main( int /* argc */, char** /* argv */ )
     //! [dgtal_shortcuts_ssec2_1_15s]
     auto bimage    = SH3::makeBinaryImage( examplesPath + "samples/Al.100.vol", params );
     auto domain    = bimage->domain();
-    
+
     // Extract points location
     std::vector<SH3::Point> sites;
-    std::copy_if(domain.begin(), 
-                 domain.end(), 
-                 std::back_inserter(sites), 
+    std::copy_if(domain.begin(),
+                 domain.end(),
+                 std::back_inserter(sites),
                  *bimage);
-    
+
     // Compute VoronoiMap and get distances from sites (L_1 and L_2 metrics)
     auto vmap1 = SHG3::getDistanceTransformation<1>(bimage->domain(), sites, params);
     auto vmap2 = SHG3::getDistanceTransformation<2>(bimage->domain(), sites, params);
@@ -472,7 +472,7 @@ int main( int /* argc */, char** /* argv */ )
     for (auto it = domain.begin(); it != domain.end(); ++it)
     {
       viewer << WithQuantity(
-                  WithQuantity(*it, 
+                  WithQuantity(*it,
                      "L1 distance", vmap1(*it)
                   ), "L2 distance", vmap2(*it)
                 );

@@ -31,10 +31,10 @@
 #include <boost/endian/conversion.hpp>
 #include "DGtal/kernel/sets/DigitalSetByOctree.h"
 
-namespace DGtal 
+namespace DGtal
 {
   /**
-   * @brief Class to read SVO file. 
+   * @brief Class to read SVO file.
    *
    * The file format is defined in SVOWriter.h
    *
@@ -42,7 +42,7 @@ namespace DGtal
    * @see SVOWriter
    */
   template <class Space>
-  class SVOReader 
+  class SVOReader
   {
   public:
     using Octree = DigitalSetByOctree<Space>;

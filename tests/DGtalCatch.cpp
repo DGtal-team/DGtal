@@ -10,4 +10,3 @@
 
 #define CATCH_CONFIG_MAIN
 #include "DGtalCatch.h"
-

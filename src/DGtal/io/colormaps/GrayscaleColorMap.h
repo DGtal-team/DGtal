@@ -19,7 +19,7 @@
 /**
  * @file GrayscaleColorMap.h
  * @author Sebastien Fourey (\c Sebastien.Fourey@greyc.ensicaen.fr )
- * Groupe de Recherche en Informatique, Image, Automatique et Instrumentation de Caen - GREYC (CNRS, UMR 6072), ENSICAEN, France
+ * GREYC (CNRS, UMR 6072), ENSICAEN, France
  *
  * @date 2010/07/19
  *
@@ -47,11 +47,11 @@
 
 #ifdef _MSC_VER
 #if defined( max )
-#undef max 
+#undef max
 #define _HAS_MSVC_MAX_ true
 #endif
 #if defined( min )
-#undef min 
+#undef min
 #define _HAS_MSVC_MIN_ true
 #endif
 #endif
@@ -67,9 +67,9 @@ namespace DGtal
    * Description of template class 'GrayscaleColorMap' <p>
    * \brief Aim: This class template may be used to (linearly) convert scalar values
    * in a given range into gray levels.
-   * 
+   *
    * The GrayscaleColorMap can be used either as a functor object
-   * (the value range is given at the object's construction) which converts a value 
+   * (the value range is given at the object's construction) which converts a value
    * into a Color structure, or it can be used through a static method
    * taking both the range and the value as parameters.
    *
@@ -92,17 +92,17 @@ namespace DGtal
   template <typename PValue>
   class GrayscaleColorMap
   {
-    
+
   public:
-    
+
     typedef PValue Value;
 
     // ----------------------- Standard services ------------------------------
   public:
 
-    /** 
+    /**
      * Constructor.
-     * 
+     *
      * @param min The lower bound of the value range.
      * @param max The upper bound of the value range.
      */
@@ -110,15 +110,15 @@ namespace DGtal
            const PValue & max );
 
 
-    /** 
+    /**
      * Computes the gray level associated with a value in a given range.
-     * 
+     *
      * @param value A value within the value range.
-     * @return A gray level (as a Color) which linearly depends on the 
+     * @return A gray level (as a Color) which linearly depends on the
      * position of [value] within the current range.
      */
     Color operator()( const PValue & value ) const;
-      
+
     /**
      * Destructor.
      */
@@ -152,14 +152,14 @@ namespace DGtal
      */
     bool isValid() const;
 
-    /** 
+    /**
      * Returns the lower bound of the value range.
      *
      * @return The lower bound of the value range.
      */
     const PValue & min() const;
 
-    /** 
+    /**
      * Returns the upper bound of the value range.
      *
      * @return The upper bound of the value range.
@@ -169,23 +169,23 @@ namespace DGtal
     // ----------------------- Static methods ---------------------------------
 
 
-    /** 
+    /**
      * Computes the gray level associated with a value in a given range.
-     * 
-     * @param min The lower bound of the value range.  
+     *
+     * @param min The lower bound of the value range.
      * @param max The upper bound of the value range.
      * @param value A value within the value range.
-     * @return A gray level (as a Color) which linearly depends on the 
-     * position of [value] within the range [min]..[max]. 
+     * @return A gray level (as a Color) which linearly depends on the
+     * position of [value] within the range [min]..[max].
      */
     static Color getColor( const PValue & min,
              const PValue & max,
              const PValue & value );
-    
-    // ------------------------- Protected Datas ------------------------------
+
+    // ------------------------- Protected Data ------------------------------
   private:
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------
@@ -215,7 +215,7 @@ namespace DGtal
   template <typename PValue>
   std::ostream&
   operator<< ( std::ostream & out, const GrayscaleColorMap<PValue> & object );
-  
+
 } // namespace DGtal
 
 

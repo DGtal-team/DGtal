@@ -47,11 +47,11 @@ DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::Tracker
 template <typename TKSpace, typename TPointPredicate>
 inline
 DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::Tracker
-::Tracker( ConstAlias<DigitalSurfaceContainer> aSurface, 
+::Tracker( ConstAlias<DigitalSurfaceContainer> aSurface,
            const Surfel & s )
   : mySurface( aSurface ), myNeighborhood()
 {
-  myNeighborhood.init( & surface().space(), 
+  myNeighborhood.init( & surface().space(),
                        & surface().surfelAdjacency(),
                        s );
 }
@@ -127,8 +127,8 @@ template <typename TKSpace, typename TPointPredicate>
 inline
 DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::ImplicitDigitalSurface
 ( const ImplicitDigitalSurface & other )
-  : myKSpace( other.myKSpace ), 
-    myPointPredicate( other.myPointPredicate ), 
+  : myKSpace( other.myKSpace ),
+    myPointPredicate( other.myPointPredicate ),
     mySurfelAdjacency( other.mySurfelAdjacency ),
     mySurfels( other. mySurfels )
 {
@@ -140,7 +140,7 @@ DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::ImplicitDigitalSurface
 ( ConstAlias<KSpace> aKSpace,
   ConstAlias<PointPredicate> aPP,
   const Adjacency & adj,
-  const Surfel & s, 
+  const Surfel & s,
   bool closed )
   : myKSpace( aKSpace ), myPointPredicate( aPP ), mySurfelAdjacency( adj )
 {
@@ -149,8 +149,8 @@ DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::ImplicitDigitalSurface
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
 inline
-const 
-typename DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::Adjacency & 
+const
+typename DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::Adjacency &
 DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::surfelAdjacency() const
 {
   return mySurfelAdjacency;
@@ -158,7 +158,7 @@ DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::surfelAdjacency() const
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
 inline
-typename DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::Adjacency & 
+typename DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::Adjacency &
 DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::surfelAdjacency()
 {
   return mySurfelAdjacency;
@@ -166,8 +166,8 @@ DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::surfelAdjacency()
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
 inline
-const 
-typename DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::PointPredicate & 
+const
+typename DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::PointPredicate &
 DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::pointPredicate() const
 {
   return myPointPredicate;
@@ -178,7 +178,7 @@ DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::pointPredicate() const
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
 inline
-const typename DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::KSpace & 
+const typename DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::KSpace &
 DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::space() const
 {
   return myKSpace;
@@ -240,7 +240,7 @@ DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::empty() const
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TPointPredicate>
 inline
-typename DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::DigitalSurfaceTracker* 
+typename DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::DigitalSurfaceTracker*
 DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::newTracker
 ( const Surfel & s ) const
 {
@@ -317,7 +317,7 @@ DGtal::ImplicitDigitalSurface<TKSpace,TPointPredicate>::isValid() const
 template <typename TKSpace, typename TPointPredicate>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		  const ImplicitDigitalSurface<TKSpace,TPointPredicate> & object )
 {
   object.selfDisplay( out );
@@ -326,5 +326,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

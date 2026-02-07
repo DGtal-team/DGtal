@@ -48,24 +48,24 @@ bool testArithDSSIterator()
 {
   typedef PointVector<2,int> Point;
   typedef ArithDSSIterator<int,8> MyIterator;
-  
+
   Point p(3,2);
   MyIterator it(2,5,-4,p);
-  
+
   typedef NaiveDSS8<int> ArithDSS;
 
   ArithDSS myDSS(p, p);
 
   int absMax=8;
-  
+
   while ( (*it)[0] <=absMax && myDSS.extendFront(*++it))
     {}
-  
-  std::cout << myDSS.a() << " " << myDSS.b() << " " << myDSS.mu() << " " <<   std::endl; 
-  
+
+  std::cout << myDSS.a() << " " << myDSS.b() << " " << myDSS.mu() << " " <<   std::endl;
+
   return ( (myDSS.a() == 2) &&
 	   (myDSS.b() == 5) &&
-	   (myDSS.mu() == -4) ); 
+	   (myDSS.mu() == -4) );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

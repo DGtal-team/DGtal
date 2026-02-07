@@ -61,7 +61,7 @@ int main( )
    typedef ImageSelector < Z2i::Domain, unsigned char>::Type Image2D;
    typedef DGtal::ConstImageAdapter<Image3D, Image2D::Domain, DGtal::functors::Projector<Z3i::Space>,
                                     Image3D::Value,  DGtal::functors::Identity >  SliceImageAdapter;
-   
+
 
    DGtal::functors::Projector<Z2i::Space >  proj(2);
 

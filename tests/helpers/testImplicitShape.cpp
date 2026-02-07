@@ -55,12 +55,12 @@ bool testImplicitShape()
   Z2i::Point a(0,0);
   Z2i::Point b(64,64);
   Z2i::Point c(32,32);
-  
+
   Board2D board;
-  
+
   Z2i::Domain domain(a,b);
   Z2i::DigitalSet set(domain);
-  
+
   Shapes<Z2i::Domain>::euclideanShaper( set,
              ImplicitBall<Z2i::Space>( c, 10));
   board << set;
@@ -72,7 +72,7 @@ bool testImplicitShape()
              ImplicitHyperCube<Z2i::Space>( c, 10));
   board << set;
   board.saveSVG("implicitcube.svg");
-  
+
 
   set.clear();
   board.clear();
@@ -80,14 +80,14 @@ bool testImplicitShape()
              ImplicitNorm1Ball<Z2i::Space>( c, 10));
   board << set;
   board.saveSVG("implicitlosange.svg");
-  
+
   set.clear();
   board.clear();
   Shapes<Z2i::Domain>::euclideanShaper( set,
              ImplicitRoundedHyperCube<Z2i::Space>( c, 10, 1));
   board << set;
   board.saveSVG("implicitrounded-1.svg");
-  
+
 
   set.clear();
   board.clear();
@@ -95,7 +95,7 @@ bool testImplicitShape()
              ImplicitRoundedHyperCube<Z2i::Space>( c, 10, 2.5));
   board << set;
   board.saveSVG("implicitrounded-2.5.svg");
-  
+
 
   return true;
 }
@@ -109,7 +109,7 @@ bool testImplicitShape3D()
   Z3i::Point a(0,0);
   Z3i::Point b(64,64,64);
   Z3i::Point c(32,32,32);
-  
+
   Z3i::Domain domain(a,b);
 
   typedef ImageContainerBySTLVector<Z3i::Domain, DGtal::uint8_t> Image;
@@ -128,7 +128,7 @@ bool testImplicitShape3D()
     }
 
   VolWriter<Image>::exportVol("implicitrounded.vol",image);
-  
+
   return true;
 }
 

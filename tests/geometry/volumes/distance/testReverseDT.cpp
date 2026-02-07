@@ -80,13 +80,13 @@ bool testReverseDT()
   unsigned int nb = 0;
 
   trace.beginBlock ( "Testing Reverse DT in 2D ..." );
-  
+
   Z2i::Point a (2, 2 );
   Z2i::Point b ( 15, 15 );
 
   typedef ImageSelector< Z2i::Domain,  int>::Type Image;
   Image image (Z2i::Domain( a, b ));
-  
+
   for ( unsigned k = 0; k < 49; k++ )
     {
       a[0] = ( k / 7 ) + 5;
@@ -95,17 +95,17 @@ bool testReverseDT()
     }
 
   a = Z2i::Point(2,2);
- 
+
   typedef SimpleThresholdForegroundPredicate<Image> Predicate;
   Predicate aPredicate(image,0);
- 
+
   typedef ExactPredicateLpSeparableMetric<Z2i::Space, 2> L2Metric;
   Z2i::Domain dom(a,b);
   L2Metric l2;
   DistanceTransformation<Z2i::Space, Predicate, L2Metric > dt(&dom, &aPredicate, &l2);
 
   trace.info() << dt<< std::endl;
-  //ReverseDT  
+  //ReverseDT
   trace.warning()<<"DT:"<<endl;
   DistanceTransformation<Z2i::Space, Predicate, L2Metric >::ConstRange::ConstIterator it = dt.constRange().begin();
   for (unsigned int y = 2; y < 16; y++)
@@ -121,7 +121,7 @@ bool testReverseDT()
   typedef ReverseDistanceTransformation< DistanceTransformation<Z2i::Space, Predicate, L2Metric > , Z2i::L2PowerMetric > RDT;
   Z2i::L2PowerMetric l2power;
   RDT reverseDT(&dom,&dt,&l2power);
-  
+
 
   for(unsigned int j=2; j<16; j++)
     {
@@ -150,34 +150,34 @@ bool testReverseDT()
     if ((*itrec) >= 0)
       ok = ok & ((*itinit) == 0);
 
-  
+
   trace.info() << "vector (4,7)= "<< reverseDT.getPowerVector(Z2i::Point(4,7))<<std::endl;
-  nbok += (reverseDT.getPowerVector(Z2i::Point(4,7))==Z2i::Point(5,7)) ? 1 : 0; 
+  nbok += (reverseDT.getPowerVector(Z2i::Point(4,7))==Z2i::Point(5,7)) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "ok" << std::endl;
-  
+
   trace.info() << "dist (4,7)= "<< reverseDT.metricPtr()->exactDistanceRepresentation(Z2i::Point(4,7), Z2i::Point(5,7))<<std::endl;
-  nbok += (reverseDT.metricPtr()->exactDistanceRepresentation(Z2i::Point(4,7), Z2i::Point(5,7))==1) ? 1 : 0; 
+  nbok += (reverseDT.metricPtr()->exactDistanceRepresentation(Z2i::Point(4,7), Z2i::Point(5,7))==1) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
- 
+
   trace.info() << "power (4,7)= "<< reverseDT(Z2i::Point(4,7))<<std::endl;
-  nbok += (reverseDT(Z2i::Point(4,7))==0) ? 1 : 0; 
+  nbok += (reverseDT(Z2i::Point(4,7))==0) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
- 
 
 
 
-  nbok += ok ? 1 : 0; 
+
+  nbok += ok ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
@@ -187,13 +187,13 @@ bool testReverseDTL1()
   unsigned int nb = 0;
 
   trace.beginBlock ( "Testing Reverse DT in 2D with L1 metric ..." );
-  
+
   Z2i::Point a (2, 2 );
   Z2i::Point b ( 15, 15 );
 
   typedef ImageSelector< Z2i::Domain, unsigned int>::Type Image;
   Image image ( Z2i::Domain( a, b ));
-  
+
   for ( unsigned k = 0; k < 49; k++ )
     {
       a[0] = ( k / 7 ) + 5;
@@ -201,8 +201,8 @@ bool testReverseDTL1()
       image.setValue ( a, 128 );
     }
   a = Z2i::Point(2, 2 );
- 
- 
+
+
   typedef SimpleThresholdForegroundPredicate<Image> Predicate;
   Predicate aPredicate(image,0);
   Z2i::Domain dom= image.domain();
@@ -211,7 +211,7 @@ bool testReverseDTL1()
   DistanceTransformation<Z2i::Space, Predicate, L1Metric> dt(&dom, &aPredicate, &l1);
 
 
-  //ReverseDT  
+  //ReverseDT
   trace.warning()<<"DT:"<<endl;
   DistanceTransformation<Z2i::Space, Predicate, L1Metric>::ConstRange::ConstIterator it = dt.constRange().begin();
   for (unsigned int y = 2; y < 16; y++)
@@ -223,12 +223,12 @@ bool testReverseDTL1()
     }
     std::cout << std::endl;
   }
- 
+
   typedef ReverseDistanceTransformation< DistanceTransformation<Z2i::Space, Predicate, L1Metric>, Z2i::L1PowerMetric > RDT;
   Z2i::L1PowerMetric l1power;
   RDT reverseDT(&dom, &dt, &l1power);
-  
-  
+
+
   trace.warning()<<"Power"<<std::endl;
   for(unsigned int j=2; j<16; j++)
     {
@@ -256,12 +256,12 @@ bool testReverseDTL1()
   for( ; itrec != itend; ++itrec,++itinit)
     if ((*itrec) >= 0)
       ok = ok & ((*itinit) == 0);
-  
-  nbok += ok ? 1 : 0; 
+
+  nbok += ok ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
-  trace.endBlock();  
+  trace.endBlock();
   return nbok == nb;
 }
 
@@ -278,7 +278,7 @@ int main( int argc, char** argv )
 
   bool res = testReverseDT()
     && testReverseDTL1(); // && ... other tests
-  
+
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

@@ -47,7 +47,7 @@ DGtal::functors::FrontierPredicate<TKSpace,TImage>::
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TImage>
 inline
-DGtal::functors::FrontierPredicate<TKSpace,TImage>::  
+DGtal::functors::FrontierPredicate<TKSpace,TImage>::
 FrontierPredicate( ConstAlias<KSpace> aSpace, ConstAlias<Image> anImage,
                    const Value & l1, const Value & l2 )
   : myPtrSpace( &aSpace ), myPtrImage( &anImage ),
@@ -56,7 +56,7 @@ FrontierPredicate( ConstAlias<KSpace> aSpace, ConstAlias<Image> anImage,
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TImage>
 inline
-DGtal::functors::FrontierPredicate<TKSpace,TImage>::  
+DGtal::functors::FrontierPredicate<TKSpace,TImage>::
 FrontierPredicate( const FrontierPredicate & other )
   : myPtrSpace( other.myPtrSpace ), myPtrImage( other.myPtrImage ),
     myLabel1( other.myLabel1 ), myLabel2( other.myLabel2 )
@@ -65,7 +65,7 @@ FrontierPredicate( const FrontierPredicate & other )
 template <typename TKSpace, typename TImage>
 inline
 DGtal::functors::FrontierPredicate<TKSpace,TImage> &
-DGtal::functors::FrontierPredicate<TKSpace,TImage>::  
+DGtal::functors::FrontierPredicate<TKSpace,TImage>::
 operator=( const FrontierPredicate & other )
 {
   if ( this != &other )
@@ -133,5 +133,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

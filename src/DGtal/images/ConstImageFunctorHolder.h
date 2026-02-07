@@ -88,7 +88,7 @@ auto image = DGtal::holdConstImageFunctor(
 @endcode
  *
  * This example is illustrated in @ref moduleImages_functorconstimage
- * and you can find more informations about how to use this class appropriately
+ * and you can find more information about how to use this class appropriately
  * in the module about @ref moduleFunctors .
  *
  * @see holdConstImageFunctor, FunctorHolder, @ref moduleFunctors
@@ -126,7 +126,7 @@ public:
 
   BOOST_STATIC_CONSTANT( Dimension, dimension = Domain::Space::dimension );
 
-  // ------------------------- Private Datas --------------------------------
+  // ------------------------- Private Data --------------------------------
   // Private members moved to the beginning of the class because of
   //  the SFINAE trick in the operator() methods.
 private:
@@ -294,7 +294,7 @@ holdConstImageFunctor( TDomain const& aDomain, TFunctor && aFunctor )
  * @note You don't have to choose between the version for unary or binary functor:
  *  this choice is automatically done using SFINAE technique.
  *
- * @see ConstImageFunctorHolder and @ref moduleImages for more informations.
+ * @see ConstImageFunctorHolder and @ref moduleImages for more information.
  */
 
 // Auto-deduction of the return type in case of an unary functor.

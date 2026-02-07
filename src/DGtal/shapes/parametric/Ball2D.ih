@@ -43,14 +43,14 @@
 template <typename T>
 inline
 DGtal::Ball2D<T>::Ball2D(const double x0, const double y0, const double radius):
-  myRadius(radius), myCenter(x0,y0) 
+  myRadius(radius), myCenter(x0,y0)
 {}
 
 
 template <typename T>
 inline
 DGtal::Ball2D<T>::Ball2D(const RealPoint &aPoint, const double radius):
-  myRadius(radius), myCenter(aPoint) 
+  myRadius(radius), myCenter(aPoint)
 {}
 
 template <typename T>
@@ -85,7 +85,7 @@ DGtal::Ball2D<T>::parameter( const RealPoint & p ) const
  */
 template <typename T>
 inline
-typename DGtal::Ball2D<T>::RealPoint 
+typename DGtal::Ball2D<T>::RealPoint
 DGtal::Ball2D<T>::x( const double t ) const
 {
   return RealPoint( myRadius*cos(t)+myCenter[0], myRadius*sin(t)+myCenter[1] );
@@ -100,7 +100,7 @@ DGtal::Ball2D<T>::x( const double t ) const
  */
 template <typename T>
 inline
-typename DGtal::Ball2D<T>::RealVector 
+typename DGtal::Ball2D<T>::RealVector
 DGtal::Ball2D<T>::xp( const double t ) const
 {
   return RealVector( -myRadius*sin(t), myRadius*cos(t) );
@@ -156,7 +156,7 @@ DGtal::Ball2D<T>::isValid() const
 template <typename T>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
       const Ball2D<T> & object )
 {
   object.selfDisplay( out );
@@ -165,5 +165,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

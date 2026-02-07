@@ -54,7 +54,7 @@ template <typename TPoint>
 inline
 void
 DGtal::CircleFrom2Points<TPoint>::init(
-        const Point& aFirstPoint, 
+        const Point& aFirstPoint,
         const Point& aSecondPoint)
 {
   myP = aFirstPoint;
@@ -66,7 +66,7 @@ template <typename TPoint>
 inline
 DGtal::CircleFrom2Points<TPoint>::CircleFrom2Points(
         const Point& aPole,
-        const Point& aFirstPoint, 
+        const Point& aFirstPoint,
         const Point& aSecondPoint):
         myPole(aPole),
         myP(aFirstPoint),
@@ -105,7 +105,7 @@ inline
 typename DGtal::CircleFrom2Points<TPoint>::Distance
 DGtal::CircleFrom2Points<TPoint>::signedDistance(const Point& aP) const
 {
-	CircleFrom3Points<Point> c(myPole,myP,myQ); 
+	CircleFrom3Points<Point> c(myPole,myP,myQ);
 	return c.signedDistance(aP);
 }
 
@@ -114,8 +114,8 @@ inline
 void
 DGtal::CircleFrom2Points<TPoint>::getParameters(double& cx, double& cy, double& r) const
 {
-	CircleFrom3Points<Point> c(myPole,myP,myQ); 
-  c.getParameters(cx,cy,r); 
+	CircleFrom3Points<Point> c(myPole,myP,myQ);
+  c.getParameters(cx,cy,r);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -145,5 +145,3 @@ DGtal::CircleFrom2Points<TPoint>::isValid() const
 {
     return true;
 }
-
-

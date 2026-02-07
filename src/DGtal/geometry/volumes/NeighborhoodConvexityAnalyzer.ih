@@ -34,7 +34,7 @@
 //-----------------------------------------------------------------------------
 template < typename TKSpace, int K >
 template < typename PointPredicate >
-void 
+void
 DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
 setCenter( Point c, const PointPredicate& X )
 {
@@ -69,7 +69,7 @@ setCenter( Point c, const PointPredicate& X )
 
 //-----------------------------------------------------------------------------
 template < typename TKSpace, int K >
-void 
+void
 DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
 getLocalX( std::vector< Point >& localX, bool with_center ) const
 {
@@ -90,7 +90,7 @@ getLocalX( std::vector< Point >& localX, bool with_center ) const
 }
 //-----------------------------------------------------------------------------
 template < typename TKSpace, int K >
-void 
+void
 DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
 getLocalCompX( std::vector< Point >& localCompX, bool with_center ) const
 {
@@ -112,7 +112,7 @@ getLocalCompX( std::vector< Point >& localCompX, bool with_center ) const
 
 //-----------------------------------------------------------------------------
 template < typename TKSpace, int K >
-bool 
+bool
 DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
 checkBasicConfigurationsFullConvexity
 ( bool compX, bool with_center ) const
@@ -124,7 +124,7 @@ checkBasicConfigurationsFullConvexity
         if ( ! myBasicFullConvexityTable[ cfg.to_ulong() | mask_center ] )
           return false;
     }
-  else 
+  else
     { // complementary of shape X
       const Size mask_center = with_center ? 0x1ff : 0x1ef;
       for ( auto cfg : myBasicCfgX )
@@ -135,7 +135,7 @@ checkBasicConfigurationsFullConvexity
 }
 //-----------------------------------------------------------------------------
 template < typename TKSpace, int K >
-bool 
+bool
 DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
 checkBasicConfigurations0Convexity
 ( bool compX, bool with_center ) const
@@ -147,7 +147,7 @@ checkBasicConfigurations0Convexity
         if ( ! myBasic0ConvexityTable[ cfg.to_ulong() | mask_center ] )
           return false;
     }
-  else 
+  else
     { // complementary of shape X
       const Size mask_center = with_center ? 0x1ff : 0x1ef;
       for ( auto cfg : myBasicCfgX )
@@ -158,7 +158,7 @@ checkBasicConfigurations0Convexity
 }
 //-----------------------------------------------------------------------------
 template < typename TKSpace, int K >
-void 
+void
 DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
 computeBasicConfigurations
 ( Configuration cfg, std::vector< BasicConfiguration > & result ) const
@@ -198,7 +198,7 @@ computeCentralBasicConfiguration
 
 //-----------------------------------------------------------------------------
 template < typename TKSpace, int K >
-void 
+void
 DGtal::NeighborhoodConvexityAnalyzer<TKSpace,K>::
 computeBasicFullConvexityTable()
 {

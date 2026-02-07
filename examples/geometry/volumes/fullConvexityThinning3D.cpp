@@ -69,11 +69,11 @@ int main( int argc, char** argv )
   int         m = argc > 4 ? atoi( argv[ 4 ] ) : 0;
   int         M = argc > 5 ? atoi( argv[ 5 ] ) : 255;
   trace.beginBlock ( "Example of 3D shape thinning with full convexity properties" );
-  
+
   PolyscopeViewer<> viewer;
 
   auto   params  = SH3::defaultParameters();
-  
+
   // Domain creation from two bounding points.
   trace.info() << "Building set or importing vol ... ";
   Point c( 0, 0, 0 );
@@ -120,19 +120,19 @@ int main( int argc, char** argv )
     auto surface = SH3::makeDigitalSurface( bimage, K, params );
     SH3::saveOBJ( surface, "source.obj" );
   }
-  
+
   trace.beginBlock ( "Thinning" );
   SH3::BinaryImage& image = *bimage;
   NCA nca( p1, p2, 10000 );
-  int nb_simple=0; 
+  int nb_simple=0;
   std::set< Point >::iterator it, itE;
   std::set< Point > to_process( shape_set );
-  do 
+  do
     {
       std::set< Point > next_to_process;
       nb_simple = 0;
       trace.info() << "Pass #S=" << shape_set.size()
-                   << " #Q=" << to_process.size() << std::endl; 
+                   << " #Q=" << to_process.size() << std::endl;
       for ( it  = to_process.begin(), itE = to_process.end(); it != itE; ++it )
         {
           Point p = *it;
@@ -162,7 +162,7 @@ int main( int argc, char** argv )
     auto surface = SH3::makeDigitalSurface( bimage, K, params );
     SH3::saveOBJ( surface, "geom-thinned.obj" );
   }
-    
+
   // Display by using two different list to manage OpenGL transparency.
   DigitalSet origin( domain );
   DigitalSet output( domain );
@@ -174,12 +174,11 @@ int main( int argc, char** argv )
 
   viewer << Color(250, 0,0, 25);
   viewer << origin;
-   
+
   trace.endBlock();
-  viewer.show();  
+  viewer.show();
   return 0;
 
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-

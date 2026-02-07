@@ -158,7 +158,7 @@ namespace DGtal
    */
   typedef std::pair<unsigned char, unsigned char> Octant;
 
-  
+
 
     /**
      * \brief Aim: This class aims at representing an iterator
@@ -235,9 +235,9 @@ namespace DGtal
        * Destructor. Does nothing.
        */
       ~ConstIterator();
- 
+
       // ------------------------- useful services -------------------------
-   public: 
+   public:
       /**
        * @return the remainder of the current point
        * (without any computation)
@@ -275,7 +275,7 @@ namespace DGtal
       bool equal(const ConstIterator& aOther) const;
 
       /**
-       * Moves @a myCurrentPoint lying at position i to the 
+       * Moves @a myCurrentPoint lying at position i to the
        * point of the DSL lying at position i + @a aShift
        * @param aShift position difference
        * NB: in O(1)
@@ -285,10 +285,10 @@ namespace DGtal
       /**
        * Computes the distance between *this and @a aOther, ie.
        * the difference between their positions
-       * @param aOther any other iterator 
+       * @param aOther any other iterator
        * @return distance between the two iterators
        */
-      Position distance_to(const ConstIterator& aOther) const; 
+      Position distance_to(const ConstIterator& aOther) const;
 
     };
 
@@ -391,24 +391,24 @@ namespace DGtal
    * @return 'true' if aPoint is an upper leaning point of *this, false otherwise
    */
   bool isUpperLeaningPoint(const Point& aPoint) const;
-  
+
   /**
    * Test if a point is a lower leaning point of *this
    * @param aPoint a point
    * @return 'true' if aPoint is a lower leaning point of *this, false otherwise
    */
   bool isLowerLeaningPoint(const Point& aPoint) const;
-  
+
 
   /**
    * Returns the octants of the DSL  as a
    * pair of integers. If the parameters are such that \f$ abs(@a myA) =
    * abs(@a myB) \f$ or \f$ @a myA = 0 \f$ or \f$ @a myB = 0 \f$, it returns
-   * two octants (for instance octants 0 and 7 if \f$ @a myA = 0 \f$).  
+   * two octants (for instance octants 0 and 7 if \f$ @a myA = 0 \f$).
    *
    * @return the octants as a pair of integers
    */
-  
+
   Octant octant() const;
 
 
@@ -524,7 +524,7 @@ namespace DGtal
 
     /**
      * Returns the unique point of the DSL located at position zero
-     * in O(1). 
+     * in O(1).
      * @pre the arithmetical thickness is not equal to zero
      * @return the point of the DSL located at position zero
      */
@@ -532,7 +532,7 @@ namespace DGtal
 
     /**
      * Returns the unique point of the DSL located at position @a aPosition
-     * in O(1). 
+     * in O(1).
      * @pre the arithmetical thickness is not equal to zero
      * @param aPosition position of the returned point
      * @return the point of the DSL located at position @a aPosition
@@ -570,8 +570,8 @@ namespace DGtal
      */
     bool isInDSL(const Point& aPoint) const;
 
-  
-  
+
+
     /**
      * @return 'true' if @a aPoint is in the DSL
      * 'false' otherwise.
@@ -617,9 +617,9 @@ namespace DGtal
 
     // ------------------------- Other services ------------------------------
   public:
-    static Coordinate toCoordinate(const Integer& aI); 
+    static Coordinate toCoordinate(const Integer& aI);
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
 
     // -------------------------vectors ---------------------------------------
@@ -819,10 +819,10 @@ namespace DGtal
 namespace DGtal
 {
   namespace detail {
-    
+
     /**
      * Description of template class 'functors::CastForSignedIntegers' <p>
-     * \brief Aim: Define a simple functor that can cast 
+     * \brief Aim: Define a simple functor that can cast
      * a signed integer (possibly a DGtal::BigInteger) into another.
      *
      * @tparam TInput type of the input value
@@ -840,7 +840,7 @@ namespace DGtal
        * @return the conversion of @a aInput into an object of type TOutput.
        */
       inline
-      static TOutput cast(const TInput& aInput) 
+      static TOutput cast(const TInput& aInput)
       {
 	return static_cast<TOutput>(aInput);
       }
@@ -852,7 +852,7 @@ namespace DGtal
     {
       BOOST_CONCEPT_ASSERT(( concepts::CSignedNumber<TOutput> ));
       BOOST_CONCEPT_ASSERT(( concepts::CInteger<TOutput> ));
-      
+
       inline
       static TOutput cast(const DGtal::BigInteger& aInput)
       {
@@ -864,7 +864,7 @@ namespace DGtal
     template <>
     struct toCoordinateImpl<DGtal::BigInteger, DGtal::BigInteger>
     {
-      
+
       inline
       static DGtal::BigInteger cast(const DGtal::BigInteger& aInput)
       {

@@ -74,7 +74,7 @@ bool testLocalEstimatorFromFunctorAdapter()
   trace.beginBlock ( "Testing init ..." );
 
   using namespace Z3i;
- 
+
   typedef GaussDigitizer<Space,Shape> Gauss;
 
   typedef LightImplicitDigitalSurface<KSpace,Gauss> SurfaceContainer;
@@ -135,14 +135,14 @@ bool testLocalEstimatorFromFunctorAdapter()
   viewer.allowReuseList = true; // Group elements together
 
   unsigned int i=0;
-  
+
   for(typename Surface::ConstIterator it = surface.begin(), itend=surface.end();
       it!= itend;
       ++it, ++i)
     {
       viewer << WithQuantity(*it, "value", values[i]);
     }
-  
+
   trace.endBlock();
 
   viewer.show();
@@ -162,7 +162,7 @@ int main( int argc, char** argv )
 
   bool res = testLocalEstimatorFromFunctorAdapter<ImplicitHyperCube<Z3i::Space> >()
     && testLocalEstimatorFromFunctorAdapter<ImplicitBall<Z3i::Space> >();
-  
+
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

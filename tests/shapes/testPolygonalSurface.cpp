@@ -133,7 +133,7 @@ SCENARIO( "PolygonalSurface< RealPoint3 > build tests", "[polysurf][build]" )
         bool distances_ok
           = std::equal( distances.begin(), distances.end(), expected_distance );
         REQUIRE( distances_ok );
-      }      
+      }
     THEN( "The mesh has 6 boundary vertices" ) {
       VertexRange bv = polymesh.allBoundaryVertices();
       std::sort( bv.begin(), bv.end() );

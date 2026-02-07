@@ -61,9 +61,9 @@ namespace DGtal
   struct LinearAlgebra
   {
     // ----------------------- Standard services ------------------------------
-   
+
     BOOST_CONCEPT_ASSERT(( concepts::CSpace<Space> ));
-    
+
     typedef typename Space::Integer Integer;
     typedef typename Space::Point Point;
     typedef typename Space::Vector Vector;
@@ -72,19 +72,19 @@ namespace DGtal
     static Integer determinant(const Point &a, const Point &b);
 
    // ----------------------- Standard services ------------------------------
-   
-    /** 
+
+    /**
      * Self display of the instance in a ostream
-     * 
+     *
      * @param out the output stream.
      */
     void selfDisplay(std::ostream &out) const;
 
-    /** 
+    /**
      * @return true if the instance is valid.
      */
     static bool isValid();
-    
+
 
   }; // end of class LinearAlgebra
 

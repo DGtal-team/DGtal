@@ -29,12 +29,12 @@
 
 /**
  * \example io/boards/dgtalBoard2D-3-custom-classes.cpp
- *  
+ *
  * This example shows you how to modify the style of each drawable
  * elements. You just have to create an instance of CustomColors,
  * CustomPenColor, CustomFillColor or CustomPen and you attach this
  * style to your drawable element type with an instance of CustomStyle
- * outputed in the Board2D stream.
+ * outputted in the Board2D stream.
  *   \image html  dgtalboard-3-custom-classes.png  "visualization of resulting export."
  */
 
@@ -65,15 +65,15 @@ int main()
   Color dgreen( 0, 192, 0 );
   Color blue( 0, 0, 255 );
   Color dblue( 0, 0, 192 );
-  
+
   Board2D board;
-  board << domain 
+  board << domain
   << CustomStyle( p1.className(), new CustomColors( red, dred ) )
   << p1
   << CustomStyle( p2.className(), new CustomFillColor( dgreen ) )
   << p2
-  << CustomStyle( p3.className(), 
-      new CustomPen( blue, dblue, 6.0, 
+  << CustomStyle( p3.className(),
+      new CustomPen( blue, dblue, 6.0,
                Board2D::Shape::SolidStyle,
                Board2D::Shape::RoundCap,
                Board2D::Shape::RoundJoin ) )
@@ -88,7 +88,7 @@ int main()
   board.saveCairo("dgtalBoard2D-3-custom-classes-cairo.ps", Board2D::CairoPS);
   board.saveCairo("dgtalBoard2D-3-custom-classes-cairo.svg", Board2D::CairoSVG);
 #endif
-  
+
   trace.endBlock();
   return 0;
 }

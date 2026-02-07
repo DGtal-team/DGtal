@@ -63,16 +63,16 @@ namespace DGtal
   /**
     Description of template class 'ImplicitFunctionDiff1LinearCellEmbedder' <p>
     \brief Aim: a cellular embedder for implicit functions,
-    (default constructible, copy constructible, assignable). 
+    (default constructible, copy constructible, assignable).
     Model of CCellEmbedder and CWithGradientMap.
-   
+
     @tparam TKSpace the cellular grid space definition, a model of CCellularGridSpaceND.
     @tparam TImplicitFunctionDiff1 the type of implicit function, a model of CImplicitFunctionDiff1.
     @tparam TEmbedder the type of digital embedder, a model of CPointEmbedder.
 
     @todo assert dimensions of space, embedder and implicit function.
    */
-  
+
   template < typename TKSpace,
              typename TImplicitFunctionDiff1,
              typename TEmbedder >
@@ -97,15 +97,15 @@ namespace DGtal
     typedef RealPoint Value;
     typedef ImplicitFunctionDiff1LinearCellEmbedderGradientMap
     < KSpace, ImplicitFunctionDiff1, Embedder > GradientMap;
-    
-    /** 
+
+    /**
         Constructor. The object is not valid.
      */
     ImplicitFunctionDiff1LinearCellEmbedder();
-    
-    /** 
+
+    /**
      * Destructor.
-     */    
+     */
     ~ImplicitFunctionDiff1LinearCellEmbedder();
 
     /**
@@ -119,32 +119,32 @@ namespace DGtal
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    ImplicitFunctionDiff1LinearCellEmbedder & 
+    ImplicitFunctionDiff1LinearCellEmbedder &
     operator= ( const ImplicitFunctionDiff1LinearCellEmbedder & other );
 
     /**
        Initializes the embedder with the space \a K, the implicit
        function \a f, the digital embedder \a e.
-       
+
        @param K any cellular grid space.
        @param f an implicit function
        @param e a digital embedder (like a GaussDigitizer).
     */
-    void init( ConstAlias<KSpace> K, ConstAlias<ImplicitFunctionDiff1> f, 
+    void init( ConstAlias<KSpace> K, ConstAlias<ImplicitFunctionDiff1> f,
                ConstAlias<Embedder> e );
 
     // ----------------------- Interface --------------------------------------
   public:
 
     /**
-       @return the corresponding gradient map. 
+       @return the corresponding gradient map.
     */
     GradientMap gradientMap() const;
 
     /**
        Maps a digital point to its corresponding point in the Euclidean
        space.
-       
+
        @param p any digital point in the digital space.
        @return its embedding by the current embedder in the Euclidean space.
      */
@@ -153,7 +153,7 @@ namespace DGtal
     /**
        Maps a cell to its corresponding point in the Euclidean
        space, by a linear guess of its position.
-       
+
        @param cell any cell in the cellular grid space.
        @return its embedding in the Euclidean space.
      */
@@ -163,7 +163,7 @@ namespace DGtal
        Maps a signed cell to its corresponding point in the Euclidean
        space, by a linear guess of its position. NB: the signed is not
        used.
-       
+
        @param scell any cell in the cellular grid space.
        @return its embedding in the Euclidean space.
      */
@@ -172,7 +172,7 @@ namespace DGtal
     /**
        Maps a cell to its corresponding point in the Euclidean
        space, by a linear guess of its position.
-       
+
        @param cell any cell in the cellular grid space.
        @return its embedding in the Euclidean space.
      */
@@ -181,7 +181,7 @@ namespace DGtal
     /**
        Maps a digital point to its corresponding embedding position
        and gradient vector in the Euclidean space.
-       
+
        @param p any digital point in the digital space.
        @param x its embedding in the Euclidean space.
        @param grad (returns) its gradient vector at the point given by
@@ -192,31 +192,31 @@ namespace DGtal
     /**
        Maps a cell to its corresponding gradient vector in the
        Euclidean space, by a linear guess of its position.
-       
+
        @param cell any cell in the cellular grid space.
        @param x its embedding in the Euclidean space.
        @param grad (returns) its gradient vector at the point given by
        the current embedder in the Euclidean space.
      */
-    void embedCell( const Cell & cell, 
+    void embedCell( const Cell & cell,
                     RealPoint & x, RealVector & grad ) const;
 
     /**
        Maps a signed cell to its corresponding gradient vector in the
        Euclidean space, by a linear guess of its position. NB: the
        signed is not used.
-       
+
        @param scell any cell in the cellular grid space.
        @param x its embedding in the Euclidean space.
        @param grad (returns) its gradient vector at the point given by
        the current embedder in the Euclidean space.
      */
-    void embedSCell( const SCell & scell, 
+    void embedSCell( const SCell & scell,
                      RealPoint & x, RealVector & grad ) const;
-    
+
     // ----------------------- Interface --------------------------------------
   public:
-    
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -229,16 +229,16 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
-   
+
     /// A pointer on the cellular grid space.
     const KSpace* myPtrK;
     /// A pointer on the implicit function.
     const ImplicitFunctionDiff1* myPtrFct;
     /// A pointer on the digital embedder.
     const Embedder* myPtrEmbedder;
-   
+
   }; // end of class ImplicitFunctionDiff1LinearCellEmbedder
 
   /**
@@ -249,7 +249,7 @@ namespace DGtal
              typename TImplicitFunctionDiff1,
              typename TEmbedder >
   class ImplicitFunctionDiff1LinearCellEmbedderGradientMap
-    : public ImplicitFunctionDiff1LinearCellEmbedder< TKSpace, 
+    : public ImplicitFunctionDiff1LinearCellEmbedder< TKSpace,
                                                       TImplicitFunctionDiff1,
                                                       TEmbedder>
   {
@@ -294,7 +294,7 @@ namespace DGtal
    */
   template < typename TKSpace, typename TImplicitFunctionDiff1, typename TEmbedder >
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
                const ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder> & object );
 
 } // namespace DGtal

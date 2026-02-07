@@ -65,7 +65,7 @@ int main()
   typedef Container::const_iterator ConstIterator;
   LambdaMST3DBy2D < ConstIterator > lmst;
   //! [LambdaMST3DBy2DStandardCtor]
-  
+
   // Input points
   Container contour;
   contour.push_back ( Point ( 18, 25, 18 ) );

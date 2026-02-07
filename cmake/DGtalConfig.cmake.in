@@ -20,18 +20,18 @@ find_dependency(ZLIB REQUIRED
   )
 
 set(DGTAL_WITH_EIGEN 1)
-if (NOT @ITK_FOUND_DGTAL@ OR NOT @DGTAL_WITH_EIGEN_ITK@) 
+if (NOT @ITK_FOUND_DGTAL@ OR NOT @DGTAL_WITH_EIGEN_ITK@)
   find_dependency(Eigen REQUIRED)
 endif()
 set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3::Eigen)
 
-if (@LIBIGL_FOUND_DGTAL@) 
+if (@LIBIGL_FOUND_DGTAL@)
   include(libigl)
   set(DGTAL_WITH_LIBIGL 1)
   set(DGtalLibDependencies ${DGtalLibDependencies} igl::core)
 endif()
 
-#### Optionnal dependencies  ####
+#### Optional dependencies  ####
 
 if(@ITK_FOUND_DGTAL@) #if ITK_FOUND_DGTAL
   set (DGTAL_WITH_ITK 1)

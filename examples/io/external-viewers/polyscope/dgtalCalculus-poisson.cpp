@@ -64,13 +64,13 @@ void computeLaplace()
   PolyDEC::SparseMatrix L = calculus.globalLaplaceBeltrami();
   PolyDEC::Form g = calculus.form0();
   DC::IntegerVector b = DC::IntegerVector::Zero( g.rows() );
-  
+
   //We set values on the boundary
   auto boundaryEdges = surfmesh.computeManifoldBoundaryEdges();
   std::cout<< "Number of boundary edges= "<<boundaryEdges.size()<<std::endl;
-  
+
   auto pihVertex=[&](const SurfMesh::Vertex &v){return  cos(scale*(surfmesh.position(v)[0]))*(scale*surfmesh.position(v)[1]);};
-  
+
   for(auto &e: boundaryEdges)
   {
     auto adjVertices = surfmesh.edgeVertices(e);
@@ -104,7 +104,7 @@ void myCallback()
 int main()
 {
   auto params = SH3::defaultParameters() | SHG3::defaultParameters() |  SHG3::parametersGeometryEstimation();
-  
+
   auto h=.7   ; //gridstep
   params( "polynomial", "0.1*y*y -0.1*x*x - 2.0*z" )( "gridstep", h );
   auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
@@ -113,13 +113,13 @@ int main()
   auto binary_image    = SH3::makeBinaryImage( digitized_shape, params );
   auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
   auto primalSurface   = SH3::makePrimalSurfaceMesh(surface);
-  
+
   //Need to convert the faces
   std::vector<std::vector<SH3::SurfaceMesh::Vertex>> faces;
   std::vector<RealPoint> positions = primalSurface->positions();
   for(auto face= 0 ; face < primalSurface->nbFaces(); ++face)
     faces.push_back(primalSurface->incidentVertices( face ));
-  
+
   surfmesh = SurfMesh(positions.begin(),
                       positions.end(),
                       faces.begin(),

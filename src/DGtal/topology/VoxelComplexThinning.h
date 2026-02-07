@@ -70,7 +70,7 @@ table_folder: str
 
 persistence: int
     if >0, performs a persistence algorithm that prunes
-    branches that are not persistant (less important).
+    branches that are not persistent (less important).
 
 distance_transform: str
     file holding a distance map. Required for select_type dmax option.

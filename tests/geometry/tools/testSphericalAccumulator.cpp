@@ -45,9 +45,9 @@ bool testSphericalAccumulator()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing Spherical Accumulator ..." );
-  
+
   typedef Z3i::RealVector Vector;
 
   SphericalAccumulator<Vector> accumulator(10);
@@ -56,20 +56,20 @@ bool testSphericalAccumulator()
   //testing insert
   accumulator.addDirection( Vector(1,1,1));
   accumulator.addDirection( Vector(1.1,1.1,1.1));
-  nbok += (accumulator.samples() == 2) ? 1 : 0; 
+  nbok += (accumulator.samples() == 2) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "insert dirs" << std::endl;
   trace.info()<< accumulator << std::endl;
-  
+
   //testing clear
   accumulator.clear();
   trace.info()<< accumulator << std::endl;
-  nbok += (accumulator.samples() == 0) ? 1 : 0; 
+  nbok += (accumulator.samples() == 0) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "clear" << std::endl;
-  
+
   //testing bin
   accumulator.addDirection( Vector(1,1,1));
   accumulator.addDirection( Vector(1.1,1.1,1.1));
@@ -77,14 +77,14 @@ bool testSphericalAccumulator()
   typedef SphericalAccumulator<Vector>::Size Size;
   Size i,j;
   accumulator.binCoordinates( Vector(1,1,1).getNormalized(), i,j);
-  trace.info() << "Got coordinates ("<<i<<","<<j<<")"<<std::endl; 
+  trace.info() << "Got coordinates ("<<i<<","<<j<<")"<<std::endl;
   trace.info() << "Count(i,j) = "<< accumulator.count(i,j) <<std::endl;
-  nbok += (accumulator.count(i,j) == 2) ? 1 : 0; 
+  nbok += (accumulator.count(i,j) == 2) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "bin with 2dirs" << std::endl;
   trace.info()<< accumulator << std::endl;
- 
+
   trace.info() << "Representative(i,j) = "<< accumulator.representativeDirection(i,j) <<std::endl;
 
   //testing ConstIterator
@@ -100,7 +100,7 @@ bool testSphericalAccumulator()
     }
   trace.info() << std::endl;
   trace.info() << "Representative(it) = "<< accumulator.representativeDirection(itwith2) <<std::endl;
-  nbok += (accumulator.representativeDirection(i,j) == accumulator.representativeDirection(itwith2)) ? 1 : 0; 
+  nbok += (accumulator.representativeDirection(i,j) == accumulator.representativeDirection(itwith2)) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "representative directions identical" << std::endl;
@@ -108,13 +108,13 @@ bool testSphericalAccumulator()
   Size ii,jj;
   accumulator.binCoordinates(itwith2, ii,jj);
   trace.info() << "Coordinate from (it) = ("<<ii<<","<<jj<<")"<<std::endl;
-  nbok += (( i == ii) && (j==jj)) ? 1 : 0; 
+  nbok += (( i == ii) && (j==jj)) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "coordinates ok" << std::endl;
 
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
@@ -122,27 +122,27 @@ bool testSphericalMore()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing Spherical Accumulator with more points ..." );
-  
-  //! [SphericalAccum-init] 
+
+  //! [SphericalAccum-init]
   typedef Z3i::RealVector Vector;
   SphericalAccumulator<Vector> accumulator(6);
   //! [SphericalAccum-init]
-  
+
 
   trace.info()<< accumulator << std::endl;
-  //! [SphericalAccum-add] 
+  //! [SphericalAccum-add]
   //Insert some directions
   accumulator.addDirection( Vector(0,1,0));
   accumulator.addDirection( Vector(1,-0.01,0));
   accumulator.addDirection( Vector(1,0.01,-0.01));
   accumulator.addDirection( Vector(1,-0.01,0.01));
-  //! [SphericalAccum-add] 
+  //! [SphericalAccum-add]
 
   accumulator.addDirection( Vector(1,0.01,0.01));
   accumulator.addDirection( Vector(1,-.01,-0.01));
-  
+
   trace.info() << "Bin values: ";
   for(SphericalAccumulator<Vector>::ConstIterator it=accumulator.begin(), itend=accumulator.end();
       it != itend;
@@ -150,10 +150,10 @@ bool testSphericalMore()
       trace.info() << *it<<" ";
   trace.info() << std::endl;
   trace.info() << accumulator<<std::endl;
-  
+
 
   trace.endBlock();
-    
+
   return nbok == nb;
 }
 
@@ -161,12 +161,12 @@ bool testSphericalMoreIntegerDir()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing Spherical Accumulator with more Integer points ..." );
-  
+
   typedef Z3i::Vector Vector;
   SphericalAccumulator<Vector> accumulator(5);
-  
+
 
   trace.info()<< accumulator << std::endl;
   //Insert some directions
@@ -175,7 +175,7 @@ bool testSphericalMoreIntegerDir()
   accumulator.addDirection( Vector(100,1,-1));
   accumulator.addDirection( Vector(100,-1,1));
   accumulator.addDirection( Vector(1,1,1));
-  
+
   trace.info() << "Bin values: ";
   for(SphericalAccumulator<Vector>::ConstIterator it=accumulator.begin(), itend=accumulator.end();
       it != itend;
@@ -189,13 +189,13 @@ bool testSphericalMoreIntegerDir()
   accumulator.maxCountBin(i,j);
   trace.info() << "Max bin= ("<<i<<","<<j<<")"<<std::endl;
   trace.info() << "Max representative= "<<accumulator.representativeDirection(i,j)<<std::endl;
-  nbok += ( accumulator.representativeDirection(i,j) == Vector(300,-1,0 )) ? 1 : 0; 
+  nbok += ( accumulator.representativeDirection(i,j) == Vector(300,-1,0 )) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "Representative ok" << std::endl;
 
   trace.endBlock();
-    
+
   return nbok == nb;
 }
 

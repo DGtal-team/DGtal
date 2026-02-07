@@ -57,29 +57,29 @@ namespace DGtal
 /////////////////////////////////////////////////////////////////////////////
 // class MeshReader
 /**
- * Description of class 'MeshReader' <p> 
+ * Description of class 'MeshReader' <p>
  * \brief Aim: Defined to import
  * OFF and OFS surface mesh. It allows to import a Mesh object and takes
- * into accouts the optional color faces.
- * 
+ * into accounts the optional color faces.
+ *
  * The importation can be done automatically according the input file
- * extension with the operator << 
- * 
- * Example of typical use: 
+ * extension with the operator <<
+ *
+ * Example of typical use:
  Add these include files:
  @code
  #include "DGtal/shapes/Mesh.h"
  #include "DGtal/io/readers/MeshReader.h"
  @endcode
- 
 
- And automatic import the Mesh through the filename extension: 
- @code 
-  std::string filenameOFF = testPath + "samples/box.off";  
+
+ And automatic import the Mesh through the filename extension:
+ @code
+  std::string filenameOFF = testPath + "samples/box.off";
   Mesh<Point> a3DMesh;
   bool importOK = a3DMesh << filenameOFF;
 @endcode
- 
+
  Then you can also display the resulting with a PolyscopeViewer:
  @code
  viewer << a3DMesh;
@@ -92,56 +92,56 @@ namespace DGtal
 
 
 
-  template <typename TPoint> 
+  template <typename TPoint>
 struct MeshReader
 {
     // ----------------------- Standard services ------------------------------
 public:
 
-  
- /** 
-  * Main method to import OFF meshes file (Geomview Object File Format) 
-  * 
+
+ /**
+  * Main method to import OFF meshes file (Geomview Object File Format)
+  *
   * @param[in] filename the file name to import.
   * @param[out] aMesh the mesh object to be imported.
   * @param[in] invertVertexOrder used to invert (default value=false) the order of imported points (important for normal
   * @param[in] onlyFaceVertex flag used to import only vertces associated to a face.
   * @return an instance of the imported mesh: MeshFromPoint.
   */
-  
-  static  bool  importOFFFile(const std::string & filename, 
+
+  static  bool  importOFFFile(const std::string & filename,
 			      DGtal::Mesh<TPoint> & aMesh, bool invertVertexOrder=false,
 			      bool onlyFaceVertex=false);
-  
 
-  
 
- /** 
-  * Main method to import OFS meshes file (an equivalent of OFF format) 
-  * 
+
+
+ /**
+  * Main method to import OFS meshes file (an equivalent of OFF format)
+  *
   * @param filename the file name to import.
   * @param aMesh (return) the mesh object to be imported.
-  * @param invertVertexOrder used to invert (default value=false) the order of imported points (important for normal orientation). 
+  * @param invertVertexOrder used to invert (default value=false) the order of imported points (important for normal orientation).
   * @param scale used to avoid to display tiny shapes (since OFS shapes are generally included in a 1x1x1 cube)
   * @return an instance of the imported mesh: MeshFromPoint.
   */
-  
-  static  bool  importOFSFile(const std::string & filename, 
+
+  static  bool  importOFSFile(const std::string & filename,
 			      DGtal::Mesh<TPoint> & aMesh, bool invertVertexOrder=false, double scale=1.0);
-  
+
   /// Reads an input file as an OBJ file format and outputs the
   /// corresponding surface mesh.
   ///
   /// @param[in] filename the input filename of the OBJ file to be read.
   /// @param[out] aMesh the output  mesh.
   /// @param[in] onlyFaceVertex flag used to import only vertces associated to a face.
-  /// 
+  ///
   /// @return 'true' if both reading the input stream was ok and the
   /// created mesh is ok.
   static
   bool importOBJFile(const std::string & filename, DGtal::Mesh<TPoint> & aMesh, bool onlyFaceVertex=false );
 
-  
+
   /// Checks that each index in \a indices is unique.
   /// @param indices a vector of integer indices
   /// @return 'true' iff the integer indices are all pairwise different.
@@ -149,7 +149,7 @@ public:
   bool verifyIndicesUniqueness( const std::vector<
                                 typename DGtal::Mesh<TPoint>::Index > &indices );
 
-   
+
   /// Reads an input material file associated ot an OBJ file format and outputs the
   /// corresponding materials as a map assiating name and diffuse color.
   ///
@@ -159,7 +159,7 @@ public:
   /// created mesh is ok.
   static
   std::map<std::string, DGtal::Color> readMaterial( std::istream & input);
-    
+
 
 
 }; // end of class MeshReader
@@ -171,15 +171,15 @@ public:
 
   /**
    *  'operator<<' for exporting objects of class 'Mesh'.
-   * @param mesh a mesh 
-   * @param filename a filename 
+   * @param mesh a mesh
+   * @param filename a filename
    * @return true if the mesh has been exported correctly.
    */
   template <typename TPoint>
   bool
   operator<< (  Mesh<TPoint> & mesh, const std::string &filename );
-  
-  
+
+
 
 
 }// namespace DGtal

@@ -60,7 +60,7 @@ namespace DGtal
      normals at faces and/or vertices.
 
      We sum up below the possible classes for representing meshes:
-     
+
      - @ref Mesh represents soaps of triangles with traversal
      operations but without any link between vertices;
      - @ref TriangulatedSurface represents 2-manifold triangulated
@@ -93,10 +93,10 @@ namespace DGtal
     typedef TRealPoint                              RealPoint;
     typedef TRealVector                             RealVector;
     typedef SurfaceMesh< RealPoint, RealVector >    Self;
-    
+
     static const Dimension dimension = RealPoint::dimension;
     BOOST_STATIC_ASSERT( ( dimension == 3 ) );
-    
+
     typedef typename RealVector::Component          Scalar;
     typedef std::vector<Scalar>                     Scalars;
     /// The type for counting elements.
@@ -124,15 +124,15 @@ namespace DGtal
     };
 
     // Required by CUndirectedSimpleGraph
-    
+
     /// Non mutable iterator for visiting vertices.
     typedef IntegerSequenceIterator< Vertex >       ConstIterator;
-    
+
     //---------------------------------------------------------------------------
   public:
     /// @name Standard services
     /// @{
-    
+
     /// Default destructor.
     ~SurfaceMesh() = default;
     /// Default constructor.
@@ -208,12 +208,12 @@ namespace DGtal
     void clear();
 
     /// @}
-    
+
     //---------------------------------------------------------------------------
   public:
     /// @name Vertex and face vectors initialization and conversion services
     /// @{
-    
+
     /// Given a range of real vectors, sets the normals of every
     /// vertex to the given vectors.
     template <typename RealVectorIterator>
@@ -246,7 +246,7 @@ namespace DGtal
     /// vector to each vertex of the mesh. It simply averages the
     /// normals of every incident face.
     void computeVertexNormalsFromFaceNormals();
-    
+
     /// Uses the normals associated with faces to compute a normal
     /// vector to each vertex of the mesh. It uses the weights
     /// proposed by \cite max1999weights for combining face information into
@@ -259,7 +259,7 @@ namespace DGtal
     template <typename AnyRing>
     std::vector<AnyRing> computeFaceValuesFromVertexValues
     ( const std::vector<AnyRing>& vvalues ) const;
-    
+
     /// @param fvalues any vector of vertex values.
     /// @return a vector of vertex values approximating \a fvalues.
     /// @tparam AnyRing any summable and averagable type.
@@ -276,7 +276,7 @@ namespace DGtal
     /// @return a vector of unit vectors on vertices approximating \a fuvectors.
     std::vector<RealVector> computeVertexUnitVectorsFromFaceUnitVectors
     ( const std::vector<RealVector>& fuvectors ) const;
-    
+
     /// @}
 
     //---------------------------------------------------------------------------
@@ -301,7 +301,7 @@ namespace DGtal
     /// minus the number of edges plus the number of faces).
     long Euler() const
     { return nbVertices() - nbEdges() + nbFaces(); }
-    
+
     /// @param i any vertex of the mesh
     /// @param j any vertex of the mesh
     /// @return the edge index of edge (i,j) or `nbEdges()` if this
@@ -310,7 +310,7 @@ namespace DGtal
     Edge makeEdge( Vertex i, Vertex j ) const;
 
     /// @param f any face
-    /// @return a const reference to the range giving for face \a f 
+    /// @return a const reference to the range giving for face \a f
     /// its incident vertices.
     const Vertices&  incidentVertices( Face f ) const
     { return myIncidentVertices[ f ]; }
@@ -320,7 +320,7 @@ namespace DGtal
     /// its incident faces.
     const Faces& incidentFaces( Vertex v ) const
     { return myIncidentFaces[ v ]; }
-    
+
     /// @param f any face
     /// @return a const reference to the range of neighbor faces for face \a f.
     const Faces& neighborFaces( Face f ) const
@@ -337,7 +337,7 @@ namespace DGtal
     /// @note if the edge is not valid, return {0,0}.
     VertexPair edgeVertices( Edge e ) const
     { return myEdgeVertices[ e ]; }
-    
+
     /// @param e any edge
     /// @return a const reference to the range giving for edge \a e
     /// its incident faces (one, two, or more if non manifold)
@@ -352,7 +352,7 @@ namespace DGtal
     /// @note an edge is stored as a vertex pair (i,j), i < j. So a
     /// face to its right, being defined ccw, means that the face is
     /// some `(..., j, i, ... )`.
-    const Faces& edgeRightFaces( Edge e ) const 
+    const Faces& edgeRightFaces( Edge e ) const
     { return myEdgeRightFaces[ e ]; }
 
     /// @param e any edge
@@ -363,7 +363,7 @@ namespace DGtal
     /// @note an edge is stored as a vertex pair (i,j), i < j. So a
     /// face to its left, being defined ccw, means that the face is
     /// some `(..., i, j, ... )`.
-    const Faces& edgeLeftFaces( Edge e ) const 
+    const Faces& edgeLeftFaces( Edge e ) const
     { return myEdgeLeftFaces[ e ]; }
 
     /// @return a const reference to the vector giving for each face
@@ -375,7 +375,7 @@ namespace DGtal
     /// its incident faces.
     const std::vector< Faces >& allIncidentFaces() const
     { return myIncidentFaces; }
-    
+
     /// @return a const reference to the vector of neighbor faces for each face.
     const std::vector< Faces >& allNeighborFaces() const
     { return myNeighborFaces; }
@@ -390,7 +390,7 @@ namespace DGtal
     /// flip and modification in the surface mesh).
     const std::vector< VertexPair >& allEdgeVertices() const
     { return myEdgeVertices; }
-    
+
     /// @return a const reference to the vector giving for each edge
     /// its incident faces (one, two, or more if non manifold)
     const std::vector< Faces >& allEdgeFaces() const
@@ -403,7 +403,7 @@ namespace DGtal
     /// @note an edge is stored as a vertex pair (i,j), i < j. So a
     /// face to its right, being defined ccw, means that the face is
     /// some `(..., j, i, ... )`.
-    const std::vector< Faces >& allEdgeRightFaces() const 
+    const std::vector< Faces >& allEdgeRightFaces() const
     { return myEdgeRightFaces; }
 
     /// @return a const reference to the vector giving for each edge
@@ -413,9 +413,9 @@ namespace DGtal
     /// @note an edge is stored as a vertex pair (i,j), i < j. So a
     /// face to its left, being defined ccw, means that the face is
     /// some `(..., i, j, ... )`.
-    const std::vector< Faces >& allEdgeLeftFaces() const 
+    const std::vector< Faces >& allEdgeLeftFaces() const
     { return myEdgeLeftFaces; }
-    
+
     /// @}
 
     //---------------------------------------------------------------------------
@@ -445,9 +445,9 @@ namespace DGtal
     /// or inner edges: they may have more than two incident faces, or
     /// two left incident faces for instance.
     Edges computeNonManifoldEdges() const;
-    
+
     /// @return true if the boundary edges define a collection of
-    /// manifold 1d polygonal curves (at most 2 adjecent edges per vertex).
+    /// manifold 1d polygonal curves (at most 2 adjacent edges per vertex).
     /// If checkClosed is set to true, we also check that all polygonal curves are closed.
     ///
     /// The method returns false if the surface mesh has no boundary.
@@ -459,7 +459,7 @@ namespace DGtal
       std::map<Vertex,Vertices> adjacent;
       auto MBE = this->computeManifoldBoundaryEdges();
       if ( MBE.size() == 0 ) return false;
-      
+
       for (auto e : MBE)
       {
         auto ij = this->edgeVertices(e);
@@ -474,7 +474,7 @@ namespace DGtal
           if ( adj.second.size() != 2 ) return false;
       return true;
     }
-    
+
     /// Extract the boundary of a surface mesh as a collection of sequences
     /// of vertices. The boundaries must be 1d manifold polygonal curves.
     /// @pre the boundaries must be manifold.
@@ -487,10 +487,10 @@ namespace DGtal
       auto MBE = this->computeManifoldBoundaryEdges();
       std::map<Vertex,bool> visited;
       std::map<Vertex,Vertices> adjacent;
-      
+
       ASSERT_MSG(MBE.size()>0,"The surface mesh must have boundary edges");
       ASSERT_MSG(this->isBoundariesManifold(), "The surface mesh mush have manifold boundaries");
-      
+
       //Coompute adjecency relationships
       for (auto e : MBE)
       {
@@ -500,20 +500,20 @@ namespace DGtal
         adjacent[ij.first].push_back(ij.second);
         adjacent[ij.second].push_back(ij.first);
       }
-      
+
       auto boundary_it = visited.begin();
-      
+
       while(boundary_it != visited.end() )
       {
         Vertex first = (*boundary_it).first;
         visited[first] = true;
         boundary.clear();
         boundary.push_back(first);
-        
+
         Vertex current = first;
         size_t nb_iter = 0;
         bool pushed=false;
-        
+
         while ((!pushed) && (nb_iter < MBE.size()*2))
         {
           bool ok = false;
@@ -548,12 +548,12 @@ namespace DGtal
       return boundaries;
     }
     /// @}
-    
+
     // ----------------------- Undirected simple graph services ----------------------
   public:
     /// @name Undirected simple graph services
     /// @{
-    
+
     /**
      * @return the number of vertices of the surface.
      */
@@ -568,7 +568,7 @@ namespace DGtal
      */
     Size bestCapacity() const
     { return 8; }
-      
+
     /**
      * @param v any vertex
      *
@@ -585,7 +585,7 @@ namespace DGtal
      *
      * @param it the output iterator
      *
-     * @param v the vertex whose neighbors will be writen
+     * @param v the vertex whose neighbors will be written
      */
     template <typename OutputIterator>
     void
@@ -631,7 +631,7 @@ namespace DGtal
     { return ConstIterator( nbVertices() ); }
 
     /// @}
-    
+
     //---------------------------------------------------------------------------
   public:
     /// @name Geometric services
@@ -646,19 +646,19 @@ namespace DGtal
     /// @return the mutable position associated to \a v.
     RealPoint& position( Vertex v )
     { return myPositions[ v ]; }
-    
+
     /// Const accessor to vertex position.
     /// @param v any vertex.
     /// @return the non-mutable position associated to \a v.
     const RealPoint& position( Vertex v ) const
     { return myPositions[ v ]; }
-      
+
     /// @return a const reference to the vector of normals to vertices.
     const std::vector< RealVector >& vertexNormals() const
     { return myVertexNormals; }
 
     /// @return a reference to the vector of normals to vertices.
-    std::vector< RealVector >& vertexNormals() 
+    std::vector< RealVector >& vertexNormals()
     { return myVertexNormals; }
 
     /// Mutable accessor to vertex normal.
@@ -666,19 +666,19 @@ namespace DGtal
     /// @return the mutable normal associated to \a v.
     RealVector& vertexNormal( Vertex v )
     { return myVertexNormals[ v ]; }
-    
+
     /// Const accessor to vertex normal.
     /// @param v any vertex.
     /// @return the non-mutable normal associated to \a v.
     const RealVector& vertexNormal( Vertex v ) const
     { return myVertexNormals[ v ]; }
-    
+
     /// @return a const reference to the vector of normals to faces.
     const std::vector< RealVector >& faceNormals() const
     { return myFaceNormals; }
 
     /// @return a reference to the vector of normals to faces.
-    std::vector< RealVector >& faceNormals() 
+    std::vector< RealVector >& faceNormals()
     { return myFaceNormals; }
 
     /// Mutable accessor to face normal.
@@ -686,13 +686,13 @@ namespace DGtal
     /// @return the mutable normal associated to \a f.
     RealVector& faceNormal( Face f )
     { return myFaceNormals[ f ]; }
-    
+
     /// Const accessor to face normal.
     /// @param f any face.
     /// @return the non-mutable normal associated to \a f.
     const RealVector& faceNormal( Face f ) const
     { return myFaceNormals[ f ]; }
-    
+
     /// @return the average of the length of edges.
     Scalar averageEdgeLength() const;
 
@@ -706,18 +706,18 @@ namespace DGtal
       const auto q=this->myPositions[ j ];
       return std::sqrt( (p[0]-q[0])*(p[0]-q[0]) + (p[1]-q[1])*(p[1]-q[1])+ (p[2]-q[2])*(p[2]-q[2]));
     }
-    
+
     /// @param f any valid face index
     /// @return the average distance between the centroid of face \a f
     /// and its vertices.
     Scalar localWindow( Face f ) const;
 
-    /// Perturbate the positions with a uniform random noise of 'p *
+    /// Perturb the positions with a uniform random noise of 'p *
     /// averageEdgeLength' along arbitrary directions.
     /// @param p any positive real value.
     void perturbateWithUniformRandomNoise( Scalar p );
 
-    /// Perturbate the positions with a uniform random noise of 'p *
+    /// Perturb the positions with a uniform random noise of 'p *
     /// averageLocalEdgeLength' along arbitrary directions.
     /// @param p any positive real value.
     void perturbateWithAdaptiveUniformRandomNoise( Scalar p );
@@ -738,7 +738,7 @@ namespace DGtal
     /// @return the Max's weights for each incident face to \a v, in the same order as `myIncidentFaces[ v ]`.
     /// @note Used in computeVertexNormalsFromFaceNormalsWithMaxWeights, see \cite max1999weights
     Scalars getMaxWeights( Index v ) const;
-    
+
     /// Given a ball of radius \a r centered on the centroid of face
     /// \a f, return the faces having a non empty intersection with
     /// this ball, each one weighted by its ratio of inclusion (in the
@@ -760,7 +760,7 @@ namespace DGtal
     /// interpolation of the results.
     WeightedFaces
     computeFacesInclusionsInBall( Scalar r, Index f ) const;
-    
+
     /// Given a ball of radius \a r centered on a point \a p belonging
     /// to face \a f, return the faces having a non empty intersection
     /// with this ball, each one weighted by its ratio of inclusion
@@ -783,7 +783,7 @@ namespace DGtal
     /// interpolation of the results.
     WeightedFaces
     computeFacesInclusionsInBall( Scalar r, Index f, RealPoint p ) const;
-    
+
     /// Given a ball of radius \a r centered on the centroid of face
     /// \a f, return the vertices/edges/faces having an non empty
     /// intersection with this ball, each edge/face weighted by its
@@ -820,7 +820,7 @@ namespace DGtal
     /// @note a vertex is either included or not, so no weight is necessary.
     std::tuple< Vertices, WeightedEdges, WeightedFaces >
     computeCellsInclusionsInBall( Scalar r, Index f, RealPoint p ) const;
-    
+
     /// Computes an approximation of the inclusion ratio of a given
     /// face \a f with a ball of radius \a r and center \a p.
     ///
@@ -883,14 +883,14 @@ namespace DGtal
 
     /// @pre `isFlippable( e )` must be true.
     /// @param e any edge.
-    /// @return the two other vertices of the quadrilateral around the edge \a e. 
+    /// @return the two other vertices of the quadrilateral around the edge \a e.
     VertexPair otherDiagonal( const Edge e ) const;
-    
+
     /**
        Flip the edge \a e. Be careful that after the flip, this edge
        index determines another edge, which is the other diagonal of
        the quadrilateral having \a e as its diagonal.
-      
+
        \verbatim
              l                   l
             / \                 /|\
@@ -906,46 +906,46 @@ namespace DGtal
             \ /                 \|/
              k                   k
        \endverbatim
-      
+
        @param e any valid edge.
-      
+
        @param recompute_face_normals when 'true', recompute normals
        of flipped faces with the positions of the vertices.
-      
+
        @pre the edge must be flippable, `isFlippable( e ) == true`
-      
+
        @post After the flip, the edge index \a e corresponds to the
        index of the flipped edge (if you reflip it you get your
        former configuration).
-      
+
        @note Time complexity is O(log n), due to the updating of
        surrounding edges information.
-      
+
        @warning For performance reasons, The neighbor faces of each
        face are not recomputed. One should call \ref computeNeighbors
        to recompute them. However the neighbor vertices to each
        vertex are recomputed.
-      
+
        @warning Vertex normals are not recomputed, but face normals
        may be recomputed if asked for. The face normals are then the
        geometric normals of triangles.
     */
     void flip( const Edge e, bool recompute_face_normals = false );
-    
-    /// @}    
+
+    /// @}
 
     //---------------------------------------------------------------------------
   public:
     /// @name Look-up table computation services
     /// @{
-    
+
     /// Computes neighboring information.
     void computeNeighbors();
     /// Computes edge information.
     void computeEdges();
 
     /// @}
-    
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -960,8 +960,8 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
-    
-    // ------------------------- Protected Datas ------------------------------
+
+    // ------------------------- Protected Data ------------------------------
   protected:
     /// For each face, its range of incident vertices
     std::vector< Vertices >     myIncidentVertices;
@@ -996,7 +996,7 @@ namespace DGtal
     /// some `(..., i, j, ... )`.
     std::vector< Faces >        myEdgeLeftFaces;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
 
@@ -1025,7 +1025,7 @@ namespace DGtal
     /// Replaces the index \a i with the index \a ri in the vector \a v.
     /// @param[inout] v a vector of indices
     /// @param[in] i an index
-    /// @param[in] ri an index    
+    /// @param[in] ri an index
     void replaceIndex( std::vector< Index >& v, Index i, Index ri )
     {
       const std::size_t n = v.size();
@@ -1048,12 +1048,12 @@ namespace DGtal
     {
       v.push_back( i );
     }
-    
+
 
     /// @return a random number between 0.0 and 1.0
     static Scalar rand01()
     { return (Scalar) rand() / (Scalar) RAND_MAX; }
-    
+
   }; // end of class SurfaceMesh
 
   /**
@@ -1065,8 +1065,8 @@ namespace DGtal
   template < typename TRealPoint, typename TRealVector >
   std::ostream&
   operator<< ( std::ostream & out,
-               const SurfaceMesh<TRealPoint, TRealVector> & object );  
-  
+               const SurfaceMesh<TRealPoint, TRealVector> & object );
+
 } // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////

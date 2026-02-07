@@ -37,7 +37,7 @@
 // class SignalData<TValue>
 //////////////////////////////////////////////////////////////////////////////
 
-/** 
+/**
  * Constructor.
  */
 template <typename TValue>
@@ -46,8 +46,8 @@ DGtal::SignalData<TValue>::SignalData()
   : data( 0 )
 {}
 
-/** 
- * Constructor.  
+/**
+ * Constructor.
  *
  * @param s the number of data in the signal.
  * @param z the index of the zero-th element.
@@ -66,8 +66,8 @@ DGtal::SignalData<TValue>::init
   data[ size ] = def;
 }
 
-/** 
- * Constructor.  
+/**
+ * Constructor.
  *
  * @param t the array containing initial data.
  * @param s the number of data in the signal.
@@ -90,8 +90,8 @@ DGtal::SignalData<TValue>::init
 }
 
 
-/** 
- * Constructor.  
+/**
+ * Constructor.
  *
  * @param s the number of data in the signal.
  * @param z the index of the zero-th element.
@@ -108,8 +108,8 @@ DGtal::SignalData<TValue>::SignalData
   data[ size ] = def;
 }
 
-/** 
- * Constructor.  
+/**
+ * Constructor.
  *
  * @param t the array containing initial data.
  * @param s the number of data in the signal.
@@ -130,7 +130,7 @@ DGtal::SignalData<TValue>::SignalData
 }
 
 
-/** 
+/**
  * Destructor.
  */
 template <typename TValue>
@@ -140,7 +140,7 @@ DGtal::SignalData<TValue>::~SignalData()
   if ( data != 0 ) delete[] data;
 }
 
-/** 
+/**
  * Copy constructor.
  * @param other the data to clone.
  */
@@ -160,7 +160,7 @@ DGtal::SignalData<TValue>::SignalData
     data = 0;
 }
 
-/** 
+/**
  * Assignment.
  * @param other the data to clone.
  * @return 'this'.
@@ -171,7 +171,7 @@ DGtal::SignalData<TValue> &
 DGtal::SignalData<TValue>::operator=
 ( const SignalData & other )
 {
-  if ( this != &other ) 
+  if ( this != &other )
     {
       if ( other.data == 0 )
   {
@@ -181,7 +181,7 @@ DGtal::SignalData<TValue>::operator=
   }
       else
   {
-    if ( size < other.size ) 
+    if ( size < other.size )
       {
         delete[] data;
         data = new TValue[ other.size + 1 ];
@@ -197,7 +197,7 @@ DGtal::SignalData<TValue>::operator=
 }
 
 
-/** 
+/**
  * Default value.
  * @return the default value.
  */
@@ -205,7 +205,7 @@ template <typename TValue>
 inline
 const TValue &
 DGtal::SignalData<TValue>::defaut() const
-{ 
+{
   ASSERT( data != 0 );
   return data[ size ];
 }
@@ -224,7 +224,7 @@ DGtal::SignalData<TValue>::defaut() const
 // class Signal
 /////////////////////////////////////////////////////////////////////////////
 /**
- * Destructor. 
+ * Destructor.
  */
 template <typename TValue>
 inline
@@ -261,7 +261,7 @@ DGtal::Signal<TValue>::Signal
 template <typename TValue>
 inline
 DGtal::Signal<TValue>::Signal
-( const TValue* t, unsigned int asize, int z, bool periodic, 
+( const TValue* t, unsigned int asize, int z, bool periodic,
   const TValue & def )
   : m_data( new SignalData<TValue>() )
 {
@@ -271,7 +271,7 @@ DGtal::Signal<TValue>::Signal
 
 
 /**
- * Destructor. 
+ * Destructor.
  */
 template <typename TValue>
 inline
@@ -290,7 +290,7 @@ DGtal::Signal<TValue>::Signal( const Signal & other )
   : m_data( other.m_data )
 {
 }
-      
+
 /**
  * Assignment.
  * @param other the object to copy.
@@ -299,7 +299,7 @@ DGtal::Signal<TValue>::Signal( const Signal & other )
  */
 template <typename TValue>
 inline
-DGtal::Signal<TValue> & 
+DGtal::Signal<TValue> &
 DGtal::Signal<TValue>::operator=( const Signal & other )
 {
   if ( this != & other )
@@ -339,7 +339,7 @@ template <typename TValue>
 inline
 void
 DGtal::Signal<TValue>::init
-( const TValue* t, unsigned int aSize, int z, bool periodic, 
+( const TValue* t, unsigned int aSize, int z, bool periodic,
   const TValue & def )
 {
   m_data = CowPtr< SignalData<TValue> >( new SignalData<TValue>() );
@@ -352,7 +352,7 @@ DGtal::Signal<TValue>::init
    @return the number of elements in the signal.
 */
 template <typename TValue>
-unsigned int 
+unsigned int
 DGtal::Signal<TValue>::size() const
 {
   return m_data->size;
@@ -363,16 +363,16 @@ DGtal::Signal<TValue>::size() const
 // ----------------------- Signal services ----------------------------
 
 
-/** 
+/**
  * Protected rw access to value. If index is out of bound, return 0
  * if not periodic or the correct value otherwise.
- * 
+ *
  * @param i the index in the signal .
- * 
+ *
  * @return the i-th value in the signal.
- */      
+ */
 template <typename TValue>
-TValue & 
+TValue &
 DGtal::Signal<TValue>::operator[]( int i )
 {
   SignalData<TValue> & sd = *m_data;
@@ -388,16 +388,16 @@ DGtal::Signal<TValue>::operator[]( int i )
     return sd.data[ sd.size ];
 }
 
-/** 
+/**
  * Protected ro access to value. If index is out of bound, return 0
  * if not periodic or the correct value otherwise.
- * 
+ *
  * @param i the index in the signal .
- * 
+ *
  * @return the i-th value in the signal.
- */      
+ */
 template <typename TValue>
-const TValue & 
+const TValue &
 DGtal::Signal<TValue>::operator[]( int i ) const
 {
   const SignalData<TValue> & sd = *m_data;
@@ -414,11 +414,11 @@ DGtal::Signal<TValue>::operator[]( int i ) const
 }
 
 
-/** 
+/**
  * The signal becomes a constant signal of value [val].
- * 
+ *
  * @param val the value of the whole signal.
- */      
+ */
 template <typename TValue>
 void
 DGtal::Signal<TValue>::setAll( const TValue & val )
@@ -429,9 +429,9 @@ DGtal::Signal<TValue>::setAll( const TValue & val )
 }
 
 
-/** 
+/**
  * External product of a signal by a scalar value.
- * 
+ *
  * @param l the external value.
  */
 template <typename TValue>
@@ -444,22 +444,22 @@ DGtal::Signal<TValue>::multiply( const TValue & l )
 }
 
 
-/** 
+/**
  * Convolution product of two signals (F = this).
- * F*G( a ) = sum F(a-i)G(i) 
- * 
+ * F*G( a ) = sum F(a-i)G(i)
+ *
  * @param G the second signal (not periodic)
- * 
+ *
  * @return the signal that is the convolution of F and G, of type F.
  */
 template <typename TValue>
-DGtal::Signal<TValue> 
+DGtal::Signal<TValue>
 DGtal::Signal<TValue>::operator*( const Signal<TValue>& G )
 {
   const SignalData<TValue>& Fd = *m_data;
   const SignalData<TValue>& Gd = *G.m_data;
 
-  
+
   unsigned int aSize = Fd.periodic ? Fd.size : Fd.size + Gd.size - 1;
   int zero = Fd.periodic ? Fd.zero : Fd.zero + Gd.zero;
   Signal<TValue> FG( aSize, zero, Fd.periodic, Fd.defaut() );
@@ -472,7 +472,7 @@ DGtal::Signal<TValue>::operator*( const Signal<TValue>& G )
     TValue sum = TValue( 0 );
     for ( unsigned int i = 0; i < Gd.size; ++i )
       {
-        sum += this->operator[]( a - ( i - Gd.zero ) ) 
+        sum += this->operator[]( a - ( i - Gd.zero ) )
     * Gd.data[ i ];
       }
     FG[ a ] = sum;
@@ -485,8 +485,8 @@ DGtal::Signal<TValue>::operator*( const Signal<TValue>& G )
     TValue sum = TValue( 0 );
     for ( unsigned int i = 0; i < Gd.size; ++i )
       {
-        sum += this->operator[]( a - ( Fd.zero + Gd.zero ) 
-                      - ( i - Gd.zero ) ) 
+        sum += this->operator[]( a - ( Fd.zero + Gd.zero )
+                      - ( i - Gd.zero ) )
            * Gd.data[ i ];
       }
     FGd.data[ a ] = sum;
@@ -498,7 +498,7 @@ DGtal::Signal<TValue>::operator*( const Signal<TValue>& G )
 
 
 template <typename TValue>
-DGtal::Signal<TValue> 
+DGtal::Signal<TValue>
 DGtal::Signal<TValue>::G2()
 {
   Signal<TValue> G = H2();
@@ -506,11 +506,11 @@ DGtal::Signal<TValue>::G2()
   return G;
 }
 
-/** 
+/**
  * @return the binomial signal of order 2.
  */
 template <typename TValue>
-DGtal::Signal<TValue> 
+DGtal::Signal<TValue>
 DGtal::Signal<TValue>::H2()
 {
   Signal<TValue> H( 3, 1, false, TValue( 0 ) );
@@ -520,11 +520,11 @@ DGtal::Signal<TValue>::H2()
   return H;
 }
 
-/** 
+/**
  * @return the right difference signal.
  */
 template <typename TValue>
-DGtal::Signal<TValue> 
+DGtal::Signal<TValue>
 DGtal::Signal<TValue>::Delta()
 {
   Signal<TValue> D( 2, 0, false, TValue( 0 ) );
@@ -534,32 +534,32 @@ DGtal::Signal<TValue>::Delta()
 }
 
 template <typename TValue>
-DGtal::Signal<TValue> 
+DGtal::Signal<TValue>
 DGtal::Signal<TValue>::G2n( unsigned int n )
 {
   if ( n <= 1 ) return G2();
-  else return G2n( n - 1 ) * G2(); 
+  else return G2n( n - 1 ) * G2();
 }
 
-/** 
+/**
  * @return the binomial signal of order 2n.
  */
 template <typename TValue>
-DGtal::Signal<TValue> 
+DGtal::Signal<TValue>
 DGtal::Signal<TValue>::H2n( unsigned int n )
 {
   if ( n <= 1 ) return H2();
-  else return H2n( n - 1 ) * H2(); 
+  else return H2n( n - 1 ) * H2();
 }
 
-/** 
+/**
  * @return the differential operator with binomial weights of order 2n.
  */
 template <typename TValue>
-DGtal::Signal<TValue> 
+DGtal::Signal<TValue>
 DGtal::Signal<TValue>::D2n( unsigned int n )
 {
-  return H2n( n ) * Delta(); 
+  return H2n( n ) * Delta();
 }
 
 
@@ -602,7 +602,7 @@ DGtal::Signal<TValue>::isValid() const
 template <typename TValue>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
       const Signal<TValue> & object )
 {
   object.selfDisplay( out );
@@ -611,5 +611,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

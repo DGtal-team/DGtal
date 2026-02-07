@@ -3,7 +3,7 @@
  * @file   Shapes.ih
  * @author Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb>
  * @date   Feb. 2010
- * 
+ *
  * @brief  Shapes inline methods
  */
 /*
@@ -16,34 +16,34 @@ namespace LibBoard {
 
 Shape::Shape( DGtal::Color pen,
         DGtal::Color fill,
-        double lineWidth, 
+        double lineWidth,
         LineStyle style,
         const LineCap cap,
         const LineJoin join,
         int depthValue )
   : _depth( depthValue ),
     _penColor( pen ),
-    _fillColor( fill ), 
+    _fillColor( fill ),
     _lineWidth( lineWidth ),
     _lineStyle( style ),
-    _lineCap( cap ), 
+    _lineCap( cap ),
     _lineJoin( join )
 {
 }
 
 Dot::Dot( double x, double y,
-    DGtal::Color color, 
+    DGtal::Color color,
     double lineWidth,
     int depthValue )
-  : Shape( color, 
-     DGtal::Color::None, 
+  : Shape( color,
+     DGtal::Color::None,
      lineWidth, SolidStyle, RoundCap, MiterJoin, depthValue ),
-    _x( x ), _y( y ) 
+    _x( x ), _y( y )
 {
 }
 
-Line::Line( double x1, double y1, double x2, double y2, 
-      DGtal::Color color, 
+Line::Line( double x1, double y1, double x2, double y2,
+      DGtal::Color color,
       double lineWidth,
       const LineStyle style,
       const LineCap cap,
@@ -59,17 +59,17 @@ Line::Line( double x1, double y1, double x2, double y2,
 Arrow::Arrow( double x1, double y1, double x2, double y2,
         DGtal::Color pen,
         DGtal::Color fill,
-        double lineWidth, 
+        double lineWidth,
         const LineStyle style,
         const LineCap cap,
         const LineJoin join,
         int depthValue )
-  : Line( x1, y1, x2, y2, pen, lineWidth, style, cap, join, depthValue ) 
+  : Line( x1, y1, x2, y2, pen, lineWidth, style, cap, join, depthValue )
 {
   Shape::_fillColor = fill;
 }
 
-Polyline::Polyline( const std::vector<Point> & points, 
+Polyline::Polyline( const std::vector<Point> & points,
         bool closed,
         DGtal::Color pen,
         DGtal::Color fill,
@@ -83,7 +83,7 @@ Polyline::Polyline( const std::vector<Point> & points,
 {
 }
 
-Polyline::Polyline( const Path & path, 
+Polyline::Polyline( const Path & path,
         DGtal::Color pen,
         DGtal::Color fill,
         double lineWidth,
@@ -111,11 +111,11 @@ Polyline::Polyline( const Path & path,
 
 Rectangle::Rectangle( double xLeft,
           double yTop,
-          double rectWidth, 
+          double rectWidth,
           double rectHeight,
           DGtal::Color pen,
           DGtal::Color fill,
-          double lineWidth, 
+          double lineWidth,
           const LineStyle style,
           const LineCap cap,
           const LineJoin join,
@@ -128,7 +128,7 @@ Rectangle::Rectangle( double xLeft,
   _path << Point( xLeft + rectWidth, yTop - rectHeight );
   _path << Point( xLeft, yTop - rectHeight );
 }
-  
+
 Rectangle::Rectangle( const Rect & rect,
           DGtal::Color pen,
           DGtal::Color fill,
@@ -145,14 +145,14 @@ Rectangle::Rectangle( const Rect & rect,
 }
 
 
-  
-Image::Image( double x0, double y0, double aWidth, double aHeight, 
+
+Image::Image( double x0, double y0, double aWidth, double aHeight,
         std::string fileName, int depthValue, double alpha )
-  : Rectangle(x0, y0, aWidth, aHeight, DGtal::Color::None, DGtal::Color::None, 0.0, SolidStyle, RoundCap, MiterJoin, depthValue ), 
+  : Rectangle(x0, y0, aWidth, aHeight, DGtal::Color::None, DGtal::Color::None, 0.0, SolidStyle, RoundCap, MiterJoin, depthValue ),
     _x0(x0), _y0(y0), _width(aWidth), _height(aHeight), _filename(fileName), _alpha (alpha)
 {
 }
-  
+
 
 
 } // namespace LibBoard

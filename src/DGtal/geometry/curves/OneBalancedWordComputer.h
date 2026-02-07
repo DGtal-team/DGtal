@@ -18,7 +18,7 @@
 
 /**
  * @file OneBalancedWordComputer.h
- * @brief Dynamical recognition of DSS on FreemanChain code. 
+ * @brief Dynamical recognition of DSS on FreemanChain code.
  * @author Xavier Provençal (\c xavier.provencal@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
  *
@@ -26,7 +26,7 @@
  *
  * Header file for module OneBalancedWordComputer.cpp
  *
- * This class is a model of the concept CDynamicBidirectionalSegmentComputer. 
+ * This class is a model of the concept CDynamicBidirectionalSegmentComputer.
  *
  * This file is part of the DGtal library.
  *
@@ -68,8 +68,8 @@ namespace DGtal
    *
    * A combinatorial DSS is a specialized type of 4-connected DSS that reads
    * codes of a Freeman chain as input.
-   * 
-   * In general, the Freeman coding of a 4-connected DSS has the following form : 
+   *
+   * In general, the Freeman coding of a 4-connected DSS has the following form :
    * 's.c^k.p' where 'k>0', 'c' is a Christoffel word, 's' is a suffix of 'c'
    * and 'p' a prefix of 'c'.
    *
@@ -83,12 +83,12 @@ namespace DGtal
    * @tparam TConstIterator the type of iterator used to read the input codes
    * (preferably of category 'random_access_iterator_tag').
    * @tparam TInteger the type of scalars used for the coordinates of the
-   * points (satisfying CInteger) 
+   * points (satisfying CInteger)
    */
 
 
   template <typename TConstIterator, typename TInteger>
-    class OneBalancedWordComputer  
+    class OneBalancedWordComputer
   {
 
     // ----------------------- Types ------------------------------
@@ -111,11 +111,11 @@ namespace DGtal
       typedef int Size;
       typedef int Index;
 
-      //The basic steps associate to the codes are given by a function `f: Code -> Vector` 
+      //The basic steps associate to the codes are given by a function `f: Code -> Vector`
       typedef Vector (*DisplacementFct) (Code);
 
       //DSL
-      typedef ArithmeticalDSL<TInteger, TInteger, 4> DSL; 
+      typedef ArithmeticalDSL<TInteger, TInteger, 4> DSL;
 
     private :
       /**
@@ -123,15 +123,15 @@ namespace DGtal
        * access to the codes previously read.
        * @tparam TIterator an iterator on the codes.
        * @tparam iterator_type the type of iterations services provided by TIterator.
-       */ 
-      
+       */
+
       template < class TIterator, class iterator_type = typename IteratorCirculatorTraits <TIterator>::Category >  class CodeHandler
         {
         public :
           CodeHandler()
             { }
-          void init( const TIterator & it ) 
-            { 
+          void init( const TIterator & it )
+            {
               myIter = it;
             }
 
@@ -166,8 +166,8 @@ namespace DGtal
           CodeHandler()
             {
             }
-          void init( const TIterator & it ) 
-            { 
+          void init( const TIterator & it )
+            {
               myFirst = it;
               myLast = it;
             }
@@ -212,7 +212,7 @@ namespace DGtal
 
       /**
        * Partial template specialization for random access iterators.
-       */ 
+       */
       template < class TIterator>
 	class CodeHandler<TIterator, RandomAccessCategory >
 	{
@@ -220,8 +220,8 @@ namespace DGtal
             CodeHandler()
               { }
 
-            void init ( const TIterator & it ) 
-            { 
+            void init ( const TIterator & it )
+            {
               myIter = it;
             }
 
@@ -271,16 +271,16 @@ namespace DGtal
            * @param pt starting point of the iterator.
            */
           ConstPointIterator( const OneBalancedWordComputer * dss, Index ind, Point pt ) :
-            myDSS(dss), i(ind), p(pt) 
+            myDSS(dss), i(ind), p(pt)
           {}
 
           /**
            * Destructor. Does nothing.
            */
           ~ConstPointIterator() {}
-            
+
           /**
-           * Comparaison operators.
+           * Comparison operators.
            */
           bool operator==( const ConstPointIterator other) const
             {
@@ -401,7 +401,7 @@ namespace DGtal
        * Initialize from input iterator. A DSS of length 1 is initialize from
        * the iterator.
        *
-       * By default, displacements are defined as : 
+       * By default, displacements are defined as :
        * '0' -> (1,0), '1' -> (0,1), '2' -> (-1,0), '3' -> (0,-1)
        *
        * @param it the first code to include in the DSS.
@@ -409,7 +409,7 @@ namespace DGtal
        * @param displacements the function that defines displacement vectors
        * from codes.
        */
-      void init( const ConstIterator & it, 
+      void init( const ConstIterator & it,
                 const Point & start = Point(0,0),
                 Vector (*displacements) (Code) = defaultMoves );
 
@@ -484,7 +484,7 @@ namespace DGtal
 
       /**
        * Tests whether the current DSS can be extended at the front.
-       *  
+       *
        * @return 'true' if yes, 'false' otherwise.
        */
       bool isExtendableFront();
@@ -505,16 +505,16 @@ namespace DGtal
 
       /**
        * Tests whether the current DSS can be extended at the back.
-       *  
+       *
        * @return 'true' if yes, 'false' otherwise.
        */
       bool isExtendableBack();
 
       /**
-       * Removes the first point of the DSS (at back). 
+       * Removes the first point of the DSS (at back).
        * NB : Unlike the ArithmeticalDSSComputer, a OneBalancedWordComputer must
        * containt at least two points since it is defined by a letter in
-       * a Freeman Chain code.  
+       * a Freeman Chain code.
        * @return 'true' if the first point is removed, 'false' otherwise.
        */
       bool retractBack();
@@ -523,7 +523,7 @@ namespace DGtal
        * Removes the last point of the DSS (at front).
        * NB : Unlike the ArithmeticalDSSComputer, a OneBalancedWordComputer must
        * containt at least two points since it is defined by a letter in
-       * a Freeman Chain code.  
+       * a Freeman Chain code.
        * @return 'true' if the last point is removed, 'false' otherwise.
        */
       bool retractFront();
@@ -542,10 +542,10 @@ namespace DGtal
       void translate( const Vector & v );
 
       /**
-       * Computes the DSL of minimal parameters 
-       * bounding the corresponding DSS,  
+       * Computes the DSL of minimal parameters
+       * bounding the corresponding DSS,
        * ie. \f$ 0 \leq ax - by + \mu < \omega \f$
-       * 
+       *
        * @return the bounding DSL
        */
       DSL getArithmeticalDescription() const;
@@ -563,7 +563,7 @@ namespace DGtal
        * Computes the b-parameter of the bounding DSL.
        * Uses 'getArithmeticalDescription' so prefer this latter one if more
        * then one parameter is computed.
-       * 
+       *
        * @return the value of 'b' in the DSS equation
        */
       Integer getB() const;
@@ -602,7 +602,7 @@ namespace DGtal
        * @param lf the (returned) first lower leaning point.
        * @param ll the (returned) last lower leaning point.
        */
-      void computeLeaningPoints( Point & uf, Point & ul, 
+      void computeLeaningPoints( Point & uf, Point & ul,
                                  Point & lf, Point & ll ) const;
 
 
@@ -639,7 +639,7 @@ namespace DGtal
       Point Ll() const;
 
       /**
-       * Performs some basic tests to check the validity of the DSS. 
+       * Performs some basic tests to check the validity of the DSS.
        * For debugging purpose only.
        * @returns 'false' if the data is incoherent.
        */
@@ -667,14 +667,14 @@ namespace DGtal
        * @return 'true' if the FreemanChain is coding a path
        * that is possibly digitally convex, 'false' if the
        * path is not digitally convex.
-       */ 
+       */
       bool longestChristoffelPrefix(
           ConstIterator it,
           const OrderedAlphabet & aOA);
 
-      
+
       // ----------------------- Accessors --------------------------------------
-      
+
     public:
 
       /**
@@ -727,8 +727,8 @@ namespace DGtal
 
 
     protected:
-      // ------------------------- Protected Datas ------------------------------
-      
+      // ------------------------- Protected Data ------------------------------
+
       /**
        * The array of char on which is defined the OneBalancedWordComputer
        */
@@ -776,7 +776,7 @@ namespace DGtal
 
       /**
        * In order to add/remove letters efficiently from the
-       * prefix and the suffix of the main pattern being read, 
+       * prefix and the suffix of the main pattern being read,
        * the position of the next letter to read is memorized.
        */
       Index myNextBefore;
@@ -790,7 +790,7 @@ namespace DGtal
 
 
 
-      // ------------------------- Private Datas --------------------------------
+      // ------------------------- Private Data --------------------------------
     private:
 
       // ------------------------- Hidden services ------------------------------
@@ -809,7 +809,7 @@ namespace DGtal
        */
       Code getBigLetter() const;
 
-      /** 
+      /**
        * Get the code at a given index, if code at index 'pos' has not been read
        * yet, the input iterator will be used to access it.
        * @param pos a position in the FreemanChain
@@ -817,7 +817,7 @@ namespace DGtal
        */
       Code getCode(Index pos);
 
-      /** 
+      /**
        * Get the code at a given index.
        * @param pos a position in the FreemanChain
        * @return the letter at the given position
@@ -838,14 +838,14 @@ namespace DGtal
 
       /**
        * Computes the length of the suffix of the main pattern read before
-       * it. 
+       * it.
        * @return the length of the suffix read.
        */
       Size suffixLength() const;
 
       /**
        * Computes the length of the prefix of the main pattern read after
-       * it. 
+       * it.
        * @return the length of the prefix read.
        */
       Size prefixLength() const;
@@ -902,7 +902,7 @@ namespace DGtal
 
 
 
-    
+
     private:
       // ------------------------- Internals ------------------------------------
     public :
@@ -910,7 +910,7 @@ namespace DGtal
       /**
        * Default displacement vectors associated to codes.
        * @param c either 0, 1, 2, or 3
-       * 
+       *
        *        (1)
        *         ^
        *         |
@@ -941,8 +941,8 @@ namespace DGtal
    */
   template < typename TConstIterator, typename TInteger >
   std::ostream&
-  operator<< ( std::ostream & out, 
-	       const OneBalancedWordComputer<TConstIterator, TInteger> & object ); 
+  operator<< ( std::ostream & out,
+	       const OneBalancedWordComputer<TConstIterator, TInteger> & object );
 
 
 } // namespace DGtal

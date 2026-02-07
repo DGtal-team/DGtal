@@ -53,7 +53,7 @@ int main()
 {
   auto params = SH3::defaultParameters() | SHG3::defaultParameters() |  SHG3::parametersGeometryEstimation();
   params("surfaceComponents", "All")( "gridstep", 1. )("r-radius" , 4.0);
-  
+
   std::string filename = examplesPath + std::string("/samples/bunny-32.vol");
   auto binary_image    = SH3::makeBinaryImage(filename, params );
   auto K               = SH3::getKSpace( binary_image, params );
@@ -62,8 +62,8 @@ int main()
   auto primalSurface   = SH3::makePrimalSurfaceMesh(surface);
   auto surfels         = SH3::getSurfelRange( surface, params);
   auto embedder        = SH3::getSCellEmbedder( K );
-  
-  
+
+
   //Need to convert the faces
   std::vector<std::vector<SH3::SurfaceMesh::Vertex>> faces;
   std::vector<RealPoint> positions;
@@ -71,22 +71,22 @@ int main()
     faces.push_back(primalSurface->incidentVertices( face ));
   //Recasting to vector of vertices
   positions = primalSurface->positions();
-  
+
   auto surfmesh = SurfMesh(positions.begin(),
                            positions.end(),
                            faces.begin(),
                            faces.end());
-  
-  
+
+
   trace.info()<<"Got "<<surfels.size()<<" surfels."<<std::endl;
-  
+
   // Initialize polyscope
   polyscope::init();
-  
+
   auto iinormals = SHG3::getIINormalVectors(binary_image, surfels, params);
   auto psMesh = polyscope::registerSurfaceMesh("input digital surface", positions, faces);
   psMesh->addFaceVectorQuantity("normals", iinormals);
-  
+
   Eigen::MatrixXd points(surfels.size(),3);
   Eigen::MatrixXd normals(surfels.size(),3);
   std::ofstream ofs ("bunny.pts", std::ofstream::out);
@@ -100,29 +100,29 @@ int main()
     normals(i,0) = n(0);
     normals(i,1) = n(1);
     normals(i,2) = n(2);
-    
+
     ofs<<p(0)<<" "<<p(1)<<" "<<p(2)<<" "<<n(0)<<" "<< n(1)<<" "<<n(2)<<std::endl;
   }
   ofs.close();
   auto pc= polyscope::registerPointCloud("input boundary points", points);
   pc->addVectorQuantity("normals", normals);
-  
+
   //Winding number shape
   WindingNumbersShape<Z3i::Space> wnshape(points,normals);
- 
-  
+
+
   auto lower = binary_image->domain().lowerBound();
   auto upper = binary_image->domain().upperBound();
-  
+
   auto resample_h = [&](double h){
-    
+
     RegularPointEmbedder<Z3i::Space> pointEmbedder;
     pointEmbedder.init( h );
     Z3i::Point lowerPoint = pointEmbedder.floor( lower );
     Z3i::Point upperPoint = pointEmbedder.ceil( upper );
     Z3i::Domain domain(lowerPoint,upperPoint);
     trace.info() <<"Digital domain = "<<domain.size()<<" " <<domain<<std::endl;
-    
+
     //Winding (batched)
     size_t size = domain.size();
     Eigen::MatrixXd queries(size,3);
@@ -136,7 +136,7 @@ int main()
     }
     trace.info()<<"Cpt= "<<cpt<<" size= "<<size<<std::endl;
     auto orientations = wnshape.orientationBatch(queries);
-    
+
     //Binary Predicate
     Z3i::DigitalSet voxels(domain);
     cpt=0;
@@ -147,7 +147,7 @@ int main()
       ++cpt;
     }
     trace.info() <<"Number of voxels = "<<voxels.size()<<std::endl;
-    
+
     //Digital surface
     Z3i::KSpace kspace;
     kspace.init(lowerPoint, upperPoint, true);
@@ -155,7 +155,7 @@ int main()
     typedef SetOfSurfels< KSpace, SurfelSet > MySetOfSurfels;
     typedef DigitalSurface< MySetOfSurfels > MyDigitalSurface;
     typedef SurfelAdjacency<KSpace::dimension> MySurfelAdjacency;
-    
+
     MySurfelAdjacency surfAdj( true ); // interior in all directions.
     MySetOfSurfels theSetOfSurfels( kspace, surfAdj );
     Surfaces<KSpace>::sMakeBoundary(theSetOfSurfels.surfelSet(),
@@ -164,32 +164,32 @@ int main()
                                     lowerPoint,
                                     upperPoint);
     trace.info()<<"Surfel set size= "<<theSetOfSurfels.surfelSet().size()<<std::endl;
-    
+
     //Polyscope visualization
     auto surfPtr = CountedPtr<DigitalSurface< MySetOfSurfels >>(new MyDigitalSurface(theSetOfSurfels));
     auto primalSurfaceReco   = SH3::makePrimalSurfaceMesh(surfPtr);
-    
+
     std::vector<RealPoint> positionsReco = primalSurfaceReco->positions();
     //Fixing the embedding
     std::for_each(std::begin(positionsReco), std::end(positionsReco), [&](RealPoint &p){p=p*h;});
-    
+
     std::vector<std::vector<SH3::SurfaceMesh::Vertex>> facesReco;
     for(auto face= 0 ; face < primalSurfaceReco->nbFaces(); ++face)
       facesReco.push_back(primalSurfaceReco->incidentVertices( face ));
     auto psMesh = polyscope::registerSurfaceMesh("Reconstruction "+std::to_string(h), positionsReco, facesReco);
   };
-  
+
   resample_h(1.0);
   resample_h(2.0); //downscaling
   resample_h(0.5); //upscaling
-#if defined(NDEBUG)  
-  resample_h(0.2); //upscaling  
+#if defined(NDEBUG)
   resample_h(0.2); //upscaling
-#else  
-  trace.warning() << "CMake Debug mode detected, limiting upscaling to 0.5.";  
-#endif  
+  resample_h(0.2); //upscaling
+#else
+  trace.warning() << "CMake Debug mode detected, limiting upscaling to 0.5.";
+#endif
   //resample_h(0.07); //extreme upscaling, 2M vertices
-  
+
   // Set the callback function
   polyscope::show();
   return EXIT_SUCCESS;

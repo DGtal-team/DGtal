@@ -48,7 +48,7 @@ void
 DGtal::MPolynomialReader<n, TRing, TAlloc, TIterator>::
 selfDisplay ( std::ostream & out ) const
 {
-  out << "[MPolynomialReader"; 
+  out << "[MPolynomialReader";
 }
 
 /**
@@ -71,7 +71,7 @@ DGtal::MPolynomialReader<n, TRing, TAlloc, TIterator>::isValid() const
 template <int n, typename TRing, typename TAlloc, typename TIterator>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
                     const MPolynomialReader<n, TRing, TAlloc, TIterator> & object )
 {
   object.selfDisplay( out );
@@ -94,11 +94,9 @@ DGtal::operator>> ( std::istream & in,
       in.unget();
       ++it;
     }
-  
+
   return in;
 }
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

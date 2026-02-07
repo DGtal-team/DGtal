@@ -125,7 +125,7 @@ bool checkAffineGeometry( int nb, const std::vector< Point>& V )
   Point n = functions::computeOrthogonalVectorToBasis( B );
   std::cout << "Orthogonal(X) =: n = " << n << "\n";
   Point ns = functions::computeSimplifiedVector( n );
-  std::cout << "Orthogonal(X)/gcd =: ns = " << ns << "\n";  
+  std::cout << "Orthogonal(X)/gcd =: ns = " << ns << "\n";
   for ( auto i = 0; i < B.size(); i++ )
     std::cout << "B[" << i << "] . ns = " << B[i] << " . " << ns
               << " == " << B[i].dot(ns) << " (should be 0)\n";

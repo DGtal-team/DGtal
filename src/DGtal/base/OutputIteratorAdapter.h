@@ -57,10 +57,10 @@ namespace DGtal
   // template class OutputIteratorAdapter
   /**
    * Description of template class 'OutputIteratorAdapter' <p>
-   * \brief Aim: Adapts an output iterator i 
+   * \brief Aim: Adapts an output iterator i
    * with a unary functor f, both given at construction,
-   * so that the element pointed to by i is updated with 
-   * a given value through f. 
+   * so that the element pointed to by i is updated with
+   * a given value through f.
    *
    * @tparam TIterator an output iterator
    *
@@ -68,7 +68,7 @@ namespace DGtal
    *
    * @tparam TFunctor a unary functor
    * with reference on the element type as argument type
-   * and reference on the the input value type as return type 
+   * and reference on the the input value type as return type
    *
    */
   template <typename TIterator, typename TFunctor, typename TInputValue>
@@ -83,19 +83,19 @@ namespace DGtal
     using difference_type = void;
     using pointer = void;
     using reference = void;
-  
 
-    
-    typedef TIterator Iterator; 
-    BOOST_CONCEPT_ASSERT(( boost::ForwardIterator<Iterator> )); 
-    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctor, 
-                           typename std::iterator_traits<Iterator>::value_type&, TInputValue& > )); 
+
+
+    typedef TIterator Iterator;
+    BOOST_CONCEPT_ASSERT(( boost::ForwardIterator<Iterator> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctor,
+                           typename std::iterator_traits<Iterator>::value_type&, TInputValue& > ));
 
     // ----------------------- Standard services ------------------------------
   public:
     /**
      * Constructor.
-     * @param it any iterator 
+     * @param it any iterator
      * @param f any functor
      */
     OutputIteratorAdapter(const Iterator &it, ConstAlias<TFunctor> f)
@@ -121,10 +121,10 @@ namespace DGtal
      * @param aValue any value
      * @return a reference to *this
      */
-    OutputIteratorAdapter& operator=(const TInputValue& aValue) 
-      { 
-        myF->operator()( *myIt ) = aValue; 
-        return *this; 
+    OutputIteratorAdapter& operator=(const TInputValue& aValue)
+      {
+        myF->operator()( *myIt ) = aValue;
+        return *this;
       }
 
     /**
@@ -143,11 +143,11 @@ namespace DGtal
      * Post-increment operator
      * @return *this
      */
-    OutputIteratorAdapter operator++(int) 
-    { 
-      OutputIteratorAdapter tmp = *this; 
-      ++myIt; 
-      return tmp; 
+    OutputIteratorAdapter operator++(int)
+    {
+      OutputIteratorAdapter tmp = *this;
+      ++myIt;
+      return tmp;
     }
 
 
@@ -157,17 +157,17 @@ namespace DGtal
 
   private:
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     /**
      * Underlying iterator
      */
-    Iterator myIt; 
+    Iterator myIt;
 
     /**
      * Aliasing pointer on the underlying functor
      */
-    const TFunctor* myF; 
+    const TFunctor* myF;
 
   }; // end of class OutputIteratorAdapter
 

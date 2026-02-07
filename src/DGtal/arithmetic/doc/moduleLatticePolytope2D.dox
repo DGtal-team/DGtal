@@ -1,11 +1,11 @@
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  */
 namespace DGtal {
 
 /*!
-   
+
 @page moduleLatticePolytope2D  Lattice polytopes in the digital plane ZxZ (convex polygons with vertices at integer coordinates)
 
 @writers Jacques-Olivier Lachaud
@@ -25,7 +25,7 @@ COBANaivePlaneComputer).
 
 \section dgtal_lattice_polytope_2d_sec1 Creating a lattice polytope in Z2
 
-The class LatticePolytope2D represents an arbitary convex polygon
+The class LatticePolytope2D represents an arbitrary convex polygon
 in the 2D plane whose vertices have integer coordinates. It is
 parameterized by a digital space \a TSpace (a model of CSpace with
 dimension 2) and by the container class \a TSequence for storing
@@ -40,7 +40,7 @@ href="http://www.sgi.com/tech/stl/Sequence.html">boost::Sequence</a>,
 but also of boost::DefaultConstructible, boost::CopyConstructible,
 boost::Assignable. This class is also a model of
 CDrawableWithBoard2D. You may therefore display it on a Board2D
-object. 
+object.
 
 Since a sequence is ordered, its order defines the order of vertices
 along the polygon, i.e. any vertex in the sequence forms an edge with
@@ -173,7 +173,7 @@ kept.
 
 This snippet is taken from example lower-integer-convex-hull.cpp. It
 cuts the polygon by calling LatticePolytope2D::cut. An half-plane
-is specified beforehands by instantiating a
+is specified beforehand by instantiating a
 LatticePolytope2D::HalfSpace. Note that it is a redefinition of the
 class ClosedIntegerHalfPlane.
 

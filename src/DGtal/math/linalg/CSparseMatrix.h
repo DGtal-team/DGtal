@@ -99,7 +99,7 @@ public:
         z.setFromTriplets(ti, te);
     }
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
 private:
     T z;
     TripletInterator ti, te;

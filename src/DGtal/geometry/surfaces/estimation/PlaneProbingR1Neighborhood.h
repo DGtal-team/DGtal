@@ -74,7 +74,7 @@ namespace DGtal
       using HexagonState        = typename PlaneProbingRNeighborhood<TPredicate>::HexagonState;
 
       using Index               = typename PlaneProbingRNeighborhood<TPredicate>::Index;
-    
+
     // ----------------------- Standard services ------------------------------
   public:
     /**
@@ -141,10 +141,10 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     mutable std::array<bool, 6> myState; /**< The current state of the H-neighborhood. */
 

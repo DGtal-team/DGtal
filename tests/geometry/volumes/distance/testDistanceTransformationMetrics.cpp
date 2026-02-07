@@ -48,11 +48,11 @@ void randomSeeds(Image &input, const unsigned int nb, const int value)
 {
   typename Image::Point p, low = input.domain().lowerBound(), up = input.domain().upperBound();
   typename Image::Vector ext;
-  
+
   for (Dimension i = 0; i < Image::Domain::dimension; i++)
     ext[i] = up[i] - low[i] + 1;
-  
-  
+
+
   for (unsigned int k = 0 ; k < nb; k++)
   {
     for (unsigned int dim = 0; dim < Image::dimension; dim++)
@@ -68,13 +68,13 @@ template<typename Image, typename Pred, typename Metric>
 bool checkVoronoi(Image &result,Pred &pointPredicate, Metric &metric)
 {
   typedef typename Image::Domain Domain;
-  
+
   for(typename Domain::ConstIterator it = result.domain().begin(),
           itend=result.domain().end();
         it != itend; ++it)
   {
     typename Metric::Value dist = result(*it);
-    
+
     for(typename Domain::ConstIterator itbis = result.domain().begin(),
         itendbis=result.domain().end();
         itbis != itendbis; ++itbis)
@@ -99,13 +99,13 @@ bool testCompareExactBruteForce(unsigned int size, unsigned int nb)
   typedef typename Space::Point Point;
   typedef DigitalSetBySTLSet<Domain> Set;
   typedef functors::NotPointPredicate<Set> NegPredicate;
-  
+
   Point low=Point::diagonal(0),
   up=Point::diagonal(size);
-  
+
   Domain domain(low,up);
   Set set(domain);
-  
+
   for(unsigned int i = 0; i<nb; ++i)
   {
     Point p;
@@ -113,19 +113,19 @@ bool testCompareExactBruteForce(unsigned int size, unsigned int nb)
       p[dim]  = rand() % size;
     set.insert(p);
   }
-  
+
   trace.info()<< "Testing metrics "<<MetricEx()<<std::endl;
   trace.info()<< "Testing space dimension "<<Space::dimension<<std::endl;
   trace.info()<< "Inserting "<<set.size() << " points."<<std::endl;
-  
+
   NegPredicate negPred(set);
-  
+
   typedef DistanceTransformation<Space, NegPredicate, MetricEx> DTEx;
   MetricEx metricEx;
   DTEx dtex(&domain, &negPred, &metricEx);
-  
+
   bool res=checkVoronoi(dtex, negPred, metricEx);
-  
+
   trace.endBlock();
   return res;
 }
@@ -141,13 +141,13 @@ bool testCompareInexactBruteForce(double norm, unsigned int size, unsigned int n
   typedef typename Space::Point Point;
   typedef DigitalSetBySTLSet<Domain> Set;
   typedef functors::NotPointPredicate<Set> NegPredicate;
-  
+
   Point low=Point::diagonal(0),
   up=Point::diagonal(size);
-  
+
   Domain domain(low,up);
   Set set(domain);
-  
+
   for(unsigned int i = 0; i<nb; ++i)
   {
     Point p;
@@ -155,19 +155,19 @@ bool testCompareInexactBruteForce(double norm, unsigned int size, unsigned int n
       p[dim]  = rand() % size;
     set.insert(p);
   }
-  
+
   trace.info()<< "Testing metrics "<<MetricInex(norm)<<std::endl;
   trace.info()<< "Testing space dimension "<<Space::dimension<<std::endl;
   trace.info()<< "Inserting "<<set.size() << " points."<<std::endl;
-  
+
   NegPredicate negPred(set);
-  
+
   typedef DistanceTransformation<Space, NegPredicate, MetricInex> DTIn;
   MetricInex metricInex(norm);
   DTIn dtinex(&domain, &negPred, &metricInex);
-  
+
   bool res=checkVoronoi(dtinex, negPred, metricInex);
-  
+
   trace.endBlock();
   return res;
 }
@@ -187,11 +187,11 @@ int main( int argc, char** argv )
   && testCompareExactBruteForce<Z2i::Space, 1>(16, 8)
   && testCompareExactBruteForce<Z3i::Space, 2>(16, 8)
   && testCompareExactBruteForce<Z2i::Space, 4>(16, 8)
-  && testCompareInexactBruteForce<Z2i::Space>(2.0,16, 8) 
+  && testCompareInexactBruteForce<Z2i::Space>(2.0,16, 8)
   && testCompareInexactBruteForce<Z2i::Space>(1.33,16, 8)
-  && testCompareInexactBruteForce<Z2i::Space>(2.6,16, 8) 
+  && testCompareInexactBruteForce<Z2i::Space>(2.6,16, 8)
   && testCompareInexactBruteForce<Z3i::Space>(2.44,10, 5)
-  && testCompareInexactBruteForce<Z3i::Space>(12.3,10, 5); 
+  && testCompareInexactBruteForce<Z3i::Space>(12.3,10, 5);
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

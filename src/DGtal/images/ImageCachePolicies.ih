@@ -51,7 +51,7 @@ DGtal::ImageCacheReadPolicyLAST<TImageContainer, TImageFactory>::getPage(const P
 
   if (myCacheImagesPtr->domain().isInside(aPoint))
     return myCacheImagesPtr;
-  
+
   return NULL;
 }
 
@@ -65,7 +65,7 @@ DGtal::ImageCacheReadPolicyLAST<TImageContainer, TImageFactory>::getPage(const D
 
   if ( (myCacheImagesPtr->domain().lowerBound() == aDomain.lowerBound()) && (myCacheImagesPtr->domain().upperBound() == aDomain.upperBound()) )
     return myCacheImagesPtr;
-  
+
   return NULL;
 }
 
@@ -79,7 +79,7 @@ DGtal::ImageCacheReadPolicyLAST<TImageContainer, TImageFactory>::getPageToDetach
 
 template <typename TImageContainer, typename TImageFactory>
 inline
-void 
+void
 DGtal::ImageCacheReadPolicyLAST<TImageContainer, TImageFactory>::updateCache(const Domain &aDomain)
 {
   myCacheImagesPtr = myImageFactory->requestImage(aDomain);
@@ -106,7 +106,7 @@ DGtal::ImageCacheReadPolicyFIFO<TImageContainer, TImageFactory>::getPage(const P
   for (unsigned int i=0; i<myFIFOCacheImages.size(); i++)
     if (myFIFOCacheImages[i]->domain().isInside(aPoint))
       return myFIFOCacheImages[i];
-  
+
   return NULL;
 }
 
@@ -121,7 +121,7 @@ DGtal::ImageCacheReadPolicyFIFO<TImageContainer, TImageFactory>::getPage(const D
   for (unsigned int i=0; i<myFIFOCacheImages.size(); i++)
     if ( (myFIFOCacheImages[i]->domain().lowerBound() == aDomain.lowerBound()) && (myFIFOCacheImages[i]->domain().upperBound() == aDomain.upperBound()) )
       return myFIFOCacheImages[i];
-  
+
   return NULL;
 }
 
@@ -131,13 +131,13 @@ TImageContainer *
 DGtal::ImageCacheReadPolicyFIFO<TImageContainer, TImageFactory>::getPageToDetach()
 {
   TImageContainer *pageToDetach = NULL;
-  
+
   if (myFIFOCacheImages.size() >= myFIFOSizeMax)
   {
     pageToDetach = myFIFOCacheImages.front();
     myFIFOCacheImages.pop_front();
   }
-  
+
   return pageToDetach;
 }
 
@@ -165,7 +165,7 @@ void
 DGtal::ImageCacheWritePolicyWT<TImageContainer, TImageFactory>::writeInPage(TImageContainer * anImageContainer, const Point & aPoint, const Value &aValue)
 {
   anImageContainer->setValue(aPoint, aValue);
-  
+
   myImageFactory->flushImage(anImageContainer); // DGtal::CACHE_WRITE_POLICY_WT
 }
 
@@ -197,5 +197,3 @@ DGtal::ImageCacheWritePolicyWB<TImageContainer, TImageFactory>::flushPage(TImage
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

@@ -80,7 +80,7 @@ namespace DGtal
     void assign( OutputDigitalSet & output, const InputDigitalSet & input );
 
     /**
-     * Use function overloading for possible faster assignment. 
+     * Use function overloading for possible faster assignment.
      * Assigns input to output.
      *
      * @param output (modified) the output set.

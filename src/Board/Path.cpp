@@ -3,8 +3,8 @@
  * @file   Path.cpp
  * @author Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb>
  * @date   Aug 2009
- * 
- * @brief  
+ *
+ * @brief
  */
 /*
  * \@copyright This File is part of the Board library which is
@@ -35,7 +35,7 @@ Path::operator<<( const Point & p )
 Point
 Path::center() const {
   Rect bbox = boundingBox();
-  return Point( bbox.left + bbox.width/2.0, 
+  return Point( bbox.left + bbox.width/2.0,
     bbox.top  - bbox.height/2.0 );
 }
 
@@ -118,7 +118,7 @@ Path::scale( double sx, double sy )
   }
   Point delta = c - center();
   translate( delta.x, delta.y );
-  return *this;  
+  return *this;
 }
 
 Path &
@@ -183,10 +183,10 @@ Path::flushFIG( std::ostream & stream,
      << " " << static_cast<int>( transform.mapY( i->y ) );
     ++i;
   }
-  if ( _closed ) { 
+  if ( _closed ) {
     stream << " " << static_cast<int>( transform.mapX( _points.begin()->x ) )
      << " " << static_cast<int>( transform.mapY( _points.begin()->y ) );
-  }  
+  }
 }
 
 void
@@ -198,7 +198,7 @@ Path::flushSVGCommands( std::ostream & stream,
   std::vector<Point>::const_iterator i = _points.begin();
   std::vector<Point>::const_iterator end = _points.end();
   int count = 0;
-  
+
   stream << "M " << transform.mapX( i->x ) << " " << transform.mapY( i->y );
   ++i;
   while ( i != end ) {
@@ -207,7 +207,7 @@ Path::flushSVGCommands( std::ostream & stream,
     count = ( count + 1 ) % 6;
     if ( !count ) stream << "\n                  ";
   }
-  if ( _closed ) 
+  if ( _closed )
     stream << " Z" << std::endl;
 }
 
@@ -281,15 +281,15 @@ Path::boundingBox() const
   rect.width = 0.0;
   rect.height = 0.0;
   ++i;
-  while ( i != end ) { 
-    if ( i->x < rect.left ) { 
+  while ( i != end ) {
+    if ( i->x < rect.left ) {
       double dw = rect.left - i->x;
       rect.left = i->x;
       rect.width += dw;
     } else if ( i->x > rect.left + rect.width ) {
       rect.width = i->x - rect.left;
     }
-    if ( i->y > rect.top ) { 
+    if ( i->y > rect.top ) {
       double dh = i->y - rect.top;
       rect.top = i->y;
       rect.height += dh;

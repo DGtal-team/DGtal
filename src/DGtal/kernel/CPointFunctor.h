@@ -92,7 +92,7 @@ Description of \b concept '\b CPointFunctor' <p>
     typedef typename T::Point Point;
     typedef typename T::Value Value;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     // ------------------------- Internals ------------------------------------
   private:

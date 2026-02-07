@@ -54,26 +54,26 @@ namespace DGtal {
   @ingroup Concepts
   @brief Aim:
   @todo Complete documentation
-     
-  # Refinement of 
+
+  # Refinement of
   boost::CopyConstructible
-    
+
   # Associated types
-    
+
   # Notation
   - \a X : A type that is a model of CDigitalSurfaceTracker
   - \a x, \a y : object of type X
-    
+
   # Definitions
-    
+
   # Valid expressions and semantics
-    
+
   | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
   |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-  | | | | | | | | | 
-     
+  | | | | | | | | |
+
   # Invariants
-    
+
   # Models
   A dummy model (for concept checking) is CCDigitalSurfaceTrackerArchetype.
 
@@ -81,7 +81,7 @@ namespace DGtal {
 
   @tparam T the type that should be a model of CDigitalSurfaceTracker.
   */
-  template <typename T> 
+  template <typename T>
   struct CDigitalSurfaceTracker : boost::CopyConstructible<T>
   {
     // ----------------------- Concept checks ------------------------------
@@ -96,7 +96,7 @@ namespace DGtal {
     // To test if two types A and Y are equals, use
     BOOST_STATIC_ASSERT
     ( (ConceptUtils::SameType< Surfel,
-       typename DigitalSurfaceContainer::Surfel >::value) );    
+       typename DigitalSurfaceContainer::Surfel >::value) );
     // 2. then check the presence of data members, operators and methods with
     BOOST_CONCEPT_USAGE( CDigitalSurfaceTracker )
     {
@@ -115,11 +115,11 @@ namespace DGtal {
       ConceptUtils::sameType( myDim, myX.orthDir() );
       // x.adjacent( Surfel&, Dimension, bool ) const, returns a uint8_t
       Surfel modifiableSurfel;
-      ConceptUtils::sameType( myInt, 
+      ConceptUtils::sameType( myInt,
 			      myX.adjacent( modifiableSurfel, myDim, myBool ) );
     }
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     T myX; // only if T is default constructible.
     DigitalSurfaceContainer myDSC;
@@ -127,12 +127,12 @@ namespace DGtal {
     Dimension myDim;
     bool myBool;
     uint8_t myInt;
-    
+
     // ------------------------- Internals ------------------------------------
   private:
-    
+
   }; // end of concept CDigitalSurfaceTracker
-  
+
 } // namespace concepts
 } // namespace DGtal
 

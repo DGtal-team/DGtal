@@ -379,7 +379,7 @@ namespace DGtal
   {
     BOOST_CONCEPT_ASSERT((  concepts::CImage<TContainer> )) ;
     /**
-     * Import a volume image file.  
+     * Import a volume image file.
      *
      * @param filename the image filename to be imported.
      *

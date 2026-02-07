@@ -107,4 +107,3 @@ DGtal::raw_writer_write_word(std::ostream& outs, Word value)
 
     return outs;
 }
-

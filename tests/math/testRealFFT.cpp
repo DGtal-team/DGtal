@@ -276,7 +276,7 @@ void cmpTranslatedFFT( ImageContainerBySTLVector<TDomain, TValue> const & anImag
       *it = anImage( pt );
     }
 
-  INFO( "Forward transformation (forcing plan re-use)." );
+  INFO( "Forward transformation (forcing plan reuse)." );
   fft.forwardFFT( FFTW_MEASURE | FFTW_WISDOM_ONLY );
   shifted_fft.forwardFFT( FFTW_MEASURE | FFTW_WISDOM_ONLY );
 
@@ -457,5 +457,3 @@ TEST_CASE( "Checking RealFFT on a 4D image in double precision.", "[4D][double]"
   cmpTranslatedFFT( image );
 }
 #endif
-
-

@@ -105,21 +105,21 @@ void initQuantities()
     PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector cograd =  calculus.coGradient(f) * ph;
     cogradients.push_back( cograd );
     normals.push_back(calculus.faceNormalAsDGtalVector(f));
-    
+
     auto vA = calculus.vectorArea(f);
     vectorArea.push_back({vA(0) , vA(1), vA(2)});
-    
+
     faceArea.push_back( calculus.faceArea(f));
-    
+
     centroids.push_back( calculus.centroidAsDGtalPoint(f) );
   }
-  
+
   psMesh->addFaceVectorQuantity("Gradients", gradients);
   psMesh->addFaceVectorQuantity("co-Gradients", cogradients);
   psMesh->addFaceVectorQuantity("Normals", normals);
   psMesh->addFaceScalarQuantity("Face area", faceArea);
   psMesh->addFaceVectorQuantity("Vector area", vectorArea);
-  
+
   polyscope::registerPointCloud("Centroids", centroids);
 }
 
@@ -129,16 +129,16 @@ void myCallback()
   ImGui::SliderFloat("Phi scale", &scale, 0., 1.);
   if (ImGui::Button("Init phi"))
     initPhi();
-  
+
   if (ImGui::Button("Compute quantities"))
     initQuantities();
-  
+
 }
 
 int main()
 {
   auto params = SH3::defaultParameters() | SHG3::defaultParameters() |  SHG3::parametersGeometryEstimation();
-  
+
   auto h=.3 ; //gridstep
   params( "polynomial", "goursat" )( "gridstep", h );
   auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
@@ -148,12 +148,12 @@ int main()
   auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
   SH3::Cell2Index c2i;
   auto primalSurface   = SH3::makePrimalSurfaceMesh(c2i, surface);
-  
+
   // Convert faces to appropriate indexed format
   std::vector<std::vector<SH3::SurfaceMesh::Vertex>> faces;
   for(auto face= 0 ; face < primalSurface->nbFaces(); ++face)
     faces.push_back(primalSurface->incidentVertices( face ));
-  
+
   //Recasting to vector of vertices
   auto positions = primalSurface->positions();
 
@@ -161,10 +161,10 @@ int main()
                       positions.end(),
                       faces.begin(),
                       faces.end());
-  
+
   // Initialize polyscope
   polyscope::init();
-  
+
   psMesh = polyscope::registerSurfaceMesh("digital surface", positions, faces);
 
   // Set the callback function

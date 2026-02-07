@@ -54,14 +54,14 @@ DGtal::ModuloComputer<T>::ModuloComputer( UnsignedIntegerParamType  m )
 // Interface - public :
 
 
-    
+
 /**
  * Increment the value [i] modulo.
  * @param i any value between 0 and [k] (excluded).
  */
 template <typename T>
 inline
-void 
+void
 DGtal::ModuloComputer<T>::increment( UnsignedInteger & i ) const
 {
   if ( ++i == k ) i = 0;
@@ -74,7 +74,7 @@ DGtal::ModuloComputer<T>::increment( UnsignedInteger & i ) const
  */
 template <typename T>
 inline
-void 
+void
 DGtal::ModuloComputer<T>::decrement( UnsignedInteger & i ) const
 {
   if ( i == 0 ) i = k;
@@ -88,10 +88,10 @@ DGtal::ModuloComputer<T>::decrement( UnsignedInteger & i ) const
  */
 template <typename T>
 inline
-typename DGtal::ModuloComputer<T>::UnsignedInteger 
+typename DGtal::ModuloComputer<T>::UnsignedInteger
 DGtal::ModuloComputer<T>::next( UnsignedIntegerParamType i ) const
 {
-  
+
   return ( (i+1) == k ) ? 0 : (i+1);
 }
 
@@ -102,7 +102,7 @@ DGtal::ModuloComputer<T>::next( UnsignedIntegerParamType i ) const
  */
 template <typename T>
 inline
-typename DGtal::ModuloComputer<T>::UnsignedInteger 
+typename DGtal::ModuloComputer<T>::UnsignedInteger
 DGtal::ModuloComputer<T>::previous( UnsignedIntegerParamType i ) const
 {
   return ( i == 0 ) ? k - 1 : i - 1;
@@ -115,7 +115,7 @@ DGtal::ModuloComputer<T>::previous( UnsignedIntegerParamType i ) const
  */
 template <typename T>
 inline
-typename DGtal::ModuloComputer<T>::UnsignedInteger 
+typename DGtal::ModuloComputer<T>::UnsignedInteger
 DGtal::ModuloComputer<T>::cast( IntegerParamType i ) const
 {
   Integer tmp = i;
@@ -125,7 +125,7 @@ DGtal::ModuloComputer<T>::cast( IntegerParamType i ) const
   return ip;
 }
 
-    
+
 /**
  * Less comparator modulo. Be careful, modulo comparisons have no
  * sense when the absolute difference of the values are around k / 2.
@@ -136,7 +136,7 @@ DGtal::ModuloComputer<T>::cast( IntegerParamType i ) const
  */
 template <typename T>
 inline
-bool 
+bool
 DGtal::ModuloComputer<T>::less( UnsignedIntegerParamType i, UnsignedIntegerParamType j ) const
 {
   Integer d = ( (T) j ) - ( (T) i );
@@ -152,11 +152,11 @@ DGtal::ModuloComputer<T>::less( UnsignedIntegerParamType i, UnsignedIntegerParam
  *
  * @param j any value between 0 and [k] (excluded).
  * @param i any value between 0 and [k] (excluded).
- * @return the value j - i, always positive. 
+ * @return the value j - i, always positive.
  */
 template <typename T>
 inline
-typename DGtal::ModuloComputer<T>::UnsignedInteger 
+typename DGtal::ModuloComputer<T>::UnsignedInteger
 DGtal::ModuloComputer<T>::posDiff( UnsignedIntegerParamType  j, UnsignedIntegerParamType i ) const
 {
   return ( i <= j ) ? j - i : j + k - i;
@@ -187,6 +187,3 @@ DGtal::ModuloComputer<T>::isValid() const
 {
     return true;
 }
-
-
-

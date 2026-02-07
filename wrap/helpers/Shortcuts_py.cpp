@@ -42,7 +42,7 @@ using L1DistanceTransform = DistanceTransformation<SHG3::Space, SHG3::VoronoiPoi
 using L2DistanceTransform = DistanceTransformation<SHG3::Space, SHG3::VoronoiPointPredicate, L2Metric>;
 
 template<typename T>
-std::vector<Color> apply_colormap(const std::vector<T>& data, const SH3::ColorMap& cmap) { 
+std::vector<Color> apply_colormap(const std::vector<T>& data, const SH3::ColorMap& cmap) {
     std::vector<Color> colors(data.size());
     for (size_t i = 0; i < data.size(); ++i) {
         colors[i] = cmap(data[i]);
@@ -51,7 +51,7 @@ std::vector<Color> apply_colormap(const std::vector<T>& data, const SH3::ColorMa
 }
 // Named apply_colormapV to ease binding and not conflict with above declaration
 template<typename T>
-std::vector<Color> apply_colormapV(const std::vector<T>& data, const Parameters& params) { 
+std::vector<Color> apply_colormapV(const std::vector<T>& data, const Parameters& params) {
     if (data.size() == 0) return {};
 
     T min = data[0];
@@ -60,7 +60,7 @@ std::vector<Color> apply_colormapV(const std::vector<T>& data, const Parameters&
         min = std::min(min, data[i]);
         max = std::max(max, data[i]);
     }
-    
+
     auto cmap = SH3::getColorMap(min, max, params);
     return apply_colormap(data, cmap);
 }
@@ -75,7 +75,7 @@ py::array_t<double> getEmbeddedPosition(Embd& embedder, size_t size, It it, It e
 
     for (size_t i = 0; it != end; ++it, ++i) {
         auto pos = embedder(*it);
-        
+
         view(i, 0) = pos[0];
         view(i, 1) = pos[1];
         view(i, 2) = pos[2];
@@ -86,9 +86,9 @@ py::array_t<double> getEmbeddedPosition(Embd& embedder, size_t size, It it, It e
 
 void define_types(py::module& m) {
     // We define some "opaques" type that are only be meant to be returned to the user
-    // and pass to other functions afterwards. These are not meant to be full binding 
+    // and pass to other functions afterwards. These are not meant to be full binding
     // of the types.
-    
+
     // Non bound types assumed to be bound within other modules:
     // (this was checked by trial and error)
     //  SH3::KSpace
@@ -96,7 +96,7 @@ void define_types(py::module& m) {
     //  Points
     //  CellEmbedder
     //  SCellEmbedder
-    
+
     // TODO: In IO module?
     py::class_<SH3::ColorMap>(m, "ColorMap")
         .def(py::init<double, double>())
@@ -152,7 +152,7 @@ void defines_types_geometry(py::module& m) {
             return ss.str();
         });
 
-    // We map distance transformation and voronoi map under the same name. 
+    // We map distance transformation and voronoi map under the same name.
     // We just "cheat" by binding functions under different names
     py::class_<L1DistanceTransform>(m, "L1VoronoiMap")
         // No constructor, we let the user build it with getDistanceTransformation
@@ -199,23 +199,23 @@ void defines_types_geometry(py::module& m) {
 void bind_voronoimap(py::module& mg);
 
 void bind_shortcuts(py::module& m_helpers) {
-    auto m = m_helpers.def_submodule("SH3", "Shortcuts 3D"); 
+    auto m = m_helpers.def_submodule("SH3", "Shortcuts 3D");
     define_types(m);
 
     // Create a reference for easy split between SH3 and SHG3 if needed
     auto& mg = m;
     defines_types_geometry(mg);
 
-    
+
     // Returns both for now
     m.def("defaultParameters", []() {
             return SH3::defaultParameters() | SHG3::defaultParameters();
         });
 
-    // Note: We use lambda because default parameters or partial specialization results 
+    // Note: We use lambda because default parameters or partial specialization results
     // in multiple overloads that are not disambiguated with py::overload_cast...
     // Even when it could, we use lambda for consistency
-    
+
     // Create objects
     m.def("makeBinaryImage", [](const std::string& fname, Parameters params){
             return SH3::makeBinaryImage(fname, params);
@@ -266,8 +266,8 @@ void bind_shortcuts(py::module& m_helpers) {
             return SH3::saveOBJ(mesh, fName);
         });
     m.def("saveOBJ", [](
-        CountedPtr<SH3::TriangulatedSurface> mesh, 
-        const std::vector<SH3::RealPoint>& normals, const std::vector<Color>& colors, 
+        CountedPtr<SH3::TriangulatedSurface> mesh,
+        const std::vector<SH3::RealPoint>& normals, const std::vector<Color>& colors,
         const std::string& fName) { // TODO: Ambient, diffuse and specular
             return SH3::saveOBJ(mesh, normals, colors, fName);
         });
@@ -278,14 +278,14 @@ void bind_shortcuts(py::module& m_helpers) {
             return SH3::saveOBJ(surf, fName);
         });
     m.def("saveOBJ", [](
-        CountedPtr<SH3::LightDigitalSurface> surf, 
-        const std::vector<SH3::RealPoint>& normals, const std::vector<Color>& colors, 
+        CountedPtr<SH3::LightDigitalSurface> surf,
+        const std::vector<SH3::RealPoint>& normals, const std::vector<Color>& colors,
         const std::string& fName) { // TODO: Ambient, diffuse and specular
             return SH3::saveOBJ(surf, normals, colors, fName);
         });
     // With lambda to avoid setting all parameters for default colors to work
     m.def("saveVectorFieldOBJ", [](
-        const SH3::RealPoints& positions, const SH3::RealVectors& vf, 
+        const SH3::RealPoints& positions, const SH3::RealVectors& vf,
         double thickness, const SH3::Colors& diffuse_colors, std::string path) {
             return SH3::saveVectorFieldOBJ(positions, vf, thickness, diffuse_colors, path);
         });
@@ -299,7 +299,7 @@ void bind_shortcuts(py::module& m_helpers) {
     m.def("getKSpace", [](const std::vector<int>& lb, const std::vector<int>& ub, Parameters params) {
             if (lb.size() != 3) throw std::runtime_error("Expected a lower bound of dimension 3");
             if (ub.size() != 3) throw std::runtime_error("Expected an upper bound of dimension 3");
-            
+
             return SH3::getKSpace(SH3::Point(lb[0], lb[1], lb[2]), SH3::Point(ub[0], ub[1], ub[2]), params);
         });
     m.def("getCellEmbedder", [](const SH3::KSpace& space) {
@@ -338,58 +338,58 @@ void bind_shortcuts(py::module& m_helpers) {
     m.def("getEmbeddedPositions", [](const SH3::KSpace& space, const SH3::SurfelRange& range) {
             auto embedder = SH3::getSCellEmbedder(space);
             return getEmbeddedPosition(embedder, range.size(), range.begin(), range.end());
-        }); 
+        });
 
 
 
     // SHG3 Shortcuts :
     mg.def("getIIMeanCurvatures", [](
-        CountedPtr<SH3::BinaryImage> im, const SH3::SurfelRange& range, 
+        CountedPtr<SH3::BinaryImage> im, const SH3::SurfelRange& range,
         const Parameters& params) {
             return SHG3::getIIMeanCurvatures(im, range, params);
         });
     mg.def("getIIMeanCurvatures", [](
-        CountedPtr<SH3::DigitizedImplicitShape3D> im, const SH3::SurfelRange& range, 
+        CountedPtr<SH3::DigitizedImplicitShape3D> im, const SH3::SurfelRange& range,
         const Parameters& params) {
             return SHG3::getIIMeanCurvatures(im, range, params);
         });
     mg.def("getIIGaussianCurvatures", [](
-        CountedPtr<SH3::BinaryImage> im, const SH3::SurfelRange& range, 
+        CountedPtr<SH3::BinaryImage> im, const SH3::SurfelRange& range,
         const Parameters& params) {
             return SHG3::getIIGaussianCurvatures(im, range, params);
         });
     mg.def("getIIGaussianCurvatures", [](
-        CountedPtr<SH3::DigitizedImplicitShape3D> im, const SH3::SurfelRange& range, 
+        CountedPtr<SH3::DigitizedImplicitShape3D> im, const SH3::SurfelRange& range,
         const Parameters& params) {
             return SHG3::getIIGaussianCurvatures(im, range, params);
         });
     mg.def("getIINormalVectors", [](
-        CountedPtr<SH3::BinaryImage> im, const SH3::SurfelRange& range, 
+        CountedPtr<SH3::BinaryImage> im, const SH3::SurfelRange& range,
         const Parameters& params) {
             return SHG3::getIINormalVectors(im, range, params);
         });
     mg.def("getIINormalVectors", [](
-        CountedPtr<SH3::DigitizedImplicitShape3D> im, const SH3::SurfelRange& range, 
+        CountedPtr<SH3::DigitizedImplicitShape3D> im, const SH3::SurfelRange& range,
         const Parameters& params) {
             return SHG3::getIINormalVectors(im, range, params);
         });
     mg.def("getPositions", [](
-        CountedPtr<SH3::ImplicitShape3D> shape, const SH3::KSpace& K, 
+        CountedPtr<SH3::ImplicitShape3D> shape, const SH3::KSpace& K,
         const SH3::SurfelRange& surfels, const Parameters& params) {
             return SHG3::getPositions(shape, K, surfels, params);
         });
     mg.def("getNormalVectors", [](
-        CountedPtr<SH3::ImplicitShape3D> shape, const SH3::KSpace& K, 
+        CountedPtr<SH3::ImplicitShape3D> shape, const SH3::KSpace& K,
         const SH3::SurfelRange& surfels, const Parameters& params) {
             return SHG3::getNormalVectors(shape, K, surfels, params);
         });
     mg.def("getMeanCurvatures", [](
-        CountedPtr<SH3::ImplicitShape3D> shape, const SH3::KSpace& K, 
+        CountedPtr<SH3::ImplicitShape3D> shape, const SH3::KSpace& K,
         const SH3::SurfelRange& surfels, const Parameters& params) {
             return SHG3::getMeanCurvatures(shape, K, surfels, params);
         });
     mg.def("getGaussianCurvatures", [](
-        CountedPtr<SH3::ImplicitShape3D> shape, const SH3::KSpace& K, 
+        CountedPtr<SH3::ImplicitShape3D> shape, const SH3::KSpace& K,
         const SH3::SurfelRange& surfels, const Parameters& params) {
             return SHG3::getGaussianCurvatures(shape, K, surfels, params);
         });
@@ -397,31 +397,31 @@ void bind_shortcuts(py::module& m_helpers) {
     mg.def("getSecondPrincipalCurvatures", &SHG3::getSecondPrincipalCurvatures);
     mg.def("getFirstPrincipalDirections", &SHG3::getFirstPrincipalDirections);
     mg.def("getSecondPrincipalDirections", &SHG3::getSecondPrincipalDirections);
-    mg.def("getVCMNormalVectors", 
-        [](CountedPtr<SH3::LightDigitalSurface> surf, 
+    mg.def("getVCMNormalVectors",
+        [](CountedPtr<SH3::LightDigitalSurface> surf,
            const SH3::SurfelRange& range, const Parameters& params) {
             return SHG3::getVCMNormalVectors(surf, range, params);
         });
-    mg.def("getVCMNormalVectors", 
-        [](CountedPtr<SH3::DigitalSurface> surf, 
+    mg.def("getVCMNormalVectors",
+        [](CountedPtr<SH3::DigitalSurface> surf,
            const SH3::SurfelRange& range, const Parameters& params) {
             return SHG3::getVCMNormalVectors(surf, range, params);
         });
     mg.def("getATScalarFieldApproximation", [](
-        std::vector<double>& scalars, 
-        const SH3::CellRange& range, 
-        CountedPtr<SH3::LightDigitalSurface> lsurface, 
-        const SH3::SurfelRange& surfels, 
-        const std::vector<double>& input, 
+        std::vector<double>& scalars,
+        const SH3::CellRange& range,
+        CountedPtr<SH3::LightDigitalSurface> lsurface,
+        const SH3::SurfelRange& surfels,
+        const std::vector<double>& input,
         const Parameters& params) {
             return SHG3::getATScalarFieldApproximation(scalars, range.cbegin(), range.cend(), lsurface, surfels, input, params);
         });
     mg.def("getATScalarFieldApproximation", [](
-        std::vector<double>& scalars, 
-        const SH3::CellRange& range, 
-        CountedPtr<SH3::DigitalSurface> surface, 
-        const SH3::SurfelRange& surfels, 
-        const std::vector<double>& input, 
+        std::vector<double>& scalars,
+        const SH3::CellRange& range,
+        CountedPtr<SH3::DigitalSurface> surface,
+        const SH3::SurfelRange& surfels,
+        const std::vector<double>& input,
         const Parameters& params) {
             return SHG3::getATScalarFieldApproximation(scalars, range.cbegin(), range.cend(), surface, surfels, input, params);
         });
@@ -444,7 +444,7 @@ void bind_voronoimap(py::module& mg) {
     mg.def("makeL2VoronoiMap", [](const CountedPtr<SH3::Domain>& d, const std::vector<SHG3::Point>& points, const Parameters& params) {
             return SHG3::getDistanceTransformation<2>(*d, points, params);
         });
-    
+
     mg.def("getL1DistanceToClosestSite", [](const SH3::Domain& points, const std::vector<SHG3::Point>& sites, const Parameters& params) {
             return SHG3::getDistanceToClosestSite<1>(points, sites, params);
         });
@@ -462,7 +462,7 @@ void bind_voronoimap(py::module& mg) {
 
             if (info.shape[1] != 3)
                 throw std::runtime_error("Only (N, 3) sets are supported");
-                
+
             // TODO: check for contiguity
             const int* data = static_cast<int*>(info.ptr);
             std::vector<SHG3::Point> points(info.shape[0]);
@@ -489,7 +489,7 @@ void bind_voronoimap(py::module& mg) {
 
             if (info.shape[1] != 3)
                 throw std::runtime_error("Only (N, 3) sets are supported");
-                
+
             // TODO: check for contiguity
             const int* data = static_cast<int*>(info.ptr);
             std::vector<SHG3::Point> points(info.shape[0]);
@@ -517,7 +517,7 @@ void bind_voronoimap(py::module& mg) {
 
             if (info.shape[1] != 3)
                 throw std::runtime_error("Only (N, 3) sets are supported");
-                
+
             // TODO: check for contiguity
             const int* data = static_cast<int*>(info.ptr);
             std::vector<SHG3::Point> points(info.shape[0]);
@@ -544,7 +544,7 @@ void bind_voronoimap(py::module& mg) {
 
             if (info.shape[1] != 3)
                 throw std::runtime_error("Only (N, 3) sets are supported");
-                
+
             // TODO: check for contiguity
             const int* data = static_cast<int*>(info.ptr);
             std::vector<SHG3::Point> points(info.shape[0]);

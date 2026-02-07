@@ -75,61 +75,61 @@ namespace DGtal
   // class GridCurve
   /////////////////////////////////////////////////////////////////////////////
     /**
-    * @brief Aim: describes, in a cellular space of dimension n, 
-    a closed or open sequence of signed d-cells (or d-scells), 
-    d being either equal to 1 or (n-1). 
+    * @brief Aim: describes, in a cellular space of dimension n,
+    a closed or open sequence of signed d-cells (or d-scells),
+    d being either equal to 1 or (n-1).
 
-    For instance, the topological boundary of a simply connected 
-    digital set is a closed sequence of 1-scells in 2d. 
-     
+    For instance, the topological boundary of a simply connected
+    digital set is a closed sequence of 1-scells in 2d.
+
     @tparam TKSpace Khalimsky space, a model of CCellularGridSpaceND
-    
+
     Using the namespace Z2i, defined in StdDefs.h, you can instantiate a grid curve as follows:
     @snippet geometry/curves/exampleGridCurve2d.cpp GridCurveDeclaration
 
-     This object provides several IO services. 
-     For instance, you can read a grid curve from a data file, 
-     which contains the (digital) coordinates of the 0-cells (pointels) in nd: 
+     This object provides several IO services.
+     For instance, you can read a grid curve from a data file,
+     which contains the (digital) coordinates of the 0-cells (pointels) in nd:
     @snippet geometry/curves/exampleGridCurve2d.cpp GridCurveFromDataFile
     Note that if the first and last 0-scells of the file have the same coordinates (i)
      or if only one of their coordinates differ by 1 (ii), then the grid curve is considered
-     as closed, ie. scells directly incident to the last signed cell and indirectly incident 
+     as closed, ie. scells directly incident to the last signed cell and indirectly incident
      to the first signed cell are the same.
-     
-     You can also build a grid curve from the contour of a digital set as follows: 
+
+     You can also build a grid curve from the contour of a digital set as follows:
     @snippet geometry/curves/exampleGridCurve2d.cpp GridCurveFromDigitalSet
-    
+
      To save a grid curve in a data file, GridCurve provides the special method writeVectorToStream():
     @snippet geometry/curves/exampleGridCurve2d.cpp GridCurveToDataFile
-    
-     The stream mechanism is used to display the true content of the grid curve: 
+
+     The stream mechanism is used to display the true content of the grid curve:
     @snippet geometry/curves/exampleGridCurve2d.cpp GridCurveStandardOutput
 
      In 2d, the grid curve can be drawn in a vector graphics file as follows:
     @snippet geometry/curves/exampleGridCurve2d.cpp GridCurveToGraphics
      See @ref moduleBoard2D to learn more about the 2d drawing mechanism
-     used in DGtal. 
+     used in DGtal.
 
-     Moreover, this object provides several ranges as nested types: 
-    
+     Moreover, this object provides several ranges as nested types:
+
      - SCellsRange to iterate over the d-scells
      - PointsRange to iterate over the digital coordinates of the 0-scells
      that are directly incident to the d-scells
      - MidPointsRange to iterate over the real coordinates of the d-scells
      - ArrowsRange to iterate over the arrows coding the 1-scells.
      Note that an arrow is a pair point-vector:
-     the point codes the digital coordinates of the 1-scell, 
-     the vector gives the topology and sign of the 1-scell. 
+     the point codes the digital coordinates of the 1-scell,
+     the vector gives the topology and sign of the 1-scell.
      - InnerPointsRange to iterate over the digital coordinates of the n-scells
-     that are @e directly incident to the (n-1)-scells.  
+     that are @e directly incident to the (n-1)-scells.
       - OuterPointsRange to iterate over the digital coordinates of the n-scells
      that are @e indirectly incident to the (n-1)-scells.
      - IncidentPointsRange to iterate over the pairs of inner and outer points
      (defined as above)
-     - CodesRange to iterate over the codes {0,1,2,3} of the 1-scells 
+     - CodesRange to iterate over the codes {0,1,2,3} of the 1-scells
      (only available if n = 2)
-    
-     You can get an access to these eight ranges through the following methods: 
+
+     You can get an access to these eight ranges through the following methods:
 
     - getSCellsRange()
     - getPointsRange()
@@ -139,20 +139,20 @@ namespace DGtal
     - getOuterPointsRange()
     - getIncidentPointsRange()
     - getCodesRange()
-    
+
     Each range can be displayed in the standard output or can be drawn
-    (except CodesRange) in a vector graphics file as shown in the 
-    following snippet: 
+    (except CodesRange) in a vector graphics file as shown in the
+    following snippet:
     @snippet geometry/curves/exampleGridCurve2d.cpp GridCurveIncidentPointsRangeIO
-    
-     Moreover, each range has the following inner types: 
+
+     Moreover, each range has the following inner types:
 
      - ConstIterator
      - ConstReverseIterator
      - ConstCirculator
      - ConstReverseCirculator
 
-     And each range provides these (circular)iterator services: 
+     And each range provides these (circular)iterator services:
 
      - begin() : begin ConstIterator
      - end() : end ConstIterator
@@ -160,11 +160,11 @@ namespace DGtal
      - rend() : end ConstReverseIterator
      - c() : ConstCirculator
      - rc() : ConstReverseCirculator
-     
+
      You can use these services to iterate over the elements of a given range
-     as follows: 
+     as follows:
      @snippet geometry/curves/exampleGridCurve2d.cpp GridCurveRangeIterators
-         
+
     * @see exampleGridCurve2d.cpp testGridCurve.cpp
     */
 
@@ -172,15 +172,15 @@ namespace DGtal
   class GridCurve
   {
 
-  public: 
-    typedef TKSpace KSpace; 
-    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< KSpace > )); 
-  
+  public:
+    typedef TKSpace KSpace;
+    BOOST_CONCEPT_ASSERT(( concepts::CCellularGridSpaceND< KSpace > ));
+
     typedef typename KSpace::Point Point;
     typedef typename KSpace::Point Vector;
 
     typedef typename KSpace::SCell SCell;
-    typedef typename std::vector<SCell> Storage; 
+    typedef typename std::vector<SCell> Storage;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -192,13 +192,13 @@ namespace DGtal
 
     /**
      * Constructor.
-     * @param aKSpace the Khalimsky space where the grid curve lies. 
+     * @param aKSpace the Khalimsky space where the grid curve lies.
      */
     GridCurve( ConstAlias<KSpace> aKSpace);
 
     /**
      * Default Constructor.
-     * (the underlying Khalimsky space is default constructed). 
+     * (the underlying Khalimsky space is default constructed).
      */
     GridCurve();
 
@@ -255,7 +255,7 @@ namespace DGtal
      * @param aVectorOfPoints the vector containing a sequence of grid points (digital coordinates).
      * @see initFromPointsRange
      */
-    bool initFromPointsVector( const std::vector<Point>& aVectorOfPoints ); 
+    bool initFromPointsVector( const std::vector<Point>& aVectorOfPoints );
 
     /**
      * Init from a range of points.
@@ -267,7 +267,7 @@ namespace DGtal
 
     /**
      * Init from a STL vector of signed cells.
-     * @param aVectorOfSCells the vector containing the sequence of signed cells. 
+     * @param aVectorOfSCells the vector containing the sequence of signed cells.
      * @see initFromSCellsRange
      */
     bool initFromSCellsVector( const std::vector<SCell>& aVectorOfSCells );
@@ -285,7 +285,7 @@ namespace DGtal
 
 
     /**
-     * Checks whether the grid curve is open or closed. 
+     * Checks whether the grid curve is open or closed.
      * Signed cells directly incident to the last scell
      * and indirectly incident to the first scell
      * should be the same in case of a closed grid curve.
@@ -302,35 +302,35 @@ namespace DGtal
 
     // ----------------------- container interface ------------------------------
 
-    typedef typename Storage::const_iterator const_iterator; 
-    typedef typename Storage::const_iterator ConstIterator; 
-    typedef typename Storage::const_reverse_iterator const_reverse_iterator; 
-    typedef typename Storage::const_reverse_iterator ConstReverseIterator; 
+    typedef typename Storage::const_iterator const_iterator;
+    typedef typename Storage::const_iterator ConstIterator;
+    typedef typename Storage::const_reverse_iterator const_reverse_iterator;
+    typedef typename Storage::const_reverse_iterator ConstReverseIterator;
 
     /**
      * @return begin iterator on scells
      */
-    ConstIterator begin() const; 
+    ConstIterator begin() const;
 
     /**
      * @return end iterator on scells
      */
-    ConstIterator end() const; 
-     
+    ConstIterator end() const;
+
     /**
      * @return reverse begin iterator on scells
      */
-    ConstReverseIterator rbegin() const; 
+    ConstReverseIterator rbegin() const;
 
     /**
      * @return reverse end iterator on scells
      */
-    ConstReverseIterator rend() const; 
+    ConstReverseIterator rend() const;
 
     /**
      * @return last scell
      */
-    SCell back() const; 
+    SCell back() const;
 
     /**
      * Back insertion of @e aSCell
@@ -338,20 +338,20 @@ namespace DGtal
      * @see pushBack
      * NB: this alias is kept for STL compliance
      */
-    void push_back(const SCell& aSCell); 
+    void push_back(const SCell& aSCell);
 
     /**
      * Back insertion of @e aSCell
      * @param aSCell any signed cell
      */
-    void pushBack(const SCell& aSCell); 
+    void pushBack(const SCell& aSCell);
 
     /**
      * @return number of scells
      */
-    typename Storage::size_type size() const; 
+    typename Storage::size_type size() const;
 
-    // ------------------------- private Datas --------------------------------
+    // ------------------------- private Data --------------------------------
   private:
     /**
      * Pointer on a Khalimsky space
@@ -366,10 +366,10 @@ namespace DGtal
     /**
      * list of signed cells
      */
-    Storage mySCells; 
+    Storage mySCells;
 
 
-    // ------------------------- Public Datas --------------------------------
+    // ------------------------- Public Data --------------------------------
   public:
 
 
@@ -380,7 +380,7 @@ namespace DGtal
     /**
      * @param aPoint any point
      * @param aVector any vector of L1 norm equal to 1
-     * @return the signed 1-cell associated to a pair point - shift vector 
+     * @return the signed 1-cell associated to a pair point - shift vector
      * (both in digital coordinates)
      */
     SCell PointVectorTo1SCell(const Point& aPoint, const Vector& aVector);
@@ -390,12 +390,12 @@ namespace DGtal
      * and 'false' otherwise
      */
     bool isInside(const SCell& aSCell) const;
-    
 
-    
+
+
     // ------------------------- inner classes --------------------------------
 
-  public: 
+  public:
 
     ///////////////////////// SCellsRange
 
@@ -406,7 +406,7 @@ namespace DGtal
      */
     SCellsRange getSCellsRange() const {
       return SCellsRange(mySCells.begin(), mySCells.end(), new functors::Identity() );
-    } 
+    }
 
     ///////////////////////// PointsRange
 
@@ -417,77 +417,77 @@ namespace DGtal
      */
     PointsRange getPointsRange() const {
       return PointsRange(mySCells.begin(), mySCells.end(), new functors::SCellToPoint<KSpace>(*myKPtr) );
-    } 
+    }
 
     ///////////////////////// MidPointsRange
 
     typedef ConstRangeAdapter< typename Storage::const_iterator, CanonicSCellEmbedder<KSpace>,
-                               typename KSpace::Space::RealPoint >  MidPointsRange; 
+                               typename KSpace::Space::RealPoint >  MidPointsRange;
 
     /**
      * @return an instance of MidPointsRange
      */
     MidPointsRange getMidPointsRange() const {
       return MidPointsRange(mySCells.begin(), mySCells.end(), new CanonicSCellEmbedder<KSpace>(*myKPtr) );
-    } 
+    }
 
     ///////////////////////// ArrowsRange
 
-    typedef ConstRangeAdapter< typename Storage::const_iterator, functors::SCellToArrow<KSpace>, 
-                               std::pair<Point,Vector> >  ArrowsRange; 
+    typedef ConstRangeAdapter< typename Storage::const_iterator, functors::SCellToArrow<KSpace>,
+                               std::pair<Point,Vector> >  ArrowsRange;
 
     /**
      * @return an instance of ArrowsRange
      */
     ArrowsRange getArrowsRange() const {
       return ArrowsRange(mySCells.begin(), mySCells.end(), new functors::SCellToArrow<KSpace>(*myKPtr) );
-    } 
+    }
 
     ///////////////////////// InnerPointsRange
 
-    typedef ConstRangeAdapter< typename Storage::const_iterator, functors::SCellToInnerPoint<KSpace>, 
-                               Point >  InnerPointsRange; 
+    typedef ConstRangeAdapter< typename Storage::const_iterator, functors::SCellToInnerPoint<KSpace>,
+                               Point >  InnerPointsRange;
 
     /**
      * @return an instance of ArrowsRange
      */
     InnerPointsRange getInnerPointsRange() const {
       return InnerPointsRange(mySCells.begin(), mySCells.end(), new functors::SCellToInnerPoint<KSpace>(*myKPtr) );
-    } 
+    }
 
     ///////////////////////// OuterPointsRange
 
-    typedef ConstRangeAdapter< typename Storage::const_iterator, functors::SCellToOuterPoint<KSpace>, 
-                               Point >  OuterPointsRange; 
+    typedef ConstRangeAdapter< typename Storage::const_iterator, functors::SCellToOuterPoint<KSpace>,
+                               Point >  OuterPointsRange;
 
     /**
      * @return an instance of OuterPointsRange
      */
     OuterPointsRange getOuterPointsRange() const {
       return OuterPointsRange(mySCells.begin(), mySCells.end(), new functors::SCellToOuterPoint<KSpace>(*myKPtr) );
-    } 
+    }
 
     ///////////////////////// IncidentPointsRange
 
-    typedef ConstRangeAdapter< typename Storage::const_iterator, functors::SCellToIncidentPoints<KSpace>, 
-                               std::pair<Point, Point> >  IncidentPointsRange; 
+    typedef ConstRangeAdapter< typename Storage::const_iterator, functors::SCellToIncidentPoints<KSpace>,
+                               std::pair<Point, Point> >  IncidentPointsRange;
 
     /**
      * @return an instance of IncidentPointsRange
      */
     IncidentPointsRange getIncidentPointsRange() const {
       return IncidentPointsRange(mySCells.begin(), mySCells.end(), new functors::SCellToIncidentPoints<KSpace>(*myKPtr) );
-    } 
+    }
     ///////////////////////// CodesRange
 
-    typedef ConstRangeAdapter< typename Storage::const_iterator, functors::SCellToCode<KSpace>, char >  CodesRange; 
+    typedef ConstRangeAdapter< typename Storage::const_iterator, functors::SCellToCode<KSpace>, char >  CodesRange;
 
     /**
      * @return an instance of CodesRange
      */
     typename GridCurve::CodesRange getCodesRange() const {
-      return CodesRange( mySCells.begin(), mySCells.end(), new functors::SCellToCode<KSpace>(*myKPtr) );    
-    } 
+      return CodesRange( mySCells.begin(), mySCells.end(), new functors::SCellToCode<KSpace>(*myKPtr) );
+    }
 
   }; // end of class GridCurve
 

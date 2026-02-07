@@ -94,8 +94,8 @@ There are several ways to represent surface meshes, depending on their genericit
   framework (classes DigitalSurface and IndexedDigitalSurface).
 
 - \subpage moduleWinding (David Coeurjolly)
-   
-    - uses winding number from libIGL to construct a voxelized binary image from 
+
+    - uses winding number from libIGL to construct a voxelized binary image from
     an set of oriented points (points with normal vectors).
 
 @b Package @b Concepts @b Overview

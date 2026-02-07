@@ -119,11 +119,11 @@ estimatorOnShapeDigitization( const string& name,
           //! [MostCenteredConstruction]
 
           std::cout << "# open grid curve" << endl;
-          
+
           //! [MostCenteredInit]
           estimator.init( r.begin(), r.end() );
           //! [MostCenteredInit]
-          
+
           //! [MostCenteredEvaluation]
           estimator.eval( r.begin(), r.end(), std::back_inserter(estimations), h );
           //! [MostCenteredEvaluation]

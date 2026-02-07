@@ -63,7 +63,7 @@ int main( int argc, char** argv )
   bool intAdjacency = atoi( argv[ 4 ] ) == 0;
 
   typedef ImageSelector < Domain, int>::Type Image;
-      
+
   //! [viewPolygonalMarchingCubes-readVol]
   trace.beginBlock( "Reading vol file into an image." );
   Image image = VolReader<Image>::importVol(inputFilename);
@@ -122,7 +122,7 @@ int main( int argc, char** argv )
   CellEmbedder    cellEmbedder;
   // The +0.5 is to avoid isosurface going exactly through a voxel
   // center, especially for binary volumes.
-  cellEmbedder.init( ks, image, trivialEmbedder, 
+  cellEmbedder.init( ks, image, trivialEmbedder,
                      ( (double) minThreshold ) + 0.5 );
   VertexMap vmap; // stores the map Vertex -> Index
   MeshHelpers::digitalSurface2DualPolygonalSurface
@@ -138,6 +138,5 @@ int main( int argc, char** argv )
   viewer.drawColor(Color(150,0,0,254));
   viewer << viewmesh;
   viewer.show();
-  
-}
 
+}

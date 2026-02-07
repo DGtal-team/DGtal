@@ -56,38 +56,38 @@ using namespace DGtal;
 template<typename OrientationFunctor>
 bool testInHalfPlane(OrientationFunctor f)
 {
-  BOOST_CONCEPT_ASSERT(( concepts::COrientationFunctor2<OrientationFunctor> )); 
+  BOOST_CONCEPT_ASSERT(( concepts::COrientationFunctor2<OrientationFunctor> ));
 
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
-  trace.beginBlock ( "Testing block ..." );
-  trace.info() << f << endl; 
 
-  typedef typename OrientationFunctor::Value Value; 
-  typedef typename OrientationFunctor::Point Point; 
-  Point a(0,0); 
+  trace.beginBlock ( "Testing block ..." );
+  trace.info() << f << endl;
+
+  typedef typename OrientationFunctor::Value Value;
+  typedef typename OrientationFunctor::Point Point;
+  Point a(0,0);
   Point b(5,2);
- 
+
   //first quadrant
-  f.init(a, b); 
+  f.init(a, b);
   if (f( Point(2,1) ) == NumberTraits<Value>::ONE)
     nbok++;   //a, b, (2,1) are CCW oriented
-  nb++; 
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   if (f( Point(3,1) ) == -NumberTraits<Value>::ONE)
     nbok++;   //a, b, (3,1) are CW oriented
-  nb++; 
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   if (f( Point(10,4) ) == NumberTraits<Value>::ZERO)
     nbok++;   //a, b, (10,4) belong to the same line
-  nb++; 
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
@@ -99,169 +99,169 @@ bool testInGeneralizedDiskOfGivenRadius()
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
-  typedef PointVector<2, DGtal::int16_t> Point; 
-  typedef AvnaimEtAl2x2DetSignComputer<DGtal::int64_t> DetComputer; 
-  typedef InGeneralizedDiskOfGivenRadius<Point, DetComputer> Functor; 
-  BOOST_CONCEPT_ASSERT(( concepts::COrientationFunctor2<Functor> )); 
-  typedef Functor::Value Value; 
+  typedef PointVector<2, DGtal::int16_t> Point;
+  typedef AvnaimEtAl2x2DetSignComputer<DGtal::int64_t> DetComputer;
+  typedef InGeneralizedDiskOfGivenRadius<Point, DetComputer> Functor;
+  BOOST_CONCEPT_ASSERT(( concepts::COrientationFunctor2<Functor> ));
+  typedef Functor::Value Value;
 
-  Value res; 
+  Value res;
 
   trace.beginBlock ( "Infinite radius..." );
 
-  Functor f_inf; //infinite radius by default 
-  trace.info() << f_inf << " " << f_inf.isValid() << endl; 
+  Functor f_inf; //infinite radius by default
+  trace.info() << f_inf << " " << f_inf.isValid() << endl;
 
   f_inf.init( Point(0,0), Point(5,2) );
-  res = f_inf( Point(7,3) ); 
-  trace.info() << res << " > 0 " << std::endl; 
+  res = f_inf( Point(7,3) );
+  trace.info() << res << " > 0 " << std::endl;
   if ( res > NumberTraits<Value>::ZERO )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   f_inf.init( Point(0,0), Point(5,2) );
-  res = f_inf( Point(8,3) ); 
-  trace.info() << res << " < 0 " << std::endl; 
+  res = f_inf( Point(8,3) );
+  trace.info() << res << " < 0 " << std::endl;
   if ( res < NumberTraits<Value>::ZERO )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   f_inf.init( Point(0,0), Point(5,2) );
-  res = f_inf( Point(10,4) ); 
-  trace.info() << res << " == 0 " << std::endl; 
+  res = f_inf( Point(10,4) );
+  trace.info() << res << " == 0 " << std::endl;
   if ( res == NumberTraits<Value>::ZERO )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
-  Functor f_inf2(false); //infinite radius too, but with another orientation 
-  trace.info() << f_inf2 << " " << f_inf2.isValid() << endl; 
+  Functor f_inf2(false); //infinite radius too, but with another orientation
+  trace.info() << f_inf2 << " " << f_inf2.isValid() << endl;
 
   f_inf2.init( Point(0,0), Point(5,2) );
-  res = f_inf2( Point(7,3) ); 
-  trace.info() << res << " < 0 " << std::endl; 
+  res = f_inf2( Point(7,3) );
+  trace.info() << res << " < 0 " << std::endl;
   if ( res < NumberTraits<Value>::ZERO )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   f_inf2.init( Point(0,0), Point(5,2) );
-  res = f_inf2( Point(8,3) ); 
-  trace.info() << res << " > 0 " << std::endl; 
+  res = f_inf2( Point(8,3) );
+  trace.info() << res << " > 0 " << std::endl;
   if ( res > NumberTraits<Value>::ZERO )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   f_inf2.init( Point(0,0), Point(5,2) );
-  res = f_inf2( Point(10,4) ); 
-  trace.info() << res << " == 0 " << std::endl; 
+  res = f_inf2( Point(10,4) );
+  trace.info() << res << " == 0 " << std::endl;
   if ( res == NumberTraits<Value>::ZERO )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   trace.endBlock();
 
   trace.beginBlock ( "Finite radius..." );
 
-  Functor f5(true, 25, 1); //radius 5 with positive orientation 
-  trace.info() << f5 << " " << f5.isValid() << endl; 
+  Functor f5(true, 25, 1); //radius 5 with positive orientation
+  trace.info() << f5 << " " << f5.isValid() << endl;
 
   f5.init( Point(5,0), Point(0,5) );
-  res = f5( Point(-4,1) ); 
-  trace.info() << res << " > 0 " << std::endl; 
+  res = f5( Point(-4,1) );
+  trace.info() << res << " > 0 " << std::endl;
   if ( res > NumberTraits<Value>::ZERO )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
-  res = f5( Point(-5,1) ); 
-  trace.info() << res << " < 0 " << std::endl; 
+  res = f5( Point(-5,1) );
+  trace.info() << res << " < 0 " << std::endl;
   if ( res < NumberTraits<Value>::ZERO )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
-  res = f5( Point(-3,4) ); 
-  trace.info() << res << " == 0 " << std::endl; 
+  res = f5( Point(-3,4) );
+  trace.info() << res << " == 0 " << std::endl;
   if ( res == NumberTraits<Value>::ZERO )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
-  res = f5( Point(-1,6) ); 
-  trace.info() << res << " < 0 " << std::endl; 
+  res = f5( Point(-1,6) );
+  trace.info() << res << " < 0 " << std::endl;
   if ( res < NumberTraits<Value>::ZERO )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
-  res = f5( Point(-1,7) ); 
-  trace.info() << res << " < 0 " << std::endl; 
+  res = f5( Point(-1,7) );
+  trace.info() << res << " < 0 " << std::endl;
   if ( res < NumberTraits<Value>::ZERO )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
-  Functor f52(false, 25, 1); //radius 5 with negative orientation 
-  trace.info() << f52 << " " << f52.isValid() << endl; 
+  Functor f52(false, 25, 1); //radius 5 with negative orientation
+  trace.info() << f52 << " " << f52.isValid() << endl;
 
   f52.init( Point(-5,0), Point(0,5) );
-  res = f52( Point(4,1) ); 
-  trace.info() << res << " < 0 " << std::endl; 
+  res = f52( Point(4,1) );
+  trace.info() << res << " < 0 " << std::endl;
   if ( res < NumberTraits<Value>::ZERO )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
-  res = f52( Point(3,1) ); 
-  trace.info() << res << " < 0 " << std::endl; 
+  res = f52( Point(3,1) );
+  trace.info() << res << " < 0 " << std::endl;
   if ( res < NumberTraits<Value>::ZERO )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
-  res = f52( Point(5,1) ); 
-  trace.info() << res << " > 0 " << std::endl; 
+  res = f52( Point(5,1) );
+  trace.info() << res << " > 0 " << std::endl;
   if ( res > NumberTraits<Value>::ZERO )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
-  res = f52( Point(3,4) ); 
-  trace.info() << res << " == 0 " << std::endl; 
+  res = f52( Point(3,4) );
+  trace.info() << res << " == 0 " << std::endl;
   if ( res == NumberTraits<Value>::ZERO )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
-  res = f52( Point(4,3) ); 
-  trace.info() << res << " == 0 " << std::endl; 
+  res = f52( Point(4,3) );
+  trace.info() << res << " == 0 " << std::endl;
   if ( res == NumberTraits<Value>::ZERO )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
-  res = f52( Point(1,6) ); 
-  trace.info() << res << " > 0 " << std::endl; 
+  res = f52( Point(1,6) );
+  trace.info() << res << " > 0 " << std::endl;
   if ( res > NumberTraits<Value>::ZERO )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
-  res = f52( Point(1,7) ); 
-  trace.info() << res << " > 0 " << std::endl; 
+  res = f52( Point(1,7) );
+  trace.info() << res << " > 0 " << std::endl;
   if ( res > NumberTraits<Value>::ZERO )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   trace.endBlock();
 
-  
+
   return nbok == nb;
 }
 ///////////////////////////////////////////////////////////////////////////////
@@ -274,18 +274,18 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  typedef PointVector<2, DGtal::int16_t> Point; 
+  typedef PointVector<2, DGtal::int16_t> Point;
 
-  bool res = true; 
+  bool res = true;
 
-  typedef Simple2x2DetComputer<DGtal::int32_t, DGtal::int64_t> DetComputer; 
-  typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> Functor1; 
+  typedef Simple2x2DetComputer<DGtal::int32_t, DGtal::int64_t> DetComputer;
+  typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> Functor1;
   res = res && testInHalfPlane( Functor1() );
- 
-  typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::int32_t> Functor2; 
+
+  typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::int32_t> Functor2;
   res = res && testInHalfPlane( Functor2() );
 
-  res = res && testInGeneralizedDiskOfGivenRadius(); 
+  res = res && testInGeneralizedDiskOfGivenRadius();
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

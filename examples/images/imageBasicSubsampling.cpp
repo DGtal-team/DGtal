@@ -62,11 +62,11 @@ using namespace DGtal;
 
 int main( int /*argc*/, char** /*argv*/ )
 {
-  
+
   //! [imageBasicSubsamplingType2D]
   typedef ImageContainerBySTLVector < Z2i::Domain, unsigned char> Image2D;
-  typedef ConstImageAdapter<Image2D,  Image2D::Domain, 
-                            functors::BasicDomainSubSampler<Image2D::Domain>,  
+  typedef ConstImageAdapter<Image2D,  Image2D::Domain,
+                            functors::BasicDomainSubSampler<Image2D::Domain>,
                             Image2D::Value,
                             functors::Identity > ConstImageAdapterForSubSampling;
 
@@ -74,9 +74,9 @@ int main( int /*argc*/, char** /*argv*/ )
 
   //! [imageBasicSubsamplingType3D]
   typedef ImageContainerBySTLVector < Z3i::Domain, unsigned char> Image3D;
-  typedef ConstImageAdapter<Image3D,  Image3D::Domain, 
+  typedef ConstImageAdapter<Image3D,  Image3D::Domain,
                             functors::BasicDomainSubSampler<Image3D::Domain>,
-                            Image3D::Value, 
+                            Image3D::Value,
                             functors::Identity > ConstImageAdapterForSubSampling3D;
   //! [imageBasicSubsamplingType3D]
 
@@ -104,13 +104,13 @@ int main( int /*argc*/, char** /*argv*/ )
     ConstImageAdapterForSubSampling subsampledImage2D (image2D, subSampledDomain2D, subSampler2D, df);
     //! [imageBasicSubsamplingConstImageAdapterSubSampling2D]
 
-    stringstream outputname; 
+    stringstream outputname;
     outputname << "subSampledImage"<< i<< "x"<< i << ".pgm" ;
     //! [imageBasicSubsamplingExport2D]
     GenericWriter<ConstImageAdapterForSubSampling>::exportFile(outputname.str(), subsampledImage2D );
     //! [imageBasicSubsamplingExport2D]
     trace.info() << "Exporting 2D subsampled image by grid size :" << i << "x"<< i<< " in "<< outputname.str() << std::endl;
-  } 
+  }
 
   for (unsigned int i=1; i<=20; i*=2){
     std::vector<Z3i::Domain::Size> aGridSize3D;
@@ -130,7 +130,7 @@ int main( int /*argc*/, char** /*argv*/ )
     ConstImageAdapterForSubSampling3D subsampledImage3D (image3D, subSampledDomain3D, subSampler3D, df);
     //! [imageBasicSubsamplingConstImageAdapterSubSampling3D]
 
-    stringstream outputname3D; 
+    stringstream outputname3D;
     outputname3D << "subSampledImage3D"<< i<< "x"<< i << ".vol" ;
     //! [imageBasicSubsamplingExport3D]
     GenericWriter<ConstImageAdapterForSubSampling3D>::exportFile(outputname3D.str(), subsampledImage3D );
@@ -138,7 +138,7 @@ int main( int /*argc*/, char** /*argv*/ )
     trace.info() << "Exporting 3D subsampled image by grid size :" << i << "x"<< i<< "x"<< i<< " in "<< outputname3D.str() << std::endl;
   }
 
-  
+
   trace.endBlock();
   return 0;
 }

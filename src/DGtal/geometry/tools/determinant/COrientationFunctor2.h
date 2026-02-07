@@ -55,10 +55,10 @@ namespace DGtal
   /**
      Description of \b concept '\b COrientationFunctor2' <p>
      @ingroup Concepts
-     @brief Aim: This concept is a refinement of COrientationFunctor, 
-     useful for simple algebraic curves that can be uniquely defined 
-     by only two points.  
-     
+     @brief Aim: This concept is a refinement of COrientationFunctor,
+     useful for simple algebraic curves that can be uniquely defined
+     by only two points.
+
      # Refinement of COrientationFunctor
 
      # Associated types
@@ -75,7 +75,7 @@ namespace DGtal
      | initialization | x.init(a,b) | a and b are points |             |              |             |                | constant   |
 
      # Models
-  
+
      InHalfPlaneBy2x2DetComputer InHalfPlaneBySimpleMatrix InGeneralizedDiskOfGivenRadius
 
      @tparam T the type that should be a model of COrientationFunctor2.
@@ -90,9 +90,9 @@ namespace DGtal
     {
       myX.init( myA, myB );
     }
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
-    T myX; 
+    T myX;
     typename T::Point myA, myB;
 
   }; // end of concept COrientationFunctor2

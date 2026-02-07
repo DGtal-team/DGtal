@@ -47,7 +47,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 // @since 0.8 In DGtal::concepts
-namespace DGtal { 
+namespace DGtal {
   namespace concepts {
 
   /////////////////////////////////////////////////////////////////////////////
@@ -56,14 +56,14 @@ namespace DGtal {
   Description of \b concept '\b CUndirectedSimpleGraph' <p>
   @ingroup Concepts
   @brief Aim: Represents the concept of local graph: each vertex has neighboring vertices, but we do not necessarily know all the vertices.
-     
-  # Refinement of 
+
+  # Refinement of
   CUndirectedSimpleLocalGraph, CSinglePassConstRange
-    
+
   # Associated types
   - Edge: the type for the edges of the graph.
 
-  The following types are defined in CSinglePassConstRange 
+  The following types are defined in CSinglePassConstRange
   - ConstIterator: const iterator on Vertex
 
   The following types are defined in CUndirectedSimpleLocalGraph
@@ -71,26 +71,26 @@ namespace DGtal {
   - Vertex: the type for the vertices of the graph.
   - VertexSet: the type for storing a set of vertices.
   - VertexMap: a rebinding structure to associate Value to vertices of model CVertexMap.
-    
+
   # Notation
   - \c X : A type that is a model of CUndirectedSimpleGraph
   - \c x : object of type X
   - \c v : object of type Vertex
   - \c out : an output iterator of type OutputIterator (model of boost::OutputIterator).
   - \c p : a predicate on vertex of type VertexPredicate (model of CVertexPredicate).
-    
+
   # Definitions
-    
-  # Valid expressions and 
+
+  # Valid expressions and
 
 
   | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
   |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-  |Size           | x.size()   |                     | Size        |                  | Returns  the number of vertices of this graph | | | 
-       
-    
+  |Size           | x.size()   |                     | Size        |                  | Returns  the number of vertices of this graph | | |
+
+
   # Invariants#
-    
+
   # Models#
   DigitalSurface, Object, IndexedDigitalSurface
 
@@ -98,9 +98,9 @@ namespace DGtal {
 
   @tparam T the type that should be a model of CUndirectedSimpleGraph.
   */
-  template <typename T> 
-  struct CUndirectedSimpleGraph : 
-    CUndirectedSimpleLocalGraph<T>, 
+  template <typename T>
+  struct CUndirectedSimpleGraph :
+    CUndirectedSimpleLocalGraph<T>,
     CConstSinglePassRange<T>
   {
     // ----------------------- Concept checks ------------------------------
@@ -120,17 +120,17 @@ namespace DGtal {
       ConceptUtils::sameType( mySize, myX.size() );
     }
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     T myX; // do not require T to be default constructible.
     Size mySize;
-    
+
     // ------------------------- Internals ------------------------------------
   private:
-    
+
   }; // end of concept CUndirectedSimpleGraph
 
-  } // namespace concepts  
+  } // namespace concepts
 } // namespace DGtal
 
 //                                                                           //

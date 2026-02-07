@@ -189,13 +189,13 @@ namespace DGtal
       typedef std::vector< Color >                                Colors;
       typedef GradientColorMap<Scalar>                            ColorMap;
       typedef TickedColorMap<Scalar,ColorMap>                     ZeroTickedColorMap;
-    
+
       // ----------------------- Static services --------------------------------------
     public:
 
       // ----------------------- General static services ------------------------------
     public:
-    
+
       /// @return the parameters and their default values used in shortcuts.
       static Parameters defaultParameters()
       {
@@ -267,7 +267,7 @@ namespace DGtal
           ( "projectionAccuracy", 0.0001 )
           ( "projectionGamma",    0.5 );
       }
-    
+
       /// Builds a 3D implicit shape from parameters
       ///
       /// @param[in] params the parameters:
@@ -299,7 +299,7 @@ namespace DGtal
 
       // ----------------------- KSpace static services ------------------------------
     public:
-    
+
       /// @return the parameters and their default values which are used for digitization.
       ///   - closed   [1  ]: specifies if the Khalimsky space is closed (!=0) or not (==0).
       ///   - gridsizex[1.0]: specifies the space between points along x.
@@ -406,7 +406,7 @@ namespace DGtal
       {
         return surface->container().space();
       }
-      
+
       /// @tparam TDigitalSurfaceContainer either kind of DigitalSurfaceContainer
       /// @param[in] surface a smart pointer on a (light or not) digital surface (e.g. DigitalSurface or LightDigitalSurface).
       /// @return a const reference to the Khalimsky space associated to the given surface.
@@ -417,7 +417,7 @@ namespace DGtal
       {
         return surface->container().space();
       }
-      
+
       /// @tparam TDigitalSurfaceContainer either kind of DigitalSurfaceContainer
       /// @param[in] surface a smart pointer on any indexed digital surface.
       /// @return a const reference to the Khalimsky space associated to the given surface.
@@ -444,11 +444,11 @@ namespace DGtal
       {
         return CanonicSCellEmbedder<KSpace>( K );
       }
-      
-    
+
+
       // ----------------------- DigitizedImplicitShape3D static services --------------
     public:
-    
+
       /// @return the parameters and their default values which are used for digitization.
       ///   - minAABB  [-10.0]: the min value of the AABB bounding box (domain)
       ///   - maxAABB  [ 10.0]: the max value of the AABB bounding box (domain)
@@ -464,7 +464,7 @@ namespace DGtal
           ( "offset",     5.0 );
       }
 
-    
+
       /// Builds a Khalimsky space that encompasses the bounding box
       /// specified by a digitization in \a params. It is useful when
       /// digitizing an implicit shape.
@@ -514,7 +514,7 @@ namespace DGtal
       ///                       useful when you process shapes and that you add noise.
       ///
       /// @return a smart pointer on the created implicit digital shape.
-      /// @see getKSpaceDigitizedImplicitShape3D 
+      /// @see getKSpaceDigitizedImplicitShape3D
       static CountedPtr<DigitizedImplicitShape3D>
         makeDigitizedImplicitShape3D
         ( CountedPtr<ImplicitShape3D> shape,
@@ -535,7 +535,7 @@ namespace DGtal
 
       // ----------------------- BinaryImage static services --------------------------
     public:
-    
+
       /// @return the parameters and their default values which are
       /// related to binary images and synthetic noise.
       ///   - noise        [0.0]: specifies the Kanungo noise level for binary pictures.
@@ -548,7 +548,7 @@ namespace DGtal
           ( "thresholdMin", 0 )
           ( "thresholdMax", 255 );
       }
-    
+
       /// Makes an empty binary image within a given domain.
       ///
       /// @param[in] shapeDomain any domain.
@@ -559,7 +559,7 @@ namespace DGtal
       {
         return CountedPtr<BinaryImage>( new BinaryImage( shapeDomain ) );
       }
-    
+
       /// Vectorizes an implicitly defined digital shape into a binary
       /// image, and possibly add Kanungo noise to the result depending
       /// on parameters given in \a params.
@@ -577,7 +577,7 @@ namespace DGtal
                                 shape_digitization->getDomain(),
                                 params );
       }
-    
+
       /// Vectorizes an implicitly defined digital shape into a binary
       /// image, in the specified (hyper-)rectangular domain, and
       /// possibly add Kanungo noise to the result depending on
@@ -614,7 +614,7 @@ namespace DGtal
         return img;
       }
 
-      /// Adds Kanungo noise to a binary image and returns the resulting new image. 
+      /// Adds Kanungo noise to a binary image and returns the resulting new image.
       ///
       /// @param[in] bimage a smart pointer on a binary image.
       /// @param[in] params the parameters:
@@ -666,7 +666,7 @@ namespace DGtal
         return makeBinaryImage( img, params );
       }
 
-      // These types helps to disambiguate between makeBinaryImage with a simple 
+      // These types helps to disambiguate between makeBinaryImage with a simple
       // position vector and nested vectors. These are also used for makeGrayScaleImage
 
       template<typename T>
@@ -678,21 +678,21 @@ namespace DGtal
       /// Create an arbitrary image from a vector where non zero values
       /// indicates voxels
       ///
-      /// @note This overload expects a linearized array. Positions are infered 
+      /// @note This overload expects a linearized array. Positions are inferred
       /// from the domain. The order must be the same
       ///
       /// @param[in] values A vector where non-zero values indicates voxels
       /// @param[in] d The domain of the image
       ///
-      /// @return a smart pointer on a binary image 
+      /// @return a smart pointer on a binary image
       template<typename T, typename __U = std::enable_if_t<std::is_arithmetic_v<T>>>
       static CountedPtr<BinaryImage>
         makeBinaryImage
-        ( const std::vector<T>& values, 
+        ( const std::vector<T>& values,
           const Domain& d )
         {
             CountedPtr<BinaryImage> image(new BinaryImage(d));
-            
+
             size_t i = 0;
             for (auto it = d.begin(); it != d.end(); ++i, ++it)
             {
@@ -712,21 +712,21 @@ namespace DGtal
       ///
       /// @return a smart pointer on a binary image
       template<
-        typename T, 
+        typename T,
         template<class...> class C1, // Allow for mix of array/vector/other contiguous arrays
         template<class...> class C2, // Allow for mix of array/vector/other contiguous arrays
         template<class...> class C3> // Allow for mix of array/vector/other contiguous arrays
       static CountedPtr<BinaryImage>
         makeBinaryImage
-        ( const C1<C2<C3<T>>>& values, 
+        ( const C1<C2<C3<T>>>& values,
           std::optional<Domain> override_domain = std::nullopt)
         {
           Domain d;
-          if (override_domain.has_value()) 
+          if (override_domain.has_value())
           {
             d = override_domain.value();
           }
-          else if (values.size() != 0) 
+          else if (values.size() != 0)
           {
             if (values[0].size() != 0)
             {
@@ -765,7 +765,7 @@ namespace DGtal
       template<typename T, std::enable_if_t<!is_double_nested_container<T>::value, int> = 0>
       static CountedPtr<BinaryImage>
         makeBinaryImage
-        ( const std::vector<T>& positions, 
+        ( const std::vector<T>& positions,
           std::optional<Domain> override_domain = std::nullopt)
       {
         Domain d;
@@ -778,7 +778,7 @@ namespace DGtal
             Point lb(positions[0][0], positions[0][1], positions[0][2]);
             Point ub(positions[0][0], positions[0][1], positions[0][2]);
 
-            for (size_t i = 0; i < positions.size(); ++i) 
+            for (size_t i = 0; i < positions.size(); ++i)
             {
               lb[0] = std::min(lb[0], static_cast<typename Point::Component>(positions[i][0]));
               lb[1] = std::min(lb[1], static_cast<typename Point::Component>(positions[i][1]));
@@ -793,7 +793,7 @@ namespace DGtal
         }
 
         CountedPtr<BinaryImage> image(new BinaryImage(d));
-        for (size_t i = 0; i < positions.size(); ++i) 
+        for (size_t i = 0; i < positions.size(); ++i)
         {
           // Builds a points for generality, T may not be a PointVector instance
           Point p({positions[i][0], positions[i][1], positions[i][2]});
@@ -830,7 +830,7 @@ namespace DGtal
         return makeBinaryImage( img, params );
       }
 
-    
+
       /// Saves an arbitrary binary image file (e.g. vol file in 3D).
       ///
       /// @param[in] bimage the input binary image.
@@ -859,7 +859,7 @@ namespace DGtal
           ( "qShift",   128.0 )
           ( "qSlope",     1.0 );
       }
-    
+
       /// Makes an empty gray scale image within a given domain (values are unsigned char).
       ///
       /// @param[in] aDomain any domain.
@@ -899,7 +899,7 @@ namespace DGtal
           // JOL: (GrayScale) was not working with visual C++: error C2065
           )
       {
-        const Domain domain = binary_image->domain(); 
+        const Domain domain = binary_image->domain();
         CountedPtr<GrayScaleImage> gray_scale_image( new GrayScaleImage( domain ) );
         std::transform( binary_image->begin(), binary_image->end(),
                         gray_scale_image->begin(),
@@ -916,7 +916,7 @@ namespace DGtal
         saveGrayScaleImage
         ( CountedPtr<GrayScaleImage> gray_scale_image, std::string output )
       {
-        return GenericWriter< GrayScaleImage > 
+        return GenericWriter< GrayScaleImage >
           ::exportFile( output, *gray_scale_image );
       }
 
@@ -985,9 +985,9 @@ namespace DGtal
         return gimage;
       }
 
-      /// Create an arbitrary image from a vector 
+      /// Create an arbitrary image from a vector
       ///
-      /// @note This overload expects a linearized array. Positions are infered 
+      /// @note This overload expects a linearized array. Positions are inferred
       /// from the domain. The order must be the same
       ///
       /// @param[in] values A vector where non-zero values indicates voxels
@@ -997,11 +997,11 @@ namespace DGtal
       template<typename T, typename __U = std::enable_if_t<std::is_arithmetic_v<T>>>
       static CountedPtr<GrayScaleImage>
         makeGrayScaleImage
-        ( const std::vector<T>& values, 
+        ( const std::vector<T>& values,
           const Domain& d )
         {
             CountedPtr<GrayScaleImage> image(new GrayScaleImage(d));
-            
+
             size_t i = 0;
             for (auto it = d.begin(); it != d.end(); ++i, ++it)
             {
@@ -1016,25 +1016,25 @@ namespace DGtal
       /// @note This overloads expect consistent size of subarrays. This is not checked.
       ///
       /// @param[in] values A vector (of vector of vector) where non-zero values indicates a voxel
-      /// @param[in] override_domain Overrides infered domain if needed
+      /// @param[in] override_domain Overrides inferred domain if needed
       ///
       /// @return a smart pointer on a gray scale image
       template<
-        typename T, 
+        typename T,
         template<class...> class C1, // Allow for mix of array/vector/other contiguous arrays
         template<class...> class C2, // Allow for mix of array/vector/other contiguous arrays
         template<class...> class C3> // Allow for mix of array/vector/other contiguous arrays
       static CountedPtr<GrayScaleImage>
         makeGrayScaleImage
-        ( const C1<C2<C3<T>>>& values, 
+        ( const C1<C2<C3<T>>>& values,
           std::optional<Domain> override_domain = std::nullopt)
         {
           Domain d;
-          if (override_domain.has_value()) 
+          if (override_domain.has_value())
           {
             d = override_domain.value();
           }
-          else if (values.size() != 0) 
+          else if (values.size() != 0)
           {
             if (values[0].size() != 0)
             {
@@ -1068,14 +1068,14 @@ namespace DGtal
       ///
       /// @param[in] positions A vector of positions to indicates locations of voxels
       /// @param[in] values A vector of values for each voxel
-      /// @param[in] override_domain Overrides infered domain if needed
+      /// @param[in] override_domain Overrides inferred domain if needed
       ///
       /// @return a smart pointer on a gray scale image
       template<typename T, typename U, std::enable_if_t<!is_double_nested_container<T>::value, int> = 0>
       static CountedPtr<GrayScaleImage>
         makeGrayScaleImage
-        ( const std::vector<T>& positions, 
-          const std::vector<U>& values, 
+        ( const std::vector<T>& positions,
+          const std::vector<U>& values,
           std::optional<Domain> override_domain = std::nullopt)
       {
         Domain d;
@@ -1088,7 +1088,7 @@ namespace DGtal
             Point lb(positions[0][0], positions[0][1], positions[0][2]);
             Point ub(positions[0][0], positions[0][1], positions[0][2]);
 
-            for (size_t i = 0; i < positions.size(); ++i) 
+            for (size_t i = 0; i < positions.size(); ++i)
             {
               lb[0] = std::min(lb[0], static_cast<typename Point::Component>(positions[i][0]));
               lb[1] = std::min(lb[1], static_cast<typename Point::Component>(positions[i][1]));
@@ -1103,7 +1103,7 @@ namespace DGtal
         }
 
         CountedPtr<GrayScaleImage> image(new GrayScaleImage(d));
-        for (size_t i = 0; i < positions.size(); ++i) 
+        for (size_t i = 0; i < positions.size(); ++i)
         {
           // Builds a points for generality, T may not be a PointVector instance
           Point p({positions[i][0], positions[i][1], positions[i][2]});
@@ -1244,10 +1244,10 @@ namespace DGtal
           }
         return fimage;
       }
-    
+
       // ----------------------- DigitalSurface static services ------------------------
     public:
-        
+
       /// @return the parameters and their default values which are
       /// related to digital surfaces.
       ///   - surfelAdjacency     [        0]: specifies the surfel adjacency (1:ext, 0:int)
@@ -1306,7 +1306,7 @@ namespace DGtal
         {
           return getSCellEmbedder( refKSpace( surface ) );
         }
-    
+
       /// Builds a light digital surface from a space \a K and a binary image \a bimage.
       ///
       /// @param[in] bimage a binary image representing the characteristic function of a digital shape.
@@ -1419,7 +1419,7 @@ namespace DGtal
             result.push_back( makeLightDigitalSurface( bimage, K, params ) );
             surfel_reps.push_back( *( result[ 0 ]->begin() ) );
             return result;
-          }	
+          }
         bool surfel_adjacency      = params[ "surfelAdjacency" ].as<int>();
         SurfelAdjacency< KSpace::dimension > surfAdj( surfel_adjacency );
         // Extracts all boundary surfels
@@ -1445,7 +1445,7 @@ namespace DGtal
         return result;
       }
 
-    
+
       /// Creates a explicit digital surface representing the boundaries in
       /// the binary image \a bimage, or any one of its big components
       /// according to parameters.
@@ -1514,7 +1514,7 @@ namespace DGtal
         return CountedPtr<DigitalSurface>
           ( new DigitalSurface( surfContainer ) ); // acquired
       }
-    
+
       /// Builds an indexed digital surface from a space \a K and a
       /// binary image \a bimage. Note that it may connected or not
       /// depending on parameters.
@@ -1550,7 +1550,7 @@ namespace DGtal
                                              K.lowerBound(), K.upperBound() );
           }
         return makeIdxDigitalSurface( surfels, K, params );
-      }    
+      }
 
       /// Builds an indexed digital surface from a space \a K and an
       /// arbitrary range of surfels.
@@ -1606,13 +1606,13 @@ namespace DGtal
           SurfelSet     surfels;
           surfels.insert( surface->begin(), surface->end() );
           return makeIdxDigitalSurface( surfels, K, params );
-        }    
+        }
 
       /// Builds an indexed digital surface from a vector of light digital
       /// surfaces. Note that the surfel adjacency may be changed and a
       /// connected light digital surface could be disconnected in the process.
       ///
-      /// @note the surfaces must live in the same digital spaces. 
+      /// @note the surfaces must live in the same digital spaces.
       ///
       /// @param[in] surfaces a vector of smart pointers on light digital surfaces.
       ///
@@ -1638,9 +1638,9 @@ namespace DGtal
             surfels.insert( surfaces[ i ]->begin(), surfaces[ i ]->end() );
           }
         return makeIdxDigitalSurface( surfels, K, params );
-      }    
+      }
 
-    
+
       /// Given any digital surface, returns the vector of its k-dimensional cells.
       ///
       /// @note The order of cells is given by the default traversal
@@ -1703,7 +1703,7 @@ namespace DGtal
         Cell2Index c2i;
         return getCellRange( c2i, surface, k );
       }
-      
+
       /// Given any digital surface, returns the vector of its pointels.
       ///
       /// @note The order of pointels is given by the default traversal
@@ -1790,7 +1790,7 @@ namespace DGtal
 	  ? getPrimalVertices( K, surfel, true )
 	  : getPrimalVertices( K, surfel );
       }
-      
+
       /// Given any digital surface, returns a vector of surfels in
       /// some specified order.
       ///
@@ -1810,7 +1810,7 @@ namespace DGtal
       {
         return getSurfelRange( surface, *( surface->begin() ), params );
       }
-      
+
       /// Given a light digital surface, returns a vector of surfels in
       /// some specified order.
       ///
@@ -1875,7 +1875,7 @@ namespace DGtal
       {
         return getIdxSurfelRange( surface, (IdxSurfel) 0, params );
       }
-    
+
       /// Given an indexed digital surface, returns a vector of surfels in
       /// some specified order.
       ///
@@ -1916,11 +1916,11 @@ namespace DGtal
         return result;
       }
       /// Outputs a digital surface as an OFF file (with its
-      /// topology).  Optionnaly you can specify the face colors (see
+      /// topology).  Optionally you can specify the face colors (see
       /// saveOBJ for a more advanced export).
       ///
       /// @tparam TDigitalSurfaceContainer any model of concepts::CDigitalSurfaceContainer
-      /// @tparam TCellEmbedder any type for maping Cell -> RealPoint.
+      /// @tparam TCellEmbedder any type for mapping Cell -> RealPoint.
       ///
       /// @param[in] digsurf the digital surface to output as an OBJ file
       /// @param[in] embedder any map Cell->RealPoint
@@ -1945,19 +1945,19 @@ namespace DGtal
           Cell2Index      c2i;
           auto       pointels = getPointelRange( c2i, digsurf );
           output_off <<  pointels.size()  << " " << digsurf->size() << " " << 0 << " " << std::endl;
-          
-          
+
+
           // Number and output vertices.
           const KSpace&     K = refKSpace( digsurf );
           for ( auto&& pointel : pointels )
             {
               RealPoint p = embedder( pointel );
               output_off << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
-            }	
-          
+            }
+
           // Taking care of faces
           for ( auto&& surfel : *digsurf )
-            {              
+            {
               auto primal_vtcs = getPointelRange( K, surfel );
               output_off << primal_vtcs.size();
                 {
@@ -1974,15 +1974,15 @@ namespace DGtal
             }
           return output_off.good();
         }
-    
+
 
       /// Outputs a digital surface as an OBJ file (with its topology)
-      /// and a material MTL file. Optionnaly you can specify the
+      /// and a material MTL file. Optionally you can specify the
       /// surfels normals and diffuse colors, and even specify how
       /// 0-cells are embedded into the space.
       ///
       /// @tparam TDigitalSurfaceContainer any model of concepts::CDigitalSurfaceContainer
-      /// @tparam TCellEmbedder any type for maping Cell -> RealPoint.
+      /// @tparam TCellEmbedder any type for mapping Cell -> RealPoint.
       ///
       /// @param[in] digsurf the digital surface to output as an OBJ file
       /// @param[in] embedder any map Cell->RealPoint
@@ -2016,7 +2016,7 @@ namespace DGtal
             }
           else
             {
-              mtlfile  = objfile.substr(0, lastindex) + ".mtl"; 
+              mtlfile  = objfile.substr(0, lastindex) + ".mtl";
             }
 
           std::ofstream output_obj( objfile.c_str() );
@@ -2037,7 +2037,7 @@ namespace DGtal
             {
               RealPoint p = embedder( pointel );
               output_obj << "v " << p[ 0 ] << " " << p[ 1 ] << " " << p[ 2 ] << std::endl;
-            }	
+            }
           // Taking care of normals
           Idx nbfaces = digsurf->size();
           bool has_normals = ( nbfaces == normals.size() );
@@ -2071,14 +2071,14 @@ namespace DGtal
               MeshHelpers::exportMTLNewMaterial
                 ( output_mtl, idxMaterial, ambient_color, diffuse_color, specular_color );
             }
-      
+
           // Taking care of faces
           Idx f = 0;
           for ( auto&& surfel : *digsurf )
             {
               output_obj << "usemtl material_"
                          << ( has_material ? mapMaterial[ diffuse_colors[ f ] ] : idxMaterial )
-                         << std::endl; 
+                         << std::endl;
               output_obj << "f";
               auto primal_vtcs = getPointelRange( K, surfel );
               // The +1 in lines below is because indexing starts at 1 in OBJ file format.
@@ -2098,9 +2098,9 @@ namespace DGtal
           output_mtl.close();
           return output_obj.good();
         }
-    
+
       /// Outputs a digital surface as an OBJ file (with its topology)
-      /// and a material MTL file. Optionnaly you can specify the
+      /// and a material MTL file. Optionally you can specify the
       /// surfels normals and diffuse colors. Here surfels are
       /// canonically embedded into the space.
       ///
@@ -2132,10 +2132,10 @@ namespace DGtal
 
       /// Outputs a digital surface as an OFF file (with its
       /// topology).  Here surfels are canonically embedded
-      /// into the space. Optionnaly you can specify the face colors (see
+      /// into the space. Optionally you can specify the face colors (see
       /// saveOBJ for a more advanced export).
       ///
-      /// Outputs a digital surface as an OFF. 
+      /// Outputs a digital surface as an OFF.
       ///
       /// @tparam TDigitalSurfaceContainer any model of concepts::CDigitalSurfaceContainer
       ///
@@ -2181,7 +2181,7 @@ namespace DGtal
 
 
       /// Outputs any vector field \a vf anchored at \a
-      /// positions as an OBJ file and a material MTL file. Optionnaly
+      /// positions as an OBJ file and a material MTL file. Optionally
       /// you can specify the diffuse colors.
       ///
       /// @param[in] positions the bases of the vectors of the vector field.
@@ -2216,7 +2216,7 @@ namespace DGtal
             }
           else
             {
-              mtlfile  = objfile.substr(0, lastindex) + ".mtl"; 
+              mtlfile  = objfile.substr(0, lastindex) + ".mtl";
             }
           std::ofstream output_obj( objfile.c_str() );
           output_obj << "#  OBJ format" << std::endl;
@@ -2259,7 +2259,7 @@ namespace DGtal
               if ( ! map_colors.count( c ) )
                 map_colors[ c ] = j++;
           }
-	  
+
 	  // Output materials
 	  bool has_material = ! diffuse_colors.empty();
           if ( has_material )
@@ -2287,7 +2287,7 @@ namespace DGtal
           output_mtl.close();
           return output_obj.good();
 	}
-      
+
       // ----------------------- Mesh services ------------------------------
     public:
 
@@ -2297,9 +2297,9 @@ namespace DGtal
       static Parameters parametersMesh()
       {
         return Parameters
-          ( "faceSubdivision", "Centroid" ); 
+          ( "faceSubdivision", "Centroid" );
       }
-      
+
       /// Builds a triangulated surface (class TriangulatedSurface) from
       /// a mesh (class Mesh). Note that a triangulated surface contains
       /// only triangles, so polygonal faces (0,1,2,3,4,...) of the
@@ -2414,7 +2414,7 @@ namespace DGtal
         MeshHelpers::polygonalSurface2TriangulatedSurface( *polySurf, *pTriSurf, centroid );
         return pTriSurf;
       }
-    
+
       /// Builds a polygon mesh (class PolygonalSurface) from
       /// a mesh (class Mesh). The output polygonal
       /// surface rebuilds a topology between faces.
@@ -2437,7 +2437,7 @@ namespace DGtal
       /// gray-scale image.
       ///
       /// @param[in] gray_scale_image any gray-scale image.
-      /// @param[in] params the parameters: 
+      /// @param[in] params the parameters:
       ///   - surfelAdjacency[0]: specifies the surfel adjacency (1:ext, 0:int)
       ///   - thresholdMin   [0]: specifies the threshold min (excluded) to define binary shape
       ///   - gridsizex    [1.0]: specifies the space between points along x.
@@ -2639,7 +2639,7 @@ namespace DGtal
         bool ok = MeshHelpers::digitalSurface2PrimalSurfaceMesh( *aSurface, embedder, *pPolySurf, c2i );
         return ok ? pPolySurf : CountedPtr< SurfaceMesh >( nullptr );
       }
-      
+
       /// Builds the primal polygonal surface associated to the given
       /// digital surface.
       ///
@@ -2653,7 +2653,7 @@ namespace DGtal
         Cell2Index c2i;
         return makePrimalSurfaceMesh( c2i, aSurface );
       }
-      
+
       /// Builds the primal polygonal surface associated to the given
       /// indexed digital surface.
       ///
@@ -2672,12 +2672,12 @@ namespace DGtal
       /// Loads a surface mesh
       ///
       /// @param[in] path Path to file
-      /// @return A smart pointer to the loaded polygonal surface, that holds nullptr if loading failed. 
+      /// @return A smart pointer to the loaded polygonal surface, that holds nullptr if loading failed.
       static CountedPtr<SurfaceMesh>
-      makeSurfaceMesh(const std::string& path) 
+      makeSurfaceMesh(const std::string& path)
       {
         std::ifstream file(path);
-        if (file.is_open()) 
+        if (file.is_open())
         {
           auto surf = CountedPtr<SurfaceMesh>( new SurfaceMesh );
           bool ok = SurfaceMeshReader<RealPoint, RealVector>::readOBJ(file, *surf);
@@ -2699,7 +2699,7 @@ namespace DGtal
       template <typename TPoint, typename TVector>
         static bool
         saveOBJ
-        ( CountedPtr< ::DGtal::SurfaceMesh<TPoint, TVector> > surf, 
+        ( CountedPtr< ::DGtal::SurfaceMesh<TPoint, TVector> > surf,
           const std::string& objfile )
         {
           std::ofstream output( objfile.c_str() );
@@ -2727,7 +2727,7 @@ namespace DGtal
         }
 
        /// Outputs a triangulated surface as an OFF file.
-      /// 
+      ///
       ///
       /// @tparam TPoint any model of point
       /// @param[in] polysurf the polygonal surface to output as an OBJ file
@@ -2739,7 +2739,7 @@ namespace DGtal
       saveOFF ( CountedPtr< ::DGtal::PolygonalSurface<TPoint> > polysurf,
                   std::string                                   off_file,
                   const Color&                                 face_color  = DGtal::Color::None)
-          
+
         {
           DGtal::Mesh< TPoint > m;
           MeshHelpers::polygonalSurface2Mesh(*polysurf,m);
@@ -2803,7 +2803,7 @@ namespace DGtal
             }
           else
             {
-              mtlfile  = objfile.substr(0, lastindex) + ".mtl"; 
+              mtlfile  = objfile.substr(0, lastindex) + ".mtl";
             }
           std::ofstream output( objfile.c_str() );
           bool ok = MeshHelpers::exportOBJwithFaceNormalAndColor
@@ -2845,7 +2845,7 @@ namespace DGtal
             }
           else
             {
-              mtlfile  = objfile.substr(0, lastindex) + ".mtl"; 
+              mtlfile  = objfile.substr(0, lastindex) + ".mtl";
             }
           std::ofstream output( objfile.c_str() );
           bool ok = MeshHelpers::exportOBJwithFaceNormalAndColor
@@ -2888,7 +2888,7 @@ namespace DGtal
             }
           else
             {
-              mtlfile  = objfile.substr(0, lastindex) + ".mtl"; 
+              mtlfile  = objfile.substr(0, lastindex) + ".mtl";
             }
           std::ofstream output( objfile.c_str() );
           bool ok = MeshHelpers::exportOBJwithFaceNormalAndColor
@@ -2899,7 +2899,7 @@ namespace DGtal
         }
 
       /// Outputs a triangulated surface as an OFF file.
-      /// 
+      ///
       ///
       /// @tparam TPoint any model of point
       /// @param[in] trisurf the triangulated surface to output as an OBJ file
@@ -2911,7 +2911,7 @@ namespace DGtal
       saveOFF ( CountedPtr< ::DGtal::TriangulatedSurface<TPoint> > trisurf,
                   std::string                                   off_file,
                   const Color&                   face_color  = DGtal::Color::None)
-          
+
         {
           DGtal::Mesh< TPoint > m;
           MeshHelpers::triangulatedSurface2Mesh(*trisurf,m);
@@ -2925,7 +2925,7 @@ namespace DGtal
           return ok;
         }
 
-    
+
       // ------------------------------ utilities ------------------------------
     public:
 
@@ -2937,7 +2937,7 @@ namespace DGtal
       {
         return Parameters
           ( "colormap", "Custom" )
-          ( "zero-tic", 0.0 ); 
+          ( "zero-tic", 0.0 );
       }
 
       /// Given two ranges with same elements but not necessarily in the
@@ -2997,11 +2997,11 @@ namespace DGtal
         {
           std::vector< TValue > result( match.size() );
           for ( Idx i = 0; i < result.size(); i++ )
-            result[ i ] = range[ match[ i ] ]; 
+            result[ i ] = range[ match[ i ] ];
           return result;
         }
-    
-    
+
+
       /// @param[in] min the minimum considered value for the colormap.
       /// @param[in] max the maximum considered value for the colormap.
       /// @param[in] params the parameters:
@@ -3029,7 +3029,7 @@ namespace DGtal
             gradcmap.addColor( Color( 0,   0,   0 ) );
             return gradcmap;
           }
-        // Custom colormap 
+        // Custom colormap
         ColorMap gradcmap( min, max );
         gradcmap.addColor( Color( 0, 0, 255 ) );
         gradcmap.addColor( Color( 0, 255, 255 ) );
@@ -3060,7 +3060,7 @@ namespace DGtal
         return ztic_cmap;
       }
 
-    
+
       /// Outputs a range of surfels as an OBJ file, embedding each
       /// vertex using the given cell embedder (3D only).
       ///
@@ -3082,7 +3082,7 @@ namespace DGtal
           const KSpace& K = embedder.space();
           // Number and output vertices.
           std::map< Cell, Size > vtx_numbering;
-          Size n = 1;  // OBJ vertex numbering start at 1 
+          Size n = 1;  // OBJ vertex numbering start at 1
           for ( auto&& s : surfels )
             {
               auto primal_vtcs = getPointelRange( K, s, true );
@@ -3105,10 +3105,10 @@ namespace DGtal
               for ( auto&& primal_vtx : primal_vtcs )
                 output << " " << vtx_numbering[ primal_vtx ];
               output << std::endl;
-            }      
+            }
           return output.good();
         }
-    
+
       /// Outputs a digital surface, seen from the primal point of view
       /// (surfels=face), as an OBJ file (3D only). Note that faces are
       /// oriented consistently (normals toward outside).
@@ -3129,7 +3129,7 @@ namespace DGtal
           auto embedder = getCellEmbedder( surface );
           return outputPrimalDigitalSurfaceAsObj( output, surface, embedder );
         }
-    
+
       /// Outputs a digital surface, seen from the primal point of view
       /// (surfels=face), as an OBJ file (3D only). Note that faces are
       /// oriented consistently (normals toward outside). Each vertex is
@@ -3175,7 +3175,7 @@ namespace DGtal
         auto embedder = getCellEmbedder( surface );
         return outputPrimalIdxDigitalSurfaceAsObj( output, surface, embedder );
       }
-    
+
       /// Outputs an indexed digital surface, seen from the primal point of view
       /// (surfels=face), as an OBJ file (3D only). Note that faces are
       /// oriented consistently (normals toward outside). Each vertex is
@@ -3230,7 +3230,7 @@ namespace DGtal
           auto embedder = getCellEmbedder( surface );
           return outputDualDigitalSurfaceAsObj( output, surface, embedder, params );
         }
-    
+
       /// Outputs a digital surface, seen from the dual point of view
       /// (surfels=vertices), as an OBJ file (3D only). Note that faces are
       /// oriented consistently (normals toward outside). Each vertex is
@@ -3271,10 +3271,10 @@ namespace DGtal
           : dualFaceSubdivision == "Centroid" ? 2
           : 0;
           const KSpace& K = embedder.space();
-          // Number and ouput vertices.
+          // Number and output vertices.
           std::map< Vertex, Size > vtx_numbering;
           std::map< Face,   Size > sub_numbering;
-          Size n = 1;  // OBJ vertex numbering start at 1 
+          Size n = 1;  // OBJ vertex numbering start at 1
           for ( auto && s : *surface )
             {
               if ( ! vtx_numbering.count( s ) )
@@ -3351,7 +3351,7 @@ namespace DGtal
             }
           return output.good();
         }
-    
+
 
       // -------------------- map I/O services ------------------------------------------
     public:
@@ -3418,7 +3418,7 @@ namespace DGtal
             sstr >> value;
             return ( results.size() == 1 ) && input.good();
           }
-      
+
           bool operator()( std::istream& input, std::vector<Value>& values )
           {
             std::string str;
@@ -3447,7 +3447,7 @@ namespace DGtal
       // @param[out] output the output stream
       // @param[in]  K the Khalimsky space where cells are defined.
       // @param[in]  anyMap the map associated a value to signed cells.
-      // @param[in]  writer the writer that can write values on the ouput
+      // @param[in]  writer the writer that can write values on the output
       // stream, e.g. ValueWriter<double> to write double value or
       // vector<double> values.
       template <typename TSCellMap, typename TValueWriter>
@@ -3467,7 +3467,7 @@ namespace DGtal
           }
         return output.good();
       }
-    
+
       // Outputs in \a output a map \a anyMap: SCell -> value given the
       // appropriate value \a writer.
       //
@@ -3477,7 +3477,7 @@ namespace DGtal
       // @param[out] output the output stream
       // @param[in]  K the Khalimsky space where cells are defined.
       // @param[in]  anyMap the map associated a value to signed cells.
-      // @param[in]  writer the writer that can write values on the ouput
+      // @param[in]  writer the writer that can write values on the output
       // stream, e.g. ValueWriter<double> to write double value or
       // vector<double> values.
       template <typename TCellMap, typename TValueWriter>
@@ -3497,7 +3497,7 @@ namespace DGtal
           }
         return output.good();
       }
-    
+
       /// Given a space \a K and an oriented cell \a s, returns its vertices.
       /// @param K any cellular grid space.
       /// @param s any signed cell.
@@ -3524,13 +3524,13 @@ namespace DGtal
       {
         return getPrimalCells( K, s, 0 );
       }
-    
+
       /// Given a space \a K and a surfel \a s, returns its vertices in ccw or cw order.
       /// @param K any cellular grid space of dimension 3.
       /// @param s any surfel, a signed cell of dimension 2.
       /// @param ccw when 'true', the order corresponds to a ccw orientation seen from the exterior normal to the surfel, otherwise it is a cw order.
       /// @return the vector of the vertices of s, as unsigned cells of dimension 0.
-      /// @note useful when exporting faces to OBJ format. 
+      /// @note useful when exporting faces to OBJ format.
       static
       CellRange getPrimalVertices( const KSpace& K, const Surfel& s, bool ccw )
       {
@@ -3548,7 +3548,7 @@ namespace DGtal
         return vtcs;
       }
 
-    
+
       // ----------------------- Standard services ------------------------------
     public:
 
@@ -3609,10 +3609,10 @@ namespace DGtal
         return true;
       }
 
-      // ------------------------- Protected Datas ------------------------------
+      // ------------------------- Protected Data ------------------------------
     protected:
 
-      // ------------------------- Private Datas --------------------------------
+      // ------------------------- Private Data --------------------------------
     private:
 
       // ------------------------- Hidden services ------------------------------

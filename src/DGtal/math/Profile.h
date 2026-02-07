@@ -61,9 +61,9 @@ namespace DGtal
    * Xk, the associated value PY is computed (by default) by the mean
    * of the values Yk. Note that other definitions can be used (MAX,
    * MIN or MEDIAN). Internally each sample abscissa is an instance of
-   * DGtal::Statistic. 
+   * DGtal::Statistic.
    *
-   * 
+   *
    * This class is templated by the type of the functor TValueFunctor
    * which is applied on the two coordinate values of the resulting
    * profile (PX, PY). This functor is by default set to the identity
@@ -75,11 +75,11 @@ namespace DGtal
    * having its Xi integer values from 1 to 10, you can construct
    * and initialize a Profile as follows:
    *
-   * @code 
+   * @code
    * Profile<> sp;
    * sp.init(10);
-   * @endcode 
-   * 
+   * @endcode
+   *
    * Alternatively you can customize the Xi initialisation by using an
    * iterator:
    *
@@ -87,7 +87,7 @@ namespace DGtal
    * std::vector<double> xDef;
    * for (double i = 0.5; i < 5; i=i+0.5){
    *     xDef.push_back(i);
-   * }   
+   * }
    * Profile<> sp;
    * sp.init(xDef.begin(), xDef.end());
    * @endcode
@@ -101,14 +101,14 @@ namespace DGtal
    * ...
    * sp.addValue(9, 20);
    * // then you can get a profile:
-   * std::vector<double> x; 
+   * std::vector<double> x;
    * std::vector<double> y;
-   * sp.getProfile(x, y); 
+   * sp.getProfile(x, y);
    * @endcode
    *
    * To obtain a profile given in log space, you just have to define the following basic log functor:
    *
-   * @code 
+   * @code
    *  struct LogFct{
    *   double operator()(const double &a) const {
    *     return log(a);
@@ -119,15 +119,15 @@ namespace DGtal
    *
    *
    * And then you can construct a profile as previously:
-   * @code 
+   * @code
    *  Profile<LogFct> pLog;
    *  pLog.init(10);
    *   ...
    *  @endcode
    *
    * @tparam TValueFunctor the type of the functor applied in the resulting Profile (any model of CUnaryFunctor)
-   * @tparam TValue the type value stored in the profile.  
-   * 
+   * @tparam TValue the type value stored in the profile.
+   *
    * The proposed implementation is mainly a backport from
    * ImaGene with some various refactoring.
    */
@@ -141,7 +141,7 @@ namespace DGtal
     /**
      * Used to specify the method to compute the profile values
      * (used in @ref getProfile())
-     * 
+     *
      **/
     enum ProfileType{MEAN, MAX, MIN, MEDIAN};
 
@@ -151,13 +151,13 @@ namespace DGtal
     typedef TValueFunctor Functor;
 
     /**
-     * The type value stored in the profile.  
+     * The type value stored in the profile.
      **/
     typedef TValue Value;
 
     BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<Functor, Value, Value>  ));
 
-    
+
     /**
      * Destructor.
      */
@@ -174,7 +174,7 @@ namespace DGtal
      * @param[in] type allows to specify the used to computes the profile points from the added samples.
      */
     Profile(ProfileType type);
-    
+
 
     /**
      * Copy constructor.
@@ -192,7 +192,7 @@ namespace DGtal
     Profile & operator= ( const Profile & other );
 
 
- 
+
     /**
      * Clears the object as if it has been just created.
      */
@@ -201,31 +201,31 @@ namespace DGtal
 
 
     /**
-     * Initializer. Must be called before adding datas. Specifies the
+     * Initializer. Must be called before adding data. Specifies the
      * X values  of the profile (generally an iterator on a sequence
      * (1,2,3,4,...N)).
      *
      * @param[in] beginXvalues an iterator pointing on the first X value.
      * @param[in] endXvalues an iterator pointing after the last X value.
-     * @param[in] storeValsInStats flag to store values in statistics (so that 
-     *    the median value is accessible (default false)). 
+     * @param[in] storeValsInStats flag to store values in statistics (so that
+     *    the median value is accessible (default false)).
      */
     template <typename Iterator>
-    void init(  Iterator beginXvalues,  Iterator endXvalues, 
+    void init(  Iterator beginXvalues,  Iterator endXvalues,
                 const bool storeValsInStats=false );
 
 
 
     /**
-     * Initializer. Must be called before adding datas. Specifies the
+     * Initializer. Must be called before adding data. Specifies the
      * X values of the profile as the sequence (1,2,3,4,...,nb).
      *
      * @param[in] nb an integer number strictly positive.
-     * @param[in] storeValsInStats flag to store values in statistics (so that 
-     *   the median value is accessible (default false)). 
+     * @param[in] storeValsInStats flag to store values in statistics (so that
+     *   the median value is accessible (default false)).
      */
     void init( const unsigned int nb, const bool storeValsInStats=false );
-    
+
 
     /**
      * Adds some sample value at the given X value.
@@ -234,7 +234,7 @@ namespace DGtal
      * @param[in] value any value.
      */
     void addValue( const unsigned int indexX, const TValue value );
-    
+
 
     /**
      * Adds some statistic at the given X value.
@@ -250,7 +250,7 @@ namespace DGtal
     /**
      * It stops and Erase the stats saved values. It must be called to
      * avoid to store all statistics values when we have to access to
-     * the median value.  Typically if you nedd to access to the
+     * the median value.  Typically if you need to access to the
      * median value of the profile, you need to follow this example:
      * @code
      * Profile sp;
@@ -264,38 +264,38 @@ namespace DGtal
      * // before erasing all statistics data, the median is computed and stored.
      * @endcode
      **/
-    void stopStatsSaving() ;    
+    void stopStatsSaving() ;
 
 
 
 
     // ----------------------- Profile services --------------------------------
   public:
-    
+
     /**
      * Used to define the method to determine the profile values from
      * the samples of X  statistics.
-     * 
+     *
      * @param[in] type the method applied to the statistics samples: MEAN, MAX, MIN.
-     **/    
+     **/
     void setType(const ProfileType type);
-    
 
-    
+
+
     /**
-     * @param[out] x (modified) adds the x-value of the profile 
+     * @param[out] x (modified) adds the x-value of the profile
      * to the back of the vector.
      *
      * @param[out] y (modified) adds the y-value of the profile
      * (log(Exp(samples))) to the back of the vector.
      */
-    void getProfile( std::vector<Value> & x, 
+    void getProfile( std::vector<Value> & x,
 		     std::vector<Value> & y ) const;
-    
-    
 
 
-    
+
+
+
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -312,13 +312,13 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     Functor myFunctor;
-    
+
     /**
      * The vector containing the different X samples for the analysis.
      */
@@ -332,19 +332,19 @@ namespace DGtal
     /**
      * Used to define the method to compute the profile: several choice are possible:
      * MEAN (default), MAX, MIN (not efficient) or MEDIAN.
-     */    
+     */
     ProfileType myProfileDef;
-    
+
 
 
     /**
      * Used to temporaly store values in statistics in order to be
      * able to access to the median value. By default the value is set
-     * to false and the median is not available. 
+     * to false and the median is not available.
      * @see setStoreStats
      */
     bool myStoreValInStats;
-    
+
 
 
     // ------------------------- Hidden services ------------------------------
@@ -353,9 +353,9 @@ namespace DGtal
 
   private:
 
-  
 
- 
+
+
     // ------------------------- Internals ------------------------------------
   private:
 

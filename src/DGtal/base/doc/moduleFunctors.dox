@@ -32,7 +32,7 @@ Starting with C++11, we can define functions directly in a code block,
 just before using it,
 using [<tt>lambdas</tt>](https://en.cppreference.com/w/cpp/language/lambda).
 For small and single-used functions, it may allow to write clearer code by
-keeping all important informations together and avoids defining the function
+keeping all important information together and avoids defining the function
 out of context.
 
 However, lambdas cannot be directly used in DGtal since many functors must
@@ -143,7 +143,7 @@ Even with more complex operations, there is still a significant performance
 penalty to use [<tt>std::function</tt>](https://en.cppreference.com/w/cpp/utility/functional/function) over @ref FunctorHolder.
 
 @subsection functorholder_derivates Which derivative class of FunctorHolder should I use ?
-Depending on the concept you want to fullfil, here are the available classes that rely on @ref FunctorHolder "":
+Depending on the concept you want to fulfill, here are the available classes that rely on @ref FunctorHolder "":
 - for a @ref concepts::CUnaryFunctor model, use @ref FunctorHolder.
 - for a @ref concepts::CPointFunctor model, use @ref PointFunctorHolder.
 - for a @ref concepts::CConstImage model, use @ref ConstImageFunctorHolder.
@@ -229,7 +229,7 @@ Otherwise, consider constructing the functor directly during the
 See the examples in section @ref holding_a_functor.
 
 @subsection auto_holdfunctor Why using the auto keyword ?
-Since the exact storage type used in @ref FunctorHolder is choosen by
+Since the exact storage type used in @ref FunctorHolder is chosen by
 @ref holdFunctor depending on the passing mode of the callable object,
 it is not easily possible to known the template parameters of
 @ref FunctorHolder.
@@ -331,7 +331,7 @@ somehow specify the function's return type.
 In C++11, you can slightly delay this type specification using the trailing
 return syntax but the type still needs to be known in the signature.
 Basically, you need to duplicate the line of code that generates the
-@ref FunctorHolder (optionaly using the function's parameters) into the
+@ref FunctorHolder (optionally using the function's parameters) into the
 function signature and deduce its type using [<tt>decltype</tt>](https://en.cppreference.com/w/cpp/language/decltype):
 @snippet exampleFunctorHolder.cpp Returning a FunctorHolder
 @snippet exampleFunctorHolder.cpp Returning a FunctorHolder in caller
@@ -398,7 +398,7 @@ Thus, you might miss some optimizations for right-value references.
 
 In order to make a factory that doesn't change the parameters type, you
 must use [forwarding references](https://en.cppreference.com/w/cpp/language/reference#Forwarding_references)
-(by using `&&` references together with template paremeter deduction, also
+(by using `&&` references together with template parameter deduction, also
  known as universal references) and perfect forwarding using [<tt>std::forward</tt>](https://en.cppreference.com/w/cpp/utility/forward):
 @snippet exampleFunctorHolder.cpp Factory of PointFunctorPredicate using perfect forwarding
 Note the use of [<tt>std::decay</tt>](https://en.cppreference.com/w/cpp/types/decay) because the template parameter will be deduced
@@ -502,7 +502,7 @@ the [<tt>decltype</tt>](https://en.cppreference.com/w/cpp/language/decltype) key
 
 Also note the perfect forwarding syntax (using [universal references](https://en.cppreference.com/w/cpp/language/reference#Forwarding_references)
 and [<tt>std::forward</tt>](https://en.cppreference.com/w/cpp/utility/forward))
-to avoid modifying the actual type of the given callable object (particulary
+to avoid modifying the actual type of the given callable object (particularly
 keeping lvalue and rvalue references).
 
 @remark
@@ -666,7 +666,7 @@ In addition, for performance reason, you may remark that functions should be
 wrapped into a lambda before being stored into your class, as explained in the
 section about @ref holding_a_function .
 
-Finally, you should link to this module page for more informations.
+Finally, you should link to this module page for more information.
 
 
 @subsection tutorial_functorconstimage A more complex example with variable functor arity
@@ -733,7 +733,7 @@ private:
 
 Note that using perfect forwarding in the constructor doesn't imply here to add
 SFINAE like in @ref pointfunctorholder_advanced_constructor because a binary
-constructor cannot be choosen as a valid overload during a copy construction.
+constructor cannot be chosen as a valid overload during a copy construction.
 
 
 @subsubsection functorconstimage_helper The helper (factory)

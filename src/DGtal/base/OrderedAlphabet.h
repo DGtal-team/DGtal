@@ -62,7 +62,7 @@ namespace DGtal
    * where the lexicographic order can be changed (shifted, reversed, ...).
    * Useful for the arithmetic minimum length polygon (AMLP).
    *
-   * Standard operators '<' and '<=' compares letters using their ascii codes. 
+   * Standard operators '<' and '<=' compares letters using their ascii codes.
    * In order to compare letters with respect to an 'OrderedAlphabet', one uses
    * the classe's functions 'less' and 'lessOrEqual'.
    */
@@ -75,7 +75,7 @@ namespace DGtal
      * Internal integer type to consider in the OrderdAlphabet class.
      */
     typedef int Integer;
-     
+
     /**
      * The index datatype.
      */
@@ -100,7 +100,7 @@ namespace DGtal
      * @param first the first letter of the alphabet.
      * @param nb the number of letters of the alphabet.
      *
-     * Exemple: OrderedAlphabet( '0', 4 ) defines the alphabet for
+     * Example: OrderedAlphabet( '0', 4 ) defines the alphabet for
      * 4-connected freeman chains.
      */
     OrderedAlphabet( char first, unsigned int nb );
@@ -126,10 +126,10 @@ namespace DGtal
     void reverse();
 
     /**
-     * Reverse the order a0 < a1 < ... < an to a3 < a2 < a1 < a0 < an < ... 
+     * Reverse the order a0 < a1 < ... < an to a3 < a2 < a1 < a0 < an < ...
      */
     void reverseAround12();
-    
+
     /**
      * @param c any valid letter in this alphabet.
      *
@@ -180,13 +180,13 @@ namespace DGtal
      * (which starts at position s).
      *
      * @param nb (returns) the number of times the Lyndon factor appears.
-     * 
+     *
      * @param w a word
      * @param s the starting index in [w].
      * @param e the index after the end in [w] (s<e).
      */
     void firstLyndonFactor( size_t & len, size_t & nb,
-          const std::string & w, 
+          const std::string & w,
           index_t s, index_t e ) const;
 
 
@@ -198,13 +198,13 @@ namespace DGtal
      * (which starts at position s).
      *
      * @param nb (returns) the number of times the Lyndon factor appears.
-     * 
+     *
      * @param w a word
      * @param s the starting index in [w].
      * @param e the index after the end in [w] (s and e arbitrary).
      */
     void firstLyndonFactorMod( size_t & len, size_t & nb,
-             const std::string & w, 
+             const std::string & w,
              index_t s, index_t e ) const;
 
 
@@ -224,13 +224,13 @@ namespace DGtal
      * (which starts at position s).
      *
      * @param nb (returns) the number of times the Lyndon factor appears.
-     * 
+     *
      * @param w a word which starts with a1 or a2 at position s.
      * @param s the starting index in [w].
      * @param e the index after the end in [w] (s<e).
      */
     bool duvalPP( size_t & len, size_t & nb,
-      const std::string & w, 
+      const std::string & w,
       index_t s, index_t e
       ) const;
 
@@ -250,19 +250,19 @@ namespace DGtal
      * (which starts at position s).
      *
      * @param nb (returns) the number of times the Lyndon factor appears.
-     * 
+     *
      * @param w a (cyclic) word which starts with a1 or a2 at position s.
      * @param s the starting index in [w].
      * @param e the index after the end in [w] (s and e arbitrary).
      */
     bool duvalPPMod( size_t & len, size_t & nb,
-        const std::string & w, 
+        const std::string & w,
         index_t s, index_t e ) const;
     /**
      * Second version of the algorithm Duval++ (see OrderedAlphabet::duvalPP),
-     * this one dynamically returns extra informations in order to compute
+     * this one dynamically returns extra information in order to compute
      * leanning points.
-     * 
+     *
      * @param len (returns) the length of the primitive Lyndon factor
      * (which starts at position s).
      *
@@ -279,7 +279,7 @@ namespace DGtal
      *
      * @param Lf2 (returns) the number of occurrences of the letter a2
      * from 's' to the first lower leaning point.
-     * 
+     *
      * @param w a word which starts with a1 or a2 at position s.
      * @param s the starting index in [w].
      * @param e the index after the end in [w] (s<e).
@@ -287,7 +287,7 @@ namespace DGtal
     bool duvalPPtoDSS( size_t & len, size_t & nb,
       unsigned int & n1,  unsigned int & n2,
       unsigned int & Lf1, unsigned int & Lf2,
-      const std::string & w, 
+      const std::string & w,
       index_t s, index_t e
       ) const;
 
@@ -315,7 +315,7 @@ namespace DGtal
      * convexity is detected.
      *
      * @return the number of letters of the extracted edge.
-     */ 
+     */
     size_t nextEdge( size_t & nb_a1, size_t & nb_a2,
          std::string & w, index_t & s, bool & cvx );
 
@@ -335,9 +335,9 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     /**
      * the first character.

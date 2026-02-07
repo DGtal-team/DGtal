@@ -50,15 +50,15 @@
 
 template <typename TImageContainer, typename TFunctor>
 inline
-TImageContainer 
-DGtal::PGMReader<TImageContainer, TFunctor>::importPGM(const std::string & aFilename, 
+TImageContainer
+DGtal::PGMReader<TImageContainer, TFunctor>::importPGM(const std::string & aFilename,
 						       const TFunctor &aFunctor,
 						       bool topbotomOrder )
 {
   std::ifstream infile;
   DGtal::IOException dgtalio;
   BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2));
-  try 
+  try
     {
       infile.open (aFilename.c_str(), std::ifstream::in | std::ifstream::binary);
     }
@@ -92,41 +92,41 @@ DGtal::PGMReader<TImageContainer, TFunctor>::importPGM(const std::string & aFile
 	{
 	  trace.error() << "PGMReader : Invalid format in " << aFilename << std::endl;
 	  throw dgtalio;
-	} 
+	}
     }
   while ( str[ 0 ] == '#' || str=="");
   std::istringstream str_in( str );
   unsigned int w, h;
   str_in >> w >> h;
-  
-   
+
+
   typename TImageContainer::Point firstPoint;
   typename TImageContainer::Point lastPoint;
-      
+
   firstPoint = TImageContainer::Point::zero;
   lastPoint[0] = w-1;
   lastPoint[1] = h-1;
-  
+
   typename TImageContainer::Domain domain(firstPoint,lastPoint);
   TImageContainer image(domain);
 
   getline( infile, str );
   std::istringstream str2_in( str );
   unsigned int max_value;
-  str2_in >> max_value;  
+  str2_in >> max_value;
 
   if ( ! infile.good() )
     {
       trace.error() << "PGMReader : Invalid format in " << aFilename << std::endl;
       throw dgtalio;
-    } 
-  
+    }
+
   unsigned int nb_read = 0;
   if(!isASCIImode)
     infile >> std::noskipws;
   else
     infile >> std::skipws;
-  
+
   for(unsigned int y=0; y <h; y++)
     for(unsigned int x=0; x <w; x++)
       {
@@ -136,21 +136,21 @@ DGtal::PGMReader<TImageContainer, TFunctor>::importPGM(const std::string & aFile
 	  }else{
 	    pt[0]=x; pt[1]=y;
 	  }
-	  
-	  
+
+
 	  if(!isASCIImode)
 	    {
 	      unsigned char c;
 	      infile >> c;
 	      if ( infile.good() )
-		{ 
+		{
 		  ++nb_read;
 		  image.setValue( pt, aFunctor(c));
 		}
 	    }
 	  else
 	    {
-	      int c; 
+	      int c;
 	      infile >> c;
 	      if ( infile.good() )
 		{
@@ -172,14 +172,14 @@ DGtal::PGMReader<TImageContainer, TFunctor>::importPGM(const std::string & aFile
 
 template <typename TImageContainer, typename TFunctor>
 inline
-TImageContainer 
-DGtal::PGMReader<TImageContainer,TFunctor>::importPGM3D(const std::string & aFilename, 
+TImageContainer
+DGtal::PGMReader<TImageContainer,TFunctor>::importPGM3D(const std::string & aFilename,
 					       const TFunctor &aFunctor)
 {
   std::ifstream infile;
   DGtal::IOException dgtalio;
   BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 3));
-  try 
+  try
     {
       infile.open (aFilename.c_str(), std::ifstream::in | std::ifstream::binary);
     }
@@ -188,14 +188,14 @@ DGtal::PGMReader<TImageContainer,TFunctor>::importPGM3D(const std::string & aFil
       trace.error() << "PGMReader : can't open " << aFilename << std::endl;
       throw dgtalio;
     }
- 
+
   std::string str;
   getline( infile, str );
   if ( ! infile.good() ) {
     trace.error() << "PGMReader : can't read " << aFilename << std::endl;
     throw dgtalio;
   }
-  
+
   if ( str.compare( 0, 2, "P2" ) != 0  && str.compare( 0, 2, "P3" ) != 0 && str.compare( 0, 2, "P5" ) != 0 ){
     trace.error() << "PGMReader : Wrong format in " << aFilename << std::endl;
     throw dgtalio;
@@ -206,24 +206,24 @@ DGtal::PGMReader<TImageContainer,TFunctor>::importPGM3D(const std::string & aFil
     infile >> std::noskipws;
   else
     infile >> std::skipws;
-  
+
   do
     {
       getline( infile, str );
       if ( ! infile.good() ){
 	trace.error() << "PGMReader : Invalid format in " << aFilename << std::endl;
 	throw dgtalio;
-      } 
+      }
     }
   while ( str[ 0 ] == '#' || str=="");
   std::istringstream str_in( str );
   unsigned int w, h, e;
   str_in >> w >> h >> e ;
 
-   
+
   typename TImageContainer::Point firstPoint;
   typename TImageContainer::Point lastPoint;
-      
+
   firstPoint = TImageContainer::Point::zero;
   lastPoint[0] = w-1;
   lastPoint[1] = h-1;
@@ -235,14 +235,14 @@ DGtal::PGMReader<TImageContainer,TFunctor>::importPGM3D(const std::string & aFil
   getline( infile, str );
   std::istringstream str2_in( str );
   int max_value;
-  str2_in >> max_value;  
+  str2_in >> max_value;
 
   if ( ! infile.good() ){
     trace.error() << "PGMReader : Invalid format in " << aFilename << std::endl;
     throw dgtalio;
-  } 
+  }
   unsigned int nb_read = 0;
-  
+
   for(unsigned int z=0; z <e; z++){
     for(unsigned int y=0; y <h; y++){
       for(unsigned int x=0; x <w; x++){
@@ -251,17 +251,17 @@ DGtal::PGMReader<TImageContainer,TFunctor>::importPGM3D(const std::string & aFil
 
   if(!isASCIImode)
 	    {
-	      unsigned char c; 
+	      unsigned char c;
 	      infile >> c;
 	      if ( infile.good() )
-		{ 
+		{
 		  ++nb_read;
 		  image.setValue( pt, aFunctor(c));
 		}
 	    }
 	  else
 	    {
-	      int c; 
+	      int c;
 	      infile >> c;
 	      if ( infile.good() )
 		{
@@ -285,5 +285,3 @@ DGtal::PGMReader<TImageContainer,TFunctor>::importPGM3D(const std::string & aFil
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

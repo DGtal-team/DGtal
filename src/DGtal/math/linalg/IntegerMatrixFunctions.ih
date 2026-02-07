@@ -42,7 +42,7 @@ namespace DGtal {
         if ( a[ i ] != b[ i ] ) return false;
       return true;
     }
-    
+
     template <typename T, typename U >
     typename DGtal::ArithmeticConversionTraits<T,U>::type
     dotProduct( const std::vector<T>& a, const std::vector<U>& b )
@@ -95,7 +95,7 @@ namespace DGtal {
       return R;
     }
 
-    
+
     template <typename T>
     T
     squaredNormL2( const std::vector<T>& a )
@@ -105,7 +105,7 @@ namespace DGtal {
         n += a[ i ] * a[ i ];
       return n;
     }
-    
+
     template <typename T>
     T
     normL1( const std::vector<T>& a )
@@ -159,7 +159,7 @@ namespace DGtal {
           n += c * c;
         }
     }
-    
+
   } // namespace detail {
 } // namespace DGtal {
 
@@ -172,7 +172,7 @@ namespace DGtal {
 
 
 //-----------------------------------------------------------------------------
-template <typename TComponent, DGtal::Dimension TN, 
+template <typename TComponent, DGtal::Dimension TN,
           typename TInternalNumber>
 void
 DGtal::functions::getDeterminantBareiss
@@ -197,7 +197,7 @@ DGtal::functions::getDeterminantBareiss
       while ( ( piv < TN ) && ( M[ piv ][ k ] == zero ) ) ++piv;
       if ( piv == TN ) { result = zero; return; }
       if ( piv != k )
-        { // swaping 2 rows => change determinant sign
+        { // swapping 2 rows => change determinant sign
           M[ piv ].swap( M[ k ] );
           change_sign = ! change_sign;
         }
@@ -214,7 +214,7 @@ DGtal::functions::getDeterminantBareiss
             }
         }
       prev = pivot;
-      // Optionnally one could zero the column k below the diagonal
+      // Optionally one could zero the column k below the diagonal
       // (not necessary for the determinant).
       // for (int i = k+1; i < TN; ++i) M[i][k] = 0;
     }
@@ -222,7 +222,7 @@ DGtal::functions::getDeterminantBareiss
 }
 
 //-----------------------------------------------------------------------------
-template <typename TComponent, 
+template <typename TComponent,
           typename TInternalNumber>
 void
 DGtal::functions::getDeterminantBareiss
@@ -258,7 +258,7 @@ DGtal::functions::getDeterminantBareiss
       while ( ( piv < n ) && ( M[ piv ][ k ] == zero ) ) ++piv;
       if ( piv == n ) { result = zero; return; }
       if ( piv != k )
-        { // swaping 2 rows => change determinant sign
+        { // swapping 2 rows => change determinant sign
           M[ piv ].swap( M[ k ] );
           change_sign = ! change_sign;
         }
@@ -275,7 +275,7 @@ DGtal::functions::getDeterminantBareiss
             }
         }
       prev = pivot;
-      // Optionnally one could zero the column k below the diagonal
+      // Optionally one could zero the column k below the diagonal
       // (not necessary for the determinant).
       // for (int i = k+1; i < n; ++i) M[i][k] = 0;
     }
@@ -345,7 +345,7 @@ DGtal::functions::reduceBasisWithLLL
   Doubles              Bo_norm(n);        // squared 2-norm of each row vector
   std::vector<Doubles> mu(n, Doubles(n)); // projection coefficients on orth. basis
   bool sign = true;
-  int64_t k = 1; // current vector 
+  int64_t k = 1; // current vector
   while ( k < n )
     {
       // Apply Gram–Schmidt until row k included.
@@ -384,7 +384,7 @@ DGtal::functions::reduceBasisWithLLL
         Bo[k].swap( v ); // faster than `Bo[k] = v;`
         functions::getSquaredNormL2( Bo_norm[k], Bo[k] );
       }
-    
+
       // Lovász test
       if ( Bo_norm[k] >= ( (delta - mu[k][k-1]*mu[k][k-1]) * Bo_norm[k-1] ) )
         k++;
@@ -408,7 +408,7 @@ DGtal::functions::makePrimitive( std::vector< TComponent >& N )
   TComponent g = 0;
   for ( Dimension k = 0; k < N.size(); k++ )
     g = Comp::staticGcd( g, N[ k ] );
-  if ( g != 0 ) 
+  if ( g != 0 )
     for ( Dimension k = 0; k < N.size(); k++ )
       N[ k ] /= g;
   return g;
@@ -470,7 +470,7 @@ DGtal::functions::computeOrthogonalLattice( std::vector< TComponent > N )
   while ( m+1 < n )
     {
       makePrimitive( V );
-      if ( n-m == 2 ) 
+      if ( n-m == 2 )
         { // last orthogonal vector
           std::vector< TComponent > B( N.size(), 0 );
           B[ m   ] =  V[ m+1 ];
@@ -556,4 +556,3 @@ DGtal::functions::shortenBasis( std::vector< std::vector< TComponent > >& B )
     }
   return total;
 }
-

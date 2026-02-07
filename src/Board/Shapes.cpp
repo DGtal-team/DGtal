@@ -166,7 +166,7 @@ Shape::setCairoDashStyle(cairo_t *cr, LineStyle type) const
   cairo_set_dash (cr, cairoDashDotDotStyle, ARRAY_SIZE(cairoDashDotDotStyle), cairoDashDotDotStyle_offset); break;
       case DashDotDotDotStyle:
   cairo_set_dash (cr, cairoDashDotDotDotStyle, ARRAY_SIZE(cairoDashDotDotDotStyle), cairoDashDotDotDotStyle_offset); break;
-  
+
       default: // SolidStyle
   cairo_set_dash (cr, cairoSolidStyle, ARRAY_SIZE(cairoSolidStyle), cairoSolidStyle_offset);
     }
@@ -349,19 +349,19 @@ Dot::flushCairo( cairo_t *cr,
      const TransformCairo & transform ) const
 {
     cairo_save (cr);
-    
+
       cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
-      
+
       cairo_move_to (cr, transform.mapX( _x ), transform.mapY( _y ));
       cairo_line_to (cr, transform.mapX( _x ), transform.mapY( _y ));
-      
+
       cairo_set_line_width (cr, _lineWidth);
       cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
       cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
       setCairoDashStyle (cr, _lineStyle);
 
       cairo_stroke (cr);
-    
+
     cairo_restore (cr);
 }
 #endif
@@ -572,19 +572,19 @@ Line::flushCairo( cairo_t *cr,
                 const TransformCairo & transform ) const
 {
     cairo_save (cr);
-    
+
       cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
-      
+
       cairo_move_to (cr, transform.mapX( _x1 ), transform.mapY( _y1 ));
       cairo_line_to (cr, transform.mapX( _x2 ), transform.mapY( _y2 ));
-      
+
       cairo_set_line_width (cr, _lineWidth);
       cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
       cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
       setCairoDashStyle (cr, _lineStyle);
 
       cairo_stroke (cr);
-    
+
     cairo_restore (cr);
 }
 #endif
@@ -657,7 +657,7 @@ Image::flushFIG( std::ostream & stream,
   stream << "0 ";
   // Depth
   stream << transform.mapDepth( _depth ) << " "
-         << "-1 -1 0.000 0 0 -1 0 0 5" << std::endl <<" 0 "     
+         << "-1 -1 0.000 0 0 -1 0 0 5" << std::endl <<" 0 "
    << _filename << std::endl;
   _path.flushFIG( stream, transform );
   stream << std::endl;
@@ -695,17 +695,17 @@ Image::flushCairo( cairo_t *cr,
   assert(cairo_surface_status (image) == CAIRO_STATUS_SUCCESS);
   w = cairo_image_surface_get_width (image);
   h = cairo_image_surface_get_height (image);
-  
+
   // tr
   cairo_translate (cr, transform.mapX( _path[0].x ), transform.mapY( _path[0].y ));
   //cairo_scale (cr, transform.scale( _path[1].x - _path[0].x )/w, transform.scale( _path[0].y - _path[3].y )/h);
   cairo_scale (cr, transform.scale( (_path[1] - _path[0]).norm() )/w, transform.scale( (_path[0] - _path[3]).norm() )/h);
   // tr
-  
+
   cairo_set_source_surface (cr, image, 0, 0);
   cairo_paint_with_alpha(cr, _alpha);
   cairo_surface_destroy (image);
-  
+
   cairo_restore (cr);
 }
 #endif
@@ -948,25 +948,25 @@ Arrow::flushCairo( cairo_t *cr,
     double ndy1 = dx*sin(0.3)+dy*cos(0.3);
     double ndx2 = dx*cos(-0.3)-dy*sin(-0.3);
     double ndy2 = dx*sin(-0.3)+dy*cos(-0.3);
-    
+
     cairo_save (cr);
-    
+
       // The line
       cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
-      
+
       cairo_move_to (cr, transform.mapX( _x1 ), transform.mapY( _y1 ));
       cairo_line_to (cr, transform.mapX( _x2 + ( dx * cos(0.3) ) ), transform.mapY( _y2 + ( dy * cos(0.3) ) ));
-      
+
       cairo_set_line_width (cr, _lineWidth);
       cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
       cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
       setCairoDashStyle (cr, _lineStyle);
-      
+
       cairo_stroke (cr);
-      
+
       // The arrow
       cairo_set_source_rgba (cr, _fillColor.red()/255.0, _fillColor.green()/255.0, _fillColor.blue()/255.0, 1.);
-      
+
       cairo_move_to (cr, transform.mapX( _x2 ) + transform.scale( ndx1 ), transform.mapY( _y2 ) - transform.scale( ndy1 ));
       cairo_line_to (cr, transform.mapX( _x2 ), transform.mapY( _y2 ));
       cairo_line_to (cr, transform.mapX( _x2 ) + transform.scale( ndx2 ), transform.mapY( _y2 ) - transform.scale( ndy2 ));
@@ -979,13 +979,13 @@ Arrow::flushCairo( cairo_t *cr,
   else
     cairo_fill (cr);
       }
-      
+
       //
-      
+
       if ( _penColor != DGtal::Color::None )
       {
   cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
-  
+
   cairo_set_line_width (cr, _lineWidth);
   cairo_set_line_cap (cr, cairoLineCap[ButtCap]);
   cairo_set_line_join (cr, cairoLineJoin[MiterJoin]);
@@ -993,7 +993,7 @@ Arrow::flushCairo( cairo_t *cr,
 
   cairo_stroke (cr);
       }
-    
+
     cairo_restore (cr);
 }
 #endif
@@ -1235,16 +1235,16 @@ Ellipse::flushCairo( cairo_t *cr,
   cairo_save (cr);
 
     cairo_set_source_rgba (cr, _fillColor.red()/255.0, _fillColor.green()/255.0, _fillColor.blue()/255.0, 1.);
-    
+
     // tr
     cairo_translate (cr, transform.mapX( _center.x ), transform.mapY( _center.y ));
     if ( _angle != 0.0 )
       cairo_rotate (cr, _angle);
     cairo_scale (cr, transform.scale( _xRadius ), transform.scale( _yRadius ));
     // tr
-    
+
     cairo_arc (cr, 0, 0, 1, 0, 2*M_PI);
-    
+
     if ( filled() )
     {
       if ( _penColor != DGtal::Color::None )
@@ -1252,13 +1252,13 @@ Ellipse::flushCairo( cairo_t *cr,
       else
   cairo_fill (cr);
     }
-    
+
     //
-    
+
     if ( _penColor != DGtal::Color::None )
     {
       cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
-  
+
       cairo_set_line_width (cr, _lineWidth);
       cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
       cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
@@ -1266,7 +1266,7 @@ Ellipse::flushCairo( cairo_t *cr,
 
       cairo_stroke (cr);
     }
-  
+
   cairo_restore (cr);
 }
 #endif
@@ -1438,9 +1438,9 @@ Circle::flushCairo( cairo_t *cr,
       cairo_save (cr);
 
   cairo_set_source_rgba (cr, _fillColor.red()/255.0, _fillColor.green()/255.0, _fillColor.blue()/255.0, 1.);
-    
+
   cairo_arc (cr, transform.mapX( _center.x ), transform.mapY( _center.y ), transform.scale( _xRadius ), 0, 2*M_PI);
-  
+
   if ( filled() )
   {
     if ( _penColor != DGtal::Color::None )
@@ -1448,13 +1448,13 @@ Circle::flushCairo( cairo_t *cr,
     else
       cairo_fill (cr);
   }
-  
+
   //
-  
+
   if ( _penColor != DGtal::Color::None )
   {
     cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
-      
+
     cairo_set_line_width (cr, _lineWidth);
     cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
     cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
@@ -1462,7 +1462,7 @@ Circle::flushCairo( cairo_t *cr,
 
     cairo_stroke (cr);
   }
-      
+
       cairo_restore (cr);
     }
 }
@@ -1508,7 +1508,7 @@ Arc::flushCairo( cairo_t *cr,
   cairo_arc (cr, transform.mapX( _center.x ), transform.mapY( _center.y ), transform.scale( _xRadius ), 2.*M_PI-_angle1, 2.*M_PI-_angle2);
       else
   cairo_arc_negative (cr, transform.mapX( _center.x ), transform.mapY( _center.y ), transform.scale( _xRadius ), 2.*M_PI-_angle1, 2.*M_PI-_angle2);
-      
+
       if ( filled() )
       {
   if ( _penColor != DGtal::Color::None )
@@ -1516,13 +1516,13 @@ Arc::flushCairo( cairo_t *cr,
   else
     cairo_fill (cr);
       }
-      
+
       //
-      
+
       if ( _penColor != DGtal::Color::None )
       {
   cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
-    
+
   cairo_set_line_width (cr, _lineWidth);
   cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
   cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
@@ -1530,7 +1530,7 @@ Arc::flushCairo( cairo_t *cr,
 
   cairo_stroke (cr);
       }
-    
+
     cairo_restore (cr);
 }
 #endif
@@ -1539,16 +1539,16 @@ void
 Arc::flushPostscript( std::ostream & stream,
 		      const TransformEPS & transform ) const
 {
-  
-//The arc is generated by sweeping a line segment of length r, and tied at the point (x-coord y-coord), in a counter-clockwise direction from an angle _angle1 to an angle _angle2. 
+
+//The arc is generated by sweeping a line segment of length r, and tied at the point (x-coord y-coord), in a counter-clockwise direction from an angle _angle1 to an angle _angle2.
 //Thus, we have to swap _angle1 and _angle2 according to bool _negative
-  double a1, a2; 
+  double a1, a2;
   if (_negative == true)
   {
     a1 = _angle2;
     a2 = _angle1;
-  } 
-  else 
+  }
+  else
   {
     a1 = _angle1;
     a2 = _angle2;
@@ -1587,26 +1587,26 @@ double ly = _center.y + _xRadius*std::sin(_angle2);
 
 stream << "<path ";
 stream << svgProperties( transform ) << " ";
-//first point 
+//first point
 stream << "d='M " << transform.mapX( fx );
 stream << "," << transform.mapY( fy );
 //arc
 stream << " A " << transform.scale( _xRadius ) << " " << transform.scale( _xRadius );
 //something
-stream << " 0"; 
+stream << " 0";
 //orientation and center position
-if (_negative) 
+if (_negative)
 {
-  if ( (std::cos(_angle1)*std::sin(_angle2) - std::sin(_angle1)*std::cos(_angle2))<0 ) 
+  if ( (std::cos(_angle1)*std::sin(_angle2) - std::sin(_angle1)*std::cos(_angle2))<0 )
   {
     stream << " 0 1";
   } else
   {
     stream << " 1 1";
   }
-} else 
+} else
 {
-  if ( (std::cos(_angle1)*std::sin(_angle2) - std::sin(_angle1)*std::cos(_angle2))<0 ) 
+  if ( (std::cos(_angle1)*std::sin(_angle2) - std::sin(_angle1)*std::cos(_angle2))<0 )
   {
     stream << " 1 0";
   } else
@@ -1811,15 +1811,15 @@ Polyline::flushCairo( cairo_t *cr,
 {
     if ( _path.empty() )
         return;
-    
+
     cairo_save (cr);
-    
+
       cairo_set_source_rgba (cr, _fillColor.red()/255.0, _fillColor.green()/255.0, _fillColor.blue()/255.0, 1.);
-  
+
       _path.flushCairoPoints( cr, transform );
       if ( _path.closed() )
   cairo_close_path (cr);
-      
+
       if ( filled() )
       {
   if ( _penColor != DGtal::Color::None )
@@ -1827,13 +1827,13 @@ Polyline::flushCairo( cairo_t *cr,
   else
     cairo_fill (cr);
       }
-      
+
       //
-      
+
       if ( _penColor != DGtal::Color::None )
       {
   cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
-  
+
   cairo_set_line_width (cr, _lineWidth);
   cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
   cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
@@ -1841,7 +1841,7 @@ Polyline::flushCairo( cairo_t *cr,
 
   cairo_stroke (cr);
       }
-    
+
     cairo_restore (cr);
 }
 #endif
@@ -2020,11 +2020,11 @@ Rectangle::flushCairo( cairo_t *cr,
             return;
         }
     }
-    
+
     cairo_save (cr);
-    
+
       cairo_set_source_rgba (cr, _fillColor.red()/255.0, _fillColor.green()/255.0, _fillColor.blue()/255.0, 1.);
-  
+
       if ( _path[0].y == _path[1].y )
   cairo_rectangle (cr, transform.mapX( _path[0].x ), transform.mapY( _path[0].y ), transform.scale( _path[1].x - _path[0].x ), transform.scale( _path[0].y - _path[3].y ));
       else
@@ -2032,15 +2032,15 @@ Rectangle::flushCairo( cairo_t *cr,
   Point v = _path[1] - _path[0];
         v /= v.norm();
         double angle = ( _path[1].y > _path[0].y ) ? acos( v * Point(1,0) ) : -acos( v * Point( 1, 0 ) );
-  
+
   // tr
   cairo_translate (cr, transform.mapX( _path[0].x )+transform.scale( _path[1].x - _path[0].x )/2., transform.mapY( _path[0].y )+transform.scale( _path[0].y - _path[3].y )/2.);
   cairo_rotate (cr, angle);
   // tr
-  
+
   cairo_rectangle (cr, -transform.scale( _path[1].x - _path[0].x )/2., -transform.scale( _path[0].y - _path[3].y )/2., transform.scale( (_path[1] - _path[0]).norm() ), transform.scale( (_path[0] - _path[3]).norm() ));
       }
-      
+
       if ( filled() )
       {
   if ( _penColor != DGtal::Color::None )
@@ -2048,13 +2048,13 @@ Rectangle::flushCairo( cairo_t *cr,
   else
     cairo_fill (cr);
       }
-      
+
       //
-      
+
       if ( _penColor != DGtal::Color::None )
       {
   cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
-  
+
   cairo_set_line_width (cr, _lineWidth);
   cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
   cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
@@ -2062,7 +2062,7 @@ Rectangle::flushCairo( cairo_t *cr,
 
   cairo_stroke (cr);
       }
-    
+
     cairo_restore (cr);
 }
 #endif
@@ -2372,10 +2372,10 @@ QuadraticBezierCurve::flushPostscript( std::ostream & stream,
   _path[ 2 ].get(x4, y4);
   //we compute the two middle control points of a cubic Bezier curve
   //from the three control points of the quadratic Bezier curve
-  x2 = x1 + 2/3.0*(x3-x1); 
-  y2 = y1 + 2/3.0*(y3-y1); 
-  x3 = x2 + 1/3.0*(x4-x1); 
-  y3 = y2 + 1/3.0*(y4-y1); 
+  x2 = x1 + 2/3.0*(x3-x1);
+  y2 = y1 + 2/3.0*(y3-y1);
+  x3 = x2 + 1/3.0*(x4-x1);
+  y3 = y2 + 1/3.0*(y4-y1);
 
   stream << std::endl << "% Bezier curve" << std::endl;
   if ( _fillColor != DGtal::Color::None ) {
@@ -2389,13 +2389,13 @@ QuadraticBezierCurve::flushPostscript( std::ostream & stream,
 	   << transform.mapY( y3 ) << " "
 	   << transform.mapX( x4 ) << " "
 	   << transform.mapY( y4 ) << " "
-	   << "curveto ";  
+	   << "curveto ";
       _fillColor.flushPostscript( stream );
       stream << " " << postscriptProperties();
       stream << " fill" << std::endl;
   }
   if ( _penColor != DGtal::Color::None ) {
-    stream << " " << postscriptProperties() << " "; 
+    stream << " " << postscriptProperties() << " ";
     stream << "n "
 	   << transform.mapX( x1 ) << " "
 	   << transform.mapY( y1 ) << " "
@@ -2406,7 +2406,7 @@ QuadraticBezierCurve::flushPostscript( std::ostream & stream,
 	   << transform.mapY( y3 ) << " "
 	   << transform.mapX( x4 ) << " "
 	   << transform.mapY( y4 ) << " "
-	   << "curveto ";  
+	   << "curveto ";
     _penColor.flushPostscript( stream );
     stream << " stroke" << std::endl;
   }
@@ -2417,8 +2417,8 @@ QuadraticBezierCurve::flushFIG( std::ostream & stream,
      const TransformFIG & transform,
      std::map<DGtal::Color,int> & colormap ) const
 {
-  stream << "#FIXME: quadratic Bezier curve unimplemented" << std::endl; 
-  Triangle::flushFIG(stream, transform, colormap); 
+  stream << "#FIXME: quadratic Bezier curve unimplemented" << std::endl;
+  Triangle::flushFIG(stream, transform, colormap);
 }
 
 void
@@ -2432,7 +2432,7 @@ QuadraticBezierCurve::flushSVG( std::ostream & stream,
 
   stream << "<path ";
   stream << svgProperties( transform ) << " ";
-  //first point 
+  //first point
   stream << "d='M " << transform.mapX( x1 );
   stream << "," << transform.mapY( y1 );
   //arc
@@ -2454,19 +2454,19 @@ QuadraticBezierCurve::flushCairo( cairo_t *cr,
   _path[ 2 ].get(x4, y4);
   //we compute the two middle control points of a cubic Bezier curve
   //from the three control points of the quadratic Bezier curve
-  x2 = x1 + 2/3.0*(x3-x1); 
-  y2 = y1 + 2/3.0*(y3-y1); 
-  x3 = x2 + 1/3.0*(x4-x1); 
-  y3 = y2 + 1/3.0*(y4-y1); 
+  x2 = x1 + 2/3.0*(x3-x1);
+  y2 = y1 + 2/3.0*(y3-y1);
+  x3 = x2 + 1/3.0*(x4-x1);
+  y3 = y2 + 1/3.0*(y4-y1);
 
   cairo_save (cr);
 
   cairo_set_source_rgba (cr, _fillColor.red()/255.0, _fillColor.green()/255.0, _fillColor.blue()/255.0, 1.);
 
-  cairo_move_to( cr, transform.mapX( x1 ), transform.mapY( y1 ) ); 
-  cairo_curve_to( cr, transform.mapX( x2 ), transform.mapY( y2 ), 
-		  transform.mapX( x3 ), transform.mapY( y3 ), 
-		  transform.mapX( x4 ), transform.mapY( y4 ) ); 
+  cairo_move_to( cr, transform.mapX( x1 ), transform.mapY( y1 ) );
+  cairo_curve_to( cr, transform.mapX( x2 ), transform.mapY( y2 ),
+		  transform.mapX( x3 ), transform.mapY( y3 ),
+		  transform.mapX( x4 ), transform.mapY( y4 ) );
 
   if ( filled() )
     {
@@ -2475,11 +2475,11 @@ QuadraticBezierCurve::flushCairo( cairo_t *cr,
       else
   	cairo_fill (cr);
     }
-      
+
   if ( _penColor != DGtal::Color::None )
     {
       cairo_set_source_rgba (cr, _penColor.red()/255.0, _penColor.green()/255.0, _penColor.blue()/255.0, 1.);
-    
+
       cairo_set_line_width (cr, _lineWidth);
       cairo_set_line_cap (cr, cairoLineCap[_lineCap]);
       cairo_set_line_join (cr, cairoLineJoin[_lineJoin]);
@@ -2487,7 +2487,7 @@ QuadraticBezierCurve::flushCairo( cairo_t *cr,
 
       cairo_stroke (cr);
     }
-    
+
   cairo_restore (cr);
 }
 #endif
@@ -2502,10 +2502,10 @@ QuadraticBezierCurve::flushTikZ( std::ostream & stream,
   _path[ 2 ].get(x4, y4);
   //we compute the two middle control points of a cubic Bezier curve
   //from the three control points of the quadratic Bezier curve
-  x2 = x1 + 2/3.0*(x3-x1); 
-  y2 = y1 + 2/3.0*(y3-y1); 
-  x3 = x2 + 1/3.0*(x4-x1); 
-  y3 = y2 + 1/3.0*(y4-y1); 
+  x2 = x1 + 2/3.0*(x3-x1);
+  y2 = y1 + 2/3.0*(y3-y1);
+  x3 = x2 + 1/3.0*(x4-x1);
+  y3 = y2 + 1/3.0*(y4-y1);
 
   stream << "\\draw[" << tikzProperties(transform) << "] ("
 	 << transform.mapX( x1 ) << ',' << transform.mapY( y1 )

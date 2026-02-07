@@ -52,7 +52,7 @@ TEST_CASE( "Testing LibIGL" )
 {
   Eigen::MatrixXd V;
   Eigen::MatrixXi F;
-  
+
   SECTION("Simple test with OBJ IO")
     {
       igl::readOFF(testPath + "samples/box.off", V, F);

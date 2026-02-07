@@ -139,7 +139,7 @@ void
 DGtal::CellGeometry<TKSpace>::
 addCellsTouchingSegment( const Point& a, const Point& b )
 {
-  const auto    V = b - a; 
+  const auto    V = b - a;
   addCellsTouchingPoint( a );
   for ( Dimension k = 0; k < dimension; k++ )
     {
@@ -257,7 +257,7 @@ addCellsTouchingPolytopePoints( const RationalPolytope& polytope )
 {
   std::vector< Point > points;
   if ( polytope.denominator() == 1 )
-    { 
+    {
       polytope.getPoints( points );
       addCellsTouchingPoints( points.cbegin(), points.cend() );
     }
@@ -587,7 +587,7 @@ getIntersectedCells( const RationalPolytope& polytope,
                       << std::endl;
       return result;
     }
-  
+
   std::vector< Point >     points;
   std::vector< RationalPolytope  > polytopes( i+1, polytope );
   std::vector< Dimension > extensions( i+1, 0 );

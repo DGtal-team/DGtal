@@ -32,9 +32,9 @@ namespace DGtal {
    This example shows how to use the fully convex envelope to build a
    digital polyhedron from an arbitrary mesh. It uses
    DigitalConvexity::envelope for computations.
-   
+
    @see \ref dgtal_envelope_sec2
-   
+
    For instance, you may call it on object "spot.obj" as
 
 \verbatim
@@ -111,7 +111,7 @@ int main( int argc, char** argv )
   Point up(500,500,500);
   DigitalConvexity< KSpace > dconv( lo, up );
   typedef DigitalConvexity< KSpace >::EnvelopeAlgorithm Algorithm;
-  
+
   auto vertices = std::vector<Point>( surfmesh.nbVertices() );
   for ( auto v : surfmesh )
     {
@@ -179,10 +179,9 @@ int main( int argc, char** argv )
       for ( auto p : face_points ) viewer << p;
     }
 
-  viewer.show();  
+  viewer.show();
   return 0;
 
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-

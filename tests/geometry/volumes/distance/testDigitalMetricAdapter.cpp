@@ -56,9 +56,9 @@ bool testConcepts()
   typedef DigitalMetricAdapter<L2> Adapted;
 
   Adapted adapted(l2);
-  
+
   BOOST_CONCEPT_ASSERT(( concepts::CDigitalMetricSpace<Adapted> ));
-  
+
   return nbok == nb;
 }/**
  * Example of a test. To be completed.
@@ -80,7 +80,7 @@ bool testVal()
 
   Adapted::Value d = adapted(a,b);
   trace.info() << "distance= "<< l2(a,b)<< " and adapted= "<< d << std::endl;
-  nbok += (d == 6) ? 1 : 0; 
+  nbok += (d == 6) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
                << std::endl;

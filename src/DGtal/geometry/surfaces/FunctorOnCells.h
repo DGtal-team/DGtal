@@ -157,9 +157,9 @@ namespace DGtal
       return *myKSpace;
     }
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     /// Const pointor on Functor on Points. Used on operator() to get the return value
     FunctorOnPoints * f;

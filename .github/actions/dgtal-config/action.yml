@@ -1,7 +1,7 @@
 name: "DGtal-Config"
 description: "Retrieve the configuration for DGtal"
 inputs:
-  config-name: 
+  config-name:
     description: "Name of the configuration. Availables are ['default', 'PR']"
     required: true
 
@@ -51,7 +51,7 @@ runs:
       run: |
         echo "DGTAL_CMAKE_CONFIG=-DCMAKE_TOOLCHAIN_FILE='conan_toolchain.cmake'" >> "$GITHUB_ENV"
         echo "DGTAL_TEST_THRESHOLD=0" >> "$GITHUB_ENV"
-    
+
     # PR Configurations
     - name: "PR Linux"
       if: ${{ runner.os == 'Linux' && inputs.config-name == 'PR' }}

@@ -30,7 +30,7 @@
 
 /**
  * \image html  resultCube.png  "Resulting digitization of a cube"
- * 
+ *
  *   \example shapes/exampleMeshVoxelizer.cpp
  */
 
@@ -70,7 +70,7 @@ int main( )
   aMesh.addVertex(Point(1,1,1));
   aMesh.addVertex(Point(1,0,1));
   aMesh.addVertex(Point(0,0,1));
-  
+
   aMesh.addQuadFace(0,1,2,3);
   aMesh.addQuadFace(1,2,5,6);
   aMesh.addQuadFace(7,6,5,4);
@@ -78,12 +78,12 @@ int main( )
   aMesh.addQuadFace(0,3,4,7);
   aMesh.addQuadFace(0,1,6,7);
   //! [MeshVoxelizerCreatingMesh]
-  
+
 
   //! [MeshVoxelizerDig]
   Domain domain(Point(0,0,0), Point(128,128,128));
   DigitalSet outputSet(domain);
-  
+
   MeshVoxelizer<DigitalSet, 6> voxelizer;
 
   trace.info()<<"Digitization..."<<std::endl;

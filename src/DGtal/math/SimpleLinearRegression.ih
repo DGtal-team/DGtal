@@ -121,7 +121,7 @@ inline
 double
 DGtal::SimpleLinearRegression::estimateVariance() const
 {
-  ASSERT( ( myN >= 3 ) && "[DGtal::SimpleLinearRegression::estimateVariance] need at least 3 datas to estimate variance.");
+  ASSERT( ( myN >= 3 ) && "[DGtal::SimpleLinearRegression::estimateVariance] need at least 3 data to estimate variance.");
   return myNormU2 / ( myN - 2 );
 }
 
@@ -146,7 +146,7 @@ DGtal::SimpleLinearRegression::SimpleLinearRegression( double eps_zero )
 }
 
 /**
- * Clear all datas.
+ * Clear all data.
  */
 inline
 void
@@ -192,7 +192,7 @@ DGtal::SimpleLinearRegression::computeRegression()
       myU.push_back( u );
       myNormU2 += u * u;
     }
-  
+
   return true;
 }
 

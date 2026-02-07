@@ -89,12 +89,12 @@ namespace DGtal
     // ----------------------- Static services ------------------------------
   public:
 
-    /** 
+    /**
      * Adds to the (perhaps non empty) set [aSet] an shape defined by
      * an instance of ShapeFunctor. Add Points where orientation is inside.
      * The shape functor must be a model of CDigitalOrientedShape and
      * CDigitalBoundedShape.
-     * 
+     *
      * @param aSet the set (modified) which will contain the shape.
      * @param aFunctor a functor defining the shape.
      * @tparam TDigitalSet a model of CDigitalSet.
@@ -105,13 +105,13 @@ namespace DGtal
     static void digitalShaper( TDigitalSet & aSet,
                                const TShapeFunctor & aFunctor);
 
-    /** 
+    /**
      * Adds to the (perhaps non empty) set [aSet] an shape defined by
      * an instance of ShapeFunctor. Add Points where orientation is inside.
      * The shape functor must be a model of CEuclideanOrientedShape
      * and CEuclideanBoundedShape. The underlying digitization process is
      * a Gauss Digitizer with grid step h.
-     * 
+     *
      * @param aSet the set (modified) which will contain the shape.
      * @param aFunctor a functor defining the shape.
      * @param h grid step for the Gauss digitization.
@@ -131,7 +131,7 @@ namespace DGtal
 
        @param aSet (modified) the digital set that will contain the points.
        @param aPP a predicate on point.
-       
+
        @tparam DigitalSet a model of CDigitalSet such that
        DigitalSet::Domain is Domain.
 
@@ -142,8 +142,8 @@ namespace DGtal
     static
     void makeSetFromPointPredicate( DigitalSet & aSet,
                                     const PointPredicate & aPP );
-    
-    
+
+
     /**
      * Adds the discrete ball (norm-1) of center [aCenter] and radius
      * [aRadius] to the (perhaps non empty) set [aSet].
@@ -156,9 +156,9 @@ namespace DGtal
      */
     template<typename TDigitalSet>
     static void addNorm1Ball( TDigitalSet & aSet,
-                              const Point & aCenter, 
+                              const Point & aCenter,
                               UnsignedInteger aRadius );
-    
+
     /**
      * Adds the discrete ball (norm-2) of center [aCenter] and radius
      * [aRadius] to the (perhaps non empty) set [aSet].
@@ -171,7 +171,7 @@ namespace DGtal
      */
     template <typename TDigitalSet>
     static void addNorm2Ball( TDigitalSet & aSet,
-                              const Point & aCenter, 
+                              const Point & aCenter,
                               UnsignedInteger aRadius );
 
     /**
@@ -185,9 +185,9 @@ namespace DGtal
      */
     template <typename TDigitalSet>
     static void removeNorm1Ball( TDigitalSet & aSet,
-                                 const Point & aCenter, 
+                                 const Point & aCenter,
                                  UnsignedInteger aRadius );
- 
+
     /**
      * Removes the discrete ball (norm-2) of center [aCenter] and radius
      * [aRadius] to the (perhaps non empty) set [aSet].
@@ -199,7 +199,7 @@ namespace DGtal
      */
     template <typename TDigitalSet>
     static void removeNorm2Ball( TDigitalSet & aSet,
-                                 const Point & aCenter, 
+                                 const Point & aCenter,
                                  UnsignedInteger aRadius );
 
 
@@ -226,9 +226,9 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------

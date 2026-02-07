@@ -50,39 +50,39 @@ namespace DGtal
 {
   namespace concepts
   {
-    
+
     /////////////////////////////////////////////////////////////////////////////
     // class CLMSTDSSFilter
     /**
      * Description of \b concept '\b CLMSTDSSFilter' <p>
      * @ingroup Concepts
      * @brief Aim: Defines the concept describing a functor which filters DSSes for L-MST calculations.
-     * 
+     *
      * # Refinement of boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>
-     * 
+     *
      * # Associated types
      *    - TDSS a 3d digital straight segment recognition algorithm
      *
      * # Notation
      * - \e T : A type that is a model of CLMSTDSSFilter
      * - \e x object of type X
-     * 
+     *
      * # Definitions
-     * 
+     *
      * # Valid expressions and semantics
-     * 
+     *
      * | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
      * |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-     * | operator()|x()     |(const TDSS &)|bool|              | Checks if a DSS fulfills a given condition. | |model dependant|
-     * 
+     * | operator()|x()     |(const TDSS &)|bool|              | Checks if a DSS fulfills a given condition. | |model dependent|
+     *
      * # Invariants
-     * 
+     *
      * # Models
-     * 
+     *
      * - DSSLengthLessEqualFilter, DSSMuteFilter
      *
      * # Notes
-     * 
+     *
      * @tparam T the type that should be a model of CLMSTDSSFilter.
      */
     template <typename T>
@@ -105,7 +105,7 @@ namespace DGtal
          ConceptUtils::sameType( c, x.admissibility ( dss, p ) );
          ConceptUtils::sameType( i, x.position ( dss, p ) );
       }
-      // ------------------------- Private Datas --------------------------------
+      // ------------------------- Private Data --------------------------------
     private:
       bool c;
       long int i;
@@ -113,7 +113,7 @@ namespace DGtal
       typename T::Point p;
       TDSS dss;
     }; // end of concept CLMSTDSSFilter
-    
+
   } // namespace concepts
 } // namespace DGtal
 

@@ -92,7 +92,7 @@ product. A digital cell in 2D is thus a couple of integer
 - (2i+1, 2j+1): a pixel which is the open square {(i,i+1) x
   (j,j+1)} in the plane.
 
-In nD, the principle is the same. A cell is thus uniquely identifed by
+In nD, the principle is the same. A cell is thus uniquely identified by
 an n-tuple of integers whose parities define the topology of the
 cell. These integers are called the @b Khalimsky @b coordinates of the
 cell.
@@ -103,7 +103,7 @@ cellular grid space \f$\mathbf{F}^2\f$.
 
 @subsection dgtal_ctopo_sec3  Models for cellular grid spaces
 
-Instead of chosing a specific implementation of a cellular grid
+Instead of choosing a specific implementation of a cellular grid
 space, we keep the genericity and efficiency objective of DGtal by
 defining a cellular grid space as the concept
 \ref concepts::CCellularGridSpaceND "CCellularGridSpaceND". It provides a set of types (Cell, SCell, etc)
@@ -297,7 +297,7 @@ All methods concerning unsigned cells are prefixed by \c u, all
 methods concerning signed cells are prefixed by \c s.
 
 
- Note that the sign of the signed and unsigned are well taked into
+ Note that the sign of the signed and unsigned are well taken into
   account in the display with  \ref DGtal::PolyscopeViewer .
 
 
@@ -356,7 +356,7 @@ cells:
   accepted in this space: KhalimskySpaceND::uGetMax and
   KhalimskySpaceND::uGetMin, KhalimskySpaceND::sGetMax and
   KhalimskySpaceND::sGetMin
-- Projet a cell along some coordinate onto the axis-aligned
+- Project a cell along some coordinate onto the axis-aligned
   hyperplanes spanned by a cell with KhalimskySpaceND::uProject and
   KhalimskySpaceND::uProjection, KhalimskySpaceND::sProject and
   KhalimskySpaceND::sProjection
@@ -411,7 +411,7 @@ As said above, the cell topology is defined by the parity of its
 Khalimsky coordinates. The number of coordinates where the cell is
 open define the dimension of the cell. A cell of maximal dimension
 (n) is called a \e pixel in 2D, a \e voxel in 3D, and sometimes
-called a \e spel or \e xel in nD. A cell of minimial dimension (0)
+called a \e spel or \e xel in nD. A cell of minimal dimension (0)
 is often called a \e pointel. n-1 cells are called \e surfels (or
 sometimes \e linels in 2D). Here are the methods related to the
 cell topology.
@@ -643,5 +643,3 @@ The main features are:
 */
 
 }
-
-

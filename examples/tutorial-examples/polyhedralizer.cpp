@@ -47,7 +47,7 @@ Example of tutorial 2: making a polyhedron from a digital object
    @see @ref tutoPolyhedralisation
    \image html polyhedral-al-finished-w3.png "The polyhedral surface approaching Al Capone digital object, for width=3/1."
    @example tutorial-examples/polyhedralizer.cpp
- 
+
 */
 
 ///////////////////////////////////////////////////////////////////////////////

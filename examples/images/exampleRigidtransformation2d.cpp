@@ -30,7 +30,7 @@
 /**
 *  Example of 2D rigid transformation using forward and backward model.
    @see @ref moduleGeometricTransform
-   \image html church_backward.jpg "Result for backward model" 
+   \image html church_backward.jpg "Result for backward model"
 *  \example images/exampleRigidtransformation2d.cpp
 **/
 
@@ -83,14 +83,14 @@ int main( int , char** )
     Bounds bounds = domainTransformer ( image.domain() );
     Domain transformedDomain ( bounds.first, bounds.second );
     //! [domain]
-    
+
     trace.beginBlock ( "Backward - Eulerian model" );
     //! [backward]
       MyImageBackwardAdapter backwardImageAdapter ( image, transformedDomain , backwardTrans, idD );
     //! [backward]
       backwardImageAdapter >> "backward_transform.pgm";
     trace.endBlock();
-    
+
     trace.beginBlock( "Forward - Lagrangian model" );
       Image forwardTransformedImage ( transformedDomain );
      //! [forward]

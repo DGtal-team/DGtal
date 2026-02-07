@@ -90,7 +90,7 @@ namespace DGtal
       {
         concepts::ConceptUtils::sameType( myB, myX.retractFront() );
       }
-      // ------------------------- Private Datas --------------------------------
+      // ------------------------- Private Data --------------------------------
     private:
       T myX; // only if T is default constructible.
       bool myB;

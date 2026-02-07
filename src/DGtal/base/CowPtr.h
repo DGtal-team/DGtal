@@ -78,9 +78,9 @@ public:
        Builds a copy-on-write pointer from a counted pointer. Requires
        an extra dummy parameter in order to solve ambiguities when
        casting from Clone<T> to CowPtr<T>.
-       
+
        @param r any counted pointer
-       
+
        @note Since 1.0, there is no more the direct constructor
        CowPtr<T>::CowPtr( CountedPtr<T> ). Indeed, it was creating an
        ambiguity when using conversion operator in class
@@ -91,7 +91,7 @@ public:
        parameter in this constructor while both conversion operators
        Clone<T>::operator CountedPtr<T> and Clone<T>::operator
        CowPtr<T> are present.
-       
+
        @code
        struct B {};
        struct A {
@@ -117,11 +117,11 @@ public:
     const T* get()          const noexcept   {return myPtr.get();}
 
     /* The following non-const methods are deactivated if T is a const type.
-     * The goal here is to avoid unecessary copies when it is known that
+     * The goal here is to avoid unnecessary copies when it is known that
      *   the T object will not be modified.
      *
      * The problem is that C++ uses the non-const methods whenever it's possible
-     *   (ie when CowPtr<T> is non-const), even if the full expression doesn't 
+     *   (ie when CowPtr<T> is non-const), even if the full expression doesn't
      *   modify the object. A solution is to const_cast the CowPtr<T> before
      *   using one of these methods to force the usage of the const versions above.
      *
@@ -176,7 +176,7 @@ public:
 
   private:
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     CountedPtr<T> myPtr;
@@ -207,7 +207,7 @@ public:
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------

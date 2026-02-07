@@ -69,7 +69,7 @@ namespace DGtal
     typedef typename TImageContainer::Domain::Vector Vector;
     typedef typename TImageContainer::Value Value;
     typedef TFunctor Functor ;
-    
+
     BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2));
     BOOST_CONCEPT_ASSERT((concepts::CUnaryFunctor<TFunctor,  Value, DGtal::Color > )) ;
 
@@ -85,7 +85,7 @@ namespace DGtal
     static bool exportPNG(const std::string & filename,
                        const ImageContainer& anImage,
                        const Functor & aFunctor =  Functor());
-    
+
     /**
      * Export an image as TGA
      *
@@ -98,7 +98,7 @@ namespace DGtal
     static bool exportTGA(const std::string & filename,
                           const ImageContainer& anImage,
                           const Functor & aFunctor =  Functor());
-    
+
     /**
      * Export an image as BMP
      *
@@ -111,7 +111,7 @@ namespace DGtal
     static bool exportBMP(const std::string & filename,
                           const ImageContainer& anImage,
                           const Functor & aFunctor =  Functor());
-    
+
     /**
      * Export an image as JPG
      *
@@ -126,10 +126,10 @@ namespace DGtal
                           const ImageContainer& anImage,
                           const Functor & aFunctor =  Functor(),
                           int quality = 70);
-    
+
   }; // end of class STBWriter
-  
-  
+
+
 } // namespace DGtal
 
 

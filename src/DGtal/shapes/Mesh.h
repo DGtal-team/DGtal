@@ -63,7 +63,7 @@ namespace DGtal
    * The mesh object stores explicitly each vertex and each face are
    * represented with the list of point index.
    *
-   * @note This class is a preliminary version of a mesh strucuture
+   * @note This class is a preliminary version of a mesh structure
    * (the method to access neigborhing facets or to a given facet are
    * not yet given)
    *
@@ -118,14 +118,14 @@ namespace DGtal
      * Define the size type of the containers.
      **/
     typedef typename VertexStorage::size_type Index;
-    
+
     /**
      * Structure for representing the faces from the vertex index.
      **/
-    
+
     typedef std::vector<Index> MeshFace;
 
-    
+
     /**
      * Define the type to store the faces of the mesh.
      **/
@@ -269,7 +269,7 @@ namespace DGtal
 
 
     /**
-     * Remove faces from the mesh. @note the vertexes which are no
+     * Remove faces from the mesh. @note the vertices which are no
      * more associated to any face are also removed.
      *
      * @param[in] facesIndex the index of the face to be removed.
@@ -465,12 +465,12 @@ namespace DGtal
      **/
     void clearFaces();
 
-    
+
     /**
      * Clear all vertices of the mesh.
      **/
     void clearVertices();
-      
+
     /**
      * Removed isolated vertices of input mesh that are not associated to a
      * face.
@@ -508,7 +508,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     FaceStorage  myFaceList;
     VertexStorage myVertexList;

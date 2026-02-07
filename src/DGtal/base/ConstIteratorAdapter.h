@@ -55,14 +55,14 @@ namespace DGtal
   /**
    * Description of template class 'ConstIteratorAdapter'
    * \brief This class adapts any iterator
-   * so that operator* returns another element 
+   * so that operator* returns another element
    * than the one pointed to by the iterator.
    *
    * @tparam TIterator the type of the iterator to adapt.
-   * 
+   *
    * To achieve this goal, the adapter is based on a functor f
-   * given at construction so that operator* calls f(\*it), 
-   * instead of calling directly operator* of the underlying 
+   * given at construction so that operator* calls f(\*it),
+   * instead of calling directly operator* of the underlying
    * iterator it.
    *
    * @note This ConstIteratorAdapter does not satisfy the
@@ -76,18 +76,18 @@ namespace DGtal
    * because the functor is passed by value)
    *
    * @tparam TReturnType the type of the element returned by the underlying functor
-   * (if TLightFunctor has a nested type called 'Value', 
+   * (if TLightFunctor has a nested type called 'Value',
    * TReturnType is set to TLightFunctor::Value by default)
    *
    * NB: from boost/iterator/transform_iterator.hpp
    */
   template <typename TIterator, typename TLightFunctor, typename TReturnType = typename TLightFunctor::Value >
   class ConstIteratorAdapter
-    : public boost::iterator_adaptor< ConstIteratorAdapter<TIterator,TLightFunctor,TReturnType>, 
+    : public boost::iterator_adaptor< ConstIteratorAdapter<TIterator,TLightFunctor,TReturnType>,
 				      TIterator, TReturnType, boost::use_default, TReturnType >
   {
     typedef typename
-    boost::iterator_adaptor< ConstIteratorAdapter<TIterator,TLightFunctor,TReturnType>, 
+    boost::iterator_adaptor< ConstIteratorAdapter<TIterator,TLightFunctor,TReturnType>,
 			     TIterator, TReturnType, boost::use_default, TReturnType >
     Super;
 
@@ -95,15 +95,15 @@ namespace DGtal
 
   public:
 
-    typedef typename IteratorCirculatorTraits<TIterator>::Type Type; 
+    typedef typename IteratorCirculatorTraits<TIterator>::Type Type;
 
 
-    /** 
+    /**
      * Default constructor
      */
     ConstIteratorAdapter() { }
 
-    /** 
+    /**
      * Constructor
      *
      * @param i any iterator
@@ -112,7 +112,7 @@ namespace DGtal
     ConstIteratorAdapter(TIterator const& i, TLightFunctor f)
       : Super(i), myF(f) { }
 
-    /** 
+    /**
      * Copy constructor
      *
      * @param other the object to copy
@@ -127,7 +127,7 @@ namespace DGtal
       : Super(other.base()), myF(other.functor())
    {}
 
-    /** 
+    /**
      * Accessor on the functor
      *
      * @return a copy of @a myF
@@ -137,11 +137,11 @@ namespace DGtal
 
   private:
 
-    /** 
+    /**
      * Dereference function
      *
      * @return the object returned by the functor
-     * from the element pointed by the underlying iterator 
+     * from the element pointed by the underlying iterator
      */
     typename Super::reference dereference() const
     { return myF(*this->base()); }

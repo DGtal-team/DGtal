@@ -66,7 +66,7 @@ DGtal::StarShaped2D<TSpace>::orientation( const RealPoint& p ) const
  * @param t any angle between 0 and 2*Pi.
  *
  * @return the vector (x'(t),y'(t)) made unitary which is the unit
- * tangent to the shape boundary.  
+ * tangent to the shape boundary.
  */
 template<typename TSpace>
 inline
@@ -82,7 +82,7 @@ DGtal::StarShaped2D<TSpace>::tangent( const double t ) const
  * @param t any angle between 0 and 2*Pi.
  *
  * @return the vector (x''(t),y''(t)) made unitary which is the unit
- * normal to the shape boundary looking inside the shape.  
+ * normal to the shape boundary looking inside the shape.
 b */
 template<typename TSpace>
 inline
@@ -103,7 +103,7 @@ DGtal::StarShaped2D<TSpace>::normal( const double t ) const
  */
 template<typename TSpace>
 inline
-double 
+double
 DGtal::StarShaped2D<TSpace>::curvature( const double t ) const
 {
   RealPoint tgt( xp(t) );
@@ -111,7 +111,7 @@ DGtal::StarShaped2D<TSpace>::curvature( const double t ) const
   const double norm = tgt.norm();
   return - ( dt[0] * tgt[1] - dt[1] * tgt[0] ) / ( norm * norm * norm );
 }
-  
+
 
 /**
  * @param t1 any angle between 0 and 2*Pi.
@@ -154,8 +154,8 @@ DGtal::StarShaped2D<TSpace>::arclength( const double t1, double t2, const unsign
 template <typename TSpace>
 inline
 typename DGtal::StarShaped2D<TSpace>::RealPoint
-DGtal::StarShaped2D<TSpace>::findIntersection( const RealPoint& inner, 
-                                               const RealPoint& outer, 
+DGtal::StarShaped2D<TSpace>::findIntersection( const RealPoint& inner,
+                                               const RealPoint& outer,
                                                const double epsilon ) const
 {
   const typename DGtal::StarShaped2D<TSpace>::RealPoint mid = RealPoint(0.5 * (inner + outer));
@@ -260,7 +260,7 @@ DGtal::StarShaped2D<T>::isValid() const
 template <typename T>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
         const StarShaped2D<T> & object )
 {
   object.selfDisplay( out );
@@ -269,5 +269,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

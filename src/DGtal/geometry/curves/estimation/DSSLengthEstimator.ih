@@ -53,7 +53,7 @@ DGtal::DSSLengthEstimator<T>::eval( const ConstIterator& itb,
     return 0.;
 
   //segments into DSSs
-  DSSComputer computer; 
+  DSSComputer computer;
   GreedySegmentation<DSSComputer> decomposition( itb, ite, computer );
 
   typename GreedySegmentation<DSSComputer>::SegmentComputerIterator i = decomposition.begin();
@@ -110,7 +110,7 @@ DGtal::DSSLengthEstimator<T>::isValid() const
 template <typename T>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
       const DSSLengthEstimator<T> & object )
 {
   object.selfDisplay( out );
@@ -119,5 +119,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

@@ -62,7 +62,7 @@ namespace DGtal
 	  return Y();
 	}
       };
-    
+
     /// Specialized definitions of a class for converting type X toward type Y.
     template <>
       struct ValueConverter< std::string, double >{
@@ -75,7 +75,7 @@ namespace DGtal
         return val;
       }
     };
-    
+
     /// Specialized definitions of a class for converting type X toward type Y.
     template <>
       struct ValueConverter< std::string, float >{
@@ -113,9 +113,9 @@ namespace DGtal
     };
 
   } // namespace detail
-    
+
   /// This class represents a parameter value as a string. It
-  /// mimicks parameter values of boost::program_options.
+  /// mimics parameter values of boost::program_options.
   struct ParameterValue {
     typedef ParameterValue Self;
     ParameterValue ()                = default;
@@ -140,13 +140,13 @@ namespace DGtal
    */
   std::ostream&
   operator<< ( std::ostream & out, const ParameterValue & object );
-  
+
   /// This class represents a set of (input) simple parameters,
   /// i.e. mapping names to values.
   struct Parameters {
     /// The type of *this.
     typedef Parameters Self;
-    
+
     /// Default constructor.
     Parameters()                         = default;
     /// Default destructor.
@@ -178,7 +178,7 @@ namespace DGtal
     /// Merge the two parameter sets and returns a new one.
     /// @param[in] other a set of parameters
     Self operator|( const Self& other ) const;
-    
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -193,7 +193,7 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
-    
+
   protected:
     std::map< std::string, ParameterValue > myParameters;
   };

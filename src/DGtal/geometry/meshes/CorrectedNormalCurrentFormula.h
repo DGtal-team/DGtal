@@ -63,7 +63,7 @@ namespace DGtal
 
      Formula for interpolated measures on a triangle with vertices A,
      B, C, and normal vectors uA, uB, uC:
-     
+
      MU0=-1/6*((uAz + uBz + uCz)*Bx - (uAz + uBz + uCz)*Cx)*Ay + 1/6*((uAz + uBz + uCz)*Ax - (uAz + uBz + uCz)*Cx)*By - 1/6*((uAz + uBz + uCz)*Ax - (uAz + uBz + uCz)*Bx)*Cy + 1/6*((uAy + uBy + uCy)*Bx - (uAy + uBy + uCy)*Cx - (uAx + uBx + uCx)*By + (uAx + uBx + uCx)*Cy)*Az - 1/6*((uAy + uBy + uCy)*Ax - (uAy + uBy + uCy)*Cx - (uAx + uBx + uCx)*Ay + (uAx + uBx + uCx)*Cy)*Bz + 1/6*((uAy + uBy + uCy)*Ax - (uAy + uBy + uCy)*Bx - (uAx + uBx + uCx)*Ay + (uAx + uBx + uCx)*By)*Cz
 
      Let UM=uA+uB+uC.
@@ -80,7 +80,7 @@ namespace DGtal
 
      6*MU1 = det(u_A+u_B+u_C,u_C-u_B,A) + det(u_A+u_B+u_C,u_A-u_C,B) + det(u_A+u_B+u_C,u_B-u_A,C)
 
-     It follows that 
+     It follows that
      MU1=1/2( det(uM, u_C-u_B, A) + det(uM, u_A-u_C, B) + det(uM, u_B-u_A, C)
 
      Gaussian curvature measure is
@@ -111,7 +111,7 @@ namespace DGtal
   public:
     /// @name Formulas for mu0 measure
     /// @{
-    
+
     /// Computes mu0 measure (area) of triangle abc given a constant
     /// corrected normal vector \a u.
     /// @param a any point
@@ -155,7 +155,7 @@ namespace DGtal
         }
       return 0.5 * ( b - a ).crossProduct( c - a ).dot( uM );
     }
-    
+
     /// Computes mu0 measure (area) of polygonal face \a pts given a
     /// constant corrected normal vector \a u.
     /// @param pts the (ccw ordered) points forming the vertices of a polygonal face.
@@ -201,7 +201,7 @@ namespace DGtal
     }
 
     /// @}
-    
+
     //-------------------------------------------------------------------------
   public:
     /// @name Formulas for mu1 measure
@@ -224,7 +224,7 @@ namespace DGtal
     /// @return the mu1-measure of edge ab, i.e. twice its mean curvature.
     static
     Scalar mu1ConstantUAtEdge
-    ( const RealPoint& a, const RealPoint& b, 
+    ( const RealPoint& a, const RealPoint& b,
       const RealVector& ur, const RealVector& ul )
     {
       RealVector   e  = b - a;
@@ -280,7 +280,7 @@ namespace DGtal
 		     + uM.crossProduct( ua - uc ).dot( b )
 		     + uM.crossProduct( ub - ua ).dot( c ) );
     }
-    
+
     /// Computes mu1 measure (twice the mean curvature) of polygonal
     /// face \a pts given a constant corrected normal vector \a u.
     ///
@@ -408,7 +408,7 @@ namespace DGtal
       (void)a; //not used
       (void)b;
       (void)c;
-      
+
       // Using non unitary interpolated normals give
       // MU2=1/2*det( uA, uB, uC )
       // When normals are unitary, it is the area of a spherical triangle.
@@ -421,7 +421,7 @@ namespace DGtal
       else
 	return 0.5 * ( ua.crossProduct( ub ).dot( uc ) );
     }
-    
+
     /// Computes mu2 measure (Gaussian curvature) of polygonal face \a pts given a
     /// constant corrected normal vector \a u.
     /// @param pts the (ccw ordered) points forming the vertices of a polygonal face.
@@ -433,7 +433,7 @@ namespace DGtal
       (void) pts; (void) u;
       return 0.0;
     }
-    
+
     /// Computes Gaussian curvature of polygonal face \a pts given an interpolated
     /// corrected normal vector \a ua, \a ub, \a uc.
     /// @param pts the (ccw ordered) points forming the vertices of a polygonal face.
@@ -459,14 +459,14 @@ namespace DGtal
 			       ub,   u[ i ],   u[ (i+1)%pts.size() ], unit_u );
       return a;
     }
-    
+
     /// @}
-    
+
     //-------------------------------------------------------------------------
   public:
     /// @name Formulas for muXY measure
     /// @{
-    
+
     /// Computes muXY measure (anisotropic curvature) of triangle abc given a constant
     /// corrected normal vector \a u.
     /// @param a any point
@@ -500,7 +500,7 @@ namespace DGtal
     /// @return the mu1-measure of edge ab, i.e. twice its mean curvature.
     static
     RealTensor muXYConstantUAtEdge
-    ( const RealPoint& a, const RealPoint& b, 
+    ( const RealPoint& a, const RealPoint& b,
       const RealVector& ur, const RealVector& ul )
     {
       RealTensor M { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 };
@@ -526,7 +526,7 @@ namespace DGtal
           }
       return M;
     }
-    
+
     /// Computes muXY measure (anisotropic curvature) of triangle abc given an interpolated
     /// corrected normal vector \a ua, \a ub, \a uc.
     /// @param a any point
@@ -567,7 +567,7 @@ namespace DGtal
       }
       return T;
     }
-    
+
     /// Computes muXY measure (anisotropic curvature) of polygonal face \a pts given a
     /// constant corrected normal vector \a u.
     /// @param pts the (ccw ordered) points forming the vertices of a polygonal face.
@@ -605,19 +605,19 @@ namespace DGtal
 				ub,   u[ i ],   u[ (i+1)%pts.size() ], unit_u );
       return T;
     }
-    
+
     /// @}
 
-    
+
     //-------------------------------------------------------------------------
   public:
     /// @name Other geometric services
     /// @{
-    
+
     /// Given a vector of points, returns its barycenter.
     /// @param pts any vector of points
     /// @return the barycenter of these points.
-    static 
+    static
     RealPoint barycenter( const RealPoints& pts )
     {
       RealPoint b;
@@ -629,7 +629,7 @@ namespace DGtal
     /// Given a vector of unit vectors, returns their average unit vector.
     /// @param vecs any vector of vectors.
     /// @return the average unit vector.
-    static 
+    static
     RealVector averageUnitVector( const RealVectors& vecs )
     {
       RealVector avg;
@@ -639,7 +639,7 @@ namespace DGtal
     }
 
     /// @}
-    
+
   };
 
 } // namespace DGtal
@@ -656,4 +656,3 @@ namespace DGtal
 
 #undef CorrectedNormalCurrentFormula_RECURSES
 #endif // else defined(CorrectedNormalCurrentFormula_RECURSES)
-  

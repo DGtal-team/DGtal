@@ -180,7 +180,7 @@ DGtal::ExactPredicateLpSeparableMetric<T,p,P>::hiddenBy(const Point &u,
         return true;
       else
         {
-          //check if uv + 1 is stricly in W
+          //check if uv + 1 is strictly in W
 
           //first, optimisation
           if (uv == upper) return true;

@@ -49,7 +49,7 @@
 
 namespace DGtal
 {
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // template class SurfaceMeshReader
   /**
@@ -74,7 +74,7 @@ namespace DGtal
     typedef typename SurfaceMesh::Vertices       Vertices;
     typedef typename SurfaceMesh::Faces          Faces;
     typedef std::vector<int>                     Materials;
-    
+
     /// Checks that every index in \a indices are different from the others.
     /// @param indices a vector of integer indices
     /// @return 'true' iff the integer indices are all pairwise different.
@@ -111,7 +111,7 @@ namespace DGtal
     static
     bool readOBJ( std::istream & input, SurfaceMesh & smesh, Materials& materials );
   };
-  
+
 } // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////

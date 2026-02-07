@@ -64,12 +64,12 @@ namespace DGtal
   {
     typedef ClosedIntegerHalfPlane<TSpace> Self;
     BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
-    
+
     typedef TSpace Space;
     typedef typename Space::Integer Integer;
     typedef typename Space::Point Point;
     typedef typename Space::Vector Vector;
-    
+
     // ----------------------- public data ------------------------------
   public:
 
@@ -95,18 +95,18 @@ namespace DGtal
        @param aC the constant that defines the bound.
     */
     ClosedIntegerHalfPlane( const Vector & aN, const Integer & aC );
-    
+
     /**
        Constructor. Computes the half-space of the form N.P<=c whose
        supporting line passes through A and B such that the point \a
        inP satisfies the constraint.
-       
+
        @param A any point.
        @param B any point different from A.
        @param inP any point not on the straight line (AB).
        @param ic any compatible integer computer.
      */
-    ClosedIntegerHalfPlane( const Point & A, const Point & B, 
+    ClosedIntegerHalfPlane( const Point & A, const Point & B,
                             const Point & inP, IntegerComputer<Integer> & ic );
 
     /**
@@ -146,9 +146,9 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
 

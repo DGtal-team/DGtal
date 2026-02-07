@@ -69,7 +69,7 @@ We then create a voxelization of a scaled version of the cube onto a
 
 \section sectVoxelization3 Limitations
 
-At this point intersection tests are performed using arithmetics on @e
+At this point intersection tests are performed using arithmetic on @e
 double as an approximation of @f$ \mathbb{R}^3@f$. The digitization
 may not be exact when the mesh are integer or rational vertices for
 instance.

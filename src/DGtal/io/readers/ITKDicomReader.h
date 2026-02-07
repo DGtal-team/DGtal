@@ -66,7 +66,7 @@ namespace DGtal
    * Description of template class 'ITKDicomReader'
    * \brief Aim: Import a 2D/3D DICOM Image from file series.
    *
-   *  This class requires ITK installation 
+   *  This class requires ITK installation
    *  (http://www.itk.org/ITK/resources/software.html)
    *  and to compile DGtal with  -DDGTAL_WITH_ITK option.
    *
@@ -89,14 +89,14 @@ namespace DGtal
 			  || (TImage::Domain::dimension == 2) ));
 
     /**
-     * Import an Image from files belonging to the same DICOM serie.
+     * Import an Image from files belonging to the same DICOM series.
      *
      * First an ImageContainerByITKImage is constructed by using the
      * source type of the input ITK image, and in a second step the
      * resulting image type is adapted to the TImage type with the use
      * of the given Functor.
      *
-     * @param filenames fullnames of file of a DICOM serie. They may be 
+     * @param filenames fullnames of file of a DICOM series. They may be
      * gathered with an itk::GDCMSeriesFileNames instance.
      * @param aFunctor functor used to cast image values.
      * @tparam TFunctor the type of functor used in the export.
@@ -115,9 +115,9 @@ namespace DGtal
     static inline
     ImageContainerByITKImage<Domain, PixelType>
     importDicomFiles( const std::vector<std::string> & filenames );
-    
 
-    
+
+
     template <typename Image, typename Domain, typename OrigValue,
               typename TFunctor, typename Value>
     struct Aux
@@ -137,13 +137,13 @@ namespace DGtal
       readDGtalImageFromITKtypes( const std::vector<std::string> & filenames,
 				  const TFunctor & aFunctor );
     };
-    
-    
+
+
     /**
-     * Read an DGtal image of type TypeDGtalImage from files belonging 
-     * to the same DICOM serie.
+     * Read an DGtal image of type TypeDGtalImage from files belonging
+     * to the same DICOM series.
      *
-     * @param filenames fullnames of file of a DICOM serie. They may be 
+     * @param filenames fullnames of file of a DICOM series. They may be
      * gathered with an itk::GDCMSeriesFileNames instance.
      * @param aFunctor functor used to cast image values
      * @tparam TFunctor the type of functor used in the export.

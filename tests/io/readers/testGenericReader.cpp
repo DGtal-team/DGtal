@@ -52,9 +52,9 @@ bool testGenericReader()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   DGtal::trace.beginBlock ( "Testing 2D/3D Image Reader" );
-   
+
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z3i::Domain, unsigned char> Image3D;
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain, unsigned char> Image2D;
 
@@ -68,81 +68,81 @@ bool testGenericReader()
   typedef DGtal::ImageContainerBySTLVector<DGtal::Z2i::Domain, unsigned int> Image2D32bits;
 
 
-  std::string filenameImage1 = testPath + "samples/cat10.vol";    
+  std::string filenameImage1 = testPath + "samples/cat10.vol";
   Image3D anImportedImage1= DGtal::GenericReader<Image3D>::import(filenameImage1);
-  DGtal::Z3i::Domain domain1 = anImportedImage1.domain(); 
+  DGtal::Z3i::Domain domain1 = anImportedImage1.domain();
   unsigned int size0Img1= domain1.upperBound()[0]-domain1.lowerBound()[0]+1;
   unsigned int size1Img1= domain1.upperBound()[1]-domain1.lowerBound()[1]+1;
   unsigned int size2Img1= domain1.upperBound()[2]-domain1.lowerBound()[2]+1;
   DGtal::trace.info()<<"Vol image read: size[0]:" << size0Img1  ;
   DGtal::trace.info()<<"size[1]:  " << size1Img1;
   DGtal::trace.info()<<"size[2]:  " << size2Img1 << std::endl;
-  nbok += (size0Img1==40 && size1Img1==40 && size2Img1==40) ? 1 : 0; 
+  nbok += (size0Img1==40 && size1Img1==40 && size2Img1==40) ? 1 : 0;
   nb++;
-  std::string filenameImage0 = testPath + "samples/test.longvol";    
+  std::string filenameImage0 = testPath + "samples/test.longvol";
   Image3D64bits anImportedImage0= DGtal::GenericReader<Image3D64bits>::import(filenameImage0);
-  DGtal::Z3i::Domain domain0 = anImportedImage0.domain(); 
+  DGtal::Z3i::Domain domain0 = anImportedImage0.domain();
   unsigned int size0Img0= domain0.upperBound()[0]-domain0.lowerBound()[0]+1;
   unsigned int size1Img0= domain0.upperBound()[1]-domain0.lowerBound()[1]+1;
   unsigned int size2Img0= domain0.upperBound()[2]-domain0.lowerBound()[2]+1;
   DGtal::trace.info()<<"Longvol image read: size[0]:" << size0Img0  ;
   DGtal::trace.info()<<"size[1]:  " << size1Img0;
   DGtal::trace.info()<<"size[2]:  " << size2Img0 << std::endl;
-  nbok += (size0Img0==16 && size1Img0==16 && size2Img0==16) ? 1 : 0; 
+  nbok += (size0Img0==16 && size1Img0==16 && size2Img0==16) ? 1 : 0;
   nb++;
-  std::string filenameImage2 = testPath + "samples/cat10.pgm3d";    
+  std::string filenameImage2 = testPath + "samples/cat10.pgm3d";
   Image3D anImportedImage2= DGtal::GenericReader<Image3D>::import(filenameImage2);
-  DGtal::Z3i::Domain domain2 = anImportedImage2.domain(); 
+  DGtal::Z3i::Domain domain2 = anImportedImage2.domain();
   unsigned int size0Img2= domain2.upperBound()[0]-domain2.lowerBound()[0]+1;
   unsigned int size1Img2= domain2.upperBound()[1]-domain2.lowerBound()[1]+1;
   unsigned int size2Img2= domain2.upperBound()[2]-domain2.lowerBound()[2]+1;
   DGtal::trace.info()<<"Pgm3D image read: size[0]:" << size0Img2  ;
   DGtal::trace.info()<<"size[1]:  " << size1Img2;
   DGtal::trace.info()<<"size[2]:  " << size2Img2 << std::endl;;
-  nbok += (size0Img2==40 && size1Img2==40 && size2Img2==40) ? 1 : 0; 
+  nbok += (size0Img2==40 && size1Img2==40 && size2Img2==40) ? 1 : 0;
   nb++;
 
   typedef DGtal::functors::Rescaling<unsigned char ,unsigned char > RescalFCT;
   Image3D imageanImportedImage2 = DGtal::GenericReader<Image3D>::importWithValueFunctor( filenameImage2,  RescalFCT(0, 120,
-                                                                                                             0, 255) );  
-  domain2 = anImportedImage2.domain(); 
+                                                                                                             0, 255) );
+  domain2 = anImportedImage2.domain();
   size0Img2= domain2.upperBound()[0]-domain2.lowerBound()[0]+1;
   size1Img2= domain2.upperBound()[1]-domain2.lowerBound()[1]+1;
   size2Img2= domain2.upperBound()[2]-domain2.lowerBound()[2]+1;
   DGtal::trace.info()<<"Pgm3D image read (with scale functor) : size[0]:" << size0Img2  ;
   DGtal::trace.info()<<"size[1]:  " << size1Img2;
   DGtal::trace.info()<<"size[2]:  " << size2Img2 << std::endl;;
-  nbok += (size0Img2==40 && size1Img2==40 && size2Img2==40) ? 1 : 0; 
+  nbok += (size0Img2==40 && size1Img2==40 && size2Img2==40) ? 1 : 0;
   nb++;
-  
+
 
 #ifdef  DGTAL_WITH_HDF5
-  std::string filenameImageh5 = testPath + "samples/cat10.h5";    
+  std::string filenameImageh5 = testPath + "samples/cat10.h5";
   Image3D anImportedImageh5= DGtal::GenericReader<Image3D>::import(filenameImageh5);
-  DGtal::Z3i::Domain domainh5 = anImportedImageh5.domain(); 
+  DGtal::Z3i::Domain domainh5 = anImportedImageh5.domain();
   unsigned int size0Imgh5= domainh5.upperBound()[0]-domainh5.lowerBound()[0]+1;
   unsigned int size1Imgh5= domainh5.upperBound()[1]-domainh5.lowerBound()[1]+1;
   unsigned int size2Imgh5= domainh5.upperBound()[2]-domainh5.lowerBound()[2]+1;
   DGtal::trace.info()<<"HDF5 3D image read: size[0]:" << size0Imgh5;
   DGtal::trace.info()<<"size[1]:  " << size1Imgh5;
   DGtal::trace.info()<<"size[2]:  " << size2Imgh5 << std::endl;;
-  nbok += (size0Imgh5==40 && size1Imgh5==40 && size2Imgh5==40) ? 1 : 0; 
+  nbok += (size0Imgh5==40 && size1Imgh5==40 && size2Imgh5==40) ? 1 : 0;
   nb++;
 #endif
-  std::string filenameImage3 = testPath + "samples/contourS.pgm";    
+  std::string filenameImage3 = testPath + "samples/contourS.pgm";
   Image2D anImportedImage3= DGtal::GenericReader<Image2D>::import(filenameImage3);
-  DGtal::Z2i::Domain domain3 = anImportedImage3.domain(); 
+  DGtal::Z2i::Domain domain3 = anImportedImage3.domain();
   unsigned int size0Img3= domain3.upperBound()[0]-domain3.lowerBound()[0]+1;
   unsigned int size1Img3= domain3.upperBound()[1]-domain3.lowerBound()[1]+1;
-  
+
   DGtal::trace.info()<<"Pgm image read: size[0]:" << size0Img3  ;
   DGtal::trace.info()<<"size[1]:  " << size1Img3     << std::endl;;
-  nbok += (size0Img3==185 && size1Img3==85 ) ? 1 : 0; 
+  nbok += (size0Img3==185 && size1Img3==85 ) ? 1 : 0;
   nb++;
 
-  std::string filenameImage4 = testPath + "samples/raw32bits5x5x5.raw";    
+  std::string filenameImage4 = testPath + "samples/raw32bits5x5x5.raw";
   Image3D32bits anImportedImage4= DGtal::GenericReader<Image3D32bits>::import(filenameImage4, 5, 5, 5);
-  DGtal::Z3i::Domain domain4 = anImportedImage4.domain(); 
+  DGtal::Z3i::Domain domain4 = anImportedImage4.domain();
   unsigned int size0Img4= domain4.upperBound()[0]-domain4.lowerBound()[0]+1;
   unsigned int size1Img4= domain4.upperBound()[1]-domain4.lowerBound()[1]+1;
   unsigned int size2Img4= domain4.upperBound()[2]-domain4.lowerBound()[2]+1;
@@ -150,18 +150,18 @@ bool testGenericReader()
   DGtal::trace.info()<<"size[1]:  " << size1Img4;
   DGtal::trace.info()<<"size[2]:  " << size2Img4 << std::endl;
   DGtal::trace.info()<<"Image value of Point (2,3,4): " << anImportedImage4(DGtal::Z3i::Point(2,3,4)) << " (should be 250000*2*3*4) "<<std::endl;
-  nbok += (size0Img4==5 && size1Img4==5 && size2Img4==5 && anImportedImage4(DGtal::Z3i::Point(2,3,4))==250000*2*3*4) ? 1 : 0; 
+  nbok += (size0Img4==5 && size1Img4==5 && size2Img4==5 && anImportedImage4(DGtal::Z3i::Point(2,3,4))==250000*2*3*4) ? 1 : 0;
   nb++;
 
-  std::string filenameImage5 = testPath + "samples/raw32bits5x5.raw";    
+  std::string filenameImage5 = testPath + "samples/raw32bits5x5.raw";
   Image2D32bits anImportedImage5= DGtal::GenericReader<Image2D32bits>::import(filenameImage5, 5, 5);
-  DGtal::Z2i::Domain domain5 = anImportedImage5.domain(); 
+  DGtal::Z2i::Domain domain5 = anImportedImage5.domain();
   unsigned int size0Img5= domain5.upperBound()[0]-domain5.lowerBound()[0]+1;
   unsigned int size1Img5= domain5.upperBound()[1]-domain5.lowerBound()[1]+1;
   DGtal::trace.info()<<"Raw32 bits 3D image read: size[0]:" << size0Img4;
   DGtal::trace.info()<<"size[1]:  " << size1Img5 << std::endl;
   DGtal::trace.info()<<"Image value of Point (2,3): " << anImportedImage5(DGtal::Z2i::Point(2,3)) << " (should be 250000*2*3*4) "<<std::endl;
-  nbok += (size0Img5==5 && size1Img5==5  && anImportedImage5(DGtal::Z2i::Point(2,3))==250000*2*3*4) ? 1 : 0; 
+  nbok += (size0Img5==5 && size1Img5==5  && anImportedImage5(DGtal::Z2i::Point(2,3))==250000*2*3*4) ? 1 : 0;
   nb++;
 
 #ifdef  DGTAL_WITH_ITK
@@ -203,7 +203,7 @@ bool testGenericReader()
 
   DGtal::trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   DGtal::trace.endBlock();
-  
+
   return nbok == nb;
 }
 

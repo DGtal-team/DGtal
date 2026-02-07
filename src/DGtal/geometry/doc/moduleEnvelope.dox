@@ -1,11 +1,11 @@
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  */
 namespace DGtal {
 
 /**
-   
+
 @page moduleEnvelope Fully convex envelope, relative fully convex envelope and digital polyhedra
 
 @writers Jacques-Olivier Lachaud
@@ -13,7 +13,7 @@ namespace DGtal {
 @since 1.3
 
 Part of the \ref packageGeometry.
-  
+
 This part of the manual describes convex hull tools associated to a
 new definition of digital convexity, called the \b full \b convexity
 \cite lachaud_dgmm_2021 \cite lachaud_jmiv_2022 . Most of the work presented here is related to \cite feschet_2022_dgmm .
@@ -25,7 +25,7 @@ envelope operation is useful to build digital polyhedra.
 [TOC]
 
 The following programs are related to this documentation:
-\ref testDigitalConvexity.cpp, 
+\ref testDigitalConvexity.cpp,
 \ref geometry/volumes/digitalPolyhedronBuilder3D.cpp,
 \ref geometry/volumes/standardDigitalPolyhedronBuilder3D.cpp .
 
@@ -99,9 +99,9 @@ intermediate steps, which can be useful in some contexts.
 \b Intermediate \b computations
 - DigitalConvexity::FC computes the operation \f$ \mathrm{FC}(Z):=\mathrm{Extr}(\mathrm{Skel}(\mathrm{Star}(\mathrm{CvxH}(Z)))) \f$, for \f$ Z \f$ a digital set.
 - DigitalConvexity::CvxH computes the lattice polytope that is the convex hull of the given digital set.
-- DigitalConvexity::StarCvxH computes the set of lattice cells \f$ \mathrm{Star}(\mathrm{CvxH}(Z)) \f$, i.e. the cells that touch the convex hull of the given digital set. 
-- DigitalConvexity::Star computes the set of lattice cells \f$ \mathrm{Star}(Z) \f$, i.e. the cells that touch some point of the given digital set. 
-- DigitalConvexity::StarCells computes the set of lattice cells \f$ \mathrm{Star}(C) \f$, i.e. the cells that touch some cell of the given set of cells, represented with lattice point and Khalimsky coordinates. 
+- DigitalConvexity::StarCvxH computes the set of lattice cells \f$ \mathrm{Star}(\mathrm{CvxH}(Z)) \f$, i.e. the cells that touch the convex hull of the given digital set.
+- DigitalConvexity::Star computes the set of lattice cells \f$ \mathrm{Star}(Z) \f$, i.e. the cells that touch some point of the given digital set.
+- DigitalConvexity::StarCells computes the set of lattice cells \f$ \mathrm{Star}(C) \f$, i.e. the cells that touch some cell of the given set of cells, represented with lattice point and Khalimsky coordinates.
 - DigitalConvexity::sizeStarCvxH computes the cardinal of the set of lattice cells \f$ \mathrm{Star}(\mathrm{CvxH}(Z)) \f$, i.e. the number of cells that touch the convex hull of the given digital set. Slightly faster than the previous one.
 - DigitalConvexity::Extr computes the extremal vertices of a range of cells.
 - DigitalConvexity::ExtrCvxH computes the extremal vertices of the convex hull of a range of lattice points.

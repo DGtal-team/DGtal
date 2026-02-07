@@ -61,9 +61,9 @@ using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-/** 
+/**
  * Set to a given value a random set of @a nb points.
- * 
+ *
  * @param image the  image
  * @param nb the number of random points to insert
  * @param value the value to add at each random point
@@ -80,7 +80,7 @@ void randomSeeds(Image &image, const unsigned int nb, const int value)
   {
     for (unsigned int dim = 0; dim < Image::dimension; dim++)
       p[dim] = rand() % (ext[dim]) +  low[dim];
-    
+
     image.setValue(p, value);
   }
 }
@@ -92,7 +92,7 @@ int main()
   //! [DTDef]
   Z2i::Point a ( 0, 0 );
   Z2i::Point b ( 127, 127);
-  
+
   //Input image with unsigned char values
   typedef ImageSelector<Z2i::Domain, unsigned int>::Type Image;
   Image image ( Z2i::Domain(a, b ));
@@ -115,13 +115,13 @@ int main()
   //Point Predicate from random seed image
   typedef functors::SimpleThresholdForegroundPredicate<Image> PointPredicate;
   PointPredicate predicate(image,0);
-  //! [DTPredicate]  
+  //! [DTPredicate]
 
   //! [DTCompute]
   typedef  DistanceTransformation<Z2i::Space, PointPredicate, Z2i::L2Metric> DTL2;
   typedef  DistanceTransformation<Z2i::Space, PointPredicate, Z2i::L1Metric> DTL1;
- 
- 
+
+
   DTL2 dtL2(image.domain(), predicate, Z2i::l2Metric);
   DTL1 dtL1(image.domain(), predicate, Z2i::l1Metric);
   //! [DTCompute]
@@ -131,20 +131,20 @@ int main()
   //We compute the maximum DT value on the L2 map
   for ( DTL2::ConstRange::ConstIterator it = dtL2.constRange().begin(), itend = dtL2.constRange().end();it != itend; ++it)
     if ( (*it) > maxv2)  maxv2 = (*it);
- 
+
   DTL1::Value maxv1=0;
   //We compute the maximum DT value on the L1 map
   for ( DTL1::ConstRange::ConstIterator it = dtL1.constRange().begin(), itend = dtL1.constRange().end();it != itend; ++it)
     if ( (*it) > maxv1)  maxv1 = (*it);
-  
+
   //! [DTColormaps]
   //Colormap used for the SVG output
   typedef HueShadeColorMap<DTL2::Value, 2> HueTwice;
   //! [DTColormaps]
 
 
-  
-  
+
+
   trace.warning() << dtL2 << " maxValue= "<<maxv2<< endl;
   board.clear();
   Display2DFactory::drawImage<HueTwice>(board, dtL2, 0.0, maxv2 + 1);
@@ -169,7 +169,7 @@ int main()
     board << *it;
   }
   board.saveSVG("example-DT-L2-ticked.svg");
-  
+
   trace.endBlock();
   return 0;
 }

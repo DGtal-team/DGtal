@@ -147,7 +147,7 @@ TEMPLATE_TEST_CASE("Star shapes", "move() method",
   const double radiusY = unif(re);
 
   TestType shape = createShape<TestType>( RealPoint(centerX, centerY), RealPoint(radiusX, radiusY) );
-  
+
   SECTION("Center coordinates")
     {
       REQUIRE( shape.center() == RealPoint(centerX, centerY) );

@@ -53,24 +53,24 @@ namespace DGtal {
   /**
    * Description of template class 'SimpleThresholdForegroundPredicate' <p>
    * \brief Aim: Define a simple Foreground predicate thresholding
-   * image values  given a single thresold.
+   * image values  given a single threshold.
    * More precisely, the functor operator() returns true if the value
    * is greater than a given threshold.
    *
    * This class is a model of concepts::CPointPredicate.
    *
-   * @tparam Image an model of CConstImage concept. 
+   * @tparam Image an model of CConstImage concept.
    */
   template <typename Image>
   class SimpleThresholdForegroundPredicate
   {
   public:
     BOOST_CONCEPT_ASSERT(( concepts::CConstImage<Image> ));
-    
+
     typedef typename Image::Value Value;
     typedef typename Image::Point Point;
 
-    /** 
+    /**
      * Constructor. This functor can be used to threshold image values
      * greater (>) than @a value.
      *
@@ -80,15 +80,15 @@ namespace DGtal {
     SimpleThresholdForegroundPredicate(ConstAlias<Image> aImage,
 				       const Value value):
       myImage(&aImage), myVal(value) {};
-    
-    /** 
+
+    /**
      * @return True if the point belongs to the value interval.
      */
     bool operator()(const typename Image::Point &aPoint) const
     {
       return ((*myImage)(aPoint) > myVal);
     }
-    
+
     /**
      * @return True if the point belongs to the value interval.
      */
@@ -97,22 +97,22 @@ namespace DGtal {
       return ( (*myImage)(*it) > myVal);
     }
 
-    /** 
+    /**
      * @return True if the point belongs to the value interval.
      */
     bool operator()(const typename Image::ConstRange::ConstIterator &it) const
     {
       return ((*it) > myVal);
     }
-    
+
 
   private:
     const Image *  myImage;
     Value myVal;
-    
+
   protected:
     SimpleThresholdForegroundPredicate();
-    
+
   };
 
 

@@ -1,13 +1,13 @@
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  */
 namespace DGtal {
 
 /**
-   
-@page moduleAlphaThickSegmentReco Alpha-thick Segment Recognition   
 
-@writers Bertrand Kerautret 
+@page moduleAlphaThickSegmentReco Alpha-thick Segment Recognition
+
+@writers Bertrand Kerautret
 
 Part of the \ref packageGeometry.
 
@@ -16,11 +16,11 @@ Part of the \ref packageGeometry.
 The Digital Straight Segment primitive (described here: @ref
 moduleArithDSSReco) is commonly used to extract geometric information
 from digital contours. It is exploited in various estimators as for
-instance in tangent \cite LachaudIVC2007 or curvature estimation 
+instance in tangent \cite LachaudIVC2007 or curvature estimation
 \cite KerautretLachaud2009 . However, this primitive is not efficient to
 directly process real contours with the potential presence of
 noise. To overcome this limitation the alpha-thick segments (called
-initially Blurred Segments) were first introduced by Debled-Rennesson 
+initially Blurred Segments) were first introduced by Debled-Rennesson
 \e et al \cite debledFuzzy2005 which handle noise or contour
 irregularities.
 
@@ -41,7 +41,7 @@ necessarily digital points (RealPoint for instance).
 
 \section moduleAlphaThickSegmentRecoIntro  Alpha-thick Segment
 
-The first definition of \b blurred \b segment  \cite debledFuzzy2005 
+The first definition of \b blurred \b segment  \cite debledFuzzy2005
 relies on the definition of the digital straight lines (@ref
 moduleArithDSSReco):
 
@@ -57,13 +57,13 @@ Following this definition, the authors also propose an incremental
 linear time algorithm to segment a digital curve into blurred segments
 of order \f$ d \f$. The main drawback of such a decomposition is the
 non optimality (it implies over segmentation).  Then the author
-introduce the notion of blurred segment of width \f$ \nu \f$ 
+introduce the notion of blurred segment of width \f$ \nu \f$
 \cite DebledRennessonBlurred2005. The width \f$ \nu \f$ is associated to the
 isothetic thickness of a set of points, ie. the minimum value between
 its vertical and horizontal thicknesses (see figure below).
 
 
-@image html exampleConvexHullHV.png "The isothetic thickness of this convexhull is the minimum between its vertical (dV) and horizontal (dH) thickness. The points P,Q and R are the antipodal pair." 
+@image html exampleConvexHullHV.png "The isothetic thickness of this convexhull is the minimum between its vertical (dV) and horizontal (dH) thickness. The points P,Q and R are the antipodal pair."
 
 
 From this notion of isothetic thickness follows the \b blurred \b segment definition \cite DebledRennessonBlurred2005 :
@@ -76,26 +76,26 @@ bounding line has an isothetic distance less or equal to \f$ \nu \f$.
 
 
 The implementation proposed here relies on the convex hull computed
-incrementally with the Melkman algorithm in linear time 
+incrementally with the Melkman algorithm in linear time
 \cite melkmanLine1987 (by using the MelkmanConvexHull class, see the module
 main documentation: @ref subsectmoduleHull2D13). It allows to add
 point on the front of the current segment and the value of
 vertical/horizontal thickness are computed in linear time by using the
-rotating caliper algorithm (see @ref subsectmoduleHull2D14).  The Buzer optimisation 
+rotating caliper algorithm (see @ref subsectmoduleHull2D14).  The Buzer optimisation
 \cite lilianComputing2007 to update the convex hull thickness with a coast
-of \f$O(log\ n) \f$ or the linear time point substraction are not yet
+of \f$O(log\ n) \f$ or the linear time point subtraction are not yet
 implemented.  Note that you can use also the Euclidean thickness (see
 illustration below) also defined from the rotating caliper algorithm.
 
 
-@image html exampleConvexHullEucl.png "Illustration of the Euclidean thickness (dE) of the convexhull defined from antipodal pair (P,Q) and R." 
+@image html exampleConvexHullEucl.png "Illustration of the Euclidean thickness (dE) of the convexhull defined from antipodal pair (P,Q) and R."
 
 
 
 \section moduleAlphaThickSegmentRecoDetails   Alpha-thick Segment Recognition
 
 
-\subsection moduleAlphaThickSegmentRecoDetails-TypeInputContours Type of Input Points 
+\subsection moduleAlphaThickSegmentRecoDetails-TypeInputContours Type of Input Points
 
 This implementation of the alpha-thick segments can take as input
 different types of points which just need to be given in the template
@@ -109,12 +109,12 @@ check manually the end condition or the iterator type).
   axis increasing coordinates.
 
 As illustration, the alpha-thick segments can be recognized on such contours:
-@image html alphThickSegmentInputPoints.png "Examples of different input coutours which can be used with the alpha-thick segment. (1) Input contour with non increasing axis coordinates, (2) contour with non connected points, (3) polygonal contour with floating points. " 
+@image html alphThickSegmentInputPoints.png "Examples of different input coutours which can be used with the alpha-thick segment. (1) Input contour with non increasing axis coordinates, (2) contour with non connected points, (3) polygonal contour with floating points. "
 
 
 
 And the example of non-simple contour can produce some errors:
-@image html alphThickSegmentInputPointsLoop.png "Example of input contour (1) containing loop which produce incorrect convexhull (2)." 
+@image html alphThickSegmentInputPointsLoop.png "Example of input contour (1) containing loop which produce incorrect convexhull (2)."
 
 
 
@@ -132,7 +132,7 @@ non digital points (e.g. Space::RealPoint), you can define:
 
 
 To import an input contour you can use the the PointListReader class:
-  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisyReadFile 
+  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisyReadFile
 
 Then, you can define and initialize a new segment with maximal thickness set to 15:
   @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisInit
@@ -141,7 +141,7 @@ Then, you can define and initialize a new segment with maximal thickness set to 
 
 
 You can extend the segment by adding point to the front:
-  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisInitAndReco 
+  @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisInitAndReco
 
 
 The final alpha-thick segment can also be displayed with a Board3D as other 2D geometric primitives:
@@ -154,7 +154,7 @@ As described in the Board3D documentation  (@ref dgtal_dgtalboard_sec14), this p
 
 
 You can also customize the segment color by using the CustomStyle object:
-@snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisCustomColor 
+@snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisCustomColor
 
 As illustration the segment recognition given in
 exampleAlphaThickSegmentNoisy.cpp produces such a display:
@@ -177,14 +177,14 @@ point iterator. Then, the computer will not store the segment points
 the segment computer can be used in a quite similar way as in the
 previous example:
 
- @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisInitAndReco2 
+ @snippet examples/geometry/curves/exampleAlphaThickSegmentNoisy.cpp exampleAlphaThickSegmentNoisInitAndReco2
 
 
 Since the iterator is defined from an open contour, we check that we
 are not at the end of the input contour before applying any extension.
 
 
-\subsection moduleAlphaThickSegmentRecoDetails-ChangeThicknessDef Changing the thickness definition 
+\subsection moduleAlphaThickSegmentRecoDetails-ChangeThicknessDef Changing the thickness definition
 
 The thickness definition can be changed at the AlphaThickSegmentComputer construction:
 @snippet examples/geometry/curves/exampleAlphaThickSegment.cpp  exampleAlphaThickSegmentEuclDef
@@ -194,7 +194,7 @@ The thickness definition can be changed at the AlphaThickSegmentComputer constru
 \section moduleAlphaThickSegmentRecoGreedy  Example of greedy segmentation into Alpha-thick Segment
 
 To apply the greedy segmentation of a digital contour, we can use the GreedySegmentation class  (since the AlphaThickSegmentComputer class  is a model of the concept  CForwardSegmentComputer):
- @snippet examples/geometry/curves/greedyAlphaThickDecomposition.cpp greedyAlphaThickDecompositionAlgo 
+ @snippet examples/geometry/curves/greedyAlphaThickDecomposition.cpp greedyAlphaThickDecompositionAlgo
 
 
 The resulting set of segments can be displayed using the bounding box mode:
@@ -210,7 +210,7 @@ The whole example can be found in \ref greedyAlphaThickDecomposition.cpp.
 
 
 
-\section moduleAlphaThickSegmentTgtCover  Computing AlphaThickSegment tangential cover 
+\section moduleAlphaThickSegmentTgtCover  Computing AlphaThickSegment tangential cover
 
 \subsection moduleAlphaThickSegmentTgtCoverSaturated Tangential cover from saturated segmentation
 
@@ -224,7 +224,7 @@ tangential cover) by using the SaturatedSegmentation class.
 @see This section is illustrated by using the example @ref exampleAlphaThickSegmentTgtCover.cpp.
 
 To obtain the complete tangential cover of a closed contour, we need to
-define a Circulator from the input contour. Thus, we have to include the 
+define a Circulator from the input contour. Thus, we have to include the
 the following headers:
 
 @snippet examples/geometry/curves/exampleAlphaThickSegmentTgtCover.cpp  SaturatedAlphaThickCoverHeader

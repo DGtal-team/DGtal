@@ -53,7 +53,7 @@ namespace DGtal {
    All graphs define a \c Vertex (which must be instance-able,
    copy-able, assignable) and a \c Size type (type for counting
    vertices). Furthermore, they must provide a default type \c
-   VertexSet for representing a set of Vertex, and a defaut type
+   VertexSet for representing a set of Vertex, and a default type
    rebinder \c VertexMap for representing a map with key Vertex.
 
    @note DGtal graph concepts are very light compared to boost::graph
@@ -69,7 +69,7 @@ namespace DGtal {
 
    This section gathers the basic ways of using graphs.
 
-   @subsection dgtal_graph_def_2_1 Instanciating graphs
+   @subsection dgtal_graph_def_2_1 Instantiating graphs
 
    The instantiation of graphs (like any object) is dependent on the
    chosen graph model. For instance, to instantiate a MetricAdjacency
@@ -160,7 +160,7 @@ namespace DGtal {
    for digital surfaces to iterate through all vertices on-the-fly
    (see LightImplicitDigitalSurface, LightExplicitDigitalSurface).
    This is done easily with class GraphVisitorRange. This class
-   transforms an arbitary model of concepts::CGraphVisitor into a single pass
+   transforms an arbitrary model of concepts::CGraphVisitor into a single pass
    input range (on \c Vertex or on \c Node).
 
    The following snippet transforms a DepthFirstVisitor into a range.

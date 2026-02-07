@@ -55,62 +55,62 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class PolarPointComparatorBy2x2DetComputer
   /**
-   * \brief Aim: Class that implements a binary point predicate, which is able to 
-   * compare the position of two given points \f$ P, Q \f$ around a pole \f$ O \f$. 
+   * \brief Aim: Class that implements a binary point predicate, which is able to
+   * compare the position of two given points \f$ P, Q \f$ around a pole \f$ O \f$.
    * More precisely, it compares the oriented angles lying between the horizontal line
-   * passing by \f$ O \f$ and the rays \f$ [OP) \f$ and \f$ [OQ) \f$ 
-   * (in a counter-clockwise orientation). 
+   * passing by \f$ O \f$ and the rays \f$ [OP) \f$ and \f$ [OQ) \f$
+   * (in a counter-clockwise orientation).
    *
    * See PolarPointComparatorBy2x2DetComputer::operator() and PolarPointComparatorBy2x2DetComputer::isBefore
-   * for more details about the comparison (especially in degenerate cases).  
+   * for more details about the comparison (especially in degenerate cases).
    *
    * \note We do not use any approximating function like atan, but only exact computations
    * involving the evaluation of determinants of 2x2 matrices. With the default
    * template parameters, the result is guaranteed to be exact for integral point coordinates
-   * lying whithin the range ]-2^30,2^30[. 
+   * lying within the range ]-2^30,2^30[.
    *
    * @tparam TPoint type of points to compare
-   * @tparam TDetComputer a model of C2x2DetComputer. 
-   * By default, Simple2x2DetComputer is chosen. 
+   * @tparam TDetComputer a model of C2x2DetComputer.
+   * By default, Simple2x2DetComputer is chosen.
    *
    */
-  template <typename TPoint, 
+  template <typename TPoint,
 	    typename TDetComputer = Simple2x2DetComputer<typename TPoint::Coordinate, DGtal::int64_t > >
   class PolarPointComparatorBy2x2DetComputer
   {
     // ----------------------- Inner types ------------------------------------
-  public: 
+  public:
 
     /**
      * Type of 2D points to compare
      */
-    typedef TPoint Point; 
+    typedef TPoint Point;
     /**
      * Type of point coordinates
      */
-    typedef typename Point::Coordinate Coordinate; 
+    typedef typename Point::Coordinate Coordinate;
     /**
      * Type of 2D vectors
      */
-    typedef Point Vector; 
+    typedef Point Vector;
 
     /**
-     * Type of the object that computes the determinant of 2x2 matrix in order to 
-     * determine the orientation of three points or compare the norm of two vectors. 
+     * Type of the object that computes the determinant of 2x2 matrix in order to
+     * determine the orientation of three points or compare the norm of two vectors.
      */
-    typedef TDetComputer DetComputer; 
-    BOOST_CONCEPT_ASSERT(( C2x2DetComputer<DetComputer> )); 
+    typedef TDetComputer DetComputer;
+    BOOST_CONCEPT_ASSERT(( C2x2DetComputer<DetComputer> ));
 
     /**
      * Type of integer returned by the determinant computer
-     */    
-    typedef typename DetComputer::ResultInteger ResultInteger; 
+     */
+    typedef typename DetComputer::ResultInteger ResultInteger;
 
     /**
-     * Type of the object that returns a bool from the determinant returned 
-     * by @a myDetComputer.   
+     * Type of the object that returns a bool from the determinant returned
+     * by @a myDetComputer.
      */
-    typedef functors::Thresholder<ResultInteger, false, false> CustomThresholder; 
+    typedef functors::Thresholder<ResultInteger, false, false> CustomThresholder;
 
 
     // ----------------------- Standard services ------------------------------
@@ -118,7 +118,7 @@ namespace DGtal
 
     /**
      * Default constructor.
-     * @a myPole is set to (0,0). 
+     * @a myPole is set to (0,0).
      */
     PolarPointComparatorBy2x2DetComputer();
 
@@ -166,11 +166,11 @@ namespace DGtal
      * Main operator, which compares two given points
      * @a aPoint1 and @a aPoint2.
      *
-     * This method first checks whether the two points 
-     * are located on the same side of the horizontal 
+     * This method first checks whether the two points
+     * are located on the same side of the horizontal
      * line passing by @a myPole or not. If so, it calls
      * PolarPointComparatorBy2x2DetComputer::isBefore. Otherwise it
-     * concludes. 
+     * concludes.
      *
      * @param aPoint1 first point
      * @param aPoint2 second point
@@ -183,48 +183,48 @@ namespace DGtal
   private:
 
     /**
-     * Method that compares two given points both belonging 
-     * to the upward (positive y-coordinates) or downward 
-     * (negative y-coordinates) half-plane. 
+     * Method that compares two given points both belonging
+     * to the upward (positive y-coordinates) or downward
+     * (negative y-coordinates) half-plane.
      *
-     * The first argument @a aU lies @e before 
+     * The first argument @a aU lies @e before
      * the second one @a aV iff the triple
-     * @a myPole , @a aU , @a aV are counter-clockwise oriented. 
+     * @a myPole , @a aU , @a aV are counter-clockwise oriented.
      *
      * If @a myPole , @a aU , @a aV are aligned
-     * @a aU lies @e before @a aV iff its (L2) norm is shorter. 
+     * @a aU lies @e before @a aV iff its (L2) norm is shorter.
      *
-     * Note that if @a aU or @a aV are equal to @a myPole, 
-     * its norm is the shortest possible. 
+     * Note that if @a aU or @a aV are equal to @a myPole,
+     * its norm is the shortest possible.
      *
-     * If @a aU and @a aV are equal, this methods returns 'false', 
-     * because no point is strictly located before the other. 
+     * If @a aU and @a aV are equal, this methods returns 'false',
+     * because no point is strictly located before the other.
      *
-     * @param aU first point 
+     * @param aU first point
      * @param aV second point
-     * @return 'true' if @a aU lies before @a aV, 
+     * @return 'true' if @a aU lies before @a aV,
      * 'false' otherwise
      */
     bool isBefore(const Point& aU, const Point& aV) const;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     /**
      * Point used as the origin for the polar comparison of two given points
      */
-    Point myPole; 
+    Point myPole;
 
     /**
-     * Object that computes the determinant of 2x2 matrix in order to 
+     * Object that computes the determinant of 2x2 matrix in order to
      * determine the orientation of three points or compare the norm of two vectors
      */
-    mutable DetComputer myDetComputer; 
+    mutable DetComputer myDetComputer;
 
     /**
      * Object that returns a bool from the determinant returned by @a myDetComputer
      */
-    CustomThresholder myThresholder; 
+    CustomThresholder myThresholder;
 
     // ------------------------- Hidden services ------------------------------
   protected:

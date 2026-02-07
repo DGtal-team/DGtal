@@ -118,11 +118,11 @@ bool testMPolynomialSpeed( double step = 0.01 )
     }
   trace.info() << "Total2 = " << total2 << std::endl;
   trace.endBlock();
-  nbok += fabs( total1 - total ) < 1e-8 ? 1 : 0; 
+  nbok += fabs( total1 - total ) < 1e-8 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "fabs( total1 - total ) < 1e-8" << std::endl;
-  nbok += fabs( total2 - total ) < 1e-8 ? 1 : 0; 
+  nbok += fabs( total2 - total ) < 1e-8 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "fabs( total2 - total ) < 1e-8" << std::endl;
@@ -139,14 +139,14 @@ bool testMPolynomial()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing block ..." );
 
   MPolynomial<2, int> f = mmonomial<int>(1, 2) + 3 * mmonomial<int>(4, 5);
   trace.info() << f << std::endl;
   int e = f(4)(2);
   trace.info() << e << std::endl;
-  nbok += e == 24592 ? 1 : 0; 
+  nbok += e == 24592 ? 1 : 0;
   nb++;
   trace.info() << derivative<1>(f) << std::endl;
   MPolynomial<1, int> g = f(2), h = f(3);
@@ -155,13 +155,13 @@ bool testMPolynomial()
   // result will be incorrect since int is not a field
   trace.info() << gcd(g, h) << std::endl; // to prove our point, check for yourself that the result is
   // X_0^5 instead of X_0^2
-  nbok += gcd<double>(g,h) == mmonomial<double>(2) ? 1 : 0; 
+  nbok += gcd<double>(g,h) == mmonomial<double>(2) ? 1 : 0;
   nb++;
   MPolynomial<1, double> l = f(mmonomial<double>(1) - 1)(mmonomial<double>(1) - 2);
   trace.info() << l << std::endl;
   trace.info() << derivative<0>(l) << std::endl;
   trace.info() << gcd(l, derivative<0>(l)) << " (gcd of two previous polys is 1)" << std::endl;
-  nbok += gcd(l, derivative<0>(l)) == 1.0 * mmonomial<double>(0) ? 1 : 0; 
+  nbok += gcd(l, derivative<0>(l)) == 1.0 * mmonomial<double>(0) ? 1 : 0;
   nb++;
   trace.info() << "Durchblick (x3y+xz3+y3z+z3+5z)= " << durchblick<double>() << std::endl;
   trace.endBlock();

@@ -78,10 +78,10 @@ namespace DGtal
    *
    * @tparam TComponent the type of each component of the matrix. For
    * now, should be some double or float type.
-   * 
+   *
    * @tparam TMatrix a model of CMatrix, for instance SimpleMatrix.
    */
-   
+
   template  <DGtal::Dimension TN, typename TComponent, typename TMatrix=SimpleMatrix<TComponent, TN, TN> >
   class EigenDecomposition
   {
@@ -100,7 +100,7 @@ namespace DGtal
     typedef ColumnVector                Vector;      ///< an alias for column vectors (Nx1)
     typedef TMatrix Matrix;      ///< the type for matrices (NxN)
 
- 
+
     // ----------------------- Static constants ------------------------------
   public:
     /// Usual static constant for dimension.
@@ -125,7 +125,7 @@ namespace DGtal
      * @param[out] e contains the subdiagonal elements of the tridiagonal matrix in its last n-1 positions. e[0] is set to 0.
      */
     static void tridiagonalize( Matrix& V, Vector& d, Vector& e );
-    
+
     /**
      * \brief finds the eigenvalues and eigenvectors of a symmetric
      * tridiagonal matrix by the QL method.  The eigenvectors of a
@@ -163,11 +163,11 @@ namespace DGtal
      * @param[out] eigenValues   vector of eigenvalues (size = dimension), sorted in ascending order (smallest to highest).
      */
     static void getEigenDecomposition( const Matrix& matrix, Matrix& eigenVectors, Vector& eigenValues );
-    
-    
-    // ------------------------- Protected Datas ------------------------------
+
+
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------

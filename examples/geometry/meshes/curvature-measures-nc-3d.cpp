@@ -32,7 +32,7 @@
    curvature measures (based on the theory of Normal cycle)
 
 \verbatim
-./examples/geometry/meshes/curvature-measures-nc-3d torus 20 20 0.5 
+./examples/geometry/meshes/curvature-measures-nc-3d torus 20 20 0.5
 \endverbatim
 outputs
 \verbatim
@@ -65,7 +65,7 @@ well known example is the Schwarz lantern. You may try the following:
 ./examples/geometry/meshes/curvature-measures-nc-3d lantern 20 20 0.5
 \endverbatim
 
-outputs 
+outputs
 
 \verbatim
 Expected mean curvatures: min=0.25 max=0.25
@@ -73,7 +73,7 @@ Computed mean curvatures: min=0.795695 max=1.41211
 Expected Gaussian curvatures: min=0 max=0
 Computed Gaussian curvatures: min=-6.79045e-14 max=15.0937
 \endverbatim
-  
+
 \example geometry/meshes/curvature-measures-nc-3d.cpp
 */
 

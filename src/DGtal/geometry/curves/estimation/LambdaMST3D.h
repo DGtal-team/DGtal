@@ -61,7 +61,7 @@ namespace DGtal {
   template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
   class LambdaMST3DEstimator
   {
-  public: 
+  public:
     //Checking concepts
     BOOST_CONCEPT_ASSERT(( concepts::CSpace < TSpace > ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 3 ));
@@ -82,30 +82,30 @@ namespace DGtal {
     typedef typename TSpace::RealVector RealVector;
     /// Type of 3d real point
     typedef typename TSpace::Point Point;
-    
+
     // ----------------------- Standard services ------------------------------
   public:
     //! Default constructor.
     LambdaMST3DEstimator ( );
-    
+
     /**
      * Initialization.
      * @param itb begin iterator
      * @param ite end iterator
      */
     void init ( ConstIterator itb, ConstIterator ite );
-    
+
     /**
      * @param segmentComputer - DSS segmentation algorithm
      */
     void attach ( Alias<TSegmentation> segmentComputer );
-    
+
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid ( ) const;
-    
+
     /**
      * For ranges of points the second version of this method is faster
      * than iterating over this version.
@@ -116,7 +116,7 @@ namespace DGtal {
      * @return tangent direction
      */
     RealVector eval ( const Point & p );
-    
+
     /**
      * @tparam OutputIterator writable iterator.
      * More efficient way to compute tangent directions for all points of a curve.
@@ -133,19 +133,19 @@ namespace DGtal {
      * @return the internal dss filter
      */
     DSSFilter & getDSSFilter ( );
-    
+
     // ------------------------- Internals ------------------------------------
   protected:
 
       typedef typename std::vector<SegmentComputer >::const_iterator OrphanDSSIterator;
-    
+
     /**
      * @brief Accumulate partial results obtained for each point.
      * In 3D it can happen that DSSs' direction vectors over same point are opposite.
      * To avoid this problem we measure angle between segments' direction vectors and if this angle
-     * is bigger than \f$\pi/2\f$, then one of the vectors is reversed. 
+     * is bigger than \f$\pi/2\f$, then one of the vectors is reversed.
      * Finally, tangent direction is estimated and stored.
-     * 
+     *
      * @tparam OutputIterator writable iterator.
      * @param outValues partial results for each point
      * @param itb begin iterator
@@ -170,7 +170,7 @@ namespace DGtal {
                        std::multimap<Point, Value> &outValues);
 
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     /**
      * Iterator which corresponds to the beginning of a valid range - [myBegin, myEnd)
@@ -194,9 +194,9 @@ namespace DGtal {
     DSSFilter myDSSFilter;
 
   }; // end of class LambdaTangentFromDSSEstimator
-  
+
   //-------------------------------------------------------------------------------------------
-  
+
   // Template class LambdaMST3D
   /**
    * \brief Aim: Simplify creation of Lambda MST tangent estimator.
@@ -210,11 +210,11 @@ namespace DGtal {
   public LambdaMST3DEstimator<Z3i::Space, DSSSegmentationComputer,
     TangentFromDSS3DFunctor< typename DSSSegmentationComputer::SegmentComputer, LambdaFunction >, DSSFilter >
     {
-      typedef 
+      typedef
       LambdaMST3DEstimator<Z3i::Space, DSSSegmentationComputer,
       TangentFromDSS3DFunctor< typename DSSSegmentationComputer::SegmentComputer, LambdaFunction >, DSSFilter > Super;
-      
-    public: 
+
+    public:
       /**
        * Default Constructor.
        */

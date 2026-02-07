@@ -44,7 +44,7 @@ DGtal::ParameterValue::ParameterValue ( const std::string& v )
 template <typename X>
 DGtal::ParameterValue::ParameterValue ( const X& v )
   : myValue( detail::ValueConverter< X, std::string>::cast( v ) )
-{} 
+{}
 // ----------------------------------------------------------------------------
 template <typename T>
 T
@@ -164,5 +164,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

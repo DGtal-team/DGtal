@@ -164,7 +164,7 @@ TEST_CASE( "Testing PlaneProbingParallelepipedEstimator" )
         }
 
         REQUIRE(nbNormals == nbOk);
-    }    
+    }
 
     SECTION("H-algorithm should return the correct normal with BigInteger")
     {

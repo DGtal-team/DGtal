@@ -114,7 +114,7 @@ namespace DGtal
       // stl iterator types.
       typedef std::forward_iterator_tag iterator_category;
       typedef Point value_type;
-      typedef std::ptrdiff_t difference_type; 
+      typedef std::ptrdiff_t difference_type;
       typedef const Point* pointer;
       typedef const Point& reference;
 
@@ -145,7 +145,7 @@ namespace DGtal
       }
 
       inline pointer operator->() const
-      { 
+      {
         ASSERT( myPtrDSL != 0 );
         return &myP;
       }
@@ -168,7 +168,7 @@ namespace DGtal
         this->operator++();
 	return __tmp;
       }
-      
+
       inline
       bool operator==( const Self & other ) const
       {
@@ -186,7 +186,7 @@ namespace DGtal
     private:
       const StandardDSLQ0<TFraction>* myPtrDSL;
       Point myP;
-      
+
     };
     // ----------------------- Standard services ------------------------------
   public:
@@ -224,10 +224,10 @@ namespace DGtal
     /**
        Creates the DSL(a/g,b/g,mu), where g = gcd( a, b).
        @param a1 any integer
-       @param b1 any integer 
+       @param b1 any integer
        @param mu1 the shift to origin.
     */
-    StandardDSLQ0( IntegerParamType a1, IntegerParamType b1, 
+    StandardDSLQ0( IntegerParamType a1, IntegerParamType b1,
                    IntegerParamType mu1 );
 
     /// @param p any point in Z2.
@@ -291,7 +291,7 @@ namespace DGtal
     bool before( const Point & p1, const Point & p2 ) const;
     /// @return true if p1 is before or equal to p2 in the DSL.
     bool beforeOrEqual( const Point & p1, const Point & p2 ) const;
-    
+
 
     /**
        Algorithm ReversedSmartDSS. See M. Said and J.-O. Lachaud,
@@ -300,7 +300,7 @@ namespace DGtal
        Computes the exact characteristics of the subsegment [A,B] of
        this DSL in time O(log(|B-A|)). An even better bound in the
        output is achieved.
-       
+
        @param A any point belonging to this DSL, A < B.
        @param B any point belonging to this DSL, A < B.
 
@@ -315,7 +315,7 @@ namespace DGtal
        Computes the exact characteristics of the subsegment [A,B] of
        this DSL in time O(log(|B-A|)). An even better bound in the
        output is achieved.
-       
+
        @param A any point belonging to this DSL, A < B.
        @param B any point belonging to this DSL, A < B.
        @param U1 the first upper leaning point such that U1 <= A.
@@ -331,7 +331,7 @@ namespace DGtal
        Used by reversedSmartDSS.
        Computes the exact characteristics of the subsegment [A,B] of
        this DSL. Note that |U2-U1| = 2 * length().
-       
+
        @param A any point belonging to this DSL, A < B.
        @param B any point belonging to this DSL, A < B.
        @param U1 the first upper leaning point such that U1 <= A.
@@ -350,7 +350,7 @@ namespace DGtal
        Computes the exact characteristics of the subsegment [A,B] of
        this DSL in time O(sum_k u_k), where the continued fraction of
        this DSL slope a/b is [u_0; u_1, u_2, ... ]
-       
+
        @param A any point belonging to this DSL, A < B.
        @param B any point belonging to this DSL, A < B.
 
@@ -373,21 +373,21 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
     /// the characteristic pattern of this DSL.
     Pattern<Fraction> myPattern;
     /// the shift to origin.
     Integer myMu;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     /// Used in some computations.
     IC ic;
 
     // ------------------------- Hidden services ------------------------------
   protected:
-    
+
     // ------------------------- Internals ------------------------------------
   private:
     static Fraction deepest( Fraction f1, Fraction f2, Fraction f3 );

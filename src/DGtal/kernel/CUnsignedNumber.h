@@ -62,30 +62,30 @@ Description of \b concept '\b CUnsignedNumber' <p>
      @brief Aim: Concept checking for Unsigned numbers. Models of this
      concept should be listed in NumberTraits class and should have
      the isUnsigned property.
-     
+
  # Refinement of
     - CQuantity
-    
+
  # Associated types
-    
+
  # Notation
      - \e X : A type that is a model of CUnsignedNumber
      - \e x, \e y  : Object of type X
-    
+
  # Definitions
-    
- # Valid expressions  
+
+ # Valid expressions
 
 
-Name | Expression |  Type requirements | Return type| Precondition | Semantics | Postcondition | Complexity 
+Name | Expression |  Type requirements | Return type| Precondition | Semantics | Postcondition | Complexity
 -----|------------|--------------------|------------|--------------|-----------|---------------|-----------
 \a X should be tagged \b true in \a NumberTraits for \a IsUnsigned. | typename NumberTraits<X>::IsUnsigned | TagTrue | | | | | |
-    
+
  # Invariants#
-    
+
  # Models#
      unsigned short, unsigned int, unsigned long long, uint16_t, uint32_t, uint64_t.
-    
+
  # Notes#
 
 
@@ -100,10 +100,10 @@ Name | Expression |  Type requirements | Return type| Precondition | Semantics |
       // Will compile iff Unsigned.
       ConceptUtils::checkTrue( myIsUnsigned );
     }
-    
-    // ------------------------- Private Datas --------------------------------
+
+    // ------------------------- Private Data --------------------------------
   private:
-    
+
     // ------------------------- Internals ------------------------------------
   private:
     typename NumberTraits<T>::IsUnsigned myIsUnsigned;

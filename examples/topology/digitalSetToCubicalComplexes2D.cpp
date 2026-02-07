@@ -68,7 +68,7 @@ int main( int , char** )
   trace.beginBlock ( "Generate a 2D shape." );
   typedef Flower2D< Space > MyEuclideanShape;
   MyEuclideanShape shape( RealPoint( 0.0, 0.0 ), 16, 5, 5, M_PI_2/2. );
-  
+
   typedef GaussDigitizer< Space, MyEuclideanShape > MyGaussDigitizer;
   MyGaussDigitizer digShape;
   digShape.attach( shape );
@@ -76,25 +76,25 @@ int main( int , char** )
   Domain domainShape = digShape.getDomain();
   DigitalSet aSet( domainShape );
   Shapes<Domain>::digitalShaper( aSet, digShape );
-  
+
   Board2D board;
   board << SetMode( domainShape.className(), "Paving" ) << domainShape;
   Color dorange ( 255,  136,  0,  220 );
   board << CustomStyle( aSet.className(), new CustomFillColor ( dorange ) );
   board << aSet;
   trace.endBlock();
-  
+
   trace.beginBlock ( "Generate a 2D cubical representation." );
   typedef map<Cell, CubicalCellData>   Map;
-  typedef CubicalComplex< KSpace, Map >     CC;  
-  
+  typedef CubicalComplex< KSpace, Map >     CC;
+
   KSpace K;
   K.init (  domainShape.lowerBound(), domainShape.upperBound(), true );
   CC complex ( K );
   complex.construct< DigitalSet >( aSet );
-  
+
   board << SetMode( domainShape.className(), "Paving" ) << domainShape;
-  
+
   typedef CC::CellMapConstIterator CellMapConstIterator;
   for ( Dimension d = 0; d <= 2; ++d )
       for ( CellMapConstIterator it = complex.begin( d ), itE = complex.end( d );
@@ -114,7 +114,7 @@ int main( int , char** )
                           Color( 100, 255, 100 ) ) );
           board << it->first;
       }
-  
+
   board.saveEPS ( "cubicalComplexes.eps" );
   trace.endBlock();
   trace.endBlock();

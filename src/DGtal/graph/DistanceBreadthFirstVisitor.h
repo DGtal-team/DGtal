@@ -58,14 +58,14 @@ namespace DGtal
   class is useful to perform an exploration of a graph given a
   starting point or set (called initial core) and a distance
   criterion.
- 
+
   The visitor implements a modified breadth-first algorithm on the
   graph of adjacencies that is based on a priority queue, the priority
   of which is given by the distance object (and not by the topological
   distance as in classical breadth-first traversal). It can be used
   not only to detect connected component but also to identify the
   layers of the object located at a given distance of a starting set.
- 
+
   The \b core of the visitor is by definition at the beginning the set
   of points at the lowest distances. A layer is a set of vertices at
   the same distance. The visitor can visit one vertex at a time or one
@@ -90,7 +90,7 @@ namespace DGtal
 
   @tparam TMarkSet the type that is used to store marked
   vertices. Should be a set of Vertex, hence a model of CSet.
- 
+
   @code
      #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
 ...
@@ -101,7 +101,7 @@ namespace DGtal
      typedef RealPoint::Coordinate Scalar;
      typedef ExactPredicateLpSeparableMetric<Space,2> Distance; // Euclidean distance
      using EDToPoint = std::function<double(const Space::Point &)>; // Fix one point
-     typedef Composer<VertexEmbedder, EDToPoint, Scalar> VertexFunctor; 
+     typedef Composer<VertexEmbedder, EDToPoint, Scalar> VertexFunctor;
        // Compose the vertex embedding with the distance computation.
      typedef DistanceBreadthFirstVisitor< Graph, VertexFunctor > Visitor;
 
@@ -113,7 +113,7 @@ namespace DGtal
      while ( ! visitor.finished() )
        {
          DistanceBreadthFirstVisitor<Graph>::Node node = visitor.current();
-         std::cout << "Vertex " << node.first 
+         std::cout << "Vertex " << node.first
                    << " at distance " << node.second << std::endl;
          visitor.expand();
        }
@@ -132,14 +132,14 @@ while ( ! visitor.finished() )
     // Get all vertices at same distance from starting vertex.
     visitor.getCurrentLayer( layer );
     // Do something with the layer ...
-    for ( typename std::vector<Node>::const_iterator it = layer.begin(), 
+    for ( typename std::vector<Node>::const_iterator it = layer.begin(),
             itE = layer.end(); it != itE; ++it )
-      { //... 
+      { //...
       }
     visitor.expandLayer();
   }
 @endcode
- 
+
    If the bread-first queueing system is not compatible with the
    distance function, then it has two consequences:
 
@@ -159,9 +159,9 @@ while ( ! visitor.finished() )
       // Get all vertices at same distance from starting vertex.
       visitor.getCurrentLayer( layer );
       // Do something with the layer ...
-      for ( typename std::vector<Node>::const_iterator it = layer.begin(), 
+      for ( typename std::vector<Node>::const_iterator it = layer.begin(),
               itE = layer.end(); it != itE; ++it )
-        { //... 
+        { //...
         }
       // Visit the nodes one at a time to expand or ignore depending
       // on your application. Be careful, the nodes may not be in the
@@ -186,8 +186,8 @@ while ( ! visitor.finished() )
             }
         }
       // Push back "late" vertices in the visitor.
-      for ( typename std::vector<Node>::const_iterator 
-              it = lateLayer.begin(), 
+      for ( typename std::vector<Node>::const_iterator
+              it = lateLayer.begin(),
               itE = lateLayer.end(); it != itE; ++it )
         {
           visitor.pushAgain( *it );
@@ -199,7 +199,7 @@ while ( ! visitor.finished() )
    @see testDistancePropagation.cpp
    @see testObject.cpp
    */
-  template < typename TGraph, 
+  template < typename TGraph,
              typename TVertexFunctor,
              typename TMarkSet = typename TGraph::VertexSet >
   class DistanceBreadthFirstVisitor
@@ -226,7 +226,7 @@ while ( ! visitor.finished() )
        The type storing the vertex and its distance. It is also a
        model of boost::LessComparable, boost::EqualityComparable.
     */
-    struct Node : public std::pair< Vertex, Scalar > 
+    struct Node : public std::pair< Vertex, Scalar >
     {
       typedef std::pair< Vertex, Scalar > Base;
       using Base::first;
@@ -282,7 +282,7 @@ while ( ! visitor.finished() )
      * @param distance the distance object, a functor Vertex -> Scalar (cloned).
      * @param p any vertex of the graph.
      */
-    DistanceBreadthFirstVisitor( ConstAlias<Graph> graph, 
+    DistanceBreadthFirstVisitor( ConstAlias<Graph> graph,
                      const VertexFunctor & distance,
                      const Vertex & p );
 
@@ -291,16 +291,16 @@ while ( ! visitor.finished() )
        specifying a range. All vertices visited between the iterators
        should be distinct two by two. The so specified set of vertices
        provides the initial core of the distance ordering
-       traversal. 
-       
+       traversal.
+
        @tparam VertexIterator any type of single pass iterator on vertices.
        @param graph the graph in which the distance ordering traversal takes place (aliased).
        @param distance the distance object, a functor Vertex -> Scalar (cloned).
-       @param b the begin iterator in a container of vertices. 
-       @param e the end iterator in a container of vertices. 
+       @param b the begin iterator in a container of vertices.
+       @param e the end iterator in a container of vertices.
     */
     template <typename VertexIterator>
-    DistanceBreadthFirstVisitor( const Graph & graph, 
+    DistanceBreadthFirstVisitor( const Graph & graph,
                      const VertexFunctor & distance,
                      VertexIterator b, VertexIterator e );
 
@@ -320,7 +320,7 @@ while ( ! visitor.finished() )
 
        NB: valid only if not 'finished()'.
      */
-    const Node & current() const; 
+    const Node & current() const;
 
     /**
        Returns all nodes at same current distance in the given
@@ -400,7 +400,7 @@ while ( ! visitor.finished() )
      */
     template <typename VertexPredicate>
     void expandLayer( const VertexPredicate & authorized_vtx );
-    
+
     /**
        @return 'true' if all possible elements have been visited.
      */
@@ -426,7 +426,7 @@ while ( ! visitor.finished() )
        @return the current set of visited vertices (a subset of marked
        vertices; excludes the marked vertices yet to be visited).
        Note that if 'finished()' is true, then 'markedVertices()' is
-       equal to 'visitedVertices()' and should thus be preferred. 
+       equal to 'visitedVertices()' and should thus be preferred.
 
        NB: computational cost is a copy of the set of marked vertices
        then as many deletion as the number of marked vertices yet to
@@ -467,9 +467,9 @@ while ( ! visitor.finished() )
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     /**
@@ -528,7 +528,7 @@ while ( ! visitor.finished() )
    */
   template < typename TGraph, typename TVertexFunctor, typename TMarkSet >
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
                const DistanceBreadthFirstVisitor<TGraph,TVertexFunctor,TMarkSet> & object );
 
 } // namespace DGtal

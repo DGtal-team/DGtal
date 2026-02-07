@@ -14,7 +14,7 @@
 /**
  * Computes the first and second derivative of the given polynomial P (in one variable).
  *
- *  @see \ref dgtal_mpolynomial_sec1_5 and \ref dgtal_mpolynomial_sec3 
+ *  @see \ref dgtal_mpolynomial_sec1_5 and \ref dgtal_mpolynomial_sec3
  * @verbatim
  * $ ./examples/math/polynomial-derivative "1+x+x^2-3*x^4"
  * P(X_0)   = (1 + 1 X_0 + 1 X_0^2 + -3 X_0^4)
@@ -80,4 +80,3 @@ int main( int argc, char** argv )
   //! [polynomial-derivative-process]
   return 0;
 }
-

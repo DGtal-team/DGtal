@@ -75,7 +75,7 @@ TEST_CASE( "Point Vector Unit tests" )
       REQUIRE( (p1 == p1bis) );
       REQUIRE( p1 < p2 );
     }
-  
+
   SECTION("Min/Max of vector components")
     {
       REQUIRE( (p3.max() == 2.0) );
@@ -107,17 +107,15 @@ TEMPLATE_TEST_CASE("STL Container test", "Description",
 
   SECTION("Size of the default constructed container")
     {
-      REQUIRE( ( defaultConstructed.size() == 0 ) ); 
+      REQUIRE( ( defaultConstructed.size() == 0 ) );
     }
 
   //Adding a value
   defaultConstructed.insert( defaultConstructed.begin(),  5 );
-  
+
   SECTION("Size after one insert")
     {
-      REQUIRE( ( defaultConstructed.size() == 1 ) ); 
+      REQUIRE( ( defaultConstructed.size() == 1 ) );
     }
 }
 //! [exampleCatch-example2]
-
-

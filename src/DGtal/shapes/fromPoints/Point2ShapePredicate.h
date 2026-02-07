@@ -53,30 +53,30 @@ namespace DGtal {
   /////////////////////////////////////////////////////////////////////////////
   // template class Point2ShapePredicate
   /**
-   * \brief Aim: Predicate returning 'true' iff a given point is in 
+   * \brief Aim: Predicate returning 'true' iff a given point is in
    * the 'interior' of a given shape, 'false' otherwise
    *
    * @tparam TSurface  a type that is a model of COrientableHypersurface.
    * Must separate the space in two disjoints parts (the 'interior' and the 'exterior')
-   * and must be able to return for any given point (of type TSurface::Point) 
-   * the signed distance to itself (of type TSurface::Distance) by a method called signedDistance() 
-   * @tparam isUpward  a bool for the orientation ('true' means that the interior 
+   * and must be able to return for any given point (of type TSurface::Point)
+   * the signed distance to itself (of type TSurface::Distance) by a method called signedDistance()
+   * @tparam isUpward  a bool for the orientation ('true' means that the interior
    * is the set of points of positive distance)
    * @tparam isClosed  a bool for the closure ('true' means that the surface is included)
    *
    * For instance, in 2d, you can define four shapes from one straight line of equation @f$ y = ax + b @f$:
-   - the set @f$ \{(x,y) | y > ax + b \} @f$  
-   -  @f$ \{(x,y) | y \geq ax + b \} @f$ 
-   -  @f$ \{(x,y) | y < ax + b \} @f$ 
+   - the set @f$ \{(x,y) | y > ax + b \} @f$
+   -  @f$ \{(x,y) | y \geq ax + b \} @f$
+   -  @f$ \{(x,y) | y < ax + b \} @f$
    -  @f$ \{(x,y) | y \leq ax + b \} @f$
    *
-   * The second set can be defined as follows: 
+   * The second set can be defined as follows:
    * @snippet shapes/testHalfPlane.cpp HalfPlaneTypedefUpClosed
    *
    * Then, you can create and use your half-plane as shown below:
    * @snippet shapes/testHalfPlane.cpp HalfPlaneUsage
-   * 
-   * You should get: 
+   *
+   * You should get:
    @code
   [Point2ShapePredicate] :
 [StraightLine] passing through:
@@ -98,8 +98,8 @@ namespace DGtal {
   public:
 
     typedef typename TSurface::Point Point;
-    typedef typename TSurface::Distance Distance; 
-  
+    typedef typename TSurface::Distance Distance;
+
   /**
      * Constructor.
      * @param aSurface any Surface
@@ -137,9 +137,9 @@ namespace DGtal {
     ~Point2ShapePredicate();
 
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     /**
      * The surface with respect to the points have to be located
@@ -161,8 +161,8 @@ namespace DGtal {
 /////////////////////////////////////////////////////////////////////////////
 // template class Point2ShapePredicateComparator
 /**
- * \brief Aim: A small struct with an operator 
- * that compares two values according to two 
+ * \brief Aim: A small struct with an operator
+ * that compares two values according to two
  * bool template parameters.
  *
  * @tparam T  type for a signed quantity that is comparable
@@ -170,7 +170,7 @@ namespace DGtal {
  * @tparam b2  a bool for the equality ('true' for a large inequality, 'false' for a strict inequality)
  *
  * NB: only specialized versions should be used.
- * 
+ *
  * @see Point2ShapePredicate
  */
 template <typename T, bool b1, bool b2>
@@ -181,7 +181,7 @@ struct Point2ShapePredicateComparator {
   * @param t  right value.
   * @return 'true' if @a q < @a t, 'false' otherwise
   */
-  bool operator()(const T& q, 
+  bool operator()(const T& q,
                    const T& t) const {
     std::less<T> c;
     return c(q,t);
@@ -189,11 +189,11 @@ struct Point2ShapePredicateComparator {
 };
 
 /**
- * \brief Aim: A small struct with an operator 
+ * \brief Aim: A small struct with an operator
  * that compares two values (<).
  *
  * @tparam T  type for a signed quantity that is comparable
- *  
+ *
  * @see Point2ShapePredicate
  */
 template <typename T>
@@ -204,18 +204,18 @@ struct Point2ShapePredicateComparator<T,false,false> {
   * @param t  right value.
   * @return 'true' if @a q < @a t, 'false' otherwise
   */
-  bool operator()(const T& q, 
+  bool operator()(const T& q,
                    const T& t) const {
     std::less<T> c;
     return c(q,t);
   }
 };
 /**
- * \brief Aim: A small struct with an operator 
+ * \brief Aim: A small struct with an operator
  * that compares two values (<=).
  *
  * @tparam T  type for a signed quantity that is comparable
- *  
+ *
  * @see Point2ShapePredicate
  */
 template <typename T>
@@ -226,18 +226,18 @@ struct Point2ShapePredicateComparator<T,false,true> {
   * @param t  right value.
   * @return 'true' if @a q <= @a t, 'false' otherwise
   */
-  bool operator()(const T& q, 
+  bool operator()(const T& q,
                    const T& t) const {
     std::less_equal<T> c;
     return c(q,t);
   }
 };
 /**
- * \brief Aim: A small struct with an operator 
+ * \brief Aim: A small struct with an operator
  * that compares two values (>).
  *
  * @tparam T  type for a signed quantity that is comparable
- *  
+ *
  * @see Point2ShapePredicate
  */
 template <typename T>
@@ -248,18 +248,18 @@ struct Point2ShapePredicateComparator<T,true,false> {
   * @param t  right value.
   * @return 'true' if @a q > @a t, 'false' otherwise
   */
-  bool operator()(const T& q, 
+  bool operator()(const T& q,
                    const T& t) const {
     std::greater<T> c;
     return c(q,t);
   }
 };
 /**
- * \brief Aim: A small struct with an operator 
+ * \brief Aim: A small struct with an operator
  * that compares two values (>=).
  *
  * @tparam T  type for a signed quantity that is comparable
- *  
+ *
  * @see Point2ShapePredicate
  */
 template <typename T>
@@ -270,7 +270,7 @@ struct Point2ShapePredicateComparator<T,true,true> {
   * @param t  right value.
   * @return 'true' if @a q >= @a t, 'false' otherwise
   */
-  bool operator()(const T& q, 
+  bool operator()(const T& q,
                    const T& t) const {
     std::greater_equal<T> c;
     return c(q,t);
@@ -288,7 +288,7 @@ struct Point2ShapePredicateComparator<T,true,true> {
 template <typename TSurface, bool isUpward, bool isClosed>
 inline
 std::ostream&
-operator<< ( std::ostream & out, 
+operator<< ( std::ostream & out,
              const DGtal::functors::Point2ShapePredicate<TSurface,isUpward,isClosed> & object );
 
 } // namespace DGtal

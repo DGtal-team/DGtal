@@ -136,7 +136,7 @@ determinant( const PointVector<3, T, C>& u,
 
 SCENARIO( "AffineBasis< Point2i > unit tests", "[affine_basis][2i]" )
 {
-  typedef SpaceND< 2, int >                Space;      
+  typedef SpaceND< 2, int >                Space;
   typedef Space::Point                     Point;
   typedef AffineBasis< Point >             Basis;
   GIVEN( "Given B = (0,0) + { (8,2), (-4,-1),  (-8,-2), (16,4), (200,50) } of affine dimension 1" ) {
@@ -173,9 +173,9 @@ SCENARIO( "AffineBasis< Z3 > LLL tests", "[affine_basis][3d][LLL]" )
     Point e  = functions::computeIndependentVector( B );
     Basis AB( b, Basis::Type::LLL_REDUCED );
     const auto [ d, L, r ] = AB.decomposeVector( e );
-    CAPTURE( B ); 
-    CAPTURE( AB.basis() ); 
-    CAPTURE( d ); 
+    CAPTURE( B );
+    CAPTURE( AB.basis() );
+    CAPTURE( d );
     CAPTURE( L );
     CAPTURE( r );
     CAPTURE( e );
@@ -190,7 +190,7 @@ SCENARIO( "AffineBasis< Z3 > LLL tests", "[affine_basis][3d][LLL]" )
 
 SCENARIO( "AffineBasis< Point4i > unit tests", "[affine_basis][4i]" )
 {
-  typedef SpaceND< 4, int >                Space;      
+  typedef SpaceND< 4, int >                Space;
   typedef Space::Point                     Point;
   typedef AffineBasis< Point >             Basis;
   GIVEN( "Given X a set of randomly generated points by adding linear combinations of 1 lattice vectors" ) {
@@ -258,9 +258,9 @@ SCENARIO( "AffineBasis< Point4i > unit tests", "[affine_basis][4i]" )
 
 SCENARIO( "AffineBasis< Point4i > projection tests", "[affine_basis][4i][4d]" )
 {
-  typedef SpaceND< 4, int64_t >            Space;      
+  typedef SpaceND< 4, int64_t >            Space;
   typedef Space::Point                     Point;
-  typedef SpaceND< 2, int64_t >            Space2;      
+  typedef SpaceND< 2, int64_t >            Space2;
   typedef Space2::Point                    PPoint;
   typedef AffineBasis< Point >             Basis;
   typedef Space::RealPoint                 RealPoint;
@@ -331,7 +331,7 @@ SCENARIO( "AffineBasis< Point4i > projection tests", "[affine_basis][4i][4d]" )
 
 SCENARIO( "AffineBasis< Point5i > unit tests", "[affine_basis][5i]" )
 {
-  typedef SpaceND< 5, BigInteger >            Space;      
+  typedef SpaceND< 5, BigInteger >            Space;
   typedef Space::Point                     Point;
   typedef AffineGeometry< Point >          Affine;
   typedef AffineBasis< Point >             Basis;
@@ -382,7 +382,7 @@ SCENARIO( "AffineBasis< Point5i > unit tests", "[affine_basis][5i]" )
       // std::cout << "N    =" << N << " Nr    =" << Nr << "\n";
       // std::cout << "N_big=" << N_big << " Nr_big=" << Nr_big << "\n";
     }
-  THEN( "Normals with big integers are the same" ) {  
+  THEN( "Normals with big integers are the same" ) {
     REQUIRE( nb_equal_big == nb );
   }
   THEN( "There is less overflow in orthogonal vector computation using non reduced basis" ) {
@@ -439,7 +439,7 @@ SCENARIO( "AffineBasis< Z10 > LLL tests", "[affine_basis][10d][LLL]" )
       unsigned int nb   = 0;
       unsigned int nbok = 0;
       for ( auto i = 0; i < V.size(); i++ )
-        for ( auto j = 0; j < i; j++ )        
+        for ( auto j = 0; j < i; j++ )
           {
             nbok += ( V[ i ][ j ] == 0 ) ? 1 : 0;
             nb++;
@@ -456,14 +456,14 @@ SCENARIO( "AffineBasis< Z10 > LLL tests", "[affine_basis][10d][LLL]" )
 
 SCENARIO( "AffineBasis< Point5i > projection tests", "[affine_basis][5i][5d]" )
 {
-  typedef SpaceND< 5, int64_t >            Space;      
+  typedef SpaceND< 5, int64_t >            Space;
   typedef Space::Point                     Point;
   typedef AffineBasis< Point >             Basis;
   typedef Space::RealPoint                 RealPoint;
   typedef AffineBasis< RealPoint >         RealBasis;
 
   GIVEN( "Given X a set of randomly generated points by adding linear combinations of 2 lattice vectors, and Y the same set but with real coordinates" ) {
-    typedef SpaceND< 2, int64_t >            Space2;      
+    typedef SpaceND< 2, int64_t >            Space2;
     typedef Space2::Point                    PPoint;
     typedef Space2::RealPoint                PRealPoint;
     std::vector< Point > V = { Point{ 3, 4, 0, 2, -5 }, Point{ -2, -1, 5, -7, 1 } };
@@ -522,7 +522,7 @@ SCENARIO( "AffineBasis< Point5i > projection tests", "[affine_basis][5i][5d]" )
   }
 
   GIVEN( "Given X a set of randomly generated points by adding linear combinations of 3 lattice vectors, and Y the same set but with real coordinates" ) {
-    typedef SpaceND< 3, int64_t >            Space3;      
+    typedef SpaceND< 3, int64_t >            Space3;
     typedef Space3::Point                    PPoint;
     typedef Space3::RealPoint                PRealPoint;
     std::vector< Point > V = { Point{ 3, 4, 0, 2, 5 },
@@ -602,7 +602,3 @@ SCENARIO( "AffineBasis< Point5i > projection tests", "[affine_basis][5i][5d]" )
   }
 
 }
-
-
-
-

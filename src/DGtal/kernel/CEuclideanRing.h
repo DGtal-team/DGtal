@@ -52,35 +52,35 @@ namespace DGtal
   /**
 Description of \b concept '\b CEuclideanRing' <p>
      @ingroup Concepts
-    
+
      @brief Aim: Defines the mathematical concept equivalent to a
-     unitary commutative ring with a division operator. 
-     
+     unitary commutative ring with a division operator.
+
  # Refinement of CCommutativeRing
  # Associated types
-    
+
  # Notation
      - \a X : A type that is a model of CEuclideanRing
      - \a x, \a y  : Object of type Integer
-    
+
  # Definitions
-    
+
  # Valid expressions and semantics
 
 
 
-|Name | Expression |  Type requirements | Return type| Precondition | Semantics | Postcondition | Complexity| 
+|Name | Expression |  Type requirements | Return type| Precondition | Semantics | Postcondition | Complexity|
 -----|------------|--------------------|------------|--------------|-----------|---------------|-----------
-| Division|   \a x / \a y   | @a X| object of type @a X|       Euclidean division of two numbers | | | |   
+| Division|   \a x / \a y   | @a X| object of type @a X|       Euclidean division of two numbers | | | |
 
 
  # Invariants#
-    
+
  # Models#
 DGtal::int32_t, DGtal::int64_t, DGtal::int8_t, float, double, long double, DGtal::BigInteger
-    
+
  # Notes#
-   
+
 @tparam T the type that should be a model of commutative ring.
    */
   template <typename T>
@@ -92,11 +92,11 @@ DGtal::int32_t, DGtal::int64_t, DGtal::int8_t, float, double, long double, DGtal
     BOOST_CONCEPT_USAGE( CEuclideanRing )
     {
       ConceptUtils::sameType( c, T( a/b ) );
-    }   
+    }
     // ------------------------- Internals ------------------------------------
   private:
     T a,b,c;
-  
+
   };
   }
 } // namespace DGtal

@@ -54,10 +54,10 @@ using namespace Z2i;
 bool testCheckImageConcept()
 {
   trace.beginBlock ( "Testing block ..." );
-  
+
   typedef ImageContainerBySTLVector<Domain, int> ImageVector;
   typedef ImageContainerBySTLVector<Domain, int> ImageMap;
- 
+
 #ifdef  DGTAL_WITH_ITK
  typedef ImageContainerByITKImage<Domain, int> ImageITK;
 #endif
@@ -74,7 +74,7 @@ bool testCheckImageConcept()
   BOOST_CONCEPT_ASSERT(( concepts::CImage< ImageHash >));
 
   trace.endBlock();
-  
+
   return true;
 }
 

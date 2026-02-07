@@ -62,7 +62,7 @@ namespace DGtal
   template <typename TParametricShape>
   class ParametricShapeTangentFunctor
   {
-    
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -87,8 +87,8 @@ namespace DGtal
      * @param aShape the input shape.
      */
     ParametricShapeTangentFunctor(const ParametricShape &aShape): myShape(aShape) {}
-    
-    
+
+
     /**
      * Destructor.
      */
@@ -105,11 +105,11 @@ namespace DGtal
      */
     ParametricShapeTangentFunctor & operator= ( const ParametricShapeTangentFunctor & other ) = delete;
 
-   
-    /** 
+
+    /**
      * Compute the tangent at [aPoint]
      *
-     * @param aPoint the point at which the tangent is computed. 
+     * @param aPoint the point at which the tangent is computed.
      * @return the tangent at [aPoint].
      */
     Quantity operator()(const RealPoint &aPoint) const
@@ -117,19 +117,19 @@ namespace DGtal
       double t = myShape.parameter( aPoint );
       return  myShape.tangent( t );
     }
-    
 
-    // ------------------------- Private Datas --------------------------------
+
+    // ------------------------- Private Data --------------------------------
   private:
-    
+
     ///Reference of the implicit shape.
     const ParametricShape &myShape;
-    
+
     // ------------------------- Internals ------------------------------------
   private:
-    
+
   }; // end of class ParametricShapeTangentFunctor
-  
+
 } // namespace DGtal
 
                                                                         //

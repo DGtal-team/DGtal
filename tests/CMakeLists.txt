@@ -4,7 +4,7 @@
 # # Make sure the compiler can find include files.
 # include_directories (${PROJECT_SOURCE_DIR}/tests/)
 
-# ConfigTest.h instanciation.
+# ConfigTest.h instantiation.
 configure_file(${PROJECT_SOURCE_DIR}/tests/ConfigTest.h.in
   ${PROJECT_BINARY_DIR}/tests/ConfigTest.h)
 

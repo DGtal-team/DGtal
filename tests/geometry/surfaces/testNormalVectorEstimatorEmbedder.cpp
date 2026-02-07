@@ -115,7 +115,7 @@ bool testLocalConvolutionNormalVectorEstimator ( int /*argc*/, char**/*argv*/ )
 
     LpMetric<Z3i::Space> l1(1.0);
     CanonicSCellEmbedder<KSpace> embedder(digSurf.container().space());
-    
+
     typedef DGtal::functors::ElementaryConvolutionNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace>> Functor;
     typedef LocalEstimatorFromSurfelFunctorAdapter<MyDigitalSurfaceContainer, LpMetric<Z3i::Space>,
                                                    Functor, ConvFunctor> MyConstantEstimator;
@@ -124,7 +124,7 @@ bool testLocalConvolutionNormalVectorEstimator ( int /*argc*/, char**/*argv*/ )
 
     MyConstantEstimator myNormalEstimator;
     myNormalEstimator.attach(digSurf);
-    myNormalEstimator.setParams(l1, estimator, kernel, 2.0); 
+    myNormalEstimator.setParams(l1, estimator, kernel, 2.0);
     myNormalEstimator.init(1.0, digSurf.begin(), digSurf.end());
 
     // Embedder definition
@@ -150,13 +150,13 @@ bool testLocalConvolutionNormalVectorEstimator ( int /*argc*/, char**/*argv*/ )
     typedef DGtal::functors::GaussianKernel ConvFunctorGaussian;
     typedef LocalEstimatorFromSurfelFunctorAdapter<MyDigitalSurfaceContainer, LpMetric<Z3i::Space>,
                                                    Functor, ConvFunctorGaussian> MyGaussianEstimator;
-    
+
     ConvFunctorGaussian kernelGaussian(4.0);
     Functor estimatorGaussian(embedder, 1.0); // Passed by alias, can't reuse previous
 
     MyGaussianEstimator myNormalEstimatorG;
     myNormalEstimatorG.attach(digSurf);
-    myNormalEstimatorG.setParams(l1, estimatorGaussian, kernelGaussian, 5.0); 
+    myNormalEstimatorG.setParams(l1, estimatorGaussian, kernelGaussian, 5.0);
     myNormalEstimatorG.init(1.0, digSurf.begin(), digSurf.end());
 
     // Embedder definition

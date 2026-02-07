@@ -49,16 +49,16 @@ bool testModuloComputer()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing block ..." );
 
   //Construct an arithmetic modulo 15
 
-  
+
   ModuloComputer< int > modular(15);
   typedef NumberTraits< int >::UnsignedVersion myUnsignedInteger;
   myUnsignedInteger a;
-  
+
   a = modular.cast( 2 );   //a contains the value 2
   nbok += (a == 2) ? 1 : 0;
   nb++;
@@ -71,14 +71,14 @@ bool testModuloComputer()
 
   modular.increment( a ); //a contains the value 0
   nbok += (a== 0) ? 1 : 0;
-  nb++;  
+  nb++;
   trace.info() << "a= "<<a<<std::endl;
 
   nbok += 1;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 

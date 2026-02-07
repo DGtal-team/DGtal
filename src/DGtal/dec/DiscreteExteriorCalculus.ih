@@ -211,11 +211,11 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
 template <DGtal::Dimension dimEmbedded, DGtal::Dimension dimAmbient, typename TLinearAlgebraBackend, typename TInteger>
 template <DGtal::Duality duality>
 DGtal::LinearOperator<DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>, 0, duality, 0, duality>
-DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::heatLaplace(const typename DenseVector::Scalar& h, 
+DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, TInteger>::heatLaplace(const typename DenseVector::Scalar& h,
   const typename DenseVector::Scalar& t, const typename DenseVector::Scalar& K) const
 {
   ASSERT_MSG( !myIndexesNeedUpdate, "call updateIndexes() after manual structure modification" );
-  
+
   typedef typename TLinearAlgebraBackend::Triplet Triplet;
   typedef LinearOperator<Self, 0, duality, 0, duality> Operator;
 
@@ -260,7 +260,7 @@ DGtal::DiscreteExteriorCalculus<dimEmbedded, dimAmbient, TLinearAlgebraBackend, 
     //_operator.myContainer.insert( i, i ) = total_weight;
     triplets.push_back( Triplet( i, i, total_weight ) );
   }
-  
+
   Operator _operator( *this );
   ASSERT( _operator.myContainer.rows() == kFormLength(0, duality) );
   ASSERT( _operator.myContainer.cols() == kFormLength(0, duality) );

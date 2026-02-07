@@ -60,7 +60,7 @@ namespace DGtal
     see Statistics class.
 
     Backported from ImaGene. \cite Lachaud03b
-    
+
     @see testStatistics.cpp
 
     @tparam TQuantity any model of CCommutativeRing.
@@ -75,12 +75,12 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( concepts::CCommutativeRing<Quantity> ) );
     typedef std::vector< Quantity > Container;
     typedef typename Container::const_iterator ConstIterator;
-    
+
     // ----------------------- Standard services ------------------------------
   public:
 
     /**
-     * Destructor. 
+     * Destructor.
      */
     ~Statistic();
 
@@ -128,73 +128,73 @@ namespace DGtal
        @return an iterator after the last stored value (if storeSample was set).
     */
     ConstIterator end() const;
- 
+
     // ----------------------- Accessors ------------------------------
   public:
 
 
-    /** 
+    /**
      * @return the number of samples.
      */
     unsigned int samples() const;
 
-    /** 
+    /**
      * @return the number of samples.
      */
     unsigned int size() const;
 
-    /** 
+    /**
      * @return the sample mean (given as double).
      */
     double mean() const;
 
-    /** 
+    /**
      * @return the sample variance (given as double).
      */
     double variance() const;
 
-    /** 
+    /**
      * @return the unbiased sample variance (given as double).
      */
     double unbiasedVariance() const;
 
-    /** 
+    /**
      * @return the maximal value.
      */
     Quantity max() const;
 
-    /** 
+    /**
      * @return the minimal value.
      */
     Quantity min() const;
-    
+
 
     /**
      * Return the median value of the Statistic values. It can be given in two possible cases:
      * - if the the values are stored in the 'Statistic' objects (not always a good solution). (complexity: linear on average)
-     * - if the values were first stored and computed by the function @ref terminate(). 
+     * - if the values were first stored and computed by the function @ref terminate().
      *  @return the median value.
-     * 
-     * @see terminate, Statistic 
+     *
+     * @see terminate, Statistic
      */
     Quantity median();
 
     /// @param[in] i a valid index
     /// @return the corresponding value (if stored).
     Quantity operator[]( unsigned int i ) const;
-    
-    /** 
+
+    /**
      * Adds a new sample value [v].
-     * 
+     *
      * @param v the new sample value.
      */
     void addValue( Quantity v );
-  
+
     /**
      * Adds a sequence of sample values, scanning a container from
      * iterators [b] to [e].
-     * 
-     * Exemple: 
+     *
+     * Example:
      @code
      vector<Quantity> x;
      Statistic stats;
@@ -207,23 +207,23 @@ namespace DGtal
     template <class Iter>
     void addValues( Iter b, Iter e );
 
-    /** 
+    /**
      * Clears the object. As if it has just been created.
      */
     void clear();
- 
+
     /**
      * Computes the median value of the statistics and switch to mode
      * which does not save the statistics samples (@ref
-     * myStoreSamples = false). Usefull only if the values are stored
+     * myStoreSamples = false). Useful only if the values are stored
      * (specified in the the constructor) else it doest nothing.
      *
      * @see median, Statistic, myStoreSamples
      */
     void terminate();
-    
 
-    
+
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -238,13 +238,13 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool OK() const;
-  
 
-    // ------------------------- Datas ----------------------------------------
+
+    // ------------------------- Data ----------------------------------------
   private:
 
 
-    // ------------------------- Datas ----------------------------------------
+    // ------------------------- Data ----------------------------------------
   private:
 
     /**
@@ -278,29 +278,29 @@ namespace DGtal
      * stores the median sample value.
      */
     Quantity myMedian;
-    
-    
+
+
     /**
-     * stores the sample to determine the median value 
-     * 
+     * stores the sample to determine the median value
+     *
      **/
     Container myValues;
 
 
     /**
-     * Tells if values must be stored or not. 
+     * Tells if values must be stored or not.
      */
     bool myStoreSamples;
-     
-    
+
+
     /**
-     * Tells if terminate was called. Usefull to return median value
+     * Tells if terminate was called. Useful to return median value
      * even if the m_values are no more stored (possible after
      * serialisation which doest store the values.).
      *
      */
     bool myIsTerminated;
-  
+
   };
 
   /**
@@ -311,10 +311,10 @@ namespace DGtal
    */
   template <typename TQuantity>
   std::ostream&
-  operator<<( std::ostream & thatStream, 
+  operator<<( std::ostream & thatStream,
         const Statistic<TQuantity> & that_object_to_display );
-  
-  
+
+
 } // namespace DGtal
 
 

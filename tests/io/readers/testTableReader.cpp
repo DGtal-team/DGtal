@@ -52,16 +52,16 @@ bool testNumberReader()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
-  trace.beginBlock ( "Testing reading Integers ..." );  
+
+  trace.beginBlock ( "Testing reading Integers ..." );
   std::string filename = testPath + "samples/pointList1.pl";
 
   vector<unsigned int> vectIntegers = TableReader<unsigned int>::getColumnElementsFromFile(filename, 1);
   for(unsigned int k=0;k < vectIntegers.size(); k++){
     trace.info() << " integer: "<< vectIntegers.at(k)<< endl;
   }
-  nbok += (vectIntegers.at(0)==2 && vectIntegers.at(1)==44 && vectIntegers.at(2)==23 
-           && vectIntegers.at(3)==1) ? 1 : 0; 
+  nbok += (vectIntegers.at(0)==2 && vectIntegers.at(1)==44 && vectIntegers.at(2)==23
+           && vectIntegers.at(3)==1) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "<< std::endl;
   trace.endBlock();
@@ -88,18 +88,18 @@ bool testNumberReader()
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   trace.endBlock();
 
-  trace.beginBlock ( "Testing reading string ..." );  
+  trace.beginBlock ( "Testing reading string ..." );
 
   vector<std::string> vectStrings = TableReader<std::string>::getColumnElementsFromFile(filename, 2);
   for(unsigned int k=0;k < vectStrings.size(); k++){
     trace.info() << " string: "<< vectStrings.at(k)<< endl;
   }
-  nbok += (vectStrings.at(0)=="3" && vectStrings.at(1)=="4" && vectStrings.at(2)=="9" 
-           && vectStrings.at(3)=="1") ? 1 : 0; 
+  nbok += (vectStrings.at(0)=="3" && vectStrings.at(1)=="4" && vectStrings.at(2)=="9"
+           && vectStrings.at(3)=="1") ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "<< std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
@@ -113,8 +113,8 @@ int main( int argc, char** argv )
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
-  
-  
+
+
   bool res = testNumberReader(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

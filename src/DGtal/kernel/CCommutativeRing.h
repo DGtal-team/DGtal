@@ -61,7 +61,7 @@ Description of \b concept '\b CCommutativeRing' <p>
      @brief Aim: Defines the mathematical concept equivalent to a
      unitary commutative ring.
 
- # Refinement of 
+ # Refinement of
   - CSignedNumber<T>
 
  # Associated types
@@ -81,7 +81,7 @@ Construction from basic integer type | @e X( i )  |                    |        
 Should have a 0                      |   @e X(0)  |                    |            |              | Neutral element for addition         |               |           |
 Should have a 1                      |   @e X(1)  |                    |            |              | Neutral element for multiplication   |               |           |
 Addition                             | @e x + @e y|                    | @a X       |              | addition of two numbers              |               |           |
-Substraction                         | @e x - @e y|                    | @a X       |              | substraction of two numbers          |               |           |
+Subtraction                         | @e x - @e y|                    | @a X       |              | subtraction of two numbers          |               |           |
 Multiplication                       | @e x * @e y|                    | @a X       |              | multiplication of two numbers        |               |           |
 Addition                             | @e x + @e y|                    | @a X       |              | addition of two numbers              |               |           |
 Opposite operator                    | - @e x     |                    | @a X       |              | opposite of a number                 |               |           |

@@ -53,39 +53,39 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class InHalfPlaneBy2x2DetComputer
   /**
-   * \brief Aim: Class that implements an orientation functor, ie. 
-   * it provides a way to compute the orientation of three given 2d points. 
-   * More precisely, it returns: 
+   * \brief Aim: Class that implements an orientation functor, ie.
+   * it provides a way to compute the orientation of three given 2d points.
+   * More precisely, it returns:
    * - zero if the three points belong to the same line
    * - strictly positive if the three points are counter-clockwise oriented
-   * - striclty negative if the three points are clockwise oriented. 
+   * - strictly negative if the three points are clockwise oriented.
    * The orientation test is reduced to the computation of the determinant of
-   * a 2x2 matrix, the implementation of which is delegated to a determinant 
-   * computer. 
+   * a 2x2 matrix, the implementation of which is delegated to a determinant
+   * computer.
    *
-   * Basic usage: 
+   * Basic usage:
    @code
    ...
-   typedef Z2i::Point Point; 
-   typedef Simple2x2DetComputer<Z2i::Integer> DeterminantComputer; 
-   typedef InHalfPlaneBy2x2DetComputer<Point, DeterminantComputer> MyType; 
+   typedef Z2i::Point Point;
+   typedef Simple2x2DetComputer<Z2i::Integer> DeterminantComputer;
+   typedef InHalfPlaneBy2x2DetComputer<Point, DeterminantComputer> MyType;
 
-   MyType orientationTest; 
-   orientationTest.init( Point(0,0), Point(5,2) ); 
-   return orientationTest( Point(2,1) ); 
+   MyType orientationTest;
+   orientationTest.init( Point(0,0), Point(5,2) );
+   return orientationTest( Point(2,1) );
    //a strictly positive value is returned because (0,0) (5,2) (2,1) are CCW oriented
    @endcode
    *
    * @tparam TPoint a model of point
    * @tparam TDetComputer a model of C2x2DetComputer
    *
-   * NB: The robustness of the computation depends on the robustness of the determinant 
-   * computer. 
-   * However, in order to be sure that the result will be exact, you should be sure that 
-   * the chosen determinant computer can safely deal with integers coded with b+1 bits 
-   * if the points coordinates are coded with b bits. 
-   * 
-   * @see Simple2x2DetComputer SimpleIncremental2x2DetComputer 
+   * NB: The robustness of the computation depends on the robustness of the determinant
+   * computer.
+   * However, in order to be sure that the result will be exact, you should be sure that
+   * the chosen determinant computer can safely deal with integers coded with b+1 bits
+   * if the points coordinates are coded with b bits.
+   *
+   * @see Simple2x2DetComputer SimpleIncremental2x2DetComputer
    * AvnaimEtAl2x2DetComputer FilteredDetComputer
    */
   template <typename TPoint, typename TDetComputer>
@@ -95,9 +95,9 @@ namespace DGtal
   public:
 
     /**
-     * Type of points 
+     * Type of points
      */
-    typedef TPoint Point; 
+    typedef TPoint Point;
 
     /**
      * Type of point array
@@ -106,7 +106,7 @@ namespace DGtal
     /**
      * Type used to represent the size of the array
      */
-    typedef typename PointArray::size_type SizeArray; 
+    typedef typename PointArray::size_type SizeArray;
     /**
      * static size of the array, ie. 2
      */
@@ -115,21 +115,21 @@ namespace DGtal
     /**
      * Type of determinant computer
      */
-    typedef TDetComputer DetComputer; 
-    BOOST_CONCEPT_ASSERT(( C2x2DetComputer<DetComputer> )); 
+    typedef TDetComputer DetComputer;
+    BOOST_CONCEPT_ASSERT(( C2x2DetComputer<DetComputer> ));
 
     /**
      * Type of input integers for the determinant computer
      *
      * NB: the type of the points coordinates are casted into ArgumentInteger
-     * before being passed to the determinant computer. 
+     * before being passed to the determinant computer.
      */
     typedef typename TDetComputer::ArgumentInteger ArgumentInteger;
 
     /**
      * Type of integer for the result
      */
-    typedef typename TDetComputer::ResultInteger Value; 
+    typedef typename TDetComputer::ResultInteger Value;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -146,7 +146,7 @@ namespace DGtal
     void init(const Point& aP, const Point& aQ);
 
     /**
-     * Initialisation. 
+     * Initialisation.
      * @param aA array of two points
      */
     void init(const PointArray& aA);
@@ -155,10 +155,10 @@ namespace DGtal
      * Main operator.
      * @warning InHalfPlaneBy2x2DetComputer::init() should be called before
      * @param aR any point to test
-     * @return orientation of the three points @a aP @a aQ @a aR : 
+     * @return orientation of the three points @a aP @a aQ @a aR :
      * - zero if the three points belong to the same line
      * - strictly positive if the three points are counter-clockwise oriented
-     * - striclty negative if the three points are clockwise oriented
+     * - strictly negative if the three points are clockwise oriented
      * @see InHalfPlaneBy2x2DetComputer::init()
      */
     Value operator()(const Point& aR) const;
@@ -175,9 +175,9 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
 
@@ -186,11 +186,11 @@ namespace DGtal
     /**
      * Coordinates of the first point.
      */
-    ArgumentInteger myA, myB; 
+    ArgumentInteger myA, myB;
     /**
      * A 2x2 determinant computer
      */
-    mutable DetComputer myDetComputer; 
+    mutable DetComputer myDetComputer;
 
   }; // end of class InHalfPlaneBy2x2DetComputer
 

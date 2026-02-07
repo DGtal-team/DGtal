@@ -97,10 +97,10 @@ namespace DGtal
     typedef Eigen::VectorXd DenseVector;
     typedef Eigen::MatrixXd DenseMatrix;
     typedef Eigen::VectorXi IntegerVector;
-    
+
     typedef Eigen::SparseMatrix<DenseVector::Scalar, Eigen::ColMajor, DenseVector::Index> SparseMatrix;
     typedef Eigen::Triplet<double, SparseMatrix::StorageIndex> Triplet;
-    
+
     /// Solvers on sparse matrices.
     typedef Eigen::SimplicialLLT<SparseMatrix> SolverSimplicialLLT;
     typedef Eigen::SimplicialLDLT<SparseMatrix> SolverSimplicialLDLT;
@@ -110,8 +110,8 @@ namespace DGtal
     typedef Eigen::SparseQR<SparseMatrix, Eigen::COLAMDOrdering<SparseMatrix::Index> > SolverSparseQR;
   };
   ///////////////////////////////////////////////////////////////////////////////
-  
-  
+
+
   /**
    * Overloads 'operator<<' for displaying objects of class 'Eigen::ComputationInfo'.
    * @param os the output stream where the object is written.
@@ -137,10 +137,10 @@ namespace DGtal
         os << "invalid_input";
         break;
     }
-    
+
     return os;
   }
-  
+
 } // namespace DGtal
 
 #endif // !defined EigenSupport_h

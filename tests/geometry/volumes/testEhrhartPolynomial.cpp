@@ -202,7 +202,7 @@ SCENARIO( "EhrhartPolynomial< Z2 > triangle tests", "[ehrhart_polynomial][2d]" )
 
   Domain     domain( Point( 0, 0 ), Point( 4, 4 ) );
   DigitalConvexity<KSpace> dconv( Point( -1, -1 ), Point( 5, 5 ) );
-  
+
   WHEN( "Computing all triangles in domain (0,0)-(4,4)." ) {
     unsigned int nbsimplex = 0;
     unsigned int nb0_ok = 0;
@@ -220,15 +220,15 @@ SCENARIO( "EhrhartPolynomial< Z2 > triangle tests", "[ehrhart_polynomial][2d]" )
             const auto   P1 = P + UnitSegment( 1 );
             const auto    D = P.getDomain();
             const auto    W = D.upperBound() - D.lowerBound();
-            const auto  E_P = Ehrhart( P  ); 
-            const auto E_P0 = Ehrhart( P0 ); 
+            const auto  E_P = Ehrhart( P  );
+            const auto E_P0 = Ehrhart( P0 );
             const auto E_P1 = Ehrhart( P1 );
             const auto   LP = E_P.numerator();
             const auto  LP0 = E_P0.numerator();
             const auto  LP1 = E_P1.numerator();
             const auto   LD = E_P.denominator();
             const auto  LD0 = E_P0.denominator();
-            const auto  LD1 = E_P1.denominator(); 
+            const auto  LD1 = E_P1.denominator();
             const bool c2_0 = ( LP[ 2 ] + Integer( W[ 1 ] ) * LD ) == LP0[ 2 ];
             const bool c1_0 = ( LP[ 1 ] + Integer( 1 ) * LD ) == LP0[ 1 ];
             const bool c0_0 = LP[ 0 ] == LP0[ 0 ];

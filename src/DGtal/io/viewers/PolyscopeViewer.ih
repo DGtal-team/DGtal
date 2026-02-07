@@ -42,20 +42,20 @@ namespace DGtal {
       glm::mat4 glmmat(1.f);
       Eigen::Matrix4d mat = transform.matrix();
 
-      for (int i = 0; i < 4; ++i) 
+      for (int i = 0; i < 4; ++i)
         for (int j = 0; j < 4; ++j)
           glmmat[i][j] = static_cast<float>(mat(j, i));
       return glmmat;
     }
   }
-  
+
   template <typename Space, typename KSpace>
   void PolyscopeViewer<Space, KSpace>::setCallback(typename Display3D<Space, KSpace>::Callback* callback) {
     Display3D<Space, KSpace>::setCallback(callback);
     if (this->myCallback != nullptr) {
         polyscope::state::userCallback = [this]() { this->polyscopeCallback(); };
     } else {
-        polyscope::state::userCallback = nullptr; // Remove callback 
+        polyscope::state::userCallback = nullptr; // Remove callback
     }
   }
 
@@ -65,7 +65,7 @@ namespace DGtal {
 
     // Draw clipping planes
     for (const auto& plane : this->planes) {
-      const glm::vec3 normal { plane.a, plane.b, plane.c }; 
+      const glm::vec3 normal { plane.a, plane.b, plane.c };
       glm::vec3 pos {0, 0, 0};
 
       if (plane.a != 0) { pos.x = -plane.d / plane.a; }
@@ -77,7 +77,7 @@ namespace DGtal {
       if (!plane.style.useDefaultColors)
         ps->setColor(toglm(plane.style.color));
 
-      //TODO: Keep this as default ?  
+      //TODO: Keep this as default ?
       ps->setDrawPlane(true);
       ps->setPose(pos, normal);
     }
@@ -128,7 +128,7 @@ namespace DGtal {
     if (!ddata.style.useDefaultColors) {
       cNetwork->setColor(toglm(ddata.style.color));
     }
-    
+
     for (const auto& [pname, vals] : ddata.scalarQuantities[QuantityScale::VERTEX]) {
       cNetwork->addNodeScalarQuantity(pname, vals)->setEnabled(true);
     }
@@ -149,10 +149,10 @@ namespace DGtal {
 
     for (const auto& [pname, vals] : ddata.colorQuantities[QuantityScale::VERTEX]) {
       cNetwork->addEdgeColorQuantity(pname, toglm(vals))->setEnabled(true);
-    }     
+    }
     for (const auto& [pname, vals] : ddata.colorQuantities[QuantityScale::EDGE]) {
       cNetwork->addEdgeColorQuantity(pname, toglm(vals))->setEnabled(true);
-    }     
+    }
   }
 
   template <typename Space, typename KSpace>
@@ -254,8 +254,8 @@ namespace DGtal {
 
       switch(ddata.elementSize) {
         case 1: registerPointCloud(name, ddata); break;
-        case 2: registerLineNetwork(name, ddata); break; 
-        case 0: 
+        case 2: registerLineNetwork(name, ddata); break;
+        case 0:
         case 3:
         case 4: registerSurfaceMesh(name, ddata); break;
         case 8: registerVolumeMesh(name, ddata); break;
@@ -274,7 +274,7 @@ namespace DGtal {
     if (io.MouseClicked[0])
     {
         glm::vec2 screenCoords{io.MousePos.x, io.MousePos.y};
-        auto [structure, index] = 
+        auto [structure, index] =
             polyscope::pick::pickAtScreenCoords(screenCoords);
 
         if (structure != nullptr) {

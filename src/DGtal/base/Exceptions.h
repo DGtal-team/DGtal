@@ -48,7 +48,7 @@ namespace DGtal
 
   /**
    * IOException derived class.
-   */ 
+   */
   class IOException: public std::exception
   {
     virtual const char* what() const noexcept
@@ -59,7 +59,7 @@ namespace DGtal
 
   /**
    * InputException derived class.
-   */ 
+   */
   class InputException: public std::exception
   {
     public:
@@ -71,7 +71,7 @@ namespace DGtal
 
   /**
    * ConnectivityException derived class.
-   */ 
+   */
   class ConnectivityException: public std::exception
   {
     public:
@@ -83,7 +83,7 @@ namespace DGtal
 
   /**
    * MemoryException derived class.
-   */ 
+   */
   class MemoryException: public std::exception
   {
     virtual const char* what() const noexcept
@@ -94,7 +94,7 @@ namespace DGtal
 
   /**
    * InfiniteNumberException derived class.
-   */ 
+   */
   class InfiniteNumberException: public std::exception
   {
     virtual const char* what() const noexcept

@@ -36,7 +36,7 @@
 #include "DGtal/helpers/StdDefs.h"
 
 #include "DGtal/io/Color.h"
-#include "DGtal/kernel/CanonicEmbedder.h" 
+#include "DGtal/kernel/CanonicEmbedder.h"
 
 #include "DGtal/topology/KhalimskySpaceND.h"
 #include "DGtal/topology/CanonicCellEmbedder.h"
@@ -64,13 +64,13 @@ namespace DGtal {
     namespace drawutils { // Namespace for some utilities
       /**
        * @brief Create a list of indices for a vertex array with independent elements
-       * 
+       *
        * @tparam I The size of individual elements
        * @param N The number of elements
        */
       template<size_t I>
       std::vector<std::array<size_t, I>> makeIndices(size_t N);
-      
+
       /**
        * @brief Return the vertices of a cube
        *
@@ -80,16 +80,16 @@ namespace DGtal {
        *
        * @see DGtal::drawutils::insertCubeVertices
        */
-      template<typename T> 
+      template<typename T>
       std::array<T, 8> getCubeVertices(T center, double size);
-      
+
       /**
        * @brief Insert cube vertices into an array
        *
        * @tparam T The type of vertex
        * @tparam U The container to insert vertices into
-       * 
-       * @param dest The container where the vertices shoudl be inserted
+       *
+       * @param dest The container where the vertices should be inserted
        * @param center The center of the cube
        * @param scale The size of the cube
        *
@@ -97,12 +97,12 @@ namespace DGtal {
        */
       template<typename T, typename U>
       void insertCubeVertices(U& dest, T center, double scale);
-      
+
       /**
-       * @brief Return the vertices of an axis aligned square 
+       * @brief Return the vertices of an axis aligned square
        *
        * @tparam T The type of vertex
-       * 
+       *
        * @param center The center of the quad
        * @param orientation 0 means normal in x direction, 1 in y-direction, 2 in z-direction
        * @param size The size of the square
@@ -111,14 +111,14 @@ namespace DGtal {
        */
       template <typename T>
       std::array<T, 4> getAASquareVertices(T center, int orientation, double size);
-      
+
       /**
        * @brief Insert vertices of a square into a container
        *
        * @tparam U The container
        * @tparam T The type of vertex
        *
-       * @param dest The container where the vertices shoudl be inserted
+       * @param dest The container where the vertices should be inserted
        * @param center The center of the square
        * @param orientation 0 means normal in x direction, 1 in y-direction, 2 in z-direction
        * @param size The size of the square
@@ -127,13 +127,13 @@ namespace DGtal {
        */
       template<typename U, typename T>
       void insertAASquare(U& dest, T center, int orientation, double size);
-      
+
       /**
        * @brief Return the vertices of a prism
        *
-       * Here, a prism is meant to display a signed Khalimsky cell. 
-       * It is draw as two square, one of which is smaller than the other, 
-       * connected by 4 other rectular shapes. 
+       * Here, a prism is meant to display a signed Khalimsky cell.
+       * It is draw as two square, one of which is smaller than the other,
+       * connected by 4 other rectular shapes.
        *
        * @tparam T The vertex type
        *
@@ -146,10 +146,10 @@ namespace DGtal {
        */
       template<typename T>
       std::array<T, 8> getPrism(
-          T center, int orientation, 
+          T center, int orientation,
           double size1, double size2, double shift1, double shift2
       );
-      
+
       /**
        * @brief Insert the vertices of a prism into a container
        *
@@ -158,16 +158,16 @@ namespace DGtal {
        * @tparam U The container type
        * @tparam T The vertex type
        *
-       * @param dest The container where the vertices shoudl be inserted
+       * @param dest The container where the vertices should be inserted
        * @param center The center of the cell on which the prism should be drawn
        * @param orientation The orientation of the cell (x, y, z)
        * @param size1 Size of the first square
        * @param size2 Size of the second square
        * @param shift1 Shift (relative to center) of the first square
        * @param shift2 Shift (relative to center) of the second square
-       */ 
+       */
       template<typename T, typename U>
-      void insertPrism(U& dest, T center, int orientation, 
+      void insertPrism(U& dest, T center, int orientation,
           double size1, double size2, double shift1, double shift2);
     } // drawutils
 
@@ -178,16 +178,16 @@ namespace DGtal {
       // Color of an object
       Color color = Color(200, 200, 200, 255);
       // When set, color is ignored and the viewer is free to choose
-      bool useDefaultColors = true;            
+      bool useDefaultColors = true;
       // Maintains uniform scale of the object independently for easy access
-      double width = 1.0;                      
+      double width = 1.0;
 
       /**
        * @brief List available draw modes.
        *
        * Draw mode are meant as a shortcut to change how objects
-       * are displayed. 
-       * Not all draw modes are supported for every objects. 
+       * are displayed.
+       * Not all draw modes are supported for every objects.
        */
       enum DrawMode : size_t {
         DEFAULT      = (1 << 0), //< Default mode
@@ -200,15 +200,15 @@ namespace DGtal {
 
       size_t mode = static_cast<size_t>(DrawMode::DEFAULT);
     };
-    
+
     /**
      * @brief Enumerate where quantities can be applied
      */
     enum class QuantityScale {
-      VERTEX  = 0, 
-      EDGE    = 1, 
-      FACE    = 2, 
-      CELL    = 3, 
+      VERTEX  = 0,
+      EDGE    = 1,
+      FACE    = 2,
+      CELL    = 3,
       UNKNOWN = 4 // Also used as a default to decide later
     };
 
@@ -216,8 +216,8 @@ namespace DGtal {
      * @brief Wrapper for array of quantities
      *
      * Post C++23, enums are not convertible to int anymore.
-     * To avoid casts everytime, we wrap the operators inside
-     * this class. 
+     * To avoid casts every time, we wrap the operators inside
+     * this class.
      */
     template<typename T>
     struct Quantity {
@@ -227,8 +227,8 @@ namespace DGtal {
 
       const QType& operator[](int idx) const { return data[idx]; }
 
-      QType& operator[](const QuantityScale& scale) { 
-        return data[static_cast<size_t>(scale)]; 
+      QType& operator[](const QuantityScale& scale) {
+        return data[static_cast<size_t>(scale)];
       };
 
       const QType& operator[](const QuantityScale& scale) const {
@@ -237,17 +237,17 @@ namespace DGtal {
 
       std::array<QType, static_cast<size_t>(QuantityScale::UNKNOWN)> data;
     };
- 
+
     /**
      * @brief Data required to display an object
-     * 
+     *
      * @tparam RealPoint Vector type for points and vector
      */
     template<typename RealPoint>
     struct DisplayData {
       /**
-       * Size of each elements. 
-       * 
+       * Size of each elements.
+       *
        * 0: elements may have variable size given by DisplayData::Indices (polygonal mesh)
        * 1: elements are drawn as points (Ball)
        * 2: elements are drawn as lines
@@ -255,9 +255,9 @@ namespace DGtal {
        * 4: elements are drawn as quads (mesh)
        * 8: elements are drawn as cubes / prisms (volumetric mesh)
        */
-      std::size_t           elementSize; 
-      
-      // Return the default quantity level associated with 
+      std::size_t           elementSize;
+
+      // Return the default quantity level associated with
       // a given element size.
       static constexpr auto getDefaultQuantityLevel = [](size_t eSize) {
         switch(eSize) {
@@ -268,23 +268,23 @@ namespace DGtal {
           case 4: // Quad meshes
                   return QuantityScale::FACE;
           case 8: return QuantityScale::CELL;
-          default: 
+          default:
                   return QuantityScale::UNKNOWN;
         };
       };
-      
+
       // Indices for elements when elementSize is 0
       std::vector<std::vector<uint32_t>> indices;
-      
+
       // List of vertices
       std::vector<RealPoint>   vertices;
 
       // Transform of the object
-      Eigen::Affine3d transform = Eigen::Affine3d::Identity(); 
-      
+      Eigen::Affine3d transform = Eigen::Affine3d::Identity();
+
       // Draw style of the object (color, scale)
       DisplayStyle style;
-      
+
       // Color to apply to each element
       Quantity<Color>  colorQuantities;
       // Vector to attach to each element
@@ -292,34 +292,34 @@ namespace DGtal {
       // Values to attach to each element (may serve for coloring)
       Quantity<double> scalarQuantities;
     };
-    
+
     /**
      * @brief Clipping plane
      */
     struct ClippingPlane {
-      ClippingPlane(double _a, double _b, double _c, double _d) : 
-        a(_a), b(_b), c(_c), d(_d) 
+      ClippingPlane(double _a, double _b, double _c, double _d) :
+        a(_a), b(_b), c(_c), d(_d)
       { }
 
       double a, b, c; //< Normal components
       double d;       //< Offset
-      
+
       // Some style for rendering (colors)
       DisplayStyle style;
     };
-    
+
     /**
      * @brief Attach a property to an element
      *
-     * This class can be used with singletons and composite elements; 
+     * This class can be used with singletons and composite elements;
      * as long as the correct number of values are provided.
-     * 
+     *
      * This class can be nested to add multiple properties:
      * @code
      *  WithQuantity(
      *    WithQuantity(
      *      obj, "value", scalar
-     *    ), 
+     *    ),
      *    "normal", normal
      *  )
      * @endcode
@@ -329,18 +329,18 @@ namespace DGtal {
      */
     template<typename T, typename Type>
     struct WithQuantity {
-      WithQuantity(const T& _object, const std::string& _name, const Type& value, QuantityScale s = QuantityScale::UNKNOWN) : 
-        scale(s), object(_object), name(_name) 
+      WithQuantity(const T& _object, const std::string& _name, const Type& value, QuantityScale s = QuantityScale::UNKNOWN) :
+        scale(s), object(_object), name(_name)
       {
         values.push_back(value);
       }
-      
-      WithQuantity(const T& _object, const std::string& _name, const std::vector<Type>& _values, QuantityScale s = QuantityScale::UNKNOWN) : 
-        scale(s), object(_object), name(_name) 
+
+      WithQuantity(const T& _object, const std::string& _name, const std::vector<Type>& _values, QuantityScale s = QuantityScale::UNKNOWN) :
+        scale(s), object(_object), name(_name)
       {
         this->values = _values;
       }
-      
+
       // Scale to apply the quantity at
       QuantityScale scale;
 
@@ -357,31 +357,31 @@ namespace DGtal {
      *
      * @tparam Space Space of draw objects
      * @tparam KSpace Khalimsky space of drawn objects
-     * 
+     *
      * Drawing:
-     * 
+     *
      * Lists:
      *  Lists are a key part of this class. A list is a collection of object
-     *  that are linked together. As such, they should be managed, updated 
+     *  that are linked together. As such, they should be managed, updated
      *  with the same options.
-     *  
+     *
      *  Each DisplayData elements corresponds to a list of elements. However
-     *  the intent behind subsequent drawcalls can be to groups elements 
+     *  the intent behind subsequent drawcalls can be to groups elements
      *  together. For example, looping through a Digital surface doing a
-     *  computation and then display the current element. 
+     *  computation and then display the current element.
      *  For this reason, the field "allowReuseList" can be set to true. This
-     *  will try, if possible to use reuse the current element if possible. 
-     *  This may not success (common cases are if elements of different size 
+     *  will try, if possible to use reuse the current element if possible.
+     *  This may not success (common cases are if elements of different size
      *  were inserted, or after drawing an object which always create its own
-     *  list). 
+     *  list).
      *  If this does not fit the need, use setCurrentList.
-     *  
+     *
      */
     template < typename Space = Z3i::Space, typename KSpace = Z3i::KSpace>
     class Display3D {
     public:
       Display3D(const KSpace& space) :
-        myKSpace(space), 
+        myKSpace(space),
         myCellEmbedder(myKSpace),
         mySCellEmbedder(myKSpace)
       { }
@@ -390,7 +390,7 @@ namespace DGtal {
 
       virtual ~Display3D() {};
 
-      // Usefull definitions
+      // Useful definitions
       using Point = typename Space::Point;
       using KCell = typename KSpace::Cell;
       using SCell = typename KSpace::SCell;
@@ -402,19 +402,19 @@ namespace DGtal {
 
       /**
        * @brief A general callback for the viewer to give control to the user
-       * 
-       * There are no guarentees on the thread-safeness of this class. 
+       *
+       * There are no guarantees on the thread-safeness of this class.
        */
       struct Callback{
         /**
          * @brief Called when setCallback is performed on the viewer
-         * 
+         *
          * This is callback can be used to store the pointer to a particular
          * instance of the viewer.
-         * 
+         *
          * If only general properties are needed, use the Callback::viewer member
-         * which is set prior calling this function. 
-         * 
+         * which is set prior calling this function.
+         *
          * @param _viewer A pointer to the viewer on which this callback is attached
          */
         virtual void OnAttach(void* _viewer) { ((void) _viewer); };
@@ -426,9 +426,9 @@ namespace DGtal {
         virtual void OnUI(void* viewerData) { ((void) viewerData); };
         /**
          * @brief Called when an element is clicked
-         * 
+         *
          * @see DGtal::Display3D::renderNewData
-         * 
+         *
          * @param name The name of the structure containing the element
          * @param index The index within the clicked structure
          * @param data The Display3D data associated with this structure
@@ -442,7 +442,7 @@ namespace DGtal {
     public: // General commands
       /**
        * @brief Starts the event loop and display of elements
-       * 
+       *
        * It is recommended that this functions calls renderNewData
        */
       virtual void show() = 0;
@@ -452,7 +452,7 @@ namespace DGtal {
       virtual void renderNewData() = 0;
 
       /**
-       * @brief (Re)Render all data 
+       * @brief (Re)Render all data
        *
        * If any modification were made within the viewer they can be lost
        */
@@ -460,7 +460,7 @@ namespace DGtal {
         myToRender.clear();
         myToRender.reserve(data.size());
 
-        for (const auto& m : data) 
+        for (const auto& m : data)
           myToRender.push_back(m.first);
 
         renderNewData();
@@ -473,7 +473,7 @@ namespace DGtal {
        * @brief Clear the viewer, including screen and internal data
        */
       virtual void clear();
-      /** 
+      /**
        * @brief Sets callback
        */
       virtual void setCallback(Callback* callback);
@@ -484,15 +484,15 @@ namespace DGtal {
        *
        * If the name requested already exists; another one is
        * computed as follows:
-       * - If the token {i} is present, replace the first occurrence with 
+       * - If the token {i} is present, replace the first occurrence with
        *   the first available index, starting from one.
-       * - Otherwise, appends "_i" where i the first available index, 
+       * - Otherwise, appends "_i" where i the first available index,
        *   starting from one.
        *
        * This function sets the current data.
-       * 
+       *
        * @param name The name to insert
-       * @param eSize elementSize of the DisplayData 
+       * @param eSize elementSize of the DisplayData
        *
        * @return The computed name
        */
@@ -500,31 +500,31 @@ namespace DGtal {
 
       /**
        * @brief Set the current group for further updates
-       * 
+       *
        * @param name The name of the group
        */
       bool setCurrentList(const std::string& name);
 
       /**
        * @brief Tells if a list of a given elementSize can be reused
-       * 
+       *
        * @param elementSize The size of each elements
        */
       bool canCreateNewList(size_t elementSize) const;
 
       /**
        * @brief Reuse a list if possible, otherwise create a new one
-       * 
+       *
        * @param name The name of the created list if needed
-       * @param elementSize The size of each element for the list 
-       * 
+       * @param elementSize The size of each element for the list
+       *
        * @return The name of the list to use
        */
       std::string createOrReuseList(const std::string& name, size_t elementSize);
 
       /**
        * @brief End current group and sets an invalid current group
-       * 
+       *
        * The purpose of this function is to disallow further
        * automatic update on a group.
        */
@@ -547,23 +547,23 @@ namespace DGtal {
       std::string createOrReusePolygonList(const std::string& name)    { return createOrReuseList(name, 0); }
       std::string createOrReuseTriangleList(const std::string& name)   { return createOrReuseList(name, 3); }
       std::string createOrReuseVolumetricList(const std::string& name) { return createOrReuseList(name, 8); }
-    
+
     public: // Draw commands
 
       /**
        * @brief Draw object with stream API
-       * 
+       *
        * @tparam Obj Any type of object
-       */ 
+       */
       template<typename Obj>
       Display3D& operator<<(const Obj& obj);
 
-      // @brief Draws a Point with integer coodinates
+      // @brief Draws a Point with integer coordinates
       std::string draw(const Point& p, const std::string& uname = "Point_{i}");
 
-      // @brief Draws a RealPoint with real coodinates
+      // @brief Draws a RealPoint with real coordinates
       std::string draw(const RealPoint& rp, const std::string& uname = "Point_{i}");
-      
+
       // @brief Draws a vector of objects
       template<typename T>
       std::string draw(const std::vector<T>& vec, const std::string& uname = "");
@@ -575,13 +575,13 @@ namespace DGtal {
       // @brief Draws any object provided through a ConstIteratorAdapter
       template<typename A, typename B, typename C>
       std::string draw(const ConstIteratorAdapter<A, B, C>& adapter, const std::string& uname = "");
-      
+
       // @brief Draws a grid curve
       std::string draw(const GridCurve<KSpace>& curve, const std::string& uname = "GridCurve_{i}");
-      
-      // @brief Draws a grid curve as mid points 
+
+      // @brief Draws a grid curve as mid points
       std::string draw(const typename GridCurve<KSpace>::MidPointsRange& range, const std::string& uname = "MidPoints_{i}");
-      
+
       // @brief Draws a grid curve as arrows
       std::string draw(const typename GridCurve<KSpace>::ArrowsRange& range, const std::string& uname = "Arrows_{i}");
 
@@ -594,15 +594,15 @@ namespace DGtal {
       std::string draw(const KForm<Calculus, order, duality>& kform, const std::string& uname = "KForm_{i}");
 
       // @brief Draws a VectorField
-      template<typename Calculus, DGtal::Duality dual> 
+      template<typename Calculus, DGtal::Duality dual>
       std::string draw(const VectorField<Calculus, dual>& field, const std::string& uname = "Field_{i}");
 
       // @brief Draws an unsigned KCell
       std::string draw(const KCell& cell, const std::string& name = "KCell_{i}_{d}d");
-      
+
       // @brief Draws a singed KCell
       std::string draw(const SCell& cell, const std::string& name = "SCell_{i}_{d}d");
- 
+
       // @brief Draws a Domain
       //
       // Note: the default name has a special hex code in the beginning
@@ -611,7 +611,7 @@ namespace DGtal {
 
       /**
        * @brief Draws a polygon
-       * 
+       *
        * @tparam Vec Type of vertex
        */
       template<typename Vec>
@@ -619,13 +619,13 @@ namespace DGtal {
 
       // @brief Draws a ball
       std::string drawBall(const RealPoint& c, const std::string& uname = "Ball_{i}");
-      
+
       // @brief Draws a line
       std::string drawLine(const RealPoint& a, const RealPoint& b, const std::string& uname = "Line_{i}");
 
       // @brief Draws a quad
       std::string drawQuad(const RealPoint& a, const RealPoint& b, const RealPoint& c, const RealPoint& d, const std::string& uname = "Quad_{i}");
-      
+
       // @brief Draws a DigitalSet
       template<typename Obj, typename Cont>
       std::string draw(const DigitalSetByAssociativeContainer<Obj, Cont>& set, const std::string& name = "Set_{i}");
@@ -637,7 +637,7 @@ namespace DGtal {
       // @brief Draws an Image
       template<typename D, typename T>
       std::string draw(const ImageContainerBySTLVector<D, T>& image, const std::string& name = "Image_{i}");
-            
+
       // @brief Draws an Image
       template <typename TImageContainer,
                 typename TNewDomain,
@@ -646,7 +646,7 @@ namespace DGtal {
                 typename TFunctorV,
                 typename TFunctorVm1>
       std::string draw(const ImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV, TFunctorVm1>& adapter, const std::string& name = "Image_{i}");
-            
+
       // @brief Draws an Image
       template <typename TImageContainer,
                 typename TNewDomain,
@@ -662,10 +662,10 @@ namespace DGtal {
       // @brief Draws a DSS6Computer
       template<typename It, typename Int, int Con>
       std::string draw(const StandardDSS6Computer<It, Int, Con>& computer, const std::string& uname = "Computer_{i}");
-      
+
       template<typename It, typename Int, int Con>
       std::string draw(const Naive3DDSSComputer<It, Int, Con>& computer, const std::string& uname = "Computer_{i}");
-      
+
       // @brief Draws any object with a property
       template<typename T, typename Type>
       std::string draw(const WithQuantity<T, Type>& props, const std::string& uname = "");
@@ -676,27 +676,27 @@ namespace DGtal {
       template<typename Type>
       void addQuantity(const std::string& oName, const std::string& qName, const std::vector<Type>& value, QuantityScale scale = QuantityScale::UNKNOWN);
 
-      
+
       // @brief Adds a clipping plane
       std::string draw(const ClippingPlane& plane, const std::string& name = "");
-    
+
       // @brief Draws a Spherical Accumulator
       template<typename T>
       std::string draw(const SphericalAccumulator<T> accumulator, const std::string& uname = "SphericalAccumulator_{i}");
 
-      // @brief Set the current draw color 
+      // @brief Set the current draw color
       std::string draw(const DGtal::Color& color, const std::string& name = "");
-      
-      // @brief Set the current draw color 
+
+      // @brief Set the current draw color
       void drawColor(const DGtal::Color& color);
 
       // @brief Use default colors
       void setDefaultColors();
-      
+
       // @brief Draws adjacencies of further Object
       void drawAdjacencies(bool toggle = true);
-      
-      // @brief Draws 2D KCell as simplifed mode
+
+      // @brief Draws 2D KCell as simplified mode
       void drawAsSimplified(bool toggle = true);
 
       // @brief Draws grid of further domains
@@ -711,7 +711,7 @@ namespace DGtal {
       // @brief Draws balls of further object, domains and points
       void drawAsBalls();
     private: // Draw commands
-      // To avoid confusion, keep this function as private: 
+      // To avoid confusion, keep this function as private:
 
       // @brief Draws an /!\ arrow (NOT A LINE)
       std::string draw(const std::pair<RealPoint, RealPoint>& arrow, const std::string& uname = "Arrow_{i}");
@@ -719,7 +719,7 @@ namespace DGtal {
       /**
        * @brief Draws a range of object to the screen
        */
-      template<typename Range> 
+      template<typename Range>
       std::string drawGenericRange(const Range& range, const std::string& uname);
 
       // @brief Draws an image through an iterator
@@ -758,4 +758,3 @@ namespace DGtal {
 } // DGtal
 
 #include "Display3D.ih"
-

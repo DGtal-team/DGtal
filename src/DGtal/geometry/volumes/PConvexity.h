@@ -78,14 +78,14 @@ namespace DGtal
       {
 	init( bd );
       }
-  
+
       /// @param bd the maximum axis of projection.
       void init( Dimension bd = dim )
       {
 	for ( Dimension j = 0; j < bd; j++ )
 	  projp.push_back( ProjPConvexity( j ) );
       }
-  
+
       /// @param X any range of lattice points (without duplicates)
       ///
       /// @param safe when 'true' performs convex hull computations
@@ -97,7 +97,7 @@ namespace DGtal
       ///
       /// @pre X must not contain any duplicates.
       static
-      bool is0Convex( const std::vector< Point >& X, bool safe ) 
+      bool is0Convex( const std::vector< Point >& X, bool safe )
       {
 	if ( X.empty() ) return true;
 	// Build polytope according to internal integer type.
@@ -120,7 +120,7 @@ namespace DGtal
 	    return number_lattice_points_in_P == X.size();
 	  }
       }
-  
+
       /// @param X any range of lattice points (without duplicates)
       ///
       /// @param safe when 'true' performs convex hull computations
@@ -152,7 +152,7 @@ namespace DGtal
       /// @return a measure that has value 1.0 when X is digitally convex, and
       /// less otherwise.
       static
-      double convexityMeasure( const std::vector< Point >& X, bool safe ) 
+      double convexityMeasure( const std::vector< Point >& X, bool safe )
       {
 	if ( X.empty() ) return 1.0;
 	// Build polytope according to internal integer type.
@@ -175,7 +175,7 @@ namespace DGtal
 	    return double( X.size() ) / double( number_lattice_points_in_P );
 	  }
       }
-      
+
       /// @param X any range of lattice points (without duplicates)
       ///
       /// @param safe when 'true' performs convex hull computations
@@ -185,7 +185,7 @@ namespace DGtal
       /// @pre X must not contain any duplicates.
       ///
       /// @return a measure that has value 1.0 when X is P-convex (or
-      /// equivalently fully convex), and less otherwise.  
+      /// equivalently fully convex), and less otherwise.
       double fullConvexityMeasure( const std::vector< Point >& X, bool safe ) const
       {
 	double m = convexityMeasure( X, safe );
@@ -196,14 +196,14 @@ namespace DGtal
 	  }
 	return m;
       }
-  
+
       /// Projects a point \a p along dimension \a a.
       ///
       /// @param[in] p any digital point
       /// @param[in] a any dimension
       /// @return the digital point of dimension (d-1) with omitted a-th coordinate.
       static
-      ProjPoint project( const Point& p, Dimension a ) 
+      ProjPoint project( const Point& p, Dimension a )
       {
 	ProjPoint pp;
 	Dimension j = 0;
@@ -222,7 +222,7 @@ namespace DGtal
       ///
       /// @post the returned range has no duplicates.
       static
-      std::vector< ProjPoint > project( const std::vector< Point >& p, Dimension a ) 
+      std::vector< ProjPoint > project( const std::vector< Point >& p, Dimension a )
       {
 	std::vector< ProjPoint > pp( p.size() );
 	for ( std::size_t i = 0; i < p.size(); i++ )
@@ -255,9 +255,9 @@ namespace DGtal
       using Point       = PointVector< 1, Integer >;
 
       /// Default constructor. Nothing to do.
-      RecursivePConvexity( Dimension /* unused parameter in 1D specialization */ ) 
+      RecursivePConvexity( Dimension /* unused parameter in 1D specialization */ )
       {}
-      
+
       /// @param X any range of lattice points (without duplicates)
       ///
       /// @param safe is a not used parameter for dimension 1, but is
@@ -269,7 +269,7 @@ namespace DGtal
       ///
       /// @note Unused second parameter.
       static
-      bool is0Convex( std::vector< Point > X, bool safe ) 
+      bool is0Convex( std::vector< Point > X, bool safe )
       {
 	(void) safe;
 	std::sort( X.begin(), X.end() );
@@ -292,7 +292,7 @@ namespace DGtal
       {
 	return is0Convex( X, safe );
       }
-      
+
       /// @param X any range of lattice points (without duplicates)
       ///
       /// @param safe is a not used parameter for dimension 1, but is
@@ -312,7 +312,7 @@ namespace DGtal
 	Integer nb =  Integer(X.back()[ 0 ]) - Integer(X.front()[ 0 ]) + Integer(1);
 	return double( X.size() ) / double( nb );
       }
-      
+
       /// @param X any range of lattice points (without duplicates)
       ///
       /// @param safe is a not used parameter for dimension 1, but is
@@ -328,13 +328,13 @@ namespace DGtal
       {
 	return convexityMeasure( X, safe );
       }
-      
+
     };
 
-  } // namespace detail 
-  
-    
-  
+  } // namespace detail
+
+
+
   /////////////////////////////////////////////////////////////////////////////
   // template class PConvexity
   /**
@@ -360,7 +360,7 @@ namespace DGtal
     typedef TSpace                   Space;
     typedef typename Space::Integer  Integer;
     typedef typename Space::Point    Point;
-    
+
     static const Dimension dimension = Space::dimension;
     using RPConvexity = DGtal::detail::RecursivePConvexity< dimension, Integer >;
 
@@ -408,7 +408,7 @@ namespace DGtal
     {
       return myRPC.isPConvex( X, mySafe );
     }
-    
+
     /// @}
 
     // ----------------------- Measure services --------------------------------------
@@ -468,23 +468,23 @@ namespace DGtal
 
     /// @}
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
 
     /// The recursive PConvexity object used to determine P-convexity.
     RPConvexity myRPC;
-    
+
     /// when 'true' performs convex hull computations with arbitrary
     /// precision integer (if available), otherwise chooses a
     /// compromise between speed and precision (int64_t).
     bool mySafe;
-    
-    // ------------------------- Private Datas --------------------------------
+
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Internals ------------------------------------
   private:
-    
+
   }; // end of class PConvexity
 
   /// @name Functions related to PConvexity (output)

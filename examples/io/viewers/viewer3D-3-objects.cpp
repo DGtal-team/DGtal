@@ -57,7 +57,7 @@ using namespace Z3i;
 int main()
 {
   PolyscopeViewer v;
-  
+
   // Instructs the viewer to draw adjacencies relation whenever possible
   v.drawAdjacencies(true /* false */);
 
@@ -73,7 +73,7 @@ int main()
 
   Object6_18 shape1( dt6_18, shape_set );
   Object18_6 shape2( dt18_6, shape_set );
-  
+
   // Draws both the object the adjacencies
   v << shape1;
   v << shape2;

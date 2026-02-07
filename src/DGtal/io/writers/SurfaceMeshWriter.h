@@ -100,7 +100,7 @@ namespace DGtal
     /// default color information for each face.
     static
     bool writeOBJ( std::string            objfile,
-                   const SurfaceMesh &    smesh, 
+                   const SurfaceMesh &    smesh,
                    const Colors&          diffuse_colors = Colors(),
                    const Color&           ambient_color  = Color( 32, 32, 32 ),
                    const Color&           diffuse_color  = Color( 200, 200, 255 ),
@@ -195,10 +195,10 @@ namespace DGtal
                            const Color&           ambient_color = Color::Black,
                            const Color&           diffuse_color = Color::Black,
                            const Color&           specular_color= Color::Black );
-    
+
   };
 
-  
+
 } // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -55,16 +55,16 @@ namespace DGtal
   /**
    * Description of template struct 'MeshWriter' <p>
    * \brief Aim: Export a Mesh (Mesh object) in different format as OFF and OBJ).
-   * 
+   *
    * The exportation can be done automatically according the input file
-   * extension with the ">>" operator  
-   * 
-   * Example of typical use: 
+   * extension with the ">>" operator
+   *
+   * Example of typical use:
    * First you have to add the following include files:
    * @snippet tests/io/writers/testMeshWriter.cpp MeshWriterUseIncludes
    * Then you create a simple Mesh object:
    * @snippet tests/io/writers/testMeshWriter.cpp MeshWriterUseMeshCreation
-   * Finally you can export directly the Mesh object: 
+   * Finally you can export directly the Mesh object:
    * @snippet tests/io/writers/testMeshWriter.cpp MeshWriterUseMeshExport
    *
    *
@@ -77,63 +77,63 @@ namespace DGtal
   {
     // ----------------------- Standard services ------------------------------
 
-   
 
 
-    /** 
+
+    /**
      * Export Mesh towards a OFF format. By default the face colors are
-     * exported (if they are stored in the Mesh object). 
-     * 
+     * exported (if they are stored in the Mesh object).
+     *
      * @param out the output stream of the exported OFF object.
      * @param aMesh the Mesh object to be exported.
-     * @param exportColor true to try to export the face colors if they are stored in the Mesh object (default true). 
+     * @param exportColor true to try to export the face colors if they are stored in the Mesh object (default true).
      * @return true if no errors occur.
      */
-    
-    static bool export2OFF(std::ostream &out, const  Mesh<TPoint>  &aMesh, 
+
+    static bool export2OFF(std::ostream &out, const  Mesh<TPoint>  &aMesh,
                            bool exportColor=true);
-  
-  
 
 
-    /** 
+
+
+    /**
      * Export a Mesh towards a OBJ format (colors are exported).
-     * 
+     *
      * @param out the output stream of the exported OBJ object.
      * @param aMesh the Mesh object to be exported.
      * @return true if no errors occur.
      */
-    
+
     static bool export2OBJ(std::ostream &out, const  Mesh<TPoint>  &aMesh);
 
-    /** 
+    /**
      * Export a Mesh towards a OBJ format including face colors.
-     * 
+     *
      * @param[out] out the output stream of the exported OBJ object.
      * @param[out] outMTL the output stream associated to the material file.
      * @param[in] nameMTLFile the file name of the material file. If an empty string is given, the material will be written inside the output stream.
      * @param[in] aMesh the Mesh object to be exported.
      * @return true if no errors occur.
      */
-    
+
     static bool export2OBJ_colors(std::ostream &out, std::ostream &outMTL,
                                   const std::string nameMTLFile,
                                   const  Mesh<TPoint>  &aMesh);
 
-     /** 
+     /**
      * Export a Mesh towards a OBJ format including face colors.
      * The material containing face colors will be written inside the resulting .obj file.
      * @param[out] out the output stream of the exported OBJ object.
      * @param[in] aMesh the Mesh object to be exported.
      * @return true if no errors occur.
      */
-    
+
     static bool export2OBJ_colors(std::ostream &out,
                                   const  Mesh<TPoint>  &aMesh);
-    
-    
+
+
   };
-  
+
 
 
 
@@ -142,36 +142,36 @@ namespace DGtal
    *  'operator>>' for exporting objects of class 'Mesh'.
    *  This operator automatically selects the good method according to
    *  the filename extension (off, obj).
-   *  
+   *
    * @param aMesh the mesh to be exported.
-   * @param aFilename the filename of the file to be exported. 
-   * @return true, if the export was successful. 
+   * @param aFilename the filename of the file to be exported.
+   * @return true, if the export was successful.
    */
   template <typename TPoint>
   bool
   operator >> (  Mesh<TPoint> & aMesh,  const std::string & aFilename  );
-  
+
 
 
 
 
   /**
    *  'operator>>' for exporting objects of class 'Mesh' in OFF format.
-   *  
+   *
    * @param aMesh the mesh to be exported.
-   * @param out the output of the OFF exportation. 
-   * @return true, if the export was successful. 
+   * @param out the output of the OFF exportation.
+   * @return true, if the export was successful.
    */
   template <typename TPoint>
   bool
   operator >> (  Mesh<TPoint> & aMesh, std::ostream &out );
-  
 
 
 
-  
 
-			   
+
+
+
 }//namespace
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -46,7 +46,7 @@ using namespace DGtal;
 
 
 /**
-   Check that an image loaded via DGtal ITKReader keeps the same spatial 
+   Check that an image loaded via DGtal ITKReader keeps the same spatial
    information than an image loaded via itk::ImageFileReader.
 
  */
@@ -59,7 +59,7 @@ void testSpatialInformation(const std::string &filename)
 
   typename DGtalImage::ITKImagePointer dgtal_itk = img.getITKImagePointer();
 
-  
+
   typedef itk::Image<PixelType, 3> ItkImage;
   typedef itk::ImageFileReader<ItkImage> ReaderType;
   typename ReaderType::Pointer reader = ReaderType::New();
@@ -130,7 +130,7 @@ TEST_CASE( "Testing ITKReader" )
 
   SECTION(
     "Checking import with/without shifted domain")
-    
+
   {
     Image3Dd imShifted = ITKReader<Image3Dd>::importITK(testPath + "samples/lobsterCroped2.nii.gz",
                                                         ITKIOTrait<Image3Dd::Value>::DefaultReadFunctor(), true );
@@ -146,7 +146,7 @@ TEST_CASE( "Testing ITKReader" )
     REQUIRE( ( *(imNonShifted.range().begin()+i) == 68  ));
   }
 
-  
+
 }
 
 /** @ingroup Tests **/

@@ -83,7 +83,7 @@ namespace DGtal
     typedef std::vector< RealPoint >                     RealPoints;
     typedef std::vector< RealVector >                    RealVectors;
     typedef std::vector< RealTensor >                    RealTensors;
-    typedef typename SurfaceMesh::Size                   Size; 
+    typedef typename SurfaceMesh::Size                   Size;
     typedef typename SurfaceMesh::Index                  Index;
     typedef typename SurfaceMesh::Vertex                 Vertex;
     typedef typename SurfaceMesh::Face                   Face;
@@ -120,7 +120,7 @@ namespace DGtal
     /// @{
 
     /// @param mu0 the mu0 measure (i.e. area) of some set
-    /// @param mu1 the mu1 measure (i.e. twice the mean curvature measue) of the same set
+    /// @param mu1 the mu1 measure (i.e. twice the mean curvature measure) of the same set
     /// @return the estimated mean curvature on this set.
     static
     Scalar meanCurvature( Scalar mu0, Scalar mu1 )
@@ -129,7 +129,7 @@ namespace DGtal
     }
 
     /// @param mu0 the mu0 measure (i.e. area) of some set
-    /// @param mu2 the mu2 measure (i.e. the Gaussian curvature measue) of the same set
+    /// @param mu2 the mu2 measure (i.e. the Gaussian curvature measure) of the same set
     /// @return the estimated Gaussian curvature on this set.
     static
     Scalar GaussianCurvature( Scalar mu0, Scalar mu2 )
@@ -138,7 +138,7 @@ namespace DGtal
     }
 
     /// @param mu0 the mu0 measure (i.e. area) of some set
-    /// @param muXY the anisotropic muXY measure (i.e. the second fundamental form measue) of the same set
+    /// @param muXY the anisotropic muXY measure (i.e. the second fundamental form measure) of the same set
     /// @param N the normal vector at the location of the set
     ///
     /// @return a tuple (K1,K2,D1,D2) where K1 and K2 are two
@@ -146,13 +146,13 @@ namespace DGtal
     /// associated principal directions.
     static
     std::tuple< Scalar, Scalar, RealVector, RealVector >
-    principalCurvatures( Scalar mu0, RealTensor muXY, const RealVector& N ) 
+    principalCurvatures( Scalar mu0, RealTensor muXY, const RealVector& N )
     {
       muXY += muXY.transpose();
       muXY *= 0.5;
       const double   coef_N = 1000.0 * mu0;
       // Trick to force orthogonality to normal vector.
-      // (see @cite lachaud2020interpolated, section 2) 
+      // (see @cite lachaud2020interpolated, section 2)
       for ( int j = 0; j < 3; j++ )
         for ( int k = 0; k < 3; k++ )
           muXY( j, k ) += coef_N * N[ j ] * N[ k ];
@@ -163,22 +163,22 @@ namespace DGtal
                               ( mu0 != 0.0 ) ? -L[ 0 ] / mu0 : 0.0,
                               V.column( 1 ),
                               V.column( 0 ) );
-    }    
+    }
     /// @}
 
-    // ------------------------- Public Datas ------------------------------
+    // ------------------------- Public Data ------------------------------
   public:
-    
-    // ------------------------- Protected Datas ------------------------------
+
+    // ------------------------- Protected Data ------------------------------
   protected:
-    
+
     /// A reference to the mesh over which computations are done.
     const SurfaceMesh& myMesh;
     /// Tells if we should use a normalized unit vector or not for
     /// interpolated curvature measures.
     bool myUnitU;
-    
-    // ------------------------- Private Datas --------------------------------
+
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Internals ------------------------------------
@@ -225,10 +225,10 @@ namespace DGtal
     /// normals are interpolated per face.
     /// @pre `! myMesh.vertexNormals().empty()`
     TensorMeasure computeMuXYInterpolatedU() const;
-    
-    
+
+
   }; // end of class CorrectedNormalCurrentComputer
-    
+
 } // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -241,4 +241,3 @@ namespace DGtal
 
 #undef CorrectedNormalCurrentComputer_RECURSES
 #endif // else defined(CorrectedNormalCurrentComputer_RECURSES)
-

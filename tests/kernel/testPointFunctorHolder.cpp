@@ -65,7 +65,7 @@ TEST_CASE( "2D PointFunctorHolder from functor by rvalue", "[2D][functor][rvalue
 
   // Checks CPointFunctor concept.
   BOOST_CONCEPT_ASSERT( (DGtal::concepts::CPointFunctor<decltype(fn)>) );
-  
+
   // Checking standard services
   std::cout << fn << std::endl;
   REQUIRE( fn.isValid() );

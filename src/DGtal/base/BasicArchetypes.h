@@ -49,14 +49,14 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // List of basic archetypes, grouped in this file.
 
- 
+
   /**
      Description of \b archetype '\b CSinglePassIteratorArchetype' <p>
      @ingroup Archetypes
      @brief An archetype of SingePassIterator.
   */
-  template <typename T> 
-  struct CSinglePassIteratorArchetype : 
+  template <typename T>
+  struct CSinglePassIteratorArchetype :
     public boost::input_iterator_archetype<T>
   {};
 
@@ -65,8 +65,8 @@ namespace DGtal
      @ingroup Archetypes
      @brief An archetype of BidirectionalIterator.
   */
-  template <typename T> 
-  struct CBidirectionalIteratorArchetype : 
+  template <typename T>
+  struct CBidirectionalIteratorArchetype :
     public boost::mutable_bidirectional_iterator_archetype<T>
   {};
 
@@ -75,15 +75,15 @@ namespace DGtal
      @ingroup Archetypes
      @brief An archetype of ConstBidirectionalIterator.
   */
-  template <typename T> 
-  struct CConstBidirectionalIteratorArchetype : 
+  template <typename T>
+  struct CConstBidirectionalIteratorArchetype :
     public boost::bidirectional_iterator_archetype<T>
   {};
 
   // {
   //   CBidirectionalIteratorArchetype( const boost::mutable_bidirectional_iterator_archetype<T> & ) {}
   //   CBidirectionalIteratorArchetype &
-  //   operator=( const boost::mutable_bidirectional_iterator_archetype<T> & ) 
+  //   operator=( const boost::mutable_bidirectional_iterator_archetype<T> & )
   //   { return *this; }
   // };
 
@@ -92,11 +92,11 @@ namespace DGtal
      @ingroup Archetypes
      @brief An archetype of ForwardIterator.
   */
-  template <typename T> 
-  struct CForwardIteratorArchetype 
+  template <typename T>
+  struct CForwardIteratorArchetype
     : public boost::forward_iterator_archetype<T>
   {};
-  
+
 } // namespace DGtal
 
 //                                                                           //

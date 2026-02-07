@@ -39,10 +39,10 @@
 // ----------------------- Standard services ------------------------------
 
 template < class TDigitalSurfaceContainer >
-inline 
+inline
 std::pair<
   typename boost::graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::vertex_iterator,
-  typename boost::graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::vertex_iterator 
+  typename boost::graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::vertex_iterator
   >
 boost::vertices( const DGtal::DigitalSurface< TDigitalSurfaceContainer > & digSurf )
 {
@@ -50,20 +50,20 @@ boost::vertices( const DGtal::DigitalSurface< TDigitalSurfaceContainer > & digSu
 }
 //-----------------------------------------------------------------------------
 template < class TDigitalSurfaceContainer >
-inline 
+inline
 boost::graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::edge_iterator::
 edge_iterator()
-  : myGraph( 0 ) 
+  : myGraph( 0 )
 {}
 //-----------------------------------------------------------------------------
 template < class TDigitalSurfaceContainer >
-inline 
+inline
 boost::graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::edge_iterator::
 edge_iterator( ConstAlias<Adapted> graph,
                const vertex_iterator & itB, const vertex_iterator & itE )
-  : myGraph( &graph ), 
+  : myGraph( &graph ),
     myVertexRange( itB, itE ),
-    myOutEdgeRange() 
+    myOutEdgeRange()
 {
   if ( myVertexRange.first != myVertexRange.second )
     {
@@ -72,22 +72,22 @@ edge_iterator( ConstAlias<Adapted> graph,
 }
 //-----------------------------------------------------------------------------
 template < class TDigitalSurfaceContainer >
-inline 
+inline
 const typename boost::graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::Arc &
 boost::graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::edge_iterator::
 dereference() const
 {
   ASSERT( myVertexRange.first != myVertexRange.second );
   ASSERT( myOutEdgeRange.first != myOutEdgeRange.second );
-  return *( myOutEdgeRange.first ); 
+  return *( myOutEdgeRange.first );
 }
 //-----------------------------------------------------------------------------
 template < class TDigitalSurfaceContainer >
-inline 
+inline
 bool
 boost::graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::edge_iterator::
 equal( const edge_iterator & other ) const
-{ 
+{
   bool thisAtEnd = ( myVertexRange.first == myVertexRange.second );
   bool otherAtEnd = ( other.myVertexRange.first == other.myVertexRange.second );
   if ( thisAtEnd || otherAtEnd ) return thisAtEnd && otherAtEnd;
@@ -100,10 +100,10 @@ equal( const edge_iterator & other ) const
 }
 //-----------------------------------------------------------------------------
 template < class TDigitalSurfaceContainer >
-inline 
+inline
 void
 boost::graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::edge_iterator::
-increment() 
+increment()
 {
   ++myOutEdgeRange.first;
   if ( myOutEdgeRange.first == myOutEdgeRange.second )
@@ -116,5 +116,3 @@ increment()
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

@@ -77,7 +77,7 @@ are not inserted.
 
 @note Choosing to add borders or not changes boundary condition of the DEC problems generated with the structure.
 @a add_border=true enforces Neumann boundary condition on primal operators.
-@a add_border=false enforces Dirichlet boudary condition on primal operators.
+@a add_border=false enforces Dirichlet boundary condition on primal operators.
 See \ref sectDECPoisson1D for an example.
 
 | @a add_border | boundary condition of primal operators                          | boundary condition of dual operators                            |

@@ -27,7 +27,7 @@
 
 #if !defined(DGTAL_WITH_POLYSCOPE_VIEWER)
 #error DGTAL_WITH_POLYSCOPE_VIEWER flag not set during the cmake step
-#endif 
+#endif
 
 #include "DGtal/io/Display3D.h"
 

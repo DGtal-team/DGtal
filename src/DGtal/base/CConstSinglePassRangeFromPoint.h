@@ -100,7 +100,7 @@ namespace DGtal
           // something of type B
           ConceptUtils::sameType( myB, myX.begin( myPoint ) );
         }
-        // ------------------------- Private Datas --------------------------------
+        // ------------------------- Private Data --------------------------------
       private:
         T myX; // do not require T to be default constructible.
         Point myPoint;

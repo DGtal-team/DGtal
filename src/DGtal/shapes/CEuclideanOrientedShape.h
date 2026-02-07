@@ -59,56 +59,56 @@ Description of \b concept '\b CEuclideanOrientedShape' <p>
      points. Returned value type corresponds to  DGtal::Orientation.
 
  # Refinement of
-    
+
  # Associated types
     - RealPoint: type for real points.
 
  # Notation
      - \a X : A type that is a model of CEuclideanOrientedShape
      - \a x, \a y : object of type X
-    
+
  # Definitions
-    
- # Valid expressions and 
-   
-   
+
+ # Valid expressions and
+
+
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
 | Orientation method | \e x.orientation( \e aPoint )|  aPoint of type const RealPoint &              |  DGtal::Orientation    |        | return the orientation of a point @c aPoint according to the shape. Orientation values can be {DGtal::INSIDE, DGtal::ON or DGtal::OUTSIDE}.| | |
-   
-   
+
+
  # Invariants#
-    
+
  # Models#
 
-      Parametric and implicit shapes in the DGtal shape factory, 
+      Parametric and implicit shapes in the DGtal shape factory,
 
  # Notes#
 
 @tparam T the type that should be a model of CEuclideanOrientedShape.
    */
-  template <typename T> 
+  template <typename T>
   struct CEuclideanOrientedShape
   {
     // ----------------------- Concept checks ------------------------------
   public:
     // 1. define first provided types (i.e. inner types), like
     typedef typename T::RealPoint RealPoint;
-   
+
     // 2. then check the presence of data members, operators and methods with
     BOOST_CONCEPT_USAGE( CEuclideanOrientedShape )
     {
       ConceptUtils::sameType( myA, myX.orientation( p ));
     }
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     T myX; // only if T is default constructible.
     Orientation myA;
     RealPoint p;
-    
+
     // ------------------------- Internals ------------------------------------
   private:
-    
+
   }; // end of concept CEuclideanOrientedShape
   }
 } // namespace DGtal

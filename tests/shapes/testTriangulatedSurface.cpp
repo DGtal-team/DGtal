@@ -111,7 +111,7 @@ SCENARIO( "TriangulatedSurface< RealPoint3 > build tests", "[trisurf][build]" )
         bool distances_ok
           = std::equal( distances.begin(), distances.end(), expected_distance );
         REQUIRE( distances_ok );
-      }      
+      }
     THEN( "The mesh has 4 boundary vertices" ) {
       VertexRange bv = trimesh.allBoundaryVertices();
       std::sort( bv.begin(), bv.end() );
@@ -196,12 +196,12 @@ SCENARIO( "TriangulatedSurface< RealPoint3 > flip tests", "[trisurf][flip]" )
       }
     THEN( "Only two arcs are flippable" ){
       REQUIRE( nbfl == 2 );
-    }      
+    }
     THEN( "The mesh has same number of vertices, edges, faces after flip." ) {
       trimesh.flip( afl );
-      REQUIRE( trimesh.nbVertices() == nbv ); 
-      REQUIRE( trimesh.nbEdges() == nbe ); 
-      REQUIRE( trimesh.nbFaces() == nbf ); 
+      REQUIRE( trimesh.nbVertices() == nbv );
+      REQUIRE( trimesh.nbEdges() == nbe );
+      REQUIRE( trimesh.nbFaces() == nbf );
     }
     THEN( "Edge (1,2) has 4 vertices around, in order (2,0,1,3)." ) {
       VertexRange V = trimesh.verticesOfFacesAroundArc( trimesh.arc( 1, 2 ) );

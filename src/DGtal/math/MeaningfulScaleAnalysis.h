@@ -23,7 +23,7 @@
  *
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5807), University of Savoie, France
- * 
+ *
  *
  * @date 2015/12/27
  *
@@ -58,18 +58,18 @@ namespace DGtal
   /**
    * Description of class 'MeaningfulScaleAnalysis' <p> \brief Aim:
    * This class implements different methods used
-   * to define the meaningful scale analysis as proposed in 
+   * to define the meaningful scale analysis as proposed in
    * \cite kerautret_meaningful_2012 . In particular, it uses the
    * Profile class to represent a multi-scale profile and to compute a
    * meaningful scale. It also permits to get a noise estimation from
    * the given profile.
-   * 
+   *
    * A typical example is for instance the length of maximal segments
-   * obtained at different scales. 
+   * obtained at different scales.
    *
    *
-   * First we construct a Profile: 
-   * @code 
+   * First we construct a Profile:
+   * @code
    *   // we need to have the Profile header:
    *   #include "DGtal/math/Profile.h"
    *
@@ -87,27 +87,27 @@ namespace DGtal
    * @endcode
    *
    * Then, we can add values to the profile:
-   * @code 
+   * @code
    *   sp.addValue(0,22);
    *   sp.addValue(1,15);
    *   sp.addValue(2,8);
    *   sp.addValue(3,17);
    *   sp.addValue(4,7);
-   *   sp.addValue(5,2);      
+   *   sp.addValue(5,2);
    *
    * @endcode
    * Finally we can construct the MeaningfulScaleAnalysis object and obtain the meaningful scale:
-   * @code 
+   * @code
    *  MeaningfulScaleAnalysis<Profile<LogFct>> msa(sp);
-   *  std::vector< std::pair<uint, uint> > intervals;      
+   *  std::vector< std::pair<uint, uint> > intervals;
    *  msa.computeMeaningfulScales(intervals, 1);
    *  unsigned int n = msa.noiseLevel();
    * @endcode
-   * @see testMeaningfulScaleAnalysis 
+   * @see testMeaningfulScaleAnalysis
    * @tparam TProfile the type of the profile class.
    */
 
-  
+
   template<typename TProfile>
   class MeaningfulScaleAnalysis
   {
@@ -120,7 +120,7 @@ namespace DGtal
      * Constructor
      */
     MeaningfulScaleAnalysis( ConstAlias<Profile> aProfile);
-      
+
 
     /**
      * Destructor.
@@ -131,7 +131,7 @@ namespace DGtal
   public:
 
 
-  
+
     /**
      * A meaningful scale is an interval of scales of length no
      * smaller than [min_width] and in which the profile has slopes
@@ -143,7 +143,7 @@ namespace DGtal
      * @param[in] maxSlope the maximum allowed slope for length evolution.
      * @param[in] minSlope the minimum allowed slope for length evolution.
      */
-    void 
+    void
     computeMeaningfulScales( std::vector< std::pair< unsigned int, unsigned int > > & intervals,
                              const unsigned int minSize = 1,
                              const double maxSlope = -0.2,
@@ -157,25 +157,25 @@ namespace DGtal
      * @return a pair<bool, double> giving the slope and indicating if
      * a meaningful scale was  found or not. If no meaningful
      * scale interval was found, it simply return the slope obtained
-     * from the linear regression. 
+     * from the linear regression.
      *
      * @param[in] maxSlope the  maximum allowed slope for length evolution.
-     * @param[in] minSlope the  minimum allowed slope for length evolution.  
+     * @param[in] minSlope the  minimum allowed slope for length evolution.
      * @param[in] minSize the minimum length for the meaningful scales.
-     * 
+     *
      **/
-    std::pair<bool, double> 
+    std::pair<bool, double>
     getSlopeFromMeaningfulScales(const double maxSlope=-0.2,
                                  const double minSlope=-1e10,
                                  const unsigned int minSize=2) const ;
-    
-    
-    
+
+
+
     /**
      * The noise level is the first scale of the first meaningful
      * scale. A meaningful scale is an interval of scales of length no
      * smaller than [min_width] and in which the profile has slopes
-     * below [max_slope]. 
+     * below [max_slope].
      *
      * @param[in] minSize the minimum length for the meaningful scales.
      * @param[in] maxSlope the maximum allowed slope for length evolution.
@@ -195,7 +195,7 @@ namespace DGtal
      * scale. A meaningful scale is an interval of scales of length no
      * smaller than [minWidth] and in which the profile has slopes
      * below [maxSlope]. The lower bounded noise level also requires
-     * minimum lenghs for different scales. Therefore the profile must
+     * minimum lengths for different scales. Therefore the profile must
      * be greater that
      * [lower_bound_at_scale_1]+[lower_bound_slope]*scale.
      *
@@ -215,7 +215,7 @@ namespace DGtal
 			    const double lowerBoundSlope = -2.0 ) const;
 
 
-    
+
 
     /**
      * Writes/Displays the object on an output stream.
@@ -229,11 +229,11 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
     const Profile  &myProfile;
-  
-    // ------------------------- Private Datas --------------------------------
+
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------

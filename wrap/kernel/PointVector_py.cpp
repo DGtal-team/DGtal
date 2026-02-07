@@ -40,4 +40,3 @@ void init_PointVector(py::module & m) {
     declare_PointVector_all_mixings<Point3D>(py_class_RealPoint3D);
 
 }
-

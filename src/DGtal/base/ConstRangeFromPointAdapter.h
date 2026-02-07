@@ -25,7 +25,7 @@
  *
  * @brief Header file for module ConstRangeFromPointAdapter.h
  *
- * This file contains an adapter for 
+ * This file contains an adapter for
  * bidirectional ranges, which can be defined from points.
  *
  * This file is part of the DGtal library.
@@ -52,7 +52,7 @@
 #include "boost/iterator/reverse_iterator.hpp"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal 
+namespace DGtal
 {
 
 
@@ -61,24 +61,24 @@ namespace DGtal
   ///////////////////////////////////////////////////////////////////////////////
 
   /**
-   * @brief Aim: model of CConstBidirectionalRangeFromPoint 
-   * that adapts any bidirectional range and provides services to 
-   * iterate over it (in a read-only manner). 
+   * @brief Aim: model of CConstBidirectionalRangeFromPoint
+   * that adapts any bidirectional range and provides services to
+   * iterate over it (in a read-only manner).
    *
    * @tparam TRange a model of CConstBidirectionalRangeFromPoint
    *
-   * Moreover, the provided iterators are adapted 
-   * with a functor f given at construction so that 
-   * operator* calls f(\*it), instead of calling directly 
+   * Moreover, the provided iterators are adapted
+   * with a functor f given at construction so that
+   * operator* calls f(\*it), instead of calling directly
    * operator* of the iterator it.
    *
    * @tparam TFunctor the type of functor that transforms
    * the pointed element into another one
    *
-   * @tparam TReturnType the type of the element returned by the underlying functor. 
+   * @tparam TReturnType the type of the element returned by the underlying functor.
    *
    * NB: the underlying range and functor are stored as aliasing pointers
-   * in order to avoid copies. As a consequence the pointed object must exist 
+   * in order to avoid copies. As a consequence the pointed object must exist
    * and must not be deleted during the use of any instance of this class.
    *
    * @see ConstIteratorAdapter BasicFunctors.h
@@ -87,13 +87,13 @@ namespace DGtal
   class ConstRangeFromPointAdapter
   {
 
-    BOOST_CONCEPT_ASSERT(( CConstBidirectionalRangeFromPoint<TRange> )); 
+    BOOST_CONCEPT_ASSERT(( CConstBidirectionalRangeFromPoint<TRange> ));
 
     // ------------------------- inner types --------------------------------
-  public: 
+  public:
 
-    typedef typename TRange::Point Point;   
-    typedef ConstIteratorAdapter<typename TRange::ConstIterator,TFunctor,TReturnType> ConstIterator; 
+    typedef typename TRange::Point Point;
+    typedef ConstIteratorAdapter<typename TRange::ConstIterator,TFunctor,TReturnType> ConstIterator;
     typedef boost::reverse_iterator<ConstIterator> ConstReverseIterator;
 
     // ------------------------- standard services --------------------------------
@@ -104,7 +104,7 @@ namespace DGtal
      * @param aFunctor functor used to adapt on-the-fly the elements of the range
      *
      */
-    ConstRangeFromPointAdapter( ConstAlias<TRange> aRange, 
+    ConstRangeFromPointAdapter( ConstAlias<TRange> aRange,
 		      ConstAlias<TFunctor> aFunctor )
       : myRangePtr(&aRange), myFunctorPtr(&aFunctor) {}
 
@@ -114,14 +114,14 @@ namespace DGtal
      */
     ConstRangeFromPointAdapter( const ConstRangeFromPointAdapter & other )
       : myRangePtr(other.myRangePtr), myFunctorPtr(other.myFunctorPtr) {}
-  
+
     /**
      * Assignment.
      * @param other the iterator to copy.
      * @return a reference on 'this'.
      */
     ConstRangeFromPointAdapter& operator= ( const ConstRangeFromPointAdapter & other )
-    {  
+    {
       if ( this != &other )
 	{
 	  myRangePtr = other.myRangePtr;
@@ -140,18 +140,18 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const { return true; }
-  
+
 
     // ------------------------- private data --------------------------------
-  private: 
+  private:
     /**
      * Aliasing pointer on the range
      */
-    const TRange* myRangePtr; 
+    const TRange* myRangePtr;
     /**
      * Aliasing pointer on the underlying functor
      */
-    const TFunctor* myFunctorPtr; 
+    const TFunctor* myFunctorPtr;
 
     // ------------------------- iterator services --------------------------------
   public:
@@ -193,8 +193,8 @@ namespace DGtal
      * @return rbegin iterator from a point
      */
     ConstReverseIterator rbegin(const Point& aPoint) const {
-      ConstIterator it( myRangePtr->begin(aPoint), *myFunctorPtr ); 
-      if ( it != this->end() ) ++it; 
+      ConstIterator it( myRangePtr->begin(aPoint), *myFunctorPtr );
+      if ( it != this->end() ) ++it;
       return ConstReverseIterator( it );
     }
 

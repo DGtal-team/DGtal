@@ -53,15 +53,15 @@ namespace DGtal
   /**
      Description of \b concept '\b CPolarPointComparator2D' <p>
      @ingroup Concepts
-     @brief Aim: This concept gathers classes that are able to 
-     compare the position of two given points \f$ P, Q \f$ around a pole \f$ O \f$. 
+     @brief Aim: This concept gathers classes that are able to
+     compare the position of two given points \f$ P, Q \f$ around a pole \f$ O \f$.
      More precisely, they compare the oriented angles lying between the horizontal line
-     passing by \f$ O \f$ and the rays \f$ [OP) \f$ and \f$ [OQ) \f$ 
-     (in a counter-clockwise orientation). This is equivalent to compare the angle in radians 
+     passing by \f$ O \f$ and the rays \f$ [OP) \f$ and \f$ [OQ) \f$
+     (in a counter-clockwise orientation). This is equivalent to compare the angle in radians
      from 0 (included) to 2 &pi; (excluded).
-     
-     The main method is the operator() applied on two points. It returns 'true' if the first 
-     point is located strictly before the second one, 'false' otherwise. A point \f$ P \f$ 
+
+     The main method is the operator() applied on two points. It returns 'true' if the first
+     point is located strictly before the second one, 'false' otherwise. A point \f$ P \f$
      is located strictly before a point \f$ Q \f$ iff the oriented angle done by \f$ P \f$ is
      smaller than the one of \f$ Q \f$ or its euclidean norm is shorter if \f$ O, P, Q \f$ are
      aligned. Note that it returns 'false' if \f$ P = Q \f$.
@@ -98,11 +98,11 @@ namespace DGtal
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    typedef typename T::Point Point; 
+    typedef typename T::Point Point;
 
     BOOST_CONCEPT_USAGE( CPolarPointComparator2D )
     {
-      myX.setPole( myP ); 
+      myX.setPole( myP );
 
       checkConstConstraints();
     }
@@ -112,11 +112,11 @@ namespace DGtal
       // something of type B
       concepts::ConceptUtils::sameType( myB, myX( myP, myP ) );
     }
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     T myX; // do not require T to be default constructible.
     Point myP;
-    bool myB; 
+    bool myB;
 
 
   }; // end of concept CPolarPointComparator2D

@@ -51,7 +51,7 @@ namespace DGtal
   // template class LatticeSetByIntervals
   /**
      Description of template class 'LatticeSetByIntervals' <p> \brief Aim:
- 
+
      A class that represents a set of lattice points using intervals
      along a given axis.
 
@@ -72,7 +72,7 @@ namespace DGtal
     using Intervals = IntegralIntervals< Integer >;
     using Interval  = typename Intervals::Interval;
     using Container = std::map< Point, Intervals >;
-    using RowIterator      = typename Container::iterator; 
+    using RowIterator      = typename Container::iterator;
     using RowConstIterator = typename Container::const_iterator;
     using LatticeSetByInterval = std::map< Point, Interval >;
     using Size      = std::size_t;
@@ -81,9 +81,9 @@ namespace DGtal
 
     //------------------- standard services (construction, move) -------------------
   public:
-    /// @name Standard services (construction, move, clear) 
+    /// @name Standard services (construction, move, clear)
     /// @{
-    
+
     /// Constructor from axis.
     /// @param axis the row axis chosen for stacking the points.
     LatticeSetByIntervals( Dimension axis = 0 )
@@ -106,7 +106,7 @@ namespace DGtal
     /// @param other any other object.
     /// @return a reference to this object
     Self& operator=( Self&& other ) = default;
-    
+
     /// Constructor from range of points
     /// @tparam PointIterator any model of input iterator on points.
     /// @param it,itE the range of point
@@ -135,10 +135,10 @@ namespace DGtal
       for ( const auto& aRow : aSet )
         myData[ aRow.first ].data().push_back( aRow.second );
     }
-      
+
     /// Clears the data structure.
     void clear() { myData.clear(); }
-    
+
     /// Change the main axis of projection. If the object is not
     /// empty, it empties the object.
     ///
@@ -181,21 +181,21 @@ namespace DGtal
         }
       return X;
     }
-    
+
     /// @}
-    
+
     //------------------- capacity services -----------------------------
   public:
     /// @name capacity services
     /// @{
-    
+
     /// @return 'true' iff this object represents the empty set.
     /// @return Constant time operation.
     bool empty() const
     {
       return myData.empty();
     }
-      
+
     /// @return the number of lattice points represented in this object.
     ///
     /// @warning The complexity is linear in the number of stored intervals.
@@ -206,7 +206,7 @@ namespace DGtal
         nb += pV.second.size();
       return nb;
     }
-      
+
     /// @return the the maximum number of elements the container is
     /// able to hold due to system or library implementation
     /// limitations.
@@ -216,7 +216,7 @@ namespace DGtal
     }
 
     /// @}
-    
+
     //------------------- modifier services -----------------------------
   public:
     /// @name modifier services
@@ -246,7 +246,7 @@ namespace DGtal
         }
     }
 
-    
+
     /// Eliminates rows that contains no element.
     void purge()
     {
@@ -255,7 +255,7 @@ namespace DGtal
           it = myData.erase( it );
         else ++it;
     }
-    
+
     /// @}
 
     //------------------- set operations --------------------------------
@@ -289,7 +289,7 @@ namespace DGtal
         }
       return *this;
     }
-    
+
     /// Subtract set \a other from this object.
     /// @param other any intervals
     /// @return a reference to this object
@@ -416,12 +416,12 @@ namespace DGtal
     }
 
     /// @}
-    
+
     //------------------- topology operations --------------------------------
   public:
     /// @name topology operations
     /// @{
-    
+
     /// Consider the set of integers as points, transform them into
     /// pointels in Khalimsky coordinates and build their
     /// star. Afterwards points represent cells with their Khalimsky
@@ -568,7 +568,7 @@ namespace DGtal
               Point       q = p;
               q[ k ]        = q[ k ] >> 1;
               bool odd      = ( p[ k ] & 0x1 ) != 0;
-              { // odd/even always copy 
+              { // odd/even always copy
                 auto it = next_E.find( q );
                 if ( it == next_E.end() ) next_E[ q ] = pC.second;
                 else
@@ -612,9 +612,9 @@ namespace DGtal
       std::sort( R.begin(), R.end() );
       return R;
     }
-    
+
     /// @}
-    
+
     //------------------- specific services (interval insertion, removal) -------------
   public:
     /// @name specific services (interval insertion, removal)
@@ -633,7 +633,7 @@ namespace DGtal
       nb += sizeof( Self );
       return nb;
     }
-    
+
     /// @param q any point
     ///
     /// @return the integral intervals corresponding to lattice point
@@ -657,7 +657,7 @@ namespace DGtal
       if ( it != myData.end() ) myData.erase( it );
     }
 
-    
+
     /// The axis along which data is stacked in intervals
     Dimension myAxis;
     /// Associate to each point its sequences of intervals

@@ -141,7 +141,7 @@ cross : PointND | RealPointND
             }, crossProduct_docs.c_str());
 
     const std::string cosineSimilarity_docs =
-R"(Provide angle betwen two vectors, deduced from their scalar product.
+R"(Provide angle between two vectors, deduced from their scalar product.
 
 Parameters
 ----------
@@ -323,7 +323,7 @@ Example of usage:
         });
 
     // Note(phcerdan): A constructor from a py::buffer would be most helpful
-    // in a factory/helper function, which will return the appropiate PointVector type
+    // in a factory/helper function, which will return the appropriate PointVector type
     // i.e PointVector(np.array([2., 3.1, 4.])) will return a RealPoint3D
     py_class.def(py::init([](py::buffer buf) {
         /* Note(phcerdan): Adapted from numpy/stl_bind.h vector_buffer */
@@ -337,7 +337,7 @@ Example of usage:
             throw py::type_error("Format mismatch (Python: " + info.format + " C++: " + py::format_descriptor<TTComponent>::format() + ")");
 
         if(info.shape[0] != TT::dimension)
-            throw py::type_error("Shape missmatch (Python: " + std::to_string(info.shape[0]) + " C++: " + std::to_string(TT::dimension) + ")");
+            throw py::type_error("Shape mismatch (Python: " + std::to_string(info.shape[0]) + " C++: " + std::to_string(TT::dimension) + ")");
 
         TTComponent *p = static_cast<TTComponent*>(info.ptr);
         return TT(p);

@@ -55,9 +55,9 @@ DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSepar
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
 inline
 DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
-VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > _surface, 
+VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > _surface,
                                           Surfel2PointEmbedding _surfelEmbedding,
-                                          Scalar _R, Scalar _r, 
+                                          Scalar _R, Scalar _r,
                                           KernelFunction chi_r,
                                           Scalar t, Metric aMetric, bool verbose )
   : mySurface( _surface ), mySurfelEmbedding( _surfelEmbedding ), myChi( chi_r ),
@@ -101,7 +101,7 @@ VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > _surface,
   typedef functors::HatFunction<Scalar> Functor;
   Functor fct( 1.0, myRadiusTrivial );
   LpMetric<Space> l2(2.0); //L2 metric in R^3 for surface propagation.
-  typedef functors::ElementaryConvolutionNormalVectorEstimator< Surfel, CanonicSCellEmbedder<KSpace> > 
+  typedef functors::ElementaryConvolutionNormalVectorEstimator< Surfel, CanonicSCellEmbedder<KSpace> >
     SurfelFunctor;
   typedef LocalEstimatorFromSurfelFunctorAdapter< DigitalSurfaceContainer, LpMetric<Space>, SurfelFunctor, Functor>
     NormalEstimator;
@@ -112,8 +112,8 @@ VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > _surface,
   estimator.attach( *mySurface);
   estimator.setParams( l2, surfelFct, fct , myRadiusTrivial);
   estimator.init( 1.0,  mySurface->begin(), mySurface->end());
-  i = 0; 
-  std::vector<Point> pts; 
+  i = 0;
+  std::vector<Point> pts;
   int surf_size = mySurface->size();
   for ( ConstIterator it = mySurface->begin(), itE = mySurface->end(); it != itE; ++it )
     {
@@ -147,7 +147,7 @@ inline
 DGtal::CountedConstPtrOrConstPtr< typename DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::Surface >
 DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
 surface() const
-{ 
+{
   return mySurface;
 }
 //-----------------------------------------------------------------------------
@@ -212,7 +212,7 @@ bool
 DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
 getChiVCMEigenvalues( VectorN& values, Surfel s ) const
 {
-  std::vector<Point> pts; 
+  std::vector<Point> pts;
   getPoints( std::back_inserter( pts ), s );
   bool ok = true;
   int i = 0;
@@ -222,7 +222,7 @@ getChiVCMEigenvalues( VectorN& values, Surfel s ) const
     {
       Point p = *itPts;
       typename Point2EigenStructure::const_iterator itEigen = myPt2EigenStructure.find( p );
-      if ( itEigen == myPt2EigenStructure.end() ) 
+      if ( itEigen == myPt2EigenStructure.end() )
         {
           ok = false;
           break;
@@ -241,7 +241,7 @@ bool
 DGtal::VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction>::
 getChiVCMEigenStructure( VectorN& values, MatrixNN& vectors, Surfel s ) const
 {
-  std::vector<Point> pts; 
+  std::vector<Point> pts;
   getPoints( std::back_inserter( pts ), s );
   bool ok = true;
   int i = 0;
@@ -252,7 +252,7 @@ getChiVCMEigenStructure( VectorN& values, MatrixNN& vectors, Surfel s ) const
     {
       Point p = *itPts;
       typename Point2EigenStructure::const_iterator itEigen = myPt2EigenStructure.find( p );
-      if ( itEigen == myPt2EigenStructure.end() ) 
+      if ( itEigen == myPt2EigenStructure.end() )
         {
           ok = false;
           break;
@@ -280,7 +280,7 @@ getPoints( PointOutputIterator outIt, Surfel s ) const
   const KSpace & ks = mySurface->container().space();
   Dimension k = ks.sOrthDir( s );
   switch ( mySurfelEmbedding ) {
-  case Pointels: 
+  case Pointels:
     {
       typename KSpace::Cells faces = ks.uFaces( ks.unsigns( s ) );
       for ( typename KSpace::Cells::const_iterator it = faces.begin(), itE = faces.end();
@@ -299,7 +299,7 @@ getPoints( PointOutputIterator outIt, Surfel s ) const
       // *outIt++ = ks.sCoords( ks.sIncident( l2, j, false ) );
     }
     break;
-  case InnerSpel: 
+  case InnerSpel:
     *outIt++ = ks.sCoords( ks.sDirectIncident( s, k ) );
     break;
   case OuterSpel:
@@ -349,7 +349,7 @@ isValid() const
 template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		  const VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction> & object )
 {
   object.selfDisplay( out );
@@ -358,5 +358,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

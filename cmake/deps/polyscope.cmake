@@ -21,17 +21,17 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG_OLD}")
 function(cleanup_target target include_paths)
   get_property(target_include_dir TARGET ${target} PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
   set_target_properties(${target} PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "")
-  target_include_directories(${target} 
+  target_include_directories(${target}
     INTERFACE
     $<BUILD_INTERFACE:${target_include_dir}>
-    $<INSTALL_INTERFACE:${DGTAL_INSTALL_DEPS_DESTINATION}/${target}> 
+    $<INSTALL_INTERFACE:${DGTAL_INSTALL_DEPS_DESTINATION}/${target}>
   )
-  
+
   if (NOT ${include_paths})
-    foreach(path ${include_paths}) 
+    foreach(path ${include_paths})
       target_include_directories(${target}
         INTERFACE
-          $<INSTALL_INTERFACE:${DGTAL_INSTALL_DEPS_DESTINATION}/${target}/${path}> 
+          $<INSTALL_INTERFACE:${DGTAL_INSTALL_DEPS_DESTINATION}/${target}/${path}>
       )
     endforeach()
   endif()
@@ -44,7 +44,7 @@ function(cleanup_target target include_paths)
       FILE ${target}Config.cmake
       DESTINATION ${DGTAL_INSTALL_CMAKE_DESTINATION}
   )
-  
+
   get_property(target_dir TARGET ${target} PROPERTY SOURCE_DIR)
   install(DIRECTORY ${target_dir} DESTINATION ${DGTAL_INSTALL_DEPS_DESTINATION}/${target})
 endfunction()

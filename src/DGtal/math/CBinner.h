@@ -80,7 +80,7 @@ continuous random variable.
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-| construction | \c X( \e m, \e M, \e n ) | \e m and \e M are \c Quantity, \e n is a \c Bin | | | | Constructs a binner with \e n bins and range from \e m to \e M | | | 
+| construction | \c X( \e m, \e M, \e n ) | \e m and \e M are \c Quantity, \e n is a \c Bin | | | | Constructs a binner with \e n bins and range from \e m to \e M | | |
 | apply | \e x( \e q ) | \e q is a \c Quantity | \c Bin  |              | returns the bin in which fall \e q | | |
 
 # Invariants
@@ -114,13 +114,13 @@ public:
   {
     ConceptUtils::sameType( myBin, myX( myQ ) );
   }
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
 private:
   T myX; // do not require T to be default constructible.
   Quantity myQ;
   Bin myBin;
   T* myClone;
-  
+
     // ------------------------- Internals ------------------------------------
 private:
 

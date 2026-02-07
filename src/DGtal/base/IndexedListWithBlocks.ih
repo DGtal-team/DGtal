@@ -55,7 +55,7 @@ Iterator()
 template <typename TValue, unsigned int N, unsigned int M>
 DGtal::IndexedListWithBlocks<TValue, N, M>::Iterator::
 Iterator( const Self & other)
-  : myIdx( other.myIdx ), myNbValues( other.myNbValues ), 
+  : myIdx( other.myIdx ), myNbValues( other.myNbValues ),
     myValues( other.myValues ), myNext( other.myNext )
 {}
 //-----------------------------------------------------------------------------
@@ -123,8 +123,8 @@ operator=( const Self & other )
 {
   if ( this != &other )
     {
-      myIdx = other.myIdx; 
-      myNbValues = other.myNbValues; 
+      myIdx = other.myIdx;
+      myNbValues = other.myNbValues;
       myValues = other.myValues;
       myNext = other.myNext;
     }
@@ -143,7 +143,7 @@ operator*() const
 //-----------------------------------------------------------------------------
 template <typename TValue, unsigned int N, unsigned int M>
 inline
-typename DGtal::IndexedListWithBlocks<TValue, N, M>::Iterator::Pointer 
+typename DGtal::IndexedListWithBlocks<TValue, N, M>::Iterator::Pointer
 DGtal::IndexedListWithBlocks<TValue, N, M>::Iterator::
 operator->() const
 {
@@ -193,7 +193,7 @@ template <typename TValue, unsigned int N, unsigned int M>
 inline
 typename DGtal::IndexedListWithBlocks<TValue, N, M>::Iterator::Self &
 DGtal::IndexedListWithBlocks<TValue, N, M>::Iterator::
-operator+=( DifferenceType n ) 
+operator+=( DifferenceType n )
 {
   myIdx += n;
   while ( myIdx >= myNbValues )
@@ -209,7 +209,7 @@ operator+=( DifferenceType n )
       myNbValues = M;
       myNext = myNext->next;
     }
-  return *this;  
+  return *this;
 }
 //-----------------------------------------------------------------------------
 template <typename TValue, unsigned int N, unsigned int M>
@@ -240,7 +240,7 @@ ConstIterator()
 template <typename TValue, unsigned int N, unsigned int M>
 DGtal::IndexedListWithBlocks<TValue, N, M>::ConstIterator::
 ConstIterator( const Self & other)
-  : myIdx( other.myIdx ), myNbValues( other.myNbValues ), 
+  : myIdx( other.myIdx ), myNbValues( other.myNbValues ),
     myValues( other.myValues ), myNext( other.myNext )
 {}
 //-----------------------------------------------------------------------------
@@ -308,8 +308,8 @@ operator=( const Self & other )
 {
   if ( this != &other )
     {
-      myIdx = other.myIdx; 
-      myNbValues = other.myNbValues; 
+      myIdx = other.myIdx;
+      myNbValues = other.myNbValues;
       myValues = other.myValues;
       myNext = other.myNext;
     }
@@ -328,7 +328,7 @@ operator*() const
 //-----------------------------------------------------------------------------
 template <typename TValue, unsigned int N, unsigned int M>
 inline
-typename DGtal::IndexedListWithBlocks<TValue, N, M>::ConstIterator::Pointer 
+typename DGtal::IndexedListWithBlocks<TValue, N, M>::ConstIterator::Pointer
 DGtal::IndexedListWithBlocks<TValue, N, M>::ConstIterator::
 operator->() const
 {
@@ -378,7 +378,7 @@ template <typename TValue, unsigned int N, unsigned int M>
 inline
 typename DGtal::IndexedListWithBlocks<TValue, N, M>::ConstIterator::Self &
 DGtal::IndexedListWithBlocks<TValue, N, M>::ConstIterator::
-operator+=( DifferenceType n ) 
+operator+=( DifferenceType n )
 {
   myIdx += n;
   while ( myIdx >= myNbValues )
@@ -394,7 +394,7 @@ operator+=( DifferenceType n )
       myNbValues = M;
       myNext = myNext->next;
     }
-  return *this;  
+  return *this;
 }
 //-----------------------------------------------------------------------------
 template <typename TValue, unsigned int N, unsigned int M>
@@ -407,7 +407,7 @@ operator[]( DifferenceType n ) const
   tmp += n;
   return *tmp;
 }
-      
+
 
 //-----------------------------------------------------------------------------
 template <typename TValue, unsigned int N, unsigned int M>
@@ -453,7 +453,7 @@ operator=( const IndexedListWithBlocks & other )
       clear();
       myFirstBlock = other.myFirstBlock;
       // there is one more stored value in the last block.
-      unsigned int s = N + 1; 
+      unsigned int s = N + 1;
       const AnyBlock* nextBlock = other.myFirstBlock.data.nextBlock;
       AnyBlock** currentPointer = & myFirstBlock.data.nextBlock;
       while ( s < myFirstBlock.size  )
@@ -675,7 +675,7 @@ DGtal::IndexedListWithBlocks<TValue, N, M>::isValid() const
 template <typename TValue, unsigned int N, unsigned int M>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		    const IndexedListWithBlocks<TValue, N, M> & object )
 {
   object.selfDisplay( out );
@@ -684,5 +684,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

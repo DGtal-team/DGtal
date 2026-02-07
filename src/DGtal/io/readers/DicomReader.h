@@ -97,16 +97,16 @@ namespace DGtal
     typedef typename TImageContainer::Value Value;
     typedef TFunctor Functor;
     typedef int32_t PixelType;
-    
+
     BOOST_CONCEPT_ASSERT((  concepts::CImage<ImageContainer> )) ;
     BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<Functor, PixelType, Value > )) ;
     BOOST_STATIC_ASSERT(( TImageContainer::Domain::dimension == 3 ));
-    
+
     /**
-     * Main method to import a Dicom serie into an instance of the
+     * Main method to import a Dicom series into an instance of the
      * template parameter ImageContainer.
      *
-     * @param aFilename one file of the serie to import.
+     * @param aFilename one file of the series to import.
      * @param aFunctor the functor used to import and cast the source
      * image values into the type of the image container value (by
      * default set to functors::Cast < TImageContainer::Value >.
@@ -115,12 +115,12 @@ namespace DGtal
      */
     static ImageContainer importDicom( const std::string & aFilename,
 				       const Functor & aFunctor = Functor());
-    
+
     /**
-     * Main method to import a Dicom serie into an instance of the
+     * Main method to import a Dicom series into an instance of the
      * template parameter ImageContainer.
      *
-     * @param filenames files of the serie to import.
+     * @param filenames files of the series to import.
      * @param aFunctor the functor used to import and cast the source
      * image values into the type of the image container value (by
      * default set to functors::Cast < TImageContainer::Value >.
@@ -129,14 +129,14 @@ namespace DGtal
      */
     static ImageContainer importDicomSeries( const std::vector<std::string> & filenames,
 					     const Functor & aFunctor = Functor());
-    
+
   private:
 
     template <typename Domain, typename PixelType>
     static inline ImageContainerByITKImage<Domain, PixelType>
     importDicomFiles_( const std::vector<std::string> & filenames );
 
-    
+
     template <typename Image, typename Domain, typename OutPixelType,
               typename PixelType>
     struct Aux
@@ -155,8 +155,8 @@ namespace DGtal
       importDicomFiles( const std::vector<std::string> & filenames,
 		        const TFunctor & aFunctor );
     };
-    
-    
+
+
     template <typename PixelType>
     static inline TImageContainer
     importDicomFiles(const std::vector<std::string> & filenames,

@@ -60,7 +60,7 @@ namespace DGtal
   // template class CDomainArchetype
   /**
     Description of template class 'CDomainArchetype' <p>
-    @ingroup Archetypes 
+    @ingroup Archetypes
     @brief Aim: The archetype of a class that represents a digital
     domain, i.e. a non mutable subset of points of the given digital
     space.
@@ -118,13 +118,13 @@ namespace DGtal
     /**
      * @return an iterator on the first element of the domain.
      **/
-    ConstIterator begin(const Point &aPoint) const 
+    ConstIterator begin(const Point &aPoint) const
     { return DummyObject<ConstIterator>::get(); }
 
     /**
      * @return an iterator on the first element of the domain.
      **/
-    ConstIterator begin() const 
+    ConstIterator begin() const
     { return DummyObject<ConstIterator>::get(); }
 
     /**
@@ -196,5 +196,3 @@ namespace DGtal
 
 #undef CDomainArchetype_RECURSES
 #endif // else defined(CDomainArchetype_RECURSES)
-
-

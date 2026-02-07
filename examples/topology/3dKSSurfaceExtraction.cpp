@@ -32,8 +32,8 @@
  *  KhalimskyCell. This program outputs these images:
  *
  *  @see \ref dgtal_helpsurf_sec3
- *  
- *  @image html KSurfelsConnectedOrientExt.png 
+ *
+ *  @image html KSurfelsConnectedOrientExt.png
  *  \example  topology/3dKSSurfaceExtraction.cpp
  */
 
@@ -113,7 +113,7 @@ int main()
   PolyscopeViewer<> viewer (K);
 
 
-  // Each connected compoments are simply displayed with a specific color.
+  // Each connected components are simply displayed with a specific color.
   GradientColorMap<long> gradient(0, vectConnectedSCell.size());
   gradient.addColor(Color::Red);
   gradient.addColor(Color::Yellow);

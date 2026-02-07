@@ -173,7 +173,7 @@ TEST_CASE("Testing PlaneProbingTetrahedronEstimator")
 
         REQUIRE(nbOk == 100);
     }
-    
+
     SECTION("H , R and L algorithms should return the correct normal, R and L algorithms a reduced basis with BigInteger")
     {
         using Point = PointVector<3, BigInteger>;
@@ -196,14 +196,14 @@ TEST_CASE("Testing PlaneProbingTetrahedronEstimator")
 		   estimatedR = estimator.compute();
 		   isReducedR = estimator.isReduced();
                  });
-	    
+
             TestPlaneProbingTetrahedronEstimator<BigInteger, ProbingMode::L>::compute
                 (n,
                  [&] (TestPlaneProbingTetrahedronEstimator<BigInteger, ProbingMode::L>::Estimator& estimator) {
                     estimatedL = estimator.compute();
                     isReducedL = estimator.isReduced();
                  });
-	    
+
             if (estimatedH == n && estimatedR == estimatedH && estimatedL == estimatedH
 		&& !isReducedH && isReducedR && isReducedL)
             {

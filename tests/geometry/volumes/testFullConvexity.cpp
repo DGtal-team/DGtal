@@ -105,7 +105,7 @@ SCENARIO( "DigitalConvexity< Z2 > ball tests", "[digital_convexity][2d]" )
     typedef DigitalConvexity< KSpace >       DConvexity;
     typedef HyperRectDomain< Space >         Domain;
     typedef DigitalSetBySTLSet< Domain >     DigitalSet;
-    
+
     Point      lo = Point::diagonal( -7 );
     Point      hi = Point::diagonal(  7 );
     Point      c  = Point::zero;
@@ -132,7 +132,7 @@ SCENARIO( "DigitalConvexity< Z3 > ball tests", "[digital_convexity][3d]" )
     typedef DigitalConvexity< KSpace >       DConvexity;
     typedef HyperRectDomain< Space >         Domain;
     typedef DigitalSetBySTLSet< Domain >     DigitalSet;
-    
+
     Point      lo = Point::diagonal( -7 );
     Point      hi = Point::diagonal(  7 );
     Point      c  = Point::zero;
@@ -160,7 +160,7 @@ SCENARIO( "DigitalConvexity< Z4 > ball tests", "[digital_convexity][4d]" )
     typedef DigitalConvexity< KSpace >       DConvexity;
     typedef HyperRectDomain< Space >         Domain;
     typedef DigitalSetBySTLSet< Domain >     DigitalSet;
-    
+
     Point      lo = Point::diagonal( -7 );
     Point      hi = Point::diagonal(  7 );
     Point      c  = Point::zero;
@@ -178,4 +178,3 @@ SCENARIO( "DigitalConvexity< Z4 > ball tests", "[digital_convexity][4d]" )
     }
   }
 }
-

@@ -142,7 +142,7 @@ bool testGetSetVal()
 
   trace.info() << myImage;
   trace.endBlock();
-  
+
 
   trace.beginBlock("SetVal");
   for( a[1] = 0; a[1] < 256; a[1]++)
@@ -157,14 +157,14 @@ bool testGetSetVal()
   else
     if ( pow((double)(a[0]-128),3.0) - pow((double)(a[1]-128),3.0) < pow(64.0,3.0))
       {
-        myImage.setValue(a, 10);  
+        myImage.setValue(a, 10);
         myImageV.setValue(a,10);
       }
       }
   trace.endBlock();
-  
+
   bool result=true;
-  
+
   trace.beginBlock("GetVal consistency test");
   for( a[1] = 0; a[1] < 256; a[1]++)
     for( a[0] = 0; a[0] < 256; a[0]++)
@@ -173,17 +173,17 @@ bool testGetSetVal()
     result = result && (myImage(a) == 30);
   else
     if ( pow((a[0]-128),3.0) - pow((a[1]-128),3.0) < pow(64,3.0))
-      result = result && (myImage(a) == 10);      
+      result = result && (myImage(a) == 10);
       }
   trace.endBlock();
-  
+
   if (result)
     trace.info() << "Get/Set test passed"<<std::endl;
   else
     trace.error() << "Get/Set test error"<<std::endl;
   nbok += result ? 1 : 0;
   nb++;
-  
+
   trace.info() << myImage;
   trace.info() << myImageV;
 
@@ -192,11 +192,11 @@ bool testGetSetVal()
   board.clear();
   Display2DFactory::drawImage<HueTwice>(board, myImageV, 0, 255);
   board.saveSVG( "hashtree-vector.svg" );
-  
+
 
   ///Domain characterized by points
   Image myImage2 ( 5, 8, 0 );
-  
+
   trace.beginBlock("SetVal (keysize=5)");
   for( a[1] = 0; a[1] < 256; a[1]++)
     for( a[0] = 0; a[0] < 256; a[0]++)
@@ -205,12 +205,12 @@ bool testGetSetVal()
     myImage2.setValue(a, 30);
   else
     if ( pow((a[0]-128),3.0) - pow((a[1]-128),3.0) < pow(64,3.0))
-      myImage2.setValue(a, 10);  
+      myImage2.setValue(a, 10);
       }
   trace.endBlock();
-  
+
   result=true;
-  
+
   trace.beginBlock("GetVal consistency test  (keysize=5)");
   for( a[1] = 0; a[1] < 256; a[1]++)
     for( a[0] = 0; a[0] < 256; a[0]++)
@@ -219,17 +219,17 @@ bool testGetSetVal()
     result = result && (myImage2(a) == 30);
   else
     if ( pow((a[0]-128),3.0) - pow((a[1]-128),3.0) < pow(64,3.0))
-      result = result && (myImage2(a) == 10);      
+      result = result && (myImage2(a) == 10);
       }
   trace.endBlock();
-  
+
   if (result)
     trace.info() << "Get/Set test passed"<<std::endl;
   else
     trace.error() << "Get/Set test error"<<std::endl;
   nbok += result ? 1 : 0;
   nb++;
-  
+
   trace.warning() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
 
@@ -261,7 +261,7 @@ bool testBadKeySizes()
   //  Image myImage2 ( 80, 8, 0 );
   //trace.info() << myImage2;
   trace.endBlock();
-  
+
   //Default image selector = STLVector
   typedef experimental::ImageContainerByHashTree<TDomain, unsigned int, DGtal::uint32_t> Image2;
   trace.beginBlock ( "Changing the HashKey type" );
@@ -270,7 +270,7 @@ bool testBadKeySizes()
   trace.endBlock();
 
 
-  return true;  
+  return true;
 }
 
 //////////////////////////////////////////////////////////////////////////////

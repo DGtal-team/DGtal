@@ -15,7 +15,7 @@ if (  DGTAL_WITH_POLYSCOPE_VIEWER )
   distancetransform3D
   exampleFMM3D
    )
-  foreach(FILE ${DGTAL_EXAMPLES_POLYSCOPE_SRC}) 
+  foreach(FILE ${DGTAL_EXAMPLES_POLYSCOPE_SRC})
      DGtal_add_example(${FILE})
   endforeach()
 

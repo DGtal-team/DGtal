@@ -87,7 +87,7 @@ namespace DGtal
 
     ///////////////////////////////////////////////////////////////////////////////
     // Interface - public :
-    
+
     template <typename TDomain, typename TValue>
     void
     ImageContainerByITKImage<TDomain, TValue>::updateDomain(const Point & inputDomainShift)
@@ -295,7 +295,7 @@ namespace DGtal
     {
       return getPhysicalPointFromDomainPoint(myDomain.upperBound());
     }
-    
+
     template<typename TDomain, typename TValue>
     inline
     typename ImageContainerByITKImage<TDomain, TValue>::ImageSpacing
@@ -317,7 +317,7 @@ namespace DGtal
          is[k] = s[k];
       myITKImagePointer->SetSpacing(is);
     }
-    
+
   ///////////////////////////////////////////////////////////////////////////////
   // Implementation of inline functions                                        //
 
@@ -333,5 +333,3 @@ namespace DGtal
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

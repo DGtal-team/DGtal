@@ -33,8 +33,8 @@
  *   these images:
  *
  * @see \ref dgtal_helpsurf_sec4
- * 
- * @image html ctopo-fillContours.png 
+ *
+ * @image html ctopo-fillContours.png
  * \example  topology/ctopo-fillContours.cpp
  */
 
@@ -59,83 +59,83 @@ using namespace DGtal;
 int main( int /*argc*/, char** /*argv*/ )
 {
   trace.beginBlock ( "Example ctopo-fillContours" );
-  DGtal::KhalimskySpaceND< 2, int > K; 
+  DGtal::KhalimskySpaceND< 2, int > K;
   K.init(Z2i::Point(0, 10),  Z2i::Point(20, 30), false);
-  
+
   // We choose a direct and indirect oriented contour.
   //! [ctopoFillContoursInit]
   FreemanChain<int> fc1 ("001001001001001111101111011222222223222222322233333330301033333003", 6, 14);
-  FreemanChain<int> fc2 ("1111000033332222", 6, 20);  
+  FreemanChain<int> fc2 ("1111000033332222", 6, 20);
   //! [ctopoFillContoursInit]
-  
+
   Board2D aBoard;
   Board2D aBoard2;
   aBoard << K.lowerBound() << K.upperBound() ;
   aBoard2 << K.lowerBound() << K.upperBound() ;
-    
+
   //From the FreemanChain we can get a vector of SCell wrapped in a SurfelSetPredicate with sign defined from the FreemanChain orientation:
   //! [ctopoFillContoursGetSCells]
-  
+
   typedef  KhalimskySpaceND<2, int>::SCell SCell;
   std::set<DGtal::KhalimskySpaceND< 2, int >::SCell> boundarySCell;
-  FreemanChain<int>::getInterPixelLinels(K, fc1, boundarySCell, false); 
+  FreemanChain<int>::getInterPixelLinels(K, fc1, boundarySCell, false);
   //! [ctopoFillContoursGetSCells]
-  
+
   aBoard << CustomStyle((*boundarySCell.begin()).className(),  new CustomColors(DGtal::Color::Red, DGtal::Color::Red) );
-  for( std::set<DGtal::KhalimskySpaceND< 2, int >::SCell>::const_iterator it= boundarySCell.begin();  
+  for( std::set<DGtal::KhalimskySpaceND< 2, int >::SCell>::const_iterator it= boundarySCell.begin();
        it!= boundarySCell.end(); it++){
     aBoard << *it;
   }
-  
+
   // We can also add other freeman chains with indirect orientation to construct a hole in interior of the shape:
   //! [ctopoFillContoursGetSCellsHole]
   std::set<DGtal::KhalimskySpaceND< 2, int >::SCell> boundarySCellhole;
-  FreemanChain<int>::getInterPixelLinels(K, fc2, boundarySCellhole, false); 
+  FreemanChain<int>::getInterPixelLinels(K, fc2, boundarySCellhole, false);
   //! [ctopoFillContoursGetSCellsHole]
-  
-  
+
+
   aBoard << CustomStyle((*boundarySCell.begin()).className(),  new CustomColors(DGtal::Color::Blue, DGtal::Color::Blue) );
   aBoard2 << CustomStyle((*boundarySCell.begin()).className(),  new CustomColors(DGtal::Color::Blue, DGtal::Color::Blue) );
-  
- 
-  
+
+
+
    for( std::set<DGtal::KhalimskySpaceND< 2, int >::SCell>::const_iterator it= boundarySCellhole.begin();  it!= boundarySCellhole.end(); it++){
     aBoard << *it;
     aBoard2 << *it;
     boundarySCell.insert(*it);
   }
-  
-  
-  // Now we can compute the unsigned cell associated to interior pixels: 
+
+
+  // Now we can compute the unsigned cell associated to interior pixels:
 
   //! [ctopoFillContoursFillRegion]
   typedef ImageContainerBySTLMap< Z2i::Domain, bool> BoolImage2D;
   BoolImage2D::Domain imageDomain( Z2i::Point(0,10), Z2i::Point(20,30) );
   BoolImage2D interiorCellImage( imageDomain );
-  Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uFillInterior(K, functors::SurfelSetPredicate<std::set<SCell>,SCell>(boundarySCell), 
-                                                              interiorCellImage, 1, false);  
+  Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uFillInterior(K, functors::SurfelSetPredicate<std::set<SCell>,SCell>(boundarySCell),
+                                                              interiorCellImage, 1, false);
   //! [ctopoFillContoursFillRegion]
 
   aBoard << CustomStyle(K.lowerCell().className(),  new CustomColors(DGtal::Color::None, Color(200, 200, 200)) );
-  for(BoolImage2D::Domain::ConstIterator it = interiorCellImage.domain().begin(); 
+  for(BoolImage2D::Domain::ConstIterator it = interiorCellImage.domain().begin();
       it!=interiorCellImage.domain().end(); it++){
     if(interiorCellImage(*it)){
       aBoard << K.uSpel(*it);
     }
   }
-  
-  
-  // We can also compute the unsigned cell associated to interior and exterior pixels: 
+
+
+  // We can also compute the unsigned cell associated to interior and exterior pixels:
   //! [ctopoFillContoursFillRegionHoles]
   BoolImage2D interiorCellHoleImage( imageDomain );
   BoolImage2D exteriorCellHoleImage( imageDomain );
 
-  
-  Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uFillInterior(K, functors::SurfelSetPredicate<std::set<SCell>, SCell>(boundarySCellhole), 
-                                                              interiorCellHoleImage, 1, true);  
-  Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uFillExterior(K, functors::SurfelSetPredicate<std::set<SCell>, SCell>(boundarySCellhole), 
-                                                              exteriorCellHoleImage, 1,  false);  
-  //! [ctopoFillContoursFillRegionHoles]  
+
+  Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uFillInterior(K, functors::SurfelSetPredicate<std::set<SCell>, SCell>(boundarySCellhole),
+                                                              interiorCellHoleImage, 1, true);
+  Surfaces<DGtal::KhalimskySpaceND< 2, int > >::uFillExterior(K, functors::SurfelSetPredicate<std::set<SCell>, SCell>(boundarySCellhole),
+                                                              exteriorCellHoleImage, 1,  false);
+  //! [ctopoFillContoursFillRegionHoles]
 
   aBoard2 << CustomStyle(K.lowerCell().className(),
                           new CustomColors(DGtal::Color::None, Color(200, 200, 200)) );
@@ -147,13 +147,13 @@ int main( int /*argc*/, char** /*argv*/ )
   }
   aBoard2 << CustomStyle(K.lowerCell().className(),
                          new CustomColors(DGtal::Color::None, Color(100, 100, 100)) );
-  for(BoolImage2D::Domain::ConstIterator it = exteriorCellHoleImage.domain().begin(); 
+  for(BoolImage2D::Domain::ConstIterator it = exteriorCellHoleImage.domain().begin();
       it!=exteriorCellHoleImage.domain().end(); it++){
     if(exteriorCellHoleImage(*it)){
       aBoard2 << K.uSpel(*it);
     }
   }
-  
+
   aBoard.saveEPS("example_ctopo-fillContours.eps");
   aBoard.saveFIG("example_ctopo-fillContours.fig");
 

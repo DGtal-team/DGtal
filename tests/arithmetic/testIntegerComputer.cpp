@@ -49,29 +49,29 @@ bool testGCD( const IntegerComputer<Integer> & ic )
   Integer a = rand();
   Integer b = rand();
   Integer g = ic.gcd( a, b );
-  trace.info() << "GCD(" << a << "," << b << ")" 
+  trace.info() << "GCD(" << a << "," << b << ")"
                << " = " << g << std::endl;
   Integer ra = a % g;
   Integer rb = b % g;
-  nbok += ic.isZero( ra ) ? 1 : 0; 
+  nbok += ic.isZero( ra ) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << a << " % " << g << " == 0" << std::endl;
-  nbok += ic.isZero( rb ) ? 1 : 0; 
+  nbok += ic.isZero( rb ) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << b << " % " << g << " == 0" << std::endl;
   a /= g; b /= g;
   g = ic.gcd( a, b );
-  nbok += g == Integer( 1 ) ? 1 : 0; 
+  nbok += g == Integer( 1 ) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "GCD(" << a << "," << b << ") == 1" << std::endl;
-  Integer c = rand(); 
+  Integer c = rand();
   ++c; // avoids zero.
   a *= c; b *= c;
   ic.getGcd( g, a, b );
-  nbok += g == c ? 1 : 0; 
+  nbok += g == c ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "GCD(" << a << "," << b << ") == " << c << std::endl;
@@ -89,7 +89,7 @@ bool testCFrac( const IntegerComputer<Integer> & ic )
   trace.info() << "a / b = " << a << " / " << b << std::endl;
   std::vector<Integer> quotients;
   Integer g2 = ic.getCFrac( quotients, a, b );
-  nbok += g == g2 ? 1 : 0; 
+  nbok += g == g2 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << g << " == " << g2 << std::endl;
@@ -101,13 +101,13 @@ bool testCFrac( const IntegerComputer<Integer> & ic )
   double da = NumberTraits<Integer>::castToDouble( a );
   double db = NumberTraits<Integer>::castToDouble( b );
   double q = floor( da / db );
-  nbok += Integer( (int) q ) == quotients[ 0 ] ? 1 : 0; 
+  nbok += Integer( (int) q ) == quotients[ 0 ] ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << q << " == " << quotients[ 0 ] << std::endl;
   typedef typename IntegerComputer<Integer>::Point2I Point2I;
   Point2I p = ic.convergent( quotients, quotients.size() );
-  nbok += p[ 0 ] == ( a / g ) ? 1 : 0; 
+  nbok += p[ 0 ] == ( a / g ) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "convergent p[ 0 ] " << p[ 0 ] << " == a / g " << std::endl;
@@ -126,23 +126,23 @@ bool testCeilFloorDiv( const IntegerComputer<Integer> & ic )
   Integer a = rand();
   a -= rand();
   Integer b = rand();
-  b -= rand(); 
+  b -= rand();
   if ( ic.isZero( b ) ) ++b;
   trace.info() << "- a / b = " << a << " / " << b << std::endl;
   Integer fl = ic.floorDiv( a, b );
   Integer ce = ic.ceilDiv( a, b );
   Integer fl2, ce2;
   ic.getFloorCeilDiv( fl2, ce2, a, b );
-  nbok += fl == fl2 ? 1 : 0; 
+  nbok += fl == fl2 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "fl == fl2 " << fl2 << std::endl;
-  nbok += ce == ce2 ? 1 : 0; 
+  nbok += ce == ce2 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "ce == ce2 " << ce2 << std::endl;
   Integer m = a % b;
-  nbok += ( ( m == 0 ) && ( fl == ce ) ) || ( fl + 1 == ce ) ? 1 : 0; 
+  nbok += ( ( m == 0 ) && ( fl == ce ) ) || ( fl + 1 == ce ) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "( ( m == 0 ) && ( fl == ce ) ) || ( fl+1 == ce )"
@@ -159,15 +159,15 @@ bool testExtendedEuclid( const IntegerComputer<Integer> & ic )
   Integer a = rand();
   Integer b = rand();
   Integer g = ic.gcd( a, b );
-  trace.info() << "a / b = " << a << " / " << b 
+  trace.info() << "a / b = " << a << " / " << b
                << " gcd=" << g << std::endl;
   Point2I v = ic.extendedEuclid( a, b, g );
   trace.info() << "Bezout = " << v[ 0 ] << "," << v[ 1 ] << std::endl;
   Integer rem = a * v[ 0 ] + b * v[ 1 ];
-  nbok += rem == g ? 1 : 0; 
+  nbok += rem == g ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-	       << "a * v[ 0 ] + b * v[ 1 ] == g " 
+	       << "a * v[ 0 ] + b * v[ 1 ] == g "
                << "(" << rem << " == " << g << ")" << std::endl;
   return nbok == nb;
 }
@@ -199,7 +199,7 @@ bool testCoefficientIntersection( const IntegerComputer<Integer> & ic )
                << " <= c = " << c
                << " <= c2 = " << c2 << std::endl;
   nbok += ( ( c1 == c2 ) && ( c == c1 ) )
-    || ( ( c1 <= c ) && ( c < c2 ) ) ? 1 : 0; 
+    || ( ( c1 <= c ) && ( c < c2 ) ) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "( ( c1 == c2 ) && ( c == c1 ) ) || ( ( c1 <= c ) && ( c < c2 ) )" << std::endl;
@@ -312,7 +312,7 @@ bool testIntegerComputer()
     }
   trace.info() << "(" << nbok << "/" << nb << ") coefficient intersection." << std::endl;
   trace.endBlock();
-  
+
   trace.beginBlock ( "Testing block: multiple valid bezout." );
   for ( unsigned int i = 0; i < nbtests; ++i )
     {
@@ -321,7 +321,7 @@ bool testIntegerComputer()
     }
   trace.info() << "(" << nbok << "/" << nb << ") valid bezout." << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 

@@ -69,7 +69,7 @@ namespace DGtal
     typedef double Value;
 
     /**
-     * Constructor. Contructs a rounded hypercube with center aCenter and width
+     * Constructor. Constructs a rounded hypercube with center aCenter and width
      * aWidth.
      *
      * @param aCenter the cube center.
@@ -99,7 +99,7 @@ namespace DGtal
      * the function value at p. In Shapes, positive values are used to
      * construct a set.
      *
-     * @param aPoint the point to evalute the function at.
+     * @param aPoint the point to evaluate the function at.
      * @return the distance of aPoint to the ball center.
      */
     inline
@@ -116,7 +116,7 @@ namespace DGtal
     /**
      * Return true if the given point belongs to the shape.
      *
-     * @param aPoint the point to evalute the function at.
+     * @param aPoint the point to evaluate the function at.
      * @return true if aPoint belongs to the shape.
      */
     inline
@@ -202,9 +202,9 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     ///Cube center

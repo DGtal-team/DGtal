@@ -28,20 +28,20 @@
 
 #include <boost/iostreams/filtering_stream.hpp>
 
-namespace DGtal 
+namespace DGtal
 {
   template<typename Stream, typename Int>
-  static inline void writeBinInt(Stream& stream, Int i) 
+  static inline void writeBinInt(Stream& stream, Int i)
   {
-    boost::endian::native_to_little_inplace(i); 
+    boost::endian::native_to_little_inplace(i);
     stream.write(reinterpret_cast<const char*>(&i), sizeof(Int));
   }
 
   template<class Space>
-  bool SVOWriter<Space>::exportSVO(const std::string& filename, const DigitalSetByOctree<Space>& octree, bool compressed) 
+  bool SVOWriter<Space>::exportSVO(const std::string& filename, const DigitalSetByOctree<Space>& octree, bool compressed)
   {
     using Octree = DigitalSetByOctree<Space>;
-    
+
     std::ofstream out(filename.c_str(), std::ios_base::out | std::ios::binary);
     if (!out) {
       trace.error() << "Can't open file '" << filename << "'" << std::endl;
@@ -78,12 +78,12 @@ namespace DGtal
     writeBinInt(outData, static_cast<int64_t>(sizeof(typename Octree::CellIndex)));
 
     writeBinInt(outData, (typename Octree::Size)nodes.size());
-    for (size_t i = 0; i < nodes.size(); ++i) 
+    for (size_t i = 0; i < nodes.size(); ++i)
       writeBinInt(outData, (typename Octree::Size)nodes[i].size());
 
-    for (size_t i = 0; i < nodes.size(); ++i) 
-      for (size_t j = 0; j < nodes[i].size(); ++j) 
-        for (size_t k = 0; k < Octree::CELL_COUNT; ++k) 
+    for (size_t i = 0; i < nodes.size(); ++i)
+      for (size_t j = 0; j < nodes[i].size(); ++j)
+        for (size_t k = 0; k < Octree::CELL_COUNT; ++k)
           writeBinInt(outData, nodes[i][j].children[k]);
 
     return true;

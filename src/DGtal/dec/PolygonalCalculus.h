@@ -53,7 +53,7 @@ namespace DGtal
      * digital surfaces using an estimated normal vector field (see @cite coeurjolly2022simple).
      *
      * @note when used in PolygonalCalculus, all operators being invariant by translation, all
-     * tangent planes pass through the origin (0,0,0) (no offest).
+     * tangent planes pass through the origin (0,0,0) (no offset).
      *
      * @tparam TRealPoint a model of points @f$\mathbb{R}^3@f$ (e.g. PointVector).
      * @tparam TRealVector a model of vectors in @f$\mathbb{R}^3@f$ (e.g. PointVector).
@@ -68,11 +68,11 @@ namespace DGtal
       typedef typename MySurfaceMesh::Face Face;
       ///Position type
       typedef typename MySurfaceMesh::RealPoint Real3dPoint;
-      
+
       EmbedderFromNormalVectors() = delete;
-      
+
       /// Constructor from an array of normal vectors and a surface mesh instance.
-      /// @param normals a vector of per face normal vectors (same ordering as the SurfaceMesh face indicies).
+      /// @param normals a vector of per face normal vectors (same ordering as the SurfaceMesh face indices).
       /// @param surfmesh an instance of SurfaceMesh
       EmbedderFromNormalVectors(ConstAlias<std::vector<Real3dPoint>> normals,
                                 ConstAlias<MySurfaceMesh> surfmesh)
@@ -80,7 +80,7 @@ namespace DGtal
         myNormals     = &normals;
         mySurfaceMesh = &surfmesh;
       }
-      
+
       /// Project a face vertex onto its tangent plane (given by the per-face estimated
       /// normal vector).
       ///
@@ -92,16 +92,16 @@ namespace DGtal
         Real3dPoint p = mySurfaceMesh->position(v);
         return p - nn.dot(p)*nn;
       }
-      
+
       ///Alias to the normal vectors
       const std::vector<Real3dPoint> *myNormals;
       ///Alias to the surface mesh
       const MySurfaceMesh *mySurfaceMesh;
     };
   }
-  
-  
-  
+
+
+
 /////////////////////////////////////////////////////////////////////////////
 // template class PolygonalCalculus
 /**
@@ -129,14 +129,14 @@ class PolygonalCalculus
 {
   // ----------------------- Standard services ------------------------------
 public:
-  
+
   ///Concept checking
   static const Dimension dimension = TRealPoint::dimension;
   BOOST_STATIC_ASSERT( ( dimension == 3 ) );
-  
+
   ///Self type
   typedef PolygonalCalculus<TRealPoint, TRealVector> Self;
-  
+
   ///Type of SurfaceMesh
   typedef SurfaceMesh<TRealPoint, TRealVector> MySurfaceMesh;
   ///Vertex type
@@ -147,7 +147,7 @@ public:
   typedef typename MySurfaceMesh::RealPoint Real3dPoint;
   ///Real vector type
   typedef typename MySurfaceMesh::RealVector Real3dVector;
-  
+
   ///Linear Algebra Backend from Eigen
   typedef EigenLinearAlgebraBackend LinAlg;
   ///Type of Vector
@@ -166,7 +166,7 @@ public:
 
   /// @name Standard services
   /// @{
-  
+
   /// Create a Polygonal DEC structure from a surface mesh (@a surf)
   /// using an default identity embedder.
   /// @param surf an instance of SurfaceMesh
@@ -179,7 +179,7 @@ public:
     myVertexNormalEmbedder = [&](Vertex v){ return toReal3dVector(computeVertexNormal(v));};
     init();
   };
-  
+
   /// Create a Polygonal DEC structure from a surface mesh (@a surf)
   /// and an embedder for the vertex position: function with two parameters, a face and a vertex
   /// which outputs the embedding in R^3 of the vertex w.r.t. to the face.
@@ -194,7 +194,7 @@ public:
     myVertexNormalEmbedder = [&](Vertex v){ return toReal3dVector(computeVertexNormal(v)); };
     init();
   };
-  
+
   /// Create a Polygonal DEC structure from a surface mesh (@a surf)
   /// and an embedder for the vertex normal: function with a vertex as
   /// parameter which outputs the embedding in R^3 of the vertex normal.
@@ -236,31 +236,31 @@ public:
    * Deleted default constructor.
    */
   PolygonalCalculus() = delete;
-  
+
   /**
    * Destructor (default).
    */
   ~PolygonalCalculus() = default;
-  
+
   /**
    * Deleted copy constructor.
    * @param other the object to clone.
    */
   PolygonalCalculus ( const PolygonalCalculus & other ) = delete;
-  
+
   /**
    * Deleted move constructor.
    * @param other the object to move.
    */
   PolygonalCalculus ( PolygonalCalculus && other ) = delete;
-  
+
   /**
    * Deleted copy assignment operator.
    * @param other the object to copy.
    * @return a reference on 'this'.
    */
   PolygonalCalculus & operator= ( const PolygonalCalculus & other ) = delete;
-  
+
   /**
    * Deleted move assignment operator.
    * @param other the object to move.
@@ -269,12 +269,12 @@ public:
   PolygonalCalculus & operator= ( PolygonalCalculus && other ) = delete;
 
   /// @}
-  
+
   // ----------------------- embedding  services  --------------------------
   //MARK: Embedding services
  /// @name Embedding services
   /// @{
-  
+
   /// Update the embedding function.
   /// @param externalFunctor a new embedding functor (Face,Vertex)->RealPoint.
   void setEmbedder(const std::function<Real3dPoint(Face,Vertex)> &externalFunctor)
@@ -287,7 +287,7 @@ public:
   //MARK: Per face operator on scalars
   /// @name Per face operators on scalars
   /// @{
-  
+
   /// Return the vertex position matrix degree x 3 of the face.
   /// @param f a face
   /// @return the n_f x 3 position matrix
@@ -295,7 +295,7 @@ public:
   {
     if (checkCache(X_,f))
       return myGlobalCache[X_][f];
-    
+
     const auto vertices = mySurfaceMesh->incidentVertices(f);
     const auto nf = myFaceDegree[f];
     DenseMatrix Xt(nf,3);
@@ -307,11 +307,11 @@ public:
       Xt(cpt,2) = myEmbedder(f,v)[2];
       ++cpt;
     }
-    
+
     setInCache(X_,f,Xt);
     return  Xt;
   }
-  
+
 
   /// Derivative operator (d_0) of a face.
   /// @param f the face
@@ -320,7 +320,7 @@ public:
   {
     if (checkCache(D_,f))
       return myGlobalCache[D_][f];
-    
+
     const auto nf = myFaceDegree[f];
     DenseMatrix d = DenseMatrix::Zero(nf ,nf);
     for(auto i=0u; i < nf; ++i)
@@ -328,11 +328,11 @@ public:
       d(i,i) = -1.;
       d(i, (i+1)%nf) = 1.;
     }
-    
+
     setInCache(D_,f,d);
     return d;
   }
-  
+
   /// Edge vector operator per face.
   /// @param f the face
   /// @return degree x 3 matrix
@@ -342,11 +342,11 @@ public:
       return myGlobalCache[E_][f];
 
     DenseMatrix op = D(f)*X(f);
- 
+
     setInCache(E_,f,op);
     return op;
   }
-  
+
   /// Average operator to average, per edge, its vertex values.
   /// @param f the face
   /// @return a degree x degree matrix
@@ -354,7 +354,7 @@ public:
   {
     if (checkCache(A_,f))
       return myGlobalCache[A_][f];
-    
+
     const auto nf = myFaceDegree[f];
     DenseMatrix a = DenseMatrix::Zero(nf ,nf);
     for(auto i=0u; i < nf; ++i)
@@ -366,8 +366,8 @@ public:
     setInCache(A_,f,a);
     return a;
   }
-  
-  
+
+
   /// Polygonal (corrected) vector area.
   /// @param f the face
   /// @return a vector oriented in the (corrected) normal direction and with length equal to the (corrected) area of the face \a f.
@@ -391,7 +391,7 @@ public:
     Eigen::Vector3d output = {af[0],af[1],af[2]};
     return 0.5*output;
   }
-  
+
   /// Area of a face from the vector area.
   /// @param f the face
   /// @return the corrected area of the face
@@ -399,7 +399,7 @@ public:
   {
     return vectorArea(f).norm();
   }
-  
+
   /// Corrected normal vector of a face.
   /// @param f the face
   /// @return a vector (Eigen vector)
@@ -409,7 +409,7 @@ public:
     v.normalize();
     return v;
   }
-  
+
   /// Corrected normal vector of a face.
   /// @param f the face
   /// @return a vector (DGtal RealVector/RealPoint)
@@ -418,7 +418,7 @@ public:
     Vector v = faceNormal(f);
     return {v(0),v(1),v(2)};
   }
-  
+
   /// co-Gradient operator of the face
   /// @param f the face
   /// @return a 3 x degree matrix
@@ -430,7 +430,7 @@ public:
     setInCache(COGRAD_, f, op);
     return op;
   }
-  
+
   ///Return [n] as the 3x3 operator such that [n]q = n x q
   ///@param n a vector
   DenseMatrix bracket(const Vector &n) const
@@ -441,7 +441,7 @@ public:
             -n(1) , n(0),0.0 ;
     return brack;
   }
-  
+
   /// Gradient operator of the face.
   /// @param f the face
   /// @return 3 x degree matrix
@@ -449,13 +449,13 @@ public:
   {
     if (checkCache(GRAD_,f))
       return myGlobalCache[GRAD_][f];
-    
+
     DenseMatrix op = -1.0/faceArea(f) * bracket( faceNormal(f) ) * coGradient(f);
-    
+
     setInCache(GRAD_,f,op);
     return op;
   }
-  
+
   /// Flat operator for the face.
   /// @param f the face
   /// @return a degree x 3 matrix
@@ -468,7 +468,7 @@ public:
     setInCache(FLAT_,f,op);
     return op;
   }
-  
+
   /// Edge mid-point operator of the face.
   /// @param f the face
   /// @return a degree x 3 matrix
@@ -480,7 +480,7 @@ public:
     setInCache(B_,f,res);
     return res;
   }
-  
+
   /// @returns the centroid of the face
   /// @param f the face
   Vector centroid(const Face f) const
@@ -488,7 +488,7 @@ public:
     const auto nf = myFaceDegree[f];
     return 1.0/(double)nf * X(f).transpose() * Vector::Ones(nf);
   }
-  
+
   /// @returns the centroid of the face as a DGtal RealPoint
   /// @param f the face
   Real3dPoint centroidAsDGtalPoint(const Face f) const
@@ -496,7 +496,7 @@ public:
     const Vector c = centroid(f);
     return {c(0),c(1),c(2)};
   }
-  
+
   /// Sharp operator for the face.
   /// @param f the face
   /// @return a 3 x degree matrix
@@ -512,7 +512,7 @@ public:
     setInCache(SHARP_,f,op);
     return op;
   }
-  
+
   /// Projection operator for the face.
   /// @param f the face
   /// @return a degree x degree matrix
@@ -520,14 +520,14 @@ public:
   {
     if (checkCache(P_,f))
       return myGlobalCache[P_][f];
-    
+
     const auto  nf = myFaceDegree[f];
     DenseMatrix op = DenseMatrix::Identity(nf,nf) - flat(f)*sharp(f);
 
     setInCache(P_, f, op);
     return op;
   }
-  
+
   /// Inner product on 1-forms associated with the face
   /// @param f the face
   /// @param lambda the regularization parameter
@@ -536,15 +536,15 @@ public:
   {
     if (checkCache(M_,f))
       return myGlobalCache[M_][f];
-    
+
     DenseMatrix Uf = sharp(f);
     DenseMatrix Pf = P(f);
     DenseMatrix op = faceArea(f) * Uf.transpose()*Uf + lambda * Pf.transpose()*Pf;
-    
+
     setInCache(M_,f,op);
     return op;
   }
-  
+
   /// Divergence operator of a one-form.
   /// @param f the face
   /// @return a degree x degree matrix
@@ -563,13 +563,13 @@ public:
   {
     if (checkCache(DIVERGENCE_,f))
       return myGlobalCache[DIVERGENCE_][f];
- 
+
     DenseMatrix op = -1.0 * D(f).transpose() * M(f);
     setInCache(DIVERGENCE_,f,op);
-    
+
     return op;
   }
-  
+
   /// Curl operator of a one-form (identity matrix).
   /// @param f the face
   /// @return a degree x degree matrix
@@ -577,14 +577,14 @@ public:
   {
     if (checkCache(CURL_,f))
       return myGlobalCache[CURL_][f];
-    
+
     DenseMatrix op = DenseMatrix::Identity(myFaceDegree[f],myFaceDegree[f]);
 
     setInCache(CURL_,f,op);
     return op;
   }
-  
-  
+
+
   /// (weak) Laplace-Beltrami operator for the face.
   /// @param f the face
   /// @param lambda the regularization parameter
@@ -603,21 +603,21 @@ public:
   {
     if (checkCache(L_,f))
       return myGlobalCache[L_][f];
- 
+
     DenseMatrix Df = D(f);
     // Laplacian is a negative operator.
     DenseMatrix op = -1.0 * Df.transpose() * M(f,lambda) * Df;
-    
+
     setInCache(L_, f, op);
     return op;
   }
   ///@}
-  
+
   // ----------------------- Vector calculus----------------------------------
   //MARK: Vector Field Calculus
   ///@name Per face operators on vector fields
   ///@{
-  
+
 public:
   ///@return 3x2 matrix defining the tangent space at vertex v, with basis
   ///vectors in columns
@@ -674,7 +674,7 @@ public:
   /// \param I  set of intrinsic vectors, vectors indices must be the same as
   /// their associated vertex
   ///@return converts a set of intrinsic vectors to their extrinsic
-  ///equivalent, expressed in correponding tangent frame
+  ///equivalent, expressed in corresponding tangent frame
   std::vector<Vector> toExtrinsicVectors(const std::vector<Vector> & I) const
   {
     std::vector<Vector> ext(mySurfaceMesh->nbVertices());
@@ -694,7 +694,7 @@ public:
     //Special case for opposite nv and nf vectors.
     if (std::abs( c + 1.0) < 0.00001)
       return -Eigen::Matrix3d::Identity();
-  
+
     auto vv          = nv.cross(nf);
     DenseMatrix skew = bracket(vv);
     return Eigen::Matrix3d::Identity() + skew +
@@ -773,7 +773,7 @@ public:
   {
     return P(f) * D(f) * transportAndFormatVectorField(f,uf);
   }
-  
+
   /// @return Covariant Gradient Operator, returns the operator that acts on
   /// the concatenated vectors. When applied, gives the associated 2x2 matrix
   /// in the isomorphic vector form (a b c d)^t to be used in the dirichlet
@@ -783,7 +783,7 @@ public:
   {
     return kroneckerWithI2(Tf(f).transpose() * gradient(f)) * blockConnection(f);
   }
-  
+
   /// @return Projection Gradient Operator, returns the operator that acts on
   /// the concatenated vectors. When applied, gives the associated nfx2 matrix
   /// in the isomorphic vector form (a b c d ...)^t to be used in the
@@ -794,7 +794,7 @@ public:
     return kroneckerWithI2(P(f) * D(f)) * blockConnection(f);
     ;
   }
-  
+
   /// L∇ := -(afG∇tG∇+λP∇tP∇)
   /// @return Connection/Vector laplacian at face f
   /// @note The sign convention for the divergence and the Laplacian
@@ -818,7 +818,7 @@ public:
     return L;
   }
   /// @}
-  
+
   // ----------------------- Global operators --------------------------------------
   //MARK: Global Operators
   /// @name Global operators
@@ -834,9 +834,9 @@ public:
   {
     SparseMatrix Id0( nbVertices(), nbVertices() );
     Id0.setIdentity();
-    return Id0; 
+    return Id0;
   }
-  
+
   /// Computes the global Laplace-Beltrami operator by assembling the
   /// per face operators.
   ///
@@ -873,7 +873,7 @@ public:
     lapGlobal.setFromTriplets(triplets.begin(), triplets.end());
     return lapGlobal;
   }
-  
+
   /// Compute and returns the global lumped mass matrix
   /// (diagonal matrix with Max's weights for each vertex).
   ///    M(i,i) =   ∑_{adjface f} faceArea(f)/degree(f) ;
@@ -975,11 +975,11 @@ public:
     return M;
   }
   /// @}
-  
+
   // ----------------------- Cache mechanism --------------------------------------
   /// @name Cache mechanism
   /// @{
-  
+
   /// Generic method to compute all the per face DenseMatrices and store them in an
   /// indexed container.
   ///
@@ -1003,7 +1003,7 @@ public:
       cache.push_back(perFaceOperator(f));
     return cache;
   }
-  
+
   /// Generic method to compute all the per face Vector and store them in an
   /// indexed container.
   ///
@@ -1034,7 +1034,7 @@ public:
   {
     myGlobalCacheEnabled = true;
   }
-  
+
   /// Disable the internal global cache for operators.
   /// This method will also clean up the
   void disableInternalGlobalCache()
@@ -1044,19 +1044,19 @@ public:
   }
 
   /// @}
-  
+
   // ----------------------- Common --------------------------------------
 public:
   /// @name Common services
   /// @{
-  
+
   /// Update the internal cache structures
   /// (e.g. degree of each face).
   void init()
   {
     updateFaceDegree();
   }
-  
+
   /// Helper to retrieve the degree of the face from the cache.
   /// @param f the face
   /// @return the number of vertices of the face.
@@ -1064,32 +1064,32 @@ public:
   {
     return myFaceDegree[f];
   }
-  
+
   /// @return the number of vertices of the underlying surface mesh.
   size_t nbVertices() const
   {
     return mySurfaceMesh->nbVertices();
   }
-  
+
   /// @return the number of faces of the underlying surface mesh.
   size_t nbFaces() const
   {
     return mySurfaceMesh->nbFaces();
   }
-  
+
   /// @returns the degree of the face f (number of vertices)
   /// @param f the face
   size_t degree(const Face f) const
   {
     return myFaceDegree[f];
   }
-  
+
   /// @returns an pointer to the underlying SurfaceMash object.
   const MySurfaceMesh * getSurfaceMeshPtr() const
   {
     return mySurfaceMesh;
   }
-  
+
   /**
    * Writes/Displays the object on an output stream.
    * @param out the output stream where the object is written.
@@ -1103,7 +1103,7 @@ public:
       out<<"internal cache disabled, ";
     out <<"SurfaceMesh="<<*mySurfaceMesh;
   }
-  
+
   /**
    * Checks the validity/consistency of the object.
    * @return 'true' if the object is valid, 'false' otherwise.
@@ -1114,17 +1114,17 @@ public:
   }
 
   /// @}
-  
-  // ------------------------- Protected Datas ------------------------------
+
+  // ------------------------- Protected Data ------------------------------
   //MARK: Protected
-  
+
 protected:
   /// @name Protected services and types
   /// @{
-  
+
   ///Enum for operators in the internal cache strategy
   enum OPERATOR { X_, D_, E_, A_, COGRAD_, GRAD_, FLAT_, B_, SHARP_, P_, M_, DIVERGENCE_, CURL_, L_,CON_L_};
-  
+
   /// Update the face degree cache
   void updateFaceDegree()
   {
@@ -1136,7 +1136,7 @@ protected:
       myFaceDegree[f] = nf;
     }
   }
-  
+
   /// Check internal cache if enabled.
   /// @param key the operator name
   /// @param f the face
@@ -1159,7 +1159,7 @@ protected:
     if (myGlobalCacheEnabled)
       myGlobalCache[key][f]  = ope;
   }
-  
+
   /// Project u on the orthgonal of n
   /// \param u vector to project
   /// \param n vector to build orthogonal space from
@@ -1168,7 +1168,7 @@ protected:
   {
     return u - (u.dot(n) / n.squaredNorm()) * n;
   }
-  
+
   /// Conversion routines.
   /// \brief toVector convert Real3dPoint to Eigen::VectorXd
   /// \param x the vector
@@ -1180,7 +1180,7 @@ protected:
       X(i) = x(i);
     return X;
   }
-  
+
   /// \brief toVec3 convert Real3dPoint to Eigen::Vector3d
   /// \param x the vector
   /// \return the same vector in eigen type
@@ -1188,7 +1188,7 @@ protected:
   {
     return Eigen::Vector3d(x(0),x(1),x(2));
   }
-  
+
   /// Conversion routines.
     /// \brief toReal3dVector converts Eigen::Vector3d to Real3dVector.
     /// \param x the vector
@@ -1197,8 +1197,8 @@ protected:
     {
       return { x(0), x(1), x(2)};
     }
-    
-  
+
+
   /// Compute the (normalized) normal vector at a Vertex by averaging
   /// the adjacent face normal vectors.
   /// \param v the vertex to compute the normal from
@@ -1217,7 +1217,7 @@ protected:
     auto faces = mySurfaceMesh->incidentFaces(v);
     for (auto f : faces)
       n += vectorArea(f);
-    
+
     if (fabs(n.norm() - 0.0) < 0.00001)
     {
       //On non-manifold edges touching the boundary, n may be null.
@@ -1227,7 +1227,7 @@ protected:
     n = n.normalized();
     return n;
   }
-  
+
   ///@return the normal vector at vertex v, if no normal vertex embedder is
   ///set, the normal will be computed
   Eigen::Vector3d n_v(const Vertex & v) const
@@ -1250,7 +1250,7 @@ protected:
     }
     return RU_fO;
   }
-  
+
   /// @return the tensor-kronecker product of M with 2x2 identity matrix
   DenseMatrix kroneckerWithI2(const DenseMatrix & M) const
   {
@@ -1266,30 +1266,30 @@ protected:
     return MK;
   }
 
-  
-  
+
+
   /// @}
-  
+
   // ------------------------- Internals ------------------------------------
   //MARK: Internals
 private:
-  
+
   ///Underlying SurfaceMesh
   const MySurfaceMesh *mySurfaceMesh;
-  
+
   ///Embedding function (face,vertex)->R^3 for the vertex position wrt. the face.
   std::function<Real3dPoint(Face, Vertex)> myEmbedder;
 
   ///Embedding function (vertex)->R^3 for the vertex normal.
   std::function<Real3dVector(Vertex)> myVertexNormalEmbedder;
-  
+
   ///Cache containing the face degree
   std::vector<size_t> myFaceDegree;
-    
+
   ///Global cache
   bool myGlobalCacheEnabled;
   mutable std::array<std::unordered_map<Face,DenseMatrix>, 15> myGlobalCache;
-  
+
 }; // end of class PolygonalCalculus
 
 /**

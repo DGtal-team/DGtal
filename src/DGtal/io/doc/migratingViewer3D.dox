@@ -18,7 +18,7 @@ namespace DGtal {
 
 \section DGtalMigration_Intro Introduction and features changes
 
-With version 2.0 of DGtal, the internal and external structures of 3D visualization have been completely changed. The aim is to take advantage of the advanced features of Polyscope, a geometric object viewer. 
+With version 2.0 of DGtal, the internal and external structures of 3D visualization have been completely changed. The aim is to take advantage of the advanced features of Polyscope, a geometric object viewer.
 
 The major changes are:
 - No more QApplication class
@@ -31,18 +31,18 @@ The stream mechanism was kept, therefore, most draw commands remain the same. He
 - Remove QApplication (and the .exec() file)
 - Move the .show() method to the end of the block.
 - CustomColor3D does not exist anymore. Instead use Display3D::drawColor (or Display3D::draw)
-- UpdateDisplay is not needed anymore. 
-- SetMode3D does not exist anymore. Use Display3D::drawAsGrid, Display3D::drawAsPaving, Display3D::drawAsBalls, Display3D::drawAdjacencies instead. 
+- UpdateDisplay is not needed anymore.
+- SetMode3D does not exist anymore. Use Display3D::drawAsGrid, Display3D::drawAsPaving, Display3D::drawAsBalls, Display3D::drawAdjacencies instead.
 
 \subsection DGtalMigration_Ex Example
 
-Old 1.4 code: 
+Old 1.4 code:
 
 @code
  QApplication application(argc,argv); // To remove
 
  typedef Viewer3D<> MyViewer;         // Change name
- MyViewer viewer;                   
+ MyViewer viewer;
  viewer.show();                       // To the end of the function
 
 
@@ -60,7 +60,7 @@ Old 1.4 code:
 
  viewer <<  SetMode3D( p1.className(), "Grid" );                        // viewer.drawAsBalls()
  viewer << CustomColors3D(Color(250, 0,0),Color(250, 0,0));             // viewer << Color(255, 0, 0);
- viewer << p4 << p5 ; 
+ viewer << p4 << p5 ;
  viewer <<  SetMode3D( p1.className(), "Both" );                        // Does not exist anymore
  viewer << CustomColors3D(Color(250, 200,0, 100),Color(250, 0,0, 100)); // viewer << Color(250, 0, 0, 100);
  viewer << p6;
@@ -77,7 +77,7 @@ Old 1.4 code:
 New 2.0 code:
 
 @code
- PolyscopeViewer viewer;                   
+ PolyscopeViewer viewer;
 
 
  Point p1( -1, -1, -2 );
@@ -93,7 +93,7 @@ New 2.0 code:
  viewer << p1 << p2 << p3;
 
  viewer.drawAsGrid();
- viewer << Color(250, 0,0) << p4 << p5; 
+ viewer << Color(250, 0,0) << p4 << p5;
  viewer << Color(250, 0, 0, 100)  << p6;
  viewer << Color(250, 200, 0, 20) << p0;
 
@@ -101,17 +101,17 @@ New 2.0 code:
  viewer << domain;
 
  viewer.show();
- return 0;         
+ return 0;
 @endcode
 
 
 \section DGtalMigration_loss Feature losses
 
-As part of the simplification process, here are the old features that now have no direct equivalent: 
+As part of the simplification process, here are the old features that now have no direct equivalent:
 
 - Most Draw Modes have been removed but can be emulated by manipulating the viewer interactively.
 - Image and Domain transform no longer have dedicated classes. To rotate and translate them, use elements transform instead (DisplayData::transform).
-- Mesh exports and exports.  
+- Mesh exports and exports.
 
 */
 }

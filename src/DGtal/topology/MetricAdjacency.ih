@@ -72,7 +72,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::MetricAdjacency()
  */
 template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
-bool 
+bool
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::isAdjacentTo
 ( const Point & p1, const Point & p2 )
 {
@@ -89,7 +89,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::isAdjacentTo
  */
 template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
-bool 
+bool
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::isProperlyAdjacentTo
 ( const Point & p1, const Point & p2 )
 {
@@ -112,20 +112,20 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::isProperlyAdjacentTo
  */
 template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
-typename DGtal::MetricAdjacency<TSpace, maxNorm1, dimension>::Size 
-DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::bestCapacity() 
+typename DGtal::MetricAdjacency<TSpace, maxNorm1, dimension>::Size
+DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::bestCapacity()
 {
   static Size myCapacity = computeCapacity();
   return myCapacity;
 }
 
 /**
- * 
+ *
  * @return the number of neighbors of this vertex
  */
 template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
-typename DGtal::MetricAdjacency<TSpace, maxNorm1, dimension>::Size 
+typename DGtal::MetricAdjacency<TSpace, maxNorm1, dimension>::Size
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::degree
 ( const Vertex & /* v */ )
 {
@@ -134,19 +134,19 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::degree
 
 /**
  * Writes the neighbors of a vertex using an output iterator
- * 
- * 
+ *
+ *
  * @tparam OutputIterator the type of an output iterator writing
  * in a container of vertices.
- * 
+ *
  * @param it the output iterator
- * 
+ *
  * @param v the vertex whose neighbors will be written
  */
 template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 template <typename OutputIterator>
 inline
-void  
+void
 DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeNeighbors
 ( OutputIterator &it, const Vertex & v )
 {
@@ -170,19 +170,19 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeNeighbors
 }
 
 /**
-  * Writes the neighbors of a vertex which satisfy a predicate using an 
+  * Writes the neighbors of a vertex which satisfy a predicate using an
   * output iterator
-  * 
-  * 
+  *
+  *
   * @tparam OutputIterator the type of an output iterator writing
   * in a container of vertices.
-  * 
+  *
   * @tparam VertexPredicate the type of the predicate
-  * 
+  *
   * @param it the output iterator
-  * 
+  *
   * @param v the vertex whose neighbors will be written
-  * 
+  *
   * @param pred the predicate that must be satisfied
   */
 template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
@@ -220,7 +220,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::writeNeighbors
 template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
 void
-DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::selfDisplay 
+DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::selfDisplay
 ( std::ostream & out )
 {
   out << "[MetricAdjacency Z" << Space::dimension
@@ -247,7 +247,7 @@ DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::isValid()
 template <typename TSpace, DGtal::Dimension maxNorm1>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
         const MetricAdjacency<TSpace,maxNorm1,
         TSpace::dimension> & object )
 {
@@ -260,8 +260,8 @@ DGtal::operator<< ( std::ostream & out,
 // Implementation of hidden services                                         //
 template <typename TSpace, DGtal::Dimension maxNorm1, DGtal::Dimension dimension>
 inline
-typename DGtal::MetricAdjacency<TSpace, maxNorm1, dimension>::Size 
-DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::computeCapacity() 
+typename DGtal::MetricAdjacency<TSpace, maxNorm1, dimension>::Size
+DGtal::MetricAdjacency<TSpace,maxNorm1,dimension>::computeCapacity()
 {
   DGtal::Dimension result = 0;
   for( DGtal::Dimension m = dimension - 1; m > dimension - maxNorm1 - 1; m-- )
@@ -289,7 +289,7 @@ namespace DGtal {
 
     typedef typename Space::Integer Integer;
     typedef typename Space::Vector Vector;
-    
+
     // Required by CUndirectedSimpleLocalGraph
     typedef Point Vertex;
     typedef typename Space::Size Size;
@@ -297,13 +297,13 @@ namespace DGtal {
     template <typename Value> struct VertexMap {
       typedef typename std::map<Vertex, Value> Type;
     };
-  
+
     // ----------------------- Standard services ------------------------------
   public:
-  
+
     MetricAdjacency() {}
     ~MetricAdjacency() {}
-  
+
     // ----------------------- Adjacency services -----------------------------
   public:
 
@@ -327,17 +327,17 @@ namespace DGtal {
         }
       return false;
     }
-    
+
     // ---------------------- Local graph services ----------------------------
   public:
-    
+
     inline
     static
     Size bestCapacity()
     {
       return 8;
     }
-    
+
     inline
     static
     Size
@@ -362,7 +362,7 @@ namespace DGtal {
       *it++ = Vertex(  x  , y+1  );
       *it++ = Vertex(  x+1, y+1  );
     }
-    
+
     template <typename OutputIterator, typename VertexPredicate>
     inline
     static
@@ -372,25 +372,25 @@ namespace DGtal {
       if ( pred( q ) ) *it++ = q;
       ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
       ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
-      q[ 0 ] -= 2; ++q[ 1 ]; 
+      q[ 0 ] -= 2; ++q[ 1 ];
       if ( pred( q ) ) *it++ = q;
       q[ 0 ] += 2; if ( pred( q ) ) *it++ = q;
-      q[ 0 ] -= 2; ++q[ 1 ]; 
+      q[ 0 ] -= 2; ++q[ 1 ];
       if ( pred( q ) ) *it++ = q;
       ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
       ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
     }
-    
+
     // ----------------------- Interface --------------------------------------
   public:
-  
+
     static
     void selfDisplay ( std::ostream & out )
     {
       out << "[MetricAdjacency Z2*"
     << " n1<=2*" << " ]";
     }
-  
+
     static
     bool isValid() { return true; }
 
@@ -425,13 +425,13 @@ namespace DGtal {
     template <typename Value> struct VertexMap {
       typedef typename std::map<Vertex, Value> Type;
     };
-    
+
     // ----------------------- Standard services ------------------------------
   public:
-  
+
     MetricAdjacency() {}
     ~MetricAdjacency() {}
-  
+
     // ----------------------- Adjacency services -----------------------------
   public:
 
@@ -452,14 +452,14 @@ namespace DGtal {
     }
 
     // ---------------------- Local graph services ----------------------------
-    
+
     inline
     static
     Size bestCapacity()
     {
       return 4;
     }
-    
+
     inline
     static
     Size
@@ -480,7 +480,7 @@ namespace DGtal {
       *it++ = Vertex(  x+1, y    );
       *it++ = Vertex(  x  , y+1  );
     }
-    
+
     template <typename OutputIterator, typename VertexPredicate>
     inline
     static
@@ -488,23 +488,23 @@ namespace DGtal {
     {
       Vertex q( v[ 0 ], v[ 1 ] - 1 );
       if ( pred( q ) ) *it++ = q;
-      --q[ 0 ]; ++q[ 1 ]; 
+      --q[ 0 ]; ++q[ 1 ];
       if ( pred( q ) ) *it++ = q;
       q[ 0 ] += 2; if ( pred( q ) ) *it++ = q;
-      --q[ 0 ]; ++q[ 1 ]; 
+      --q[ 0 ]; ++q[ 1 ];
       if ( pred( q ) ) *it++ = q;
     }
-    
+
     // ----------------------- Interface --------------------------------------
   public:
-  
+
     static
     void selfDisplay ( std::ostream & out )
     {
       out << "[MetricAdjacency Z2*"
     << " n1<=2*" << " ]";
     }
-  
+
     static
     bool isValid() { return true; }
 
@@ -532,7 +532,7 @@ namespace DGtal {
 
     typedef typename Space::Integer Integer;
     typedef typename Space::Vector Vector;
-    
+
     // Required by CUndirectedSimpleLocalGraph
     typedef Point Vertex;
     typedef typename Space::Size Size;
@@ -540,13 +540,13 @@ namespace DGtal {
     template <typename Value> struct VertexMap {
       typedef typename std::map<Vertex, Value> Type;
     };
-  
+
     // ----------------------- Standard services ------------------------------
   public:
-  
+
     MetricAdjacency() {}
     ~MetricAdjacency() {}
-  
+
     // ----------------------- Adjacency services -----------------------------
   public:
 
@@ -573,14 +573,14 @@ namespace DGtal {
 
     // ---------------------- Local graph services ----------------------------
   public:
-    
+
     inline
     static
     Size bestCapacity()
     {
       return 26;
     }
-    
+
     inline
     static
     Size
@@ -597,7 +597,7 @@ namespace DGtal {
       Integer x = v[ 0 ];
       Integer y = v[ 1 ];
       Integer z = v[ 2 ];
-  
+
       *it++ = Vertex(  x-1, y-1, z-1 );
       *it++ = Vertex(  x  , y-1, z-1 );
       *it++ = Vertex(  x+1, y-1, z-1 );
@@ -626,7 +626,7 @@ namespace DGtal {
       *it++ = Vertex(  x  , y+1, z+1 );
       *it++ = Vertex(  x+1, y+1, z+1 );
     }
-    
+
     template <typename OutputIterator, typename VertexPredicate>
     inline
     static
@@ -637,51 +637,51 @@ namespace DGtal {
       if ( pred( q ) ) *it++ = q;
       ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
       ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
-      q[ 0 ] -= 2; ++q[ 1 ]; 
+      q[ 0 ] -= 2; ++q[ 1 ];
       if ( pred( q ) ) *it++ = q;
       ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
       ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
-      q[ 0 ] -= 2; ++q[ 1 ]; 
+      q[ 0 ] -= 2; ++q[ 1 ];
       if ( pred( q ) ) *it++ = q;
       ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
       ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
       // z
-      q[ 0 ] -= 2; q[ 1 ] -= 2; ++q[ 2 ]; 
+      q[ 0 ] -= 2; q[ 1 ] -= 2; ++q[ 2 ];
       if ( pred( q ) ) *it++ = q;
       ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
       ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
-      q[ 0 ] -= 2; ++q[ 1 ]; 
+      q[ 0 ] -= 2; ++q[ 1 ];
       if ( pred( q ) ) *it++ = q;
       q[ 0 ] += 2; if ( pred( q ) ) *it++ = q; // skip (x,y,z)
-      q[ 0 ] -= 2; ++q[ 1 ]; 
+      q[ 0 ] -= 2; ++q[ 1 ];
       if ( pred( q ) ) *it++ = q;
       ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
       ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
       // z+1
-      q[ 0 ] -= 2; q[ 1 ] -= 2; ++q[ 2 ]; 
+      q[ 0 ] -= 2; q[ 1 ] -= 2; ++q[ 2 ];
       if ( pred( q ) ) *it++ = q;
       ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
       ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
-      q[ 0 ] -= 2; ++q[ 1 ]; 
+      q[ 0 ] -= 2; ++q[ 1 ];
       if ( pred( q ) ) *it++ = q;
       ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
       ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
-      q[ 0 ] -= 2; ++q[ 1 ]; 
+      q[ 0 ] -= 2; ++q[ 1 ];
       if ( pred( q ) ) *it++ = q;
       ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
       ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
-    }    
-    
+    }
+
     // ----------------------- Interface --------------------------------------
   public:
-  
+
     static
     void selfDisplay ( std::ostream & out )
     {
       out << "[MetricAdjacency Z3*"
 	  << " n1<=3*" << " ]";
     }
-  
+
     static
     bool isValid() { return true; }
 
@@ -709,7 +709,7 @@ namespace DGtal {
 
     typedef typename Space::Integer Integer;
     typedef typename Space::Vector Vector;
-    
+
     // Required by CUndirectedSimpleLocalGraph
     typedef Point Vertex;
     typedef typename Space::Size Size;
@@ -717,13 +717,13 @@ namespace DGtal {
     template <typename Value> struct VertexMap {
       typedef typename std::map<Vertex, Value> Type;
     };
-  
+
     // ----------------------- Standard services ------------------------------
   public:
-  
+
     MetricAdjacency() {}
     ~MetricAdjacency() {}
-  
+
     // ----------------------- Adjacency services -----------------------------
   public:
 
@@ -748,16 +748,16 @@ namespace DGtal {
       return false;
     }
 
-    // ---------------------- Local graph services ----------------------------   
+    // ---------------------- Local graph services ----------------------------
   public:
-    
+
     inline
     static
     Size bestCapacity()
     {
       return 18;
     }
-    
+
     inline
     static
     Size
@@ -774,7 +774,7 @@ namespace DGtal {
       Integer x = v[ 0 ];
       Integer y = v[ 1 ];
       Integer z = v[ 2 ];
-  
+
       *it++ = Vertex(  x  , y-1, z-1 );
       *it++ = Vertex(  x-1, y-1, z   );
       *it++ = Vertex(  x  , y-1, z   );
@@ -795,7 +795,7 @@ namespace DGtal {
       *it++ = Vertex(  x+1, y+1, z   );
       *it++ = Vertex(  x  , y+1, z+1 );
     }
-    
+
     template <typename OutputIterator, typename VertexPredicate>
     inline
     static
@@ -809,36 +809,36 @@ namespace DGtal {
       ++q[ 0 ]; if ( pred( q ) ) *it++ = q;           // x+1, y  , z-1
       --q[ 0 ], ++q[ 1 ]; if ( pred( q ) ) *it++ = q; // x  , y+1, z-1
       // z
-      --q[ 0 ], q[ 1 ] -= 2, ++q[ 2 ]; 
+      --q[ 0 ], q[ 1 ] -= 2, ++q[ 2 ];
       if ( pred( q ) ) *it++ = q;
       ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
       ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
-      q[ 0 ] -= 2; ++q[ 1 ]; 
+      q[ 0 ] -= 2; ++q[ 1 ];
       if ( pred( q ) ) *it++ = q;
       q[ 0 ] += 2; if ( pred( q ) ) *it++ = q; // skip (x,y,z)
-      q[ 0 ] -= 2; ++q[ 1 ]; 
+      q[ 0 ] -= 2; ++q[ 1 ];
       if ( pred( q ) ) *it++ = q;
       ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
       ++q[ 0 ]; if ( pred( q ) ) *it++ = q;
       // z+1
-      --q[ 0 ], q[ 1 ] -= 2; ++q[ 2 ]; 
+      --q[ 0 ], q[ 1 ] -= 2; ++q[ 2 ];
       if ( pred( q ) ) *it++ = q;                     // x  , y-1, z+1
       --q[ 0 ], ++q[ 1 ]; if ( pred( q ) ) *it++ = q; // x-1, y  , z+1
       ++q[ 0 ]; if ( pred( q ) ) *it++ = q;           // x  , y  , z+1
       ++q[ 0 ]; if ( pred( q ) ) *it++ = q;           // x+1, y  , z+1
       --q[ 0 ], ++q[ 1 ]; if ( pred( q ) ) *it++ = q; // x  , y+1, z+1
     }
-    
+
     // ----------------------- Interface --------------------------------------
   public:
-  
+
     static
     void selfDisplay ( std::ostream & out )
     {
       out << "[MetricAdjacency Z3*"
 	  << " n1<=2*" << " ]";
     }
-  
+
     static
     bool isValid() { return true; }
 
@@ -866,7 +866,7 @@ namespace DGtal {
 
     typedef typename Space::Integer Integer;
     typedef typename Space::Vector Vector;
-    
+
     // Required by CUndirectedSimpleLocalGraph
     typedef Point Vertex;
     typedef typename Space::Size Size;
@@ -874,13 +874,13 @@ namespace DGtal {
     template <typename Value> struct VertexMap {
       typedef typename std::map<Vertex, Value> Type;
     };
-  
+
     // ----------------------- Standard services ------------------------------
   public:
-  
+
     MetricAdjacency() {}
     ~MetricAdjacency() {}
-  
+
     // ----------------------- Adjacency services -----------------------------
   public:
 
@@ -904,17 +904,17 @@ namespace DGtal {
 	}
       return false;
     }
-    
+
     // ---------------------- Local graph services ----------------------------
   public:
-    
+
     inline
     static
     Size bestCapacity()
     {
       return 6;
     }
-    
+
     inline
     static
     Size
@@ -931,7 +931,7 @@ namespace DGtal {
       Integer x = v[ 0 ];
       Integer y = v[ 1 ];
       Integer z = v[ 2 ];
-  
+
       *it++ = Vertex(  x  , y-1, z   );
       *it++ = Vertex(  x  , y  , z-1 );
       *it++ = Vertex(  x-1, y  , z   );
@@ -940,7 +940,7 @@ namespace DGtal {
       *it++ = Vertex(  x  , y  , z+1 );
       *it++ = Vertex(  x  , y+1, z   );
     }
-    
+
     template <typename OutputIterator, typename VertexPredicate>
     inline
     static
@@ -957,14 +957,14 @@ namespace DGtal {
 
     // ----------------------- Interface --------------------------------------
   public:
-  
+
     static
     void selfDisplay ( std::ostream & out )
     {
       out << "[MetricAdjacency Z3*"
 	  << " n1<=1*" << " ]";
     }
-  
+
     static
     bool isValid() { return true; }
 
@@ -981,4 +981,3 @@ namespace DGtal {
 
 
 }
-

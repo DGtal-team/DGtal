@@ -1,11 +1,11 @@
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  */
 namespace DGtal {
 
 /**
-   
+
 @page moduleDigitalConvexity Digital convexity, full convexity and P-convexity
 
 @writers Jacques-Olivier Lachaud
@@ -13,7 +13,7 @@ namespace DGtal {
 @since 1.1
 
 Part of the \ref packageGeometry.
-  
+
 This part of the manual describes tools associated to a new definition
 of digital convexity, called the \b full \b convexity \cite lachaud_dgmm_2021 \cite lachaud_jmiv_2022 . This new definition solves
 many problems related to the usual definition of digital convexity,
@@ -31,10 +31,10 @@ convexity, and is generally faster to check \cite feschet_2024_dgmm .
 The following programs are related to this documentation:
 geometry/curves/exampleDigitalConvexity.cpp,
 geometry/curves/exampleRationalConvexity.cpp,
-testBoundedLatticePolytope.cpp, 
-testBoundedLatticePolytopeCounter.cpp, 
+testBoundedLatticePolytope.cpp,
+testBoundedLatticePolytopeCounter.cpp,
 testCellGeometry.cpp,
-testDigitalConvexity.cpp, 
+testDigitalConvexity.cpp,
 testEhrhartPolynomial.cpp,
 geometry/volumes/exampleBoundedLatticePolytopeCount2D.cpp,
 geometry/volumes/exampleBoundedLatticePolytopeCount3D.cpp,
@@ -128,7 +128,7 @@ Three classes help to check digital convexity.
 - PConvexity provides functions to check digital convexity and
   P-convexity, as well a full convexity measure that is
   characteristics of full convex sets (or equivalently P-convex sets).
-  
+
 
 @subsection dgtal_dconvexity_sec21 Lattice polytopes
 
@@ -175,10 +175,10 @@ Simplex S( { Point(0,0,0), Point(3,0,0), Point(1,5,0), Point(-3,2,4) } );
 std::cout << S.count() << std::endl;
 simplex += Simplex::UnitSegment( 0 ); // Extend it along x
 std::cout << S.count() << std::endl;
-\endcode 
+\endcode
 
 Last, you may compute Minkowski sums of a polytope with axis-aligned
-segments, squares or (hyper)-cubes (BoundedLatticePolytope::operator+=). 
+segments, squares or (hyper)-cubes (BoundedLatticePolytope::operator+=).
 
 @note You can check if the result of a Minkowski sum will be valid by
 calling BoundedLatticePolytope::canBeSummed before. The support is for
@@ -334,7 +334,7 @@ The following snippet shows that a 4D ball is indeed fully convex.
 
 
 @note This method for checking full convexity is slightly slower than
-the method using the Minkowski sum on the polytope contraints, but it
+the method using the Minkowski sum on the polytope constraints, but it
 works in arbitrary dimension and for arbitrary digital set.
 
 Simplex services:
@@ -344,8 +344,8 @@ Simplex services:
 - DigitalConvexity::displaySimplex outputs simplex information for debugging
 
 Polytope services:
-- DigitalConvexity::insidePoints returns the range of lattice points in the given polytope 
-- DigitalConvexity::interiorPoints returns the range of lattice points in the interior of the given polytope 
+- DigitalConvexity::insidePoints returns the range of lattice points in the given polytope
+- DigitalConvexity::interiorPoints returns the range of lattice points in the interior of the given polytope
 
 Lattice cell geometry services:
 - DigitalConvexity::makeCellCover either returns the lattice cells touching the given range of points or the lattice cells touching the given polytope
@@ -411,11 +411,11 @@ EhrhartPolynomial< Space, int64_t > E( P );
 auto expP = mmonomial<Integer>( 2 ) + 3 * mmonomial<Integer>( 1 ) + 2;
 REQUIRE( E.numerator()   == expP );
 REQUIRE( E.denominator() == 2 );
-// number of lattice points of its 4-fold dilated version 
+// number of lattice points of its 4-fold dilated version
 auto P4 = 4 * P;
 auto n4 = E.count( 4 );
 REQUIRE( P4.count() == n4 );
-// number of interior lattice points of its 4-fold dilated version 
+// number of interior lattice points of its 4-fold dilated version
 auto P4 = 4 * P;
 auto n4 = E.countInterior( 4 );
 REQUIRE( P4.countInterior() == n4 );
@@ -437,7 +437,7 @@ a recursive definition \cite feschet_2024_dgmm . It provides thus a
 quite simple characterization of full convexity, which is implemented
 in class PConvexity.
 
-- constructor PConvexity::PConvexity allows you to force a safe internal integer representation for convexity computation (default choice induces `int64_t`), 
+- constructor PConvexity::PConvexity allows you to force a safe internal integer representation for convexity computation (default choice induces `int64_t`),
 - method PConvexity::is0Convex checks if a given range of digital points is 0-convex,
 - method PConvexity::isPConvex checks if a given range of digital points is P-convex
 
@@ -493,7 +493,7 @@ X is indeed fully convex:
 
   \a X is fully convex iff \f$ \forall \alpha \subset \{1, \ldots,
   d\}, U_\alpha(X) = \mathrm{CvxH}(U_\alpha(X)) \cap \mathbb{Z}^d \f$,
-  
+
   where \f$ U_\alpha \f$ is the discrete Minkowski sum defined as \f$
   U_\emptyset(X):= X \f$, and for any subset of directions \f$ \alpha
   \in \{1,\ldots,d\} \f$ and a direction \f$ i \in \alpha \f$, \f$
@@ -512,7 +512,7 @@ X is indeed fully convex:
   \mathrm{Star}(\mathrm{CvxH}(X)) \f$ is directly computable from \f$
   \mathrm{CvxH}(U_{\{1,\ldots,d\}}(X)) \f$, so one convex hull
   computation is sufficient.
-  
+
   This is implemented as DigitalConvexity::isFullyConvexFast .
 
 - \b envelope \b idempotence  \cite feschet_2023_jmiv (Theorem 2)
@@ -653,7 +653,7 @@ confirms the above explanation.
 You can also create bounded rational polytopes, i.e. polytopes with
 vertices with rational coordinates, with class
 BoundedRationalPolytope. You must give a common denominator for all
-rational coordinates. 
+rational coordinates.
 
 \code
 #include "DGtal/geometry/volumes/BoundedRationalPolytope.h"
@@ -671,7 +671,7 @@ Polytope P { Point(4,4), a, b, c };
 Then the interface of BoundedRationalPolytope is almost the same as
 the one of BoundedLatticePolytope (see \ref dgtal_dconvexity_sec21 ).
 
-The classs BoundedRationalPolytope offers dilatation by an arbitrary
+The class BoundedRationalPolytope offers dilatation by an arbitrary
 rational, e.g. as follows
 
 \code

@@ -73,7 +73,7 @@ namespace DGtal
       using Vector            = Point;
       using Integer           = typename Point::Coordinate;
       using Triangle          = std::array<Vector, 3>;
-      using Index             = std::size_t; 
+      using Index             = std::size_t;
     using PointOnProbingRay = detail::PointOnProbingRay<Integer,Index>;
 
       /**
@@ -200,7 +200,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
     Predicate const& myPredicate; /**< A reference on the probing predicate. */
     Point const& myQ; /**< A reference on the fixed point. */
@@ -210,7 +210,7 @@ namespace DGtal
     static const PointOnProbingRay myNeighborhood[6]; /**< The six rays defining the H-neighborhood. */
     std::vector<PointOnProbingRay> myNeighbors; /**< An array of rays to filter the neighborhood. */
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------
@@ -245,22 +245,22 @@ namespace DGtal
     bool isSmallest (Point const& aX, Point const& aY) const;
 
     /**
-     * Returns the vector from the point q to the current point, 
-     * represented by the input object. 
+     * Returns the vector from the point q to the current point,
+     * represented by the input object.
      *
      * @param aPoint a representation of the current point.
-     * @tparam TPointAdapter a type for the representation of the input point. 
+     * @tparam TPointAdapter a type for the representation of the input point.
      * @return the vector from the fixed point 'q' to the current point.
      */
     template <class TPointAdapter>
     Point relativePoint (TPointAdapter const& aPoint) const;
 
     /**
-     * Returns the geometric realization of the input representation 
+     * Returns the geometric realization of the input representation
      * of the current point on the ray.
      *
      * @param aPoint a representation of the current point.
-     * @tparam TPointAdapter a type for the representation of the input point. 
+     * @tparam TPointAdapter a type for the representation of the input point.
      * @return the current point.
      */
     template <class TPointAdapter>

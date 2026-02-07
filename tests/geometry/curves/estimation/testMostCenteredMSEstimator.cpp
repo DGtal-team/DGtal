@@ -71,34 +71,34 @@ template<typename I>
 bool test(const I& itb, const I& ite)
 {
   typedef I ConstIterator;//constIterator
-  typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point; 
+  typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point;
   typedef ArithmeticalDSSComputer<ConstIterator,typename Point::Coordinate,4> SegmentComputer;//segmentComputer
   typedef TangentVectorFromDSSEstimator<SegmentComputer> SCEstimator; //functor
   typedef typename SCEstimator::Quantity Value; //value
   typedef MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator> Estimator;//estimator
   BOOST_CONCEPT_ASSERT(( concepts::CCurveLocalGeometricEstimator< Estimator > ));
   SegmentComputer sc;
-  SCEstimator f; 
+  SCEstimator f;
 
-  Estimator e(sc,f); 
+  Estimator e(sc,f);
   e.init(itb,ite);
 
-  unsigned int nb = 0; 
-  unsigned int nbok = 0; 
-  std::vector<Value> v1, v2, v3; 
+  unsigned int nb = 0;
+  unsigned int nbok = 0;
+  std::vector<Value> v1, v2, v3;
 
   {
     trace.info() << "Eval at one element" << endl;
     if (isNotEmpty(itb, ite))
       {
-	ConstIterator it = itb; 
-	do 
+	ConstIterator it = itb;
+	do
 	  {
-	    Value q = e.eval(it,1.);  
-	    cout << q << " "; 
-	    v1.push_back( q ); 
-	    ++it; 
-	  } while (it != ite); 
+	    Value q = e.eval(it,1.);
+	    cout << q << " ";
+	    v1.push_back( q );
+	    ++it;
+	  } while (it != ite);
       }
     cout << endl;
   }
@@ -108,18 +108,18 @@ bool test(const I& itb, const I& ite)
     e.eval(itb, ite, std::back_inserter(v2));
 
     for (typename std::vector<Value>::iterator i = v2.begin(); i != v2.end(); ++i) {
-      cout << *i << " "; 
+      cout << *i << " ";
     }
     cout << endl;
   }
 
   nbok += ( ( v1.size() == v2.size() ) &&
-	    ( std::equal(v1.begin(), v1.end(), v2.begin() ) ) )?1:0; 
-  nb++; 
+	    ( std::equal(v1.begin(), v1.end(), v2.begin() ) ) )?1:0;
+  nb++;
 
-  trace.info() << "(" << nbok << "/" << nb << ")" << std::endl; 
+  trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
 
-  if ( (ite-itb) >= 10) 
+  if ( (ite-itb) >= 10)
     {
 
       trace.info() << "Eval for each element between begin+4 and begin+9 " << endl;
@@ -127,22 +127,22 @@ bool test(const I& itb, const I& ite)
       e.eval((itb+4),(itb+9),std::back_inserter(v3));
 
       for (typename vector<Value>::iterator i = v3.begin(); i != v3.end(); ++i) {
-  	cout << *i << " "; 
+  	cout << *i << " ";
       }
       cout << endl;
 
       nbok += ( (v3.size() == 5) &&
-  		( std::equal( (v1.begin()+4), (v1.begin()+9), v3.begin()) ) )?1:0; 
-      nb++; 
+  		( std::equal( (v1.begin()+4), (v1.begin()+9), v3.begin()) ) )?1:0;
+      nb++;
 
-      trace.info() << "(" << nbok << "/" << nb << ")" << std::endl; 
+      trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
     }
 
-  return (nb == nbok); 
+  return (nb == nbok);
 }
 
 /**
- * Applying test on a given data file 
+ * Applying test on a given data file
  *
  */
 bool testEval(string filename)
@@ -150,7 +150,7 @@ bool testEval(string filename)
 
   trace.info() << endl;
   trace.info() << "Reading GridCurve from " << filename << endl;
-  
+
   ifstream instream; // input stream
   instream.open (filename.c_str(), ifstream::in);
   typedef KhalimskySpaceND<2> Kspace; //space
@@ -159,13 +159,13 @@ bool testEval(string filename)
   typedef GridCurve<Kspace >::PointsRange Range;//range
   Range r = c.getPointsRange();//building range
 
-  trace.info() << "Building Estimator (process range as"; 
+  trace.info() << "Building Estimator (process range as";
   trace.info() << ( (c.isClosed())?"closed":"open" ) << ")" << endl;
 
   if (c.isClosed())
-    return test(r.c(), r.c()); 
-  else 
-    return test(r.begin(), r.end()); 
+    return test(r.c(), r.c());
+  else
+    return test(r.begin(), r.end());
 
 }
 
@@ -175,7 +175,7 @@ bool testEval(string filename)
 
 int main(int argc, char **argv)
 {
-  
+
   trace.beginBlock ( "Testing class MostCenteredMaximalSegmentEstimator" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )

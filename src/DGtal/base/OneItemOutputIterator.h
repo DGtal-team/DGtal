@@ -51,9 +51,9 @@ namespace DGtal
   // template class OneItemOutputIterator
   /**
    * Description of template class 'OneItemOutputIterator' <p>
-   * \brief Aim: model of output iterator, ie incrementable and writable iterator, 
+   * \brief Aim: model of output iterator, ie incrementable and writable iterator,
    * which only stores in a variable the last assigned item.
-   * @tparam T at least a default constructible, copy constuctible and assignable type. 
+   * @tparam T at least a default constructible, copy constuctible and assignable type.
    */
   template <typename T>
   class OneItemOutputIterator//: public std::iterator<std::output_iterator_tag,void,void,void,void>
@@ -66,11 +66,11 @@ namespace DGtal
     using pointer = void;
     using reference = void;
 
-    
-    BOOST_CONCEPT_ASSERT(( boost::DefaultConstructible<T> )); 
-    BOOST_CONCEPT_ASSERT(( boost::CopyConstructible<T> )); 
+
+    BOOST_CONCEPT_ASSERT(( boost::DefaultConstructible<T> ));
+    BOOST_CONCEPT_ASSERT(( boost::CopyConstructible<T> ));
     BOOST_CONCEPT_ASSERT(( boost::Assignable<T> ));
- 
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -79,7 +79,7 @@ namespace DGtal
      */
     OneItemOutputIterator(): myItemPtr(NULL)
     {
-      myItemPtr = new T(); 
+      myItemPtr = new T();
     }
     /**
      * Copy constructor.
@@ -94,11 +94,11 @@ namespace DGtal
      * @param aItem any item
      * @return a reference to *this
      */
-    inline OneItemOutputIterator& operator=(const T& aItem) 
-    { 
-      ASSERT( isValid() ); 
+    inline OneItemOutputIterator& operator=(const T& aItem)
+    {
+      ASSERT( isValid() );
       *myItemPtr = aItem;
-      return *this; 
+      return *this;
     }
 
     /**
@@ -117,16 +117,16 @@ namespace DGtal
      * Post-increment operator
      * @return *this
      */
-    inline OneItemOutputIterator operator++(int) { return *this; } 
+    inline OneItemOutputIterator operator++(int) { return *this; }
 
     /**
      * Accessor to the last assigned item.
      * @return the content of @a myItem.
      */
-    inline T get() const 
+    inline T get() const
     {
-      ASSERT( isValid() ); 
-      return *myItemPtr; 
+      ASSERT( isValid() );
+      return *myItemPtr;
     }
 
     /**
@@ -135,10 +135,10 @@ namespace DGtal
      */
     inline bool isValid() const { return (myItemPtr != NULL); }
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     ///pointer that stores the last assigned item
-    T* myItemPtr; 
+    T* myItemPtr;
 
   }; // end of class OneItemOutputIterator
 

@@ -134,7 +134,7 @@ TEST_CASE("Testing ArithmeticalDSSComputerOnSurfels")
     auto segIt = segmentation.begin();
     auto segSurfelIt = segmentationSurfels.begin();
     while (segIt != segmentation.end() && segSurfelIt != segmentationSurfels.end()) {
-      
+
       allEqual = allEqual && (segIt->primitive() == segSurfelIt->primitive());
       ++segIt;
       ++segSurfelIt;

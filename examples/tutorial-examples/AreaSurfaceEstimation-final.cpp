@@ -44,7 +44,7 @@ int main( int argc, char** argv )
 
 	DigitalShape digitalBall;
 	digitalBall.attach( ball );
-	digitalBall.init( ball.getLowerBound() - Z3i::RealPoint( 1.0, 1.0, 1.0 ), 
+	digitalBall.init( ball.getLowerBound() - Z3i::RealPoint( 1.0, 1.0, 1.0 ),
 					  ball.getUpperBound() + Z3i::RealPoint( 1.0, 1.0, 1.0 ),
 					  h );
 	Domain domain = digitalBall.getDomain();
@@ -95,7 +95,7 @@ int main( int argc, char** argv )
 	for( unsigned int i_position = 0; i_position < v_border.size(); ++i_position )
 	{
 		Z3i::RealPoint normalEstimated = normalEstimator.eval( &(v_border[i_position]) );
-		Z3i::RealPoint normalSurfel = kspace.sKCoords( kspace.sDirectIncident( v_border[i_position], kspace.sOrthDir( v_border[i_position] ))) - kspace.sKCoords( v_border[i_position] ); 
+		Z3i::RealPoint normalSurfel = kspace.sKCoords( kspace.sDirectIncident( v_border[i_position], kspace.sOrthDir( v_border[i_position] ))) - kspace.sKCoords( v_border[i_position] );
 		normalEstimated = normalEstimated.getNormalized();
 		areaSurfaceEstimated += std::abs( normalEstimated.dot( normalSurfel )) * h * h;
 	}

@@ -104,7 +104,7 @@ namespace DGtal
       CharacteristicSetPredicate( const Self& other ) : ptrSet( other.ptrSet ) {}
       Self& operator=( const Self& other ) { ptrSet = other.ptrSet; return *this; }
       bool operator()( const Point& p ) const
-      { 
+      {
         ASSERT( ptrSet != 0 );
         return (*ptrSet)( p );
       }
@@ -116,7 +116,7 @@ namespace DGtal
 
     typedef double Scalar;                                    ///< the type for "real" numbers.
     typedef DGtal::SimpleMatrix< Scalar,
-                                 Space::dimension, 
+                                 Space::dimension,
                                  Space::dimension > MatrixNN; ///< the type for nxn matrix of real numbers.
     typedef typename MatrixNN::RowVector VectorN;             ///< the type for N-vector of real numbers
     typedef std::vector<Point> PointContainer;                ///< the list of points
@@ -153,7 +153,7 @@ namespace DGtal
     /// @return the parameter r in VCM(chi_r), i.e. an upper bound for
     /// the diameter of the support of kernel functions.
     Scalar r() const;
- 
+
     /**
        Cleans intermediate data structure likes the characteristic set and the voronoi map.
        @note Further calls to voronoiMap are no more valid.
@@ -162,7 +162,7 @@ namespace DGtal
 
     /**
        Computes the Voronoi Covariance Measure for the set of points given by range [itb,ite)
-       
+
        @tparam PointInputIterator an input iterator on digital points.
        @param itb the start of the range
        @param ite the end of the range.
@@ -175,7 +175,7 @@ namespace DGtal
     /// @return the domain of computation
     const Domain& domain() const;
 
-    /// @return the current Voronoi map 
+    /// @return the current Voronoi map
     /// @pre init must have been called before.
     const Voronoi& voronoiMap() const;
 
@@ -186,15 +186,15 @@ namespace DGtal
 
     /**
     Computes the Voronoi Covariance Measure of the function \a chi_r.
-    
+
     @tparam Point2ScalarFunction the type of a functor
     Point->Scalar. For instance functors::HatPointFunction and
     functors::BallConstantPointFunction are models of this type.
-    
+
     @param chi_r the kernel function whose support is included in
     the cube centered on the origin with edge size 2r (see \ref
     VoronoiCovarianceMeasure).
-    
+
     @param p the point where the kernel function is moved. It must lie within domain.
     */
     template <typename Point2ScalarFunction>
@@ -215,16 +215,16 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     /// The parameter R in the VCM, i.e. the offset radius for the compact set K.
-    double myBigR;  
+    double myBigR;
     /// The parameter r in VCM(chi_r), i.e. an upper bound for the
     /// diameter of the support of kernel functions.
-    double mySmallR;  
+    double mySmallR;
     /// The metric chosen for the Voronoi map.
     Metric myMetric;
     /// Tells if it is verbose mode.
@@ -280,7 +280,7 @@ namespace DGtal
    */
   template <typename TSpace, typename TSeparableMetric>
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
                const VoronoiCovarianceMeasure<TSpace, TSeparableMetric> & object );
 
 } // namespace DGtal

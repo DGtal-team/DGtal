@@ -51,31 +51,31 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class UmbrellaComputer
   /**
-     Description of class 'DigitalSurfaceUmbrellaComputer' <p> 
+     Description of class 'DigitalSurfaceUmbrellaComputer' <p>
 
      \brief Aim: Useful for computing umbrellas on 'DigitalSurface's,
      ie set of n-1 cells around a n-3 cell.
-    
+
      The current surfel (n-1 cell), or \a face, is denoted by \a s.
      The n-3 cell is called the \a pivot and denoted by \a +p. It is
      always a positive cell. There is also a current n-2 cell, called
      the \a separator and denoted by \a t, which is in the boundary of
      \a s and whose boundary contains \a +p.
-    
+
      Two directions specifies the separator and the pivot, the \a
      track direction \a j and the separator direction \a k. Moreover
      an orientation \f$ \epsilon=\pm 1 \f$ specifies one which side is
      the separator wrt the face. We have \f$ t = \Delta^{\epsilon}_k
      s, +p = \Delta^{\mu}_{j} t, \f$ where \f$ \mu \f$ is the direct
      orientation of \a t along \a j.
-    
+
      Turning around the pivot means moving the face and the separator
      once (in the track direction), such that the pivot is the same
      (ie \a +p), the track and separator directions being
      updated. Repeating this process a sufficient number of times
      brings the umbrella back in its original position, except in the
      case when the DigitalSurface has a boundary touching the pivot.
-    
+
      Uses delegation with DigitalSurfaceTracker.
 
      Essentially a backport from ImaGene.
@@ -101,7 +101,7 @@ namespace DGtal
        Stores (the main part of) the state when visiting an umbrella.
        @see UmbrellaComputer
     */
-    struct State 
+    struct State
     {
       /// Current surfel
       Surfel surfel;
@@ -112,23 +112,23 @@ namespace DGtal
       /// Track direction (j != k), j in sDirs(surfel).
       Dimension j;
       inline State(){}
-      inline State( const Surfel & _surfel, 
+      inline State( const Surfel & _surfel,
                     Dimension _k, bool _epsilon, Dimension _j )
         : surfel( _surfel ), k( _k ), epsilon( _epsilon ), j( _j )
       {}
       inline bool operator==( const State & other ) const
       {
-	return ( surfel == other.surfel ) 
-	  && ( k == other.k ) 
+	return ( surfel == other.surfel )
+	  && ( k == other.k )
 	  && ( epsilon == other.epsilon )
 	  && ( j == other.j );
       }
       inline bool operator<( const State & other ) const
       {
-	return ( surfel < other.surfel ) 
-	  || ( ( surfel == other.surfel ) 
-	       && ( ( k < other.k ) 
-		    || ( ( k == other.k ) 
+	return ( surfel < other.surfel )
+	  || ( ( surfel == other.surfel )
+	       && ( ( k < other.k )
+		    || ( ( k == other.k )
 			 && ( ( epsilon < other.epsilon )
 			      || ( ( epsilon == other.epsilon)
 				   && ( j < other.j ) ) ) ) ) );
@@ -155,23 +155,23 @@ namespace DGtal
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    UmbrellaComputer & 
+    UmbrellaComputer &
     operator=( const UmbrellaComputer & other );
-   
+
     /**
        Initializes the umbrella with a 'DigitalSurfaceTracker'. Links
        the umbrella computer with a concrete surface and a surfel on
        it. Tells also where is the positive pivot to turn around.
-      
+
        @param tracker a tracker on a digital surface with a valid
        'current()' surfel. (cloned). Specifies the initial surfel.
-     
+
        @param k the separator direction different from [j] and the
        orthogonal direction to the surfel.
-      
+
        @param epsilon the orientation where to find the separator
        pointing at the pivot.
-      
+
        @param j the track direction where the next surfel of the umbrella is.
      */
     void init( const DigitalSurfaceTracker & tracker,
@@ -188,7 +188,7 @@ namespace DGtal
     void setState( const State & aState );
 
     /**
-     * Returns the state of the umbrella in the referenced object [state]. 
+     * Returns the state of the umbrella in the referenced object [state].
      *
      * @param aState (returns) the current umbrella state describing
      * the face, the separator and the pivot.
@@ -200,7 +200,7 @@ namespace DGtal
 
     /// Accessor to the digital space.
     const KSpace & space() const;
- 
+
     // ----------------------- Accessor services ------------------------------
   public:
 
@@ -212,7 +212,7 @@ namespace DGtal
 
     /// @return the pivot n-3 cell (always positively orientated).
     SCell pivot() const;
-    
+
     /// @return the orthogonal direction to the current surfel.
     Dimension orthDir() const;
 
@@ -227,21 +227,21 @@ namespace DGtal
 
     /// @return the separator orientation.
     bool separatorOrientation() const;
-    
+
     // ----------------------- Pivoting services ------------------------------
   public:
 
     /**
        Turns around the current pivot (positive turn).
-     
+
        @return 0 if the move was impossible (nothing is updated)
        otherwise returns the move code of the face.
      */
     unsigned int next();
-    
+
     /**
        Turns around the current pivot (negative turn).
-       
+
        @return 0 if the move was impossible (nothing is updated)
        otherwise returns the move code of the face.
      */
@@ -251,12 +251,12 @@ namespace DGtal
        Go the adjacent umbrella, ie the one which shares the same
        faces around the separator but whose pivot is symmetric around
        the separator.
-       
+
        @return 'true' if their was an adjacent umbrella, 'false' otherwise.
        (the umbrella is in the same state as before the call).
      */
     bool adjacent();
-    
+
 
 
     // ----------------------- Interface --------------------------------------
@@ -274,9 +274,9 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     /// Tracker used to move on the digital surface.

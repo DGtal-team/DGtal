@@ -58,14 +58,14 @@ bool testPNMReader()
   trace.info() << "Loading filename: "<< filename<<std::endl;
 
   typedef ImageSelector < Z2i::Domain, unsigned int>::Type Image;
-  Image image = PGMReader<Image>::importPGM( filename ); 
-  
+  Image image = PGMReader<Image>::importPGM( filename );
+
   Z2i::DigitalSet set2d (image.domain());
   SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, 0, 255);
-   
+
   Board2D board;
   board << image.domain() << set2d; // display domain and set
-  
+
   board.saveEPS( "testPNMReaderPGM.eps");
   trace.endBlock();
 
@@ -75,16 +75,16 @@ bool testPNMReader()
   trace.info() << "Loading filename: "<< filenamePPM <<std::endl;
 
   typedef ImageSelector < Z2i::Domain, unsigned int>::Type Image;
-  Image imagePPM = PPMReader<Image>::importPPM( filenamePPM ); 
-  
+  Image imagePPM = PPMReader<Image>::importPPM( filenamePPM );
+
   Z2i::DigitalSet set2dPPM (imagePPM.domain());
   SetFromImage<Z2i::DigitalSet>::append<Image>(set2dPPM, imagePPM, 0, 0xFFFFFEu);
-   
+
   Board2D boardPPM;
   boardPPM << imagePPM.domain() << set2dPPM; // display domain and set
-  
+
   boardPPM.saveEPS( "testPNMReaderPPM.eps");
-  trace.endBlock();  
+  trace.endBlock();
 
   return true;
 }
@@ -100,10 +100,10 @@ bool testPNM3DReader()
   trace.info() << "Loading filename: "<< filename<<std::endl;
 
   typedef ImageSelector < Z3i::Domain, unsigned int>::Type Image;
-  Image image = PGMReader<Image>::importPGM3D( filename ); 
-  
+  Image image = PGMReader<Image>::importPGM3D( filename );
+
   trace.info() << "Image 3D = "<<image<<std::endl;
-  
+
   trace.endBlock();
   return true;
 }

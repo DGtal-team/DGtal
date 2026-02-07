@@ -50,7 +50,7 @@
 #include "boost/iterator/reverse_iterator.hpp"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal 
+namespace DGtal
 {
 
 
@@ -59,16 +59,16 @@ namespace DGtal
   ///////////////////////////////////////////////////////////////////////////////
 
   /**
-   * @brief Aim: model of CConstBidirectionalRangeFromPoint and 
-   * CBidirectionalRangeWithWritableIteratorFromPoint that adapts the domain 
+   * @brief Aim: model of CConstBidirectionalRangeFromPoint and
+   * CBidirectionalRangeWithWritableIteratorFromPoint that adapts the domain
    * of an image in order to iterate over the values associated
    * to its domain points
-   * (in a read-only as well as a write-only manner).  
+   * (in a read-only as well as a write-only manner).
    *
    * @tparam TImage a model of CImage mapping points to values
    *
    * NB: the underlying image is stored as an aliasing pointer
-   * in order to avoid copies. As a consequence the pointed object must exist 
+   * in order to avoid copies. As a consequence the pointed object must exist
    * and must not be deleted during the use of any instance of this class.
    *
    * TODO: inherits from DefaultConstImageRange
@@ -79,16 +79,16 @@ namespace DGtal
 
 
     // ------------------------- inner types --------------------------------
-  public: 
-  
-    BOOST_CONCEPT_ASSERT(( concepts::CTrivialImage<TImage> ));
-    typedef typename TImage::Domain Domain; 
-    typedef typename TImage::Point Point; 
-    typedef typename TImage::Value Value; 
+  public:
 
-    /// constant iterator types 
-    BOOST_CONCEPT_ASSERT(( concepts::CDomain<Domain> )); 
-    typedef ConstIteratorAdapter<typename Domain::ConstIterator,TImage,Value> ConstIterator; 
+    BOOST_CONCEPT_ASSERT(( concepts::CTrivialImage<TImage> ));
+    typedef typename TImage::Domain Domain;
+    typedef typename TImage::Point Point;
+    typedef typename TImage::Value Value;
+
+    /// constant iterator types
+    BOOST_CONCEPT_ASSERT(( concepts::CDomain<Domain> ));
+    typedef ConstIteratorAdapter<typename Domain::ConstIterator,TImage,Value> ConstIterator;
     typedef boost::reverse_iterator<ConstIterator> ConstReverseIterator;
 
     /// output iterator types
@@ -111,14 +111,14 @@ namespace DGtal
      */
     DefaultImageRange( const DefaultImageRange & other )
       : myImagePtr(other.myImagePtr) {}
-  
+
     /**
      * Assignment.
      * @param other the iterator to copy.
      * @return a reference on 'this'.
      */
     DefaultImageRange& operator= ( const DefaultImageRange & other )
-    {  
+    {
       if ( this != &other )
 	{
 	  myImagePtr = other.myImagePtr;
@@ -136,15 +136,15 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const { return true; }
-  
-  
+
+
 
     // ------------------------- private data --------------------------------
-  private: 
+  private:
     /**
      * Aliasing pointer on the underlying image
      */
-    TImage* myImagePtr; 
+    TImage* myImagePtr;
 
     // ------------------------- iterator services (read-only) --------------------------------
   public:
@@ -154,7 +154,7 @@ namespace DGtal
      * @return begin iterator
      */
     ConstIterator begin() const {
-      Domain d = myImagePtr->domain(); 
+      Domain d = myImagePtr->domain();
       return ConstIterator( d.begin(), *myImagePtr );
     }
 
@@ -164,7 +164,7 @@ namespace DGtal
      * @return begin iterator
      */
     ConstIterator begin(const Point& aPoint) const {
-      Domain d = myImagePtr->domain(); 
+      Domain d = myImagePtr->domain();
       return ConstIterator( d.begin(aPoint), *myImagePtr );
     }
 
@@ -173,7 +173,7 @@ namespace DGtal
      * @return end iterator
      */
     ConstIterator end() const {
-      Domain d = myImagePtr->domain(); 
+      Domain d = myImagePtr->domain();
       return ConstIterator( d.end(), *myImagePtr );
     }
 
@@ -191,9 +191,9 @@ namespace DGtal
      * @return rbegin iterator
      */
     ConstReverseIterator rbegin(const Point& aPoint) const {
-      Domain d = myImagePtr->domain(); 
-      typename Domain::ConstIterator itOnPts = d.begin(aPoint); 
-      if ( itOnPts != d.end() ) ++itOnPts; 
+      Domain d = myImagePtr->domain();
+      typename Domain::ConstIterator itOnPts = d.begin(aPoint);
+      if ( itOnPts != d.end() ) ++itOnPts;
       ConstIterator itOnVals( itOnPts, *myImagePtr );
       return ConstReverseIterator( itOnVals );
     }
@@ -207,13 +207,13 @@ namespace DGtal
     }
 
     // ------------------------- iterator services (write-only) --------------------------------
-  public: 
+  public:
     /**
      * Iterator service.
      * @return output iterator
      */
     OutputIterator outputIterator() const {
-      Domain d = myImagePtr->domain(); 
+      Domain d = myImagePtr->domain();
       return OutputIterator( d.begin(), *myImagePtr );
     }
 
@@ -223,7 +223,7 @@ namespace DGtal
      * @return output iterator
      */
     OutputIterator outputIterator(const Point& aPoint) const {
-      Domain d = myImagePtr->domain(); 
+      Domain d = myImagePtr->domain();
       return OutputIterator( d.begin(aPoint), *myImagePtr );
     }
 

@@ -22,7 +22,7 @@
  *
  * @date 2021/06/22
  *
- * An example file named fullConvexityCollapsiblePoints2D. 
+ * An example file named fullConvexityCollapsiblePoints2D.
  *
  * This file is part of the DGtal library.
  */

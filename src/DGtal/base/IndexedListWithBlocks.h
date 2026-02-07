@@ -117,7 +117,7 @@ namespace DGtal
     typedef SizeType size_type;
     typedef Iterator iterator;
     typedef ConstIterator const_iterator;
-    
+
     struct FirstBlock; ///< Forward declaration
     struct AnyBlock; ///< Forward declaration
 
@@ -189,7 +189,7 @@ namespace DGtal
 	++size;
       }
 
-      inline 
+      inline
       void erase( unsigned int idx )
       {
 	// std::cerr << "FirstBlock::erase(" << idx << ")"
@@ -204,7 +204,7 @@ namespace DGtal
             data.nextBlock = 0;
 	  }
 	else if ( size == N + 2 )
-	  { 
+	  {
 	    if ( idx < N )
 	      {
 		std::copy( values + idx + 1, values + N, values + idx );
@@ -254,7 +254,7 @@ namespace DGtal
       void insert( unsigned int idx, unsigned int size, const Value & v )
       {
         ASSERT( idx <= size );
-	if ( idx >= M ) 
+	if ( idx >= M )
 	  {
 	    if ( next == 0 )
 	      {
@@ -265,11 +265,11 @@ namespace DGtal
             else
               next->insert( idx - M, size - M, v );
 	  }
-	else 
+	else
 	  { // idx < M
             if ( size < ( M - 1) )
               {
-                std::copy_backward( values + idx, values + size, 
+                std::copy_backward( values + idx, values + size,
                                     values + size + 1 );
                 values[ idx ] = v;
               }
@@ -293,10 +293,10 @@ namespace DGtal
 	  }
       }
 
-      inline 
+      inline
       AnyBlock* erase( unsigned int idx, unsigned int size )
       {
-	// std::cerr << "AnyBlock::erase(" << idx << "," << size << ")" 
+	// std::cerr << "AnyBlock::erase(" << idx << "," << size << ")"
 	// 	  << " this=" << this
 	// 	  << " next=" << next
 	// 	  << std::endl;
@@ -362,7 +362,7 @@ namespace DGtal
 	 Constructor from first block and index. Used by class IndexedListWithBlocks.
       */
       Iterator( FirstBlock & block, unsigned int idx );
-      
+
     public:
       /**
 	 Default destructor.
@@ -386,60 +386,60 @@ namespace DGtal
        * @return a reference on 'this'.
        */
       Self & operator= ( const Self & other );
-      
+
       /**
 	 Dereference operator.
 	 @return the current value of the iterator, if valid.
       */
       Reference operator*() const;
-     
+
       /**
 	 Pointer dereference operator.
 	 @return a non-mutable pointer on the current value.
-      */  
+      */
       Pointer operator->() const;
-      
-      /** 
+
+      /**
 	  Pre-increment operator.
 	  @return a reference to itself.
       */
       Self& operator++();
-      
-      /** 
+
+      /**
 	  Post-increment operator.
 	  @return a reference to itself.
       */
       Self operator++( int );
 
-      /** 
+      /**
 	  Addition operator. Moves the iterator at position + \a n.
 	  @param n any positive integer
 	  @return a reference to itself.
       */
       Self& operator+=( DifferenceType n );
 
-      /** 
+      /**
 	  Positive offset dereference operator. Moves the iterator at position + \a n.
 	  @param n any positive integer
 	  @return a reference to itself.
       */
       Reference operator[]( DifferenceType n ) const;
-    
+
       /**
 	 Equality operator.
 	 @param other any other iterator.
 	 @return 'true' iff the iterators points on the same element.
       */
       bool operator==( const Self & other ) const;
-      
+
       /**
 	 Inequality operator.
 	 @param other any other iterator.
 	 @return 'true' iff the iterators points on different elements.
       */
       bool operator!=( const Self & other ) const;
-      
-      
+
+
     };
 
 
@@ -480,7 +480,7 @@ namespace DGtal
          Used by class IndexedListWithBlocks.
       */
       ConstIterator( const FirstBlock & block, unsigned int idx );
-      
+
     public:
       /**
 	 Default destructor.
@@ -504,60 +504,60 @@ namespace DGtal
        * @return a reference on 'this'.
        */
       Self & operator= ( const Self & other );
-      
+
       /**
 	 Dereference operator.
 	 @return the current value of the iterator, if valid.
       */
       Reference operator*() const;
-     
+
       /**
 	 Pointer dereference operator.
 	 @return a non-mutable pointer on the current value.
-      */  
+      */
       Pointer operator->() const;
-      
-      /** 
+
+      /**
 	  Pre-increment operator.
 	  @return a reference to itself.
       */
       Self& operator++();
-      
-      /** 
+
+      /**
 	  Post-increment operator.
 	  @return a reference to itself.
       */
       Self operator++( int );
 
-      /** 
+      /**
 	  Addition operator. Moves the iterator at position + \a n.
 	  @param n any positive integer
 	  @return a reference to itself.
       */
       Self& operator+=( DifferenceType n );
 
-      /** 
+      /**
 	  Positive offset dereference operator. Moves the iterator at position + \a n.
 	  @param n any positive integer
 	  @return a reference to itself.
       */
       Reference operator[]( DifferenceType n ) const;
-    
+
       /**
 	 Equality operator.
 	 @param other any other iterator.
 	 @return 'true' iff the iterators points on the same element.
       */
       bool operator==( const Self & other ) const;
-      
+
       /**
 	 Inequality operator.
 	 @param other any other iterator.
 	 @return 'true' iff the iterators points on different elements.
       */
       bool operator!=( const Self & other ) const;
-      
-      
+
+
     };
 
 
@@ -589,7 +589,7 @@ namespace DGtal
 
     // ----------------------- Container services -----------------------------
   public:
-    
+
     /**
        The number of values stored in the structure. O(1) complexity.
      */
@@ -689,9 +689,9 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     /**
@@ -721,7 +721,7 @@ namespace DGtal
    */
   template  <typename TValue, unsigned int N, unsigned int M>
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
                const IndexedListWithBlocks<TValue, N, M> & object );
 
 } // namespace DGtal

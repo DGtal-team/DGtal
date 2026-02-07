@@ -41,7 +41,7 @@
 
 using namespace std;
 using namespace DGtal;
-using namespace Z2i; 
+using namespace Z2i;
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -52,11 +52,11 @@ int main( int argc, char** argv )
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
-  
+
   std::string filename = examplesPath + "samples/DSS.dat";
   ifstream instream; // input stream
   instream.open (filename.c_str(), ifstream::in);
-  
+
   Curve c; //grid curve
   c.initFromVectorStream(instream);
 
@@ -64,17 +64,17 @@ int main( int argc, char** argv )
   trace.beginBlock("Simple example");
 
   //! [StabbingLineComputerUsage]
-  Curve::IncidentPointsRange r = c.getIncidentPointsRange(); 
-  Curve::IncidentPointsRange::ConstIterator itEnd (r.end()); 
+  Curve::IncidentPointsRange r = c.getIncidentPointsRange();
+  Curve::IncidentPointsRange::ConstIterator itEnd (r.end());
 
-  StabbingLineComputer<Curve::IncidentPointsRange::ConstIterator> s; 
+  StabbingLineComputer<Curve::IncidentPointsRange::ConstIterator> s;
   //extension
   s.init( r.begin() );
   while ( ( s.end() != itEnd )
         &&( s.extendFront() ) ) {}
   //! [StabbingLineComputerUsage]
 
-  trace.info() << s << endl;  
+  trace.info() << s << endl;
 
   trace.endBlock();
 

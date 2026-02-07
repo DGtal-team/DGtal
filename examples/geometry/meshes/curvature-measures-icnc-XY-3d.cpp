@@ -76,7 +76,7 @@ MTL file.
 
 @see \ref moduleCurvatureMeasures
 
-@note Interpolated corected curvature measures can provide consistent results even on on bad sampling of smooth surfaces. A well known example is the Schwarz lantern. You may try the following:
+@note Interpolated corrected curvature measures can provide consistent results even on on bad sampling of smooth surfaces. A well known example is the Schwarz lantern. You may try the following:
 
 \verbatim
 ./examples/geometry/meshes/curvature-measures-icnc-XY-3d lantern 20 20 0.5
@@ -273,7 +273,7 @@ int main( int argc, char* argv[] )
   SH::saveVectorFieldOBJ( positions, D2, 0.05 * avg_e, SH::Colors(),
                           "example-cnc-D2",
                           SH::Color::Black, SH::Color(128, 0,128 ) );
-  
+
   //! [curvature-measures-output]
   return 0;
 }

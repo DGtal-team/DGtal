@@ -294,11 +294,11 @@ namespace DGtal
      */
     bool isProjectedInside () const;
     /**
-     * Checks whether the predicate is true for all vertices of 
+     * Checks whether the predicate is true for all vertices of
      * the base triangle or not.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
-    bool isInside() const; 
+    bool isInside() const;
     /**
      * Checks whether the three vectors stored in 'myM'
      * are the columns of a unimodular matrix or not.
@@ -306,10 +306,10 @@ namespace DGtal
      */
     bool isUnimodular() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     Triangle myM; /**< The three height vectors, representing the current frame. */
     Predicate const& myPredicate; /**< The probing predicate. */
@@ -320,7 +320,7 @@ namespace DGtal
 
     // ------------------------- Hidden services ------------------------------
   protected:
-    
+
     // ------------------------- Internals ------------------------------------
   private:
     /**

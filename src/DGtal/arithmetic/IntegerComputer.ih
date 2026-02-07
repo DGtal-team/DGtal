@@ -126,7 +126,7 @@ abs( IntegerParamType a )
 {
   if ( isPositiveOrZero( a ) )
     return a;
-  else 
+  else
     return -a;
 }
 //-----------------------------------------------------------------------------
@@ -371,7 +371,7 @@ convergent( const std::vector<Integer> & quotients,
   _m_bezout[ 1 ].clear(); // q
   _m_bezout[ 1 ].push_back( NumberTraits<Integer>::ONE );
   _m_bezout[ 1 ].push_back( NumberTraits<Integer>::ZERO );
-  if ( k >= quotients.size() ) 
+  if ( k >= quotients.size() )
     k = (quotients.size() - 1);
   for ( unsigned int i = 0; i <= k; ++i )
     {
@@ -413,7 +413,7 @@ template <typename TInteger>
 inline
 void
 DGtal::IntegerComputer<TInteger>::
-getCrossProduct( Integer & cp, 
+getCrossProduct( Integer & cp,
                  const Vector2I & u, const Vector2I & v) const
 {
   cp = u[ 0 ] * v[ 1 ];
@@ -435,7 +435,7 @@ template <typename TInteger>
 inline
 void
 DGtal::IntegerComputer<TInteger>::
-getDotProduct( Integer & dp, 
+getDotProduct( Integer & dp,
                const Vector2I & u, const Vector2I & v) const
 {
   dp = u[ 0 ] * v[ 0 ];
@@ -445,7 +445,7 @@ getDotProduct( Integer & dp,
 template <typename TInteger>
 typename DGtal::IntegerComputer<TInteger>::Vector2I
 DGtal::IntegerComputer<TInteger>::
-extendedEuclid( IntegerParamType a, IntegerParamType b, 
+extendedEuclid( IntegerParamType a, IntegerParamType b,
                 IntegerParamType c ) const
 {
   if( isZero( a ) )  return Point2I( NumberTraits<Integer>::ZERO, b * c );
@@ -461,23 +461,23 @@ extendedEuclid( IntegerParamType a, IntegerParamType b,
   _m_bezout[ 2 ].push_back( NumberTraits<Integer>::ZERO );
   _m_bezout[ 3 ].push_back( NumberTraits<Integer>::ZERO );
   _m_bezout[ 3 ].push_back( NumberTraits<Integer>::ONE );
-  
+
   unsigned int k = 0; // index of the iteration during the computation.
   while( isNotZero( _m_bezout[ 0 ][ k+1 ] ) )
     {
-      _m_bezout[ 1 ].push_back( _m_bezout[ 0 ][ k ] 
+      _m_bezout[ 1 ].push_back( _m_bezout[ 0 ][ k ]
                                 / _m_bezout[ 0 ][ k+1 ] );
-      _m_bezout[ 0 ].push_back( _m_bezout[ 0 ][ k ] 
+      _m_bezout[ 0 ].push_back( _m_bezout[ 0 ][ k ]
                                 % _m_bezout[ 0 ][ k+1 ] );
-      _m_bezout[ 2 ].push_back( _m_bezout[ 2 ][ k ] 
+      _m_bezout[ 2 ].push_back( _m_bezout[ 2 ][ k ]
                                 - _m_bezout[ 1 ][ k+1 ]
                                 * _m_bezout[ 2 ][ k+1 ] );
-      _m_bezout[ 3 ].push_back( _m_bezout[ 3 ][ k ] 
+      _m_bezout[ 3 ].push_back( _m_bezout[ 3 ][ k ]
                                 - _m_bezout[ 1 ][ k+1 ]
                                 *_m_bezout[ 3 ][ k+1 ] );
       ++k;
     }
-  
+
   _m_v[ 0 ] = _m_bezout[ 2 ][ k ];
   _m_v[ 1 ] = _m_bezout[ 3 ][ k ];
   if ( k % 2 != 0 )
@@ -490,7 +490,7 @@ extendedEuclid( IntegerParamType a, IntegerParamType b,
   _m_v *= c / _m_bezout[ 0 ][ k ]; // c / gcd(a,b)
   if ( isNegative( a ) ) _m_v[ 0 ] = - _m_v[ 0 ];
   if ( isNegative( b ) ) _m_v[ 1 ] = - _m_v[ 1 ];
-  // std::cout << "a * x + b * y == c, " 
+  // std::cout << "a * x + b * y == c, "
   //           << a << " * " << _m_v[ 0 ] << " + " << b << " * " << _m_v[ 1 ] << " == " << c << std::endl;
   ASSERT( (a*_m_v[ 0 ]+b*_m_v[ 1 ]) == c );
   ASSERT( isNegative( c ) || ( ( isPositive( a ) == isPositive( _m_v[ 0 ] ) ) || isZero( _m_v[ 0 ] ) ) );
@@ -505,9 +505,9 @@ inline
 void
 DGtal::IntegerComputer<TInteger>::
 getCoefficientIntersection( Integer & fl, Integer & ce,
-                            const Vector2I & p, 
-                            const Vector2I & u, 
-                            const Vector2I & N, 
+                            const Vector2I & p,
+                            const Vector2I & u,
+                            const Vector2I & N,
                             IntegerParamType c ) const
 {
   getDotProduct( _m_c0, p, N );
@@ -522,10 +522,10 @@ template <typename TInteger>
 inline
 void
 DGtal::IntegerComputer<TInteger>::
-getValidBezout ( Vector2I & v, 
+getValidBezout ( Vector2I & v,
                  const Point2I & A, const Vector2I & u,
-                 const Vector2I & N, IntegerParamType c, 
-                 const Vector2I & N2, IntegerParamType c2, 
+                 const Vector2I & N, IntegerParamType c,
+                 const Vector2I & N2, IntegerParamType c2,
                  bool compute_v ) const
 {
   if ( compute_v )
@@ -541,7 +541,7 @@ getValidBezout ( Vector2I & v,
 	}
     }
   else _m_v0 = A + v;
-  getCoefficientIntersection( _m_a0, _m_a1, 
+  getCoefficientIntersection( _m_a0, _m_a1,
                               _m_v0, u, N2, c2 );
   _m_v1 = u * _m_a0; // floor value
   v += _m_v1;
@@ -576,7 +576,7 @@ template <typename TInteger>
 inline
 void
 DGtal::IntegerComputer<TInteger>::
-getDotProduct( Integer & dp, 
+getDotProduct( Integer & dp,
             const Vector3I & u, const Vector3I & v) const
 {
   dp =  u[ 0 ] * v[ 0 ];
@@ -620,7 +620,7 @@ DGtal::IntegerComputer<TInteger>::isValid() const
 template <typename TInteger>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
                     const IntegerComputer<TInteger> & object )
 {
   object.selfDisplay( out );
@@ -629,5 +629,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

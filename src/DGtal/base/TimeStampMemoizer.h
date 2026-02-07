@@ -80,10 +80,10 @@ namespace DGtal
     typedef std::size_t                       Size;
     typedef DGtal::uint32_t                   TimeStamp;
     typedef std::pair< Value, TimeStamp >     StoredValue;
-    
+
     // ----------------------- Standard services ------------------------------
   public:
-    
+
     /**
        Constructor.
 
@@ -93,7 +93,7 @@ namespace DGtal
        maximum number is reached, at least the oldest \a ratio
        fraction of items are deleted from the memoizer.
 
-       @param verbose if 'true', traces some informations.
+       @param verbose if 'true', traces some information.
      */
     TimeStampMemoizer( Size max_size = 0, double ratio = 0.5,
                        bool verbose = false )
@@ -164,7 +164,7 @@ namespace DGtal
     {
       return myMap;
     }
-    
+
     /// Given a \a key, return the associated pair <value, true> if it
     /// is found, or return <dummy, false> where dummy is an arbitrary value.
     ///
@@ -181,7 +181,7 @@ namespace DGtal
       ++myHits;
       return std::make_pair( it->second.first, false );
     }
-    
+
     /// Memoizes (or update) a pair \a key and \a value.
     ///
     /// @param key any key.
@@ -214,7 +214,7 @@ namespace DGtal
       if ( myVerbose) trace.info() << " " << nb << " erased." << std::endl;
       myHits   = 0;
     }
-    
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -226,7 +226,7 @@ namespace DGtal
     {
       out << "[TimeStampMemoizer " << myMap.size() << "/" << myMaxSize << " items"
           << " time=" << myTimeStamp << " ratio=" << myRatio
-          << " hits=" << myHits 
+          << " hits=" << myHits
           << "]";
     }
 
@@ -239,7 +239,7 @@ namespace DGtal
       return ( myMaxSize > 0 );
     }
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
     /// The maximal number of memoized items
     Size      myMaxSize;
@@ -254,9 +254,9 @@ namespace DGtal
     /// when 'true', traces some information.
     bool      myVerbose;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
-    
+
     // ------------------------- Hidden services ------------------------------
   protected:
 
@@ -279,7 +279,7 @@ namespace DGtal
    */
   template <typename TKey, typename TValue>
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
                const TimeStampMemoizer<TKey, TValue> & object )
   {
     object.selfDisplay( out );

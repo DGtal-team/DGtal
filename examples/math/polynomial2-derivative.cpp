@@ -14,7 +14,7 @@
 /**
  *   computes the first and second derivatives of the given polynomial P (in two variables).
  *
- * @see \ref dgtal_mpolynomial_sec1_5 and \ref dgtal_mpolynomial_sec3 
+ * @see \ref dgtal_mpolynomial_sec1_5 and \ref dgtal_mpolynomial_sec3
  *
  * @verbatim
  * $ ./examples/math/polynomial2-derivative "(x-3)^2 + (y-2)^2 - 4"
@@ -88,4 +88,3 @@ int main( int argc, char** argv )
   //! [polynomial2-derivative-process]
   return 0;
 }
-

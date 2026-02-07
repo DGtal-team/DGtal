@@ -40,7 +40,7 @@
 using namespace std;
 using namespace DGtal;
 using namespace LibBoard;
-  
+
 ///////////////////////////////////////////////////////////////////////////////
 // Functions for testing class SimpleBoard.
 ///////////////////////////////////////////////////////////////////////////////
@@ -54,15 +54,15 @@ bool testSimpleBoard()
   unsigned int nb = 2;
 
   trace.beginBlock ( "Testing class SimpleBoard" );
-  
+
   Board2D board;
 
   board.setPenColorRGBi( 0, 0, 0);
   board.drawRectangle( -1, 1, 2.0, 2.0 );
   board.setPenColorRGBi( 0, 0, 255 );
   board.fillCircle( 2, 2, 1 );
-  
-  
+
+
 
   board.saveSVG( "simpleboard.svg" );
   board.saveFIG( "simpleboard.fig" );
@@ -103,14 +103,14 @@ bool testDomain()
 
     trace.beginBlock ( "HyperRectDomain Iterator" );
     HyperRectDomain<TSpace> myDomain ( a,b );
-    
+
     Board2D board;
-    
+
     board << SetMode( myDomain.className(), "Grid" ) << myDomain;
     board.scale(10);
     board.saveSVG( "domain-grid.svg" );
     board.saveTikZ( "domain-grid.tikz" );
-    
+
     Board2D b2;
     b2 << SetMode( myDomain.className(), "Paving" ) << myDomain;
     b2.scale(10);
@@ -119,7 +119,7 @@ bool testDomain()
     trace.endBlock();
 
     PointVector<3,int> pl;
-    //An assert should be raised 
+    //An assert should be raised
     //Display2DFactory::draw(b2, pl);
 
     return true;
@@ -133,8 +133,8 @@ bool testImage()
   trace.beginBlock ( "Testing Display Image with Board " );
   Board2D board;
 
-  std::string filenameImage1 = testPath + "samples/contourS.png";    
-  board.drawImage(filenameImage1, 0, 85, 185, 85); 
+  std::string filenameImage1 = testPath + "samples/contourS.png";
+  board.drawImage(filenameImage1, 0, 85, 185, 85);
   board.saveFIG("boardTestDisplayImage.fig");
   board.saveSVG("boardTestDisplayImage.svg");
   board.saveTikZ("boardTestDisplayImage.tikz" );
@@ -159,7 +159,7 @@ int main( int argc, char** argv )
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
-  
+
   bool res = testSimpleBoard() && testDomain() && testImage(); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

@@ -59,31 +59,31 @@ DescriptionDescription of \b concept '\b CDigitalBoundedShape' <p>
 @ingroup Concepts
 @brief Aim: designs the concept of bounded shapes in DGtal (shape for
     which upper and lower bounding bounds are available).
-    
-# Refinement of 
-   
+
+# Refinement of
+
 # Associated types
     - Point: type for points (to characterize upper/lower bounds).
-   
+
 # Notation
     - \a X : A type that is a model of CDigitalBoundedShape
     - \a x, \a y  : Object of type X
-   
+
 # Definitions
-   
+
 # Valid expressions and semantics
-   
+
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
 |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
 |Lower bound    | x.getLowerBound()| |             |Point        |                  |compute and return the lower bound of the shape bounding box | | |
 |Upper bound    | x.getUpperBound()| |             |Point        |                  |compute and return the upper bound of the shape bounding box | | |
-   
+
 # Invariants
-   
+
 # Models
       Implicit and Parametric shapes of the shape factory.
-   
-   
+
+
 # Notes
    */
   template <typename TShape>
@@ -91,22 +91,22 @@ DescriptionDescription of \b concept '\b CDigitalBoundedShape' <p>
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    
+
     typedef typename TShape::Point Point;
-    
+
      BOOST_CONCEPT_USAGE( CDigitalBoundedShape )
     {
       // Shape should have a getUpperBound() returning a Point.
       ConceptUtils::sameType( myP, myT.getUpperBound() );
       // Shape should have a getLowerBound() returning a Point.
-      ConceptUtils::sameType( myP, myT.getLowerBound() );    
+      ConceptUtils::sameType( myP, myT.getLowerBound() );
     }
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     TShape myT;
     Point myP;
-    
+
   }; // end of concept CDigitalBoundedShape
   }
 } // namespace DGtal

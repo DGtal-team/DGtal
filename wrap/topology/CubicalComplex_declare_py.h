@@ -575,7 +575,7 @@ dim: Dimension
                     + method + "). Valid methods are: pardir, surface or isthmus.");
         }
     },
-R"(Impements thinning algorithms in cubical complexes.
+R"(Implements thinning algorithms in cubical complexes.
 
 Based on article: Chaussard, J. and Couprie, M., Surface Thinning in 3D Cubical Complexes,
 Combinatorial Image Analysis, (2009)

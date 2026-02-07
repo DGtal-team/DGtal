@@ -62,8 +62,8 @@ namespace DGtal
   // class ArithmeticalDSSComputerOnSurfels
   /**
    * \brief Aim: This class is a wrapper around ArithmeticalDSS that is devoted
-   * to the dynamic recognition of digital straight segments (DSS) along a 
-   * sequence of surfels lying on a slice of the digital surface (i.e., the 
+   * to the dynamic recognition of digital straight segments (DSS) along a
+   * sequence of surfels lying on a slice of the digital surface (i.e., the
    * orthogonal direction of all surfels belong to a same plane, most pairs
    * of consecutive surfels share a common linel).
    *
@@ -98,7 +98,7 @@ namespace DGtal
     /**
      * Type of signed cell
      */
-    typedef typename KSpace::SCell  SCell; 
+    typedef typename KSpace::SCell  SCell;
 
     /**
      * Type of iterator, at least readable and forward
@@ -106,7 +106,7 @@ namespace DGtal
     typedef TIterator ConstIterator;
     BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<ConstIterator> ));
     BOOST_CONCEPT_ASSERT(( boost_concepts::ForwardTraversalConcept<ConstIterator> ));
-    BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType< SCell, 
+    BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType< SCell,
                           typename IteratorCirculatorTraits<ConstIterator>::Value >::value ));
     /**
      * Type of 3d digital point
@@ -119,10 +119,10 @@ namespace DGtal
     typedef PointVector<2, TInteger> Point;
 
     /**
-     * Type of 3d to 2d projector 
+     * Type of 3d to 2d projector
      */
-    typedef functors::Projector<SpaceND<2,TInteger> > Projector; 
-    
+    typedef functors::Projector<SpaceND<2,TInteger> > Projector;
+
     /**
      * Type of coordinate
      */
@@ -164,16 +164,16 @@ namespace DGtal
 
       virtual Point first(const std::pair<Point,Point>& aPair) const { return aPair.first; }
       virtual Point second(const std::pair<Point,Point>& aPair) const { return aPair.second; }
-      
+
     };
     struct IndirectPairExtractor : public DirectPairExtractor {
-      
+
       Point first(const std::pair<Point,Point>& aPair) const { return  aPair.second; }
       Point second(const std::pair<Point,Point>& aPair) const { return aPair.first; }
 
-    }; 
-    typedef std::shared_ptr<DirectPairExtractor> PairExtractor;  
-    
+    };
+    typedef std::shared_ptr<DirectPairExtractor> PairExtractor;
+
     /**
      * Reversed version of this class (using reverse iterators)
      */
@@ -193,12 +193,12 @@ namespace DGtal
      * @param aKSpace a Khalimsky space
      * @param aDim1 a first direction that describes the projection plane
      * @param aDim2 a second direction that describes the projection plane
-     * @param aFlagToReverse a boolean telling whether one has to reverse 
-     * the orientation of the points associated to a surfel or not 
+     * @param aFlagToReverse a boolean telling whether one has to reverse
+     * the orientation of the points associated to a surfel or not
      * ('false' by default)
      */
     ArithmeticalDSSComputerOnSurfels(const KSpace& aKSpace, Dimension aDim1, Dimension aDim2, bool aFlagToReverse = false);
-    
+
     /**
      * Initialisation.
      * @param it an iterator on 3D surfels
@@ -258,8 +258,8 @@ namespace DGtal
      *
      * @return 'true' if yes, 'false' otherwise.
      *
-     * @warning the caller must be sure that the iterator returned  
-     * by 'end()' can be safely dereferenced. 
+     * @warning the caller must be sure that the iterator returned
+     * by 'end()' can be safely dereferenced.
      */
     bool isExtendableFront();
 
@@ -276,8 +276,8 @@ namespace DGtal
      *
      * @return 'true' if yes, 'false' otherwise.
      *
-     * @warning the caller must be sure that the iterator returned  
-     * by 'end()' can be safely dereferenced. 
+     * @warning the caller must be sure that the iterator returned
+     * by 'end()' can be safely dereferenced.
      */
     bool extendFront();
 
@@ -303,31 +303,31 @@ namespace DGtal
     bool retractBack();
 
     /**
-     * Returns the ends of a unit segment corresponding 
-     * to the projection of a given signed surfel. 
+     * Returns the ends of a unit segment corresponding
+     * to the projection of a given signed surfel.
      *
      * @param aSurfel any signed surfel.
-     * @return a pair of 2D points. 
+     * @return a pair of 2D points.
      */
-    std::pair<Point,Point> getProjectedPointsFromSurfel(SCell const& aSurfel) const; 
+    std::pair<Point,Point> getProjectedPointsFromSurfel(SCell const& aSurfel) const;
 
     /**
-     * Front end of the projection of a given surfel. 
+     * Front end of the projection of a given surfel.
      *
      * @param aSurfel any signed surfel.
      * @return the second 2D point.
      * @see getProjectedPointsFromSurfel
      */
     Point getNextProjectedPoint(SCell const& aSurfel) const;
-    
+
     /**
-     * Back end of the projection of a given surfel. 
+     * Back end of the projection of a given surfel.
      *
      * @param aSurfel any signed surfel.
      * @return the second 2D point.
      * @see getProjectedPointsFromSurfel
      */
-    Point getPreviousProjectedPoint(SCell const& aSurfel) const; 
+    Point getPreviousProjectedPoint(SCell const& aSurfel) const;
 
     // ------------------------- Accessors ------------------------------
     /**
@@ -397,23 +397,23 @@ namespace DGtal
   private:
 
     /**
-     * Returns the ends of a unit segment corresponding 
-     * to the projection of a given signed linel. 
+     * Returns the ends of a unit segment corresponding
+     * to the projection of a given signed linel.
      *
      * @param aLinel any signed linel.
-     * @return a pair of 2D points. 
+     * @return a pair of 2D points.
      */
-    std::pair<Point,Point> getProjectedPointsFromLinel(SCell const& aLinel) const; 
-    
+    std::pair<Point,Point> getProjectedPointsFromLinel(SCell const& aLinel) const;
+
     /**
-     * Returns the unique dimension in {0,1,2} \ {aDim1, aDim2}. 
+     * Returns the unique dimension in {0,1,2} \ {aDim1, aDim2}.
      *
      * @param aDim1 a dimension
      * @param aDim2 a dimension
      */
-    Dimension dimNotIn(Dimension const& aDim1, Dimension const& aDim2) const; 
-    
-    // ------------------------- Protected Datas ------------------------------
+    Dimension dimNotIn(Dimension const& aDim1, Dimension const& aDim2) const;
+
+    // ------------------------- Protected Data ------------------------------
   protected:
 
     /**
@@ -425,44 +425,44 @@ namespace DGtal
      * A first direction that describes the projection plane
      */
     Dimension mySliceAxis1;
-    
+
     /**
      * A second direction that describes the projection plane
      */
     Dimension mySliceAxis2;
-    
+
     /**
      * A direction along which the points are projected
-     * (and orthogonal to the projection plane) 
+     * (and orthogonal to the projection plane)
      */
     Dimension myProjectionAxis;
 
     /**
      * Functor that projects a 3D point to a 2D point along myProjectionAxis
      */
-    Projector my2DProjector; 
+    Projector my2DProjector;
 
     /**
-     * Smart pointer on an object used to extract relevant points 
+     * Smart pointer on an object used to extract relevant points
      * from a pair of points
      */
-    PairExtractor myExtractor; 
-    
+    PairExtractor myExtractor;
+
     /**
     * DSS representation
     */
     DSS myDSS;
-    
+
     /**
     * begin iterator
     */
     ConstIterator myBegin;
-    
+
     /**
     * end iterator
     *
     * @warning the user must be sure that it can be safely dereferenced
-    * before calling 'isExtendableFront' and 'extendFront'. 
+    * before calling 'isExtendableFront' and 'extendFront'.
     */
     ConstIterator myEnd;
 

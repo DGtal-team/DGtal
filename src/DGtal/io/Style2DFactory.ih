@@ -219,7 +219,7 @@ namespace DGtal
       aBoard.setFillColor(Color::None);
     }
   };
-  
+
   /**
    * Default style for the points mode.
    */
@@ -238,7 +238,7 @@ namespace DGtal
       aBoard.setFillColor(Color::None);
     }
   };
-  
+
   // AlphaThickSegmentComputer
 
 
@@ -796,8 +796,8 @@ defaultStyle(const DGtal::GridCurve<TKSpace> & /*object*/,
 
 // SCellsRange
 template <typename TIterator, typename TSCell>
-DGtal::DrawableWithBoard2D* 
-defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::Identity, TSCell> & /*object*/, 
+DGtal::DrawableWithBoard2D*
+defaultStyle(const DGtal::ConstRangeAdapter<TIterator, DGtal::functors::Identity, TSCell> & /*object*/,
              std::string mode = "" )
 {
   boost::ignore_unused_variable_warning(mode);
@@ -940,7 +940,7 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::Object<TDigitalTopology, T
 // Object
 
 // CubicalComplex
-template < typename TKSpace, 
+template < typename TKSpace,
            typename TCellContainer >
 inline
 DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::CubicalComplex<TKSpace, TCellContainer> & /*o*/, std::string mode = "" )
@@ -1039,5 +1039,3 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::SetMode & /*sm*/, std::str
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

@@ -51,33 +51,33 @@ namespace DGtal
  * Description of \b concept '\b CTrivialImage' <p>
  *
  * @ingroup Concepts
- * @brief Aim: Defines the concept describing an image without extra ranges, 
- * which is a refinement of CTrivialConstImage. 
+ * @brief Aim: Defines the concept describing an image without extra ranges,
+ * which is a refinement of CTrivialConstImage.
  *
 #  Refinement of
   - CTrivialConstImage
-#  Associated types 
-  
+#  Associated types
+
 #  Notation
  - \e X : A type that is a model of CTrivialImage
  - \e x, \e y  : Object of type X
  - \e p, \e v : Objects of type Point and Value
-   
+
 #  Definitions
-   
+
 #  Valid expressions and semantics
-   
+
 
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
 |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-| Set value | x.setValue(p,v) | | | | set a given value v to a given point p | | |   
+| Set value | x.setValue(p,v) | | | | set a given value v to a given point p | | |
 
-   
+
 #  Invariants
-   
+
 #  Models
 ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, ImageContainerByHashTree
-   
+
    */
 
   template <typename I>
@@ -88,14 +88,14 @@ ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, Ima
 
     BOOST_CONCEPT_USAGE(CTrivialImage)
     {
-      myI.setValue( myPoint, myValue ); 
+      myI.setValue( myPoint, myValue );
     }
 
    private:
     I myI;
-    typename I::Point myPoint; 
-    typename I::Value myValue; 
-    
+    typename I::Point myPoint;
+    typename I::Value myValue;
+
   };
   }
 } // namespace DGtal

@@ -48,139 +48,139 @@ bool testPolarPointComparatorBy2x2DetComputer()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing block ..." );
 
   typedef PointVector<2,DGtal::int32_t> Point;
- 
-  Point origin(0,0); 
-  functors::PolarPointComparatorBy2x2DetComputer<Point> comp( origin ); 
+
+  Point origin(0,0);
+  functors::PolarPointComparatorBy2x2DetComputer<Point> comp( origin );
   trace.info() << comp << endl;
 
   //same half-plane
   trace.info() << "same half-plane" << endl;
   if ( comp( Point(2,1), Point(1,2) ) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   if ( ! comp( Point(1,2), Point(2,1) ) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   if ( comp( Point(2,1), Point(-1,2) ) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   if ( comp( Point(1,-2), Point(2,-1) ) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
- 
+
   //different half-plane
   trace.info() << "different half-plane" << endl;
   if ( comp( Point(1,2), Point(2,-1) ) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   if ( ! comp( Point(2,-1), Point(1,2) ) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   //y-coordinate equal to 0
   trace.info() << "y-coordinate == 0" << endl;
   if ( comp( Point(1,0), Point(3,3) ) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   if ( ! comp( Point(3,3), Point(1,0) ) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   if ( comp( Point(3,3), Point(-1,0) ) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   if ( comp( Point(1,0), Point(3,-3) ) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   //aligned
   trace.info() << "aligned points" << endl;
   if ( ! comp( Point(3,3), Point(1,1) ) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   if ( comp( Point(1,1),  Point(3,3) ) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   if ( ! comp( Point(-3,-3), Point(1,1) ) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   //y-coordinate equal to 0 AND aligned
   trace.info() << "aligned points on the horizontal axis" << endl;
   if ( comp( Point(1,0),  Point(5,0) ) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
  if ( ! comp( Point(5,0),  Point(1,0) ) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
  if ( comp( Point(1,0),  Point(-5,0) ) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
  if ( comp( Point(5,0),  Point(-5,0) ) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
  if ( ! comp( Point(-5,0),  Point(5,0) ) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
  if ( comp( Point(-1,0),  Point(-5,0) ) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   //degenerated
   trace.info() << "point equality" << endl;
   if ( comp( Point(0,0),  Point(3,3) ) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   if ( comp( Point(0,0),  Point(-3,-3) ) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   if ( ! comp( Point(2,1),  Point(2,1) ) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
@@ -191,20 +191,20 @@ bool testSort()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing block ..." );
 
   typedef PointVector<2,DGtal::int32_t> Point;
-  Point origin(0,0); 
- 
-  std::vector<Point> g, v; 
+  Point origin(0,0);
+
+  std::vector<Point> g, v;
   //data
   v.push_back( Point(3,4) );
-  v.push_back( Point(5,0) ); 
+  v.push_back( Point(5,0) );
   v.push_back( Point(4,3) );
-  v.push_back( Point(0,5) ); 
+  v.push_back( Point(0,5) );
   v.push_back( Point(-3,-4) );
-  v.push_back( Point(-5,0) ); 
+  v.push_back( Point(-5,0) );
   v.push_back( Point(-4,-3) );
   v.push_back( Point(0,-5) );
   v.push_back( Point(3,-4) );
@@ -212,43 +212,43 @@ bool testSort()
   v.push_back( Point(-3,4) );
   v.push_back( Point(-4,3) );
   //ground truth
-  g.push_back( Point(5,0) ); 
+  g.push_back( Point(5,0) );
   g.push_back( Point(4,3) );
   g.push_back( Point(3,4) );
-  g.push_back( Point(0,5) ); 
+  g.push_back( Point(0,5) );
   g.push_back( Point(-3,4) );
   g.push_back( Point(-4,3) );
-  g.push_back( Point(-5,0) ); 
+  g.push_back( Point(-5,0) );
   g.push_back( Point(-4,-3) );
   g.push_back( Point(-3,-4) );
   g.push_back( Point(0,-5) );
   g.push_back( Point(3,-4) );
   g.push_back( Point(4,-3) );
-  
+
   //sort
-  functors::PolarPointComparatorBy2x2DetComputer<Point> comp( origin ); 
-  std::sort(v.begin(), v.end(), comp); 
-  std::copy(v.begin(), v.end(), ostream_iterator<Point>( std::cout, " " ) ); 
-  std::cout << std::endl; 
+  functors::PolarPointComparatorBy2x2DetComputer<Point> comp( origin );
+  std::sort(v.begin(), v.end(), comp);
+  std::copy(v.begin(), v.end(), ostream_iterator<Point>( std::cout, " " ) );
+  std::cout << std::endl;
 
   if ( std::equal(v.begin(), v.end(), g.begin()) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   //with a different pole
-  comp.setPole( Point(5,0) ); 
-  std::sort(v.begin(), v.end(), comp); 
-  std::copy(v.begin(), v.end(), ostream_iterator<Point>( std::cout, " " ) ); 
-  std::cout << std::endl; 
+  comp.setPole( Point(5,0) );
+  std::sort(v.begin(), v.end(), comp);
+  std::copy(v.begin(), v.end(), ostream_iterator<Point>( std::cout, " " ) );
+  std::cout << std::endl;
 
   if ( std::equal(v.begin(), v.end(), g.begin()) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
@@ -264,7 +264,7 @@ int main( int argc, char** argv )
   trace.info() << endl;
 
   bool res = testPolarPointComparatorBy2x2DetComputer()
-    && testSort(); 
+    && testSort();
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

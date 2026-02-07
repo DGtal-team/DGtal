@@ -66,13 +66,13 @@ namespace DGtal
   {
     // ----------------------- Standard services ------------------------------
   public:
-    
+
     /**
      * Destructor.
      */
     ~OrderedLinearRegression()
     {}
-    
+
     /**
      * Constructor.
      * The object is empty (and invalid for regression).
@@ -140,15 +140,15 @@ namespace DGtal
     /**
      * Returns the slope of the first straight part of the data. The
      * straightness is evaluated through a statistic test based on a
-     * simple linear regression (SLR) model. 
-     * It requires two parameters: 
+     * simple linear regression (SLR) model.
+     * It requires two parameters:
      * @a n is the minimum number of samples to fit a linear model,
      * 1-[ @a alpha] is the proportion of accepted linear model of the
      * test (99%, alpha=0.01, means that 99% of all linear model with
      * a Gaussian noise are accepted).
      *
      * @param[in] n the minimum number of samples greater than 3 (default
-     * value is 4).  
+     * value is 4).
      * @param[in] alpha is the proportion of rejected linear
      * model (the ones with big variance, default value is 0.01).
      *
@@ -160,9 +160,9 @@ namespace DGtal
     {
       linearModel.setEpsilonZero(myEpsilonZero);
       linearModel.clear();
-      std::vector<double>::const_iterator itx = myX.begin(); 
-      std::vector<double>::const_iterator itxe = myX.end(); 
-      std::vector<double>::const_iterator ity = myY.begin(); 
+      std::vector<double>::const_iterator itx = myX.begin();
+      std::vector<double>::const_iterator itxe = myX.end();
+      std::vector<double>::const_iterator ity = myY.begin();
       linearModel.addSamples( itx, itx + n, ity );
       linearModel.computeRegression();
       itx += n;
@@ -179,19 +179,19 @@ namespace DGtal
         }
     }
 
-    
+
      /**
      * Returns the slope of the last straight part of the data.  The
      * straightness is evaluated through a statistic test based on a
-     * simple linear regression (SLR) model. 
-     * It requires two parameters: 
+     * simple linear regression (SLR) model.
+     * It requires two parameters:
      * @a n is the minimum number of samples to fit a linear model,
      * 1-[ @a alpha] is the proportion of accepted linear model of the
      * test (99%, alpha=0.01, means that 99% of all linear model with
      * a Gaussian noise are accepted).
      *
      * @param[in] n the minimum number of samples greater than 3 (default
-     * value is 4).  
+     * value is 4).
      * @param[in] alpha is the proportion of rejected linear
      * model (the ones with big variance, default value is 0.01).
      *
@@ -203,9 +203,9 @@ namespace DGtal
     {
       linearModel.setEpsilonZero(myEpsilonZero);
       linearModel.clear();
-      std::vector<double>::const_reverse_iterator itx = myX.rbegin(); 
-      std::vector<double>::const_reverse_iterator itxe = myX.rend(); 
-      std::vector<double>::const_reverse_iterator ity = myY.rbegin(); 
+      std::vector<double>::const_reverse_iterator itx = myX.rbegin();
+      std::vector<double>::const_reverse_iterator itxe = myX.rend();
+      std::vector<double>::const_reverse_iterator ity = myY.rbegin();
       linearModel.addSamples( itx, itx + n, ity );
       linearModel.computeRegression();
       itx += n;
@@ -221,7 +221,7 @@ namespace DGtal
           linearModel.computeRegression();
         }
     }
-    
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -233,7 +233,7 @@ namespace DGtal
     {
       that_stream << "[OrderedLinearRegression]  Number of samples="<< myN;
     }
-    
+
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
@@ -244,7 +244,7 @@ namespace DGtal
     }
 
 
-    // ------------------------- Datas ----------------------------------------
+    // ------------------------- Data ----------------------------------------
 
   private:
 
@@ -256,10 +256,10 @@ namespace DGtal
 
     ///Ordinate values of sample points
     std::vector<double> myY;
-    
+
     ///Abscissa values of sample points
     std::vector<double> myX;
-   
+
 
     // ------------------------- Hidden services ------------------------------
   protected:

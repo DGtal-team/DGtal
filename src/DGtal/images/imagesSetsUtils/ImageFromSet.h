@@ -64,48 +64,48 @@ namespace DGtal
   {
     typedef TImage Image;
     typedef typename TImage::Value Value;
-  
-    
-    BOOST_CONCEPT_ASSERT(( concepts::CImage<Image> ));
-    
 
-    /** 
+
+    BOOST_CONCEPT_ASSERT(( concepts::CImage<Image> ));
+
+
+    /**
      * Create an Image from a DigitalSet. The size of the output image
      * is given from the set bounding box.
      *
-     * @tparam Set model of CDigitalSet 
+     * @tparam Set model of CDigitalSet
      * @param aSet an instance of Set to convert into an image
      * @param defaultValue the default value for points in the set
      * @param addBorder if true, we add a border of size 1 of
-     * defaultValue around the set. 
+     * defaultValue around the set.
      * @param itBegin ConstIterator on the set to specify the first point
      * to copy.
      * @param itEnd ConstIterator on the set to specify the last point
      * to copy.
      * @param keepSetDomain if true, the set domain is used to create
-     * the resulting image, else the bouding box of the set is used.
-    
+     * the resulting image, else the bounding box of the set is used.
+
      * @return an image.
      */
     template <typename Set>
     static
     Image create(const Set &aSet, const Value &defaultValue,
                  const bool addBorder,
-                 typename Set::ConstIterator itBegin, 
+                 typename Set::ConstIterator itBegin,
                  typename Set::ConstIterator itEnd,
                  const bool keepSetDomain=false);
 
-    /** 
+    /**
      * Create an Image from a DigitalSet. The size of the output image
      * is given from the set bounding box.
      *
-     * @tparam Set model of CDigitalSet 
+     * @tparam Set model of CDigitalSet
      * @param aSet an instance of Set to convert into an image
      * @param defaultValue the default value for points in the set
      * @param addBorder if true, we add a border of size 1 of
-     * defaultValue around the set. 
+     * defaultValue around the set.
      * @param keepSetDomain if true, the set domain is used to create
-     * the resulting image, else the bouding box of the set is used.
+     * the resulting image, else the bounding box of the set is used.
      *
      * @return an image.
      */
@@ -115,14 +115,14 @@ namespace DGtal
                  const bool keepSetDomain=false)
     {
       return create(aSet,defaultValue,addBorder,aSet.begin(), aSet.end(), keepSetDomain);
-    }        
-    
-    
-    /** 
+    }
+
+
+    /**
      * Append a Set to an existing image. Only points in the Set
      * between itBegin and itEnd contained in the image domain are
-     * considered. 
-     * 
+     * considered.
+     *
      * @tparam Set model of CDigitalSet
      * @param aImage an image
      * @param defaultValue the default value for points in the set
@@ -134,13 +134,13 @@ namespace DGtal
     template<typename Set>
     static
     void append(Image &aImage, const Value &defaultValue,
-                typename Set::ConstIterator itBegin, 
+                typename Set::ConstIterator itBegin,
                 typename Set::ConstIterator itEnd);
-    
-    /** 
+
+    /**
      * Append a Set to an existing image. Only points in the Set
-     * contained in the image domain are considered. 
-     * 
+     * contained in the image domain are considered.
+     *
      * @tparam Set model of CDigitalSet
      * @param aImage an image
      * @param aSet  an instance of Set to convert into an image
@@ -156,7 +156,7 @@ namespace DGtal
   }   ; // end of class ImageFromSet
 
 
- 
+
 } // namespace DGtal
 
 

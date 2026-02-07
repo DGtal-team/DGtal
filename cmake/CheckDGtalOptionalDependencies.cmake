@@ -122,15 +122,15 @@ if (DGTAL_WITH_ITK)
       set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3::Eigen)
       target_link_libraries(DGtal PUBLIC Eigen3::Eigen)
     endif()
-    
+
     # -------------------------------------------------------------------------
-    # ITK 5.0 adds "/usr/lib/x86_64-linux-gnu/include" to include path which 
-    # does not exists on "new" (for example in Docker containers) systems. 
-    # When linking with DGTal, a cmake Error is raised 
+    # ITK 5.0 adds "/usr/lib/x86_64-linux-gnu/include" to include path which
+    # does not exists on "new" (for example in Docker containers) systems.
+    # When linking with DGTal, a cmake Error is raised
     #  "Imported target "DGtal::DGtal" includes non-existent path"
-    # 
-    # In case the name is not the same accross unix distributions and windows
-    # we filter out all directories that do not exist on the system 
+    #
+    # In case the name is not the same across unix distributions and windows
+    # we filter out all directories that do not exist on the system
     # --------------------------------------------------------------------------
     set(FILTERED_ITK_INCLUDE_DIRS "")
     foreach (includedir ${ITK_INCLUDE_DIRS})
@@ -138,7 +138,7 @@ if (DGTAL_WITH_ITK)
         list(APPEND FILTERED_ITK_INCLUDE_DIRS ${includedir})
       endif()
     endforeach()
-    
+
     target_include_directories(DGtal PUBLIC ${FILTERED_ITK_INCLUDE_DIRS})
 
     # -------------------------------------------------------------------------
@@ -171,7 +171,7 @@ if(DGTAL_WITH_CAIRO)
     target_include_directories(DGtal PUBLIC ${CAIRO_INCLUDE_DIRS} ${cairo_INCLUDE_DIRS})
     target_link_libraries(DGtal PUBLIC ${CAIRO_LIBRARIES} ${cairo_LIBRARIES})
     set(DGtalLibDependencies ${DGtalLibDependencies} ${CAIRO_LIBRARIES} ${cairo_LIBRARIES})
-    
+
     target_compile_definitions(DGTAL_LibBoard PUBLIC  -DDGTAL_WITH_CAIRO)
     target_include_directories(DGTAL_LibBoard PUBLIC ${CAIRO_INCLUDE_DIRS} ${cairo_INCLUDE_DIRS})
     target_link_libraries(DGTAL_LibBoard PUBLIC ${CAIRO_LIBRARIES} ${cairo_LIBRARIES})
@@ -273,7 +273,7 @@ endif()
 set(PONCA_FOUND_DGTAL 0)
 if(DGTAL_WITH_PONCA)
   include(ponca)
-  
+
   target_link_libraries(DGtal PUBLIC Ponca::Ponca)
   target_compile_definitions(DGtal PUBLIC -DDGTAL_WITH_PONCA)
 endif()
@@ -331,4 +331,3 @@ if(DGTAL_WITH_LIBIGL)
 endif()
 
 message(STATUS "-------------------------------------------------------------------------------")
-

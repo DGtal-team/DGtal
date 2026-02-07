@@ -92,7 +92,7 @@ void usage2d()
     {
         trace.info() << "primal path" << endl;
 
-        // create primal 0-form and fill it with euclidian metric
+        // create primal 0-form and fill it with euclidean metric
         //! [usage_primal_fill_zero_form]
         Calculus::PrimalForm0 primal_zero_form(calculus);
         for (Calculus::Index index=0; index<primal_zero_form.length(); index++)
@@ -102,7 +102,7 @@ void usage2d()
             primal_zero_form.myContainer(index) = value;
         }
         //! [usage_primal_fill_zero_form]
-        // one can do linear algebra operation between equaly typed kforms
+        // one can do linear algebra operation between equally typed kforms
         //! [usage_primal_form_algebra]
         const Calculus::PrimalForm0 foo = 2 * primal_zero_form + primal_zero_form;
         //! [usage_primal_form_algebra]
@@ -168,7 +168,7 @@ void usage2d()
     {
         trace.info() << "dual path" << endl;
 
-        // create dual 0-form and fill it with euclidian metric
+        // create dual 0-form and fill it with euclidean metric
         Calculus::DualForm0 dual_zero_form(calculus);
         for (Calculus::Index index=0; index<dual_zero_form.length(); index++)
         {
@@ -237,4 +237,3 @@ int main()
 
     return 0;
 }
-

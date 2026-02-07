@@ -92,32 +92,32 @@ void initQuantities()
 {
   trace.beginBlock("Basic quantities");
   PolygonalCalculus<SH3::RealPoint,SH3::RealVector> calculus(surfmesh);
-  
+
   std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector> gradients;
   std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector> cogradients;
   std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Real3dPoint> normals;
   std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Real3dPoint> vectorArea;
   std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Real3dPoint> centroids;
-  
+
   std::vector<double> faceArea;
-  
+
   for(auto f=0; f < surfmesh.nbFaces(); ++f)
   {
     PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector grad = calculus.gradient(f) * phi(f);
     gradients.push_back( grad );
-    
+
     PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector cograd =  calculus.coGradient(f) * phi(f);
     cogradients.push_back( cograd );
-    
+
     normals.push_back(calculus.faceNormalAsDGtalVector(f));
-    
+
     PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector vA = calculus.vectorArea(f);
     vectorArea.push_back({vA(0) , vA(1), vA(2)});
-    
+
     faceArea.push_back( calculus.faceArea(f));
   }
   trace.endBlock();
-  
+
   psMesh->addFaceVectorQuantity("Gradients", gradients);
   psMesh->addFaceVectorQuantity("co-Gradients", cogradients);
   psMesh->addFaceVectorQuantity("Normals", normals);
@@ -130,32 +130,32 @@ void initQuantitiesCached()
 {
   trace.beginBlock("Basic quantities (cached)");
   PolygonalCalculus<SH3::RealPoint,SH3::RealVector> calculus(surfmesh,true);
-  
+
   std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector> gradients;
   std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector> cogradients;
   std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Real3dPoint> normals;
   std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Real3dPoint> vectorArea;
   std::vector<PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Real3dPoint> centroids;
-  
+
   std::vector<double> faceArea;
-  
+
   for(auto f=0; f < surfmesh.nbFaces(); ++f)
   {
     PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector grad = calculus.gradient(f) * phi(f);
     gradients.push_back( grad );
-    
+
     PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector cograd =  calculus.coGradient(f) * phi(f);
     cogradients.push_back( cograd );
-    
+
     normals.push_back(calculus.faceNormalAsDGtalVector(f));
-    
+
     PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector vA = calculus.vectorArea(f);
     vectorArea.push_back({vA(0) , vA(1), vA(2)});
-    
+
     faceArea.push_back( calculus.faceArea(f));
   }
   trace.endBlock();
-  
+
   psMesh->addFaceVectorQuantity("Gradients", gradients);
   psMesh->addFaceVectorQuantity("co-Gradients", cogradients);
   psMesh->addFaceVectorQuantity("Normals", normals);
@@ -170,7 +170,7 @@ void computeLaplace()
   trace.beginBlock("Operator construction...");
   PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::SparseMatrix L = calculus.globalLaplaceBeltrami();
   trace.endBlock();
-   
+
   const auto nbv = surfmesh.nbVertices();
   PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector g = PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector::Zero(nbv);
 
@@ -183,23 +183,23 @@ void computeLaplace()
       g( idx ) = rand() % 100;
       p( idx ) = 1.0;
     }
-  
+
   //Solve Δu=0 with g as boundary conditions
   PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Solver solver;
-  
+
   trace.beginBlock("Prefactorization...");
   DC::SparseMatrix L_dirichlet = DC::dirichletOperator( L, p );
-  solver.compute( L_dirichlet );  
+  solver.compute( L_dirichlet );
   ASSERT(solver.info()==Eigen::Success);
   trace.endBlock();
-  
+
   trace.beginBlock("Solve...");
   PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector g_dirichlet = DC::dirichletVector( L, g, p, g );
   PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector x_dirichlet = solver.solve( g_dirichlet );
   PolygonalCalculus<SH3::RealPoint,SH3::RealVector>::Vector u = DC::dirichletSolution( x_dirichlet, p, g );
   ASSERT(solver.info()==Eigen::Success);
   trace.endBlock();
-  
+
   psMesh->addVertexScalarQuantity("g", g);
   psMesh->addVertexScalarQuantity("u", u);
 }
@@ -232,17 +232,17 @@ int main()
   auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
   SH3::Cell2Index c2i;
   auto primalSurface   = SH3::makePrimalSurfaceMesh(surface);
-  
+
   //Need to convert the faces
   std::vector<std::vector<SH3::SurfaceMesh::Vertex>> faces;
   std::vector<RealPoint> positions;
-  
+
   for(auto face= 0 ; face < primalSurface->nbFaces(); ++face)
     faces.push_back(primalSurface->incidentVertices( face ));
-  
+
   //Recasting to vector of vertices
   positions = primalSurface->positions();
-   
+
   surfmesh = SurfMesh(positions.begin(),
                       positions.end(),
                       faces.begin(),
@@ -253,7 +253,7 @@ int main()
 
   std::cout<<"number of non-manifold Edges = " << surfmesh.computeNonManifoldEdges().size()<<std::endl;
   psMesh = polyscope::registerSurfaceMesh("digital surface", positions, faces);
-  
+
   // Set the callback function
   polyscope::state::userCallback = myCallback;
   polyscope::show();

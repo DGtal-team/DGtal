@@ -55,7 +55,7 @@ double notNullValue(
   return res;
 }
 
-RealPoint notNullRealPoint( 
+RealPoint notNullRealPoint(
 	std::uniform_real_distribution<double>& unif,
 	std::default_random_engine& re )
 {
@@ -73,7 +73,7 @@ TEST_CASE("Lemniscate2D")
       Shape shape( center, unif(re) );
       REQUIRE( shape.center() == center );
     }
-  
+
   SECTION("Lower and upper bounds")
     {
       Shape shape( unif(re), unif(re), unif(re) );

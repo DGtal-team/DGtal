@@ -97,7 +97,7 @@ public:
     {
         ConceptUtils::sameType( i, T::dimension );
     }
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
 private:
     Index i;
 

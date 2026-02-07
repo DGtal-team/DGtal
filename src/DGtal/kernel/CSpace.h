@@ -126,7 +126,7 @@ Description of \b concept '\b CSpace' <p>
       ConceptUtils::sameType( myDim, T::dimension );
     }
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     Dimension myDim;
 

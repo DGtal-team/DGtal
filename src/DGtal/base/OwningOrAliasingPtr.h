@@ -52,19 +52,19 @@ namespace DGtal
   /**
    * Description of template class 'OwningOrAliasingPtr' <p>
    * \brief Aim:
-   * This class describes a smart pointer that is, 
-   * given the constructor called by the user, 
-   * either an alias pointer on existing data 
-   * or an owning pointer on a copy. 
+   * This class describes a smart pointer that is,
+   * given the constructor called by the user,
+   * either an alias pointer on existing data
+   * or an owning pointer on a copy.
    *
-   * Such a pointer may be used for a (big) member of class, 
+   * Such a pointer may be used for a (big) member of class,
    * which can be either given at construction (aliasing pointer)
    * or default-constructed (owning pointer).
-   * 
-   * Such a pointer may be also used to make the user be able to decide 
-   * whether the data should be copied (owning pointer) or not (aliasing pointer).  
    *
-   * Obviously, the data are free'd at destruction in the case of an owning pointer. 
+   * Such a pointer may be also used to make the user be able to decide
+   * whether the data should be copied (owning pointer) or not (aliasing pointer).
+   *
+   * Obviously, the data are free'd at destruction in the case of an owning pointer.
    *
    * @tparam T a model of boost::CopyConstructible
    */
@@ -73,29 +73,29 @@ namespace DGtal
   {
 
     BOOST_CONCEPT_ASSERT(( boost::CopyConstructible<T> ));
- 
+
     // ----------------------- Inner types       ------------------------------
   public:
-    typedef T Value; 
+    typedef T Value;
     typedef T* Pointer;
-    typedef T& Reference;   
+    typedef T& Reference;
 
     // ----------------------- Standard services ------------------------------
   public:
 
     /**
-     * Constructor with copy. 
+     * Constructor with copy.
      * @param aValue value, @a myPtr owns a copy of which.
      */
     OwningOrAliasingPtr( const T& aValue );
 
     /**
-     * Constructor without copy. 
+     * Constructor without copy.
      * @param aPtr any pointer assigned to @a myPtr
      * @param isOwning 'true' if @a myPtr must be an owning pointer
      * 'false' if @a myPtr must be only an alias (default).
      */
-    OwningOrAliasingPtr( Pointer aPtr, bool isOwning = false ); 
+    OwningOrAliasingPtr( Pointer aPtr, bool isOwning = false );
 
     /**
      * Copy constructor.
@@ -155,21 +155,21 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     /**
      * Owning or aliasing pointer to the data
      */
-    Pointer myPtr; 
- 
+    Pointer myPtr;
+
     /**
      * Boolean that is equal to 'true' if @a myPtr owns the data
      * 'false' otherwise
      */
-    bool myFlagIsOwning; 
+    bool myFlagIsOwning;
 
 
     // ------------------------- Hidden services ------------------------------

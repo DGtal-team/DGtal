@@ -49,7 +49,7 @@ verifyIndicesUniqueness( const std::vector< Index > &indices )
 
 //-----------------------------------------------------------------------------
 template <typename TRealPoint, typename TRealVector>
-std::vector< std::string > 
+std::vector< std::string >
 DGtal::SurfaceMeshReader<TRealPoint, TRealVector>::
 split( const std::string& str, char delim )
 {
@@ -58,7 +58,7 @@ split( const std::string& str, char delim )
   std::vector< std::string > cont;
   while ( std::getline( ss, token, delim ) ) cont.push_back(token);
   return cont;
-}    
+}
 
 //-----------------------------------------------------------------------------
 template <typename TRealPoint, typename TRealVector>
@@ -122,7 +122,7 @@ readOBJ( std::istream & input, SurfaceMesh & smesh, Materials& materials )
 	      Index  v  = static_cast<Index>((int)std::stoi( vtxinfo[ 0 ] )-1);
 	      if (v < 0 )
 		{ // special case of relative indices (ie negative index);
-		  v = vertices.size() + v+1; 
+		  v = vertices.size() + v+1;
 		}
 	      face.push_back(v);
 	      Index vn = vtxinfo.size() >= 3 ? std::stoi( vtxinfo[ 2 ] ) : v-1;
@@ -146,7 +146,7 @@ readOBJ( std::istream & input, SurfaceMesh & smesh, Materials& materials )
                << " #VN=" << normals.size()
                << " #F=" << faces.size() << std::endl;
   if ( input.bad() )
-    trace.warning() << "[SurfaceMeshReader::readOBJ] Some I/O error occured."
+    trace.warning() << "[SurfaceMeshReader::readOBJ] Some I/O error occurred."
                     << " Proceeding but the mesh may be damaged." << std::endl;
   bool ok = smesh.init( vertices.begin(), vertices.end(),
                         faces.begin(), faces.end() );
@@ -165,7 +165,7 @@ readOBJ( std::istream & input, SurfaceMesh & smesh, Materials& materials )
     { // Build face normal map
       std::vector< RealVector > faces_normals;
       for ( auto face_n_indices : faces_normals_idx )
-        { 
+        {
           RealVector _n;
           for ( auto k : face_n_indices ) _n += normals[ k ];
           _n /= face_n_indices.size();

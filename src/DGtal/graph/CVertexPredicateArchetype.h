@@ -67,7 +67,7 @@ namespace DGtal {
       return *this;
     }
   }; // end of concept CVertexPredicateArchetype
-  
+
 } // namespace concepts
 } // namespace DGtal
 

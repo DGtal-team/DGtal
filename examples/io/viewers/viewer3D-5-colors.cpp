@@ -32,7 +32,7 @@
  * Example of a custom display
  * @see \ref DGtalGLV_Custom
  * \example io/viewers/viewer3D-5-colors.cpp
- * \image html visuModeCustom.png "Example of several custom display ." 
+ * \image html visuModeCustom.png "Example of several custom display ."
  * \image latex visuModeCustom.png "Example of several custom display ." width=5cm
  */
 
@@ -58,7 +58,7 @@ using namespace Z3i;
 
 int main()
 {
-  PolyscopeViewer viewer; 
+  PolyscopeViewer viewer;
 
   Point p1( -1, -1, -2 );
   Point p2( 2, 2, 3 );
@@ -78,7 +78,7 @@ int main()
   viewer << p6;
   viewer << Color(250, 200,0, 20);
   viewer << p0;
-  
+
   viewer.setDefaultColors();
   viewer << domain;
 

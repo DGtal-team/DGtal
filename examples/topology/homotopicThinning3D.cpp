@@ -64,15 +64,15 @@ int main()
 {
 
   trace.beginBlock ( "Example simple example of 3DViewer" );
-  
+
   PolyscopeViewer<> viewer;
-  
+
   // Domain cretation from two bounding points.
   Point c( 0, 0, 0 );
   Point p1( -50, -50, -50 );
   Point p2( 50, 50, 50 );
   Domain domain( p1, p2 );
-  
+
   trace.warning() << "Constructing a ring DigitalSet  ... ";
   DigitalSet shape_set( domain );
   for (Domain::ConstIterator it = domain.begin(); it != domain.end(); ++it )
@@ -83,16 +83,16 @@ int main()
       }
     }
   trace.warning() << "  [Done]" << std::endl;
-  
+
   trace.beginBlock ( "Thinning" );
   Object18_6 shape( dt18_6,  shape_set );
-  int nb_simple=0; 
+  int nb_simple=0;
   DigitalSet::Iterator it, itE;
-  do 
+  do
     {
       DigitalSet & S = shape.pointSet();
       std::queue<DigitalSet::Iterator> Q;
-      it = S.begin(); 
+      it = S.begin();
       itE = S.end();
 #ifdef DGTAL_WITH_OPENMP
       std::vector<DigitalSet::Iterator> v( S.size() );
@@ -104,7 +104,7 @@ int main()
 	b[ i ] = shape.isSimple( *(v[ i ]) );
 
       for ( size_t i = 0; i < v.size(); ++i )
-	if ( b[ i ] ) Q.push( v[ i ] ); 
+	if ( b[ i ] ) Q.push( v[ i ] );
 #else
       for ( ; it != itE; ++it )
 	if ( shape.isSimple( *it ) )
@@ -129,17 +129,16 @@ int main()
   // Display by using two different list to manage OpenGL transparency.
 
   viewer << Color(25,25,255, 255);
-  viewer << S ; 
+  viewer << S ;
 
   viewer << Color(250, 0,0, 25);
   viewer << shape_set;
 
-  
+
   trace.endBlock();
-  viewer.show();  
+  viewer.show();
   return 0;
 
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-

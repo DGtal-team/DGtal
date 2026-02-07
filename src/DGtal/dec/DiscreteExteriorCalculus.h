@@ -544,7 +544,7 @@ namespace DGtal
     bool
     isValid() const;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     /**
@@ -554,7 +554,7 @@ namespace DGtal
 
     /**
      * Cells indexed by their order.
-     * Usefull for finding cell from index and order.
+     * Useful for finding cell from index and order.
      */
     IndexedSCells myIndexSignedCells;
 

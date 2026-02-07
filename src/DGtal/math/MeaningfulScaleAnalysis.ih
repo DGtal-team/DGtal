@@ -44,8 +44,8 @@
 // Implementation of inline methods                                          //
 
 template<typename TProfile>
-DGtal::MeaningfulScaleAnalysis<TProfile>::MeaningfulScaleAnalysis( ConstAlias<Profile> aProfile): myProfile(aProfile) 
-{  
+DGtal::MeaningfulScaleAnalysis<TProfile>::MeaningfulScaleAnalysis( ConstAlias<Profile> aProfile): myProfile(aProfile)
+{
 }
 
 
@@ -56,7 +56,7 @@ DGtal::MeaningfulScaleAnalysis<TProfile>::~MeaningfulScaleAnalysis()
 
 
 template<typename TProfile>
-void 
+void
 DGtal::MeaningfulScaleAnalysis<TProfile>::computeMeaningfulScales ( std::vector< std::pair< unsigned int,
                                                                     unsigned int > > & intervals,
                                                                     const unsigned int minSize,
@@ -70,8 +70,8 @@ DGtal::MeaningfulScaleAnalysis<TProfile>::computeMeaningfulScales ( std::vector<
   for ( unsigned int k = 1; k < x.size(); ++k )
     {
       double slope = ( y[ k ] - y[ k - 1 ] ) / ( x[ k ] - x[ k - 1 ] );
-      if ( ( slope > maxSlope ) 
-	   || ( slope < minSlope ) 
+      if ( ( slope > maxSlope )
+	   || ( slope < minSlope )
 	   || ( (k+1) == x.size() ) )
 	{
 	  if ( ( k - 1 - l ) >= minSize )
@@ -82,8 +82,8 @@ DGtal::MeaningfulScaleAnalysis<TProfile>::computeMeaningfulScales ( std::vector<
 }
 
 template<typename TProfile>
-std::pair<bool, double> 
-DGtal::MeaningfulScaleAnalysis<TProfile>::getSlopeFromMeaningfulScales(const double maxSlope, 
+std::pair<bool, double>
+DGtal::MeaningfulScaleAnalysis<TProfile>::getSlopeFromMeaningfulScales(const double maxSlope,
                                                                        const double minSlope,
                                                                        const unsigned int minSize) const {
   std::pair<bool, double> resuSlope(false, 0.0);
@@ -93,8 +93,8 @@ DGtal::MeaningfulScaleAnalysis<TProfile>::getSlopeFromMeaningfulScales(const dou
   std::vector<typename TProfile::Value> vy;
 
   myProfile.getProfile( vx, vy );
-  // no meaningfulScale interval: 
-  
+  // no meaningfulScale interval:
+
   if(vectIntervals.size()!=0 && vectIntervals.at(0).first<vectIntervals.at(0).second )
     {
       resuSlope.first=true;
@@ -102,13 +102,13 @@ DGtal::MeaningfulScaleAnalysis<TProfile>::getSlopeFromMeaningfulScales(const dou
   else
     {
       std::pair<unsigned int, unsigned int> interAll(1, vx.size());
-      vectIntervals.push_back(interAll); 
+      vectIntervals.push_back(interAll);
     }
   SimpleLinearRegression SLR;
 
   unsigned int mfsBeg = vectIntervals.at(0).first-1;
   unsigned int mfsEnd = vectIntervals.at(0).second-1;
-  
+
   // Only two sampled points
   if ( mfsEnd-mfsBeg == 1 )
     {
@@ -197,5 +197,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

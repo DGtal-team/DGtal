@@ -55,9 +55,9 @@ namespace DGtal
   /**
  Description of \b concept '\b CPowerSeparableMetric' <p>
  @ingroup Concepts
- @brief Aim: defines the concept of separable metrics. 
+ @brief Aim: defines the concept of separable metrics.
 
- Separable metrics are metrics satsifying the monotonicity property. 
+ Separable metrics are metrics satisfying the monotonicity property.
 
  # Refinement of CPowerMetric
 
@@ -79,7 +79,7 @@ namespace DGtal
 
  # Models
 
-ExactPredicateLpPowerSeparableMetric, 
+ExactPredicateLpPowerSeparableMetric,
 
  # Notes
 
@@ -103,14 +103,14 @@ ExactPredicateLpPowerSeparableMetric,
       // something of type B
       ConceptUtils::sameType( myBool, myX.hiddenByPower(u,wu,v,wv,w,ww,start,end,dim) );
     }
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     T myX; // do not require T to be default constructible.
     Point u,v,w,start,end;
     Weight ww,wu,wv;
     bool myBool;
     DGtal::Dimension dim;
-  
+
     // ------------------------- Internals ------------------------------------
   private:
 

@@ -56,8 +56,8 @@ template < typename TKSpace, typename TImplicitFunctionDiff1, typename TEmbedder
 inline
 DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::
 ImplicitFunctionDiff1LinearCellEmbedder( const ImplicitFunctionDiff1LinearCellEmbedder & other )
-  : myPtrK( other.myPtrK ), 
-    myPtrFct( other.myPtrFct ), 
+  : myPtrK( other.myPtrK ),
+    myPtrFct( other.myPtrFct ),
     myPtrEmbedder( other.myPtrEmbedder )
 {}
 //-----------------------------------------------------------------------------
@@ -78,7 +78,7 @@ operator=( const ImplicitFunctionDiff1LinearCellEmbedder & other )
 //-----------------------------------------------------------------------------
 template < typename TKSpace, typename TImplicitFunctionDiff1, typename TEmbedder >
 inline
-void 
+void
 DGtal::ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder>::
 init( ConstAlias<KSpace> K, ConstAlias<ImplicitFunctionDiff1> f, ConstAlias<Embedder> e )
 {
@@ -126,7 +126,7 @@ operator()( const Cell & cell ) const
   Point p1( myPtrK->uCoords( cell ) );
   RealPoint x1( embed( p1 ) );
   ImplicitFctValue y1 = (*myPtrFct)( x1 );
-  for ( typename KSpace::DirIterator qit = myPtrK->uOrthDirs( cell ); 
+  for ( typename KSpace::DirIterator qit = myPtrK->uOrthDirs( cell );
         qit != 0; ++qit )
     { // cell is closed along this dimension.
       // estimate coordinate by interpolation, looking for f(...)=0.
@@ -150,7 +150,7 @@ embedSCell( const SCell & scell ) const
   Point p1( myPtrK->sCoords( scell ) );
   RealPoint x1( embed( p1 ) );
   ImplicitFctValue y1 = (*myPtrFct)( x1 );
-  for ( typename KSpace::DirIterator qit = myPtrK->sOrthDirs( scell ); 
+  for ( typename KSpace::DirIterator qit = myPtrK->sOrthDirs( scell );
         qit != 0; ++qit )
     { // cell is closed along this dimension.
       // estimate coordinate by interpolation, looking for f(...)=0.
@@ -232,7 +232,7 @@ isValid() const
 template < typename TKSpace, typename TImplicitFunctionDiff1, typename TEmbedder >
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
                     const ImplicitFunctionDiff1LinearCellEmbedder<TKSpace, TImplicitFunctionDiff1, TEmbedder> & object )
 {
   object.selfDisplay( out );
@@ -241,5 +241,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

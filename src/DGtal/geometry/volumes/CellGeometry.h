@@ -178,7 +178,7 @@ namespace DGtal
     /// @note Three times faster than building a (degenerated) lattice
     /// polytope and then calling addCellsTouchingPolytope.
     void addCellsTouchingSegment( const Point& a, const Point& b );
-    
+
     /// Updates the cell cover with the cells touching a range of
     /// digital points [itB, itE).
     template <typename PointIterator>
@@ -241,7 +241,7 @@ namespace DGtal
     /// @param k any non negative integer
     /// @return the vector of k-cells, represented as points with Khalimsky coordinates.
     std::vector< Point > getKPoints( const Dimension k ) const;
-    
+
     /// @}
 
     // ----------------------- Cell services ------------------------------
@@ -382,7 +382,7 @@ namespace DGtal
 
     /// @}
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
 
     /// The cellular space for cells.
@@ -397,13 +397,13 @@ namespace DGtal
     /// Tells if verbose mode.
     bool myVerbose;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
 
     // ------------------------- Internals ------------------------------------
   private:
-    // Internal method for cheking if sorted range [it1,itE1] is a
+    // Internal method for checking if sorted range [it1,itE1] is a
     // subset of sorted range [it2, itE2].  Different from
     // std::includes since it performs exponential march and dichotomy
     // to walk faster along range [it1,itE1].

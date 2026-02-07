@@ -50,8 +50,8 @@ bool runATest( unsigned int maxTest)
   InexactPredicateLpSeparableMetric<Z3i::Space> approxMetric(p);
   double sum=0.0, d=0,d2=0, MSE=0;
   std::string txt = "Testing Exponent" +   boost::lexical_cast<string>(p);
-  
-    
+
+
   DGtal::Dimension dim = 1000;
   trace.beginBlock(txt);
   trace.beginBlock("Exact Predicate run");
@@ -63,7 +63,7 @@ bool runATest( unsigned int maxTest)
     }
 
   trace.endBlock();
-  
+
   trace.beginBlock("Inexact Predicate run");
  for(unsigned int i=0; i< maxTest; ++i)
     {
@@ -72,7 +72,7 @@ bool runATest( unsigned int maxTest)
       sum += approxMetric(P,Q);
     }
   trace.endBlock();
-  
+
 
   trace.beginBlock("Both with comparison run");
   for(unsigned int i=0; i< maxTest; ++i)

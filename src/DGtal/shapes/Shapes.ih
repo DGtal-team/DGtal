@@ -63,7 +63,7 @@ inline
 void
 DGtal::Shapes<TDomain>::removeNorm1Ball
 ( TDigitalSet & aSet,
-  const Point & aCenter, 
+  const Point & aCenter,
   UnsignedInteger aRadius )
 {
   Point v1( aCenter.diagonal( aRadius ) );
@@ -71,14 +71,14 @@ DGtal::Shapes<TDomain>::removeNorm1Ball
   Point p2( p1 );
   p1 -= v1;
   p2 += v1;
-  const Domain & domain = aSet.domain(); 
+  const Domain & domain = aSet.domain();
   typedef DGtal::HyperRectDomain<Space> LocalSpace;
   LocalSpace ballDomain( p1, p2 );
-  for ( typename LocalSpace::ConstIterator it = ballDomain.begin(); 
-	it != ballDomain.end(); 
+  for ( typename LocalSpace::ConstIterator it = ballDomain.begin();
+	it != ballDomain.end();
 	++it )
     {
-      if ( domain.isInside( *it ) 
+      if ( domain.isInside( *it )
 	   && ( (*it - aCenter ).norm1() <= aRadius ) )
 	aSet.erase( *it );
     }
@@ -98,7 +98,7 @@ inline
 void
 DGtal::Shapes<TDomain>::addNorm1Ball
 ( TDigitalSet & aSet,
-  const Point & aCenter, 
+  const Point & aCenter,
   UnsignedInteger aRadius )
 {
   Point v1( aCenter.diagonal( aRadius ) );
@@ -106,14 +106,14 @@ DGtal::Shapes<TDomain>::addNorm1Ball
   Point p2( p1 );
   p1 -= v1;
   p2 += v1;
-  const Domain & domain = aSet.domain(); 
+  const Domain & domain = aSet.domain();
   typedef DGtal::HyperRectDomain<Space> LocalSpace;
   LocalSpace ballDomain( p1, p2 );
-  for ( typename LocalSpace::ConstIterator it = ballDomain.begin(); 
-	it != ballDomain.end(); 
+  for ( typename LocalSpace::ConstIterator it = ballDomain.begin();
+	it != ballDomain.end();
 	++it )
     {
-      if ( domain.isInside( *it ) 
+      if ( domain.isInside( *it )
 	   && ( (*it - aCenter ).norm1() <= aRadius ) )
 	aSet.insert( *it );
     }
@@ -135,7 +135,7 @@ inline
 void
 DGtal::Shapes<TDomain>::removeNorm2Ball
 ( TDigitalSet & aSet,
-  const Point & aCenter, 
+  const Point & aCenter,
   UnsignedInteger aRadius )
 {
   Point v1( aCenter.diagonal( aRadius ) );
@@ -143,14 +143,14 @@ DGtal::Shapes<TDomain>::removeNorm2Ball
   Point p2( p1 );
   p1 -= v1;
   p2 += v1;
-  const Domain & domain = aSet.domain(); 
+  const Domain & domain = aSet.domain();
   typedef DGtal::HyperRectDomain<Space> LocalSpace;
   LocalSpace ballDomain( p1, p2 );
-  for ( typename LocalSpace::ConstIterator it = ballDomain.begin(); 
-	it != ballDomain.end(); 
+  for ( typename LocalSpace::ConstIterator it = ballDomain.begin();
+	it != ballDomain.end();
 	++it )
     {
-      if ( domain.isInside( *it ) 
+      if ( domain.isInside( *it )
 	   && ( (*it - aCenter ).norm() <= aRadius ) )
 	aSet.erase( *it );
     }
@@ -172,7 +172,7 @@ inline
 void
 DGtal::Shapes<TDomain>::addNorm2Ball
 ( TDigitalSet & aSet,
-  const Point & aCenter, 
+  const Point & aCenter,
   UnsignedInteger aRadius )
 {
   Point v1( aCenter.diagonal( aRadius ) );
@@ -180,14 +180,14 @@ DGtal::Shapes<TDomain>::addNorm2Ball
   Point p2( p1 );
   p1 -= v1;
   p2 += v1;
-  const Domain & domain = aSet.domain(); 
+  const Domain & domain = aSet.domain();
   typedef DGtal::HyperRectDomain<Space> LocalSpace;
   LocalSpace ballDomain( p1, p2 );
-  for ( typename LocalSpace::ConstIterator it = ballDomain.begin(); 
-	it != ballDomain.end(); 
+  for ( typename LocalSpace::ConstIterator it = ballDomain.begin();
+	it != ballDomain.end();
 	++it )
     {
-      if ( domain.isInside( *it ) 
+      if ( domain.isInside( *it )
 	   && ( (*it - aCenter ).norm() <= aRadius ) )
 	aSet.insert( *it );
     }
@@ -200,17 +200,17 @@ DGtal::Shapes<TDomain>::digitalShaper( TDigitalSet & aSet,
                                        const ShapeFunctor & aFunctor)
 {
   typedef DGtal::HyperRectDomain<Space> LocalSpace;
-  
+
   BOOST_CONCEPT_ASSERT((concepts::CDigitalBoundedShape<ShapeFunctor>));
   BOOST_CONCEPT_ASSERT((concepts::CDigitalOrientedShape<ShapeFunctor>));
- 
+
 
   Point pLow = aFunctor.getLowerBound();
   Point pUpp = aFunctor.getUpperBound();
-  
+
   LocalSpace implicitDomain( pLow, pUpp );
-  for ( typename LocalSpace::ConstIterator it = implicitDomain.begin(); 
-        it != implicitDomain.end(); 
+  for ( typename LocalSpace::ConstIterator it = implicitDomain.begin();
+        it != implicitDomain.end();
         ++it )
     {
       if ( aFunctor.orientation( *it ) == INSIDE || aFunctor.orientation( *it ) == ON )
@@ -226,16 +226,16 @@ DGtal::Shapes<TDomain>::euclideanShaper( TDigitalSet & aSet,
                                          const ShapeFunctor & aFunctor,
                                          const double h)
 {
-  
+
   BOOST_CONCEPT_ASSERT((concepts::CEuclideanBoundedShape<ShapeFunctor>));
   BOOST_CONCEPT_ASSERT((concepts::CEuclideanOrientedShape<ShapeFunctor>));
 
   RealPoint pLow = aFunctor.getLowerBound();
   RealPoint pUpp = aFunctor.getUpperBound();
-  GaussDigitizer<Space,ShapeFunctor> dig;  
+  GaussDigitizer<Space,ShapeFunctor> dig;
   dig.attach( aFunctor ); // attaches the shape.
-  dig.init( pLow, pUpp, h); 
-  
+  dig.init( pLow, pUpp, h);
+
   // Creates a set from the digitizer.
   Shapes<Domain>::digitalShaper( aSet, dig );
 }
@@ -247,7 +247,7 @@ DGtal::Shapes<TDomain>::makeSetFromPointPredicate
 ( DigitalSet & aSet,
   const PointPredicate & aPP )
 {
-  
+
   BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet< DigitalSet > ));
   BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate< PointPredicate > ));
   BOOST_STATIC_ASSERT
@@ -298,7 +298,7 @@ DGtal::Shapes<TDomain>::isValid() const
 template <typename TDomain>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		    const Shapes<TDomain> & object )
 {
   object.selfDisplay( out );
@@ -307,5 +307,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

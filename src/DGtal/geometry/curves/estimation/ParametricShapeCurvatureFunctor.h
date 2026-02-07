@@ -64,7 +64,7 @@ namespace DGtal
   template <typename TParametricShape>
   class ParametricShapeCurvatureFunctor
   {
-    
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -89,13 +89,13 @@ namespace DGtal
      * @param aShape the input shape.
      */
     ParametricShapeCurvatureFunctor(const ParametricShape &aShape): myShape(aShape) {}
-    
-    
+
+
     /**
      * Destructor.
      */
     ~ParametricShapeCurvatureFunctor() = default;
-    
+
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -106,11 +106,11 @@ namespace DGtal
      * Forbidden by default.
      */
     ParametricShapeCurvatureFunctor & operator= ( const ParametricShapeCurvatureFunctor & other ) = delete;
-   
-    /** 
+
+    /**
      * Computes the curvature at [aPoint]
-     * 
-     * @param aPoint the point at which the curvature is computed. 
+     *
+     * @param aPoint the point at which the curvature is computed.
      * @return the curvature at [aPoint].
      */
     Quantity operator()(const RealPoint &aPoint) const
@@ -118,19 +118,19 @@ namespace DGtal
       double t = myShape.parameter( aPoint );
       return myShape.curvature( t );
     }
-    
 
-    // ------------------------- Private Datas --------------------------------
+
+    // ------------------------- Private Data --------------------------------
   private:
-    
+
     ///Reference of the implicit shape.
     const ParametricShape &myShape;
-    
+
     // ------------------------- Internals ------------------------------------
   private:
-    
+
   }; // end of class ParametricShapeCurvatureFunctor
-  
+
 } // namespace DGtal
 
                                                                         //

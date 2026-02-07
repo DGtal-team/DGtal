@@ -75,12 +75,12 @@ TEST_CASE( "Testing PolygonalCalculus" )
     { 3, 2, 6, 7 } ,
     { 2, 0, 4, 6 } ,
     { 4, 5, 8, 9 } };
-  
+
   Mesh box(positions.cbegin(), positions.cend(),
            faces.cbegin(), faces.cend());
-  
+
   PolygonalCalculus< RealPoint,RealVector > boxCalculus(box);
-  
+
   SECTION("Construction and basic operators")
     {
       REQUIRE( boxCalculus.isValid() );
@@ -90,7 +90,7 @@ TEST_CASE( "Testing PolygonalCalculus" )
       auto x = boxCalculus.X(f);
       auto d = boxCalculus.D(f);
       auto a = boxCalculus.A(f);
-      
+
       //Checking X
       PolygonalCalculus< RealPoint,RealVector >::Vector vec = x.row(0);
       REQUIRE( vecToRealPoint(vec ) == positions[1]);
@@ -102,7 +102,7 @@ TEST_CASE( "Testing PolygonalCalculus" )
       REQUIRE( vecToRealPoint(vec ) == positions[3]);
 
       trace.info()<< boxCalculus <<std::endl;
-      
+
       //Some D and A
       REQUIRE( d(1,1) == -1 );
       REQUIRE( d(0,1) == 1 );
@@ -111,13 +111,13 @@ TEST_CASE( "Testing PolygonalCalculus" )
       REQUIRE( a(1,1) == 0.5 );
       REQUIRE( a(0,1) == 0.5 );
       REQUIRE( a(0,2) == 0 );
-      
+
       auto vectorArea = boxCalculus.vectorArea(f);
-      
+
       //Without correction, this should match
       for(auto ff=0; ff<6; ++ff)
         REQUIRE( boxCalculus.faceArea(ff) == box.faceArea(ff) );
-     
+
       box.computeFaceNormalsFromPositions();
       for(auto ff=0; ff<6; ++ff)
       {
@@ -125,56 +125,56 @@ TEST_CASE( "Testing PolygonalCalculus" )
         auto n = box.faceNormal(ff);
         REQUIRE(  cn == n  );
       }
-      
+
       RealPoint c = boxCalculus.centroidAsDGtalPoint(f);
       RealPoint expected(0.5,0.5,0.0);
       REQUIRE(c == expected);
     }
-  
+
   SECTION("Derivatives")
   {
     PolygonalCalculus< RealPoint,RealVector >::Face f = 0;
     auto d = boxCalculus.D(f);
-    
+
     auto nf = boxCalculus.faceDegree(f);
     PolygonalCalculus< RealPoint,RealVector >::Vector phi(nf),expected(nf);
     phi << 1.0, 3.0, 2.0, 6.0;
     expected << 2,-1,4,-5;
     auto dphi = d*phi;  // n_f x 1 matrix
     REQUIRE(dphi == expected);
-    
+
   }
-  
-  SECTION("Structural propertes")
+
+  SECTION("Structural properties")
   {
     PolygonalCalculus< RealPoint,RealVector >::Face f = 0;
     auto nf =  boxCalculus.faceDegree(f);
     PolygonalCalculus< RealPoint,RealVector >::Vector phi(nf);
     phi << 1.0, 3.0, 2.0, 6.0;
-    
+
     auto G = boxCalculus.gradient(f);
     auto gphi = G*phi;
     auto coG = boxCalculus.coGradient(f);
     auto cogphi = coG*phi;
-    
+
     // grad . cograd == 0
     REQUIRE( gphi.dot(cogphi) == 0.0);
-        
+
     //    Gf = Uf Df
     REQUIRE( G == boxCalculus.sharp(f)*boxCalculus.D(f));
-    
+
     //    UV = I - nn^t (lemma4)
     PolygonalCalculus< RealPoint,RealVector >::Vector n = boxCalculus.faceNormal(f);
     REQUIRE( boxCalculus.sharp(f)*boxCalculus.flat(f) == PolygonalCalculus< RealPoint,RealVector >::DenseMatrix::Identity(3,3) - n*n.transpose() );
-    
+
     //    P^2 = P (lemma6)
     auto P = boxCalculus.P(f);
     REQUIRE( P*P == P);
-    
+
     //    PV=0 (lemma5)
     REQUIRE( (P*boxCalculus.flat(f)).norm() == 0.0);
   }
-  
+
   SECTION("Div / Curl")
   {
     PolygonalCalculus< RealPoint,RealVector >::Face f = 0;
@@ -182,12 +182,12 @@ TEST_CASE( "Testing PolygonalCalculus" )
     //Not a great test BTW
     REQUIRE(curl.norm() == 2.0);
   }
-  
+
   SECTION("Local Laplace-Beltrami")
   {
     PolygonalCalculus< RealPoint,RealVector >::Face f = 0;
     auto nf = box.incidentVertices(f).size();
-    
+
     auto L = boxCalculus.laplaceBeltrami(f);
     PolygonalCalculus< RealPoint,RealVector >::Vector phi(nf),expected(nf);
     phi << 1.0, 1.0, 1.0, 1.0;
@@ -212,7 +212,7 @@ TEST_CASE( "Testing PolygonalCalculus" )
     REQUIRE( det == Approx(1.0));
     REQUIRE( lphi[2] == Approx(-3.683));
   }
-  
+
   SECTION("Covariant Operators")
   {
     PolygonalCalculus< RealPoint,RealVector >::Face f = 0;
@@ -238,33 +238,33 @@ TEST_CASE( "Testing PolygonalCalculus" )
     double a=0.0;
     for( PolygonalCalculus< RealPoint,RealVector >::MySurfaceMesh::Index v=0; v < box.nbVertices(); ++v )
       a += M.coeffRef(v,v);
-    
+
     double fa=0.0;
     for( PolygonalCalculus< RealPoint,RealVector >::MySurfaceMesh::Index f=0; f < box.nbFaces(); ++f )
       fa += box.faceArea(f);
     REQUIRE( a == fa );
   }
-  
+
   SECTION("Checking cache")
   {
     auto cacheU = boxCalculus.getOperatorCacheMatrix( [&](const PolygonalCalculus< RealPoint,RealVector >::Face f){ return boxCalculus.sharp(f);} );
     REQUIRE( cacheU.size() == 6 );
-    
+
     auto cacheC = boxCalculus.getOperatorCacheVector( [&](const PolygonalCalculus< RealPoint,RealVector >::Face f){ return boxCalculus.centroid(f);} );
     REQUIRE( cacheC.size() == 6 );
   }
-  
+
   SECTION("Internal cache")
   {
     PolygonalCalculus< RealPoint,RealVector > boxCalculusCached(box,true);
     trace.info()<< boxCalculusCached <<std::endl;
-    
+
     trace.beginBlock("Without cache");
     PolygonalCalculus< RealPoint,RealVector >::SparseMatrix L(box.nbVertices(),box.nbVertices());
     for(auto i=0; i < 1000 ; ++i)
       L += i*boxCalculus.globalLaplaceBeltrami();
     auto tps = trace.endBlock();
-    
+
     trace.beginBlock("With cache");
     PolygonalCalculus< RealPoint,RealVector >::SparseMatrix LC(box.nbVertices(),box.nbVertices());
     for(auto i=0; i < 1000 ; ++i)
@@ -272,9 +272,9 @@ TEST_CASE( "Testing PolygonalCalculus" )
     auto tpsC = trace.endBlock();
     REQUIRE(tpsC < tps);
     REQUIRE(L.norm() == Approx(LC.norm()));
-    
+
   }
-  
+
 }
 
 TEST_CASE( "Testing PolygonalCalculus and DirichletConditions" )
@@ -287,7 +287,7 @@ TEST_CASE( "Testing PolygonalCalculus and DirichletConditions" )
 
   // Build a more complex surface.
   auto params = SH3::defaultParameters();
-  
+
   params( "polynomial", "0.1*y*y -0.1*x*x - 2.0*z" )( "gridstep", 2.0 );
   auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
   auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
@@ -295,19 +295,19 @@ TEST_CASE( "Testing PolygonalCalculus and DirichletConditions" )
   auto binary_image    = SH3::makeBinaryImage( digitized_shape, params );
   auto surface         = SH3::makeDigitalSurface( binary_image, K, params );
   auto primalSurface   = SH3::makePrimalSurfaceMesh(surface);
-  
+
   std::vector<std::vector< Index > > faces;
   std::vector<RealPoint> positions = primalSurface->positions();
   for( PolygonalCalculus< RealPoint,RealVector >::MySurfaceMesh::Index face= 0 ; face < primalSurface->nbFaces(); ++face)
     faces.push_back(primalSurface->incidentVertices( face ));
-  
+
   Mesh surfmesh = Mesh( positions.begin(), positions.end(),
                             faces.begin(),     faces.end() );
   auto boundaryEdges = surfmesh.computeManifoldBoundaryEdges();
-  
+
   // Builds calculus and solve a Poisson problem with Dirichlet boundary conditions
   PolyDEC calculus( surfmesh );
-  // Laplace opeartor
+  // Laplace operator
   PolyDEC::SparseMatrix L = calculus.globalLaplaceBeltrami();
   // value on boundary
   PolyDEC::Vector g = calculus.form0();
@@ -324,7 +324,7 @@ TEST_CASE( "Testing PolygonalCalculus and DirichletConditions" )
             return cos(scale*(surfmesh.position(v)[0]))
               * (scale*surfmesh.position(v)[1]);
           };
-          
+
           for(auto &e: boundaryEdges)
             {
               auto adjVertices = surfmesh.edgeVertices(e);

@@ -174,7 +174,7 @@ int main( int argc, char** argv )
           itE = recognized.end(); it != itE; ++it )
     if ( ! strip( *it ) ) viewer << *it;
 
-  viewer << green; 
+  viewer << green;
   displayRange( viewer, plane.begin(), plane.end() );
 
   viewer << grey;

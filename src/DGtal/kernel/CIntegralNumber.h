@@ -63,30 +63,30 @@ Description of \b concept '\b CIntegralNumber' <p>
 @brief Aim: Concept checking for Integral Numbers. Models of this
      concept should be listed in NumberTraits class and should have
      the isIntegral property.
-     
- # Refinement of 
-   
+
+ # Refinement of
+
     - CQuantity<T>
- 
- # Associated types 
-    
+
+ # Associated types
+
  # Notation
      - \a X : A type that is a model of CIntegralNumber
      - \a x, \a  y  : Object of type X
-    
- # Definitions
-    
- # Valid expressions and semantics
- 
 
-Name | Expression |  Type requirements | Return type| Precondition | Semantics | Postcondition | Complexity 
+ # Definitions
+
+ # Valid expressions and semantics
+
+
+Name | Expression |  Type requirements | Return type| Precondition | Semantics | Postcondition | Complexity
 -----|------------|--------------------|------------|--------------|-----------|---------------|-----------
 \a X should be tagged \b true in \a NumberTraits for \a IsIntegral. | typename NumberTraits<X>::IsIntegral | TagTrue | | | | | |
-    
-    
+
+
  # Invariants
 
-    
+
  # Models
 
 BigInteger,  short, int, long long, uint32_t, int16_t, int32_t, int64_t, ...
@@ -95,7 +95,7 @@ BigInteger,  short, int, long long, uint32_t, int16_t, int32_t, int64_t, ...
 
 @tparam T the type that is checked. T should be a model of
      CBoundedInteger.
-    
+
    */
   template <typename T>
   struct CIntegralNumber: CQuantity<T>
@@ -107,13 +107,13 @@ BigInteger,  short, int, long long, uint32_t, int16_t, int32_t, int64_t, ...
       // Will compile iff Integral.
       ConceptUtils::checkTrue( myIsIntegral );
     }
-    
+
     // ------------------------- Internals ------------------------------------
   private:
     typename NumberTraits<T>::IsIntegral myIsIntegral;
 
   }; // end of concept CIntegralNumber
-  }  
+  }
 } // namespace DGtal
 
 

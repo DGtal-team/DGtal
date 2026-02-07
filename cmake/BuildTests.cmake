@@ -44,6 +44,6 @@ if (DGTAL_BUILD_TESTS OR DGTAL_BUILD_BENCHMARKS)
   message(STATUS "Build test/benchmarks files ENABLED")
   ENABLE_TESTING()
   include(CTest)
-  
+
   add_subdirectory (${PROJECT_SOURCE_DIR}/tests)
 endif()

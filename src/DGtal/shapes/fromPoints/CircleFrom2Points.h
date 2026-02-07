@@ -185,9 +185,9 @@ namespace DGtal
      */
     std::string className() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     //the three points that uniquely define the circle
     /**

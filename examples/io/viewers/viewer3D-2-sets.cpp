@@ -62,7 +62,7 @@ int main()
   Point p1( 0, 0, 0 );
   Point p2( 10, 10 , 10 );
   Domain domain( p1, p2 );
-  
+
   v << p1 << p2 << domain;
 
   DigitalSet shape_set( domain );
@@ -71,7 +71,7 @@ int main()
 
   shape_set.erase(Point(3,3,3));
   shape_set.erase(Point(6,6,6));
-  
+
   v << shape_set;
 
   v.show();

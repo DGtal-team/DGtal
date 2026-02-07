@@ -52,16 +52,16 @@ bool testTickedColorMap()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing TickedCMAP..." );
-  
+
   TickedColorMap<double, HueShadeColorMap<double, 1> > ticked(0.0,100.0);
 
   ticked.addTick(5.0, 1.0);
   ticked.addTick(9.0, 1.0);
   ticked.finalize();
   trace.info()<<ticked<<std::endl;
-  
+
   Color c = ticked(4.5);
   nbok += (c == Color::White) ? 1 : 0;
   nb++;
@@ -73,7 +73,7 @@ bool testTickedColorMap()
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
   << "c == white on tick sup.."<< std::endl;
- 
+
   c = ticked(9.5);
   nbok += (c == Color::White) ? 1 : 0;
   nb++;
@@ -86,14 +86,14 @@ bool testTickedColorMap()
   trace.info() << "(" << nbok << "/" << nb << ") "
   << "c == white on tick sup.. "<< std::endl;
 
-  
+
   c = ticked(20.0);
   nbok += (c != Color::White) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
   << "c != white outside.. "<< std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
@@ -107,12 +107,12 @@ bool testCMAP()
   ticked.finalize();
   trace.info() << ticked<<std::endl;
   Z2i::Point p;
-  
+
   for(unsigned int i=0; i < 100; i++)
     board<< CustomStyle(p.className(),new CustomColors(ticked(i),ticked(i)))
     << Z2i::Point(i,0);
   board.saveEPS("testTicked.eps");
-  
+
   board.clear();
   TickedColorMap<double, HueShadeColorMap<double, 1> > ticked2(0.0,100.0);
   ticked2.addRegularTicks(10, 1.0);
@@ -121,7 +121,7 @@ bool testCMAP()
     board<< CustomStyle(p.className(),new CustomColors(ticked2(i),ticked2(i)))
     << Z2i::Point(i,0);
   board.saveEPS("testTicked-regular.eps");
- 
+
   //same with gradient colormap (and ticked.colormap() accessor)
   board.clear();
   TickedColorMap<double, GradientColorMap<double> > ticked3(0.0,100.0);
@@ -133,7 +133,7 @@ bool testCMAP()
     board<< CustomStyle(p.className(),new CustomColors(ticked3(i),ticked3(i)))
     << Z2i::Point(i,0);
   board.saveEPS("testTicked-gradient-regular.eps");
-  
+
   return true;
 }
 

@@ -907,7 +907,7 @@ dim: Int
 
 Return
 ------
-    Cell with coordinate [dim] incremeneted.
+    Cell with coordinate [dim] incremented.
 )", py::arg("cell"), py::arg("dim"));
 
     py_class.def("uIsMax", &TT::uIsMax,
@@ -1022,7 +1022,7 @@ dim: Int
 
 Return
 ------
-    Cell with coordinate [dim] decremeneted.
+    Cell with coordinate [dim] decremented.
 )", py::arg("cell"), py::arg("dim"));
 
     py_class.def("uIsMin", &TT::uIsMin,
@@ -1060,7 +1060,7 @@ Return
 )", py::arg("cell"), py::arg("dim"), py::arg("x"));
 
     py_class.def("uGetSub", &TT::uGetSub,
-R"(Return the same element as [cell] except for the coordinate [dim] decremeneted by x.
+R"(Return the same element as [cell] except for the coordinate [dim] decremented by x.
 
 Parameters
 ----------
@@ -1073,7 +1073,7 @@ x: Int
 
 Return
 ------
-    Cell with coordinate [dim] decremeneted with x
+    Cell with coordinate [dim] decremented with x
 )", py::arg("cell"), py::arg("dim"), py::arg("x"));
 
     py_class.def("uTranslation", &TT::uTranslation,
@@ -1149,7 +1149,7 @@ upper: Cell
 
 Return
 ------
-    True if [cell] is still withing the bounds, false if the scanning is finished.
+    True if [cell] is still within the bounds, false if the scanning is finished.
 
 )", py::arg("cell"), py::arg("lower"), py::arg("upper"));
 
@@ -1167,7 +1167,7 @@ dim: Int
 
 Return
 ------
-    SCell with coordinate [dim] incremeneted.
+    SCell with coordinate [dim] incremented.
 )", py::arg("cell"), py::arg("dim"));
 
     py_class.def("sIsMax", &TT::sIsMax,
@@ -1249,7 +1249,7 @@ dim: Int
 
 Return
 ------
-    SCell with coordinate [dim] decremeneted.
+    SCell with coordinate [dim] decremented.
 )", py::arg("cell"), py::arg("dim"));
 
     py_class.def("sIsMin", &TT::sIsMin,
@@ -1285,7 +1285,7 @@ Return
 )", py::arg("cell"), py::arg("dim"), py::arg("x"));
 
     py_class.def("sGetSub", &TT::sGetSub,
-R"(Return the same element as [cell] except for the coordinate [dim] decremeneted by x.
+R"(Return the same element as [cell] except for the coordinate [dim] decremented by x.
 
 Parameters
 ----------
@@ -1298,7 +1298,7 @@ x: Int
 
 Return
 ------
-    SCell with coordinate [dim] decremeneted with x
+    SCell with coordinate [dim] decremented with x
 )", py::arg("cell"), py::arg("dim"), py::arg("x"));
 
     py_class.def("sTranslation", &TT::sTranslation,
@@ -1374,7 +1374,7 @@ upper: SCell
 
 Return
 ------
-    True if [cell] is still withing the bounds, false if the scanning is finished.
+    True if [cell] is still within the bounds, false if the scanning is finished.
 
 )", py::arg("cell"), py::arg("lower"), py::arg("upper"));
 

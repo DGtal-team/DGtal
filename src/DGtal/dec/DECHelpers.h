@@ -69,7 +69,7 @@ namespace DGtal
         triplets.emplace_back( index, index, kform.myContainer(index) );
       Operator ope(kform.myCalculus);
       ope.myContainer.setFromTriplets(triplets.begin(), triplets.end());
-      
+
       return ope;
     }
 
@@ -98,7 +98,7 @@ namespace DGtal
       M12.myContainer = 0.25 * M12.myContainer.cwiseAbs();
       return M12;
     }
-    
+
     /// Builds the linear operator that brings a primal 2-form to a
     /// primal 0-form by averaging (face to vertex operator)
     ///
@@ -111,7 +111,7 @@ namespace DGtal
       BOOST_STATIC_ASSERT( Calculus::dimensionAmbient == 3 );
       using DGtal::PRIMAL;
       using DGtal::DUAL;
-      
+
       typedef typename Calculus::LinearAlgebraBackend::SparseMatrix SparseMatrix;
       typedef typename Calculus::LinearAlgebraBackend::Triplet Triplet;
       typedef typename Calculus::KSpace KSpace;
@@ -121,7 +121,7 @@ namespace DGtal
       typedef typename Calculus::Point Point;
       typedef DGtal::LinearOperator<Calculus, 2, DGtal::PRIMAL, 0, DGtal::PRIMAL>
 	Operator;
-      
+
       const KSpace& kspace = calculus.myKSpace;
 
       const std::vector<Point> deltas = {
@@ -129,13 +129,13 @@ namespace DGtal
         Point(1,0,1), Point(-1,0,1), Point(-1,0,-1), Point(1,0,-1),
         Point(1,1,0), Point(-1,1,0), Point(-1,-1,0), Point(1,-1,0)
       };
-      
+
       std::vector<Triplet> triplets;
       for (Index index_point=0; index_point<calculus.kFormLength(0,PRIMAL); index_point++)
         {
           const Cell point = kspace.unsigns(calculus.getSCell(0, PRIMAL, index_point));
           ASSERT( kspace.uDim(point) == 0 );
-          
+
           std::vector<Index> indexes_surfel;
           for (const Point delta : deltas)
             {
@@ -145,21 +145,21 @@ namespace DGtal
                 indexes_surfel.push_back(calculus.getCellIndex(surfel));
             }
           ASSERT( indexes_surfel.size() > 2 );
-          
+
           const double weight = 1/static_cast<Scalar>(indexes_surfel.size());
           for (const Index index_surfel : indexes_surfel)
             triplets.emplace_back( index_point, index_surfel, weight );
         }
-      
+
       SparseMatrix matrix( calculus.kFormLength(0, DGtal::PRIMAL),
 			   calculus.kFormLength(2, DGtal::PRIMAL) );
       matrix.setFromTriplets(triplets.begin(), triplets.end());
-      
+
       return Operator(calculus, matrix);
     }
-    
+
   } // namespace dec_helper
-  
+
 } // namespace DGtal
 
 

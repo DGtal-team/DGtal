@@ -56,7 +56,7 @@ Description of \b concept '\b CUnaryFunctor' <p>
      \brief Aim: Defines a unary functor, which
      associates arguments to results
 
-# Refinement of 
+# Refinement of
 
  - boost::Assignable
 
@@ -76,7 +76,7 @@ Description of \b concept '\b CUnaryFunctor' <p>
 
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
 |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-| Apply function | r = x(\a a) |                   | \c R        |                  | returns the value of the function \a x on argument \a a | | |         
+| Apply function | r = x(\a a) |                   | \c R        |                  | returns the value of the function \a x on argument \a a | | |
 
 
 # Invariants
@@ -97,7 +97,7 @@ Description of \b concept '\b CUnaryFunctor' <p>
       // x( a ) returns r.
       ConceptUtils::sameType( r, x.operator() ( a ) );
     }
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     X x;
     A a;
@@ -119,7 +119,7 @@ Description of \b concept '\b CUnaryFunctor' <p>
     {
       ConceptUtils::sameType( getRef(r), x.operator() ( getRef(a) ) );
     }
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     X x;
     A a;
@@ -127,9 +127,9 @@ Description of \b concept '\b CUnaryFunctor' <p>
     // ------------------------- Internals ------------------------------------
   private:
     template<typename T>
-    T& getRef(T& t) 
+    T& getRef(T& t)
     {
-      return t; 
+      return t;
     }
 
   }; // end of concept CUnaryFunctor

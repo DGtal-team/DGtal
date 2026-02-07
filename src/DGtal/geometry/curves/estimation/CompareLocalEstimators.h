@@ -18,7 +18,7 @@
 
 /**
  * @file CompareLocalEstimators.h
- * @brief Functor to compare two local geometric estimators. 
+ * @brief Functor to compare two local geometric estimators.
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -55,12 +55,12 @@ namespace DGtal
   // template class CompareLocalEstimators
   /**
    * Description of template struct 'CompareLocalEstimators' <p>
-   * \brief Aim: Functor to compare two local geometric estimators. 
-   * 
+   * \brief Aim: Functor to compare two local geometric estimators.
+   *
    *
    * @tparam TFirstEsimator type of the first estimator.
    * @tparam TSecondEstimator type of the second estimator.
-   * 
+   *
    */
   template <typename TFirstEsimator, typename TSecondEstimator>
   struct CompareLocalEstimators
@@ -78,9 +78,9 @@ namespace DGtal
     ///Output statistic type.
     typedef Statistic<Quantity> OutputStatistic;
     typedef Statistic<double> OutputVectorStatistic;
-    
+
     ///@todo Assert firstestimator::Quantity==secondestimator::Quantity
-    
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -96,9 +96,9 @@ namespace DGtal
      * @param it the point to evaluate the difference.
      * @param h grid size (must be > 0).
      * @return the difference between the two estiamtor values at
-     * *it. (firstEstimator value - secondEstimator value). 
+     * *it. (firstEstimator value - secondEstimator value).
      */
-    static 
+    static
     Quantity compare(FirstEstimator & aFirstEstimator,
          SecondEstimator & aSecondEstimator,
          const ConstIterator &it,
@@ -125,13 +125,13 @@ namespace DGtal
      * @param h grid size (must be > 0).
      * @param storeSamples if true, the instance of Statistic will
      * store all the values.
-     * @return the statistic of differences between the two estiamtor values 
+     * @return the statistic of differences between the two estiamtor values
      */
     static
     OutputStatistic
     compare(FirstEstimator & aFirstEstimator,
       SecondEstimator & aSecondEstimator,
-      const ConstIterator & itb, 
+      const ConstIterator & itb,
       const ConstIterator & ite,
       const double h = 1.,
       const bool storeSamples = false)
@@ -159,10 +159,10 @@ namespace DGtal
      * @param it the point to evaluate the difference.
      * @param h grid size (must be > 0).
      * @return the difference between the two estiamtor values at
-     * *it. (firstEstimator value - secondEstimator value). 
+     * *it. (firstEstimator value - secondEstimator value).
      */
-    static 
-    double 
+    static
+    double
     compareVectors(FirstEstimator & aFirstEstimator,
        SecondEstimator & aSecondEstimator,
        const ConstIterator &it,
@@ -195,13 +195,13 @@ namespace DGtal
      * @param h grid size (must be >0).
      * @param storeSamples if true, the instance of Statistic will
      * store all the values.
-     * @return the statistic of differences between the two estiamtor values 
+     * @return the statistic of differences between the two estiamtor values
      */
     static
     OutputVectorStatistic
     compareVectors(FirstEstimator & aFirstEstimator,
        SecondEstimator & aSecondEstimator,
-       const ConstIterator & itb, 
+       const ConstIterator & itb,
        const ConstIterator & ite,
        const double h,
        const bool storeSamples = false)

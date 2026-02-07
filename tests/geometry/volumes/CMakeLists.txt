@@ -19,4 +19,3 @@ set(DGTAL_TESTS_VOLUMES_SRC
 foreach(FILE ${DGTAL_TESTS_VOLUMES_SRC})
   DGtal_add_test(${FILE})
 endforeach()
-

@@ -83,12 +83,12 @@ int main()
   Surfaces<Z3i::KSpace>::trackBoundary( vectBdrySCellALL,
           ks,SAdj, set3d, aCell );
 
-  // Extract the bondary contour associated to the initial surfel in its first direction
+  // Extract the boundary contour associated to the initial surfel in its first direction
   Surfaces<Z3i::KSpace>::track2DSliceBoundary( vectBdrySCell,
                  ks, *(ks.sDirs( aCell )), SAdj,
                  set3d, aCell );
 
-  // Extract the bondary contour associated to the initial surfel in its second direction
+  // Extract the boundary contour associated to the initial surfel in its second direction
   Surfaces<Z3i::KSpace>::track2DSliceBoundary( vectBdrySCell2,
                  ks, *(++(ks.sDirs( aCell ))), SAdj,
                  set3d, aCell );

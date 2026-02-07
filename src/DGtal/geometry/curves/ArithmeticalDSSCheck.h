@@ -49,10 +49,10 @@ namespace DGtal
 {
 
   //forward declaration of ArithmeticalDSS
-  template <typename TCoordinate, 
-	    typename TInteger, 
+  template <typename TCoordinate,
+	    typename TInteger,
 	    unsigned short adjacency>
-  class ArithmeticalDSS; 
+  class ArithmeticalDSS;
 
   namespace functions {
 
@@ -62,41 +62,41 @@ namespace DGtal
      * @pre the DSS contains only one point
      * @return 'true' if the DSS is valid, 'false' otherwise.
      */
-    template <typename TCoordinate, 
-	      typename TInteger,  
+    template <typename TCoordinate,
+	      typename TInteger,
 	      unsigned short adjacency>
     bool checkOnePoint(const ArithmeticalDSS<TCoordinate, TInteger, adjacency>& aDSS);
 
     /**
      * Checks that the difference between two extremal
-     * upper (resp. lower) leaning points is equal to the 
+     * upper (resp. lower) leaning points is equal to the
      * direction vector (a,b) scaled by an integer.
      * Checks that there is no pattern between end points
-     * and extremal leaning points. 
+     * and extremal leaning points.
      * @param aDSS any DSS
-     * @pre the DSS contains more than one point, 
-     * ie a and b are not both null. 
+     * @pre the DSS contains more than one point,
+     * ie a and b are not both null.
      * @return 'true' if ok, 'false' otherwise.
      */
-    template <typename TCoordinate, 
-	      typename TInteger,  
+    template <typename TCoordinate,
+	      typename TInteger,
 	      unsigned short adjacency>
-    bool checkPointsPosition(const ArithmeticalDSS<TCoordinate, TInteger, adjacency>& aDSS); 
+    bool checkPointsPosition(const ArithmeticalDSS<TCoordinate, TInteger, adjacency>& aDSS);
 
     /**
-     * Checks the consistency between the parameters and 
-     * the leaning points: first and last upper leaning points 
-     * should have a remainder equal to mu while firsta and 
-     * last lower leaning points should have a remainder equal to 
-     * mu + omega - 1. Moreover, front and back points should have a 
-     * remainder lying within the range [mu, mu+omega[. 
+     * Checks the consistency between the parameters and
+     * the leaning points: first and last upper leaning points
+     * should have a remainder equal to mu while firsta and
+     * last lower leaning points should have a remainder equal to
+     * mu + omega - 1. Moreover, front and back points should have a
+     * remainder lying within the range [mu, mu+omega[.
      * @param aDSS any DSS
-     * @pre the DSS contains more than one point, 
-     * ie a and b are not both null. 
+     * @pre the DSS contains more than one point,
+     * ie a and b are not both null.
      * @return 'true' if this property is fulfilled, 'false' otherwise.
      */
-    template <typename TCoordinate, 
-	      typename TInteger,  
+    template <typename TCoordinate,
+	      typename TInteger,
 	      unsigned short adjacency>
     bool checkPointsRemainder(const ArithmeticalDSS<TCoordinate, TInteger, adjacency>& aDSS);
 
@@ -107,8 +107,8 @@ namespace DGtal
      * @param aDSS any DSS
      * @return 'true' if valid, 'false' otherwise.
      */
-    template <typename TCoordinate, 
-	      typename TInteger,  
+    template <typename TCoordinate,
+	      typename TInteger,
 	      unsigned short adjacency>
     bool checkAll(const ArithmeticalDSS<TCoordinate, TInteger, adjacency>& aDSS);
 

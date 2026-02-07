@@ -65,7 +65,7 @@ namespace DGtal
    *
    * A functor can be specified to convert image values to raw values
    * (e.g. unsigned char for \c exportRaw8).
-   * 
+   *
    * Example usage:
    * @code
    * ...

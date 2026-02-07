@@ -66,7 +66,7 @@ namespace DGtal
     typedef typename TImageContainer::Domain::Vector Vector;
     typedef typename TImageContainer::Value Value;
     typedef TFunctor Functor ;
-    
+
     BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2));
     BOOST_CONCEPT_ASSERT((concepts::CUnaryFunctor<TFunctor,  DGtal::Color, Value> )) ;
 
@@ -82,9 +82,9 @@ namespace DGtal
     static ImageContainer import(const std::string & filename,
                                  const Functor & aFunctor =  Functor());
   }; // end of class STBReader
-  
-  
-  
+
+
+
 } // namespace DGtal
 
 

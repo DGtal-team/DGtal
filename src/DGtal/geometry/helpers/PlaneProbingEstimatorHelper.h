@@ -153,15 +153,15 @@ namespace DGtal
                 Integer const& position () const;
 
 	        /**
-		 * Returns the geometric realization of this grid point. 
+		 * Returns the geometric realization of this grid point.
 		 *
-		 * @param aM an array of three points. 
-		 * @tparam Point a type for points. 
-		 * @return the computed point. 
+		 * @param aM an array of three points.
+		 * @tparam Point a type for points.
+		 * @return the computed point.
 		 */
 	         template < typename Point >
 		 Point relativePoint (std::array<Point, 3> const& aM) const;
-	  
+
                 /**
                  * Equality test between two rays: the internal permutations and
                  * indices must be the same.
@@ -223,13 +223,13 @@ namespace DGtal
        * Description of template class 'GridPoint' <p>
        * \brief
        * A grid point consists of a couple of nonnegative coordinates \f$ (x,y)  \f$ and an integer index \f$ k \f$
-       * that determines a point used as origin. 
+       * that determines a point used as origin.
        * For a triplet of vectors \f$ (m_k)_{0 \leq k \leq 2} \f$ and a point \f$ q \f$, a grid point is defined as:
        * \f$ q - m_{k} + x m_{(k+1)\bmod 3} + y m_{(k+2)\bmod 3} \f$. \f$ q - m_{k} \f$, called base point, is used
-       * as origin. 
+       * as origin.
        *
-       * This class is used to represent candidate points for the plane-probing L-algorithm. In practice, 
-       * the point \f$ q \f$ is the fixed point and the three vectors \f$ (m_k)_{0 \leq k \leq 2} \f$ are 
+       * This class is used to represent candidate points for the plane-probing L-algorithm. In practice,
+       * the point \f$ q \f$ is the fixed point and the three vectors \f$ (m_k)_{0 \leq k \leq 2} \f$ are
        * the vectors defining the current probing frame.
        *
        * @tparam Integer the integer type, model of concepts::CInteger.
@@ -238,60 +238,60 @@ namespace DGtal
       class GridPoint
       {
 	BOOST_CONCEPT_ASSERT(( concepts::CInteger<Integer> ) );
-	
+
       public:
-	
+
 	/**
 	 * Default constructor.
 	 */
 	GridPoint () = default;
 
 	/**
-	 * Constructs a grid point from a couple of coordinates and 
-	 * the index of the point used as origin. 
+	 * Constructs a grid point from a couple of coordinates and
+	 * the index of the point used as origin.
 	 *
-	 * @param aDir a pair of nonnegative integers. 
+	 * @param aDir a pair of nonnegative integers.
 	 * @param aK an index in {0,1,2}.
 	 */
 	GridPoint (std::pair<Integer,Integer> const& aDir, Index const& aK ) : myDir(aDir), myK(aK) {}
 
 	/**
-	 * Constructs a grid point from a couple of coordinates and 
-	 * the index of the point used as origin. 
+	 * Constructs a grid point from a couple of coordinates and
+	 * the index of the point used as origin.
 	 *
 	 * @param aX first coordinate.
-	 * @param aY second coordinate. 
+	 * @param aY second coordinate.
 	 * @param aK an index in {0,1,2}.
 	 */
 	GridPoint (Integer const& aX, Integer const& aY, Index const& aK ) : myDir(std::make_pair(aX,aY)), myK(aK) {}
-	  
+
 	/**
-	 * Returns the couple of coordinates, i.e., 
-	 * the direction going from the origin to 
-	 * the grid point. 
+	 * Returns the couple of coordinates, i.e.,
+	 * the direction going from the origin to
+	 * the grid point.
 	 *
-	 * @return the direction. 
+	 * @return the direction.
 	 */
 	std::pair<Integer,Integer> direction() const {
-	  return myDir; 
+	  return myDir;
 	}
 
 	/**
-	 * Returns the index of the point used as origin. 
+	 * Returns the index of the point used as origin.
 	 *
-	 * @return the index. 
+	 * @return the index.
 	 */
 	Index k() const {
-	  return myK; 
+	  return myK;
 	}
-	
+
 	/**
-	 * Returns the vector going from the base point to the 
-	 * geometric realization of this object. 
+	 * Returns the vector going from the base point to the
+	 * geometric realization of this object.
 	 *
-	 * @param aM an array of three vectors. 
-	 * @tparam Vector a type for vectors. 
-	 * @return the computed vector. 
+	 * @param aM an array of three vectors.
+	 * @tparam Vector a type for vectors.
+	 * @return the computed vector.
 	 */
 	template < typename Vector >
 	Vector directionVector (std::array<Vector, 3> const& aM) const {
@@ -299,22 +299,22 @@ namespace DGtal
 	}
 
 	/**
-	 * Returns the geometric realization of this grid point. 
+	 * Returns the geometric realization of this grid point.
 	 *
-	 * @param aM an array of three points. 
-	 * @tparam Point a type for points. 
-	 * @return the computed point. 
+	 * @param aM an array of three points.
+	 * @tparam Point a type for points.
+	 * @return the computed point.
 	 */
 	template < typename Point >
 	Point relativePoint (std::array<Point, 3> const& aM) const {
-	  return -aM[myK] + directionVector(aM); 
+	  return -aM[myK] + directionVector(aM);
 	}
-	
+
 	/**
 	 * Tells whether this grid point is equal to another or not.
-	 * Two grid points are equal iff their members are equal. 
+	 * Two grid points are equal iff their members are equal.
 	 *
-	 * @param other another grid point. 
+	 * @param other another grid point.
 	 * @return 'true' if equal, 'false' otherwise.
 	 */
 	bool operator== (GridPoint const& other) const {
@@ -324,54 +324,54 @@ namespace DGtal
 	/**
 	 * Tells whether this grid point is different from another or not.
 	 *
-	 * @param other another grid point. 
-	 * @return 'true' if different, i.e., not equal, 'false' otherwise. 
+	 * @param other another grid point.
+	 * @return 'true' if different, i.e., not equal, 'false' otherwise.
 	 */
 	bool operator!= (GridPoint const& other) const {
 	  return !(*this == other);
 	}
 
 	/**
-	 * Returns a grid point given a couple of coordinates.  
+	 * Returns a grid point given a couple of coordinates.
 	 *
-	 * @param aDir a couple of coordinates. 
-	 * @return the resulting grid point.  
+	 * @param aDir a couple of coordinates.
+	 * @return the resulting grid point.
 	 */
-	GridPoint getOnSameGrid(const std::pair<Integer,Integer>& aDir) const {   
-	  return GridPoint(aDir,myK);                                    
+	GridPoint getOnSameGrid(const std::pair<Integer,Integer>& aDir) const {
+	  return GridPoint(aDir,myK);
 	}
 
 	/**
-	 * Adds a grid point to this one (as if they were vectors). 
+	 * Adds a grid point to this one (as if they were vectors).
 	 *
-	 * @param other another grid point. 
-	 * @return the resulting point.  
+	 * @param other another grid point.
+	 * @return the resulting point.
 	 */
-	GridPoint operator+(const GridPoint & other) const {   
+	GridPoint operator+(const GridPoint & other) const {
 	  ASSERT(myK == other.myK);
 	  std::pair<Integer,Integer> d = std::make_pair(myDir.first+other.myDir.first,
 						myDir.second+other.myDir.second);
-	  return getOnSameGrid(d);                                    
+	  return getOnSameGrid(d);
 	}
 
 	/**
-	 * Scales this grid point by a scalar (as if it was vector). 
+	 * Scales this grid point by a scalar (as if it was vector).
 	 *
 	 * @param aValue a scalar value
-	 * @return the resulting point.  
+	 * @return the resulting point.
 	 */
-	GridPoint operator*(Integer aValue) const {   
+	GridPoint operator*(Integer aValue) const {
 	  std::pair<Integer,Integer> d = std::make_pair(myDir.first*aValue,
 						myDir.second*aValue);
-	  return getOnSameGrid(d);                                    
-	} 
-	
+	  return getOnSameGrid(d);
+	}
+
 	/**
-	 * Checks whether the representation of the grid point is valid, 
-	 * i.e., the coordinates are nonnegative coordinates, not both 
-	 * equal to zero, and the index is in {0,1,2}. 
+	 * Checks whether the representation of the grid point is valid,
+	 * i.e., the coordinates are nonnegative coordinates, not both
+	 * equal to zero, and the index is in {0,1,2}.
 	 *
-	 * @return 'true' if valid, 'false' otherwise. 
+	 * @return 'true' if valid, 'false' otherwise.
 	 */
 	bool isValid() const {
 	  if ( (myDir.first != 0) || (myDir.second != 0) ) { //not both null
@@ -379,15 +379,15 @@ namespace DGtal
 		     && (myK >= 0) && (myK <= 2)
 		     );
 	  } else {
-	    return false; 
+	    return false;
 	  }
 	}
-	
+
       private:
 
 	std::pair<Integer,Integer> myDir; /**< Couple of coordinates giving a direction */
-	Index myK; /**< Index of a point used as origin */	
-	
+	Index myK; /**< Index of a point used as origin */
+
       }; //end of class GridPoint
 
       /**
@@ -403,19 +403,19 @@ namespace DGtal
 	    << ", a=" << aGridPoint.direction().first
 	    << ", b=" << aGridPoint.direction().second
 	    << "]";
-	return aOs; 
+	return aOs;
       }
 
       /////////////////////////////////////////////////////////////////////////////
       // template class GridPointOnProbingRay
       /**
        * Description of template class 'GridPointOnProbingRay' <p>
-       * \brief Aim: Represents a grid point along a discrete ray defined on a grid. 
+       * \brief Aim: Represents a grid point along a discrete ray defined on a grid.
        *
        * More precisely, a ray consists of a starting point (represented as an instance of 'GridPoint')
-       * and a direction (respresented as a couple of coordinates for the basis of the underlying grid). 
-       * A grid point along that ray is determined by an index, 0 being the starting point of the ray. 
-       * The class provides several methods to compare and move points along the ray.  
+       * and a direction (represented as a couple of coordinates for the basis of the underlying grid).
+       * A grid point along that ray is determined by an index, 0 being the starting point of the ray.
+       * The class provides several methods to compare and move points along the ray.
        *
        * @tparam Integer the integer type, model of concepts::CInteger.
        */
@@ -424,13 +424,13 @@ namespace DGtal
       {
 	BOOST_CONCEPT_ASSERT(( concepts::CInteger<Integer> ) );
 
-      public: 
+      public:
 	/**
 	 * Default constructor.
 	 */
 	GridPointOnProbingRay () = default;
 
-	/** 
+	/**
 	 * Constructor.
 	 *
 	 * @param aGridPoint starting point of the ray
@@ -443,9 +443,9 @@ namespace DGtal
 	  : myOrigin(aGridPoint), myDirection(aDirection), myIdx(aIdx) {}
 
 	/**
-	 * Equality test. The two objects are equal iff 
-	 * the underlying rays are the same and 
-	 * the indices are the same. 
+	 * Equality test. The two objects are equal iff
+	 * the underlying rays are the same and
+	 * the indices are the same.
 	 *
 	 * @param other another instance of GridPointOnProbingRay
 	 * @return 'true' if equal, 'false' otherwise
@@ -457,7 +457,7 @@ namespace DGtal
 	}
 
 	/**
-	 * Difference test.   
+	 * Difference test.
 	 *
 	 * @param other another instance of GridPointOnProbingRay
 	 * @return 'true' if different, i.e. not equal, 'false' otherwise
@@ -467,63 +467,63 @@ namespace DGtal
 	}
 
 	/**
-	 * Returns a grid point lying after this one along the ray. 
-	 * The distance is given as an input parameter. 
+	 * Returns a grid point lying after this one along the ray.
+	 * The distance is given as an input parameter.
 	 *
 	 * @param aInc an increment.
 	 * @return a new grid point on the same ray, with index,
 	 * the current index incremented by 'aInc'.
 	 */
 	GridPointOnProbingRay next(const Integer& aInc) const {
-	  return GridPointOnProbingRay(myOrigin, myDirection, myIdx+aInc); 
+	  return GridPointOnProbingRay(myOrigin, myDirection, myIdx+aInc);
 	}
 
 	/**
-	 * Returns a grid point lying before this one along the ray. 
-	 * The distance is given as an input parameter. 
+	 * Returns a grid point lying before this one along the ray.
+	 * The distance is given as an input parameter.
 	 *
 	 * @param aDec a decrement.
 	 * @return a new grid point on the same ray, with index,
 	 * the current index decremented by 'aDec'.
 	 */
 	GridPointOnProbingRay previous(const Integer& aDec) const {
-	  return GridPointOnProbingRay(myOrigin, myDirection, myIdx-aDec); 
+	  return GridPointOnProbingRay(myOrigin, myDirection, myIdx-aDec);
 	}
-	
+
 	/**
 	 * @return index of the current grid point on the ray.
 	 */
 	Integer index() const {
-	  return myIdx; 
+	  return myIdx;
 	}
 
 	/**
 	 * @return the current grid point as an instance of GridPoint.
 	 */
 	GridPoint<Integer, Index> gridPoint() const {
-	  return myOrigin + myOrigin.getOnSameGrid(myDirection)*myIdx; 
+	  return myOrigin + myOrigin.getOnSameGrid(myDirection)*myIdx;
 	}
 
 	/**
-	 * Returns the geometric realization of this grid point. 
+	 * Returns the geometric realization of this grid point.
 	 *
-	 * @param aM an array of three points. 
-	 * @tparam Point a type for points. 
-	 * @return the computed point. 
+	 * @param aM an array of three points.
+	 * @tparam Point a type for points.
+	 * @return the computed point.
 	 */
 	template < typename Point >
 	Point relativePoint (std::array<Point, 3> const& aM) const {
-	  return gridPoint().relativePoint(aM); 
+	  return gridPoint().relativePoint(aM);
 	}
 
 
-      private: 
+      private:
 	GridPoint<Integer, Index> myOrigin; /**< starting point of the ray */
 	std::pair<Integer, Integer> myDirection; /**< direction of the ray */
 	Integer myIdx; /**< index of the point along the ray */
-	
+
       }; //end of class GridPointOnProbingRay
-      
+
     } // namespace detail
 } // namespace DGtal
 

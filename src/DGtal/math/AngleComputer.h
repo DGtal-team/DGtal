@@ -55,14 +55,14 @@ namespace DGtal
   /**
    * A simple class to perform angle computations. All angles are in [0:2pi[
    */
-  struct AngleComputer 
+  struct AngleComputer
   {
     /**
      * @param i any angle.
      * @return the corresponding angle in [0:2pi[
      */
      static float cast( float i );
-    
+
     /**
      * Less comparator modulo. Be careful, modulo comparisons have no
      * sense when the absolute difference of the values are around pi.
@@ -78,7 +78,7 @@ namespace DGtal
      *
      * @param j any angle in [0:2pi[
      * @param i any angle in [0:2pi[
-     * @return the value j - i, always positive. 
+     * @return the value j - i, always positive.
      */
      static float posDiff( float j, float i );
 
@@ -87,7 +87,7 @@ namespace DGtal
      *
      * @param j any angle in [0:2pi[
      * @param i any angle in [0:2pi[
-     * @return the value j - i, always positive. 
+     * @return the value j - i, always positive.
      */
      static float deviation( float j, float i );
 
@@ -115,7 +115,7 @@ namespace DGtal
      * @return the corresponding angle in [0:2pi[
      */
     static double cast( double i );
-    
+
     /**
      * Less comparator modulo. Be careful, modulo comparisons have no
      * sense when the absolute difference of the values are around pi.
@@ -131,7 +131,7 @@ namespace DGtal
      *
      * @param j any angle in [0:2pi[
      * @param i any angle in [0:2pi[
-     * @return the value j - i, always positive. 
+     * @return the value j - i, always positive.
      */
     static double posDiff( double j, double i );
 
@@ -140,7 +140,7 @@ namespace DGtal
      *
      * @param j any angle in [0:2pi[
      * @param i any angle in [0:2pi[
-     * @return the value j - i, always positive. 
+     * @return the value j - i, always positive.
      */
     static double deviation( double j, double i );
 
@@ -162,11 +162,11 @@ namespace DGtal
      */
     static double max( double i, double j );
 
-    
+
   };
 
- 
-  
+
+
 
 } // namespace DGtal
 

@@ -64,7 +64,7 @@ void usage( int /*argc*/, char** argv )
   std::cerr << "\t - You may try x^3y+xz^3+y^3z+z^3+5z or (y^2+z^2-1)^2 +(x^2+y^2-1)^3 " << std::endl;
   std::cerr << "\t - See http://www.freigeist.cc/gallery.html" << std::endl;
 }
-  
+
   typedef Space::RealPoint RealPointT;
   typedef RealPointT::Coordinate Ring;
   typedef MPolynomial<3, Ring> Polynomial3;

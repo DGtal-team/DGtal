@@ -103,12 +103,12 @@ namespace DGtal
 
     /**
        Initializes space, adjacency, surfel.
-       
+
        @param space the cellular grid space (only referenced).
        @param adj the chosen surfel adjacency (only referenced).
        @param aSurfel any signed surfel of [space] ((n-1)-cell).
     */
-    void init( const KSpace* space, 
+    void init( const KSpace* space,
          const SurfelAdjacency<KSpace::dimension>* adj,
          const SCell & aSurfel );
 
@@ -155,7 +155,7 @@ namespace DGtal
        [pos].
      */
     SCell outerAdjacentSpel( Dimension track_dir, bool pos ) const;
- 
+
     //----------------------- follower services -------------------------
   public:
     /**
@@ -165,7 +165,7 @@ namespace DGtal
        along the positive direction of the tracking axis, otherwise
        along the negative direction.
        @return the first follower of 'surfel()'.
-     */ 
+     */
     SCell follower1( Dimension track_dir, bool pos ) const;
 
     /**
@@ -175,7 +175,7 @@ namespace DGtal
        along the positive direction of the tracking axis, otherwise
        along the negative direction.
        @return the second follower of 'surfel()'.
-     */ 
+     */
     SCell follower2( Dimension track_dir, bool pos ) const;
 
     /**
@@ -185,7 +185,7 @@ namespace DGtal
        along the positive direction of the tracking axis, otherwise
        along the negative direction.
        @return the third follower of 'surfel()'.
-     */ 
+     */
     SCell follower3( Dimension track_dir, bool pos ) const;
 
 
@@ -202,7 +202,7 @@ namespace DGtal
 
        @param adj_surfel (returns) the signed adjacent surfel in direction
        [track_dir] if there is one.
-       @param obj any set of unsigned spels (n-cells). 
+       @param obj any set of unsigned spels (n-cells).
        @param track_dir the direction where to look for the spel.
        @param pos when 'true' look in positive direction along
        [track_dir] axis, 'false' look in negative direction.
@@ -213,7 +213,7 @@ namespace DGtal
     */
     template <typename SpelSet>
     unsigned int getAdjacentOnSpelSet( SCell & adj_surfel,
-               const SpelSet & obj, 
+               const SpelSet & obj,
                Dimension track_dir,
                bool pos ) const;
 
@@ -227,7 +227,7 @@ namespace DGtal
 
        @param adj_surfel (returns) the signed adjacent surfel in direction
        [track_dir] if there is one.
-       @param obj any set of unsigned spels (n-cells). 
+       @param obj any set of unsigned spels (n-cells).
        @param track_dir the direction where to look for the spel.
        @param pos when 'true' look in positive direction along
        [track_dir] axis, 'false' look in negative direction.
@@ -238,7 +238,7 @@ namespace DGtal
     */
     template <typename DigitalSet>
     unsigned int getAdjacentOnDigitalSet( SCell & adj_surfel,
-            const DigitalSet & obj, 
+            const DigitalSet & obj,
             Dimension track_dir,
             bool pos ) const;
 
@@ -269,7 +269,7 @@ namespace DGtal
     */
     template <typename PointPredicate>
     unsigned int getAdjacentOnPointPredicate( SCell & adj_surfel,
-                const PointPredicate & pp, 
+                const PointPredicate & pp,
                 Dimension track_dir,
                 bool pos ) const;
 
@@ -280,7 +280,7 @@ namespace DGtal
 
        @tparam SurfelPredicate any model of predicate on surfel, i.e. a
        boolean functor returning 'true' when the surfel belongs to the
-       digital surface. It is a model of CSurfelPredicate. 
+       digital surface. It is a model of CSurfelPredicate.
 
        @param adj_surfel (returns) the signed adjacent surfel in direction
        [track_dir] if there is one.
@@ -298,7 +298,7 @@ namespace DGtal
     */
     template <typename SurfelPredicate>
     unsigned int getAdjacentOnSurfelPredicate( SCell & adj_surfel,
-                                               const SurfelPredicate & sp, 
+                                               const SurfelPredicate & sp,
                                                Dimension track_dir,
                                                bool pos ) const;
 
@@ -317,9 +317,9 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     /** A pointer to the digital space. */
@@ -333,7 +333,7 @@ namespace DGtal
     /** The direct orientation in the orthogonal direction wrt [mySurfel].
   @see m_surfel */
     bool myOrthDirect;
- 
+
     // ------------------------- Hidden services ------------------------------
   protected:
 

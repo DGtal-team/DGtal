@@ -26,7 +26,7 @@
  *
  * This file is part of the DGtal library.
  */
- 
+
  ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include <set>
@@ -62,7 +62,7 @@ bool testDistancePropagation()
   typedef Z2i::Domain Domain;
   typedef Z2i::DigitalSet DigitalSet;
   typedef Z2i::Object4_8 Object;
-  
+
   BOOST_CONCEPT_ASSERT(( CUndirectedSimpleGraph<Z2i::Object4_8> ));
 
   trace.beginBlock( "Distance propagation in 2D object" );
@@ -75,7 +75,7 @@ bool testDistancePropagation()
   Point c4( -10, -20 );
   Point c5( 12, -1 );
   DigitalSet shape_set( domain );
-  
+
   Shapes<Domain>::addNorm2Ball( shape_set, c1, 9 );
   Shapes<Domain>::addNorm1Ball( shape_set, c2, 9 );
   Shapes<Domain>::addNorm1Ball( shape_set, c3, 10 );
@@ -83,20 +83,20 @@ bool testDistancePropagation()
   Shapes<Domain>::addNorm1Ball( shape_set, c5, 4 );
 
   Object obj(Z2i::dt4_8, shape_set);
-  
-  
+
+
   GradientColorMap<int> cmap_grad( 0, 25);
   cmap_grad.addColor( Color( 0, 0, 255 ) );
   cmap_grad.addColor( Color( 0, 255, 0 ) );
   cmap_grad.addColor( Color( 255, 0, 0 ) );
-  
+
   Board2D board;
   board << SetMode( domain.className(), "Paving" )
         << domain
         << SetMode( p1.className(), "Paving" );
-  
+
   Image image = ImageFromSet<Image>::create(shape_set, 1);
-  
+
   // Type definitions
   typedef CanonicEmbedder<Space> VertexEmbedder;
   typedef VertexEmbedder::Value RealPoint;
@@ -115,16 +115,16 @@ bool testDistancePropagation()
 
   VertexFunctor vfunctor( embedder, distanceToPoint );
   Visitor visitor( obj, vfunctor, c1 );
-  
+
   while( ! visitor.finished() )
     {
       Scalar v = visitor.current().second;
-      image.setValue( visitor.current().first, v ); 
+      image.setValue( visitor.current().first, v );
       visitor.expand();
     }
-  
+
   string specificStyle = p1.className() + "/Paving";
-  
+
   for ( DigitalSet::ConstIterator it = shape_set.begin();
         it != shape_set.end();
         ++it )
@@ -163,9 +163,9 @@ bool testDistancePropagation()
       nbperfect += (next_d >= d ) ? 1 : 0;
       d = next_d;
     }
-  trace.info() << "(" << nbok << "/" << nb 
+  trace.info() << "(" << nbok << "/" << nb
                << ") number of vertices in approximate Euclidean distance ordering."<< std::endl;
-  trace.info() << "(" << nbperfect << "/" << nb 
+  trace.info() << "(" << nbperfect << "/" << nb
                << ") number of vertices in perfect Euclidean distance ordering."<< std::endl;
   trace.endBlock();
   return nb == nbok;
@@ -176,7 +176,3 @@ int main( int /*argc*/, char** /*argv*/ )
   bool res = testDistancePropagation();
   return res ? 0 : 1;
 }
-
-
-
-

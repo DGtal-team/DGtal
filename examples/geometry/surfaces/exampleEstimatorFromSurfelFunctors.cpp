@@ -171,7 +171,7 @@ int main(  )
   FunctorNormal::Quantity valN = reporterN.eval( surface.begin());
   FunctorNormalLeast::Quantity valL = reporterL.eval( surface.begin());
 #endif
-  
+
   reporterElem.attach(surface);
   reporterElem.setParams(l2,
                          estimatorNormalElem, gaussian, 5.0);

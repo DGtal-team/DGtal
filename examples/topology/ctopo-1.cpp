@@ -32,7 +32,7 @@
  * instantiated and visualized. This program outputs this image.
  *
  * @see \ref dgtal_ctopo_sec5
- * 
+ *
  * @image html ctopo-1.png
  *
  * \example topology/ctopo-1.cpp

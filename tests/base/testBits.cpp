@@ -49,7 +49,7 @@ unsigned int index( DGtal::uint32_t n, unsigned int b )
       if ( n & 1 ) ++i;
       n >>= 1;
     }
-  return ( n & 1 ) ? i + 1 : 0; 
+  return ( n & 1 ) ? i + 1 : 0;
 }
 
 
@@ -72,7 +72,7 @@ int main()
 
   for ( unsigned int i = 0; i < 100; ++i )
     {
-      DGtal::uint16_t n = (DGtal::uint16_t) ( rand() % 65536 ); 
+      DGtal::uint16_t n = (DGtal::uint16_t) ( rand() % 65536 );
       for ( unsigned int b = 0; b < 16; ++b )
       {
         ++nb; nbok += Bits::indexInSetBits( n, b ) == index( n, b ) ? 1 : 0;

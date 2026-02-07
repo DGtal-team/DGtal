@@ -285,7 +285,7 @@ class RealFFT< HyperRectDomain<TSpace>, T >
     ///@{
 
     ///@{
-    /** Padding used with real datas.
+    /** Padding used with real data.
      *
      * @return the number of real values used as padding along the last dimension.
      *
@@ -432,7 +432,7 @@ class RealFFT< HyperRectDomain<TSpace>, T >
      *
      * @note For planner other than @a FFTW_ESTIMATE and if no plan has been generated before,
      *       a temporary image will be allocated in order to find an optimal transformation plan
-     *       without modifiying the user data. See createPlan() if you want to avoid this
+     *       without modifying the user data. See createPlan() if you want to avoid this
      *       extra-memory cost.
      *
      * @warning Since this class uses an in-place algorithm,
@@ -685,11 +685,11 @@ class RealFFT< HyperRectDomain<TSpace>, T >
 
     ///@}
 
-    // ------------------------- Public Datas --------------------------------
+    // ------------------------- Public Data --------------------------------
   public:
     const Real pi = boost::math::constants::pi<Real>(); ///< Pi.
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     const Domain  mySpatialDomain;  ///< Spatial domain (real).
     const Point   mySpatialExtent;  ///< Extent of the spatial domain.
@@ -729,4 +729,3 @@ class RealFFT< HyperRectDomain<TSpace>, T >
 
 #undef RealFFT_RECURSES
 #endif // else defined(RealFFT_RECURSES)
-

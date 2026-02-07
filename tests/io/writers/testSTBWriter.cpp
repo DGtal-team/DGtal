@@ -57,11 +57,11 @@ TEST_CASE( "Testing STBWriter" )
     Image image = STBReader<Image>::import( filename );
     CAPTURE(image);
     PPMWriter<Image>::exportPPM("contourS-export.ppm", image);
-    
+
     STBWriter<Image>::exportPNG("contourS-export.png", image);
     CHECK( image.isValid());
   }
-  
+
   SECTION("Testing feature io/readers of STBWriter (PNG)")
   {
     std::string filename = testPath + "samples/color64.png";
@@ -73,12 +73,12 @@ TEST_CASE( "Testing STBWriter" )
     STBWriter<Image>::exportJPG("color64-export.jpg", image);
     STBWriter<Image>::exportBMP("color64-export.bmp", image);
   }
-  
+
   SECTION("Testing scalar functor (PNG)")
   {
     typedef ImageSelector < Z2i::Domain, int>::Type Image;
     Image image(Z2i::Domain(Z2i::Point(0,0),  Z2i::Point(8,8)));
-    
+
     image.setValue(Z2i::Point(3,3), 10);
     image.setValue(Z2i::Point(1,1), 1);
     image.setValue(Z2i::Point(7,7), 20);
@@ -88,11 +88,11 @@ TEST_CASE( "Testing STBWriter" )
     cmap_grad.addColor( Color( 50, 50, 255 ) );
     cmap_grad.addColor( Color( 255, 0, 0 ) );
     cmap_grad.addColor( Color( 255, 255, 10 ) );
-    
+
     CHECK( image.isValid());
     STBWriter<Image,GradientColorMap<int>>::exportPNG("scalar-export.jpg", image, cmap_grad );
   }
-  
+
 }
 
 /** @ingroup Tests **/

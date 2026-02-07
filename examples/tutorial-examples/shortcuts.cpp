@@ -133,7 +133,7 @@ int main( int /* argc */, char** /* argv */ )
   {
     auto params          = SH3::defaultParameters();
     //! [dgtal_shortcuts_ssec2_2_1s]
-    params( "polynomial", "3*x^2+2*y^2+z^2-90" )( "gridstep", 0.25 ) 
+    params( "polynomial", "3*x^2+2*y^2+z^2-90" )( "gridstep", 0.25 )
       ( "noise", 0.3 );
     auto implicit_shape  = SH3::makeImplicitShape3D( params );
     auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
@@ -171,7 +171,7 @@ int main( int /* argc */, char** /* argv */ )
     auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
     auto Kwhole          = SH3::getKSpace( params );
     auto K               = SH3::getKSpace( SH3::Point::zero, Kwhole.upperBound(), params );
-    auto binary_image    = SH3::makeBinaryImage( digitized_shape, 
+    auto binary_image    = SH3::makeBinaryImage( digitized_shape,
 						 SH3::Domain(K.lowerBound(),K.upperBound()),
 						 params );
     auto surface         = SH3::makeIdxDigitalSurface( binary_image, K, params );
@@ -216,9 +216,9 @@ int main( int /* argc */, char** /* argv */ )
     ++nb; nbok += ok ? 1 : 0;
   }
   trace.endBlock();
-  
+
   trace.info() << nbok << "/" << nb << " passed tests." << std::endl;
-  
+
   return 0;
 }
 //                                                                           //

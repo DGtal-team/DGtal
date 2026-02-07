@@ -57,7 +57,7 @@ namespace DGtal
    * DescriptionDescription of \b concept '\b CDomain' <p> \brief Aim: This
    * concept represents a digital domain, i.e. a non mutable subset of
    * points of the given digital space.
-   * 
+   *
    * <p> Refinement of CConstSinglePassRange
    *
    * <p> Associated types
@@ -67,9 +67,9 @@ namespace DGtal
    * - Size : the type used for counting elements of the space.
    * - Dimension : the type used for indexing the dimension.
    * - Vector : the vector type of the space
-   * - Predicate : the type of the predicate returning true for exactly the points of this domain.  
-   * 
-   * 
+   * - Predicate : the type of the predicate returning true for exactly the points of this domain.
+   *
+   *
    * <p> Notation
    * - \a X : A type that is a model of CDomain
    * - \a x  : Object of type X
@@ -77,39 +77,39 @@ namespace DGtal
    *
    * <p> Definitions
    *
-   * <p> Valid expressions and 
+   * <p> Valid expressions and
    * <table> <tr> <td> \b Name </td> <td> \b Expression </td>
    * <td> \b Type requirements </td> <td> \b Return type </td>
-   * <td> \b Precondition </td> <td> \b Semantics </td> 
+   * <td> \b Precondition </td> <td> \b Semantics </td>
    * <td> \b Postcondition </td> <td> \b Complexity </td>
    * </tr>
-   * <tr> 
-   * <td> lower bound</td> <td> x.lowerBound() </td> 
+   * <tr>
+   * <td> lower bound</td> <td> x.lowerBound() </td>
    * <td> </td> <td> const Point &</td>
    * <td> </td> <td> return the infimum of all points of the domain.</td> <td> </td> <td> O(1) </td>
    * </tr>
-   * <tr> 
-   * <td> upper bound</td> <td> x.upperBound() </td> 
+   * <tr>
+   * <td> upper bound</td> <td> x.upperBound() </td>
    * <td> </td> <td> const Point &</td>
    * <td> </td> <td> return the supremum of all points of the domain.</td> <td> </td> <td> O(1) </td>
    * </tr>
-   * <tr> 
-   * <td> inside domain test</td> <td> x.isInside( p ) </td> 
+   * <tr>
+   * <td> inside domain test</td> <td> x.isInside( p ) </td>
    * <td> </td> <td> \c bool </td>
    * <td> </td> <td> return 'true' whenever \c p is in the domain.</td> <td> </td> <td>  </td>
    * </tr>
-   * <tr> 
-   * <td> inside domain predicate object</td> <td> x.predicate() </td> 
+   * <tr>
+   * <td> inside domain predicate object</td> <td> x.predicate() </td>
    * <td> </td> <td> const Predicate & </td>
    * <td> </td> <td> return a reference to the predicate object equivalent to the isInside(p) test.</td> <td> </td> <td>  </td>
    * </tr>
-   * <tr> 
-   * <td> size </td> <td> x.size() </td> 
+   * <tr>
+   * <td> size </td> <td> x.size() </td>
    * <td> </td> <td> Size </td>
    * <td> </td> <td> return the number of points lying in the domain.</td> <td> </td> <td> O(1) </td>
    * </tr>
-   * <tr> 
-   * <td> iterator from point </td> <td> x.begin(p) </td> 
+   * <tr>
+   * <td> iterator from point </td> <td> x.begin(p) </td>
    * <td> </td> <td> ConstIterator </td>
    * <td> </td> <td> return a ConstIterator on the domain starting
    * from the point p.</td> <td> </td> <td>  </td>
@@ -119,7 +119,7 @@ namespace DGtal
    * <p> Invariants#
    *
    * <p> Models#
-   * HyperRectDomain, DigitalSetDomain 
+   * HyperRectDomain, DigitalSetDomain
    *
    * <p> Notes#
    *
@@ -159,17 +159,17 @@ namespace DGtal
 
     }
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     T myT;
     Point myP;
     Predicate myPred;
     bool myBool;
-    Size mySize; 
+    Size mySize;
     ConstIterator myIt;
     // ------------------------- Internals ------------------------------------
   private:
-    
+
   }; // end of concept CDomain
   }
 } // namespace DGtal

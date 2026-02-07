@@ -56,14 +56,14 @@ namespace DGtal
     <p> \brief Aim: a cellular embedder for implicit functions,
     (default constructible, copy constructible, assignable). Model of
     CCellEmbedder.
-   
+
     @tparam TKSpace the cellular grid space definition.
     @tparam TImplicitFunction the type of implicit function, a model of CImplicitFunction.
     @tparam TEmbedder the type of digital embedder.
 
     @todo assert dimensions of space, embedder and implicit function.
    */
-  
+
   template < typename TKSpace,
              typename TImplicitFunction,
              typename TEmbedder >
@@ -83,15 +83,15 @@ namespace DGtal
     typedef typename ImplicitFunction::Value ImplicitFctValue;
     typedef Cell Argument;
     typedef RealPoint Value;
-    
-    /** 
+
+    /**
         Constructor. The object is not valid.
      */
     ImplicitFunctionLinearCellEmbedder();
-    
-    /** 
+
+    /**
      * Destructor.
-     */    
+     */
     ~ImplicitFunctionLinearCellEmbedder();
 
     /**
@@ -105,18 +105,18 @@ namespace DGtal
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    ImplicitFunctionLinearCellEmbedder & 
+    ImplicitFunctionLinearCellEmbedder &
     operator= ( const ImplicitFunctionLinearCellEmbedder & other );
 
     /**
        Initializes the embedder with the space \a K, the implicit
        function \a f, the digital embedder \a e.
-       
+
        @param K any cellular grid space.
        @param f an implicit function
        @param e a digital embedder (like a GaussDigitizer).
     */
-    void init( ConstAlias<KSpace> K, ConstAlias<ImplicitFunction> f, 
+    void init( ConstAlias<KSpace> K, ConstAlias<ImplicitFunction> f,
                ConstAlias<Embedder> e );
 
     // ----------------------- Interface --------------------------------------
@@ -125,7 +125,7 @@ namespace DGtal
     /**
        Maps a digital point to its corresponding point in the Euclidean
        space.
-       
+
        @param p any digital point in the digital space.
        @return its embedding by the current embedder in the Euclidean space.
      */
@@ -134,7 +134,7 @@ namespace DGtal
     /**
        Maps a cell to its corresponding point in the Euclidean
        space, by a linear guess of its position.
-       
+
        @param cell any cell in the cellular grid space.
        @return its embedding in the Euclidean space.
      */
@@ -144,7 +144,7 @@ namespace DGtal
        Maps a signed cell to its corresponding point in the Euclidean
        space, by a linear guess of its position. NB: the signed is not
        used.
-       
+
        @param scell any cell in the cellular grid space.
        @return its embedding in the Euclidean space.
      */
@@ -153,15 +153,15 @@ namespace DGtal
     /**
        Maps a cell to its corresponding point in the Euclidean
        space, by a linear guess of its position.
-       
+
        @param cell any cell in the cellular grid space.
        @return its embedding in the Euclidean space.
      */
     RealPoint operator()( const Cell & cell ) const;
-    
+
     // ----------------------- Interface --------------------------------------
   public:
-    
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -174,23 +174,23 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
-   
+
     /// A pointer on the cellular grid space.
     const KSpace* myPtrK;
     /// A pointer on the implicit function.
     const ImplicitFunction* myPtrFct;
     /// A pointer on the digital embedder.
     const Embedder* myPtrEmbedder;
-   
+
     // ------------------------- Hidden services ------------------------------
   protected:
 
-  private:    
-    
+  private:
+
   }; // end of class ImplicitFunctionLinearCellEmbedder
 
 
@@ -202,7 +202,7 @@ namespace DGtal
    */
   template < typename TKSpace, typename TImplicitFunction, typename TEmbedder >
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
                const ImplicitFunctionLinearCellEmbedder<TKSpace, TImplicitFunction, TEmbedder> & object );
 
 } // namespace DGtal

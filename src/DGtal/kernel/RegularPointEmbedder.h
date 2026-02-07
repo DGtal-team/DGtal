@@ -58,7 +58,7 @@ namespace DGtal
      Aim: A simple point embedder where grid steps are given for each
      axis. Note that the real point (0,...,0) is mapped onto the
      digital point (0,...,0).
-     
+
      RegularPointEmbedder is a model of CPointEmbedder.
 
      @tparam TSpace the type of digital Space where the digitized
@@ -152,7 +152,7 @@ namespace DGtal
      */
     RealPoint operator()( const Point & p ) const;
 
-    
+
     /**
        @return the grid steps in each direction.
     */
@@ -174,12 +174,12 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
     /// The grid steps.
     RealVector myGridSteps;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------
@@ -199,7 +199,7 @@ namespace DGtal
    */
   template <typename TSpace>
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
          const RegularPointEmbedder<TSpace> & object );
 
 } // namespace DGtal

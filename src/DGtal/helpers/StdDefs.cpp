@@ -31,7 +31,7 @@
 template class DGtal::SpaceND<2, DGtal::Z2i::Integer>;
 template class DGtal::PointVector<2, DGtal::Z2i::Integer>;
 template class DGtal::KhalimskySpaceND< 2, DGtal::Z2i::Integer > ;
-template class DGtal::HyperRectDomain< DGtal::Z2i::Space > ; 
+template class DGtal::HyperRectDomain< DGtal::Z2i::Space > ;
 template class DGtal::MetricAdjacency< DGtal::Z2i::Space, 1> ;
 template class DGtal::MetricAdjacency< DGtal::Z2i::Space, 2> ;
 template class DGtal::DigitalTopology< DGtal::Z2i::Adj4, DGtal::Z2i::Adj8 > ;
@@ -51,7 +51,7 @@ template class DGtal::ExactPredicateLpPowerSeparableMetric<DGtal::Z2i::Space,1> 
 template class DGtal::SpaceND<3, DGtal::Z3i::Integer>;
 template class DGtal::PointVector<3, DGtal::Z3i::Integer>;
 template class DGtal::KhalimskySpaceND< 3, DGtal::Z3i::Integer > ;
-template class DGtal::HyperRectDomain< DGtal::Z3i::Space > ; 
+template class DGtal::HyperRectDomain< DGtal::Z3i::Space > ;
 template class DGtal::MetricAdjacency< DGtal::Z3i::Space, 1> ;
 template class DGtal::MetricAdjacency< DGtal::Z3i::Space, 2> ;
 template class DGtal::MetricAdjacency< DGtal::Z3i::Space, 3> ;

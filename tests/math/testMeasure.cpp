@@ -104,12 +104,12 @@ int main(int argc, char **argv)
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
-  
+
   testUnitSquare();
   testUnitSquareCentroid();
-  
+
   trace.endBlock();
-  
+
   return 0;
 }
 

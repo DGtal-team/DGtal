@@ -116,7 +116,7 @@ bool testPublicSercives()
   typedef FreemanChain::Point Point;
   typedef FreemanChain::ConstIterator Iterator;
 
-  trace.beginBlock ( "Testing public sercives" );
+  trace.beginBlock ( "Testing public services" );
 
   FreemanChain fc("000103000322232122", 0, 0);
   int nbOk = 0;

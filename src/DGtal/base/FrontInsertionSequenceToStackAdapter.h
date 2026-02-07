@@ -53,9 +53,9 @@ namespace DGtal
   /**
    * \brief Aim:
    * This class implements a dynamic adapter to an instance
-   * of a model of front insertion sequence in order to get 
-   * a stack interface. 
-   * This class is a model of CStack. 
+   * of a model of front insertion sequence in order to get
+   * a stack interface.
+   * This class is a model of CStack.
    * @tparam TSequence a model of boost::FrontInsertionSequence
    */
   template <typename TSequence>
@@ -63,32 +63,32 @@ namespace DGtal
   {
 
     // ----------------------- Inner types ------------------------------------
-  public: 
+  public:
 
     /**
      * Type of the underlying container
      */
-    typedef TSequence Container; 
+    typedef TSequence Container;
     BOOST_CONCEPT_ASSERT(( boost::FrontInsertionSequence<Container> ));
 
 
     /**
      * STL-like type of elements
      */
-    typedef typename Container::value_type value_type; 
+    typedef typename Container::value_type value_type;
     /**
      * Type of elements
      */
-    typedef typename Container::value_type Value; 
+    typedef typename Container::value_type Value;
 
     /**
      * STL-like type used to represent the size of the container
      */
-    typedef typename Container::size_type size_type; 
+    typedef typename Container::size_type size_type;
     /**
      * Type used to represent the size of the container
      */
-    typedef typename Container::size_type Size; 
+    typedef typename Container::size_type Size;
 
 
     // ----------------------- Standard services ------------------------------
@@ -107,40 +107,40 @@ namespace DGtal
     Size size() const;
 
     /**
-     * Tests whether the container is empty or not. 
+     * Tests whether the container is empty or not.
      * @return 'true' if empty, 'false' otherwise
      */
     bool empty() const;
 
     /**
-     * Access to the top element, ie. the element 
-     * available at the front of the underlying container. 
-     * This method indeed calls method @a front of the 
-     * underlying container. 
+     * Access to the top element, ie. the element
+     * available at the front of the underlying container.
+     * This method indeed calls method @a front of the
+     * underlying container.
      * @return reference to the top element of the stack
      */
     Value& top();
     /**
-     * Access to the top element, ie. the element 
-     * available at the front of the underlying container. 
-     * This method indeed calls method @a front of the 
-     * underlying container. 
+     * Access to the top element, ie. the element
+     * available at the front of the underlying container.
+     * This method indeed calls method @a front of the
+     * underlying container.
      * @return reference to the top element of the stack
      */
-    const Value& top() const; 
+    const Value& top() const;
 
     /**
      * Inserts an element above the current top element.
-     * This method calls method @a push_front of the 
-     * underlying container. 
+     * This method calls method @a push_front of the
+     * underlying container.
      * @param aValue any value
      */
     void push(const Value& aValue);
 
     /**
      * Removes the element on top of the stack.
-     * This method calls method @a pop_front of the 
-     * underlying container. 
+     * This method calls method @a pop_front of the
+     * underlying container.
      */
     void pop();
 
@@ -159,12 +159,12 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     /**
      * Pointer to the underlying container
      */
-    Container* myContainerPtr; 
+    Container* myContainerPtr;
 
 
 
@@ -182,13 +182,13 @@ namespace DGtal
   operator<< ( std::ostream & out, const FrontInsertionSequenceToStackAdapter<TSequence> & object );
 
   /**
-   * Function returning an object of class 'FrontInsertionSequenceToStackAdapter' 
-   * @param aSequence container to adapt. 
+   * Function returning an object of class 'FrontInsertionSequenceToStackAdapter'
+   * @param aSequence container to adapt.
    * @tparam TSequence a model of back insertion sequence
    * @return the adapter.
    */
   template <typename TSequence>
-  FrontInsertionSequenceToStackAdapter<TSequence> 
+  FrontInsertionSequenceToStackAdapter<TSequence>
   frontStack ( TSequence& aSequence );
 
 } // namespace DGtal

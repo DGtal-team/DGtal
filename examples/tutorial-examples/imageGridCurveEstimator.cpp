@@ -21,9 +21,9 @@
  *
  *
  * @date 2010/10/17
- * 
+ *
  * @brief An example of extracting a grid curve from an image iso-contour
- * and estimating its length. 
+ * and estimating its length.
  *
  * This file is part of the DGtal library.
  */
@@ -71,17 +71,17 @@ int main()
   //image import
   typedef DGtal::ImageContainerBySTLVector< Z2i::Domain, int> Image;
   std::string filename =  examplesPath + "samples/contourS.pgm";
-  Image image = DGtal::PGMReader<Image>::importPGM(filename); 
+  Image image = DGtal::PGMReader<Image>::importPGM(filename);
 
-  //! [imageGridCurveEstimator-predicate] 
+  //! [imageGridCurveEstimator-predicate]
   //predicate from the image
   typedef DGtal::functors::IntervalThresholder<Image::Value> Binarizer;
-  Binarizer b(1, 135); 
-  PointFunctorPredicate<Image,Binarizer> predicate(image, b); 
+  Binarizer b(1, 135);
+  PointFunctorPredicate<Image,Binarizer> predicate(image, b);
   //! [imageGridCurveEstimator-predicate]
 
   //! [imageGridCurveEstimator-prepareTracking]
-  Z2i::KSpace ks;                                            //Khalimsky space 
+  Z2i::KSpace ks;                                            //Khalimsky space
   ks.init( image.domain().lowerBound(), image.domain().upperBound(), true );
   SurfelAdjacency<2> sAdj( true );                           //adjacency
   //! [imageGridCurveEstimator-prepareTracking]
@@ -95,23 +95,23 @@ int main()
 
   if (contours.size() > 0)
   {
-    
+
     //! [imageGridCurveEstimator-instantiation]
     //init grid curve from the first retrieved contour
     Z2i::Curve c;
-    c.initFromSCellsVector( contours.at(1) );  
+    c.initFromSCellsVector( contours.at(1) );
     //! [imageGridCurveEstimator-instantiation]
 
     //! [imageGridCurveEstimator-getRange]
     //range of points
-    typedef Z2i::Curve::PointsRange Range; 
-    Range r = c.getPointsRange(); 
+    typedef Z2i::Curve::PointsRange Range;
+    Range r = c.getPointsRange();
     //! [imageGridCurveEstimator-getRange]
 
     //! [imageGridCurveEstimator-lengthEstimation]
     //length estimation based on a DSS segmentation
     DSSLengthEstimator< Range::ConstCirculator > DSSlength;
-    trace.info() << "Length: " << DSSlength.eval(r.c(), r.c(), 1.) << std::endl; 
+    trace.info() << "Length: " << DSSlength.eval(r.c(), r.c(), 1.) << std::endl;
     //! [imageGridCurveEstimator-lengthEstimation]
 
     //DSS segmentation display
@@ -121,18 +121,18 @@ int main()
     Segmentation theSegmentation( r.c(), r.c(), SegmentComputer() );
     Segmentation::SegmentComputerIterator i = theSegmentation.begin();
     Segmentation::SegmentComputerIterator end = theSegmentation.end();
-    
+
     DGtal::Board2D aBoard;
     aBoard << SetMode("PointVector", "Grid");
     for ( ; i != end; ++i) {
-      SegmentComputer::Primitive dss = i->primitive(); 
-      aBoard << SetMode(dss.className(), "Points") << dss; 
-      aBoard << SetMode(dss.className(), "BoundingBox") << dss; 
-    } 
+      SegmentComputer::Primitive dss = i->primitive();
+      aBoard << SetMode(dss.className(), "Points") << dss;
+      aBoard << SetMode(dss.className(), "BoundingBox") << dss;
+    }
     aBoard.saveEPS("DisplayDSSSegmentationTuto3.eps");
-  
-  } else trace.info() << "no contour" << std::endl; 
-  
+
+  } else trace.info() << "no contour" << std::endl;
+
   return 0;
 
 }

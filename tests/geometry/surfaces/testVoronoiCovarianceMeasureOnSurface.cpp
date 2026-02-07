@@ -63,7 +63,7 @@ bool testVoronoiCovarianceMeasureOnSurface()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   using namespace DGtal;
   using namespace DGtal::Z3i; // gets Space, Point, Domain
 
@@ -83,7 +83,7 @@ bool testVoronoiCovarianceMeasureOnSurface()
   // std::string poly_str = "1.0-0.16*x^2+0.22*y^2+0.3*z^2";
   std::string poly_str = "-81.0*4.0+x^2+y^2+z^2";
   // NB (JOL): II is sensitive to orientation !!
-  // std::string poly_str = "81.0-x^2-y^2-z^2"; 
+  // std::string poly_str = "81.0-x^2-y^2-z^2";
   Polynomial3 poly;
   Polynomial3Reader reader;
   std::string::const_iterator iter = reader.read( poly, poly_str.begin(), poly_str.end() );
@@ -116,7 +116,7 @@ bool testVoronoiCovarianceMeasureOnSurface()
 
   trace.beginBlock("Computing VCM on surface." );
   KernelFunction chi( 1.0, 5.0 );
-  CountedPtr<VCMOnSurface> vcm_surface( new VCMOnSurface( ptrSurface, Pointels, 
+  CountedPtr<VCMOnSurface> vcm_surface( new VCMOnSurface( ptrSurface, Pointels,
                                                           10.0, 5.0, chi, 1.5, Metric(), true ) );
   trace.endBlock();
 
@@ -140,7 +140,7 @@ bool testVoronoiCovarianceMeasureOnSurface()
   trace.beginBlock("Evaluating normals wrt true normal." );
   typedef functors::ShapeGeometricFunctors::ShapeNormalVectorFunctor<ImplicitShape> NormalFunctor;
   typedef TrueDigitalSurfaceLocalEstimator<KSpace, ImplicitShape, NormalFunctor> TrueNormalEstimator;
-  
+
   BOOST_CONCEPT_ASSERT(( concepts::CSurfelLocalEstimator< IINormalEstimator > ));
   BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceLocalEstimator< VCMNormalEstimator > ));
   BOOST_CONCEPT_ASSERT(( concepts::CSurfelLocalEstimator< TrueNormalEstimator > ));
@@ -163,7 +163,7 @@ bool testVoronoiCovarianceMeasureOnSurface()
       if ( n_ii.dot( n_triv ) < 0 ) n_ii = -n_ii;
       error_ii_true.addValue( n_ii.dot( n_true ) );
     }
-  error_true.terminate(); 
+  error_true.terminate();
   error_triv_true.terminate();
   error_ii_true.terminate();
   trace.info() << "VCM/true  cos angle avg = " << error_true.mean() << std::endl;
@@ -220,7 +220,7 @@ bool testVoronoiCovarianceMeasureOnSurface()
   trace.beginBlock("Computing ground truth mean curvatures." );
   typedef functors::ShapeGeometricFunctors::ShapeMeanCurvatureFunctor<ImplicitShape> CurvatureFunctor;
   typedef TrueDigitalSurfaceLocalEstimator<KSpace, ImplicitShape, CurvatureFunctor> TrueCurvatureEstimator;
-  
+
   TrueCurvatureEstimator true_curv_estimator;
   true_curv_estimator.setParams( K, CurvatureFunctor() );
   true_curv_estimator.attach( shape );
@@ -231,7 +231,7 @@ bool testVoronoiCovarianceMeasureOnSurface()
   BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceLocalEstimator< VCMCurvatureEstimator > ));
   BOOST_CONCEPT_ASSERT(( concepts::CSurfelLocalEstimator< TrueCurvatureEstimator > ));
 
-  
+
   trace.beginBlock("Evaluating curvatures." );
   Statistic<double> stat_vcm_curv;
   Statistic<double> stat_ii_curv;
@@ -257,7 +257,7 @@ bool testVoronoiCovarianceMeasureOnSurface()
   nbok += ( std::abs( stat_ii_curv.mean() - 0.055555 ) < 0.05 ) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-               << "mean of II curv is around 0.055555: " 
+               << "mean of II curv is around 0.055555: "
                << std::abs( stat_ii_curv.mean() - 0.055555 ) << std::endl;
   nbok += ( std::abs( stat_vcm_curv.mean() - 0.055555 ) < 0.05 ) ? 1 : 0;
   nb++;

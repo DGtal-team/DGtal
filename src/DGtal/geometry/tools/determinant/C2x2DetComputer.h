@@ -57,16 +57,16 @@ namespace DGtal
      @ingroup Concepts
      @brief Aim: This concept gathers all models that are
      able to compute the (sign of the) determinant of a 2x2
-     matrix with integral entries. 
+     matrix with integral entries.
 
      # Invariant
 
-     The returned value, which is a model of CSignedNumber, is guaranteed to be: 
+     The returned value, which is a model of CSignedNumber, is guaranteed to be:
      - strictly positive if the determinant is strictly positive
-     - striclty negative if the determinant is strictly negative
+     - strictly negative if the determinant is strictly negative
      - zero if the determinant is null
 
-     # Refinement of 
+     # Refinement of
      boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>
 
      # Associated types
@@ -89,12 +89,12 @@ namespace DGtal
 
      # Notes
 
-     In addition to the full operator(), this concept allows another way to compute the quantity ad - bc in two steps: 
-     - first, we set the first column vector, ie a and b. 
-     - then, we compute the quantity ad - bc from a given column vector, ie c and d with the memorized values of a and b.   
-     This feature is a way of accepting models that incrementally computes many determinants of matrices 
-     whose first column vector, ie a and b, is constant and whose second column vector, ie c and d, 
-     slightly varies from one computation to the next one. See for instance, SimpleIncremental2x2DetComputer. 
+     In addition to the full operator(), this concept allows another way to compute the quantity ad - bc in two steps:
+     - first, we set the first column vector, ie a and b.
+     - then, we compute the quantity ad - bc from a given column vector, ie c and d with the memorized values of a and b.
+     This feature is a way of accepting models that incrementally computes many determinants of matrices
+     whose first column vector, ie a and b, is constant and whose second column vector, ie c and d,
+     slightly varies from one computation to the next one. See for instance, SimpleIncremental2x2DetComputer.
 
      # Models
 
@@ -117,14 +117,14 @@ namespace DGtal
     BOOST_CONCEPT_USAGE( C2x2DetComputer )
     {
       concepts::ConceptUtils::sameType( myR, myX( myA, myB, myC, myD ) );
-      myX.init(myA, myB); 
+      myX.init(myA, myB);
       concepts::ConceptUtils::sameType( myR, myX( myA, myB ) );
     }
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
-    T myX; 
+    T myX;
     ArgumentType myA, myB, myC, myD;
-    ResultType myR; 
+    ResultType myR;
     // ------------------------- Internals ------------------------------------
   private:
 

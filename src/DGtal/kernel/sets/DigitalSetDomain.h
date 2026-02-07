@@ -157,9 +157,9 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     /**
@@ -198,7 +198,7 @@ namespace DGtal
 
     // ------------------------- Internals ------------------------------------
   private:
-    
+
 
   }; // end of class DigitalSetDomain
 

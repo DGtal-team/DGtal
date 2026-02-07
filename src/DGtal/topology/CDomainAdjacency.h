@@ -53,43 +53,43 @@ namespace DGtal {
   /////////////////////////////////////////////////////////////////////////////
   // class CDomainAdjacency
   /**
-  Description of \b concept '\b CDomainAdjacency' <p> 
-  @ingroup Concepts 
-   
+  Description of \b concept '\b CDomainAdjacency' <p>
+  @ingroup Concepts
+
   @brief Aim: Refines the concept CAdjacency by telling that the
   adjacency is specific to a given domain of the embedding digital
   space.
-   
+
   This class is useful to define subspaces with restricted
   neighborhood relations. For instance, you can limit the adjacency
   to an object, then to its border, then to a subset of its border,
   etc.
-    
-  # Refinement of 
+
+  # Refinement of
   CAdjacency
-   
+
   # Associated types
   - Domain: the domain of this adjacency.
   - Predicate: the type of the predicate "is in domain ?"
-   
+
   #  Notation
   - \a X : A type that is a model of CDomainAdjacency
   - \a x, \a y  : Object of type X
-   
+
   # Definitions
-   
+
   #  Valid expressions and semantics
 
   | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
   |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
   | embedding domain | x.domain() | | const Domain & | | return a reference to the embedding domain.| |  O(1) |
   | "is in domain ?" predicate | x.predicate() | | const Predicate & | | return a reference to the predicate object that is characteristic of the embedding domain.| |  O(1) |
-   
+
   # Invariants
-   
+
   # Models
   DomainAdjacency
-   
+
   # Notes
   */
   template <typename T>
@@ -101,7 +101,7 @@ namespace DGtal {
     typedef typename Adj::Domain Domain;
     typedef typename Adj::Predicate Predicate;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     BOOST_CONCEPT_USAGE( CDomainAdjacency )
     {
@@ -116,9 +116,9 @@ namespace DGtal {
     T myT;
     Domain myDomain;
     Predicate myPredicate;
-    
+
   }; // end of concept CDomainAdjacency
-  
+
 } // namespace concepts
 } // namespace DGtal
 

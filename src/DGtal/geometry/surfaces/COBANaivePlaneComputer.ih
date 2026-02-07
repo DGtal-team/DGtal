@@ -105,10 +105,10 @@ clear()
   myPointSet.clear();
   myState.cip.clear();
   // initialize the search space as a square.
-  myState.cip.pushBack( InternalPoint2( -myG, -myG ) ); 
-  myState.cip.pushBack( InternalPoint2(  myG, -myG ) ); 
-  myState.cip.pushBack( InternalPoint2(  myG,  myG ) ); 
-  myState.cip.pushBack( InternalPoint2( -myG,  myG ) ); 
+  myState.cip.pushBack( InternalPoint2( -myG, -myG ) );
+  myState.cip.pushBack( InternalPoint2(  myG, -myG ) );
+  myState.cip.pushBack( InternalPoint2(  myG,  myG ) );
+  myState.cip.pushBack( InternalPoint2( -myG,  myG ) );
   computeCentroidAndNormal( myState );
 }
 //-----------------------------------------------------------------------------
@@ -116,7 +116,7 @@ template <typename TSpace, typename TInternalInteger>
 inline
 void
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
-init( Dimension axis, InternalInteger diameter, 
+init( Dimension axis, InternalInteger diameter,
       InternalInteger widthNumerator,
       InternalInteger widthDenominator )
 {
@@ -212,7 +212,7 @@ inline
 bool
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
 extendAsIs( const Point & p )
-{ 
+{
   ASSERT( isValid() && ! empty() );
   bool ok = this->operator()( p );
   if ( ok ) myPointSet.insert( p );
@@ -240,14 +240,14 @@ extend( const Point & p )
   if ( myPointSet.find( p ) != myPointSet.end() ) // already in set
     return true;
   // Check if p lies within the current bounds of the plane.
-  _state.N = myState.N; 
-  _state.min = myState.min; 
-  _state.max = myState.max; 
-  _state.ptMin = myState.ptMin; 
-  _state.ptMax = myState.ptMax; 
+  _state.N = myState.N;
+  _state.min = myState.min;
+  _state.max = myState.max;
+  _state.ptMin = myState.ptMin;
+  _state.ptMax = myState.ptMax;
   bool changed = updateMinMax( _state, &p, (&p)+1 );
   // Check if point is already within bounds.
-  if ( ! changed ) 
+  if ( ! changed )
     {
       myPointSet.insert( p );
       return true;
@@ -269,7 +269,7 @@ extend( const Point & p )
   if( ( ( _grad[ 0 ] == NumberTraits<InternalInteger>::ZERO )
 	&& ( _grad[ 1 ] == NumberTraits<InternalInteger>::ZERO ) ) )
     {
-      // Unable to update solution. 
+      // Unable to update solution.
       return false;
     }
 
@@ -329,11 +329,11 @@ isExtendable( const Point & p ) const
   if ( myPointSet.find( p ) != myPointSet.end() ) // already in set
     return true;
   // Check if p lies within the current bounds of the plane.
-  _state.N = myState.N; 
-  _state.min = myState.min; 
-  _state.max = myState.max; 
-  _state.ptMin = myState.ptMin; 
-  _state.ptMax = myState.ptMax; 
+  _state.N = myState.N;
+  _state.min = myState.min;
+  _state.max = myState.max;
+  _state.ptMin = myState.ptMin;
+  _state.ptMax = myState.ptMax;
   bool changed = updateMinMax( _state, (&p), (&p)+1 );
   // Check if point is already within bounds.
   if ( ! changed ) return true;
@@ -346,7 +346,7 @@ isExtendable( const Point & p ) const
   // Checks if we can change the normal so as to find another digital plane.
   if( ( ( _grad[ 0 ] == NumberTraits<InternalInteger>::ZERO )
 	&& ( _grad[ 1 ] == NumberTraits<InternalInteger>::ZERO ) ) )
-    // Unable to update solution. 
+    // Unable to update solution.
     return false;
 
   // There is a gradient, tries to optimize.
@@ -371,9 +371,9 @@ isExtendable( const Point & p ) const
     // Checks if we can change the normal so as to find another digital plane.
     if ( ( ( _grad[ 0 ] == NumberTraits<InternalInteger>::ZERO )
            && ( _grad[ 1 ] == NumberTraits<InternalInteger>::ZERO ) ) )
-      // Unable to update solution. 
+      // Unable to update solution.
       return false;
-    
+
     // There is a gradient, tries to optimize.
     doubleCut( _grad, _state );
   }
@@ -393,7 +393,7 @@ extend( TInputIterator it, TInputIterator itE )
   if ( it == itE ) return true;
   // Check if points lies within the current bounds of the plane.
   bool changed;
-  _state.N = myState.N; 
+  _state.N = myState.N;
   if ( empty() )
     {
       changed = true;
@@ -401,14 +401,14 @@ extend( TInputIterator it, TInputIterator itE )
     }
   else
     {
-      _state.min = myState.min; 
-      _state.max = myState.max; 
-      _state.ptMin = myState.ptMin; 
-      _state.ptMax = myState.ptMax; 
+      _state.min = myState.min;
+      _state.max = myState.max;
+      _state.ptMin = myState.ptMin;
+      _state.ptMax = myState.ptMax;
       changed = updateMinMax( _state, it, itE );
     }
   // Check if points are already within bounds.
-  if ( ! changed ) 
+  if ( ! changed )
     { // All points are within bounds. Put them in pointset.
       for ( TInputIterator tmpIt = it; tmpIt != itE; ++tmpIt )
         myPointSet.insert( *tmpIt );
@@ -432,7 +432,7 @@ extend( TInputIterator it, TInputIterator itE )
   if( ( ( _grad[ 0 ] == NumberTraits<InternalInteger>::ZERO )
 	&& ( _grad[ 1 ] == NumberTraits<InternalInteger>::ZERO ) ) )
     {
-      // Unable to update solution. 
+      // Unable to update solution.
       return false;
     }
 
@@ -495,7 +495,7 @@ isExtendable( TInputIterator it, TInputIterator itE ) const
   if ( it == itE ) return true;
   // Check if points lies within the current bounds of the plane.
   bool changed;
-  _state.N = myState.N; 
+  _state.N = myState.N;
   if ( empty() )
     {
       changed = true;
@@ -503,10 +503,10 @@ isExtendable( TInputIterator it, TInputIterator itE ) const
     }
   else
     {
-      _state.min = myState.min; 
-      _state.max = myState.max; 
-      _state.ptMin = myState.ptMin; 
-      _state.ptMax = myState.ptMax; 
+      _state.min = myState.min;
+      _state.max = myState.max;
+      _state.ptMin = myState.ptMin;
+      _state.ptMax = myState.ptMax;
       changed = updateMinMax( _state, it, itE );
     }
 
@@ -521,7 +521,7 @@ isExtendable( TInputIterator it, TInputIterator itE ) const
   // Checks if we can change the normal so as to find another digital plane.
   if( ( ( _grad[ 0 ] == NumberTraits<InternalInteger>::ZERO )
 	&& ( _grad[ 1 ] == NumberTraits<InternalInteger>::ZERO ) ) )
-    // Unable to update solution. 
+    // Unable to update solution.
     return false;
 
   // There is a gradient, tries to optimize.
@@ -549,9 +549,9 @@ isExtendable( TInputIterator it, TInputIterator itE ) const
     // Checks if we can change the normal so as to find another digital plane.
     if ( ( ( _grad[ 0 ] == NumberTraits<InternalInteger>::ZERO )
            && ( _grad[ 1 ] == NumberTraits<InternalInteger>::ZERO ) ) )
-      // Unable to update solution. 
+      // Unable to update solution.
       return false;
-    
+
     // There is a gradient, tries to optimize.
     doubleCut( _grad, _state );
   }
@@ -586,17 +586,17 @@ DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
 getNormal( Vector3D & normal ) const
 {
   switch( myAxis ) {
-    case 0 : 
+    case 0 :
       normal[0] = 1.0;
       normal[1] = NumberTraits<InternalInteger>::castToDouble( myState.N[ 1 ]) / NumberTraits<InternalInteger>::castToDouble( myState.N[ 0 ] );
       normal[2] = NumberTraits<InternalInteger>::castToDouble( myState.N[ 2 ]) / NumberTraits<InternalInteger>::castToDouble( myState.N[ 0 ] );
       break;
-    case 1 : 
+    case 1 :
       normal[0] = NumberTraits<InternalInteger>::castToDouble( myState.N[ 0 ]) / NumberTraits<InternalInteger>::castToDouble( myState.N[ 1 ] );
       normal[1] = 1.0;
       normal[2] = NumberTraits<InternalInteger>::castToDouble( myState.N[ 2 ]) / NumberTraits<InternalInteger>::castToDouble( myState.N[ 1 ] );
       break;
-    case 2 : 
+    case 2 :
       normal[0] = NumberTraits<InternalInteger>::castToDouble( myState.N[ 0 ]) / NumberTraits<InternalInteger>::castToDouble( myState.N[ 2 ] );
       normal[1] = NumberTraits<InternalInteger>::castToDouble( myState.N[ 1 ]) / NumberTraits<InternalInteger>::castToDouble( myState.N[ 2 ] );
       normal[2] = 1.0;
@@ -607,7 +607,7 @@ getNormal( Vector3D & normal ) const
 //-----------------------------------------------------------------------------
 template <typename TSpace, typename TInternalInteger>
 inline
-const typename DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::IntegerVector3 & 
+const typename DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::IntegerVector3 &
 DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
 exactNormal() const
 {
@@ -686,11 +686,11 @@ DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::selfDisplay ( std::ostr
       << " size=" << size() << " complexity=" << complexity() << " N=" << myState.N << ": ";
   this->getUnitNormal( N );
   this->getBounds( min, max );
-  out << min << " <= " 
+  out << min << " <= "
       << N[ 0 ] << " * x + "
       << N[ 1 ] << " * y + "
       << N[ 2 ] << " * z "
-      << " <= " << max << " ]"; 
+      << " <= " << max << " ]";
 }
 
 /**
@@ -720,17 +720,17 @@ computeCentroidAndNormal( State & state ) const
   state.centroid = state.cip.centroid();
   ic().reduce( state.centroid );
   switch( myAxis ){
-  case 0 : 
+  case 0 :
     state.N[ 0 ] = state.centroid[ 2 ] * myG;
     state.N[ 1 ] = state.centroid[ 0 ];
     state.N[ 2 ] = state.centroid[ 1 ];
     break;
-  case 1 : 
+  case 1 :
     state.N[ 0 ] = state.centroid[ 0 ];
     state.N[ 1 ] = state.centroid[ 2 ] * myG;
     state.N[ 2 ] = state.centroid[ 1 ];
     break;
-  case 2 : 
+  case 2 :
     state.N[ 0 ] = state.centroid[ 0 ];
     state.N[ 1 ] = state.centroid[ 1 ];
     state.N[ 2 ] = state.centroid[ 2 ] * myG;
@@ -748,7 +748,7 @@ doubleCut( InternalPoint2 & grad, State & state ) const
   // 2 cuts on the search space:
   //  Gradient.p <= cst1 - _v
   // -Gradient.p <= cst2 + _v
-  _v = myG * ( state.ptMin[ myAxis ] 
+  _v = myG * ( state.ptMin[ myAxis ]
                - state.ptMax[ myAxis ] );
   state.cip.cut( HalfSpace( grad, myCst1 - _v ) );
   grad.negate();
@@ -774,9 +774,9 @@ computeMinMax( State & state, TInputIterator itB, TInputIterator itE ) const
   for ( ; itB != itE; ++itB )
     {
       ic().getDotProduct( _v, state.N, *itB );
-      if ( _v > state.max ) 
-	{ 
-	  state.max = _v;  
+      if ( _v > state.max )
+	{
+	  state.max = _v;
 	  state.ptMax = *itB;
 	}
       else if ( _v < state.min )
@@ -801,9 +801,9 @@ updateMinMax( State & state, TInputIterator itB, TInputIterator itE ) const
   for ( ; itB != itE; ++itB )
     {
       ic().getDotProduct( _v, state.N, *itB );
-      if ( _v > state.max ) 
-	{ 
-	  state.max = _v;  
+      if ( _v > state.max )
+	{
+	  state.max = _v;
 	  state.ptMax = *itB;
           changed = true;
 	}
@@ -823,7 +823,7 @@ DGtal::COBANaivePlaneComputer<TSpace, TInternalInteger>::
 checkPlaneWidth( const State & state ) const
 {
   _v = ic().abs( state.N[ myAxis ] );
-  return ( ( state.max - state.min ) 
+  return ( ( state.max - state.min )
            < ( _v * myWidth[ 0 ] / myWidth[ 1 ] ) );
 }
 //-----------------------------------------------------------------------------
@@ -834,7 +834,7 @@ computeGradient( InternalPoint2 & grad, const State & state ) const
 {
   // computation of the gradient
   switch( myAxis ){
-  case 0 : 
+  case 0 :
     grad[ 0 ] = state.ptMin[ 1 ] - state.ptMax[ 1 ];
     grad[ 1 ] = state.ptMin[ 2 ] - state.ptMax[ 2 ];
     break;
@@ -856,7 +856,7 @@ computeGradient( InternalPoint2 & grad, const State & state ) const
 template <typename TSpace, typename TInternalInteger>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		  const COBANaivePlaneComputer<TSpace, TInternalInteger> & object )
 {
   object.selfDisplay( out );
@@ -865,5 +865,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

@@ -56,7 +56,7 @@ DGtal::TriangulatedSurface<TPoint>::build()
                     << " s1=" << myPositions.size()
                     << " s2=" << myHEDS.nbVertices() << std::endl;
     isHEDSValid = false;
-  } 
+  }
   return isHEDSValid;
 }
 
@@ -70,7 +70,7 @@ DGtal::TriangulatedSurface<TPoint>::clear()
   myHEDS.clear();
   myPositions.clear();
   myTriangles.clear();
-  
+
 }
 //-----------------------------------------------------------------------------
 template <typename TPoint>
@@ -137,12 +137,12 @@ DGtal::TriangulatedSurface<TPoint>::degree( const Vertex & v ) const
   ASSERT( isValid() );
   return myHEDS.nbNeighboringVertices( v );
 }
-    
+
 //-----------------------------------------------------------------------------
 template <typename TPoint>
 template <typename OutputIterator>
 inline
-void  
+void
 DGtal::TriangulatedSurface<TPoint>::writeNeighbors
 ( OutputIterator &it, const Vertex & v ) const
 {
@@ -152,12 +152,12 @@ DGtal::TriangulatedSurface<TPoint>::writeNeighbors
   myHEDS.getNeighboringVertices( v, neighbors );
   for ( Vertex nv : neighbors ) *it++ = nv;
 }
-    
+
 //-----------------------------------------------------------------------------
 template <typename TPoint>
 template <typename OutputIterator, typename VertexPredicate>
 inline
-void  
+void
 DGtal::TriangulatedSurface<TPoint>::writeNeighbors
 ( OutputIterator &it, const Vertex & v, const VertexPredicate & pred) const
 {
@@ -293,7 +293,7 @@ DGtal::TriangulatedSurface<TPoint>::facesAroundArc( const Arc & a ) const
 //-----------------------------------------------------------------------------
 template <typename TPoint>
 inline
-typename DGtal::TriangulatedSurface<TPoint>::VertexRange 
+typename DGtal::TriangulatedSurface<TPoint>::VertexRange
 DGtal::TriangulatedSurface<TPoint>::verticesAroundFace( const Face & f ) const
 {
   VertexRange result;
@@ -313,7 +313,7 @@ DGtal::TriangulatedSurface<TPoint>::verticesAroundFace( const Face & f ) const
 //-----------------------------------------------------------------------------
 template <typename TPoint>
 inline
-typename DGtal::TriangulatedSurface<TPoint>::ArcRange 
+typename DGtal::TriangulatedSurface<TPoint>::ArcRange
 DGtal::TriangulatedSurface<TPoint>::arcsAroundFace( const Face & f ) const
 {
   ArcRange result;
@@ -549,7 +549,7 @@ DGtal::TriangulatedSurface<TPoint>::isValid() const
 template <typename TPoint>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
                     const TriangulatedSurface<TPoint> & object )
 {
   object.selfDisplay( out );
@@ -558,5 +558,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

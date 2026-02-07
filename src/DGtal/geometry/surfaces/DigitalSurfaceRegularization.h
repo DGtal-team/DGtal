@@ -52,7 +52,7 @@
 
 namespace DGtal
   {
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // template class DigitalSurfaceRegularization
   /**
@@ -89,25 +89,25 @@ namespace DGtal
   {
     // ----------------------- Standard services ------------------------------
   public:
-    
+
     ///DigitalSurface type
     typedef TDigitalSurface DigSurface;
     ///Digital Surface Container type
     typedef typename TDigitalSurface::DigitalSurfaceContainer DigitalSurfaceContainer;
     BOOST_CONCEPT_ASSERT(( concepts::CDigitalSurfaceContainer< DigitalSurfaceContainer > ));
-    
+
     ///We rely on the Shortcuts 3D types
     typedef Shortcuts<Z3i::KSpace> SH3;
-    
+
     ///We rely on the ShortcutsGeometry 3D types
     typedef ShortcutsGeometry<Z3i::KSpace> SHG3;
-    
+
     ///Pointels position container
     typedef std::vector<Z3i::RealPoint> Positions;
-    
+
     ///Pointels position container
     typedef std::vector<Z3i::RealVector> Normals;
-    
+
     /**
      * Default constructor.
      */
@@ -116,41 +116,41 @@ namespace DGtal
     {
       myK = SH3::getKSpace( myDigitalSurface );
     }
-    
+
     /**
      * Destructor.
      */
     ~DigitalSurfaceRegularization() = default;
-    
+
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
     DigitalSurfaceRegularization ( const DigitalSurfaceRegularization & other ) = delete;
-    
+
     /**
      * Move constructor.
      * @param other the object to move.
      */
     DigitalSurfaceRegularization ( DigitalSurfaceRegularization && other ) = delete;
-    
+
     /**
      * Copy assignment operator.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
     DigitalSurfaceRegularization & operator= ( const DigitalSurfaceRegularization & other ) = delete;
-    
+
     /**
      * Move assignment operator.
      * @param other the object to move.
      * @return a reference on 'this'.
      */
     DigitalSurfaceRegularization & operator= ( DigitalSurfaceRegularization && other ) = delete;
-    
+
     // ----------------------- Interface --------------------------------------
   public:
-    
+
     /**
      * Attach normal vectors from a generic function that associates
      * a normal vector to each surfel.
@@ -159,7 +159,7 @@ namespace DGtal
      * surfels (SH3::SCell) to normal vectors (SH3::RealVector).
      */
     void attachNormalVectors(const std::function<SHG3::RealVector(SH3::SCell&)> &normalFunc);
-    
+
     /**
      * Attach convolved trivial normal vectors to the digital surface
      * (cf ShortCutsGeometry::getCTrivialNormalVectors).
@@ -170,37 +170,37 @@ namespace DGtal
      */
     void attachConvolvedTrivialNormalVectors(const Parameters someParams
                                     = SH3::defaultParameters() | SHG3::defaultParameters() );
-    
-    
+
+
     /**
      * @brief Initialize the parameters of the energy function.
      *
      * This init() method attaches the same weights to all vertices.
      *
      * @param [in] alpha the data attachment term coeff. (default=0.001)
-     * @param [in] beta  the alignemnt term coeff. (default=1.0)
+     * @param [in] beta  the alignment term coeff. (default=1.0)
      * @param [in] gamma the fairness term coeef. (default=0.05)
      */
     void init(const double alpha = 0.001,
               const double beta  = 1.0,
               const double gamma = 0.05);
-    
-    
+
+
     /**
      * @brief Initialize the parameters of the energy function.
      *
-     * This init() method considers local weights per vertex (all verctors
+     * This init() method considers local weights per vertex (all vectors
      * must have the same size: the number of pointels of the original surface).
-     * 
+     *
      * @param [in] alphas the data attachment term coeff.
-     * @param [in] betas  the alignemnt term coeff.
+     * @param [in] betas  the alignment term coeff.
      * @param [in] gammas the fairness term coeef.
      */
     void init(ConstAlias< std::vector<double> > alphas,
               ConstAlias< std::vector<double> > betas,
               ConstAlias< std::vector<double> > gammas);
-    
-    
+
+
     /**
      * Compute the energy gradient vector and return the energy value.
      *
@@ -210,8 +210,8 @@ namespace DGtal
      * @return the energy value.
      **/
     double computeGradient();
-    
-    
+
+
     /**
      * Compute the energy gradient vector and return the energy value.
      *
@@ -223,8 +223,8 @@ namespace DGtal
      * @return the energy value.
      **/
     double computeGradientLocalWeights();
-    
-    
+
+
     /**
      * @brief Main regularization loop.
      *
@@ -240,7 +240,7 @@ namespace DGtal
      *
      * The energy at the final step is returned.
      *
-     * @param [in] nbIters maxium number of steps
+     * @param [in] nbIters maximum number of steps
      * @param [in] dt initial learning rate
      * @param [in] epsilon minimum l_infity norm of the gradient vector
      * @param [in] advectionFunc advection function/functor/lambda to move a regularized point &a p associated with
@@ -265,7 +265,7 @@ namespace DGtal
         *
         * The energy at the final step is returned.
         *
-        * @param [in] nbIters maxium number of steps (default=200)
+        * @param [in] nbIters maximum number of steps (default=200)
         * @param [in] dt initial learning rate (default = 1.0)
         * @param [in] epsilon minimum l_infity norm of the gradient vector (default = 0.0001)
         * @return the energy at the final step.
@@ -277,9 +277,9 @@ namespace DGtal
          return regularize(nbIters,dt,epsilon,
                            [](SHG3::RealPoint& p,SHG3::RealPoint& o,SHG3::RealVector& v){ (void)o; p += v; });
        }
-      
-    
-   
+
+
+
     /**
      * Static method to be used in @e regularize() that
      * clamps to regularized point @a p when shifted by @a v
@@ -299,8 +299,8 @@ namespace DGtal
         else
           if ((p[i]-orig[i])< -0.5) p[i]=orig[i]-0.5;
     }
-    
-    
+
+
     /**
      * @returns the regularized position of a given pointel @a aPointel.
      * @param[in] aPointel the digital surface pointel.
@@ -314,7 +314,7 @@ namespace DGtal
       ASSERT_MSG(myK.uDim(aPointel) == 0, "The cell must be a pointel (0-cell)");
       return myRegularizedPositions[ myPointelIndex[ aPointel] ];
     }
-    
+
     /**
      * @return the regularized vertices positions
      * (see getCellIndex for the Cell->Index map).
@@ -355,7 +355,7 @@ namespace DGtal
       ASSERT_MSG(myInit, "The init() method must be called first.");
       return myNormals;
     }
-    
+
     /**
      * @return the CellIndex (Cell->Index map) for
      the positions and normal vectors containers.
@@ -366,7 +366,7 @@ namespace DGtal
       ASSERT_MSG(myInit, "The init() method must be called first.");
       return mySurfelIndex;
     }
-    
+
     /**
      * Reset the regularized vertices positions to the original one.
      * @note the init() method must have been called.
@@ -376,106 +376,106 @@ namespace DGtal
       ASSERT_MSG(myInit, "The init() method must be called first.");
       std::copy(myOriginalPositions.begin(), myOriginalPositions.end(), myRegularizedPositions.begin());
     }
-    
-    
+
+
     // ----------------------- Services --------------------------------------
-    
-    
+
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
     void selfDisplay ( std::ostream & out ) const;
-    
+
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
-    
+
     /**
      * Enable verbose messages.
      */
     void enableVerbose() {myVerbose=true;}
-    
+
     /**
      * Disable verbose messages.
      */
     void disasbleVerbose() {myVerbose=false;}
-    
+
     // ------------------------- Private methods --------------------------------
   private:
-    
+
     /**
      * Internal init method to set up topological caches.
      */
     void cacheInit();
-    
-    
-    // ------------------------- Private Datas --------------------------------
+
+
+    // ------------------------- Private Data --------------------------------
   private:
-    
+
     ///Data attachment term coefficient
     double myAlpha;
     ///Alignment term coefficient
     double myBeta;
     ///Fairness term coefficient
     double myGamma;
-    
+
     ///Data attachment term local coefficients
     const std::vector<double> *myAlphas;
     ///Alignment attachment term local coefficients
     const std::vector<double> *myBetas;
     ///Fairness attachment term local coefficients
     const std::vector<double> *myGammas;
-    
+
     ///Flag if the gradient has constant weights for the init method and gradient.
     bool myConstantCoeffs;
-    
+
     ///Flag if the object has been set up properly
     bool myInit;
-    
+
     ///Flag for verbose messages
     bool myVerbose;
-    
+
     ///Input DigitalSurface to regularize
     CountedPtr<DigSurface> myDigitalSurface;
-    
+
     ///Copy of the input pointels positions.
     Positions myOriginalPositions;
-    
+
     ///Regularized vertices
     Positions myRegularizedPositions;
-    
+
     ///Normals
     Normals myNormals;
-    
+
     ///Gradient of the energy w.r.t. vertex positons
     Positions myGradient;
-    
-    
-  
+
+
+
     // ---------------------------------------------------------------
-    ///Internal members to store precomputed topological informations
-    
-    ///Gradient of the quad alignement w.r.t. vertex positons
+    ///Internal members to store precomputed topological information
+
+    ///Gradient of the quad alignment w.r.t. vertex positons
     Positions myGradientAlign;
-    
+
     ///Instance of the KSpace
     SH3::KSpace myK;
-    
+
     ///Indexed surface elements
     SH3::SurfelRange mySurfels;
-    
+
     ///Surfel Index
     SH3::Surfel2Index mySurfelIndex;
-    
+
     ///Indices for pointels
     SH3::Cell2Index myPointelIndex;
-    
-    ///Indices of adjacent pointels for the Alignement energy term
+
+    ///Indices of adjacent pointels for the Alignment energy term
     std::vector< SH3::Idx > myAlignPointelsIdx;
-    ///Adjacent pointels for the Alignement energy term
+    ///Adjacent pointels for the Alignment energy term
     std::vector< SH3::Cell > myAlignPointels;
     ///Number of adjacent edges to pointels
     std::vector<unsigned char> myNumberAdjEdgesToPointel;
@@ -485,10 +485,10 @@ namespace DGtal
     std::vector< unsigned char > myNbAdjacent;
     ///All faces of the dual digital surfacce
     SH3::PolygonalSurface::FaceRange myFaces;
-    
+
   }; // end of class DigitalSurfaceRegularization
-  
-  
+
+
   /**
    * Overloads 'operator<<' for displaying objects of class 'DigitalSurfaceRegularization'.
    * @param out the output stream where the object is written.
@@ -498,7 +498,7 @@ namespace DGtal
   template <typename T>
   std::ostream&
   operator<< ( std::ostream & out, const DigitalSurfaceRegularization<T> & object );
-  
+
   } // namespace surfaces
 
 

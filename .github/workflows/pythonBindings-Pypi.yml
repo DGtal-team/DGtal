@@ -10,17 +10,17 @@ jobs:
       matrix:
         os: [ubuntu-latest, macOS-latest, windows-latest]
 
-    steps: 
+    steps:
       - uses: actions/checkout@v4
         with:
           # Note: at least (5 + 1) for the whitelist to work
           fetch-depth: 6
 
-      - name: Setup OS 
+      - name: Setup OS
         uses: ./.github/actions/setup-os
         with:
           python-version: "3.11" # At least 3.11 for cibuildwheel 3.1.4
-                                 # Note that the tool will build other python versions. 
+                                 # Note that the tool will build other python versions.
 
       - name: Install cibuildwheel
         run: python -m pip install cibuildwheel==3.3.0
@@ -73,7 +73,3 @@ jobs:
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
         verbose: true
-
-
-      
-

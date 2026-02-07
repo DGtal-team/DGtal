@@ -68,13 +68,13 @@ namespace DGtal
     /// default value outside).
     bool periodic;
 
-    /** 
+    /**
      * Constructor. The object is not valid.
      * @see init.
      */
     SignalData();
-    
-    /** 
+
+    /**
      * Initializer.
      *
      * @param s the number of data in the signal.
@@ -82,7 +82,7 @@ namespace DGtal
      * @param p 'true' if the signal is periodic.
      * @param def the default value.
      */
-    void init( unsigned int s, int z = 0, bool p = false, 
+    void init( unsigned int s, int z = 0, bool p = false,
                const Value & def = Value( 0 ) );
 
     /**
@@ -94,20 +94,20 @@ namespace DGtal
      * @param p 'true' if the signal is periodic.
      * @param def the default value.
      */
-    void init( const Value* t, unsigned int size, int z = 0, bool p = false, 
+    void init( const Value* t, unsigned int size, int z = 0, bool p = false,
                const Value & def = Value( 0 )  );
-    
-    /** 
-     * Constructor.  
+
+    /**
+     * Constructor.
      *
      * @param s the number of data in the signal.
      * @param z the index of the zero-th element.
      * @param p 'true' if the signal is periodic.
      * @param def the default value.
      */
-    SignalData( unsigned int s, int z = 0, bool p = false, 
+    SignalData( unsigned int s, int z = 0, bool p = false,
                 const Value & def = Value( 0 ) );
-    
+
     /**
      * Constructor.
      * @param t the array containing initial data.
@@ -116,28 +116,28 @@ namespace DGtal
      * @param p 'true' if the signal is periodic.
      * @param def the default value.
      */
-    SignalData( const Value* t, unsigned int size, int z = 0, bool p = false, 
+    SignalData( const Value* t, unsigned int size, int z = 0, bool p = false,
                 const Value & def = Value( 0 )  );
-    
-    /** 
+
+    /**
      * Destructor.
      */
     ~SignalData();
-    
-    /** 
+
+    /**
      * Copy constructor.
      * @param other the data to clone.
      */
     SignalData( const SignalData & other );
-    
-    /** 
+
+    /**
      * Assignment.
      * @param other the data to clone.
      * @return 'this'.
      */
     SignalData& operator=( const SignalData & other );
-    
-    /** 
+
+    /**
      * Default value.
      * @return the default value.
      */
@@ -154,54 +154,54 @@ namespace DGtal
 
      @tparam TValue the type chosen for each sample (generally float
      or double).
-     
+
      This class is a backport from ImaGene.
   */
   template <typename TValue>
   class Signal
   {
-    
+
   public:
     typedef TValue Value;
-    /** 
+    /**
         @return the gaussian signal of order 2 (binomial signal of
         order 2 / 4).
-        
+
         TValue must be able to represent real values.
     */
     static Signal<TValue> G2();
 
-    /** 
+    /**
         @return the binomial signal of order 2.
     */
     static Signal<TValue> H2();
-    
-    /** 
+
+    /**
         @return the right difference signal.
     */
     static Signal<TValue> Delta();
-    
-    /** 
+
+    /**
         @return the gaussian signal of order 2n (binomial signal of
         order 2n / 2^n).
     */
     static Signal<TValue> G2n( unsigned int n );
 
-    /** 
+    /**
         @return the binomial signal of order 2n.
     */
     static Signal<TValue> H2n( unsigned int n );
-    
-    /** 
+
+    /**
         @return the differential operator with binomial weights of order 2n.
     */
     static Signal<TValue> D2n( unsigned int n );
 
     // ----------------------- Standard services ----------------------------
   public:
-      
+
     /**
-       Destructor. 
+       Destructor.
     */
     ~Signal();
 
@@ -209,8 +209,8 @@ namespace DGtal
        Constructor.
     */
     Signal();
-      
-    
+
+
     /**
        Constructor.
        @param size the size of the signal.
@@ -218,9 +218,9 @@ namespace DGtal
        @param periodic 'true' if the signal is periodic.
        @param def the default value.
     */
-    Signal( unsigned int size, int z, bool periodic, 
+    Signal( unsigned int size, int z, bool periodic,
             const TValue & def = TValue( 0 )  );
-    
+
     /**
        Constructor.
        @param t the array containing initial data.
@@ -229,15 +229,15 @@ namespace DGtal
        @param periodic 'true' if the signal is periodic.
        @param def the default value.
     */
-    Signal( const TValue* t, unsigned int size, int z, bool periodic, 
+    Signal( const TValue* t, unsigned int size, int z, bool periodic,
             const TValue & def = TValue( 0 )  );
-    
+
     /**
        Copy constructor.
        @param other the object to clone.
     */
     Signal( const Signal<TValue> & other );
-    
+
     /**
        Assignment.
        @param other the object to copy.
@@ -246,7 +246,7 @@ namespace DGtal
     Signal<TValue> & operator=( const Signal<TValue> & other );
 
 
-    /** 
+    /**
      * Initializer.
      *
      * @param s the number of data in the signal.
@@ -254,7 +254,7 @@ namespace DGtal
      * @param p 'true' if the signal is periodic.
      * @param def the default value.
      */
-    void init( unsigned int s, int z = 0, bool p = false, 
+    void init( unsigned int s, int z = 0, bool p = false,
                const TValue & def = TValue( 0 ) );
 
     /**
@@ -266,9 +266,9 @@ namespace DGtal
      * @param p 'true' if the signal is periodic.
      * @param def the default value.
      */
-    void init( const TValue* t, unsigned int size, int z = 0, bool p = false, 
+    void init( const TValue* t, unsigned int size, int z = 0, bool p = false,
                const TValue & def = TValue( 0 )  );
- 
+
 
     /**
        @return the number of elements in the signal.
@@ -277,49 +277,49 @@ namespace DGtal
 
     // ----------------------- Signal services ----------------------------
   public:
-    
-    /** 
+
+    /**
         Protected rw access to value. If index is out of bound, return
         0 if not periodic or the correct value otherwise.
-        
+
         @param i the index in the signal .
-        
+
         @return the i-th value in the signal.
-    */      
+    */
     TValue & operator[]( int i );
-    
-    /** 
+
+    /**
         Protected ro access to value. If index is out of bound, return 0
         if not periodic or the correct value otherwise.
-        
+
         @param i the index in the signal .
-        
+
         @return the i-th value in the signal.
-    */      
+    */
     const TValue & operator[]( int i ) const;
-    
-    /** 
+
+    /**
         The signal becomes a constant signal of value [val].
-  
+
         @param val the value of the whole signal.
-    */      
+    */
     void setAll( const TValue & val = TValue( 0 ) );
-    
-    
-    /** 
+
+
+    /**
         External product of a signal by a scalar value.
-        
+
         @param val the external value.
-        
+
     */
     void multiply( const TValue & val );
 
-    /** 
+    /**
         Convolution product of two signals (F = this).
-        F*G( a ) = sum F(a-i)G(i) 
-        
+        F*G( a ) = sum F(a-i)G(i)
+
         @param G the second signal (not periodic)
-        
+
         @return the signal that is the convolution of F and G, of type
         F. The returned signal is periodic iff Fis periodic.
     */
@@ -333,25 +333,25 @@ namespace DGtal
        @param out the output stream where the object is written.
     */
     void selfDisplay ( std::ostream & out ) const;
-    
+
     /**
        Checks the validity/consistency of the object.
        @return 'true' if the object is valid, 'false' otherwise.
     */
     bool isValid() const;
 
-     
-    // ------------------------- Datas --------------------------------------
+
+    // ------------------------- Data --------------------------------------
   private:
-      
+
     /**
        the array that stores the data.
     */
     CowPtr< SignalData<TValue> > m_data;
-      
+
     // ------------------------- Hidden services ----------------------------
   protected:
-    
+
 
   }; // end of class Signal
 

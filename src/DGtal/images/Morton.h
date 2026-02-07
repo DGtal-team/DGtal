@@ -69,7 +69,7 @@ namespace DGtal
    *
    * @tparam THashKey type to store the morton code (should have
    * enough capacity to store the interleaved binary word).
-   * @tparam TPoint type of points. 
+   * @tparam TPoint type of points.
    *
    * @see testImageContainerByHashTree.cpp
    */
@@ -92,12 +92,12 @@ namespace DGtal
      *
      */
     Morton();
-    
+
     /**
      * Interleave the bits of the nbIn inputs.
      * @param aPoint an array of the nbIn values to mix in.
      * @param output The result
-     */ 
+     */
     void interleaveBits(const Point  & aPoint, HashKey & output) const;
 
 
@@ -105,7 +105,7 @@ namespace DGtal
      * Returns the key corresponding to the coordinates passed in the parameters.
      *
      * @param treeDepth The depth at which the coordinates are to be
-     * read (usualy corresponds to the deepest leave).  
+     * read (usually corresponds to the deepest leave).
      *
      * @param coordinates An array containing the coordinates to
      * convert into a key.
@@ -124,7 +124,7 @@ namespace DGtal
      * Returns the parent key of a key passed in parameter.
      *
      * @param key The key.
-     */ 
+     */
     inline HashKey parentKey(const HashKey key) const
     {
       return key >> dimension;
@@ -136,20 +136,20 @@ namespace DGtal
      *
      * @param key The key.
      * @param result Will contain the resulting brother keys.
-     */ 
+     */
     void brotherKeys(const HashKey key, HashKey* result ) const;
 
-    
+
     /**
      * Computes the children keys of the key passed in parameter.
      *
      * @param key The key.
      * @param result Will contain the resulting children keys.
-     */ 
+     */
     void childrenKeys(const HashKey key, HashKey* result ) const;
-    
-  private: 
-    
+
+  private:
+
     ///@todo Implements dilateMasks
     //boost::array< HashKey,LOG2<sizeof(HashKey)*8>::VALUE> myDilateMasks;
     //boost::array< HashKey,LOG2<sizeof(HashKey)*8>::VALUE> myContractMasks;

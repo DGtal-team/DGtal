@@ -49,23 +49,23 @@ using namespace DGtal;
 TEST_CASE( "Testing Rotating Caliper of ConvexHull2D (basic convex hull)" )
 {
   typedef PointVector<2,DGtal::int32_t> Point;
-  typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::int64_t> Functor;  
-   DGtal::MelkmanConvexHull<Point, Functor> ch; 
+  typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::int64_t> Functor;
+   DGtal::MelkmanConvexHull<Point, Functor> ch;
    ch.add(Point(0,0));
    ch.add(Point(1,0));
    ch.add(Point(1,1));
 
    Point pHV,qHV,sHV, pE,qE,sE;
-   double thicknessHV = 
-     DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
+   double thicknessHV =
+     DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(),
                                                     DGtal::functions::Hull2D::HorizontalVerticalThickness,
                                                     pHV, qHV, sHV);
-   
-   double thicknessEucl = 
-     DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
+
+   double thicknessEucl =
+     DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(),
                                                     DGtal::functions::Hull2D::EuclideanThickness,
                                                     pE, qE, sE);
-   
+
    SECTION("Testing computation of horizontal/vertical thickness of ConvexHull2D")
      {
        REQUIRE( thicknessHV == 1.0 );
@@ -73,7 +73,7 @@ TEST_CASE( "Testing Rotating Caliper of ConvexHull2D (basic convex hull)" )
        REQUIRE( qHV==Point(1,0) );
        REQUIRE( sHV==Point(1,1) );
      }
-   
+
 
    SECTION("Testing computation of euclidean thickness of ConvexHull2D")
      {
@@ -82,16 +82,16 @@ TEST_CASE( "Testing Rotating Caliper of ConvexHull2D (basic convex hull)" )
        REQUIRE( qE==Point(0,0) );
        REQUIRE( sE==Point(1,0) );
      }
-   
+
 }
 
 
 TEST_CASE( "Testing Rotating Caliper of ConvexHull2D (convex hull with floating coordinates)" )
 {
   typedef PointVector<2, double_t> Point;
-  typedef InHalfPlaneBySimple3x3Matrix<Point, double> Functor;  
-  DGtal::MelkmanConvexHull<Point, Functor> ch; 
-  
+  typedef InHalfPlaneBySimple3x3Matrix<Point, double> Functor;
+  DGtal::MelkmanConvexHull<Point, Functor> ch;
+
   ch.add(Point(104.0, 54.2));
   ch.add(Point(104.2, 53.2));
   ch.add(Point(103.2, 53.4));
@@ -104,19 +104,19 @@ TEST_CASE( "Testing Rotating Caliper of ConvexHull2D (convex hull with floating 
   ch.add(Point(101.2, 48.2));
   ch.add(Point(100.0, 48.2));
   ch.add(Point(100.4, 47.4));
-  
+
   Point pHV,qHV,sHV, pE,qE,sE;
 
-  const double thicknessHV = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
+  const double thicknessHV = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(),
                                                  DGtal::functions::Hull2D::HorizontalVerticalThickness,
                                                  pHV, qHV, sHV);
-  const double thicknessE  = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
+  const double thicknessE  = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(),
                                                  DGtal::functions::Hull2D::EuclideanThickness,
                                                  pE, qE, sE);
 
   CAPTURE( thicknessHV );
   CAPTURE( thicknessE  );
-  
+
    SECTION("Testing antipodal points of ConvexHull2D")
      {
        REQUIRE( pHV == Point(101.2, 48.2) );
@@ -130,13 +130,13 @@ TEST_CASE( "Testing Rotating Caliper of ConvexHull2D (convex hull with floating 
        REQUIRE( sE == Point(102.3, 52.3) );
      }
    ch.reverse();
-   
-   const double thicknessEb = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
+
+   const double thicknessEb = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(),
                                                   DGtal::functions::Hull2D::EuclideanThickness,
                                                   pE, qE, sE);
 
    CAPTURE( thicknessEb );
-   
+
    SECTION("Testing same antipodal points after hull reversing ")
      {
        REQUIRE( pE == Point(101.2, 48.2) );

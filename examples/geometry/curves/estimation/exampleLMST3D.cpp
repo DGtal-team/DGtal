@@ -84,7 +84,7 @@ int main()
   contour.push_back(Point(10,25,26));
   contour.push_back(Point(9,25,27));
   contour.push_back(Point(8,25,28));
-  
+
   //! [LambdaMST3DTangential]
   // Initialization of tangential cover
   Segmentation segmenter ( contour.begin(), contour.end(), SegmentComputer() );
@@ -105,7 +105,7 @@ int main()
     std::vector < RealVector > tangent;
     lmst.eval < std::back_insert_iterator< std::vector < RealVector > > > ( contour.begin(), contour.end(), std::back_insert_iterator< vector < RealVector > > ( tangent ) );
   //! [LambdaMST3DFast]
-  
+
   return 0;
 }
 //                                                                           //

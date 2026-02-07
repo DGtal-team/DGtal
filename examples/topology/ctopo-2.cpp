@@ -31,11 +31,11 @@
 
 /**
  *  A simple example illustrating the extraction of the sequence of
- *  surfels boudary. This program outputs this image.
+ *  surfels boundary. This program outputs this image.
  *
  *  @see \ref dgtal_helpsurf_sec1
  *
- * @image html ctopo2c.png 
+ * @image html ctopo2c.png
  *
  * \example topology/ctopo-2.cpp
  */
@@ -69,14 +69,14 @@ using namespace DGtal;
 int main()
 {
   typedef ImageSelector < Z2i::Domain, int>::Type Image;
-  std::string inputFilename = examplesPath + "samples/circleR10modif.pgm"; 
-  Image image = PGMReader<Image>::importPGM( inputFilename ); 
-  
+  std::string inputFilename = examplesPath + "samples/circleR10modif.pgm";
+  Image image = PGMReader<Image>::importPGM( inputFilename );
+
   Z2i::DigitalSet set2d (image.domain());
   SetFromImage<Z2i::DigitalSet>::append<Image>(set2d, image, 0, 255);
   Board2D board;
   board << image.domain() << set2d; // display domain and set
-  
+
   Board2D board2;
   board2 << image.domain() << set2d; // display domain and set
 
@@ -87,7 +87,7 @@ int main()
   // Construct the Khalimsky space from the image domain
   Z2i::KSpace ks;
   bool space_ok = ks.init( image.domain().lowerBound(), image.domain().upperBound(), true );
-  
+
 
 
   //Extract a boundary cell
@@ -98,11 +98,11 @@ int main()
   SurfelAdjacency<2> SAdj( true );
   Surfaces<Z2i::KSpace>::track2DBoundary( vectBdrySCell,
             ks, SAdj, set2d, aCell );
-  
-  board << CustomStyle( (*(vectBdrySCell.begin())).className(), 
+
+  board << CustomStyle( (*(vectBdrySCell.begin())).className(),
       new CustomColors(  Color( 255, 255, 0 ),
              Color( 192, 192, 0 ) ));
-  
+
   GradientColorMap<int> cmap_grad( 0, (int)vectBdrySCell.size() );
   cmap_grad.addColor( Color( 50, 50, 255 ) );
   cmap_grad.addColor( Color( 255, 0, 0 ) );
@@ -126,7 +126,7 @@ int main()
     ( bdry,
       ks, set2d, ks.lowerBound(), ks.upperBound() );
 
-  
+
   std::set<Z2i::SCell>::iterator itB;
   for ( itB=bdry.begin() ; itB != bdry.end(); itB++ ){
     board2<< CustomStyle((*itB).className() ,
@@ -134,7 +134,7 @@ int main()
              cmap_grad( d )))<< *itB;
     d++;
   }
-  
+
   std::vector< std::vector<Z2i::SCell> > vectContoursBdrySCell;
   Surfaces<Z2i::KSpace>::extractAll2DSCellContours( vectContoursBdrySCell,
                 ks, SAdj, set2d );
@@ -145,7 +145,7 @@ int main()
   cmap_grad3.addColor( Color( 200, 200, 200 ) );
   cmap_grad3.addColor( Color( 20, 200, 200 ) );
   cmap_grad3.addColor( Color( 200, 20, 200 ) );
-  
+
   d=0;
   for(unsigned int i=0; i< vectContoursBdrySCell.size(); i++){
     d++;
@@ -153,23 +153,23 @@ int main()
       board3<< CustomStyle(vectContoursBdrySCell.at(i).at(j).className() ,
          new CustomColors( Color::Black,
                cmap_grad3( d )))<<vectContoursBdrySCell.at(i).at(j) ;
-      
+
     }
   }
 
 
 
- 
-    board << aCell;  
+
+    board << aCell;
     board.saveEPS( "ctopo-2.eps");
     board.saveFIG( "ctopo-2.fig");
 
     board2.saveEPS( "ctopo-2d.eps");
     board2.saveFIG( "ctopo-2d.fig");
-    
+
     board3.saveEPS( "ctopo-2e.eps");
     board3.saveFIG( "ctopo-2e.fig");
-    
+
     return (space_ok);
 }
 //                                                                           //

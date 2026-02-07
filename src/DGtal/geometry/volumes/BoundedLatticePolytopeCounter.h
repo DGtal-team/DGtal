@@ -58,12 +58,12 @@ namespace DGtal
      polytope, i.e. a convex polyhedron.
 
      It is a model of boost::CopyConstructible,
-     boost::DefaultConstructible, boost::Assignable. 
+     boost::DefaultConstructible, boost::Assignable.
 
      @tparam TSpace an arbitrary model of CSpace.
    */
   template < typename TSpace >
-  class BoundedLatticePolytopeCounter 
+  class BoundedLatticePolytopeCounter
   {
     BOOST_CONCEPT_ASSERT(( concepts::CSpace< TSpace > ));
   public:
@@ -88,14 +88,14 @@ namespace DGtal
 
     /// Internal type used to represent any lattice point set.
     using LatticeSetByIntervals = std::map< Point, Intervals >;
-    
+
     /// Default constructor
     BoundedLatticePolytopeCounter() = default;
-    
+
     /// Constructor from valid polytope
     /// @param P any polytope
     BoundedLatticePolytopeCounter( const Polytope& P );
-    
+
     /// Initialization from polytope pointer (nullptr if you want to
     /// create an invalid polytope).
     /// @param ptrP any pointer on a polytope or nullptr.
@@ -138,7 +138,7 @@ namespace DGtal
     /// along this axis.
     /// @see longestAxis
     Integer countAlongAxis( Dimension a ) const;
-    
+
     /// @param a any axis with 0 <= a < d, where d is the dimension of the space.
     /// @return the number of lattice point strictly inside the current polytope.
     ///
@@ -200,13 +200,13 @@ namespace DGtal
     /// @return the upper point of the tight bounding box of the current polytope.
     Point upperBound() const { return myUpper; }
 
-    
-    // --------------------------- protected datas -----------------------------------
+
+    // --------------------------- protected data -----------------------------------
     /// The associated polytope.
     const Polytope* myPolytope;
-    /// The lower point of the tight bounding box to the associated polytope. 
+    /// The lower point of the tight bounding box to the associated polytope.
     Point myLower;
-    /// The upper point of the tight bounding box to the associated polytope. 
+    /// The upper point of the tight bounding box to the associated polytope.
     Point myUpper;
   };
 
@@ -224,4 +224,3 @@ namespace DGtal
 
 #undef BoundedLatticePolytopeCounter_RECURSES
 #endif // else defined(BoundedLatticePolytopeCounter_RECURSES)
-    

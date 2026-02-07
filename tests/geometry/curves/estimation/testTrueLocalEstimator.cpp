@@ -75,7 +75,7 @@ bool testTrueLocalEstimator(const std::string &filename)
   ifstream instream; // input stream
   instream.open (filename.c_str(), ifstream::in);
   typedef KhalimskySpaceND<2> Kspace; //space
-  GridCurve<Kspace> c; 
+  GridCurve<Kspace> c;
   c.initFromVectorStream(instream); //building grid curve
   typedef GridCurve<Kspace >::PointsRange Range;//range
   Range r = c.getPointsRange();//building range
@@ -89,7 +89,7 @@ bool testTrueLocalEstimator(const std::string &filename)
 
   Shape ball(Z2i::Point(0,0), 30);
 
-   
+
   typedef TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Curvature  > TrueCurvatureEstimator;
   typedef TrueLocalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Tangent  > TrueTangentEstimator;
   typedef TrueGlobalEstimatorOnPoints< ConstIteratorOnPoints, Shape, Length  >  TrueLengthEstimator;
@@ -120,7 +120,7 @@ bool testTrueLocalEstimator(const std::string &filename)
 }
 
 template <typename Shape>
-bool 
+bool
 testTrueLocalEstimatorOnShapeDigitization( const string & name,
              Shape & aShape, double h )
 {
@@ -128,13 +128,13 @@ testTrueLocalEstimatorOnShapeDigitization( const string & name,
 
   trace.beginBlock ( ( "Testing TrueLocalEstimator on digitization of "
            + name ). c_str() );
-  
+
   // Creates a digitizer on the window (xLow, xUp).
   RealPoint xLow( -10.0, -10.0 );
   RealPoint xUp( 10.0, 10.0 );
   GaussDigitizer<Space,Shape> dig;
   dig.attach( aShape ); // attaches the shape.
-  dig.init( xLow, xUp, h ); 
+  dig.init( xLow, xUp, h );
 
   // The domain size is given by the digitizer according to the window
   // and the step.
@@ -168,16 +168,16 @@ testTrueLocalEstimatorOnShapeDigitization( const string & name,
 
       TrueLocalEstimatorOnPoints<ConstIteratorOnPoints, Shape, Curvature> curvatureEstimator;
       Range r = gridcurve.getPointsRange();//building range
-      curvatureEstimator.attach( aShape ); 
+      curvatureEstimator.attach( aShape );
 
       std::cout << "# idx x y kappa" << endl;
       unsigned int i = 0;
       for ( ConstIteratorOnPoints it = r.begin(), ite = r.end();
             it != ite; ++it, ++i )
       {
-        const RealPoint& x = *it; 
+        const RealPoint& x = *it;
         const double kappa = curvatureEstimator.eval( it, h );
-        std::cout << i << " " << x[0] << " " << x[1] 
+        std::cout << i << " " << x[0] << " " << x[1]
                   << " " << kappa << std::endl;
       }
     }
@@ -213,19 +213,19 @@ int main( int argc, char** argv )
 
   typedef Ellipse2D< Z2i::Space > MyEllipse;
   MyEllipse ellipse( 1.2, 0.1, 4.0, 3.0, 0.3 );
-  res = res && 
+  res = res &&
     testTrueLocalEstimatorOnShapeDigitization<MyEllipse>
     ( "Ellipse-4-3-0.3-s1", ellipse, 1 );
-  res = res && 
+  res = res &&
     testTrueLocalEstimatorOnShapeDigitization<MyEllipse>
     ( "Ellipse-4-3-0.3-s0.5", ellipse, 0.5 );
 
   typedef Flower2D< Z2i::Space > MyFlower;
   MyFlower flower( 0.5, -2.3, 5.0, 0.7, 6, 0.3 );
-  res = res && 
+  res = res &&
     testTrueLocalEstimatorOnShapeDigitization<MyFlower>
     ( "Flower-5-0.3-6-0.3-s1", flower, 1 );
-  res = res && 
+  res = res &&
     testTrueLocalEstimatorOnShapeDigitization<MyFlower>
     ( "Flower-5-0.3-6-0.3-s0.25", flower, 0.25 );
 

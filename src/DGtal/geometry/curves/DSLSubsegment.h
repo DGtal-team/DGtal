@@ -605,8 +605,8 @@ namespace DGtal
        */
       RayC localizeRay(Integer fp, Integer fq, Integer gp, Integer gq,
                        Integer r, Number a, Number b, Number mu, Integer n);
-      
-      
+
+
       /**
        * Compute the closest ray below the point (alpha,beta) passing
        * through the point (fp/fq,r/fq) in the Farey fan of order n

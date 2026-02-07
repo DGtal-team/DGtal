@@ -123,7 +123,7 @@ SCENARIO( "IntegerConverter< 1, BigInteger >", "[integer_conversions]" )
     DGtal::BigInteger b = Converter::cast( big_int64 );
     DGtal::BigInteger c = Converter::cast( big_bigint );
     DGtal::BigInteger b_prime = big_int64;
-    
+
     THEN( "Only bigger integers are identical" ) {
       REQUIRE( a == big_int32 );
       REQUIRE( a != b );

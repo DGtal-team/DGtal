@@ -47,29 +47,29 @@ using namespace DGtal;
 bool testHDF5Reader()
 {
   unsigned int nbok = 0;
-  unsigned int nb = 0;  
-  
+  unsigned int nb = 0;
+
   trace.beginBlock ( "Testing hdf5 reader ..." );
-  nbok += true ? 1 : 0; 
+  nbok += true ? 1 : 0;
   nb++;
   std::string filename = testPath + "samples/ex_image2.h5";
 
   trace.info() << "Loading filename: " << filename << std::endl;
-  
+
   typedef GrayscaleColorMap<unsigned char> Gray; // a simple GrayscaleColorMap varying on 'unsigned char' values
   typedef ImageSelector < Z2i::Domain, unsigned char>::Type Image;
-  
-  Image image = HDF5Reader<Image>::importHDF5( filename, "/image8bit" ); 
+
+  Image image = HDF5Reader<Image>::importHDF5( filename, "/image8bit" );
   trace.info() << "image8bitFromHDF5image image: " << image << endl;
   PPMWriter<Image,Gray>::exportPPM("image8bitFromHDF5image.ppm", image, Gray(0,255));
-  
-  image = HDF5Reader<Image>::importHDF5( filename, "/image24bitpixel" ); 
+
+  image = HDF5Reader<Image>::importHDF5( filename, "/image24bitpixel" );
   trace.info() << "image24bitFromHDF5image image: " << image << endl;
   PPMWriter<Image,Gray>::exportPPM("image24bitFromHDF5image.ppm", image, Gray(0,255));
-  
+
   trace.info() << "(" << nbok << "/" << nb << ") " << "true == true" << std::endl;
-  trace.endBlock();  
-  
+  trace.endBlock();
+
   return nbok == nb;
 }
 
@@ -77,22 +77,22 @@ bool testHDF5_3DReader()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing hdf5 3D reader ..." );
 
   typedef SpaceND<3> Space4Type;
   typedef HyperRectDomain<Space4Type> TDomain;
-  
+
   //Default image selector = STLVector
   typedef ImageSelector<TDomain, unsigned char>::Type Image;
-  
-  
+
+
   std::string filename = testPath + "samples/cat10.h5";
   Image image = HDF5Reader<Image>::importHDF5_3D( filename, "/UInt8Array3D" );
-  
+
   trace.info() << image <<endl;
-  
-  nbok += true ? 1 : 0; 
+
+  nbok += true ? 1 : 0;
   nb++;
 
   unsigned int nbval=0;
@@ -100,16 +100,16 @@ bool testHDF5_3DReader()
       it != itend;   ++it)
     if ( (*it) != 0)
       nbval++;
-  
+
   trace.info() << "Number of points with (val!=0)  = "<<nbval<<endl;
 
-  nbok += ( nbval == 8043)  ? 1 : 0; 
+  nbok += ( nbval == 8043)  ? 1 : 0;
   nb++;
 
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 

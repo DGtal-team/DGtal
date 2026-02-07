@@ -51,7 +51,7 @@ template < typename TGraph, typename TMarkSet >
 inline
 DGtal::DepthFirstVisitor<TGraph,TMarkSet>
 ::DepthFirstVisitor( const DepthFirstVisitor & other )
-  : myGraph( other.myGraph ), 
+  : myGraph( other.myGraph ),
     myMarkedVertices( other.myMarkedVertices ),
     myQueue( other.myQueue )
 {
@@ -92,7 +92,7 @@ DGtal::DepthFirstVisitor<TGraph,TMarkSet>
 //-----------------------------------------------------------------------------
 template < typename TGraph, typename TMarkSet >
 inline
-const typename DGtal::DepthFirstVisitor<TGraph,TMarkSet>::Graph & 
+const typename DGtal::DepthFirstVisitor<TGraph,TMarkSet>::Graph &
 DGtal::DepthFirstVisitor<TGraph,TMarkSet>::graph() const
 {
   return myGraph;
@@ -108,7 +108,7 @@ DGtal::DepthFirstVisitor<TGraph,TMarkSet>::finished() const
 //-----------------------------------------------------------------------------
 template < typename TGraph, typename TMarkSet >
 inline
-const typename DGtal::DepthFirstVisitor<TGraph,TMarkSet>::Node & 
+const typename DGtal::DepthFirstVisitor<TGraph,TMarkSet>::Node &
 DGtal::DepthFirstVisitor<TGraph,TMarkSet>::current() const
 {
   ASSERT( ! finished() );
@@ -131,13 +131,13 @@ DGtal::DepthFirstVisitor<TGraph,TMarkSet>::expand()
 {
   ASSERT( ! finished() );
   Node node = myQueue.top();
-  Data d = node.second + 1; 
+  Data d = node.second + 1;
   myQueue.pop();
   VertexList tmp;
   tmp.reserve( myGraph.bestCapacity() );
   std::back_insert_iterator<VertexList> write_it = std::back_inserter( tmp );
   myGraph.writeNeighbors( write_it, node.first );
-  for ( typename VertexList::const_iterator it = tmp.begin(), 
+  for ( typename VertexList::const_iterator it = tmp.begin(),
           it_end = tmp.end(); it != it_end; ++it )
     {
       typename MarkSet::const_iterator mark_it = myMarkedVertices.find( *it );
@@ -158,7 +158,7 @@ DGtal::DepthFirstVisitor<TGraph,TMarkSet>::expand
 {
   ASSERT( ! finished() );
   Node node = myQueue.top();
-  Data d = node.second + 1; 
+  Data d = node.second + 1;
   myQueue.pop();
   VertexList tmp;
   tmp.reserve( myGraph.bestCapacity() );
@@ -166,7 +166,7 @@ DGtal::DepthFirstVisitor<TGraph,TMarkSet>::expand
   myGraph.writeNeighbors( write_it,
                           node.first,
                           authorized_vtx );
-  for ( typename VertexList::const_iterator it = tmp.begin(), 
+  for ( typename VertexList::const_iterator it = tmp.begin(),
           it_end = tmp.end(); it != it_end; ++it )
     {
       typename MarkSet::const_iterator mark_it = myMarkedVertices.find( *it );
@@ -195,7 +195,7 @@ DGtal::DepthFirstVisitor<TGraph,TMarkSet>::terminate()
 //-----------------------------------------------------------------------------
 template < typename TGraph, typename TMarkSet >
 inline
-const typename DGtal::DepthFirstVisitor<TGraph,TMarkSet>::MarkSet & 
+const typename DGtal::DepthFirstVisitor<TGraph,TMarkSet>::MarkSet &
 DGtal::DepthFirstVisitor<TGraph,TMarkSet>::markedVertices() const
 {
   return myMarkedVertices;
@@ -257,7 +257,7 @@ DGtal::DepthFirstVisitor<TGraph,TMarkSet>::isValid() const
 template < typename TGraph, typename TMarkSet >
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
                     const DepthFirstVisitor<TGraph,TMarkSet> & object )
 {
   object.selfDisplay( out );
@@ -266,5 +266,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

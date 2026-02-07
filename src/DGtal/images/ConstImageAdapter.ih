@@ -65,7 +65,7 @@ inline
 std::string
 DGtal::ConstImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV>:: className() const
 {
-  return "ConstImageAdapter";  
+  return "ConstImageAdapter";
 }
 
 
@@ -85,5 +85,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

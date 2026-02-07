@@ -46,17 +46,17 @@ using namespace DGtal;
 namespace DGtal {
   template <typename KSpace, typename PointPredicate>
   bool
-  testLightImplicitDigitalSurface( const KSpace & K, 
+  testLightImplicitDigitalSurface( const KSpace & K,
                                    const PointPredicate & pp,
                                    const typename KSpace::Surfel & bel )
   {
     typedef LightImplicitDigitalSurface<KSpace,PointPredicate> Boundary;
     typedef typename Boundary::SurfelConstIterator ConstIterator;
-    
+
     unsigned int nbok = 0;
     unsigned int nb = 0;
     trace.beginBlock ( "Testing block ... LightImplicitDigitalSurface" );
-    trace.beginBlock ( "LightImplicitDigitalSurface instanciation" );
+    trace.beginBlock ( "LightImplicitDigitalSurface instantiation" );
     Boundary boundary( K, pp,
                        SurfelAdjacency<KSpace::dimension>( true ), bel );
     trace.endBlock();
@@ -75,7 +75,7 @@ namespace DGtal {
     trace.endBlock();
     return nbok == nb;
   }
-  
+
 
   template <typename TPoint3>
   struct ImplicitDigitalEllipse3 {

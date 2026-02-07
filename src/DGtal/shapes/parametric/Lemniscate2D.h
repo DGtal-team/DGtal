@@ -210,7 +210,7 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
-  
+
   // ------------------------- Hidden services ------------------------------
   private:
 

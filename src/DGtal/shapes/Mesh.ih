@@ -221,7 +221,7 @@ inline
 void
 DGtal::Mesh<TPoint>::removeFaces(const std::vector<Index> &facesIndex){
   DGtal::Mesh<TPoint> newMesh(true);
-  
+
   std::vector<unsigned int> indexVertexFaceCard(nbVertex());
   std::vector<bool> indexFaceOK(nbFaces());
   std::fill(indexVertexFaceCard.begin(), indexVertexFaceCard.end(), 0);
@@ -517,7 +517,7 @@ DGtal::Mesh<TPoint>::subDivideTriangularFaces(const double minArea){
       {
 	maxArea = a;
       }
-        
+
       if(a>=minArea)
       {
 	addVertex(c);
@@ -813,5 +813,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

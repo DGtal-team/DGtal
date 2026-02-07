@@ -60,11 +60,11 @@ namespace DGtal
   // template class MostCenteredMaximalSegmentEstimator
   /**
    * Description of template class 'MostCenteredMaximalSegmentEstimator' <p>
-   * \brief Aim: A model of CLocalCurveGeometricEstimator that assigns to each 
-   * element of a (sub)range a quantity estimated from the most centered 
-   * maximal segment passing through this element. 
+   * \brief Aim: A model of CLocalCurveGeometricEstimator that assigns to each
+   * element of a (sub)range a quantity estimated from the most centered
+   * maximal segment passing through this element.
    *
-   Here is a basic example of curvature estimation: 
+   Here is a basic example of curvature estimation:
    - 1. Construct an instance from a segment computer and a segment computer estimator
    @snippet geometry/curves/estimation/exampleCurvature.cpp MostCenteredConstruction
    - 2. Initialize it with a range @e r and a grid step @e h
@@ -77,15 +77,15 @@ namespace DGtal
    *
    * @see testMostCenteredMSEstimator.cpp
    * @see exampleCurvature.cpp
-   * @see SaturatedSegmentation.h 
+   * @see SaturatedSegmentation.h
    */
   template <typename SegmentComputer, typename SCEstimator>
   class MostCenteredMaximalSegmentEstimator
   {
 
-    BOOST_CONCEPT_ASSERT(( concepts::CForwardSegmentComputer<SegmentComputer> )); 
-    BOOST_CONCEPT_ASSERT(( concepts::CSegmentComputerEstimator<SCEstimator> )); 
-    BOOST_STATIC_ASSERT(( boost::is_same< SegmentComputer, 
+    BOOST_CONCEPT_ASSERT(( concepts::CForwardSegmentComputer<SegmentComputer> ));
+    BOOST_CONCEPT_ASSERT(( concepts::CSegmentComputerEstimator<SCEstimator> ));
+    BOOST_STATIC_ASSERT(( boost::is_same< SegmentComputer,
 			  typename SCEstimator::SegmentComputer >::value ));
     BOOST_CONCEPT_ASSERT(( concepts::CCurveLocalGeometricEstimator< SCEstimator > ));
 
@@ -95,8 +95,8 @@ namespace DGtal
     typedef typename SegmentComputer::ConstIterator ConstIterator;
     typedef typename SCEstimator::Quantity Quantity;
 
-    typedef SaturatedSegmentation<SegmentComputer> Segmentation; 
-    typedef typename Segmentation::SegmentComputerIterator SegmentIterator; 
+    typedef SaturatedSegmentation<SegmentComputer> Segmentation;
+    typedef typename Segmentation::SegmentComputerIterator SegmentIterator;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -111,7 +111,7 @@ namespace DGtal
      * @param aSegmentComputer a segment computer
      * @param aSCEstimator an estimator
      */
-    MostCenteredMaximalSegmentEstimator(const SegmentComputer& aSegmentComputer, 
+    MostCenteredMaximalSegmentEstimator(const SegmentComputer& aSegmentComputer,
                                         const SCEstimator& aSCEstimator);
 
     /**
@@ -130,12 +130,12 @@ namespace DGtal
     void init( const ConstIterator& itb, const ConstIterator& ite );
 
     /**
-     * Unique estimation 
+     * Unique estimation
      * @param it any valid iterator
      * @param h grid size (must be > 0).
      * @return the estimated quantity at *it
      *
-     * NB: the whole range [@e myBegin , @e myEnd)| 
+     * NB: the whole range [@e myBegin , @e myEnd)|
      * is scanned in the worst case
      */
     Quantity eval(const ConstIterator& it, const double h = 1.);
@@ -144,19 +144,19 @@ namespace DGtal
      * Estimation for a subrange [@e itb , @e ite )
      *
      * @param itb subrange begin iterator
-     * @param ite subrange end iterator     
+     * @param ite subrange end iterator
      * @param result output iterator on the estimated quantity
      * @param h grid size (must be > 0).
      *
      * @return the estimated quantity
      * from itb till ite (excluded)
      *
-     * NB: the whole range [@e myBegin , @e myEnd)| 
+     * NB: the whole range [@e myBegin , @e myEnd)|
      * is scanned in the worst case
      */
     template <typename OutputIterator>
-    OutputIterator eval(const ConstIterator& itb, const ConstIterator& ite, 
-                        OutputIterator result, const double h = 1.); 
+    OutputIterator eval(const ConstIterator& itb, const ConstIterator& ite,
+                        OutputIterator result, const double h = 1.);
 
 
     /**
@@ -165,19 +165,19 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
-    /** begin and end iterators */ 
+    /** begin and end iterators */
     ConstIterator myBegin,myEnd;
 
-    /** segmentComputer used to segment */ 
-    SegmentComputer mySC; 
+    /** segmentComputer used to segment */
+    SegmentComputer mySC;
 
-    /** object estimating the quantity from segmentComputer */ 
+    /** object estimating the quantity from segmentComputer */
     SCEstimator mySCEstimator;
 
     // ------------------------- Internal services ------------------------------
@@ -188,7 +188,7 @@ namespace DGtal
      * Specialization of the end of the algorithm
      *
      * @param itb subrange begin iterator
-     * @param ite subrange end iterator     
+     * @param ite subrange end iterator
      * @param itCurrent current iterator
      * @param first iterator on the first maximal segment
      * @param last iterator on the last maximal segment
@@ -199,19 +199,19 @@ namespace DGtal
      * NB: O(n)
      */
     template <typename OutputIterator>
-    OutputIterator endEval(const ConstIterator& itb, const ConstIterator& ite, ConstIterator& itCurrent, 
-			   SegmentIterator& first, SegmentIterator& last, 
-			   OutputIterator result); 
+    OutputIterator endEval(const ConstIterator& itb, const ConstIterator& ite, ConstIterator& itCurrent,
+			   SegmentIterator& first, SegmentIterator& last,
+			   OutputIterator result);
 
     template <typename OutputIterator>
-    OutputIterator endEval(const ConstIterator& /*itb*/, const ConstIterator& ite, ConstIterator& itCurrent, 
-			   SegmentIterator& /*first*/, SegmentIterator& last, 
-			   OutputIterator result, IteratorType); 
+    OutputIterator endEval(const ConstIterator& /*itb*/, const ConstIterator& ite, ConstIterator& itCurrent,
+			   SegmentIterator& /*first*/, SegmentIterator& last,
+			   OutputIterator result, IteratorType);
 
     template <typename OutputIterator>
-    OutputIterator endEval(const ConstIterator& itb, const ConstIterator& ite, ConstIterator& itCurrent, 
-			   SegmentIterator& first, SegmentIterator& last, 
-			   OutputIterator result, CirculatorType); 
+    OutputIterator endEval(const ConstIterator& itb, const ConstIterator& ite, ConstIterator& itCurrent,
+			   SegmentIterator& first, SegmentIterator& last,
+			   OutputIterator result, CirculatorType);
 
     // ------------------------- Hidden services ------------------------------
 

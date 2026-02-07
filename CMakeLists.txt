@@ -3,7 +3,7 @@
 # -----------------------------------------------------------------------------
 cmake_minimum_required (VERSION 3.20)
 
-# Reading version 
+# Reading version
 file(READ "VERSION" version_file_raw)
 string(REGEX REPLACE "[\r\n]" "" version_file "${version_file_raw}")
 string(REGEX MATCHALL "([0-9]+)" version_parts ${version_file})
@@ -32,7 +32,7 @@ list(APPEND CMAKE_PREFIX_PATH ${CMAKE_BINARY_DIR})
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 list(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake/deps)
 
-# @TODO : See if those variable are still usefull,
+# @TODO : See if those variable are still useful,
 #         Note that they are set in source code !
 set(DGtal_VERSION_MAJOR ${CMAKE_PROJECT_VERSION_MAJOR})
 set(DGtal_VERSION_MINOR ${CMAKE_PROJECT_VERSION_MINOR})

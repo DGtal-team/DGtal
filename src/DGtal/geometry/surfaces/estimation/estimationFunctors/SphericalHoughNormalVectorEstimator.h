@@ -84,13 +84,13 @@ namespace DGtal
     class SphericalHoughNormalVectorEstimator
     {
     public:
-      
+
       typedef TSurfel Surfel;
       typedef TEmbedder SCellEmbedder;
       typedef typename SCellEmbedder::RealPoint RealPoint;
       typedef RealPoint Quantity;
       typedef SimpleMatrix<double,3,3> Matrix;
-      
+
       /**
        * Constructor.
        *
@@ -111,7 +111,7 @@ namespace DGtal
       myNbTrials( nbTrials), mySize(accumulatorSize) , myNbAccumulators(nbAccumulators)
       {
         SphericalAccumulator<RealPoint> accum(mySize);
-        
+
         //We precompute the random rotations and accumulators
         for(auto i = 0u; i < myNbAccumulators; ++i)
         {
@@ -127,7 +127,7 @@ namespace DGtal
        */
       SphericalHoughNormalVectorEstimator() = delete;
 
-      
+
       /**
        * Add the geometrical embedding of a surfel to the point list and
        * update the normal spherical hough voting.
@@ -142,7 +142,7 @@ namespace DGtal
         RealPoint p = myH * ( myEmbedder->operator()(aSurf) );
         myPoints.push_back(p);
       }
-      
+
       /**
        * Estimate normal vector using spherical accumulator
        * voting.
@@ -155,17 +155,17 @@ namespace DGtal
         std::uniform_int_distribution<int> distribution(0,
                                                         static_cast<int>(myPoints.size()) - 1 );
         double aspect;
-        
+
         for(auto t = 0u; t < myNbTrials ; ++t)
         {
           unsigned int i,j,k;
-          
+
           //We pick 3 distinct point indices.
           i = distribution(generator);
           j = distribution(generator);
           while ( (j = distribution(generator)) == i);
           while (( (k = distribution(generator)) == i) || (k == j) );
-          
+
           RealPoint vector = getNormal(i,j,k,aspect);
           if ((vector.norm() > 0.00001) && (aspect > myAspectRatio))
           {
@@ -185,7 +185,7 @@ namespace DGtal
         {
           myAccumulators[acc].maxCountBin(posPhi, posTheta);
           RealPoint dir = myInverseRotations[acc]*myAccumulators[acc].representativeDirection(posPhi, posTheta).getNormalized() ;
-          
+
           //We only consider z-oriented normals (since we pushed vector and -vector)
           if ( dir.dot(RealPoint(0,0,1)) > 0.0 )
           vote += dir;
@@ -194,7 +194,7 @@ namespace DGtal
         }
         return vote.getNormalized();
       }
-      
+
       /**
        * Reset the point list.
        *
@@ -206,9 +206,9 @@ namespace DGtal
         for(auto i = 0u; i < myNbAccumulators; ++i)
           myAccumulators[i].clear();
       }
-      
+
     private:
-      
+
       /**
        * @return a random rotation matrix.
        */
@@ -227,7 +227,7 @@ namespace DGtal
         Rt.setComponent(0,2,0);
         Rt.setComponent(1,2,sin(theta));
         Rt.setComponent(2,2,cos(theta));
-        
+
         Matrix Rph;
         Rph.setComponent(0,0,cos(phi));
         Rph.setComponent(1,0,0);
@@ -238,7 +238,7 @@ namespace DGtal
         Rph.setComponent(0,2,-sin(phi));
         Rph.setComponent(1,2,0);
         Rph.setComponent(2,2,cos(phi));
-        
+
         Matrix Rps;
         Rps.setComponent(0,0,cos(psi));
         Rps.setComponent(1,0,-sin(psi));
@@ -249,10 +249,10 @@ namespace DGtal
         Rps.setComponent(0,2,0);
         Rps.setComponent(1,2,0);
         Rps.setComponent(2,2,1);
-        
+
         return Rt*Rph*Rps;
       }
-      
+
       /**
        * Computes the (unnormalized) normal vector of a triangle defined
        * by triangle (i,j,k).
@@ -273,11 +273,11 @@ namespace DGtal
         ASSERT( i < myPoints.size());
         ASSERT( j < myPoints.size());
         ASSERT( k < myPoints.size());
-        
+
         const RealPoint v = myPoints[i] - myPoints[j];
         const RealPoint u = myPoints[i] - myPoints[k];
         const RealPoint w = myPoints[j] - myPoints[k];
-        
+
         //aspect ratio
         const double a = u.norm() , b = v.norm();
         const double c = w.norm();
@@ -290,38 +290,38 @@ namespace DGtal
 
         return v.crossProduct(u);
       }
-      
+
       ///Alias of the geometrical embedder
       const SCellEmbedder * myEmbedder;
-      
+
       ///Grid step
       const double myH;
-      
+
       ///Minimal aspect ratio (norm of the cross-product) to consider a given triangle
       const double myAspectRatio;
-      
+
       ///Number of trials in the neignborhood
       const unsigned int myNbTrials;
-      
+
       ///Size of the accumulator
       const unsigned int mySize;
-      
+
       ///Number of randomly shifted spherical accumulators to consider
       const unsigned int myNbAccumulators;
-      
+
       ///vector of embedded surfels
       std::vector<RealPoint> myPoints;
-      
+
       ///Spherical Accumulators
       std::vector< SphericalAccumulator<RealPoint> > myAccumulators;
-      
+
       ///Random rotations
       std::vector< Matrix > myRotations;
-      
+
       ///Random inverse rotations
       std::vector< Matrix > myInverseRotations;
-      
-      
+
+
     }; // end of class SphericalHoughNormalVectorEstimator
   } // namespace functors
 } // namespace DGtal

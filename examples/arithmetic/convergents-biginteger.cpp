@@ -108,4 +108,3 @@ int main( int argc, char** argv )
   //! [convergents-biginteger-convergents]
   return 0;
 }
-

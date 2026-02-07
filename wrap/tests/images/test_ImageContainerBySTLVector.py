@@ -134,7 +134,7 @@ def test_bridge_buffer(Type):
         # Check shape (upper bound is reversed)
         assert np_array_c.shape[0] == img.domain.upper_bound[1] + 1
         assert np_array_c.shape[1] == img.domain.upper_bound[0] + 1
-        # c_contiguous (row major) (reversed from f_contiguous Point accesors)
+        # c_contiguous (row major) (reversed from f_contiguous Point accessors)
         assert np_array_c[0, 1] == dtype(20)
         assert np_array_c[1, 0] == dtype(40)
         # modify image through np_array_c
@@ -292,7 +292,7 @@ def test_bridge_buffer_with_Points(Type):
         assert np_array_c.shape[1] == img.domain.upper_bound[0] + 1
         assert np_array_c.shape[2] == ImagePoint.dimension
         assert np_array_c.shape == (4, 3, ImagePoint.dimension)
-        # c_contiguous (row major) (reversed from f_contiguous Point accesors)
+        # c_contiguous (row major) (reversed from f_contiguous Point accessors)
         np.testing.assert_array_equal(np_array_c[0, 1], np.array(img.TValue.diagonal(10)))
         # modify image through np_array_c (view)
         np_array_c[1,1] = np.array(img.TValue.diagonal(1))
@@ -302,7 +302,7 @@ def test_bridge_buffer_with_Points(Type):
         assert np_array_c.shape[2] == img.domain.upper_bound[0] + 1
         assert np_array_c.shape[3] == ImagePoint.dimension
         assert np_array_c.shape == (5, 4, 3, ImagePoint.dimension)
-        # c_contiguous (row major) (reversed from f_contiguous Point accesors)
+        # c_contiguous (row major) (reversed from f_contiguous Point accessors)
         np.testing.assert_array_equal(np_array_c[0, 0, 1], np.array(img.TValue.diagonal(10)))
         # modify image through np_array_c (view)
         np_array_c[1,1,1] = np.array(img.TValue.diagonal(1))
@@ -360,7 +360,7 @@ def test_bridge_buffer_with_Color(Type):
         assert np_array_c.shape[1] == img.domain.upper_bound[0] + 1
         assert np_array_c.shape[2] == color_dimension
         assert np_array_c.shape == (4, 3, color_dimension)
-        # c_contiguous (row major) (reversed from f_contiguous Point accesors)
+        # c_contiguous (row major) (reversed from f_contiguous Point accessors)
         np.testing.assert_array_equal(np_array_c[0, 1], np.array(a_color))
         # modify image through np_array_c (view)
         np_array_c[1,1] = np.array(another_color)
@@ -370,7 +370,7 @@ def test_bridge_buffer_with_Color(Type):
         assert np_array_c.shape[2] == img.domain.upper_bound[0] + 1
         assert np_array_c.shape[3] == color_dimension
         assert np_array_c.shape == (5, 4, 3, color_dimension)
-        # c_contiguous (row major) (reversed from f_contiguous Point accesors)
+        # c_contiguous (row major) (reversed from f_contiguous Point accessors)
         np.testing.assert_array_equal(np_array_c[0, 0, 1], np.array(a_color))
         # modify image through np_array_c (view)
         np_array_c[1,1,1] = np.array(another_color)

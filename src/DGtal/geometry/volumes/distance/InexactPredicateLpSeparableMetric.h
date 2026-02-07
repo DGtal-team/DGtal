@@ -70,7 +70,7 @@ namespace DGtal
  * double numbers. As a consequence, @a hiddenBy and @a closest
  * methods may be inexact (numerical issues).
  *
- * The exponent @a p is specifed at the constructor.
+ * The exponent @a p is specified at the constructor.
  *
  * @tparam TSpace the model of CSpace on which the metric is
  * defined.
@@ -99,7 +99,7 @@ namespace DGtal
     typedef TValue Value;
     ///Type for raw distance values
     typedef TValue RawValue;
-    
+
     /**
      * Constructor.
      */
@@ -211,7 +211,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
 
     /**
@@ -253,7 +253,7 @@ namespace DGtal
                                 const Abscissa &upper) const;
 
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     ///Exponent value

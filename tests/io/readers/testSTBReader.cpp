@@ -55,26 +55,26 @@ TEST_CASE( "Testing STBReader" )
     typedef ImageSelector < Z2i::Domain, Color>::Type Image;
     Image image = STBReader<Image>::import( filename );
     CAPTURE(image);
-    
+
     PPMWriter<Image>::exportPPM("testwriter.ppm", image);
     CHECK( image.isValid());
   }
-  
+
   SECTION("Testing feature io/readers of STBReader (PPM color)")
   {
     std::string filename = testPath + "samples/color64.";
     typedef ImageSelector < Z2i::Domain, Color>::Type Image;
-    
+
     Image image = STBReader<Image>::import( filename+"ppm" );
     PPMWriter<Image>::exportPPM("testwriterColor.ppm", image);
     CHECK( image.isValid());
   }
-  
+
   SECTION("Testing all file formats")
   {
     std::string filename = testPath + "samples/color64.";
     typedef ImageSelector < Z2i::Domain, Color>::Type Image;
-    
+
     Image imagePPM = STBReader<Image>::import( filename+"ppm" );
     CHECK( imagePPM.isValid());
     Image imageJPG = STBReader<Image>::import( filename+"jpg" );

@@ -47,7 +47,7 @@ DGtal::TickedColorMap<Value,CMAP>::TickedColorMap
   const Color & color )
   : myMin( amin ), myMax( amax ), myTickColor( color )
 {
-  ASSERT_MSG(myMin < myMax, "Max should be strictly greather than Min in a colormap.");
+  ASSERT_MSG(myMin < myMax, "Max should be strictly greater than Min in a colormap.");
   myColorMap = new ColorMap(myMin,myMax);
 }
 
@@ -58,7 +58,7 @@ DGtal::TickedColorMap<Value,CMAP>::TickedColorMap
   const Color & color )
   : myMin( other.min() ), myMax( other.max() ), myTickColor( color )
 {
-  ASSERT_MSG(myMin < myMax, "Max should be strictly greather than Min in a colormap.");
+  ASSERT_MSG(myMin < myMax, "Max should be strictly greater than Min in a colormap.");
   myColorMap = new ColorMap( other );
 }
 
@@ -68,8 +68,8 @@ inline
 DGtal::TickedColorMap<Value,CMAP>::TickedColorMap
 ( const TickedColorMap<Value,CMAP> & other )
   : myMin( other.myMin ), myMax( other.myMax ), myTickColor( other.myTickColor )
-{ 
-  ASSERT_MSG(myMin < myMax, "Max should be strictly greather than Min in a colormap.");
+{
+  ASSERT_MSG(myMin < myMax, "Max should be strictly greater than Min in a colormap.");
 }
 
 template <typename Value, typename CMAP>
@@ -87,9 +87,9 @@ DGtal::TickedColorMap<Value,CMAP>::operator=
   if ( &other != this ) {
     myMin = other.myMin;
     myMax = other.myMax;
-    ASSERT_MSG(myMin < myMax, "Max should be strictly greather than Min in a colormap.");
+    ASSERT_MSG(myMin < myMax, "Max should be strictly greater than Min in a colormap.");
     myTickColor = other.myTickColor;
-    myTicks = other.myTicks;   
+    myTicks = other.myTicks;
   }
   return *this;
 }
@@ -121,9 +121,9 @@ DGtal::TickedColorMap<Value,CMAP>::operator()( const Value & value ) const
   //If there's no ticks, just return the color.
   if (myTicks.size()==0)
     return myColorMap->operator()(value);
-  
+
   typename std::vector< std::pair<Value,Value> >::const_iterator  up;
-  
+
   //Test the upper bound
   up = std::upper_bound(myTicks.begin(), myTicks.end(), std::make_pair(value,value));
   if (up == myTicks.end())
@@ -133,15 +133,15 @@ DGtal::TickedColorMap<Value,CMAP>::operator()( const Value & value ) const
     else
       return myColorMap->operator()(value);
   }
- 
+
   if (std::abs(value - up->first) < up->second)
     return myTickColor;
-  
+
   //We test the lower bound
   if ((up != myTicks.begin()) &&
       (std::abs(value - (up-1)->first) < (up-1)->second))
     return myTickColor;
-  
+
   return myColorMap->operator()(value);
 }
 
@@ -154,7 +154,7 @@ inline
 void
 DGtal::TickedColorMap<Value,CMAP>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[TickedColorMap " 
+  out << "[TickedColorMap "
       << " min=" << myMin
       << " max=" << myMax
       << " tickColor= "<< myTickColor
@@ -169,7 +169,7 @@ void DGtal::TickedColorMap<Value,CMAP>::addTick(const Value tick,
 {
   ASSERT( tick >= myMin );
   ASSERT( tick <= myMax );
-  
+
   myTicks.push_back(std::make_pair(tick,thickness));
 }
 
@@ -212,7 +212,7 @@ DGtal::TickedColorMap<Value,CMAP>::isValid() const
 template <typename Value, typename CMAP>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
       const TickedColorMap<Value,CMAP> & object )
 {
   object.selfDisplay( out );
@@ -221,7 +221,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-
-
-

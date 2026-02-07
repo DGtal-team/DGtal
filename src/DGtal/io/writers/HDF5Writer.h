@@ -71,13 +71,13 @@ namespace DGtal
     typedef TImage Image;
     typedef typename TImage::Value Value;
     typedef TFunctor Functor;
-    
-    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, Value, unsigned char> )) ;    
+
+    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, Value, unsigned char> )) ;
     BOOST_STATIC_ASSERT(TImage::Domain::dimension == 3);
 
-    /** 
+    /**
      * Export a 3D UInt8 HDF5 output file with ZLIB compression activated.
-     * 
+     *
      * @param filename name of the output file
      * @param aImage the image to export
      * @param aDataset the dataset name to export.

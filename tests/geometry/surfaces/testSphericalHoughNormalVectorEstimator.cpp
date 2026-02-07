@@ -62,37 +62,37 @@ TEST_CASE( "Testing SphericalHoughNormalVectorEstimator" )
 {
   typedef ImplicitBall<Space> Shape;
   typedef GaussDigitizer<Space,Shape> Gauss;
-  
+
   typedef LightImplicitDigitalSurface<KSpace,Gauss> SurfaceContainer;
   typedef DigitalSurface<SurfaceContainer> Surface;
   typedef Surface::Surfel Surfel;
-  
-  
+
+
   Point p1( -50, -50, -50 );
   Point p2( 50, 50, 50 );
   KSpace K;
   REQUIRE( K.init( p1, p2, true ) );
-  
+
 
   //Shape
   Shape shape(RealPoint::diagonal(0.0), 10.0 );
   Gauss gauss;
   gauss.attach(shape);
   gauss.init(p1,p2,1.0);
-  
+
   //Surface
   Surfel bel = Surfaces<KSpace>::findABel( K, gauss, 10000 );
   SurfaceContainer* surfaceContainer = new SurfaceContainer( K, gauss, SurfelAdjacency<KSpace::dimension>( true ), bel );
   Surface surface( surfaceContainer ); // acquired
 
-  
+
   typedef functors::SphericalHoughNormalVectorEstimator<Surfel, CanonicSCellEmbedder<KSpace> > SphericalHough;
   typedef functors::ConstValue<double> ConstFunctor;
   typedef LocalEstimatorFromSurfelFunctorAdapter<SurfaceContainer, LpMetric<Z3i::Space>, SphericalHough, ConstFunctor> Reporter;
-  
+
   CanonicSCellEmbedder<KSpace> embedder(surface.container().space());
   SphericalHough estimator(embedder,1.0 , 0.001, 1000 , 10, 1);
-  
+
   LpMetric<Z3i::Space> l2(2.0);
   ConstFunctor constFunc(1.0);
   Reporter reporter(surface, l2, estimator , constFunc);
@@ -101,19 +101,19 @@ TEST_CASE( "Testing SphericalHoughNormalVectorEstimator" )
   reporter.init(1, surface.begin(),surface.end());
 
   REQUIRE( reporter.isValid() );
-  
+
   typedef  Reporter::Quantity Quantity;
-  
+
   Quantity result = reporter.eval( surface.begin() );
   trace.info() << "Result at begin = "<< result <<std::endl;
- 
+
   //true normal (implicitBall)
   RealPoint res = embedder( *(surface.begin()) ).getNormalized();
   trace.info() << "Expecting  = "<< res <<std::endl;
-  
+
   REQUIRE( std::abs(result.dot(res)) > 0.9 );
-  
-  
+
+
 #ifdef DGTAL_WITH_POLYSCOPE_TESTS
   PolyscopeViewer<Z3i::Space, KSpace> viewer(K);
   for(Surface::ConstIterator it = surface.begin(), itend=surface.end(); it != itend ;
@@ -124,7 +124,7 @@ TEST_CASE( "Testing SphericalHoughNormalVectorEstimator" )
                             static_cast<unsigned char>(255*abs(normal[1])),
                             static_cast<unsigned char>(255*abs(normal[2])));
     viewer << K.unsigns(*it) ;
-    
+
     Point center = K.sCoords ( *it );
     }
   viewer.show();

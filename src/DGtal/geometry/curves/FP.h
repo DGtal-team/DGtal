@@ -54,30 +54,30 @@
 namespace DGtal
 {
 
-  namespace detail 
+  namespace detail
   {
     /////////////////////////////////////////////////////////////////////////////
     /**
      * \brief Aim: Abstract DSSDecorator for ArithmeticalDSSComputer.
-     * Has 2 virtual methods returning the first and last leaning point: 
+     * Has 2 virtual methods returning the first and last leaning point:
      * - firstLeaningPoint()
      * - lastLeaningPoint()
      *
      * @see DSSDecorator4ConvexPart DSSDecorator4ConcavePart
-     * 
+     *
      * @tparam TDSS type devoted to DSS recognition
-     * Must have a nested type 'Point' and four accessors: 
+     * Must have a nested type 'Point' and four accessors:
      *  Uf(), Ul(), Lf(), Ll()
      *
      */
     template <typename TDSS>
-    class DSSDecorator 
+    class DSSDecorator
     {
-    public: 
+    public:
       /**
        * Type of the underlying DSS
        */
-      typedef TDSS DSS; 
+      typedef TDSS DSS;
     protected:
       /**
        *  Aliasing pointer to an instance of TDSS
@@ -90,7 +90,7 @@ namespace DGtal
        */
       bool isExtendableFront() const
       {
-        return myDSS->isExtendableFront(); 
+        return myDSS->isExtendableFront();
       }
       /**
        * Extends the underlying segment (if possible)
@@ -99,7 +99,7 @@ namespace DGtal
        */
       bool extendFront()
       {
-        return myDSS->extendFront(); 
+        return myDSS->extendFront();
       }
       /**
        * Retracts the underlying segment (if possible)
@@ -108,7 +108,7 @@ namespace DGtal
        */
       bool retractBack()
       {
-        return myDSS->retractBack(); 
+        return myDSS->retractBack();
       }
       /**
        * End of the underlying segment
@@ -116,21 +116,21 @@ namespace DGtal
        */
       typename DSS::ConstIterator end()
       {
-        return myDSS->end(); 
+        return myDSS->end();
       }
 
       /**
-       * Destructor 
+       * Destructor
        * ( virtual to disable warnings [-Wdelete-non-virtual-dtor] )
        */
       virtual ~DSSDecorator() {}
       /**
-       * First leaning point accessor 
+       * First leaning point accessor
        * @return the first upper or lower leaning point
        */
       virtual typename TDSS::Point firstLeaningPoint() const = 0;
       /**
-       * Last leaning point accessor 
+       * Last leaning point accessor
        * @return the last upper or lower leaning point
        */
       virtual typename TDSS::Point lastLeaningPoint() const = 0;
@@ -143,21 +143,21 @@ namespace DGtal
 
     /**
      * \brief Aim: adapter for TDSS used by FP in CONVEX parts.
-     * Has 2 methods: 
+     * Has 2 methods:
      * - firstLeaningPoint()
      * - lastLeaningPoint()
      *
-     * They respectively return the first and last UPPER leaning point 
-     * of the underlying instance of TDSS. 
-     * 
+     * They respectively return the first and last UPPER leaning point
+     * of the underlying instance of TDSS.
+     *
      * @tparam TDSS type devoted to DSS recognition
-     * Must have a nested type 'Point' and four accessors: 
+     * Must have a nested type 'Point' and four accessors:
      *  Uf(), Ul(), Lf(), Ll()
      *
      * @see DSSDecorator FP
      */
     template <typename TDSS>
-    class DSSDecorator4ConvexPart : public DSSDecorator<TDSS> 
+    class DSSDecorator4ConvexPart : public DSSDecorator<TDSS>
     {
     public:
       /**
@@ -169,15 +169,15 @@ namespace DGtal
 	this->myDSS = &aDSS;
       }
       /**
-       * First leaning point accessor 
+       * First leaning point accessor
        * @return the first upper leaning point
        */
-      typename TDSS::Point firstLeaningPoint() const 
+      typename TDSS::Point firstLeaningPoint() const
       {
         return this->myDSS->Uf();
       }
       /**
-       * Last leaning point accessor 
+       * Last leaning point accessor
        * @return the last upper leaning point
        */
       typename TDSS::Point lastLeaningPoint() const
@@ -194,21 +194,21 @@ namespace DGtal
 
     /**
      * \brief Aim: adapter for TDSS used by FP in CONCAVE parts.
-     * Has 2 methods: 
+     * Has 2 methods:
      * - firstLeaningPoint()
      * - lastLeaningPoint()
      *
-     * They respectively return the first and last LOWER leaning point 
-     * of the underlying instance of TDSS. 
-     * 
+     * They respectively return the first and last LOWER leaning point
+     * of the underlying instance of TDSS.
+     *
      * @tparam TDSS type devoted to DSS recognition
-     * Must have a nested type 'Point' and four accessors: 
+     * Must have a nested type 'Point' and four accessors:
      *  Uf(), Ul(), Lf(), Ll()
      *
      * @see DSSDecorator FP
      */
     template <typename TDSS>
-    class DSSDecorator4ConcavePart : public DSSDecorator<TDSS> 
+    class DSSDecorator4ConcavePart : public DSSDecorator<TDSS>
     {
     public:
       /**
@@ -220,15 +220,15 @@ namespace DGtal
         this->myDSS = &aDSS;
       }
       /**
-       * First leaning point accessor 
+       * First leaning point accessor
        * @return the first lower leaning point
        */
-      typename TDSS::Point firstLeaningPoint() const 
+      typename TDSS::Point firstLeaningPoint() const
       {
         return this->myDSS->Lf();
       }
       /**
-       * Last leaning point accessor 
+       * Last leaning point accessor
        * @return the last lower leaning point
        */
       typename TDSS::Point lastLeaningPoint() const
@@ -250,26 +250,26 @@ namespace DGtal
   // template class FP
   /**
    * \brief Aim: Computes the faithful polygon (FP)
-   * of a range of 4/8-connected 2D Points. 
-   * 
-   * The FP has several interesting properties: 
-   *  - its vertices are points of the underlying digital curve, thus with integer coordinates, 
+   * of a range of 4/8-connected 2D Points.
+   *
+   * The FP has several interesting properties:
+   *  - its vertices are points of the underlying digital curve, thus with integer coordinates,
    *  - it respects the convex and concave parts of the underlying digital curve,
-   *  - it is reversible, 
+   *  - it is reversible,
    *  - it is unique for digital curves that are not digital straight segments,
    *  - it is closed to the minimum length polygon (MLP) (and converges toward the MLP
-   * as the resolution tends to the infinity) for closed digital curves.  
+   * as the resolution tends to the infinity) for closed digital curves.
    *
    * It is computed in the course of the maximal digital straight segments computation,
-   * because in convex parts (resp. concave parts), the first and last upper (resp. lower) 
+   * because in convex parts (resp. concave parts), the first and last upper (resp. lower)
    * leaning points of segments that are maximal at the front or at the back are also
    * vertices of the FP.
-   * 
+   *
    * @see ArithmeticalDSSComputer DSSDecorator DSSDecorator4ConvexPart DSSDecorator4ConcavePart
    *
-   * @note T. ROUSSILLON and I. SIVIGNON, 
-   * Faithful polygonal representation of the convex and concave parts of a digital curve, 
-   * Pattern Recognition, Volume 44, Issues 10-11, October-November 2011, Pages 2693-2700. 
+   * @note T. ROUSSILLON and I. SIVIGNON,
+   * Faithful polygonal representation of the convex and concave parts of a digital curve,
+   * Pattern Recognition, Volume 44, Issues 10-11, October-November 2011, Pages 2693-2700.
    *
    * Usage:
    * @code
@@ -277,14 +277,14 @@ namespace DGtal
    FP<ConstIterator, Integer, 4> theFP( r .begin(), r.end() );
    * @endcode
    *
-   * Once the FP is computed, copyFP() is a way of geting its vertices. 
-   * In the same way, copyMLP() is a way of getting the vertices of the MLP. 
-   * 
-   * @tparam TIterator  type ConstIterator on 2D points, 
-   * @tparam TInteger (satisfying CInteger) 
+   * Once the FP is computed, copyFP() is a way of getting its vertices.
+   * In the same way, copyMLP() is a way of getting the vertices of the MLP.
+   *
+   * @tparam TIterator  type ConstIterator on 2D points,
+   * @tparam TInteger (satisfying CInteger)
    * @tparam connectivity
-   * 4 for standard (4-connected) DSS or 8 for naive (8-connected) DSS. 
-   * (Any other integers act as 8). 
+   * 4 for standard (4-connected) DSS or 8 for naive (8-connected) DSS.
+   * (Any other integers act as 8).
    *
    * @see testFP.cpp
    */
@@ -297,17 +297,17 @@ namespace DGtal
 
 
     BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ) );
-    
+
     typedef DGtal::PointVector<2,TInteger> Point;
     typedef DGtal::PointVector<2,TInteger> Vector;
-    
+
     typedef DGtal::PointVector<2, double> RealPoint;
     typedef DGtal::PointVector<2, double> RealVector;
-    
+
     typedef DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity> DSSComputer;
-    
+
     typedef std::list<Point> Polygon;
-    
+
 
 
     // ----------------------- Standard services ------------------------------
@@ -319,7 +319,7 @@ namespace DGtal
      * @param ite  end iterator
      */
     FP(const TIterator& itb, const TIterator& ite);
-  
+
     /**
      * Destructor.
      */
@@ -332,7 +332,7 @@ namespace DGtal
      * @return the list where each vertex of the FP is stored.
      */
     const Polygon& polygon() const;
-    
+
     /**
      * @return true if the list has to be consider as circular.
      */
@@ -357,20 +357,20 @@ namespace DGtal
      * NB: O(n)
      */
     template <typename OutputIterator>
-    OutputIterator copyFP(OutputIterator result) const; 
+    OutputIterator copyFP(OutputIterator result) const;
 
     /**
      * @return the vertices of the MLP
      * NB: O(n)
      */
     template <typename OutputIterator>
-    OutputIterator copyMLP(OutputIterator result) const; 
+    OutputIterator copyMLP(OutputIterator result) const;
 
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    
-    // ------------------------- Private Datas --------------------------------
+
+    // ------------------------- Private Data --------------------------------
   private:
 
     /**
@@ -390,7 +390,7 @@ namespace DGtal
      * @param aDSS a DSS lying on the range to process
      * @return an adapter to @a aDSS for convex or concave part
      *
-     * @tparam Adapter type that adapts a DSS computer 
+     * @tparam Adapter type that adapts a DSS computer
      * @see details::DSSDecorator details::DSSDecorator4ConvexParts details::DSSDecorator4ConcaveParts
      */
     template<typename Adapter>
@@ -399,10 +399,10 @@ namespace DGtal
     /**
      * Removing step
      * @param adapter an Adapter to the current DSS
-     * @return 'false' if the underlying digital curve 
+     * @return 'false' if the underlying digital curve
      * is detected as disconnected and 'true' otherwise
      *
-     * @tparam Adapter type that adapts a DSS computer 
+     * @tparam Adapter type that adapts a DSS computer
      * @see details::DSSDecorator details::DSSDecorator4ConvexParts details::DSSDecorator4ConcaveParts
      */
     template<typename Adapter>
@@ -411,23 +411,23 @@ namespace DGtal
     /**
      * Adding step in the open case
      * @param adapter an Adapter to the current DSS
-     * @param itEnd end iterator used to stop the algorithm 
+     * @param itEnd end iterator used to stop the algorithm
      * (when @a currentDSS.end() == @a itEnd )
      * @return 'false' if the algorithm has to stop
      * and 'true' otherwise
      *
-     * @tparam Adapter type that adapts a DSS computer 
+     * @tparam Adapter type that adapts a DSS computer
      * @see details::DSSDecorator details::DSSDecorator4ConvexParts details::DSSDecorator4ConcaveParts
      */
     template<typename Adapter>
-    bool addingStep( Adapter* adapter, 
+    bool addingStep( Adapter* adapter,
 		     const typename Adapter::DSS::ConstIterator& itEnd );
 
     /**
      * Adding step in the closed case
      * @param adapter an Adapter to the current DSS
      *
-     * @tparam Adapter type that adapts a DSS computer 
+     * @tparam Adapter type that adapts a DSS computer
      * @see details::DSSDecorator details::DSSDecorator4ConvexParts details::DSSDecorator4ConcaveParts
      */
     template<typename Adapter>
@@ -483,8 +483,8 @@ namespace DGtal
      * @param a previous vertex of the FP
      * @param b current vertex of the FP
      * @param c next vertex of the FP
-     * @return vertex of the MLP, which is 
-     * the tranlated of @a b by (+- 0.5, +- 0.5)
+     * @return vertex of the MLP, which is
+     * the translated of @a b by (+- 0.5, +- 0.5)
      */
     RealPoint getRealPoint (const Point& a,const Point& b, const Point& c) const;
 
@@ -506,15 +506,15 @@ namespace DGtal
     FP & operator= ( const FP & other );
 
     // ------------------------- Display ------------------------------------
-  public: 
+  public:
 
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
     void selfDisplay ( std::ostream & out ) const;
-    
-    
+
+
     // --------------- CDrawableWithBoard2D realization --------------------
   public:
 

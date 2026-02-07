@@ -31,4 +31,3 @@ clear()
 {
     setZero();
 }
-

@@ -148,7 +148,7 @@ namespace DGtal
 			   .dot( ( pairs[i+1] - a ).getNormalized() ) );
       return 2.0 * M_PI - angle_sum;
     }
-    
+
     /// Computes the anisotropic measure \f$ \bar{H} \f$ at edge ab.
     /// @param a any point
     /// @param b any point
@@ -206,16 +206,16 @@ namespace DGtal
       return ( 0.5 * norm_ab * angle ) * T; // JOL * 0.5
     }
 
-    
+
     //-------------------------------------------------------------------------
   public:
     /// @name Other geometric services
     /// @{
-    
+
     /// Given a vector of points, returns its barycenter.
     /// @param pts any vector of points
     /// @return the barycenter of these points.
-    static 
+    static
     RealPoint barycenter( const RealPoints& pts )
     {
       RealPoint b;
@@ -234,7 +234,7 @@ namespace DGtal
     RealVector normal( const RealPoint& a, const RealPoint& b, const RealPoint& c )
     {
       return ( ( b - a ).crossProduct( c - a ) ).getNormalized();
-    }    
+    }
 
     /// Computes triangle area
     /// @param a any point
@@ -245,12 +245,12 @@ namespace DGtal
     Scalar area( const RealPoint& a, const RealPoint& b, const RealPoint& c )
     {
       return 0.5 * ( ( b - a ).crossProduct( c - a ) ).norm();
-    }    
+    }
 
     /// Given a vector of unit vectors, returns their average unit vector.
     /// @param vecs any vector of vectors.
     /// @return the average unit vector.
-    static 
+    static
     RealVector averageUnitVector( const RealVectors& vecs )
     {
       RealVector avg;
@@ -258,10 +258,10 @@ namespace DGtal
       auto avg_norm = avg.norm();
       return avg_norm != 0.0 ? avg / avg_norm : avg;
     }
-    
-    
+
+
     /// @}
-    
+
   };
 
 } // namespace DGtal

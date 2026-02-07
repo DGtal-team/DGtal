@@ -56,7 +56,7 @@ Integer getRandomInteger( const Integer & first, const Integer & after_last )
  */
 template <typename Integer, typename NaivePlaneComputer>
 bool
-checkPlane( Integer a, Integer b, Integer c, Integer d, 
+checkPlane( Integer a, Integer b, Integer c, Integer d,
             int diameter, unsigned int nbpoints,
             Statistic<double> & stats )
 {
@@ -84,8 +84,8 @@ checkPlane( Integer a, Integer b, Integer c, Integer d,
   unsigned int complexity = plane.complexity();
   while ( nb != nbpoints )
     {
-      p[ 0 ] = getRandomInteger<PointInteger>( -diameter+1, diameter ); 
-      p[ 1 ] = getRandomInteger<PointInteger>( -diameter+1, diameter ); 
+      p[ 0 ] = getRandomInteger<PointInteger>( -diameter+1, diameter );
+      p[ 1 ] = getRandomInteger<PointInteger>( -diameter+1, diameter );
       p[ 2 ] = getRandomInteger<PointInteger>( -diameter+1, diameter );
       x = (Integer) p[ 0 ];
       y = (Integer) p[ 1 ];
@@ -94,7 +94,7 @@ checkPlane( Integer a, Integer b, Integer c, Integer d,
       case 0: p[ 0 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - b * y - c * z, a ) ); break;
       case 1: p[ 1 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - c * z, b ) ); break;
       case 2: p[ 2 ] = NumberTraits<Integer>::castToInt64_t( ic.ceilDiv( d - a * x - b * y, c ) ); break;
-      } 
+      }
       bool ok = plane.extend( p ); // should be ok
       ++nb; nbok += ok ? 1 : 0;
       if ( ! ok )
@@ -123,16 +123,16 @@ checkPlanes( unsigned int nbplanes, int diameter, unsigned int nbpoints,
   unsigned int nbok = 0;
   for ( unsigned int nbp = 0; nbp < nbplanes; ++nbp )
     {
-      Integer a = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 ); 
-      Integer b = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 ); 
-      Integer c = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 ); 
-      Integer d = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 ); 
+      Integer a = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 );
+      Integer b = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 );
+      Integer c = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 );
+      Integer d = getRandomInteger<Integer>( (Integer) 0, (Integer) diameter / 2 );
       if ( ( a != 0 ) || ( b != 0 ) || ( c != 0 ) )
         {
           ++nb; nbok += checkPlane<Integer, NaivePlaneComputer>( a, b, c, d, diameter, nbpoints, stats ) ? 1 : 0;
           if ( nb != nbok )
             {
-              std::cerr << "[ERROR] for plane " << a << " * x + " 
+              std::cerr << "[ERROR] for plane " << a << " * x + "
                         << b << " * y + " << c << " * z = " << d << std::endl;
               break;
             }
@@ -155,17 +155,17 @@ int main( int argc, char** argv )
   std::cout << "# Usage: " << argv[0] << " <nbtries> <nbpoints> <diameter>." << std::endl;
   std::cout << "# Test class COBANaivePlaneComputer. Points are randomly chosen in [-diameter,diameter]^3." << std::endl;
   std::cout << "# Integer nbtries nbpoints diameter time/plane(ms) E(comp) V(comp)" << std::endl;
-  
+
  // Max diameter is ~20 for int32_t, ~500 for int64_t, any with BigInteger.
   trace.beginBlock ( "Testing class COBANaivePlaneComputer" );
-  bool res = true 
+  bool res = true
     && checkPlanes<COBANaivePlaneComputer<Z3, DGtal::BigInteger> >( nbtries, diameter, nbpoints, stats );
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   long t = trace.endBlock();
   stats.terminate();
   std::cout << "BigInteger" << " " << stats.samples()
             << " " << nbpoints
-            << " " << diameter 
+            << " " << diameter
             << " " << ( (double) t / (double) stats.samples() )
             << " " << stats.mean()
             << " " << stats.variance()

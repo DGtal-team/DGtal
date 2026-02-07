@@ -14,13 +14,13 @@
  *
  **/
 
-/** 
+/**
  * @file MeasureOfStraightLines.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/03/04
- * 
+ *
  * Header file for module MeasureOfStraightLines.cpp
  *
  * This file is part of the DGtal library.
@@ -43,14 +43,14 @@
 #include "DGtal/base/Common.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal 
+namespace DGtal
 {
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // class MeasureOfStraightLines
-  /** 
+  /**
    * Description of class 'MeasureOfStraightLines' <p>
-   * Aim: 
+   * Aim:
    *
    * @brief The aim of this class is to compute the measure in the Lebesgues
    * sense of the set of straight lines associated to domains defined
@@ -60,15 +60,15 @@ namespace DGtal
    *
    * \verbatim
    * @inproceedings{COEURJOLLY:2009:HAL-00432711:1,
-   *   title = { {M}easure of {S}traight {L}ines and its {A}pplications in {D}igital {G}eometry},
+   *   title = { {M}easure of {S}traight {L}lines and its {A}applications in {D}igital {G}eometry},
    *   author = {{C}oeurjolly, {D}avid and {S}ivignon, {I}sabelle},
    *   booktitle = {13th {I}nternational {W}orkshop on {C}ombinatorial {I}mage {A}nalysis 13th {I}nternational {W}orkshop on {C}ombinatorial {I}mage {A}nalysis },
-   *   publisher = {{R}esearch {P}ublishing {S}ervices },
+   *   publisher = {{R}esearch {P}publishing {S}ervices },
    *   pages = {1-12 },
    *   address = {{C}ancun {M}exique },
    *   audience = {internationale },
    *   year = {2009},
-   *   URL = {http://hal.archives-ouvertes.fr/hal-00432711/PDF/mesure.pdf},
+   *   URL = {http://hal.archives-ouvertes.fr/hal-00432711/PDF/measure.pdf},
    * }
    * \endverbatim
    *
@@ -82,14 +82,14 @@ namespace DGtal
   public:
 
     /**
-     * Constructor. 
+     * Constructor.
      */
     MeasureOfStraightLines();
 
 
 
     /**
-     * Destructor. 
+     * Destructor.
      */
     ~MeasureOfStraightLines();
 
@@ -111,43 +111,43 @@ namespace DGtal
 
     /**
      * Compute the measure of the polygon {(a_i,b_i)} in the (a,b)-parameter space
-     * 
-     * REQUIREMENTS: 
-     *   - The polygon is given counter-clockwise 
+     *
+     * REQUIREMENTS:
+     *   - The polygon is given counter-clockwise
      *   - a_i > 0
-     * 
+     *
      * @param a the a-value of polygon vertices
      * @param b the b-value of polygon vertices
      * @return the measure value (positive value)
      */
     double computeMeasure(const std::vector<double> &a,const std::vector<double> &b);
 
-    
+
     /**
      * Compute the abscissa of the centroid of the polygon {(a_i,b_i)}
      * in the (a,b)-parameter space with respect to the measure of lines.
-     * 
-     * REQUIREMENTS: 
-     *   - The polygon is given counter-clockwise 
+     *
+     * REQUIREMENTS:
+     *   - The polygon is given counter-clockwise
      *   - a_i > 0
-     * 
+     *
      * @param a the a-value of polygon vertices
      * @param b the b-value of polygon vertices
      * @return the measure value (positive value)
      */
     double computeCentroidA(const std::vector<double> &a,const std::vector<double> &b);
 
-    
+
     /**
      * Compute the ordinate of the centroid of the polygon {(a_i,b_i)}
      * in the (a,b)-parameter space with respect to the measure of
      * lines. Note that there is a numerical approximation is
      * performed.
-     * 
-     * REQUIREMENTS: 
-     *   - The polygon is given counter-clockwise 
+     *
+     * REQUIREMENTS:
+     *   - The polygon is given counter-clockwise
      *   - a_i > 0
-     * 
+     *
      * @param a the a-value of polygon vertices
      * @param b the b-value of polygon vertices
      * @return the measure value (positive value)
@@ -162,11 +162,11 @@ namespace DGtal
      * @param aValue the new epsilon value
      */
     void setEpsilon(const double aValue);
-    
 
-    // ------------------------- Protected Datas ------------------------------
+
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     double myEpsilon;
 
@@ -189,8 +189,8 @@ namespace DGtal
      * Forbidden by default.
      */
     MeasureOfStraightLines & operator=( const MeasureOfStraightLines & other );
-    
-  
+
+
     // ------------------------- Internals ------------------------------------
   private:
 
@@ -227,11 +227,11 @@ namespace DGtal
      * @param a1 abscissa of the second point.
      * @param b1 ordinate of the second point.
      * @return the measure
-     */  
+     */
     double computeCentroidEdge_b ( double a0,double b0, double a1, double b1 );
-    
+
     /**
-     * Approximate  the centroid on 'b' on the triangle (0,0)-(a0,b0)-(a1,b1) 
+     * Approximate  the centroid on 'b' on the triangle (0,0)-(a0,b0)-(a1,b1)
      * (internal function)
      *
      *
@@ -241,7 +241,7 @@ namespace DGtal
      * @param b1 ordinate of the second point.
      **/
     double __computeCentroidTriApprox_b ( double a0, double b0,double a1,double b1 );
-    
+
     /**
     * Approximate  the centroid on 'b' on the trapezioid  (a0,0)-(a0,b0)-(a1,b1)-(a1,0)
     * (internal function)
@@ -271,7 +271,7 @@ namespace DGtal
      * @return the sign of a number (1 or -1)
      **/
     int sign ( const double a );
-     
+
 
 
   }; // end of class MeasureOfStraightLines
@@ -286,7 +286,7 @@ namespace DGtal
   std::ostream&
   operator<<( std::ostream & out, const MeasureOfStraightLines & object );
 
-  
+
 } // namespace DGtal
 
 

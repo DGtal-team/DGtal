@@ -308,7 +308,7 @@ namespace DGtal
      * @return a reference on 'this'.
      */
     Self & operator= ( const Self & other )
-    {  
+    {
       boost::ignore_unused_variable_warning( other );
       return *this;
     }
@@ -408,7 +408,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
 
 

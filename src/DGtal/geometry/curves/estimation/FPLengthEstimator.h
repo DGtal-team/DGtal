@@ -134,7 +134,7 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
-  
+
   }; // end of class FPLengthEstimator
 
 

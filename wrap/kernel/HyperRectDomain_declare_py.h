@@ -64,7 +64,7 @@ R"(Constructor from two points lower_bound, upper_bound defining the space diago
 R"(Constructor from two points lower_bound, upper_bound with
 real coordinates defining the space diagonal.
 
-The domain actualy defined is the smallest domain with integer bounds that
+The domain actually defined is the smallest domain with integer bounds that
 contains the two given points.
 )",
         py::arg("lower_bound"), py::arg("upper_bound"));

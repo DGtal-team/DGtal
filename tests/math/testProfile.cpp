@@ -33,7 +33,7 @@
 #include "ConfigTest.h"
 #include "DGtalCatch.h"
 #include "DGtal/helpers/StdDefs.h"
-#include "DGtal/math/Profile.h" 
+#include "DGtal/math/Profile.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace std;
@@ -51,10 +51,10 @@ struct LogFct{
 
 TEST_CASE( "Testing Profile" )
 {
-  
+
   Profile<LogFct> sp(Profile<LogFct>::MEAN);
   sp.init(5);
-  
+
   SECTION("Testing basic add of Profile")
     {
       sp.addValue(0, 10.0);
@@ -68,7 +68,7 @@ TEST_CASE( "Testing Profile" )
       REQUIRE( x[3] == Approx(log(4)) );
       REQUIRE( y[3] == Approx(log(10.0)) );
     }
-  
+
   Profile<> sp2(Profile<>::MAX);
   sp2.init(3, true);
 

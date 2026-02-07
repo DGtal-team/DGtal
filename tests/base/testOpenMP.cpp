@@ -55,7 +55,7 @@ bool testOpenMP()
 #endif
 
   trace.endBlock();
-  
+
   return true;
 }
 

@@ -78,7 +78,7 @@ namespace DGtal
 * is moved along the surface. The covariance matrix of this kernel
 * intersected with the shape carries local geometric information. It
 * can be used to compute normal and curvature directions, and
-* curvature values also. Theorical multigrid convergence is proved,
+* curvature values also. Theoretical multigrid convergence is proved,
 * with a convergence speed of O(h^1/3) with hypothesis about the shape
 * geometry and the convolution kernel radius.  Experimental results
 * confirm the multigrid convergence.
@@ -153,7 +153,7 @@ public:
   typedef GaussDigitizer< Space, KernelSupport > DigitalShapeKernel;
   typedef GaussDigitizer< Space, EuclideanMinus > DigitalShape;
 
-  typedef DigitalSurfaceConvolver<ShapeSpelFunctor, KernelSpelFunctor, 
+  typedef DigitalSurfaceConvolver<ShapeSpelFunctor, KernelSpelFunctor,
                                   KSpace, DigitalShapeKernel> Convolver;
   typedef typename Convolver::PairIterators PairIterators;
   typedef typename Convolver::CovarianceMatrix Matrix;
@@ -161,7 +161,7 @@ public:
   typedef double Scalar;
   BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< ShapeSpelFunctor > ));
   BOOST_CONCEPT_ASSERT (( concepts::CUnaryFunctor< CovarianceMatrixFunctor, Matrix, Quantity > ));
-  BOOST_STATIC_ASSERT (( concepts::ConceptUtils::SameType< typename Convolver::CovarianceMatrix, 
+  BOOST_STATIC_ASSERT (( concepts::ConceptUtils::SameType< typename Convolver::CovarianceMatrix,
                                                  typename CovarianceMatrixFunctor::Argument >::value ));
 
 
@@ -171,7 +171,7 @@ public:
   /**
   * Default constructor. The object is invalid. The user needs to call
   * setParams and attach.
-  * 
+  *
   * @param fct the functor for transforming the covariance matrix into
   * some quantity. If not precised, a default object is instantiated.
   */
@@ -186,7 +186,7 @@ public:
   * @param fct the functor for transforming the covariance matrix into
   * some quantity. If not precised, a default object is instantiated.
   */
-  IntegralInvariantCovarianceEstimator ( ConstAlias< KSpace > K, 
+  IntegralInvariantCovarianceEstimator ( ConstAlias< KSpace > K,
                                ConstAlias< PointPredicate > aPointPredicate,
                                CovarianceMatrixFunctor fct = CovarianceMatrixFunctor() );
 
@@ -226,7 +226,7 @@ public:
   * @param aPointPredicate the shape of interest. The alias can be secured
   * if a some counted pointer is handed.
   */
-  void attach( ConstAlias< KSpace > K, 
+  void attach( ConstAlias< KSpace > K,
                ConstAlias<PointPredicate> aPointPredicate );
 
   /**
@@ -235,7 +235,7 @@ public:
   * @param[in] dRadius the "digital" radius of the kernel (but may be non integer).
   */
   void setParams( const double dRadius );
-  
+
   /**
   * Model of CDigitalSurfaceLocalEstimator. Initialisation.
   *
@@ -248,7 +248,7 @@ public:
   void init( const double _h, SurfelConstIterator itb, SurfelConstIterator ite );
 
   /**
-  * -- Estimation -- 
+  * -- Estimation --
   *
   * Compute the integral invariant covariance matrix at surfel *it of
   * a shape, then apply the CovarianceMatrixFunctor to extract some
@@ -266,7 +266,7 @@ public:
 
 
   /**
-  * -- Estimation -- 
+  * -- Estimation --
   *
   * Compute the integral invariant covariance matrix for a range of
   * surfels [itb,ite) on a shape, then apply the
@@ -302,7 +302,7 @@ public:
   */
   bool isValid() const;
 
-  // ------------------------- Private Datas --------------------------------
+  // ------------------------- Private Data --------------------------------
 private:
 
   CovarianceMatrixFunctor myFct;            ///< The covariance matrix functor that transforms the II covariance matrix into a quantity.
@@ -312,7 +312,7 @@ private:
   CountedPtr<KernelSupport>      myKernel;      ///< Euclidean kernel
   CountedPtr<DigitalShapeKernel> myDigKernel;   ///< Digital kernel
   CountedConstPtrOrConstPtr<PointPredicate> myPointPredicate; ///< Smart pointer (if required) on a point predicate.
-  CountedPtr<Domain>             myShapeDomain; ///< Smart pointer on domain         
+  CountedPtr<Domain>             myShapeDomain; ///< Smart pointer on domain
   CountedPtr<ShapePointFunctor>  myShapePointFunctor; ///< Smart pointer on functor point -> {0,1}
   CountedPtr<ShapeSpelFunctor>   myShapeSpelFunctor;  ///< Smart pointer on functor spel ->  {0,1}
   CountedPtr<Convolver>          myConvolver;   ///< Convolver
@@ -332,7 +332,7 @@ private:
   */
   template <typename TKSpace, typename TPointPredicate, typename TCovarianceMatrixFunctor>
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
                const IntegralInvariantCovarianceEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor> & object );
 
 } // namespace DGtal

@@ -56,7 +56,7 @@ namespace DGtal
   /**
    * Description of template class 'CountedPtr' <p>
    * \brief Aim: Smart pointer based on reference counts.
-   * 
+   *
    * It is a standard smart pointer by reference counts. Of course,
    * only dynamically allocated objects may be pointed by a smart
    * pointer. The CountedPtr<T> holds a pointer to a
@@ -116,8 +116,8 @@ namespace DGtal
      *
      * @param p either 0 or a pointer on a dynamically allocated object of type T.
      */
-    explicit CountedPtr(T* p = 0) : myCounter(0) 
-    { 
+    explicit CountedPtr(T* p = 0) : myCounter(0)
+    {
       if (p) myCounter = new Counter(p);
     }
 
@@ -126,8 +126,8 @@ namespace DGtal
      * object, delete it.
      */
     ~CountedPtr()
-    { 
-      release(); 
+    {
+      release();
     }
 
     /**
@@ -136,7 +136,7 @@ namespace DGtal
      * Performs a smart copy. The CountedPtr only references the same
      * object as \a r. There is now one more reference on the same
      * object.
-     * 
+     *
      * @param r the object to copy.
      */
     CountedPtr(const CountedPtr& r) noexcept
@@ -152,7 +152,7 @@ namespace DGtal
      * pointing on it). Then, this CountedPtr only references the same
      * object as \a r. There is now one more reference on the same
      * object.
-     * 
+     *
      * @param r the object to copy.
      * @return a reference on 'this'.
      */
@@ -167,7 +167,7 @@ namespace DGtal
     }
 
     /**
-     * Dereferencing operator. 
+     * Dereferencing operator.
      * @return a reference on the object that is pointed by the smart pointer.
      * @pre 'isValid()' is true
      */
@@ -177,7 +177,7 @@ namespace DGtal
     }
 
     /**
-     * Member access operator. 
+     * Member access operator.
      * @return a pointer on the object that is pointed by the smart pointer.
      * @pre 'isValid()' is true
      */
@@ -187,7 +187,7 @@ namespace DGtal
     }
 
     /**
-     * Secured member access operator. 
+     * Secured member access operator.
      *
      * @return a pointer on the object that is pointed by the smart
      * pointer or 0 if the object is not valid ('isValid()' is false).
@@ -208,7 +208,7 @@ namespace DGtal
 
     /**
        Equality operator ==
-       
+
        @param other any other pointer.
        @return 'true' if 'this' points to \a other.
     */
@@ -219,7 +219,7 @@ namespace DGtal
 
     /**
        Inequality operator !=
-       
+
        @param other any other pointer.
        @return 'true' if 'this' points to a different address than \a other.
     */
@@ -233,7 +233,7 @@ namespace DGtal
      *
      * @return the number of smart pointers pointing to the same object as 'this'.
      */
-    unsigned int count() const      
+    unsigned int count() const
     {
       return myCounter->count;
     }
@@ -246,13 +246,13 @@ namespace DGtal
      * @note Use with care.
      * @pre 'isValid()' and 'unique()'.
      */
-    inline T* drop() 
-    { 
+    inline T* drop()
+    {
       ASSERT( isValid() );
       ASSERT( unique() );
       T* tmp = myCounter->ptr;
       delete myCounter;
-      myCounter = 0; 
+      myCounter = 0;
       return tmp;
     }
 private:
@@ -302,12 +302,12 @@ private:
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
     /// The counter object pointed by this smart pointer.
     Counter* myCounter;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------

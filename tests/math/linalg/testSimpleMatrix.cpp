@@ -137,7 +137,7 @@ bool testArithm()
 
   trace.endBlock();
 
-  trace.beginBlock ( "Testing substraction ..." );
+  trace.beginBlock ( "Testing subtraction ..." );
   nbok += ((m34d - m34dbis) == ressub) ? 1 : 0;
   nb++;
   trace.info()<<ressub<<std::endl;
@@ -406,7 +406,7 @@ bool testBareissDeterminant()
   trace.beginBlock( "Bareiss determinant test" );
   {
     typedef DGtal::SimpleMatrix<int,3,3> Matrix;
-    
+
     Matrix M = { 1, 2, 3, 4, 5, 7, 6, 8, 9 };
     auto   d = M.determinant();
     int    db;
@@ -438,7 +438,7 @@ bool testBareissDeterminant()
     std::vector<int> V = { 1, 2, 3, -4, 13, 4, 5, 7, 6, 8, 17, 9, 21, 12, -5, 11 };
     auto MV = DGtal::functions::matrixAsVectorVector( 4, 4, V );
     int64_t db;
-    DGtal::functions::getDeterminantBareiss( db, MV ); 
+    DGtal::functions::getDeterminantBareiss( db, MV );
     trace.info() << "db=" << db << "\n";
     nbok += ( db == -12260 ) ? 1 : 0;
     nb++;
@@ -480,7 +480,7 @@ bool testBareissDeterminant()
 
   std::cout << "(" << nbok << "/" << nb << ")\n";
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
@@ -512,7 +512,7 @@ bool testLLL()
     std::cout << "Init base: \n" << B
               << "\nLLL base: delta=0.75\n" << L1 << "\n"
               << "\nLLL base: delta=0.99\n" << L2 << "\n";
-    
+
     std::vector< std::vector< Integer > > R = { {-12,3,-7}, {32,-17,-49}, {-7,-20,0} };
     nbok += L1 == R ? 1 : 0;
     nb++;
@@ -531,7 +531,7 @@ bool testLLL()
     std::cout << "Init base: \n" << B
               << "\nLLL base: delta=0.75\n" << L1 << "\n"
               << "\nLLL base: delta=0.99\n" << L2 << "\n";
-    
+
     std::vector< std::vector< Integer > > R1 = {
       { 69, 116, -78,  31},
       {-23, 166,  55, -26},
@@ -561,7 +561,7 @@ bool testLLL()
     std::cout << "Init base: \n" << B
               << "\nLLL base: delta=0.75\n" << L1 << "\n"
               << "\nLLL base: delta=0.99\n" << L2 << "\n";
-    
+
     std::vector< std::vector< Integer > > R1 = {
       { 15,-13, -9,  5,-20,  6,  9, -7},
       {-12,  9,  0,  5,-23, -5, -8,  1},
@@ -637,7 +637,7 @@ bool testOrthogonalLattice()
   for ( auto i = 0; i < 10000; i++ )
     {
       vector<int64_t> n = { rand() % 30 - 15, rand() % 30 - 15, rand() % 30 - 15 };
-      
+
       auto g = functions::makePrimitive( n );
       if ( g==0 ) continue;
       vector<int64_t> no = n;
@@ -645,7 +645,7 @@ bool testOrthogonalLattice()
       auto L = DGtal::functions::computeOrthogonalLattice( n );
       functions::shortenBasis( L );
       Integer l0 = functions::dotProduct( L[ 0 ], n ); // vectors are orthogonal
-      Integer l1 = functions::dotProduct( L[ 1 ], n ); 
+      Integer l1 = functions::dotProduct( L[ 1 ], n );
       auto     c = functions::crossProduct( L[ 0 ], L[ 1 ] ); // u x v = n
       nbok += l0 == 0 ? 1 : 0;
       nbok += l1 == 0 ? 1 : 0;

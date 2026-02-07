@@ -157,11 +157,11 @@ namespace DGtal
      *
      * @param verbose if 'true' displays information on ongoing computation.
      */
-    VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > _surface, 
+    VoronoiCovarianceMeasureOnDigitalSurface( ConstAlias< Surface > _surface,
                                               Surfel2PointEmbedding _surfelEmbedding,
-                                              Scalar _R, Scalar _r, 
+                                              Scalar _R, Scalar _r,
                                               KernelFunction chi_r,
-                                              Scalar t = 2.5, Metric aMetric = Metric(), 
+                                              Scalar t = 2.5, Metric aMetric = Metric(),
                                               bool verbose = false );
 
     /// the const-aliased digital surface.
@@ -181,12 +181,12 @@ namespace DGtal
     Scalar radiusTrivial() const;
 
     /**
-       @param[in] outIt an output iterator on Point to write the point(s) associated to surfel \a s. 
+       @param[in] outIt an output iterator on Point to write the point(s) associated to surfel \a s.
        @param[in] s the surfel that is embedded in the digital space according to mySurfelEmbedding.
        @return the (modified) output iterator after the write operations.
     */
     template <typename PointOutputIterator>
-    PointOutputIterator getPoints( PointOutputIterator outIt, Surfel s ) const; 
+    PointOutputIterator getPoints( PointOutputIterator outIt, Surfel s ) const;
 
     /// @return a const-reference to the map Surfel -> Normals (vcm and trivial normal).
     const Surfel2Normals& mapSurfel2Normals() const;
@@ -229,7 +229,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
     /// (possibly secure) alias of the digital surface
     CountedConstPtrOrConstPtr< Surface > mySurface;
@@ -248,7 +248,7 @@ namespace DGtal
     /// Stores for each surfel its vcm normal and its trivial normal.
     Surfel2Normals mySurfel2Normals;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------
@@ -291,7 +291,7 @@ namespace DGtal
    */
   template <typename TDigitalSurfaceContainer, typename TSeparableMetric, typename TKernelFunction>
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
                const VoronoiCovarianceMeasureOnDigitalSurface<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction> & object );
 
 } // namespace DGtal

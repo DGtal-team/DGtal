@@ -144,7 +144,7 @@ DenseMatrix HarmonicParametrization()
     std::vector<chain> chains = surfmesh.computeManifoldBoundaryChains();
     //choose longest chain as boundary of the parametrization
     std::cout<<"Nb boundaries  = "<< chains.size() << std::endl;
-  
+
     //choose longest chain as boundary of the parametrization
     auto B = *std::max_element(chains.begin(),chains.end(),[] (const chain& A,const chain& B) {return A.size() < B.size();});
 

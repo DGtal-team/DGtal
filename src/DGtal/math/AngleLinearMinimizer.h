@@ -47,8 +47,8 @@
 #include <iostream>
 #include <vector>
 #include "DGtal/base/Common.h"
-#include "DGtal/math/AngleComputer.h" 
-#include "DGtal/arithmetic/ModuloComputer.h" 
+#include "DGtal/math/AngleComputer.h"
+#include "DGtal/arithmetic/ModuloComputer.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -59,14 +59,14 @@ namespace DGtal
 /**
  * Description of class 'AngleLinearMinimizer' <p>
  * \brief Aim: Used to minimize the angle variation between different angles while taking into accounts min and max constraints.
- * Example (@see math/testAngleLinearMinimizer.cpp) 
+ * Example (@see math/testAngleLinearMinimizer.cpp)
   \snippet testAngleLinearMinimizer.cpp optimization
-  
+
  *
  */
 class AngleLinearMinimizer
 {
-  
+
 public:
   /**
    * Stores the information linked to the value to optimize.
@@ -79,10 +79,10 @@ public:
     double value;
 
     /**
-     * The old value. Useful during optimization. 
+     * The old value. Useful during optimization.
      */
-    double oldValue; 
-    
+    double oldValue;
+
     /**
      * The lower bound for the value.
      */
@@ -97,24 +97,24 @@ public:
      * This is the distance between this value and the next one.
      */
     double distToNext;
-    
+
   };
-  
+
 
 
     // ----------------------- Standard services ------------------------------
 public:
-  
+
   /**
    * Destructor.
    */
   virtual ~AngleLinearMinimizer();
-  
+
   /**
    * Constructor.
    */
   AngleLinearMinimizer();
-  
+
   /**
    * Reset all. The object is as if it has just been created.
    */
@@ -126,19 +126,19 @@ public:
    * @param nbMax an upper bound for the number of values to optimize.
    */
   void init( unsigned int nbMax );
-  
+
 
   /**
    * @return a reference on the information structure of the [i]th value.
    */
    ValueInfo & rw( unsigned int i );
 
-  
+
    /**
    * @return a const reference on the information structure of the [i]th value.
    */
    const ValueInfo & ro( unsigned int i ) const;
-  
+
   /**
    * @return the maximum number of values stored in the object.
    */
@@ -164,27 +164,27 @@ public:
    void setIsCurveOpen( bool is_curve_open = false );
 
 
- 
-  
+
+
   // ------------------------- Optimization services --------------------------
 
 public:
-  
+
   /**
    * @param i1 the first value to be optimized (between 0 and 'size()-1').
-   * @param i2 the value after the last to be optimized (between 0 and 'size()-1') 
+   * @param i2 the value after the last to be optimized (between 0 and 'size()-1')
    * @return the current energy of the system.
    */
   double getEnergy( unsigned int i1, unsigned int i2 ) const;
-  
+
   /**
    * @param i1 the first value to be optimized (between 0 and 'size()-1').
-   * @param i2 the value after the last to be optimized (between 0 and 'size()-1') 
+   * @param i2 the value after the last to be optimized (between 0 and 'size()-1')
    * @return the former energy of the system.
    */
-  double getFormerEnergy( unsigned int i1, unsigned int i2 ) const;  
-  
-  
+  double getFormerEnergy( unsigned int i1, unsigned int i2 ) const;
+
+
   /**
    * @return the energy gradient computed at the current position.
    */
@@ -195,25 +195,25 @@ public:
    * @return the energy gradient computed at the former position.
    */
   std::vector<double> getFormerGradient() const;
-  
+
   /**
    * Move each value on the straight line joining its neighboring
    * values while maintaining the value between its bounds.  The
-   * optimization is performed on all values. After preparing datas,
-   * calls oneStep, which may be overriden.
+   * optimization is performed on all values. After preparing data,
+   * calls oneStep, which may be overridden.
    *
    * @return the sum of the displacements.
    * @see oneStep
    */
   double optimize();
-  
-  
+
+
   /**
    * Move each value on the straight line joining its neighboring
    * values while maintaining the value between its bounds.  The
    * optimization is performed on values [i1] included to [i2]
-   * excluded.  After preparing datas, calls oneStep, which may be
-   * overriden. Then, computes max and sum of displacements.
+   * excluded.  After preparing data, calls oneStep, which may be
+   * overridden. Then, computes max and sum of displacements.
    *
    * @param i1 the first value to be optimized (between 0 and 'size()-1').
    * @param i2 the value after the last to be optimized (between 0 and 'size()-1').
@@ -221,8 +221,8 @@ public:
    * @see oneStep
    */
   double optimize( unsigned int i1, unsigned int i2 );
-  
-  
+
+
   /**
    * Sum of all the absolute displacements of the last optimisation step.
    */
@@ -235,7 +235,7 @@ public:
    */
    double max() const;
 
- 
+
 protected:
 
   /**
@@ -257,9 +257,9 @@ public:
    * several meanings, like the infinite norm of the last displacement
    * or the infinite norm of the projected gradient.
    *
-   * @return an upper bound on the norm of the last displacement. 
+   * @return an upper bound on the norm of the last displacement.
    */
-  virtual double lastDelta() const; 
+  virtual double lastDelta() const;
 
 
 
@@ -276,7 +276,7 @@ public:
   // ----------------------- Interface --------------------------------------
 public:
 
-  
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -289,19 +289,19 @@ public:
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
 
 protected:
   /**
    * Indicates if the curve is open.
    */
   bool myIsCurveOpen;
-  
+
   /**
    * The dynamically allocated array of values and the associated constraints.
    */
   ValueInfo* myValues;
-  
+
   /**
    * The meaningful size of the array [myValues], ie the number of
    * valid entries.
@@ -309,20 +309,20 @@ protected:
   unsigned int mySize;
 
 private:
-  
+
   /**
    * The size of the array @a myValues, ie the maximal number of valid values.
    */
   unsigned int myMaxSize;
 
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
 private:
   /**
    * Sum of all the absolute displacements of the last optimisation step.
    */
   double mySum;
-  
+
   /**
    * Max of all the absolute displacements of the last optimisation step.
    */
@@ -330,7 +330,7 @@ private:
 
   // ------------------------- Hidden services ------------------------------
 
-  
+
 
 private:
  /**
@@ -346,9 +346,9 @@ private:
    * Forbidden by default.
    */
    AngleLinearMinimizer & operator=( const AngleLinearMinimizer & other );
-  
 
-  
+
+
   // ------------------------- Internals ------------------------------------
 private:
 
@@ -374,11 +374,11 @@ private:
      virtual ~AngleLinearMinimizerByRelaxation();
 
   protected:
-    
+
     /**
      * The method which performs the optimization effectively. Use a
      * relaxation technique. The optimization is performed on values
-     * [i1] included to [i2] excluded. 
+     * [i1] included to [i2] excluded.
      *
      * @param i1 the first value to be optimized (between 0 and 'size()-1').
      * @param i2 the value after the last to be optimized (between 0 and 'size()-1').
@@ -392,9 +392,9 @@ public:
      * several meanings, like the infinite norm of the last displacement
      * or the infinite norm of the projected gradient.
      *
-     * @return an upper bound on the norm of the last displacement. 
+     * @return an upper bound on the norm of the last displacement.
      */
-    virtual double lastDelta() const; 
+    virtual double lastDelta() const;
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -405,7 +405,7 @@ public:
     virtual void selfDisplay( std::ostream & aStream ) const;
 
   };
-  
+
 
 
   /**
@@ -432,11 +432,11 @@ public:
      virtual ~AngleLinearMinimizerByGradientDescent();
 
   protected:
-    
+
     /**
      * The method which performs the optimization effectively. Use a
      * relaxation technique. The optimization is performed on values
-     * [i1] included to [i2] excluded. 
+     * [i1] included to [i2] excluded.
      *
      * @param i1 the first value to be optimized (between 0 and 'size()-1').
      * @param i2 the value after the last to be optimized (between 0 and 'size()-1').
@@ -450,9 +450,9 @@ public:
      * several meanings, like the infinite norm of the last displacement
      * or the infinite norm of the projected gradient.
      *
-     * @return an upper bound on the norm of the last displacement. 
+     * @return an upper bound on the norm of the last displacement.
      */
-    virtual double lastDelta() const; 
+    virtual double lastDelta() const;
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -490,11 +490,11 @@ public:
      virtual ~AngleLinearMinimizerByAdaptiveStepGradientDescent();
 
   protected:
-    
+
     /**
      * The method which performs the optimization effectively. Use a
      * relaxation technique. The optimization is performed on values
-     * [i1] included to [i2] excluded. 
+     * [i1] included to [i2] excluded.
      *
      * @param i1 the first value to be optimized (between 0 and 'size()-1').
      * @param i2 the value after the last to be optimized (between 0 and 'size()-1').
@@ -508,9 +508,9 @@ public:
      * several meanings, like the infinite norm of the last displacement
      * or the infinite norm of the projected gradient.
      *
-     * @return an upper bound on the norm of the last displacement. 
+     * @return an upper bound on the norm of the last displacement.
      */
-    virtual double lastDelta() const; 
+    virtual double lastDelta() const;
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -521,8 +521,8 @@ public:
     virtual void selfDisplay( std::ostream & aStream ) const;
 
   };
-  
-  
+
+
 
 
 /**

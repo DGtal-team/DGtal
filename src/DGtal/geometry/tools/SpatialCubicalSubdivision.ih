@@ -57,7 +57,7 @@ template <typename TSpace>
 inline
 DGtal::SpatialCubicalSubdivision<TSpace>::
 SpatialCubicalSubdivision( const SpatialCubicalSubdivision& other )
-  : myDomain( other.myDomain ), mySize( other.mySize ), 
+  : myDomain( other.myDomain ), mySize( other.mySize ),
     myArray( other.binDomain() ), myDiag( other.myDiag )
 {
   BinConstRange range = myArray.constRange();
@@ -143,11 +143,11 @@ template <typename TSpace>
 inline
 void
 DGtal::SpatialCubicalSubdivision<TSpace>::
-push( const Point& p ) 
+push( const Point& p )
 {
   Point b = bin( p );
   Storage* pts = myArray( b );
-  if ( pts == 0 ) 
+  if ( pts == 0 )
     {
       pts = new Storage;
       myArray.setValue( b, pts );
@@ -173,7 +173,7 @@ template <typename PointPredicate>
 inline
 void
 DGtal::SpatialCubicalSubdivision<TSpace>::
-getPoints( std::vector<Point> & pts, 
+getPoints( std::vector<Point> & pts,
            Point bin_lo, Point bin_up, const PointPredicate & pred ) const
 {
   Domain local( bin_lo.sup( binDomain().lowerBound() ),
@@ -182,7 +182,7 @@ getPoints( std::vector<Point> & pts,
     {
       const Storage* storage = myArray( *it );
       if ( storage )
-        for ( typename Storage::const_iterator its = storage->begin(), itsE = storage->end(); 
+        for ( typename Storage::const_iterator its = storage->begin(), itsE = storage->end();
               its != itsE; ++its )
           if ( pred( *its ) ) pts.push_back( *its );
     }
@@ -192,7 +192,7 @@ template <typename TSpace>
 inline
 void
 DGtal::SpatialCubicalSubdivision<TSpace>::
-getPoints( std::vector<Point> & pts, 
+getPoints( std::vector<Point> & pts,
            Point bin_lo, Point bin_up ) const
 {
   Domain local( bin_lo.sup( binDomain().lowerBound() ),
@@ -201,7 +201,7 @@ getPoints( std::vector<Point> & pts,
     {
       const Storage* storage = myArray( *it );
       if ( storage )
-        for ( typename Storage::const_iterator its = storage->begin(), itsE = storage->end(); 
+        for ( typename Storage::const_iterator its = storage->begin(), itsE = storage->end();
               its != itsE; ++its )
           pts.push_back( *its );
     }
@@ -220,7 +220,7 @@ inline
 void
 DGtal::SpatialCubicalSubdivision<TSpace>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[SpatialCubicalSubdivision domain=" << domain() 
+  out << "[SpatialCubicalSubdivision domain=" << domain()
       << " binDomain=" << binDomain()
       << " binSize=" << mySize
       << "]";
@@ -246,7 +246,7 @@ DGtal::SpatialCubicalSubdivision<TSpace>::isValid() const
 template <typename TSpace>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		  const SpatialCubicalSubdivision<TSpace> & object )
 {
   object.selfDisplay( out );
@@ -255,5 +255,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

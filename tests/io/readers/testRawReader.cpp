@@ -63,7 +63,7 @@ void testImageOnRef( Image const& anImage )
 {
   typedef typename Image::Domain  Domain;
   typedef typename Domain::Point  Point;
-  
+
   // Checking domain
   INFO( "Checking domain" )
   REQUIRE( anImage.domain().lowerBound() == Point::diagonal(0) );
@@ -87,7 +87,7 @@ void testImageOnRef( Image const& anImage )
 /** Reads and compares a raw file to the reference data.
  * @tparam N  Dimension of the image.
  */
-template < 
+template <
   DGtal::Dimension N
 >
 void testRawReaderOnRef()
@@ -109,7 +109,7 @@ void testRawReaderOnRef()
 
   // Reading file
   const Vector extent = Vector::diagonal(5);
-  
+
   INFO( "Reading file with importRaw32" << fileName );
   Image imageRaw32 = RawReader<Image>::importRaw32( fileName, extent );
   testImageOnRef( imageRaw32 );
@@ -133,7 +133,7 @@ void generateRefImage( Image & anImage, typename Image::Value aSeed )
   typedef typename Domain::Point  Point;
 
   const Domain  domain = anImage.domain();
-  
+
   for ( typename Domain::ConstIterator it = domain.begin(), itEnd = domain.end(); it != itEnd; ++it )
     {
       const Point pt = *it;
@@ -158,7 +158,7 @@ void testWriteAndRead( T aSeed )
   typedef SpaceND<N> Space;
   typedef HyperRectDomain<Space> Domain;
   typedef typename ImageSelector<Domain, T>::Type Image;
-  typedef typename Domain::Point  Point;  
+  typedef typename Domain::Point  Point;
 
   Point upperPt;
   upperPt[ 0 ] = 8;
@@ -327,4 +327,3 @@ TEST_CASE( "Checking writing & reading double in 3D with generic IO", "[reader][
 {
   testWriteAndRead<3, double, RawIO>( 1.23456789 );
 }
-

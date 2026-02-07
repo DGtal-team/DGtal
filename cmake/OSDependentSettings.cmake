@@ -1,5 +1,5 @@
 #------------------------------------------------------------------------------
-# -- Environement variables
+# -- Environment variables
 #------------------------------------------------------------------------------
 if (UNIX)
   target_compile_definitions(DGtal PUBLIC -DUNIX)
