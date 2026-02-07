@@ -187,16 +187,16 @@ namespace DGtal
         ASSERT( idx <= size );
 	if ( size < N )
 	  {
-	    std::copy_backward( datas + idx, datas + size, datas + size + 1 );
-	    return ( datas[ idx ] = v );
+	    std::copy_backward( allData + idx, allData + size, allData + size + 1 );
+	    return ( allData[ idx ] = v );
 	  }
 	else if ( size == N )
 	  {
             if ( idx < N )
               {
-                data.lastData = datas[ N - 1 ];
-                std::copy_backward( datas + idx, datas + N - 1, datas + N );
-                return ( datas[ idx ] = v );
+                data.lastData = allData[ N - 1 ];
+                std::copy_backward( allData + idx, allData + N - 1, allData + N );
+                return ( allData[ idx ] = v );
               }
             else // idx == N
               {
@@ -210,33 +210,33 @@ namespace DGtal
 	    __AnyBlock* next = new __AnyBlock;
 	    if ( idx < N )
 	      {
-		next->datas[ 0 ] = datas[ N - 1 ];
-		next->datas[ 1 ] = data.lastData;
-		std::copy_backward( datas + idx, datas + N - 1, datas + N );
+		next->allData[ 0 ] = allData[ N - 1 ];
+		next->allData[ 1 ] = data.lastData;
+		std::copy_backward( allData + idx, allData + N - 1, allData + N );
                 data.nextBlock = next;
-		return ( datas[ idx ] = v );
+		return ( allData[ idx ] = v );
 	      }
 	    else if ( idx == N )
 	      {
-		next->datas[ 1 ] = data.lastData;
+		next->allData[ 1 ] = data.lastData;
                 data.nextBlock = next;
-		return ( next->datas[ 0 ] = v );
+		return ( next->allData[ 0 ] = v );
 	      }
 	    else //if ( idx > N )
 	      {
-		next->datas[ 0 ] = data.lastData;
+		next->allData[ 0 ] = data.lastData;
                 data.nextBlock = next;
-                return ( next->datas[ 1 ] = v );
+                return ( next->allData[ 1 ] = v );
 	      }
 	  }
 	else // size > N + 1
 	  {
 	    if ( idx < N )
 	      {
-		Data v1 = datas[ N - 1 ];
-		std::copy_backward( datas + idx, datas + N - 1, datas + N );
+		Data v1 = allData[ N - 1 ];
+		std::copy_backward( allData + idx, allData + N - 1, allData + N );
 		data.nextBlock->insert( 0, size - N, v1 );
-		return ( datas[ idx ] = v );
+		return ( allData[ idx ] = v );
 	      }
 	    else
 	      return data.nextBlock->insert( idx - N, size - N, v );
@@ -254,28 +254,28 @@ namespace DGtal
 	if ( size <= ( N + 1 ) )
 	  {
 	    // works also in the case we use 'data' to store a N+1-th data.
-	    std::copy( datas + idx + 1, datas + size, datas + idx );
+	    std::copy( allData + idx + 1, allData + size, allData + idx );
             data.nextBlock = 0;
 	  }
 	else if ( size == N + 2 )
 	  {
 	    if ( idx < N )
 	      {
-		std::copy( datas + idx + 1, datas + N, datas + idx );
-		datas[ N - 1 ] = data.nextBlock->datas[ 0 ];
-                Data tmp = data.nextBlock->datas[ 1 ];
+		std::copy( allData + idx + 1, allData + N, allData + idx );
+		allData[ N - 1 ] = data.nextBlock->allData[ 0 ];
+                Data tmp = data.nextBlock->allData[ 1 ];
 		delete data.nextBlock;
                 data.lastData = tmp;
 	      }
 	    else if ( idx == N )
               {
-                Data tmp = data.nextBlock->datas[ 1 ];
+                Data tmp = data.nextBlock->allData[ 1 ];
 		delete data.nextBlock;
                 data.lastData = tmp;
               }
             else // idx == N + 1
               {
-                Data tmp = data.nextBlock->datas[ 0 ];
+                Data tmp = data.nextBlock->allData[ 0 ];
 		delete data.nextBlock;
                 data.lastData = tmp;
               }
@@ -284,8 +284,8 @@ namespace DGtal
 	  {
 	    if ( idx < N )
 	      {
-		std::copy( datas + idx + 1, datas + N, datas + idx );
-		datas[ N - 1 ] = data.nextBlock->datas[ 0 ];
+		std::copy( allData + idx + 1, allData + N, allData + idx );
+		allData[ N - 1 ] = data.nextBlock->allData[ 0 ];
 		data.nextBlock = data.nextBlock->erase( 0, size - N );
 	      }
 	    else
@@ -293,7 +293,7 @@ namespace DGtal
 	  }
       }
 
-      Data datas[ N ];
+      Data allData[ N ];
       DataOrBlockPointer data;
     };
 
@@ -313,7 +313,7 @@ namespace DGtal
 		ASSERT( size == M );
 		ASSERT( idx == M );
 		next = new __AnyBlock;
-                return ( next->datas[ 0 ] = v );
+                return ( next->allData[ 0 ] = v );
 	      }
             else
               {
@@ -326,21 +326,21 @@ namespace DGtal
             if ( size <= ( M - 1) ) // ( size < ( M - 1) )
               {
                 ASSERT( next == 0 );
-                std::copy_backward( datas + idx, datas + size,
-                                    datas + size + 1 );
-                return ( datas[ idx ] = v );
+                std::copy_backward( allData + idx, allData + size,
+                                    allData + size + 1 );
+                return ( allData[ idx ] = v );
               }
             else
               {
-                Data v1 = datas[ M - 1 ];
-                std::copy_backward( datas + idx, datas + M - 1, datas + M );
+                Data v1 = allData[ M - 1 ];
+                std::copy_backward( allData + idx, allData + M - 1, allData + M );
                 // if ( size >= M )
                 //   {
                 if ( next == 0 )
                   {
                     ASSERT( size == M );
                     next = new __AnyBlock;
-                    next->datas[ 0 ] = v1;
+                    next->allData[ 0 ] = v1;
                   }
                 else
                   {
@@ -348,7 +348,7 @@ namespace DGtal
                     next->insert( 0, size - M, v1 );
                   }
                 // }
-                return ( datas[ idx ] = v );
+                return ( allData[ idx ] = v );
               }
 	  }
       }
@@ -368,11 +368,11 @@ namespace DGtal
           }
 	if ( idx < M )
 	  {
-	    std::copy( datas + idx + 1, datas + M, datas + idx );
+	    std::copy( allData + idx + 1, allData + M, allData + idx );
 	    if ( next != 0 )
 	      {
 		ASSERT( size > M );
-		datas[ M - 1 ] = next->datas[ 0 ];
+		allData[ M - 1 ] = next->allData[ 0 ];
                 next = next->erase( 0, size - M );
 	      }
 	  }
@@ -382,7 +382,7 @@ namespace DGtal
       }
 
 
-      Data datas[ M ];
+      Data allData[ M ];
       __AnyBlock* next;
     };
 
@@ -411,8 +411,8 @@ namespace DGtal
 
     protected:
       unsigned int myIdx;      ///< current index in \a myDatas of the iterator
-      unsigned int myNbDatas; ///< number of valid datas in array \a myDatas
-      Data* myDatas;         ///< array of \a myNbDatas datas.
+      unsigned int myNbDatas; ///< number of valid data in array \a myDatas
+      Data* myDatas;         ///< array of \a myNbDatas data.
       __AnyBlock* myNext;        ///< pointer to next block or 0 if last block.
 
       friend class LabelledMap;
@@ -528,8 +528,8 @@ namespace DGtal
 
     protected:
       unsigned int myIdx;      ///< current index in \a myDatas of the iterator
-      unsigned int myNbDatas; ///< number of valid datas in array \a myDatas
-      const Data* myDatas;   ///< array of \a myNbDatas datas.
+      unsigned int myNbDatas; ///< number of valid data in array \a myDatas
+      const Data* myDatas;   ///< array of \a myNbDatas data.
       const __AnyBlock* myNext;  ///< pointer to next block or 0 if last block.
 
       friend class LabelledMap;

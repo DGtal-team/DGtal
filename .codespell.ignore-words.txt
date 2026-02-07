@@ -6,3 +6,8 @@ aPoint
 aPoints
 myU
 Astroid
+inPt
+outPt
+acount
+astroid
+myDatas

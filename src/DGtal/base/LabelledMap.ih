@@ -70,7 +70,7 @@ BlockIterator( __FirstBlock & block, unsigned int idx, unsigned int size )
 	{
 	  myIdx = idx;
 	  myNbDatas = N + 1;
-	  myDatas = block.datas;
+	  myDatas = block.allData;
 	  myNext = 0;
 	}
       else
@@ -89,7 +89,7 @@ BlockIterator( __FirstBlock & block, unsigned int idx, unsigned int size )
 	{
 	  myIdx = idx;
 	  myNbDatas = N;
-	  myDatas = block.datas;
+	  myDatas = block.allData;
 	}
       else
 	{
@@ -109,7 +109,7 @@ BlockIterator( __FirstBlock & block, unsigned int idx, unsigned int size )
 	    {
 	      myIdx = idx;
 	      myNbDatas = M;
-	      myDatas = myNext->datas;
+	      myDatas = myNext->allData;
 	    }
 	}
     }
@@ -205,7 +205,7 @@ operator+=( DifferenceType n )
 	  break;
 	}
       myIdx -= myNbDatas;
-      myDatas = myNext->datas;
+      myDatas = myNext->data;
       myNbDatas = M;
       myNext = myNext->next;
     }
@@ -255,7 +255,7 @@ BlockConstIterator( const __FirstBlock & block, unsigned int idx, unsigned int s
 	{
 	  myIdx = idx;
 	  myNbDatas = N + 1;
-	  myDatas = block.datas;
+	  myDatas = block.allData;
 	  myNext = 0;
 	}
       else
@@ -274,7 +274,7 @@ BlockConstIterator( const __FirstBlock & block, unsigned int idx, unsigned int s
 	{
 	  myIdx = idx;
 	  myNbDatas = N;
-	  myDatas = block.datas;
+	  myDatas = block.allData;
 	}
       else
 	{
@@ -294,7 +294,7 @@ BlockConstIterator( const __FirstBlock & block, unsigned int idx, unsigned int s
 	    {
 	      myIdx = idx;
 	      myNbDatas = M;
-	      myDatas = myNext->datas;
+	      myDatas = myNext->allData;
 	    }
 	}
     }
@@ -390,7 +390,7 @@ operator+=( DifferenceType n )
 	  break;
 	}
       myIdx -= myNbDatas;
-      myDatas = myNext->datas;
+      myDatas = myNext->allData;
       myNbDatas = M;
       myNext = myNext->next;
     }
@@ -735,7 +735,7 @@ blockAt( size_t idx ) const
 {
   ASSERT( idx < size() );
   if ( idx < N )
-    return myFirstBlock.datas[ idx ];
+    return myFirstBlock.data[ idx ];
   else if ( ( idx == N ) && ( size() == N+1 ) )
     return myFirstBlock.data.lastData;
   const __AnyBlock* ptr = myFirstBlock.data.nextBlock;
@@ -746,7 +746,7 @@ blockAt( size_t idx ) const
       ptr = ptr->next;
     }
   ASSERT( ptr != 0 );
-  return ptr->datas[ idx ];
+  return ptr->data[ idx ];
 }
 //-----------------------------------------------------------------------------
 template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
@@ -757,7 +757,7 @@ blockAt( size_t idx )
 {
   ASSERT( idx < size() );
   if ( idx < N )
-    return myFirstBlock.datas[ idx ];
+    return myFirstBlock.allData[ idx ];
   else if ( ( idx == N ) && ( size() == N+1 ) )
     return myFirstBlock.data.lastData;
   __AnyBlock* ptr = myFirstBlock.data.nextBlock;
@@ -768,7 +768,7 @@ blockAt( size_t idx )
       ptr = ptr->next;
     }
   ASSERT( ptr != 0 );
-  return ptr->datas[ idx ];
+  return ptr->allData[ idx ];
 }
 //-----------------------------------------------------------------------------
 template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
