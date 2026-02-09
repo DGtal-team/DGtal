@@ -142,6 +142,7 @@ The pre-commit hooks will automatically run before each commit and check for:
 - Case conflicts in filenames
 
 If any hook fails, the commit will be aborted and you'll need to fix the reported issues before committing again.
+Note that in some cases (e.g. when the trailing whitespace check fails), you just need to git add the changes made by the pre-commit hook and then commit.
 
 To run all hooks manually on all files:
 @code
