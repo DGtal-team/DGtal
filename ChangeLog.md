@@ -4,6 +4,7 @@
 
 - *Project*
   - pre-commit hooks have been activated for sanity checks on files before running the git commit (David Coeurjolly,  [#1835](https://github.com/DGtal-team/DGtal/pull/1835))
+  - Add pre-commit setup instructions to contributing documentation (David Coeurjolly, [#1836](https://github.com/DGtal-team/DGtal/pull/1836))
 
 ## Changes
 
