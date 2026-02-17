@@ -525,6 +525,14 @@ namespace DGtal
     std::vector< Index >
     getCotangentPoints( const Point& a,
                         const std::vector< bool > & to_avoid ) const;
+
+    /// Extracts cotangent points by a breadth-first traversal up to some distance.
+    /// @param[in] a any point
+    /// @param[in] max_discrete_distance the sought maximal distance (included).
+    /// @return the indices of the other points of the shape that are cotangent to \a a.
+    std::vector< Index >
+    getCotangentPoints( const Point& a, double max_discrete_distance ) const;
+
     
     /// @}
     
