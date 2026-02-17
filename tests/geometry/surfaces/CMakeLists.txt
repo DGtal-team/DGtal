@@ -40,6 +40,7 @@ endif()
 
 if (  DGTAL_WITH_POLYSCOPE_VIEWER )
   set(POLYSCOPE_VIEWER_TESTS_SRC
+      testIntegralInvariantTraversal
     testLocalConvolutionNormalVectorEstimator
     testTensorVotingViewer)
 
