@@ -119,6 +119,37 @@ click on "Pull Request". Then, choose the two branches you would like
 to merge (main in upstream and yourbranch in origin), write your
 comments and click on "Send Pull Request".
 
+\subsection subsectGIT33 Setting up Pre-commit Hooks
+
+Before starting to make changes to the code, we strongly recommend setting up pre-commit hooks to ensure code quality:
+
+1. **Install pre-commit** (if not already installed):
+@code
+pip install pre-commit
+@endcode
+
+2. **Install the hooks** in your local repository:
+@code
+pre-commit install
+@endcode
+
+The pre-commit hooks will automatically run before each commit and check for:
+- Trailing whitespace
+- Missing end-of-file newlines
+- YAML syntax errors
+- Large files
+- Broken symlinks
+- Case conflicts in filenames
+
+If any hook fails, the commit will be aborted and you'll need to fix the reported issues before committing again.
+Note that in some cases (e.g. when the trailing whitespace check fails), you just need to git add the changes made by the pre-commit hook and then commit.
+
+To run all hooks manually on all files:
+@code
+pre-commit run --all-files
+@endcode
+
+For more information about pre-commit, see https://pre-commit.com/
 
 \subsection subsectGIT32 Edit files and commit in branches
 
