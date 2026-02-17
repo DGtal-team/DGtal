@@ -77,10 +77,7 @@ The current pre-commit configuration (`/.pre-commit-config.yaml`) includes:
 
 ### Running hooks manually
 
-To run all hooks on all files:
-```bash
-pre-commit run --all-files
-```
+By default, hooks will be run on each file ofh the commit automatically.
 
 To run hooks on specific files:
 ```bash
@@ -92,7 +89,6 @@ pre-commit run --files path/to/your/files
 To update to the latest versions of the hooks:
 ```bash
 pre-commit autoupdate
-pre-commit run --all-files
 ```
 
 ### Skipping hooks (not recommended)
