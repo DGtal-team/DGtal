@@ -59,5 +59,5 @@ cleanup_target(glm "")
 cleanup_target(glm-header-only "")
 cleanup_target(nlohmann_json "")
 cleanup_target(MarchingCube "")
-
 cleanup_target(polyscope "")
+cleanup_target(IconFontCppHeaders "")
