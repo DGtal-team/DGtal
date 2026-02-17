@@ -79,10 +79,10 @@ namespace DGtal
   struct UnorderedMultisetAssociativeCategory :  UnorderedAssociativeCategory, SimpleAssociativeCategory, MultipleAssociativeCategory {};
   struct UnorderedMapAssociativeCategory :  UnorderedAssociativeCategory, PairAssociativeCategory, UniqueAssociativeCategory {};
   struct UnorderedMultimapAssociativeCategory :  UnorderedAssociativeCategory, PairAssociativeCategory, MultipleAssociativeCategory {};
-  
+
   /// Defines default container traits for arbitrary types.
   template <typename TContainer>
-  struct ContainerTraits 
+  struct ContainerTraits
   {
     typedef NotContainerCategory Category;
   };
@@ -107,7 +107,7 @@ namespace DGtal
   {
     typedef SequenceCategory Category;
   };
-  
+
   /// Defines container traits for std::forward_list<>.
   template < class T, class Alloc >
   struct ContainerTraits< std::forward_list<T, Alloc> >
@@ -128,7 +128,7 @@ namespace DGtal
   {
     typedef SetAssociativeCategory Category;
   };
-  
+
   /// Defines container traits for std::map<>.
   template < class Key, class T, class Compare, class Alloc >
   struct ContainerTraits< std::map<Key, T, Compare, Alloc> >
@@ -142,7 +142,7 @@ namespace DGtal
   {
     typedef MultisetAssociativeCategory Category;
   };
-  
+
   /// Defines container traits for std::multimap<>.
   template < class Key, class T, class Compare, class Alloc >
   struct ContainerTraits< std::multimap<Key, T, Compare, Alloc> >
@@ -212,26 +212,26 @@ namespace DGtal
     /////////////////////////////////////////////////////////////////////////////
     /**
      * Description of template class 'HasNestedTypeCategory' <p>
-     * \brief Aim: 
+     * \brief Aim:
      *  Checks whether type @a T has a nested type called 'Category' or not.
      *  NB: from en.wikipedia.org/wiki/Substitution_failure_is_not_an_error
-     *  NB: to avoid various compiler issues, we use BOOST_STATIC_CONSTANT according to 
+     *  NB: to avoid various compiler issues, we use BOOST_STATIC_CONSTANT according to
      *  http://www.boost.org/development/int_const_guidelines.html
      *  @tparam T any type.
      */
-    template <typename T> 
-    struct HasNestedTypeCategory 
+    template <typename T>
+    struct HasNestedTypeCategory
     {
-      typedef char yes[1]; 
-      typedef char no[2]; 
-      
+      typedef char yes[1];
+      typedef char no[2];
+
       template <typename C>
       static yes& test(typename C::Category*);
-      
+
       template <typename C>
       static no& test(...);
-      
-      BOOST_STATIC_CONSTANT(bool, value = sizeof(test<T>(0)) == sizeof(yes));  
+
+      BOOST_STATIC_CONSTANT(bool, value = sizeof(test<T>(0)) == sizeof(yes));
     };
 
     /**
@@ -282,7 +282,7 @@ namespace DGtal
     struct IsSimpleAssociativeContainerFromCategory {
       BOOST_STATIC_CONSTANT(bool, value = ( boost::is_base_of<SimpleAssociativeCategory,TCategory>::value ) );
     };
-    
+
     /**
      * This class is used by IsPairAssociativeContainer to determine if the container category is pair associative.
      */
@@ -290,7 +290,7 @@ namespace DGtal
     struct IsPairAssociativeContainerFromCategory {
       BOOST_STATIC_CONSTANT(bool, value = ( boost::is_base_of<PairAssociativeCategory,TCategory>::value ) );
     };
-    
+
     /**
      * This class is used by IsUniqueAssociativeContainer to determine if the container category is unique associative.
      */
@@ -298,7 +298,7 @@ namespace DGtal
     struct IsUniqueAssociativeContainerFromCategory {
       BOOST_STATIC_CONSTANT(bool, value = ( boost::is_base_of<UniqueAssociativeCategory,TCategory>::value ) );
     };
-    
+
     /**
      * This class is used by IsMultipleAssociativeContainer to determine if the container category is multiple associative.
      */
@@ -306,7 +306,7 @@ namespace DGtal
     struct IsMultipleAssociativeContainerFromCategory {
       BOOST_STATIC_CONSTANT(bool, value = ( boost::is_base_of<MultipleAssociativeCategory,TCategory>::value ) );
     };
-    
+
   }
 
   /**
@@ -315,7 +315,7 @@ namespace DGtal
    */
   template <typename T>
   struct IsContainer {
-    BOOST_STATIC_CONSTANT( bool, 
+    BOOST_STATIC_CONSTANT( bool,
                            value = ( detail::HasNestedTypeCategory< ContainerTraits<T> >::value
                                      && detail::IsContainerFromCategory<typename ContainerTraits<T>::Category>::value ) );
   };
@@ -325,7 +325,7 @@ namespace DGtal
    */
   template <typename T>
   struct IsSequenceContainer {
-    BOOST_STATIC_CONSTANT( bool, 
+    BOOST_STATIC_CONSTANT( bool,
                            value = ( detail::HasNestedTypeCategory< ContainerTraits<T> >::value
                                      && detail::IsSequenceContainerFromCategory<typename ContainerTraits<T>::Category>::value ) );
   };
@@ -335,7 +335,7 @@ namespace DGtal
    */
   template <typename T>
   struct IsAssociativeContainer {
-    BOOST_STATIC_CONSTANT( bool, 
+    BOOST_STATIC_CONSTANT( bool,
                            value = ( detail::HasNestedTypeCategory< ContainerTraits<T> >::value
                                      && detail::IsAssociativeContainerFromCategory<typename ContainerTraits<T>::Category>::value ) );
   };
@@ -345,7 +345,7 @@ namespace DGtal
    */
   template <typename T>
   struct IsOrderedAssociativeContainer {
-    BOOST_STATIC_CONSTANT( bool, 
+    BOOST_STATIC_CONSTANT( bool,
                            value = ( detail::HasNestedTypeCategory< ContainerTraits<T> >::value
                                      && detail::IsOrderedAssociativeContainerFromCategory<typename ContainerTraits<T>::Category>::value ) );
   };
@@ -355,7 +355,7 @@ namespace DGtal
    */
   template <typename T>
   struct IsUnorderedAssociativeContainer {
-    BOOST_STATIC_CONSTANT( bool, 
+    BOOST_STATIC_CONSTANT( bool,
                            value = ( detail::HasNestedTypeCategory< ContainerTraits<T> >::value
                                      && detail::IsUnorderedAssociativeContainerFromCategory<typename ContainerTraits<T>::Category>::value ) );
   };
@@ -365,7 +365,7 @@ namespace DGtal
    */
   template <typename T>
   struct IsSimpleAssociativeContainer {
-    BOOST_STATIC_CONSTANT( bool, 
+    BOOST_STATIC_CONSTANT( bool,
                            value = ( detail::HasNestedTypeCategory< ContainerTraits<T> >::value
                                      && detail::IsSimpleAssociativeContainerFromCategory<typename ContainerTraits<T>::Category>::value ) );
   };
@@ -375,7 +375,7 @@ namespace DGtal
    */
   template <typename T>
   struct IsPairAssociativeContainer {
-    BOOST_STATIC_CONSTANT( bool, 
+    BOOST_STATIC_CONSTANT( bool,
                            value = ( detail::HasNestedTypeCategory< ContainerTraits<T> >::value
                                      && detail::IsPairAssociativeContainerFromCategory<typename ContainerTraits<T>::Category>::value ) );
   };
@@ -385,7 +385,7 @@ namespace DGtal
   */
   template <typename T>
   struct IsUniqueAssociativeContainer {
-    BOOST_STATIC_CONSTANT( bool, 
+    BOOST_STATIC_CONSTANT( bool,
                            value = ( detail::HasNestedTypeCategory< ContainerTraits<T> >::value
                                      && detail::IsUniqueAssociativeContainerFromCategory<typename ContainerTraits<T>::Category>::value ) );
   };
@@ -395,7 +395,7 @@ namespace DGtal
    */
   template <typename T>
   struct IsMultipleAssociativeContainer {
-    BOOST_STATIC_CONSTANT( bool, 
+    BOOST_STATIC_CONSTANT( bool,
                            value = ( detail::HasNestedTypeCategory< ContainerTraits<T> >::value
                                      && detail::IsMultipleAssociativeContainerFromCategory<typename ContainerTraits<T>::Category>::value ) );
   };

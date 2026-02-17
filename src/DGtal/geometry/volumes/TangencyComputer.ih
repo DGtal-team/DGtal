@@ -57,7 +57,7 @@ init( PointIterator itB, PointIterator itE, bool use_lattice_cell_cover )
     myLatticeCellCover = LatticeCellCover( myX.cbegin(), myX.cend() ).starOfPoints();
   else
     myCellCover =
-      myDConv.makeCellCover( myX.cbegin(), myX.cend(), 1, KSpace::dimension - 1 );    
+      myDConv.makeCellCover( myX.cbegin(), myX.cend(), 1, KSpace::dimension - 1 );
   for ( Size i = 0; i < myX.size(); ++i )
     myPt2Index[ myX[ i ] ] = i;
 }
@@ -288,7 +288,7 @@ shortestPath( Index source, Index target,
 {
   auto SP0 = makeShortestPaths( secure );
   auto SP1 = makeShortestPaths( secure );
-  SP0.init( source ); 
+  SP0.init( source );
   SP1.init( target );
   Path Q;
   while ( ! SP0.finished() && ! SP1.finished() )
@@ -305,7 +305,7 @@ shortestPath( Index source, Index target,
           auto c1 = SP1.pathToSource( p1 );
           std::copy(c0.rbegin(), c0.rend(), std::back_inserter(Q));
           Q.pop_back();
-          std::copy(c1.begin(), c1.end(), std::back_inserter(Q)); 
+          std::copy(c1.begin(), c1.end(), std::back_inserter(Q));
           break;
         }
       if ( verbose )

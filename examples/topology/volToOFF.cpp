@@ -31,18 +31,18 @@
 /**
  * Marching-cube like surface extracted using the combinatorial
  * manifold structure of digital surfaces.
- * 
+ *
  * @see \ref dgtal_digsurf_sec4_3
- * 
+ *
  * On the lobser.vol volume, volToOFF.cpp builds an OFF surface of
  * 155068 vertices, 154910 faces, 310136 edges in 3879ms+1646ms.
- * 
+ *
  * @verbatim
  * # Commands
  * $ ./examples/topology/volToOff ../examples/samples/cat10.vol 1 255 0
  * $ ./examples/topology/volToOff ../examples/samples/lobster.vol 50 255 0
  * @endverbatim
- * 
+ *
  * @image html digital-surface-mc-cat10.png "Marching-cube surface of cat10.vol file."
  * @image html digital-surface-mc-lobster.png "Marching-cube surface of lobster.vol file."
  *

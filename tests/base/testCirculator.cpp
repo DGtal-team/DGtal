@@ -48,7 +48,7 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 
 /**
- * Iteration accross the end of a range
+ * Iteration across the end of a range
  */
 template<typename Iterator>
 bool testOffset(const Iterator& itb, const Iterator& ite, const vector<int>& groundTruth)
@@ -58,11 +58,11 @@ bool testOffset(const Iterator& itb, const Iterator& ite, const vector<int>& gro
   BOOST_CONCEPT_ASSERT(( boost::BidirectionalIterator< Circulator<Iterator> > ));
 
   //list
-  copy(itb,ite,ostream_iterator<int>(trace.info(), " ")); 
+  copy(itb,ite,ostream_iterator<int>(trace.info(), " "));
   trace.info() << " => ";
 
   //use of Circulators
-  vector<int> v; 
+  vector<int> v;
   Circulator<Iterator> cb( itb, itb, ite );
   Circulator<Iterator> c( ++cb );
   do {
@@ -71,11 +71,11 @@ bool testOffset(const Iterator& itb, const Iterator& ite, const vector<int>& gro
   } while (c != cb);
 
   //offset list
-  copy(v.begin(),v.end(),ostream_iterator<int>(trace.info(), " ")); 
+  copy(v.begin(),v.end(),ostream_iterator<int>(trace.info(), " "));
 
   //ground truth
   trace.info() << " ( == ";
-  copy(groundTruth.begin(),groundTruth.end(),ostream_iterator<int>(trace.info(), " ")); 
+  copy(groundTruth.begin(),groundTruth.end(),ostream_iterator<int>(trace.info(), " "));
   trace.info() << ")" << std::endl;
 
   return equal( v.begin(),v.end(),groundTruth.begin() );
@@ -91,55 +91,55 @@ bool basicForwardTest(const Container& cont)
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Operators of forward circulator" );
   typedef typename Container::const_iterator I;
 
   //default construction
   Circulator<I> circ0;
   if ( !(circ0.isValid()) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
-  //construction 
+  //construction
   Circulator<I> circ1(cont.begin(), cont.begin(), cont.end());
   if ( circ1.isValid() )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
-  //copy 
-  Circulator<I> circ2 = circ1; 
-  //assignement
+  //copy
+  Circulator<I> circ2 = circ1;
+  //assignment
   circ0 = circ1;
-  //pre/post-incrementation 
-  circ1++; 
-  ++circ2;   
+  //pre/post-incrementation
+  circ1++;
+  ++circ2;
   //equality
   if ( (circ0 != circ1) && (circ0 != circ2) && (circ1 == circ2) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   //base, begin, end
-  if ( (circ0.base() != circ1.base()) 
-       && (circ0.base() != circ2.base()) 
+  if ( (circ0.base() != circ1.base())
+       && (circ0.base() != circ2.base())
        && (circ1.base() == circ2.base()) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
-  if ( (circ0.begin() == circ1.begin()) 
-       && (circ0.end() == circ1.end()) 
+  if ( (circ0.begin() == circ1.begin())
+       && (circ0.end() == circ1.end())
        && (circ1.begin() == circ2.begin()) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
   //operator *, ->
   if ( (*circ1 == *circ2) && (circ1.operator->() == &(*circ1)) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
   trace.endBlock();
-  
+
   return (nbok == nb);
 }
 
@@ -151,34 +151,34 @@ bool basicForwardTest(const Container& cont)
 template<typename Container>
 bool basicBidirectionalTest(const Container& cont)
 {
-  ASSERT( cont.size() >= 1 ); 
+  ASSERT( cont.size() >= 1 );
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Operators of bidirectional circulator" );
   typedef typename Container::const_iterator I;
 
-  //construction/copy 
+  //construction/copy
   Circulator<I> res(cont.begin(), cont.begin(), cont.end());
   Circulator<I> circ1(cont.begin(), cont.begin(), cont.end());
-  Circulator<I> circ2 = circ1; 
-  //pre/post-incrementation 
-  circ1++; 
-  ++circ2;   
+  Circulator<I> circ2 = circ1;
+  //pre/post-incrementation
+  circ1++;
+  ++circ2;
   if (circ1 == circ2)
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
-  //pre/post-decrementation 
-  circ1--; 
-  --circ2;   
+  //pre/post-decrementation
+  circ1--;
+  --circ2;
   if ( (circ1 == circ2) && (circ1 == res) && (circ2 == res) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
   trace.endBlock();
-  
+
   return (nbok == nb);
 }
 
@@ -190,63 +190,63 @@ bool basicBidirectionalTest(const Container& cont)
 template<typename Container>
 bool basicRandomAccessTest(const Container& cont)
 {
-  ASSERT( cont.size() == 5 ); 
+  ASSERT( cont.size() == 5 );
 
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Operators of random access circulator" );
   typedef typename Container::const_iterator I;
 
-  //construction/copy 
+  //construction/copy
   Circulator<I> circ1(cont.begin(), cont.begin(), cont.end());
-  Circulator<I> circ2 = circ1; 
+  Circulator<I> circ2 = circ1;
 
   trace.info() << "arithmetic operators" << std::endl;
   circ2 += 4;
   if ( (circ2) == (circ1+4) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
   circ2 -= 5;
-  circ2++;   
+  circ2++;
   if ( circ1 == circ2 )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
   if ( (circ1+3) == (3+circ1) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
-  circ2 += 7; 
+  circ2 += 7;
   if ( (circ1+2) == circ2 )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
   if ( ((circ1-circ2) + (circ2-circ1)) == (cont.end()-cont.begin()) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
   trace.info() << "comparison operators" << std::endl;
-  if ( (circ1 < circ2) && (circ1 <= circ2) 
+  if ( (circ1 < circ2) && (circ1 <= circ2)
        && (circ2 < circ1) && (circ2 <= circ1) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
-  if ( !( (circ1 > circ2) && (circ1 >= circ2) 
+  if ( !( (circ1 > circ2) && (circ1 >= circ2)
 	  && (circ2 > circ1) && (circ2 >= circ1) ) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
   trace.endBlock();
-  
+
   return (nbok == nb);
 }
 
@@ -312,19 +312,19 @@ int main( int argc, char** argv )
   fl.push_front(3);
   fl.push_front(4);
   fl.push_front(5);
-  
-  std::list<int> bl; 
+
+  std::list<int> bl;
   bl.push_back(1);
   bl.push_back(2);
   bl.push_back(3);
   bl.push_back(4);
   bl.push_back(5);
 
-  res = res && 
-    basicForwardTest(fl) && 
-    basicForwardTest(bl) && 
+  res = res &&
+    basicForwardTest(fl) &&
+    basicForwardTest(bl) &&
     basicForwardTest(v) &&
-    basicBidirectionalTest(bl) && 
+    basicBidirectionalTest(bl) &&
     basicBidirectionalTest(v) &&
     basicRandomAccessTest(v);
 

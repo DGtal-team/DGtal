@@ -48,8 +48,8 @@ namespace DGtal
 {
   namespace functors
   {
-    
-  namespace ShapeGeometricFunctors 
+
+  namespace ShapeGeometricFunctors
   {
 
     /**
@@ -67,7 +67,7 @@ namespace DGtal
       typedef RealPoint Argument;
       typedef RealPoint Quantity;
       typedef Quantity Value;
-     
+
       /**
        * Constructor. A shape may also be attached at construction.
        *
@@ -75,7 +75,7 @@ namespace DGtal
        * if a some counted pointer is handed.
        */
       ShapePositionFunctor( ConstAlias<Shape> aShape = 0 ) : myShape( aShape ) {}
-      
+
       /**
        * Attach a shape.
        *
@@ -127,7 +127,7 @@ namespace DGtal
        * if a some counted pointer is handed.
        */
       ShapeNormalVectorFunctor( ConstAlias<Shape> aShape = 0 ) : myShape( aShape ) {}
-      
+
       /**
        * Attach a shape.
        *
@@ -174,7 +174,7 @@ namespace DGtal
       typedef RealPoint Argument;
       typedef Scalar Quantity;
       typedef Quantity Value;
-      
+
       /**
        * Constructor. A shape may also be attached at construction.
        *
@@ -182,7 +182,7 @@ namespace DGtal
        * if a some counted pointer is handed.
        */
       ShapeMeanCurvatureFunctor( ConstAlias<Shape> aShape = 0 ) : myShape( aShape ) {}
-      
+
       /**
        * Attach a shape.
        *
@@ -226,7 +226,7 @@ namespace DGtal
       typedef RealPoint Argument;
       typedef Scalar Quantity;
       typedef Quantity Value;
-      
+
       /**
        * Constructor. A shape may also be attached at construction.
        *
@@ -234,7 +234,7 @@ namespace DGtal
        * if a some counted pointer is handed.
        */
       ShapeGaussianCurvatureFunctor( ConstAlias<Shape> aShape = 0 ) : myShape( aShape ) {}
-      
+
       /**
        * Attach a shape.
        *
@@ -278,7 +278,7 @@ namespace DGtal
       typedef RealPoint Argument;
       typedef Scalar Quantity;
       typedef Quantity Value;
-      
+
       /**
        * Constructor. A shape may also be attached at construction.
        *
@@ -287,7 +287,7 @@ namespace DGtal
        */
       ShapeFirstPrincipalCurvatureFunctor( ConstAlias<Shape> aShape = 0 )
 	: myShape( aShape ) {}
-      
+
       /**
        * Attach a shape.
        *
@@ -315,7 +315,7 @@ namespace DGtal
       /// The shape of interest.
       CountedConstPtrOrConstPtr<Shape> myShape;
     }; // struct ShapeFirstPrincipalCurvatureFunctor
-    
+
     /**
      * Description of template class 'ShapeSecondPrincipalCurvatureFunctor' <p>
      * \brief Aim: A functor RealPoint -> Quantity that returns the
@@ -333,7 +333,7 @@ namespace DGtal
       typedef RealPoint Argument;
       typedef Scalar Quantity;
       typedef Quantity Value;
-      
+
       /**
        * Constructor. A shape may also be attached at construction.
        *
@@ -342,7 +342,7 @@ namespace DGtal
        */
       ShapeSecondPrincipalCurvatureFunctor( ConstAlias<Shape> aShape = 0 )
 	: myShape( aShape ) {}
-      
+
       /**
        * Attach a shape.
        *
@@ -390,7 +390,7 @@ namespace DGtal
       typedef RealPoint Argument;
       typedef RealVector Quantity;
       typedef Quantity Value;
-      
+
       /**
        * Constructor. A shape may also be attached at construction.
        *
@@ -399,7 +399,7 @@ namespace DGtal
        */
       ShapeFirstPrincipalDirectionFunctor( ConstAlias<Shape> aShape = 0 )
 	: myShape( aShape ) {}
-      
+
       /**
        * Attach a shape.
        *
@@ -447,7 +447,7 @@ namespace DGtal
       typedef RealPoint Argument;
       typedef RealVector Quantity;
       typedef Quantity Value;
-      
+
       /**
        * Constructor. A shape may also be attached at construction.
        *
@@ -456,7 +456,7 @@ namespace DGtal
        */
       ShapeSecondPrincipalDirectionFunctor( ConstAlias<Shape> aShape = 0 )
 	: myShape( aShape ) {}
-      
+
       /**
        * Attach a shape.
        *
@@ -504,7 +504,7 @@ namespace DGtal
       typedef RealPoint Argument;
       typedef std::tuple<Scalar,Scalar,RealVector,RealVector> Quantity;
       typedef Quantity Value;
-      
+
       /**
        * Constructor. A shape may also be attached at construction.
        *
@@ -513,7 +513,7 @@ namespace DGtal
        */
       ShapePrincipalCurvaturesAndDirectionsFunctor( ConstAlias<Shape> aShape = 0 )
 	: myShape( aShape ) {}
-      
+
       /**
        * Attach a shape.
        *
@@ -547,7 +547,7 @@ namespace DGtal
       CountedConstPtrOrConstPtr<Shape> myShape;
     }; // struct ShapePrincipalCurvaturesAndDirectionsFunctor
 
-    
+
   } // namespace ShapeGeometricFunctors
   } // namespace functors
 } // namespace DGtal

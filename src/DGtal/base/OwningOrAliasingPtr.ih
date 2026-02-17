@@ -42,23 +42,23 @@
 template <typename T>
 inline
 DGtal::OwningOrAliasingPtr<T>::OwningOrAliasingPtr(const T& aValue)
-  :myPtr( new T(aValue) ), myFlagIsOwning( true ) 
+  :myPtr( new T(aValue) ), myFlagIsOwning( true )
 {
 }
 
 template <typename T>
 inline
 DGtal::OwningOrAliasingPtr<T>::OwningOrAliasingPtr(T* aPtr, bool aFlagIsOwning)
-  :myPtr( aPtr ), myFlagIsOwning( aFlagIsOwning ) 
+  :myPtr( aPtr ), myFlagIsOwning( aFlagIsOwning )
 {
 }
 
 template <typename T>
 inline
 DGtal::OwningOrAliasingPtr<T>::OwningOrAliasingPtr(const DGtal::OwningOrAliasingPtr<T>& other)
-  : myFlagIsOwning( other.myFlagIsOwning ) 
+  : myFlagIsOwning( other.myFlagIsOwning )
 {
-  ASSERT( myFlagIsOwning == other.myFlagIsOwning ); 
+  ASSERT( myFlagIsOwning == other.myFlagIsOwning );
   if (myFlagIsOwning)
     myPtr = new Value( *other.myPtr ); //copy of the data
   else
@@ -74,7 +74,7 @@ DGtal::OwningOrAliasingPtr<T>::operator=(const DGtal::OwningOrAliasingPtr<T>& ot
     {
       //free old data (if needed)
       if (myFlagIsOwning)
-        delete(myPtr); 
+        delete(myPtr);
       //acquire new data
       myFlagIsOwning = other.myFlagIsOwning;
       if (myFlagIsOwning)
@@ -91,7 +91,7 @@ DGtal::OwningOrAliasingPtr<T>::~OwningOrAliasingPtr()
 {
   //free if @a myPtr owns the data
   if (myFlagIsOwning)
-    delete(myPtr); 
+    delete(myPtr);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -118,7 +118,7 @@ inline
 typename DGtal::OwningOrAliasingPtr<T>::Reference
 DGtal::OwningOrAliasingPtr<T>::operator*() const
 {
-  ASSERT( myPtr != NULL ); 
+  ASSERT( myPtr != NULL );
   return *myPtr;
 }
 
@@ -146,7 +146,7 @@ DGtal::OwningOrAliasingPtr<T>::selfDisplay ( std::ostream & out ) const
   out << "[OwningOrAliasingPtr]";
   if (myPtr != NULL)
     out << "  " << myPtr << " " << (*myPtr);
-  else 
+  else
     out << "  " << myPtr << " " << "NULL";
 }
 
@@ -157,7 +157,7 @@ DGtal::OwningOrAliasingPtr<T>::selfDisplay ( std::ostream & out ) const
 template <typename T>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		  const OwningOrAliasingPtr<T> & object )
 {
   object.selfDisplay( out );
@@ -166,5 +166,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

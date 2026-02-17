@@ -39,18 +39,18 @@
 template <typename Image>
 template <typename Set>
 inline
-Image 
+Image
 DGtal::ImageFromSet<Image>::create(const Set &aSet, const Value &defaultValue,
            const bool addBorder,
-           typename Set::ConstIterator itBegin, 
+           typename Set::ConstIterator itBegin,
            typename Set::ConstIterator itEnd,
            const bool keepSetDomain)
 {
   BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<Set> ));
- 
+
   typename Set::Point lower,upper;
   typename Set::Point dec;
-  
+
   if (addBorder)
       dec = Set::Point::diagonal(1);
   if (!keepSetDomain)
@@ -64,26 +64,25 @@ DGtal::ImageFromSet<Image>::create(const Set &aSet, const Value &defaultValue,
   }
   Image image(typename Image::Domain(lower - dec ,upper + dec));
   append<Set>(image,defaultValue, itBegin, itEnd);
-  
+
   return image;
-  
+
 }
 
 
 template<typename Image>
 template<typename Set>
 inline
-void 
+void
 DGtal::ImageFromSet<Image>::append(Image &aImage, const Value &defaultValue,
-           typename Set::ConstIterator itBegin, 
+           typename Set::ConstIterator itBegin,
            typename Set::ConstIterator itEnd)
 {
   BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<Set> ));
- 
+
   typename Image::Domain domain = aImage.domain();
 
   for( ; itBegin != itEnd;  ++itBegin)
     if (domain.isInside( *itBegin))
       aImage.setValue( *itBegin, defaultValue);
 }
-

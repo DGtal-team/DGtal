@@ -54,26 +54,26 @@ namespace DGtal
     /**
        Description of \b concept '\b CIncrementalSegmentComputer' <p>
        @ingroup Concepts
-       @brief Aim: Defines the concept describing an incremental segment computer,  
-       ie. a model of CSegmentFactory that can, in addition, incrementally check 
-       whether or not an implicit predicate P is true. 
+       @brief Aim: Defines the concept describing an incremental segment computer,
+       ie. a model of CSegmentFactory that can, in addition, incrementally check
+       whether or not an implicit predicate P is true.
        In other words, it can control its own extension from a range of one element
        (in the direction that is relative to the underlying iterator)
-       so that an implicit predicate P remains true.  
-     
+       so that an implicit predicate P remains true.
+
        # Refinement of CSegmentFactory
-    
-       # Associated types 
+
+       # Associated types
        the same as CSegmentFactory
-  
+
        # Notation
        - \a X : A type that is a model of CIncrementalSegmentComputer
        - \a x, \a y : object of type X
        - \a i : object of type X::ConstIterator
-  
+
        # Definitions
-    
-       # Valid expressions and 
+
+       # Valid expressions and
 
 
        | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
@@ -81,34 +81,34 @@ namespace DGtal
        | Initialization| x.init(i)  |                     |void         |                  |set a segment to i |x is valid and P is true | O(1) |
        | Extension test| x.isExtendableFront()|         |bool         | x is valid and P is true | check whether x can be extended to x.end() or not | x is valid and P is true | |
        | Extension     | x.extendFront()|               |bool         | x is valid and P is true | check whether x can be extended to x.end() or not, extend only if true | x is valid and P is true | |
-    
+
        # Invariants#
 
-       Models of CIncrementalSegmentComputer garantee that 
-       for each iterator it from s.begin() to s.end(), the range [s.begin(), it) is 
-       a segment such that P is true. 
-    
+       Models of CIncrementalSegmentComputer guarantee that
+       for each iterator it from s.begin() to s.end(), the range [s.begin(), it) is
+       a segment such that P is true.
+
        @code
-       for ( ConstIterator it = s.begin(), 
+       for ( ConstIterator it = s.begin(),
              ConstIterator itEnd = s.end();
              it != itEnd; ++it)
-       { 
+       {
           // [s.begin(), it) is a segment:
-          s.init( s.begin() ); 
-          bool flag = true; 
+          s.init( s.begin() );
+          bool flag = true;
           while ( (s.end() != it)&&(flag) ) { flag = s.extend(); }
-          ASSERT( flag ); 
+          ASSERT( flag );
        }
        @endcode
 
-    
+
        # Models#
-    
+
        # Notes#
 
        @tparam T the type that should be a model of CIncrementalSegmentComputer.
     */
-    template <typename T> 
+    template <typename T>
     struct CIncrementalSegmentComputer : concepts::CSegmentFactory<T>
     {
       // ----------------------- Concept checks ------------------------------
@@ -117,22 +117,22 @@ namespace DGtal
       // Methods
       BOOST_CONCEPT_USAGE( CIncrementalSegmentComputer )
       {
-        myX.init(myI);     
+        myX.init(myI);
 
         concepts::ConceptUtils::sameType( myB, myX.isExtendableFront() );
         concepts::ConceptUtils::sameType( myB, myX.extendFront() );
       }
-      // ------------------------- Private Datas --------------------------------
+      // ------------------------- Private Data --------------------------------
     private:
       T myX; // only if T is default constructible.
       typename T::ConstIterator myI;
-      bool myB; 
-    
+      bool myB;
+
       // ------------------------- Internals ------------------------------------
     private:
-    
+
     }; // end of concept CIncrementalSegmentComputer
-  } //namespace concepts 
+  } //namespace concepts
 } // namespace DGtal
 
 //                                                                           //

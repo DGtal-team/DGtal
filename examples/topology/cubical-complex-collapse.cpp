@@ -28,7 +28,7 @@
  */
 
 
-/** 
+/**
  * Collapse of 3D cubical complex that is made of 20x20x20 voxels with
  * their faces.  Fixed cells were marked in red. It was the eight
  * vertices, plus all border linels on the upper faces plus a random
@@ -45,7 +45,7 @@
  * EndBlock [Creating Cubical Complex] (12.088 ms)
  * New Block [Collapsing complex]
  * [CC::collapse]-+ tag collapsible elements...    68756 found.
- * [CC::collapse]-+ entering collapsing loop. 
+ * [CC::collapse]-+ entering collapsing loop.
  * [CC::collapse]---+ Pass 1, Card(PQ)=68921 elements, nb_exam=0
  * [CC::collapse]---+ Pass 2, Card(PQ)=16219 elements, nb_exam=68921
  * [CC::collapse]---+ Pass 3, Card(PQ)=7956 elements, nb_exam=85140
@@ -92,7 +92,7 @@ struct DiagonalPriority {
   typedef typename CubicalComplex::Point  Point;
   typedef typename CubicalComplex::Cell   Cell;
   typedef typename CubicalComplex::CellMapIterator CellMapIterator;
-  
+
   DiagonalPriority( const CubicalComplex& complex ) : myComplex( complex ) {}
   bool operator()( const CellMapIterator& it1, const CellMapIterator& it2 ) const
   {
@@ -106,7 +106,7 @@ struct DiagonalPriority {
     double n2 = v2.dot( v2 );
     return ( n1 < n2 ) || ( ( n1 == n2 ) && ( it1->first < it2->first ) );
   }
-  
+
   const CubicalComplex& myComplex;
 };
 ///////////////////////////////////////////////////////////////////////////////
@@ -129,7 +129,7 @@ int main()
     for ( Integer y = 0; y <= m; ++y )
       for ( Integer z = 0; z <= m; ++z )
         {
-          Point k1 = Point( x, y, z ); 
+          Point k1 = Point( x, y, z );
           S.push_back( K.uCell( k1 ) );
           double d1 = Point::diagonal( 1 ).dot( k1 ) / (double) KSpace::dimension; // sqrt( (double) KSpace::dimension );
           RealPoint v1( k1[ 0 ], k1[ 1 ], k1[ 2 ] );
@@ -149,9 +149,9 @@ int main()
             || ( ( x == m ) && ( y == m ) )
             || ( ( z == 0 ) && ( y == m ) )
             || ( ( z == m ) && ( y == m ) );
-          complex.insertCell( S.back(), 
-                              fixed ? CC::FIXED 
-                              : (DGtal::uint32_t) floor(64.0 * n1 ) // This is the priority for collapse 
+          complex.insertCell( S.back(),
+                              fixed ? CC::FIXED
+                              : (DGtal::uint32_t) floor(64.0 * n1 ) // This is the priority for collapse
                               );
         }
   //complex.close();
@@ -175,10 +175,10 @@ int main()
         }
     viewer.show();
   }
-  
+
   trace.beginBlock( "Collapsing complex" );
   CC::DefaultCellMapIteratorPriority P;
-  DGtal::uint64_t removed 
+  DGtal::uint64_t removed
     = functions::collapse( complex, S.begin(), S.end(), P, true, true, true );
   trace.info() << "Collapse removed " << removed << " cells." << std::endl;
   trace.info() << "After collapse: " << complex << std::endl;

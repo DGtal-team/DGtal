@@ -57,10 +57,10 @@ namespace concepts
 Description of \b concept '\b CPowerMetric' <p>
 @ingroup Concepts
 @brief Aim: defines the concept of special weighted metrics, so called
-power metrics. 
+power metrics.
 
 
-# Refinement of 
+# Refinement of
 
   boost::CopyConstructible<T>, boost::Assignable<T>
 
@@ -82,7 +82,7 @@ power metrics.
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
 | power distance computation | x.powerDistance(aPoint, anotherPoint, anotherWeight) | @a aPoint and @a anotherPoint of type @a Point, @a aWeight  of type Weight |  a value of type @a Weight   |              |  compute the power distance between a point and a weighted point  |                |    -        |
 | closest point test | closestPower(aOrigin, aP, aWp, aQ, aWq) | @a aOrigin, @a aP,@a aQ of type @a aPoint, @a aWp,@a aWq of type @a Weight |   a value of type Closest | | decide between weighted points  @a aP and @a aQ which one is closer to the origin. This functions returns either DGtal::ClosestFIRST if @a aP is closer, DGtal::ClosestSECOND if @a aQ is closer  and DGtal::ClosestBOTH if both are equidistant.| | - |
-  
+
 
 # Invariants
 
@@ -103,7 +103,7 @@ public:
   typedef typename T::Weight Weight;
   typedef typename T::Value Value;
   typedef typename T::Point Point;
-  
+
   BOOST_CONCEPT_ASSERT(( CSpace< Space > ));
   BOOST_CONCEPT_ASSERT(( CQuantity< Value > ));
   BOOST_CONCEPT_ASSERT(( CQuantity< Weight > ));
@@ -113,13 +113,13 @@ public:
   {
     checkConstConstraints();
   }
-  
+
   void checkConstConstraints() const
   {
     ConceptUtils::sameType( myW3, myX.powerDistance( myPoint,  myPoint2, myW1 ) );
     ConceptUtils::sameType( aclosest, myX.closestPower( myPoint , myPoint2, myW2,myPoint3, myW3 ) );
   }
-  // ------------------------- Private Datas --------------------------------
+  // ------------------------- Private Data --------------------------------
 private:
   T myX; // do not require T to be default constructible.
   Point myPoint, myPoint2, myPoint3;

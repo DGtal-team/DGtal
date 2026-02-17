@@ -75,36 +75,36 @@ namespace DGtal
     typedef TImage Image;
     typedef typename TImage::Value Value;
     typedef TFunctor Functor;
-    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, Value, DGtal::Color> )) ;    
-    BOOST_STATIC_ASSERT( (TImage::Domain::dimension == 2) || 
+    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, Value, DGtal::Color> )) ;
+    BOOST_STATIC_ASSERT( (TImage::Domain::dimension == 2) ||
        (TImage::Domain::dimension == 3));
 
-    /** 
-     * Export an Image with PPM format. 
-     * 
+    /**
+     * Export an Image with PPM format.
+     *
      * @param filename name of the output file
      * @param aImage the image to export
      * @param aFunctor  functor used to cast image values
-     * @param topbottomOrder true if top to bottom order is prefered (default: true)
+     * @param topbottomOrder true if top to bottom order is preferred (default: true)
      *
      * @return true if no errors occur.
      */
-    static bool exportPPM(const std::string & filename, const Image &aImage, 
+    static bool exportPPM(const std::string & filename, const Image &aImage,
 			  const Functor & aFunctor = Functor(), bool topbottomOrder=true);
-  
 
-    /** 
+
+    /**
      * Export an Image with PPM3D format.
-     * 
+     *
      * @param filename name of the output file
      * @param aImage the image to export
      * @param aFunctor  functor used to cast image values
-     * 
+     *
      * @return true if no errors occur.
      */
-    static bool exportPPM3D(const std::string & filename, const Image &aImage, 
+    static bool exportPPM3D(const std::string & filename, const Image &aImage,
 			    const Functor & aFunctor = Functor());
-    
+
   };
 }//namespace
 

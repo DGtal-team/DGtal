@@ -58,7 +58,7 @@ namespace DGtal
  *
  * @note the method @ref terminate() should be called before accessing
  * to the quantities like mean, variance, etc.
- * 
+ *
  *
  * The proposed implementation is mainly a backport from
  * ImaGene with some various refactoring.
@@ -76,13 +76,13 @@ public:
 
 
 
-   /** 
+   /**
      * Creates an object for computing [size] statistics.
-     * 
+     *
      * @param[in] size the number of statistical variables.
      * @param[in] storeSamples when 'true', stores each given sample,
      * default is 'false'
-     */    
+     */
     MultiStatistics( const unsigned int size, const bool storeSamples = false );
 
 
@@ -106,49 +106,49 @@ public:
     // ----------------------- Accessors ------------------------------
   public:
 
-    /** 
+    /**
      * @return the number of statistical variables.
      */
     inline unsigned int nb() const;
 
 
-    /** 
+    /**
      * @param[in] k the statistical variable.
-     * 
+     *
      * @return the number of samples for this variable.
      */
     inline unsigned int samples( const unsigned int k ) const;
 
-    /** 
+    /**
      * @param[in] k the statistical variable.
-     * 
+     *
      * @return the sample mean for this variable.
      * @pre method 'terminate' must have been called.
      * @see terminate
      */
     inline double mean( const unsigned int k ) const;
 
-    /** 
+    /**
      * @param[in] k the statistical variable.
-     * 
+     *
      * @return the sample variance for this variable.
      * @pre method 'terminate' must have been called.
      * @see terminate
      */
     inline double variance( const unsigned int k ) const;
 
-    /** 
+    /**
      * @param k the statistical variable.
-     * 
+     *
      * @return the unbiased sample variance for this variable.
      * @pre method 'terminate' must have been called.
      * @see terminate
      */
     inline double unbiasedVariance( const unsigned int k ) const;
 
-    /** 
+    /**
      * @param[in] k the statistical variable.
-     * 
+     *
      * @return the maximal value for this variable.
      * @pre method 'terminate' must have been called.
      * @see terminate
@@ -156,9 +156,9 @@ public:
     inline double max( const unsigned int k ) const;
 
 
-    /** 
+    /**
      * @param[in] k the statistical variable.
-     * 
+     *
      * @return the indice of the maximal value for this variable.
      * @pre method 'terminate' must have been called.
      * @see terminate
@@ -167,9 +167,9 @@ public:
 
 
 
-    /** 
+    /**
      * @param[in] k the statistical variable.
-     * 
+     *
      * @return the minimal value for this variable.
      * @pre method 'terminate' must have been called.
      * @see terminate
@@ -178,9 +178,9 @@ public:
 
 
 
-    /** 
+    /**
      * @param[in] k the statistical variable.
-     * 
+     *
      * @return the indice of the minimal value for this variable.
      * @pre method 'terminate' must have been called.
      * @see terminate
@@ -189,36 +189,36 @@ public:
 
 
 
-    /** 
+    /**
      * Returns a stored sample value that was added before. The object
      * should have been initialized with 'store_samples = true'.
      *
      * @param[in] k the statistical variable.
      *
      * @param[in] i the index of the sample value, '0<=i<samples(k)'.
-     * 
+     *
      * @return the [i]-th value for this variable.
      *
      * @see MultiStatistics, init
      */
     inline double value( const unsigned int k, const unsigned int i ) const;
-  
 
 
-    /** 
+
+    /**
      * Adds a new sample value [v] for the variable [k].
-     * 
+     *
      * @param[in] k the statistical variable.
      * @param[in] v the new sample value.
      */
     void addValue( unsigned int k, double v );
 
-  
+
     /**
      * Adds a sequence of sample values for the variable [k], scanning
      * a container from iterators [b] to [e].
-     * 
-     * Exemple: 
+     *
+     * Example:
      @code
      vector<double> x;
      MultiStatistics stats( 1, true );
@@ -232,21 +232,21 @@ public:
     template <class Iter>
     void addValues(const  unsigned int k, Iter b, Iter e );
 
-    /** 
+    /**
      * Once all sample values have been added to this object, computes
      * meaningful statistics like sample mean, variance and unbiased
      * variance.
-     * 
+     *
      * @see mean, variance, unbiasedVariance, min, max
      */
     void terminate();
 
 
-    /** 
+    /**
      * Reinitializes the object to contain [size] statistical
      * variables. All preceding sample values and statistics are
      * lost. Calls 'erase()'.
-     * 
+     *
      * @param[in] size the number of statistical variables.
      *
      * @param[in] storeSamples when 'true', stores each given sample,
@@ -256,17 +256,17 @@ public:
     void init( unsigned int size, bool storeSamples );
 
 
-    /** 
+    /**
      * Clears the object from all given samples. The object still
      * represents 'nb()' statistical variables.
      */
     void clear();
-  
 
-    /** 
+
+    /**
      * Erases the object as if it was just created. The user must call
      * 'init()' before any other method.
-     * 
+     *
      * @see init
      */
     void erase();
@@ -283,9 +283,9 @@ public:
      *
      * @return the covariance of [x],[y] from indices [s] to [e].
      */
-  double covariance( const unsigned int x, const unsigned int y, 
+  double covariance( const unsigned int x, const unsigned int y,
                      const unsigned int s = 0, unsigned int e = 0 ) const;
-  
+
     /**
      * Computes the linear regression of the ([x],[y]) variables. The
      * 'MultiStatistics' object should have stored its values and
@@ -296,7 +296,7 @@ public:
      *
      * @return the pair (slope, shift at origin )
      */
-    std::pair<double,double> linearRegression( const unsigned int x, 
+    std::pair<double,double> linearRegression( const unsigned int x,
                                                const unsigned int y ) const;
 
 
@@ -331,10 +331,10 @@ public:
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
 private:
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
 private:
 
     /**
@@ -368,7 +368,7 @@ private:
      * For each variable, stores the unbiased sample variance.
      */
     double* myUnbiasedVar;
-    
+
     /**
      * For each variable, stores the maximal sample value.
      */
@@ -405,7 +405,7 @@ private:
    *  variance etc.
    **/
   bool myIsTerminate;
-  
+
     // ------------------------- Hidden services ------------------------------
 protected:
 

@@ -95,7 +95,7 @@ bool testCurvature2d ( double h, double delta )
   trace.endBlock();
 
   trace.beginBlock( "Curvature estimator initialisation ...");
-  
+
   VisitorRange range( new Visitor( surf, *surf.begin() ));
   VisitorConstIterator ibegin = range.begin();
   VisitorConstIterator iend = range.end();
@@ -197,7 +197,7 @@ bool testMeanCurvature3d( double h, double delta )
   trace.endBlock();
 
   trace.beginBlock( "Curvature estimator initialisation ...");
-  
+
   VisitorRange range( new Visitor( surf, *surf.begin() ));
   VisitorConstIterator ibegin = range.begin();
   VisitorConstIterator iend = range.end();

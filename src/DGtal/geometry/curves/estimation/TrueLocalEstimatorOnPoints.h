@@ -53,7 +53,7 @@ namespace DGtal
   // template class TrueLocalEstimatorOnPoints
   /**
    * Description of template class 'TrueLocalEstimatorOnPoints' <p>
-   * \brief Aim: Computes the true quantity to each element of a range associated to 
+   * \brief Aim: Computes the true quantity to each element of a range associated to
    * a parametric shape.
    *
    * @tparam TConstIteratorOnPoints type of iterator on points used as
@@ -62,8 +62,8 @@ namespace DGtal
    * @tparam TParametricShapeFunctor type of Functor used to evaluate
    * the quantity.
    */
-  template <typename TConstIteratorOnPoints, 
-	    typename TParametricShape, 
+  template <typename TConstIteratorOnPoints,
+	    typename TParametricShape,
 	    typename TParametricShapeFunctor>
   class TrueLocalEstimatorOnPoints
   {
@@ -75,7 +75,7 @@ namespace DGtal
 
     typedef TParametricShape ParametricShape;
     typedef typename TParametricShape::RealPoint RealPoint;
-    
+
     typedef TParametricShapeFunctor ParametricShapeFunctor;
     typedef typename ParametricShapeFunctor::Quantity Quantity;
 
@@ -114,7 +114,7 @@ namespace DGtal
 
     /**
      * Estimation at *it
-     * @param it iterator to the point. 
+     * @param it iterator to the point.
      * @param h grid size (must be > 0).
      * @return the estimated quantity at *it
      */
@@ -129,7 +129,7 @@ namespace DGtal
      * @return the estimated quantity from itb till ite (excluded)
      */
     template <typename OutputIterator>
-    OutputIterator eval(const ConstIterator& itb, 
+    OutputIterator eval(const ConstIterator& itb,
 			  const ConstIterator& ite,
         OutputIterator result,
         const double h = 1.) const;
@@ -140,7 +140,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     ///Owning pointer on a parametric shape functor

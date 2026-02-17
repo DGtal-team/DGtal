@@ -1,9 +1,9 @@
 set(DGTAL_TESTS_SRC_ARITH
        testModuloComputer
-       testPattern 
+       testPattern
        testIntegerComputer
        testLatticePolytope2D
-       testSternBrocot 
+       testSternBrocot
        testLightSternBrocot
        testLighterSternBrocot
 )

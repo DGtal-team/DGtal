@@ -11,5 +11,3 @@ set(DGTAL_TESTS_SRC
 FOREACH(FILE ${DGTAL_TESTS_SRC})
      DGtal_add_example(${FILE})
 endforeach()
-
-

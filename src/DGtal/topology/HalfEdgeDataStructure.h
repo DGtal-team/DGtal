@@ -55,7 +55,7 @@ namespace DGtal
   /// within HalfEdgeDataStructure (e.g. BOOST_STATIC_CONSTANT, c++
   /// constexpr, c++ constexpr with const reference).
   static std::size_t const HALF_EDGE_INVALID_INDEX = std::numeric_limits<std::size_t>::max();
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // class HalfEdgeDataStructure
   /**
@@ -106,7 +106,7 @@ namespace DGtal
     // static constexpr Index const INVALID_INDEX = boost::integer_traits<Index>::const_max;
     // static Index const INVALID_INDEX = boost::integer_traits<Index>::const_max;
     // BOOST_STATIC_CONSTANT( Index, INVALID_INDEX = boost::integer_traits<Index>::const_max );
-    
+
     typedef std::vector<HalfEdgeIndex> HalfEdgeIndexRange;
     typedef std::vector<VertexIndex>   VertexIndexRange;
     typedef std::vector<EdgeIndex>     EdgeIndexRange;
@@ -120,20 +120,20 @@ namespace DGtal
     // A map from an arc (a std::pair of VertexIndex's) to its face
     // index.
     typedef std::map< Arc, FaceIndex > Arc2FaceIndex;
-    
+
     /// Represents an unoriented edge as two vertex indices, the first
     /// lower than the second.
     struct Edge
     {
       /// The two vertex indices.
       VertexIndex v[2];
-      
+
       VertexIndex& start() { return v[0]; }
       const VertexIndex& start() const { return v[0]; }
-      
+
       VertexIndex& end() { return v[1]; }
       const VertexIndex& end() const { return v[1]; }
-      
+
       Edge()
       {
         v[0] = v[1] = -1;
@@ -155,16 +155,16 @@ namespace DGtal
     {
       /// The three vertex indices.
       std::array<VertexIndex,3> v;
-      
+
       VertexIndex& i() { return v[0]; }
       const VertexIndex& i() const { return v[0]; }
-      
+
       VertexIndex& j() { return v[1]; }
       const VertexIndex& j() const { return v[1]; }
-      
+
       VertexIndex& k() { return v[2]; }
       const VertexIndex& k() const { return v[2]; }
-      
+
       Triangle()
       {
         v[0] = v[1] = v[2] = -1;
@@ -180,7 +180,7 @@ namespace DGtal
     /// Defines an arbitrary polygonal face as a vector of vertex
     /// indices. To be valid, its size must be at least 3.
     typedef std::vector<VertexIndex> PolygonalFace;
-    
+
     /// The half edge structure. Each half-edge points to some Vertex,
     /// is incident to one face, lies on one undirected edge, has an
     /// opposite half-edge lying on the same edge, and has a next
@@ -211,9 +211,9 @@ namespace DGtal
   public:
     /// Default constructor. The data structure is empty. @see build
     HalfEdgeDataStructure() {}
-    
-    /** 
-     * Computes all the unoriented edges of the given triangles. 
+
+    /**
+     * Computes all the unoriented edges of the given triangles.
      *
      * @note Method build() needs the unordered edges of the mesh.  If
      * you don't have them, call this first.
@@ -253,7 +253,7 @@ namespace DGtal
       return vertexSet.size();
     }
 
-    /** 
+    /**
      * Computes all the unoriented edges of the given polygonal faces.
      *
      * @note Method build() needs the unordered edges of the mesh.  If
@@ -270,7 +270,7 @@ namespace DGtal
      */
     static Size getUnorderedEdgesFromPolygonalFaces
     ( const std::vector<PolygonalFace>& polygonal_faces, std::vector< Edge >& edges_out );
-    
+
     /**
      * Builds the half-edge data structures from the given triangles
      * and edges.  It keeps the numbering of vertices given in the
@@ -281,7 +281,7 @@ namespace DGtal
      * getUnorderedEdgesFromTriangles() before.
      *
      * @note Both \a triangles and \a edges are not needed after the call to build()
-     * completes and may be destroyed. 
+     * completes and may be destroyed.
      *
      * @param[in] num_vertices the number of vertices (one more than the
      * maximal vertex index).
@@ -293,7 +293,7 @@ namespace DGtal
      * error in the given topology (for instance, three triangles
      * sharing an edge).
      */
-    bool build( const Size num_vertices, 
+    bool build( const Size num_vertices,
                 const std::vector<Triangle>& triangles,
                 const std::vector<Edge>&     edges );
 
@@ -307,7 +307,7 @@ namespace DGtal
      * getUnorderedEdgesFromPolygonalFaces() before.
      *
      * @note Both \a polygonal_faces and \a edges are not needed after the call to build()
-     * completes and may be destroyed. 
+     * completes and may be destroyed.
      *
      * @param[in] num_vertices the number of vertices (one more than the
      * maximal vertex index).
@@ -319,7 +319,7 @@ namespace DGtal
      * error in the given topology (for instance, three triangles
      * sharing an edge).
      */
-    bool build( const Size                        num_vertices, 
+    bool build( const Size                        num_vertices,
                 const std::vector<PolygonalFace>& polygonal_faces,
                 const std::vector<Edge>&          edges );
 
@@ -371,14 +371,14 @@ namespace DGtal
 
     /// @return the number of unoriented edges in the structure.
     Size nbEdges() const { return myEdgeHalfEdges.size(); }
-    
+
     /// @return the number of faces in the structure.
     Size nbFaces() const { return myFaceHalfEdges.size(); }
 
     /// @return the euler characteristic of the corresponding combinatorial mesh.
     long Euler() const
     { return (long) nbVertices() - (long) nbEdges() + (long) nbFaces(); }
-    
+
     /// @param i any valid half-edge index.
     /// @return the half-edge of index \a i.
     const HalfEdge& halfEdge( const Index i ) const { return myHalfEdges.at( i ); }
@@ -396,7 +396,7 @@ namespace DGtal
     /// @return the index of the half-edge from \a i to \a j or HALF_EDGE_INVALID_INDEX if not found.
     Index halfEdgeIndexFromArc( const VertexIndex i, const VertexIndex j ) const
     { return halfEdgeIndexFromArc( std::make_pair( i, j ) ); }
-    
+
     /// @param arc any directed edge (i,j)
     /// @return the index of the half-edge from \a i to \a j or HALF_EDGE_INVALID_INDEX if not found.
     Index halfEdgeIndexFromArc( const Arc& arc ) const
@@ -411,7 +411,7 @@ namespace DGtal
     /// originating from v1, and turn around to find the one pointing
     /// to v2. This method is useful if you do not update myArc2Index
     /// when flipping.
-    /// 
+    ///
     /// @param i the vertex index of some vertex.
     /// @param j the vertex index of some other vertex.
     /// @return the index of the half-edge from \a i to \a j or HALF_EDGE_INVALID_INDEX if not found.
@@ -424,7 +424,7 @@ namespace DGtal
     /// originating from v1, and turn around to find the one pointing
     /// to v2. This method is useful if you do not update myArc2Index
     /// when flipping.
-    /// 
+    ///
     /// @param arc any directed edge (i,j)
     /// @return the index of the half-edge from \a i to \a j or HALF_EDGE_INVALID_INDEX if not found.
     Index findHalfEdgeIndexFromArc( const Arc& arc ) const
@@ -453,7 +453,7 @@ namespace DGtal
     /// @return the index of an half-edge that borders the edge \a ei.
     Index halfEdgeIndexFromEdgeIndex( const EdgeIndex ei ) const
     { return myEdgeHalfEdges[ ei ]; }
-    
+
     /// @param[in] vi any vertex index.
     /// @param[out] result the sequence of vertex neighbors of the given vertex \a vi (clockwise if triangles were given ccw).
     void getNeighboringVertices( const VertexIndex vi, VertexIndexRange& result ) const
@@ -596,7 +596,7 @@ namespace DGtal
     {
       return nbSides( halfEdgeIndexFromFaceIndex( f ) );
     }
-    
+
     /// @param f any valid face index.
     /// @return the sequence of vertices of the face \a f.
     VertexIndexRange verticesOfFace( const FaceIndex f ) const
@@ -616,7 +616,7 @@ namespace DGtal
 
     // -------------------- Modification services -------------------------
   public:
-    
+
     /// An edge is (topologically) flippable iff: (1) it does not lie
     /// on the boundary, (2) it is bordered by two triangles, (3) the
     /// two other vertices of the quad are not already neighbors.
@@ -632,9 +632,9 @@ namespace DGtal
       const Index     hei2 = he.opposite;
       const HalfEdge&  he2 = halfEdge( hei2 );
       // check if hei borders an infinite face.
-      if ( he.face  == HALF_EDGE_INVALID_INDEX ) return false; 
+      if ( he.face  == HALF_EDGE_INVALID_INDEX ) return false;
       // check if hei2 borders an infinite face.
-      if ( he2.face == HALF_EDGE_INVALID_INDEX ) return false; 
+      if ( he2.face == HALF_EDGE_INVALID_INDEX ) return false;
       // Checks that he1 and he2 border a triangle.
       if ( ( nbSides( hei ) != 3 ) || ( nbSides( hei2 ) != 3 ) ) return false;
       // Checks that the two other vertices of the two surrounding
@@ -695,7 +695,7 @@ namespace DGtal
       // No need to reassign edge... it has just changed of vertices
       // but is still based on half-edges i1 and i2
       // Now taking care of mapping (vertex,vertex) -> half-edge.
-      if ( update_arc2index ) 
+      if ( update_arc2index )
         {
           myArc2Index.erase( Arc( v1, v2 ) );
           myArc2Index.erase( Arc( v2, v1 ) );
@@ -824,7 +824,7 @@ namespace DGtal
     /// @return 'true' if the edge containing \a hei is topologically mergeable.
     ///
     /// @note Time complexity is O(1).
-    bool isMergeable( const Index hei ) const { 
+    bool isMergeable( const Index hei ) const {
       ASSERT( hei != HALF_EDGE_INVALID_INDEX );
       const HalfEdge&  he = halfEdge( hei );
       const Index    hei2 = he.opposite;
@@ -832,7 +832,7 @@ namespace DGtal
       // check if hei borders an infinite face.
       if ( ( he.face == HALF_EDGE_INVALID_INDEX )
 	   || ( he2.face == HALF_EDGE_INVALID_INDEX ) )
-	return false; 
+	return false;
       // Checks that he1 and he2 border a triangle.
       if ( ( nbSides( hei ) != 3 ) || ( nbSides( hei2 ) != 3) )
 	return false;
@@ -843,7 +843,7 @@ namespace DGtal
 	&&   ( ! isVertexBoundary( halfEdge( he2.next ).toVertex ) );
     }
 
-    
+
     /// Merges the edge specified by the half-edge \a hei.
     ///
     /// @param hei any valid half-edge index.
@@ -896,7 +896,7 @@ namespace DGtal
       auto nbV2 = nbNeighboringVertices( v2 );
       auto nbV3 = nbNeighboringVertices( v3 );
       auto nbV4 = nbNeighboringVertices( v4 );
-      // Changes toVertex field of half-edges pointing to v2	 
+      // Changes toVertex field of half-edges pointing to v2
       std::vector<VertexIndex> outer_v;  // stores vertices around v2
       std::vector<Index>       inner_he; // stores half-edges from v2
       std::vector<Index>       outer_he; // stores half-edges toward v2
@@ -904,7 +904,7 @@ namespace DGtal
       do {
 	const HalfEdge& he = halfEdge( i );
 	const Index   iopp = he.opposite;
-	outer_v. push_back( he.toVertex ); 
+	outer_v. push_back( he.toVertex );
 	inner_he.push_back( i );
 	outer_he.push_back( iopp );
 	HalfEdge&    heopp = myHalfEdges[ iopp ];
@@ -945,7 +945,7 @@ namespace DGtal
 	for ( std::size_t j = 1; j < ( outer_v.size() - 2 ); ++j ) {
 	  myArc2Index[ Arc( v1, outer_v[ j ] ) ] = inner_he[ j ];
 	  myArc2Index[ Arc( outer_v[ j ], v1 ) ] = outer_he[ j ];
-	} 
+	}
 	myArc2Index[ Arc( v3, v1 ) ] = iext1n;
 	myArc2Index[ Arc( v1, v4 ) ] = iext2nn;
       }
@@ -987,7 +987,7 @@ namespace DGtal
 
     // ------------------------ protected services -------------------------
   protected:
-    
+
     /// Renumber the last vertex of the triangulated surface as vertex
     /// i (this replaces it). The number of vertices of the data
     /// structure is decreased by 1.
@@ -1097,7 +1097,7 @@ namespace DGtal
   public:
     /// Checks the whole half-edge structure for consistency.
     /// Complexity is at O(n log n) if n in the number of half-edges.
-    /// 
+    ///
     /// @param check_arc2index (optimisation parameter), when 'true'
     /// checks everything, otherwise does not check that the mapping
     /// myArc2Index is correct. This is used in conjunction with flip
@@ -1217,7 +1217,7 @@ namespace DGtal
             }
             i = he.next;
           }
-          while ( i != start );          
+          while ( i != start );
         }
       // Checks that turning around a vertex gives half-edges associated to this vertex.
       for ( VertexIndex v = 0; v < nbVertices(); v++ )
@@ -1236,7 +1236,7 @@ namespace DGtal
               }
               i = halfEdge( he.opposite ).next;
             }
-          while ( i != s );          
+          while ( i != s );
         }
 
       // Checks that boundary vertices have specific associated half-edges.
@@ -1245,8 +1245,8 @@ namespace DGtal
         const Index j = myVertexHalfEdges[ i ];
         if ( halfEdge( j ).face != HALF_EDGE_INVALID_INDEX ) {
           trace.warning() << "[HalfEdgeDataStructure::isValid] "
-                          << "boundary vertex " << i << " is associated to the half-edge " << j 
-                          << " that does not lie on the boundary but on face " << halfEdge( j ).face 
+                          << "boundary vertex " << i << " is associated to the half-edge " << j
+                          << " that does not lie on the boundary but on face " << halfEdge( j ).face
                           << std::endl;
           ok = false;
         }
@@ -1282,12 +1282,12 @@ namespace DGtal
 	if ( hej.edge != ei ) {
           trace.warning() << "[HalfEdgeDataStructure::isValid] "
                           << "edge " << ei << " is associated to half-edge " << i
-			  << " of opposite half-edge " << j 
+			  << " of opposite half-edge " << j
                           << " but its edge is " << hej.edge << std::endl;
           ok = false;
 	}
       }
-      
+
       // Checks that arcs have a correct associated half-edge.
       if ( check_arc2index )
         {
@@ -1298,15 +1298,15 @@ namespace DGtal
               const Index        i = arc2idx.second;
               if ( myHalfEdges[ i ].toVertex != v2 ) {
                 trace.warning() << "[HalfEdgeDataStructure::isValid] "
-                                << "arc (" << v1 << "," << v2 << ") is associated to half-edge " << i 
+                                << "arc (" << v1 << "," << v2 << ") is associated to half-edge " << i
                                 << " but it points to vertex " << myHalfEdges[ i ].toVertex << std::endl;
                 ok = false;
               }
               const Index       i2 = myHalfEdges[ i ].opposite;
               if ( myHalfEdges[ i2 ].toVertex != v1 ) {
                 trace.warning() << "[HalfEdgeDataStructure::isValid] "
-                                << "arc (" << v1 << "," << v2 << ") is associated to half-edge " << i 
-                                << " but its opposite half-edge " << i2 << " points to vertex " << myHalfEdges[ i2 ].toVertex 
+                                << "arc (" << v1 << "," << v2 << ") is associated to half-edge " << i
+                                << " but its opposite half-edge " << i2 << " points to vertex " << myHalfEdges[ i2 ].toVertex
                                 << std::endl;
                 ok = false;
               }
@@ -1346,7 +1346,7 @@ namespace DGtal
 	    nbv++;
             i = he.next;
           }
-          while ( i != start );          
+          while ( i != start );
 	  if ( nbv != 3 ) {
 	    trace.warning() << "[HalfEdgeDataStructure::isValidTriangulation] "
 			    << "when turning around face " << f
@@ -1391,7 +1391,7 @@ namespace DGtal
     std::vector< Index > myEdgeHalfEdges;
     /// The mapping between arcs to their half-edge index.
     Arc2Index myArc2Index;
-    
+
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -1402,9 +1402,9 @@ namespace DGtal
      */
     void selfDisplay ( std::ostream & out ) const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     // ------------------------- Hidden services ------------------------------
   protected:
@@ -1426,7 +1426,7 @@ namespace DGtal
         }
       return it->second;
     }
-        
+
   }; // end of class HalfEdgeDataStructure
 
 

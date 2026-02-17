@@ -54,7 +54,7 @@ namespace DGtal
   /**
      Description of class 'SphericalTriangle' <p> \brief Aim:
      Represent a triangle drawn onto a sphere of radius 1.
-     
+
      @tparam TSpace any type of 3-dimensional digital space.
   */
   template <typename TSpace>
@@ -66,18 +66,18 @@ namespace DGtal
     typedef typename Space::RealPoint      RealPoint;
     typedef typename Space::RealVector     RealVector;
     typedef typename RealVector::Component Scalar;
-    
+
     // Checks that dimension is 3.
     BOOST_STATIC_ASSERT(( Space::dimension == 3 ));
-    
+
     // ----------------------- Standard services ------------------------------
   public:
-    
+
     /**
      * Destructor.
      */
     ~SphericalTriangle() {}
-    
+
     /// Default constructor. The object is invalid.
     SphericalTriangle( const RealVector& va, const RealVector& vb, const RealVector& vc,
 		       bool normalize = true )
@@ -86,13 +86,13 @@ namespace DGtal
       setB( vb, normalize );
       setC( vc, normalize );
     }
-    
+
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
     SphericalTriangle ( const SphericalTriangle & other ) = default;
-    
+
     /**
      * Assignment.
      * @param other the object to copy.
@@ -169,7 +169,7 @@ namespace DGtal
       if ( d[ 2 ] > d[ m ] ) m = 2;
       return ( fabs( d[ m ] - d[ (m+1)%3 ] - d[ (m+2)%3 ] ) < 1e-8 );
     }
-    
+
     /// @return the polar triangle associated with this triangle.
     Self polarTriangle() const
     {
@@ -222,8 +222,8 @@ namespace DGtal
       if ( M.norm1() <= 1e-8 || X.norm1() <= 1e-8 ) return 0.0;
       return M.dot( X ) < 0.0 ? -S : S;
     }
-    
-    // ------------------------- Private Datas --------------------------------
+
+    // ------------------------- Private Data --------------------------------
   private:
     // ------------------------- Hidden services ------------------------------
   protected:
@@ -233,12 +233,12 @@ namespace DGtal
     RealVector myB;
     /// The point C of the triangle ABC, of unit length
     RealVector myC;
-    
+
     // ------------------------- Internals ------------------------------------
   private:
-    
+
   }; // end of class SphericalTriangle
-  
+
 
 } // namespace DGtal
 

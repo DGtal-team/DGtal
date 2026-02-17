@@ -184,10 +184,10 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     CountedConstPtrOrConstPtr<Surface> mySurface; /**< A pointer to the digital surface. */
     Scalar myH; /**< The gridstep */

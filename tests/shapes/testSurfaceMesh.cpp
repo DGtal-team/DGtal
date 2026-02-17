@@ -119,7 +119,7 @@ PointVector<3,double> > makeTetrahedron()
   positions.push_back( RealPoint( 0, 0, 1 ) );
   faces.push_back( { 0, 1, 2 } );
   faces.push_back( { 1, 0, 3 } );
-  faces.push_back( { 0, 2, 3 } );  
+  faces.push_back( { 0, 2, 3 } );
   faces.push_back( { 3, 2, 1 } );
   return PolygonMesh( positions.cbegin(), positions.cend(),
                      faces.cbegin(), faces.cend() );
@@ -193,7 +193,7 @@ SCENARIO( "SurfaceMesh< RealPoint3 > build tests", "[surfmesh][build]" )
         bool distances_ok
           = std::equal( distances.begin(), distances.end(), expected_distance );
         REQUIRE( distances_ok );
-      }      
+      }
     THEN( "The mesh has 6 boundary edges and 9 manifold inner consistent edges, the boundary is a 1d manifold" ) {
       auto mani_bdry    = polymesh.computeManifoldBoundaryEdges();
       auto mani_inner   = polymesh.computeManifoldInnerEdges();
@@ -328,12 +328,12 @@ SCENARIO( "SurfaceMesh< RealPoint3 > reader/writer tests", "[surfmesh][io]" )
   typedef PolygonMeshHelper::NormalsType             NormalsType;
   auto polymesh = PolygonMeshHelper::makeSphere( 3.0, RealPoint::zero,
                                                  10, 10, NormalsType::VERTEX_NORMALS );
-  WHEN( "Writing the mesh as an OBJ file and reading into another mesh" ) { 
+  WHEN( "Writing the mesh as an OBJ file and reading into another mesh" ) {
     PolygonMesh readmesh;
     std::ostringstream output;
     bool okw = PolygonMeshWriter::writeOBJ( output, polymesh );
     std::string file = output.str();
-    std::istringstream input( file ); 
+    std::istringstream input( file );
     bool okr = PolygonMeshReader::readOBJ ( input,  readmesh );
     THEN( "The read mesh is the same as the original one" ) {
       CAPTURE( file );
@@ -378,7 +378,7 @@ SCENARIO( "SurfaceMesh< RealPoint3 > flippable tests", "[surfmesh][flip]" )
   typedef PointVector<3,double>                      RealPoint;
   typedef PointVector<3,double>                      RealVector;
   typedef SurfaceMesh< RealPoint, RealVector >       PolygonMesh;
-  typedef PolygonMesh::Edge                          Edge;  
+  typedef PolygonMesh::Edge                          Edge;
   typedef SurfaceMeshHelper< RealPoint, RealVector > PolygonMeshHelper;
   typedef PolygonMeshHelper::NormalsType             NormalsType;
   auto meshBox     = makeBox();
@@ -416,7 +416,7 @@ SCENARIO( "SurfaceMesh< RealPoint3 > flippable tests", "[surfmesh][flip]" )
     auto inner_edges = meshLantern.computeManifoldInnerEdges();
     Edge nb_flippable       = 0;
     Edge nb_bdry_flippable  = 0;
-    Edge nb_inner_flippable = 0;    
+    Edge nb_inner_flippable = 0;
     for ( Edge e = 0; e < meshLantern.nbEdges(); e++ )
       if ( meshLantern.isFlippable( e ) ) nb_flippable++;
     for ( Edge e : bdry_edges )
@@ -437,7 +437,7 @@ SCENARIO( "SurfaceMesh< RealPoint3 > flip tests", "[surfmesh][flip]" )
   typedef PointVector<3,double>                      RealPoint;
   typedef PointVector<3,double>                      RealVector;
   typedef SurfaceMesh< RealPoint, RealVector >       PolygonMesh;
-  typedef PolygonMesh::Edge                          Edge;  
+  typedef PolygonMesh::Edge                          Edge;
   typedef SurfaceMeshHelper< RealPoint, RealVector > PolygonMeshHelper;
   typedef PolygonMeshHelper::NormalsType             NormalsType;
   auto meshLantern = PolygonMeshHelper::makeLantern( 3.0, 3.0, RealPoint::zero,
@@ -463,7 +463,7 @@ SCENARIO( "SurfaceMesh< RealPoint3 > flip tests", "[surfmesh][flip]" )
       REQUIRE( euler == post_euler );
     }
     THEN( "Boundary is unchanged" ) {
-      auto post_bdry_edges  = meshLantern.computeManifoldBoundaryEdges();      
+      auto post_bdry_edges  = meshLantern.computeManifoldBoundaryEdges();
       REQUIRE( bdry_edges.size() == post_bdry_edges.size() );
     }
   }
@@ -513,4 +513,3 @@ SCENARIO( "SurfaceMesh< RealPoint3 > restore lantern with flips tests", "[surfme
     }
   }
 }
-  

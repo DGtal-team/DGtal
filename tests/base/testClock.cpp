@@ -110,7 +110,7 @@ bool test_RestartClock()
   c_accum.startClock();
 
 #if !defined(WIN32)
-  
+
   for (unsigned int i=0 ; i< 43350; i++)
     tmp = cos(tmp+i);
 	usleep(20000);

@@ -29,7 +29,7 @@ namespace DGtal {
     template<size_t I>
     std::vector<std::array<size_t, I>> makeIndices(size_t N) {
       std::vector<std::array<size_t, I>> indices(N);
-    
+
       for (size_t i = 0; i < N; ++i) {
         for (size_t j = 0; j < I; ++j) {
           indices[i][j] = j + i * I;
@@ -38,16 +38,16 @@ namespace DGtal {
       return indices;
     }
 
-    template<typename T> 
+    template<typename T>
     std::array<T, 8> getCubeVertices(T center, double size) {
       return {
-        center + 0.5 * size * T(-1, -1, -1), 
+        center + 0.5 * size * T(-1, -1, -1),
         center + 0.5 * size * T( 1, -1, -1),
-        center + 0.5 * size * T( 1,  1, -1), 
+        center + 0.5 * size * T( 1,  1, -1),
         center + 0.5 * size * T(-1,  1, -1),
-        center + 0.5 * size * T(-1, -1,  1), 
+        center + 0.5 * size * T(-1, -1,  1),
         center + 0.5 * size * T( 1, -1,  1),
-        center + 0.5 * size * T( 1,  1,  1), 
+        center + 0.5 * size * T( 1,  1,  1),
         center + 0.5 * size * T(-1,  1,  1)
       };
     }
@@ -63,14 +63,14 @@ namespace DGtal {
       switch(orientation) {
       case 0: // Normal in x direction
         return {
-          center + 0.5 * size * T(0, -1, -1), 
+          center + 0.5 * size * T(0, -1, -1),
           center + 0.5 * size * T(0, -1,  1),
           center + 0.5 * size * T(0,  1,  1),
           center + 0.5 * size * T(0,  1, -1)
         };
       case 1: // Normal in y direction
         return {
-          center + 0.5 * size * T(-1, 0, -1), 
+          center + 0.5 * size * T(-1, 0, -1),
           center + 0.5 * size * T(-1, 0,  1),
           center + 0.5 * size * T( 1, 0,  1),
           center + 0.5 * size * T( 1, 0, -1)
@@ -78,7 +78,7 @@ namespace DGtal {
       case 2: // Normal in z direction
       default:
         return {
-          center + 0.5 * size * T(-1, -1, 0), 
+          center + 0.5 * size * T(-1, -1, 0),
           center + 0.5 * size * T(-1,  1, 0),
           center + 0.5 * size * T( 1,  1, 0),
           center + 0.5 * size * T( 1, -1, 0)
@@ -94,10 +94,10 @@ namespace DGtal {
 
     template<typename T>
     std::array<T, 8> getPrism(
-        T center, int orientation, 
+        T center, int orientation,
         double size1, double size2, double shift1, double shift2
     ) {
-      T dir(0, 0, 0); dir[orientation] = 1; 
+      T dir(0, 0, 0); dir[orientation] = 1;
 
       std::array<T, 8> vertices;
       auto fQuad = getAASquareVertices(center + shift1 * dir, orientation, size1);
@@ -109,7 +109,7 @@ namespace DGtal {
     }
 
     template<typename T, typename U>
-    void insertPrism(U& dest, T center, int orientation, 
+    void insertPrism(U& dest, T center, int orientation,
                      double scale1, double scale2, double shift1, double shift2) {
       auto vertices = getPrism(center, orientation, scale1, scale2, shift1, shift2);
       dest.insert(dest.end(), vertices.begin(), vertices.end());
@@ -122,7 +122,7 @@ namespace DGtal {
   template <typename Space, typename KSpace>
   void Display3D<Space, KSpace>::clear() {
     endCurrentGroup();
-  
+
     myToRender.clear();
     planes.clear();
     data.clear();
@@ -141,7 +141,7 @@ namespace DGtal {
 
   ///////////////////////////// GENERAL COMMANDS ////////////////////////////
   ///////////////////////////////////////////////////////////////////////////
-  
+
   ///////////////////////////////////////////////////////////////////////////
   ///////////////////////////// GROUP MANAGEMENT ////////////////////////////
 
@@ -169,7 +169,7 @@ namespace DGtal {
         i += 1;
       } while (data.find(newName) != data.end());
     }
-    
+
     // Insert a new empty container
     DisplayData<RealPoint> newData;
 
@@ -181,16 +181,16 @@ namespace DGtal {
     myCurrentName = newName;
     // Add to render queue
     myToRender.push_back(myCurrentName);
-    // Return computed name 
+    // Return computed name
     return newName;
   }
 
   template <typename Space, typename KSpace>
   bool Display3D<Space, KSpace>::setCurrentList(const std::string& name) {
     auto it = data.find(name);
-    if (it == data.end()) 
+    if (it == data.end())
       return false;
-    
+
     myCurrentData = &it->second;
     myCurrentName = name;
     return true;
@@ -229,7 +229,7 @@ namespace DGtal {
     drawColor(color);
     return "";
   }
-  
+
   template <typename Space, typename KSpace>
   void Display3D<Space, KSpace>::drawColor(const DGtal::Color& color) {
     currentStyle.color = color;
@@ -240,7 +240,7 @@ namespace DGtal {
   void Display3D<Space, KSpace>::setDefaultColors() {
     currentStyle.useDefaultColors = true;
   }
-  
+
   template <typename Space, typename KSpace>
   void Display3D<Space, KSpace>::drawAdjacencies(bool toggle) {
     if (toggle) currentStyle.mode |=  DisplayStyle::ADJACENCIES;
@@ -258,7 +258,7 @@ namespace DGtal {
     if (toggle) currentStyle.mode |=  DisplayStyle::GRID;
     else        currentStyle.mode &= ~DisplayStyle::GRID;
   }
-  
+
   template <typename Space, typename KSpace>
   void Display3D<Space, KSpace>::defaultStyle() {
     currentStyle.mode = DisplayStyle::DEFAULT;
@@ -278,7 +278,7 @@ namespace DGtal {
 
   ////////////////////////////// DRAW MODIFIERS //////////////////////////////
   ////////////////////////////////////////////////////////////////////////////
-  
+
   ////////////////////////////////////////////////////////////////////////////
   ////////////////////////////// DRAW COMMANDS ///////////////////////////////
 
@@ -378,7 +378,7 @@ namespace DGtal {
       const bool xodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(displayed.preCell().coordinates[0]) & 1);
       const bool yodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(displayed.preCell().coordinates[1]) & 1);
       const bool zodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(displayed.preCell().coordinates[2]) & 1);
-      
+
       const int dim = xodd + yodd + zodd;
 
       setCurrentList(*lists[dim]);
@@ -402,7 +402,7 @@ namespace DGtal {
 
     // using CSCell = Calculus::SCell;
     using Scalar = typename Calculus::Scalar;
-    
+
     std::string list0   = newBallList(uname + "_0d");
     std::string list1   = newLineList(uname + "_1d");
     std::string list2_1 = newQuadList(uname + "_2d");
@@ -418,14 +418,14 @@ namespace DGtal {
       const bool xodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[0]) & 1);
       const bool zodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[2]) & 1);
       const bool yodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[1]) & 1);
-      
+
       const int dim = xodd + yodd + zodd;
       if (!std::isfinite(val)) continue;
 
       setCurrentList(*lists[dim]);
       if ((dim == 2) && (currentStyle.mode & DisplayStyle::SIMPLIFIED))
         setCurrentList(list2_1);
-      
+
       // Automatically decide the scalle of the quantity
       draw(WithQuantity(cell, "value", val));
     }
@@ -437,10 +437,10 @@ namespace DGtal {
 
 
   template <typename Space, typename KSpace>
-  template <typename Calculus, DGtal::Duality dual> 
+  template <typename Calculus, DGtal::Duality dual>
   std::string Display3D<Space, KSpace>::draw(const VectorField<Calculus, dual>& field, const std::string& uname) {
     std::string name = newBallList(uname);
-    
+
     myCurrentData->style.width = 0.; // Make ball diseapear
     myCurrentData->vertices.reserve(field.length());
     myCurrentData->vectorQuantities[QuantityScale::VERTEX]["value"].reserve(field.length());
@@ -462,33 +462,33 @@ namespace DGtal {
   template <typename Space, typename KSpace>
   std::string Display3D<Space, KSpace>::draw(const KCell& cell, const std::string& name) {
     const RealPoint rp = myCellEmbedder.embed(cell);
-    
+
     const bool xodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[0]) & 1);
     const bool yodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[1]) & 1);
     const bool zodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[2]) & 1);
-      
+
     return drawKCell(name, rp, xodd, yodd, zodd, false, false);
   }
 
   template <typename Space, typename KSpace>
   std::string Display3D<Space, KSpace>::draw(const SCell& cell, const std::string& name) {
     const RealPoint rp = mySCellEmbedder.embed(cell);
-    
+
     const bool xodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[0]) & 1);
     const bool yodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[1]) & 1);
     const bool zodd = (NumberTraits<typename KSpace::Integer>::castToInt64_t(cell.preCell().coordinates[2]) & 1);
-    
+
     return drawKCell(name, rp, xodd, yodd, zodd, true, cell.preCell().positive);
   }
 
   template <typename Space, typename KSpace>
   std::string Display3D<Space, KSpace>::draw(const HyperRectDomain<Space>& domain, const std::string& uname) {
-   
+
     std::string name;
-    
+
     if (currentStyle.mode & DisplayStyle::GRID) {
       name = newLineList(uname);
-      
+
       // Faces YX
       for (auto z = domain.myLowerBound[2]; z <= domain.myUpperBound[2]; z++) {
         for (auto x = domain.myLowerBound[0];  x <= domain.myUpperBound[0]; x++) {
@@ -560,7 +560,7 @@ namespace DGtal {
   template <typename Vec>
   std::string Display3D<Space, KSpace>::drawPolygon(const std::vector<Vec>& vertices, const std::string& uname) {
     std::string name = createOrReusePolygonList(uname);
-    
+
     std::vector<unsigned> indices;
     indices.reserve(vertices.size());
 
@@ -579,7 +579,7 @@ namespace DGtal {
     myCurrentData->vertices.push_back(c);
     return name;
   }
-  
+
   template <typename Space, typename KSpace>
   std::string Display3D<Space, KSpace>::drawLine(const RealPoint& a, const RealPoint& b, const std::string& uname) {
     std::string name = createOrReuseLineList(uname);
@@ -614,7 +614,7 @@ namespace DGtal {
   std::string Display3D<Space, KSpace>::draw(const ImageContainerBySTLVector<D, T>& image, const std::string& name) {
     return drawImage(name, image);
   }
-  
+
   template <typename Space, typename KSpace>
   template <typename TImageContainer,
             typename TNewDomain,
@@ -625,7 +625,7 @@ namespace DGtal {
   std::string Display3D<Space, KSpace>::draw(const ImageAdapter<TImageContainer, TNewDomain, TFunctorD, TNewValue, TFunctorV, TFunctorVm1>& adapter, const std::string& name) {
     return drawImageAdaptDom(name, adapter);
   }
-        
+
   template <typename Space, typename KSpace>
   template <typename TImageContainer,
             typename TNewDomain,
@@ -644,7 +644,7 @@ namespace DGtal {
     // Draw adjacency if needed
     if (currentStyle.mode & DisplayStyle::ADJACENCIES) {
       newLineList(name + "_adj");
-      
+
       for (auto it = obj.begin(); it != obj.end(); ++it) {
           auto neig = obj.properNeighborhood(*it);
 
@@ -660,7 +660,7 @@ namespace DGtal {
     endCurrentGroup();
     return name;
   }
-  
+
   template <typename Space, typename KSpace>
   template <typename T, typename Type>
   std::string Display3D<Space, KSpace>::draw(const WithQuantity<T, Type>& props, const std::string& uname) {
@@ -671,7 +671,7 @@ namespace DGtal {
       name = draw(props.object, uname);
 
     QuantityScale sloc = props.scale;
-    
+
     // Tries to find an appropriate scale
     if (sloc == QuantityScale::UNKNOWN)
       sloc = data[name].getDefaultQuantityLevel(data[name].elementSize);
@@ -684,7 +684,7 @@ namespace DGtal {
     addQuantity(name, props.name, props.values, sloc);
     return name;
   }
-  
+
   template <typename Space, typename KSpace>
   template <typename Type>
   void Display3D<Space, KSpace>::addQuantity(const std::string& oName, const std::string& qName, const Type& value, QuantityScale scale) {
@@ -710,7 +710,7 @@ namespace DGtal {
     else if constexpr(std::is_same_v<RealPoint, Type>) {
       auto& loc = data[oName].vectorQuantities[scale][qName];
       loc.insert(loc.end(), values.begin(), values.end());
-    }  
+    }
     else if constexpr(std::is_same_v<Color , Type>) {
       auto& loc = data[oName].colorQuantities[scale][qName];
       loc.insert(loc.end(), values.begin(), values.end());
@@ -776,11 +776,11 @@ namespace DGtal {
         std::swap(a, b);
       }
     }
-    
+
     endCurrentGroup();
     return name;
   }
-  
+
   template <typename Space, typename KSpace>
   template<typename It, typename Int, int Con>
   std::string Display3D<Space, KSpace>::draw(const Naive3DDSSComputer<It, Int, Con>& computer, const std::string& uname) {
@@ -805,7 +805,7 @@ namespace DGtal {
     }
     return name;
   }
-      
+
   template <typename Space, typename KSpace>
   std::string Display3D<Space, KSpace>::draw(const ClippingPlane& plane, const std::string& uname) {
     ((void) uname);
@@ -838,11 +838,11 @@ namespace DGtal {
       }
     }
     return name;
-  }      
+  }
 
   // Generic functions
   template <typename Space, typename KSpace>
-  template <typename Range> 
+  template <typename Range>
   std::string Display3D<Space, KSpace>::drawGenericRange(const Range& range, const std::string& uname) {
     bool save = allowReuseList;
 
@@ -851,7 +851,7 @@ namespace DGtal {
 
     auto it = range.begin();
 
-    std::string name = myCurrentName; 
+    std::string name = myCurrentName;
     if (uname.empty()) {
       name = draw(*it);
     } else {
@@ -868,7 +868,7 @@ namespace DGtal {
     }
 
     endCurrentGroup();
-    allowReuseList = save; 
+    allowReuseList = save;
     return name;
   }
 
@@ -882,7 +882,7 @@ namespace DGtal {
     auto it = image.domain().begin();
     auto itend = image.domain().end();
     constexpr size_t dim = T::Domain::Space::dimension;
-    
+
     myCurrentData->vertices.reserve(8 * total);
     myCurrentData->scalarQuantities[QuantityScale::CELL]["value"].reserve(total);
     for(; it != itend; ++it) {
@@ -891,14 +891,14 @@ namespace DGtal {
         rp = myEmbedder.embed(*it);
       } else {
         // We accept to draw theses 2D image, do ask to parametrize to also the myEmbedder...
-        rp = myEmbedder.embed(Z3i::Point((*it)[0], (*it)[1], 0)); 
+        rp = myEmbedder.embed(Z3i::Point((*it)[0], (*it)[1], 0));
       }
       myCurrentData->scalarQuantities[QuantityScale::CELL]["value"].push_back(image(*it));
       drawutils::insertCubeVertices(myCurrentData->vertices, rp, myCurrentData->style.width);
     }
     return name;
   }
-  
+
   template <typename Space, typename KSpace>
   template <typename T>
   std::string Display3D<Space, KSpace>::drawImageAdaptDom(const std::string& uname, const T& image) {
@@ -909,7 +909,7 @@ namespace DGtal {
     auto it = image.domain().begin();
     auto itend = image.domain().end();
     constexpr size_t dim = T::Domain::Space::dimension;
-    
+
     myCurrentData->vertices.reserve(8 * total);
     myCurrentData->scalarQuantities[QuantityScale::CELL]["value"].reserve(total);
     for(; it != itend; ++it) {
@@ -918,7 +918,7 @@ namespace DGtal {
         rp = myEmbedder.embed(*it);
       } else {
         // We accept to draw theses 2D image, do ask to parametrize to also the myEmbedder...
-        rp = myEmbedder.embed(image.sourceDomainPoint(Z2i::Point((*it)[0], (*it)[1]))); 
+        rp = myEmbedder.embed(image.sourceDomainPoint(Z2i::Point((*it)[0], (*it)[1])));
       }
       myCurrentData->scalarQuantities[QuantityScale::CELL]["value"].push_back(image(*it));
       drawutils::insertCubeVertices(myCurrentData->vertices, rp, myCurrentData->style.width);
@@ -926,7 +926,7 @@ namespace DGtal {
     return name;
   }
 
-  
+
   template <typename Space, typename KSpace>
   std::string Display3D<Space, KSpace>::drawKCell(std::string uname, const RealPoint& rp, bool xodd, bool yodd, bool zodd, bool hasSign, bool sign) {
     std::string name = myCurrentName;
@@ -935,7 +935,7 @@ namespace DGtal {
     static const double shift = 0.05;
     static const double smallScale = 0.3;
     static const double smallShift = 0.15;
-    // For 2D cell, this indicates if the big quad is 
+    // For 2D cell, this indicates if the big quad is
     // inside the cell or outside
     static const int orientationPermut[3][2] = {
       {1, 0}, {0, 1}, {1, 0}
@@ -944,7 +944,7 @@ namespace DGtal {
     const unsigned int dim = xodd + yodd + zodd;
 
     auto tokenPos = uname.find(TOKEN);
-    if (tokenPos != std::string::npos) 
+    if (tokenPos != std::string::npos)
       uname.replace(uname.find(TOKEN), TOKEN.size(), std::to_string(dim));
 
     switch(dim) {
@@ -974,12 +974,12 @@ namespace DGtal {
           drawutils::insertAASquare(myCurrentData->vertices, rp, orientation, scale1);
         } else {
           name = createOrReuseVolumetricList(uname);
-          
+
           const double scales[2] = {
-            scale      * myCurrentData->style.width, 
+            scale      * myCurrentData->style.width,
             smallScale * myCurrentData->style.width
           };
-          
+
           // Decide where the big quad goes, in the interior or the exterior
           // of the cell depending on sign and the orientation
           int permut = orientationPermut[orientation][sign];

@@ -442,4 +442,3 @@ DGtal::ArithmeticalDSSComputer<TIterator,TInteger,adjacency>::selfDisplay ( std:
 {
   out << "[ArithmeticalDSSComputer] " << myDSS;
 }
-

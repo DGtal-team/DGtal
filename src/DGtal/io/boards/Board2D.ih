@@ -69,14 +69,14 @@ DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
   BOOST_CONCEPT_ASSERT((concepts::CDrawableWithBoard2D<TDrawableWithBoard2D>));
 
   CountedPtr<DrawableWithBoard2D> style( defaultStyle(object) );
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   trace.info() << "[operator<<] " << object.className();
 #endif
 
   // Apply default style
   if ( style.get() )
     {
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
       trace.info() << " [default style]";
 #endif
       DGtal::Style2DFactory::draw(*this, style.get());
@@ -86,7 +86,7 @@ DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
   if ( it != myStyles.end() )
     if ( it->second.get() != 0 )
       {
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   trace.info() << " [specific style]";
 #endif
    DGtal::Style2DFactory::draw(*this, it->second.get());
@@ -95,7 +95,7 @@ DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
   ModeMapping::const_iterator itm = myModes.find( object.className() );
   if ( itm != myModes.end() )
     {
-      #ifdef DEBUG_VERBOSE
+      #ifdef DGTAL_DEBUG_VERBOSE
       trace.info() << "  [mode]";
       #endif
 
@@ -104,7 +104,7 @@ DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
   ( defaultStyle(object, itm->second) );
       if ( style_mode.get() )
   {
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
     trace.info() << " [default style for mode]";
 #endif
      DGtal::Style2DFactory::draw(*this, style_mode.get());
@@ -115,19 +115,19 @@ DGtal::Board2D::operator<<( const TDrawableWithBoard2D & object )
       if ( it != myStyles.end() )
   if ( it->second.get() != 0 )
     {
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
       trace.info() << " [specific style for mode: "
           << specific_style << "]";
 #endif
       DGtal::Style2DFactory::draw(*this, it->second.get());
     }
     }
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   trace.info() << "  [draw]";
 #endif
 
   DGtal::Display2DFactory::draw(*this, object);
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   std::cerr << std::endl;
 #endif
    return *this;
@@ -170,9 +170,9 @@ DGtal::Board2D::~Board2D()
 {
 }
 
-/** 
+/**
  * Constructs a new board and sets the background color, if any.
- * 
+ *
  * @param aBackgroundColor A color for the drawing's background.
  */
 DGtal::Board2D::Board2D( const Color & aBackgroundColor )
@@ -182,9 +182,9 @@ DGtal::Board2D::Board2D( const Color & aBackgroundColor )
   this->setUnit(LibBoard::Board::UCentimeter);
 }
 
-/** 
+/**
  * Copy constructor.
- * 
+ *
  * @param other The object to be copied.
  */
 DGtal::Board2D::Board2D( const Board2D & other )
@@ -198,7 +198,7 @@ DGtal::Board2D::Board2D( const Board2D & other )
  * @param other the object to copy.
  * @return a reference on 'this'.
  */
-DGtal::Board2D & 
+DGtal::Board2D &
 DGtal::Board2D::operator= ( const Board2D & other )
 {
   if ( this != &other )

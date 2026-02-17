@@ -196,7 +196,7 @@ decomposeQL( Matrix& V, Vector& d, Vector e )
     e[ i - 1 ] = e[ i ];
 
   e[ dimensionMinusOne ] = 0.0;
-  
+
   Quantity f = Quantity( 0.0 );
   Quantity tst1 = Quantity( 0.0 );
   Quantity eps = Quantity( std::pow( 2.0, -52.0 ));
@@ -260,7 +260,7 @@ decomposeQL( Matrix& V, Vector& d, Vector e )
                       V.setComponent ( k, i, ( c * V ( k, i ) - s * h ));
                     }
                 }
-              
+
               p = - s * s2 * c3 * el1 * e[ l ] / dl1;
               e[ l ] = s * p;
               d[ l ] = c * p;
@@ -276,7 +276,7 @@ decomposeQL( Matrix& V, Vector& d, Vector e )
     {
       Dimension k = i;
       Quantity p = d[ i ];
-      
+
       for ( Dimension j = i + 1; j < dimension; ++j )
         {
           if ( d[ j ] < p )
@@ -313,5 +313,3 @@ getEigenDecomposition( const Matrix& matrix, Matrix& eigenVectors, Vector& eigen
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

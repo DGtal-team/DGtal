@@ -52,30 +52,30 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class Filtered2x2DetComputer
   /**
-   * \brief Aim: Class that provides a way of computing the sign of the 
-   * determinant of a 2x2 matrix from its four coefficients, ie. 
-   * 
-   \f$ 
+   * \brief Aim: Class that provides a way of computing the sign of the
+   * determinant of a 2x2 matrix from its four coefficients, ie.
+   *
+   \f$
    \begin{vmatrix}
    a & x \\
    b & y
-   \end{vmatrix} 
+   \end{vmatrix}
    \f$
    *
    * The coefficients must be integers, with an absolute value less than
-   * 2^53, of type 'double'. 
-   * 
-   * It returns: 
-   * - a strictly positive value if \f$ ay - bx > 0\f$, 
+   * 2^53, of type 'double'.
+   *
+   * It returns:
+   * - a strictly positive value if \f$ ay - bx > 0\f$,
    * - a strictly negative value if \f$ ay - bx < 0 \f$,
    * - 0 if \f$ ay - bx = 0 \f$.
    *
    * If the result of \f$ ay - bx \f$ is not null,
-   * the IEC-559 / IEEE-754 standard guarantees that 
-   * the result is not zero (filtering step). Otherwise, 
-   * we use another method to conclude. 
+   * the IEC-559 / IEEE-754 standard guarantees that
+   * the result is not zero (filtering step). Otherwise,
+   * we use another method to conclude.
    *
-   * This class is a model of C2x2DetComputer. 
+   * This class is a model of C2x2DetComputer.
    *
    * @tparam TDetComputer any model of C2x2DetComputer
    */
@@ -84,33 +84,33 @@ namespace DGtal
   {
     // ----------------------- Types  ------------------------------------
   public:
-    BOOST_CONCEPT_ASSERT(( C2x2DetComputer<TDetComputer> )); 
+    BOOST_CONCEPT_ASSERT(( C2x2DetComputer<TDetComputer> ));
 
     /**
      * Type of integer for the input coefficients of the 2x2 matrix
      */
-    typedef typename TDetComputer::ArgumentInteger ArgumentInteger; 
+    typedef typename TDetComputer::ArgumentInteger ArgumentInteger;
     //NB. TDetComputer should take input coefficients of type float, double or long double
     //this type must adhere to IEC-559 / IEEE-754 standard.
-    BOOST_STATIC_ASSERT(( std::numeric_limits<ArgumentInteger>::is_iec559 )); 
+    BOOST_STATIC_ASSERT(( std::numeric_limits<ArgumentInteger>::is_iec559 ));
 
     /**
      * DGtal alias of type ArgumentInteger
      */
-    typedef ArgumentInteger Integer; 
+    typedef ArgumentInteger Integer;
     /**
      * STL alias of type ArgumentInteger
      */
-    typedef ArgumentInteger argument_type; 
+    typedef ArgumentInteger argument_type;
 
     /**
      * Type of integer for the returned determinant
      */
-    typedef typename TDetComputer::ResultInteger ResultInteger; 
+    typedef typename TDetComputer::ResultInteger ResultInteger;
     /**
      * DGtal alias type of ResultInteger
      */
-    typedef ResultInteger Value; 
+    typedef ResultInteger Value;
     /**
      * STL alias of type ResultInteger
      */
@@ -132,7 +132,7 @@ namespace DGtal
      * @pre init must be called before
      * @param aX 0-component of the second column vector
      * @param aY 1-component of the second column vector
-     * @return the 2x2 matrix determinant, ie. 
+     * @return the 2x2 matrix determinant, ie.
      * @a myAX . @a aY - @a myBY . @a aX
      */
     ResultInteger operator()(const ArgumentInteger& aX, const ArgumentInteger& aY) const;
@@ -146,7 +146,7 @@ namespace DGtal
      * @return determinant of the 2x2 matrix that consists
      * of the two above column vectors, ie. @a aA . @a aY - @a aB . @a aX
      */
-    ResultInteger operator()(const ArgumentInteger& aA, const ArgumentInteger& aB, 
+    ResultInteger operator()(const ArgumentInteger& aA, const ArgumentInteger& aB,
 			     const ArgumentInteger& aX, const ArgumentInteger& aY);
 
     // ----------------------- Interface --------------------------------------
@@ -164,26 +164,26 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     /**
-     * Data member used to store 
+     * Data member used to store
      * the 0-component of the first column vector, ie. a.
      */
-    ArgumentInteger myA; 
+    ArgumentInteger myA;
     /**
      * Data member used to store
      * the 1-component of the first column vector, ie. b.
      */
-    ArgumentInteger myB; 
+    ArgumentInteger myB;
     /**
-     * Object that can return (the sign of) the determinant, 
-     * after the filtering. 
+     * Object that can return (the sign of) the determinant,
+     * after the filtering.
      */
-    mutable TDetComputer myDetComputer; 
+    mutable TDetComputer myDetComputer;
 
     // ------------------------- Internals ------------------------------------
   private:

@@ -63,7 +63,7 @@ DGtal::TwoStepLocalLengthEstimator<T>::eval(const ConstIterator& itb,
 
   ConstIterator i = itb, ii = itb;
   ++ii;
- 
+
   do
   {
     if ((i->second).dot(ii->second) == 0)
@@ -72,12 +72,12 @@ DGtal::TwoStepLocalLengthEstimator<T>::eval(const ConstIterator& itb,
 	    nbDirect+=2;
 
     ++i;
-    if (i == ite) 
+    if (i == ite)
 	    continue;
-    
+
     ++i; ++ii;
 
-    if (ii == ite) 
+    if (ii == ite)
 	    continue;
 
     ++ii;
@@ -86,7 +86,7 @@ DGtal::TwoStepLocalLengthEstimator<T>::eval(const ConstIterator& itb,
 
   if ( i != ite )
     nbDirect++;
-  
+
   return (nbDiag*myWeightDiagonal + nbDirect*myWeightDirect) * h;
 }
 
@@ -102,7 +102,7 @@ void
 DGtal::TwoStepLocalLengthEstimator<T>::selfDisplay ( std::ostream & out ) const
 {
   out << "[TwoStepLocalLengthEstimator]";
-  if (isValid()) 
+  if (isValid())
     out <<" initialized";
   else
     out<< " not initialized";
@@ -125,7 +125,7 @@ DGtal::TwoStepLocalLengthEstimator<T>::isValid() const
 template <typename T>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		    const TwoStepLocalLengthEstimator<T> & object )
 {
   object.selfDisplay( out );
@@ -134,5 +134,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

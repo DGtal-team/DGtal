@@ -62,7 +62,7 @@ bool testMetricAdjacency()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   typedef SpaceND<3> Space3D;
   typedef Space3D::Point Point;
   typedef Z3i::Adj6 Adj6;
@@ -77,10 +77,10 @@ bool testMetricAdjacency()
   vector<Point> neigh6;
   back_insert_iterator< vector<Point> > bii6( neigh6 );
   Adj6::writeNeighbors( bii6, p );
-  nbok += neigh6.size() == 6 ? 1 : 0; 
+  nbok += neigh6.size() == 6 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-         << "Card(6-neigh): " << neigh6.size() 
+         << "Card(6-neigh): " << neigh6.size()
          << "== 6 ?" << std::endl;
   trace.beginBlock ( "Enumerating neighbors." );
   unsigned int nb_correct = 0;
@@ -95,7 +95,7 @@ bool testMetricAdjacency()
   trace.info() << neigh6[ i ] << "- " << std::endl;
     }
   trace.endBlock();
-  nbok += nb_correct == 6 ? 1 : 0; 
+  nbok += nb_correct == 6 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "Within, #proper adjacent : " << nb_correct
@@ -110,10 +110,10 @@ bool testMetricAdjacency()
   vector<Point> neigh18;
   back_insert_iterator< vector<Point> > bii18( neigh18 );
   Adj18::writeNeighbors( bii18, p );
-  nbok += neigh18.size() == 18 ? 1 : 0; 
+  nbok += neigh18.size() == 18 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-         << "Card(18-neigh): " << neigh18.size() 
+         << "Card(18-neigh): " << neigh18.size()
          << "== 18 ?" << std::endl;
   trace.beginBlock ( "Enumerating neighbors." );
   nb_correct = 0;
@@ -128,7 +128,7 @@ bool testMetricAdjacency()
   trace.info() << neigh18[ i ] << "- " << std::endl;
     }
   trace.endBlock();
-  nbok += nb_correct == 18 ? 1 : 0; 
+  nbok += nb_correct == 18 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "Within, #proper adjacent : " << nb_correct
@@ -142,10 +142,10 @@ bool testMetricAdjacency()
   vector<Point> neigh26;
   back_insert_iterator< vector<Point> > bii26( neigh26 );
   Adj26::writeNeighbors( bii26, p );
-  nbok += neigh26.size() == 26 ? 1 : 0; 
+  nbok += neigh26.size() == 26 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
-         << "Card(26-neigh): " << neigh26.size() 
+         << "Card(26-neigh): " << neigh26.size()
          << "== 26 ?" << std::endl;
   trace.beginBlock ( "Enumerating neighbors." );
   nb_correct = 0;
@@ -160,7 +160,7 @@ bool testMetricAdjacency()
   trace.info() << neigh26[ i ] << "- " << std::endl;
     }
   trace.endBlock();
-  nbok += nb_correct == 26 ? 1 : 0; 
+  nbok += nb_correct == 26 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "Within, #proper adjacent : " << nb_correct
@@ -178,17 +178,17 @@ bool testLocalGraphModel()
 
   typedef DGtal::MetricAdjacency<SpaceND<6,int>, 2>  Adj;
   BOOST_CONCEPT_ASSERT(( CUndirectedSimpleLocalGraph<Adj> ));
-  
-  
-  nbok += Adj::bestCapacity() == 72 ? 1 : 0; 
+
+
+  nbok += Adj::bestCapacity() == 72 ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "Within, bestCapacity : " << Adj::bestCapacity()
          << "== 72 ?" << std::endl;
   trace.endBlock();
 
-  
-  
+
+
   return nbok == nb;
 }
 

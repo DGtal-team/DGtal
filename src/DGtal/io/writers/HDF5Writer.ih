@@ -49,7 +49,7 @@ namespace DGtal {
 			    const Functor & aFunctor)
   {
     DGtal::IOException dgtalio;
-  
+
     typename I::Domain::Vector size;
     const typename I::Domain::Point &upBound = aImage.domain().upperBound();
     const typename I::Domain::Point &lowBound = aImage.domain().lowerBound();
@@ -59,19 +59,19 @@ namespace DGtal {
 
     typename I::Domain domain = aImage.domain();
     typename I::Value val;
-    
+
     hid_t               file, dataset;                // file and dataset handles
     hid_t               datatype, dataspace;          // handles
     hsize_t             dimsf[RANK_3D];               // dataset dimensions
     herr_t              status;
     DGtal::uint8_t      *data;
     int                 i;
-    
+
     // compressed dataset
     hid_t plist_id;
     hsize_t cdims[RANK_3D];
     // compressed dataset
-    
+
     try
       {
         data = (DGtal::uint8_t*)malloc(size[2]*size[1]*size[0] * sizeof(DGtal::uint8_t));
@@ -80,7 +80,7 @@ namespace DGtal {
           trace.error() << " malloc error" << std::endl;
           return false;
         }
-        
+
 	// We scan the domain instead of the image because we cannot
 	// trust the image container Iterator
 	i=0;
@@ -91,7 +91,7 @@ namespace DGtal {
 	    val = aImage( (*it) );
 	    data[i++] = aFunctor(val);
 	  }
-	  
+
 	/*
         * Create a new file using H5F_ACC_TRUNC access,
         * default file creation properties, and default file
@@ -104,7 +104,7 @@ namespace DGtal {
         dimsf[1] = size[1];
         dimsf[2] = size[0];
         dataspace = H5Screate_simple(RANK_3D, dimsf, NULL);
-        
+
         // compressed dataset
         plist_id  = H5Pcreate(H5P_DATASET_CREATE);
 
@@ -154,7 +154,7 @@ namespace DGtal {
         H5Pclose(plist_id);
         // compressed dataset
         H5Fclose(file);
-        
+
         free(data);
       }
     catch( ... )

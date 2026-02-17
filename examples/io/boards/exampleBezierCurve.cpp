@@ -29,7 +29,7 @@
 
 /**
  * Example of bezier curve display in Board2D
- * 
+ *
  *   @image html exampleBezierCurve.png "visualization of resulting export."
  *  @example io/boards/exampleBezierCurve.cpp
  */
@@ -59,35 +59,35 @@ int main( int argc, char** argv )
 
   //control points
   typedef PointVector<2,int> Point;
-  Point P(0,0), Q(4,4), R(8,0); 
+  Point P(0,0), Q(4,4), R(8,0);
 
   //display
-  Board2D board; 
+  Board2D board;
 
   //with fill
-  board << SetMode(P.className(), "Grid") << P << Q << R; 
-  board.drawQuadraticBezierCurve(P[0], P[1], Q[0], Q[1], R[0], R[1]); 
+  board << SetMode(P.className(), "Grid") << P << Q << R;
+  board.drawQuadraticBezierCurve(P[0], P[1], Q[0], Q[1], R[0], R[1]);
 
-  board.saveSVG("BezierCurve.svg", Board2D::BoundingBox, 5000 ); 
-  board.saveEPS("BezierCurve.eps", Board2D::BoundingBox, 5000 ); 
-  board.saveTikZ("BezierCurve.tikz", Board2D::BoundingBox, 5000 ); 
-  board.saveFIG("BezierCurve.fig", Board2D::BoundingBox, 5000 ); 
+  board.saveSVG("BezierCurve.svg", Board2D::BoundingBox, 5000 );
+  board.saveEPS("BezierCurve.eps", Board2D::BoundingBox, 5000 );
+  board.saveTikZ("BezierCurve.tikz", Board2D::BoundingBox, 5000 );
+  board.saveFIG("BezierCurve.fig", Board2D::BoundingBox, 5000 );
 #ifdef DGTAL_WITH_CAIRO
-  board.saveCairo("BezierCurve.pdf", Board2D::CairoPDF); 
+  board.saveCairo("BezierCurve.pdf", Board2D::CairoPDF);
 #endif
 
-  board.clear(); 
+  board.clear();
   //without fill
-  board << SetMode(P.className(), "Grid") << P << Q << R; 
-  board.setFillColor(Color::None); 
-  board.drawQuadraticBezierCurve(P[0], P[1], Q[0], Q[1], R[0], R[1]); 
+  board << SetMode(P.className(), "Grid") << P << Q << R;
+  board.setFillColor(Color::None);
+  board.drawQuadraticBezierCurve(P[0], P[1], Q[0], Q[1], R[0], R[1]);
 
-  board.saveSVG("BezierCurve2.svg", Board2D::BoundingBox, 5000 ); 
-  board.saveEPS("BezierCurve2.eps", Board2D::BoundingBox, 5000 ); 
-  board.saveTikZ("BezierCurve2.tikz", Board2D::BoundingBox, 5000 ); 
-  board.saveFIG("BezierCurve2.fig", Board2D::BoundingBox, 5000 ); 
+  board.saveSVG("BezierCurve2.svg", Board2D::BoundingBox, 5000 );
+  board.saveEPS("BezierCurve2.eps", Board2D::BoundingBox, 5000 );
+  board.saveTikZ("BezierCurve2.tikz", Board2D::BoundingBox, 5000 );
+  board.saveFIG("BezierCurve2.fig", Board2D::BoundingBox, 5000 );
 #ifdef DGTAL_WITH_CAIRO
-  board.saveCairo("BezierCurve2.pdf", Board2D::CairoPDF); 
+  board.saveCairo("BezierCurve2.pdf", Board2D::CairoPDF);
 #endif
 
   trace.endBlock();

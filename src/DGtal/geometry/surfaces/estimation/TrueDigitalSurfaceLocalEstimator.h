@@ -164,10 +164,10 @@ namespace DGtal
      * @param accuracy distance criterion to stop the descent (proximity of implicit function).
      * @param gamma coefficient associated with the gradient (size of each step).
      */
-    void setParams( ConstAlias<KSpace> ks, 
+    void setParams( ConstAlias<KSpace> ks,
                     Clone<GeometricFunctor> fct,
-                    const int maxIter = 20, 
-                    const Scalar accuracy = 0.0001, 
+                    const int maxIter = 20,
+                    const Scalar accuracy = 0.0001,
                     const Scalar gamma = 0.5 );
 
     /**
@@ -179,10 +179,10 @@ namespace DGtal
      * @param[in] itb iterator after the last surfel of the surface.
      */
     template <typename SurfelConstIterator>
-    void init( const Scalar _h, 
+    void init( const Scalar _h,
                SurfelConstIterator itb,
                SurfelConstIterator ite );
-    
+
     /**
      * @return the estimated quantity at *it
      * @param [in] it the surfel iterator at which we evaluate the quantity.
@@ -223,7 +223,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
     /// The cellular space
     CountedConstPtrOrConstPtr<KSpace> myKSpace;
@@ -245,7 +245,7 @@ namespace DGtal
     /// coefficient associated with the gradient (size of each step).
     Scalar myGamma;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------

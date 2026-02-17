@@ -77,7 +77,7 @@ namespace functors
    * is mapped to point (x,y).
    *
    * All kth coordinates (0 < k < j) that are greater than i,
-   * are set to a value given at construction (0 by defaut).
+   * are set to a value given at construction (0 by default).
    *
    * Ex: for i = 2 and j = 3, the first two coordinates
    * (numbered 0 and 1) are copied so that point (x,y) is
@@ -363,7 +363,7 @@ namespace functors
    * - Then, we define the origin point and axis vector used to extract 2D image values and we also deduce the associated 2D domain:
    * @snippet images/extract2DImagesFrom3D.cpp extract2DImagesFrom3DOrigin3D
    *
-   * - The 2D image we can now be  constructed from the embeder and from the ConstImageAdapter class:
+   * - The 2D image we can now be  constructed from the embedder and from the ConstImageAdapter class:
    * @snippet images/extract2DImagesFrom3D.cpp extract2DImagesFrom3DOExtract
    *
    * - Alternatively, you can also construct the same functor from a reference center point, a normal, and a size:
@@ -464,7 +464,7 @@ namespace functors
       uDir2[2] = uDir1[0]*aNormalVector[1]-uDir1[1]*aNormalVector[0];
 
       uDir2/=uDir2.norm();
-      
+
       myOriginPointEmbeddedIn3D = anOriginPoint + Point(uDir1*aWidth/2) + Point(uDir2*aWidth/2);
       myFirstAxisEmbeddedDirection = -uDir1;
       mySecondAxisEmbeddedDirection = -uDir2;
@@ -491,7 +491,7 @@ namespace functors
                          const Point &aDefautPoint = Point(0,0,0)): myDomain(aDomain3DImg),
                                                                     myDefaultPoint (aDefautPoint)
     {
-     
+
       typename Space::RealPoint uDir1;
       uDir1 = orientXaxisVector/orientXaxisVector.norm();
       typename Space::RealPoint uDir2;
@@ -531,7 +531,7 @@ namespace functors
         }
       else
         {
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
           trace.warning() << "Warning pt outside the 3D domain " << pt << std::endl;
 #endif
           return  myDefaultPoint;
@@ -540,9 +540,9 @@ namespace functors
 
 
     /**
-     * Shift the image plane center of the functor (without modify the the image plane direction). 
-     * 
-     * @param[in] shift direction. 
+     * Shift the image plane center of the functor (without modify the the image plane direction).
+     *
+     * @param[in] shift direction.
      **/
     inline
     void shiftOriginPoint(const typename Space::RealPoint& shift)
@@ -551,8 +551,8 @@ namespace functors
          myOriginPointEmbeddedIn3D[i] = myOriginPointEmbeddedIn3D[i] + shift[i];
        }
       }
-    
-    
+
+
   private:
     TDomain3D myDomain;
 
@@ -671,7 +671,7 @@ namespace functors
 
       for (Dimension dim=0; dim< Space::dimension; dim++){
         domainLowerBound[dim] = static_cast<IntergerDom>(floor(NumberTraits<IntergerDom>::castToDouble(domainLowerBound[dim]) /
-                                                               NumberTraits<TValue>::castToDouble( aGridSize[dim] )));        
+                                                               NumberTraits<TValue>::castToDouble( aGridSize[dim] )));
         domainUpperBound[dim] = static_cast<IntergerDom>(floor(NumberTraits<IntergerDom>::castToDouble(domainUpperBound[dim]) /
                                                                NumberTraits<TValue>::castToDouble( aGridSize[dim] )));
       }
@@ -724,7 +724,7 @@ namespace functors
     }
 
     /**
-     * This method can be useful to directely recover the new domain
+     * This method can be useful to directly recover the new domain
      * associated to the resulting subsampled domain.
      * @return the new subsampled domain.
      */

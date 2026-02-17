@@ -53,14 +53,14 @@ SCENARIO( "Parameters decimal conversion tests", "[parameters]" )
       THEN( "it does store strings" ) {
         REQUIRE( params[ "foo"    ].as<string>() == "bar" );
         REQUIRE( params[ "Laurel" ].as<string>() == "Hardy" );
-      }      
+      }
     }
     WHEN( "initialized with integers" ) {
       params( "prime", 7 )( "negative-int", -2 );
       THEN( "it does store ints" ) {
         REQUIRE( params[ "prime"        ].as<int>() == 7 );
         REQUIRE( params[ "negative-int" ].as<int>() == -2 );
-      }      
+      }
     }
     WHEN( "initialized with doubles" ) {
       params( "pi", 3.14159 )( "planck", 6.62607004e-34 )( "g", 9.80665 );
@@ -68,7 +68,7 @@ SCENARIO( "Parameters decimal conversion tests", "[parameters]" )
         REQUIRE( params[ "pi"     ].as<double>() == Approx( 3.14159 ) );
         REQUIRE( params[ "planck" ].as<double>() == Approx( 6.62607004e-34 ) );
         REQUIRE( params[ "g"      ].as<double>() == Approx( 9.80665 ) );
-      }      
+      }
     }
   }
 }

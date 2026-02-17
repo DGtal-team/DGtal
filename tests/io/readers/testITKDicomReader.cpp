@@ -36,7 +36,7 @@
 #include "DGtal/images/ImageContainerBySTLVector.h"
 #include "DGtal/images/ImageContainerByITKImage.h"
 #include "DGtal/io/readers/ITKDicomReader.h"
-// Required ITK files to read serie DICOM files
+// Required ITK files to read series DICOM files
 // DGtal must be compiled with " -DDGTAL_WITH_ITK=true" option
 #if defined(__clang__)
 #pragma clang diagnostic push
@@ -64,10 +64,10 @@ getFirstDicomSerieFileNames(const std::string &path)
   NamesGeneratorType::Pointer nameGenerator = NamesGeneratorType::New();
   nameGenerator->SetUseSeriesDetails( true );
   nameGenerator->SetDirectory( path );
-  
+
   typedef itk::GDCMSeriesFileNames::SeriesUIDContainerType SeriesIdContainer;
   const SeriesIdContainer & seriesUID = nameGenerator->GetSeriesUIDs();
-  
+
   if (! seriesUID.empty() )
   {
     return nameGenerator->GetFileNames( *(seriesUID.begin()) );
@@ -81,9 +81,9 @@ void
 testImportDICOM()
 {
   std::vector<std::string> fileNames = getFirstDicomSerieFileNames( testPath + "samples/dicomSample" );
-      
+
   Image image = ITKDicomReader<Image>::importDICOM( fileNames );
-  
+
   unsigned int nbVal=0, nbPos = 0;
   typename Image::ConstRange r = image.constRange();
   for ( typename Image::ConstRange::ConstIterator it=r.begin(), itend=r.end() ; it != itend ; ++it )
@@ -99,7 +99,7 @@ template <typename PixelType>
 void testSpatialInformation()
 {
   std::vector<std::string> fileNames = getFirstDicomSerieFileNames( testPath + "samples/dicomSample" );
-      
+
   typedef ImageContainerByITKImage<Z3i::Domain, PixelType> DGtalImage;
   DGtalImage img = ITKDicomReader<DGtalImage>::importDICOM( fileNames );
   typename DGtalImage::ITKImagePointer dgtal_itk = img.getITKImagePointer();
@@ -110,7 +110,7 @@ void testSpatialInformation()
   reader->SetFileNames( fileNames );
 
   reader->Update();
-  
+
   typename ItkImage::Pointer itk = reader->GetOutput();
 
   INFO( "Checking spacing" )
@@ -121,8 +121,8 @@ void testSpatialInformation()
   REQUIRE( dgtal_itk->GetDirection() == itk->GetDirection() );
 }
 
-  
-  
+
+
 
 
 TEST_CASE( "Testing ITKReader" )
@@ -149,7 +149,7 @@ TEST_CASE( "Testing ITKReader" )
     typedef ImageContainerBySTLVector<Z3i::Domain, uint16_t> Image;
     testImportDICOM<Image>();
   }
-  
+
   SECTION(
   "Testing ITKDicomReader with 16 bits ImageContainerByITKImage images" )
   {
@@ -188,7 +188,7 @@ TEST_CASE( "Testing ITKReader" )
   {
     testSpatialInformation<int16_t>();
   }
- 
+
 
 }
 

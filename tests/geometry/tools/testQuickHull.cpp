@@ -94,12 +94,12 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 2 > > unit tests", "[quickhull][
 {
   typedef ConvexHullIntegralKernel< 2 >    QHKernel;
   typedef QuickHull< QHKernel >            QHull;
-  typedef SpaceND< 2, int >                Space;      
+  typedef SpaceND< 2, int >                Space;
   typedef Space::Point                     Point;
   typedef QHull::Index                     Index;
   typedef QHull::IndexRange                IndexRange;
 
-  
+
   GIVEN( "Given a star { (0,0), (-4,-1), (-3,5), (7,3), (5, -2) } " ) {
     std::vector<Point> V
       = { Point(0,0), Point(-4,-1), Point(-3,5), Point(7,3), Point(5, -2) };
@@ -169,10 +169,10 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 2 > > dimensionality tests", "[q
 {
   typedef ConvexHullIntegralKernel< 2 >    QHKernel;
   typedef QuickHull< QHKernel >            QHull;
-  typedef SpaceND< 2, int >                Space;      
+  typedef SpaceND< 2, int >                Space;
   typedef Space::Point                     Point;
   typedef AffineGeometry< Point >            Affine;
-  
+
   std::vector< Point > V = { Point{ 3, 1 } };
 
   GIVEN( "Given 100 aligned points" ) {
@@ -186,13 +186,13 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 2 > > dimensionality tests", "[q
     THEN( "AffineSubset should detect not full dimensionality" ) {
       CAPTURE( d );
       REQUIRE( d == 1 );
-    }      
+    }
     THEN( "QuickHull should detect not full dimensionality" ) {
       REQUIRE( ok == false );
       REQUIRE( status == QHull::Status::NotFullDimensional );
     }
   }
-  
+
   GIVEN( "Given 100 aligned points + another not aligned" ) {
     auto X = makeRandomLatticePointsFromDirVectors( 100, V );
     X.push_back( X[ 0 ] + Point(-1,1) );
@@ -206,7 +206,7 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 2 > > dimensionality tests", "[q
     THEN( "AffineSubset should detect full dimensionality" ) {
       CAPTURE( d );
       REQUIRE( d == 2 );
-    }      
+    }
     THEN( "QuickHull should detect full dimensionality" ) {
       REQUIRE( ok == true );
       REQUIRE( status != QHull::Status::NotFullDimensional );
@@ -225,11 +225,11 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 3 > > unit tests", "[quickhull][
 {
   typedef ConvexHullIntegralKernel< 3 >    QHKernel;
   typedef QuickHull< QHKernel >            QHull;
-  typedef SpaceND< 3, int >                Space;      
+  typedef SpaceND< 3, int >                Space;
   typedef Space::Point                     Point;
   typedef QHull::IndexRange                IndexRange;
 
-  
+
   GIVEN( "Given an octahedron" ) {
     const int R = 5;
     std::vector<Point> V = { Point( 0,0,0 ) };
@@ -272,10 +272,10 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 3 > > dimensionality tests", "[q
 {
   typedef ConvexHullIntegralKernel< 3 >    QHKernel;
   typedef QuickHull< QHKernel >            QHull;
-  typedef SpaceND< 3, int >                Space;      
+  typedef SpaceND< 3, int >                Space;
   typedef Space::Point                     Point;
   typedef AffineGeometry< Point >            Affine;
-  
+
   GIVEN( "Given 100 aligned points" ) {
     std::vector< Point > V = { Point{ 3, 1, -1 } };
     auto X = makeRandomLatticePointsFromDirVectors( 100, V );
@@ -288,13 +288,13 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 3 > > dimensionality tests", "[q
     THEN( "AffineSubset should detect not full dimensionality" ) {
       CAPTURE( d );
       REQUIRE( d == 1 );
-    }      
+    }
     THEN( "QuickHull should detect not full dimensionality" ) {
       REQUIRE( ok == false );
       REQUIRE( status == QHull::Status::NotFullDimensional );
     }
   }
-  
+
   GIVEN( "Given 100 aligned points + another not aligned" ) {
     std::vector< Point > V = { Point{ 3, 2, -1 } };
     auto X = makeRandomLatticePointsFromDirVectors( 100, V );
@@ -309,7 +309,7 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 3 > > dimensionality tests", "[q
     THEN( "AffineSubset should detect not full dimensionality (dimension 2)" ) {
       CAPTURE( d );
       REQUIRE( d == 2 );
-    }      
+    }
     THEN( "QuickHull should detect not full dimensionality" ) {
       REQUIRE( ok == false );
       REQUIRE( status == QHull::Status::NotFullDimensional );
@@ -328,7 +328,7 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 3 > > dimensionality tests", "[q
     THEN( "AffineSubset should detect not full dimensionality (dimension 2)" ) {
       CAPTURE( d );
       REQUIRE( d == 2 );
-    }      
+    }
     THEN( "QuickHull should detect not full dimensionality" ) {
       REQUIRE( ok == false );
       REQUIRE( status == QHull::Status::NotFullDimensional );
@@ -349,7 +349,7 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 3 > > dimensionality tests", "[q
     THEN( "AffineSubset should detect full dimensionality" ) {
       CAPTURE( d );
       REQUIRE( d == 3 );
-    }      
+    }
     THEN( "QuickHull should detect full dimensionality" ) {
       REQUIRE( ok == true );
       REQUIRE( status != QHull::Status::NotFullDimensional );
@@ -370,10 +370,10 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 4 > > unit tests", "[quickhull][
 {
   typedef ConvexHullIntegralKernel< 4 >    QHKernel;
   typedef QuickHull< QHKernel >            QHull;
-  typedef SpaceND< 4, int >                Space;      
+  typedef SpaceND< 4, int >                Space;
   typedef Space::Point                     Point;
 
-  
+
   GIVEN( "Given an octahedron" ) {
     const int R = 5;
     std::vector<Point> V = { Point( 0,0,0,0 ) };
@@ -412,10 +412,10 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 4 > > dimensionality tests", "[q
 {
   typedef ConvexHullIntegralKernel< 4 >    QHKernel;
   typedef QuickHull< QHKernel >            QHull;
-  typedef SpaceND< 4, int >                Space;      
+  typedef SpaceND< 4, int >                Space;
   typedef Space::Point                     Point;
   typedef AffineGeometry< Point >            Affine;
-  
+
   GIVEN( "Given 100 aligned points" ) {
     std::vector< Point > V = { Point{ 3, 1, -1, 2 } };
     auto X = makeRandomLatticePointsFromDirVectors( 100, V );
@@ -428,13 +428,13 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 4 > > dimensionality tests", "[q
     THEN( "AffineSubset should detect not full dimensionality" ) {
       CAPTURE( d );
       REQUIRE( d == 1 );
-    }      
+    }
     THEN( "QuickHull should detect not full dimensionality" ) {
       REQUIRE( ok == false );
       REQUIRE( status == QHull::Status::NotFullDimensional );
     }
   }
-  
+
   GIVEN( "Given 100 aligned points + another not aligned" ) {
     std::vector< Point > V = { Point{ 3, 2, -1, 2 } };
     auto X = makeRandomLatticePointsFromDirVectors( 100, V );
@@ -449,7 +449,7 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 4 > > dimensionality tests", "[q
     THEN( "AffineSubset should detect not full dimensionality (dimension 2)" ) {
       CAPTURE( d );
       REQUIRE( d == 2 );
-    }      
+    }
     THEN( "QuickHull should detect not full dimensionality" ) {
       REQUIRE( ok == false );
       REQUIRE( status == QHull::Status::NotFullDimensional );
@@ -468,7 +468,7 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 4 > > dimensionality tests", "[q
     THEN( "AffineSubset should detect not full dimensionality (dimension 2)" ) {
       CAPTURE( d );
       REQUIRE( d == 2 );
-    }      
+    }
     THEN( "QuickHull should detect not full dimensionality" ) {
       REQUIRE( ok == false );
       REQUIRE( status == QHull::Status::NotFullDimensional );
@@ -489,9 +489,9 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 4 > > dimensionality tests", "[q
     THEN( "AffineSubset should detect not full dimensionality (dimension 3)" ) {
       CAPTURE( d );
       REQUIRE( d == 3 );
-    }      
+    }
     THEN( "QuickHull should detect not full dimensionality" ) {
-      REQUIRE( ok == false );      
+      REQUIRE( ok == false );
       REQUIRE( status == QHull::Status::NotFullDimensional );
     }
   }
@@ -508,9 +508,9 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 4 > > dimensionality tests", "[q
     THEN( "AffineSubset should detect not full dimensionality (dimension 3)" ) {
       CAPTURE( d );
       REQUIRE( d == 3 );
-    }      
+    }
     THEN( "QuickHull should detect not full dimensionality" ) {
-      REQUIRE( ok == false );      
+      REQUIRE( ok == false );
       REQUIRE( status == QHull::Status::NotFullDimensional );
     }
   }
@@ -529,7 +529,7 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 4 > > dimensionality tests", "[q
     THEN( "AffineSubset should detect full dimensionality" ) {
       CAPTURE( d );
       REQUIRE( d == 4 );
-    }      
+    }
     THEN( "QuickHull should detect full dimensionality" ) {
       REQUIRE( ok == true );
       REQUIRE( status != QHull::Status::NotFullDimensional );
@@ -541,7 +541,5 @@ SCENARIO( "QuickHull< ConvexHullIntegralKernel< 4 > > dimensionality tests", "[q
       REQUIRE( hull.nbFacets() > 4 );
     }
   }
-  
+
 }
-
-

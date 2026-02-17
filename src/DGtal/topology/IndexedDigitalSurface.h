@@ -59,7 +59,7 @@ namespace DGtal
   /**
    * Description of template class 'IndexedDigitalSurface' <p> \brief
    * Aim: Represents a digital surface with the topology of its dual
-   * surface. Its aim is to mimick the standard DigitalSurface, but to
+   * surface. Its aim is to mimic the standard DigitalSurface, but to
    * optimize its traversal and topology services. The idea is simply
    * to number all its vertices (ie surfels), arcs, and faces and to
    * store its topology with an half-edge data structure. It is
@@ -256,7 +256,7 @@ namespace DGtal
     {
       build( surfContainer );
     }
-    
+
     /// Clears everything.
     void clear();
 
@@ -410,7 +410,7 @@ namespace DGtal
       ASSERT( f < nbFaces() );
       return myFaceIndex2Pointel[ f ];
     }
-    
+
     /// @param[in] aSurfel any surfel of the surface
     ///
     /// @return the vertex (ie an index) corresponding to this surfel,
@@ -440,7 +440,7 @@ namespace DGtal
       auto it = myPointel2FaceIndex.find( aPointel );
       return it != myPointel2FaceIndex.end() ? it->second : INVALID_FACE;
     }
-    
+
     // ----------------------- Undirected simple graph services -------------------------
   public:
     /**
@@ -472,7 +472,7 @@ namespace DGtal
      *
      * @param it the output iterator
      *
-     * @param v the vertex whose neighbors will be writen
+     * @param v the vertex whose neighbors will be written
      */
     template <typename OutputIterator>
     void
@@ -663,7 +663,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
     /// Indicates if the half-edge structure has been created/updated.
     bool                  isHEDSValid;
@@ -689,8 +689,8 @@ namespace DGtal
     /// Mapping FaceIndex   -> Pointel
     SCellStorage          myFaceIndex2Pointel;
 
-    
-    // ------------------------- Private Datas --------------------------------
+
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------

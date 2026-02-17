@@ -3,7 +3,7 @@
  * @file   Transforms.h
  * @author Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb>
  * @date   Sat Aug 18 2007
- * 
+ *
  * @brief
  */
 /*
@@ -75,7 +75,7 @@ public:
   inline TransformFIG();
   double rounded( double x ) const;
   double mapY( double y ) const;
-  int mapWidth( double width ) const; 
+  int mapWidth( double width ) const;
   void setBoundingBox( const Rect & rect,
            const double pageWidth,
            const double pageHeight,
@@ -96,7 +96,7 @@ struct TransformSVG : public Transform {
 public:
   double rounded( double x ) const;
   double mapY( double y ) const;
-  double mapWidth( double width ) const; 
+  double mapWidth( double width ) const;
   void setBoundingBox( const Rect & rect,
            const double pageWidth,
            const double pageHeight,
@@ -113,7 +113,7 @@ struct TransformCairo : public Transform {
 public:
   double rounded( double x ) const;
   double mapY( double y ) const;
-  double mapWidth( double width ) const; 
+  double mapWidth( double width ) const;
   void setBoundingBox( const Rect & rect,
            const double pageWidth,
            const double pageHeight,

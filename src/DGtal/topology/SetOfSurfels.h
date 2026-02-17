@@ -61,19 +61,19 @@ namespace DGtal
      surface as connected surfels. The shape is determined by the set
      of surfels that composed the surface. The set of surfels is
      stored in this container.
-     
+
      @tparam TKSpace a model of CCellularGridSpaceND: the type chosen
      for the cellular grid space.
-     
-     @tparam TSurfelSet a model of CSurfelSet: the type chosen for 
+
+     @tparam TSurfelSet a model of CSurfelSet: the type chosen for
      representing the set of surfels in the space.
    */
-  template < typename TKSpace, 
+  template < typename TKSpace,
              typename TSurfelSet = typename TKSpace::SurfelSet >
   class SetOfSurfels
   {
   public:
-    
+
     /**
        A model of CDigitalSurfaceTracker for SetOfSurfels.
     */
@@ -84,7 +84,7 @@ namespace DGtal
       typedef Tracker Self;
       typedef SetOfSurfels<TKSpace,TSurfelSet> DigitalSurfaceContainer;
       typedef typename TKSpace::SCell Surfel;
-      
+
       // -------------------- inner types --------------------
       typedef TKSpace KSpace;
       typedef SurfelNeighborhood<KSpace> Neighborhood;
@@ -95,7 +95,7 @@ namespace DGtal
 	 @param aSurface the container describing the surface.
 	 @param s the surfel on which the tracker is initialized.
       */
-      Tracker( ConstAlias<DigitalSurfaceContainer> aSurface, 
+      Tracker( ConstAlias<DigitalSurfaceContainer> aSurface,
                const Surfel & s );
 
       /**
@@ -122,25 +122,25 @@ namespace DGtal
 	 @param s the surfel on which the tracker is moved.
       */
       void move( const Surfel & s );
-      
+
       /**
 	 Computes the surfel adjacent to 'current()' in the direction
-	 [d] along orientation [pos]. 
-	 
+	 [d] along orientation [pos].
+
 	 @param s (modified) set to the adjacent surfel in the specified
 	 direction @a d and orientation @a pos if it exists. Otherwise
 	 unchanged (method returns 0 in this case).
-	 
+
 	 @param d any direction different from 'orthDir()'.
-	 
+
 	 @param pos when 'true' look in positive direction along
 	 [track_dir] axis, 'false' look in negative direction.
-	 
+
 	 @return the move code (n=0-3). When 0: no adjacent surfel,
 	 otherwise 1-3: adjacent surfel is n-th follower.
       */
       uint8_t adjacent( Surfel & s, Dimension d, bool pos ) const;
-      
+
     private:
       /// a reference to the digital surface container on which is the
       /// tracker.
@@ -206,7 +206,7 @@ namespace DGtal
 
        @param aSetOfSurfels any set of surfels that is cloned in this
        object (default is empty)
-       
+
        NB: Complexity depends on the type chosen for SurfelSet.
       */
     SetOfSurfels( ConstAlias<KSpace> aKSpace,
@@ -255,7 +255,7 @@ namespace DGtal
     /**
        @param s any surfel of the space.
        @pre 'isInside( s )'
-       @return a dyn. alloc. pointer on a tracker positionned at @a s.
+       @return a dyn. alloc. pointer on a tracker positioned at @a s.
     */
     DigitalSurfaceTracker* newTracker( const Surfel & s ) const;
 
@@ -280,9 +280,9 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     /// a reference to the cellular space.
     const KSpace & myKSpace;
@@ -290,7 +290,7 @@ namespace DGtal
     SurfelSet mySurfelSet;
     /// the surfel predicate defining the shape (related to mySurfelSet).
     SurfelPredicate mySurfelPredicate;
-    /// the surfel adjacency used to determine neighbors. 
+    /// the surfel adjacency used to determine neighbors.
     Adjacency mySurfelAdjacency;
 
     // ------------------------- Hidden services ------------------------------
@@ -320,13 +320,13 @@ namespace DGtal
 
      @tparam TKSpace a model of CCellularGridSpaceND: the type chosen
      for the cellular grid space.
-     
+
      @tparam TSurfelSet a model of CDigitalSet: the type chosen for
      the set of digital points.
    */
   template <typename TKSpace, typename TSurfelSet>
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
 	       const SetOfSurfels<TKSpace, TSurfelSet> & object );
 
 } // namespace DGtal

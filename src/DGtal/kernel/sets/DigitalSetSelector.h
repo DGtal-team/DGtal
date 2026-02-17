@@ -69,7 +69,7 @@ namespace DGtal
   inline constexpr int HIGH_ITER_DS = 8;
   inline constexpr int LOW_BEL_DS = 0;
   inline constexpr int HIGH_BEL_DS = 16;
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // template class DigitalSetSelector
   /**
@@ -87,7 +87,7 @@ namespace DGtal
    Domain domain ( a,b );
    // Specifies a small point set but with a high variability.
    typedef typename DigitalSetSelector
-     < Domain, SMALL_DS + HIGH_VAR_DS >::Type SpecificSet; 
+     < Domain, SMALL_DS + HIGH_VAR_DS >::Type SpecificSet;
    SpecificSet set1( domain );
    *
    * @endcode

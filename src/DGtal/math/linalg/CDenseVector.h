@@ -96,7 +96,7 @@ public:
     {
       Scalar& aa = z(i);
       (void)aa; // to avoid compiler warning
-      
+
       checkConstConstraints();
     }
 
@@ -106,7 +106,7 @@ public:
     (void)bb; // to avoid compiler warning
   }
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
 private:
     T z;
     Index i;

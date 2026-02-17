@@ -56,7 +56,7 @@ namespace DGtal
      adjacencies between surfel elements, telling if it follows an
      interior to exterior ordering or exterior to interior ordering. It
      allows tracking of boundaries and of surfaces.
-     
+
      @tparam dim the number of dimension of the space.
 
      NB: backported from ImaGene.
@@ -66,36 +66,36 @@ namespace DGtal
   {
     // ----------------------- Standard services ------------------------------
   public:
-  
+
     /**
      * Destructor.
      */
     ~SurfelAdjacency();
-  
+
     /**
        Constructor.
-     
+
        @param int2ext when 'true', the surfel adjacency is interior
        to exterior for any coordinate pair, when 'false', it is
        exterior to interior for any one.
-     
+
        NB: @see setAdjacency to modify a specific pair or coordinates
     */
     SurfelAdjacency( bool int2ext );
-  
+
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
     SurfelAdjacency ( const SurfelAdjacency & other );
-  
+
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
     SurfelAdjacency & operator= ( const SurfelAdjacency & other );
-  
+
     /**
        Set a coordinate pair as interior to exterior or exterior to
        interior in the surfel adjacency.
@@ -109,7 +109,7 @@ namespace DGtal
     void setAdjacency( Dimension i, Dimension j, bool int2ext );
 
     /**
-       Returns whether a coordinate pair is interior (true) or exterior (false) 
+       Returns whether a coordinate pair is interior (true) or exterior (false)
        in the bel adjacency.
 
        @param i first coordinate.
@@ -136,7 +136,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     /**

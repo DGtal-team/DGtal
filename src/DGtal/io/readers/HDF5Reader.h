@@ -54,8 +54,8 @@ namespace DGtal
  * Description of class 'HDF5Reader' <p>
  * \brief Aim: Import a HDF5 file.
  *
- * @tparam TImageContainer the image container to use. 
- * @tparam TFunctor the type of functor used in the import (by default set to functors::Cast< TImageContainer::Value>). 
+ * @tparam TImageContainer the image container to use.
+ * @tparam TFunctor the type of functor used in the import (by default set to functors::Cast< TImageContainer::Value>).
  *
  */
   template <typename TImageContainer, typename TFunctor= functors::Cast< typename TImageContainer::Value > >
@@ -68,20 +68,20 @@ namespace DGtal
     typedef TImageContainer OutputImage;
     typedef typename TImageContainer::Domain Domain;
     typedef typename TImageContainer::Domain::Vector Vector;
-    typedef typename TImageContainer::Value Value;    
+    typedef typename TImageContainer::Value Value;
     typedef TFunctor Functor;
-    
+
     BOOST_CONCEPT_ASSERT(( concepts::CImage<TImageContainer> ));
-    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctor, unsigned char, Value > )) ;    
-    
-    BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2) || 
+    BOOST_CONCEPT_ASSERT(( concepts::CUnaryFunctor<TFunctor, unsigned char, Value > )) ;
+
+    BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2) ||
                          (ImageContainer::Domain::dimension == 3));
 
-    /** 
+    /**
      * Main method to import a HDF5 image file with 2D image dataset(s)
      * (8-bit with palette and 24-bit truecolor with INTERLACE_PIXEL)
      * into an instance of the template parameter ImageContainer.
-     * 
+     *
      * @param aFilename the file name to import.
      * @param aDataset the dataset name to import.
      * @param aFunctor the functor used to import and cast the source
@@ -96,12 +96,12 @@ namespace DGtal
      */
     static ImageContainer importHDF5(const std::string & aFilename, const std::string & aDataset,
 				      const Functor & aFunctor =  Functor(), bool topbotomOrder = true);
-                                      
-                                      
-    /** 
+
+
+    /**
      * Main method to import a HDF5 image file with 3D UInt8 image dataset(s)
      * into an instance of the template parameter ImageContainer.
-     * 
+     *
      * @param aFilename the file name to import.
      * @param aDataset the dataset name to import.
      * @param aFunctor the functor used to import and cast the source
@@ -112,7 +112,7 @@ namespace DGtal
      */
     static ImageContainer importHDF5_3D(const std::string & aFilename, const std::string & aDataset,
                                       const Functor & aFunctor =  Functor());
-    
+
  }; // end of class  HDF5Reader
 
 } // namespace DGtal

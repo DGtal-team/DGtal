@@ -1,6 +1,6 @@
-set(DGTAL_BENCH_SRC 
-    testStandardDSLQ0-reversedSmartDSS-benchmark 
-    testStandardDSLQ0-LSB-reversedSmartDSS-benchmark 
+set(DGTAL_BENCH_SRC
+    testStandardDSLQ0-reversedSmartDSS-benchmark
+    testStandardDSLQ0-LSB-reversedSmartDSS-benchmark
     testStandardDSLQ0-LrSB-reversedSmartDSS-benchmark
     testStandardDSLQ0-smartDSS-benchmark
     testArithmeticDSS-benchmark

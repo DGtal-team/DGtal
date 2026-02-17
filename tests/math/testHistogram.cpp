@@ -55,7 +55,7 @@ bool testHistogramUniform()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   Statistic<double> stat( true );
   for(unsigned int k=0; k < 1000; k++)
     stat.addValue( getRandomNumber( -1.0, 1.0 ) );
@@ -74,7 +74,7 @@ bool testHistogramGaussian()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   Statistic<double> stat( true );
   for(unsigned int k=0; k < 1000; k++)
     stat.addValue( getRandomNumber( -1.0, 1.0 ) + getRandomNumber( -1.0, 1.0 ) );
@@ -93,7 +93,7 @@ bool testHistogramGaussian2()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   Statistic<double> stat( true );
   for(unsigned int k=0; k < 1000; k++)
     stat.addValue( getRandomNumber( -1.0, 1.0 ) + getRandomNumber( -1.0, 1.0 )

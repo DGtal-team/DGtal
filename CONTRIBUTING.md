@@ -48,6 +48,62 @@ tests.
 More information are described in the
 [DGtal documentation](http://dgtal.org/doc/stable/moduleFAQGit.html).
 
+## Setting up Pre-commit Hooks
+
+DGtal uses [pre-commit](https://pre-commit.com/) to ensure code quality and consistency. Before making contributions, we highly recommend setting up pre-commit hooks:
+
+### Installation
+
+1. **Install pre-commit** (if not already installed):
+   ```bash
+   pip install pre-commit
+   ```
+
+2. **Install the hooks** in your local repository:
+   ```bash
+   cd /path/to/DGtal
+   pre-commit install
+   ```
+
+### What the hooks do
+
+The current pre-commit configuration (`/.pre-commit-config.yaml`) includes:
+- Removes trailing whitespace
+- Ensures files end with a newline
+- Validates YAML syntax
+- Prevents large files from being committed
+- Checks for broken symlinks
+- Detects case conflicts in filenames
+
+### Running hooks manually
+
+By default, hooks will be run on each file ofh the commit automatically.
+
+To run hooks on specific files:
+```bash
+pre-commit run --files path/to/your/files
+```
+
+### Updating hooks
+
+To update to the latest versions of the hooks:
+```bash
+pre-commit autoupdate
+```
+
+### Skipping hooks (not recommended)
+
+If you absolutely need to skip hooks (not recommended for regular development):
+```bash
+git commit --no-verify -m "Commit message"
+```
+
+### Troubleshooting
+
+- If hooks fail, fix the reported issues and try committing again
+- For persistent issues, you can temporarily disable specific hooks in `/.pre-commit-config.yaml`
+- Ensure you're using a compatible Python version (3.6+)
+
 ## Code Structure
 
 ### Folders
@@ -80,10 +136,10 @@ codes:
 * ```DGtal::experimental::``` contains classes and features that have a "beta" status.
 * ```DGtal::Z2i::``` and ```DGtal::Z3i::``` are user-oriented
   namespaces that contain predefined types for digital geometry in
-  dimension 2 and 3 (respectivelly) using an arithmetical kernel based
+  dimension 2 and 3 (respectively) using an arithmetical kernel based
   on ```DGtal::int32_t```.
 * ```DGtal::deprecated::``` contains deprecated classes  and functions.
-* ```DGtal::detail::``` contains some internal classes and funcitons.
+* ```DGtal::detail::``` contains some internal classes and functions.
 
 
 ## Coding style

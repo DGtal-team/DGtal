@@ -48,7 +48,7 @@
 
 namespace DGtal
 {
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // class SimpleDistanceColorMap
   /**
@@ -59,23 +59,23 @@ namespace DGtal
    *
    * @tparam TValue the value type
    */
-  
+
   template <typename TValue>
   class SimpleDistanceColorMap
   {
     // ----------------------- Standard services ------------------------------
   public:
-    
+
     ///Value type
     typedef TValue Value;
-    
+
     /**
      * Copy constructor.
      * @param[in] other the object to clone.
      * Forbidden by default.
      */
     SimpleDistanceColorMap ( const SimpleDistanceColorMap & other );
-    
+
     /**
      * Assignment.
      * @param [in] anOther the object to copy.
@@ -83,8 +83,8 @@ namespace DGtal
      * Forbidden by default.
      */
     SimpleDistanceColorMap & operator= ( const SimpleDistanceColorMap & anOther );
-    
-    
+
+
     /**
      * Constructor from two min and max values.
      *
@@ -97,9 +97,9 @@ namespace DGtal
                            const bool withTick=true):
     myMin(amin), myMax(amax), myTick(withTick)
     {}
-    
-    
-    
+
+
+
     /**
      * Computes the color associated with a value.
      *
@@ -114,7 +114,7 @@ namespace DGtal
       double r = (1. - d*d) * .8;
       double g = (1. - (2. * (d - .5)) * (2. * (d - .5))) * .7;
       double b = (1. - (1. - d) * (1. - d));
-      
+
       // lines
       if (myTick)
       {
@@ -127,29 +127,29 @@ namespace DGtal
         g = h + (1. - h)*g;
         b = h + (1. - h)*b;
       }
-      
+
       return Color(static_cast<unsigned char>(r*255),
                    static_cast<unsigned char>(g*255),
                    static_cast<unsigned char>(b*255));
     }
-    
-    
-    
+
+
+
     // ----------------------- Interface --------------------------------------
   public:
-    
+
     /**
      * Writes/Displays the object on an output stream.
      * @param[in,out] out the output stream where the object is written.
      */
     void selfDisplay ( std::ostream & out ) const;
-    
+
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const { return true;}
-    
+
     /**
      * Returns the lower bound of the value range.
      *
@@ -159,7 +159,7 @@ namespace DGtal
     {
       return myMin;
     }
-    
+
     /**
      * Returns the upper bound of the value range.
      *
@@ -170,28 +170,28 @@ namespace DGtal
       return myMax;
     }
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
-    
+
     ///Min value
     Value myMin;
-    
+
     ///Max value
     Value myMax;
-    
-    ///Boolean to activate/desactivate ticks
+
+    ///Boolean to activate/deactivate ticks
     bool myTick;
-    
+
     // ------------------------- Hidden services ------------------------------
   protected:
-    
+
     /**
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
      */
     SimpleDistanceColorMap();
- 
-  
+
+
   }; // end of class SimpleDistanceColorMap
 } // namespace DGtal
 

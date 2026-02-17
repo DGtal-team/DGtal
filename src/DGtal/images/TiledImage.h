@@ -237,13 +237,13 @@ namespace DGtal
       friend class TiledImage<ImageContainer, ImageFactory, ImageCacheReadPolicy, ImageCacheWritePolicy>;
 
     public:
-      
+
       using iterator_category = std::bidirectional_iterator_tag;
       using value_type = Value;
       using difference_type = ptrdiff_t;
       using pointer = Value*;
       using reference = Value&;
-      
+
       typedef typename ImageContainer::Range::/*Output*/Iterator TiledRangeIterator;
       typedef typename Domain::Iterator BlockCoordsIterator;
 
@@ -719,9 +719,9 @@ namespace DGtal
         {
           myImageCache->incCacheMissRead();
           Domain d;
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
           trace.info()<<"+";
-#endif 
+#endif
           d = findSubDomain(aPoint);
 
           myImageCache->update(d);
@@ -779,7 +779,7 @@ namespace DGtal
       myImageCache->clearCacheAndResetCacheMisses();
     }
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   protected:
 
     /// Number of tiles per dimension

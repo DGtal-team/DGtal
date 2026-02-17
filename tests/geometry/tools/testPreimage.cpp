@@ -67,8 +67,8 @@ int main()
   std::string filename = testPath + "samples/DSS.dat";
   std::ifstream instream; // input stream
   instream.open (filename.c_str(), std::ifstream::in);
-  
-  typedef KhalimskySpaceND<2,int> KSpace; 
+
+  typedef KhalimskySpaceND<2,int> KSpace;
   GridCurve<KSpace> c; //grid curve
   c.initFromVectorStream(instream);
 
@@ -81,11 +81,11 @@ int main()
 
   GridCurve<KSpace>::IncidentPointsRange r = c.getIncidentPointsRange(); //range
   GridCurve<KSpace>::IncidentPointsRange::ConstReverseIterator it (r.rbegin()); //iterators
-  GridCurve<KSpace>::IncidentPointsRange::ConstReverseIterator itEnd (r.rend()); 
+  GridCurve<KSpace>::IncidentPointsRange::ConstReverseIterator itEnd (r.rend());
 
   //preimage computation
   Preimage2D thePreimage(it->first, it->second, aStraightLine);
-  ++it; 
+  ++it;
   while ( (it != itEnd) &&
               (thePreimage.addBack(it->first, it->second)) )
   {

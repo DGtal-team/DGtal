@@ -69,7 +69,7 @@ testPattern( Fraction1 f1 )
   std::cerr << "r(2)=";
   f1.reduced(2).selfDisplay( std::cerr );
   std::cerr << std::endl;
- 
+
   Pattern1 p1( f1 );
   Pattern2 p2( f2 );
   std::cerr << "p1=" << p1.rE() << std::endl;
@@ -146,4 +146,3 @@ int main( int , char** )
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-

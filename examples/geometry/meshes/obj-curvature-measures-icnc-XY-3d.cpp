@@ -221,7 +221,7 @@ int main( int argc, char* argv[] )
   SH::saveVectorFieldOBJ( positions, D2, 0.05 * avg_e, SH::Colors(),
                           "example-cnc-D2",
                           SH::Color::Black, SH::Color(128, 0,128 ) );
-  
+
   //! [curvature-measures-output]
   return 0;
 }

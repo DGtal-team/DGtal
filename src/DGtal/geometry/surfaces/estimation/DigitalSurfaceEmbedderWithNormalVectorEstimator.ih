@@ -227,7 +227,7 @@ operator()( const Argument & arg ) const
 template < typename TDigitalSurfaceEmbedder, typename TNormalVectorEstimator >
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
                     const DigitalSurfaceEmbedderWithNormalVectorEstimator<TDigitalSurfaceEmbedder, TNormalVectorEstimator> & object )
 {
   object.selfDisplay( out );
@@ -236,5 +236,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

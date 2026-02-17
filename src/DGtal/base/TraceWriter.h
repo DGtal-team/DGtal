@@ -21,7 +21,7 @@
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/02/17
- * 
+ *
  * Header file for module TraceWriter.cpp
  *
  * This file is part of the DGtal library.
@@ -43,12 +43,12 @@
 #include <ostream>
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal 
+namespace DGtal
 {
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // class TraceWriter
-  /** 
+  /**
    * Description of class 'TraceWriter' <p>
    * Aim: @brief Virtual Class to implement trace writers.
    *
@@ -80,17 +80,17 @@ namespace DGtal
     virtual std::string  prefixError() = 0;
     virtual std::string  prefixEmphase() = 0;
     virtual std::string  postfixReset() = 0;
-    
+
     std::ostream & outputStream() {return myOutputStream;};
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
 
     ///Reference to the  output stream
     std::ostream &myOutputStream;
 
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------
@@ -101,7 +101,7 @@ namespace DGtal
      * Forbidden by default (protected to avoid g++ warnings).
      */
   TraceWriter(std::ostream &aoutputStream) : myOutputStream(aoutputStream) {};
-  
+
 
 
 
@@ -121,10 +121,10 @@ namespace DGtal
      * Forbidden by default.
      */
     TraceWriter & operator=( const TraceWriter & other );
-  
+
     // ------------------------- Internals ------------------------------------
   private:
-  
+
   }; // end of class TraceWriter
 
 
@@ -137,7 +137,7 @@ namespace DGtal
   std::ostream&
   operator<<( std::ostream & out, const TraceWriter & object );
 
-  
+
 } // namespace DGtal
 
                                                                     //

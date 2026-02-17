@@ -61,7 +61,7 @@ namespace DGtal
  * digital curves obtained from a digitization process of 3D parametric curves.
  *
  * @tparam TParametricCurve a model of C3DParametricCurve
- * 
+ *
  * \todo The method cannot detect an optimal digitization time step, therefore, for curves of high
  * curvature, the method can be very very slow due to the need of setting a tiny digitization step.
  * Such a limitation is planned to be mitigated by splitting a curve into regions of different
@@ -165,7 +165,7 @@ public:
 private:
 
     /**
-     * Buffer type. A buffer is used during digitzation to store part of the output. The size of the bufffer is
+     * Buffer type. A buffer is used during digitzation to store part of the output. The size of the buffer is
      * three times K_NEXT.
      */
     typedef DigitalCurve Buffer;
@@ -188,7 +188,7 @@ private:
     unsigned int K_NEXT;
 
     /**
-     * A variable which stores the buffer size. It is equl to 3 times K_NEXT.
+     * A variable which stores the buffer size. It is equal to 3 times K_NEXT.
      */
     unsigned int BUFFER_SIZE;
 
@@ -205,7 +205,7 @@ protected:
     MetaData metaDataContainter;
     /// A flag used to decided if meta data should be stored and returned to the user
     bool metaData;
-    /// A pointer to the parameteric curve which is going to be digitized
+    /// A pointer to the parametric curve which is going to be digitized
     const TParametricCurve * curve;
     /// the time step value
     long double step;
@@ -213,7 +213,7 @@ protected:
     long double timeMin;
     ///  the time when the digitization should stop (has to be bigger than timeMin)
     long double timeMax;
-    /// A flag which is set to true if the initial paramters are correct.
+    /// A flag which is set to true if the initial parameters are correct.
     bool initOK;
 
     // ------------------------- Hidden services ------------------------------

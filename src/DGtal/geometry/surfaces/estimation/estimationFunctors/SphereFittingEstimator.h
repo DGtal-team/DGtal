@@ -30,7 +30,7 @@
  *
  * @see testLengthEstimators.cpp, testTrueLocalEstimator.cpp
  */
-  
+
 #if defined(SphereFittingEstimator_RECURSES)
 #error Recursive header files inclusion detected in SphereFittingEstimator.h
 #else // defined(SphereFittingEstimator_RECURSES)
@@ -89,7 +89,7 @@ namespace DGtal
     {
     public:
 
-      
+
       class PoncaPoint
       {
       public:
@@ -97,22 +97,22 @@ namespace DGtal
 	typedef double Scalar;
 	typedef Eigen::Matrix<Scalar, Dim, 1>   VectorType;
 	typedef Eigen::Matrix<Scalar, Dim, Dim> MatrixType;
-        
-	PONCA_MULTIARCH inline PoncaPoint(const VectorType& _pos    = VectorType::Zero(), 
+
+	PONCA_MULTIARCH inline PoncaPoint(const VectorType& _pos    = VectorType::Zero(),
                                      const VectorType& _normal = VectorType::Zero())
           : m_pos(_pos), m_normal(_normal) {}
-        
-	PONCA_MULTIARCH inline const VectorType& pos()    const { return m_pos; }  
+
+	PONCA_MULTIARCH inline const VectorType& pos()    const { return m_pos; }
 	PONCA_MULTIARCH inline const VectorType& normal() const { return m_normal; }
 
-	PONCA_MULTIARCH inline VectorType& pos()    { return m_pos; }  
+	PONCA_MULTIARCH inline VectorType& pos()    { return m_pos; }
 	PONCA_MULTIARCH inline VectorType& normal() { return m_normal; }
 
       private:
 	VectorType m_pos, m_normal;
       };
 
-     
+
       typedef TSurfel Surfel;
       typedef TEmbedder SCellEmbedder;
       typedef typename SCellEmbedder::RealPoint RealPoint;
@@ -121,8 +121,8 @@ namespace DGtal
 
       typedef typename PoncaPoint::Scalar Scalar;
       typedef typename PoncaPoint::VectorType VectorType;
-      
-      typedef Ponca::DistWeightFunc<PoncaPoint, Ponca::SmoothWeightKernel<Scalar>> WeightFunc; 
+
+      typedef Ponca::DistWeightFunc<PoncaPoint, Ponca::SmoothWeightKernel<Scalar>> WeightFunc;
       typedef Ponca::Basket<PoncaPoint, WeightFunc, Ponca::OrientedSphereFit, Ponca::GLSParam> Fit;
 
       ///Quantity type: a 3-sphere (model of CQuantity)
@@ -133,7 +133,7 @@ namespace DGtal
         double tau;
         double kappa;
         RealPoint eta;
-        
+
         Quantity(){}
         Quantity(RealPoint p, double rad, double _tau,
                  double _kappa, RealPoint _eta): center(p), radius(rad),
@@ -141,7 +141,7 @@ namespace DGtal
                                                  eta(_eta) {}
         ~Quantity(){}
         bool operator==(Quantity aq) {return (center==aq.center) && (radius==aq.radius);}
-        bool operator<(Quantity aq) {return (center<aq.center) && (radius<aq.radius);}        
+        bool operator<(Quantity aq) {return (center<aq.center) && (radius<aq.radius);}
         bool operator!=(Quantity aq) {return !(*this == aq);}
       };
 
@@ -177,7 +177,7 @@ namespace DGtal
         delete myFit ;
       }
 
-      
+
       /**
        * Add the geometrical embedding of a surfel to the point list
        *
@@ -190,7 +190,7 @@ namespace DGtal
         BOOST_VERIFY(aDistance==aDistance);
 
         RealPoint p = myEmbedder->operator()(aSurf);
-        RealPoint norm = myNormalEsitmatorCache->eval(aSurf);          
+        RealPoint norm = myNormalEsitmatorCache->eval(aSurf);
         VectorType pp;
         pp(0) = p[0]*myH;
         pp(1) = p[1]*myH;
@@ -207,8 +207,8 @@ namespace DGtal
           }
         else
           myFit->addNeighbor(point);
-        
-#ifdef DEBUG_VERBOSE
+
+#ifdef DGTAL_DEBUG_VERBOSE
         trace.info() <<"#";
 #endif
       }
@@ -216,24 +216,24 @@ namespace DGtal
       /**
        * Evaluate the sphere fitting.
        *
-       * @return the fitted sphere 
+       * @return the fitted sphere
        */
       Quantity eval()
       {
         myFit->finalize();
 
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
         trace.info() <<std::endl;
-        
+
         //Test if the fitting ended without errors
 	if(myFit->isStable())
 	{
 		std::cout << "Center: [" << myFit->center().transpose() << "] ;  radius: " << myFit->radius() << std::endl;
 
-		std::cout << "Pratt normalization" 
+		std::cout << "Pratt normalization"
 			<< (myFit->applyPrattNorm() ? " is now done." : " has already been applied.") << std::endl;
 
-	
+
 		std::cout << "Fitted Sphere: " << std::endl
 			<< "\t Tau  : "      << myFit->tau()             << std::endl
 			<< "\t Eta  : "      << myFit->eta().transpose() << std::endl
@@ -257,7 +257,7 @@ namespace DGtal
                             (myFit->eta())(2));
         return res;
       }
-                             
+
 
       /**
        * Reset the point list.
@@ -279,19 +279,19 @@ namespace DGtal
 
       ///Fitting object
       Fit *myFit;
-      
+
       ///Grid step
       double myH;
 
       ///Boolean for initial point
       bool myFirstPoint;
-      
+
       ///NormalVectorCache
       const NormalVectorEstimatorCache *myNormalEsitmatorCache;
 
       ///const WeightFunction
       const  WeightFunc *myWeightFunction;
-      
+
     }; // end of class SphereFittingEstimator
   }
 } // namespace DGtal

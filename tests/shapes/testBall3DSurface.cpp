@@ -45,17 +45,17 @@ using namespace Z3i;
 int main(int /*argc*/, char** /*argv*/)
 {
 
-     
-   
+
+
   // -------------------------------------------------------------------------- Type declaring
   typedef Ball3D<Space> EuclideanShape;
 
   bool test = true;
-   
+
   // -------------------------------------------------------------------------- Creating the shape
   double  radius = 10;
   RealPoint c1(0, 0, 0 );
-  EuclideanShape ball1( c1, radius );	
+  EuclideanShape ball1( c1, radius );
 
   trace.beginBlock("Arc length computing");
   double arcExp = ball1.arclength( make_pair(0.0,0.0), make_pair(0.0,M_PI) ,500 );
@@ -64,14 +64,14 @@ int main(int /*argc*/, char** /*argv*/)
   trace.info() << "Theoric arc length: "<< arcTheo << endl;
   if(fabs(arcTheo- arcExp) < 0.1)
     {
-      trace.info() <<"The arc length has a good value"<<endl;	
+      trace.info() <<"The arc length has a good value"<<endl;
     }
   else
     {
       test=false;
     }
   trace.endBlock();
-  
+
   trace.beginBlock("Surface length computing");
   double surfaceExp = ball1.surfacelength( make_pair(0.0,0.0), make_pair(M_PI*2,M_PI) ,500 );
   double surfaceTheo = 4.0*M_PI*radius*radius;
@@ -79,7 +79,7 @@ int main(int /*argc*/, char** /*argv*/)
   trace.info() << "Theoric surface length: "<< surfaceTheo << endl;
   if(fabs(surfaceExp- surfaceTheo) < 0.1)
     {
-      trace.info() <<"The surface has a good value"<<endl;	
+      trace.info() <<"The surface has a good value"<<endl;
     }
   else
     {
@@ -87,7 +87,7 @@ int main(int /*argc*/, char** /*argv*/)
     }
   trace.endBlock();
 
-    
+
   if (test)
     return 0;
   else
@@ -95,5 +95,3 @@ int main(int /*argc*/, char** /*argv*/)
 }
 // //
 ///////////////////////////////////////////////////////////////////////////////
-
-

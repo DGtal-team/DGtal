@@ -59,7 +59,7 @@ namespace DGtal {
    *
    * Model of CSurfelPredicate
    */
-  template < typename TSurfelSet, 
+  template < typename TSurfelSet,
              typename TSurfel = typename TSurfelSet::Surfel >
   struct SurfelSetPredicate
   {

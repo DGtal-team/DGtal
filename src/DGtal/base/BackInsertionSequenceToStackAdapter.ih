@@ -87,7 +87,7 @@ inline
 void
 DGtal::BackInsertionSequenceToStackAdapter<TSequence>::push(const Value& aValue)
 {
-  myContainerPtr->push_back(aValue); 
+  myContainerPtr->push_back(aValue);
 }
 
 // ----------------------------------------------------------------------------
@@ -96,7 +96,7 @@ inline
 void
 DGtal::BackInsertionSequenceToStackAdapter<TSequence>::pop()
 {
-  myContainerPtr->pop_back(); 
+  myContainerPtr->pop_back();
 }
 
 // ----------------------------------------------------------------------------
@@ -125,7 +125,7 @@ DGtal::BackInsertionSequenceToStackAdapter<TSequence>::isValid() const
 template <typename TSequence>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		  const BackInsertionSequenceToStackAdapter<TSequence> & object )
 {
   object.selfDisplay( out );
@@ -135,12 +135,10 @@ DGtal::operator<< ( std::ostream & out,
 
 template <typename TSequence>
 inline
-DGtal::BackInsertionSequenceToStackAdapter<TSequence> 
+DGtal::BackInsertionSequenceToStackAdapter<TSequence>
 DGtal::backStack ( TSequence& aSequence )
 {
-  return BackInsertionSequenceToStackAdapter<TSequence>( aSequence ); 
+  return BackInsertionSequenceToStackAdapter<TSequence>( aSequence );
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

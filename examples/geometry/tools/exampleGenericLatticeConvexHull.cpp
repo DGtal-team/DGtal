@@ -30,7 +30,7 @@
 /**
    Computes the affine dimension of the convex hull of many small sets
    of lattice points and computes various statistics.
-   
+
 \verbatim
 0.024% are 0-dimensional #V=1 #F=0 (24/24)
 11.2% are 1-dimensional #V=2 #F=0 (11208/11208)
@@ -54,7 +54,7 @@ int main()
 {
   using namespace DGtal;
   // point coordinates are int (32 bits), computation with int64_t
-  typedef GenericLatticeConvexHull< 3, int, int64_t > QHull; 
+  typedef GenericLatticeConvexHull< 3, int, int64_t > QHull;
   typedef SpaceND< 3, int >                           Space;
   typedef Space::Point                                Point;
 
@@ -72,7 +72,7 @@ int main()
         X.push_back( Point{ rand() % 8, rand() % 8, rand() % 8 } );
       // Compute convex hull
       QHull hull;
-      bool ok = hull.compute( X ); 
+      bool ok = hull.compute( X );
       auto  k  = hull.affine_dimension;    // affine dimension of X
       // Compute statistics
       nb_per_dim [ k ] += 1;
@@ -83,7 +83,7 @@ int main()
   for ( auto k = 0; k < 4; k++ )
     std::cout << std::setprecision(3) << ( 100.0 * nb_per_dim[ k ] ) / nb
               << "% are " << k << "-dimensional"
-              << " #V=" << double( nb_vertices[ k ] ) / nb_per_dim[ k ] 
+              << " #V=" << double( nb_vertices[ k ] ) / nb_per_dim[ k ]
               << " #F=" << double( nb_facets[ k ] ) / nb_per_dim[ k ]
               << " (" << nb_ok[ k ] << "/" << nb_per_dim[ k ] << ")\n";
   return 0;

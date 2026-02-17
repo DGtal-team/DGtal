@@ -57,10 +57,10 @@ using namespace DGtal;
 int main()
 {
   trace.beginBlock ( "Example of greedy alpha thick segment  decompotion" );
-  
+
   typedef  std::vector<Z2i::RealPoint>::const_iterator ConstIterator;
   typedef  AlphaThickSegmentComputer<Z2i::RealPoint, ConstIterator > AlphaThickSegmentComputer2D;
-  
+
   Board2D aBoard;
   std::string file = examplesPath + "samples/contourSnoisy.sdp";
   std::vector<Z2i::RealPoint> aContour = PointListReader<Z2i::RealPoint>::getPointsFromFile (file);
@@ -68,32 +68,32 @@ int main()
   typedef GreedySegmentation<AlphaThickSegmentComputer2D> DecompositionAT;
 
   // displaying contour
-  aBoard << SetMode(aContour[0].className(), "Grid"); 
+  aBoard << SetMode(aContour[0].className(), "Grid");
   std::vector<LibBoard::Point> poly;
   for (unsigned int i = 0; i< aContour.size(); i++)  poly.push_back(LibBoard::Point(aContour[i][0], aContour[i][1]));
   aBoard.setPenColor(DGtal::Color::Gray);
   aBoard.fillPolyline(poly);
-  
+
   // Computing greedy Alpha Thick decomposition.
   //! [greedyAlphaThickDecompositionModeDisplay]
   aBoard << SetMode("AlphaThickSegment", "BoundingBox");
   //! [greedyAlphaThickDecompositionModeDisplay]
-  
+
   //! [greedyAlphaThickDecompositionAlgo]
-  DecompositionAT theDecomposition(aContour.begin(), aContour.end(), AlphaThickSegmentComputer2D(4)); 
+  DecompositionAT theDecomposition(aContour.begin(), aContour.end(), AlphaThickSegmentComputer2D(4));
   //! [greedyAlphaThickDecompositionAlgo]
 
-  //! [greedyAlphaThickDecompositionDisplay]  
-  for ( DecompositionAT::SegmentComputerIterator 
+  //! [greedyAlphaThickDecompositionDisplay]
+  for ( DecompositionAT::SegmentComputerIterator
            it = theDecomposition.begin(),
            itEnd = theDecomposition.end();
-         it != itEnd; ++it ) 
+         it != itEnd; ++it )
      {
-       aBoard << CustomStyle( (*it).className(), 
+       aBoard << CustomStyle( (*it).className(),
                               new CustomPenColor( Color::Blue ) );
        aBoard<< *it;
-     } 
-  //! [greedyAlphaThickDecompositionDisplay]  
+     }
+  //! [greedyAlphaThickDecompositionDisplay]
 
   aBoard.saveEPS("greedyAlphaThickDecomposition.eps");
 

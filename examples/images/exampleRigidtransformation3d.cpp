@@ -32,7 +32,7 @@
 /**
 *  Example of 3D rigid transformation using forward and backward model.
    @see @ref moduleGeometricTransform
-   \image html cat10_backward.jpg "Result for backward model" 
+   \image html cat10_backward.jpg "Result for backward model"
 *  \example images/exampleRigidtransformation3d.cpp
 **/
 
@@ -69,9 +69,9 @@ int main( int , char** )
   typedef ConstImageAdapter<Image, Domain, BackwardTrans, Image::Value, Identity > MyImageBackwardAdapter;
   typedef DomainRigidTransformation3D < Domain, ForwardTrans > MyTransformedDomain;
   typedef MyTransformedDomain::Bounds Bounds;
-  //! [def]  
+  //! [def]
   trace.beginBlock ( "Example rigidtransformation3d" );
-    //! [trans] 
+    //! [trans]
     ForwardTrans forwardTrans( Point ( 5, 5, 5 ), RealVector ( 1, 0, 1 ), M_PI_4, RealVector( 3, -3, 3 ) );
     BackwardTrans backwardTrans( Point ( 5, 5, 5 ), RealVector ( 1, 0, 1 ), M_PI_4, RealVector( 3, -3, 3 ) );
     //! [trans]
@@ -79,7 +79,7 @@ int main( int , char** )
     MyTransformedDomain domainForwardTrans ( forwardTrans );
     //![init_domain_helper]
     Identity idD;
-    
+
     Image image = VolReader<Image>::importVol ( examplesPath + "samples/cat10.vol" );
     //! [domain]
     Bounds bounds = domainForwardTrans ( image.domain() );
@@ -91,7 +91,7 @@ int main( int , char** )
     //! [backward]
       adapter >> "backward_transform.pgm3d";
     trace.endBlock();
-  
+
     trace.beginBlock( "Forward - Lagrangian model" );
       Image transformed ( transformedDomain );
      //! [forward]

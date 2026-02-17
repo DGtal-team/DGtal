@@ -200,7 +200,7 @@ extendAsIs( const InputPoint & p )
     {
       for ( AxisIterator it = myAxes.begin(); it != myAxes.end(); )
         // cannot put end() in variable, since end() moves when
-        // modifiying a vector.
+        // modifying a vector.
         {
           bool ok = myComputers[ *it ].extendAsIs( p );
           if ( ! ok )

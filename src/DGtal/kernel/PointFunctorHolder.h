@@ -82,7 +82,7 @@ auto fn = holdPointFunctor<Point>( // auto-deduced Value template
 );
 @endcode
  *
- * You can find more informations about how to use this class appropriately
+ * You can find more information about how to use this class appropriately
  * in the module about @ref moduleFunctors.
  *
  * @see holdPointFunctor, FunctorHolder, @ref moduleFunctors
@@ -155,7 +155,7 @@ public:
     }
 
 
-  // ------------------------- Private Datas --------------------------------
+  // ------------------------- Private Data --------------------------------
 private:
   Functor myFunctor; ///< The held functor.
 
@@ -208,7 +208,7 @@ holdPointFunctor( TFunctor && aFunctor )
  * @param   aFunctor  The functor to hold.
  * @return an instance of the appropriate PointFunctorHolder type.
  *
- * @see PointFunctorHolder and @ref moduleFunctors for more informations.
+ * @see PointFunctorHolder and @ref moduleFunctors for more information.
  */
 template <
   typename TPoint,

@@ -48,9 +48,9 @@ bool testLinearAlgebra()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing block ..." );
-  
+
   typedef SpaceND<2,DGtal::int32_t> Space2Int;
   typedef Space2Int::Point Point;
   typedef SpaceND<2,DGtal::int64_t > Space2LongInt;
@@ -62,12 +62,12 @@ bool testLinearAlgebra()
   LinearAlgebra<Space2Int>::determinant(a,b);
   LinearAlgebra<Space2LongInt>::determinant(c,d);
 
-  nbok += true ? 1 : 0; 
+  nbok += true ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 ///////////////////////////////////////////////////////////////////////////////

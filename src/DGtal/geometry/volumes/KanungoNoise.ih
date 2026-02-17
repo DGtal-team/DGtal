@@ -45,10 +45,10 @@ DGtal::KanungoNoise<TP,TD, TS>::KanungoNoise(ConstAlias<TP> aPredicate, ConstAli
 {
   std::mt19937 rng;
   std::uniform_real_distribution<double> dis(0.0, 1.0);
-  
+
   ASSERT(alpha>0 && alpha < 1);
   double p;
-  
+
   //We copy the point set
   mySet = new  DigitalSet( new Domain( aDomain ) );
 
@@ -59,7 +59,7 @@ DGtal::KanungoNoise<TP,TD, TS>::KanungoNoise(ConstAlias<TP> aPredicate, ConstAli
   //DT computation for l2metric
   L2 l2;
   functors::NotPointPredicate<PointPredicate> negPred(myPredicate);
- 
+
   DTPredicate DTin(myDomain, myPredicate, l2);
   DTNotPredicate DTout(myDomain, negPred, l2);
 
@@ -100,7 +100,7 @@ DGtal::KanungoNoise<TP,TD, TS>::operator=( const KanungoNoise<TP,TD,TS> &other)
 
   myAlpha = other.myAlpha;
   mySet = other.mySet;
-  
+
   return *this;
 }
 // ---------------------------------------------  --------
@@ -131,7 +131,7 @@ DGtal::KanungoNoise<TP,TD, TS>::isValid() const
 template <typename TP, typename TD, typename TS>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		  const KanungoNoise<TP,TD, TS> & object )
 {
   object.selfDisplay( out );
@@ -140,5 +140,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

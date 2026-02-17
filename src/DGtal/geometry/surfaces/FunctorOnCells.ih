@@ -83,7 +83,7 @@ DGtal::FunctorOnCells<TF, TKS>::isValid() const
 template <typename TF, typename TKS>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
                   const FunctorOnCells<TF, TKS> & object )
 {
   object.selfDisplay( out );
@@ -92,5 +92,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

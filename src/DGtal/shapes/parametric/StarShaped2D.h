@@ -176,7 +176,7 @@ namespace DGtal
   public:
 
     /**
-     * Return the orienatation of a point with respect to a shape.
+     * Return the orientation of a point with respect to a shape.
      *
      * @param p input point
      *

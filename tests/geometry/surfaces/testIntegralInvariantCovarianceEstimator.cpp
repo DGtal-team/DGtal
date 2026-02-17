@@ -97,7 +97,7 @@ bool testGaussianCurvature3d( double h, double delta )
   trace.endBlock();
 
   trace.beginBlock( "Curvature estimator initialisation ...");
-  
+
   VisitorRange range( new Visitor( surf, *surf.begin() ));
   VisitorConstIterator ibegin = range.begin();
   VisitorConstIterator iend = range.end();
@@ -202,7 +202,7 @@ bool testPrincipalCurvatures3d( double h )
   trace.endBlock();
 
   trace.beginBlock( "Curvature estimator initialisation ...");
-  
+
   VisitorRange range( new Visitor( surf, *surf.begin() ));
   VisitorConstIterator ibegin = range.begin();
   VisitorConstIterator iend = range.end();
@@ -220,7 +220,7 @@ bool testPrincipalCurvatures3d( double h )
   curvatureEstimatorTensor.attach( K, dshape );
   curvatureEstimatorTensor.setParams( re/h );
   curvatureEstimatorTensor.init( h, ibegin, iend );
-  
+
   trace.endBlock();
 
   trace.beginBlock( "Curvature estimator evaluation ...");
@@ -230,8 +230,8 @@ bool testPrincipalCurvatures3d( double h )
   curvatureEstimator.eval( ibegin, iend, resultsIt );
   trace.endBlock();
 
-  
-  
+
+
   trace.beginBlock( "Checking CurvaturesAndDirections functor");
   Value val = curvatureEstimator.eval( surf.begin() );
   ValueTensor valTensor = curvatureEstimatorTensor.eval( surf.begin() );
@@ -239,10 +239,10 @@ bool testPrincipalCurvatures3d( double h )
   ok &= (val.second ==  std::get<1>(valTensor));
   if (!ok)
     trace.error()<< "Error comparing principal curvatures between two different functors."<<std::endl;
-  
+
   trace.endBlock();
 
-  
+
   trace.beginBlock ( "Comparing results of integral invariant 3D Gaussian curvature ..." );
 
   unsigned int error_order = 0;

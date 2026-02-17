@@ -51,7 +51,7 @@
 
 namespace DGtal
 {
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // template class TickedColorMap
   /**
@@ -77,21 +77,21 @@ namespace DGtal
   template <typename TValue, typename TColorMap>
   class TickedColorMap
   {
-    
+
   public:
-    
+
     ///Value type
     typedef TValue Value;
-    
+
     ///Adapted colormap type.
     typedef TColorMap ColorMap;
-    
+
     BOOST_CONCEPT_ASSERT(( concepts::CColorMap<ColorMap> )) ;
     BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType<Value, typename ColorMap::Value>::value));
-    
+
     // ----------------------- Standard services ------------------------------
   public:
-    
+
     /**
      * Constructor.
      *
@@ -104,7 +104,7 @@ namespace DGtal
     TickedColorMap(const Value & aMin,
                    const Value & aMax,
                    const Color &color = Color::White );
-    
+
     /**
      * Constructor from colormap
      *
@@ -115,7 +115,7 @@ namespace DGtal
      */
     TickedColorMap( const ColorMap & other,
                     const Color &    color = Color::White );
-    
+
     /**
      * Computes the color associated with a value in a given range.
      *
@@ -126,28 +126,28 @@ namespace DGtal
      * @return A color.
      */
     Color operator()( const Value & value ) const;
-    
+
     /**
      * Destructor.
      */
     ~TickedColorMap();
-    
+
     /**
      * Copy constructor.
      * @param other the object to clone.
      */
     TickedColorMap ( const TickedColorMap & other );
-    
+
     /**
      * Assignment.
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
     TickedColorMap & operator= ( const TickedColorMap & other );
-    
+
     // ----------------------- Interface --------------------------------------
   public:
-    
+
     /**
      * Add a tick at a given position of the
      * range [myMin, myMax].
@@ -157,7 +157,7 @@ namespace DGtal
      */
     void addTick(const Value position,
                  const Value thickness);
-    
+
     /**
      * Add regularly spaced ticks in the range [myMin,myMax].
      *
@@ -166,7 +166,7 @@ namespace DGtal
      */
     void addRegularTicks(const unsigned int nbTicks,
                          const Value thickness);
-    
+
     /**
      * Finalize the insert ticks (this will sort the tick vector).
      * This method must be called before any color access if you
@@ -174,7 +174,7 @@ namespace DGtal
      *
      */
     void finalize();
-    
+
     /**
      * @return a pointer to the underlying colormap
      */
@@ -182,54 +182,54 @@ namespace DGtal
     {
       return myColorMap;
     }
-    
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
      */
     void selfDisplay ( std::ostream & out ) const;
-    
+
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
-    
+
     /**
      * Returns the lower bound of the value range.
      *
      * @return The lower bound of the value range.
      */
     const Value & min() const;
-    
+
     /**
      * Returns the upper bound of the value range.
      *
      * @return The upper bound of the value range.
      */
     const Value & max() const;
-    
-    
+
+
     // ------------------------- Hidden services ------------------------------
   protected:
-    
+
     Value myMin;    /**< The lower bound of the value range.  */
     Value myMax;           /**< The lower bound of the value range.  */
     ColorMap *myColorMap;  /**< Underlying colormap. */
     Color myTickColor; /**< The tick color. */
-    
+
     ///Sorted vector of ticks.
     std::vector< std::pair<Value,Value> > myTicks;
-    
+
     /**
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
      */
     TickedColorMap();
-    
+
   }; // end of class TickedColorMap2d
-  
-  
+
+
   /**
    * Overloads 'operator<<' for displaying objects of class 'TickedColorMap'.
    * @param out the output stream where the object is written.
@@ -238,7 +238,7 @@ namespace DGtal
   template <typename TValue, typename CMAP >
   std::ostream&
   operator<< ( std::ostream & out, const TickedColorMap<TValue,CMAP> & object );
-  
+
 } // namespace DGtal
 
 

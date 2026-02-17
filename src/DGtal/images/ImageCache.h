@@ -51,24 +51,24 @@
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
-{   
+{
 
 // CACHE_READ_POLICY_LAST, CACHE_READ_POLICY_FIFO, CACHE_READ_POLICY_LRU, CACHE_READ_POLICY_NEIGHBORS   // read policies
 // CACHE_WRITE_POLICY_WT, CACHE_WRITE_POLICY_WB                                                         // write policies
-    
+
 /////////////////////////////////////////////////////////////////////////////
 // Template class ImageCache
 /**
  * Description of template class 'ImageCache' <p>
  * \brief Aim: implements an images cache with 'read and write' policies.
- * 
+ *
  * @tparam TImageContainer an image container type (model of CImage).
  * @tparam TImageFactory an image factory type (model of CImageFactory).
  * @tparam TReadPolicy an image cache read policy class (model of CImageCacheReadPolicy).
  * @tparam TWritePolicy an image cache write policy class (model of CImageCacheWritePolicy).
- * 
+ *
  * The cache provides 3 functions:
- * 
+ *
  *  - read :    for getting the value of an image from cache at a given position given by a point only if that point belongs to an image from cache
  *  - write :   for setting a   value on an image from cache at a given position given by a point only if that point belongs to an image from cache
  *  - update :  for updating the cache according to the read cache policy
@@ -80,8 +80,8 @@ class ImageCache
     // ----------------------- Types ------------------------------
 
 public:
-    typedef ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy> Self; 
-    
+    typedef ImageCache<TImageContainer, TImageFactory, TReadPolicy, TWritePolicy> Self;
+
     ///Checking concepts
     BOOST_CONCEPT_ASSERT(( concepts::CImage<TImageContainer> ));
     BOOST_CONCEPT_ASSERT(( concepts::CImageFactory<TImageFactory> ));
@@ -93,16 +93,16 @@ public:
     typedef typename ImageContainer::Domain Domain;
     typedef typename ImageContainer::Point Point;
     typedef typename ImageContainer::Value Value;
-    
+
     typedef TImageFactory ImageFactory;
-    
+
     typedef TReadPolicy ReadPolicy;
     typedef TWritePolicy WritePolicy;
 
     // ----------------------- Standard services ------------------------------
 
 public:
-  
+
     /**
      * Constructor.
      * @param anImageFactory alias on the image factory (see ImageFactoryFromImage or ImageFactoryFromHDF5).
@@ -113,11 +113,11 @@ public:
       myImageFactoryPtr(&anImageFactory), myReadPolicy(&aReadPolicy), myWritePolicy(&aWritePolicy)
     {
       myReadPolicy->clearCache();
-      
+
       cacheMissRead = 0;
       cacheMissWrite = 0;
     }
-    
+
     /**
      * Destructor.
      * Does nothing
@@ -125,11 +125,11 @@ public:
     ~ImageCache()
     {
     }
-    
+
 private:
-    
+
     ImageCache( const ImageCache & other );
-        
+
     ImageCache & operator=( const ImageCache & other );
 
     // ----------------------- Interface --------------------------------------
@@ -140,7 +140,7 @@ public:
 
     /////////////////// Accessors //////////////////
 
-    
+
     /////////////////// API //////////////////
 
     /**
@@ -157,22 +157,22 @@ public:
     {
         return (myImageFactoryPtr->isValid());
     }
-    
+
     /**
     * Get the value of an image from cache at a given position given
     * by aPoint only if aPoint belongs to an image from cache.
     *
     * @param aPoint the point.
     * @param aValue the value returned.
-    * 
+    *
     * @return 'true' if aPoint belongs to an image from cache, 'false' otherwise.
     */
     bool read(const Point & aPoint, Value &aValue) const;
-    
+
     /**
-     * Get the alias on the image that matchs the domain aDomain
-     * or NULL if no image in the cache matchs the domain aDomain.
-     * 
+     * Get the alias on the image that matches the domain aDomain
+     * or NULL if no image in the cache matches the domain aDomain.
+     *
      * @param aDomain the domain.
      *
      * @return the alias on the image container or NULL pointer.
@@ -185,18 +185,18 @@ public:
      *
      * @param aPoint the point.
      * @param aValue the value returned.
-     * 
+     *
      * @return 'true' if aPoint belongs to an image from cache, 'false' otherwise.
      */
     bool write(const Point & aPoint, const Value &aValue);
-    
+
     /**
      * Update the cache according to the read cache policy.
-     * 
+     *
      * @param aDomain the domain.
      */
     void update(const Domain &aDomain);
-    
+
     /**
      * Get the cacheMissRead value.
      */
@@ -204,7 +204,7 @@ public:
     {
         return cacheMissRead;
     }
-    
+
     /**
      * Get the cacheMissWrite value.
      */
@@ -212,7 +212,7 @@ public:
     {
         return cacheMissWrite;
     }
-    
+
     /**
      * Inc the cacheMissRead value.
      */
@@ -220,7 +220,7 @@ public:
     {
         cacheMissRead++;
     }
-    
+
     /**
      * Inc the cacheMissWrite value.
      */
@@ -228,37 +228,37 @@ public:
     {
         cacheMissWrite++;
     }
-    
+
     /**
      * Clear the cache and reset the cache misses
      */
     void clearCacheAndResetCacheMisses()
     {
       myReadPolicy->clearCache();
-      
+
       cacheMissRead = 0;
       cacheMissWrite = 0;
     }
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
 private:
     /**
      * Default constructor.
      */
     //ImageCache() {}
-    
-    // ------------------------- Private Datas --------------------------------
+
+    // ------------------------- Private Data --------------------------------
 protected:
 
     /// Alias on the image factory
     ImageFactory * myImageFactoryPtr;
-    
+
     /// Specialized caches
     ReadPolicy * myReadPolicy;
     WritePolicy * myWritePolicy;
-    
+
 private:
-    
+
     /// cache miss values
     unsigned int cacheMissRead;
     unsigned int cacheMissWrite;

@@ -5,7 +5,7 @@
  *
  * @date 2014/07/17
  *
- * @brief Doccumentation file for geometrical transformations in DGtal.
+ * @brief Documentation file for geometrical transformations in DGtal.
  *
  * This file is part of the DGtal library.
  */
@@ -73,7 +73,7 @@ DGtal contains both models, and below snippets of code present how to
 apply them for a 2D image. In order to illustrate how to use discrete
 rigid transformation we are going to:
 
-a) add those includes: 
+a) add those includes:
 @snippet images/exampleRigidtransformation2d.cpp include
 
 b) define these types:
@@ -98,7 +98,7 @@ e1) apply rigid transformation to image with forward model:
 e2) or with backward which can be used with ConstImageAdapter or ImageAdapter:
 @snippet images/exampleRigidtransformation2d.cpp backward
 
-Below image presents result for froward model and image "Church.pgm"
+Below image presents result for forward model and image "Church.pgm"
 \image html church_forward.jpg
 
 and for backward as well:
@@ -112,7 +112,7 @@ rotation around any arbitrary axis with exception for
 \f$(0,0,0)\f$. Usage is analogous to the 2D implementation and can be
 illustrated in the following steps:
 
-a) add those includes: 
+a) add those includes:
 @snippet images/exampleRigidtransformation3d.cpp include
 
 b) define these types:
@@ -137,7 +137,7 @@ e1) apply rigid transformation to image with forward model:
 e2) or with backward which can be used with ConstImageAdapter or ImageAdapter:
 @snippet images/exampleRigidtransformation3d.cpp backward
 
-Below image presents result for froward model and image "cat10.vol"
+Below image presents result for forward model and image "cat10.vol"
 \image html cat10_forward.jpg
 
 and for backward as well:
@@ -145,10 +145,3 @@ and for backward as well:
 
 */
  }
-
-
-
-
-
-
-

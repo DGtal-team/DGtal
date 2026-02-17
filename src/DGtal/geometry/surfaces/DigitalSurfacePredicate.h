@@ -129,10 +129,10 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     CountedConstPtrOrConstPtr<Surface> mySurface; /**< A pointer on the digital surface. */
     UnorderedSetByBlock<Point> myPointSet; /**< The set of pointels. */

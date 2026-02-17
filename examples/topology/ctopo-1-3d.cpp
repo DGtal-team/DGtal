@@ -41,11 +41,11 @@
 
 /**
  *   A simple example illustrating the extraction of the sequence of
- *   surfels boudary. This program outputs this image.
+ *   surfels boundary. This program outputs this image.
  *
  * @see \ref dgtal_helpsurf_sec2
  *
- *  @image html ctopo3dSurfelCut.png 
+ *  @image html ctopo3dSurfelCut.png
  *
  * \example topology/ctopo-2-3d.cpp
  *

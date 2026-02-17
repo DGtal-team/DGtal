@@ -53,7 +53,7 @@ template <typename TDigitalSurfaceContainer, typename TSeparableMetric,
 inline
 DGtal::VCMDigitalSurfaceLocalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction, TVCMGeometricFunctor>::
 VCMDigitalSurfaceLocalEstimator()
-  : mySurface( 0 ), 
+  : mySurface( 0 ),
     mySurfelEmbedding( InnerSpel ),
     myVCMOnSurface( 0 ),
     myGeomFct(),
@@ -67,7 +67,7 @@ template <typename TDigitalSurfaceContainer, typename TSeparableMetric,
 inline
 DGtal::VCMDigitalSurfaceLocalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction, TVCMGeometricFunctor>::
 VCMDigitalSurfaceLocalEstimator( const Self& other )
-  : mySurface( other.mySurface ), 
+  : mySurface( other.mySurface ),
     mySurfelEmbedding( other.mySurfelEmbedding ),
     myVCMOnSurface( other.myVCMOnSurface ),
     myGeomFct( other.myGeomFct ),
@@ -83,11 +83,11 @@ typename DGtal::VCMDigitalSurfaceLocalEstimator<TDigitalSurfaceContainer, TSepar
 DGtal::VCMDigitalSurfaceLocalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction, TVCMGeometricFunctor>::
 operator=( const Self& other )
 {
-  if ( this != &other ) 
+  if ( this != &other )
     {
       mySurface = other.mySurface;
       mySurfelEmbedding = other.mySurfelEmbedding;
-      myVCMOnSurface = other.myVCMOnSurface;    
+      myVCMOnSurface = other.myVCMOnSurface;
       myGeomFct = other.myGeomFct;
       myH = other.myH;
     }
@@ -100,7 +100,7 @@ template <typename TDigitalSurfaceContainer, typename TSeparableMetric,
 inline
 DGtal::VCMDigitalSurfaceLocalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction, TVCMGeometricFunctor>::
 VCMDigitalSurfaceLocalEstimator( ConstAlias< VCMOnSurface > vcmSurface )
-  : mySurface( vcmSurface->surface() ), 
+  : mySurface( vcmSurface->surface() ),
     mySurfelEmbedding( vcmSurface->surfelEmbedding() ),
     myVCMOnSurface( vcmSurface ),
     myGeomFct( vcmSurface ),
@@ -113,7 +113,7 @@ template <typename TDigitalSurfaceContainer, typename TSeparableMetric,
 inline
 DGtal::VCMDigitalSurfaceLocalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction, TVCMGeometricFunctor>::
 VCMDigitalSurfaceLocalEstimator( ConstAlias< Surface > surface )
-  : mySurface( surface ), 
+  : mySurface( surface ),
     mySurfelEmbedding( InnerSpel ),
     myVCMOnSurface( 0 ),
     myGeomFct(),
@@ -156,7 +156,7 @@ template <typename SurfelConstIterator>
 inline
 void
 DGtal::VCMDigitalSurfaceLocalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction, TVCMGeometricFunctor>::
-init( const Scalar _h, 
+init( const Scalar _h,
       SurfelConstIterator /* itb */,
       SurfelConstIterator /* ite */ )
 {
@@ -251,7 +251,7 @@ template <typename TDigitalSurfaceContainer, typename TSeparableMetric,
           typename TKernelFunction, typename TVCMGeometricFunctor>
 inline
 std::ostream&
-DGtal::operator<<( std::ostream & out, 
+DGtal::operator<<( std::ostream & out,
                    const VCMDigitalSurfaceLocalEstimator<TDigitalSurfaceContainer, TSeparableMetric, TKernelFunction, TVCMGeometricFunctor> & object )
 {
   object.selfDisplay( out );
@@ -260,5 +260,3 @@ DGtal::operator<<( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

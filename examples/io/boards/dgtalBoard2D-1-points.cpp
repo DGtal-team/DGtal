@@ -24,7 +24,7 @@
  * @date 2010/11/26
  *
  * An example file named dgtalBoard2D-1-points.
- * 
+ *
  */
 
 /**
@@ -58,7 +58,7 @@ int main()
   Point p2( 7, 3 );
   Point p3( 0, 0 );
   Domain domain( p1, p2 );
-  
+
   Board2D board;
   board << domain << p1 << p2 << p3;
 
@@ -72,7 +72,7 @@ int main()
   board.saveCairo("dgtalBoard2D-1-points-cairo.ps", Board2D::CairoPS);
   board.saveCairo("dgtalBoard2D-1-points-cairo.svg", Board2D::CairoSVG);
 #endif
-  
+
   trace.endBlock();
   return 0;
 }

@@ -58,7 +58,7 @@ DGtal::Display2DFactory::drawDECSignedKhalimskyCell(DGtal::Board2D& board, const
     //and not instantiated at each call.
     using Embedder = DGtal::CanonicSCellEmbedder<KPS>;
     const Embedder embedder( K );
-    
+
     const Embedder::RealPoint coords = embedder( sk );
     const double x = coords[0];
     const double y = coords[1];
@@ -658,8 +658,8 @@ void DGtal::Display2DFactory::drawAnnulus(Board2D & aBoard, const DGtal::CircleF
     double ilx = cx + (radius-w)*std::cos(alpha2);
     double ily = cy + (radius-w)*std::sin(alpha2);
     double olx = cx + (radius+w)*std::cos(alpha2);
-    double oly = cy + (radius+w)*std::sin(alpha2);
-    aBoard.drawLine(ilx, ily, olx, oly);
+    double only = cy + (radius+w)*std::sin(alpha2);
+    aBoard.drawLine(ilx, ily, olx, only);
   }
   catch ( InfiniteNumberException& e )
   {

@@ -47,7 +47,7 @@ inline
 bool
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, const ConstIterator& itb, const ConstIterator& ite)
 {
-  typedef typename IteratorCirculatorTraits<typename SegmentComputer::ConstIterator>::Type Type; 
+  typedef typename IteratorCirculatorTraits<typename SegmentComputer::ConstIterator>::Type Type;
   return this->doesIntersectNext( it, itb, ite, Type() );
 }
 
@@ -56,17 +56,17 @@ inline
 bool
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it, const ConstIterator& itb, const ConstIterator& ite, IteratorType )
 {
-    ConstIterator previousIt(it); 
-    if ( (it != itb)&&(it != ite) ) 
+    ConstIterator previousIt(it);
+    if ( (it != itb)&&(it != ite) )
       {
 	--previousIt;
 	SegmentComputer tmpSegmentComputer=mySegmentComputer.getSelf();
 	tmpSegmentComputer.init(previousIt);
 	return tmpSegmentComputer.extendFront();
-      } 
-    else 
+      }
+    else
       {
-	return false; 
+	return false;
       }
 }
 
@@ -86,7 +86,7 @@ bool
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::doesIntersectNext(const ConstIterator& it)
 {
   ConstIterator previousIt(it); --previousIt;
-  
+
   SegmentComputer tmpSegmentComputer=mySegmentComputer.getSelf();
   tmpSegmentComputer.init(previousIt);
   return tmpSegmentComputer.extendFront();
@@ -103,22 +103,22 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::longestSeg
 
   //while my segmentComputer can be extended
   while ( (mySegmentComputer.end() != myS->myStop)
-    &&(mySegmentComputer.extendFront()) ) {} 
+    &&(mySegmentComputer.extendFront()) ) {}
 
   //if the end is reached
   if (mySegmentComputer.end() == myS->myStop) {
 
     myFlagIntersectNext = doesIntersectNext( mySegmentComputer.end(), myS->myBegin, myS->myEnd );
-    myFlagIsLast = true; 
+    myFlagIsLast = true;
 
     //last extension
-    if ( isNotEmpty<ConstIterator>(myS->myStop, myS->myEnd) ) { 
+    if ( isNotEmpty<ConstIterator>(myS->myStop, myS->myEnd) ) {
       if (myS->myMode == "Truncate+1") {
-        mySegmentComputer.extendFront(); 
+        mySegmentComputer.extendFront();
       }
       if (myS->myMode == "DoNotTruncate") {
         while ( (mySegmentComputer.extendFront())
-             && (mySegmentComputer.end() != myS->myEnd) ) {} 
+             && (mySegmentComputer.end() != myS->myEnd) ) {}
       }
     }
 
@@ -137,14 +137,14 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::next()
 
   if (myFlagIsLast) { //if the segmentComputer has reached the end
 
-    myFlagIsValid = false; 
+    myFlagIsValid = false;
 
   } else { //otherwise
 
     myFlagIntersectPrevious = myFlagIntersectNext;
 
-    ConstIterator it( mySegmentComputer.end() ); 
-    if (myFlagIntersectPrevious) --it; 
+    ConstIterator it( mySegmentComputer.end() );
+    if (myFlagIntersectPrevious) --it;
 
     this->longestSegment(it);
 
@@ -157,30 +157,30 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::next()
 
  template <typename TSegmentComputer>
 inline
-DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator ( 
+DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator (
   const GreedySegmentation<TSegmentComputer> *s,
   const TSegmentComputer& aSegmentComputer,
   const bool& aIsValid )
-  : myS( s ), 
-    mySegmentComputer( aSegmentComputer ), 
+  : myS( s ),
+    mySegmentComputer( aSegmentComputer ),
     myFlagIsValid( aIsValid ),
     myFlagIntersectNext( false ),
     myFlagIntersectPrevious( false ),
     myFlagIsLast( false )
 {
- 
+
  if (myFlagIsValid)
    {
-     if ( isNotEmpty<ConstIterator>(myS->myStart, myS->myStop) ) 
+     if ( isNotEmpty<ConstIterator>(myS->myStart, myS->myStop) )
        {   //if at least one element
- 
+
          myFlagIntersectPrevious = doesIntersectNext( myS->myStart, myS->myBegin, myS->myEnd );
-         
+
          //computation of the longest segment from myS->myStart
-         this->longestSegment(myS->myStart);  
- 
-        } 
-      else 
+         this->longestSegment(myS->myStart);
+
+        }
+      else
        {
          myFlagIsValid = false;
        }
@@ -192,10 +192,10 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentCom
 inline
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentComputerIterator
 ( const SegmentComputerIterator & other )
-  : myS( other.myS ), 
+  : myS( other.myS ),
     mySegmentComputer( other.mySegmentComputer ),
     myFlagIsValid( other.myFlagIsValid ),
-    myFlagIntersectNext( other.myFlagIntersectNext ), 
+    myFlagIntersectNext( other.myFlagIntersectNext ),
     myFlagIntersectPrevious( other.myFlagIntersectPrevious ) ,
     myFlagIsLast( other.myFlagIsLast )
 {
@@ -204,7 +204,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::SegmentCom
 
   template <typename TSegmentComputer>
 inline
-typename DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator& 
+typename DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator&
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator=
 ( const SegmentComputerIterator & other )
 {
@@ -219,7 +219,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator=
     }
   return *this;
 }
-    
+
 
   template <typename TSegmentComputer>
 inline
@@ -229,7 +229,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::~SegmentCo
 
 ///////////////////////////////////////////////////////////////////////////////
 // ------------------------- iteration services -------------------------
-    
+
 
   template <typename TSegmentComputer>
 inline
@@ -258,13 +258,13 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::get() cons
 
   template <typename TSegmentComputer>
 inline
-typename DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator & 
+typename DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator &
 DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator++()
 {
   this->next();
   return *this;
 }
-    
+
 
 
   template <typename TSegmentComputer>
@@ -274,11 +274,11 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator==
 ( const SegmentComputerIterator & other ) const
 {
 
- if ( isValid() ) 
-  return ( (other.isValid() ) && 
+ if ( isValid() )
+  return ( (other.isValid() ) &&
 ( mySegmentComputer.begin() == other.mySegmentComputer.begin() ) &&
-( mySegmentComputer.end() == other.mySegmentComputer.end() ) );  
- else 
+( mySegmentComputer.end() == other.mySegmentComputer.end() ) );
+ else
   return ( ! other.isValid() );
 }
 
@@ -294,7 +294,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::operator!=
 
 
 // ------------------------- accessors -------------------------
-  
+
   template <typename TSegmentComputer>
 inline
 bool
@@ -369,7 +369,7 @@ void
 DGtal::GreedySegmentation<TSegmentComputer>::setMode
 (const std::string& aMode)
 {
-  myMode = aMode; 
+  myMode = aMode;
 }
 
 
@@ -383,7 +383,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::~GreedySegmentation()
 
   template <typename TSegmentComputer>
 inline
-typename DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator 
+typename DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator
 DGtal::GreedySegmentation<TSegmentComputer>::begin() const
 {
   return SegmentComputerIterator(this, mySegmentComputer, true);
@@ -392,7 +392,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::begin() const
 
   template <typename TSegmentComputer>
 inline
-typename DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator 
+typename DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator
 DGtal::GreedySegmentation<TSegmentComputer>::end() const
 {
   return SegmentComputerIterator(this, mySegmentComputer, false);
@@ -425,7 +425,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::isValid() const
   template <typename TSegmentComputer>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
       const GreedySegmentation<TSegmentComputer> & object )
 {
   object.selfDisplay( out );
@@ -434,5 +434,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

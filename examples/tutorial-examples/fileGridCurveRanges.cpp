@@ -21,8 +21,8 @@
  *
  *
  * @date 2010/10/17
- * 
- * @brief An example of reading and displaying a gridcurve and its ranges. 
+ *
+ * @brief An example of reading and displaying a gridcurve and its ranges.
  *
  * This file is part of the DGtal library.
  */
@@ -50,46 +50,46 @@ using namespace DGtal;
 
 int main()
 {
-  
+
   //! [fileGridCurveRanges-declaration]
-  Z2i::Curve c; 
+  Z2i::Curve c;
   //! [fileGridCurveRanges-declaration]
 
   //! [fileGridCurveRanges-ex]
-  std::string square = examplesPath + "samples/smallSquare.dat";  
+  std::string square = examplesPath + "samples/smallSquare.dat";
   //! [fileGridCurveRanges-ex]
 
   //! [fileGridCurveRanges-read]
   std::fstream inputStream;
   inputStream.open (square.c_str(), std::ios::in);
   c.initFromVectorStream(inputStream);
-  inputStream.close();  
+  inputStream.close();
   //! [fileGridCurveRanges-read]
 
   //! [fileGridCurveRanges-board]
   DGtal::Board2D aBoard;
   //! [fileGridCurveRanges-board]
-  
+
   //displaying domain
   Z2i::Point low(-1,-1);
   Z2i::Point up(3,3);
   Z2i::Domain aDomain( low,up );
-  aBoard << SetMode(aDomain.className(), "Paving") << aDomain; 
-  
+  aBoard << SetMode(aDomain.className(), "Paving") << aDomain;
+
   //! [fileGridCurveRanges-displayCurve]
-  aBoard << c;  
+  aBoard << c;
   aBoard.saveEPS("DisplayGridCurveTuto.eps");
   //! [fileGridCurveRanges-displayCurve]
-  
+
   //! [fileGridCurveRanges-displayInnerPoints]
-  Z2i::Curve::InnerPointsRange r1 = c.getInnerPointsRange(); 
-  aBoard << r1; 
+  Z2i::Curve::InnerPointsRange r1 = c.getInnerPointsRange();
+  aBoard << r1;
   //! [fileGridCurveRanges-displayInnerPoints]
   aBoard.saveEPS("DisplayInnerPointsTuto.eps");
 
   //! [fileGridCurveRanges-displayIncidentPoints]
-  Z2i::Curve::IncidentPointsRange r2 = c.getIncidentPointsRange(); 
-  aBoard << r2; 
+  Z2i::Curve::IncidentPointsRange r2 = c.getIncidentPointsRange();
+  aBoard << r2;
   //! [fileGridCurveRanges-displayIncidentPoints]
   aBoard.saveEPS("DisplayIncidentPointsTuto.eps");
 

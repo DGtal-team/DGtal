@@ -90,7 +90,7 @@ namespace DGtal
       return { e, block_coords };
     }
 
-    /// Rejoins a splitted element (see \ref split).
+    /// Rejoins a split element (see \ref split).
     ///
     /// @param e the block coordinate of the element.
     /// @param x the bit coordinate of the element.
@@ -104,7 +104,7 @@ namespace DGtal
       return e;
     }
 
-    /// Rejoins a splitted element (see \ref split).
+    /// Rejoins a split element (see \ref split).
     ///
     /// @param p a pair grouping the block coordinate and the bit
     /// coordinate of the element.
@@ -680,7 +680,7 @@ namespace DGtal
     /**
      *  @brief Inserts a range of element into the set.
      *
-     *  @tparam InputIterator any model of input iterator 
+     *  @tparam InputIterator any model of input iterator
      *  @param[in]  first an iterator pointing on the first element of the range
      *  @param[in]  last an iterator pointing after the last element of the range
      *
@@ -695,7 +695,7 @@ namespace DGtal
     {
       for ( ; first != last; ++first ) insert( *first );
     }
-    
+
     /**
      *  @brief Attempts to build and insert an element into the set.
      *  @param __args  Arguments used to generate an element.
@@ -1074,7 +1074,7 @@ namespace DGtal
   public:
 
     /**
-     * Sets the number of buckets to the number needed to accomodate
+     * Sets the number of buckets to the number needed to accommodate
      * at least count elements without exceeding maximum load factor
      * and rehashes the container, i.e. puts the elements into
      * appropriate buckets considering that total number of buckets

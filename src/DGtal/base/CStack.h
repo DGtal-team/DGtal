@@ -54,7 +54,7 @@ namespace DGtal
     /**
        Description of \b concept '\b CStack' <p>
        @ingroup Concepts
-       @brief Aim: This concept gathers classes that provide 
+       @brief Aim: This concept gathers classes that provide
        a stack interface
 
        # Refinement of copy constructible and assignable
@@ -97,9 +97,9 @@ namespace DGtal
 
       BOOST_CONCEPT_USAGE( CStack )
       {
-        concepts::ConceptUtils::sameType( myV, myX.top() ); 
+        concepts::ConceptUtils::sameType( myV, myX.top() );
         myX.push( myV );
-        myX.pop(); 
+        myX.pop();
 
         // check const methods.
         checkConstConstraints();
@@ -110,12 +110,12 @@ namespace DGtal
         concepts::ConceptUtils::sameType( myB, myX.empty() );
         concepts::ConceptUtils::sameType( myV, myX.top() );
       }
-      // ------------------------- Private Datas --------------------------------
+      // ------------------------- Private Data --------------------------------
     private:
       T myX; // do not require T to be default constructible.
-      Value myV; 
-      Size myS; 
-      bool myB; 
+      Value myV;
+      Size myS;
+      bool myB;
 
     }; // end of concept CStack
   }//namespace concepts

@@ -63,7 +63,7 @@ typedef FreemanChain<int> Contour;
 /**
  * Test exted and retract function on a complex chape
  */
-bool testOneBalancedWordComputer() 
+bool testOneBalancedWordComputer()
 {
   typedef string::const_iterator codeIterator;
   typedef OneBalancedWordComputer< list<char>::iterator, int> OneBalancedWordComputer_list;
@@ -152,9 +152,9 @@ bool CompareToArithmetical()
   TestedType C;
   C.init( it );
   ReferenceType A(it);
-  A.extendFront(); 
+  A.extendFront();
   bool res = true;
-  while ( C.end() != theContour.chain.end() ) 
+  while ( C.end() != theContour.chain.end() )
     {
       bool a = A.extendFront();
       bool c = C.extendFront();
@@ -180,7 +180,7 @@ bool CompareToArithmetical()
       if ( ( C.getA() != A.a() ) || ( C.getB() != A.b() ) ||
            ( C.getMu() != A.mu() ) || ( C.getOmega() != A.omega() ) ||
            ( C.Uf() != A.Uf() ) || ( C.Ul() != A.Ul() ) ||
-           ( C.Lf() != A.Lf() ) || ( C.Ll() != A.Ll() ) 
+           ( C.Lf() != A.Lf() ) || ( C.Ll() != A.Ll() )
          )
         {
           cout << "Arithmetic parameters error\n";
@@ -219,11 +219,11 @@ bool testInGreedySegmentation( )
   combinSegmentation combin_dec( theContour.chain.begin(), theContour.chain.end(), combinDSS() );
   vector<combinDSS> theCombinDSS;
   for ( combinSegmentation::SegmentComputerIterator i = combin_dec.begin();
-       i != combin_dec.end(); ++i ) 
+       i != combin_dec.end(); ++i )
     {
       combinDSS c( *i );
       theCombinDSS.push_back( c );
-    } 
+    }
   bool ok = ( theCombinDSS.size() == 1593 );
   trace.endBlock();
 
@@ -237,7 +237,7 @@ bool testInGreedySegmentation( )
  * is uses ArithmeticDSS.
  *
  * It produces a slightly different decomposition since in a greedy-segmentation,
- * consecutive ArithmeticDSS overlap a single point while OneBalancedWordComputer 
+ * consecutive ArithmeticDSS overlap a single point while OneBalancedWordComputer
  * overlap on a code and thus on two points.
  */
 bool showGreedySegmantation()
@@ -266,10 +266,10 @@ bool showGreedySegmantation()
   p[0] = 31;
   p[1] = 16;
   for ( Decomposition::SegmentComputerIterator i = theDecomposition.begin();
-  i != theDecomposition.end(); ++i ) 
+  i != theDecomposition.end(); ++i )
     {
       combinDSS segment(*i);
-      // set the position of the combinatorilDSS 
+      // set the position of the combinatorilDSS
       segment.setPosition( p );
       // Since both DSS overlap on one code, the start point of the next one is
       // the penultimate point of the current one.
@@ -277,14 +277,14 @@ bool showGreedySegmantation()
 
       // Build an ArithmeticDSS from the OneBalancedWordComputer.
       arithDSS toShow( *segment.pointBegin(), *segment.pointBegin() );
-      for (combinDSS::ConstPointIterator it = segment.pointBegin(), 
+      for (combinDSS::ConstPointIterator it = segment.pointBegin(),
 	     itEnd = segment.pointEnd(); it != itEnd; ++it )
 	toShow.extendFront( *it );
-      
+
       aBoard << SetMode( toShow.className(), "BoundingBox" )
-	     << CustomStyle( toShow.className()+"/BoundingBox", new CustomPenColor( Color::Blue ) ) 
+	     << CustomStyle( toShow.className()+"/BoundingBox", new CustomPenColor( Color::Blue ) )
 	     << toShow; // draw each segment
-    } 
+    }
   aBoard.saveSVG("testCombinDSS-greedy.svg");
   trace.endBlock();
   return 1;
@@ -301,8 +301,8 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testOneBalancedWordComputer()     
-    && CompareToArithmetical() 
+  bool res = testOneBalancedWordComputer()
+    && CompareToArithmetical()
     && testInGreedySegmentation()
     && showGreedySegmantation();
 

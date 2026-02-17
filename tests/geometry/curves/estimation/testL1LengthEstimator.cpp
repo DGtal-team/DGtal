@@ -65,7 +65,7 @@ bool testL1LengthEstimator(std::string &filename)
 {
 
   trace.info() << "Reading GridCurve " << endl;
-  
+
   ifstream instream; // input stream
   instream.open (filename.c_str(), ifstream::in);
 
@@ -76,7 +76,7 @@ bool testL1LengthEstimator(std::string &filename)
   GridCurve<KhalimskySpaceND<2> >::ArrowsRange ra = c.getArrowsRange(); //range
   L1LengthEstimator<  GridCurve<KhalimskySpaceND<2> >::ArrowsRange::ConstIterator > l1length;
   TwoStepLocalLengthEstimator<  GridCurve<KhalimskySpaceND<2> >::ArrowsRange::ConstIterator > locallength(1.0,sqrt(2.0));
-    
+
   l1length.init(1, ra.begin(), ra.end(), c.isClosed());
   trace.info() << "L1 length (h=1) = "<< l1length.eval()<<std::endl;
 
@@ -85,15 +85,15 @@ bool testL1LengthEstimator(std::string &filename)
 
   ////////////////////// Local 2steps
   TwoStepLocalLengthEstimator<  GridCurve<KhalimskySpaceND<2> >::ArrowsRange::ConstIterator > locallength(1.0,sqrt(2.0));
- 
+
   localength.init(1, ra.begin(), ra.end(), c.isClosed());
   trace.info() << "Local length (h=1) = "<< localength.eval()<<std::endl;
 
-    
+
   //////////////////////// MLP
   GridCurve<KhalimskySpaceND<2> >::PointsRange rp = c.getPointsRange(); //range
   MLPLengthEstimator<  GridCurve<KhalimskySpaceND<2> >::PointsRange::ConstIterator > MLPlength;
-    
+
   MLPlength.init(1, rp.begin(), rp.end(), c.isClosed());
   trace.info() << "MLP Length (h=1) = "<< MLPlength.eval()<<std::endl;
 
@@ -102,7 +102,7 @@ bool testL1LengthEstimator(std::string &filename)
 
   //////////////////////// FP
   FPLengthEstimator<  GridCurve<KhalimskySpaceND<2> >::PointsRange::ConstIterator > FPlength;
-    
+
   FPlength.init(1, rp.begin(), rp.end(), c.isClosed());
   trace.info() << "FP Length (h=1) = "<< FPlength.eval()<<std::endl;
 
@@ -111,7 +111,7 @@ bool testL1LengthEstimator(std::string &filename)
 
   //////////////////////// DSS
   DSSLengthEstimator<  GridCurve<KhalimskySpaceND<2> >::PointsRange::ConstIterator > DSSlength;
-    
+
   DSSlength.init(1, rp.begin(), rp.end(), c.isClosed());
   trace.info() << "DSS Length (h=1) = "<< DSSlength.eval()<<std::endl;
 

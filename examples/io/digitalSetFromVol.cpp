@@ -29,9 +29,9 @@
 
 /**
  *   Example of digital set extraction from volumetric file (.vol).
- * 
- * @see @ref moduleIO 
- *  \image html visuDigitalSet3D.png "3D digital set from volumetric file (.vol)" 
+ *
+ * @see @ref moduleIO
+ *  \image html visuDigitalSet3D.png "3D digital set from volumetric file (.vol)"
  *  \example io/digitalSetFromVol.cpp
  */
 

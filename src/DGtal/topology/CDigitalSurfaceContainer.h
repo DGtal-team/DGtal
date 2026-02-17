@@ -59,7 +59,7 @@ Description of \b concept '\b CDigitalSurfaceContainer' <p>
 
 @brief Aim: The digital surface container concept describes a
 minimal set of inner types and methods so as to describe the data
-of digital surfaces. 
+of digital surfaces.
 
 Digital surfaces arise in many different contexts:
 
@@ -87,7 +87,7 @@ data representing the digital surface in common way.
 See @ref dgtal_digsurf_sec3_2
 
 # Refinement of boost::CopyConstructible
-    
+
 # Associated types
 - KSpace: the type of cellular grid space in which lies the digital surface.
 - Surfel: the type of an oriented n-1-cell in this space.
@@ -99,9 +99,9 @@ See @ref dgtal_digsurf_sec3_2
 - \c X : A type that is a model of CDigitalSurfaceContainer
 - \c x : object of type X
 - \c s : object of type Surfel
-    
+
 # Definitions
-    
+
 # Valid expressions and semantics
 
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
@@ -114,16 +114,16 @@ See @ref dgtal_digsurf_sec3_2
 | connectedness test | \e x.connectedness()|       | \c enum \e Connectedness |     | returns either DISCONNECTED, CONNECTED, UNKNOWN depending on the surface. | | |
 | number of surfels | \e x.nbSurfels()|            | \e Size     |                  | returns the number of surfels of this surface. | | |
 | empty container test | \e x.empty()|             | \e bool     |                  | returns \c true iff the digital surface contains no surfel. | | |
-    
+
 # Invariants
-    
+
 # Models
 - DigitalSetBoundary, SetOfSurfels, ImplicitDigitalSurface, LightImplicitDigitalSurface, ExplicitDigitalSurface, LightExplicitDigitalSurface
 
 # Notes
 @tparam T the type that should be a model of CDigitalSurfaceContainer.
    */
-  template <typename T> 
+  template <typename T>
   struct CDigitalSurfaceContainer : boost::CopyConstructible<T>
   {
     // ----------------------- Concept checks ------------------------------
@@ -164,7 +164,7 @@ See @ref dgtal_digsurf_sec3_2
       // x.empty() const, returns bool
       ConceptUtils::sameType( myBool, myX.empty() );
     }
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     T myX; // do not require T to be default constructible.
     KSpace myKSpace;
@@ -176,9 +176,9 @@ See @ref dgtal_digsurf_sec3_2
     Size mySize;
     // ------------------------- Internals ------------------------------------
   private:
-    
+
   }; // end of concept CDigitalSurfaceContainer
-  
+
 } // namespace concepts
 } // namespace DGtal
 

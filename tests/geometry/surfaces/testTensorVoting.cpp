@@ -69,7 +69,7 @@ bool testLocalEstimatorFromFunctorAdapter()
   trace.beginBlock ( "Testing init ..." );
 
   using namespace Z3i;
- 
+
   typedef GaussDigitizer<Space,Shape> Gauss;
 
   typedef LightImplicitDigitalSurface<KSpace,Gauss> SurfaceContainer;
@@ -179,9 +179,9 @@ bool testCube()
 
   CanonicSCellEmbedder<KSpace> embedder(surface.container().space());
   FunctorVoting estimator(embedder,1);
-  
+
   LpMetric<Z3i::Space> l2(2.0);
-  
+
   ConvFunctor convFunc(1.0);
   Reporter reporter(surface, l2, estimator , convFunc);
   reporter.attach(surface);

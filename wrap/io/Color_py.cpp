@@ -179,7 +179,7 @@ void init_Color(py::module & m) {
             throw py::type_error("Format mismatch (Python: " + info.format + " C++: " + py::format_descriptor<TTValue>::format() + ")");
 
         if(info.shape[0] != 4)
-            throw py::type_error("Shape missmatch (Python: " + std::to_string(info.shape[0]) + " C++: " + std::to_string(4) + ")");
+            throw py::type_error("Shape mismatch (Python: " + std::to_string(info.shape[0]) + " C++: " + std::to_string(4) + ")");
         TTValue *p = static_cast<TTValue*>(info.ptr);
         return TT(*p, *(p+1), *(p+2), *(p+3));
     }));

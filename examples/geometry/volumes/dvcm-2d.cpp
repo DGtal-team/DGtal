@@ -86,9 +86,9 @@ int main( int /* argc */, char** /* argv */ )
   string inputSDP = examplesPath + "samples/flower-30-8-3.sdp";
   // string inputSDP = examplesPath + "samples/ellipse-20-7-0.4.sdp";
   // string inputSDP = examplesPath + "samples/accflower-20-5-5-0.1.sdp";
-  trace.info() << "Reading input 2d discrete points file: " << inputSDP; 
-  std::vector<Point> pts = PointListReader<Point>::getPointsFromFile(inputSDP, vPos); 
-  trace.info() << " [done] " << std::endl ; 
+  trace.info() << "Reading input 2d discrete points file: " << inputSDP;
+  std::vector<Point> pts = PointListReader<Point>::getPointsFromFile(inputSDP, vPos);
+  trace.info() << " [done] " << std::endl ;
   const double R = 20;
   trace.info() << "Big radius   R = " << R << std::endl;
   const double r = 5;
@@ -120,15 +120,15 @@ int main( int /* argc */, char** /* argv */ )
       vcm_r = vcm.measure( chi, *it );
       LinearAlgebraTool::getEigenDecomposition( vcm_r, evec, eval );
       double feature = eval[ 0 ] / ( eval[ 0 ] +  eval[ 1 ] );
-      board << CustomStyle( it->className(), 
+      board << CustomStyle( it->className(),
                             new CustomColors( Color::Black,  colormap( feature > T ? T : feature ) ) )
             << *it;
       // Display normal
       RealVector normal = evec.column( 1 );
-      RealPoint p( (*it)[ 0 ], (*it)[ 1 ] ); 
+      RealPoint p( (*it)[ 0 ], (*it)[ 1 ] );
       Display2DFactory::draw( board, size*normal, p );
       Display2DFactory::draw( board, -size*normal, p );
-    }      
+    }
   board.saveSVG("dvcm-hat-r.svg");
 
   return 0;

@@ -11,7 +11,7 @@
  * This file is part of the DGtal library.
  */
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  * Do not forget to add an entry in src/DGtal/base/Config.h.in !
  */
@@ -21,7 +21,7 @@ namespace DGtal {
 @page packageArithmeticConcepts Arithmetic Concepts and Models
 @writers Jacques-Olivier Lachaud
 
- @dot   
+ @dot
 digraph GARITHMETIC {
     rankdir= BT
 
@@ -60,7 +60,7 @@ digraph GARITHMETIC {
                  boost_Sequence [ label="boost::Sequence" URL="\ref boost::Sequence" ];
         }
     }
-  
+
     subgraph cluster_concepts {
         style=filled;
         color=lightgrey;
@@ -76,7 +76,7 @@ digraph GARITHMETIC {
     CPositiveIrreducibleFraction -> boost_Assignable;
     CPositiveIrreducibleFraction -> CInteger [label="use",style=dashed];
     CPositiveIrreducibleFraction -> CSignedNumber [label="use",style=dashed];
-  
+
     subgraph cluster_models {
         style=filled;
         color="#ccffcc";

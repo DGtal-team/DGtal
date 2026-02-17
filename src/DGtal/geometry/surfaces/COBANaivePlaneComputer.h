@@ -113,7 +113,7 @@ namespace DGtal
    typedef SpaceND<3,int> Z3;
    typedef COBANaivePlaneComputer< Z3, int64_t > NaivePlaneComputer;
    NaivePlaneComputer plane;
-   plane.init( 2, 100, 1, 1 ); // axis is z, diameter is 100, width is 1/1 => naive 
+   plane.init( 2, 100, 1, 1 ); // axis is z, diameter is 100, width is 1/1 => naive
    plane.extend( Point( 10, 0, 0 ) ); // return 'true'
    plane.extend( Point( 0, 8, 0 ) );  // return 'true'
    plane.extend( Point( 0, 0, 6 ) );  // return 'true'
@@ -124,7 +124,7 @@ namespace DGtal
    * Model of boost::DefaultConstructible, boost::CopyConstructible,
    * boost::Assignable, boost::ForwardContainer, concepts::CAdditivePrimitiveComputer, concepts::CPointPredicate.
    */
-  template < typename TSpace, 
+  template < typename TSpace,
              typename TInternalInteger >
   class COBANaivePlaneComputer
   {
@@ -235,8 +235,8 @@ namespace DGtal
      * the plane is defined as the rational number \a widthNumerator /
      * \a widthDenominator (default is 1/1, i.e. naive plane).
      */
-    void init( Dimension axis, InternalInteger diameter, 
-               InternalInteger widthNumerator = NumberTraits< InternalInteger >::ONE, 
+    void init( Dimension axis, InternalInteger diameter,
+               InternalInteger widthNumerator = NumberTraits< InternalInteger >::ONE,
                InternalInteger widthDenominator = NumberTraits< InternalInteger >::ONE );
 
     /**
@@ -375,7 +375,7 @@ namespace DGtal
     /**
        @return the current primitive recognized by this computer,
        which is a ParallelStrip of axis width smaller than the one
-       specified at instantiation. 
+       specified at instantiation.
 
        @note The returned primitive has the form \f$\mu \le \vec{N}
        \cdot \vec{X} \le \mu + \epsilon\f$. It is guaranteed that its axis
@@ -391,7 +391,7 @@ namespace DGtal
      * @tparam Vector3D any type T such that T.operator[](int i)
      * returns a reference to a double. i ranges in 0,1,2.
      *
-     * @param [in,out] normal  the current normal vector 
+     * @param [in,out] normal  the current normal vector
      */
     template <typename Vector3D>
     void getNormal( Vector3D & normal ) const;
@@ -405,7 +405,7 @@ namespace DGtal
      * @tparam Vector3D any type T such that T.operator[](int i)
      * returns a reference to a double. i ranges in 0,1,2.
      *
-     * @param [in,out] normal (updates) the current unit normal vector 
+     * @param [in,out] normal (updates) the current unit normal vector
      */
     template <typename Vector3D>
     void getUnitNormal( Vector3D & normal ) const;
@@ -450,12 +450,12 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     Dimension myAxis;          /**< the main axis used in all subsequent computations. */
     InternalInteger myG;       /**< the grid step used in all subsequent computations. */
     InternalPoint2 myWidth;    /**< the plane width as a positive rational number myWidth[0]/myWidth[1] */
-    PointSet myPointSet;       /**< the set of points within the plane. */ 
+    PointSet myPointSet;       /**< the set of points within the plane. */
     State myState;             /**< the current state that defines the plane being recognized. */
     InternalInteger myCst1;    /**<  ( (int) ceil( get_si( myG ) * myWidth ) + 1 ). */
     InternalInteger myCst2;    /**<  ( (int) floor( get_si( myG ) * myWidth ) - 1 ). */

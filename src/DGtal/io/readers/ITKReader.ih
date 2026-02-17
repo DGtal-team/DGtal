@@ -55,9 +55,9 @@ namespace DGtal {
   const std::string & filename, bool shiftDomainUsingOrigin )
   {
     typename DGtal::ITKIOTrait<typename I::Value>::DefaultReadFunctor def;
-    return DGtal::ITKReader<I>::importITK(filename,def , shiftDomainUsingOrigin); 
+    return DGtal::ITKReader<I>::importITK(filename,def , shiftDomainUsingOrigin);
   }
-  
+
   template <typename I>
   template <typename TFunctor>
   I ITKReader<I>::importITK(
@@ -229,11 +229,11 @@ namespace DGtal {
       const functors::Identity identityFunctor{};
       const AdaptedImage adapted( dgtal_itk_image, domain, identityFunctor,
 				 aFunctor );
-      
+
       Image image( domain );
       std::copy( adapted.constRange().begin(), adapted.constRange().end(),
 		 image.range().outputIterator() );
-     
+
       return image;
   }
 
@@ -249,7 +249,7 @@ namespace DGtal {
 			      const TFunctor & aFunctor, bool shiftDomainUsingOrigin )
   {
     typedef ImageContainerByITKImage<Domain, Value> Image;
-      
+
     typedef ImageContainerByITKImage<Domain, OrigValue> TypeDGtalImage;
     TypeDGtalImage dgtal_itk_image =
       ITKReader<I>::readDGtalITKImage<Domain, OrigValue>( filename, shiftDomainUsingOrigin );
@@ -262,7 +262,7 @@ namespace DGtal {
     const functors::Identity identityFunctor{};
     const AdaptedImage adapted( dgtal_itk_image, domain, identityFunctor,
 			       	aFunctor );
-      
+
     Image image( domain );
     std::copy( adapted.constRange().begin(), adapted.constRange().end(),
 	       image.range().outputIterator() );
@@ -270,11 +270,11 @@ namespace DGtal {
     //copy ITKImage spatial parameters
     image.getITKImagePointer()->SetOrigin(
       dgtal_itk_image.getITKImagePointer()->GetOrigin() );
-    image.getITKImagePointer()->SetSpacing( 
+    image.getITKImagePointer()->SetSpacing(
       dgtal_itk_image.getITKImagePointer()->GetSpacing() );
     image.getITKImagePointer()->SetDirection(
       dgtal_itk_image.getITKImagePointer()->GetDirection() );
-      
+
     return image;
   }
 

@@ -74,4 +74,3 @@ int main( int argc, char** argv )
   //! [fraction-from-quotients]
   return 0;
 }
-

@@ -166,7 +166,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
   Dimension total = 0;
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   Dimension recount = 0;
 #endif
 
@@ -182,7 +182,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
     {
       if( total != 0 )
         {
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
           bool hasJumped = core_eval( it, innerSum, outerSum, true, lastInnerSpel, lastOuterSpel, lastInnerSum, lastOuterSum );
           recount = ( hasJumped ) ? recount + 1 : recount;
 #else
@@ -200,7 +200,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
       ++total;
     }
 
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   std::cout << "#total cells = " << total << std::endl;
   std::cout << "#recount = " << recount << std::endl;
 #endif
@@ -219,7 +219,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
   Dimension total = 0;
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   Dimension recount = 0;
 #endif
 
@@ -236,7 +236,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
     {
       if( total != 0 )
         {
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
           bool hasJumped = core_eval( it, innerSum, outerSum, true, lastInnerSpel, lastOuterSpel, lastInnerSum, lastOuterSum );
           recount = ( hasJumped ) ? recount + 1 : recount;
 #else
@@ -255,7 +255,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
       ++total;
     }
 
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   std::cout << "#total cells = " << total << std::endl;
   std::cout << "#recount = " << recount << std::endl;
 #endif
@@ -314,7 +314,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
   Dimension total = 0;
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   Dimension recount = 0;
 #endif
 
@@ -330,7 +330,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
     {
       if( total != 0 )
         {
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
           bool hasJumped = core_evalCovarianceMatrix( it, innerCovarianceMatrix, outerCovarianceMatrix, true, lastInnerSpel, lastOuterSpel, lastInnerMoments, lastOuterMoments );
           recount = ( hasJumped ) ? recount + 1 : recount;
 #else
@@ -348,7 +348,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
       ++total;
     }
 
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   std::cout << "#total cells = " << total << std::endl;
   std::cout << "#recount = " << recount << std::endl;
 #endif
@@ -367,7 +367,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
   Dimension total = 0;
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   Dimension recount = 0;
 #endif
 
@@ -384,7 +384,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
     {
       if( total != 0 )
         {
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
           bool hasJumped = core_evalCovarianceMatrix( it, innerCovarianceMatrix, outerCovarianceMatrix, true, lastInnerSpel, lastOuterSpel, lastInnerMoments, lastOuterMoments );
           recount = ( hasJumped ) ? recount + 1 : recount;
 #else
@@ -403,7 +403,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
       ++total;
     }
 
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   std::cout << "#total cells = " << total << std::endl;
   std::cout << "#recount = " << recount << std::endl;
 #endif
@@ -472,7 +472,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
 }
 
 #ifndef _MSC_VER
-// For Visual Studio, to be defined as a static const, it has to be intialized into the header file
+// For Visual Studio, to be defined as a static const, it has to be initialized into the header file
 template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel, DGtal::Dimension dimension >
 const int
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, dimension >::nbMoments = 6;
@@ -678,7 +678,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
   Dimension total = 0;
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   Dimension recount = 0;
 #endif
 
@@ -694,7 +694,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
     {
       if( total != 0 )
         {
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
           bool hasJumped = core_eval( it, innerSum, outerSum, true, lastInnerSpel, lastOuterSpel, lastInnerSum, lastOuterSum );
           recount = ( hasJumped ) ? recount + 1 : recount;
 #else
@@ -712,7 +712,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
       ++total;
     }
 
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   std::cout << "#total cells = " << total << std::endl;
   std::cout << "#recount = " << recount << std::endl;
 #endif
@@ -731,7 +731,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
   Dimension total = 0;
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   Dimension recount = 0;
 #endif
 
@@ -748,7 +748,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
     {
       if( total != 0 )
         {
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
           bool hasJumped = core_eval( it, innerSum, outerSum, true, lastInnerSpel, lastOuterSpel, lastInnerSum, lastOuterSum );
           recount = ( hasJumped ) ? recount + 1 : recount;
 #else
@@ -767,7 +767,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
       ++total;
     }
 
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   std::cout << "#total cells = " << total << std::endl;
   std::cout << "#recount = " << recount << std::endl;
 #endif
@@ -826,7 +826,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
   Dimension total = 0;
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   Dimension recount = 0;
 #endif
 
@@ -842,7 +842,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
     {
       if( total != 0 )
         {
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
           bool hasJumped = core_evalCovarianceMatrix( it, innerCovarianceMatrix, outerCovarianceMatrix, true, lastInnerSpel, lastOuterSpel, lastInnerMoments, lastOuterMoments );
           recount = ( hasJumped ) ? recount + 1 : recount;
 #else
@@ -860,7 +860,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
       ++total;
     }
 
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   std::cout << "#total cells = " << total << std::endl;
   std::cout << "#recount = " << recount << std::endl;
 #endif
@@ -879,7 +879,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
   Dimension total = 0;
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   Dimension recount = 0;
 #endif
 
@@ -896,7 +896,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
     {
       if( total != 0 )
         {
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
           bool hasJumped = core_evalCovarianceMatrix( it, innerCovarianceMatrix, outerCovarianceMatrix, true, lastInnerSpel, lastOuterSpel, lastInnerMoments, lastOuterMoments );
           recount = ( hasJumped ) ? recount + 1 : recount;
 #else
@@ -915,7 +915,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
       ++total;
     }
 
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   std::cout << "#total cells = " << total << std::endl;
   std::cout << "#recount = " << recount << std::endl;
 #endif
@@ -977,7 +977,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
 }
 
 #ifndef _MSC_VER
-// For Visual Studio, to be defined as a static const, it has to be intialized into the header file
+// For Visual Studio, to be defined as a static const, it has to be initialized into the header file
 template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
 const int
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2 >::nbMoments = 6;
@@ -1024,7 +1024,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
 
   using KPS = typename KSpace::PreCellularGridSpace;
 
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   Dimension recount = false;
 #endif
 
@@ -1084,7 +1084,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
             if( x2y2 != 4 && x2y2 != 8 ) /// Previous and current cells aren't adjacent. Compute on the full kernel
               {
                 useLastResults = false;
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
                 recount = true;
 #endif
               }
@@ -1162,7 +1162,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
           {
             m = lastInnerSum;
 
-            /// Part to substract from previous result.
+            /// Part to subtract from previous result.
             for( KernelConstIterator itm = (*myMasks)[ offset ].first, itend = (*myMasks)[ offset ].second; itm != itend; ++itm )
               {
                 auto preShiftedSpel = KPS::sSpel( *itm );
@@ -1209,7 +1209,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
       }
   }
 
-  /// Outter cell
+  /// Outer cell
   {
     DGtal::Dimension kDim = myKSpace.sOrthDir( *it );
     currentOuterSpel = myKSpace.sIndirectIncident( *it, kDim );
@@ -1237,7 +1237,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
       }
     else
       {
-        /// Part to substract from previous result.
+        /// Part to subtract from previous result.
         for( KernelConstIterator itm = (*myMasks)[ offset ].first, itend = (*myMasks)[ offset ].second; itm != itend; ++itm )
           {
             auto preShiftedSpel = KPS::sSpel( *itm );
@@ -1288,7 +1288,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   lastInnerSpel = currentInnerSpel;
   lastOuterSpel = currentOuterSpel;
 
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   return recount;
 #else
   return false;
@@ -1313,7 +1313,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
 
   using KPS = typename KSpace::PreCellularGridSpace;
 
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   Dimension recount = false;
 #endif
 
@@ -1374,7 +1374,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
             if( x2y2 != 4 && x2y2 != 8 ) /// Previous and current cells aren't adjacent. Compute on the full kernel
               {
                 useLastResults = false;
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
                 recount = true;
 #endif
               }
@@ -1451,7 +1451,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
           {
             memcpy( m, lastInnerMoments, nbMoments * sizeof( Quantity ));
 
-            /// Part to substract from previous result.
+            /// Part to subtract from previous result.
             for( KernelConstIterator itm = (*myMasks)[ offset ].first, itend = (*myMasks)[ offset ].second; itm != itend; ++itm )
               {
                 auto preShiftedSpel = KPS::sSpel( *itm );
@@ -1498,7 +1498,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
       }
   }
 
-  /// Outter cell
+  /// Outer cell
   {
     DGtal::Dimension kDim = myKSpace.sOrthDir( *it );
     currentOuterSpel = myKSpace.sIndirectIncident( *it, kDim );
@@ -1526,7 +1526,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
       }
     else
       {
-        /// Part to substract from previous result.
+        /// Part to subtract from previous result.
         for( KernelConstIterator itm = (*myMasks)[ offset ].first, itend = (*myMasks)[ offset ].second; itm != itend; ++itm )
           {
             auto preShiftedSpel = KPS::sSpel( *itm );
@@ -1576,7 +1576,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   lastInnerSpel = currentInnerSpel;
   lastOuterSpel = currentOuterSpel;
 
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   return recount;
 #else
   return false;
@@ -1712,7 +1712,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
   Dimension total = 0;
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   Dimension recount = 0;
 #endif
 
@@ -1728,7 +1728,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
     {
       if( total != 0 )
         {
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
           bool hasJumped = core_eval( it, innerSum, outerSum, true, lastInnerSpel, lastOuterSpel, lastInnerSum, lastOuterSum );
           recount = ( hasJumped ) ? recount + 1 : recount;
 #else
@@ -1746,7 +1746,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
       ++total;
     }
 
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   std::cout << "#total cells = " << total << std::endl;
   std::cout << "#recount = " << recount << std::endl;
 #endif
@@ -1765,7 +1765,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
   Dimension total = 0;
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   Dimension recount = 0;
 #endif
 
@@ -1782,7 +1782,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
     {
       if( total != 0 )
         {
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
           bool hasJumped = core_eval( it, innerSum, outerSum, true, lastInnerSpel, lastOuterSpel, lastInnerSum, lastOuterSum );
           recount = ( hasJumped ) ? recount + 1 : recount;
 #else
@@ -1801,7 +1801,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
       ++total;
     }
 
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   std::cout << "#total cells = " << total << std::endl;
   std::cout << "#recount = " << recount << std::endl;
 #endif
@@ -1858,7 +1858,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
   Dimension total = 0;
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   Dimension recount = 0;
 #endif
 
@@ -1874,7 +1874,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
     {
       if( total != 0 )
         {
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
           bool hasJumped = core_evalCovarianceMatrix( it, innerCovarianceMatrix, outerCovarianceMatrix, true, lastInnerSpel, lastOuterSpel, lastInnerMoments, lastOuterMoments );
           recount = ( hasJumped ) ? recount + 1 : recount;
 #else
@@ -1892,7 +1892,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
       ++total;
     }
 
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   std::cout << "#total cells = " << total << std::endl;
   std::cout << "#recount = " << recount << std::endl;
 #endif
@@ -1911,7 +1911,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
   ASSERT ( isInitFullMasks == true || isInitKernelAndMasks == true );
 
   Dimension total = 0;
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   Dimension recount = 0;
 #endif
 
@@ -1928,7 +1928,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
     {
       if( total != 0 )
         {
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
           bool hasJumped = core_evalCovarianceMatrix( it, innerCovarianceMatrix, outerCovarianceMatrix, true, lastInnerSpel, lastOuterSpel, lastInnerMoments, lastOuterMoments );
           recount = ( hasJumped ) ? recount + 1 : recount;
 #else
@@ -1947,7 +1947,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
       ++total;
     }
 
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   std::cout << "#total cells = " << total << std::endl;
   std::cout << "#recount = " << recount << std::endl;
 #endif
@@ -2028,7 +2028,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
 }
 
 #ifndef _MSC_VER
-// For Visual Studio, to be defined as a static const, it has to be intialized into the header file
+// For Visual Studio, to be defined as a static const, it has to be initialized into the header file
 template< typename Functor, typename KernelFunctor, typename KSpace, typename DigitalKernel >
 const int
 DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3 >::nbMoments = 10;
@@ -2075,7 +2075,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
 
   using KPS = typename KSpace::PreCellularGridSpace;
 
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   Dimension recount = false;
 #endif
 
@@ -2137,7 +2137,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
             if( x2y2z2 != 4 && x2y2z2 != 8 && !( x2 == 4 && y2 == 4 && z2 == 4 )) /// Previous and current cells aren't adjacent. Compute on the full kernel
               {
                 useLastResults = false;
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
                 recount = true;
 #endif
               }
@@ -2216,7 +2216,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
           {
             m = lastInnerSum;
 
-            /// Part to substract from previous result.
+            /// Part to subtract from previous result.
             for( KernelConstIterator itm = (*myMasks)[ offset ].first, itend = (*myMasks)[ offset ].second; itm != itend; ++itm )
               {
                 auto preShiftedSpel = KPS::sSpel( *itm );
@@ -2265,7 +2265,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
       }
   }
 
-  /// Outter cell
+  /// Outer cell
   {
     DGtal::Dimension kDim = myKSpace.sOrthDir( *it );
     currentOuterSpel = myKSpace.sIndirectIncident( *it, kDim );
@@ -2295,7 +2295,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
       }
     else
       {
-        /// Part to substract from previous result.
+        /// Part to subtract from previous result.
         for( KernelConstIterator itm = (*myMasks)[ offset ].first, itend = (*myMasks)[ offset ].second; itm != itend; ++itm )
           {
             auto preShiftedSpel = KPS::sSpel( *itm );
@@ -2349,7 +2349,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
   lastInnerSpel = currentInnerSpel;
   lastOuterSpel = currentOuterSpel;
 
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   return recount;
 #else
   return false;
@@ -2374,7 +2374,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
 
   using KPS = typename KSpace::PreCellularGridSpace;
 
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   Dimension recount = false;
 #endif
 
@@ -2437,7 +2437,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
             if( x2y2z2 != 4 && x2y2z2 != 8 && !( x2 == 4 && y2 == 4 && z2 == 4 )) /// Previous and current cells aren't adjacent. Compute on the full kernel
               {
                 useLastResults = false;
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
                 recount = true;
 #endif
               }
@@ -2516,7 +2516,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
           {
             memcpy( m, lastInnerMoments, nbMoments * sizeof( Quantity ));
 
-            /// Part to substract from previous result.
+            /// Part to subtract from previous result.
             for( KernelConstIterator itm = (*myMasks)[ offset ].first, itend = (*myMasks)[ offset ].second; itm != itend; ++itm )
               {
                 auto preShiftedSpel = KPS::sSpel( *itm );
@@ -2565,7 +2565,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
       }
   }
 
-  /// Outter cell
+  /// Outer cell
   {
     DGtal::Dimension kDim = myKSpace.sOrthDir( *it );
     currentOuterSpel = myKSpace.sIndirectIncident( *it, kDim );
@@ -2595,7 +2595,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
       }
     else
       {
-        /// Part to substract from previous result.
+        /// Part to subtract from previous result.
         for( KernelConstIterator itm = (*myMasks)[ offset ].first, itend = (*myMasks)[ offset ].second; itm != itend; ++itm )
           {
             auto preShiftedSpel = KPS::sSpel( *itm );
@@ -2648,7 +2648,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
   lastInnerSpel = currentInnerSpel;
   lastOuterSpel = currentOuterSpel;
 
-#ifdef DEBUG_VERBOSE
+#ifdef DGTAL_DEBUG_VERBOSE
   return recount;
 #else
   return false;

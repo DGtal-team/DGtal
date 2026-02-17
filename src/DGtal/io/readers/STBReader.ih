@@ -54,17 +54,17 @@ DGtal::STBReader<TImageContainer, TFunctor>::import(const std::string & filename
 {
   int x,y,n;
   unsigned char *data = stbi_load(filename.c_str(), &x, &y, &n, 0);
-  
+
   typename TImageContainer::Point firstPoint(0,0);
   typename TImageContainer::Point lastPoint(x-1,y-1);
-  
+
   typename TImageContainer::Domain domain(firstPoint,lastPoint);
   TImageContainer image(domain);
 
 #ifdef VERBOSE
   trace.info()<<"File size= "<<x<<"x"<<y<<" nbChannels= "<< n<<std::endl;
 #endif
-  
+
   Color col;
   for(auto j=0; j < y; ++j)
     for(auto i=0; i < x; ++i)
@@ -80,15 +80,13 @@ DGtal::STBReader<TImageContainer, TFunctor>::import(const std::string & filename
             col.setRGBi(data[3*id],data[3*id+1],data[3*id+2],255);
           else
             col.setRGBi(data[4*id],data[4*id+1],data[4*id+2],data[4*id+3]);
-      
+
       image.setValue(typename TImageContainer::Point(i,j), aFunctor(col) );
     }
-  
+
   stbi_image_free(data);
   return image;
 }
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

@@ -186,7 +186,7 @@ void def_buffer_bridge(
                     const std::string &order) {
             return constructor_from_buffer<TT>(buf, lower_bound_ijk, order);
         }),
-R"(Construct ImageContainer from an appropiate python buffer and a lower bound.
+R"(Construct ImageContainer from an appropriate python buffer and a lower bound.
 Parameters
 ----------
 buffer: python buffer
@@ -367,7 +367,7 @@ shift: Point
 R"(Set a value on an Image at a position specified by [point].
 Pre: The point must be in the image domain.
 
-Note, you can also use python accesors with points to get/set the points.
+Note, you can also use python accessors with points to get/set the points.
 
 Parameters
 ----------
@@ -384,7 +384,7 @@ value: ImageContainer::Value
 R"(Get a value on an Image at a position specified by [point].
 Pre: The point must be in the image domain.
 
-Note, you can also use python accesors with points to get/set the points.
+Note, you can also use python accessors with points to get/set the points.
 
 Parameters
 ----------
@@ -570,7 +570,7 @@ void def_buffer_bridge_for_PointVector(
                     const std::string &order) {
         return constructor_from_buffer_point_container<TT, TTComponent>(buf, lower_bound_ijk, order);
         }),
-R"(Construct ImageContainer from an appropiate python buffer and a lower bound.
+R"(Construct ImageContainer from an appropriate python buffer and a lower bound.
 Parameters
 ----------
 buffer: python buffer
@@ -729,7 +729,7 @@ void def_buffer_bridge_for_Color(
                     const std::string &order) {
         return constructor_from_buffer_color_container<TT>(buf, lower_bound_ijk, order);
         }),
-R"(Construct ImageContainer from an appropiate python buffer and a lower bound.
+R"(Construct ImageContainer from an appropriate python buffer and a lower bound.
 Parameters
 ----------
 buffer: python buffer

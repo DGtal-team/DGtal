@@ -75,31 +75,31 @@ namespace DGtal {
     typedef typename TSpace::RealVector RealVector;
     /// Type of 3d real point
     typedef typename TSpace::Point Point;
-    
+
     // ----------------------- Interface --------------------------------------
   public:
     //! Default constructor.
     LambdaMST2DEstimator ( );
-    
+
     /**
      * Initialization.
      * @param itb begin iterator
      * @param ite end iterator
      */
     void init ( ConstIterator itb, ConstIterator ite );
-    
+
     /**
      * Attach tangential cover computer.
      * @param SegmentComputer - DSS segmentation algorithm
      */
     void attach ( Alias<TSegmentation> SegmentComputer );
-    
+
     /**
      * @param p a point of the underlying curve
      * @return tangent direction
      */
     RealVector eval ( const Point & p );
-    
+
     /**
      * @tparam OutputIterator writable iterator.
      * More efficient way to compute tangent directions for all points of a curve.
@@ -109,10 +109,10 @@ namespace DGtal {
      */
     template <typename OutputIterator>
     OutputIterator eval ( ConstIterator itb, ConstIterator ite, OutputIterator result );
-    
+
     // ----------------------- Standard services ------------------------------
   public:
-    
+
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
@@ -120,20 +120,20 @@ namespace DGtal {
     bool isValid ( ) const;
     // ------------------------- Internals ------------------------------------
   protected:
-    
+
     /**
      * @brief Accumulate partial results obtained for each point.
-     * 
+     *
      * @tparam OutputIterator writable iterator.
      * @param outValues partial results for each point
      * @param result writable iterator over a container which stores estimated tangent directions.
      */
     template <typename OutputIterator>
     void accumulate ( std::vector < Value > & outValues, OutputIterator & result );
-    
-    // ------------------------- Private Datas --------------------------------
+
+    // ------------------------- Private Data --------------------------------
   private:
-    
+
     /**
      * Iterator which corresponds to the beginning of a valid range - [myBegin, myEnd)
      */
@@ -152,11 +152,11 @@ namespace DGtal {
      * Pointer to a curve segmentation algorithm.
      */
     TSegmentation * dssSegments;
-    
+
   }; // end of class LambdaMST2DEstimator
-  
+
   //-------------------------------------------------------------------------------------------
-  
+
   // Template class LambdaMST2D
   /**
    * \brief Aim: Simplify creation of Lambda MST tangent estimator.
@@ -164,14 +164,14 @@ namespace DGtal {
    * @tparam LambdaFunction Lambda functor @see FunctorsLambdaMST.h
    */
   template < typename DSSSegmentationComputer, typename LambdaFunction = functors::Lambda64Function >
-  class LambdaMST2D: 
+  class LambdaMST2D:
   public LambdaMST2DEstimator < Z2i::Space, DSSSegmentationComputer,
     TangentFromDSS2DFunctor < typename DSSSegmentationComputer::SegmentComputer, LambdaFunction > >
     {
       typedef LambdaMST2DEstimator < Z2i::Space, DSSSegmentationComputer,
       TangentFromDSS2DFunctor < typename DSSSegmentationComputer::SegmentComputer, LambdaFunction> > Super;
-      
-    public: 
+
+    public:
       /**
        * Default Constructor.
        */

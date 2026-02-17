@@ -47,7 +47,7 @@ using namespace DGtal::concepts;
 /**
  *
  * This file tests the adaptation of a STL map to a vertex map.
- * 
+ *
  */
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -65,7 +65,7 @@ bool testMapToVertexMap()
   BOOST_CONCEPT_ASSERT((CVertexMap<VertexMap>));
   myMap.setValue(Point(1,1), 10);
   myMap.setValue(Point(2,3), 2);
-  
+
   return (myMap(Point(1,1)) == 10 && myMap(Point(2,3)) == 2);
 }
 

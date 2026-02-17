@@ -63,7 +63,7 @@ namespace DGtal
     /// Description of template class 'AffineGeometryPointOperations' <p>
     /// \brief Aim: Internal class used by AffineGeometry to
     /// differentiate operations on lattice points and operations on
-    /// points with floating-point coordinates. 
+    /// points with floating-point coordinates.
     template < DGtal::Dimension dim,
                typename TEuclideanRing,
                typename TContainer=std::array<TEuclideanRing,dim> >
@@ -74,13 +74,13 @@ namespace DGtal
       typedef PointVector< dim, TEuclideanRing, TContainer > Point;
       typedef typename Point::Coordinate Scalar;
       /// In the generic class, the type scalar should be an integral type.
-      typedef Scalar Integer; 
+      typedef Scalar Integer;
 
       // ----------------------- internal services --------------------------
     private:
       /// @name static internal services
       /// @{
-      
+
       /// Generic method to normalize a vector.
       /// By default, assume it is an integral type.
       template <typename TInteger >
@@ -95,7 +95,7 @@ namespace DGtal
         for ( DGtal::Dimension k = i; k < Point::dimension; k++ )
           w[ k ] /= g;
       }
-      
+
       /// Specialized version to cast points to other point type.
       template <typename TOtherPoint>
       static
@@ -104,8 +104,8 @@ namespace DGtal
         return IntegerConverter< Point::dimension, Scalar >::cast( other );
       }
     }; // end of class AffineGeometryPointOperations
-    
-    
+
+
     /// Description of template class 'AffineGeometryPointOperations'
     /// <p> \brief Aim: Internal class used by AffineGeometry to
     /// differentiate operations on lattice points and operations on
@@ -184,8 +184,8 @@ namespace DGtal
         return result;
       }
     }; // end of class AffineGeometryPointOperations
-    
-    
+
+
 
     /////////////////////////////////////////////////////////////////////////////
     // template class AffineGeometryScalarOperations
@@ -206,8 +206,8 @@ namespace DGtal
 
       typedef TScalar Scalar;
       /// In the generic class, the type scalar should be an integral type.
-      typedef Scalar Integer; 
-      
+      typedef Scalar Integer;
+
       // ----------------------- internal services --------------------------
     private:
       /// @name static internal services
@@ -249,7 +249,7 @@ namespace DGtal
         const Integer g = gcd( a, b );
         return (a / g) * b;
       }
-      
+
       /// @param[in] x any integer number
       ///
       /// @return 'true' iff x is non zero.
@@ -271,7 +271,7 @@ namespace DGtal
     {
       template <typename T> friend struct DGtal::AffineGeometry;
       template <typename T> friend struct DGtal::AffineBasis;
-    
+
       /// @param[in] a any number
       /// @param[in] b any number
       ///
@@ -299,7 +299,7 @@ namespace DGtal
         return 1.0;
       }
 
-      
+
       /// @param[in] x any  number
       ///
       /// @param[in] tol the accepted tolerance value below which the
@@ -324,7 +324,7 @@ namespace DGtal
     {
       template <typename T> friend struct DGtal::AffineGeometry;
       template <typename T> friend struct DGtal::AffineBasis;
-    
+
       /// @param[in] a any number
       /// @param[in] b any number
       ///
@@ -352,7 +352,7 @@ namespace DGtal
         return 1.0f;
       }
 
-      
+
       /// @param[in] x any  number
       ///
       /// @param[in] tol the accepted tolerance value below which the
@@ -365,46 +365,46 @@ namespace DGtal
         const double dx = double(x);
         return (dx > tol) || ( dx < -tol );
       }
-      
+
     }; // end of class AffineGeometryScalarOperations< float >
 
     template < typename TScalar, bool Robust >
     struct AffineGeometryInternalNumber {
-      typedef TScalar type; 
+      typedef TScalar type;
     };
     template <>
     struct AffineGeometryInternalNumber<int32_t, false> {
-      typedef int64_t type; 
+      typedef int64_t type;
     };
     template <>
     struct AffineGeometryInternalNumber<int32_t, true> {
-      typedef BigInteger type; 
+      typedef BigInteger type;
     };
     template <>
     struct AffineGeometryInternalNumber<int64_t, false> {
-      typedef int64_t type; 
+      typedef int64_t type;
     };
     template <>
     struct AffineGeometryInternalNumber<int64_t, true> {
-      typedef BigInteger type; 
+      typedef BigInteger type;
     };
     template <>
     struct AffineGeometryInternalNumber<float, false> {
-      typedef double type; 
+      typedef double type;
     };
     template <>
     struct AffineGeometryInternalNumber<float, true> {
-      typedef double type; 
+      typedef double type;
     };
     template <>
     struct AffineGeometryInternalNumber<double, false> {
-      typedef double type; 
+      typedef double type;
     };
     template <>
     struct AffineGeometryInternalNumber<double, true> {
-      typedef double type; 
+      typedef double type;
     };
-    
+
   } // namespace detail
 
 } // namespace DGtal
@@ -439,7 +439,7 @@ namespace DGtal
   /// #include "DGtal/kernel/SpaceND.h"
   /// #include "DGtal/geometry/tools/AffineGeometry.h"
   /// ...
-  /// typedef SpaceND< 3, int >                Space;      
+  /// typedef SpaceND< 3, int >                Space;
   /// typedef Space::Point                     Point;
   /// typedef AffineGeometry< Point >          Affine;
   /// std::vector<Point> X = { Point{1, 0, 0}, Point{2, 1, 0}, Point{3, 2, 0}, Point{3, 1, 1}, Point{5, 2, 2}, Point{4, 2, 1} };
@@ -462,7 +462,7 @@ namespace DGtal
     typedef DGtal::detail::AffineGeometryPointOperations
     < dimension, Scalar, Container >   PointOps;
     typedef DGtal::detail::AffineGeometryScalarOperations< Scalar > ScalarOps;
-    
+
     // ----------------------- standard services --------------------------
   public:
     /// @name static affine services
@@ -487,7 +487,7 @@ namespace DGtal
     {
       return DGtal::int64_t( affineSubset( X, tolerance ).size() ) - 1;
     }
-    
+
     /// Given a range of points \a X, returns a subset of these points
     /// that form an affine basis of \a X. Equivalently it is a
     /// simplex whose affine space spans all the points of \a X.
@@ -569,7 +569,7 @@ namespace DGtal
         }
       return chosen;
     }
-    
+
     /// Given a range of points \a X, returns a point and a range of
     /// vectors forming an affine basis containing \a X.
     ///
@@ -644,7 +644,7 @@ namespace DGtal
         }
       return std::make_pair( X[ I[ 0 ] ], basis );
     }
-    
+
     /// Given a partial basis of vectors, returns a new vector that is independent.
     ///
     /// @param[in] basis a range of independent vectors that defines a
@@ -707,7 +707,7 @@ namespace DGtal
           Scalar sql2;
           functions::getSquaredNormL2( sql2, w );
           if ( ScalarOps::isNonZero( sql2, tolerance ) )
-            return TOtherPoint::base( k ); 
+            return TOtherPoint::base( k );
         }
       trace.error() << "[AffineGeometry::independentVector]"
                     << " Unable to find independent vector." << std::endl;
@@ -778,7 +778,7 @@ namespace DGtal
           R[ i ][ j ] = B[ i ][ j ];
       return R;
     }
-      
+
     /// @}
 
     // ----------------------- specific services --------------------------
@@ -843,13 +843,13 @@ namespace DGtal
           // Useful to reduce the norm of vectors for lattice vectors
           // and necessary for real vectors so that `tolerance` keeps
           // the same meaning.
-          PointOps::normalizeVector( w, x ); 
+          PointOps::normalizeVector( w, x );
           basis.push_back( w );
           return true;
         }
       return false;
     }
-    
+
     /// Reduces vector \a w by the vector \a b
     ///
     /// @param[in,out] w any vector
@@ -876,8 +876,8 @@ namespace DGtal
       if ( lead == n ) return std::make_pair( mul_w, mul_b ); // b is null vector
 
       std::tie( mul_w, mul_b ) = ScalarOps::getMultipliers( w[ lead ], b[ lead ] );
-      
-      for (Size j = 0; j < n; j++) 
+
+      for (Size j = 0; j < n; j++)
         w[j] = mul_w * w[j] - mul_b * b[j];
       return std::make_pair( mul_w, mul_b );
     }
@@ -910,13 +910,13 @@ namespace DGtal
       if ( lead == n ) return std::make_pair( mul_w, mul_b ); // b is null vector
 
       std::tie( mul_w, mul_b ) = ScalarOps::getMultipliers( w[ lead ], b[ lead ] );
-      
-      for (Size j = 0; j < n; j++) 
+
+      for (Size j = 0; j < n; j++)
         w[j] = mul_w * w[j] - mul_b * b[j];
       return std::make_pair( mul_w, mul_b );
     }
 
-    
+
     /// Transform a vector or point into the representation chosen for
     /// AffineGeometry class. This overloading takes care of the
     /// trivial case, where there is no need to change the
@@ -936,7 +936,7 @@ namespace DGtal
     /// generic case, where a transformation of each component is required.
     ///
     /// @param[in] w any vector or point
-    /// @return the same vector or point, but in the represention chosen for this class.
+    /// @return the same vector or point, but in the representation chosen for this class.
     template <typename TInputPoint>
     static
     Point
@@ -944,7 +944,7 @@ namespace DGtal
     {
       return PointOps::cast( w );
     }
-    
+
     /// Given `d-1` independent vectors in dD, returns a vector that
     /// is orthogonal to each of them.
     ///
@@ -1026,7 +1026,7 @@ namespace DGtal
       W = AffineGeometry<InternalPoint>::simplifiedVector( W );
       return transform( W );
     }
-    
+
     /// Given a vector, returns the aligned vector with its component
     /// simplified by the gcd of all components (when the components
     /// are integers) or the aligned vector with unit L2-norm (when
@@ -1035,7 +1035,7 @@ namespace DGtal
     /// @param[in] v any vector.
     ///
     /// @return a simplified vector aligned with \a v.
-    static 
+    static
     Point simplifiedVector( Point v )
     {
       Scalar x;
@@ -1043,13 +1043,13 @@ namespace DGtal
       PointOps::normalizeVector( v, x );
       return v;
     }
-    
+
     /// @}
-    
+
   };
 
   namespace functions {
-    
+
     /// Given a range of points \a X, returns the affine dimension of
     /// its spanned affine subspace.
     ///
@@ -1121,7 +1121,7 @@ namespace DGtal
       return AffineGeometry<TPoint>::affineSubset( X, I, tolerance );
     }
 
-    
+
     /// Given a range of points \a X, returns a point and a range of
     /// vectors forming an affine basis containing \a X.
     ///
@@ -1183,7 +1183,7 @@ namespace DGtal
     {
       std::tie( o, basis ) = AffineGeometry<TPoint>::affineBasis( X, I, tolerance );
     }
-    
+
     /// Given a partial basis of vectors, returns a canonic unit
     /// vector that is independent.
     ///
@@ -1344,7 +1344,7 @@ namespace DGtal
     getOrthogonalVector( TPoint& w,
                          const std::vector< TInputPoint >& X,
                          const double tolerance = 1e-12 )
-    { 
+    {
       typedef AffineGeometry<TPoint> Affine;
       w = TPoint::zero;
       TInputPoint o;
@@ -1362,7 +1362,7 @@ namespace DGtal
     /// @tparam TPoint any type of lattice point (type for computations and output).
     /// @tparam TInputPoint any type of lattice point
     ///
-    /// @param[out] B the d-1 dimension basis of the orthognal lattice to \a N.
+    /// @param[out] B the d-1 dimension basis of the orthogonal lattice to \a N.
     ///
     /// @param[in] N a non null primitive lattice vector
     ///
@@ -1378,7 +1378,7 @@ namespace DGtal
       B = AffineGeometry<TPoint>::orthogonalLatticeBasis( N, shortened );
     }
 
-    
+
     /// Given a vector, returns the aligned vector with its component
     /// simplified by the gcd of all components (when the components
     /// are integers) or the aligned vector with a squared L2-norm of
@@ -1395,7 +1395,7 @@ namespace DGtal
     {
       return AffineGeometry<TPoint>::simplifiedVector( v );
     }
-    
+
   } // namespace functions
 } // namespace DGtal
 
@@ -1408,4 +1408,3 @@ namespace DGtal
 
 #undef AffineGeometry_RECURSES
 #endif // else defined(AffineGeometry_RECURSES)
-    

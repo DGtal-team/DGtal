@@ -70,19 +70,19 @@ bool testIOGridCurve(const string& filename)
 
 //////////////////////////////////////////
   trace.info() << endl;
-  trace.info() << "Reading GridCurve d=" << d << " "; 
-  
+  trace.info() << "Reading GridCurve d=" << d << " ";
+
   ifstream instream; // input stream
   instream.open (filename.c_str(), ifstream::in);
 
   c.initFromVectorStream(instream);
 
-  trace.info() << "(" << c.size() << ") elts" << std::endl; 
+  trace.info() << "(" << c.size() << ") elts" << std::endl;
   trace.info() << c << endl;
 
 ///////////////////////////////////////////
-  std::stringstream s; 
-  s << "gridcurve" << d << ".dat"; 
+  std::stringstream s;
+  s << "gridcurve" << d << ".dat";
 
   trace.info() << "Writing GridCurve d=" << d << " in " << s.str() << endl;
 
@@ -129,13 +129,13 @@ bool testExceptions(const string &filename)
 
   trace.info() << endl;
   trace.info() << "Trying to read bad file: " << filename << endl;
-  
+
   ifstream instream; // input stream
   instream.open (filename.c_str(), ifstream::in);
 
   try {
     c.initFromVectorStream(instream);
-    trace.info() << "no exception catched!?" << endl;
+    trace.info() << "no exception caught!?" << endl;
     return false;
   }  catch (DGtal::ConnectivityException& e) {
     trace.info() << e.what() << endl;
@@ -146,7 +146,7 @@ bool testExceptions(const string &filename)
   } catch (exception& e) {
     trace.info() << e.what() << endl;
     return true;
-  } 
+  }
 }
 
 /**
@@ -160,17 +160,17 @@ bool testDrawGridCurve(const string &filename)
 
   trace.info() << endl;
   trace.info() << "Displaying GridCurve " << endl;
-  
+
   //reading grid curve
   fstream inputStream;
   inputStream.open (filename.c_str(), ios::in);
-  c.initFromVectorStream(inputStream); 
+  c.initFromVectorStream(inputStream);
   inputStream.close();
 
   //displaying it
   Board2D aBoard;
   aBoard.setUnit(Board2D::UCentimeter);
-  aBoard << c; 
+  aBoard << c;
   aBoard.saveEPS( "GridCurve.eps", Board2D::BoundingBox, 5000 );
 #ifdef DGTAL_WITH_CAIRO
   aBoard.saveCairo("GridCurve-cairo.pdf", Board2D::CairoPDF, Board2D::BoundingBox, 5000);
@@ -190,17 +190,17 @@ bool testRange(const Range &aRange)
 
   trace.info() << endl;
   trace.info() << "Testing Range" << endl;
-  
-  typedef typename IteratorCirculatorTraits<typename Range::ConstIterator>::Value Value; 
-  std::vector<Value> v1,v2,v3,v4; 
-  
+
+  typedef typename IteratorCirculatorTraits<typename Range::ConstIterator>::Value Value;
+  std::vector<Value> v1,v2,v3,v4;
+
 {
   trace.info() << "Forward" << endl;
   typename Range::ConstIterator i = aRange.begin();
   typename Range::ConstIterator end = aRange.end();
   for ( ; i != end; ++i) {
     //cout << *i << endl;
-    v1.push_back(*i); 
+    v1.push_back(*i);
   }
 }
 {
@@ -209,37 +209,37 @@ bool testRange(const Range &aRange)
   typename Range::ConstReverseIterator end = aRange.rend();
   for ( ; i != end; ++i) {
     //cout << *i << endl;
-    v2.push_back(*i); 
+    v2.push_back(*i);
   }
 }
 {
   trace.info() << "Circulator" << endl;
   typename Range::ConstCirculator c = aRange.c();
   typename Range::ConstCirculator cend = aRange.c();
-  if (isNotEmpty(c,cend)) 
+  if (isNotEmpty(c,cend))
   {
-    do 
+    do
     {
       //cout << *c << endl;
       v3.push_back(*c);
       c++;
-    } while (c!=cend); 
+    } while (c!=cend);
   }
 }
 
 {
   trace.info() << "Reverse Circulator" << endl;
   typename Range::ConstReverseCirculator c = aRange.rc();
-  ++c; 
+  ++c;
   typename Range::ConstReverseCirculator cend = c;
-  if (isNotEmpty(c,cend)) 
+  if (isNotEmpty(c,cend))
   {
-    do 
+    do
     {
       //cout << *c << endl;
       v4.push_back(*c);
       c++;
-    } while (c!=cend); 
+    } while (c!=cend);
   }
 }
 
@@ -255,7 +255,7 @@ bool testPairsRange(const Range &aRange)
 
   trace.info() << endl;
   trace.info() << "Testing Range" << endl;
-  
+
 {
   trace.info() << "Forward" << endl;
   typename Range::ConstIterator i = aRange.begin();
@@ -272,7 +272,7 @@ bool testPairsRange(const Range &aRange)
     cout << i->first << " " << i->second << endl;
   }
 }
- 
+
   return true;
 }
 
@@ -283,7 +283,7 @@ bool testDisplayRange(const Range &aRange)
   trace.info() << endl;
   trace.info() << "Displaying Range" << endl;
   trace.info() << aRange << endl;
-  
+
   return true;
 }
 
@@ -291,12 +291,12 @@ template <typename Range>
 bool testDrawRange(const Range &aRange, const string &aName, const string& aDomainMode)
 {
 
-  std::stringstream s; 
-  s << aName << "Range.eps"; 
-  
+  std::stringstream s;
+  s << aName << "Range.eps";
+
   trace.info() << endl;
   trace.info() << "Drawing " << s.str() << " " << endl;
-  
+
   //board
   Board2D aBoard;
   aBoard.setUnit(Board2D::UCentimeter);
@@ -305,12 +305,12 @@ bool testDrawRange(const Range &aRange, const string &aName, const string& aDoma
   PointVector<2,int> up(3,3);
   if (aDomainMode == "Paving") up = PointVector<2,int>(4,4);
   HyperRectDomain< SpaceND<2,int> > aDomain( low,up );
-  aBoard << SetMode(aDomain.className(), aDomainMode) << aDomain; 
+  aBoard << SetMode(aDomain.className(), aDomainMode) << aDomain;
   //displaying range
-  aBoard << aRange; 
+  aBoard << aRange;
   //save
   aBoard.saveEPS( s.str().c_str(), Board2D::BoundingBox, 5000 );
-  
+
   return true;
 }
 
@@ -361,17 +361,17 @@ testRangeConceptChecking<GridCurve::IncidentPointsRange>();
     && testExceptions(emptyFile)
     && testDrawGridCurve(sinus2D4)
     && testIsOpen(sinus2D4,true)
-    && testIsOpen(square,false); 
+    && testIsOpen(square,false);
 
 
   //reading grid curve
-  GridCurve c; 
+  GridCurve c;
   fstream inputStream;
   inputStream.open (square.c_str(), ios::in);
   c.initFromVectorStream(inputStream);
   inputStream.close();
 
-  res = res 
+  res = res
     && testRange<GridCurve::SCellsRange>(c.getSCellsRange())
     && testRange<GridCurve::PointsRange>(c.getPointsRange())
     && testRange<GridCurve::MidPointsRange>(c.getMidPointsRange())
@@ -382,7 +382,7 @@ testRangeConceptChecking<GridCurve::IncidentPointsRange>();
     && testRange<GridCurve::CodesRange>(c.getCodesRange())
 ;
 
-  res = res 
+  res = res
     && testDisplayRange<GridCurve::SCellsRange>(c.getSCellsRange())
     && testDisplayRange<GridCurve::PointsRange>(c.getPointsRange())
     && testDisplayRange<GridCurve::MidPointsRange>(c.getMidPointsRange())
@@ -393,7 +393,7 @@ testRangeConceptChecking<GridCurve::IncidentPointsRange>();
     && testDisplayRange<GridCurve::CodesRange>(c.getCodesRange())
 ;
 
-  res = res 
+  res = res
     && testDrawRange<GridCurve::SCellsRange>(c.getSCellsRange(),"1cells","Grid")
     && testDrawRange<GridCurve::PointsRange>(c.getPointsRange(),"Points","Paving")
     && testDrawRange<GridCurve::MidPointsRange>(c.getMidPointsRange(),"MidPoints","Paving")
@@ -407,7 +407,7 @@ testRangeConceptChecking<GridCurve::IncidentPointsRange>();
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
-  
+
   return res ? 0 : 1;
 }
 //                                                                           //

@@ -74,7 +74,7 @@ namespace DGtal
     using difference_type = void;
     using pointer = void;
     using reference = void;
-    
+
     typedef TImage Image;
     BOOST_CONCEPT_ASSERT(( concepts::CTrivialImage<Image> ));
 
@@ -147,7 +147,7 @@ namespace DGtal
     }
 
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------

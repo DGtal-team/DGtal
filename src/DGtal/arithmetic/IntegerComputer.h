@@ -76,7 +76,7 @@ It is a backport of \e ImaGene.
 
 @tparam TInteger any model of integer (CInteger), like \c int, \c long int,
 \c int64_t, \c BigInteger.
-   
+
    */
   template <typename TInteger>
   class IntegerComputer
@@ -111,7 +111,7 @@ It is a backport of \e ImaGene.
        Constructor.  Each thread must have its own instance for all
        computations. Such object stores several local variables to
        limit the number of memory allocations.
-     
+
        Does nothing (member data are allocated, but their values are
        not used except during the execution of methods).
      */
@@ -119,7 +119,7 @@ It is a backport of \e ImaGene.
 
     /**
        Copy constructor.
-       
+
        Does nothing (member data are allocated, but their values are
        not used except during the execution of methods).
 
@@ -290,7 +290,7 @@ It is a backport of \e ImaGene.
        Computes and push_backs the simple continued fraction of a / b.
        (positive) and b (positive). For instance, 5/13=[0;2,1,1,2],
        which is exactly what is pushed at the back of \a quotients.
- 
+
        @param quotients (modifies) adds to the back of the vector the quotients of the continued fraction of a/b.
        @param a any positive integer.
        @param b any positive integer.
@@ -301,9 +301,9 @@ It is a backport of \e ImaGene.
     /**
        Computes and outputs the quotients of the simple continued
        fraction of a / b.  (positive) and b (positive). For instance,
-       5/13=[0;2,1,1,2], which is exactly what is outputed with the
+       5/13=[0;2,1,1,2], which is exactly what is outputted with the
        OutputIterator outIt.
- 
+
        @tparam OutputIterator a model of boost::OutputIterator
 
        @param outIt an instance of output iterator that is used to
@@ -334,7 +334,7 @@ It is a backport of \e ImaGene.
   public:
     /**
        Makes \a p irreducible.
-       
+
        @param p any vector in Z2.
      */
     void reduce( Vector2I & p ) const ;
@@ -344,7 +344,7 @@ It is a backport of \e ImaGene.
        Computes and returns the cross product of \a u and \a v.
 
        @param u any vector in Z2.
-       @param v any vector in Z2. 
+       @param v any vector in Z2.
        @return the cross product of \a u and \a v.
     */
     Integer crossProduct( const Vector2I & u, const Vector2I & v) const;
@@ -356,7 +356,7 @@ It is a backport of \e ImaGene.
        @param u any vector in Z2.
        @param v any vector in Z2.
      */
-    void getCrossProduct( Integer & cp, 
+    void getCrossProduct( Integer & cp,
                           const Vector2I & u, const Vector2I & v) const;
 
     /**
@@ -375,7 +375,7 @@ It is a backport of \e ImaGene.
        @param u any vector in Z2.
        @param v any vector in Z2.
      */
-    void getDotProduct( Integer & dp, 
+    void getDotProduct( Integer & dp,
                         const Vector2I & u, const Vector2I & v) const;
 
     /**
@@ -385,10 +385,10 @@ It is a backport of \e ImaGene.
        complexity is bounded by max(log(a),log(b)).
 
        The solution is chosen such that:
-       - when \a c > 0, 
+       - when \a c > 0,
          - \a a > 0 implies \a x >= 0, thus sgn(\a y)=-sgn(\a b)
          - \a a < 0 implies \a x <= 0, thus sgn(\a y)=-sgn(\a b)
-       - when \a c < 0, 
+       - when \a c < 0,
          - \a a > 0 implies \a x <= 0, thus sgn(\a y)=sgn(\a b)
          - \a a < 0 implies \a x >= 0, thus sgn(\a y)=sgn(\a b)
        - abs(\a x) <= abs(\a b * \a c )
@@ -399,13 +399,13 @@ It is a backport of \e ImaGene.
        @param c any integer multiple of gcd(|a|,|b|).
        @return a vector (x,y) solution to a x + b y = c.
      */
-    Vector2I extendedEuclid( IntegerParamType a, IntegerParamType b, 
+    Vector2I extendedEuclid( IntegerParamType a, IntegerParamType b,
                              IntegerParamType c ) const;
 
     /**
        Computes the floor (fl) and the ceiling (ce) value of the real
        number k such that p + k u lies on the supporting line of the
-       linear constraint N.p <= c. 
+       linear constraint N.p <= c.
 
        Otherwise said: (u.N) fl <= c - p.N < (u.N) ce
 
@@ -417,16 +417,16 @@ It is a backport of \e ImaGene.
        @param c any integer.
      */
     void getCoefficientIntersection( Integer & fl, Integer & ce,
-                                     const Vector2I & p, 
-                                     const Vector2I & u, 
-                                     const Vector2I & N, 
+                                     const Vector2I & p,
+                                     const Vector2I & u,
+                                     const Vector2I & N,
                                      IntegerParamType c ) const;
-				  
+
     /**
-       Compute the valid bezout vector v of u such that A+v satifies
-       the constraints C2 and such that A+v+u doesn't satify the
-       constraint C2. 
-       
+       Compute the valid bezout vector v of u such that A+v satisfies
+       the constraints C2 and such that A+v+u doesn't satisfy the
+       constraint C2.
+
        (A+v).N2   <= c2,
        (A+v+u).N2 >  c2.
 
@@ -447,10 +447,10 @@ It is a backport of \e ImaGene.
        @param compute_v tells if v should be recomputed (true) or is
        already given (false), default to true.
      */
-    void getValidBezout ( Vector2I & v, 
+    void getValidBezout ( Vector2I & v,
                           const Point2I & A, const Vector2I & u,
-                          const Vector2I & N, IntegerParamType c, 
-                          const Vector2I & N2, IntegerParamType c2, 
+                          const Vector2I & N, IntegerParamType c,
+                          const Vector2I & N2, IntegerParamType c2,
                           bool compute_v = true ) const;
 
     // ----------------------- Point3I services ------------------------------
@@ -458,7 +458,7 @@ It is a backport of \e ImaGene.
 
     /**
        Makes \a p irreducible.
-       
+
        @param p any vector in Z3.
      */
     void reduce( Vector3I & p ) const;
@@ -479,7 +479,7 @@ It is a backport of \e ImaGene.
        @param u any vector in Z3.
        @param v any vector in Z3.
      */
-    void getDotProduct( Integer & dp, 
+    void getDotProduct( Integer & dp,
                         const Vector3I & u, const Vector3I & v) const;
 
 
@@ -498,9 +498,9 @@ It is a backport of \e ImaGene.
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     /// Used to store parameter a.

@@ -54,9 +54,9 @@ bool testDGtalBIGINTEGER()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "BIGINTEGER linking test..." );
- 
+
   DGtal::BigInteger a(1234);
   DGtal::BigInteger b("-5678");
   DGtal::BigInteger c = a + b;
@@ -64,12 +64,12 @@ bool testDGtalBIGINTEGER()
   trace.info() << "sum is " << c << "\n";
   trace.info() << "absolute value is " << abs(c) << "\n";
 
-  nbok += (abs(c)==4444) ? 1 : 0; 
+  nbok += (abs(c)==4444) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
@@ -82,9 +82,9 @@ bool testBIGINTEGERSpace()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "BIGINTEGER Space test..." );
-   
+
   //This space is weird...
   typedef SpaceND<2, DGtal::BigInteger> Space2;
   typedef Space2::Point Point;
@@ -116,12 +116,12 @@ bool testBIGINTEGERSpace()
   aBoard.saveSVG("testbigintcontour.svg");
 
 
-  nbok += true ? 1 : 0; 
+  nbok += true ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 

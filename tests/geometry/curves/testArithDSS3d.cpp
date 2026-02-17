@@ -64,8 +64,8 @@ bool testDSSreco()
 
   typedef PointVector<3,int> Point;
   typedef std::vector<Point>::iterator Iterator;
-  typedef StandardDSS6Computer<Iterator,int,4> SegmentComputer;  
-  
+  typedef StandardDSS6Computer<Iterator,int,4> SegmentComputer;
+
   std::vector<Point> sequence;
   sequence.push_back(Point(0,0,0));
   sequence.push_back(Point(1,0,0));
@@ -83,12 +83,12 @@ bool testDSSreco()
   sequence.push_back(Point(6,4,3));
   sequence.push_back(Point(6,4,4));
   sequence.push_back(Point(6,5,4));
-  
+
   // Adding step
   trace.beginBlock("Add points while it is possible and display the result");
 
-  SegmentComputer algo;  
-  Iterator i = sequence.begin();  
+  SegmentComputer algo;
+  Iterator i = sequence.begin();
   algo.init(i);
   trace.info() << "init with " << (*i) << std::endl;
 
@@ -96,13 +96,13 @@ bool testDSSreco()
 	    && algo.extendFront()) {
       trace.info() << "extended with " << (*(--algo.end())) << std::endl;
     }
-    
+
 
     trace.info() << algo << " " << algo.isValid() << std::endl;
 
     trace.endBlock();
 
-  return ( algo.isValid() && (algo.end() == (sequence.begin()+13)) );  
+  return ( algo.isValid() && (algo.end() == (sequence.begin()+13)) );
 }
 
 
@@ -116,7 +116,7 @@ bool testSegmentation()
 
   typedef PointVector<3,int> Point;
   typedef std::vector<Point>::iterator Iterator;
-  typedef StandardDSS6Computer<Iterator,int,4> SegmentComputer;  
+  typedef StandardDSS6Computer<Iterator,int,4> SegmentComputer;
   typedef GreedySegmentation<SegmentComputer> Decomposition;
 
   std::vector<Point> sequence;
@@ -136,20 +136,20 @@ bool testSegmentation()
   sequence.push_back(Point(6,4,3));
   sequence.push_back(Point(6,4,4));
   sequence.push_back(Point(6,5,4));
-  
+
   //Segmentation
   trace.beginBlock("Segmentation test");
-    
+
     SegmentComputer algo;
     Decomposition theDecomposition(sequence.begin(), sequence.end(), algo);
-           
+
     unsigned int c = 0;
     Decomposition::SegmentComputerIterator i = theDecomposition.begin();
     for ( ; i != theDecomposition.end(); ++i) {
       SegmentComputer currentSegmentComputer(*i);
       trace.info() << currentSegmentComputer << std::endl;  //standard output
       c++;
-    } 
+    }
 
   trace.endBlock();
   return (c==2);
@@ -159,13 +159,13 @@ bool testSegmentation()
 void testStandardDSS6ComputerConceptChecking()
 {
   typedef PointVector<3,int> Point;
-  typedef std::vector<Point>::const_iterator ConstIterator; 
-  typedef StandardDSS6Computer<ConstIterator,int,4> ArithDSS3d; 
+  typedef std::vector<Point>::const_iterator ConstIterator;
+  typedef StandardDSS6Computer<ConstIterator,int,4> ArithDSS3d;
 
   trace.beginBlock("Concept checking");
 
   BOOST_CONCEPT_ASSERT(( concepts::CForwardSegmentComputer<ArithDSS3d> ));
-  
+
   trace.endBlock();
 
 }
@@ -175,15 +175,15 @@ void testStandardDSS6ComputerConceptChecking()
 int main(int argc, char **argv)
 {
   trace.beginBlock ( "Testing class ArithmeticalDSSComputer" );
- 
-  testStandardDSS6ComputerConceptChecking();  
-    
+
+  testStandardDSS6ComputerConceptChecking();
+
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res = testDSSreco() 
+  bool res = testDSSreco()
         && testSegmentation()
 
   ;

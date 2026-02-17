@@ -53,32 +53,32 @@ bool testExactMetricBalls()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(64,64));
   typedef ExactPredicateLpSeparableMetric<Z2i::Space, norm> Metric;
   Z2i::DigitalSet set(domain);
-  
+
   set.insertNew(Z2i::Point(32,32));
   typedef NotPointPredicate< Z2i::DigitalSet > NegPred;
-  // SetPredicate<Z2i::DigitalSet> setpred(set); 
+  // SetPredicate<Z2i::DigitalSet> setpred(set);
   NegPred predicate( set );
-  
+
   typedef  DistanceTransformation< Z2i::Space, NegPred, Metric> DT;
   Metric metric;
   DT dt( &domain, &predicate, &metric);
-  
-  
+
+
   Board2D board;
   typedef HueShadeColorMap<typename DT::Value,2> Hue;
   board.setUnit ( LibBoard::Board::UCentimeter );
   Display2DFactory::drawImage<Hue> (board, dt,
                                   0.0,
                                   32*sqrt(2)/2.0);
-  
+
   std::string title = "image-ball-" +  boost::lexical_cast<string>( norm )+".png" ;
 #ifdef DGTAL_WITH_CAIRO
   board.saveCairo(title.c_str(), Board2D::CairoPNG );
-#endif  
+#endif
   return nbok == nb;
 }
 
@@ -86,32 +86,32 @@ bool testInexactMetricBalls(double norm)
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   Z2i::Domain domain(Z2i::Point(0,0), Z2i::Point(64,64));
   typedef InexactPredicateLpSeparableMetric<Z2i::Space> Metric;
   Z2i::DigitalSet set(domain);
-  
+
   set.insertNew(Z2i::Point(32,32));
   typedef NotPointPredicate< Z2i::DigitalSet > NegPred;
-  // SetPredicate<Z2i::DigitalSet> setpred(set); 
+  // SetPredicate<Z2i::DigitalSet> setpred(set);
   NegPred predicate( set );
-  
+
   typedef  DistanceTransformation< Z2i::Space, NegPred, Metric> DT;
   Metric metric(norm);
   DT dt( &domain, &predicate, &metric);
-  
-  
+
+
   Board2D board;
   typedef HueShadeColorMap< DT::Value,2> Hue;
   board.setUnit ( LibBoard::Board::UCentimeter );
   Display2DFactory::drawImage<Hue> (board, dt,
                                   0.0,
                                   32*sqrt(2)/2.0);
-  
+
   std::string title = "image-ball-" +  boost::lexical_cast<string>( norm )+".png" ;
 #ifdef DGTAL_WITH_CAIRO
   board.saveCairo(title.c_str(), Board2D::CairoPNG );
-#endif  
+#endif
   return nbok == nb;
 }
 

@@ -59,12 +59,12 @@ int main()
   Point p2( 5, 5 ,5 );
   Point p3( 2, 3, 4 );
   Domain domain( p1, p2 );
-  
+
   // Drawing can happen with draw function
   v.draw(p1);
   // Or stream operators that can be chained
   v << p2 << p3;
-  // Draw operator allows to retrieve the name (id) of an object 
+  // Draw operator allows to retrieve the name (id) of an object
   std::string name = v.draw(domain);
   trace.info() << name << std::endl;
 

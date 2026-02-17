@@ -39,11 +39,11 @@ inline
 DGtal::functors::Projector<S>::Projector(const Integer& aDefaultInteger)
  : myDims(), myDefaultInteger(aDefaultInteger)
 { //default projection
-  Dimension k = 0; 
+  Dimension k = 0;
   for ( ; k < dimension; ++k)
   {
-    myDims[k] = k; 
-  } 
+    myDims[k] = k;
+  }
 }
 
 
@@ -53,19 +53,19 @@ inline
 void
 DGtal::functors::Projector<S>::init( const TIterator& itb, const TIterator& ite )
 {
-  BOOST_STATIC_ASSERT ((boost::is_same< Dimension, 
-   typename std::iterator_traits<TIterator>::value_type >::value)); 
+  BOOST_STATIC_ASSERT ((boost::is_same< Dimension,
+   typename std::iterator_traits<TIterator>::value_type >::value));
 
-  TIterator it = itb; 
-  Dimension k = 0; 
+  TIterator it = itb;
+  Dimension k = 0;
   for ( ; ( (k < dimension)&&(it != ite) ); ++it, ++k)
   {
-    myDims[k] = *it; 
-  } 
+    myDims[k] = *it;
+  }
   for ( ; k < dimension; ++k)
   {
-    myDims[k] = dimension; 
-  } 
+    myDims[k] = dimension;
+  }
 }
 
 
@@ -73,7 +73,7 @@ template <typename S>
 inline
 void
 DGtal::functors::Projector<S>::initRemoveOneDim(const Dimension &dimRemoved)
-{ 
+{
   std::vector<Dimension> vectDims;
   Dimension aCurrentPos = 0;
   Dimension k=0;
@@ -83,7 +83,7 @@ DGtal::functors::Projector<S>::initRemoveOneDim(const Dimension &dimRemoved)
       vectDims.push_back(aCurrentPos);
     }
     aCurrentPos++;
-  }  
+  }
   init(vectDims.begin(), vectDims.end());
 }
 
@@ -94,9 +94,9 @@ template <typename S>
 inline
 void
 DGtal::functors::Projector<S>::initAddOneDim( const Dimension &newDim)
-{ 
+{
   std::vector<Dimension> vectDims;
-  Dimension maxIndex = dimension; 
+  Dimension maxIndex = dimension;
   Dimension aCurrentPos = 0;
   Dimension k=0;
   for ( ; k < dimension; ++k)
@@ -107,8 +107,8 @@ DGtal::functors::Projector<S>::initAddOneDim( const Dimension &newDim)
       vectDims.push_back(aCurrentPos);
       aCurrentPos++;
     }
-  }  
-  init(vectDims.begin(), vectDims.end());  
+  }
+  init(vectDims.begin(), vectDims.end());
 }
 
 
@@ -119,25 +119,25 @@ inline
 typename DGtal::functors::Projector<S>::Point
 DGtal::functors::Projector<S>::operator()( const TInputPoint& aPoint ) const
 {
- 	BOOST_STATIC_ASSERT ((boost::is_same< typename TInputPoint::Coordinate, 
+ 	BOOST_STATIC_ASSERT ((boost::is_same< typename TInputPoint::Coordinate,
    Integer >::value));
- 
-  Point res; 
 
-  typename std::array<Dimension,dimension>::const_iterator it = myDims.begin(); 
+  Point res;
+
+  typename std::array<Dimension,dimension>::const_iterator it = myDims.begin();
   typename std::array<Dimension,dimension>::const_iterator itEnd = myDims.end();
 
-  Dimension k = 0; 
+  Dimension k = 0;
   for ( ; it != itEnd; ++it, ++k)
   {
-    Dimension l = *it; 
-    if (l < TInputPoint::dimension) 
-      res[k] = aPoint[l]; 
-    else 
-      res[k] = myDefaultInteger; 
-  } 
-  
-  return res; 
+    Dimension l = *it;
+    if (l < TInputPoint::dimension)
+      res[k] = aPoint[l];
+    else
+      res[k] = myDefaultInteger;
+  }
+
+  return res;
 }
 //------------------------------------------------------------------------------
 
@@ -194,5 +194,3 @@ DGtal::functors::PointFunctorFromPointPredicateAndDomain<TP,TD, TV>::operator=( 
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

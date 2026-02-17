@@ -74,7 +74,7 @@ namespace DGtal
   /// #include "DGtal/kernel/SpaceND.h"
   /// #include "DGtal/geometry/tools/AffineBasis.h"
   /// ...
-  /// typedef SpaceND< 3, int >                Space;      
+  /// typedef SpaceND< 3, int >                Space;
   /// typedef Space::Point                     Point;
   /// typedef AffineBasis< Point >            Affine;
   /// std::vector<Point> X = { Point{1, 0, 0}, Point{2, 1, 0}, Point{3, 2, 0}, Point{3, 1, 1}, Point{5, 2, 2}, Point{4, 2, 1} };
@@ -117,12 +117,12 @@ namespace DGtal
     typedef AffineGeometry< Point >    Affine;
 
     enum struct Type {
-      INVALID = 0,     ///< invalid basis 
+      INVALID = 0,     ///< invalid basis
       ECHELON_REDUCED, ///< echelon matrix
       SHORTEST_ECHELON_REDUCED, ///< echelon matrix starting from shortest vectors
       LLL_REDUCED      ///< delta-LLL reduced matrix
     };
-    
+
     // ----------------------- standard services --------------------------
   public:
     /// @name standard services
@@ -175,7 +175,7 @@ namespace DGtal
       initBasis( basis );
       reduce( type, delta );
     }
-    
+
     /// Constructor from origin and basis.
     ///
     /// @param[in] origin the origin of the affine basis
@@ -239,7 +239,7 @@ namespace DGtal
       _type = ( type == Type::LLL_REDUCED )
         ? Type::LLL_REDUCED : Type::ECHELON_REDUCED;
     }
-    
+
     /// Reduces the basis into a set of a linearly independent
     /// vectors, and in the desired reduced form.
     ///
@@ -265,7 +265,7 @@ namespace DGtal
           reduceAsLLL( delta, (Scalar) 0 );
         }
     }
-    
+
     /// @returns the affine dimension of the basis
     /// @pre the basis is reduced.
     Dimension dimension() const
@@ -278,7 +278,7 @@ namespace DGtal
     {
       return first;
     }
-    
+
     /// @return the vectors spanning the vector space of this affine
     /// basis.
     const Points& basis() const
@@ -389,14 +389,14 @@ namespace DGtal
         w += lambda[ i ] * second[ i ];
       return w / d;
     }
-    
+
     /// Decompose p as ` d * (p - o) = l[0]b[0] + ... l[i]b[i] + r`, where r
     /// is independent from this basis B=(b[0],...,b[i]).
     ///
     /// @param[in] p any point.
     ///
     /// @return (d,l,r) where d is a scalar, l/d are the rational
-    /// coordinates of (p-o) in the basis, r is the remainer vector if p
+    /// coordinates of (p-o) in the basis, r is the remainder vector if p
     /// does not belong to the affine space.
     std::tuple< Scalar, Point, Point > decompose( const Point& p ) const
     {
@@ -409,7 +409,7 @@ namespace DGtal
     /// @param[in] w any vector.
     ///
     /// @return (d,l,r) where d is a scalar, l/d are the rational
-    /// coordinates of w in the basis, r is the remainer vector if w
+    /// coordinates of w in the basis, r is the remainder vector if w
     /// does not belong to the affine space.
     std::tuple< Scalar, Point, Point > decomposeVector( Point w ) const
     {
@@ -432,7 +432,7 @@ namespace DGtal
     /// Projects the range of points \a input onto the affine basis
     /// and outputs it in \a result. A consistent choice for
     /// ProjectedPoint is to match the affine dimension.
-    /// 
+    ///
     /// @tparam ProjectedPoint a type of point that matches the affine dimension.
     ///
     /// @param[out] result the range of projected points.
@@ -479,7 +479,7 @@ namespace DGtal
       for ( std::size_t i = 0; i < pp.dimension; ++i )
         pp[ i ] = Scalar( p[ i ] );
     }
-      
+
     /// Transforms the type of an input point into another one, while
     /// dilating it by a factor \a m.
     ///
@@ -495,7 +495,7 @@ namespace DGtal
       for ( std::size_t i = 0; i < pp.dimension; ++i )
         pp[ i ] = m * Scalar( p[ i ] );
     }
-    
+
     /// @}
 
     // ----------------------- debug and I/O services --------------------------
@@ -520,7 +520,7 @@ namespace DGtal
     bool isValid() const
     {
       return _type != Type::INVALID;
-    }  
+    }
 
     /// @return the type of matrix as a string
     std::string reductionTypeName() const
@@ -556,7 +556,7 @@ namespace DGtal
       for ( auto& v : second )
         v = Affine::simplifiedVector( v );
     }
-    
+
     /// Reduces the basis so that each basis vector is normalized,
     /// removes linearly dependent vectors, and builds a echelon matrix.
     void reduceAsEchelon( Type type )
@@ -568,7 +568,7 @@ namespace DGtal
         {
           std::size_t row = findIndexWithSmallestNonNullComponent( k, i, second );
           if ( row != i && row != second.size() )
-            std::swap( second[ i ], second[ row ] );            
+            std::swap( second[ i ], second[ row ] );
           Point& w            = second[ i ];
           // check if this vector is independent from the previous ones
           is_independent[ i ] = true;
@@ -611,7 +611,7 @@ namespace DGtal
       };
       std::sort( second.begin(), second.end(), compare );
     }
-    
+
     /// Reduces the basis so that each basis vector is normalized,
     /// then computes its delta-LLL-reduction lattice, and removes
     /// linearly dependent vectors.
@@ -698,7 +698,7 @@ namespace DGtal
     /// had its k-th component null.
     ///
     /// @param[in] k the component/coordinate of interest
-    /// @param[in] i the starting index 
+    /// @param[in] i the starting index
     /// @param[in] basis a range of points/vectors
     ///
     /// @return starting from rank \a i, the index of the point with lowest non null k-th
@@ -730,9 +730,9 @@ namespace DGtal
         }
       return index;
     }
-    
+
   }; // struct AffineBasis
-    
+
 } // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////

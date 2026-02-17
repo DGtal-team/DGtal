@@ -47,7 +47,7 @@ DGtal::DomainAdjacency<TDomain,TAdjacency>
 template <typename TDomain, typename TAdjacency>
 inline
 DGtal::DomainAdjacency<TDomain,TAdjacency>
-::DomainAdjacency( ConstAlias<Domain> aDomain, 
+::DomainAdjacency( ConstAlias<Domain> aDomain,
        ConstAlias<Adjacency> adjacency )
   : myPred( aDomain ), myAdjacency( adjacency )
 {
@@ -122,7 +122,7 @@ DGtal::DomainAdjacency<TDomain,TAdjacency>
 template <typename TDomain, typename TAdjacency>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
       const DomainAdjacency<TDomain,TAdjacency> & object )
 {
   object.selfDisplay( out );
@@ -137,7 +137,7 @@ DGtal::operator<< ( std::ostream & out,
  */
 template <typename TDomain, typename TAdjacency>
 inline
-typename DGtal::DomainAdjacency<TDomain, TAdjacency>::Size 
+typename DGtal::DomainAdjacency<TDomain, TAdjacency>::Size
 DGtal::DomainAdjacency<TDomain, TAdjacency>::bestCapacity() const
 {
   return myAdjacency.bestCapacity();
@@ -145,12 +145,12 @@ DGtal::DomainAdjacency<TDomain, TAdjacency>::bestCapacity() const
 
 /**
  * @param v any vertex
- * 
+ *
  * @return the number of neighbors of this vertex
  */
 template <typename TDomain, typename TAdjacency>
 inline
-typename DGtal::DomainAdjacency<TDomain, TAdjacency>::Size 
+typename DGtal::DomainAdjacency<TDomain, TAdjacency>::Size
 DGtal::DomainAdjacency<TDomain, TAdjacency>::degree
 ( const Vertex & v ) const
 {
@@ -163,19 +163,19 @@ DGtal::DomainAdjacency<TDomain, TAdjacency>::degree
 
 /**
  * Writes the neighbors of a vertex using an output iterator
- * 
- * 
+ *
+ *
  * @tparam OutputIterator the type of an output iterator writing
  * in a container of vertices.
- * 
+ *
  * @param it the output iterator
- * 
+ *
  * @param v the vertex whose neighbors will be written
  */
 template <typename TDomain, typename TAdjacency>
 template <typename OutputIterator>
 inline
-void  
+void
 DGtal::DomainAdjacency<TDomain, TAdjacency>::writeNeighbors
 ( OutputIterator &it, const Vertex & v ) const
 {
@@ -186,19 +186,19 @@ DGtal::DomainAdjacency<TDomain, TAdjacency>::writeNeighbors
 }
 
 /**
-  * Writes the neighbors of a vertex which satisfy a predicate using an 
+  * Writes the neighbors of a vertex which satisfy a predicate using an
   * output iterator
-  * 
-  * 
+  *
+  *
   * @tparam OutputIterator the type of an output iterator writing
   * in a container of vertices.
-  * 
+  *
   * @tparam VertexPredicate the type of the predicate
-  * 
+  *
   * @param it the output iterator
-  * 
+  *
   * @param v the vertex whose neighbors will be written
-  * 
+  *
   * @param pred the predicate that must be satisfied
   */
 template <typename TDomain, typename TAdjacency>
@@ -223,5 +223,3 @@ DGtal::DomainAdjacency<TDomain, TAdjacency>::writeNeighbors
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

@@ -53,18 +53,18 @@ namespace DGtal
   /**
    * Description of template class 'IteratorAdapter' <p>
    * \brief This class adapts any lvalue iterator
-   * so that operator* returns a member on the element pointed 
+   * so that operator* returns a member on the element pointed
    * to by the iterator, instead the element itself.
    *
    * @tparam TIterator the type of the iterator to adapt
    *
    * To achieve this goal, the adapter is based on a functor f
-   * given at construction so that operator* calls f(\*it), 
-   * instead of calling directly operator* of the underlying 
+   * given at construction so that operator* calls f(\*it),
+   * instead of calling directly operator* of the underlying
    * iterator it. This operation returns a reference (or constant
-   * reference) on a member of the element pointed to by the 
-   * iterator, which can be read as well as assigned (if the 
-   * member is not constant).  
+   * reference) on a member of the element pointed to by the
+   * iterator, which can be read as well as assigned (if the
+   * member is not constant).
    *
    * @tparam TFunctor the type of functor that transforms
    * the pointed element into another one
@@ -74,66 +74,66 @@ namespace DGtal
    */
   template <typename TIterator, typename TFunctor, typename TReturnType = typename TFunctor::Value>
   class IteratorAdapter:
-    public boost::transform_iterator< TFunctor, TIterator, TReturnType&, TReturnType  > 
+    public boost::transform_iterator< TFunctor, TIterator, TReturnType&, TReturnType  >
   {
 
   BOOST_CONCEPT_ASSERT(( boost_concepts::LvalueIteratorConcept<TIterator> ));
 
-  public: 
+  public:
 
     /** this class **/
-    typedef IteratorAdapter< TIterator, TFunctor, TReturnType > Self; 
+    typedef IteratorAdapter< TIterator, TFunctor, TReturnType > Self;
     /** parent class **/
-    typedef boost::transform_iterator< TFunctor, TIterator, TReturnType&, TReturnType > Parent; 
+    typedef boost::transform_iterator< TFunctor, TIterator, TReturnType&, TReturnType > Parent;
 
-    /** 
+    /**
      * Default constructor
      */
     IteratorAdapter(): Parent() {}
-    /** 
+    /**
      * Constructor from an iterator and a functor
-     * 
+     *
      * @param iter any iterator
-     * @param func any functor 
+     * @param func any functor
      */
     IteratorAdapter( const TIterator& iter, TFunctor func ): Parent(iter,func) {}
-    /** 
+    /**
      * Copy operator
-     * 
+     *
      * @param other the object of type Self to copy.
      */
     IteratorAdapter( const Self& other ): Parent( static_cast<const Parent&>(other) ) {}
-    /** 
+    /**
      * Copy operator
-     * 
+     *
      * @param other the object of type Parent to copy.
      */
     IteratorAdapter( const Parent& other ): Parent(other) {}
-    /** 
-     * Assignement operator
-     * 
+    /**
+     * Assignment operator
+     *
      * @param other the object of type Self to copy.
      * @return this
      */
     Self& operator=( const Self& other )
     {
       if (this != &other)
-	Parent::operator=( static_cast<const Parent&>(other) ); 
-      return *this; 
-    } 
-    /** 
-     * Assignement operator
-     * 
+	Parent::operator=( static_cast<const Parent&>(other) );
+      return *this;
+    }
+    /**
+     * Assignment operator
+     *
      * @param other the object of type Parent to copy.
      * @return this
      */
     Self& operator=( const Parent& other )
     {
       if (this != &other)
-	  Parent::operator=(other); 
-      return *this; 
+	  Parent::operator=(other);
+      return *this;
     }
-    /** 
+    /**
      * Destructor.
      *
      */

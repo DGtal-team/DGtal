@@ -51,26 +51,26 @@ int main()
   typedef ArithDSSIterator<Integer,8> DSSIterator;
   typedef ArithmeticalDSSComputer<DSSIterator,Integer,8> ArithDSS;
   typedef Z2i::Point Point;
-  
+
   Point A(1,5);
   Integer xMax = 6;
-  
+
   // Define an iterator over the 8-connected DSS of characteristics
-  // (2,3,15) and initial point A 
+  // (2,3,15) and initial point A
   DSSIterator  it(2,3,-15,A);
-  
+
   // Use this iterator in the ArithmeticalDSS recognition algorithm.
   // The result gives the minimal characteristics of the subsegment of
   // the DSL (2,3,15) between the point A and the point of abscissa
-  // equal to xMax. 
+  // equal to xMax.
   ArithDSS myDSS(it);
-  
+
   while ( (*(myDSS.end()))[0] <=xMax && myDSS.extendFront())
     {}
-  
+
   //Display the result.
   std::cout << myDSS.a() << " " << myDSS.b() << " " << myDSS.mu();
-  
+
   trace.endBlock();
   return 0;
 }

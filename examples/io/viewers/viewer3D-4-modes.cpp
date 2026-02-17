@@ -74,7 +74,7 @@ int main()
   viewer.drawAsBalls();
   viewer << p1 << p2 << p3<< p4<< p5 << p6 << p0;
   viewer << domain;
-  
+
   // Draws a grid instead of cubes
   viewer.drawAsGrid();
   viewer << domain;

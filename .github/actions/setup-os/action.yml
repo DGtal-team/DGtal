@@ -12,17 +12,17 @@ runs:
     - name: "Setup Linux"
       if: ${{ runner.os == 'Linux'}}
       uses: DGtal-team/DGtal/.github/actions/setup-linux@main
-      with: 
+      with:
         python-version: ${{ inputs.python-version }}
 
     - name: "Setup MacOS"
       if: ${{ runner.os == 'macOS'}}
       uses: DGtal-team/DGtal/.github/actions/setup-macos@main
-      with: 
+      with:
         python-version: ${{ inputs.python-version }}
 
     - name: "Setup Windows"
       if: ${{ runner.os == 'Windows'}}
       uses: DGtal-team/DGtal/.github/actions/setup-windows@main
-      with: 
+      with:
         python-version: ${{ inputs.python-version }}

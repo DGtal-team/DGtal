@@ -54,7 +54,7 @@ template <typename TPoint>
 inline
 void
 DGtal::CircleFrom3Points<TPoint>::init(
-        const Point& aFirstPoint, 
+        const Point& aFirstPoint,
         const Point& aSecondPoint,
         const Point& aThirdPoint)
 {
@@ -67,7 +67,7 @@ DGtal::CircleFrom3Points<TPoint>::init(
 template <typename TPoint>
 inline
 DGtal::CircleFrom3Points<TPoint>::CircleFrom3Points(
-        const Point& aFirstPoint, 
+        const Point& aFirstPoint,
         const Point& aSecondPoint,
         const Point& aThirdPoint):
         myP(aFirstPoint),
@@ -107,9 +107,9 @@ inline
 typename DGtal::CircleFrom3Points<TPoint>::Distance
 DGtal::CircleFrom3Points<TPoint>::signedDistance(const Point& aP) const
 {
-  Vector u( (myP[0]-aP[0])*(myR[1]-aP[1])-(myR[0]-aP[0])*(myP[1]-aP[1]), 
+  Vector u( (myP[0]-aP[0])*(myR[1]-aP[1])-(myR[0]-aP[0])*(myP[1]-aP[1]),
                   (myR[0]-aP[0])*(myR[0]-myP[0])+(myR[1]-aP[1])*(myR[1]-myP[1]) );
-  Vector v( (myP[0]-aP[0])*(myQ[1]-aP[1])-(myQ[0]-aP[0])*(myP[1]-aP[1]), 
+  Vector v( (myP[0]-aP[0])*(myQ[1]-aP[1])-(myQ[0]-aP[0])*(myP[1]-aP[1]),
                   (myQ[0]-aP[0])*(myQ[0]-myP[0])+(myQ[1]-aP[1])*(myQ[1]-myP[1]) );
 
   return -( (u[0] * v[1]) - (u[1] * v[0]) );
@@ -131,13 +131,13 @@ DGtal::CircleFrom3Points<TPoint>::getParameters(double& cx, double& cy, double& 
   } else {
 
     //center
-    double areaD = NumberTraits<Coordinate>::castToDouble(area)*2.0; 
+    double areaD = NumberTraits<Coordinate>::castToDouble(area)*2.0;
     double pz, qz, rz;
-    pz = std::pow( NumberTraits<Coordinate>::castToDouble(myP[0]),2.0 )/areaD 
+    pz = std::pow( NumberTraits<Coordinate>::castToDouble(myP[0]),2.0 )/areaD
         + std::pow( NumberTraits<Coordinate>::castToDouble(myP[1]),2.0 )/areaD;
-    qz = std::pow( NumberTraits<Coordinate>::castToDouble(myQ[0]),2.0 )/areaD 
+    qz = std::pow( NumberTraits<Coordinate>::castToDouble(myQ[0]),2.0 )/areaD
         + std::pow( NumberTraits<Coordinate>::castToDouble(myQ[1]),2.0 )/areaD;
-    rz = std::pow( NumberTraits<Coordinate>::castToDouble(myR[0]),2.0 )/areaD 
+    rz = std::pow( NumberTraits<Coordinate>::castToDouble(myR[0]),2.0 )/areaD
         + std::pow( NumberTraits<Coordinate>::castToDouble(myR[1]),2.0 )/areaD;
 
     cx = NumberTraits<Coordinate>::castToDouble(myP[1])*(qz-rz)
@@ -148,7 +148,7 @@ DGtal::CircleFrom3Points<TPoint>::getParameters(double& cx, double& cy, double& 
          -NumberTraits<Coordinate>::castToDouble(myR[0])*(pz-qz);
 
     //radius
-    double a, b, c; 
+    double a, b, c;
     a = std::pow( NumberTraits<Coordinate>::castToDouble(myQ[0]-myP[0]),2.0 )
        +std::pow( NumberTraits<Coordinate>::castToDouble(myQ[1]-myP[1]),2.0 );
     b = std::pow( NumberTraits<Coordinate>::castToDouble(myR[0]-myQ[0]),2.0 )
@@ -169,12 +169,12 @@ DGtal::CircleFrom3Points<TPoint>::getCurvature() const
   Vector u(myP - myQ);
   Vector v(myR - myP);
 
-  //4 times the area of the triangle 
+  //4 times the area of the triangle
   Coordinate area = (u[0] * v[1]) - (u[1] * v[0]);
-  double areaD = NumberTraits<Coordinate>::castToDouble(area)*2.0; 
-  
-  //length of the sides of the triangle 
-  double a, b, c; 
+  double areaD = NumberTraits<Coordinate>::castToDouble(area)*2.0;
+
+  //length of the sides of the triangle
+  double a, b, c;
   a = std::pow( NumberTraits<Coordinate>::castToDouble(myQ[0]-myP[0]),2.0 )
      +std::pow( NumberTraits<Coordinate>::castToDouble(myQ[1]-myP[1]),2.0 );
   b = std::pow( NumberTraits<Coordinate>::castToDouble(myR[0]-myQ[0]),2.0 )
@@ -214,5 +214,3 @@ DGtal::CircleFrom3Points<TPoint>::isValid() const
 {
     return true;
 }
-
-

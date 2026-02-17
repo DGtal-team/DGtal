@@ -63,10 +63,10 @@ DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>
 template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
 inline
 DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>
-::DigitalTopology( ConstAlias<ForegroundAdjacency> aKappa, 
+::DigitalTopology( ConstAlias<ForegroundAdjacency> aKappa,
        ConstAlias<BackgroundAdjacency> aLambda,
        DigitalTopologyProperties props )
-  : myKappa( aKappa ), myLambda( aLambda ), 
+  : myKappa( aKappa ), myLambda( aLambda ),
     myProps( props )
 {
 }
@@ -81,7 +81,7 @@ template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
 inline
 DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>
 ::DigitalTopology ( const DigitalTopology & other )
-  : myKappa( other.myKappa ), myLambda( other.myLambda ), 
+  : myKappa( other.myKappa ), myLambda( other.myLambda ),
     myProps( other.myProps )
 {
 }
@@ -92,7 +92,7 @@ DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>
  */
 template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
 inline
-const TForegroundAdjacency & 
+const TForegroundAdjacency &
 DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>::kappa() const
 {
   return myKappa;
@@ -103,7 +103,7 @@ DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>::kappa() const
  */
 template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
 inline
-const TBackgroundAdjacency & 
+const TBackgroundAdjacency &
 DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>::lambda() const
 {
   return myLambda;
@@ -115,7 +115,7 @@ DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>::lambda() cons
  */
 template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
 inline
-DGtal::DigitalTopologyProperties 
+DGtal::DigitalTopologyProperties
 DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>::properties() const
 {
   return myProps;
@@ -128,7 +128,7 @@ DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>::properties() 
 template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
 inline
 typename DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>
-::ReverseTopology 
+::ReverseTopology
 DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>
 ::reverseTopology() const
 {
@@ -148,7 +148,7 @@ void
 DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>
 ::selfDisplay ( std::ostream & out ) const
 {
-  out << "[DigitalTopology kappa=" << myKappa 
+  out << "[DigitalTopology kappa=" << myKappa
       << " lambda=" << myLambda;
   if ( properties() == JORDAN_DT ) out << " [Jordan]";
   else if ( properties() == NOT_JORDAN_DT ) out << " [Not Jordan]";
@@ -178,7 +178,7 @@ DGtal::DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency>
 template <typename TForegroundAdjacency, typename TBackgroundAdjacency>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
       const DigitalTopology<TForegroundAdjacency,TBackgroundAdjacency> & object )
 {
   object.selfDisplay( out );
@@ -187,5 +187,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

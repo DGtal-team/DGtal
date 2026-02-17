@@ -65,16 +65,16 @@ TEST_CASE( "HalfplaneUnit tests" )
   Point r2(0,2);
   Point r3(10,4);
   StraightLine line(p,q);
-  
-  //halfplane upward oriented and closed 
+
+  //halfplane upward oriented and closed
 //! [HalfPlaneTypedefUpClosed]
   typedef Point2ShapePredicate<StraightLine,true,true> UpClosedHalfPlane;
 //! [HalfPlaneTypedefUpClosed]
- 
-  //halfplane upward oriented and open 
-  typedef Point2ShapePredicate<StraightLine,true,false> UpOpenHalfPlane; 
-  //halfplane downward oriented and closed 
-  typedef Point2ShapePredicate<StraightLine,false,true> DownClosedHalfPlane; 
+
+  //halfplane upward oriented and open
+  typedef Point2ShapePredicate<StraightLine,true,false> UpOpenHalfPlane;
+  //halfplane downward oriented and closed
+  typedef Point2ShapePredicate<StraightLine,false,true> DownClosedHalfPlane;
 
   //Location
   trace.beginBlock("Creation of a halfplane and test some points");

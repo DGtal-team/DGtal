@@ -74,7 +74,7 @@ namespace DGtal
    *
    * @see testAdjacency.cpp
    */
-  template <typename TSpace, Dimension maxNorm1, 
+  template <typename TSpace, Dimension maxNorm1,
 	    Dimension dimension = TSpace::dimension >
   class MetricAdjacency
   {
@@ -88,7 +88,7 @@ namespace DGtal
 
     // Others
     typedef typename Space::Vector Vector;
-    
+
     // Required by CUndirectedSimpleLocalGraph
     typedef Point Vertex;
     typedef typename Space::Size Size;
@@ -122,7 +122,7 @@ namespace DGtal
      * adjacency relation.
      */
     static
-    bool isAdjacentTo( const Point & p1, const Point & p2 ); 
+    bool isAdjacentTo( const Point & p1, const Point & p2 );
 
     /**
      * @param p1 any point in this space.
@@ -132,56 +132,56 @@ namespace DGtal
      * adjacency relation and p1 != p2.
      */
     static
-    bool isProperlyAdjacentTo( const Point & p1, const Point & p2 ); 
+    bool isProperlyAdjacentTo( const Point & p1, const Point & p2 );
 
-    
+
     // ----------------------- Local graph services --------------------------
-    
+
     /**
      * @return maximum number of neighbors for this adjacency
      */
     static
     Size bestCapacity();
-    
+
     /**
      * @param v any vertex
-     * 
+     *
      * @return the number of neighbors of this vertex
      */
     static
     Size degree( const Vertex & v );
-    
+
     /**
      * Writes the neighbors of a vertex using an output iterator
-     * 
-     * 
+     *
+     *
      * @tparam OutputIterator the type of an output iterator writing
      * in a container of vertices.
-     * 
+     *
      * @param it the output iterator
-     * 
-     * @param v the vertex whose neighbors will be writen
+     *
+     * @param v the vertex whose neighbors will be written
      */
     template <typename OutputIterator>
     static
-    void  
+    void
     writeNeighbors( OutputIterator &it ,
 		    const Vertex & v );
-    
+
     /**
-     * Writes the neighbors of a vertex which satisfy a predicate using an 
+     * Writes the neighbors of a vertex which satisfy a predicate using an
      * output iterator
-     * 
-     * 
+     *
+     *
      * @tparam OutputIterator the type of an output iterator writing
      * in a container of vertices.
-     * 
+     *
      * @tparam VertexPredicate the type of the predicate
-     * 
+     *
      * @param it the output iterator
-     * 
+     *
      * @param v the vertex whose neighbors will be written
-     * 
+     *
      * @param pred the predicate that must be satisfied
      */
     template <typename OutputIterator, typename VertexPredicate>
@@ -190,7 +190,7 @@ namespace DGtal
     writeNeighbors( OutputIterator &it ,
 		    const Vertex & v,
 		    const VertexPredicate & pred);
-    
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -208,11 +208,11 @@ namespace DGtal
     static
     bool isValid();
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
-    
+
     // ------------------------- Hidden services ------------------------------
   protected:
     static Size computeCapacity();
@@ -247,7 +247,7 @@ namespace DGtal
    */
   template <typename TSpace, Dimension maxNorm1>
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
          const MetricAdjacency< TSpace,maxNorm1,
          TSpace::dimension > & object );
 
