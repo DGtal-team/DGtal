@@ -130,7 +130,7 @@ SCENARIO( "TangencyComputer::ShortestPaths 3D tests", "[shortest_paths][3d][tang
       // AND_THEN( "This distance is greater or equal to the exacts shortest path" )
       REQUIRE( last_distance_opt*h >= last_distance*h );
     }
-}  
+}
 
 SCENARIO( "TangencyComputer 3D tests", "[3d][tangency]" )
 {
@@ -139,7 +139,7 @@ SCENARIO( "TangencyComputer 3D tests", "[3d][tangency]" )
   typedef Shortcuts< KSpace > SH3;
   typedef Space::Point        Point;
   typedef std::size_t         Index;
-  
+
   SECTION( "Computing shortest paths on a 3D unit sphere digitized at gridstep 0.125" )
     {
       // Make digital sphere
@@ -193,5 +193,4 @@ SCENARIO( "TangencyComputer 3D tests", "[3d][tangency]" )
       REQUIRE( md2 <= 10.0 );
       REQUIRE( md3 <= 15.0 );
     }
-}  
-
+}
