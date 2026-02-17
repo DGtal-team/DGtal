@@ -34,9 +34,9 @@ namespace DGtal {
    property that their points lies in the naive/standard plane defined
    by its vertices. It uses DigitalConvexity::relativeEnvelope for
    computations.
-   
+
    @see \ref dgtal_envelope_sec2
-   
+
    For instance, you may call it on object "lion-tri.obj" as
 
 \verbatim
@@ -147,7 +147,7 @@ int main( int argc, char** argv )
   Point up(500,500,500);
   DigitalConvexity< KSpace > dconv( lo, up );
   typedef DigitalConvexity< KSpace >::EnvelopeAlgorithm Algorithm;
-  
+
   auto vertices = std::vector<Point>( surfmesh.nbVertices() );
   for ( auto v : surfmesh )
     {
@@ -190,7 +190,7 @@ int main( int argc, char** argv )
       for ( size_t i = 0; i < X.size(); i++ )
         {
           PointRange Y { X[ i ], X[ (i+1)%X.size() ] };
-          if ( Y[ 1 ] < Y[ 0 ] ) std::swap( Y[ 0 ], Y[ 1 ] ); 
+          if ( Y[ 1 ] < Y[ 0 ] ) std::swap( Y[ 0 ], Y[ 1 ] );
           int idx1 = faceVertices[ f ][ i ];
           int idx2 = faceVertices[ f ][ (i+1)%X.size() ];
           // Variant (1): edges of both sides have many points in common
@@ -272,10 +272,9 @@ int main( int argc, char** argv )
       for ( auto p : face_points ) viewer << p;
     }
 
-  viewer.show();  
+  viewer.show();
   return 0;
 
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-

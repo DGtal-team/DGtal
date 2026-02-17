@@ -69,7 +69,7 @@ namespace DGtal
   {
     // ----------------------- Standard services ------------------------------
 
-    ///Matrix componenets type
+    ///Matrix components type
     typedef typename TMatrix::Component Component;
     ///Matrix type
     typedef TMatrix Matrix;

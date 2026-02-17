@@ -53,7 +53,7 @@
 
 namespace DGtal
 {
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // template class LongvolReader
   /**
@@ -91,15 +91,15 @@ namespace DGtal
   struct LongvolReader
   {
     // ----------------------- Standard services ------------------------------
-    
+
     typedef TImageContainer ImageContainer;
     typedef typename TImageContainer::Value Value;
     typedef TFunctor Functor;
-    
+
     BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, DGtal::uint64_t, Value > )) ;
     BOOST_STATIC_ASSERT(ImageContainer::Domain::dimension == 3);
-    
-    
+
+
     /**
      * Main method to import a Longvol into an instance of the
      * template parameter ImageContainer.
@@ -113,11 +113,11 @@ namespace DGtal
      */
     static ImageContainer importLongvol(const std::string & filename,
                                         const Functor & aFunctor =  Functor());
-    
-    
-    
+
+
+
   private:
-    
+
     /**
      * Generic read word (binary mode) in little-endian mode.
      *
@@ -135,8 +135,8 @@ namespace DGtal
           raw[i] = fin.get();
       return fin;
     }
-    
-    
+
+
     typedef unsigned char voxel;
     /** This class help us to associate a field type and his value.
      * An object is a pair (type, value). You can copy and assign
@@ -159,7 +159,7 @@ namespace DGtal
       type( strdup(h.type) ), value( strdup(h.value) ) {};
       //! Default constructor
       HeaderField() : type(NULL), value(NULL) {};
-      //! Assignement operator
+      //! Assignment operator
       const HeaderField &operator = (const HeaderField &h) {
         free( type );
         free( value );
@@ -174,23 +174,23 @@ namespace DGtal
       //! Value of field (e.g. 2)
       char *value;
     };
-    
-    
+
+
     //! Returns NULL if this field is not found
     static const char *getHeaderValue( const char *type, const HeaderField * header );
-    
+
     //! Returns non-zero if failure
     static     int getHeaderValueAsInt( const char *type, int *dest , const HeaderField * header);
-    
+
     //! Internal method which returns the index of a field or -1 if not found.
     static int getHeaderField( const char *type, const HeaderField * header ) ;
-    
+
     //! Global list of required fields in a .longvol file
     static const char *requiredHeaders[];
-    
+
   }; // end of class LongvolReader
-  
-  
+
+
 } // namespace DGtal
 
 

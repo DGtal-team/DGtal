@@ -73,14 +73,14 @@ namespace DGtal
 
     \brief Aim: A wrapper class around a STL associative container for
     storing sets of digital points within some given domain.
-   
+
     Model of CDigitalSet.
 
     @since 0.7 Domains are now hold with copy on write pointers and no more
     only aliased. The problem was related to returning sets with a
     locally constructed domain. With CowPtr, you are sure that the
     domain remains valid during the lifetime of your set.
-   
+
    * @tparam TDomain type of domain on which the set will be defined (model of concepts::CDomain).
    * @tparam TContainer STL associative container to store points (model of concepts::CSTLAssociativeContainer).
    *
@@ -89,13 +89,13 @@ namespace DGtal
   class DigitalSetByAssociativeContainer
   {
   public:
-    
+
     ///Domain type.
     typedef TDomain Domain;
-  
+
     ///Container type.
     typedef TContainer Container;
-    
+
     ///Self Type.
     typedef DigitalSetByAssociativeContainer<Domain, Container> Self;
     ///Type of digital space.
@@ -110,12 +110,12 @@ namespace DGtal
     typedef typename Container::value_type value_type;
     ///Size type of the container;
     typedef typename Container::size_type Size;
-    
+
     ///Concept checks
     BOOST_CONCEPT_ASSERT(( concepts::CDomain< TDomain > ));
     BOOST_CONCEPT_ASSERT(( concepts::CSTLAssociativeContainer< TContainer > ));
     BOOST_STATIC_ASSERT(( boost::is_same<typename Container::key_type, Point>::value ));
-    
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -328,7 +328,7 @@ namespace DGtal
 
 
     // ----------------------- Interface --------------------------------------
-    
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -341,7 +341,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
 
     /**

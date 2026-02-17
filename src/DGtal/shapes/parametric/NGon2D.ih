@@ -44,7 +44,7 @@
 
 template <typename T>
 inline
-DGtal::NGon2D<T>::NGon2D(const double x0, const double y0, 
+DGtal::NGon2D<T>::NGon2D(const double x0, const double y0,
        const double radius, const unsigned int k,
        const double phi):
   myCenter(x0,y0), myRadius(radius), myK(k), myPhi(phi)
@@ -92,7 +92,7 @@ DGtal::NGon2D<T>::parameter( const RealPoint & p ) const
  */
 template <typename T>
 inline
-typename DGtal::NGon2D<T>::RealPoint 
+typename DGtal::NGon2D<T>::RealPoint
 DGtal::NGon2D<T>::x( const double t ) const
 {
   double angle = t - myPhi;
@@ -126,15 +126,15 @@ DGtal::NGon2D<T>::x( const double t ) const
  */
 template <typename T>
 inline
-typename DGtal::NGon2D<T>::RealVector 
+typename DGtal::NGon2D<T>::RealVector
 DGtal::NGon2D<T>::xp( const double t ) const
 {
   // seek the vertices between the point, then compute the vector from one vertex to the next one.
   // TODO check if angle equals that of a vertex ?
-  double angle = t - myPhi; 
+  double angle = t - myPhi;
   while ( angle < 0.0 )
     angle += NGON2D_2_PI;
-  
+
   unsigned int intervalle_lower = static_cast<unsigned int>( floor( angle * myK / (NGON2D_2_PI ) ) );
   unsigned int intervalle_upper = intervalle_lower == ( myK -1 ) ? 0 : intervalle_lower+1;
 
@@ -144,7 +144,7 @@ DGtal::NGon2D<T>::xp( const double t ) const
         myRadius*sin(myPhi + intervalle_upper*NGON2D_2_PI/myK)
       - myRadius*sin(myPhi + intervalle_lower*NGON2D_2_PI/myK)
   );
-  
+
   //normalize
   return s / s.norm();
 }
@@ -200,7 +200,7 @@ DGtal::NGon2D<T>::isValid() const
 template <typename T>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
       const NGon2D<T> & object )
 {
   object.selfDisplay( out );
@@ -209,5 +209,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

@@ -45,7 +45,7 @@ digraph GGraph {
                  color="#ddddee";
                  node [style=filled,color=white];
                  label="kernel";
-                 
+
         }
         subgraph cluster_io {
                  style=filled;
@@ -74,13 +74,13 @@ digraph GGraph {
 
        }
     }
-  
+
     subgraph cluster_concepts {
         style=filled;
         color=lightgrey;
         node [style=filled,color=white];
         label="Graph (main concepts)";
-        
+
         CUndirectedSimpleLocalGraph [ label="CUndirectedSimpleLocalGraph" URL="\ref concepts::CUndirectedSimpleLocalGraph" ] ;
         CUndirectedSimpleGraph [ label="CUndirectedSimpleGraph" URL="\ref concepts::CUndirectedSimpleGraph" ] ;
         CVertexPredicate [ label="CVertexPredicate" URL="\ref concepts::CVertexPredicate" ] ;
@@ -97,7 +97,7 @@ digraph GGraph {
     CGraphVisitor -> boost_CopyConstructible;
 
     subgraph cluster_down {
-    
+
     subgraph cluster_models {
         style=filled;
         color="#ccffcc";

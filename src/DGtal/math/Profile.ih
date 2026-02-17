@@ -20,7 +20,7 @@
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
  * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
- * 
+ *
  * @date 2015/11/08
  *
  * Implementation of inline methods defined in Profile.h
@@ -46,7 +46,7 @@ template<typename TValueFunctor, typename TValue>
 DGtal::Profile<TValueFunctor, TValue>::~Profile()
 {
   if ( myXsamples != 0 ) delete myXsamples;
-  if ( myStats != 0 ) delete myStats; 
+  if ( myStats != 0 ) delete myStats;
 }
 
 template<typename TValueFunctor, typename TValue>
@@ -64,25 +64,25 @@ DGtal::Profile<TValueFunctor, TValue>::Profile(ProfileType type)
 
 
 template<typename TValueFunctor, typename TValue>
-void 
+void
 DGtal::Profile<TValueFunctor, TValue>::clear()
 {
-  if ( myXsamples != 0 ) 
+  if ( myXsamples != 0 )
     {
       delete myXsamples;
       myXsamples = 0;
     }
-  if ( myStats != 0 ) 
+  if ( myStats != 0 )
     {
       delete myStats;
       myStats = 0;
     }
-  
+
 }
 
 
 template<typename TValueFunctor, typename TValue>
-void 
+void
 DGtal::Profile<TValueFunctor, TValue>::init(const unsigned int nb, const bool storeValsInStats )
 {
   clear();
@@ -121,7 +121,7 @@ DGtal::Profile<TValueFunctor, TValue>::getProfile
 ( std::vector<TValue> & x, std::vector<TValue> & y ) const
 {
   ASSERT( isValid() );
-  for ( unsigned int i = 0; i < myXsamples->size(); ++i) 
+  for ( unsigned int i = 0; i < myXsamples->size(); ++i)
     {
       x.push_back( myFunctor( (*myXsamples)[ i ] ) );
       switch (myProfileDef){
@@ -135,7 +135,7 @@ DGtal::Profile<TValueFunctor, TValue>::getProfile
 	y.push_back (myFunctor( (*myStats)[ i ].median() ));
 	break;
       case MEAN:
-      default: 
+      default:
         y.push_back( myFunctor( (*myStats)[ i ].mean() ) );
 	break;
 
@@ -149,13 +149,13 @@ DGtal::Profile<TValueFunctor, TValue>::getProfile
 
 
 template<typename TValueFunctor, typename TValue>
-void 
+void
 DGtal::Profile<TValueFunctor, TValue>::stopStatsSaving()
 {
   for ( unsigned int i = 0; i < myStats->size(); ++i )
     {
       ((*myStats).at( i )).terminate();
-    } 
+    }
 }
 
 template<typename TValueFunctor, typename TValue>
@@ -184,11 +184,11 @@ DGtal::Profile<TValueFunctor, TValue>::Profile( const Profile & other ){
 
 template<typename TValueFunctor, typename TValue>
 inline
-DGtal::Profile<TValueFunctor, TValue> & 
+DGtal::Profile<TValueFunctor, TValue> &
 DGtal::Profile<TValueFunctor, TValue>::operator=
 ( const DGtal::Profile<TValueFunctor, TValue> & other )
 {
-  if ( this != &other ) 
+  if ( this != &other )
     {
       if(other.myStats!=0 && other.myXsamples!=0)
         {
@@ -210,7 +210,7 @@ DGtal::Profile<TValueFunctor, TValue>::operator=
           myStoreValInStats=false;
         }
     }
-  
+
   return *this;
 }
 
@@ -219,7 +219,7 @@ DGtal::Profile<TValueFunctor, TValue>::operator=
 template<typename TValueFunctor, typename TValue>
 template <typename Iterator>
 inline
-void 
+void
 DGtal::Profile<TValueFunctor, TValue>::init( Iterator  beginXvalues, Iterator endXvalues,
                                              const bool storeValsInStats )
 {
@@ -227,7 +227,7 @@ DGtal::Profile<TValueFunctor, TValue>::init( Iterator  beginXvalues, Iterator en
   myStoreValInStats= storeValsInStats;
   myXsamples = new std::vector<TValue>;
   myStats = new std::vector< Statistic<TValue> >;
-  
+
   unsigned int nb = 0;
   for ( ;  beginXvalues != endXvalues; ++ beginXvalues, ++nb )
     {
@@ -238,7 +238,7 @@ DGtal::Profile<TValueFunctor, TValue>::init( Iterator  beginXvalues, Iterator en
 
 
 template<typename TValueFunctor, typename TValue>
-void 
+void
 DGtal::Profile<TValueFunctor, TValue>::selfDisplay( std::ostream& out ) const
 {
   out << "[Profile]";
@@ -275,14 +275,12 @@ DGtal::operator<< ( std::ostream & out,
 
 template<typename TValueFunctor, typename TValue>
 inline
-void 
+void
 DGtal::Profile<TValueFunctor, TValue>::setType(ProfileType type){
   ASSERT(myProfileDef==MEAN || myProfileDef==MAX || myProfileDef==MIN || myProfileDef==MEDIAN);
-  myProfileDef = type; 
+  myProfileDef = type;
 }
-    
+
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

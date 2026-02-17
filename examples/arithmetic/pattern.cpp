@@ -84,4 +84,3 @@ int main( int argc, char** argv )
   //! [pattern-process]
   return 0;
 }
-

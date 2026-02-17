@@ -25,11 +25,11 @@ namespace DGtal {
  @dot
 digraph GKERNEL {
   rankdir=BT;
-  
+
    subgraph cluster_ext {
        rank = same;
        style=invis;
-       
+
        subgraph cluster_base {
            style=filled;
 	   color="#eeeeff";
@@ -40,18 +40,18 @@ digraph GKERNEL {
 	   CPredicate [ label="CPredicate" URL="\ref concepts::CPredicate" ];
 	   CConstSinglePassRange [ label="CConstSinglePassRange" URL="@ref concepts::CConstSinglePassRange"]
 	   }
-	   
+
        subgraph cluster_boost {
            style=filled;
 	   color=white;
 	   node [style=filled,color=orange];
 	   label="boost";
-	   
+
 	   boost_CopyConstructible [ label="boost::CopyConstructible" URL="\ref boost::CopyConstructible" ];
 	   boost_Assignable [ label="boost::Assignable" URL="\ref boost::Assignable" ];
 	   boost_DefaultConstructible [ label="boost::DefaultConstructible" URL="\ref boost::DefaultConstructible" ];
 	   boost_ForwardContainer [ label="boost::ForwardContainer" URL="\ref boost::ForwardContainer" ];
-	   
+
         }
 
    }
@@ -62,7 +62,7 @@ digraph GKERNEL {
       color="#ddddee";
       node [style=filled,color=white];
       label="kernel (main concepts)";
-      
+
       CPointPredicate [label="CPointPredicate" URL="@ref  concepts::CPointPredicate"];
       CPointFunctor [label="CPointFunctor" URL="@ref concepts::CPointFunctor"];
       CSpace [label="CSpace" ULR="@ref concepts::CSpace"];
@@ -88,7 +88,7 @@ digraph GKERNEL {
       CInteger -> CEuclideanRing;
       CEuclideanRing -> CCommutativeRing;
       CCommutativeRing -> CSignedNumber;
-    
+
       CDomain-> CConstSinglePassRange;
 
       CSTLAssociativeContainer -> boost_DefaultConstructible;
@@ -96,7 +96,7 @@ digraph GKERNEL {
 
       CDigitalSet -> CPointPredicate;
       CDigitalSet -> CDomain   [label="use",style=dashed] ;
-		
+
       CSpace -> CInteger  [label="use",style=dashed];
       CSpace -> CIntegralNumber  [label="use",style=dashed];
       CSpace -> CUnsignedNumber  [label="use",style=dashed];
@@ -122,7 +122,7 @@ digraph GKERNEL {
 	DomainPredicate [ label="DomainPredicate" URL="\ref functors::DomainPredicate" ] ;
         DigitalSetByAssociativeContainer [ label="DigitalSetByAssociativeContainer" URL="\ref DigitalSetByAssociativeContainer" ] ;
      }
-     
+
    SpaceND ->CSpace;
    HyperRectDomain -> CDomain;
    DigitalSetBySTLVector -> CDigitalSet;
@@ -134,9 +134,9 @@ digraph GKERNEL {
    SetPredicate -> CPointPredicate;
    DomainPredicate -> CDomain [label="use",style=dashed];
    DomainPredicate -> CPointPredicate;
-   
-   
- 
+
+
+
   }
 @enddot
 

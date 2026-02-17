@@ -49,7 +49,7 @@
 
 namespace DGtal
 {
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // template class EstimatorCache
   /**
@@ -78,24 +78,24 @@ namespace DGtal
   {
     // ----------------------- Standard services ------------------------------
   public:
-    
-    
+
+
     ///Estimator type
     typedef TEstimator Estimator;
     BOOST_CONCEPT_ASSERT(( concepts::CSurfelLocalEstimator<TEstimator> ));
-    
+
     ///Container type
     typedef TContainer Container;
     BOOST_CONCEPT_ASSERT(( boost::PairAssociativeContainer<TContainer> ));
-    
+
     //Concept of CSurfelLocalEstimator
-    
+
     ///Surfel type
     typedef typename Estimator::Surfel Surfel;
-    
+
     ///Quantity type
     typedef typename Estimator::Quantity Quantity;
-    
+
     ///Self
     typedef EstimatorCache<Estimator,Container> Self;
 
@@ -104,7 +104,7 @@ namespace DGtal
      */
     EstimatorCache(): myInit(false)
     {}
-    
+
     /**
      * Constructor from estimator instance.
      *
@@ -112,13 +112,13 @@ namespace DGtal
     EstimatorCache( Alias<Estimator> anEstimator): myEstimator(&anEstimator),
                                                    myInit(false)
     {}
-    
+
     /**
      * Destructor.
      */
     ~EstimatorCache()
     {}
-    
+
     /**
      * Copy constructor.
      */
@@ -126,7 +126,7 @@ namespace DGtal
                                        myEstimator(other.myEstimator),
                                        myInit(other.myInit)
     {}
-   
+
     /**
      * Assignment.
      * @param other the object to copy.
@@ -138,15 +138,15 @@ namespace DGtal
       myContainer = other.myContainer;
       myEstimator = other.myEstimator;
       myInit = other.myInit;
-      
+
       return *this;
     }
-    
+
     // ----------------------- CSurfelLocalEstimator Interface --------------------------------------
-    
+
     /**
      * Estimator initialization. This method initializes the underlying
-     * estimator and caches all estimated quantity between @a itb and @a ite. 
+     * estimator and caches all estimated quantity between @a itb and @a ite.
      *
      * @tparam  SurfelConstIterator a const iterator on surfels.
      * @param[in] aH the gridstep
@@ -166,10 +166,10 @@ namespace DGtal
       //cannot use the optimized "range" eval on the estimator)
       for(SurfelConstIterator it = itb; it != ite; ++it)
         myContainer.insert( std::pair<Surfel, Quantity>(*it, myEstimator->eval(it) ) );
-      
+
       myInit = true;
     }
-    
+
     /**
      * Cached evaluation of the estimator at iterator @a it
      *
@@ -185,7 +185,7 @@ namespace DGtal
       ASSERT_MSG(myInit, " init() method must have been called first.");
       return myContainer.find( *it )->second;
     }
-    
+
     /**
      * Cached evaluation of the estimator at a surfel @a s
      *
@@ -199,8 +199,8 @@ namespace DGtal
       ASSERT_MSG(myInit, " init() method must have been called first.");
       return myContainer.find( s )->second;
     }
-    
-    
+
+
     /**
      * Cached range evaluation of the estimator between @a itb
      * and @a ite.
@@ -222,10 +222,10 @@ namespace DGtal
       ASSERT_MSG(myInit, " init() method must have been called first.");
       for(SurfelConstIterator it = itb; it != ite; ++it)
         *result++ = this->eval(it);
-      
+
       return result;
     }
-    
+
     /**
      * @return the gridstep.
      *
@@ -237,13 +237,13 @@ namespace DGtal
     {
       return myEstimator->h();
     }
-    
+
     // ----------------------- Interface --------------------------------------
   public:
 
-    /** 
+    /**
      * @pre init() method must have been called first.
-     * @return the number of cached elements. 
+     * @return the number of cached elements.
      */
     typename Container::size_type size() const
     {
@@ -259,7 +259,7 @@ namespace DGtal
     {
       out<< "[EstimatorCache] number of surfels="<<myContainer.size();
     }
-    
+
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
@@ -268,28 +268,28 @@ namespace DGtal
     {
       return myEstimator && myEstimator->isValid();
     }
-    
-    // ------------------------- Protected Datas ------------------------------
+
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
-    
-    
+
+
     ///Instance of estimator
     Container myContainer;
-    
+
     ///Alias of the estimator
     Estimator *myEstimator;
 
     ///Init flag
     bool myInit;
-    
+
     // ------------------------- Internals ------------------------------------
   private:
-    
+
   }; // end of class EstimatorCache
-  
-  
+
+
   /**
    * Overloads 'operator<<' for displaying objects of class 'EstimatorCache'.
    * @param out the output stream where the object is written.
@@ -303,7 +303,7 @@ namespace DGtal
     object.selfDisplay( out );
     return out;
   }
-  
+
 } // namespace DGtal
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

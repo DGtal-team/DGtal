@@ -47,11 +47,11 @@ bool testEigenDecomposition()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   typedef EigenDecomposition<2,double> Eigen2;
   typedef Eigen2::Vector Vector2;
   typedef Eigen2::Matrix Matrix2;
-  
+
   trace.beginBlock ( "Testing block ..." );
   // [4 1]
   // [1 2]
@@ -94,7 +94,7 @@ bool testEigenDecomposition()
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "error_v1 < epsilon, i.e. " <<  error_v1 << " < " << epsilon << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 

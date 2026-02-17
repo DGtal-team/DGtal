@@ -72,7 +72,7 @@ namespace DGtal
     typedef double Value;
 
     /**
-     * Constructor. Contructs a ball with center aCenter and radius
+     * Constructor. Constructs a ball with center aCenter and radius
      * aRadius.
      *
      * @param aCenter the ball center.
@@ -155,9 +155,9 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     ///Ball center

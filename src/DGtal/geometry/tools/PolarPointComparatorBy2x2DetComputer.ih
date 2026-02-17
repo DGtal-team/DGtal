@@ -42,8 +42,8 @@ template <typename TPoint, typename TDetComputer>
 inline
 DGtal::functors::PolarPointComparatorBy2x2DetComputer<TPoint,TDetComputer>
 ::PolarPointComparatorBy2x2DetComputer()
-  : myPole( NumberTraits<Coordinate>::ZERO, NumberTraits<Coordinate>::ZERO ), 
-    myDetComputer(), 
+  : myPole( NumberTraits<Coordinate>::ZERO, NumberTraits<Coordinate>::ZERO ),
+    myDetComputer(),
     myThresholder()
 {
 }
@@ -53,8 +53,8 @@ template <typename TPoint, typename TDetComputer>
 inline
 DGtal::functors::PolarPointComparatorBy2x2DetComputer<TPoint,TDetComputer>
 ::PolarPointComparatorBy2x2DetComputer(const Point& aPoint)
-: myPole( aPoint ), 
-  myDetComputer(), 
+: myPole( aPoint ),
+  myDetComputer(),
   myThresholder()
 {
 }
@@ -64,8 +64,8 @@ template <typename TPoint, typename TDetComputer>
 inline
 DGtal::functors::PolarPointComparatorBy2x2DetComputer<TPoint,TDetComputer>
 ::PolarPointComparatorBy2x2DetComputer( const PolarPointComparatorBy2x2DetComputer & other )
-  : myPole( other.myPole ), 
-    myDetComputer( other.myDetComputer ), 
+  : myPole( other.myPole ),
+    myDetComputer( other.myDetComputer ),
     myThresholder( other.myThresholder )
 {
 }
@@ -73,17 +73,17 @@ DGtal::functors::PolarPointComparatorBy2x2DetComputer<TPoint,TDetComputer>
 // ------------------------------------------------------------------------
 template <typename TPoint, typename TDetComputer>
 inline
-DGtal::functors::PolarPointComparatorBy2x2DetComputer<TPoint,TDetComputer>& 
+DGtal::functors::PolarPointComparatorBy2x2DetComputer<TPoint,TDetComputer>&
 DGtal::functors::PolarPointComparatorBy2x2DetComputer<TPoint,TDetComputer>
 ::operator=( const PolarPointComparatorBy2x2DetComputer & other )
 {
   if (this != &other)
     {
-      myPole = other.myPole; 
+      myPole = other.myPole;
       myDetComputer = other.myDetComputer;
-      myThresholder = other.myThresholder; 
+      myThresholder = other.myThresholder;
     }
-  return *this; 
+  return *this;
 }
 
 // ------------------------------------------------------------------------
@@ -93,7 +93,7 @@ void
 DGtal::functors::PolarPointComparatorBy2x2DetComputer<TPoint,TDetComputer>
 ::setPole ( const Point& aPole )
 {
-  myPole = aPole; 
+  myPole = aPole;
 }
 
 // ------------------------------------------------------------------------
@@ -128,80 +128,80 @@ DGtal::functors::PolarPointComparatorBy2x2DetComputer<TPoint,TDetComputer>
   ASSERT( ( (aU[1] > NumberTraits<Coordinate>::ZERO) &&
 	    (aV[1] >= NumberTraits<Coordinate>::ZERO) ) ||
 	  ( (aU[1] < NumberTraits<Coordinate>::ZERO) &&
-	    (aV[1] <= NumberTraits<Coordinate>::ZERO) ) ); 
- 
+	    (aV[1] <= NumberTraits<Coordinate>::ZERO) ) );
+
   ResultInteger det = myDetComputer( aU[0], aU[1], aV[0], aV[1] );
- 
+
   if ( det == NumberTraits<ResultInteger>::ZERO )
-    { //aU is before aV iff the norm of aU is smaller than the one of aV. 
-      //we compute the determinant of 
-      // aV[1]+aU[1] , aV[0]-aU[0] , -aV[0]-aU[0] , aV[1]-aU[1] 
+    { //aU is before aV iff the norm of aU is smaller than the one of aV.
+      //we compute the determinant of
+      // aV[1]+aU[1] , aV[0]-aU[0] , -aV[0]-aU[0] , aV[1]-aU[1]
       //which is equal to aV[0]*aV[0] + aV[1]*aV[1] - aU[0]*aU[0] - aU[1]*aU[1]
       return  myThresholder( myDetComputer( aV[1]+aU[1] , aV[0]-aU[0] , -aV[0]-aU[0] , aV[1]-aU[1] ) );
     }
-  else 
-    { 
-      return myThresholder( det ); 
+  else
+    {
+      return myThresholder( det );
     }
 }
 
 // ------------------------------------------------------------------------
 template <typename TPoint, typename TDetComputer>
 inline
-bool 
+bool
 DGtal::functors::PolarPointComparatorBy2x2DetComputer<TPoint,TDetComputer>
-::operator()(const Point& aPoint1, const Point& aPoint2) const 
+::operator()(const Point& aPoint1, const Point& aPoint2) const
 {
-  Vector u = aPoint1 - myPole; 
-  Vector v = aPoint2 - myPole; 
+  Vector u = aPoint1 - myPole;
+  Vector v = aPoint2 - myPole;
 
   if ( u[1] == NumberTraits<Coordinate>::ZERO )
     {
       if ( v[1] == NumberTraits<Coordinate>::ZERO )
-	{	
+	{
 	  if ( u[0] >= NumberTraits<Coordinate>::ZERO )
 	    {
-	      return ( ( v[0] < NumberTraits<Coordinate>::ZERO ) 
-		       || (v[0] > u[0]) ); 
+	      return ( ( v[0] < NumberTraits<Coordinate>::ZERO )
+		       || (v[0] > u[0]) );
 	    }
-	  else 
+	  else
 	    {
-	      return (v[0] < u[0]); 
+	      return (v[0] < u[0]);
 	    }
 	}
       else if ( v[1] > NumberTraits<Coordinate>::ZERO )
 	{
-	  return ( u[0] >= NumberTraits<Coordinate>::ZERO ); 
+	  return ( u[0] >= NumberTraits<Coordinate>::ZERO );
 	}
       else // v[1] < 0
 	{
-	  return true; 
+	  return true;
 	}
     }
   else if ( u[1] > NumberTraits<Coordinate>::ZERO )
     {
       if ( v[1] == NumberTraits<Coordinate>::ZERO )
-	{	
-	  return ( v[0] < NumberTraits<Coordinate>::ZERO ); 
+	{
+	  return ( v[0] < NumberTraits<Coordinate>::ZERO );
 	}
       else if ( v[1] > NumberTraits<Coordinate>::ZERO )
 	{
-	  return isBefore(u, v); 
+	  return isBefore(u, v);
 	}
       else // v[1] < 0
 	{
-	  return true; 
+	  return true;
 	}
     }
   else //u[1] < 0
     {
       if ( v[1] < NumberTraits<Coordinate>::ZERO )
 	{
-	  return isBefore(u, v); 
+	  return isBefore(u, v);
 	}
       else //v[1] >= 0
 	{
-	  return false; 
+	  return false;
 	}
     }
 }
@@ -212,7 +212,7 @@ DGtal::functors::PolarPointComparatorBy2x2DetComputer<TPoint,TDetComputer>
 template <typename TPoint, typename TDetComputer>
 inline
 std::ostream&
-DGtal::functors::operator<< ( std::ostream & out, 
+DGtal::functors::operator<< ( std::ostream & out,
 			      const PolarPointComparatorBy2x2DetComputer<TPoint,TDetComputer> & object )
 {
   object.selfDisplay( out );
@@ -221,5 +221,3 @@ DGtal::functors::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

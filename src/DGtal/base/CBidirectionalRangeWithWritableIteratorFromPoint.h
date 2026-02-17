@@ -103,7 +103,7 @@ namespace DGtal
         concepts::ConceptUtils::sameType( myIt, myX.routputIterator( myPoint ) );
       }
 
-      // ------------------------- Private Datas --------------------------------
+      // ------------------------- Private Data --------------------------------
     private:
       T myX; // do not require T to be default constructible.
       Point myPoint;

@@ -54,7 +54,7 @@ TEST_CASE( "Checking CInteger models")
   trace.beginBlock ( "Checking CInteger models ..." );
   BOOST_CONCEPT_ASSERT(( concepts::CInteger<int> ));
   BOOST_CONCEPT_ASSERT(( concepts::CInteger<DGtal::int16_t> ));
-  
+
   trace.info() << "  - max int16 = " << NumberTraits<DGtal::int16_t>::max()
   << std::endl;
   trace.info() << "  - min int16 = " << NumberTraits<DGtal::int16_t>::min()
@@ -79,15 +79,15 @@ TEST_CASE( "Checking CInteger models")
   << std::endl;
   trace.info() << "  - min uint64 = " << NumberTraits<DGtal::uint64_t>::min()
   << std::endl;
-  
+
   trace.endBlock();
-  
+
   trace.beginBlock ( "Checking CUnsignedInteger models ..." );
   BOOST_CONCEPT_ASSERT(( concepts::CUnsignedNumber<unsigned int> ));
   trace.endBlock();
-  
+
   trace.beginBlock ( "Checking NumberTraits on  built-in OS dependent types ..." );
-  trace.warning() << "If digits() returns 0, the type is not considered in specilizations"<<endl;
+  trace.warning() << "If digits() returns 0, the type is not considered in specializations"<<endl;
   trace.info() << "  - digits int = " << NumberTraits<int>::digits()<< std::endl;
   trace.info() << "  - digits unsigned int = " << NumberTraits<unsigned int>::digits()<< std::endl;
   trace.info() << "  - digits long int = " << NumberTraits<long int>::digits()<< std::endl;
@@ -99,10 +99,10 @@ TEST_CASE("DGal::BigInteger tests")
   trace.beginBlock ( "Checking CUnsignedInteger models ..." );
   BOOST_CONCEPT_ASSERT(( concepts::CInteger<DGtal::BigInteger> ));
   trace.endBlock();
-  
+
   DGtal::BigInteger big(425);
   CHECK(big == (int)425);
-  
+
   DGtal::BigInteger anotherbig(5);
   DGtal::BigInteger res = big + anotherbig;
   CHECK(res == (int)430);

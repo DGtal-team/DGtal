@@ -58,19 +58,19 @@ bool testRange(const Range &aRange)
 
   trace.info() << endl;
   trace.info() << "Testing Range" << endl;
-  
-  typedef typename IteratorCirculatorTraits<typename Range::ConstIterator>::Value Value; 
-  std::vector<Value> v1, v2; 
-  std::list<Value> l3, l4; 
+
+  typedef typename IteratorCirculatorTraits<typename Range::ConstIterator>::Value Value;
+  std::vector<Value> v1, v2;
+  std::list<Value> l3, l4;
   {
     trace.info() << "Forward" << endl;
     typename Range::ConstIterator i = aRange.begin();
     typename Range::ConstIterator end = aRange.end();
     for ( ; i != end; ++i) {
       cout << *i << " ";
-      v1.push_back(*i); 
+      v1.push_back(*i);
     }
-    cout << endl; 
+    cout << endl;
   }
   {
     trace.info() << "Backward" << endl;
@@ -78,9 +78,9 @@ bool testRange(const Range &aRange)
     typename Range::ConstReverseIterator end = aRange.rend();
     for ( ; i != end; ++i) {
       cout << *i << " ";
-      v2.push_back(*i); 
+      v2.push_back(*i);
     }
-    cout << endl; 
+    cout << endl;
   }
   {
     trace.info() << "Circulator" << endl;
@@ -89,34 +89,34 @@ bool testRange(const Range &aRange)
 
     trace.info() << "c is valid: "<< (int)c.isValid() << " --  " << *c << std::endl;
     trace.info() << "cend is valid: "<< (int)cend.isValid() << " --   " << *cend << std::endl;
-    
 
-    if (isNotEmpty(c,cend)) 
+
+    if (isNotEmpty(c,cend))
       {
-	do 
+	do
 	  {
 	    cout << *c << " ";
 	    l3.push_back(*c);
 	    c++;
-	  } while (c!=cend); 
+	  } while (c!=cend);
       }
-    cout << endl; 
+    cout << endl;
   }
-  
+
   {
     trace.info() << "Reverse Circulator" << endl;
     typename Range::ConstReverseCirculator c = aRange.rc();
     typename Range::ConstReverseCirculator cend = aRange.rc();
-    if (isNotEmpty(c,cend)) 
+    if (isNotEmpty(c,cend))
       {
-        do 
+        do
           {
             cout << *c << " ";
             l4.push_back(*c);
             c++;
-          } while (c!=cend); 
+          } while (c!=cend);
       }
-    cout << endl; 
+    cout << endl;
   }
 
   return ( std::equal(v1.begin(),v1.end(),l3.begin())
@@ -144,56 +144,56 @@ int main( int argc, char** argv )
   trace.info() << endl;
 
   //1) simple range of integers
-  const int n = 10; 
+  const int n = 10;
   std::vector<int> v;
-  std::back_insert_iterator<std::vector<int> > ito(v); 
-  for (int i = 1; i < n; ++i) 
+  std::back_insert_iterator<std::vector<int> > ito(v);
+  for (int i = 1; i < n; ++i)
       *ito++ = i;
 
-  typedef ConstRangeAdapter<std::vector<int>::iterator, functors::Identity, int > SimpleRange; 
-  functors::Identity df; 
-  SimpleRange r1(v.begin(), v.end(), df); 
+  typedef ConstRangeAdapter<std::vector<int>::iterator, functors::Identity, int > SimpleRange;
+  functors::Identity df;
+  SimpleRange r1(v.begin(), v.end(), df);
 
 
   //2) thresholded range of integers
   typedef ConstRangeAdapter<std::vector<int>::iterator, DGtal::functors::Thresholder<int>, bool > BoolRange;
   DGtal::functors::Thresholder<int> t(n/2);
-  BoolRange r2(v.begin(), v.end(), t); 
+  BoolRange r2(v.begin(), v.end(), t);
 
   //3) range of signed cells...
-  typedef KhalimskySpaceND<3> K; 
-  typedef K::Point Point3; 
-  vector<K::SCell> v3; 
-  K ks; 
-  v3.push_back(ks.sCell(Point3(1,1,0))); 
-  v3.push_back(ks.sCell(Point3(2,1,1))); 
-  v3.push_back(ks.sCell(Point3(3,1,2))); 
+  typedef KhalimskySpaceND<3> K;
+  typedef K::Point Point3;
+  vector<K::SCell> v3;
+  K ks;
+  v3.push_back(ks.sCell(Point3(1,1,0)));
+  v3.push_back(ks.sCell(Point3(2,1,1)));
+  v3.push_back(ks.sCell(Point3(3,1,2)));
   //... transformed into inner voxels,
   //which are projected into 2d points
   typedef SpaceND<2> S;
-  typedef S::Point Point2; 
-  functors::SCellToInnerPoint<K> f(ks); 
+  typedef S::Point Point2;
+  functors::SCellToInnerPoint<K> f(ks);
 
   functors::Projector<S> p;
   functors::Composer< functors::SCellToInnerPoint<K>,
                       functors::Projector<S>, Point2 > c(f,p);
 
-  typedef ConstRangeAdapter< std::vector<K::SCell>::iterator, 
+  typedef ConstRangeAdapter< std::vector<K::SCell>::iterator,
                              functors::Composer< functors::SCellToInnerPoint<K>,
                                                  functors::Projector<S>, Point2 >, Point2 > PointRange;
-  PointRange r3(v3.begin(), v3.end(), c); 
- 
+  PointRange r3(v3.begin(), v3.end(), c);
+
   /////////// concept checking
   testRangeConceptChecking<SimpleRange>();
   testRangeConceptChecking<BoolRange>();
   testRangeConceptChecking<PointRange>();
 
   /////////// iterators tests
-  bool res = testRange(r1) 
-    && testRange(r2) 
-    && testRange(r3); 
+  bool res = testRange(r1)
+    && testRange(r2)
+    && testRange(r3);
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
-  trace.endBlock();  
+  trace.endBlock();
   return res ? 0 : 1;
 }

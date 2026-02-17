@@ -60,7 +60,7 @@
 
 namespace DGtal
 {
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // template class NeighborhoodConvexityAnalyzer
   /**
@@ -106,16 +106,16 @@ namespace DGtal
     typedef std::vector<Point>              PointRange;
     typedef HyperRectDomain<Space>          Domain;
     typedef std::size_t                     Size;
-    
+
     static const Dimension dimension  = KSpace::dimension;
-    static const Size      neigh_size = functions::const_pow( 2*K+1, dimension ); 
+    static const Size      neigh_size = functions::const_pow( 2*K+1, dimension );
     static const Size      middle     = functions::const_middle( K, dimension );
     static const bool  false_positive = ( dimension > 2 ) || ( K > 1 );
 
     typedef std::bitset< functions::const_pow( 2*K+1, dimension ) > Configuration;
     typedef std::bitset< 9 > BasicConfiguration;
 
-    
+
     // ------------------------- Standard services --------------------------------
   public:
     /// @name Standard services (construction, initialization, assignment)
@@ -130,7 +130,7 @@ namespace DGtal
      * Constructor. Invalid object.
      */
     NeighborhoodConvexityAnalyzer() = default;
-    
+
     /**
      * Copy constructor.
      * @param other the object to clone.
@@ -200,7 +200,7 @@ namespace DGtal
     /// within the neighborhood except its center.
     static Size size()
     { return neigh_size; }
-    
+
     /// @}
 
     // -------------------- Neighborhood and convexity  services -----------------------
@@ -226,7 +226,7 @@ namespace DGtal
     {
       return myCenter;
     }
-    
+
     /// @return the current configuration.
     Configuration configuration() const
     {
@@ -266,7 +266,7 @@ namespace DGtal
           && isComplementaryFullyConvex( false )
           && isFullyConvex( true );
     }
-    
+
     /// @return 'true' iff the center is locally 0-convex collapsible.
     bool is0ConvexCollapsible()
     {
@@ -485,7 +485,7 @@ namespace DGtal
         }
       return current;
     }
-    
+
     /// @param[inout] localX as output, the set of points of the
     /// neighborhood belonging to the shape
     ///
@@ -497,10 +497,10 @@ namespace DGtal
     ///
     /// @param[in] with_center if 'true' adds the center point.
     void getLocalCompX( std::vector< Point >& localCompX, bool with_center ) const;
-    
+
     /// @}
-    
-    // ------------------------- Protected Datas ------------------------------
+
+    // ------------------------- Protected Data ------------------------------
   protected:
     /// The bounded domain in which computations are carried out.
     Domain myDomain;
@@ -523,7 +523,7 @@ namespace DGtal
     std::bitset< 512 > myBasicFullConvexityTable;
     /// Stores the 0-convexity property of the basic 3x3 neighborhood configurations
     std::bitset< 512 > myBasic0ConvexityTable;
-    
+
     /// Enum types indicating the possible type of local computations.
     enum Computation {
       FullConvexity_X_with_center        = 0x1,
@@ -539,8 +539,8 @@ namespace DGtal
     int myComputations;
     /// Stores the properties boolean values.
     int myResults;
-      
-    // ------------------------- Private Datas --------------------------------
+
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Internals ------------------------------------
@@ -591,7 +591,7 @@ namespace DGtal
     BasicConfiguration computeCentralBasicConfiguration
     ( Configuration cfg, Dimension i, Dimension j ) const;
 
-    
+
   }; // end of class NeighborhoodConvexityAnalyzer
 
 

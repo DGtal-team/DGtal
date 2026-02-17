@@ -63,51 +63,51 @@ namespace DGtal
   /**
    * @brief Aim:
    * On-line recognition of a digital circular arcs (DCA)
-   * defined as a sequence of connected grid edges such that 
-   * there is at least one (Euclidean) circle that separates the centers 
-   * of the two incident pixels of each grid edge. 
+   * defined as a sequence of connected grid edges such that
+   * there is at least one (Euclidean) circle that separates the centers
+   * of the two incident pixels of each grid edge.
    *
    * The algorithm iteratively calls a routine (@ref isCircularlySeparable)
-   * that uses Preimage2D in order to compute the whole set of 
-   * separating (Euclidean) circles passing through a given point. 
-   * It returns 'false' if the set is empty and 'true' otherwise. 
+   * that uses Preimage2D in order to compute the whole set of
+   * separating (Euclidean) circles passing through a given point.
+   * It returns 'false' if the set is empty and 'true' otherwise.
    *
    * The algorithm may be divided into two steps:
-  
+
   - The first one consists in the on-line recognition of a DSS
-  using StabbingLineComputer (using at its turn Preimage2D). 
-  Once the recogntion stops, the main routine is run. 
+  using StabbingLineComputer (using at its turn Preimage2D).
+  Once the recogntion stops, the main routine is run.
   The two incident pixels of each grid edge are scanned
-  a second time in order to compute the whole set of 
-  separating (Euclidean) circles passing through 
+  a second time in order to compute the whole set of
+  separating (Euclidean) circles passing through
   the point that made the recognition stop. If the set is not
-  empty, one of the separating circles is chosen as a solution. 
-  
-  - The second step consists in checking if the centers of the two incident pixels 
-  of the next grid edge are lying on either side of the current solution circle. 
-  If it turns out that a point is outside of the current solution circle instead of 
-  being inside or conversely, the main routine is run. 
+  empty, one of the separating circles is chosen as a solution.
+
+  - The second step consists in checking if the centers of the two incident pixels
+  of the next grid edge are lying on either side of the current solution circle.
+  If it turns out that a point is outside of the current solution circle instead of
+  being inside or conversely, the main routine is run.
   The two incident pixels of each grid edge are scanned
-  a new time in order to compute the whole set of separating (Euclidean) circles 
+  a new time in order to compute the whole set of separating (Euclidean) circles
   passing through the point that made the current solution circle not separating.
   If the set is not empty, one of the separating circles is chosen as a new solution
-  and so on. 
-  
-  For a DCA of @f$ n @f$ grid edges, a trivial upper bound of this algorithm is @f$ O(n^2) @f$ 
+  and so on.
+
+  For a DCA of @f$ n @f$ grid edges, a trivial upper bound of this algorithm is @f$ O(n^2) @f$
   because the linear-time routine may be possibly called @f$ n @f$ times. But we observed in practice
-  that the routine is called only a few times and that the algorithm is fast. 
-  
+  that the routine is called only a few times and that the algorithm is fast.
+
    *
-   * This class is a model of the concept CBidirectionalSegmentComputer. 
+   * This class is a model of the concept CBidirectionalSegmentComputer.
    *
    * It should be used with the Curve object (defined in StdDefs.h)
    * and its IncidentPointsRange as follows:
    *
    * @snippet geometry/curves/exampleStabbingCircleComputer.cpp StabbingCircleComputerUsage
    *
-   * @tparam TConstIterator ConstIterator type on STL pairs of 2D points 
+   * @tparam TConstIterator ConstIterator type on STL pairs of 2D points
   *
-   * @see testStabbingCircleComputer.cpp  exampleStabbingCircleComputer.cpp testStabbingLineComputer.cpp  exampleStabbingLineComputer.cpp 
+   * @see testStabbingCircleComputer.cpp  exampleStabbingCircleComputer.cpp testStabbingLineComputer.cpp  exampleStabbingLineComputer.cpp
    */
   template <typename TConstIterator>
   class StabbingCircleComputer
@@ -115,30 +115,30 @@ namespace DGtal
 
   public:
 
-    //requiered types
+    //required types
     typedef TConstIterator ConstIterator;
-    typedef StabbingCircleComputer<ConstIterator> Self; 
+    typedef StabbingCircleComputer<ConstIterator> Self;
     typedef StabbingCircleComputer<ReverseIterator<ConstIterator> > Reverse;
 
     //point type
-    typedef typename IteratorCirculatorTraits<ConstIterator>::Value Pair; 
+    typedef typename IteratorCirculatorTraits<ConstIterator>::Value Pair;
     //Pair::first_type and Pair::second_type should be the same type;
     BOOST_STATIC_ASSERT(( concepts::ConceptUtils::SameType<typename Pair::first_type, typename Pair::second_type >::value ));
     typedef typename Pair::first_type Point;
     BOOST_STATIC_ASSERT(( Point::dimension == 2 ));
-  
-  private: 
-    
+
+  private:
+
     //other types used for the recognition
-    typedef CowPtr<StabbingLineComputer<ConstIterator> > StabbingLineComputerPtr; 
-    typedef CircleFrom3Points<Point> Circle; 
-      
-    //Predicates used to decide whether the current circle is still seperating or not
-    typedef functors::Point2ShapePredicate<Circle,false,true> 
-      PInCirclePred; 
-    typedef functors::Point2ShapePredicate<Circle,true,true> 
-      QInCirclePred; 
-  
+    typedef CowPtr<StabbingLineComputer<ConstIterator> > StabbingLineComputerPtr;
+    typedef CircleFrom3Points<Point> Circle;
+
+    //Predicates used to decide whether the current circle is still separating or not
+    typedef functors::Point2ShapePredicate<Circle,false,true>
+      PInCirclePred;
+    typedef functors::Point2ShapePredicate<Circle,true,true>
+      QInCirclePred;
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -183,15 +183,15 @@ namespace DGtal
     */
     bool operator!=( const Self & other) const;
 
-    /** 
-     * @return a default-constructed instance of Self 
-     */    
+    /**
+     * @return a default-constructed instance of Self
+     */
     Self getSelf() const;
 
     /**
      * @return a default-constructed instance of Reverse.
      */
-     Reverse getReverse() const; 
+     Reverse getReverse() const;
 
 
     // ----------------------- Interface --------------------------------------
@@ -227,12 +227,12 @@ namespace DGtal
      * @see isStraight
      */
     StabbingLineComputerPtr getStabbingLineComputerPtr() const;
-    
+
     /**
      * @return a separating circle.
      */
     Circle getSeparatingCircle() const;
-    
+
     // ----------------------- growth operations --------------------------------------
 
     /**
@@ -276,16 +276,16 @@ namespace DGtal
      */
     void selfDisplay ( std::ostream & out ) const;
 
-    
+
     /**
      * @return the name of the class.
      */
     std::string className() const;
-    
 
-    // ------------------------- Protected Datas ------------------------------
+
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     /**
      * segment begin iterator.
@@ -298,16 +298,16 @@ namespace DGtal
     /**
      * Pointer to the geometrical DSS.
      */
-    StabbingLineComputerPtr mySegPtr; 
+    StabbingLineComputerPtr mySegPtr;
     /**
      * Separating circle.
      */
-    Circle myCircle; 
+    Circle myCircle;
     /**
-     * Flag equal to 'true' if @a mySegPtr has finished its extension 
-     * 'false' otherwise. 
+     * Flag equal to 'true' if @a mySegPtr has finished its extension
+     * 'false' otherwise.
      */
-    bool myFlagIsInit; 
+    bool myFlagIsInit;
 
     // ------------------------- Hidden services ------------------------------
   protected:
@@ -318,13 +318,13 @@ namespace DGtal
 
     // ------------------------- Internals ------------------------------------
   private:
-    
+
     /**
      * Check if the two sets of points can be separated by circles
-     * passing through the given point @a aPole. 
+     * passing through the given point @a aPole.
      * If yes, return the four points of support of the partial preimage.
-     * The pole and either @a Pf and @a Ql or @a Qf and @a Pl 
-     * implicitely describe a separating circle. 
+     * The pole and either @a Pf and @a Ql or @a Qf and @a Pl
+     * implicitly describe a separating circle.
      *
      * @param itb begin iterator on STL pairs of 2D points.
      * @param ite end iterator on STL pairs of 2D points.
@@ -335,15 +335,15 @@ namespace DGtal
      * @param Ql  (returned) last outer point of support.
      *
      * @tparam TIterator type of iterator (normal or reverse type)
-     * 
+     *
      * @return 'true' if the sets of points can be separated, 'false' otherwise
      */
     template <typename TIterator>
-    bool isCircularlySeparable(const TIterator& itb, const TIterator& ite, 
-			       const Point& aPole, 
-			       Point& Pf, Point& Pl, Point& Qf, Point& Ql);  
-  
-    // ------------------------- Private Datas --------------------------------
+    bool isCircularlySeparable(const TIterator& itb, const TIterator& ite,
+			       const Point& aPole,
+			       Point& Pf, Point& Pl, Point& Qf, Point& Ql);
+
+    // ------------------------- Private Data --------------------------------
   private:
 
 

@@ -30,7 +30,7 @@
 
 /**
    This snippet shows how to build SurfaceMesh objects from different sources:
-   
+
    - pyramid: construction from list of coordinates and list of faces
    - torus:   construction from predefined mesh surface
    - cow:     construction from OBJ file.
@@ -81,7 +81,7 @@ int main()
   typedef SurfaceMeshHelper< RealPoint, RealVector > Helper;
   typedef SurfMesh::Vertices                         Vertices;
   //! [exampleSurfaceMesh-typedef]
-  
+
   trace.beginBlock ( "Reading a mesh OBJ file" );
   //! [exampleSurfaceMesh-read-mesh]
   SurfMesh    smesh;
@@ -135,7 +135,7 @@ int main()
   auto cmap = GradientColorMap< double >( 0.0, biggest_d, CMAP_JET );
   std::vector<Color> face_colors( smesh.nbFaces() );
   for ( SurfMesh::Face j = 0; j < smesh.nbFaces(); ++j )
-    face_colors[ j ] = cmap( face_distances[ j ] );      
+    face_colors[ j ] = cmap( face_distances[ j ] );
   typedef SurfaceMeshWriter< RealPoint, RealVector > Writer;
   Writer::writeOBJ( "spot-bft.obj", smesh, face_colors );
 
@@ -159,7 +159,7 @@ int main()
   PolyscopeViewer<> viewer;
   viewer << viewmesh << viewmesh2 << viewmesh3;
   viewer.show();
-  
+
   return 0;
 }
 //                                                                           //

@@ -88,7 +88,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
   FFTW::free( myStorage );
 }
 
-// Padding when using real datas.
+// Padding when using real data.
 template <typename TSpace, typename T>
 inline
 std::size_t
@@ -434,7 +434,7 @@ DGtal::RealFFT<DGtal::HyperRectDomain<TSpace>, T>::
     }
   else
     {
-      // Strategy to preserve input datas while creating DFT plan:
+      // Strategy to preserve input data while creating DFT plan:
       // - Firstly, checks if a plan already exists for this dimensions.
       p = FFTW::plan_dft( dimension, n, getSpatialStorage(), getFreqStorage(), way, FFTW_WISDOM_ONLY | flags );
 
@@ -531,5 +531,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

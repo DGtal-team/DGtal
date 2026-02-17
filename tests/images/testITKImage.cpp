@@ -196,7 +196,7 @@ bool testITKMethod()
 
 
   trace.info() << "Output image=";
-  
+
   for (Image::ConstIterator it = myImageOut.begin(), itend = myImageOut.end();
        it != itend;
        ++it)

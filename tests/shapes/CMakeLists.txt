@@ -35,13 +35,13 @@ set(DGTAL_TESTS_SRC
   )
 
 if (DGTAL_WITH_LIBIGL)
-   set(DGTAL_TESTS_SRC_LIBIGL 
+   set(DGTAL_TESTS_SRC_LIBIGL
        testlibigl
        testWindingNumbersShape
       )
     foreach(test_file ${DGTAL_TESTS_SRC_LIBIGL})
       DGtal_add_test(${test_file})
-    endforeach()      
+    endforeach()
 endif()
 
 foreach(FILE ${DGTAL_TESTS_SRC})

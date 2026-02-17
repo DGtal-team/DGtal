@@ -70,7 +70,7 @@ namespace DGtal
    typedef DGtal::ImageContainerBySTLMap<DGtal::Z3i::Domain, unsigned char> Image3D;
    typedef DGtal::ImageContainerBySTLMap<DGtal::Z2i::Domain, unsigned char> Image2D;
    @endcode
-   * - After contructing and filling an image (anImage2D or anImage3D), just save it with:
+   * - After constructing and filling an image (anImage2D or anImage3D), just save it with:
    @code
    anImage3D >> "aFilename.pgm3d";
    anImage3D >> "aFilename.vol";
@@ -203,7 +203,7 @@ namespace DGtal
 
   /**
    * GenericWriter
-   * Template partial specialisation for images of dimension 2 with image value DGtal::Color 
+   * Template partial specialisation for images of dimension 2 with image value DGtal::Color
    **/
   template <typename TContainer,  typename TFunctor>
   struct GenericWriter<TContainer, 2, DGtal::Color, TFunctor>
@@ -223,7 +223,7 @@ namespace DGtal
                            const TFunctor & aFunctor = TFunctor() );
 
   };
-  
+
 
 /**
    * GenericWriter

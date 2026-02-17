@@ -42,12 +42,12 @@ inline
 void
 DGtal::InHalfPlaneBySimple3x3Matrix<TP,TI>::init( const Point& aP, const Point& aQ )
 {
-  myMatrix.setComponent( 0, 0, static_cast<Integer>( aP[0] ) ); 
-  myMatrix.setComponent( 0, 1, static_cast<Integer>( aP[1] ) ); 
-  myMatrix.setComponent( 0, 2, NumberTraits<Integer>::ONE ); 
-  myMatrix.setComponent( 1, 0, static_cast<Integer>( aQ[0] ) ); 
-  myMatrix.setComponent( 1, 1, static_cast<Integer>( aQ[1] ) ); 
-  myMatrix.setComponent( 1, 2, NumberTraits<Integer>::ONE ); 
+  myMatrix.setComponent( 0, 0, static_cast<Integer>( aP[0] ) );
+  myMatrix.setComponent( 0, 1, static_cast<Integer>( aP[1] ) );
+  myMatrix.setComponent( 0, 2, NumberTraits<Integer>::ONE );
+  myMatrix.setComponent( 1, 0, static_cast<Integer>( aQ[0] ) );
+  myMatrix.setComponent( 1, 1, static_cast<Integer>( aQ[1] ) );
+  myMatrix.setComponent( 1, 2, NumberTraits<Integer>::ONE );
 }
 
 // ----------------------------------------------------------------------------
@@ -56,7 +56,7 @@ inline
 void
 DGtal::InHalfPlaneBySimple3x3Matrix<TP,TI>::init( const PointArray& aA )
 {
-  init( aA[0], aA[1] ); 
+  init( aA[0], aA[1] );
 }
 
 // ----------------------------------------------------------------------------
@@ -65,10 +65,10 @@ inline
 typename DGtal::InHalfPlaneBySimple3x3Matrix<TP,TI>::Value
 DGtal::InHalfPlaneBySimple3x3Matrix<TP,TI>::operator()( const Point& aR ) const
 {
-  myMatrix.setComponent( 2, 0, static_cast<Integer>( aR[0] ) ); 
-  myMatrix.setComponent( 2, 1, static_cast<Integer>( aR[1] ) ); 
-  myMatrix.setComponent( 2, 2, NumberTraits<Integer>::ONE ); 
-  return myMatrix.determinant(); 
+  myMatrix.setComponent( 2, 0, static_cast<Integer>( aR[0] ) );
+  myMatrix.setComponent( 2, 1, static_cast<Integer>( aR[1] ) );
+  myMatrix.setComponent( 2, 2, NumberTraits<Integer>::ONE );
+  return myMatrix.determinant();
 }
 
 // ----------------------------------------------------------------------------
@@ -97,7 +97,7 @@ DGtal::InHalfPlaneBySimple3x3Matrix<TP,TI>::isValid() const
 template <typename TP, typename TI>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		    const InHalfPlaneBySimple3x3Matrix<TP,TI> & object )
 {
   object.selfDisplay( out );
@@ -106,5 +106,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

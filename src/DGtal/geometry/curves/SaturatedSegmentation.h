@@ -50,26 +50,26 @@
 
 namespace DGtal
 {
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // template class SaturatedSegmentation
   /**
    * Description of template class 'SaturatedSegmentation' <p>
    * \brief Aim: Computes the saturated segmentation, that is
-   * the whole set of maximal segments within a range given by 
+   * the whole set of maximal segments within a range given by
    * a pair of ConstIterators (maximal segments are segments
-   * that cannot be included in greater segments). 
+   * that cannot be included in greater segments).
    *
    * This class is a model of CSegmentation.
-   * 
+   *
    * @tparam TSegmentComputer at least a model of concepts::CForwardSegmentComputer
-   * (an online algorithm for the recognition of a given class of segments). 
+   * (an online algorithm for the recognition of a given class of segments).
    *
    * In the short example below, a digital curve stored in a STL vector
-   * is decomposed into maximal 8-connected DSSs whose parameters are sent to 
+   * is decomposed into maximal 8-connected DSSs whose parameters are sent to
    * the standard output.
-   * @code 
-   
+   * @code
+
   //types definition
   typedef PointVector<2,int> Point;
   typedef std::vector<Point> Range;
@@ -92,60 +92,60 @@ namespace DGtal
   //Segmentation
   SegmentComputer recognitionAlgorithm;
   Segmentation theSegmentation(curve.begin(), curve.end(), recognitionAlgorithm);
-         
+
   Segmentation::SegmentComputerIterator i = theSegmentation.begin();
   Segmentation::SegmentComputerIterator end = theSegmentation.end();
   for ( ; i != end; ++i) {
     SegmentComputer current(*i);
     trace.info() << current << std::endl;  //standard output
-  } 
+  }
 
    * @endcode
    *
-   * If you want to get the saturated segmentation of a part of the 
-   * digital curve (not the whole digital curve), you can give 
-   * the range to process as a pair of iterators when calling 
-   * the setSubRange() method as follow: 
-   * @code 
+   * If you want to get the saturated segmentation of a part of the
+   * digital curve (not the whole digital curve), you can give
+   * the range to process as a pair of iterators when calling
+   * the setSubRange() method as follow:
+   * @code
   theSegmentation.setSubRange(beginIt, endIt);
-   * @endcode   
+   * @endcode
    *
    * Obviously, [beginIt, endIt) has to be a valid range included
-   * in the wider range [curve.begin(), curve.end()). 
+   * in the wider range [curve.begin(), curve.end()).
    *
-   * Moreover, the segmentation at the ends depends of the 
-   * underlying digital curve. Among the whole set of  
-   * maximal segments that pass through the first (resp. last) 
+   * Moreover, the segmentation at the ends depends of the
+   * underlying digital curve. Among the whole set of
+   * maximal segments that pass through the first (resp. last)
    * element of the range, one maximal segment must be chosen
-   * as the first (resp. last) retrieved maximal segments. 
-   * Several processing modes are therefore available: 
-   * - "First" and "First++" 
-   * - "MostCentered" (default) and "MostCentered++" 
+   * as the first (resp. last) retrieved maximal segments.
+   * Several processing modes are therefore available:
+   * - "First" and "First++"
+   * - "MostCentered" (default) and "MostCentered++"
    * - "Last" and "Last++"
    *
-   * The mode i indicates that the segmentation begins with 
+   * The mode i indicates that the segmentation begins with
    * the i maximal segment passing through the first element
-   * and ends with the i maximal segment passing through 
+   * and ends with the i maximal segment passing through
    * the last element. The last retrieved segment of the segmentation
    * is not included in the simple "XXX" modes, but is included
    * in the "XXX++" modes.
    *
-   * For instance, in the default mode "MostCentered", the 
+   * For instance, in the default mode "MostCentered", the
    * segmentation begins with the most centered maximal segment
    * passing through the first element and ends (without including it)
-   * with the most centered maximal segment passing through the last 
-   * element. This mode is basically used to process a whole circular 
+   * with the most centered maximal segment passing through the last
+   * element. This mode is basically used to process a whole circular
    * structure so that the first maximal segment is not retrieved twice.
-   * However, in order to include the most centered maximal segment 
-   * passing through the last element in a subpart, you should use the 
-   * "MostCentered++" mode. 
-   * 
+   * However, in order to include the most centered maximal segment
+   * passing through the last element in a subpart, you should use the
+   * "MostCentered++" mode.
+   *
    * In order to set a mode (before getting a SegmentComputerIterator),
-   * use the setMode() method as follow: 
-   * @code 
+   * use the setMode() method as follow:
+   * @code
   theSegmentation.setMode("First");
-   * @endcode  
-   * 
+   * @endcode
+   *
    * @see testSegmentation.cpp
    */
 
@@ -153,13 +153,13 @@ namespace DGtal
   class SaturatedSegmentation
   {
 
-  public: 
+  public:
 
     BOOST_CONCEPT_ASSERT(( concepts::CForwardSegmentComputer<TSegmentComputer> ));
     typedef TSegmentComputer SegmentComputer;
     typedef typename SegmentComputer::ConstIterator ConstIterator;
 
-  private: 
+  private:
 
     typedef typename TSegmentComputer::Reverse ReverseSegmentComputer;
     typedef typename ReverseSegmentComputer::ConstIterator ConstReverseIterator;
@@ -173,15 +173,15 @@ namespace DGtal
   // template class SegmentComputerIterator
   /**
    * Description of template class 'SaturatedSegmentation::SegmentComputerIterator'
-   *  <p> \brief Aim: Specific iterator to visit all the maximal segments of a 
-   * saturated segmentation. 
+   *  <p> \brief Aim: Specific iterator to visit all the maximal segments of a
+   * saturated segmentation.
    */
     class SegmentComputerIterator
     {
 
          // ------------------------- inner Types -----------------------
 
-    public: 
+    public:
       typedef typename SaturatedSegmentation::SegmentComputer SegmentComputer;
       typedef typename SegmentComputer::ConstIterator ConstIterator;
 
@@ -197,12 +197,12 @@ namespace DGtal
        * The current segment
        */
       SegmentComputer  mySegmentComputer;
-      
+
       /**
-       * A flag equal to TRUE if *this is valid, FALSE otherwise 
+       * A flag equal to TRUE if *this is valid, FALSE otherwise
        */
       bool  myFlagIsValid;
-    
+
       /**
        * Begin iterator of the last maximal segment of the segmentation
        */
@@ -211,24 +211,24 @@ namespace DGtal
        * End iterator of the last maximal segment of the segmentation
        */
       ConstIterator myLastMaximalSegmentEnd;
-      
+
       /**
        * A flag equal to TRUE if the current segment
-       * intersects the next one, FALSE otherwise 
-       * (and FALSE if the current segment is the last one) 
+       * intersects the next one, FALSE otherwise
+       * (and FALSE if the current segment is the last one)
        */
       bool  myFlagIntersectNext;
 
       /**
        * A flag equal to TRUE if the current segment
-       * intersects the previous one, FALSE otherwise 
-       * (and FALSE if the current segment is the first one) 
+       * intersects the previous one, FALSE otherwise
+       * (and FALSE if the current segment is the first one)
        */
       bool  myFlagIntersectPrevious;
 
       /**
        * A flag equal to TRUE if *this is the last maximal segment,
-       * FALSE otherwise 
+       * FALSE otherwise
        */
       bool  myFlagIsLast;
 
@@ -237,12 +237,12 @@ namespace DGtal
       // ------------------------- Standard services -----------------------
     public:
        friend class SaturatedSegmentation<TSegmentComputer>;
-         
+
 
 
       /**
        * Constructor.
-       * 
+       *
        * Nb: complexity in O(n).
        * @param aSegmentation  the object that knows the range bounds
        * @param aSegmentComputer  an online segment recognition algorithm
@@ -258,14 +258,14 @@ namespace DGtal
        * @param aOther the iterator to clone.
        */
       SegmentComputerIterator( const SegmentComputerIterator & aOther );
-    
+
       /**
        * Assignment.
        * @param aOther the iterator to copy.
        * @return a reference on 'this'.
        */
       SegmentComputerIterator& operator=( const SegmentComputerIterator & aOther );
-    
+
       /**
        * Destructor. Does nothing.
        */
@@ -276,10 +276,10 @@ namespace DGtal
        * @return 'true' if the object is valid, 'false' otherwise.
        */
       bool isValid() const { return myFlagIsValid; }
-    
+
       // ------------------------- iteration services -------------------------
     public:
-      
+
       /**
        * @return a constant reference to the current segment
        */
@@ -302,10 +302,10 @@ namespace DGtal
        * Nb: complexity in O(n).
        */
       SegmentComputerIterator& operator++();
-      
+
       /**
        * Equality operator.
-       * @param aOther the iterator to compare with 
+       * @param aOther the iterator to compare with
        * @return 'true' if their current positions coincide.
        * (same front and back iterators)
        */
@@ -313,7 +313,7 @@ namespace DGtal
 
       /**
        * Inequality operator.
-       * @param aOther the iterator to compare with 
+       * @param aOther the iterator to compare with
        * @return 'true' if their current positions differs.
        * (different front and back iterators)
        */
@@ -345,9 +345,9 @@ namespace DGtal
 
     // ----------------------- hidden services --------------------------------------
 
-      private: 
+      private:
 
-      
+
 
       /**
        * Checks if the current segment intersects the next one.
@@ -357,11 +357,11 @@ namespace DGtal
        * @return 'true' if it != itb and it != ite and
        * --it and it form a valid segment, false otherwise
        */
-      bool doesIntersectNext(const ConstIterator& it, 
+      bool doesIntersectNext(const ConstIterator& it,
                        const ConstIterator& itb, const ConstIterator& ite);
-      bool doesIntersectNext(const ConstIterator& it, 
+      bool doesIntersectNext(const ConstIterator& it,
                        const ConstIterator& itb, const ConstIterator& ite, IteratorType);
-      bool doesIntersectNext(const ConstIterator& it, 
+      bool doesIntersectNext(const ConstIterator& it,
                        const ConstIterator& itb, const ConstIterator& ite, CirculatorType);
 
       /**
@@ -409,27 +409,27 @@ namespace DGtal
      * Constructor.
      * @param itb  begin iterator of the underlying range
      * @param ite  end iterator of the underlying range
-     * @param aSegmentComputer  an online segment recognition algorithm. 
+     * @param aSegmentComputer  an online segment recognition algorithm.
      */
-    SaturatedSegmentation(const ConstIterator& itb, 
-        const ConstIterator& ite, 
+    SaturatedSegmentation(const ConstIterator& itb,
+        const ConstIterator& ite,
         const SegmentComputer& aSegmentComputer);
 
     /**
      * Set a subrange to process
      * @param itb  begin iterator the range to processed
      * @param ite  end iterator the range to processed
-     * 
+     *
      * Nb: must be a valid range included in the underlying range.
      */
-    void setSubRange(const ConstIterator& itb, 
+    void setSubRange(const ConstIterator& itb,
                      const ConstIterator& ite);
 
 
     /**
      * Set processing mode
      * @param aMode one of the 3 available modes :
-     * "Truncate" (default), "Truncate+1", "DoNotTruncate". 
+     * "Truncate" (default), "Truncate+1", "DoNotTruncate".
      */
     void setMode(const std::string& aMode);
 
@@ -464,21 +464,21 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     /**
      * Begin iterator of the underlying range
      */
     ConstIterator myBegin;
-    
+
     /**
      * End iterator of the underlying range
      */
     ConstIterator myEnd;
-  
+
     /**
      * Begin iterator of the subrange to segment
      */
@@ -488,11 +488,11 @@ namespace DGtal
      * End iterator of the subrange to segment
      */
     ConstIterator myStop;
-  
+
     /**
      * Mode: either "First", "MostCentered" (default), "Last"
      */
-    std::string myMode; 
+    std::string myMode;
 
     /**
      * the segment computer.

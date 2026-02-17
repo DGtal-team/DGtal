@@ -45,9 +45,9 @@ DGtal::L1LengthEstimator<T>::eval( const ConstIterator& itb,
     const ConstIterator& ite, const double h ) const
 {
   ASSERT(h > 0.);
-  
+
   Quantity val = 0.;
-  
+
   if ( DGtal::isEmpty(itb,ite) )
     return val;
 
@@ -56,8 +56,8 @@ DGtal::L1LengthEstimator<T>::eval( const ConstIterator& itb,
   {
     val += 1.;
     ++i;
-  } 
-  while (i != ite);  
+  }
+  while (i != ite);
 
   return val*h;
 }
@@ -72,7 +72,7 @@ void
 DGtal::L1LengthEstimator<T>::selfDisplay ( std::ostream & out ) const
 {
   out << "[L1LengthEstimator]";
-  if (isValid()) 
+  if (isValid())
     out <<" initialized";
   else
     out<< " not initialized";
@@ -95,7 +95,7 @@ DGtal::L1LengthEstimator<T>::isValid() const
 template <typename T>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
       const L1LengthEstimator<T> & object )
 {
   object.selfDisplay( out );
@@ -104,5 +104,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

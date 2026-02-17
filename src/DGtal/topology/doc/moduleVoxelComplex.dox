@@ -197,7 +197,7 @@ complex, selectRandom<Complex>, isthmusTable, persistence);
 
 \endcode
 
-The persistence parameter controls the removal of voxels from the skeleton (voxels where the Skel function 
+The persistence parameter controls the removal of voxels from the skeleton (voxels where the Skel function
 returns true). Every generation in the algorithm runs over every voxel, checking if they can be removed
 (because they don't change the topology) and if they have to be kept because they are part of the skeleton.
 

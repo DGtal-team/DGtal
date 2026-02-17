@@ -53,26 +53,26 @@ DGtal::FPLengthEstimator<T>::eval(const ConstIterator& itb,
   if ( isEmpty(itb,ite) )
     return val;
 
-  FaithfulPolygon fp( itb, ite ); 
+  FaithfulPolygon fp( itb, ite );
   std::vector<Point> points(fp.size());
   fp.copyFP( points.begin() );
 
   typename std::vector<Point>::const_iterator i = points.begin();
   typename std::vector<Point>::const_iterator j = i;
-  ++j; 
+  ++j;
   const typename std::vector<Point>::const_iterator end = points.end();
 
   for ( ; j != end; ++i, ++j )
   {
-    Vector v( *j - *i ); 
+    Vector v( *j - *i );
     val += v.norm(Vector::L_2);
   }
   if ( IsCirculator<ConstIterator>::value )
   {
-    Vector v( points.front() - *i ); 
+    Vector v( points.front() - *i );
     val += v.norm(Vector::L_2);
   }
-  
+
   return val*h;
 }
 
@@ -88,7 +88,7 @@ void
 DGtal::FPLengthEstimator<T>::selfDisplay ( std::ostream & out ) const
 {
   out << "[FPLengthEstimator]";
-  if (isValid()) 
+  if (isValid())
     out <<" initialized";
   else
     out<< " not initialized";
@@ -111,7 +111,7 @@ DGtal::FPLengthEstimator<T>::isValid() const
 template <typename T>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
       const FPLengthEstimator<T> & object )
 {
   object.selfDisplay( out );
@@ -120,5 +120,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

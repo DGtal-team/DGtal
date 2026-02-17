@@ -47,11 +47,11 @@ using namespace DGtal;
 
 template <typename DSL>
 bool checkSubStandardDSLQ0( const DSL & D,
-                            const typename DSL::Point & A, 
-                            const typename DSL::Point & B ) 
+                            const typename DSL::Point & A,
+                            const typename DSL::Point & B )
 {
-  
-  
+
+
   DSL S = D.smartDSS( A, B );
   // std::cout << D.a() << " " << D.b() << " " << D.mu() << " "
   //           << S.a() << " " << S.b() << " " << S.mu() << " "
@@ -61,9 +61,9 @@ bool checkSubStandardDSLQ0( const DSL & D,
 }
 
 template <typename Fraction>
-bool testSubStandardDSLQ0( unsigned int nbtries, 
-                           typename Fraction::Integer moda, 
-                           typename Fraction::Integer modb, 
+bool testSubStandardDSLQ0( unsigned int nbtries,
+                           typename Fraction::Integer moda,
+                           typename Fraction::Integer modb,
                            typename Fraction::Integer modx )
 {
   typedef StandardDSLQ0<Fraction> DSL;
@@ -72,7 +72,7 @@ bool testSubStandardDSLQ0( unsigned int nbtries,
   IntegerComputer<Integer> ic;
 
   //std::cout << "# a b mu a1 b1 mu1 Ax Ay Bx By" << std::endl;
-  
+
   clock_t timeBegin, timeEnd;
   timeBegin = clock();
 
@@ -96,16 +96,16 @@ bool testSubStandardDSLQ0( unsigned int nbtries,
             }
         }
     }
-  
+
   timeEnd = clock();
   long double CPUTime;
-  CPUTime =  ((double)timeEnd-(double)timeBegin)/((double)CLOCKS_PER_SEC);  
-  
-  //std::cout << "SmartDSS: CPU Time ellapsed = " << CPUTime << " - Time/test = = " << (long double) CPUTime/(nbtries*5*10) << std::endl;
- 
+  CPUTime =  ((double)timeEnd-(double)timeBegin)/((double)CLOCKS_PER_SEC);
+
+  //std::cout << "SmartDSS: CPU Time elapsed = " << CPUTime << " - Time/test = = " << (long double) CPUTime/(nbtries*5*10) << std::endl;
+
   std::cout << modx  << " " << (long double) CPUTime/(nbtries*5*10) << std::endl;
-  
- 
+
+
 return true;
 }
 
@@ -122,12 +122,12 @@ int main( int argc, char** argv)
   // Integer modb = ( argc > 3 ) ? atoll( argv[ 3 ] ) : 100000000000;
   // Integer modx = ( argc > 4 ) ? atoll( argv[ 4 ] ) : 1000;
   // testSubStandardDSLQ0<Fraction>( nbtries, moda, modb, modx );
- 
-  
+
+
 
   Integer modb = 1000000000000;
   Integer moda = modb;
-  
+
   for(Integer modx = 10; modx < modb/2;modx*=2)
     {
       testSubStandardDSLQ0<Fraction>( nbtries, moda, modb, modx );

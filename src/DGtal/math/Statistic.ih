@@ -22,7 +22,7 @@
  * @date 2011/06/24
  *
  * Implementation of inline methods defined in Statistics.h
- * 
+ *
  * Backport from ImaGene
  *
  * This file is part of the DGtal library.
@@ -37,7 +37,7 @@
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline methods                                          //
 /**
- * Destructor. 
+ * Destructor.
  */
 template <typename TQuantity>
 inline
@@ -60,12 +60,12 @@ template <typename TQuantity>
 inline
 DGtal::Statistic<TQuantity>::Statistic
 ( const Statistic<TQuantity> & other )
-  : mySamples( other.mySamples ), 
-    myExp( other.myExp ), 
-    myExp2( other.myExp2 ), 
+  : mySamples( other.mySamples ),
+    myExp( other.myExp ),
+    myExp2( other.myExp2 ),
     myMax( other.myMax ),
-    myMin( other.myMin ), 
-    myMedian( other.myMedian), 
+    myMin( other.myMin ),
+    myMedian( other.myMedian),
     myStoreSamples (other.myStoreSamples),
     myIsTerminated(other.myIsTerminated)
 {
@@ -75,14 +75,14 @@ DGtal::Statistic<TQuantity>::Statistic
       myValues.push_back(other.myValues.at(i));
     }
   }
-  
+
 }
 
 
 
 template <typename TQuantity>
 inline
-DGtal::Statistic<TQuantity> & 
+DGtal::Statistic<TQuantity> &
 DGtal::Statistic<TQuantity>::operator=
 ( const Statistic<TQuantity> & other )
 {
@@ -105,13 +105,13 @@ DGtal::Statistic<TQuantity>::operator=
     }
   return *this;
 }
- 
+
 
 
 
 template <typename TQuantity>
 inline
-DGtal::Statistic<TQuantity> & 
+DGtal::Statistic<TQuantity> &
 DGtal::Statistic<TQuantity>::operator+=
 ( const Statistic<TQuantity> & other )
 {
@@ -126,7 +126,7 @@ DGtal::Statistic<TQuantity>::operator+=
   myExp += other.myExp;
   myExp2 += other.myExp2;
   myIsTerminated=false;
-  
+
   if(myStoreSamples && other.myStoreSamples){
     for(unsigned int i=0; i<other.myValues.size(); i++){
       myValues.push_back(other.myValues.at(i));
@@ -142,7 +142,7 @@ DGtal::Statistic<TQuantity>::operator+=
 
 template <typename TQuantity>
 inline
-DGtal::Statistic<TQuantity> 
+DGtal::Statistic<TQuantity>
 DGtal::Statistic<TQuantity>::operator+
 ( const Statistic<TQuantity> & other ) const
 {
@@ -177,7 +177,7 @@ DGtal::Statistic<TQuantity>::end() const
 
 template <typename TQuantity>
 inline
-unsigned int 
+unsigned int
 DGtal::Statistic<TQuantity>::samples() const
 {
   return mySamples;
@@ -185,7 +185,7 @@ DGtal::Statistic<TQuantity>::samples() const
 
 template <typename TQuantity>
 inline
-unsigned int 
+unsigned int
 DGtal::Statistic<TQuantity>::size() const
 {
   return myValues.size();
@@ -203,7 +203,7 @@ inline
 double
 DGtal::Statistic<TQuantity>::mean() const
 {
-  return NumberTraits<Quantity>::castToDouble(myExp) / 
+  return NumberTraits<Quantity>::castToDouble(myExp) /
     static_cast<double>(mySamples );
 }
 
@@ -223,7 +223,7 @@ double
 DGtal::Statistic<TQuantity>::unbiasedVariance() const
 {
   ASSERT( mySamples != 0 );
-  return ( (double) mySamples ) * variance() 
+  return ( (double) mySamples ) * variance()
     / ( (double) mySamples );
 }
 
@@ -249,7 +249,7 @@ DGtal::Statistic<TQuantity>::min() const
 template <typename TQuantity>
 inline
 TQuantity
-DGtal::Statistic<TQuantity>::median() 
+DGtal::Statistic<TQuantity>::median()
 {
   ASSERT( myStoreSamples || myIsTerminated );
   if(myIsTerminated){
@@ -257,7 +257,7 @@ DGtal::Statistic<TQuantity>::median()
   }
   else{
     ASSERT(myValues.size()>0);
-    nth_element( myValues.begin(), myValues.begin()+(myValues.size()/2), 
+    nth_element( myValues.begin(), myValues.begin()+(myValues.size()/2),
                  myValues.end());
     return *(myValues.begin()+(myValues.size()/2));
   }
@@ -267,7 +267,7 @@ DGtal::Statistic<TQuantity>::median()
 
 template <typename TQuantity>
 inline
-void 
+void
 DGtal::Statistic<TQuantity>::addValue( TQuantity v )
 {
   if ( mySamples == 0 )
@@ -284,13 +284,13 @@ DGtal::Statistic<TQuantity>::addValue( TQuantity v )
     myValues.push_back(v);
   }
 }
-  
+
 
 
 template <typename TQuantity>
 template <class Iter>
 inline
-void 
+void
 DGtal::Statistic<TQuantity>::addValues( Iter b, Iter e )
 {
   for ( ; b != e; ++b )
@@ -319,9 +319,9 @@ DGtal::Statistic<TQuantity>::clear()
 
 
 
-template< typename TQuantity> 
+template< typename TQuantity>
 inline
-void 
+void
 DGtal::Statistic<TQuantity>::terminate()
 {
   if(myStoreSamples){
@@ -331,9 +331,9 @@ DGtal::Statistic<TQuantity>::terminate()
     // myValues.clear();
     myStoreSamples=false;
     myIsTerminated=true;
-  } 
+  }
 }
- 
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
@@ -341,7 +341,7 @@ DGtal::Statistic<TQuantity>::terminate()
 
 template <typename TQuantity>
 inline
-void 
+void
 DGtal::Statistic<TQuantity>::selfDisplay
 ( std::ostream& thatStream ) const
 {
@@ -352,7 +352,7 @@ DGtal::Statistic<TQuantity>::selfDisplay
              << " uvar=" << unbiasedVariance()
              << " min=" << min()
              << " max=" << max();
-  if(myIsTerminated){    
+  if(myIsTerminated){
     thatStream << " median =" << myMedian;
   }
   thatStream << "]";
@@ -361,7 +361,7 @@ DGtal::Statistic<TQuantity>::selfDisplay
 
 template <typename TQuantity>
 inline
-bool 
+bool
 DGtal::Statistic<TQuantity>::OK() const
 {
   return true;
@@ -375,7 +375,7 @@ DGtal::Statistic<TQuantity>::OK() const
 template <typename TQuantity>
 inline
 std::ostream&
-DGtal::operator<<( std::ostream & thatStream, 
+DGtal::operator<<( std::ostream & thatStream,
                    const Statistic<TQuantity> & that_object_to_display )
 {
   that_object_to_display.selfDisplay( thatStream );
@@ -384,5 +384,3 @@ DGtal::operator<<( std::ostream & thatStream,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

@@ -106,7 +106,7 @@ Point calcPointModuloDomain( Point aPoint, Domain const & aDomain )
 /** Returns periodicity specification from an integer between 0 and 2^n - 1.
  *
  * From an integer between 0 and 2^n-1, it returns a boolean array of size n
- * whith value true at position i if the ith bit of the integer is set,
+ * with value true at position i if the ith bit of the integer is set,
  * false otherwise.
  *
  * @tparam N          size of the periodicity specification array.

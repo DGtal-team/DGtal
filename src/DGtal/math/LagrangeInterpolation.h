@@ -51,9 +51,9 @@
 namespace DGtal
 {
   /**
-    Description of class 'LagrangeInterpolation' 
+    Description of class 'LagrangeInterpolation'
     <p> \brief Aim: This class implements Lagrange basis functions and Lagrange interpolation.
-    
+
     @see testLagrangeInterpolation.cpp
 
     @tparam TEuclideanRing any model of CEuclideanRing like int, double, etc.
@@ -71,12 +71,12 @@ namespace DGtal
     /// The monovariate polynomial type
     typedef DGtal::MPolynomial< 1, Ring > Polynomial;
     typedef std::size_t                   Size;
-    
+
     // ----------------------- Standard services ------------------------------
   public:
 
     /**
-     * Destructor. 
+     * Destructor.
      */
     ~LagrangeInterpolation() = default;
 
@@ -95,7 +95,7 @@ namespace DGtal
     {
       init( xvalues );
     }
-                          
+
     /**
      * Copy constructor.
      * @param other the object to clone.
@@ -139,7 +139,7 @@ namespace DGtal
     {
       return myDeterminant;
     }
-    
+
     /// Initializes the Lagrange interpolation object with its
     /// x-values, and computes the corresponding Lagrange Basis.
     ///
@@ -160,11 +160,11 @@ namespace DGtal
         {
           Ring c = myDeterminant;
           for ( Dimension m = 0; m < size(); ++m )
-            if ( m != j ) 
+            if ( m != j )
               c /= myX[ j ] - myX[ m ];
           Polynomial P = c; // constant
           for ( Dimension m = 0; m < size(); ++m )
-            if ( m != j ) 
+            if ( m != j )
               P *= mmonomial<Ring>( 1 ) - myX[ m ] * mmonomial<Ring>( 0 );
           myLagrangeBasis.push_back( P );
         }
@@ -187,7 +187,7 @@ namespace DGtal
         P += yvalues[ j ] * myLagrangeBasis[ j ];
       return P;
     }
-    
+
     // ----------------------- Accessors ------------------------------
   public:
 
@@ -201,7 +201,7 @@ namespace DGtal
       ASSERT( i < size() );
       return myLagrangeBasis[ i ];
     }
-      
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -225,8 +225,8 @@ namespace DGtal
     {
       return myDeterminant != NumberTraits< Ring >::ZERO;
     }
-  
-    // ------------------------- Datas ----------------------------------------
+
+    // ------------------------- Data ----------------------------------------
   protected:
 
     /// The vector of X-values (abscissa)
@@ -235,7 +235,7 @@ namespace DGtal
     Ring                myDeterminant;
     /// The Lagrange polynomial basis corresponding to X-values.
     std::vector<Polynomial> myLagrangeBasis;
-  
+
   };
 
   /**
@@ -246,14 +246,14 @@ namespace DGtal
    */
   template <typename TEuclideanRing>
   std::ostream&
-  operator<<( std::ostream & that_stream, 
+  operator<<( std::ostream & that_stream,
         const LagrangeInterpolation< TEuclideanRing > & that_object_to_display )
   {
     that_object_to_display.selfDisplay( that_stream );
     return that_stream;
   }
-  
-  
+
+
 } // namespace DGtal
 
 

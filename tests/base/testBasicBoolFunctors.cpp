@@ -60,72 +60,72 @@ bool testBasicBoolFunctors()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing block ..." );
   // true()
-  nbok += trueBF0() == true ? 1 : 0; 
+  nbok += trueBF0() == true ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true() == true" << std::endl;
 
   // false()
-  nbok += falseBF0() == false ? 1 : 0; 
+  nbok += falseBF0() == false ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "false() == false" << std::endl;
 
   // id( b )
-  nbok += identityBF1( true ) == true ? 1 : 0; 
+  nbok += identityBF1( true ) == true ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "id(true) == true" << std::endl;
-  nbok += identityBF1( false ) == false ? 1 : 0; 
+  nbok += identityBF1( false ) == false ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "id(false) == false" << std::endl;
 
   // not( b )
-  nbok += notBF1( true ) == false ? 1 : 0; 
+  nbok += notBF1( true ) == false ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "not(true) == false" << std::endl;
-  nbok += notBF1( false ) == true ? 1 : 0; 
+  nbok += notBF1( false ) == true ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "not(false) == true" << std::endl;
 
   // and( b1, b2 )
-  nbok += andBF2( true, true ) == true ? 1 : 0; 
+  nbok += andBF2( true, true ) == true ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "and( true, true ) == true" << std::endl;
-  nbok += andBF2( false, true ) == false ? 1 : 0; 
+  nbok += andBF2( false, true ) == false ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "and( false, true ) == false" << std::endl;
-  nbok += andBF2( true, false ) == false ? 1 : 0; 
+  nbok += andBF2( true, false ) == false ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "and( true, false ) == false" << std::endl;
-  nbok += andBF2( false, false ) == false ? 1 : 0; 
+  nbok += andBF2( false, false ) == false ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "and( false, false ) == false" << std::endl;
 
   // or( b1, b2 )
-  nbok += orBF2( true, true ) == true ? 1 : 0; 
+  nbok += orBF2( true, true ) == true ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "or( true, true ) == true" << std::endl;
-  nbok += orBF2( false, true ) == true ? 1 : 0; 
+  nbok += orBF2( false, true ) == true ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "or( false, true ) == true" << std::endl;
-  nbok += orBF2( true, false ) == true ? 1 : 0; 
+  nbok += orBF2( true, false ) == true ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "or( true, false ) == true" << std::endl;
-  nbok += orBF2( false, false ) == false ? 1 : 0; 
+  nbok += orBF2( false, false ) == false ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "or( false, false ) == true" << std::endl;
@@ -137,17 +137,17 @@ bool testBasicBoolFunctors()
   INBLOCK_TEST2( xorBF2( false, false ) == false, "xor( false, false ) == false" );
 
   // implies( b1, b2 )
-  INBLOCK_TEST2( impliesBF2( true, true ) == true, 
+  INBLOCK_TEST2( impliesBF2( true, true ) == true,
      "implies( true, true ) == true" );
-  INBLOCK_TEST2( impliesBF2( false, true ) == true, 
+  INBLOCK_TEST2( impliesBF2( false, true ) == true,
      "implies( false, true ) == true" );
-  INBLOCK_TEST2( impliesBF2( true, false ) == false, 
+  INBLOCK_TEST2( impliesBF2( true, false ) == false,
      "implies( true, false ) == false" );
-  INBLOCK_TEST2( impliesBF2( false, false ) == true, 
+  INBLOCK_TEST2( impliesBF2( false, false ) == true,
      "implies( false, false ) == true" );
-  
+
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 

@@ -21,7 +21,7 @@
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2010/12/01
- * 
+ *
  * An example of FreemanChain display with background source image.
  *
  * This file is part of the DGtal library.
@@ -50,7 +50,7 @@ using namespace Z2i;
 
 int main()
 {
-  
+
   typedef SpaceND<2> Space2;
   typedef HyperRectDomain<Space2> TDomain;
 
@@ -63,27 +63,27 @@ int main()
   fst.open (freemanChainFilename.c_str(), ios::in);
   FreemanChain<Space::Integer> fc(fst);
   fst.close();
-  
+
   // Importing image with MagickReader
   STBReader<Image> reader;
   std::string filenameImage = examplesPath + "samples/contourS.png";
   Image img = reader.import( filenameImage );
-  
-  Point ptInf = img.domain().lowerBound(); 
-  Point ptSup = img.domain().upperBound(); 
+
+  Point ptInf = img.domain().lowerBound();
+  Point ptSup = img.domain().upperBound();
   unsigned int width = abs(ptSup[0]-ptInf[0]+1);
   unsigned int height = abs(ptSup[1]-ptInf[1]+1);
-  
-  // Draw the freemanchain and the contour 
+
+  // Draw the freemanchain and the contour
   Board2D dgBoard;
-  
+
   dgBoard.drawImage(filenameImage, 0,height-1, width, height );
   dgBoard << fc;
-  
+
   dgBoard.saveEPS("freemanChainDisplay.eps");
   dgBoard.saveSVG("freemanChainDisplay.svg");
   dgBoard.saveFIG("freemanChainDisplay.fig");
-  
+
   return 0;
 }
 //                                                                           //

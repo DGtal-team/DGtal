@@ -74,11 +74,11 @@ int main()
 
   Image3D imageCrop(subDomain);
   Image3D imageCrop2(subDomain2);
-  
-  // Adding too many single point is slow and will 
+
+  // Adding too many single point is slow and will
   // makke the view laggy
-  // This parameter allows to reuse some list if 
-  // possible (but it won't work if multiples types are 
+  // This parameter allows to reuse some list if
+  // possible (but it won't work if multiples types are
   // inserted)
   viewer.allowReuseList = true;
 

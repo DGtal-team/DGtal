@@ -65,7 +65,7 @@ namespace DGtal
  * This class performs all computations on C++ double converting the digital
  * points to Space::RealPoint
  *
- * The exponent @a p is specifed at the constructor.
+ * The exponent @a p is specified at the constructor.
  *
  * @tparam TSpace the model of CSpace on which the metric is
  * defined.
@@ -79,14 +79,14 @@ namespace DGtal
     ///Copy the space type
     typedef TSpace Space;
     BOOST_CONCEPT_ASSERT(( concepts::CSpace<TSpace> ));
-    
+
     ///Type for points (RealPoint for this class)
     typedef typename Space::RealPoint Point;
     ///Type for distance values
     typedef double Value;
     ///Type for raw distance values
     typedef double RawValue;
-    
+
     /**
      * Constructor.
      *
@@ -178,7 +178,7 @@ namespace DGtal
       else
         if (dfirst > dsecond)
           return ClosestSECOND;
-      
+
       return ClosestBOTH;
     }
 
@@ -199,8 +199,8 @@ namespace DGtal
     {
       return true;
     }
- 
-    // ------------------------- Private Datas --------------------------------
+
+    // ------------------------- Private Data --------------------------------
   private:
 
     ///Exponent value

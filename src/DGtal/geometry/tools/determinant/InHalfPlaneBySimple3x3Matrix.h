@@ -55,34 +55,34 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class InHalfPlaneBySimple3x3Matrix
   /**
-   * \brief Aim: Class that implements an orientation functor, ie. 
-   * it provides a way to compute the orientation of three given 2d points. 
-   * More precisely, it returns: 
+   * \brief Aim: Class that implements an orientation functor, ie.
+   * it provides a way to compute the orientation of three given 2d points.
+   * More precisely, it returns:
    * - zero if the three points belong to the same line
    * - strictly positive if the three points are counter-clockwise oriented
-   * - striclty negative if the three points are clockwise oriented. 
-   * The orientation test is performed by the evaluation of the determinant 
-   * of a 3x3 matrix stored into an instance of SimpleMatrix. 
+   * - strictly negative if the three points are clockwise oriented.
+   * The orientation test is performed by the evaluation of the determinant
+   * of a 3x3 matrix stored into an instance of SimpleMatrix.
    *
-   * Basic usage: 
+   * Basic usage:
    @code
    ...
-   typedef Z2i::Point Point; 
-   typedef InHalfPlaneBySimple3x3Matrix<Point, Z2i::Integer> MyType; 
+   typedef Z2i::Point Point;
+   typedef InHalfPlaneBySimple3x3Matrix<Point, Z2i::Integer> MyType;
 
-   MyType orientationTest; 
-   orientationTest.init( Point(0,0), Point(5,2) ); 
-   return orientationTest( Point(2,1) ); 
+   MyType orientationTest;
+   orientationTest.init( Point(0,0), Point(5,2) );
+   return orientationTest( Point(2,1) );
    //a strictly positive value is returned because (0,0) (5,2) (2,1) are CCW oriented
    @endcode
    *
    * @tparam TPoint a model of point
-   * @tparam TInteger a model of integer for the 3x3 matrix entries and the result, 
+   * @tparam TInteger a model of integer for the 3x3 matrix entries and the result,
    * at least a model of CEuclideanRing
    *
-   * NB. In order to be sure that the result will be exact, you should be sure that 
+   * NB. In order to be sure that the result will be exact, you should be sure that
    * TInteger can represent integers with 2b+3 bits if the points coordinates
-   * are coded with b bits. 
+   * are coded with b bits.
    *
    * @see SimpleMatrix
    * @see InHalfPlaneBy2x2DetComputer
@@ -94,9 +94,9 @@ namespace DGtal
   public:
 
     /**
-     * Type of points 
+     * Type of points
      */
-    typedef TPoint Point; 
+    typedef TPoint Point;
 
     /**
      * Type of point array
@@ -105,7 +105,7 @@ namespace DGtal
     /**
      * Type used to represent the size of the array
      */
-    typedef typename PointArray::size_type SizeArray; 
+    typedef typename PointArray::size_type SizeArray;
     /**
      * static size of the array, ie. 2
      */
@@ -115,10 +115,10 @@ namespace DGtal
      * Type of matrix integral entries
      *
      * NB: the type of the points coordinates are casted into Integer
-     * before being stored into the matrix. 
+     * before being stored into the matrix.
      */
     typedef TInteger Integer;
-    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<Integer> )); 
+    BOOST_CONCEPT_ASSERT(( concepts::CEuclideanRing<Integer> ));
 
     /**
      * Type of matrix
@@ -128,7 +128,7 @@ namespace DGtal
     /**
      * Type of integer for the result
      */
-    typedef Integer Value; 
+    typedef Integer Value;
 
     // ----------------------- Interface --------------------------------------
   public:
@@ -150,10 +150,10 @@ namespace DGtal
      * Main operator.
      * @warning InHalfPlaneBy2x2DetComputer::init() should be called before
      * @param aR any point to test
-     * @return orientation of the three points @a aP @a aQ @a aR : 
+     * @return orientation of the three points @a aP @a aQ @a aR :
      * - zero if the three points belong to the same line
      * - strictly positive if the three points are counter-clockwise oriented
-     * - striclty negative if the three points are clockwise oriented
+     * - strictly negative if the three points are clockwise oriented
      * @see InHalfPlaneBy2x2DetComputer::init()
      */
     Value operator()(const Point& aR) const;
@@ -170,13 +170,13 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     /**
      * 3x3 matrix whose determinant provides the expected result
      */
-    mutable Matrix myMatrix; 
+    mutable Matrix myMatrix;
 
 
   }; // end of class InHalfPlaneBySimple3x3Matrix

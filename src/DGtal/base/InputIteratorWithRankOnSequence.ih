@@ -104,7 +104,7 @@ operator*() const
 //-----------------------------------------------------------------------------
 template <typename TSequence, typename TRank>
 inline
-typename DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::Pointer 
+typename DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::Pointer
 DGtal::InputIteratorWithRankOnSequence<TSequence,TRank>::
 operator->() const
 {
@@ -201,7 +201,7 @@ isValid() const
 template <typename TSequence, typename TRank>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		  const InputIteratorWithRankOnSequence<TSequence,TRank> & object )
 {
   object.selfDisplay( out );
@@ -210,5 +210,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

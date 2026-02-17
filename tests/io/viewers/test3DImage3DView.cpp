@@ -64,7 +64,7 @@ int main()
   std::string filename =  testPath + "samples/lobsterCroped.vol";
 
   Image3D image3d =  VolReader<Image3D>::importVol(filename);
-  
+
   viewer << Color(255, 255, 200);
   viewer << image3d;
   // Extract some slice images:
@@ -94,4 +94,3 @@ int main()
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-

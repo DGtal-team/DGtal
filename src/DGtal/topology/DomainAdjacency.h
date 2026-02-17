@@ -77,7 +77,7 @@ namespace DGtal
   public:
 
     // Required as model of CAdjacency
-    typedef typename TDomain::Space Space; 
+    typedef typename TDomain::Space Space;
     typedef TAdjacency Adjacency;
     typedef typename TDomain::Point Point;
 
@@ -93,10 +93,10 @@ namespace DGtal
     template <typename Value> struct VertexMap {
       typedef typename std::map<Vertex, Value> Type;
     };
-    
+
     // ----------------------- Standard services ------------------------------
   public:
-    
+
     /**
        Constructor.
 
@@ -141,7 +141,7 @@ namespace DGtal
      * @return 'true' iff p1 is adjacent to p2 according to this
      * adjacency relation.
      */
-    bool isAdjacentTo( const Point & p1, const Point & p2 ) const; 
+    bool isAdjacentTo( const Point & p1, const Point & p2 ) const;
 
     /**
      * @param p1 any point in this space.
@@ -150,52 +150,52 @@ namespace DGtal
      * @return 'true' iff p1 is adjacent to p2 according to this
      * adjacency relation and p1 != p2.
      */
-    bool isProperlyAdjacentTo( const Point & p1, const Point & p2 ) const; 
+    bool isProperlyAdjacentTo( const Point & p1, const Point & p2 ) const;
 
 // ----------------------- Local graph services --------------------------
-    
+
     /**
      * @return maximum number of neighbors for this adjacency
      */
     Size bestCapacity() const;
-    
+
     /**
      * @param v any vertex
-     * 
+     *
      * @return the number of neighbors of this vertex
      */
     Size degree( const Vertex & v ) const;
-    
+
     /**
      * Writes the neighbors of a vertex using an output iterator
-     * 
-     * 
+     *
+     *
      * @tparam OutputIterator the type of an output iterator writing
      * in a container of vertices.
-     * 
+     *
      * @param it the output iterator
-     * 
-     * @param v the vertex whose neighbors will be writen
+     *
+     * @param v the vertex whose neighbors will be written
      */
     template <typename OutputIterator>
-    void  
+    void
     writeNeighbors( OutputIterator &it ,
 		    const Vertex & v ) const;
-    
+
     /**
-     * Writes the neighbors of a vertex which satisfy a predicate using an 
+     * Writes the neighbors of a vertex which satisfy a predicate using an
      * output iterator
-     * 
-     * 
+     *
+     *
      * @tparam OutputIterator the type of an output iterator writing
      * in a container of vertices.
-     * 
+     *
      * @tparam VertexPredicate the type of the predicate
-     * 
+     *
      * @param it the output iterator
-     * 
+     *
      * @param v the vertex whose neighbors will be written
-     * 
+     *
      * @param pred the predicate that must be satisfied
      */
     template <typename OutputIterator, typename VertexPredicate>
@@ -203,7 +203,7 @@ namespace DGtal
     writeNeighbors( OutputIterator &it ,
 		    const Vertex & v,
 		    const VertexPredicate & pred) const;
-    
+
     // ----------------------- Interface --------------------------------------
   public:
 
@@ -219,9 +219,9 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     /**
      * The predicate for testing if a point belongs to the domain.
@@ -266,7 +266,7 @@ namespace DGtal
    */
   template <typename TDomain, typename TAdjacency>
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
          const DomainAdjacency<TDomain, TAdjacency> & object );
 
 } // namespace DGtal

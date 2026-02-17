@@ -56,14 +56,14 @@ namespace DGtal
     \brief Aim: model of cellular embedder for normal vector
     estimators on digital surface,
     (default constructible, copy constructible, assignable).
-   
+
     @tparam TDigitalSurface the digital surface definition
     @tparam TNormalVectorEstimator the type of normal vector estimator.
     @tparam TEmbedder the type of digital embedder.
 
     @todo assert dimensions of space, embedder and implicit function.
    */
-  
+
   template < typename TDigitalSurface,
              typename TNormalVectorEstimator,
              typename TEmbedder >
@@ -79,21 +79,21 @@ namespace DGtal
     typedef typename DigitalSurface::KSpace::Space::RealPoint RealPoint;
     typedef typename DigitalSurface::KSpace::Space::RealVector RealVector;
     typedef typename NormalVectorEstimator::Quantity Quantity;
-    
-    /** 
+
+    /**
         Constructor.
-        
+
        @param digSurf  any digital surface.
        @param estimator an normal vector estimator
        @param e a digital embedder (like a GaussDigitizer).
     */
     NormalVectorEstimatorLinearCellEmbedder( ConstAlias<DigitalSurface> digSurf,
-                                             ConstAlias<NormalVectorEstimator> estimator, 
+                                             ConstAlias<NormalVectorEstimator> estimator,
                                              ConstAlias<Embedder> e );
-    
-    /** 
+
+    /**
      * Destructor.
-     */    
+     */
     ~NormalVectorEstimatorLinearCellEmbedder();
 
     // ----------------------- Interface --------------------------------------
@@ -103,7 +103,7 @@ namespace DGtal
     /**
        Maps a digital point to its corresponding point in the Euclidean
        space.
-       
+
        @param p any digital point in the digital space.
        @return its embedding by the current embedder in the Euclidean space.
      */
@@ -112,7 +112,7 @@ namespace DGtal
     /**
        Maps a digital surface surfel defined by an iterator into its
        corresponding point in the Euclidean space.
-       
+
        @param it any iterator on surface surfel.
        @return its embedding in the Euclidean space.
      */
@@ -121,7 +121,7 @@ namespace DGtal
     /**
        Maps a digital point to its corresponding embedding position
        and gradient vector in the Euclidean space.
-       
+
        @param surfelIt any digital surface surfel given by a ConstIterator.
        @param x its embedding in the Euclidean space.
        @param grad (returns) its gradient vector at the point given by
@@ -129,10 +129,10 @@ namespace DGtal
      */
     void embedSurfel( const ConstIterator & surfelIt, RealPoint & x, RealVector & grad ) const;
 
-   
+
     // ----------------------- Interface --------------------------------------
   public:
-    
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -145,24 +145,24 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
-   
+
     ///A pointer on the digital surface
     const DigitalSurface& mySurface;
     /// A pointer on the normal vector estimator.
     const NormalVectorEstimator& myPtrFct;
     /// A pointer on the digital embedder.
     const Embedder& myPtrEmbedder;
-   
+
     // ------------------------- Hidden services ------------------------------
   protected:
     NormalVectorEstimatorLinearCellEmbedder();
 
-  private:    
-    
+  private:
+
   }; // end of class NormalVectorEstimatorLinearCellEmbedder
 
 
@@ -174,7 +174,7 @@ namespace DGtal
    */
   template < typename TDigitalSurface, typename TNormalVectorEstimator, typename TEmbedder >
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
                const NormalVectorEstimatorLinearCellEmbedder<TDigitalSurface, TNormalVectorEstimator, TEmbedder> & object );
 
 } // namespace DGtal

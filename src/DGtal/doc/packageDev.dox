@@ -26,15 +26,15 @@
  * This file is part of the DGtal library.
  */
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  * Do not forget to add an entry in src/DGtal/base/Config.h.in !
  */
 namespace DGtal {
 //----------------------------------------
 /*!
-@page packageDev Details for developers 
-   
+@page packageDev Details for developers
+
 
 @managers David Coeurjolly, Jacques-Olivier Lachaud
 @since 2.0

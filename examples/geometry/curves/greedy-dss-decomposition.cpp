@@ -31,7 +31,7 @@
 /**
  *
  * \example geometry/curves/greedy-dss-decomposition.cpp
- * This example outputs a greedy segmentation of a closed and 4-connected digital curve into DSSs. 
+ * This example outputs a greedy segmentation of a closed and 4-connected digital curve into DSSs.
  *
  *  @verbatim
  * $ ./examples/geometry/curves/greedy-dss-decomposition
@@ -71,14 +71,14 @@ int main( )
 {
   trace.beginBlock ( "Example dgtalboard-5-greedy-dss" );
 
-  typedef FreemanChain<int> Contour4; 
+  typedef FreemanChain<int> Contour4;
   typedef ArithmeticalDSSComputer<Contour4::ConstIterator,int,4> DSS4;
   typedef GreedySegmentation<DSS4> Decomposition4;
 
-  // A Freeman chain code is a string composed by the coordinates of the first pixel, and the list of elementary displacements. 
+  // A Freeman chain code is a string composed by the coordinates of the first pixel, and the list of elementary displacements.
   std::stringstream ss(stringstream::in | stringstream::out);
   ss << "31 16 11121212121212212121212212122122222322323233323333333323333323303330330030300000100010010010001000101010101111" << endl;
-  
+
   // Construct the Freeman chain
   Contour4 theContour( ss );
 
@@ -92,28 +92,28 @@ int main( )
   Board2D aBoard;
   aBoard << SetMode( domain.className(), "Grid" )
 	 << domain
-    	 << SetMode( "PointVector", "Grid" ); 
+    	 << SetMode( "PointVector", "Grid" );
 
   // Draw each segment
   string styleName = "";
-  for ( Decomposition4::SegmentComputerIterator 
+  for ( Decomposition4::SegmentComputerIterator
 	  it = theDecomposition.begin(),
 	  itEnd = theDecomposition.end();
-	it != itEnd; ++it ) 
+	it != itEnd; ++it )
     {
       aBoard << SetMode( "ArithmeticalDSS", "Points" )
-	     << it->primitive(); 
+	     << it->primitive();
       aBoard << SetMode( "ArithmeticalDSS", "BoundingBox" )
-	     << CustomStyle( "ArithmeticalDSS/BoundingBox", 
+	     << CustomStyle( "ArithmeticalDSS/BoundingBox",
        			     new CustomPenColor( Color::Blue ) )
 	     << it->primitive();
-    } 
+    }
 
-  
+
   aBoard.saveSVG("greedy-dss-decomposition.svg");
   aBoard.saveEPS("greedy-dss-decomposition.eps");
   #ifdef DGTAL_WITH_CAIRO
-    aBoard.saveCairo("greedy-dss-decomposition.png"); 
+    aBoard.saveCairo("greedy-dss-decomposition.png");
   #endif
 
   trace.endBlock();

@@ -187,4 +187,3 @@ int main( int argc, char** argv )
     trace.endBlock();
     return res ? 0 : 1;
 }
-

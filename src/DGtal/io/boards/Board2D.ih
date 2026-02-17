@@ -170,9 +170,9 @@ DGtal::Board2D::~Board2D()
 {
 }
 
-/** 
+/**
  * Constructs a new board and sets the background color, if any.
- * 
+ *
  * @param aBackgroundColor A color for the drawing's background.
  */
 DGtal::Board2D::Board2D( const Color & aBackgroundColor )
@@ -182,9 +182,9 @@ DGtal::Board2D::Board2D( const Color & aBackgroundColor )
   this->setUnit(LibBoard::Board::UCentimeter);
 }
 
-/** 
+/**
  * Copy constructor.
- * 
+ *
  * @param other The object to be copied.
  */
 DGtal::Board2D::Board2D( const Board2D & other )
@@ -198,7 +198,7 @@ DGtal::Board2D::Board2D( const Board2D & other )
  * @param other the object to copy.
  * @return a reference on 'this'.
  */
-DGtal::Board2D & 
+DGtal::Board2D &
 DGtal::Board2D::operator= ( const Board2D & other )
 {
   if ( this != &other )

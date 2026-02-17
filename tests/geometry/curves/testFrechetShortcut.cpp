@@ -129,7 +129,7 @@ void testFrechetShortcutConceptChecking()
 bool testSegmentation()
 {
   typedef PointVector<2,int> Point;
-  
+
   std::vector<Point> contour;
   contour.push_back(Point(0,0));
   contour.push_back(Point(1,0));
@@ -170,7 +170,7 @@ bool testSegmentation()
   board << aCurve.getArrowsRange();
 
   // Test when error = 3
-  
+
 
   int nbok = 3;
   int nb=0;
@@ -181,7 +181,7 @@ bool testSegmentation()
 
     Segmentation::SegmentComputerIterator it = theSegmentation.begin();
     Segmentation::SegmentComputerIterator itEnd = theSegmentation.end();
-    
+
     for ( ; it != itEnd; ++it) {
       SegmentComputer s(*it);
       trace.info() << s << std::endl;
@@ -193,7 +193,7 @@ bool testSegmentation()
   }
 
   // test when error = 0
-  
+
 
   int nbok2 = 5;
   int nb2=0;
@@ -215,7 +215,7 @@ bool testSegmentation()
     board.saveEPS("FrechetShortcutGreedySegmentationTest.eps", Board2D::BoundingBox, 5000 );
   }
 
-  
+
   /* Saturated segmentation does not work for FrechetShortcut
      computer. Indeed, given two maximal Frechet shortcuts s1(begin, end) et
      s2(begin, end),  we can have s1.begin < s2.begin < s2.end <
@@ -233,53 +233,53 @@ bool testSegmentationLarger(const string& filename, int min, int max, double del
 {
   // Build output filename
 
-  std::size_t pos1 = filename.find("samples/");  
+  std::size_t pos1 = filename.find("samples/");
   std::size_t init = pos1+8;
-  std::size_t pos2 = filename.find(".dat"); 
+  std::size_t pos2 = filename.find(".dat");
   std::size_t end = pos2-init;
-  std::string output = filename.substr(init,end); 
-  
+  std::string output = filename.substr(init,end);
+
   trace.beginBlock ( "Testing block ..." );
 
   trace.beginBlock ( "Greedy segmentation on larger contours" );
 
-  trace.info() << "Reading input curve" << filename << std::endl; 
+  trace.info() << "Reading input curve" << filename << std::endl;
 
   typedef Curve::PointsRange::ConstIterator Iterator;
-  
+
   Curve aCurve; //grid curve
-  
+
   ifstream instream; // input stream
   instream.open (filename.c_str(), ifstream::in);
 
   aCurve.initFromVectorStream(instream);
-  
-  
+
+
   typedef Curve::PointsRange Range; //range
   Range r = aCurve.getPointsRange(); //range
 
   Board2D board;
   board << r;
   board << aCurve.getArrowsRange();
-   
+
   trace.info() << "Size of input curve = " << aCurve.size() << std::endl;
-  
+
   typedef Curve::PointsRange::ConstIterator Iterator;
   typedef FrechetShortcut<Iterator,int> SegmentComputer;
   typedef GreedySegmentation<SegmentComputer> Segmentation;
-  
+
   for(double error = min; error <= max; error+=delta)
     {
-      trace.info() << "error = " << error << "\t";  
+      trace.info() << "error = " << error << "\t";
       Segmentation theSegmentation( r.begin(), r.end(), SegmentComputer(error) );
-      
+
       Segmentation::SegmentComputerIterator it = theSegmentation.begin();
       Segmentation::SegmentComputerIterator itEnd = theSegmentation.end();
 
       int size = 0;
-      for ( ; it != itEnd; ++it) 
+      for ( ; it != itEnd; ++it)
 	size++;
-      
+
       trace.info() << "size of simplified curve = " << size << std::endl;
 
       it = theSegmentation.begin();
@@ -292,14 +292,14 @@ bool testSegmentationLarger(const string& filename, int min, int max, double del
       string outputFilename = "FrechetShortcut-"+output+".eps";
       board.saveEPS(outputFilename.c_str(), Board2D::BoundingBox, 5000 );
     }
-  
+
   trace.endBlock();
   trace.endBlock();
 
   return 1;
 }
 
-  
+
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -318,8 +318,8 @@ int main( int argc, char** argv )
 
   std::string Plant054 = testPath + "samples/Plant054.dat";
   std::string beetle = testPath + "samples/beetle-1.dat";
-   
-  
+
+
   bool res = testFrechetShortcut() && testSegmentation() && testSegmentationLarger(Plant054,0,20,0.5) && testSegmentationLarger(beetle,0,30,5); // && ... other tests
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

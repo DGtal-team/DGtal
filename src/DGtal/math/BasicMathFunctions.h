@@ -49,12 +49,12 @@
 #include "DGtal/kernel/NumberTraits.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal 
+namespace DGtal
 {
   namespace functions
   {
 
-    /** 
+    /**
      * Compute exponentiation by squaring of a scalar @a aVal of type
      * @a T by the exponent @a exponent (unsigned int). The
      * computation is done in @f$ O(\log(exponent))@f$ multiplications.
@@ -74,11 +74,11 @@ namespace DGtal
     {
       unsigned int q=exponent;
       T p(aVal);
-      
+
       if (exponent == 0) { return 1;    }
-      
+
       T result = NumberTraits<T>::ONE;
-      while (q != 0) 
+      while (q != 0)
 	{
 	  if (q % 2 == 1) {    // q is odd
 	    result *= p;
@@ -92,18 +92,18 @@ namespace DGtal
 
 
     /**
-     * Compute the next higher power of two of the given argument n of type T. 
-     * 
+     * Compute the next higher power of two of the given argument n of type T.
+     *
      * @tparam T the type of the element T
      * @param n an element of type T (casted to unsigned integer).
      * @return the next higher power of two.
      **/
-    template<typename T> 
+    template<typename T>
     T roundToUpperPowerOfTwo(const  T &n){
       return (T)  1 << (1+DGtal::Bits::mostSignificantBit( (unsigned int) n-1 ) );
     }
 
-    /** 
+    /**
      * Return the absolute value of an instance of type T.
      *
      * @tparam T the type of elements to compare (model of
@@ -116,7 +116,7 @@ namespace DGtal
     T abs(const T & a)
     {
       BOOST_CONCEPT_ASSERT((boost::LessThanComparable<T>));
-      if (a<0) 
+      if (a<0)
 	return -a;
       else
 	return a;

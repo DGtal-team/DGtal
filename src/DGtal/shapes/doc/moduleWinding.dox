@@ -28,7 +28,7 @@ Part of \ref packageShapes
 
 @see examples/polyscope_examples/windingNumberShape.cpp, tests/shapes/testWindingNumberShape.cpp
 
-This documentation describes the tool to construct a binary image from a set of oriented point clouds in @f$\mathbb{R}^3@f$ using 
+This documentation describes the tool to construct a binary image from a set of oriented point clouds in @f$\mathbb{R}^3@f$ using
 the generalized winding number framework of @cite barill2018fast.
 For short, from a collection of oriented points, the generalized [winding number](https://en.wikipedia.org/wiki/Winding_number) implicit function returns a scalar value at each point accounting
 for the number of turns of  the (unknown) underling surface around that point.
@@ -36,7 +36,7 @@ From @cite barill2018fast, the implicit function for a point cloud @f$ \{(p_i,n_
 @f[
  w(q) = \sum_i^m a_i \frac{(p_i-q)\cdot n_i}{4\pi\|p_i -q\|^3}
 @f]
-where @f$ a_i@f$ is some area contribution of the point @f$ p_i@f$ to the surface (computed from the projection of the k-nearest neighbors to @f$ p_i@f$ onto the 
+where @f$ a_i@f$ is some area contribution of the point @f$ p_i@f$ to the surface (computed from the projection of the k-nearest neighbors to @f$ p_i@f$ onto the
 tangent plane at @f$ p_i @f$).
 By thresholding the winding function with some values in @f$[0,1]@f$, we can define an iso-surface that approximates the exterior envelope of the shape
 defined by the oriented point cloud. For fast computations, we rely on the [libigl](https://libigl.github.io) of the generalized winding numbers.
@@ -89,9 +89,9 @@ std::vector<Orientation> orientations = winding.orientationBatch(queries);
 The output vector contains the orientation of the query points in the same order.
 
 At this point, we completely rely on libIGL and CGAL to estimate the @f$ a_i @f$ area measures. If the user
-wants to provide these quantities, the @f$\{a_i\}@f$ can be prescribed at the constructor, or using the `setAreaMeasure()` method (with a `skipPointAreas` to `true` at the constructor). 
+wants to provide these quantities, the @f$\{a_i\}@f$ can be prescribed at the constructor, or using the `setAreaMeasure()` method (with a `skipPointAreas` to `true` at the constructor).
 
-@note The orientation methods have a default thresholding parameter set to 0.3. Please check the class documentation for details. 
+@note The orientation methods have a default thresholding parameter set to 0.3. Please check the class documentation for details.
 
 */
 }

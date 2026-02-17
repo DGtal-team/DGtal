@@ -96,7 +96,7 @@ namespace DGtal
     typedef Space::Vector Vector;
     typedef Space::RealPoint RealPoint;
     typedef Space::RealVector RealVector;
-    typedef HyperRectDomain< Space > Domain; 
+    typedef HyperRectDomain< Space > Domain;
     typedef DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
     typedef Object<DT4_8, DigitalSet> Object4_8;
     typedef Object<DT4_8, DigitalSet>::ComplementObject ComplementObject4_8;
@@ -119,7 +119,7 @@ namespace DGtal
     typedef ExactPredicateLpSeparableMetric<Space,1> L1Metric;
     typedef ExactPredicateLpPowerSeparableMetric<Space,2> L2PowerMetric;
     typedef ExactPredicateLpPowerSeparableMetric<Space,1> L1PowerMetric;
- 
+
     static const L2Metric l2Metric;
     static const L1Metric l1Metric;
     static const L2PowerMetric l2PowerMetric;
@@ -169,7 +169,7 @@ namespace DGtal
     typedef Space::Vector Vector;
     typedef Space::RealPoint RealPoint;
     typedef Space::RealVector RealVector;
-    typedef HyperRectDomain< Space > Domain; 
+    typedef HyperRectDomain< Space > Domain;
     typedef DigitalSetSelector< Domain, BIG_DS+HIGH_BEL_DS >::Type DigitalSet;
     typedef Object<DT6_18, DigitalSet> Object6_18;
     typedef Object<DT6_18, DigitalSet>::ComplementObject ComplementObject6_18;
@@ -208,9 +208,9 @@ namespace DGtal
 
   } // namespace Z3i
 
-  
 
-  
+
+
 } // namespace DGtal
 
 

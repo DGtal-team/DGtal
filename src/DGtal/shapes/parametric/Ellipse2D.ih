@@ -79,10 +79,10 @@ double
 DGtal::Ellipse2D<T>::parameter( const RealPoint & pp ) const
 {
   RealPoint v2d( pp - myCenter );
-  
-  double angle; 
 
-  if ( isAlmostEqual(v2d[0],0.) ) 
+  double angle;
+
+  if ( isAlmostEqual(v2d[0],0.) )
     angle = v2d[1] > 0. ? M_PI_2 : ELLIPSE2D_3_PI_2;
   else if ( v2d[0] > 0. )
     angle = atan(v2d[1]/v2d[0]) + (v2d[1] < 0. ? ELLIPSE2D_2_PI : 0.);
@@ -100,7 +100,7 @@ DGtal::Ellipse2D<T>::parameter( const RealPoint & pp ) const
  */
 template <typename T>
 inline
-typename DGtal::Ellipse2D<T>::RealPoint 
+typename DGtal::Ellipse2D<T>::RealPoint
 DGtal::Ellipse2D<T>::x( const double t ) const
 {
   const double a2 = myAxis1*myAxis1;
@@ -122,7 +122,7 @@ DGtal::Ellipse2D<T>::x( const double t ) const
  */
 template <typename T>
 inline
-typename DGtal::Ellipse2D<T>::RealVector 
+typename DGtal::Ellipse2D<T>::RealVector
 DGtal::Ellipse2D<T>::xp( const double t ) const
 {
   const double a2 = myAxis1 * myAxis1;
@@ -134,7 +134,7 @@ DGtal::Ellipse2D<T>::xp( const double t ) const
   const double rho = myAxis2 / sqrt(1. - (a2-b2) / a2 * costth * costth);
   const double rhod = myAxis1 * myAxis2 * (b2-a2) * sintth * costth
     / std::pow(a2 * sintth * sintth + b2 * costth * costth, 1.5);
-  
+
   return RealPoint(
     rhod*cost - rho*sint,
     rhod*sint + rho*cost
@@ -165,7 +165,7 @@ DGtal::Ellipse2D<T>::xpp( const double t ) const
     / std::pow( a2*sintth*sintth + b2*costth*costth, 2.5 )
     * ( (costth*costth - sintth*sintth) * (a2*sintth*sintth + b2*costth*costth)
         + 3.*(b2-a2)*sintth*sintth*costth*costth );
-  
+
   return RealPoint(
     rhodd*cost - 2.*rhod*sint - rho*cost,
     rhodd*sint + 2.*rhod*cost - rho*sint
@@ -211,7 +211,7 @@ DGtal::Ellipse2D<T>::isValid() const
 template <typename T>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
       const Ellipse2D<T> & object )
 {
   object.selfDisplay( out );
@@ -220,5 +220,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

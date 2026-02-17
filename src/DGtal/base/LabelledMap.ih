@@ -55,7 +55,7 @@ BlockIterator()
 template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
 DGtal::LabelledMap<TData, L, TWord, N, M>::BlockIterator::
 BlockIterator( const Self & other)
-  : myIdx( other.myIdx ), myNbDatas( other.myNbDatas ), 
+  : myIdx( other.myIdx ), myNbDatas( other.myNbDatas ),
     myDatas( other.myDatas ), myNext( other.myNext )
 {}
 //-----------------------------------------------------------------------------
@@ -70,7 +70,7 @@ BlockIterator( __FirstBlock & block, unsigned int idx, unsigned int size )
 	{
 	  myIdx = idx;
 	  myNbDatas = N + 1;
-	  myDatas = block.datas;
+	  myDatas = block.allData;
 	  myNext = 0;
 	}
       else
@@ -89,7 +89,7 @@ BlockIterator( __FirstBlock & block, unsigned int idx, unsigned int size )
 	{
 	  myIdx = idx;
 	  myNbDatas = N;
-	  myDatas = block.datas;
+	  myDatas = block.allData;
 	}
       else
 	{
@@ -109,7 +109,7 @@ BlockIterator( __FirstBlock & block, unsigned int idx, unsigned int size )
 	    {
 	      myIdx = idx;
 	      myNbDatas = M;
-	      myDatas = myNext->datas;
+	      myDatas = myNext->allData;
 	    }
 	}
     }
@@ -123,8 +123,8 @@ operator=( const Self & other )
 {
   if ( this != &other )
     {
-      myIdx = other.myIdx; 
-      myNbDatas = other.myNbDatas; 
+      myIdx = other.myIdx;
+      myNbDatas = other.myNbDatas;
       myDatas = other.myDatas;
       myNext = other.myNext;
     }
@@ -143,7 +143,7 @@ operator*() const
 //-----------------------------------------------------------------------------
 template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
 inline
-typename DGtal::LabelledMap<TData, L, TWord, N, M>::BlockIterator::Pointer 
+typename DGtal::LabelledMap<TData, L, TWord, N, M>::BlockIterator::Pointer
 DGtal::LabelledMap<TData, L, TWord, N, M>::BlockIterator::
 operator->() const
 {
@@ -193,7 +193,7 @@ template <typename TData, unsigned int L, typename TWord, unsigned int N, unsign
 inline
 typename DGtal::LabelledMap<TData, L, TWord, N, M>::BlockIterator::Self &
 DGtal::LabelledMap<TData, L, TWord, N, M>::BlockIterator::
-operator+=( DifferenceType n ) 
+operator+=( DifferenceType n )
 {
   myIdx += n;
   while ( myIdx >= myNbDatas )
@@ -205,11 +205,11 @@ operator+=( DifferenceType n )
 	  break;
 	}
       myIdx -= myNbDatas;
-      myDatas = myNext->datas;
+      myDatas = myNext->data;
       myNbDatas = M;
       myNext = myNext->next;
     }
-  return *this;  
+  return *this;
 }
 //-----------------------------------------------------------------------------
 template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
@@ -240,7 +240,7 @@ BlockConstIterator()
 template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
 DGtal::LabelledMap<TData, L, TWord, N, M>::BlockConstIterator::
 BlockConstIterator( const Self & other)
-  : myIdx( other.myIdx ), myNbDatas( other.myNbDatas ), 
+  : myIdx( other.myIdx ), myNbDatas( other.myNbDatas ),
     myDatas( other.myDatas ), myNext( other.myNext )
 {}
 //-----------------------------------------------------------------------------
@@ -255,7 +255,7 @@ BlockConstIterator( const __FirstBlock & block, unsigned int idx, unsigned int s
 	{
 	  myIdx = idx;
 	  myNbDatas = N + 1;
-	  myDatas = block.datas;
+	  myDatas = block.allData;
 	  myNext = 0;
 	}
       else
@@ -274,7 +274,7 @@ BlockConstIterator( const __FirstBlock & block, unsigned int idx, unsigned int s
 	{
 	  myIdx = idx;
 	  myNbDatas = N;
-	  myDatas = block.datas;
+	  myDatas = block.allData;
 	}
       else
 	{
@@ -294,7 +294,7 @@ BlockConstIterator( const __FirstBlock & block, unsigned int idx, unsigned int s
 	    {
 	      myIdx = idx;
 	      myNbDatas = M;
-	      myDatas = myNext->datas;
+	      myDatas = myNext->allData;
 	    }
 	}
     }
@@ -308,8 +308,8 @@ operator=( const Self & other )
 {
   if ( this != &other )
     {
-      myIdx = other.myIdx; 
-      myNbDatas = other.myNbDatas; 
+      myIdx = other.myIdx;
+      myNbDatas = other.myNbDatas;
       myDatas = other.myDatas;
       myNext = other.myNext;
     }
@@ -328,7 +328,7 @@ operator*() const
 //-----------------------------------------------------------------------------
 template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
 inline
-typename DGtal::LabelledMap<TData, L, TWord, N, M>::BlockConstIterator::Pointer 
+typename DGtal::LabelledMap<TData, L, TWord, N, M>::BlockConstIterator::Pointer
 DGtal::LabelledMap<TData, L, TWord, N, M>::BlockConstIterator::
 operator->() const
 {
@@ -378,7 +378,7 @@ template <typename TData, unsigned int L, typename TWord, unsigned int N, unsign
 inline
 typename DGtal::LabelledMap<TData, L, TWord, N, M>::BlockConstIterator::Self &
 DGtal::LabelledMap<TData, L, TWord, N, M>::BlockConstIterator::
-operator+=( DifferenceType n ) 
+operator+=( DifferenceType n )
 {
   myIdx += n;
   while ( myIdx >= myNbDatas )
@@ -390,11 +390,11 @@ operator+=( DifferenceType n )
 	  break;
 	}
       myIdx -= myNbDatas;
-      myDatas = myNext->datas;
+      myDatas = myNext->allData;
       myNbDatas = M;
       myNext = myNext->next;
     }
-  return *this;  
+  return *this;
 }
 //-----------------------------------------------------------------------------
 template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
@@ -407,7 +407,7 @@ operator[]( DifferenceType n ) const
   tmp += n;
   return *tmp;
 }
-      
+
 ///////////////////////////////////////////////////////////////////////////////
 // class LabelledMap::ConstIterator
 //-----------------------------------------------------------------------------
@@ -599,7 +599,7 @@ operator=( const LabelledMap & other )
       auto theSize = other.size();
       if ( theSize > N + 1 )
         {
-          unsigned int s = N; 
+          unsigned int s = N;
           const __AnyBlock* nextBlock = other.myFirstBlock.data.nextBlock;
           __AnyBlock** currentPointer = & myFirstBlock.data.nextBlock;
           while ( s < theSize  )
@@ -735,7 +735,7 @@ blockAt( size_t idx ) const
 {
   ASSERT( idx < size() );
   if ( idx < N )
-    return myFirstBlock.datas[ idx ];
+    return myFirstBlock.data[ idx ];
   else if ( ( idx == N ) && ( size() == N+1 ) )
     return myFirstBlock.data.lastData;
   const __AnyBlock* ptr = myFirstBlock.data.nextBlock;
@@ -746,7 +746,7 @@ blockAt( size_t idx ) const
       ptr = ptr->next;
     }
   ASSERT( ptr != 0 );
-  return ptr->datas[ idx ];
+  return ptr->data[ idx ];
 }
 //-----------------------------------------------------------------------------
 template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
@@ -757,7 +757,7 @@ blockAt( size_t idx )
 {
   ASSERT( idx < size() );
   if ( idx < N )
-    return myFirstBlock.datas[ idx ];
+    return myFirstBlock.allData[ idx ];
   else if ( ( idx == N ) && ( size() == N+1 ) )
     return myFirstBlock.data.lastData;
   __AnyBlock* ptr = myFirstBlock.data.nextBlock;
@@ -768,7 +768,7 @@ blockAt( size_t idx )
       ptr = ptr->next;
     }
   ASSERT( ptr != 0 );
-  return ptr->datas[ idx ];
+  return ptr->allData[ idx ];
 }
 //-----------------------------------------------------------------------------
 template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
@@ -777,9 +777,9 @@ const typename DGtal::LabelledMap<TData, L, TWord, N, M>::Data &
 DGtal::LabelledMap<TData, L, TWord, N, M>::
 operator[]( const Key & key ) const
 {
-  ASSERT( key < L ); 
+  ASSERT( key < L );
   bool exists = myLabels.test( key );
-  if ( ! exists ) 
+  if ( ! exists )
     {
       unsigned int block_size = size();
       myLabels.set( key ); // must be done before so that 'index' works.
@@ -797,9 +797,9 @@ typename DGtal::LabelledMap<TData, L, TWord, N, M>::Data &
 DGtal::LabelledMap<TData, L, TWord, N, M>::
 operator[]( const Key & key )
 {
-  ASSERT( key < L ); 
+  ASSERT( key < L );
   bool exists = myLabels.test( key );
-  if ( ! exists ) 
+  if ( ! exists )
     {
       auto block_size = size();
       myLabels.set( key ); // must be done before so that 'index' works.
@@ -817,7 +817,7 @@ const typename DGtal::LabelledMap<TData, L, TWord, N, M>::Data &
 DGtal::LabelledMap<TData, L, TWord, N, M>::
 fastAt( const Key & key ) const
 {
-  ASSERT( key < L ); 
+  ASSERT( key < L );
   ASSERT( myLabels.test( key ) );
   return blockAt( myLabels.index( key ) );
 }
@@ -828,7 +828,7 @@ typename DGtal::LabelledMap<TData, L, TWord, N, M>::Data &
 DGtal::LabelledMap<TData, L, TWord, N, M>::
 fastAt( const Key & key )
 {
-  ASSERT( key < L ); 
+  ASSERT( key < L );
   ASSERT( myLabels.test( key ) );
   return blockAt( myLabels.index( key ) );
 }
@@ -877,16 +877,16 @@ std::pair<typename DGtal::LabelledMap<TData, L, TWord, N, M>::Iterator, bool>
 DGtal::LabelledMap<TData, L, TWord, N, M>::
 insert( const Value & val )
 {
-  ASSERT( val.first < L ); 
+  ASSERT( val.first < L );
   bool exists = myLabels.test( val.first );
-  if ( ! exists ) 
+  if ( ! exists )
     {
       unsigned int block_size = static_cast<unsigned int>( size() );
       myLabels.set( val.first ); // must be done before so that 'index' works.
       blockInsert( myLabels.index( val.first ), block_size, val.second );
     }
   Iterator position = begin();
-  while ( (*position).first != val.first ) 
+  while ( (*position).first != val.first )
     {
       // std::cerr << "[" << (*position).first << "]" << std::endl;
       ++position;
@@ -900,15 +900,15 @@ typename DGtal::LabelledMap<TData, L, TWord, N, M>::Iterator
 DGtal::LabelledMap<TData, L, TWord, N, M>::
 insert ( Iterator position, const Value & val )
 {
-  ASSERT( val.first < L ); 
+  ASSERT( val.first < L );
   if ( ! myLabels.test( val.first ) )
     {
       unsigned int block_size = size();
       myLabels.set( val.first ); // must be done before so that 'index' works.
       blockInsert( myLabels.index( val.first ), block_size, val.second );
     }
-  position = begin(); 
-  while ( (*position).first != val.first ) 
+  position = begin();
+  while ( (*position).first != val.first )
     {
       //std::cerr << "[" << (*position).first << "]" << std::endl;
       ++position;
@@ -922,7 +922,7 @@ inline
 void
 DGtal::LabelledMap<TData, L, TWord, N, M>::
 insert( InputIterator first, InputIterator last )
-{ 
+{
   BOOST_CONCEPT_ASSERT(( boost::InputIterator< InputIterator > ));
   for ( ; first != last; ++first )
     {
@@ -947,7 +947,7 @@ equal_range( const Key & x )
   for ( ; it != it_end; ++it )
     {
       if ( (*it).first == x )
-        { 
+        {
           // JOL: g++ does not compile correctly:
           // return std::make_pair( it, ++it );
           it_end = it; ++it_end;
@@ -1221,7 +1221,7 @@ DGtal::LabelledMap<TData, L, TWord, N, M>::isValid() const
 template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		    const LabelledMap<TData, L, TWord, N, M> & object )
 {
   object.selfDisplay( out );
@@ -1243,11 +1243,11 @@ DGtal::detail::argminLabelledMapMemoryUsageForGeometricDistribution
   for ( unsigned int N = 1; N < L; ++N )
     for ( unsigned int M = 2; M < (L-N); ++M )
       {
-        // std::cerr << "Fmem(" << N << "," << M << ")=" 
+        // std::cerr << "Fmem(" << N << "," << M << ")="
         //           << F.fctNM( N, M ) << std::endl;
         if ( ( m < 0.0 ) || ( F.fctNM( N, M ) < m ) )
           {
-            Nopt = N; Mopt = M; 
+            Nopt = N; Mopt = M;
             m = F.fctNM( Nopt, Mopt );
           }
       }
@@ -1256,5 +1256,3 @@ DGtal::detail::argminLabelledMapMemoryUsageForGeometricDistribution
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

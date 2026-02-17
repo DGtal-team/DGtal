@@ -94,7 +94,7 @@ bool checkChordGenericStandardPlaneComputer
   Integer a, b, c, mu;
   std::random_device rd;
   std::mt19937 g(rd());
-  
+
   for ( unsigned int p = 0; p < nbplanes; ++p )
     {
       do {

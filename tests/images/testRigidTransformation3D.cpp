@@ -71,13 +71,13 @@ private:
   DomainTrans domainForwardTrans;
 public:
   // Setup part
-  testRigidTransformation3D() : 
+  testRigidTransformation3D() :
   binary ( PGMReader<Image>::importPGM3D ( testPath + "samples/cat10.pgm3d" ) ),
   forwardTrans ( RealPoint ( 5, 5, 5 ), RealVector ( 1, 0, 1 ), M_PI_4, RealVector( 3, -3, 3 ) ),
   backwardTrans( RealPoint ( 5, 5, 5 ), RealVector ( 1, 0, 1 ), M_PI_4, RealVector( 3, -3, 3 ) ),
   domainForwardTrans(forwardTrans)
   {}
-  
+
   bool forwardTransformation ()
   {
     Bounds bounds = domainForwardTrans ( binary.domain() );

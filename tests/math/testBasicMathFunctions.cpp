@@ -47,17 +47,17 @@ bool testBasicMathFunctions()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing power by  squaring ..." );
 
   trace.info() << "power(5,4)= "<< functions::power(5,4) <<std::endl;
-  nbok += (functions::power(5,4)==625) ? 1 : 0; 
+  nbok += (functions::power(5,4)==625) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
 
   trace.info() << "power(5.0,4)= "<< functions::power(5.0,4) <<std::endl;
-  nbok += (functions::power(5,4)==625.0) ? 1 : 0; 
+  nbok += (functions::power(5,4)==625.0) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
@@ -66,26 +66,26 @@ bool testBasicMathFunctions()
   trace.beginBlock ( "Testing roundToUpperPowerOfTwo ..." );
 
   trace.info() << "roundToUpperPowerOfTwo(200)= "<< functions::roundToUpperPowerOfTwo(200) <<std::endl;
-  nbok += (functions::roundToUpperPowerOfTwo(200)==256) ? 1 : 0; 
+  nbok += (functions::roundToUpperPowerOfTwo(200)==256) ? 1 : 0;
   nb++;
 
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
 
   trace.info() << "roundToUpperPowerOfTwo(1000)= "<< functions::roundToUpperPowerOfTwo(1000) <<std::endl;
-  nbok += (functions::roundToUpperPowerOfTwo(1000)==1024) ? 1 : 0; 
+  nbok += (functions::roundToUpperPowerOfTwo(1000)==1024) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
 
   trace.info() << "power(5.0,4)= "<< functions::power(5.0,4) <<std::endl;
-  nbok += (functions::power(5,4)==625.0) ? 1 : 0; 
+  nbok += (functions::power(5,4)==625.0) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << std::endl;
 
 
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 

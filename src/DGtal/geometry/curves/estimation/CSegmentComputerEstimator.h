@@ -50,17 +50,17 @@ namespace DGtal
 {
   namespace concepts
   {
-  
+
     /////////////////////////////////////////////////////////////////////////////
     // class CSegmentComputerEstimator
     /**
        Description of \b concept '\b CSegmentComputerEstimator' <p>
        @ingroup Concepts
        @brief Aim: This concept is a refinement of CCurveLocalGeometricEstimator
-       devoted to the estimation of a geometric quantiy along a segment 
-       detected by a segment computer. 
+       devoted to the estimation of a geometric quantiy along a segment
+       detected by a segment computer.
 
-       # Refinement of 
+       # Refinement of
        - CCurveLocalGeometricEstimator
        - boost::CopyConstructible
        - boost::Assignable
@@ -72,14 +72,14 @@ namespace DGtal
        - \e X : A type that is a model of CSegmentComputerEstimator
        - \e x : object of type X
        - \e x : object of type SegmentComputer
-  
+
        # Definitions
 
        # Valid expressions and semantics
 
        | Name     | Expression          | Type requirements | Return type | Precondition | Semantics                       | Post condition | Complexity      |
        |----------|---------------------|-------------------|-------------|--------------|---------------------------------|----------------|-----------------|
-       | Attach   | x.attach(s)         |                   | void        |              | Attach the segment computer     |                | constant        |                              
+       | Attach   | x.attach(s)         |                   | void        |              | Attach the segment computer     |                | constant        |
 
        # Invariants
 
@@ -94,7 +94,7 @@ namespace DGtal
        @tparam T the type that should be a model of CSegmentComputerEstimator.
     */
     template <typename T>
-    struct CSegmentComputerEstimator: 
+    struct CSegmentComputerEstimator:
       concepts::CCurveLocalGeometricEstimator<T>, boost::CopyConstructible<T>, boost::Assignable<T>
     {
       // ----------------------- Concept checks ------------------------------
@@ -106,11 +106,11 @@ namespace DGtal
       BOOST_CONCEPT_USAGE( CSegmentComputerEstimator )
       {
 
-        myX.attach(mySC); 
+        myX.attach(mySC);
 
       }
 
-      // ------------------------- Private Datas --------------------------------
+      // ------------------------- Private Data --------------------------------
     private:
       T myX;
       SegmentComputer mySC;

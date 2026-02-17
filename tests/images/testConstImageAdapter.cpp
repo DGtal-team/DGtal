@@ -21,7 +21,7 @@
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2012/02/13
- * 
+ *
  * @author Martial Tola (\c martial.tola@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
@@ -51,13 +51,13 @@ using namespace DGtal;
 template <typename R>
 void displayRange(const R& r)
 {
-  typedef typename R::ConstIterator I; 
+  typedef typename R::ConstIterator I;
   for (I it = r.begin(), itEnd = r.end();
        it != itEnd; ++it)
     {
-      trace.info() << *it << " "; 
-    } 
-  trace.info() << std::endl; 
+      trace.info() << *it << " ";
+    }
+  trace.info() << std::endl;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -65,41 +65,41 @@ int main( int argc, char** argv )
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-    
+
   trace.beginBlock ( "Test for ConstImageAdapter" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  using namespace Z2i; 
+  using namespace Z2i;
 
   trace.beginBlock("Image creation");
 
   //domain
-  const Integer size = 5; 
-  Point p = Point::diagonal(0); 
-  Point q = Point::diagonal(size-1); 
-  Domain d(p,q); 
+  const Integer size = 5;
+  Point p = Point::diagonal(0);
+  Point q = Point::diagonal(size-1);
+  Domain d(p,q);
 
   //image
-  typedef ImageSelector<Domain, int >::Type Image; 
-  Image img(d); 
+  typedef ImageSelector<Domain, int >::Type Image;
+  Image img(d);
 
   //fill
-  const int maximalValue = size*size; 
-  Image::Range::OutputIterator it = img.range().outputIterator(); 
+  const int maximalValue = size*size;
+  Image::Range::OutputIterator it = img.range().outputIterator();
   for (int i = 0; i < maximalValue; ++i)
     *it++ = i;
 
-  //display values 
-  Image::ConstRange r = img.constRange(); 
-  std::copy( r.begin(), r.end(), std::ostream_iterator<int>(cout,", ") ); 
-  cout << endl; 
+  //display values
+  Image::ConstRange r = img.constRange();
+  std::copy( r.begin(), r.end(), std::ostream_iterator<int>(cout,", ") );
+  cout << endl;
   trace.endBlock();
-  
 
-  const int thresholdValue = maximalValue/2; 
+
+  const int thresholdValue = maximalValue/2;
   trace.beginBlock("Implicit thresholding");
 
   //! [ConstImageAdapterConstruction]
@@ -107,16 +107,16 @@ int main( int argc, char** argv )
   DGtal::functors::Thresholder<Image::Value> t( thresholdValue );
   typedef ConstImageAdapter<Image, Domain, functors::Identity, bool, DGtal::functors::Thresholder<Image::Value> > MyConstImageAdapter;
   BOOST_CONCEPT_ASSERT(( concepts::CConstImage< MyConstImageAdapter > ));
-  MyConstImageAdapter a(img, d, g, t); 
+  MyConstImageAdapter a(img, d, g, t);
   //! [ConstImageAdapterConstruction]
 
-  //display values 
+  //display values
   //! [ConstImageAdapterRange]
-  ConstImageAdapter<Image, Domain, functors::Identity, bool, DGtal::functors::Thresholder<Image::Value> >::ConstRange 
-    ra = a.constRange(); 
+  ConstImageAdapter<Image, Domain, functors::Identity, bool, DGtal::functors::Thresholder<Image::Value> >::ConstRange
+    ra = a.constRange();
   std::copy( ra.begin(), ra.end(), std::ostream_iterator<int>(cout,", ") );
   cout << endl;
-    
+
   std::vector<int> to_vector(25);
   std::copy(ra.begin(), ra.end(), to_vector.begin());
   for (int i = 0; i < 25; i++)
@@ -149,13 +149,13 @@ int main( int argc, char** argv )
     }
   }
   //! [ConstImageAdapterRange]
-  
-  cout << endl; 
+
+  cout << endl;
 
   trace.endBlock();
 
   bool res = (nbok == nb);
-  
+
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

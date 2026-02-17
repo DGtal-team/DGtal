@@ -50,18 +50,18 @@ bool testBinomialConvolver()
   trace.beginBlock ( "Testing block ..." );
   typedef PointVector<2, double> RealPoint;
   std::vector< RealPoint > points;
-  points.push_back( RealPoint( { 0.0, 0.0 } ) ); 
-  points.push_back( RealPoint( { 1.0, 0.0 } ) ); 
-  points.push_back( RealPoint( { 2.0, 0.0 } ) ); 
-  points.push_back( RealPoint( { 2.0, 1.0 } ) ); 
-  points.push_back( RealPoint( { 2.0, 2.0 } ) ); 
-  points.push_back( RealPoint( { 1.0, 2.0 } ) ); 
-  points.push_back( RealPoint( { 0.0, 2.0 } ) ); 
-  points.push_back( RealPoint( { 0.0, 1.0 } ) ); 
-  
+  points.push_back( RealPoint( { 0.0, 0.0 } ) );
+  points.push_back( RealPoint( { 1.0, 0.0 } ) );
+  points.push_back( RealPoint( { 2.0, 0.0 } ) );
+  points.push_back( RealPoint( { 2.0, 1.0 } ) );
+  points.push_back( RealPoint( { 2.0, 2.0 } ) );
+  points.push_back( RealPoint( { 1.0, 2.0 } ) );
+  points.push_back( RealPoint( { 0.0, 2.0 } ) );
+  points.push_back( RealPoint( { 0.0, 1.0 } ) );
+
   typedef std::vector< RealPoint >::const_iterator ConstIteratorOnPoints;
   typedef BinomialConvolver<ConstIteratorOnPoints, double> MyBinomialConvolver;
-  
+
   for ( unsigned int n = 1; n < 10; ++n )
     {
       trace.info() << "Binomial convolver n=" << n << std::endl;
@@ -77,7 +77,7 @@ bool testBinomialConvolver()
             << std::endl;
     }
   unsigned int n = MyBinomialConvolver::suggestedSize( 1.0, points.begin(), points.end() );
-  trace.info() << "Binomial convolver suggested n=" 
+  trace.info() << "Binomial convolver suggested n="
          << n
          << std::endl;
 
@@ -97,13 +97,13 @@ bool testBinomialConvolver()
   for ( ConstIteratorOnPoints it = points.begin(), it_end = points.end();
   it != it_end; ++it )
     {
-      std::cout << *it 
-    << " " << tgtEstimator.eval( it ) 
-    << " " << curvEstimator.eval( it ) 
+      std::cout << *it
+    << " " << tgtEstimator.eval( it )
+    << " " << curvEstimator.eval( it )
     << std::endl;
     }
   trace.endBlock();
-  
+
   return true;
 }
 

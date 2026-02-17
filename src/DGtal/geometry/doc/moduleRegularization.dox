@@ -6,7 +6,7 @@ namespace DGtal {
 
 /**
 
-@page moduleRegularization Digital surface regularization by normal vector alignment 
+@page moduleRegularization Digital surface regularization by normal vector alignment
 
 @writers David Coeurjolly
 
@@ -68,7 +68,7 @@ The regularization class instance can be set up using the following syntax:
 @snippet geometry/surfaces/testDigitalSurfaceRegularization.cpp DigitalRegUsage
 
 The DigitalSurfaceRegularization::init() method sets some default values for the @f$\alpha@f$,
-@f$\beta@f$ and @f$\gamma@f$ parameters. Such parameters can be 
+@f$\beta@f$ and @f$\gamma@f$ parameters. Such parameters can be
 either chosen as global values (e.g. @e init(alpha,beta,gamma)), or as
 local weights. In the latter case, the user must specify a vector of @f$\alpha[i]@f$,
 @f$\beta[i]@f$ and @f$\gamma[i]@f$ values, one per digital surface pointels (see \ref moduleReg_seclocal).
@@ -95,14 +95,14 @@ the following reconstruction.
 A key ingredient of the approach is to be able to change the input
 normal bundle. One can consider normal vectors from @ref moduleIntegralInvariant.
 Normal vectors can be attached using either a
-functor, a function or a lambda. For example, using  @ref moduleShortcuts 
+functor, a function or a lambda. For example, using  @ref moduleShortcuts
 
 @snippet geometry/surfaces/testDigitalSurfaceRegularization.cpp DigitalRegII
 
 to obtain
 @image html regRegul-II.png "Regularized digital surface (II normal vectors)."
 
-For piecewise smooth reconstruction, one can consider preprocessing of the normal vector field using @ref moduleGenericAT 
+For piecewise smooth reconstruction, one can consider preprocessing of the normal vector field using @ref moduleGenericAT
 
 
 \section moduleReg_seclocal Local control

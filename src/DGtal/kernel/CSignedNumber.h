@@ -61,29 +61,29 @@ Description of \b concept '\b CSignedNumber' <p>
      @brief Aim: Concept checking for Signed Numbers. Models of this
      concept should be listed in NumberTraits class and should have
      the isSigned property.
-     
- # Refinement of 
+
+ # Refinement of
     - CQuantity
 
- # Associated types 
-    
+ # Associated types
+
  # Notation
      - \a X : A type that is a model of CSignedNumber
      - \a x, \a y  : Object of type X
-    
+
  # Definitions
-    
- # Valid expressions and 
+
+ # Valid expressions and
 
 
 
-Name | Expression |  Type requirements | Return type| Precondition | Semantics | Postcondition | Complexity 
+Name | Expression |  Type requirements | Return type| Precondition | Semantics | Postcondition | Complexity
 -----|------------|--------------------|------------|--------------|-----------|---------------|-----------
 \a X should be tagged \b true in \a NumberTraits for \a IsSigned | typename NumberTraits<X>::IsSigned | TagTrue | | | | | |
-    
+
  # Invariants#
 
-    
+
  # Models#
      double, BigInteger,  short, int, long long, int16_t, int32_t, int64_t.
 
@@ -91,7 +91,7 @@ Name | Expression |  Type requirements | Return type| Precondition | Semantics |
 
 @tparam T the type that is checked. T should be a model of
      CBoundedInteger.
-    
+
    */
   template <typename T>
   struct CSignedNumber: CQuantity<T>
@@ -103,16 +103,16 @@ Name | Expression |  Type requirements | Return type| Precondition | Semantics |
       // Will compile iff Signed.
       ConceptUtils::checkTrue(myIsSigned );
     }
-    
-    // ------------------------- Private Datas --------------------------------
+
+    // ------------------------- Private Data --------------------------------
   private:
-    
+
     // ------------------------- Internals ------------------------------------
   private:
     typename NumberTraits<T>::IsSigned myIsSigned;
 
   }; // end of concept CSignedNumber
-  } 
+  }
 } // namespace DGtal
 
 

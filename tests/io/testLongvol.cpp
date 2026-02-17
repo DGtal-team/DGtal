@@ -51,34 +51,34 @@ bool testLongvol()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing Longvol writer ..." );
 
   Z3i::Point a(0,0,0);
   Z3i::Point b(15,15,15);
   Z3i::Point c(7,7,7);
-  
+
   typedef ImageContainerBySTLVector<Z3i::Domain, DGtal::uint64_t> Image;
   Image image(Z3i::Domain(a,b));
-  
+
   image.setValue(c,0X8899AABBCCDDEEFFull);
-  
+
   LongvolWriter<Image>::exportLongvol("export-longvol.longvol",image);
- 
+
   Image image2 =  LongvolReader<Image>::importLongvol("export-longvol.longvol");
-  
+
   bool allFine= true;
   Image::ConstIterator ito = image.begin();
   for(Image::ConstIterator it = image2.begin(), itend=image2.end();
       it != itend; ++it, ++ito)
     allFine &= (*it) == (*ito);
-      
-  nbok += allFine ? 1 : 0; 
+
+  nbok += allFine ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 

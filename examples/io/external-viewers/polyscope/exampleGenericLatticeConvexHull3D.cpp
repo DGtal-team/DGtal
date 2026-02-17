@@ -164,11 +164,11 @@ int main( int argc, char* argv[] )
     }
   std::cout << "      dilation=" << hull.projected_dilation
             << " => counting of lattice points is "
-            << (hull.projected_dilation == 1 ? "correct" : "INCORRECT") << ".\n"; 
+            << (hull.projected_dilation == 1 ? "correct" : "INCORRECT") << ".\n";
   std::cout << "     #(P ∩ Z3)=" << hull.count() << "\n";
   std::cout << "#(Int(P) ∩ Z3)=" << hull.countInterior() << "\n";
   std::cout << " #(Bd(P) ∩ Z3)=" << hull.countBoundary() << "\n";
   polyscope::show();
   return EXIT_SUCCESS;
-  
+
 }

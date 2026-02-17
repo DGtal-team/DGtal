@@ -31,8 +31,8 @@
 
 /**
  * Example of point list import.
- *  @see @ref moduleIO 
- *  \image html visuPointList.png "Visualisation of 3d imported point list " 
+ *  @see @ref moduleIO
+ *  \image html visuPointList.png "Visualisation of 3d imported point list "
  * \example io/digitalSetFromPointList.cpp
  */
 

@@ -56,15 +56,15 @@ using namespace DGtal;
 ///////////////////////////////////////////////////////////////////////////////
 
 
-/** 
- * 
+/**
+ *
  * Gaussdigitizer is a model of CDigitalBoundedShape and
  * CDigitalOrientedShape.
- * 
+ *
  */
 bool testConcept()
 {
-  typedef GaussDigitizer<Z2i::Space,Ellipse2D< Z2i::Space > > Dig; 
+  typedef GaussDigitizer<Z2i::Space,Ellipse2D< Z2i::Space > > Dig;
   BOOST_CONCEPT_ASSERT((concepts::CDigitalBoundedShape<Dig>));
   BOOST_CONCEPT_ASSERT((concepts::CDigitalOrientedShape<Dig>));
   return true;
@@ -85,30 +85,30 @@ testDigitization( const Shape & aShape, double h,
   // Creates a digitizer on the window (xLow, xUp).
   RealPoint xLow( -5.3, -4.3 );
   RealPoint xUp( 7.4, 4.7 );
-  GaussDigitizer<Space,Shape> dig;  
+  GaussDigitizer<Space,Shape> dig;
   dig.attach( aShape ); // attaches the shape.
   dig.init( aShape.getLowerBound(), aShape.getUpperBound(), h );
-  
+
   // The domain size is given by the digitizer according to the window
   // and the step.
   Domain domain = dig.getDomain();
   MySet aSet( domain );
   // Creates a set from the digitizer.
   Shapes<Domain>::digitalShaper( aSet, dig );
-  
+
   // Create cellular space
   typedef Z2i::KSpace KSpace;
   typedef Z2i::SCell SCell;
   KSpace K;
   bool ok = K.init( dig.getLowerBound(), dig.getUpperBound(), true );
- 
+
   if (!ok)
     return false;
-  
+
 
   SurfelAdjacency<KSpace::dimension> SAdj( true );
 
- 
+
 
   // Extracts shape boundary
   SCell bel = Surfaces<KSpace>::findABel( K, dig, 10000 );
@@ -125,14 +125,14 @@ testDigitization( const Shape & aShape, double h,
     << domain << aSet;
 
   board << SetMode( gridcurve.className(), "Edges" )
-  << CustomStyle( bel.className(), 
+  << CustomStyle( bel.className(),
       new CustomColors( DGtal::Color( 255, 0, 0 ),
             DGtal::Color( 200, 0, 0 ) ) )
   << gridcurve;
 
   board.saveEPS( ( fileName + ".eps" ).c_str() );
   board.saveSVG( ( fileName + ".svg" ).c_str() );
-  
+
   return true;
 }
 
@@ -144,73 +144,73 @@ bool testGaussDigitizer()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing GaussDigitizer as a Digital Shape functor." );
 
   typedef Astroid2D< Z2i::Space > MyAstroid;
   MyAstroid astroid( 6.2, -2.1, 7.3, 4.9 );
   nbok += testDigitization<Z2i::Space,MyAstroid>
-    ( astroid, 1.0, "gauss-astroid-1" ) ? 1 : 0; 
+    ( astroid, 1.0, "gauss-astroid-1" ) ? 1 : 0;
   nb++;
   nbok += testDigitization<Z2i::Space,MyAstroid>
-    ( astroid, 0.5, "gauss-astroid-0_5" ) ? 1 : 0; 
+    ( astroid, 0.5, "gauss-astroid-0_5" ) ? 1 : 0;
   nb++;
   nbok += testDigitization<Z2i::Space,MyAstroid>
-    ( astroid, 0.25, "gauss-astroid-0_25" ) ? 1 : 0; 
+    ( astroid, 0.25, "gauss-astroid-0_25" ) ? 1 : 0;
   nb++;
 
   typedef Ball2D< Z2i::Space > MyBall;
   MyBall ball( 6.2, -2.1, 7.3 );
   nbok += testDigitization<Z2i::Space,MyBall>
-    ( ball, 1.0, "gauss-ball-1" ) ? 1 : 0; 
+    ( ball, 1.0, "gauss-ball-1" ) ? 1 : 0;
   nb++;
   nbok += testDigitization<Z2i::Space,MyBall>
-    ( ball, 0.5, "gauss-ball-0_5" ) ? 1 : 0; 
+    ( ball, 0.5, "gauss-ball-0_5" ) ? 1 : 0;
   nb++;
   nbok += testDigitization<Z2i::Space,MyBall>
-    ( ball, 0.25, "gauss-ball-0_25" ) ? 1 : 0; 
+    ( ball, 0.25, "gauss-ball-0_25" ) ? 1 : 0;
   nb++;
 
   typedef Ellipse2D< Z2i::Space > MyEllipse;
   MyEllipse ellipse( 1.2, 0.1, 4.0, 3.0, 0.3 );
   nbok += testDigitization<Z2i::Space,MyEllipse>
-    ( ellipse, 1.0, "gauss-ellipse-1" ) ? 1 : 0; 
+    ( ellipse, 1.0, "gauss-ellipse-1" ) ? 1 : 0;
   nb++;
   nbok += testDigitization<Z2i::Space,MyEllipse>
-    ( ellipse, 0.5, "gauss-ellipse-0_5" ) ? 1 : 0; 
+    ( ellipse, 0.5, "gauss-ellipse-0_5" ) ? 1 : 0;
   nb++;
   nbok += testDigitization<Z2i::Space,MyEllipse>
-    ( ellipse, 0.25, "gauss-ellipse-0_25" ) ? 1 : 0; 
+    ( ellipse, 0.25, "gauss-ellipse-0_25" ) ? 1 : 0;
   nb++;
 
   typedef Flower2D< Z2i::Space > MyFlower;
   MyFlower flower( 0.5, -2.3, 5.0, 0.7, 6, 0.3 );
   nbok += testDigitization<Z2i::Space,MyFlower>
-    ( flower, 1.0, "gauss-flower-1" ) ? 1 : 0; 
+    ( flower, 1.0, "gauss-flower-1" ) ? 1 : 0;
   nb++;
   nbok += testDigitization<Z2i::Space,MyFlower>
-    ( flower, 0.5, "gauss-flower-0_5" ) ? 1 : 0; 
+    ( flower, 0.5, "gauss-flower-0_5" ) ? 1 : 0;
   nb++;
   nbok += testDigitization<Z2i::Space,MyFlower>
-    ( flower, 0.25, "gauss-flower-0_25" ) ? 1 : 0; 
+    ( flower, 0.25, "gauss-flower-0_25" ) ? 1 : 0;
   nb++;
 
   typedef Lemniscate2D< Z2i::Space > MyLemniscate;
   MyLemniscate lemniscate( 0.5, -2.3, 5.0 );
   nbok += testDigitization<Z2i::Space,MyLemniscate>
-    ( lemniscate, 1.0, "gauss-lemniscate-1" ) ? 1 : 0; 
+    ( lemniscate, 1.0, "gauss-lemniscate-1" ) ? 1 : 0;
   nb++;
   nbok += testDigitization<Z2i::Space,MyLemniscate>
-    ( lemniscate, 0.5, "gauss-lemniscate-0_5" ) ? 1 : 0; 
+    ( lemniscate, 0.5, "gauss-lemniscate-0_5" ) ? 1 : 0;
   nb++;
   nbok += testDigitization<Z2i::Space,MyLemniscate>
-    ( lemniscate, 0.25, "gauss-lemniscate-0_25" ) ? 1 : 0; 
+    ( lemniscate, 0.25, "gauss-lemniscate-0_25" ) ? 1 : 0;
   nb++;
 
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 

@@ -106,7 +106,7 @@ namespace DGtal
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    CDigitalSetArchetype & operator= ( const CDigitalSetArchetype & other ) 
+    CDigitalSetArchetype & operator= ( const CDigitalSetArchetype & other )
     { return *this; }
 
     /**
@@ -131,7 +131,7 @@ namespace DGtal
      * @return 'true' iff the set is empty (no element).
      */
     bool empty() const { return true; }
-     
+
     /**
      * Adds point [p] to this set.
      *
@@ -177,7 +177,7 @@ namespace DGtal
 
     /**
      * Removes point [p] from the set.
-     * 
+     *
      * @param p the point to remove.
      * @return the number of removed elements (0 or 1).
      */
@@ -185,7 +185,7 @@ namespace DGtal
 
     /**
      * Removes the point pointed by [it] from the set.
-     * 
+     *
      * @param it an iterator on this set.
      * Note: generally faster than giving just the point.
      */
@@ -209,7 +209,7 @@ namespace DGtal
     /**
      * @param p any digital point.
      */
-    ConstIterator find( const Point & p ) const 
+    ConstIterator find( const Point & p ) const
     { return DummyObject<ConstIterator>::get(); }
 
     /**
@@ -263,7 +263,7 @@ namespace DGtal
 
     // ----------------------- Other Set services -----------------------------
   public:
-    
+
     /**
      * Computes the complement in the domain of this set
      * @param ito an output iterator
@@ -280,7 +280,7 @@ namespace DGtal
      */
     void assignFromComplement( const CDigitalSetArchetype<Domain> & other_set )
     {}
-    
+
     /**
      * Computes the bounding box of this set.
      *
@@ -320,5 +320,3 @@ namespace DGtal
 
 #undef CDigitalSetArchetype_RECURSES
 #endif // else defined(CDigitalSetArchetype_RECURSES)
-
-

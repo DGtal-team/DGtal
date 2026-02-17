@@ -190,16 +190,16 @@ bool testSimpleRegressionOrdered()
 
   OrderedLinearRegression OLR;
   OLR.addSamples( &x[0] , &x[7], &y[0]);
-  
+
   SimpleLinearRegression SLR;
   SLR.addSamples( &x[0] , &x[7], &y[0]);
 
-  SimpleLinearRegression forward; 
+  SimpleLinearRegression forward;
   SimpleLinearRegression backward;
-  
+
   OLR.forwardSLR(forward, 4);
   OLR.backwardSLR(backward, 3);
-    
+
   SLR.computeRegression();
 
   trace.info() << "SLR slope = " << SLR.slope() <<std::endl;
@@ -211,7 +211,7 @@ bool testSimpleRegressionOrdered()
   trace.info() << "Backward slope = " << backward.slope() << " " << backward.size() << std::endl;
   nbok += (( backward.slope() < 11 ) && ( backward.slope() > 10 ))  ? 1 : 0;
   nb++;
-  
+
   trace.endBlock();
 
   return nbok == nb;

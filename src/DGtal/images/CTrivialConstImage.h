@@ -52,25 +52,25 @@ namespace DGtal
   /**
 Description of \b concept '\b CTrivialConstImage' <p>
 @ingroup Concepts
-     
+
 @brief Aim: Defines the concept describing a read-only image,
 which is a refinement of CPointFunctor.
-     
-#  Refinement of 
+
+#  Refinement of
      CPointFunctor
-     
+
 #  Associated types
      - \a Domain: type of the image domain, model of concept CDomain
-     
+
 #  Notation
     - \a X : A type that is a model of CTrivialConstImage
     - \a x, \a y  : Object of type X
-    
+
 #  Definitions
-   
+
 #  Valid expressions and semantics
 
-   
+
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
 |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
 |Accessor to the domain | x.domain() | | const Domain & | | returns a const reference to the image domain | | O(1) |

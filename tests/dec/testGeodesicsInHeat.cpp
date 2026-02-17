@@ -63,23 +63,23 @@ TEST_CASE( "Testing GeodesicsInHeat" )
     { 3, 2, 6, 7 } ,
     { 2, 0, 4, 6 } ,
     { 4, 5, 8, 9 } };
-  
+
   Mesh box(positions.cbegin(), positions.cend(),
            faces.cbegin(), faces.cend());
-  
+
   PolygonalCalculus<RealPoint,RealVector> boxCalculus(box);
-  
-  
+
+
   SECTION("Construction and basic operators")
   {
     GeodesicsInHeat<PolygonalCalculus<RealPoint,RealVector>> heat(boxCalculus);
     REQUIRE( heat.isValid() == false );
-    
+
     trace.beginBlock("init solvers");
     heat.init(0.1);
     trace.endBlock();
     REQUIRE( heat.isValid()  );
-    
+
     heat.addSource(0);
     GeodesicsInHeat<PolygonalCalculus<RealPoint,RealVector>>::Vector d = heat.compute();
     REQUIRE( (size_t)d.size() == (size_t)positions.size() );

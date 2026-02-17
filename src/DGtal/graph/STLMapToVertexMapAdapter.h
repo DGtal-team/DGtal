@@ -51,10 +51,10 @@ namespace DGtal
   /**
   Description of template class 'STLMapToVertexMapAdapter' <p> \brief
   Aim: This class adapts any map of the STL to match with the CVertexMap concept
-  
- 
+
+
   @tparam TMap the type of the associative container.
- 
+
 
    */
   template < typename TMap >
@@ -69,7 +69,7 @@ namespace DGtal
     typedef typename Container::allocator_type Allocator;
     typedef typename Container::key_type Vertex;
     typedef typename Container::mapped_type Value;
-    
+
 
     // Cannot check this since some types using it are incomplete.
     // BOOST_CONCEPT_ASSERT(( CUndirectedSimpleLocalGraph< Graph > ));
@@ -80,19 +80,19 @@ namespace DGtal
   public:
 
     STLMapToVertexMapAdapter() : Container() {}
-    
+
     template <class InputIterator> STLMapToVertexMapAdapter( InputIterator first,
 	InputIterator last, const Compare& comp = Compare(), const Allocator& alloc = Allocator() )
 	: Container( first, last, comp, alloc ) {}
-    
-    STLMapToVertexMapAdapter( STLMapToVertexMapAdapter & other ) 
+
+    STLMapToVertexMapAdapter( STLMapToVertexMapAdapter & other )
 	: Container( other ) {}
 
     void setValue(Vertex v, Value val)
     {
       (*this)[v] = val;
     }
-    
+
     Value operator()(Vertex v)
     {
       typename Container::const_iterator it = Container::find(v);
@@ -103,7 +103,7 @@ namespace DGtal
   }; // end of class STLMapToVertexMapAdapter
 
 
- 
+
 
 } // namespace DGtal
 

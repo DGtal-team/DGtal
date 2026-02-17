@@ -237,7 +237,7 @@ computeMu1ConstantU() const
   ASSERT( ! myMesh.faceNormals().empty() );
   auto& edge_mu1 = mu1.kMeasures( 1 );
   edge_mu1.resize( myMesh.nbEdges() );
-  
+
   for ( Index idx_e = 0; idx_e < myMesh.nbEdges(); ++idx_e )
     {
       const auto& right_f = myMesh.edgeRightFaces( idx_e );
@@ -279,7 +279,7 @@ computeMu2ConstantU() const
 	  const auto & vtcs = myMesh.allIncidentVertices()[ f ];
           const auto    nbv = vtcs.size();
 	  Index j = std::find( vtcs.cbegin(), vtcs.cend(), idx_v ) - vtcs.cbegin();
-	  if ( j == nbv ) continue; 
+	  if ( j == nbv ) continue;
           faces.push_back( f );
           prev.push_back( vtcs[ ( j + nbv - 1 ) % nbv ] );
           next.push_back( vtcs[ ( j + nbv + 1 ) % nbv ] );
@@ -326,7 +326,7 @@ computeMuXYConstantU() const
   ASSERT( ! myMesh.faceNormals().empty() );
   auto& edge_muXY = muXY.kMeasures( 1 );
   edge_muXY.resize( myMesh.nbEdges() );
-  
+
   for ( Index idx_e = 0; idx_e < myMesh.nbEdges(); ++idx_e )
     {
       const auto& right_f = myMesh.edgeRightFaces( idx_e );

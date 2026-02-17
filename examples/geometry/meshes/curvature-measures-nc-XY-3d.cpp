@@ -67,7 +67,7 @@ well known example is the Schwarz lantern. You may try the following:
 ./examples/geometry/meshes/curvature-measures-nc-3d lantern 20 20 0.5
 \endverbatim
 
-outputs 
+outputs
 
 \verbatim
 Expected k1 curvatures: min=0 max=0
@@ -258,7 +258,7 @@ int main( int argc, char* argv[] )
   SH::saveVectorFieldOBJ( positions, D2, 0.05 * avg_e, SH::Colors(),
                           "example-nc-D2",
                           SH::Color::Black, SH::Color(128, 0,128 ) );
-  
+
   //! [curvature-measures-output]
   return 0;
 }

@@ -1354,7 +1354,7 @@ namespace DGtal
     */
     static SCell sIndirectIncident( SCell p, Dimension k );
 
-    
+
     /** @brief For a given surfel ((n-1)-signed cell), returns its interior voxel
      * (point in Z^d given by the direct incident n-cell to the given cell).
      *
@@ -1370,7 +1370,7 @@ namespace DGtal
      * @return the outer voxel.
      */
     static Point exteriorVoxel( const SCell & c ) ;
-    
+
     /// @}
 
 

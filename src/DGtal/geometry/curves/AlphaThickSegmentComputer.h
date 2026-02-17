@@ -76,7 +76,7 @@ namespace DGtal
  * the \cite FaureTangential2008 (see \cite FaureTangential2008 page
  * 363) which reduces the complexity from \f$O(n\ log\ n) \f$ in
  * \f$O( log\ n) \f$.  Note that the convexhull update in linear
- * time (with point substraction) proposed by Buzer
+ * time (with point subtraction) proposed by Buzer
  * @cite lilianComputing2007 is not yet implemented.
  *
  *
@@ -436,7 +436,7 @@ public:
 
 
   /**
-   * Computes the paralell strip params from the current state of the segment.
+   * Computes the parallel strip params from the current state of the segment.
    * @param[out] mu the minimal value of N.X (with N is the normal vector of the segment).
    * @param[out] N the normal of the vector (not normalized).
    * @param[out] nu the width of the strip.
@@ -473,7 +473,7 @@ public:
 
 
    /**
-   * @return the segment length defined from the bouding box (@see getBoundingBox).
+   * @return the segment length defined from the bounding box (@see getBoundingBox).
    **/
   double getSegmentLength() const;
 
@@ -530,7 +530,7 @@ public:
   /**
    * Computes the segment bounding box defined from the extremity
    * points computed after a scan of the current convexhull. Note that
-   * this bouding box differs from the begin/end points bounding box
+   * this bounding box differs from the begin/end points bounding box
    * when a large amount of noise is present in the initial curve.
    * The sequence of resulting points (pt1LongestSegment1,
    * pt2LongestSegment1, pt3LongestSegment2, pt4LongestSegment4) are
@@ -567,7 +567,7 @@ public:
    */
   void selfDisplay ( std::ostream & out ) const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
 protected:
 
 
@@ -584,7 +584,7 @@ protected:
 
 
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
 private:
 
   /**

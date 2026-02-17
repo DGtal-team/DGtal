@@ -17,7 +17,7 @@
 /**
  * @file VoxelComplex.ih
  * @author Pablo Hernandez-Cerdan (\c pablo.hernandez.cerdan@outlook.com)
- * Insitute of Fundamental Sciences, Massey University, New Zealand.
+ * Institute of Fundamental Sciences, Massey University, New Zealand.
  *
  * @date 2018/01/01
  *
@@ -426,7 +426,7 @@ DGtal::VoxelComplex<TKSpace, TCellContainer>::K_2(
         k2_crit.insertCell(ks.uCell(y6));
     if (by7)
         k2_crit.insertCell(ks.uCell(y7));
-    // Note that input spels A,B are ommited.
+    // Note that input spels A,B are omitted.
 
     /////////////////////////////////
     // Critical Clique Conditions:
@@ -811,7 +811,7 @@ typename DGtal::VoxelComplex<TKSpace, TCellContainer>::CliqueContainer
 DGtal::VoxelComplex<TKSpace, TCellContainer>::criticalCliquesForD(
     const Dimension d, const Parent &cubical, bool verbose) const
 {
-#if defined(DGTAL_WITH_OPENMP) && !defined(WIN32) 
+#if defined(DGTAL_WITH_OPENMP) && !defined(WIN32)
     ASSERT(dimension >= 0 && dimension <= 3);
     CliqueContainer critical;
 

@@ -54,13 +54,13 @@ namespace DGtal
   // template class InputIteratorWithRankOnSequence
   /**
      Description of template class 'InputIteratorWithRankOnSequence' <p>
-     
+
      \brief Aim: Useful to create an iterator that returns a pair
      (value,rank) when visiting a sequence. The sequence is smartly
      copied within the iterator. Hence, the given sequence need not to
      persist during the visit. Since it is only an input sequence, it
      is not necessary to give a valid sequence when creating the end()
-     iterator. 
+     iterator.
 
      It is used by SternBrocot::Fraction, LightSternBrocot::Fraction,
      LighterSternBrocot::Fraction to visit the quotients of the
@@ -151,16 +151,16 @@ namespace DGtal
     /**
        Pointer dereference operator.
        @return a non-mutable pointer on the current value.
-    */  
+    */
     Pointer operator->() const;
 
-    /** 
+    /**
         Pre-increment operator.
         @return a reference to itself.
     */
     Self& operator++();
 
-    /** 
+    /**
         Post-increment operator.
         @return a reference to itself.
     */
@@ -195,9 +195,9 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     /// A smart pointer to the visited sequence.

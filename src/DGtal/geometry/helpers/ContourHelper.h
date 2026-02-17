@@ -61,18 +61,18 @@ class ContourHelper
 {
     // ----------------------- Static services ------------------------------
 public:
-  
+
   /**
-   * Compute the barycenter of a set of points.  
-   * 
+   * Compute the barycenter of a set of points.
+   *
    * @param[in] aSet the vector containing the set of points.
-   * @return the resulting mean point. 
+   * @return the resulting mean point.
    **/
-  template <typename TPoint> 
-  static 
-  DGtal::PointVector<TPoint::dimension, double> 
+  template <typename TPoint>
+  static
+  DGtal::PointVector<TPoint::dimension, double>
   getBarycenter(const std::vector<TPoint> & aSet);
-  
+
 
   /**
    * Checks if a polygonal curve given as a sequence of point is clockwise oriented or not.
@@ -80,12 +80,12 @@ public:
    * @param[in] aCurve the vector containing the 2D polygonal curve.
    * @return 'true' if the polygonal curve is counter clockwise oriented, 'false' otherwise.
    **/
-  template <typename TPoint> 
+  template <typename TPoint>
   static
   bool
   isCounterClockWise(const std::vector<TPoint> & aCurve);
 
-  
+
 
   /**
    * Transforms an input contour into an 8 connected contour.  The
@@ -103,9 +103,9 @@ public:
   static
   void
   pixels2pixels8C(const TIterator &itb, const TIterator &ite, TOutputIterator out);
-  
-  
-  
+
+
+
 
     // ----------------------- Standard services ------------------------------
 public:
@@ -130,9 +130,9 @@ public:
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
 private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
 private:
 
     // ------------------------- Hidden services ------------------------------

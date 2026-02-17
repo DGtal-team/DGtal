@@ -70,7 +70,7 @@ namespace DGtal
      * of the eigenvalues (@f$ \lambda_1\leq\lambda_2\leq\lambda_3@f$) of
      * the accumulated tensor votes.
      *
-     * (see @cite tensor-voting-ParkLL12)    
+     * (see @cite tensor-voting-ParkLL12)
      *
      * model of concepts::CLocalEstimatorFromSurfelFunctor
      *
@@ -123,10 +123,10 @@ namespace DGtal
             myArea+= aDistance;
             const RealPoint p = myEmbedder->operator()(aSurf);
             const RealPoint v = p - myReceiver;
-          
+
             double maxcol = 0.0;
             double matnorm = 0.0;
-          
+
             // I - vv^t/||vv^t||
             for(DGtal::Dimension i= 0; i <3; i++)
               {
@@ -139,13 +139,13 @@ namespace DGtal
                   }
                 matnorm += maxcol;
               }
-        
+
             myAccum += (myId - myVote/matnorm)*aDistance;
           }
       }
 
       /**
-       * Evaluate the feature score. 
+       * Evaluate the feature score.
        *
        * I.e. (l_1+l_2)/l_3 of the tensor eigenvalues (l_1<l_2<l_3).
        *
@@ -158,12 +158,12 @@ namespace DGtal
 
         myAccum /= myArea;
         EigenDecomposition<3, double>::getEigenDecomposition( myAccum, eigenvectors, eigenvalues);
-  
+
 #ifdef DEBUG
         for( Dimension i_dim = 1; i_dim < 3; ++i_dim )
             ASSERT ( std::abs(eigenvalues[i_dim - 1]) <= std::abs(eigenvalues[i_dim]) );
 #endif
-      
+
         return ((eigenvalues[0] + eigenvalues[1])/(eigenvalues[2]));
       }
 
@@ -183,7 +183,7 @@ namespace DGtal
 
       ///First surfel flag
       bool myFirstSurfel;
-    
+
       ///Alias of the geometrical embedder
       const SCellEmbedder * myEmbedder;
 
@@ -192,13 +192,13 @@ namespace DGtal
 
       ///Receiver (embedding of the starting surfel)
       RealPoint myReceiver;
-    
+
       ///Covariance accumulator
       SimpleMatrix<double, 3, 3> myAccum, myId, myVote;
-    
+
       ///Convolution kernel area
       double myArea;
-    
+
     }; // end of class TensorVotingFeatureExtraction
   }//namespace functors
 }// namespace DGtal

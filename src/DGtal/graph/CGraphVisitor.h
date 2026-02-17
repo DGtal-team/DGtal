@@ -49,7 +49,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 // @since 0.8 In DGtal::concepts
-namespace DGtal { 
+namespace DGtal {
   namespace concepts {
 
 /////////////////////////////////////////////////////////////////////////////
@@ -75,7 +75,7 @@ the traversal with a given predicate.
 - \c MarkSet: the type used for representing a set of marked vertices, a model of boost::SimpleAssociativeContainer and boost::UniqueAssociativeContainer, whose key type / value type is Vertex.
 - \c Data: the type is associated to the current node and may be used for several purposes (like measuring the distance between the current element and the starting point/set), a model of boost::DefaultConstructible, boost::Assignable, boost::CopyConstructible.
 - \c Node: either the pair<Vertex,Data> or a type convertible to the pair<Vertex,Data>, where Vertex is the current node, Data is the attached data.
- 
+
 # Notation
  - \e X : A type that is a model of CGraphVisitor
  - \e x, \e y : object of type X
@@ -91,10 +91,10 @@ the traversal with a given predicate.
 | Expand to next vertex | \a x.expand() |            |               | ! \a x.finished() | Goes to the next vertex, while taking into account the current vertex for determining the future visited vertices. | | amortized logarithmic time  |
 | Expand to next vertex | \a x.expand(\a p) | \a p is a model of CVertexPredicate | | ! \a x.finished() | Goes to the next vertex, while taking into account the current vertex for determining the future visited vertices (which must satisfy predicate \a p). | | amortized logarithmic time  |
 | Jump to next vertex | \a x.ignore() |              |               | ! \a x.finished() | Goes to the next vertex but ignores the current vertex when determining the future visited vertices. | | amortized logarithmic time  |
-| Termination test | \a x.finished() |               | \c bool       |              | Return true if and only if the visitor has traversed all autorized vertices. | | O(1) |
+| Termination test | \a x.finished() |               | \c bool       |              | Return true if and only if the visitor has traversed all authorized vertices. | | O(1) |
 | Force termination | \a x.terminate() |             |               |              | Force a premature termination of the traversal. | \a x.finished() == \c true | |
 | Get set of marked vertices | \a x.markedVertices() | | \c MarkSet  |              | Returns a const reference to the current set of marked vertices. It includes the visited vertices and the vertices neighbors to the current layer of vertices. | | O(1) |
-| Get set of visited vertices | \a x.visitedVertices() | | \c MarkSet  |            | Returns the current set of visited vertices (equal to markedVertices() whenever \a x.finished() ). | | linear time in the number of marked vertices. | 
+| Get set of visited vertices | \a x.visitedVertices() | | \c MarkSet  |            | Returns the current set of visited vertices (equal to markedVertices() whenever \a x.finished() ). | | linear time in the number of marked vertices. |
 
 # Invariants
 
@@ -130,7 +130,7 @@ public:
   BOOST_CONCEPT_ASSERT(( boost::Assignable< Data > ));
   BOOST_CONCEPT_ASSERT(( boost::CopyConstructible< Data > ));
   BOOST_STATIC_ASSERT(( boost::is_convertible<Node, std::pair<Vertex,Data> >::value ));
-  
+
   // To test if two types A and Y are equals, use
   // 2. then check the presence of data members, operators and methods with
   BOOST_CONCEPT_USAGE( CGraphVisitor )
@@ -151,7 +151,7 @@ public:
     ConceptUtils::sameType( myMarkSet, myX.markedVertices() );
     ConceptUtils::sameType( myMarkSet, myX.visitedVertices() );
   }
-  // ------------------------- Private Datas --------------------------------
+  // ------------------------- Private Data --------------------------------
 private:
   T myX; // do not require T to be default constructible.
   Graph myGraph;

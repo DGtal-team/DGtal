@@ -26,7 +26,7 @@
  *
  * This file is part of the DGtal library.
  */
- 
+
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
@@ -58,9 +58,9 @@ void testDepthFirstPropagation()
   typedef Z2i::Domain Domain;
   typedef Z2i::DigitalSet DigitalSet;
   typedef Z2i::Object4_8 Object;
-  
+
   BOOST_CONCEPT_ASSERT(( CUndirectedSimpleGraph<Z2i::Object4_8> ));
-  
+
   Point p1( -41, -36 );
   Point p2( 18, 18 );
   Domain domain( p1, p2 );
@@ -70,7 +70,7 @@ void testDepthFirstPropagation()
   Point c4( -10, -20 );
   Point c5( 12, -1 );
   DigitalSet shape_set( domain );
-  
+
   Shapes<Domain>::addNorm2Ball( shape_set, c1, 9 );
   Shapes<Domain>::addNorm1Ball( shape_set, c2, 9 );
   Shapes<Domain>::addNorm1Ball( shape_set, c3, 10 );
@@ -78,33 +78,33 @@ void testDepthFirstPropagation()
   Shapes<Domain>::addNorm1Ball( shape_set, c5, 4 );
 
   Object obj(Z2i::dt4_8, shape_set);
-  
-  
+
+
   HueShadeColorMap<int,3> cmap_grad( 0, (int)obj.size());
   //cmap_grad.addColor( Color( 0, 0, 200 ) );
   //cmap_grad.addColor( Color( 0, 0, 50 ) );
-  
+
   Board2D board;
   board << SetMode( domain.className(), "Paving" )
 	<< domain
 	<< SetMode( p1.className(), "Paving" );
-  
+
   Image image = ImageFromSet<Image>::create(shape_set, 1);
-  
+
   typedef DepthFirstVisitor<Object, set<Point> > Visitor;
   BOOST_CONCEPT_ASSERT(( CGraphVisitor<Visitor> ));
   Visitor bfv (obj, c1);
-  
+
   int cpt=0;
-  
+
   while( !bfv.finished() )
     {
       image.setValue(bfv.current().first, ++cpt);
       bfv.expand();
     }
-  
+
   string specificStyle = p1.className() + "/Paving";
-  
+
   for ( DigitalSet::ConstIterator it = shape_set.begin();
         it != shape_set.end();
         ++it )
@@ -139,16 +139,16 @@ void testDepthFirstPropagation()
   board.clear();
 
   DepthFirstVisitor<Object, set<Point> > bfv2 (obj, c1);
-  
-  
+
+
   while( !bfv2.finished() )
     {
       image.setValue(bfv2.current().first, bfv2.current().second);
       bfv2.expand();
     }
-  
+
   specificStyle = p1.className() + "/Paving";
-  
+
   for ( DigitalSet::ConstIterator it = shape_set.begin();
         it != shape_set.end();
         ++it )
@@ -186,7 +186,3 @@ int main( int /*argc*/, char** /*argv*/ )
   testDepthFirstPropagation();
   return 0;
 }
-
-
-
-

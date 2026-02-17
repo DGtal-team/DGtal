@@ -46,7 +46,7 @@ namespace DGtal
      Description of template class 'IntersectionTarget'
 
      \brief Aim: A class for intersection target used for voxelization.
-   
+
      @see MeshVoxelizer
 
      @tparam TSpace space of the digitalset

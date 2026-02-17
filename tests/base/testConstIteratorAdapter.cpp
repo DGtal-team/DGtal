@@ -54,22 +54,22 @@ using namespace DGtal;
 bool testProjection()
 {
 
-  unsigned int nb = 0; 
-  unsigned int nbok = 0; 
-  
+  unsigned int nb = 0;
+  unsigned int nbok = 0;
+
   typedef PointVector<3,int> Point3;
   typedef PointVector<2,int> Point2;
   typedef std::vector<Point3>::iterator Iterator3;
 
   //projector
-  typedef DGtal::functors::Projector<SpaceND<2,int> > Projector2; 
+  typedef DGtal::functors::Projector<SpaceND<2,int> > Projector2;
 
-  typedef ConstIteratorAdapter<Iterator3,Projector2,Point2> Adapter; 
+  typedef ConstIteratorAdapter<Iterator3,Projector2,Point2> Adapter;
   BOOST_CONCEPT_ASSERT(( boost::RandomAccessIterator<Iterator3> ));
 
   BOOST_CONCEPT_ASSERT(( boost_concepts::ReadableIteratorConcept<Adapter> ));
   BOOST_CONCEPT_ASSERT(( boost_concepts::RandomAccessTraversalConcept<Adapter> ));
-  
+
   //range of 3d Points
   std::vector<Point3> r;
   r.push_back(Point3(0,0,0));
@@ -88,7 +88,7 @@ bool testProjection()
   r.push_back(Point3(6,4,3));
   r.push_back(Point3(6,4,4));
   r.push_back(Point3(6,5,4));
-  
+
   //true projection
   std::vector<Point2> rtrue;
   rtrue.push_back(Point2(0,0));
@@ -107,67 +107,67 @@ bool testProjection()
   rtrue.push_back(Point2(6,4));
   rtrue.push_back(Point2(6,4));
   rtrue.push_back(Point2(6,5));
-  
+
   trace.beginBlock ( "Testing block ..." );
 
-  trace.info() << "2d points after projection (XY)" << endl; 
+  trace.info() << "2d points after projection (XY)" << endl;
 
-  Projector2 proj; 
-    
+  Projector2 proj;
+
   Adapter aitBegin(r.begin(),proj);
-  Adapter ait = aitBegin;    
-  Adapter aitEnd(r.end(),proj); 
+  Adapter ait = aitBegin;
+  Adapter aitEnd(r.end(),proj);
 
-  for ( ; ait != aitEnd; ++ait) 
+  for ( ; ait != aitEnd; ++ait)
     {
-      trace.info() << *(ait.base()); 
-      trace.info() << *ait; 
+      trace.info() << *(ait.base());
+      trace.info() << *ait;
       trace.info() << "(" << ait->operator[](0) << ", " << ait->operator[](1) << ")" << endl;
     }
 
   //comparison
   if ( std::equal( rtrue.begin(), rtrue.end(), aitBegin ) == true )
-    nbok++; 
-  nb++; 
-  trace.info() << nbok << "/" << nb << std::endl;   
+    nbok++;
+  nb++;
+  trace.info() << nbok << "/" << nb << std::endl;
 
   //basic operators
-  trace.info() << "basic operators (operator==)" << endl; 
+  trace.info() << "basic operators (operator==)" << endl;
   if ( ( ait != aitBegin ) && ( ait == aitEnd ) )
-    nbok++; 
-  nb++; 
-  trace.info() << nbok << "/" << nb << std::endl;   
-  
+    nbok++;
+  nb++;
+  trace.info() << nbok << "/" << nb << std::endl;
+
   //random access
   ait = (aitBegin + 3);
   ait += 1;
-  ait = 1 + ait; 
-  trace.info() << "random access operators (operator+)" << endl; 
-  trace.info() << *(aitBegin.base()) << *aitBegin << endl; 
-  trace.info() << "+5" << std::endl; 
-  trace.info() << *(ait.base()) << *ait << endl; 
+  ait = 1 + ait;
+  trace.info() << "random access operators (operator+)" << endl;
+  trace.info() << *(aitBegin.base()) << *aitBegin << endl;
+  trace.info() << "+5" << std::endl;
+  trace.info() << *(ait.base()) << *ait << endl;
   if ( ( *ait == Point2(3,1) ) == true )
-    nbok++; 
-  nb++; 
-  trace.info() << nbok << "/" << nb << std::endl;   
+    nbok++;
+  nb++;
+  trace.info() << nbok << "/" << nb << std::endl;
 
-  trace.info() << "backward scanning" << endl; 
-  boost::reverse_iterator<Adapter> raitBegin( aitEnd ); 
+  trace.info() << "backward scanning" << endl;
+  boost::reverse_iterator<Adapter> raitBegin( aitEnd );
   if ( std::equal( rtrue.rbegin(), rtrue.rend(), raitBegin ) == true )
-    nbok++; 
-  nb++; 
-  trace.info() << nbok << "/" << nb << std::endl;   
-  
-  trace.info() << "circular scanning" << endl; 
-  Circulator<Adapter> caitBegin( aitBegin, aitBegin, aitEnd ); 
+    nbok++;
+  nb++;
+  trace.info() << nbok << "/" << nb << std::endl;
+
+  trace.info() << "circular scanning" << endl;
+  Circulator<Adapter> caitBegin( aitBegin, aitBegin, aitEnd );
   if ( std::equal( rtrue.begin(), rtrue.end(), caitBegin ) == true )
-    nbok++; 
-  nb++; 
-  trace.info() << nbok << "/" << nb << std::endl;   
-  
+    nbok++;
+  nb++;
+  trace.info() << nbok << "/" << nb << std::endl;
+
 
   trace.endBlock();
-    
+
   return (nb == nbok);
 }
 

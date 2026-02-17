@@ -98,4 +98,3 @@ int main( int argc, char** argv )
   //! [convergents-convergents]
   return 0;
 }
-

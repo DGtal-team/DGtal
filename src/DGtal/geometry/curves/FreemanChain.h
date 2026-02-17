@@ -79,26 +79,26 @@ namespace DGtal
    * 4-connected contour as a string of '0', '1', '2', and '3' and the
    * coordinate of the first point. When it is a loop, it is the
    * clockwise boundary of the shape.
-   
+
    * Example :
-   * @code 
-   
+   * @code
+
    // A Freeman chain code is a string composed by the coordinates of the first
-   // pixel, and the list of elementary displacements. 
+   // pixel, and the list of elementary displacements.
    std::stringstream ss (stringstream::in | stringstream::out);
    ss << "0 0 00001111222233" << endl;
-   
+
    // Construct the Freeman chain
    FreemanChain<int> fc(ss);
-   
-   // Compute a bounding box 
+
+   // Compute a bounding box
    int minX, maxX, minY, maxY;
-   fc.computeBoundingBox(minX, minY, maxX, maxY);  
-   
+   fc.computeBoundingBox(minX, minY, maxX, maxY);
+
    // Compute the list of points of the contour
-   vector<FreemanChain<int>::Point> aContourPointVector; 
+   vector<FreemanChain<int>::Point> aContourPointVector;
    fc.getContourPoints(fc, aContourPointVector);
-   
+
    // Draw the Freeman chain
    Board2D aBoard;
    aBoard.setUnit(Board::UMillimeter);
@@ -129,12 +129,12 @@ namespace DGtal
 
     // ------------------------- iterator ------------------------------
   public:
-    
+
     ///////////////////////////////////////////////////////////////////////////////
     // class FreemanChain::ConstIterator
     ///////////////////////////////////////////////////////////////////////////////
-  
-    
+
+
     /**
      * This class represents an iterator on points defined by freeman chain,
      * storing the current coordinate.
@@ -143,13 +143,13 @@ namespace DGtal
     class ConstIterator
     {
     public:
-      
+
       using iterator_category = std::bidirectional_iterator_tag;
       using value_type = Point;
       using difference_type = int;
       using pointer = Point*;
       using reference = Point;
-      
+
       // ------------------------- Private data -----------------------
 
       private:
@@ -186,7 +186,7 @@ namespace DGtal
 
         /**
          * Constructor.
-         * It is the user's responsability to make sure that the data's are
+         * It is the user's responsibility to make sure that the data's are
          * consistent. No verification is performed.
          *
          * Nb: complexity in O(1).
@@ -196,7 +196,7 @@ namespace DGtal
          * @param XY the point corresponding to the 'n'-th position of 'chain'.
          */
         ConstIterator( ConstAlias<FreemanChain> aChain, Index n, const Point & XY)
-          : myFc( &aChain ), myPos( n ), myXY ( XY ) 
+          : myFc( &aChain ), myPos( n ), myXY ( XY )
         { }
 
         /**
@@ -205,7 +205,7 @@ namespace DGtal
          */
         ConstIterator( const ConstIterator & aOther )
           : myFc( aOther.myFc ), myPos( aOther.myPos ), myXY( aOther.myXY )
-        { } 
+        { }
 
         /**
          * Assignment.
@@ -373,7 +373,7 @@ namespace DGtal
          * @return 'true' if the current position of 'this' is before
          * the current position of [aOther].
          */
-        bool operator< ( const ConstIterator & aOther ) const 
+        bool operator< ( const ConstIterator & aOther ) const
         {
           ASSERT( myFc == aOther.myFc );
           return myPos < aOther.myPos;
@@ -396,9 +396,9 @@ class CodesRange
 {
 
   // ------------------------- inner types --------------------------------
-public: 
+public:
 
-  typedef std::string::const_iterator ConstIterator; 
+  typedef std::string::const_iterator ConstIterator;
   typedef std::string::const_reverse_iterator ConstReverseIterator;
   typedef Circulator<ConstIterator> ConstCirculator;
   typedef boost::reverse_iterator<ConstCirculator> ConstReverseCirculator;
@@ -421,14 +421,14 @@ public:
    */
   CodesRange( const CodesRange & aOther )
     : myChain( aOther.myChain ){}
-  
+
   /**
    * Assignment.
    * @param other the iterator to copy.
    * @return a reference on 'this'.
    */
   CodesRange& operator= ( const CodesRange & other )
-  {  
+  {
     if ( this != &other )
     {
       myChain = other.myChain;
@@ -444,7 +444,7 @@ public:
   /**
    * @return the size of the range
    */
-  std::string::size_type size() const 
+  std::string::size_type size() const
   {
     return myChain.size();
   }
@@ -454,21 +454,21 @@ public:
    * @return 'true' if the object is valid, 'false' otherwise.
    */
   bool isValid() const { return true; }
-  
+
   // ------------------------- display --------------------------------
   /**
    * Writes/Displays the object on an output stream.
    * @param out the output stream where the object is written.
    */
-  void selfDisplay ( std::ostream & out ) const 
+  void selfDisplay ( std::ostream & out ) const
   {
-    typedef typename IteratorCirculatorTraits<ConstIterator>::Value Value; 
+    typedef typename IteratorCirculatorTraits<ConstIterator>::Value Value;
     out << "[FreemanChainCodes]" << std::endl;
-    out << "\t"; 
+    out << "\t";
     std::copy( this->begin(), this->end(), std::ostream_iterator<Value>(out, "") );
     out << std::endl;
   }
-  
+
   /**
    * Overloads 'operator<<' for displaying objects of class 'CodesRange'.
    * @param out the output stream where the object is written.
@@ -484,7 +484,7 @@ public:
   private:
   /**
    * Private member @a myChain is a string of letters
-   */    
+   */
   std::string myChain;
   // ------------------------- iterator services --------------------------------
 public:
@@ -546,14 +546,14 @@ public:
      * @return  an instance of CodesRange.
      */
     CodesRange getCodesRange()
-    { 
-      return CodesRange(chain); 
+    {
+      return CodesRange(chain);
     }
 
 
     ///////////////////////////////////////////////////////////////////////////////
     // ----------------------- Standard services ------------------------------
-    
+
   public:
 
     /**
@@ -576,8 +576,8 @@ public:
      * @param vectPoints the vector containing all the points.
      */
     FreemanChain( const std::vector<Point>& vectPoints);
-    
-    
+
+
     /**
      * Constructor.
      * @param in any input stream,
@@ -601,7 +601,7 @@ public:
 
 
     /**
-     * Comparaison operator
+     * Comparison operator
      * @param other the object to compare to.
      * @return 'true' both FreemanChain are equals, 'false' otherwise.
      */
@@ -612,7 +612,7 @@ public:
     }
 
     /**
-     * Comparaison operator
+     * Comparison operator
      * @param other the object to compare to.
      * @return 'true' both FreemanChain are different, 'false' otherwise.
      */
@@ -640,10 +640,10 @@ public:
 
     /**
      * Returns the subchain of the chain starting at position 'pos' and has 'n'
-     * letters long.  
+     * letters long.
      *
      * @param pos position of a character in the current FreemanChain object to
-     * be used as starting character for the subchain.  
+     * be used as starting character for the subchain.
      * @param n length of the subchain.
      *
      * @return the subchain starting at 'pos' having 'n' letters long.
@@ -701,7 +701,7 @@ public:
      * @return an iterator on 'this' that points on the first letter b.
      */
     //BK
-    typename Self::ConstIterator 
+    typename Self::ConstIterator
       findQuadrantChange( OrderedAlphabet & A ) const;
 
     /**
@@ -761,7 +761,7 @@ public:
      * @return the point at position 'pos'.
      */
     Point getPoint ( Index pos ) const;
-    
+
 
     /**
      * @return the starting point of the FreemanChain.
@@ -789,7 +789,7 @@ public:
     {
       return lastPoint() -  firstPoint();
     }
-   
+
 
     /**
      * Add one symbol at the end of the FreemanChain
@@ -803,7 +803,7 @@ public:
      */
     FreemanChain & retract(Size n = 1);
 
-    
+
 
 
 
@@ -811,7 +811,7 @@ public:
 
     ///////////////////////////////////////////////////////////////////////////////
     // ----------------------- Iteration services ------------------------------
-    
+
     /**
      * Iterator service on points.
      * @return an iterator pointing on the first point of the chain.
@@ -828,7 +828,7 @@ public:
     /**
      * Returns the next position in the chain code. The path coded by the chain
      * code is assumed to be closed so that the position after the last letter
-     * is the first one.  
+     * is the first one.
      * @param pos a position in the chain code.
      * @return the next position.
      */
@@ -838,7 +838,7 @@ public:
     /**
      * Returns the previous position in the chain code. The path coded by the
      * chain code is assumed to be closed so that the position before the first
-     * letter is the first last one.  
+     * letter is the first last one.
      * @param pos a position in the chain code.
      * @return the previous position.
      */
@@ -846,7 +846,7 @@ public:
 
 
     // ------------------------- Static services -----------------------
-    
+
   public:
 
     /**
@@ -876,7 +876,7 @@ public:
      */
     template<typename TConstIterator>
     static void readFromPointsRange( const TConstIterator& itBegin, const TConstIterator& itEnd, FreemanChain & c );
-    
+
     /**
      * Reads a chain from the points range @a aRange and updates @a c.
      * @param aRange  any points range
@@ -885,16 +885,16 @@ public:
      */
     template<typename TRange>
     static void readFromPointsRange( const TRange& aRange, FreemanChain & c );
-    
+
     /**
      * Return a vector containing all the integer points of the freemanchain.
      *
      * @param fc the FreemanChain
      * @param aVContour (returns) the vector containing all the integer contour points.
      */
-    static void getContourPoints(const FreemanChain & fc, 
+    static void getContourPoints(const FreemanChain & fc,
                                  std::vector<Point> & aVContour );
-    
+
 
     /**
      * Return a set containing all the linels (given as Signed SCell
@@ -904,21 +904,21 @@ public:
      * convention to (-0.5, 0.5).  Notes that this shift is the same
      * that the one used to display FreemanChain object in interpixel
      * mode.
-     *     
+     *
      * @param aKSpace the KSpace
      * @param fc the FreemanChain
      * @param aSCellContour (returns) the set containing all the linels of the inter-pixels contour.
-     * @param aFlagForAppend if set to true the resulting set is appended to initial set.  
+     * @param aFlagForAppend if set to true the resulting set is appended to initial set.
      */
 
-    static void getInterPixelLinels(const KhalimskySpaceND<2,  TInteger> & aKSpace, 
-                                    const FreemanChain & fc, 
+    static void getInterPixelLinels(const KhalimskySpaceND<2,  TInteger> & aKSpace,
+                                    const FreemanChain & fc,
                                     typename KhalimskySpaceND<2, TInteger>::SCellSet & aSCellContour,
                                     bool aFlagForAppend=false);
-    
 
-    
-    
+
+
+
     /**
      * Translate a point by the displacement given a code from a FreemanChain
      *
@@ -941,12 +941,12 @@ public:
      * @return the type of movement given by aCode1 and aCode2.
      */
     //static unsigned int movement( unsigned int aCode1, unsigned int aCode2,
-    //    bool ccw = true ); 
+    //    bool ccw = true );
     static char movement( char aCode1, char aCode2,
-        bool ccw = true ); 
+        bool ccw = true );
 
     /**
-     * Increment (or decrement if negative) the code by 'n'. 
+     * Increment (or decrement if negative) the code by 'n'.
      * '0' + 1 = '1', '1' + 1 = '2', ... , '3' + 1 = '0'
      * @param code the initial code.
      * @param n the number to add/remove to the code
@@ -962,11 +962,11 @@ public:
      *
      * @param[in] dx  the x-displacement.
      * @param[in] dy  the y-displacement.
-     * 
+     *
      **/
     static short freemanCode4C(int dx, int dy);
 
-    
+
 
     /**
      * Returns the displacement vector of a Freeman code.
@@ -979,7 +979,7 @@ public:
     static void displacement( int & dx, int & dy, char aCode );
 
 
-    
+
     /**
      * @param aCode a Freeman code (between 0-3).
      * Returns the displacement vector of the Freeman code.
@@ -1091,12 +1091,12 @@ public:
           std::vector<unsigned int> & aClean2c,
           const FreemanChain & c,
           bool ccw = true );
-    
+
 
 
 
     // ----------------------- Interface --------------------------------------
-    
+
   public:
 
     /**
@@ -1123,14 +1123,14 @@ public:
      * @return the dyn. alloc. default style for this object.
      */
     //DrawableWithBoard2D* defaultStyle( std::string mode = "" ) const;
- 
+
 
     /**
      * @return the style name used for drawing this object.
      */
     std::string className() const;
 
-    // ------------------------- Public Datas ------------------------------
+    // ------------------------- Public Data ------------------------------
 
   public:
     /**
@@ -1158,9 +1158,9 @@ public:
      */
     Integer yn;
 
-    
+
     // ------------------------- Internals ------------------------------------
-    
+
 
   private:
 

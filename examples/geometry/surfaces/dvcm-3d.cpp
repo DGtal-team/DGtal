@@ -26,7 +26,7 @@
  * This file is part of the DGtal library.
  */
 
-/** 
+/**
 This example shows the computation of the VCM of a digital surface
 read from a .vol file. The normal is estimated from the
 diagonalization of the VCM tensor, while the orientation is deduced

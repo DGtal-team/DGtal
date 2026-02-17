@@ -62,13 +62,13 @@ namespace DGtal {
   primitive is an informal word that describes some family of
   objects that share common characteristics. Often, the primitives
   are geometric, e.g. digital planes.
-  
+
   # Refinement of boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>
-  
+
   # Associated types
   - \a Space, the type that defines the digital space.
   - \a Primitive, the type that defines the primitive.
-  
+
   # Notation
   - \a X : A type that is a model of CPrimitiveComputer
   - \a x : object of type X
@@ -79,16 +79,16 @@ namespace DGtal {
   | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
   |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
   |access to primitive | x.primitive() |             | \a Primitive|                  |returns a primitive that represents the current solution| | O(1)|
-  
-  
+
+
   # Invariants#
-  
+
   # Models#
-  
+
   - COBANaivePlaneComputer, COBAGenericNaivePlaneComputer, ChordNaivePlaneComputer, ChordGenericNaivePlaneComputer, COBAGenericStandardPlaneComputer
-  
+
   # Notes#
-  
+
   @tparam T the type that should be a model of CPrimitiveComputer.
   */
   template <typename T>
@@ -109,7 +109,7 @@ namespace DGtal {
     {
       ConceptUtils::sameType( myP, myX.primitive() );
     }
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     T myX; // only if T is default constructible.
     Primitive myP;

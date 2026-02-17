@@ -168,4 +168,3 @@ def test_VoxelComplexSpecificMethods():
     assert vcomplex.isTableLoaded()
     # TODO Some functions are yet to be exercised
     # vcomplex.voxelClose(cell=)
-

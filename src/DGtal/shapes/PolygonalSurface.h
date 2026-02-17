@@ -271,11 +271,11 @@ namespace DGtal
     /// @return (setter) a reference to the topological structure of the
     /// polygonal surface (an half-edge data structure).
     HalfEdgeDataStructure& heds() { return myHEDS; }
-    
+
     /// @return (getter) a const reference to the topological structure of the
     /// polygonal surface (an half-edge data structure).
     const HalfEdgeDataStructure& heds() const { return myHEDS; }
-    
+
     // ------------------------- standard services ------------------------------
   public:
     /// @return the number of half edges in the structure.
@@ -387,7 +387,7 @@ namespace DGtal
      *
      * @param it the output iterator
      *
-     * @param v the vertex whose neighbors will be writen
+     * @param v the vertex whose neighbors will be written
      */
     template <typename OutputIterator>
     void
@@ -524,7 +524,7 @@ namespace DGtal
        natural order (the range size should be 3).
     */
     ArcRange arcsAroundFace( const Face & f ) const;
-    
+
     /**
        @param v any vertex.
        @return 'true' if and only if vertex \a v lies on a boundary.
@@ -589,7 +589,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
     /// Indicates if the half-edge structure has been created/updated.
     bool                  isHEDSValid;
@@ -600,7 +600,7 @@ namespace DGtal
     /// Stores the polygonal faces.
     PolygonalFacesStorage myPolygonalFaces;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------

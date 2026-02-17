@@ -114,7 +114,7 @@ public:
         return functor ( p );
     }
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
 protected:
     RealPoint origin;
     double t_sin;
@@ -184,7 +184,7 @@ public:
         return functor ( p);
     }
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
 protected:
     RealPoint origin;
     double t_sin;
@@ -258,7 +258,7 @@ public:
         return bounds;
     }
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
 protected:
    const TRigidTransformFunctor & transform;
 };
@@ -270,4 +270,3 @@ protected:
 
 #undef RigidTransformation2D_RECURSES
 #endif // else defined(RigidTransformation2D_RECURSES)
-

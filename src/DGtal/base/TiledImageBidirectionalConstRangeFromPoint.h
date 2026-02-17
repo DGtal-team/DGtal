@@ -77,7 +77,7 @@ namespace DGtal
       // ------------------------- inner types --------------------------------
 
     public:
-      
+
       typedef TTiledImage TiledImage;
 
       typedef typename TiledImage::Point Point;
@@ -89,7 +89,7 @@ namespace DGtal
       typedef boost::reverse_iterator<ConstCirculator> ConstReverseCirculator;
 
       // ------------------------- standard services --------------------------------
-      
+
       /**
        * Standard constructor from a TiledImage.
        * @param ti pointer on a TiledImage.
@@ -159,7 +159,7 @@ namespace DGtal
       // ------------------------- private data --------------------------------
 
     private:
-      
+
       const TTiledImage *myti;
 
     // ------------------------- iterator services --------------------------------

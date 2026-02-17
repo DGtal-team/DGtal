@@ -57,20 +57,20 @@ namespace concepts
   /**
 Description of \b concept \b 'CColorMap' <p>
 @ingroup Concepts
-    
+
 @brief Aim: Defines the concept describing a color map. A color map converts
     a value within a given range into an RGB triple.
-    
+
 # Refinement of
-   
+
 # Associated types
-   
+
 # Notation
     - \a X : A type that is a model of CColorMap
     - \a x, \a y  : Object of type X
-   
+
 # Definitions
-   
+
 # Valid expressions and semantics
 
 
@@ -80,11 +80,11 @@ Description of \b concept \b 'CColorMap' <p>
 |Obtain a color | color = cmap(value) | value is a Value | DGtal::Color | min  &le; value &le; max | Returns a color computed after the position of \em value \em within the range [min,max] | | |
 
 # Invariants
-   
+
 ## Models
            GradientColorMap
            HueShadeColorMap
-           ColorBrightnessColorMap 
+           ColorBrightnessColorMap
            GrayScaleColorMap
            RandomColorMap
 # Notes
@@ -94,25 +94,25 @@ Description of \b concept \b 'CColorMap' <p>
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    
+
     typedef typename CMap::Value Value;
-    
+
     BOOST_CONCEPT_ASSERT(( CLabel<Value> ));
-    
+
     BOOST_CONCEPT_USAGE( CColorMap )
     {
       CMap myCMap( myMin, myMax );
       // operator() exists, takes a Value, and returns a LibBoard::Color.
       ConceptUtils::sameType( myColor, myCMap.operator()( myValue ) );
     }
-    
-    // ------------------------- Private Datas --------------------------------
+
+    // ------------------------- Private Data --------------------------------
   private:
-    
+
     // ------------------------- Internals ------------------------------------
   private:
     Color myColor;
-    Value myMin, myMax, myValue;    
+    Value myMin, myMax, myValue;
   }; // end of concept CColorMap
   }//namespace concepts
 } // namespace DGtal

@@ -149,7 +149,7 @@ int main( int argc, char* argv[] )
   params( "thresholdMin", m )( "thresholdMax", M )( "closed", 1);
   params( "t-ring", 3 )( "surfaceTraversal", "Default" );
   auto bimage = SH::makeBinaryImage( input.c_str(), params );
-  if ( bimage == nullptr ) 
+  if ( bimage == nullptr )
     {
       trace.error() <<  "Unable to read file <" << input.c_str() << ">" << std::endl;
       return 1;
@@ -169,11 +169,11 @@ int main( int argc, char* argv[] )
   auto pointels = SH::getPointelRange( c2i, surface );
   auto vertices = SH::RealPoints( pointels.size() );
   std::transform( pointels.cbegin(), pointels.cend(), vertices.begin(),
-                  [&] (const SH::Cell& c) { return embedder( c ); } ); 
+                  [&] (const SH::Cell& c) { return embedder( c ); } );
   for ( auto&& surfel : *surface )
     {
       const auto primal_surfel_vtcs = SH::getPointelRange( K, surfel );
-      SM::Vertices face;	      
+      SM::Vertices face;
       for ( auto&& primal_vtx : primal_surfel_vtcs )
         face.push_back( c2i[ primal_vtx ] );
       faces.push_back( face );
@@ -186,7 +186,7 @@ int main( int argc, char* argv[] )
   //! [curvature-measures-CNC]
   // Builds a CorrectedNormalCurrentComputer object onto the SurfaceMesh object
   CNC cnc( smesh );
-  // Estimates normal vectors using Convolved Trivial Normal estimator 
+  // Estimates normal vectors using Convolved Trivial Normal estimator
   auto face_normals = SHG::getCTrivialNormalVectors( surface, surfels, params );
   smesh.setFaceNormals( face_normals.cbegin(), face_normals.cend() );
   if ( smesh.vertexNormals().empty() )

@@ -58,7 +58,7 @@ namespace DGtal
        Like any model of CIncrementalSegmentComputer, it can control its own extension
        (in the direction that is relative to the underlying iterator)
        so that an implicit predicate P remains true. However, contrary to models
-       of CIncrementalSegmentComputer, it garantees that P is also true for any
+       of CIncrementalSegmentComputer, it guarantees that P is also true for any
        subrange of the whole segment at any time. This extra constraint is necessary
        to be able to incrementally check whether or not the segment is maximal.
 
@@ -75,7 +75,7 @@ namespace DGtal
        # Invariants#
 
        Contrary to models of CIncrementalSegmentComputer,
-       models of CForwardSegmentComputer also garantee that
+       models of CForwardSegmentComputer also guarantee that
        for each iterator it from s.begin() to s.end(),
        the range [it, s.end()) is a segment such that P is true.
 
@@ -83,7 +83,7 @@ namespace DGtal
        for ( ConstIterator it = s.begin(),
              ConstIterator itEnd = s.end();
              it != itEnd; ++it)
-       { 
+       {
          // [it, itEnd) is a segment:
          bool flag = true;
          while ( (s.end() != itEnd)&&(flag) ) { flag = s.extend(); }
@@ -104,7 +104,7 @@ namespace DGtal
       // ----------------------- Concept checks ------------------------------
     public:
 
-      // ------------------------- Private Datas --------------------------------
+      // ------------------------- Private Data --------------------------------
     private:
 
       // ------------------------- Internals ------------------------------------

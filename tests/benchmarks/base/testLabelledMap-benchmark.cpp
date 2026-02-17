@@ -46,7 +46,7 @@
 #include "DGtal/base/LabelledMap.h"
 
 // Before 1.47, random number generation in boost.
-// Since 1.47, random number generation in boost::random. 
+// Since 1.47, random number generation in boost::random.
 #define BOOST_MAJOR_VERSION  (BOOST_VERSION / 100000)
 #define BOOST_MINOR_VERSION  (( BOOST_VERSION / 100) % 1000)
 #define BOOST_SUBMINOR_VERSION  (BOOST_VERSION % 100)
@@ -82,7 +82,7 @@ public:
     clear();
   }
 
-  inline 
+  inline
   void clear()
   {
     for ( unsigned int l = 0; l < L; ++l )
@@ -91,12 +91,12 @@ public:
           setValue( _invalid, l, x, y );
   }
 
-  inline 
+  inline
   const Value & value( unsigned int l, unsigned int x, unsigned int y ) const
   {
     return _data[ l ][ x ][ y ];
   }
-  inline 
+  inline
   unsigned int erase( unsigned int l, unsigned int x, unsigned int y )
   {
     if ( _data[ l ][ x ][ y ] != _invalid )
@@ -107,12 +107,12 @@ public:
     return 0;
   }
 
-  inline 
+  inline
   void setValue( const Value & val, unsigned int l, unsigned int x, unsigned int y )
   {
     _data[ l ][ x ][ y ] = val;
   }
-  inline 
+  inline
   void setValueNoNewLabel( const Value & val, unsigned int l, unsigned int x, unsigned int y )
   {
     _data[ l ][ x ][ y ] = val;
@@ -122,8 +122,8 @@ public:
   {
     return value( l, x, y ) != _invalid;
   }
-  inline 
-  void getLabels( std::vector<unsigned int> & labels, 
+  inline
+  void getLabels( std::vector<unsigned int> & labels,
                   unsigned int x, unsigned int y ) const
   {
     labels.clear();
@@ -139,7 +139,7 @@ public:
       if ( hasLabel( l, x, y ) ) ++nb;
     return nb;
   }
-  inline 
+  inline
   void display ( ostream & , unsigned int , unsigned int , unsigned int  )
   {}
 
@@ -169,7 +169,7 @@ public:
   {
   }
 
-  inline 
+  inline
   void clear()
   {
       for ( unsigned int y = 0; y < Y; ++y )
@@ -177,23 +177,23 @@ public:
           _data[ x ][ y ].clear();
   }
 
-  inline 
+  inline
   const Value & value( unsigned int l, unsigned int x, unsigned int y )
   {
     return _data[ x ][ y ][ l ];
   }
-  inline 
+  inline
   unsigned int erase( unsigned int l, unsigned int x, unsigned int y )
   {
     return _data[ x ][ y ].erase( l );
   }
 
-  inline 
+  inline
   void setValue( const Value & val, unsigned int l, unsigned int x, unsigned int y )
   {
     _data[ x ][ y ][ l ] = val;
   }
-  inline 
+  inline
   void setValueNoNewLabel( const Value & val, unsigned int l, unsigned int x, unsigned int y )
   {
     _data[ x ][ y ][ l ] = val;
@@ -203,8 +203,8 @@ public:
   {
     return _data[ x ][ y ].count( l ) != 0;
   }
-  inline 
-  void getLabels( std::vector<unsigned int> & labels, 
+  inline
+  void getLabels( std::vector<unsigned int> & labels,
                   unsigned int x, unsigned int y ) const
   {
     labels.clear();
@@ -217,7 +217,7 @@ public:
   {
     return (unsigned int)_data[ x ][ y ].size();
   }
-  inline 
+  inline
   void display ( ostream & , unsigned int, unsigned int , unsigned int  )
   {}
 
@@ -266,7 +266,7 @@ public:
   {
   }
 
-  inline 
+  inline
   void clear()
   {
       for ( unsigned int y = 0; y < Y; ++y )
@@ -274,11 +274,11 @@ public:
           _data[ x ][ y ].clear();
   }
 
-  inline 
+  inline
   const Value & value( unsigned int l, unsigned int x, unsigned int y )
   {
     MyList & list = _data[ x ][ y ];
-    Iterator it = list.begin(), it_end = list.end(); 
+    Iterator it = list.begin(), it_end = list.end();
     for ( ; it != it_end; ++it )
       {
         if ( it->first == l ) return it->second;
@@ -287,12 +287,12 @@ public:
     list.emplace_front( std::make_pair( l, Value() ) );
     return list.front().second;
   }
-  inline 
+  inline
   unsigned int erase( unsigned int l, unsigned int x, unsigned int y )
   {
     MyList & list = _data[ x ][ y ];
     Iterator it_prev = list.before_begin();
-    Iterator it = list.begin(), it_end = list.end(); 
+    Iterator it = list.begin(), it_end = list.end();
     for ( ; it != it_end; ++it )
       {
         if ( it->first == l )
@@ -305,56 +305,56 @@ public:
     return 0;
   }
 
-  inline 
+  inline
   void setValue( const Value & val, unsigned int l, unsigned int x, unsigned int y )
   {
     MyList & list = _data[ x ][ y ];
-    Iterator it = list.begin(), it_end = list.end(); 
+    Iterator it = list.begin(), it_end = list.end();
     for ( ; it != it_end; ++it )
       {
-        if ( it->first == l ) 
+        if ( it->first == l )
           {
             it->second = val;
             return;
           }
       }
-    if ( it == it_end ) 
+    if ( it == it_end )
         list.emplace_front( std::make_pair( l, val ) );
   }
-  inline 
+  inline
   void setValueNoNewLabel( const Value & val, unsigned int l, unsigned int x, unsigned int y )
   {
     MyList & list = _data[ x ][ y ];
-    Iterator it = list.begin(), it_end = list.end(); 
+    Iterator it = list.begin(), it_end = list.end();
     for ( ; it != it_end; ++it )
       {
-        if ( it->first == l ) 
+        if ( it->first == l )
           {
             it->second = val;
             return;
           }
       }
-    if ( it == it_end ) 
+    if ( it == it_end )
       list.emplace_front( std::make_pair( l, val ) );
   }
   inline
   bool hasLabel( unsigned int l, unsigned int x, unsigned int y ) const
   {
     const MyList & list = _data[ x ][ y ];
-    ConstIterator it = list.begin(), it_end = list.end(); 
+    ConstIterator it = list.begin(), it_end = list.end();
     for ( ; it != it_end; ++it )
       {
         if ( it->first == l ) return true;
       }
     return false;
   }
-  inline 
-  void getLabels( std::vector<unsigned int> & labels, 
+  inline
+  void getLabels( std::vector<unsigned int> & labels,
                   unsigned int x, unsigned int y ) const
   {
     labels.clear();
     const MyList & list = _data[ x ][ y ];
-    ConstIterator it = list.begin(), it_end = list.end(); 
+    ConstIterator it = list.begin(), it_end = list.end();
     for ( ; it != it_end; ++it )
       {
         labels.push_back( (*it).first );
@@ -364,13 +364,13 @@ public:
   unsigned int nbLabels( unsigned int x, unsigned int y ) const
   {
     const MyList & list = _data[ x ][ y ];
-    ConstIterator it = list.begin(), it_end = list.end(); 
+    ConstIterator it = list.begin(), it_end = list.end();
     unsigned int n = 0;
     for ( ; it != it_end; ++it )
       ++n;
     return n;
   }
-  inline 
+  inline
   void display ( ostream & , unsigned int , unsigned int , unsigned int )
   {}
 
@@ -417,25 +417,25 @@ public:
   inline
   ArrayXYOfLabelledMap() {}
 
-  inline 
+  inline
   const Value & value( unsigned int l, unsigned int x, unsigned int y ) const
   {
     return _data[ x ][ y ].fastAt( l );
   }
 
-  inline 
+  inline
   void setValue( const Value & val, unsigned int l, unsigned int x, unsigned int y )
   {
     _data[ x ][ y ][ l ] = val;
   }
 
-  inline 
+  inline
   unsigned int erase( unsigned int l, unsigned int x, unsigned int y )
   {
     return _data[ x ][ y ].erase( l );
   }
 
-  inline 
+  inline
   void setValueNoNewLabel( const Value & val, unsigned int l, unsigned int x, unsigned int y )
   {
     _data[ x ][ y ].fastAt( l ) = val;
@@ -447,8 +447,8 @@ public:
     return _data[ x ][ y ].count( l );
   }
 
-  inline 
-  void getLabels( std::vector<unsigned int> & labels, 
+  inline
+  void getLabels( std::vector<unsigned int> & labels,
                   unsigned int x, unsigned int y ) const
   {
     _data[ x ][ y ].labels().getLabels( labels );
@@ -489,7 +489,7 @@ generateData( MapLXY & m, double proba_no_label, double proba_label )
 {
   boost::random::mt19937 rng;         // produces randomness out of thin air
   rng.seed( 0 );
-  boost::random::uniform_smallint<> diceL(0, L-1);  
+  boost::random::uniform_smallint<> diceL(0, L-1);
   boost::random::uniform_01<> diceDouble;
   boost::random::geometric_distribution<> diceNbLabels( proba_label ); // Y
   // E(Y) = (1-p)/p,  Var(Y) = (1-p)/p^2
@@ -523,11 +523,11 @@ generateData( MapLXY & m, double proba_no_label, double proba_label )
 {
   boost::mt19937 rng;         // produces randomness out of thin air
   rng.seed( 0 );
-  boost::uniform_smallint<> diceL(0, L-1);  
+  boost::uniform_smallint<> diceL(0, L-1);
   boost::uniform_01<> diceDouble;
   boost::geometric_distribution<> nbLabelsDist( proba_label ); // Y
   boost::variate_generator
-    <boost::mt19937&, 
+    <boost::mt19937&,
      boost::geometric_distribution<> > diceNbLabels( rng, nbLabelsDist);
   // E(Y) = (1-p)/p,  Var(Y) = (1-p)/p^2
   std::cerr << "E(Y)=" << ( (1-proba_label)/proba_label )
@@ -555,7 +555,7 @@ generateData( MapLXY & m, double proba_no_label, double proba_label )
 #endif
 
 template <typename MapLXY, unsigned int L, unsigned int X, unsigned int Y>
-double 
+double
 sumAllData( MapLXY & m )
 {
   double sum = 0.0;
@@ -572,7 +572,7 @@ sumAllData( MapLXY & m )
 }
 
 template <typename MapLXY, unsigned int L, unsigned int X, unsigned int Y>
-double 
+double
 sumOneData( MapLXY & m, unsigned int l )
 {
   double sum = 0.0;
@@ -594,8 +594,8 @@ locateThreeData( MapLXY & m, unsigned int l1, unsigned int l2, unsigned int l3 )
   for ( unsigned int y = 0; y < Y; ++y )
     for ( unsigned int x = 0; x < X; ++x )
       {
-        if ( ( m.hasLabel( l1, x, y ) ) 
-             && ( m.hasLabel( l2, x, y ) ) 
+        if ( ( m.hasLabel( l1, x, y ) )
+             && ( m.hasLabel( l2, x, y ) )
              && ( m.hasLabel( l3, x, y ) ) )
           ++loc3;
       }
@@ -604,7 +604,7 @@ locateThreeData( MapLXY & m, unsigned int l1, unsigned int l2, unsigned int l3 )
 }
 
 template <typename MapLXY, unsigned int L, unsigned int X, unsigned int Y>
-unsigned int 
+unsigned int
 eraseOneData( MapLXY & m, unsigned int l )
 {
   unsigned int nb = 0;

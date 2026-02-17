@@ -71,7 +71,7 @@ IntegralInvariantVolumeEstimator( VolumeFunctor fct )
   : myFct( fct ),
     myKernelFunctor(NumberTraits<Value>::ONE),
     myKernels(), myKernelsSet(),
-    myKernel( 0 ), myDigKernel( 0 ), 
+    myKernel( 0 ), myDigKernel( 0 ),
     myPointPredicate( 0 ), myShapeDomain( 0 ),
     myShapePointFunctor( 0 ), myShapeSpelFunctor( 0 ),
     myConvolver( 0 ),
@@ -84,10 +84,10 @@ template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
 inline
 DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor>::
 IntegralInvariantVolumeEstimator
-( ConstAlias< KSpace > K, 
+( ConstAlias< KSpace > K,
   ConstAlias< PointPredicate > aPointPredicate,
   VolumeFunctor fct )
-  : myFct( fct ), 
+  : myFct( fct ),
     myKernelFunctor(NumberTraits<Value>::ONE),
     myKernels(), myKernelsSet(),
     myKernel( 0 ), myDigKernel( 0 ),
@@ -112,7 +112,7 @@ IntegralInvariantVolumeEstimator
   : myFct( other.myFct ),
     myKernelFunctor( other.myKernelFunctor ),
     myKernels( other.myKernels ), myKernelsSet( other.myKernelsSet ),
-    myKernel( other.myKernel ), myDigKernel( other.myDigKernel ), 
+    myKernel( other.myKernel ), myDigKernel( other.myDigKernel ),
     myPointPredicate( other.myPointPredicate ), myShapeDomain( other.myShapeDomain ),
     myShapePointFunctor( other.myShapePointFunctor ), myShapeSpelFunctor( other.myShapeSpelFunctor ),
     myConvolver( other.myConvolver ),
@@ -149,7 +149,7 @@ inline
 typename DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor>::Scalar
 DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor>::
 h() const
-{ 
+{
   return myH;
 }
 //-----------------------------------------------------------------------------
@@ -158,7 +158,7 @@ inline
 void
 DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor>::
 attach
-( ConstAlias< KSpace > K, 
+( ConstAlias< KSpace > K,
   ConstAlias<PointPredicate> aPointPredicate )
 {
   myPointPredicate = aPointPredicate;
@@ -204,7 +204,7 @@ init
 
   myH = _h;
   double eRadius = myRadius * myH; // Euclidean radius of the ball kernel.
-  
+
   myFct.init( myH, eRadius );
 
   RealPoint rOrigin = RealPoint::zero;
@@ -221,8 +221,8 @@ init
   unsigned int middle = n / 2;
   RealPoint shiftPoint;
   for ( typename Domain::ConstIterator it_neigh = neighborhood.begin(),
-          it_neigh_end = neighborhood.end(); 
-        it_neigh != it_neigh_end; 
+          it_neigh_end = neighborhood.end();
+        it_neigh != it_neigh_end;
         ++it_neigh, ++offset )
     {
       /// Computation of shifting masks
@@ -236,13 +236,13 @@ init
       DigitalShape digCurrent;
       digCurrent.attach( *current );
       digCurrent.init( myKernel->getLowerBound() + Point::diagonal(-1), myKernel->getUpperBound() + Point::diagonal(1), myH );
-      
+
       myKernelsSet[ offset ] = new DigitalSet( digCurrent.getDomain() );
       Shapes< Domain>::digitalShaper ( *(myKernelsSet[ offset ]), digCurrent );
-      
+
       myKernels[ offset ].first  = myKernelsSet[ offset ]->begin();
       myKernels[ offset ].second = myKernelsSet[ offset ]->end();
-      
+
       delete current;
       delete kernelShifted;
     }
@@ -301,7 +301,7 @@ template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
 inline
 std::ostream&
 DGtal::operator<<
-( std::ostream & out, 
+( std::ostream & out,
   const IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor> & object )
 {
   object.selfDisplay( out );

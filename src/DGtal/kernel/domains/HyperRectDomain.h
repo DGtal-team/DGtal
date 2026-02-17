@@ -85,7 +85,7 @@ namespace DGtal
    *             std::ostream_iterator<Point4D> ( std::cout, " " ) );
    *  \endcode
    *
-   * More informations can be found in the module page about
+   * More information can be found in the module page about
    * \ref moduleSpacePointVectorDomain .
    *
    * @note Since DGtal 1.1, @ref HyperRectDomain provides random-access iterators.
@@ -142,7 +142,7 @@ namespace DGtal
      * Constructor from two points \param lowerPoint and \param upperPoint
      * with real coordinates and that define the space diagonal.
      *
-     * The domain actualy defined is the smallest domain with integer bounds
+     * The domain actually defined is the smallest domain with integer bounds
      * that contains the two given points.
      */
     HyperRectDomain ( const typename Space::RealPoint &lowerPoint,
@@ -602,7 +602,7 @@ namespace DGtal
      */
     const Predicate & predicate() const;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
 

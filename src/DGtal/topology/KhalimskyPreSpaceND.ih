@@ -1387,7 +1387,7 @@ template < DGtal::Dimension dim, typename TInteger>
 inline
 typename DGtal::KhalimskyPreSpaceND< dim, TInteger >::Point
 DGtal::KhalimskyPreSpaceND< dim, TInteger >::
-interiorVoxel( const SCell &p) 
+interiorVoxel( const SCell &p)
 {
   ASSERT(sDim(p) == (dimension - 1));
   auto d = sOrthDir( p );

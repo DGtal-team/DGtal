@@ -59,7 +59,7 @@ template <typename CIt, typename PShape, typename PShapeFunctor>
 inline
 void
 DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>
-::attach(const ParametricShape& aShape) 
+::attach(const ParametricShape& aShape)
 {
   if ( myFunctorPtr != nullptr )
     delete myFunctorPtr;
@@ -69,11 +69,11 @@ DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>
 // ------------------------------------------------------------------------
 template <typename CIt, typename PShape, typename PShapeFunctor>
 inline
-typename DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::Quantity 
+typename DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>::Quantity
 DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>
 ::eval(const ConstIterator& it, const double h) const
-{ 
-  ASSERT( isValid() ); 
+{
+  ASSERT( isValid() );
   RealPoint p( *it );
   p *= h;
   return myFunctorPtr->operator()(p);
@@ -85,21 +85,21 @@ template <typename OutputIterator>
 inline
 OutputIterator
 DGtal::TrueLocalEstimatorOnPoints<CIt,PShape,PShapeFunctor>
-::eval(const ConstIterator& itb, 
+::eval(const ConstIterator& itb,
        const ConstIterator& ite,
        OutputIterator result,
        const double h) const
 {
-  ASSERT( isValid() ); 
+  ASSERT( isValid() );
   if (isEmpty(itb, ite))
     return result;
-  
+
   // do-while loop to deal with the case of a whole circular range
-  ConstIterator it = itb; 
+  ConstIterator it = itb;
   do
 	{
 	  *result++ = eval( it, h );
-	  ++it; 
+	  ++it;
 	} while (it != ite);
 
   return result;

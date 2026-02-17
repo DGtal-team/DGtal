@@ -56,43 +56,43 @@ namespace DGtal {
   /**
   DescriptionDescription of \b concept '\b CAdjacency' <p>
   @ingroup Concepts
-   
+
   @brief Aim: The concept CAdjacency defines an elementary
   adjacency relation between points of a digital space.
-    
+
   It thus distinguishes which points are close and which points are
   further away in this space. Adjacency relations are used to
   define a digital topology, in the sense of Rosenfeld or in the
   sense of Herman. In other words, and adjacency relation define a
   neighborhood graph on the points of a digital domain.
-   
-  # Refinement of 
+
+  # Refinement of
   - CUndirectedSimpleLocalGraph
-   
+
   # Associated types (must be defined in the model):
   - \c Space: the space of the adjacency.
   - \c Point: the digital point type.
   - \c Adjacency: the type of the adjacency itself.
-   
+
   #  Notations
   - \c Adj : A type that is a model of CAdjacency
   - \c adj  : Object of type Adj.
   - \c p1, \c p2 : an object of type \ref Point.
-    
+
   # Definitions
-   
+
   # Valid expressions and semantics
 
   | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
   |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
   | adjacency test | adj.isAdjacentTo( p1, p2 ) | \c p1 and \c p2 of same type Point. | \c bool | | Return 'true' when the two points are adjacent according to the adjacency relation \c adj | | |
-  | proper adjacency test | adj.isProperlyAdjacentTo( p1, p2 ) | \c p1 and \c p2 of same type Point. | \c bool | | Return 'true' when the two points are adjacent according to the adjacency relation \c adj and if \c p1 different from \c p2 | | | 
-    
+  | proper adjacency test | adj.isProperlyAdjacentTo( p1, p2 ) | \c p1 and \c p2 of same type Point. | \c bool | | Return 'true' when the two points are adjacent according to the adjacency relation \c adj and if \c p1 different from \c p2 | | |
+
   # Invariants
-   
+
   # Models
   - MetricAdjacency, DomainAdjacency
-   
+
   # Notes
   */
   template <typename Adj>
@@ -100,7 +100,7 @@ namespace DGtal {
   {
     // ----------------------- Concept checks ------------------------------
   public:
-    
+
     typedef typename Adj::Space Space;
     typedef typename Adj::Point Point;
     typedef typename Adj::Adjacency Adjacency;
@@ -110,11 +110,11 @@ namespace DGtal {
       // check isAdjacentTo
       ConceptUtils::sameType( myBool, myAdj.isAdjacentTo( myP1, myP2 ) );
       // check isProperlyAdjacentTo
-      ConceptUtils::sameType( myBool, 
+      ConceptUtils::sameType( myBool,
             myAdj.isProperlyAdjacentTo( myP1, myP2 ) );
     }
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     Adj myAdj;
     Point myP1;
@@ -124,9 +124,9 @@ namespace DGtal {
 
     // ------------------------- Internals ------------------------------------
   private:
-    
+
   }; // end of concept CAdjacency
-  
+
 } // namespace concepts
 } // namespace DGtal
 

@@ -50,7 +50,7 @@
 //////////////////////////////////////////////////////////////////////////////
 
 // @since 0.8 In DGtal::concepts
-namespace DGtal { 
+namespace DGtal {
   namespace concepts {
 
     /////////////////////////////////////////////////////////////////////////////
@@ -67,27 +67,27 @@ namespace DGtal {
     - Vertex: the type for the vertices of the graph (a model of boost::DefaultConstructible, boost::Assignable, boost::CopyConstructible).
     - VertexSet: the type for storing a set of vertices.
     - VertexMap: a rebinding structure to associate Value to vertices of model CVertexMap.
-    
+
     # Notation
     - \c X : A type that is a model of CUndirectedSimpleLocalGraph
     - \c x : object of type X
     - \c v : object of type Vertex
     - \c out : an output iterator of type OutputIterator (model of boost::OutputIterator).
     - \c p : a predicate on vertex of type VertexPredicate (model of CVertexPredicate).
-    
+
     # Definitions
-    
-    # Valid expressions and semantics 
-     
+
+    # Valid expressions and semantics
+
     | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
     |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
     | Degree        | x.degree(v)|                     | Size        |                  |Returns the degree of vertex \c v | | |
-    |Capacity       | x.bestCapacity() |               | Size        |                  |Returns the approximate number of neighbors to be expected. Useful to prepare data structures. | | |      
+    |Capacity       | x.bestCapacity() |               | Size        |                  |Returns the approximate number of neighbors to be expected. Useful to prepare data structures. | | |
     |Neighbourhood | x.writeNeighbors<OutputIterator>( out, v ) | | | | Writes with the output iterator \c out the neighboring vertices of \c v. | | |
-    | Neighborhood | x.writeNeighbors<OutputIterator,VertexPredicate>( out, v, p ) | | | | Writes with the output iterator \c out the neighboring vertices of \c v that satisfy the predicate \c p. | | |  
-            
+    | Neighborhood | x.writeNeighbors<OutputIterator,VertexPredicate>( out, v, p ) | | | | Writes with the output iterator \c out the neighboring vertices of \c v that satisfy the predicate \c p. | | |
+
     # Invariants#
-    
+
     # Models#
     - DigitalSurface, LightImplicitDigitalSurface, LightExplicitDigitalSurface
     - Object, MetricAdjacency, DomainAdjacency
@@ -96,8 +96,8 @@ namespace DGtal {
 
     @tparam T the type that should be a model of CUndirectedSimpleLocalGraph.
     */
-    template <typename T> 
-    struct CUndirectedSimpleLocalGraph 
+    template <typename T>
+    struct CUndirectedSimpleLocalGraph
     {
       // ----------------------- Concept checks ------------------------------
     public:
@@ -109,7 +109,7 @@ namespace DGtal {
         typedef typename T::template VertexMap<Value>::Type Type;
         BOOST_CONCEPT_ASSERT(( CVertexMap< VertexMap<Value> > ));
       };
- 
+
       // possibly check these types so as to satisfy a concept with
       BOOST_CONCEPT_ASSERT(( CIntegralNumber< Size > ));
       BOOST_CONCEPT_ASSERT(( boost::DefaultConstructible< Vertex > ));
@@ -130,7 +130,7 @@ namespace DGtal {
         myX.writeNeighbors( myOutIt, myVertex, myVPred );
       }
 
-      // ------------------------- Private Datas --------------------------------
+      // ------------------------- Private Data --------------------------------
     private:
       T myX; // do not require T to be default constructible.
       Size mySize;
@@ -139,9 +139,9 @@ namespace DGtal {
       CVertexPredicateArchetype<Vertex> myVPred;
       // ------------------------- Internals ------------------------------------
     private:
-    
+
     }; // end of concept CUndirectedSimpleLocalGraph
-  
+
   } // namespace concepts
 } // namespace DGtal
 

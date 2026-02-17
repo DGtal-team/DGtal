@@ -3,7 +3,7 @@
  * @file   Board.cpp
  * @author Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb>
  * @date   Sat Aug 18 2007
- * 
+ *
  * @brief
  */
 
@@ -49,7 +49,7 @@
 #if defined( WIN32 )
 #define _USE_MATH_DEFINES
 #include <math.h>
-#else 
+#else
 #include <cmath>
 #endif //win32
 
@@ -59,18 +59,18 @@
 //#ifdef M_PI
 //#undef M_PI
 //#endif
-//C++ exception specification ignored except 
+//C++ exception specification ignored except
 //to indicate a function is not __declspec(nothrow)
 #pragma warning(disable : 4290)
 #endif
 
 #ifdef _MSC_VER
 #if defined( max )
-#undef max 
+#undef max
 #define _HAS_MSVC_MAX_ true
 #endif
 #if defined( min )
-#undef min 
+#undef min
 #define _HAS_MSVC_MIN_ true
 #endif
 #endif
@@ -116,7 +116,7 @@ Board &
 Board::operator=( const Board & other )
 {
   free();
-  if ( ! other._shapes.size() ) return (*this);  
+  if ( ! other._shapes.size() ) return (*this);
   _shapes.resize( other._shapes.size(), 0 );
   std::vector<Shape*>::iterator t = _shapes.begin();
   std::vector<Shape*>::const_iterator i = other._shapes.begin();
@@ -276,7 +276,7 @@ Board::setUnit( double factor, Unit unit )
 Board &
 Board::setPenColorRGBi( unsigned char red,
       unsigned char green,
-      unsigned char blue, 
+      unsigned char blue,
       unsigned char alpha )
 {
   _state.penColor.setRGBi( red, green, blue, alpha );
@@ -286,7 +286,7 @@ Board::setPenColorRGBi( unsigned char red,
 Board &
 Board::setPenColorRGBf(  float red,
        float green,
-       float blue, 
+       float blue,
        float alpha )
 {
   _state.penColor.setRGBf( red, green, blue, alpha );
@@ -354,8 +354,8 @@ Board::backgroundColor( const DGtal::Color & color )
 
 void
 Board::drawDot( double x, double y, int depthValue )
-{  
-  if ( depthValue != -1 ) 
+{
+  if ( depthValue != -1 )
     _shapes.push_back( new Dot( _state.unit(x), _state.unit(y),
         _state.penColor, _state.lineWidth, depthValue ) );
   else
@@ -364,10 +364,10 @@ Board::drawDot( double x, double y, int depthValue )
 }
 
 void
-Board::drawLine( double x1, double y1, double x2, double y2, 
+Board::drawLine( double x1, double y1, double x2, double y2,
      int depthValue /* = -1 */  )
 {
-  if ( depthValue != -1 ) 
+  if ( depthValue != -1 )
     _shapes.push_back( new Line( _state.unit(x1), _state.unit(y1),
          _state.unit(x2), _state.unit(y2),
          _state.penColor, _state.lineWidth,
@@ -380,10 +380,10 @@ Board::drawLine( double x1, double y1, double x2, double y2,
 }
 
 void
-Board::drawQuadraticBezierCurve( double x1, double y1, double x2, double y2, double x3, double y3,  
+Board::drawQuadraticBezierCurve( double x1, double y1, double x2, double y2, double x3, double y3,
      int depthValue /* = -1 */  )
 {
-  if ( depthValue != -1 ) 
+  if ( depthValue != -1 )
     _shapes.push_back( new QuadraticBezierCurve( _state.unit(x1), _state.unit(y1),
          _state.unit(x2), _state.unit(y2), _state.unit(x3), _state.unit(y3),
          _state.penColor, _state.fillColor, _state.lineWidth,
@@ -396,7 +396,7 @@ Board::drawQuadraticBezierCurve( double x1, double y1, double x2, double y2, dou
 }
 
 void
-Board::drawArrow( double x1, double y1, double x2, double y2, 
+Board::drawArrow( double x1, double y1, double x2, double y2,
       bool filledArrow /* = false */,
       int depthValue /* = -1 */  )
 {
@@ -413,23 +413,23 @@ Board::drawArrow( double x1, double y1, double x2, double y2,
 }
 
 void
-Board::drawRectangle( double x, double y, 
+Board::drawRectangle( double x, double y,
           double width, double height,
           int depthValue /* = -1 */ )
 {
   int d = (depthValue != -1) ? depthValue : _nextDepth--;
-  _shapes.push_back( new Rectangle( _state.unit(x), _state.unit(y), _state.unit(width), _state.unit(height), 
+  _shapes.push_back( new Rectangle( _state.unit(x), _state.unit(y), _state.unit(width), _state.unit(height),
             _state.penColor, _state.fillColor,
             _state.lineWidth, _state.lineStyle, _state.lineCap, _state.lineJoin, d ) );
 }
 
 void
-Board::drawImage(std::string filename, double x, double y, 
+Board::drawImage(std::string filename, double x, double y,
      double width, double height,
      int depthValue, double alpha /* = -1 */ )
 {
   int d = (depthValue != -1) ? depthValue : _nextDepth--;
-  _shapes.push_back( new Image( _state.unit(x), _state.unit(y), _state.unit(width), _state.unit(height), 
+  _shapes.push_back( new Image( _state.unit(x), _state.unit(y), _state.unit(width), _state.unit(height),
         filename, d, alpha ) );
 }
 
@@ -451,20 +451,20 @@ Board::drawCircle( double x, double y, double radius,
        int depthValue /* = -1 */  )
 {
   int d = (depthValue != -1) ? depthValue : _nextDepth--;
-  _shapes.push_back( new Circle( _state.unit(x), _state.unit(y), _state.unit(radius), 
+  _shapes.push_back( new Circle( _state.unit(x), _state.unit(y), _state.unit(radius),
          _state.penColor, _state.fillColor,
          _state.lineWidth, _state.lineStyle, d ) );
 }
 
-void 
-Board::drawArc(double x, double y, double radius, double angle1, double angle2, 
+void
+Board::drawArc(double x, double y, double radius, double angle1, double angle2,
 	       bool neg, int depthValue /*= -1*/ ){
   int d = (depthValue != -1) ? depthValue : _nextDepth--;
-  _shapes.push_back( new Arc( _state.unit(x), _state.unit(y), _state.unit(radius), 
+  _shapes.push_back( new Arc( _state.unit(x), _state.unit(y), _state.unit(radius),
 			      angle1, angle2, neg,_state.penColor,
 			      DGtal::Color::None, _state.lineWidth, _state.lineStyle, d ) );
 }
-    
+
 
 void
 Board::fillCircle( double x, double y,
@@ -472,7 +472,7 @@ Board::fillCircle( double x, double y,
        int depthValue /* = -1 */ )
 {
   int d = (depthValue != -1) ? depthValue : _nextDepth--;
-  _shapes.push_back( new Circle( _state.unit(x), _state.unit(y), _state.unit(radius), 
+  _shapes.push_back( new Circle( _state.unit(x), _state.unit(y), _state.unit(radius),
          DGtal::Color::None, _state.penColor,
          0.0f, _state.lineStyle, d ) );
 }
@@ -493,7 +493,7 @@ Board::drawEllipse( double x, double y,
 }
 
 void
-Board::fillEllipse( double x, double y, 
+Board::fillEllipse( double x, double y,
         double xRadius, double yRadius,
         int depthValue /* = -1 */ )
 {
@@ -501,7 +501,7 @@ Board::fillEllipse( double x, double y,
   _shapes.push_back( new Ellipse( _state.unit(x), _state.unit(y), _state.unit(xRadius), _state.unit(yRadius),
           DGtal::Color::None,
           _state.penColor,
-          0.0f, 
+          0.0f,
           _state.lineStyle,
           d ) );
 }
@@ -510,7 +510,7 @@ void
 Board::drawPolyline( const std::vector<Point> & points,
          int depthValue /* = -1 */ )
 {
-  int d = (depthValue != -1) ? depthValue : _nextDepth--;  
+  int d = (depthValue != -1) ? depthValue : _nextDepth--;
   std::vector<Point> v = points;
   std::vector<Point>::iterator it = v.begin();
   std::vector<Point>::iterator end = v.end();
@@ -567,9 +567,9 @@ Board::fillPolyline( const std::vector<Point> & points,
 }
 
 void
-Board::drawTriangle( double x1, double y1, 
-         double x2, double y2, 
-         double x3, double y3, 
+Board::drawTriangle( double x1, double y1,
+         double x2, double y2,
+         double x3, double y3,
          int depthValue /* = -1 */ )
 {
   int d = (depthValue != -1) ? depthValue : _nextDepth--;
@@ -587,8 +587,8 @@ Board::drawTriangle( double x1, double y1,
 
 void
 Board::drawTriangle( const Point & p1,
-         const Point & p2, 
-         const Point & p3, 
+         const Point & p2,
+         const Point & p3,
          int depthValue /* = -1 */ )
 {
   int d = (depthValue != -1) ? depthValue : _nextDepth--;
@@ -601,13 +601,13 @@ Board::drawTriangle( const Point & p1,
            _state.lineStyle,
            _state.lineCap,
            _state.lineJoin,
-           d ) );  
+           d ) );
 }
 
 void
-Board::fillTriangle( double x1, double y1, 
-         double x2, double y2, 
-         double x3, double y3, 
+Board::fillTriangle( double x1, double y1,
+         double x2, double y2,
+         double x3, double y3,
          int depthValue /* = -1 */ )
 {
   int d = (depthValue != -1) ? depthValue : _nextDepth--;
@@ -625,8 +625,8 @@ Board::fillTriangle( double x1, double y1,
 
 void
 Board::fillTriangle( const Point & p1,
-         const Point & p2, 
-         const Point & p3, 
+         const Point & p2,
+         const Point & p3,
          int depthValue /* = -1 */ )
 {
   int d = (depthValue != -1) ? depthValue : _nextDepth--;
@@ -639,7 +639,7 @@ Board::fillTriangle( const Point & p1,
            _state.lineStyle,
            _state.lineCap,
            _state.lineJoin,
-           d ) );  
+           d ) );
 }
 
 void
@@ -724,7 +724,7 @@ Board::drawBoundingBox( int depthValue /* = -1 */ )
 }
 
 void
-Board::setClippingRectangle( double xLeft, double yTop, 
+Board::setClippingRectangle( double xLeft, double yTop,
            double rectWidth, double rectHeight )
 {
   _clippingPath.clear();
@@ -752,7 +752,7 @@ Board::setClippingPath(  const Path & path  )
   _clippingPath = path;
   _clippingPath.setClosed( true );
   if ( _clippingPath.size() > 1 ) {
-    if ( _clippingPath[0] == _clippingPath[ _clippingPath.size() - 1 ] ) 
+    if ( _clippingPath[0] == _clippingPath[ _clippingPath.size() - 1 ] )
       _clippingPath.pop_back();
   }
   unsigned int n = _clippingPath.size();
@@ -806,11 +806,11 @@ Board::saveEPS( const char * filename, PageSize size, double margin ) const
   saveEPS( filename, pageSizes[size][0], pageSizes[size][1], margin );
 }
 
-  
+
 void
 Board::saveEPS( const char * filename, double pageWidth, double pageHeight, double margin ) const
 {
-  std::ofstream file( filename );  
+  std::ofstream file( filename );
   saveEPS(file, pageWidth, pageHeight, margin);
   file.close();
 }
@@ -822,10 +822,10 @@ Board::saveEPS( std::ostream &out, double pageWidth, double pageHeight, double m
   bool clipping = _clippingPath.size() > 2;
   if ( clipping )
     box = box && _clippingPath.boundingBox();
-  
+
   TransformEPS transform;
   transform.setBoundingBox( box, pageWidth, pageHeight, margin );
-  
+
   out << "%!PS-Adobe-2.0 EPSF-2.0" << std::endl;
   out << "%%Title:  output.eps " << std::endl;
   out << "%%Creator: Board library (Copyleft)2007 Sebastien Fourey" << std::endl;
@@ -877,9 +877,9 @@ Board::saveEPS( std::ostream &out, double pageWidth, double pageHeight, double m
     _clippingPath.flushPostscript( out, transform );
     out << " 0 slw clip " << std::endl;
   }
-  
+
   // Draw the background color if needed.
-  if ( _backgroundColor != DGtal::Color::None ) { 
+  if ( _backgroundColor != DGtal::Color::None ) {
     Rectangle r( box, DGtal::Color::None, _backgroundColor, 0.0f );
     r.flushPostscript( out, transform );
   }
@@ -913,7 +913,7 @@ Board::saveFIG( std::ostream &out, PageSize size, double margin, bool includeFIG
   saveFIG( out, pageSizes[size][0], pageSizes[size][1], margin, includeFIGHeader );
 }
 void
-Board::saveFIG( const char * filename, double pageWidth, double pageHeight, double margin,  
+Board::saveFIG( const char * filename, double pageWidth, double pageHeight, double margin,
 		bool includeFIGHeader  ) const
 {
   std::ofstream file( filename );
@@ -924,13 +924,13 @@ Board::saveFIG( const char * filename, double pageWidth, double pageHeight, doub
 void
 Board::saveFIG( std::ostream &file, double pageWidth, double pageHeight, double margin, bool includeFIGHeader ) const
 {
-  
+
 
   TransformFIG transform;
   Rect box = boundingBox();
   transform.setBoundingBox( box, pageWidth, pageHeight, margin  );
   transform.setDepthRange( *this );
-  if(includeFIGHeader){    
+  if(includeFIGHeader){
     file << "#FIG 3.2  Produced by the Board library (Copyleft)2007 Sebastien Fourey\n";
     file << "Portrait\n";
     file << "Center\n";
@@ -947,13 +947,13 @@ Board::saveFIG( std::ostream &file, double pageWidth, double pageHeight, double 
   int maxColor = 32;
 
 
-  colormap[DGtal::Color(0,0,0)] = 0; 
-  colormap[DGtal::Color(0,0,255)] = 1; 
-  colormap[DGtal::Color(0,255,0)] = 2; 
-  colormap[DGtal::Color(0,255,255)] = 0; 
-  colormap[DGtal::Color(255,0,0)] = 4; 
-  colormap[DGtal::Color(255,0,255)] = 0; 
-  colormap[DGtal::Color(255,255,0)] = 6; 
+  colormap[DGtal::Color(0,0,0)] = 0;
+  colormap[DGtal::Color(0,0,255)] = 1;
+  colormap[DGtal::Color(0,255,0)] = 2;
+  colormap[DGtal::Color(0,255,255)] = 0;
+  colormap[DGtal::Color(255,0,0)] = 4;
+  colormap[DGtal::Color(255,0,255)] = 0;
+  colormap[DGtal::Color(255,255,0)] = 6;
   colormap[DGtal::Color(255,255,255)] = 7;
 
 
@@ -961,8 +961,8 @@ Board::saveFIG( std::ostream &file, double pageWidth, double pageHeight, double 
   stable_sort( shapes.begin(), shapes.end(), shapeGreaterDepth );
   std::vector< Shape* >::const_iterator i = shapes.begin();
   std::vector< Shape* >::const_iterator end = shapes.end();
-  while ( i != end ) { 
-    if ( colormap.find( (*i)->penColor() ) == colormap.end() 
+  while ( i != end ) {
+    if ( colormap.find( (*i)->penColor() ) == colormap.end()
    && (*i)->penColor().valid() )
       colormap[ (*i)->penColor() ] = maxColor++;
     if ( colormap.find( (*i)->fillColor() ) == colormap.end()
@@ -974,7 +974,7 @@ Board::saveFIG( std::ostream &file, double pageWidth, double pageHeight, double 
   if ( colormap.find( _backgroundColor ) == colormap.end()
        && _backgroundColor.valid() )
     colormap[ _backgroundColor ] = maxColor++;
-  
+
   // Write the colormap
   std::map<DGtal::Color,int>::const_iterator iColormap = colormap.begin();
   std::map<DGtal::Color,int>::const_iterator endColormap = colormap.end();
@@ -991,7 +991,7 @@ Board::saveFIG( std::ostream &file, double pageWidth, double pageHeight, double 
   }
 
   // Draw the background color if needed.
-  if ( _backgroundColor != DGtal::Color::None ) { 
+  if ( _backgroundColor != DGtal::Color::None ) {
     Rectangle r( box, DGtal::Color::None, _backgroundColor, 0.0f );
     r.depth( std::numeric_limits<int>::max() );
     r.flushFIG( file, transform, colormap );
@@ -1003,7 +1003,7 @@ Board::saveFIG( std::ostream &file, double pageWidth, double pageHeight, double 
     // notice << (*i)->name() << " " << (*i)->depth() <<  '\n';
     (*i)->flushFIG( file, transform, colormap );
     ++i;
-  }  
+  }
 }
 
 
@@ -1033,7 +1033,7 @@ Board::saveSVG( const char * filename, double pageWidth, double pageHeight, doub
 void
 Board::saveSVG( std::ostream &file, double pageWidth, double pageHeight, double margin, std::string filename ) const
 {
-  
+
   TransformSVG transform;
   Rect box = boundingBox();
   bool clipping = _clippingPath.size() > 2;
@@ -1066,8 +1066,8 @@ Board::saveSVG( std::ostream &file, double pageWidth, double pageHeight, double 
 
   }
 
-  file << "<desc>" << filename 
-       << ", created with the Board library (Copyleft) 2007 Sebastien Fourey" 
+  file << "<desc>" << filename
+       << ", created with the Board library (Copyleft) 2007 Sebastien Fourey"
        << "</desc>" << std::endl;
 
   if ( clipping  ) {
@@ -1079,13 +1079,13 @@ Board::saveSVG( std::ostream &file, double pageWidth, double pageHeight, double 
     file << " </clipPath>\n";
     file << "<g clip-path=\"url(#GlobalClipPath)\">\n";
   }
-  
+
   // Draw the background color if needed.
-  if ( _backgroundColor != DGtal::Color::None ) { 
+  if ( _backgroundColor != DGtal::Color::None ) {
     Rectangle r( box, DGtal::Color::None, _backgroundColor, 0.0 );
     r.flushSVG( file, transform );
   }
-  
+
   // Draw the shapes.
   std::vector< Shape* > shapes = _shapes;
   stable_sort( shapes.begin(), shapes.end(), shapeGreaterDepth );
@@ -1094,20 +1094,20 @@ Board::saveSVG( std::ostream &file, double pageWidth, double pageHeight, double 
   while ( i != end ) {
     (*i)->flushSVG( file, transform );
     ++i;
-  }  
+  }
 
   if ( clipping )
     file << "</g>\n</g>";
   file << "</svg>" << std::endl;
- 
+
 }
 
 
 void
-Board::save( const char * filename, double pageWidth, double pageHeight, double margin ) const 
+Board::save( const char * filename, double pageWidth, double pageHeight, double margin ) const
 {
   const char * extension = filename + strlen( filename );
-  while ( extension > filename && *extension != '.' ) 
+  while ( extension > filename && *extension != '.' )
     --extension;
   if ( !(strcmp( extension, ".eps" )) || !(strcmp( extension, ".EPS" )) ) {
     saveEPS( filename, pageWidth, pageHeight, margin );
@@ -1128,7 +1128,7 @@ Board::save( const char * filename, double pageWidth, double pageHeight, double 
 }
 
 void
-Board::save( const char * filename, PageSize size, double margin ) const 
+Board::save( const char * filename, PageSize size, double margin ) const
 {
   save( filename, pageSizes[size][0], pageSizes[size][1], margin );
 }
@@ -1144,9 +1144,9 @@ Board::saveCairo( const char * filename, CairoType type, double pageWidth, doubl
 {
   cairo_surface_t *surface;
   cairo_t *cr;
-  
+
   double cairoWidth, cairoHeight;
-  
+
   TransformCairo transform;
   Rect box = boundingBox();
 
@@ -1154,7 +1154,7 @@ Board::saveCairo( const char * filename, CairoType type, double pageWidth, doubl
   if ( clipping )
     box = box && _clippingPath.boundingBox();
   transform.setBoundingBox( box, pageWidth, pageHeight, margin );
-  
+
   if ( pageWidth > 0 && pageHeight > 0 )
   {
     cairoWidth = pageWidth;
@@ -1165,7 +1165,7 @@ Board::saveCairo( const char * filename, CairoType type, double pageWidth, doubl
     cairoWidth = box.width;
     cairoHeight = box.height;
   }
-  
+
   switch (type)
   {
   case CairoPDF:
@@ -1173,7 +1173,7 @@ Board::saveCairo( const char * filename, CairoType type, double pageWidth, doubl
   case CairoPS:
       surface = cairo_ps_surface_create (filename, cairoWidth, cairoHeight); break;
   case CairoEPS:
-    surface = cairo_ps_surface_create (filename, cairoWidth, cairoHeight); 
+    surface = cairo_ps_surface_create (filename, cairoWidth, cairoHeight);
     cairo_ps_surface_set_eps(surface, true); break;
   case CairoSVG:
       surface = cairo_svg_surface_create (filename, cairoWidth, cairoHeight); break;
@@ -1181,21 +1181,21 @@ Board::saveCairo( const char * filename, CairoType type, double pageWidth, doubl
     default:
       surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, (int)cairoWidth, (int)cairoHeight);
   }
-  
+
   cr = cairo_create (surface);
-  
+
   /* For 1.0 x 1.0 coordinate space */
   //cairo_scale (cr, cairoWidth, cairoHeight);
-  
+
   //temp: http://zetcode.com/tutorials/cairographicstutorial/basicdrawing/
   //temp: http://www.graphviz.org/pub/scm/graphviz-cairo/plugin/cairo/gvrender_cairo.c
-      
+
   // Draw the background color if needed.
-  if ( _backgroundColor != DGtal::Color::None ) { 
+  if ( _backgroundColor != DGtal::Color::None ) {
     Rectangle r( box, DGtal::Color::None, _backgroundColor, 0.0 );
     r.flushCairo( cr, transform );
   }
-  
+
   // Draw the shapes.
   std::vector< Shape* > shapes = _shapes;
   stable_sort( shapes.begin(), shapes.end(), shapeGreaterDepth );
@@ -1205,10 +1205,10 @@ Board::saveCairo( const char * filename, CairoType type, double pageWidth, doubl
     (*i)->flushCairo( cr, transform );
     ++i;
   }
-  
+
   if (type==CairoPNG)
     cairo_surface_write_to_png (surface, filename);
-      
+
   cairo_destroy (cr);
   cairo_surface_destroy (surface);
 }
@@ -1251,9 +1251,9 @@ Board::saveTikZ( std::ostream &out, double pageWidth, double pageHeight, double 
     _clippingPath.flushSVGCommands( out, transform );
     out << "\n";
   }
-  
+
   // Draw the background color if needed.
-  if ( _backgroundColor != DGtal::Color::None ) { 
+  if ( _backgroundColor != DGtal::Color::None ) {
     Rectangle r( box, DGtal::Color::None, _backgroundColor, 0.0 );
     r.flushTikZ( out, transform );
   }
@@ -1266,7 +1266,7 @@ Board::saveTikZ( std::ostream &out, double pageWidth, double pageHeight, double 
   while ( i != end ) {
     (*i)->flushTikZ( out, transform );
     ++i;
-  }  
+  }
 
   //if ( clipping )
   //  out << "</g>\n</g>";
@@ -1280,7 +1280,7 @@ Board::saveTikZ( std::ostream &out, double pageWidth, double pageHeight, double 
 /**
  *  LibBoard - A C++ library for simple Postscript, SVG, and XFig drawings.
  *
- * <img align=left src="http://www.greyc.ensicaen.fr/~seb/images/LibBoardLogoII_Small.png"> (Copyleft) 2007 S&eacute;bastien Fourey - GREYC ENSICAEN 
+ * <img align=left src="http://www.greyc.ensicaen.fr/~seb/images/LibBoardLogoII_Small.png"> (Copyleft) 2007 S&eacute;bastien Fourey - GREYC ENSICAEN
  *
  * @section intro_sec Introduction
  *

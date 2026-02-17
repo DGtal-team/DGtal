@@ -3,7 +3,7 @@
  * @file   PSFonts.h
  * @author Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb>
  * @date   Sat Aug 18 2007
- * 
+ *
  * @brief  The Point structure.
  */
 /*
@@ -18,7 +18,7 @@
 
 namespace LibBoard {
 
-  
+
 /*
  * Postscript Type 1 base fonts :
  * ------------------------------
@@ -78,4 +78,3 @@ namespace LibBoard {
 } // mamespace LibBoard
 
 #endif // _BOARD_PSFONTS_H_
-

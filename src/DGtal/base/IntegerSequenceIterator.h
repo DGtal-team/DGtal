@@ -70,7 +70,7 @@ namespace DGtal
   public:
     typedef IntegerSequenceIterator<TInteger> Self;
     typedef TInteger                          Integer;
-    
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -133,16 +133,16 @@ namespace DGtal
     /// @return the integer value corresponding to the position of
     /// this iterator. Required by boost::iterator_facade.
     Integer const& dereference() const { return myNumber; }
-    
+
     // ----------------------- Interface --------------------------------------
   public:
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
-    /// The current value of the interator.
+    /// The current value of the iterator.
     Integer myNumber;
-    
-    // ------------------------- Private Datas --------------------------------
+
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------

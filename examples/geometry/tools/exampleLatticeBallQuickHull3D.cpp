@@ -110,5 +110,4 @@ int main( int argc, char* argv[] )
   out.close();
   //! [QuickHull3D-OutputMesh]
   return 0;
-} 
-  
+}

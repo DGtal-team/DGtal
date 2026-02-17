@@ -58,54 +58,54 @@ using namespace DGtal;
 
 ///////////////////////////////////////////////////////////////////////////////
 
-bool 
+bool
 basicUsage()
 {
   //! [DomainDefinition]
   //domain definition
   typedef SpaceND< 2, DGtal::int16_t > DigitalSpace;
-  typedef HyperRectDomain< DigitalSpace > Domain; 
-  typedef Domain::Point Point; 
-  Domain domain( Point(-32767,-32767), Point(32767,32767) ); 
+  typedef HyperRectDomain< DigitalSpace > Domain;
+  typedef Domain::Point Point;
+  Domain domain( Point(-32767,-32767), Point(32767,32767) );
   //! [DomainDefinition]
 
   //! [ProblemStatement]
-  Point P, Q, R; 
-  P = Point(0,0); 
-  Q = Point(5,2); 
-  R = Point(2,1); 
+  Point P, Q, R;
+  P = Point(0,0);
+  Q = Point(5,2);
+  R = Point(2,1);
   //problem: are P, Q, R counter-clockwise oriented ?
   //! [ProblemStatement]
 
   //! [FunctorDefinition]
   //orientation functor
-  typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::int32_t> OrientationFunctor; 
+  typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::int32_t> OrientationFunctor;
   OrientationFunctor orientationFunctor;
   //! [FunctorDefinition]
 
   //! [PredicateDefinition]
   //geometric predicate
-  PredicateFromOrientationFunctor2<OrientationFunctor> 
-    pointPredicate( orientationFunctor ); 
+  PredicateFromOrientationFunctor2<OrientationFunctor>
+    pointPredicate( orientationFunctor );
   //! [PredicateDefinition]
 
   //! [FunctorInitialization]
   //initialization
-  pointPredicate.init( P, Q ); 
-  //which is equivalent to 
+  pointPredicate.init( P, Q );
+  //which is equivalent to
   //orientationFunctor.init( P, Q );
   //because the predicate stores a pointer to the functor
   //! [FunctorInitialization]
 
-  bool isCCW; 
+  bool isCCW;
   //! [PredicateUsage]
   //decision
-  isCCW = pointPredicate( R ); 
+  isCCW = pointPredicate( R );
   //which is equivalent to the following shortcut:
-  //isCCW = pointPredicate( P, Q, R ); 
+  //isCCW = pointPredicate( P, Q, R );
   //! [PredicateUsage]
 
-  return isCCW; 
+  return isCCW;
 }
 
 void
@@ -114,8 +114,8 @@ advice()
   {
   //! [FunctorDefinition30]
   //for coordinates of 30 (not zero) bits
-  typedef PointVector<2, DGtal::int32_t> Point; 
-  typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::int64_t> Functor; 
+  typedef PointVector<2, DGtal::int32_t> Point;
+  typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::int64_t> Functor;
   //! [FunctorDefinition30]
   Functor *a = new Functor();
   BOOST_VERIFY(a);
@@ -125,24 +125,24 @@ advice()
   {
   //! [FunctorDefinition52]
   //for coordinates of 52 (not zero) bits
-  typedef PointVector<2, DGtal::int64_t> Point;  
-  typedef AvnaimEtAl2x2DetSignComputer<double> DetComputer; 
-  typedef Filtered2x2DetComputer<DetComputer> FDetComputer; 
-  typedef InHalfPlaneBy2x2DetComputer<Point, FDetComputer> Functor; 
+  typedef PointVector<2, DGtal::int64_t> Point;
+  typedef AvnaimEtAl2x2DetSignComputer<double> DetComputer;
+  typedef Filtered2x2DetComputer<DetComputer> FDetComputer;
+  typedef InHalfPlaneBy2x2DetComputer<Point, FDetComputer> Functor;
   //! [FunctorDefinition52]
   Functor *a = new Functor();
   BOOST_VERIFY(a);
   delete a;
   //NB. using double as coordinate type is slightly faster than using DGtal::int64_t
-  //typedef PointVector<2, double> Point;  
+  //typedef PointVector<2, double> Point;
   }
 
   {
   //! [FunctorDefinition62]
   //for coordinates of 62 (not zero) bits
-  typedef PointVector<2, DGtal::int64_t> Point; 
-  typedef AvnaimEtAl2x2DetSignComputer<DGtal::int64_t> DetComputer; 
-  typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> Functor; 
+  typedef PointVector<2, DGtal::int64_t> Point;
+  typedef AvnaimEtAl2x2DetSignComputer<DGtal::int64_t> DetComputer;
+  typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> Functor;
   //! [FunctorDefinition62]
   Functor *a= new Functor();
   BOOST_VERIFY( a);
@@ -153,10 +153,10 @@ advice()
   //! [FunctorDefinition62bis]
   //for coordinates of 62 (not zero) bits
   //if long double is implemented as the 80-bit extended precision type
-  typedef PointVector<2, DGtal::int64_t> Point;  
-  typedef AvnaimEtAl2x2DetSignComputer<long double> DetComputer; 
-  typedef Filtered2x2DetComputer<DetComputer> FDetComputer; 
-  typedef InHalfPlaneBy2x2DetComputer<Point, FDetComputer> Functor; 
+  typedef PointVector<2, DGtal::int64_t> Point;
+  typedef AvnaimEtAl2x2DetSignComputer<long double> DetComputer;
+  typedef Filtered2x2DetComputer<DetComputer> FDetComputer;
+  typedef InHalfPlaneBy2x2DetComputer<Point, FDetComputer> Functor;
   Functor *a = new Functor();
   BOOST_VERIFY(a == a);
   //! [FunctorDefinition62bis]
@@ -166,9 +166,9 @@ advice()
   {
   //! [FunctorDefinition62plus]
   //for arbitrary coordinates
-  typedef PointVector<2, DGtal::BigInteger> Point; 
-  typedef Simple2x2DetComputer<DGtal::BigInteger> DetComputer; 
-  typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> Functor; 
+  typedef PointVector<2, DGtal::BigInteger> Point;
+  typedef Simple2x2DetComputer<DGtal::BigInteger> DetComputer;
+  typedef InHalfPlaneBy2x2DetComputer<Point, DetComputer> Functor;
   Functor *a= new Functor();
   BOOST_VERIFY( a);
   //! [FunctorDefinition62plus]
@@ -185,8 +185,8 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  basicUsage(); 
-  advice(); 
+  basicUsage();
+  advice();
 
   trace.endBlock();
   return 0;

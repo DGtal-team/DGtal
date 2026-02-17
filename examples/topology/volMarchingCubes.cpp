@@ -20,11 +20,11 @@
  *
  * @verbatim
  * # Commands
- * $ ./examples/topology/volMarchingCubes  ../examples/samples/Al.100.vol 0 1 0 
+ * $ ./examples/topology/volMarchingCubes  ../examples/samples/Al.100.vol 0 1 0
  * @endverbatim
- * 
+ *
  * @image html digital-surface-mc-Al100.png "Marching-cube surface of Al.100.vol file."
- * 
+ *
  * \example topology/volMarchingCubes.cpp
  */
 
@@ -129,7 +129,7 @@ int main( int argc, char** argv )
   MyEmbedder trivialEmbedder;
   // The +0.5 is to avoid isosurface going exactly through a voxel
   // center, especially for binary volumes.
-  cellEmbedder.init( ks, image, trivialEmbedder, 
+  cellEmbedder.init( ks, image, trivialEmbedder,
                      ( (double) minThreshold ) + 0.5 );
   ofstream out( "marching-cube.off" );
   if ( out.good() )
@@ -139,4 +139,3 @@ int main( int argc, char** argv )
   //! [volMarchingCubes-makingOFF]
   return 0;
 }
-

@@ -67,7 +67,7 @@ operator=( const RegularPointEmbedder & other )
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 inline
-void 
+void
 DGtal::RegularPointEmbedder<TSpace>
 ::init( typename RealVector::Component gridStep )
 {
@@ -76,7 +76,7 @@ DGtal::RegularPointEmbedder<TSpace>
 //-----------------------------------------------------------------------------
 template <typename TSpace>
 inline
-void 
+void
 DGtal::RegularPointEmbedder<TSpace>
 ::init( const RealVector & aGridSteps )
 {
@@ -136,7 +136,7 @@ DGtal::RegularPointEmbedder<TSpace>
 {
   RealPoint aRealPoint;
   for ( Dimension i = 0; i < Space::dimension; ++i )
-    aRealPoint[ i ] = NumberTraits<Integer>::castToDouble( p[ i ] ) 
+    aRealPoint[ i ] = NumberTraits<Integer>::castToDouble( p[ i ] )
       * myGridSteps[ i ];
   return aRealPoint;
 }
@@ -186,7 +186,7 @@ DGtal::RegularPointEmbedder<TSpace>::isValid() const
 template <typename TSpace>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
       const RegularPointEmbedder<TSpace> & object )
 {
   object.selfDisplay( out );
@@ -195,5 +195,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

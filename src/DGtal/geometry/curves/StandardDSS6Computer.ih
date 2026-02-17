@@ -244,7 +244,7 @@ DGtal::StandardDSS6Computer<TIterator,TInteger,connectivity>::operator!=(
 /**
  * Tests whether the union between a point
  * (adding to the front of the DSS
- * with respect to the scan orientaion)
+ * with respect to the scan orientation)
  * and a DSS is a DSS.
  * Computes the parameters of the new DSS
  * with the adding point if true.

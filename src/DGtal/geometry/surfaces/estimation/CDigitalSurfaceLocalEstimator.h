@@ -59,12 +59,12 @@ namespace DGtal {
   *  @brief Aim: This concept describes an object that can process a
   *  range over some generic digital surface so as to return one
   *  estimated quantity for each element of the range (or a given
-  *  subrange). 
+  *  subrange).
   *
   *  It refines the concept CSurfelLocalEstimator by forcing the
   *  abstract surface to be some digital surface.
   *
-  *  # Refinement of 
+  *  # Refinement of
   *  - CSurfelLocalEstimator
   *
   *  # Associated types
@@ -116,7 +116,7 @@ namespace DGtal {
       myX.attach( myS );
     }
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     T myX;
     Surface myS;

@@ -96,7 +96,7 @@ namespace DGtal
     /// @param[in] m the number of latitudes (poles excepted), minimum is 1.
     /// @param[in] n the number of longitudes, minimum is 3.
     ///
-    /// @param[in] normals specifies built-time normals of the output
+    /// @param[in] normals specifies build-time normals of the output
     /// mesh: NO_NORMALS no normals, VERTEX_NORMALS the normals at
     /// each vertex, FACE_NORMALS the normals at each face.
     ///
@@ -105,7 +105,7 @@ namespace DGtal
     SurfaceMesh
     makeSphere( const Scalar radius, const RealPoint &center,
                 Size m, Size n, NormalsType normals );
-    
+
     /// Returns the mean curvature at each vertex of a sphere of
     /// given parameters with \a m latitudes (poles excluded) and \a n
     /// longitudes.
@@ -118,7 +118,7 @@ namespace DGtal
     static
     Scalars
     sphereMeanCurvatures( const Scalar radius, Size m, Size n );
-    
+
     /// Returns the Gaussian curvature at each vertex of a sphere of
     /// given parameters with \a m latitudes (poles excluded) and \a n
     /// longitudes.
@@ -187,7 +187,7 @@ namespace DGtal
     sphereSecondPrincipalDirections( const Scalar radius, Size m, Size n );
 
     /// @}
-    
+
     //---------------------------------------------------------------------------
   public:
     /// @name Schwarz lantern services
@@ -202,7 +202,7 @@ namespace DGtal
     /// @param[in] m the number of latitudes, minimum is 2.
     /// @param[in] n the number of longitudes, minimum is 3.
     ///
-    /// @param[in] normals specifies built-time normals of the output
+    /// @param[in] normals specifies build-time normals of the output
     /// mesh: NO_NORMALS no normals, VERTEX_NORMALS the normals at
     /// each vertex, FACE_NORMALS the normals at each face.
     ///
@@ -224,7 +224,7 @@ namespace DGtal
     static
     Scalars
     lanternMeanCurvatures( const Scalar radius, Size m, Size n );
-      
+
     /// Returns the Gaussian curvature at each vertex of a Schwarz lantern of
     /// given parameters with \a m latitudes and \a n
     /// longitudes.
@@ -291,12 +291,12 @@ namespace DGtal
     lanternSecondPrincipalDirections( const Scalar radius, Size m, Size n );
 
     /// @}
-    
+
     //---------------------------------------------------------------------------
   public:
     /// @name Torus services
     /// @{
-    
+
     /// Builds a surface mesh representing a torus with \a m
     /// latitudes and \a n longitudes.
     ///
@@ -310,7 +310,7 @@ namespace DGtal
     /// parallel: 0 is a natural torus parameterization, +n or -n
     /// makes the visitor arriving on another parallel after one turn.
     ///
-    /// @param[in] normals specifies built-time normals of the output
+    /// @param[in] normals specifies build-time normals of the output
     /// mesh: NO_NORMALS no normals, VERTEX_NORMALS the normals at
     /// each vertex, FACE_NORMALS the normals at each face.
     ///
@@ -336,9 +336,9 @@ namespace DGtal
     /// @return the mean curvature at each vertex.
     static
     Scalars
-    torusMeanCurvatures( const Scalar big_radius, const Scalar small_radius, 
+    torusMeanCurvatures( const Scalar big_radius, const Scalar small_radius,
                          Size m, Size n, const int twist );
-    
+
     /// Returns the Gaussian curvature at each vertex of a torus of
     /// given parameters with \a m latitudes and \a n
     /// longitudes.
@@ -355,9 +355,9 @@ namespace DGtal
     /// @return the Gaussian curvature at each vertex.
     static
     Scalars
-    torusGaussianCurvatures( const Scalar big_radius, const Scalar small_radius, 
+    torusGaussianCurvatures( const Scalar big_radius, const Scalar small_radius,
                              Size m, Size n, const int twist );
-    
+
     /// Returns the first principal curvature at each vertex of a
     /// torus of given parameters with \a m latitudes and \a n
     /// longitudes.
@@ -374,7 +374,7 @@ namespace DGtal
     /// @return the first principal curvature at each vertex.
     static
     Scalars
-    torusFirstPrincipalCurvatures( const Scalar big_radius, const Scalar small_radius, 
+    torusFirstPrincipalCurvatures( const Scalar big_radius, const Scalar small_radius,
                                    Size m, Size n, const int twist );
 
     /// Returns the second principal curvature at each vertex of a
@@ -393,7 +393,7 @@ namespace DGtal
     /// @return the second principal curvature at each vertex.
     static
     Scalars
-    torusSecondPrincipalCurvatures( const Scalar big_radius, const Scalar small_radius, 
+    torusSecondPrincipalCurvatures( const Scalar big_radius, const Scalar small_radius,
                                     Size m, Size n, const int twist );
 
     /// Returns the first principal direction at each vertex of a
@@ -412,7 +412,7 @@ namespace DGtal
     /// @return the first principal direction at each vertex (in xy-plane).
     static
     RealVectors
-    torusFirstPrincipalDirections( const Scalar big_radius, const Scalar small_radius, 
+    torusFirstPrincipalDirections( const Scalar big_radius, const Scalar small_radius,
                                    Size m, Size n, const int twist );
 
     /// Returns the second principal direction at each vertex of a
@@ -432,13 +432,13 @@ namespace DGtal
     /// (in meridian-sliced plane).
     static
     RealVectors
-    torusSecondPrincipalDirections( const Scalar big_radius, const Scalar small_radius, 
+    torusSecondPrincipalDirections( const Scalar big_radius, const Scalar small_radius,
                                     Size m, Size n, const int twist );
-    
+
     /// @}
-    
+
   };
-  
+
 } // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////

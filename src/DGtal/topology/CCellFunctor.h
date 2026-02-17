@@ -58,31 +58,31 @@ namespace DGtal {
   @ingroup Concepts
 
   @brief Aim: Defines a functor on cells.
-  
+
   Associates values to cells.
-  
+
   # Refinement of CUnaryFunctor
-  
+
   # Associated types
   - Cell : specifies the type for a cells (inner type).
   - Quantity : specifies the type for a quantity (inner type).
-  
+
   # Notation
   - \a X : A type that is a model of CCellFunctor
   - \a x : Object of type \a X
   - \a c : Object of type Cell
   - \a q : Object of type Quantity
-    
+
   # Definitions
-  
+
   # Valid expressions and semantics
-  
+
   | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
-  |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|     
+  |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
   |Apply function | \a x( \a c)|                     | \c q        |                  |the quantity of the function \a x at cell \a c | | |
-  
+
   # Invariants
-  
+
   # Notes#
   */
   template <typename T>
@@ -92,9 +92,9 @@ namespace DGtal {
   public:
     typedef typename T::Cell Cell;
     typedef typename T::Quantity Quantity;
-    
+
     BOOST_CONCEPT_ASSERT(( CUnaryFunctor<T,Cell,Quantity> ));
-    
+
     BOOST_CONCEPT_USAGE( CCellFunctor )
     {
       check_const_constraints();
@@ -102,8 +102,8 @@ namespace DGtal {
     void check_const_constraints() const
     {
     }
-      
-    // ------------------------- Private Datas --------------------------------
+
+    // ------------------------- Private Data --------------------------------
   private:
     // ------------------------- Internals ------------------------------------
   private:

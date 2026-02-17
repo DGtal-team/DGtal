@@ -23,7 +23,7 @@
  *
  * @date 2018/01/01
  *
- * Testing classs of NeighborhoodConfigurations
+ * Testing class of NeighborhoodConfigurations
  * @see NeighborhoodConfigurations.h
  *
  * This file is part of the DGtal library.

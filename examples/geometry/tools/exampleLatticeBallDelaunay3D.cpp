@@ -112,5 +112,4 @@ int main( int argc, char* argv[] )
     ::writeOBJ( out, mesh );
   out.close();
   return 0;
-} 
-  
+}

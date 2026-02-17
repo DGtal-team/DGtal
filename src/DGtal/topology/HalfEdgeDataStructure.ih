@@ -71,7 +71,7 @@ DGtal::HalfEdgeDataStructure::getUnorderedEdgesFromPolygonalFaces
 inline
 bool
 DGtal::HalfEdgeDataStructure::
-build( const Size num_vertices, 
+build( const Size num_vertices,
        const std::vector<Triangle>& triangles,
        const std::vector<Edge>&     edges )
 {
@@ -241,7 +241,7 @@ build( const Size num_vertices,
 inline
 bool
 DGtal::HalfEdgeDataStructure::
-build( const Size                        num_vertices, 
+build( const Size                        num_vertices,
        const std::vector<PolygonalFace>& polygonal_faces,
        const std::vector<Edge>&          edges )
 {
@@ -456,7 +456,7 @@ DGtal::HalfEdgeDataStructure::selfDisplay ( std::ostream & out ) const
 
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
                     const HalfEdgeDataStructure & object )
 {
   object.selfDisplay( out );
@@ -465,5 +465,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

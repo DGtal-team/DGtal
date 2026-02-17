@@ -56,7 +56,7 @@ DGtal::STBWriter<TImageContainer, TFunctor>::exportPNG(const std::string & filen
   const int h = anImage.domain().upperBound()[1]  -  anImage.domain().lowerBound()[1] +1 ;
   const int comp=4;
   unsigned char *data = (unsigned char*)malloc( w * h * comp );
-  
+
   unsigned int cpt=0;
   for(const auto &value: anImage)
   {
@@ -83,7 +83,7 @@ DGtal::STBWriter<TImageContainer, TFunctor>::exportBMP(const std::string & filen
   const int h = anImage.domain().upperBound()[1]  -  anImage.domain().lowerBound()[1] +1 ;
   const int comp=4;
   unsigned char *data = (unsigned char*)malloc( sizeof(unsigned char)*w * h * comp);
-  
+
   unsigned int cpt=0;
   for(const auto &value: anImage)
   {
@@ -111,7 +111,7 @@ DGtal::STBWriter<TImageContainer, TFunctor>::exportTGA(const std::string & filen
   const int h = anImage.domain().upperBound()[1]  -  anImage.domain().lowerBound()[1] +1 ;
   const int comp=4;
   unsigned char *data = (unsigned char*)malloc( sizeof(unsigned char)*w * h * comp);
-  
+
   unsigned int cpt=0;
   for(const auto &value: anImage)
   {
@@ -138,7 +138,7 @@ DGtal::STBWriter<TImageContainer, TFunctor>::exportJPG(const std::string & filen
   const int h = anImage.domain().upperBound()[1]  -  anImage.domain().lowerBound()[1] +1 ;
   const int comp=4;
   unsigned char *data = (unsigned char*)malloc( sizeof(unsigned char)*w * h * comp);
-  
+
   unsigned int cpt=0;
   for(const auto &value: anImage)
   {
@@ -155,5 +155,3 @@ DGtal::STBWriter<TImageContainer, TFunctor>::exportJPG(const std::string & filen
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

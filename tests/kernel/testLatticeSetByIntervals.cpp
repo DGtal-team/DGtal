@@ -124,7 +124,7 @@ SCENARIO( "LatticeSetByIntervals< int > set operations tests", "[lattice_set]" )
   std::set_symmetric_difference( X.cbegin(), X.cend(), Y.cbegin(), Y.cend(),
                                  std::back_inserter( X_delta_Y ) );
   auto tv = c.stopClock();
-  
+
   c.startClock();
   LatticeSet A_cup_B = A.set_union( B );
   LatticeSet A_cap_B = A.set_intersection( B );
@@ -138,8 +138,8 @@ SCENARIO( "LatticeSetByIntervals< int > set operations tests", "[lattice_set]" )
   THEN( "Set operations on lattice sets are correct" ) {
     REQUIRE( X_cup_Y.size()   ==  A_cup_B.size() );
     REQUIRE( X_cap_Y.size()   ==  A_cap_B.size() );
-    REQUIRE( X_minus_Y.size() ==  A_minus_B.size() ); 
-    REQUIRE( X_delta_Y.size() ==  A_delta_B.size() ); 
+    REQUIRE( X_minus_Y.size() ==  A_minus_B.size() );
+    REQUIRE( X_delta_Y.size() ==  A_delta_B.size() );
   }
   THEN( "Set operations on lattice sets are faster" ) {
     REQUIRE( tl < tv );
@@ -317,12 +317,12 @@ SCENARIO( "LatticeSetByIntervals< int > 2d topology operations tests", "[lattice
       }
     WHEN( "Computing the extrema of a set of cells C, extremas are correct" ) {
       std::vector< Point > XX;
-      XX.push_back( Point(10,-2) ); 
-      XX.push_back( Point(5,5) ); 
-      XX.push_back( Point(4,5) ); 
-      XX.push_back( Point(3,5) ); 
-      XX.push_back( Point(2,1) ); 
-      XX.push_back( Point(2,3) ); 
+      XX.push_back( Point(10,-2) );
+      XX.push_back( Point(5,5) );
+      XX.push_back( Point(4,5) );
+      XX.push_back( Point(3,5) );
+      XX.push_back( Point(2,1) );
+      XX.push_back( Point(2,3) );
       XX.push_back( Point(1,1) );
       XX.push_back( Point(-2,3) );
       XX.push_back( Point(-3,2) );
