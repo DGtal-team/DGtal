@@ -10,7 +10,7 @@
  * This file is part of the DGtal library.
  */
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  * Do not forget to add an entry in src/DGtal/base/Config.h.in !
  */
@@ -37,22 +37,22 @@ options "Set up Git", "Create a Repo", "Fork a Repo" and "Be Social"
 
 \subsection subsectGIT12 Set up git
 
-Github documentation is quite straightforward (see help/set up git in the Github web site). 
+Github documentation is quite straightforward (see help/set up git in the Github web site).
 
 In order to be to establish a secure connection between your computer and github servers
 and to be able to "push" changes to github servers, two methods are available:
-the SSH method or the HTTPS method, which is now recommended.  
+the SSH method or the HTTPS method, which is now recommended.
 
 Note that in the HTTPS method, URLs look like "https://github.com/yourlogin/DGtal.git",
-whereas in the SSH method URLs look like "git@github.com:yourlogin/DGtal.git". 
-The HTTPS method is used below. 
+whereas in the SSH method URLs look like "git@github.com:yourlogin/DGtal.git".
+The HTTPS method is used below.
 
 In the meantime, you can also update your account settings
 (https://github.com/account)
 
 \subsection subsectGIT13 Fork DGtal
 
-Before going into details on git and git-commands, let's fork the initial DGtal repository. 
+Before going into details on git and git-commands, let's fork the initial DGtal repository.
 So, once you're logged in on github
 
   - go to  https://github.com/DGtal-team/DGtal
@@ -64,66 +64,97 @@ report issues, view/edit wiki pages,..
 
 \section sectGIT3 Normal workflow
 
-\subsection subsectGIT31 Set remote repositories and get a local copy 
+\subsection subsectGIT31 Set remote repositories and get a local copy
 
-Once you have fork the initial DGtal repository, 
+Once you have fork the initial DGtal repository,
 you can clone your fork to have a local copy of your own (remote) copy of DGtal:
 
 @code
 git clone https://github.com/yourlogin/DGtal.git
 @endcode
 
-In order to easily access to the initial DGtal repository, 
-you can set it as a remote repository, called "upstream": 
+In order to easily access to the initial DGtal repository,
+you can set it as a remote repository, called "upstream":
 @code
 git remote add upstream https://github.com/DGtal-team/DGtal.git
 @endcode
 
 Git remotes are great because they allows to have multiple pull/push
-repositories. You can see the list of your remote repositories: 
+repositories. You can see the list of your remote repositories:
 
 @code
 git remote
 git remote -v
 @endcode
 
-At this point, you should have two remote repositories: 
+At this point, you should have two remote repositories:
  - origin, your own copy of the initial DGtal repository.
  - upstream, the remote repository you have just added containing the initial DGtal repository.
 
-You can see the state of a remote repository called "remotename" with the command 
-"git remote show": 
+You can see the state of a remote repository called "remotename" with the command
+"git remote show":
 
 @code
 git remote show remotename
 @endcode
 
 In the normal workflow, you can pull from the main DGtal
-repository (upstream)... 
+repository (upstream)...
 
 @code
 git pull upstream main
 @endcode
 
-...but only push to your own copy of DGtal (origin). 
+...but only push to your own copy of DGtal (origin).
 
 @code
 git push origin yourbranch
 @endcode
 
 
-The merge between the two repositories is done by another developer 
-after a pull request. 
-To make a pull request, go to http://github.com/yourlogin/DGtal, 
-click on "Pull Request". Then, choose the two branches you would like 
-to merge (main in upstream and yourbranch in origin), write your 
-comments and click on "Send Pull Request". 
+The merge between the two repositories is done by another developer
+after a pull request.
+To make a pull request, go to http://github.com/yourlogin/DGtal,
+click on "Pull Request". Then, choose the two branches you would like
+to merge (main in upstream and yourbranch in origin), write your
+comments and click on "Send Pull Request".
 
+\subsection subsectGIT33 Setting up Pre-commit Hooks
+
+Before starting to make changes to the code, we strongly recommend setting up pre-commit hooks to ensure code quality:
+
+1. **Install pre-commit** (if not already installed):
+@code
+pip install pre-commit
+@endcode
+
+2. **Install the hooks** in your local repository:
+@code
+pre-commit install
+@endcode
+
+The pre-commit hooks will automatically run before each commit and check for:
+- Trailing whitespace
+- Missing end-of-file newlines
+- YAML syntax errors
+- Large files
+- Broken symlinks
+- Case conflicts in filenames
+
+If any hook fails, the commit will be aborted and you'll need to fix the reported issues before committing again.
+Note that in some cases (e.g. when the trailing whitespace check fails), you just need to git add the changes made by the pre-commit hook and then commit.
+
+To run all hooks manually on all files:
+@code
+pre-commit run --all-files
+@endcode
+
+For more information about pre-commit, see https://pre-commit.com/
 
 \subsection subsectGIT32 Edit files and commit in branches
 
 
-0- Before starting to work, pull the upstream (you have to be online). 
+0- Before starting to work, pull the upstream (you have to be online).
 
 @code
 git pull upstream main
@@ -132,20 +163,20 @@ git pull upstream main
 
 
 
-1- By default, you have a main local branch called main. 
-Create a local branch "cool-feature". 
+1- By default, you have a main local branch called main.
+Create a local branch "cool-feature".
 
 @code
 git branch cool-feature
 @endcode
 
-Note that you can see the list of your local branches: 
+Note that you can see the list of your local branches:
 
 @code
 git branch
 @endcode
 
-Note also that the branch marked with a star is your 
+Note also that the branch marked with a star is your
 current local branch. At this point you should see
 @code
 - * main
@@ -158,7 +189,7 @@ current local branch. At this point you should see
 git checkout cool-feature
 @endcode
 
-After taping the command "git branch" you should see now: 
+After taping the command "git branch" you should see now:
 @code
  - main
  - * cool-feature
@@ -172,7 +203,7 @@ git commit -a -m "This commit concerns the cool-feature in newFile ..."
 @endcode
 
 Note that you can use the command "git status" or "git log" to have useful infos
-about the current branch state and the commits history. 
+about the current branch state and the commits history.
 
 4- Push to your fork (you have to be online)
 
@@ -180,26 +211,26 @@ about the current branch state and the commits history.
 git push origin cool-feature
 @endcode
 
-This creates a new branch in your remote copy of DGtal, 
-which is called "cool-feature", like your local branch. 
+This creates a new branch in your remote copy of DGtal,
+which is called "cool-feature", like your local branch.
 
-But this is a shortcut to: 
+But this is a shortcut to:
 
 @code
 git push origin cool-feature:cool-feature
 @endcode
 
-You can thus give a different name for 
-your remote branch as follows:  
+You can thus give a different name for
+your remote branch as follows:
 
 @code
 git push origin cool-feature:another-name
 @endcode
 
 
-5- If you have to work on another issue (e.g. bug #42), 
+5- If you have to work on another issue (e.g. bug #42),
 you can create a new local branch "bug42" from your main,
-jump onto it, commit edits, and push: 
+jump onto it, commit edits, and push:
 
 @code
 git checkout main
@@ -208,26 +239,26 @@ git checkout bug42
 git commit -a -m "Bug #42 fixed....."
 git push origin bug42
 @endcode
-  
 
-6- Once you have finished to work on an issue, 
+
+6- Once you have finished to work on an issue,
 go to http://github.com/yourlogin/DGtal and ask for a "Pull Request"
 
-7- Once the "Pull Request" has been validate and the merge done, 
-you can remove your local branch: 
+7- Once the "Pull Request" has been validate and the merge done,
+you can remove your local branch:
 
 @code
 git checkout main
 git branch -d cool-feature
 @endcode
 
-And you can also remove the associated remote branch 
+And you can also remove the associated remote branch
 (because everything should be merged into either the "main" of your fork, or the "main" of DGtal-team):
 
 @code
 git push origin :cool-feature
 @endcode
-  
+
 
 \section sectGITCommands Useful git commands
 
@@ -256,7 +287,7 @@ git commit -a -m "...." //commit to new branch
 @endcode
 To cleanup your stack: "git stash clear"
 @note In the previous example, it wouldn't have  been possible to create/checkout a new branch since your current branch contained uncommitted edits.
- 
+
 
 
 \subsection ssCom2 git Tracking Branches
@@ -273,9 +304,9 @@ Then you will work on the new tracked branch aBranch
 
 @note
 the option --track work only from git version 1.6.2 and later. But you can perform equivalent with the following command:
-@code 
+@code
 git checkout -b [myBranchName] [aRemoteName]/[aBranch]
-@endcode 
+@endcode
 
 
 
@@ -284,7 +315,7 @@ git checkout -b [myBranchName] [aRemoteName]/[aBranch]
 After working on your remote branch you can remove it from your server
 by using this particular syntax:
 
-@code 
+@code
  git push aRemoteName :theBranchToDelete
 @endcode
 
@@ -343,7 +374,7 @@ all your local commits)
   - Jump to another branch
 @code
 	svn switch URL (server-side branch...)
-	<==>	
+	<==>
 	git checkout toto (offline branch)
 @endcode
 
@@ -353,7 +384,7 @@ all your local commits)
 	svn commit...
 	<==>
 	git checkout main (we go back to the "trunk")
-	git merge toto (merger toto->trunk)	
+	git merge toto (merger toto->trunk)
 	git commit -a ...
 @endcode
 
@@ -364,7 +395,7 @@ all your local commits)
 
 Even it is very rare, conflit can appear when you try to apply a pull:
 
-@code 
+@code
 >git pull upstream main
 
 remote: Counting objects: 1, done.
