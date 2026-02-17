@@ -64,8 +64,8 @@ namespace DGtal
   {
     // ----------------------- Static services ------------------------------
   public:
-    
-    
+
+
     /// Builds a triangulated surface (class TriangulatedSurface) from
     /// a mesh (class Mesh). Note that a triangulated surface contains
     /// only triangles, so polygonal faces (0,1,2,3,4,...) of the
@@ -204,7 +204,7 @@ namespace DGtal
       const CellEmbedder& cembedder,
       PolygonalSurface<typename CellEmbedder::Value>& polysurf,
       CellMap& cellmap );
-    
+
     /// Builds a polygonal surface (class SurfaceMesh) from
     /// the primal graph of a digital surface in K^3 (class
     /// DigitalSurface). The digital surface does not need to be
@@ -228,8 +228,8 @@ namespace DGtal
      const CellEmbedder& cembedder,
      SurfaceMesh<typename CellEmbedder::Value,typename CellEmbedder::Value>& polysurf,
      CellMap& cellmap );
-    
-    
+
+
     /// Builds a mesh (class Mesh) from a triangulated surface (class
     /// TriangulatedSurface). Note that the mesh looses the topology
     /// of the triangulated surface, since it is essentially a soup of
@@ -273,7 +273,7 @@ namespace DGtal
     void surfaceMesh2Mesh
     ( const SurfaceMesh< RealPoint, RealVector >& smesh,
      Mesh< RealPoint >& mesh, const std::vector<Color> &cols = {} );
-    
+
     /// Exports a triangulated surface as an OBJ file (with topology)
     /// into the given output stream.
     ///
@@ -349,7 +349,7 @@ namespace DGtal
       const Color&                   diffuse_color  = Color( 200, 200, 255 ),
       const Color&                   specular_color = Color::White );
 
-    
+
     /// Exports a new material in a MTL stream.
     ///
     /// @param[in,out] output_mtl an output stream into a MTL file

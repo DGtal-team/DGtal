@@ -41,8 +41,8 @@ using namespace DGtal;
 // Functions for testing class ArithmeticalDSLKernel.
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * General test. 
- * 
+ * General test.
+ *
  * @param a a-parameter
  * @param b b-parameter
  *
@@ -55,34 +55,34 @@ bool test(const Integer& a, const Integer& b)
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "testing general cases..." );
 
-  typename ArithmeticalDSLKernel<Coordinate, adj>::Steps steps = 
-    ArithmeticalDSLKernel<Coordinate, adj>::steps(a, b); 
+  typename ArithmeticalDSLKernel<Coordinate, adj>::Steps steps =
+    ArithmeticalDSLKernel<Coordinate, adj>::steps(a, b);
 
   trace.info() << " step1: " << steps.first << std::endl;
   trace.info() << " step2: " << steps.second << std::endl;
 
-  typename ArithmeticalDSLKernel<Coordinate, adj>::Vector shift = 
-    ArithmeticalDSLKernel<Coordinate, adj>::shift(a, b);   
+  typename ArithmeticalDSLKernel<Coordinate, adj>::Vector shift =
+    ArithmeticalDSLKernel<Coordinate, adj>::shift(a, b);
 
   trace.info() << " shift: " << shift << std::endl;
 
   if ( (steps.first - steps.second) == shift )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
 
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
 /**
- * Test for the special cases  
- * 
+ * Test for the special cases
+ *
  * @param a a-parameter
  * @param b b-parameter
  *
@@ -95,66 +95,66 @@ bool specialCases(const Integer& a, const Integer& b)
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "testing special cases..." );
 
   trace.info() << " a " << a << " b " << b << std::endl;
 
-  typename ArithmeticalDSLKernel<Coordinate, adj>::Steps steps = 
-    ArithmeticalDSLKernel<Coordinate, adj>::steps(a, b); 
+  typename ArithmeticalDSLKernel<Coordinate, adj>::Steps steps =
+    ArithmeticalDSLKernel<Coordinate, adj>::steps(a, b);
 
   trace.info() << " step1: " << steps.first << std::endl;
   trace.info() << " step2: " << steps.second << std::endl;
 
-  typedef typename ArithmeticalDSLKernel<Coordinate, adj>::Vector Vector; 
-  Vector shift = 
-    ArithmeticalDSLKernel<Coordinate, adj>::shift(a, b);   
+  typedef typename ArithmeticalDSLKernel<Coordinate, adj>::Vector Vector;
+  Vector shift =
+    ArithmeticalDSLKernel<Coordinate, adj>::shift(a, b);
 
   trace.info() << " shift: " << shift << std::endl;
 
   if ( (a == 0) && (b == 0) )
     {
-      if ( (steps.first == Vector(0,0)) 
-	   && (steps.second == Vector(0,0)) 
+      if ( (steps.first == Vector(0,0))
+	   && (steps.second == Vector(0,0))
 	   && (shift == Vector(0,0)))
-	nbok++; 
-      nb++; 
+	nbok++;
+      nb++;
     }
   else
     {
       if ( (a == 0)||(b == 0) )
 	{
-	  if ( (steps.first != Vector(0,0)) 
-	       && (steps.second == Vector(0,0)) 
+	  if ( (steps.first != Vector(0,0))
+	       && (steps.second == Vector(0,0))
 	       && (shift != Vector(0,0)))
-	    nbok++; 
-	  nb++; 
+	    nbok++;
+	  nb++;
 	}
-      else 
+      else
 	{
 	  if ( (adj == 8)
 	       &&( (a == b)||(a == -b) ) )
 	    {
-	      if ( (steps.first != Vector(0,0)) 
-		   && (steps.second == Vector(0,0)) 
+	      if ( (steps.first != Vector(0,0))
+		   && (steps.second == Vector(0,0))
 		   && (shift != Vector(0,0)) )
-		nbok++; 
-	      nb++; 
+		nbok++;
+	      nb++;
 	    }
-	  else 
+	  else
 	    {
-	      if ( (steps.first != Vector(0,0)) 
-		   && (steps.second != Vector(0,0)) 
+	      if ( (steps.first != Vector(0,0))
+		   && (steps.second != Vector(0,0))
 		   && (shift != Vector(0,0)) )
-		nbok++; 
-	      nb++; 
+		nbok++;
+	      nb++;
 	    }
 	}
     }
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 
 }
@@ -181,10 +181,10 @@ int main( int argc, char** argv )
     && test<DGtal::int32_t, DGtal::int32_t, 8>(-5,-8)
     && test<DGtal::int32_t, DGtal::int32_t, 8>(5,-8)
     && test<DGtal::int32_t, DGtal::int32_t, 8>(8,-5)
-    ; 
+    ;
 
   //4-adjacency
-  res = res 
+  res = res
     && test<DGtal::int32_t, DGtal::int32_t, 4>(8,5)
     && test<DGtal::int32_t, DGtal::int32_t, 4>(5,8)
     && test<DGtal::int32_t, DGtal::int32_t, 4>(-5,8)
@@ -193,11 +193,11 @@ int main( int argc, char** argv )
     && test<DGtal::int32_t, DGtal::int32_t, 4>(-5,-8)
     && test<DGtal::int32_t, DGtal::int32_t, 4>(5,-8)
     && test<DGtal::int32_t, DGtal::int32_t, 4>(8,-5)
-    ; 
+    ;
 
   //-------------- special tests --------------------------
   //8-adjacency
-  res = res 
+  res = res
     && specialCases<DGtal::int32_t, DGtal::int32_t, 8>(0,0)
     && specialCases<DGtal::int32_t, DGtal::int32_t, 8>(0,5)
     && specialCases<DGtal::int32_t, DGtal::int32_t, 8>(0,-5)
@@ -207,10 +207,10 @@ int main( int argc, char** argv )
     && specialCases<DGtal::int32_t, DGtal::int32_t, 8>(1,-1)
     && specialCases<DGtal::int32_t, DGtal::int32_t, 8>(-1,1)
     && specialCases<DGtal::int32_t, DGtal::int32_t, 8>(-1,-1)
-    ; 
+    ;
 
   //4-adjacency
-  res = res 
+  res = res
     && specialCases<DGtal::int32_t, DGtal::int32_t, 4>(0,0)
     && specialCases<DGtal::int32_t, DGtal::int32_t, 4>(0,5)
     && specialCases<DGtal::int32_t, DGtal::int32_t, 4>(0,-5)
@@ -220,12 +220,12 @@ int main( int argc, char** argv )
     && specialCases<DGtal::int32_t, DGtal::int32_t, 4>(1,-1)
     && specialCases<DGtal::int32_t, DGtal::int32_t, 4>(-1,1)
     && specialCases<DGtal::int32_t, DGtal::int32_t, 4>(-1,-1)
-    ; 
+    ;
 
-  res = res 
-    && test<DGtal::BigInteger, DGtal::BigInteger, 8>(8,5) 
+  res = res
+    && test<DGtal::BigInteger, DGtal::BigInteger, 8>(8,5)
     && test<DGtal::BigInteger, DGtal::BigInteger, 4>(8,5)
-    ; 
+    ;
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

@@ -28,14 +28,14 @@ solutions to the following problems:
   above, except that planarity of points can be checked progressively
   by adding points one at a time (incremental) or by groups (additive).
 - \b width \b computation: computes the minimal width of a parallel
-  strip that containes a given set of (digital or not) points.
+  strip that contains a given set of (digital or not) points.
 
 This module thus extends to the 3D case the recognition of \b digital
 \b straight \b segments and of \b blurred \b segments.
 
 For now, these problems are solved thanks to two algorithms: the COBA
 algorithm by Charrier and Buzer \cite Charrier_2008_dgci and the Chord
-algorithm by Gerard, Debled-Rennesson and Zimmermann 
+algorithm by Gerard, Debled-Rennesson and Zimmermann
 @cite Gerard_2005_dam .
 
 More precisely, these modules tackle \e naive \e digital \e planes (with or
@@ -174,7 +174,7 @@ else
 
 \note The second template parameter of the class ChordNaivePlaneComputer
 gives the type of input points. When recognizing digital planes, you
-shoud set it to Space::Point, where Space is your digital space. Note
+should set it to Space::Point, where Space is your digital space. Note
 that the Chord algorithm works also for real-valued points: in this
 case, you can specify another kind of Point like RealPoint.
 

@@ -68,7 +68,7 @@ bool testDSS4drawing()
 
   typedef PointVector<2,int> Point;
   typedef std::vector<Point>::iterator Iterator;
-  typedef ArithmeticalDSSComputer<Iterator,int,4> DSS4Computer;  
+  typedef ArithmeticalDSSComputer<Iterator,int,4> DSS4Computer;
 
   std::vector<Point> contour;
   contour.push_back(Point(0,0));
@@ -84,11 +84,11 @@ bool testDSS4drawing()
   contour.push_back(Point(6,3));
   contour.push_back(Point(6,4));
 
-  
+
   // Adding step
   trace.beginBlock("Add points while it is possible and draw the result");
 
-  DSS4Computer theDSS4Computer;  
+  DSS4Computer theDSS4Computer;
   theDSS4Computer.init( contour.begin() );
   trace.info() << theDSS4Computer << std::endl;
 
@@ -97,27 +97,27 @@ bool testDSS4drawing()
 
   trace.info() << theDSS4Computer << std::endl;
 
-  DSS4Computer::Primitive theDSS4 = theDSS4Computer.primitive(); 
+  DSS4Computer::Primitive theDSS4 = theDSS4Computer.primitive();
   HyperRectDomain< SpaceND<2,int> > domain( Point(0,0), Point(10,10) );
 
   Board2D board;
   board.setUnit(Board::UCentimeter);
-    
+
   board << SetMode(domain.className(), "Grid")
-	<< domain;    
+	<< domain;
   board << SetMode("PointVector", "Grid");
 
-  board << SetMode(theDSS4.className(), "Points") 
+  board << SetMode(theDSS4.className(), "Points")
 	<< theDSS4;
-  board << SetMode(theDSS4.className(), "BoundingBox") 
+  board << SetMode(theDSS4.className(), "BoundingBox")
 	<< theDSS4;
-    
+
   board.saveSVG("DSS4.svg");
-  
+
 
   trace.endBlock();
 
-  return true;  
+  return true;
 }
 
 /**
@@ -129,7 +129,7 @@ bool testDSS8drawing()
 
   typedef PointVector<2,int> Point;
   typedef std::vector<Point>::iterator Iterator;
-  typedef ArithmeticalDSSComputer<Iterator,int,8> DSS8Computer;  
+  typedef ArithmeticalDSSComputer<Iterator,int,8> DSS8Computer;
 
   std::vector<Point> boundary;
   boundary.push_back(Point(0,0));
@@ -143,7 +143,7 @@ bool testDSS8drawing()
 
   // Good Initialisation
   trace.beginBlock("Add points while it is possible and draw the result");
-  DSS8Computer theDSS8Computer;    
+  DSS8Computer theDSS8Computer;
   theDSS8Computer.init( boundary.begin() );
 
   trace.info() << theDSS8Computer << std::endl;
@@ -153,26 +153,26 @@ bool testDSS8drawing()
 
   trace.info() << theDSS8Computer << std::endl;
 
-  DSS8Computer::Primitive theDSS8 = theDSS8Computer.primitive(); 
+  DSS8Computer::Primitive theDSS8 = theDSS8Computer.primitive();
   HyperRectDomain< SpaceND<2,int> > domain( Point(0,0), Point(10,10) );
-    
+
   Board2D board;
   board.setUnit(Board::UCentimeter);
-    
+
   board << SetMode(domain.className(), "Paving")
-	<< domain;    
+	<< domain;
   board << SetMode("PointVector", "Both");
 
-  board << SetMode(theDSS8.className(), "Points") 
+  board << SetMode(theDSS8.className(), "Points")
 	<< theDSS8;
-  board << SetMode(theDSS8.className(), "BoundingBox") 
+  board << SetMode(theDSS8.className(), "BoundingBox")
 	<< theDSS8;
-        
+
   board.saveSVG("DSS8.svg");
 
   trace.endBlock();
 
-  return true;  
+  return true;
 }
 
 /**
@@ -200,7 +200,7 @@ bool testExtendRetractFront()
   typedef std::vector<Point>::const_reverse_iterator ReverseIterator;
   typedef ArithmeticalDSSComputer<Iterator,int,4> Computer;
   typedef ArithmeticalDSSComputer<ReverseIterator,int,4> ReverseComputer;
-  typedef Computer::Primitive Primitive; 
+  typedef Computer::Primitive Primitive;
 
   std::deque<Primitive> v1,v2;
 
@@ -211,22 +211,22 @@ bool testExtendRetractFront()
 
   Computer c;
   c.init( contour.begin() );
-  v1.push_back( c.primitive() );   
+  v1.push_back( c.primitive() );
 
   while ( (c.end() != contour.end())
     &&(c.extendFront()) ) {
     v1.push_back( c.primitive() );
   }
-  ASSERT(contour.size() == v1.size()); 
+  ASSERT(contour.size() == v1.size());
 
   //backward scan
   trace.info() << "backward scan" << std::endl;
 
-  ReverseComputer rc; 
-  rc.init( contour.rbegin() ); 
+  ReverseComputer rc;
+  rc.init( contour.rbegin() );
 
   while ( (rc.end() != contour.rend())
-          &&(rc.extendFront()) ) 
+          &&(rc.extendFront()) )
     {
     }
 
@@ -236,23 +236,23 @@ bool testExtendRetractFront()
   v2.push_front( rc.primitive() );
   while (rc.retractBack()) {
     v2.push_front( rc.primitive() );
-  }    
+  }
   ASSERT(v1.size() == v2.size());
-    
+
   //comparison
   trace.info() << "comparison" << std::endl;
 
   bool isOk = true;
   for (unsigned int k = 0; k < v1.size(); k++) {
-    if (v1.at(k) != v2.at(k)) 
+    if (v1.at(k) != v2.at(k))
       isOk = false;
     trace.info() << "DSS :" << k << std::endl;
     trace.info() << v1.at(k) << std::endl << v2.at(k) << std::endl;
   }
 
-  if (isOk) 
+  if (isOk)
     trace.info() << "ok for the " << v1.size() << " DSS" << std::endl;
-  else 
+  else
     trace.info() << "failure" << std::endl;
 
   trace.endBlock();
@@ -261,35 +261,35 @@ bool testExtendRetractFront()
 }
 
 template<typename Iterator>
-bool testIsInsideForOneQuadrant(const Iterator& k, const Iterator& l, const Iterator& ite) 
+bool testIsInsideForOneQuadrant(const Iterator& k, const Iterator& l, const Iterator& ite)
 {
-  ASSERT(k < l); 
-  ASSERT(l < ite); 
+  ASSERT(k < l);
+  ASSERT(l < ite);
 
-  typedef ArithmeticalDSSComputer<Iterator,int,4> DSS4;  
+  typedef ArithmeticalDSSComputer<Iterator,int,4> DSS4;
   DSS4 theDSS4;
 
   theDSS4.init( k );
   while ( (theDSS4.end() != l )
           &&(theDSS4.extendFront()) ) {}
 
-  ASSERT( theDSS4.isValid() ); 
+  ASSERT( theDSS4.isValid() );
 
   //all DSS points are in the DSS
-  bool flagIsInside = true; 
+  bool flagIsInside = true;
   for (Iterator i = theDSS4.begin(); i != theDSS4.end(); ++i)
     {
       if ( !theDSS4.isInDSS(i) )
-	  flagIsInside = false; 
-    } 
+	  flagIsInside = false;
+    }
   //all other points are not in the DSS
-  bool flagIsOutside = true; 
+  bool flagIsOutside = true;
   for (Iterator i = l; i != ite; ++i)
     {
       if ( theDSS4.isInDSS(i) )
-	flagIsOutside = false; 
+	flagIsOutside = false;
     }
-  return (flagIsInside && flagIsOutside); 
+  return (flagIsInside && flagIsOutside);
 }
 
 /**
@@ -302,8 +302,8 @@ bool testIsInside()
   typedef std::vector<Point>::iterator Iterator;
   typedef std::vector<Point>::reverse_iterator ReverseIterator;
 
-  int nb = 0; 
-  int nbok = 0; 
+  int nb = 0;
+  int nbok = 0;
 
   std::vector<Point> contour;
   contour.push_back(Point(0,0));
@@ -332,42 +332,42 @@ bool testIsInside()
   trace.beginBlock("isInside tests for each of the four quadrants");
   { //Quadrant 1
     Iterator itb = contour.begin() + 1;
-    Iterator ite = itb + 8;  
+    Iterator ite = itb + 8;
     if (testIsInsideForOneQuadrant(itb, ite, contour.end()) )
-      nbok++; 
-    nb++; 
-    trace.info() << nbok << " / " << nb << " quadrants" << std::endl; 
+      nbok++;
+    nb++;
+    trace.info() << nbok << " / " << nb << " quadrants" << std::endl;
   }
 
   { //quadrant 2
     ReverseIterator itb = contour2.rbegin() + 1;
-    ReverseIterator ite = itb + 8;  
+    ReverseIterator ite = itb + 8;
     if (testIsInsideForOneQuadrant(itb, ite, contour2.rend()) )
-      nbok++; 
-    nb++; 
-    trace.info() << nbok << " / " << nb << " quadrants" << std::endl; 
+      nbok++;
+    nb++;
+    trace.info() << nbok << " / " << nb << " quadrants" << std::endl;
   }
 
   { //quadrant 3
     ReverseIterator itb = contour.rbegin() + 1;
-    ReverseIterator ite = itb + 8;  
+    ReverseIterator ite = itb + 8;
     if (testIsInsideForOneQuadrant(itb, ite, contour.rend()) )
-      nbok++; 
-    nb++; 
-    trace.info() << nbok << " / " << nb << " quadrants" << std::endl; 
+      nbok++;
+    nb++;
+    trace.info() << nbok << " / " << nb << " quadrants" << std::endl;
   }
 
   { //quadrant 4
     Iterator itb = contour2.begin() + 1;
-    Iterator ite = itb + 8;  
+    Iterator ite = itb + 8;
     if (testIsInsideForOneQuadrant(itb, ite, contour2.end()) )
-      nbok++; 
-    nb++; 
-    trace.info() << nbok << " / " << nb << " quadrants" << std::endl; 
+      nbok++;
+    nb++;
+    trace.info() << nbok << " / " << nb << " quadrants" << std::endl;
   }
   trace.endBlock();
 
-  return (nb == nbok); 
+  return (nb == nbok);
 }
 
 /**
@@ -382,14 +382,14 @@ bool testBIGINTEGER()
   typedef DGtal::BigInteger Coordinate;
   typedef PointVector<2,Coordinate> Point;
   typedef std::vector<Point>::iterator Iterator;
-  typedef ArithmeticalDSSComputer<Iterator,Coordinate,4> DSS4;  
+  typedef ArithmeticalDSSComputer<Iterator,Coordinate,4> DSS4;
 
 
 
   trace.beginBlock("Add some points of big coordinates");
 
   std::vector<Point> contour;
-  contour.push_back(Point(1000000000,1000000000));  
+  contour.push_back(Point(1000000000,1000000000));
   contour.push_back(Point(1000000001,1000000000));
   contour.push_back(Point(1000000002,1000000000));
   contour.push_back(Point(1000000003,1000000000));
@@ -431,7 +431,7 @@ bool testCorner()
 
   typedef PointVector<2,int> Point;
   typedef std::vector<Point>::iterator Iterator;
-  typedef ArithmeticalDSSComputer<Iterator,int,8> DSS8;  
+  typedef ArithmeticalDSSComputer<Iterator,int,8> DSS8;
 
   std::vector<Point> boundary;
   boundary.push_back(Point(10,10));
@@ -442,24 +442,24 @@ bool testCorner()
 
   DSS8 theDSS8;
   theDSS8.init(boundary.begin());
-  std::cerr << theDSS8 << std::endl; 
+  std::cerr << theDSS8 << std::endl;
   theDSS8.extendFront();
-  std::cerr << theDSS8 << std::endl; 
+  std::cerr << theDSS8 << std::endl;
   bool res = ( !theDSS8.extendFront() );
-  std::cerr << theDSS8 << std::endl; 
+  std::cerr << theDSS8 << std::endl;
 
   trace.endBlock();
- 
-  return res; 
+
+  return res;
 }
 
 
 
 void testArithmeticalDSSComputerConceptChecking()
 {
-   typedef PointVector<2,int> Point; 
-   typedef std::vector<Point>::iterator Iterator; 
-   typedef ArithmeticalDSSComputer<Iterator,int,8> ArithDSS; 
+   typedef PointVector<2,int> Point;
+   typedef std::vector<Point>::iterator Iterator;
+   typedef ArithmeticalDSSComputer<Iterator,int,8> ArithDSS;
    BOOST_CONCEPT_ASSERT(( concepts::CDynamicBidirectionalSegmentComputer<ArithDSS> ));
 }
 
@@ -473,12 +473,12 @@ int main(int argc, char **argv)
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-   
+
   {//concept checking
     testArithmeticalDSSComputerConceptChecking();
   }
-  
-  bool res = testDSS4drawing() 
+
+  bool res = testDSS4drawing()
     && testDSS8drawing()
     && testExtendRetractFront()
     && testCorner()

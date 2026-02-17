@@ -49,7 +49,7 @@ namespace DGtal
 {
 
   namespace detail {
-    template <typename LessThan, typename T> 
+    template <typename LessThan, typename T>
     struct EqualPredicateFromLessThanComparator {
       LessThan compare;
       EqualPredicateFromLessThanComparator( LessThan aCompare )
@@ -59,7 +59,7 @@ namespace DGtal
         return ( ! compare( t1, t2 ) ) && ( ! compare( t2, t1 ) );
       }
     };
-    template <typename KeyComparator, typename PairKeyData> 
+    template <typename KeyComparator, typename PairKeyData>
     struct KeyComparatorForPairKeyData {
       KeyComparator compare;
       KeyComparatorForPairKeyData( KeyComparator aCompare )
@@ -90,12 +90,12 @@ namespace DGtal
       {
         return value;
       }
-      
+
     };
 
     /// Set-like adapter.
     template <typename Container>
-    struct ComparatorAdapter< Container, true, true, false > 
+    struct ComparatorAdapter< Container, true, true, false >
     {
       typedef typename Container::value_type  value_type;
       typedef typename Container::key_type    key_type;
@@ -119,7 +119,7 @@ namespace DGtal
 
     /// Map-like adapter.
     template <typename Container>
-    struct ComparatorAdapter< Container, true, true, true > 
+    struct ComparatorAdapter< Container, true, true, true >
     {
       typedef typename Container::value_type  value_type;
       typedef typename Container::key_type    key_type;
@@ -144,7 +144,7 @@ namespace DGtal
 
     /// unordered set-like adapter.
     template <typename Container>
-    struct ComparatorAdapter< Container, true, false, false > 
+    struct ComparatorAdapter< Container, true, false, false >
     {
       typedef typename Container::value_type  value_type;
       typedef typename Container::key_type    key_type;
@@ -166,7 +166,7 @@ namespace DGtal
 
     /// unordered map-like adapter.
     template <typename Container>
-    struct ComparatorAdapter< Container, true, false, true > 
+    struct ComparatorAdapter< Container, true, false, true >
     {
       typedef typename Container::value_type      value_type;
       typedef typename Container::key_type        key_type;
@@ -233,7 +233,7 @@ namespace DGtal
     template <typename Container, bool associative, bool ordered>
     struct SetFunctionsImpl
     {
-      /** 
+      /**
        * Equality test. This version does not use the
        * fact that the container is ordered.
        * @param[in] S1 an input set.
@@ -258,7 +258,7 @@ namespace DGtal
                            CompAdapter::equal_to( S1 ) );
       }
 
-      /** 
+      /**
        * Inclusion test. This version does not use the
        * fact that the container is ordered.
        * @param[in] S1 an input set.
@@ -283,7 +283,7 @@ namespace DGtal
                               CompAdapter::less( S1 ) );
       }
 
-      /** 
+      /**
        * Updates the set \a S1 as \f$ S1 - S2 \f$. This version does not use the
        * fact that the container is ordered.
        * @param[in,out] S1 an input set, \a S1 - \a S2 as output.
@@ -307,7 +307,7 @@ namespace DGtal
         return S1;
       }
 
-      /** 
+      /**
        * Updates the set \a S1 as \f$ S1 \cup S2 \f$. This version does not use the
        * fact that the container is ordered.
        * @param[in,out] S1 an input set, \f$ S1 \cup S2 \f$ as output.
@@ -331,7 +331,7 @@ namespace DGtal
         return S1;
       }
 
-      /** 
+      /**
        * Updates the set \a S1 as \f$ S1 \cap S2 \f$. This version does not use the
        * fact that the container is ordered.
        * @param[in,out] S1 an input set, \f$ S1 \cap S2 \f$ as output.
@@ -351,12 +351,12 @@ namespace DGtal
         std::sort( V2.begin(), V2.end(), CompAdapter::less( S1 )  );
         S1.clear();
         std::set_intersection( V1.begin(), V1.end(), V2.begin(), V2.end(),
-                               std::inserter( S1, S1.end() ), 
+                               std::inserter( S1, S1.end() ),
                                CompAdapter::less( S1 )  );
         return S1;
       }
 
-      /** 
+      /**
        * Updates the set \a S1 as \f$ S1 \Delta S2 \f$. This version does not use the
        * fact that the container is ordered.
        * @param[in,out] S1 an input set, \f$ S1 \Delta S2 \f$ as output.
@@ -376,14 +376,14 @@ namespace DGtal
         std::sort( V2.begin(), V2.end(), CompAdapter::less( S1 )  );
         S1.clear();
         std::set_symmetric_difference( V1.begin(), V1.end(), V2.begin(), V2.end(),
-                                       std::inserter( S1, S1.end() ), 
+                                       std::inserter( S1, S1.end() ),
                                        CompAdapter::less( S1 )  );
         return S1;
       }
 
 
     };
-    
+
     /**
      * Specialization for associative, unordered containers
      * (unordered_set, unordered_map).
@@ -392,7 +392,7 @@ namespace DGtal
     struct SetFunctionsImpl<Container, true, false>
     {
 
-      /** 
+      /**
        * Equality test. This version does not use the
        * fact that the container is ordered.
        * @param[in] S1 an input set.
@@ -408,13 +408,13 @@ namespace DGtal
         // Checks size first.
         if ( S1.size() != S2.size() ) return false;
         // Note that it is critical here that all elements are distinct.
-        for ( typename Container::const_iterator it = S1.begin(), 
+        for ( typename Container::const_iterator it = S1.begin(),
                 itE = S1.end(); it != itE; ++it )
           if ( S2.find( CompAdapter::key( *it ) ) == S2.end() ) return false;
         return true;
       }
 
-      /** 
+      /**
        * Inclusion test. This version does not use the
        * fact that the container is ordered.
        * @param[in] S1 an input set.
@@ -429,13 +429,13 @@ namespace DGtal
 
         // Checks size first.
         if ( S1.size() > S2.size() ) return false;
-        for ( typename Container::const_iterator it = S1.begin(), 
+        for ( typename Container::const_iterator it = S1.begin(),
                 itE = S1.end(); it != itE; ++it )
           if ( S2.find( CompAdapter::key( *it ) ) == S2.end() ) return false;
         return true;
       }
 
-      /** 
+      /**
        * Updates the set S1 as S1 - S2. This version does not use the
        * fact that the container is ordered.
        * @param[in,out] S1 an input set, \a S1 - \a S2 as output.
@@ -447,13 +447,13 @@ namespace DGtal
                                    IsPairAssociativeContainer< Container >::value >
           CompAdapter;
 
-        for ( typename Container::const_iterator it = S2.begin(), 
+        for ( typename Container::const_iterator it = S2.begin(),
                 itE = S2.end(); it != itE; ++it )
           S1.erase( CompAdapter::key( *it ) );
         return S1;
       }
 
-      /** 
+      /**
        * Updates the set \a S1 as \f$ S1 \cup S2 \f$. This version does not use the
        * fact that the container is ordered.
        * @param[in,out] S1 an input set, \f$ S1 \cup S2 \f$ as output.
@@ -462,13 +462,13 @@ namespace DGtal
       static Container& assignUnion( Container& S1, const Container& S2 )
       {
         typename Container::iterator itS1 = S1.end();
-        for ( typename Container::const_iterator it = S2.begin(), 
+        for ( typename Container::const_iterator it = S2.begin(),
                 itE = S2.end(); it != itE; ++it )
           itS1 = S1.insert( itS1, *it );
         return S1;
       }
 
-      /** 
+      /**
        * Updates the set \a S1 as \f$ S1 \cap S2 \f$. This version does not use the
        * fact that the container is ordered.
        * @param[in,out] S1 an input set, \f$ S1 \cap S2 \f$ as output.
@@ -480,7 +480,7 @@ namespace DGtal
                                    IsPairAssociativeContainer< Container >::value >
           CompAdapter;
 
-        for ( typename Container::iterator it = S1.begin(), 
+        for ( typename Container::iterator it = S1.begin(),
                 itE = S1.end(); it != itE; )
           {
             typename Container::iterator itNext = it; ++itNext;
@@ -491,7 +491,7 @@ namespace DGtal
         return S1;
       }
 
-      /** 
+      /**
        * Updates the set \a S1 as \f$ S1 \Delta S2 \f$. This version does not use the
        * fact that the container is ordered.
        * @param[in,out] S1 an input set, \f$ S1 \Delta S2 \f$ as output.
@@ -514,7 +514,7 @@ namespace DGtal
     struct SetFunctionsImpl<Container, true, true >
     {
 
-      /** 
+      /**
        * Equality test. This version uses the fact that the container is ordered.
        *
        * @param[in] S1 an input set.
@@ -526,17 +526,17 @@ namespace DGtal
         // Checks size first.
         if ( S1.size() != S2.size() ) return false;
         // One has to be careful for comparing keys in set-like
-        // structure, we only have an operator<. Hence a == b is defined as 
+        // structure, we only have an operator<. Hence a == b is defined as
         // ( ! a<b ) && ( ! b<a ).
         typedef ComparatorAdapter< Container, true, true,
                                    IsPairAssociativeContainer< Container >::value >
           CompAdapter;
 
-        return std::equal( S1.begin(), S1.end(), S2.begin(), 
+        return std::equal( S1.begin(), S1.end(), S2.begin(),
                            CompAdapter::equal_to( S1 ) );
       }
 
-      /** 
+      /**
        * Inclusion test. This version uses the fact that the container
        * is ordered.
        *
@@ -552,12 +552,12 @@ namespace DGtal
                                    IsPairAssociativeContainer< Container >::value >
           CompAdapter;
 
-        return std::includes( S2.begin(), S2.end(), 
+        return std::includes( S2.begin(), S2.end(),
                               S1.begin(), S1.end(), CompAdapter::less( S1 ) );
       }
 
 
-      /** 
+      /**
        * Updates the set S1 as S1 - S2. This version uses the
        * fact that the container is ordered.
        * @param[in,out] S1 an input set, \a S1 - \a S2 as output.
@@ -571,13 +571,13 @@ namespace DGtal
 
         Container S;
         std::swap( S, S1 );
-        std::set_difference( S.begin(), S.end(), S2.begin(), S2.end(), 
+        std::set_difference( S.begin(), S.end(), S2.begin(), S2.end(),
                              std::inserter( S1, S1.end() ),
                              CompAdapter::less( S1 ) );
         return S1;
       }
 
-      /** 
+      /**
        * Updates the set \a S1 as \f$ S1 \cup S2 \f$. This version uses the
        * fact that the container is ordered.
        * @param[in,out] S1 an input set, \f$ S1 \cup S2 \f$ as output.
@@ -591,13 +591,13 @@ namespace DGtal
 
         Container S;
         std::swap( S, S1 );
-        std::set_union( S.begin(), S.end(), S2.begin(), S2.end(), 
+        std::set_union( S.begin(), S.end(), S2.begin(), S2.end(),
                         std::inserter( S1, S1.end() ),
                         CompAdapter::less( S1 ) );
         return S1;
       }
 
-      /** 
+      /**
        * Updates the set \a S1 as \f$ S1 \cap S2 \f$. This version uses the
        * fact that the container is ordered.
        * @param[in,out] S1 an input set, \f$ S1 \cap S2 \f$ as output.
@@ -611,13 +611,13 @@ namespace DGtal
 
         Container S;
         std::swap( S, S1 );
-        std::set_intersection( S.begin(), S.end(), S2.begin(), S2.end(), 
-                               std::inserter( S1, S1.end() ), 
+        std::set_intersection( S.begin(), S.end(), S2.begin(), S2.end(),
+                               std::inserter( S1, S1.end() ),
                                CompAdapter::less( S1 ) );
         return S1;
       }
 
-      /** 
+      /**
        * Updates the set \a S1 as \f$ S1 \Delta S2 \f$. This version uses the
        * fact that the container is ordered.
        * @param[in,out] S1 an input set, \f$ S1 \Delta S2 \f$ as output.
@@ -631,7 +631,7 @@ namespace DGtal
 
         Container S;
         std::swap( S, S1 );
-        std::set_symmetric_difference( S.begin(), S.end(), S2.begin(), S2.end(), 
+        std::set_symmetric_difference( S.begin(), S.end(), S2.begin(), S2.end(),
                                        std::inserter( S1, S1.end() ),
                                        CompAdapter::less( S1 ) );
         return S1;
@@ -645,7 +645,7 @@ namespace DGtal
     template <typename Container >
     struct SetFunctionsImpl< Container, false, true >
     {
-      /** 
+      /**
        * Equality test. This version uses the fact that the container is ordered.
        *
        * @param[in] S1 an input set.
@@ -659,11 +659,11 @@ namespace DGtal
 
         // Checks size first.
         if ( S1.size() != S2.size() ) return false;
-        return std::equal( S1.begin(), S1.end(), S2.begin(), 
-                           CompAdapter::equal_to( S1 ) ); 
+        return std::equal( S1.begin(), S1.end(), S2.begin(),
+                           CompAdapter::equal_to( S1 ) );
       }
 
-      /** 
+      /**
        * Inclusion test. This version uses the fact that the container
        * is ordered.
        *
@@ -678,11 +678,11 @@ namespace DGtal
 
         // Checks size first.
         if ( S1.size() > S2.size() ) return false;
-        return std::includes( S2.begin(), S2.end(), S1.begin(), S1.end(), 
-                              CompAdapter::less( S1 ) ); 
+        return std::includes( S2.begin(), S2.end(), S1.begin(), S1.end(),
+                              CompAdapter::less( S1 ) );
       }
 
-      /** 
+      /**
        * Updates the set S1 as S1 - S2. This version uses the
        * fact that the container is ordered.
        * @param[in,out] S1 an input set, \a S1 - \a S2 as output.
@@ -695,13 +695,13 @@ namespace DGtal
 
         Container S;
         std::swap( S, S1 );
-        std::set_difference( S.begin(), S.end(), S2.begin(), S2.end(), 
-                             std::inserter( S1, S1.end() ), 
+        std::set_difference( S.begin(), S.end(), S2.begin(), S2.end(),
+                             std::inserter( S1, S1.end() ),
                              CompAdapter::less( S1 ) );
         return S1;
       }
 
-      /** 
+      /**
        * Updates the set \a S1 as \f$ S1 \cup S2 \f$. This version uses the
        * fact that the container is ordered.
        * @param[in,out] S1 an input set, \f$ S1 \cup S2 \f$ as output.
@@ -714,13 +714,13 @@ namespace DGtal
 
         Container S;
         std::swap( S, S1 );
-        std::set_union( S.begin(), S.end(), S2.begin(), S2.end(), 
-                        std::inserter( S1, S1.end() ), 
+        std::set_union( S.begin(), S.end(), S2.begin(), S2.end(),
+                        std::inserter( S1, S1.end() ),
                         CompAdapter::less( S1 ) );
         return S1;
       }
 
-      /** 
+      /**
        * Updates the set \a S1 as \f$ S1 \cap S2 \f$. This version uses the
        * fact that the container is ordered.
        * @param[in,out] S1 an input set, \f$ S1 \cap S2 \f$ as output.
@@ -733,13 +733,13 @@ namespace DGtal
 
         Container S;
         std::swap( S, S1 );
-        std::set_intersection( S.begin(), S.end(), S2.begin(), S2.end(), 
-                               std::inserter( S1, S1.end() ), 
+        std::set_intersection( S.begin(), S.end(), S2.begin(), S2.end(),
+                               std::inserter( S1, S1.end() ),
                                CompAdapter::less( S1 ) );
         return S1;
       }
 
-      /** 
+      /**
        * Updates the set \a S1 as \f$ S1 \Delta S2 \f$. This version uses the
        * fact that the container is ordered.
        * @param[in,out] S1 an input set, \f$ S1 \Delta S2 \f$ as output.
@@ -752,23 +752,23 @@ namespace DGtal
 
         Container S;
         std::swap( S, S1 );
-        std::set_symmetric_difference( S.begin(), S.end(), S2.begin(), S2.end(), 
-                                       std::inserter( S1, S1.end() ), 
+        std::set_symmetric_difference( S.begin(), S.end(), S2.begin(), S2.end(),
+                                       std::inserter( S1, S1.end() ),
                                        CompAdapter::less( S1 ) );
         return S1;
       }
 
     };
-    
+
   } // detail
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // template class SetFunctions
 
   namespace functions {
 
     //////////////////////// EQUALITY /////////////////////////
-    /** 
+    /**
      * Equality test.
      *
      * @param[in] S1 an input set.
@@ -792,14 +792,14 @@ namespace DGtal
         BOOST_STATIC_CONSTANT
           ( bool, isAssociative = IsAssociativeContainer< Container >::value );
         BOOST_STATIC_CONSTANT
-          ( bool, isOrdered = ordered 
+          ( bool, isOrdered = ordered
             || ( isAssociative && IsOrderedAssociativeContainer< Container >::value ) );
-        
+
         return DGtal::detail::SetFunctionsImpl< Container, isAssociative, isOrdered >
           ::isEqual( S1, S2 );
       }
 
-    /** 
+    /**
      * Equality test.
      *
      * @param[in] S1 an input set.
@@ -819,14 +819,14 @@ namespace DGtal
           ( bool, isAssociative = IsAssociativeContainer< Container >::value );
         BOOST_STATIC_CONSTANT
           ( bool, isOrdered = isAssociative && IsOrderedAssociativeContainer< Container >::value );
-        
+
         return DGtal::detail::SetFunctionsImpl< Container, isAssociative, isOrdered >
           ::isEqual( S1, S2 );
       }
 
 
     //////////////////////// INCLUSION /////////////////////////
-    /** 
+    /**
      * Inclusion test.
      *
      * @param[in] S1 an input set.
@@ -848,14 +848,14 @@ namespace DGtal
         BOOST_STATIC_CONSTANT
           ( bool, isAssociative = IsAssociativeContainer< Container >::value );
         BOOST_STATIC_CONSTANT
-          ( bool, isOrdered = ordered 
+          ( bool, isOrdered = ordered
             || ( isAssociative && IsOrderedAssociativeContainer< Container >::value ) );
-        
+
         return DGtal::detail::SetFunctionsImpl< Container, isAssociative, isOrdered >
           ::isSubset( S1, S2 );
       }
 
-    /** 
+    /**
      * Inclusion test.
      *
      * @param[in] S1 an input set.
@@ -873,14 +873,14 @@ namespace DGtal
           ( bool, isAssociative = IsAssociativeContainer< Container >::value );
         BOOST_STATIC_CONSTANT
           ( bool, isOrdered = isAssociative && IsOrderedAssociativeContainer< Container >::value );
-        
+
         return DGtal::detail::SetFunctionsImpl< Container, isAssociative, isOrdered >
           ::isSubset( S1, S2 );
       }
 
     //////////////////////// SET DIFFERENCE /////////////////////////
-    /** 
-     * Set difference operation. Updates the set S1 as S1 - S2. 
+    /**
+     * Set difference operation. Updates the set S1 as S1 - S2.
      * @param[in,out] S1 an input set, \a S1 - \a S2 as output.
      * @param[in] S2 another input set.
      *
@@ -899,15 +899,15 @@ namespace DGtal
       BOOST_STATIC_CONSTANT
         ( bool, isAssociative = IsAssociativeContainer< Container >::value );
       BOOST_STATIC_CONSTANT
-        ( bool, isOrdered = ordered 
+        ( bool, isOrdered = ordered
           || ( isAssociative && IsOrderedAssociativeContainer< Container >::value ) );
 
       return DGtal::detail::SetFunctionsImpl< Container, isAssociative, isOrdered >
         ::assignDifference( S1, S2 );
     }
 
-    /** 
-     * Set difference operation. Updates the set S1 as S1 - S2. 
+    /**
+     * Set difference operation. Updates the set S1 as S1 - S2.
      * @param[in,out] S1 an input set, \a S1 - \a S2 as output.
      * @param[in] S2 another input set.
      *
@@ -927,12 +927,12 @@ namespace DGtal
         ::assignDifference( S1, S2 );
     }
 
-    /** 
+    /**
      * Set difference operation. Returns the difference of \a S1 - \a S2.
      * @param[in] S1 an input set
      * @param[in] S2 another input set.
      *
-     * @return the set \a S1 - \a S2. 
+     * @return the set \a S1 - \a S2.
      *
      * @tparam Container any type of container (even a sequence, a
      * set, an unordered_set, a map, etc).
@@ -951,12 +951,12 @@ namespace DGtal
       return S;
     }
 
-    /** 
+    /**
      * Set difference operation. Returns the difference of \a S1 - \a S2.
      * @param[in] S1 an input set
      * @param[in] S2 another input set.
      *
-     * @return the set \a S1 - \a S2. 
+     * @return the set \a S1 - \a S2.
      *
      * @tparam Container any type of container (even a sequence, a
      * set, an unordered_set, a map, etc).
@@ -973,7 +973,7 @@ namespace DGtal
 
     //////////////////////// SET UNION /////////////////////////
 
-    /** 
+    /**
      * Set union operation. Updates the set \a S1 as \f$ S1 \cup S2 \f$.
      * @param[in,out] S1 an input set, \f$ S1 \cup S2 \f$ as output.
      * @param[in] S2 another input set.
@@ -993,14 +993,14 @@ namespace DGtal
       BOOST_STATIC_CONSTANT
         ( bool, isAssociative = IsAssociativeContainer< Container >::value );
       BOOST_STATIC_CONSTANT
-        ( bool, isOrdered = ordered 
+        ( bool, isOrdered = ordered
           || ( isAssociative && IsOrderedAssociativeContainer< Container >::value ) );
 
       return DGtal::detail::SetFunctionsImpl< Container, isAssociative, isOrdered >
         ::assignUnion( S1, S2 );
     }
 
-    /** 
+    /**
      * Set union operation. Updates the set \a S1 as \f$ S1 \cup S2 \f$.
      * @param[in,out] S1 an input set, \f$ S1 \cup S2 \f$ as output.
      * @param[in] S2 another input set.
@@ -1021,7 +1021,7 @@ namespace DGtal
         ::assignUnion( S1, S2 );
     }
 
-    /** 
+    /**
      * Set union operation. Returns the set \f$ S1 \cup S2 \f$.
      * @param[in] S1 an input set.
      * @param[in] S2 another input set.
@@ -1044,7 +1044,7 @@ namespace DGtal
       return S;
     }
 
-    /** 
+    /**
      * Set union operation. Returns the set \f$ S1 \cup S2 \f$.
      * @param[in] S1 an input set.
      * @param[in] S2 another input set.
@@ -1065,7 +1065,7 @@ namespace DGtal
 
     //////////////////////// SET INTERSECTION /////////////////////////
 
-    /** 
+    /**
      * Set intersection operation. Updates the set \a S1 as \f$ S1 \cap S2 \f$.
      * @param[in,out] S1 an input set, \f$ S1 \cap S2 \f$ as output.
      * @param[in] S2 another input set.
@@ -1085,14 +1085,14 @@ namespace DGtal
       BOOST_STATIC_CONSTANT
         ( bool, isAssociative = IsAssociativeContainer< Container >::value );
       BOOST_STATIC_CONSTANT
-        ( bool, isOrdered = ordered 
+        ( bool, isOrdered = ordered
           || ( isAssociative && IsOrderedAssociativeContainer< Container >::value ) );
 
       return DGtal::detail::SetFunctionsImpl< Container, isAssociative, isOrdered >
         ::assignIntersection( S1, S2 );
     }
 
-    /** 
+    /**
      * Set intersection operation. Updates the set \a S1 as \f$ S1 \cap S2 \f$.
      * @param[in,out] S1 an input set, \f$ S1 \cap S2 \f$ as output.
      * @param[in] S2 another input set.
@@ -1113,7 +1113,7 @@ namespace DGtal
         ::assignIntersection( S1, S2 );
     }
 
-    /** 
+    /**
      * Set intersection operation. Returns the set \f$ S1 \cap S2 \f$.
      * @param[in] S1 an input set.
      * @param[in] S2 another input set.
@@ -1136,7 +1136,7 @@ namespace DGtal
       return S;
     }
 
-    /** 
+    /**
      * Set intersection operation. Returns the set \f$ S1 \cap S2 \f$.
      * @param[in] S1 an input set.
      * @param[in] S2 another input set.
@@ -1157,7 +1157,7 @@ namespace DGtal
 
     //////////////////////// SET SYMMETRIC DIFFERENCE /////////////////////////
 
-    /** 
+    /**
      * Set symmetric difference operation. Updates the set \a S1 as
      * \f$ S1 \Delta S2 \f$.
      *
@@ -1179,14 +1179,14 @@ namespace DGtal
       BOOST_STATIC_CONSTANT
         ( bool, isAssociative = IsAssociativeContainer< Container >::value );
       BOOST_STATIC_CONSTANT
-        ( bool, isOrdered = ordered 
+        ( bool, isOrdered = ordered
           || ( isAssociative && IsOrderedAssociativeContainer< Container >::value ) );
 
       return DGtal::detail::SetFunctionsImpl< Container, isAssociative, isOrdered >
         ::assignSymmetricDifference( S1, S2 );
     }
 
-    /** 
+    /**
      * Set symmetric difference operation. Updates the set \a S1 as \f$ S1 \Delta S2 \f$.
      * @param[in,out] S1 an input set, \f$ S1 \Delta S2 \f$ as output.
      * @param[in] S2 another input set.
@@ -1207,7 +1207,7 @@ namespace DGtal
         ::assignSymmetricDifference( S1, S2 );
     }
 
-    /** 
+    /**
      * Set symmetric difference operation. Returns the set \f$ S1 \Delta S2 \f$.
      * @param[in] S1 an input set.
      * @param[in] S2 another input set.
@@ -1230,7 +1230,7 @@ namespace DGtal
       return S;
     }
 
-    /** 
+    /**
      * Set symmetric difference operation. Returns the set \f$ S1 \Delta S2 \f$.
      * @param[in] S1 an input set.
      * @param[in] S2 another input set.
@@ -1259,9 +1259,9 @@ namespace DGtal
      * symmetric difference ^.
      */
     namespace setops {
-      
-      /** 
-       * Set difference operation. Updates the set S1 as S1 - S2. 
+
+      /**
+       * Set difference operation. Updates the set S1 as S1 - S2.
        * @param[in,out] S1 an input set, \a S1 - \a S2 as output.
        * @param[in] S2 another input set.
        *
@@ -1273,13 +1273,13 @@ namespace DGtal
       {
         return assignDifference( S1, S2 );
       }
-      
-      /** 
+
+      /**
        * Set difference operation. Returns the difference of \a S1 - \a S2.
        * @param[in] S1 an input set
        * @param[in] S2 another input set.
        *
-       * @return the set \a S1 - \a S2. 
+       * @return the set \a S1 - \a S2.
        *
        * @tparam Container any type of container (even a sequence, a
        * set, an unordered_set, a map, etc).
@@ -1290,7 +1290,7 @@ namespace DGtal
         return makeDifference( S1, S2 );
       }
 
-      /** 
+      /**
        * Set union operation. Returns the set \f$ S1 \cup S2 \f$.
        * @param[in] S1 an input set.
        * @param[in] S2 another input set.
@@ -1305,7 +1305,7 @@ namespace DGtal
         return makeUnion( S1, S2 );
       }
 
-      /** 
+      /**
        * Set union operation. Updates the set \a S1 as \f$ S1 \cup S2 \f$.
        * @param[in,out] S1 an input set, \f$ S1 \cup S2 \f$ as output.
        * @param[in] S2 another input set.
@@ -1319,7 +1319,7 @@ namespace DGtal
         return assignUnion( S1, S2 );
       }
 
-      /** 
+      /**
        * Set intersection operation. Returns the set \f$ S1 \cap S2 \f$.
        * @param[in] S1 an input set.
        * @param[in] S2 another input set.
@@ -1334,7 +1334,7 @@ namespace DGtal
         return makeIntersection( S1, S2 );
       }
 
-      /** 
+      /**
        * Set intersection operation. Updates the set \a S1 as \f$ S1 \cap S2 \f$.
        * @param[in,out] S1 an input set, \f$ S1 \cap S2 \f$ as output.
        * @param[in] S2 another input set.
@@ -1348,7 +1348,7 @@ namespace DGtal
         return assignIntersection( S1, S2 );
       }
 
-      /** 
+      /**
        * Set symmetric difference operation. Returns the set \f$ S1 \Delta S2 \f$.
        *
        * @param[in] S1 an input set.
@@ -1364,7 +1364,7 @@ namespace DGtal
         return makeSymmetricDifference( S1, S2 );
       }
 
-      /** 
+      /**
        * Set symmetric difference operation. Updates the set \a S1 as
        * \f$ S1 \Delta S2 \f$.
        *

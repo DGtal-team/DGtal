@@ -28,12 +28,12 @@
  */
 
 
-/** 
+/**
  * Implicit polynomial surface defined on the command-line by the
  * user (as "(x^2+y^2+2z^2-1)*(z^2x-0.1)"), then extracted using digital
  * surface tracking and converted into the corresponding combinatorial
  * surface.
- * 
+ *
  * @see \ref dgtal_mpolynomial_sec3
  * @see \ref dgtal_digsurf_sec4_3
  *
@@ -46,7 +46,7 @@
  * @endverbatim
  *
  * @image html nice-mpolynomial.png "Implicit polynomial surface (x^2+y^2+2*z^2-1)*(z^2x-0.1) between [-2,-2,-2] and [2,2,2], step 0.02."
- * @image latex nice-mpolynomial.png "Implicit polynomial surface (x^2+y^2+2*z^2-1)*(z^2x-0.1) between [-2,-2,-2] and [2,2,2], step 0.02." width=0.5\textwidth 
+ * @image latex nice-mpolynomial.png "Implicit polynomial surface (x^2+y^2+2*z^2-1)*(z^2x-0.1) between [-2,-2,-2] and [2,2,2], step 0.02." width=0.5\textwidth
  *
  * \example topology/trackImplicitPolynomialSurfaceToOFF.cpp
  */
@@ -108,18 +108,18 @@ int main( int argc, char** argv )
   typedef MPolynomial<3, Ring> Polynomial3;
   typedef MPolynomialReader<3, Ring> Polynomial3Reader;
   typedef ImplicitPolynomial3Shape<Space> ImplicitShape;
-  typedef GaussDigitizer<Space,ImplicitShape> DigitalShape; 
+  typedef GaussDigitizer<Space,ImplicitShape> DigitalShape;
   typedef DigitalShape::PointEmbedder DigitalEmbedder;
 
   // See http://www.freigeist.cc/gallery.html
   Polynomial3 P;
   Polynomial3Reader reader;
   std::string poly_str = argv[ 1 ];
-  std::string::const_iterator iter 
+  std::string::const_iterator iter
     = reader.read( P, poly_str.begin(), poly_str.end() );
   if ( iter != poly_str.end() )
     {
-      std::cerr << "ERROR: I read only <" 
+      std::cerr << "ERROR: I read only <"
                 << poly_str.substr( 0, iter - poly_str.begin() )
                 << ">, and I built P=" << P << std::endl;
       return 1;
@@ -146,7 +146,7 @@ int main( int argc, char** argv )
   //   - 6 * mmonomial<double>(2,2,0)
   //   - 3 * mmonomial<double>(0,4,0)
   //   + 3 * mmonomial<double>(2,0,0);
-  
+
   trace.info() << "P( X_0, X_1, X_2 ) = " << P << std::endl;
   ImplicitShape ishape( P );
   DigitalShape dshape;
@@ -162,7 +162,7 @@ int main( int argc, char** argv )
   // NB: it is \b necessary to work with a \b closed cellular space
   // since umbrellas use separators and pivots, which must exist for
   // arbitrary surfels.
-  bool space_ok = K.init( domain.lowerBound(), 
+  bool space_ok = K.init( domain.lowerBound(),
                           domain.upperBound(), true // necessary
                           );
   if (!space_ok)
@@ -189,7 +189,7 @@ int main( int argc, char** argv )
   MySetOfSurfels theSetOfSurfels( K, surfAdj );
   Surfel bel = Surfaces<KSpace>::findABel( K, dshape, 100000 );
   Surfaces<KSpace>::trackBoundary( theSetOfSurfels.surfelSet(),
-                                   K, surfAdj, 
+                                   K, surfAdj,
                                    dshape, bel );
   trace.endBlock();
   //! [trackImplicitPolynomialSurfaceToOFF-ExtractingSurface]
@@ -201,9 +201,9 @@ int main( int argc, char** argv )
                << std::endl;
   // The cell embedder is used to place vertices closer to the set
   // P(x,y,z)=0
-  typedef 
-    ImplicitFunctionDiff1LinearCellEmbedder< KSpace, 
-                                             ImplicitShape, 
+  typedef
+    ImplicitFunctionDiff1LinearCellEmbedder< KSpace,
+                                             ImplicitShape,
                                              DigitalEmbedder >
     CellEmbedder;
   CellEmbedder cellEmbedder;

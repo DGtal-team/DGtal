@@ -45,7 +45,7 @@ DGtal received the [Symposium on Geometry Processing Software Award in 2016](htt
 DGtal is associated with the projects [DGtalTools](http://dgtal.org/dgtaltools/)
 and [DGtalTools-contrib](http://dgtal.org/dgtaltools/). Please have a look
 at the [DGtalTools online
-documentation](https://dgtal-team.github.io/doctools-nightly) for additional 
+documentation](https://dgtal-team.github.io/doctools-nightly) for additional
 information.
 
 @note From release 1.2, DGtal has a (partial) python binding. For more information, cf \subpage packageIntroduction
@@ -56,7 +56,7 @@ information.
   - \subpage moduleShortcuts
 
 
-## DGtal Packages 
+## DGtal Packages
 
   - \subpage packageIntroduction
   - \subpage packageBase
@@ -79,10 +79,10 @@ information.
 
 ## Links
 
-* Documentation of the associated [DGtalTools project](https://dgtal-team.github.io/doctools-nightly) 
-* Visit the [DGtal homepage](http://dgtal.org/) 
-* LibBoard section page    
-  
+* Documentation of the associated [DGtalTools project](https://dgtal-team.github.io/doctools-nightly)
+* Visit the [DGtal homepage](http://dgtal.org/)
+* LibBoard section page
+
    @defgroup Concepts DGtal Concepts
    @defgroup Archetypes DGtal Archetypes
    @defgroup Tests DGtal Test Files

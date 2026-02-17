@@ -21,7 +21,7 @@
  * LORIA (CNRS, UMR 7503), University of Nancy, France
  *
  * @date 2010/12/01
- * 
+ *
  * An example of FreemanChain display with background source image.
  *
  * This file is part of the DGtal library.
@@ -30,8 +30,8 @@
 /**
 \example tutorial-examples/freemanChainFromImage.cpp
 * A simple example to show how to extract the set of boundary contours obtained from the image level set.
-* This programm outputs this image: 
-*   @image html fcExtraction.png 
+* This programm outputs this image:
+*   @image html fcExtraction.png
 *
 */
 
@@ -66,9 +66,9 @@ int main()
   //! [freemanChainFromImage-imageImport]
   typedef DGtal::ImageContainerBySTLVector< DGtal::Z2i::Domain, unsigned char> Image;
   std::string filename =  examplesPath + "samples/circleR10modif.pgm";
-  Image image = DGtal::PGMReader<Image>::importPGM(filename); 
+  Image image = DGtal::PGMReader<Image>::importPGM(filename);
   //! [freemanChainFromImage-imageImport]
-  
+
   //![freemanChainFromImage-ksspace]
   Z2i::KSpace ks;
   ks.init( image.domain().lowerBound(), image.domain().upperBound(), true );
@@ -83,7 +83,7 @@ int main()
   //! [freemanChainFromImage-displaySet]
   Board2D aBoard;
   aBoard << set2d;
-  aBoard << image.domain();  
+  aBoard << image.domain();
   //! [freemanChainFromImage-displaySet]
 
   //! [freemanChainFromImage-adj]
@@ -93,9 +93,9 @@ int main()
   //! [freemanChainFromImage-extraction]
   std::vector< std::vector< Z2i::Point >  >  vectContoursBdryPointels;
   Surfaces<Z2i::KSpace>::extractAllPointContours4C( vectContoursBdryPointels,
-                ks, set2d, sAdj );  
+                ks, set2d, sAdj );
   //! [freemanChainFromImage-extraction]
-  
+
 
   GradientColorMap<int> cmap_grad( 0, (int)vectContoursBdryPointels.size() );
   cmap_grad.addColor( Color( 50, 50, 255 ) );
@@ -104,19 +104,19 @@ int main()
   cmap_grad.addColor( Color( 25, 255, 255 ) );
   cmap_grad.addColor( Color( 255, 25, 255 ) );
   cmap_grad.addColor( Color( 25, 25, 25 ) );
-  
+
   //! [freemanChainFromImage-fcConstruction]
   for(unsigned int i=0; i<vectContoursBdryPointels.size(); i++){
-    //  Constructing and displaying FreemanChains from contours. 
-    FreemanChain<Z2i::Integer> fc (vectContoursBdryPointels.at(i));    
+    //  Constructing and displaying FreemanChains from contours.
+    FreemanChain<Z2i::Integer> fc (vectContoursBdryPointels.at(i));
     //! [freemanChainFromImage-fcConstruction]
     //! [freemanChainFromImage-fcdysplay]
     aBoard << SetMode( fc.className(), "InterGrid" );
-    aBoard<< CustomStyle( fc.className(), 
-            new CustomColors(  cmap_grad(i),  Color::None ) );        
+    aBoard<< CustomStyle( fc.className(),
+            new CustomColors(  cmap_grad(i),  Color::None ) );
     aBoard << fc;
     //! [freemanChainFromImage-fcdysplay]
-  }   
+  }
 
   aBoard.saveEPS("freemanChainFromImage.eps");
   return 0;

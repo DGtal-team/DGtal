@@ -135,7 +135,7 @@ testITKSpacingIO()
   trace.info() << "reading image spacing after write (should be 0.2, 0.3)" << std::endl;
   trace.info() << "spacing: " << s2[0] << " " << s2[1]  << std::endl;
 
-  
+
   return s[0] == 0.2 && s[1] == 0.3 && s[2] == 0.4 &&
          s2[0] == 0.2 && s2[1] == 0.3 &&
          s3[0] == 0.8 && s3[1] == 0.9 && s3[2] == 1.0;
@@ -182,7 +182,7 @@ bool testITKio()
   nb += 1;
   trace.beginBlock ( "Testing 3D ITK image with spacing ..." );
   nbok += testITKSpacingIO();
-  trace.endBlock();  
+  trace.endBlock();
   return nbok == nb;
 }
 

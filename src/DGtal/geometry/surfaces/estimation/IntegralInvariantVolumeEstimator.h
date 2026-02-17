@@ -78,7 +78,7 @@ namespace DGtal
 * The algorithm we propose uses a kernel (2D: Ball2D, 3D: Ball3D) that
 * is moved along the surface. The volume of this kernel intersected
 * with the shape carries local geometric information. It can be used to
-* compute the mean curvature in 2D and 3D. Theorical multigrid
+* compute the mean curvature in 2D and 3D. Theoretical multigrid
 * convergence is proved, with a convergence speed of O(h^1/3) with
 * hypothesis about the shape geometry and the convolution kernel
 * radius.  Experimental results confirm the multigrid convergence.
@@ -151,7 +151,7 @@ public:
   typedef GaussDigitizer< Space, KernelSupport > DigitalShapeKernel;
   typedef GaussDigitizer< Space, EuclideanMinus > DigitalShape;
 
-  typedef DigitalSurfaceConvolver<ShapeSpelFunctor, KernelSpelFunctor, 
+  typedef DigitalSurfaceConvolver<ShapeSpelFunctor, KernelSpelFunctor,
                                   KSpace, DigitalShapeKernel> Convolver;
   typedef typename Convolver::PairIterators PairIterators;
   typedef typename Convolver::CovarianceMatrix Matrix;
@@ -159,7 +159,7 @@ public:
   typedef double Scalar;
   BOOST_CONCEPT_ASSERT (( concepts::CCellFunctor< ShapeSpelFunctor > ));
   BOOST_CONCEPT_ASSERT (( concepts::CUnaryFunctor< VolumeFunctor, Component, Quantity > ));
-  BOOST_STATIC_ASSERT (( concepts::ConceptUtils::SameType< typename Convolver::Quantity, 
+  BOOST_STATIC_ASSERT (( concepts::ConceptUtils::SameType< typename Convolver::Quantity,
                                                  typename VolumeFunctor::Argument >::value ));
 
 
@@ -169,7 +169,7 @@ public:
   /**
   * Default constructor. The object is invalid. The user needs to call
   * setParams and attach.
-  * 
+  *
   * @param[in] fct the functor for transforming the volume into
   * some quantity. If not precised, a default object is instantiated.
   */
@@ -184,7 +184,7 @@ public:
   * @param[in] fct the functor for transforming the volume into
   * some quantity. If not precised, a default object is instantiated.
   */
-  IntegralInvariantVolumeEstimator ( ConstAlias< KSpace > K, 
+  IntegralInvariantVolumeEstimator ( ConstAlias< KSpace > K,
                                      ConstAlias< PointPredicate > aPointPredicate,
                                      VolumeFunctor fct = VolumeFunctor() );
 
@@ -224,7 +224,7 @@ public:
   * @param aPointPredicate the shape of interest. The alias can be secured
   * if a some counted pointer is handed.
   */
-  void attach( ConstAlias< KSpace > K, 
+  void attach( ConstAlias< KSpace > K,
                ConstAlias<PointPredicate> aPointPredicate );
 
   /**
@@ -233,7 +233,7 @@ public:
   * @param[in] dRadius the "digital" radius of the kernel (buy may be non integer).
   */
   void setParams( const double dRadius );
-  
+
   /**
   * Model of CDigitalSurfaceLocalEstimator. Initialisation.
   *
@@ -246,7 +246,7 @@ public:
   void init( const double _h, SurfelConstIterator itb, SurfelConstIterator ite );
 
   /**
-  * -- Estimation -- 
+  * -- Estimation --
   *
   * Compute the integral invariant volume at surfel *it of
   * a shape, then apply the VolumeFunctor to extract some
@@ -264,7 +264,7 @@ public:
 
 
   /**
-  * -- Estimation -- 
+  * -- Estimation --
   *
   * Compute the integral invariant volume for a range of
   * surfels [itb,ite) on a shape, then apply the
@@ -300,7 +300,7 @@ public:
   */
   bool isValid() const;
 
-  // ------------------------- Private Datas --------------------------------
+  // ------------------------- Private Data --------------------------------
 private:
 
   VolumeFunctor myFct;            ///< The volume functor that transforms the volume into a quantity.
@@ -310,7 +310,7 @@ private:
   CountedPtr<KernelSupport>      myKernel;      ///< Euclidean kernel
   CountedPtr<DigitalShapeKernel> myDigKernel;   ///< Digital kernel
   CountedConstPtrOrConstPtr<PointPredicate> myPointPredicate; ///< Smart pointer (if required) on a point predicate.
-  CountedPtr<Domain>             myShapeDomain; ///< Smart pointer on domain         
+  CountedPtr<Domain>             myShapeDomain; ///< Smart pointer on domain
   CountedPtr<ShapePointFunctor>  myShapePointFunctor; ///< Smart pointer on functor point -> {0,1}
   CountedPtr<ShapeSpelFunctor>   myShapeSpelFunctor;  ///< Smart pointer on functor spel ->  {0,1}
   CountedPtr<Convolver>          myConvolver;   ///< Convolver
@@ -330,7 +330,7 @@ private:
   */
   template <typename TKSpace, typename TPointPredicate, typename TVolumeFunctor>
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
                const IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor> & object );
 
 } // namespace DGtal

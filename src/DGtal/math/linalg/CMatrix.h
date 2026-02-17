@@ -105,7 +105,7 @@ public:
         ConceptUtils::sameType(i, z.rows());
         ConceptUtils::sameType(j, z.cols());
     }
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
 private:
     T z;
     Index i, j;

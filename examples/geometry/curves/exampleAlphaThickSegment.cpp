@@ -77,7 +77,7 @@ int main(  )
          anAlphaSegment.extendFront()) {
   }
   aBoard << anAlphaSegment;
-  // Example of thickness definition change: usin the euclidean thickness definition.
+  // Example of thickness definition change: using the euclidean thickness definition.
   //! [exampleAlphaThickSegmentEuclDef]
   AlphaThickSegmentComputer2D anAlphaSegment2Eucl(5, functions::Hull2D::EuclideanThickness);
   //! [exampleAlphaThickSegmentEuclDef]

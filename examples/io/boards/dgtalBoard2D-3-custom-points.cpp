@@ -34,7 +34,7 @@
  * elements. It is a matter of creating a custom style class which
  * gives in its method \c setStyle the specific style
  * parameters. Then, you attach this style to your drawable elements
- * with an instance of CustomStyle outputed in the Board2D
+ * with an instance of CustomStyle outputted in the Board2D
  * stream.
  *   \image html  dgtalboard-3-custom-points.png  "visualization of resulting export."
  */
@@ -83,9 +83,9 @@ int main()
   Color dgreen( 0, 192, 0 );
   Color blue( 0, 0, 255 );
   Color dblue( 0, 0, 192 );
-  
+
   Board2D board;
-  board << domain 
+  board << domain
   << CustomStyle( p1.className(), new MyDrawStyleCustomColor( red, dred ) )
   << p1
   << CustomStyle( p2.className(), new MyDrawStyleCustomColor( green, dgreen ) )
@@ -102,7 +102,7 @@ int main()
   board.saveCairo("dgtalBoard2D-3-custom-points-cairo.ps", Board2D::CairoPS);
   board.saveCairo("dgtalBoard2D-3-custom-points-cairo.svg", Board2D::CairoSVG);
 #endif
-  
+
   trace.endBlock();
   return 0;
 }

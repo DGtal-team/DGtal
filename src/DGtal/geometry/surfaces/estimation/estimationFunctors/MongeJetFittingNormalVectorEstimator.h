@@ -67,7 +67,7 @@ namespace DGtal
    *
    * As discussed in MongeJetFittingMeanCurvatureEstimator, only the
    * estimated normal vector is given up to a sign. Hence, depending
-   * on the local orientation of the surface, you would problably have
+   * on the local orientation of the surface, you would probably have
    * to reverse the estimated vector @f$ \vec{n} @f$ to @f$
    * -\vec{n}@f$.
    *

@@ -104,7 +104,7 @@ namespace DGtal
       void checkConstConstraints() const
       {
       }
-      // ------------------------- Private Datas --------------------------------
+      // ------------------------- Private Data --------------------------------
     private:
       T myX; // do not require T to be default constructible.
       value_type myV;

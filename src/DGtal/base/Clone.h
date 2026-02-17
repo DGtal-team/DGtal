@@ -126,8 +126,8 @@ namespace DGtal
      @note (Speed) Even on a small type (here a pair<int,int>), it is
      much faster than NClone and has the advantage (wrt Clone<T>) to
      handle nicely both const T& and CowPtr<T> as input. It may be
-     slightly slower than passing by value or by const ref for small 
-     objects like a pair<int,int>. This is certainly due to the fact 
+     slightly slower than passing by value or by const ref for small
+     objects like a pair<int,int>. This is certainly due to the fact
      that it uses one more integer register for \a myParam data member.
 
      | Type   | Context  | value    | const ref | Clone |
@@ -293,7 +293,7 @@ namespace DGtal
       }
       trace.info() << "[Clone<T>::" << method << " param="
                    << sp << "]" << std::endl;
-        
+
     }
     /// Internal class that is used for a late deletion of an acquired pointer.
     struct TempPtr {
@@ -434,10 +434,10 @@ namespace DGtal
        Cast operator to a smart pointer on T instance. The object is duplicated or not
        depending on the type of input parameter.
 
-      - const T & -> CountedPtr<T>     // immediate duplication 
-      - T* -> CountedPtr<T>            // acquired              
-      - CountedPtr<T> -> CountedPtr<T> // lazy duplication      
-      - CowPtr<T> -> CountedPtr<T>     // immediate duplication 
+      - const T & -> CountedPtr<T>     // immediate duplication
+      - T* -> CountedPtr<T>            // acquired
+      - CountedPtr<T> -> CountedPtr<T> // lazy duplication
+      - CowPtr<T> -> CountedPtr<T>     // immediate duplication
       - T&& -> CountedPtr<T>           // move into member
     */
     inline operator CountedPtr<T>() const
@@ -491,7 +491,7 @@ namespace DGtal
       }
     }
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     /// Characterizes the type of the input parameter at clone instantiation.
     const Parameter myParam;

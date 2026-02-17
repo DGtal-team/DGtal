@@ -27,18 +27,18 @@
  * This file is part of the DGtal library.
  */
 /**
-   This example shows how to use GridCurve as a sequence of 1-scells in a 3d Khalimsky space. 
+   This example shows how to use GridCurve as a sequence of 1-scells in a 3d Khalimsky space.
 
 @verbatim
 $ ./examples/geometry/curves/exampleGridCurve3d
 @endverbatim
 
-Note that the data type you want to display may be passed as argument as follows: 
+Note that the data type you want to display may be passed as argument as follows:
 @verbatim
 $ ./examples/geometry/curves/exampleGridCurve3d points
 @endverbatim
 
-This command line produces the following output (points are displayed as voxels): 
+This command line produces the following output (points are displayed as voxels):
 
 @image html exampleGridCurveSinus.png "3d digital curve"
 @image latex exampleGridCurveSinus.png "3d digital curve"
@@ -74,11 +74,11 @@ int main( int argc, char** argv )
 
   trace.info() << "exampleGridCurve3d: the type of data to be displayed "
 	       << "may be given as argument as follows: "
-	       << argv[0] << " scells" << endl; 
+	       << argv[0] << " scells" << endl;
   trace.info() << "Available types are: gridcurve (default), scells, points, midpoints, arrows" << endl;
 
   string type = (argc > 1) ? string(argv[1]) : "arrows";
-  trace.info() << "Chosen type: " << type << endl; 
+  trace.info() << "Chosen type: " << type << endl;
 
   //curve
   string sinus = examplesPath + "samples/sinus.dat";

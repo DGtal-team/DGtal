@@ -179,7 +179,7 @@ template <typename TCalculus, Duality duality>
     bool isValid() const;
 
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------
@@ -218,7 +218,7 @@ template <typename TCalculus, Duality duality>
   operator+(const VectorField<Calculus, duality>& vector_field_a, const VectorField<Calculus, duality>& vector_field_b);
 
   /**
-   * Overloads 'operator-' for substracting objects of class 'VectorField'.
+   * Overloads 'operator-' for subtracting objects of class 'VectorField'.
    * @param vector_field_a left operant
    * @param vector_field_b right operant
    * @return vector_field_a - vector_field_b.

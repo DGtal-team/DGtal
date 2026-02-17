@@ -92,7 +92,7 @@ SCENARIO( "PConvexity< Z3 > ball tests", "[p_convexity][3d]" )
     typedef PConvexity< Space >     Convexity;
     typedef HyperRectDomain< Space >         Domain;
     typedef DigitalSetBySTLSet< Domain >     DigitalSet;
-    
+
     Convexity  pconv;
     Point      lo = Point::diagonal( -7 );
     Point      hi = Point::diagonal(  7 );
@@ -122,7 +122,7 @@ SCENARIO( "PConvexity< Z4 > ball tests", "[p_convexity][4d]" )
     typedef PConvexity< Space >     Convexity;
     typedef HyperRectDomain< Space >         Domain;
     typedef DigitalSetBySTLSet< Domain >     DigitalSet;
-    
+
     Convexity  conv;
     Point      lo = Point::diagonal( -7 );
     Point      hi = Point::diagonal(  7 );
@@ -157,7 +157,7 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex and p-convex tetrahedra", "[p_con
   Domain     domain( Point( 0, 0, 0 ), Point( 3, 3, 3 ) );
   DConvexity dconv( Point( -1, -1, -1 ), Point( 4, 4, 4 ) );
   PConvexity pconv;
-  
+
   WHEN( "Computing many tetrahedra in domain (0,0,0)-(4,4,4)." ) {
     const unsigned int nb = 100;
     unsigned int nbsimplex= 0;
@@ -230,4 +230,3 @@ SCENARIO( "DigitalConvexity< Z3 > fully convex and p-convex tetrahedra", "[p_con
     }
   }
 }
-

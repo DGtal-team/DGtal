@@ -367,25 +367,25 @@ void outputResults( Dimension dim,
 
   set terminal eps font "Helvetica,14"
   set key bottom right
-  
+
   plot [1e2:1e7][1e-2:1e4] 1e-6*x*log(x) w l lw 3, "./timings-p-convexity-Z2.txt" using 1:($3 == 1 ? $2 : 1/0) title "FC: P-convex charac. (in Z2)" w p pt 5 lc rgb "blue", "./timings-p-convexity-Z2.txt" using 1:($3 == 0 ? $2 : 1/0) title "non FC: P-convex charac. (in Z2)" w p pt 4 lc rgb "blue",  "./timings-fcf-convexity-Z2.txt" using 1:($3 == 1 ? $2 : 1/0) title "FC: cellular charac. (in Z2)" w p pt 7 lc rgb "black", "./timings-fcf-convexity-Z2.txt" using 1:($3 == 0 ? $2 : 1/0) title "non FC: cellular charac. (in Z2)" w p pt 6 lc rgb "black", "./timings-fc-convexity-Z2.txt" using 1:($3 == 1 ? $2 : 1/0) title "FC: discrete morphological charac. (in Z2)" w p pt 13 lc rgb "magenta", "./timings-fc-convexity-Z2.txt" using 1:($3 == 0 ? $2 : 1/0) title "non FC: discrete morphological charac. (in Z2)" w p pt 12 lc rgb "magenta"
 
-  
+
   plot [1e2:1e7][1e-2:1e4] 1e-6*x*log(x) w l lw 3, "./timings-p-convexity-Z3.txt" using 1:($3 == 1 ? $2 : 1/0) title "FC: P-convex charac. (in Z3)" w p pt 5 lc rgb "blue", "./timings-p-convexity-Z3.txt" using 1:($3 == 0 ? $2 : 1/0) title "non FC: P-convex charac. (in Z3)" w p pt 4 lc rgb "blue",  "./timings-fcf-convexity-Z3.txt" using 1:($3 == 1 ? $2 : 1/0) title "FC: cellular charac. (in Z3)" w p pt 7 lc rgb "black", "./timings-fcf-convexity-Z3.txt" using 1:($3 == 0 ? $2 : 1/0) title "non FC: cellular charac. (in Z3)" w p pt 6 lc rgb "black", "./timings-fc-convexity-Z3.txt" using 1:($3 == 1 ? $2 : 1/0) title "FC: discrete morphological charac. (in Z3)" w p pt 13 lc rgb "magenta", "./timings-fc-convexity-Z3.txt" using 1:($3 == 0 ? $2 : 1/0) title "non FC: discrete morphological charac. (in Z3)" w p pt 12 lc rgb "magenta"
 
-  
+
   plot [1e2:1e7][1e-2:1e4] 1e-6*x*log(x) w l lw 3, "./timings-p-convexity-Z4.txt" using 1:($3 == 1 ? $2 : 1/0) title "FC: P-convex charac. (in Z4)" w p pt 5 lc rgb "blue", "./timings-p-convexity-Z4.txt" using 1:($3 == 0 ? $2 : 1/0) title "non FC: P-convex charac. (in Z4)" w p pt 4 lc rgb "blue",  "./timings-fcf-convexity-Z4.txt" using 1:($3 == 1 ? $2 : 1/0) title "FC: cellular charac. (in Z4)" w p pt 7 lc rgb "black", "./timings-fcf-convexity-Z4.txt" using 1:($3 == 0 ? $2 : 1/0) title "non FC: cellular charac. (in Z4)" w p pt 6 lc rgb "black", "./timings-fc-convexity-Z4.txt" using 1:($3 == 1 ? $2 : 1/0) title "FC: discrete morphological charac. (in Z4)" w p pt 13 lc rgb "magenta", "./timings-fc-convexity-Z4.txt" using 1:($3 == 0 ? $2 : 1/0) title "non FC: discrete morphological charac. (in Z4)" w p pt 12 lc rgb "magenta"
 
   set terminal eps font "Helvetica,12"
   set key bottom right
-  
+
   plot [1e2:1e7][1e-2:1e4] 1e-6*x*log(x) w l lw 3, "./timings-p-convexity-ncvx-Z2.txt" using 1:2 title "P-convex charac. (in Z2)" w p pt 4 lc rgb "blue", "./timings-fc-convexity-ncvx-Z2.txt" using 1:2 title "discrete morphological charac. (in Z2)" w p pt 12 lc rgb "magenta", "./timings-fcf-convexity-ncvx-Z2.txt" using 1:2 title "cellular charac. (in Z2)" w p pt 6 lc rgb "black"
 
   plot [1e2:1e7][1e-2:1e4] 1e-6*x*log(x) w l lw 3, "./timings-p-convexity-ncvx-Z3.txt" using 1:2 title "P-convex charac. (in Z3)" w p pt 4 lc rgb "blue", "./timings-fc-convexity-ncvx-Z3.txt" using 1:2 title "discrete morphological charac. (in Z3)" w p pt 12 lc rgb "magenta", "./timings-fcf-convexity-ncvx-Z3.txt" using 1:2 title "cellular charac. (in Z3)" w p pt 6 lc rgb "black"
 
   plot [1e2:1e7][1e-2:1e4] 1e-6*x*log(x) w l lw 3, "./timings-p-convexity-ncvx-Z4.txt" using 1:2 title "P-convex charac. (in Z4)" w p pt 4 lc rgb "blue", "./timings-fc-convexity-ncvx-Z4.txt" using 1:2 title "discrete morphological charac. (in Z4)" w p pt 12 lc rgb "magenta", "./timings-fcf-convexity-ncvx-Z4.txt" using 1:2 title "cellular charac. (in Z4)" w p pt 6 lc rgb "black"
-  
-  
+
+
 */
 
 int main( )
@@ -608,7 +608,7 @@ int main( )
       timingsFullConvexityFastNonConvex<4>( R4, 20,  50 );
       outputResults( 4, R4, "timings-fcf-convexity-ncvx-Z4.txt" );
     }
-  
-  
+
+
   return 0;
 }

@@ -187,46 +187,46 @@ namespace DGtal
     // BOOST_CONCEPT_ASSERT(( boost::PairAssociativeContainer< TCellContainer > ));
     BOOST_CONCEPT_ASSERT(( concepts::CSTLAssociativeContainer< TCellContainer > ));
 
-    template < typename K, typename C > 
+    template < typename K, typename C >
     friend CubicalComplex<K,C>&
     DGtal::operator|=( CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
-    template < typename K, typename C > 
+    template < typename K, typename C >
     friend CubicalComplex<K,C>&
     DGtal::operator&=( CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
-    template < typename K, typename C > 
+    template < typename K, typename C >
     friend CubicalComplex<K,C>&
     DGtal::operator^=( CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
-    template < typename K, typename C > 
+    template < typename K, typename C >
     friend CubicalComplex<K,C>&
     DGtal::operator-=( CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
-    template < typename K, typename C > 
+    template < typename K, typename C >
     friend CubicalComplex<K,C>
     DGtal::operator| ( const CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
-    template < typename K, typename C > 
+    template < typename K, typename C >
     friend CubicalComplex<K,C>
     DGtal::operator& ( const CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
-    template < typename K, typename C > 
+    template < typename K, typename C >
     friend CubicalComplex<K,C>
     DGtal::operator^ ( const CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
-    template < typename K, typename C > 
+    template < typename K, typename C >
     friend CubicalComplex<K,C>
     DGtal::operator- ( const CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
-    template < typename K, typename C > 
+    template < typename K, typename C >
     friend CubicalComplex<K,C>
     DGtal::operator~ ( const CubicalComplex<K,C>& );
-    template < typename K, typename C > 
+    template < typename K, typename C >
     friend CubicalComplex<K,C>
     DGtal::operator* ( const CubicalComplex<K,C>& );
-    template < typename K, typename C > 
+    template < typename K, typename C >
     friend bool
     DGtal::operator==( const CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
-    template < typename K, typename C > 
+    template < typename K, typename C >
     friend bool
     DGtal::operator!=( const CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
-    template < typename K, typename C > 
+    template < typename K, typename C >
     friend bool
     DGtal::operator<=( const CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
-    template < typename K, typename C > 
+    template < typename K, typename C >
     friend bool
     DGtal::operator>=( const CubicalComplex<K,C>&, const CubicalComplex<K,C>& );
 
@@ -300,7 +300,7 @@ namespace DGtal
     };
 
     /**
-     * An non-mutable iterator class to visit all the cells (and not their datas)
+     * An non-mutable iterator class to visit all the cells (and not their data)
      * of the complex. A model of boost::ForwardIterator.
      */
     struct ConstIterator
@@ -405,7 +405,7 @@ namespace DGtal
 
     /**
      * A mutable iterator class to visit all the cells (and not their
-     * datas) of the complex. A model of boost::ForwardIterator. Note
+     * data) of the complex. A model of boost::ForwardIterator. Note
      * that, as for associative container, values are not modifiable.
      */
     struct Iterator
@@ -919,7 +919,7 @@ namespace DGtal
     /**
     * Outputs all the cells that are proper faces of \a aCell with output iterator \a it.
     *
-    * @param outIt the output iterator on Cell that is used for outputing faces.
+    * @param outIt the output iterator on Cell that is used for outputting faces.
     * @param aCell any cell valid in the Khalimsky space associated to the complex.
     * @param hintClosed when 'true', this hint tells that the complex
     * is closed, so this speeds up this method, otherwise, the
@@ -939,7 +939,7 @@ namespace DGtal
     * output iterator \a it (direct faces are lower incident cells
     * with a dimension just one below).
     *
-    * @param outIt the output iterator on Cell that is used for outputing faces.
+    * @param outIt the output iterator on Cell that is used for outputting faces.
     * @param aCell any cell valid in the Khalimsky space associated to the complex.
     * @param hintClosed when 'true', this hint tells that the complex
     * is closed, so this speeds up this method, otherwise, the
@@ -959,7 +959,7 @@ namespace DGtal
     * output iterator \a it (direct faces are lower incident cells
     * with a dimension just one below).
     *
-    * @param outIt the output iterator on CellMapIterator that is used for outputing face iterators.
+    * @param outIt the output iterator on CellMapIterator that is used for outputting face iterators.
     * @param aCell any cell valid in the Khalimsky space associated to the complex.
     *
     * @tparam CellMapIteratorOutputIterator any model of boost::OutputIterator, with value_type CellMapIterator.
@@ -974,7 +974,7 @@ namespace DGtal
     * Outputs all the cells that are proper co-faces of \a aCell with
     * output iterator \a it.
     *
-    * @param outIt the output iterator on Cell that is used for outputing faces.
+    * @param outIt the output iterator on Cell that is used for outputting faces.
     * @param aCell any cell valid in the Khalimsky space associated to the complex.
     * @param hintOpen when 'true', this hint tells that the complex
     * is open, so this speeds up this method, otherwise, the
@@ -994,7 +994,7 @@ namespace DGtal
     * output iterator \a it (direct faces are upper incident cells
     * with a dimension just one above).
     *
-    * @param outIt the output iterator on Cell that is used for outputing faces.
+    * @param outIt the output iterator on Cell that is used for outputting faces.
     * @param aCell any cell valid in the Khalimsky space associated to the complex.
     * @param hintOpen when 'true', this hint tells that the complex
     * is open, so this speeds up this method, otherwise, the
@@ -1014,7 +1014,7 @@ namespace DGtal
     * output iterator \a it (direct faces are upper incident cells
     * with a dimension just one above).
     *
-    * @param outIt the output iterator on CellMapIterator that is used for outputing face iterators.
+    * @param outIt the output iterator on CellMapIterator that is used for outputting face iterators.
     * @param aCell any cell valid in the Khalimsky space associated to the complex.
     *
     * @tparam CellMapIteratorOutputIterator any model of boost::OutputIterator, with value_type CellMapIterator.
@@ -1289,7 +1289,7 @@ namespace DGtal
      */
     std::string className() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
 
     /// The Khalimsky space in which lives the cubical complex.

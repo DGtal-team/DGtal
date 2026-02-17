@@ -381,10 +381,10 @@ namespace DGtal
         return n_true_estimations;
       }
 
-    /// Given a SurfaceMesh, compute mean curvature at each face using 
+    /// Given a SurfaceMesh, compute mean curvature at each face using
     /// CorrectedNormalCurrent method.
     ///
-    /// @warning In this code, only triangles with barycenters strictly inside the sphere are 
+    /// @warning In this code, only triangles with barycenters strictly inside the sphere are
     /// considered.
     ///
     /// @param mesh The surface mesh
@@ -394,11 +394,11 @@ namespace DGtal
     ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
     ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II, CNC)."
     ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
-    /// @return The curvatures for each face of the mesh, in the same order `faces` 
+    /// @return The curvatures for each face of the mesh, in the same order `faces`
     static Scalars
       getCNCMeanCurvatures
-      ( CountedPtr<typename Base::SurfaceMesh>  mesh, 
-        const typename Base::SurfaceMesh::Faces faces, 
+      ( CountedPtr<typename Base::SurfaceMesh>  mesh,
+        const typename Base::SurfaceMesh::Faces faces,
         const Parameters&                       params = parametersShapeGeometry() )
       {
         bool unit_u = params["unit_u"].as<int>();
@@ -408,10 +408,10 @@ namespace DGtal
         if ( alpha != 1.0 ) radius *= pow( h, alpha-1.0 );
 
         CNCComputer computer(*mesh, unit_u);
-        
+
         const auto& mu0 = computer.computeMu0();
         const auto& mu1 = computer.computeMu1();
-        
+
         Scalars curvatures(faces.size());
         for (size_t i = 0; i < faces.size(); ++i)
         {
@@ -549,7 +549,7 @@ namespace DGtal
         if ( alpha != 1.0 ) radius *= pow( h, alpha-1.0 );
 
         CNCComputer computer(*mesh, unit_u);
-        
+
         const auto& mu0 = computer.computeMu0();
         const auto& mu2 = computer.computeMu2();
 
@@ -561,7 +561,7 @@ namespace DGtal
           const auto lmu2 = mu2.measure(center, radius, faces[i]);
           curvatures[i] = CNCComputer::GaussianCurvature(area, lmu2);
         }
-        
+
         return curvatures;
       }
 
@@ -582,7 +582,7 @@ namespace DGtal
       ///   (VCM, II, CNC)."
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted
       ///   by h).
-      /// @return The curvatures for each face of the mesh, in thn the order
+      /// @return The curvatures for each face of the mesh, in then the order
       /// given by the mesh
       static Scalars getCNCGaussianCurvatures(
       CountedPtr<typename Base::SurfaceMesh> mesh,
@@ -590,7 +590,7 @@ namespace DGtal
       {
         std::vector<typename Base::SurfaceMesh::Face> allFaces(mesh->nbFaces());
         std::iota(allFaces.begin(), allFaces.end(), 0);
-        
+
         return getCNCGaussianCurvatures(mesh, allFaces, params);
       }
 
@@ -620,7 +620,7 @@ namespace DGtal
         return getCNCGaussianCurvatures(mesh, params);
       }
 
-      /// Given a space \a K, an implicit \a shape, a sequence of \a principal curvatures 
+      /// Given a space \a K, an implicit \a shape, a sequence of \a principal curvatures
       /// at the specified surfels, in the same order.
       ///
       /// @note that the first principal curvature is approximated by projecting the
@@ -855,8 +855,8 @@ namespace DGtal
       /// second curvatures, first directions, second directions].
       static std::tuple<Scalars, Scalars, RealVectors, RealVectors>
         getCNCPrincipalCurvaturesAndDirections
-        ( CountedPtr<typename Base::SurfaceMesh>   mesh, 
-          const typename Base::SurfaceMesh::Faces& faces, 
+        ( CountedPtr<typename Base::SurfaceMesh>   mesh,
+          const typename Base::SurfaceMesh::Faces& faces,
           const Parameters&                        params = parametersShapeGeometry() )
         {
           bool unit_u = params["unit_u"].as<int>();
@@ -866,19 +866,19 @@ namespace DGtal
           if ( alpha != 1.0 ) radius *= pow( h, alpha-1.0 );
 
           CNCComputer computer(*mesh, unit_u);
-          
+
           const auto& mu0  = computer.computeMu0();
           const auto& muxy = computer.computeMuXY();
-          
+
           if (mesh->faceNormals().size() == 0)
           {
             // Try to use vertex normals if any
             if (mesh->vertexNormals().size() == 0)
               mesh->computeFaceNormalsFromPositions();
-            else 
+            else
               mesh->computeFaceNormalsFromVertexNormals();
           }
-          
+
           const auto& normals = mesh->faceNormals();
 
           Scalars k1(faces.size()), k2(faces.size());
@@ -889,7 +889,7 @@ namespace DGtal
             const auto center = mesh->faceCentroid(faces[i]);
             const auto area  = mu0 .measure(center, radius, faces[i]);
             const auto lmuxy = muxy.measure(center, radius, faces[i]);
-            std::tie(k1[i], k2[i], d1[i], d2[i]) = 
+            std::tie(k1[i], k2[i], d1[i], d2[i]) =
                 CNCComputer::principalCurvatures(area, lmuxy, normals[faces[i]]);
           }
 
@@ -1684,9 +1684,9 @@ namespace DGtal
       ///   - at-epsilon      [  0.5   ]: (last value of) parameter epsilon in AT (width of discontinuities)
       ///   - at-epsilon-start[  2.0   ]: first value for parameter epsilon in Gamma-convergence optimization (sequence of AT optimization with decreasing epsilon)
       ///   - at-epsilon-ratio[  2.0   ]: ratio between two consecutive epsilon value in Gamma-convergence optimization (sequence of AT optimization with decreasing epsilon)
-      ///   - at-max-iter     [ 10     ]: maximum number of alternate minization in AT optimization
+      ///   - at-max-iter     [ 10     ]: maximum number of alternate minimization in AT optimization
       ///   - at-diff-v-max   [  0.0001]: stopping criterion that measures the loo-norm of the evolution of \a v between two iterations
-      ///   - at-v-policy     ["Maximum"]: the policy when outputing feature vector v onto cells: "Average"|"Minimum"|"Maximum"
+      ///   - at-v-policy     ["Maximum"]: the policy when outputting feature vector v onto cells: "Average"|"Minimum"|"Maximum"
       ///
       static Parameters parametersATApproximation()
       {
@@ -1718,7 +1718,7 @@ namespace DGtal
       ///   - at-epsilon      [  0.5   ]: (last value of) parameter epsilon in AT (width of discontinuities)
       ///   - at-epsilon-start[  2.0   ]: first value for parameter epsilon in Gamma-convergence optimization (sequence of AT optimization with decreasing epsilon)
       ///   - at-epsilon-ratio[  2.0   ]: ratio between two consecutive epsilon value in Gamma-convergence optimization (sequence of AT optimization with decreasing epsilon)
-      ///   - at-max-iter     [ 10     ]: maximum number of alternate minization in AT optimization
+      ///   - at-max-iter     [ 10     ]: maximum number of alternate minimization in AT optimization
       ///   - at-diff-v-max   [  0.0001]: stopping criterion that measures the loo-norm of the evolution of \a v between two iterations
       /// @param[in] input the input vector field (a vector of vector values)
       ///
@@ -1778,9 +1778,9 @@ namespace DGtal
       ///   - at-epsilon      [  0.5   ]: (last value of) parameter epsilon in AT (width of discontinuities)
       ///   - at-epsilon-start[  2.0   ]: first value for parameter epsilon in Gamma-convergence optimization (sequence of AT optimization with decreasing epsilon)
       ///   - at-epsilon-ratio[  2.0   ]: ratio between two consecutive epsilon value in Gamma-convergence optimization (sequence of AT optimization with decreasing epsilon)
-      ///   - at-max-iter     [ 10     ]: maximum number of alternate minization in AT optimization
+      ///   - at-max-iter     [ 10     ]: maximum number of alternate minimization in AT optimization
       ///   - at-diff-v-max   [  0.0001]: stopping criterion that measures the loo-norm of the evolution of \a v between two iterations
-      ///   - at-v-policy     ["Maximum"]: the policy when outputing feature vector v onto cells: "Average"|"Minimum"|"Maximum"
+      ///   - at-v-policy     ["Maximum"]: the policy when outputting feature vector v onto cells: "Average"|"Minimum"|"Maximum"
       /// @param[in] input the input vector field (a vector of vector values)
       ///
       /// @return the piecewise-smooth approximation of \a input.
@@ -1800,7 +1800,7 @@ namespace DGtal
                                      = parametersATApproximation() | parametersGeometryEstimation() )
       {
         (void)surface; //param not used FIXME: JOL
-        
+
         int      verbose   = params[ "verbose"          ].as<int>();
         Scalar   alpha_at  = params[ "at-alpha"         ].as<Scalar>();
         Scalar   lambda_at = params[ "at-lambda"        ].as<Scalar>();
@@ -1842,7 +1842,7 @@ namespace DGtal
       ///   - at-epsilon      [  0.5   ]: (last value of) parameter epsilon in AT (width of discontinuities)
       ///   - at-epsilon-start[  2.0   ]: first value for parameter epsilon in Gamma-convergence optimization (sequence of AT optimization with decreasing epsilon)
       ///   - at-epsilon-ratio[  2.0   ]: ratio between two consecutive epsilon value in Gamma-convergence optimization (sequence of AT optimization with decreasing epsilon)
-      ///   - at-max-iter     [ 10     ]: maximum number of alternate minization in AT optimization
+      ///   - at-max-iter     [ 10     ]: maximum number of alternate minimization in AT optimization
       ///   - at-diff-v-max   [  0.0001]: stopping criterion that measures the loo-norm of the evolution of \a v between two iterations
       /// @param[in] input the input scalar field (a vector of scalar values)
       ///
@@ -1905,9 +1905,9 @@ namespace DGtal
       ///   - at-epsilon      [  0.5   ]: (last value of) parameter epsilon in AT (width of discontinuities)
       ///   - at-epsilon-start[  2.0   ]: first value for parameter epsilon in Gamma-convergence optimization (sequence of AT optimization with decreasing epsilon)
       ///   - at-epsilon-ratio[  2.0   ]: ratio between two consecutive epsilon value in Gamma-convergence optimization (sequence of AT optimization with decreasing epsilon)
-      ///   - at-max-iter     [ 10     ]: maximum number of alternate minization in AT optimization
+      ///   - at-max-iter     [ 10     ]: maximum number of alternate minimization in AT optimization
       ///   - at-diff-v-max   [  0.0001]: stopping criterion that measures the loo-norm of the evolution of \a v between two iterations
-      ///   - at-v-policy     ["Maximum"]: the policy when outputing feature vector v onto cells: "Average"|"Minimum"|"Maximum"
+      ///   - at-v-policy     ["Maximum"]: the policy when outputting feature vector v onto cells: "Average"|"Minimum"|"Maximum"
       /// @param[in] input the input scalar field (a vector of scalar values)
       ///
       /// @return the piecewise-smooth approximation of \a input.
@@ -1926,7 +1926,7 @@ namespace DGtal
                                      = parametersATApproximation() | parametersGeometryEstimation() )
       {
         (void)surface; //param not used FIXME: JOL
-        
+
         int      verbose   = params[ "verbose"          ].as<int>();
         Scalar   alpha_at  = params[ "at-alpha"         ].as<Scalar>();
         Scalar   lambda_at = params[ "at-lambda"        ].as<Scalar>();
@@ -2018,7 +2018,7 @@ namespace DGtal
       /// Computes the absolute difference between each element of the two vectors.
       /// @param[in] v1 any vector of values.
       /// @param[in] v2 any vector of values.
-      /// @return the vector composed of elemenst |v1[i]-v2[i]|.
+      /// @return the vector composed of elements |v1[i]-v2[i]|.
       static Scalars
         getScalarsAbsoluteDifference( const Scalars & v1,
                                       const Scalars & v2 )
@@ -2078,7 +2078,7 @@ namespace DGtal
         return loo;
       }
       /// @}
-      
+
       // ----------------------- VoronoiMap services ------------------------------
     public:
       /// @name VoronoiMap services
@@ -2110,11 +2110,11 @@ namespace DGtal
       //    - toroidal-x [false]: If the domain is toroidal in the first  dimension
       //    - toroidal-y [false]: If the domain is toroidal in the second dimension
       //    - toroidal-z [false]: If the domain is toroidal in the third  dimension
-      /// 
+      ///
       /// @return The VoronoiMap within a domain with prescribed sites
       template<uint32_t p, typename PointRange>
       static VoronoiMap<Space, VoronoiPointPredicate, ExactPredicateLpSeparableMetric<Space, p>>
-        getVoronoiMap(Domain domain, 
+        getVoronoiMap(Domain domain,
                       const PointRange& sites,
                       const Parameters& params = parametersVoronoiMap())
       {
@@ -2147,11 +2147,11 @@ namespace DGtal
       //    - toroidal-x [false]: If the domain is toroidal in the first  dimension
       //    - toroidal-y [false]: If the domain is toroidal in the second dimension
       //    - toroidal-z [false]: If the domain is toroidal in the third  dimension
-      /// 
+      ///
       /// @return The VoronoiMap within a domain with prescribed sites
       template<uint32_t p, typename PointRange>
       static VoronoiMap<Space, VoronoiPointPredicate, ExactPredicateLpSeparableMetric<Space, p>>
-        getVoronoiMap(CountedPtr<Domain> domain, 
+        getVoronoiMap(CountedPtr<Domain> domain,
                       const PointRange& sites,
                       const Parameters& params = parametersVoronoiMap())
       {
@@ -2186,11 +2186,11 @@ namespace DGtal
       //    - toroidal-x [false]: If the domain is toroidal in the first  dimension
       //    - toroidal-y [false]: If the domain is toroidal in the second dimension
       //    - toroidal-z [false]: If the domain is toroidal in the third  dimension
-      /// 
+      ///
       /// @return The DistanceTransformation within a domain with prescribed sites
       template<uint32_t p, typename PointRange>
       static DistanceTransformation<Space, VoronoiPointPredicate, ExactPredicateLpSeparableMetric<Space, p>>
-        getDistanceTransformation(Domain domain, 
+        getDistanceTransformation(Domain domain,
                                    const PointRange& sites,
                                    const Parameters& params = parametersVoronoiMap())
       {
@@ -2211,11 +2211,11 @@ namespace DGtal
         return DTMap(domain, predicate, metric, specs);
       }
 
-    
+
       /// @brief Computes the vector to the closest site from a range of points
       ///
       /// @tparam p The exponent in the Lp metric
-      /// @tparam PointRange The range of point 
+      /// @tparam PointRange The range of point
       /// @tparam PointRangeSites The range of sites
       ///
       /// @param points The one to compute the closest site of
@@ -2224,11 +2224,11 @@ namespace DGtal
       //    - toroidal-x [false]: If the domain is toroidal in the first  dimension
       //    - toroidal-y [false]: If the domain is toroidal in the second dimension
       //    - toroidal-z [false]: If the domain is toroidal in the third  dimension
-      /// 
+      ///
       /// @return A vector of direction to the closest in the same order as 'points'.
       template<uint32_t p, typename PointRangeSites, typename PointRange>
       static std::vector<Vector> getDirectionToClosestSite(
-        const PointRange& points, 
+        const PointRange& points,
         const PointRangeSites& sites,
         const Parameters& params = parametersVoronoiMap())
       {
@@ -2240,7 +2240,7 @@ namespace DGtal
         Point pmax = pmin;
 
         size_t pCount = 0;
-        for (auto it = points.begin(); it != points.end(); ++it) 
+        for (auto it = points.begin(); it != points.end(); ++it)
         {
           pCount ++;
           for (size_t i = 0; i < Space::dimension; ++i)
@@ -2250,7 +2250,7 @@ namespace DGtal
           }
         }
 
-        for (auto it = sites.begin(); it != sites.end(); ++it) 
+        for (auto it = sites.begin(); it != sites.end(); ++it)
         {
           for (size_t i = 0; i < Space::dimension; ++i)
           {
@@ -2285,7 +2285,7 @@ namespace DGtal
       /// @brief Computes the distances to the closest site from a range of points
       ///
       /// @tparam p The exponent in the Lp metric
-      /// @tparam PointRange The range of point 
+      /// @tparam PointRange The range of point
       /// @tparam PointRangeSites The range of sites
       ///
       /// @param points The one to compute the closest site of
@@ -2294,11 +2294,11 @@ namespace DGtal
       //    - toroidal-x [false]: If the domain is toroidal in the first  dimension
       //    - toroidal-y [false]: If the domain is toroidal in the second dimension
       //    - toroidal-z [false]: If the domain is toroidal in the third  dimension
-      /// 
+      ///
       /// @return A vector of distances to the closest in the same order as 'points'.
       template<uint32_t p, typename PointRangeSites, typename PointRange>
       static std::vector<typename ExactPredicateLpSeparableMetric<Space, p>::Value> getDistanceToClosestSite(
-        const PointRange& points, 
+        const PointRange& points,
         const PointRangeSites& sites,
         const Parameters& params = parametersVoronoiMap())
       {
@@ -2310,7 +2310,7 @@ namespace DGtal
         Point pmax = pmin;
 
         size_t pCount = 0;
-        for (auto it = points.begin(); it != points.end(); ++it) 
+        for (auto it = points.begin(); it != points.end(); ++it)
         {
           pCount ++;
           for (size_t i = 0; i < Space::dimension; ++i)
@@ -2320,7 +2320,7 @@ namespace DGtal
           }
         }
 
-        for (auto it = sites.begin(); it != sites.end(); ++it) 
+        for (auto it = sites.begin(); it != sites.end(); ++it)
         {
           for (size_t i = 0; i < Space::dimension; ++i)
           {
@@ -2376,11 +2376,11 @@ namespace DGtal
       {
         using Metric = ExactPredicateLpSeparableMetric<Space, p>;
         using DTMap = DistanceTransformation<Space, VoronoiPointPredicate, Metric>;
-        
+
         // Compute domain of points
         Point pmin = *points.begin();
         Point pmax = pmin;
-        
+
         size_t pCount = 0;
         for (auto it = points.begin(); it != points.end(); ++it)
         {
@@ -2391,7 +2391,7 @@ namespace DGtal
             pmax[i] = std::max(pmax[i], (*it)[i] + 1);
           }
         }
-        
+
         for (auto it = sites.begin(); it != sites.end(); ++it)
         {
           for (size_t i = 0; i < Space::dimension; ++i)
@@ -2400,20 +2400,20 @@ namespace DGtal
             pmax[i] = std::max(pmax[i], (*it)[i] + 1);
           }
         }
-        
+
         Domain domain(pmin, pmax);
-        
+
         DigitalSet set(domain); set.insert(sites.begin(), sites.end());
         VoronoiPointPredicate predicate(set);
         Metric metric;
-        
+
         typename DTMap::PeriodicitySpec specs = {false, false, false};
         if (params["toroidal-x"].as<int>()) specs[0] = true;
         if (params["toroidal-y"].as<int>()) specs[1] = true;
         if (params["toroidal-z"].as<int>()) specs[2] = true;
-        
+
         auto map = DTMap(domain, predicate, metric, specs);
-        
+
         std::vector<typename Metric::Value> directions(pCount);
         size_t i = 0;
         for (auto it = points.begin(); it != points.end(); ++it)
@@ -2472,10 +2472,10 @@ namespace DGtal
       // ----------------------- Interface --------------------------------------
     public:
 
-      // ------------------------- Protected Datas ------------------------------
+      // ------------------------- Protected Data ------------------------------
     protected:
 
-      // ------------------------- Private Datas --------------------------------
+      // ------------------------- Private Data --------------------------------
     private:
 
       // ------------------------- Hidden services ------------------------------

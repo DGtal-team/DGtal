@@ -86,7 +86,7 @@ namespace DGtal
     typedef std::vector< Index >        Path;
     typedef CellGeometry< KSpace >      CellCover;
     typedef LatticeSetByIntervals< Space > LatticeCellCover;
-    
+
     // ------------------------- Shortest path services --------------------------------
   public:
 
@@ -99,7 +99,7 @@ namespace DGtal
       /// Allows to compare two nodes (closest is popped first) by
       /// modeling a `greater than` relation (which is the relation
       /// used for `std::priority_queue` when you wish to have the
-      /// smallest one outputed first).
+      /// smallest one outputted first).
       struct Comparator {
         /// @param p1 the first node
         /// @param p2 the second node
@@ -130,7 +130,7 @@ namespace DGtal
       /// @param other the object to clone.
       /// @return a reference to 'this'
       ShortestPaths& operator=( ShortestPaths&& other ) = default;
-      
+
       /// Constructs a ShorthestPaths object and references the given
       /// TangencyComputer \a tgcy_computer. It initialized the object
       /// so that it can start a new computation.
@@ -160,13 +160,13 @@ namespace DGtal
       {
         return myTgcyComputer;
       }
-      
+
       /// @return the number of points in the associated tangency computer
       Index size() const
       {
         return myTgcyComputer->size();
       }
-      
+
       /// Clears the object and prepares it for a shortest path
       /// computation.
       void clear()
@@ -189,7 +189,7 @@ namespace DGtal
         myDistance[ i ] = 0.0;
         myVisited [ i ] = true;
       }
-                     
+
       /// Adds a range of indices as source points
       ///
       /// @param[in] it,itE a range of valid indices, which are the
@@ -237,7 +237,7 @@ namespace DGtal
       /// @note The core method of shortest paths algorithm.
       void expand();
 
-      
+
       /// @return 'true' if the object is valid, i.e. when its tangency computer exists.
       bool isValid() const
       {
@@ -315,17 +315,17 @@ namespace DGtal
       /// a source.
       const std::vector< Index >& ancestors() const
       { return myAncestor; }
-      
+
       /// @return a const reference to the array storing for each
       /// point its distance to the closest source.
       const std::vector< double >& distances() const
       { return myDistance; }
-      
+
       /// @return a const reference to the array storing for each
       /// point if it is already visited.
       const std::vector< bool >& visitedPoints() const
       { return myVisited; }
-      
+
     protected:
       /// A pointer toward the tangency computer.
       const TangencyComputer* myTgcyComputer;
@@ -353,7 +353,7 @@ namespace DGtal
       /// @param current the index of the point where we determine its
       /// adjacent (here cotangent) to update the queue of the bft.
       void propagate( Index current );
-      
+
       /// Extracts a subset of cotangent points by a breadth-first
       /// traversal. Used to update the queue when computing shortest paths.
       ///
@@ -365,9 +365,9 @@ namespace DGtal
 
     };
 
-    /// ShortestPaths may access to datas of TangencyComputer.
+    /// ShortestPaths may access to data of TangencyComputer.
     friend struct ShortestPaths;
-    
+
     // ------------------------- Standard services --------------------------------
   public:
     /// @name Standard services (construction, initialization, assignment)
@@ -384,16 +384,16 @@ namespace DGtal
     /// @param other the object to move
     TangencyComputer( Self&& other ) = default;
 
-    /// Assigment
+    /// Assignment
     /// @param other the object to clone
     /// @return a reference to 'this'
     Self& operator=( const Self& other ) = default;
 
-    /// Move assigment
+    /// Move assignment
     /// @param other the object to clone
     /// @return a reference to 'this'
     Self& operator=( Self&& other ) = default;
-    
+
     /// Constructor from digital space.
     /// @param aK the input Khalimsky space, which is cloned.
     TangencyComputer( Clone< KSpace > aK );
@@ -419,7 +419,7 @@ namespace DGtal
   public:
     /// @name Accessors services
     /// @{
-    
+
     /// @return a const reference to the Khalimsky space.
     const KSpace& space() const
     { return myK; }
@@ -427,16 +427,16 @@ namespace DGtal
     /// @return the number of points in the digital set.
     Size size() const
     { return myX.size(); }
-    
+
     /// @return a const reference to the points defining the digital set.
     const std::vector< Point >& points() const
       { return myX; }
-      
+
     /// @param i any valid point index (between 0 included and 'size()' excluded)
     /// @return a const reference to the corresponding point.
     const Point& point( Index i ) const
     { return myX[ i ]; }
-      
+
     /// @param a any point
     /// @return its index or `size()` if the point is not in the object
     /// @note Time complexity is amortized constant.
@@ -445,7 +445,7 @@ namespace DGtal
       const auto p = myPt2Index.find( a );
       return p == myPt2Index.cend() ? size() : p->second;
     }
-      
+
     /// @return a const reference to the cell geometry of the current digital set.
     const CellCover& cellCover() const
     { return myCellCover; }
@@ -466,14 +466,14 @@ namespace DGtal
         l += eucl_d( point( path[ i-1 ] ), point( path[ i ] ) );
       return l;
     }
-    
+
     /// @}
 
     // ------------------------- Tangency services --------------------------------
   public:
     /// @name Tangency services
     /// @{
-    
+
     /// Tells if two points are cotangent with respect to the current digital set.
     /// @param[in] a any point
     /// @param[in] b any point
@@ -492,7 +492,7 @@ namespace DGtal
     /// @return the indices of the other points of the shape that are cotangent to \a a.
     std::vector< Index >
     getCotangentPoints( const Point& a ) const;
-    
+
     /// Extracts a subset of cotangent points by a breadth-first traversal.
     ///
     /// @param[in] a any point
@@ -503,14 +503,14 @@ namespace DGtal
     std::vector< Index >
     getCotangentPoints( const Point& a,
                         const std::vector< bool > & to_avoid ) const;
-    
+
     /// @}
-    
+
     // ------------------------- Shortest paths services --------------------------------
   public:
     /// @name Shortest paths services
     /// @{
-    
+
     /// Returns a ShortestPaths object that gives a lot of control
     /// when computing shortest paths. You should use it instead of
     /// TangencyComputer::shortestPaths or
@@ -529,7 +529,7 @@ namespace DGtal
     /// @return a ShortestPaths object that allows shortest path computations.
     ShortestPaths
     makeShortestPaths( double secure = sqrt( KSpace::dimension ) ) const;
-        
+
     /// This function can be used to compute directly several shortest
     /// paths from given sources to a set of targets. Each
     /// returned path starts from the source and ends at the closest
@@ -559,7 +559,7 @@ namespace DGtal
                    const std::vector< Index >& targets,
                    double secure = sqrt( KSpace::dimension ),
                    bool verbose = false ) const;
-    
+
     /// This function can be used to compute directly a shortest path
     /// from a source to a target, returned as a sequence of
     /// point indices, where the first is the source and the last is
@@ -589,12 +589,12 @@ namespace DGtal
     shortestPath( Index source, Index target,
                   double secure = sqrt( KSpace::dimension ),
                   bool verbose = false ) const;
-    
+
     /// @}
-    
-    // ------------------------- Protected Datas ------------------------------
+
+    // ------------------------- Protected Data ------------------------------
   protected:
-    
+
     /// The cellular grid space where computations are done.
     KSpace myK;
     /// The digital convexity object used to check full convexity.
@@ -614,11 +614,11 @@ namespace DGtal
     /// The lattice cell geometry representing all the cells touching
     /// the digital shape (uses LatticeSetByIntervals behind).
     LatticeCellCover myLatticeCellCover;
-    
+
     /// A map giving for each point its index.
     std::unordered_map< Point, Index > myPt2Index;
-    
-    // ------------------------- Private Datas --------------------------------
+
+    // ------------------------- Private Data --------------------------------
   private:
 
 
@@ -627,7 +627,7 @@ namespace DGtal
 
     /// Precomputes some neighborhood tables at construction.
     void setUp();
-    
+
   }; // end of class TangencyComputer
 
   /// @name Functions related to TangencyComputer (output)
@@ -660,5 +660,3 @@ namespace DGtal
 
 #undef TangencyComputer_RECURSES
 #endif // else defined(TangencyComputer_RECURSES)
-
-  

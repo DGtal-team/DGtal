@@ -213,5 +213,3 @@ DGtal::operator-(const DGtal::VectorField<Calculus, duality>& _vector_field)
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

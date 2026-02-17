@@ -130,7 +130,7 @@ bool testObject()
     }
   trace.endBlock();
 
-  trace.beginBlock ( "Testing Object instanciation and smart copy  ..." );
+  trace.beginBlock ( "Testing Object instantiation and smart copy  ..." );
   ObjectType disk_object( dt48, disk );
   nbok += disk_object.size() == 7825 ? 1 : 0;
   nb++;
@@ -280,7 +280,7 @@ bool testObject3D()
   Point c( 0, 0, 0 );
   Point d( 5, 2, 0 );
 
-  trace.beginBlock ( "Testing 3D Object instanciation and smart copy  ..." );
+  trace.beginBlock ( "Testing 3D Object instantiation and smart copy  ..." );
   trace.info() << "Creating diamond (r=15)" << endl;
   // diamond of radius 30
   DigitalSet diamond_set( domain );
@@ -473,7 +473,7 @@ bool testDraw()
     }
   trace.endBlock();
 
-  trace.beginBlock ( "Testing Object instanciation and smart copy  ..." );
+  trace.beginBlock ( "Testing Object instantiation and smart copy  ..." );
   ObjectType disk_object( dt48, disk );
   ObjectType84 disk_object2( dt84, disk );
   trace.endBlock();

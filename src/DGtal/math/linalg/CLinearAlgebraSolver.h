@@ -116,7 +116,7 @@ public:
         status_return = static_cast<int>(const_solver.info());
         x = const_solver.solve(y);
     }
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
 private:
     int status_return;
     const Solver const_solver;

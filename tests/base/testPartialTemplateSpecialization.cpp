@@ -43,7 +43,7 @@ template< typename TC, typename TD >
 class A
 {
 public:
-	typedef TC C; 
+	typedef TC C;
 
   A( const C& c );
 };
@@ -61,7 +61,7 @@ A< TC, TD >::A( const C& c )
 template< typename TC > //int specialization
 class B : public A< TC, int >
 {
-public: 
+public:
     typedef A< TC, int > Super;
 	typedef typename Super::C C; //Compile en rajoutant cette ligne (et en changeant les appels à Super::C par C)
 
@@ -70,7 +70,7 @@ public:
 
 template <typename TC>
 inline
-B<TC>::B( const C& c) : Super(c) 
+B<TC>::B( const C& c) : Super(c)
 {
   std::cout << "Specialized" << std::endl;
 }

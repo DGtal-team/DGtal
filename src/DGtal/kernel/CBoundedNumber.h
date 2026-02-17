@@ -76,10 +76,10 @@ Description of \b concept '\b CBoundedNumber' <p>
  # Valid expressions and semantics
 
 
-Name | Expression |  Type requirements | Return type| Precondition | Semantics | Postcondition | Complexity 
+Name | Expression |  Type requirements | Return type| Precondition | Semantics | Postcondition | Complexity
 -----|------------|--------------------|------------|--------------|-----------|---------------|-----------
 \a X should be tagged \b true in \a NumberTraits for \a IsBounded | typename NumberTraits<X>::IsBounded | TagTrue | | | | | |
-  
+
  # Invariants
 
  # Models
@@ -105,7 +105,7 @@ uint16_t, uint32_t, uint64_t, int16_t, int32_t, int64_t.
 
     }
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     T myX;
     typename NumberTraits<T>::IsBounded myIsBounded;

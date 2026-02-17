@@ -75,13 +75,13 @@ bool testFitting()
   trace.beginBlock("Creating Surface");
   Point p1( -20, -20, -20 );
   Point p2( 20, 20, 20 );
-   
+
   ImplicitBall<Z3i::Space> shape( RealPoint(6.0,0,0), 4);
   typedef GaussDigitizer<Z3i::Space, ImplicitBall<Z3i::Space> > Gauss;
   Gauss gauss;
   gauss.attach(shape);
   gauss.init(p1, p2, 1);
-  
+
   typedef LightImplicitDigitalSurface<KSpace,  Gauss > SurfaceContainer;
   typedef DigitalSurface<SurfaceContainer> Surface;
   typedef Surface::Surfel Surfel;
@@ -130,7 +130,7 @@ bool testFitting()
   Reporter reporter;
   reporter.attach(surface);
   reporter.setParams(l2, fitter , convFunc, 15.0);
-  
+
   reporter.init(1, surface.begin(), surface.end());
   for(Surface::ConstIterator it = surface.begin(), ite=surface.end(); it!=ite; ++it)
     {

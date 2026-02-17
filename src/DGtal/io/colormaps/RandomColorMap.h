@@ -80,46 +80,46 @@ public:
      * Forbidden by default.
      */
   RandomColorMap & operator= ( const RandomColorMap & anOther );
-  
+
 
   /**
-   * Constructor from two unsigned intergers and two Colors.
+   * Constructor from two unsigned integers and two Colors.
    *
    **/
-  
-  RandomColorMap(const unsigned int &aFirstIndex, const unsigned int & aLastIndex, 
+
+  RandomColorMap(const unsigned int &aFirstIndex, const unsigned int & aLastIndex,
      const Color &aFirstColor=Color::White, const Color &aLastColor=Color::Red);
 
 
   //  RandomColorMap(const unsigned int &aFirstIndex, const unsigned int & aLastIndex);
-  
 
-  
-  /** 
+
+
+  /**
    * Adds a color to the list of color steps.
-   * 
+   *
    * @param aColor A color.
    */
   void addColor( const Color & aColor ) ;
-  
 
-  /** 
+
+  /**
    * Computes the color associated with a value in a given range.
-   * 
+   *
    * @param aValue A value within the value range.
    * @return A random color identified by an unique [aValue] within the current range.
    */
   Color operator()( const unsigned int & aValue ) const;
-  
 
-   /** 
+
+   /**
      * Returns the lower bound of the value range.
      *
      * @return The lower bound of the value range.
      */
     const unsigned int & min() const;
 
-  /** 
+  /**
      * Returns the upper bound of the value range.
      *
      * @return The upper bound of the value range.
@@ -147,23 +147,23 @@ public:
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
 protected:
   unsigned int myMin;    /**< The lower bound of the value range.  */
   unsigned int myMax;            /**< The lower bound of the value range.  */
 
-  
-  
-  
-    // ------------------------- Private Datas --------------------------------
+
+
+
+    // ------------------------- Private Data --------------------------------
 private:
   GradientColorMap<unsigned int> *myGradientMap;
   std::vector<unsigned int>  myColorIndex;
   std::vector<unsigned int>  myFreeColorIndex;
-  
-  
+
+
   void associateRandomIndexColor();
-  
+
     // ------------------------- Hidden services ------------------------------
 protected:
 

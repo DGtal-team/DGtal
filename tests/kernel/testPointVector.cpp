@@ -528,7 +528,7 @@ TEST_CASE("Benchmarking","[.benchmark]")
   typedef PointVector<3, Integer> Point;
   Point p1 = {1,2,3,4};
   Point p2 = {3,4,5,6};
- 
+
   using Real = double;
   typedef PointVector<3, Real> RPoint;
   RPoint rp1 = {1,2,3,4};

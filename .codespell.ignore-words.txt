@@ -1,0 +1,14 @@
+LAMA
+nd
+aOther
+aRay
+aPoint
+aPoints
+myU
+Astroid
+inPt
+outPt
+acount
+astroid
+myDatas
+Aline

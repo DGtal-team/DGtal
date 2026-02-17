@@ -40,13 +40,13 @@ Docker
 ======
 
 A Docker file is included in the repository in order to allow the users to build a docker image with the DGtal library installed. Inside the docker container, the library is installed with many optional dependencies (eigen, cgal, itk, cairo, polyscope, openmp, fftw3) so the user can start developing without the need to install DGtal on the system.
-                                                                                                                                                                                                                        
-To build the Docker image, Docker should have been installed in the system (to [install Docker](https://docs.docker.com/engine/install/)) download the *Dockerfile* inside the [DGtal repository](https://github.com/DGtal-team/DGtal), in the same directory where the Dockerfile is located execute    
+
+To build the Docker image, Docker should have been installed in the system (to [install Docker](https://docs.docker.com/engine/install/)) download the *Dockerfile* inside the [DGtal repository](https://github.com/DGtal-team/DGtal), in the same directory where the Dockerfile is located execute
 
 ```shell
 docker build -t dgtal:latest .
 ```
-To run an interactive terminal inside the docker container and see the examples 
+To run an interactive terminal inside the docker container and see the examples
 ```shell
 docker run -it --user=digital dgtal:latest bash
 cd /home/digital/git/DGtal/build/examples
@@ -63,7 +63,7 @@ More Information
 * Release 1.4 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11550945.svg)](https://doi.org/10.5281/zenodo.11550945)
 * Release 1.3 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.7331486.svg)](https://doi.org/10.5281/zenodo.7331486)
 * Release 1.2 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4892404.svg)](https://doi.org/10.5281/zenodo.4892404)
-* Release 1.1 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4075246.svg)](https://doi.org/10.5281/zenodo.4075246) 
+* Release 1.1 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.4075246.svg)](https://doi.org/10.5281/zenodo.4075246)
 * Release 1.0 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2611275.svg)](https://doi.org/10.5281/zenodo.2611275)
 * Release 0.9.4 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.1203577.svg)](https://doi.org/10.5281/zenodo.1203577)
 * Release 0.9.3 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.290419.svg)](https://doi.org/10.5281/zenodo.290419)
@@ -71,4 +71,3 @@ More Information
 * Release 0.9.1 [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.45125.svg)](http://dx.doi.org/10.5281/zenodo.45125)
 * Release 0.9 [![DOI](https://zenodo.org/badge/doi/10.5281/zenodo.31884.svg)](http://dx.doi.org/10.5281/zenodo.31884)
 * Release 0.8 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.11586.svg)](https://doi.org/10.5281/zenodo.11586)
-

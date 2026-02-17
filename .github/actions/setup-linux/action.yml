@@ -11,11 +11,11 @@ runs:
   steps:
      - name: Set up Python ${{ inputs.python-version }}
        uses: actions/setup-python@v5
-       with: 
+       with:
           python-version: ${{ inputs.python-version }}
-       
+
      - name: Install linux deps
        shell: bash
        run: |
-           sudo apt-get update  
+           sudo apt-get update
            sudo apt-get install ccache zsh libcgal-dev ninja-build libhdf5-serial-dev libcairo2-dev libfftw3-dev libinsighttoolkit5-dev xorg-dev libglu1-mesa-dev freeglut3-dev mesa-common-dev

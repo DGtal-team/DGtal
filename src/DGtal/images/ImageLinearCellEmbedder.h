@@ -55,14 +55,14 @@ namespace DGtal
     Description of template class 'ImageLinearCellEmbedder' <p> \brief
     Aim: a cellular embedder for images.  (default constructible, copy
     constructible, assignable). Model of CCellEmbedder.
-   
+
     @tparam TKSpace the cellular grid space definition.
     @tparam TImage the type of implicit function, a model of CImage.
     @tparam TEmbedder the type of digital embedder.
 
     @todo assert dimensions of space, embedder and implicit function.
    */
-  
+
   template < typename TKSpace,
              typename TImage,
              typename TEmbedder >
@@ -84,15 +84,15 @@ namespace DGtal
     typedef typename Image::Value ImageValue;
     typedef Cell Argument;
     typedef RealPoint Value;
-    
-    /** 
+
+    /**
         Constructor. The object is not valid.
      */
     ImageLinearCellEmbedder();
-    
-    /** 
+
+    /**
      * Destructor.
-     */    
+     */
     ~ImageLinearCellEmbedder();
 
     /**
@@ -106,19 +106,19 @@ namespace DGtal
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    ImageLinearCellEmbedder & 
+    ImageLinearCellEmbedder &
     operator= ( const ImageLinearCellEmbedder & other );
 
     /**
        Initializes the embedder with the space \a K, the implicit
        function \a f, the digital embedder \a e.
-       
+
        @param K any cellular grid space.
        @param f an image
        @param e a digital embedder (like a GaussDigitizer).
        @param iso_value the threshold value that defines the linear embedding.
     */
-    void init( ConstAlias<KSpace> K, ConstAlias<Image> f, 
+    void init( ConstAlias<KSpace> K, ConstAlias<Image> f,
                ConstAlias<Embedder> e, double iso_value );
 
     // ----------------------- Interface --------------------------------------
@@ -127,7 +127,7 @@ namespace DGtal
     /**
        Maps a digital point to its corresponding point in the Euclidean
        space.
-       
+
        @param p any digital point in the digital space.
        @return its embedding by the current embedder in the Euclidean space.
      */
@@ -136,7 +136,7 @@ namespace DGtal
     /**
        Maps a cell to its corresponding point in the Euclidean
        space, by a linear guess of its position.
-       
+
        @param cell any cell in the cellular grid space.
        @return its embedding in the Euclidean space.
      */
@@ -146,7 +146,7 @@ namespace DGtal
        Maps a signed cell to its corresponding point in the Euclidean
        space, by a linear guess of its position. NB: the signed is not
        used.
-       
+
        @param scell any cell in the cellular grid space.
        @return its embedding in the Euclidean space.
      */
@@ -155,16 +155,16 @@ namespace DGtal
     /**
        Maps a cell to its corresponding point in the Euclidean
        space, by a linear guess of its position.
-       
+
        @param cell any cell in the cellular grid space.
        @return its embedding in the Euclidean space.
      */
     RealPoint operator()( const Cell & cell ) const;
 
-    
+
     // ----------------------- Interface --------------------------------------
   public:
-    
+
     /**
      * Writes/Displays the object on an output stream.
      * @param out the output stream where the object is written.
@@ -177,11 +177,11 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
-   
+
     /// A pointer on the cellular grid space.
     const KSpace* myPtrK;
     /// A pointer on the image.
@@ -190,12 +190,12 @@ namespace DGtal
     const Embedder* myPtrEmbedder;
     /// The threshold value for the linear embedding.
     double myIsoValue;
-    
+
     // ------------------------- Hidden services ------------------------------
   protected:
 
-  private:    
-    
+  private:
+
   }; // end of class ImageLinearCellEmbedder
 
 
@@ -207,7 +207,7 @@ namespace DGtal
    */
   template < typename TKSpace, typename TImage, typename TEmbedder >
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
                const ImageLinearCellEmbedder<TKSpace, TImage, TEmbedder> & object );
 
 } // namespace DGtal

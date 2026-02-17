@@ -54,25 +54,25 @@ namespace DGtal
   /////////////////////////////////////////////////////////////////////////////
   // template class Preimage2D
   /**
-   * @brief Aim: Computes the preimage of the 2D Euclidean shapes 
-   * crossing a sequence of n straigth segments in O(n),
-   * with the algorithm of O'Rourke (1981). 
+   * @brief Aim: Computes the preimage of the 2D Euclidean shapes
+   * crossing a sequence of n straight segments in O(n),
+   * with the algorithm of O'Rourke (1981).
    *
    * @note Joseph O'Rourke, An on-line algorithm for fitting straight lines between data ranges,
-  Communications of the ACM, Volume 24, Issue 9, September 1981, 574--578. 
+  Communications of the ACM, Volume 24, Issue 9, September 1981, 574--578.
    *
    * For all i from 0 to n, the straight
    * segment i is described by its two end points Pi and Qi.
-   * The set of shapes considered here are those that 
-   * can be uniquely defined by two points and that separate 
-   * the 2D plane into two disjoint parts (e.g. straight lines, 
-   * circles passing through a given point). Consequently, the 
-   * points Pi and the points Qi are assumed to lie in either 
+   * The set of shapes considered here are those that
+   * can be uniquely defined by two points and that separate
+   * the 2D plane into two disjoint parts (e.g. straight lines,
+   * circles passing through a given point). Consequently, the
+   * points Pi and the points Qi are assumed to lie in either
    * side of the shape.
    *
-   * The user of this class has to decide from its input set 
-   * of segments and the shape used whether a linear-time algorithm 
-   * is possible or not. If yes (e.g. preimage of straight lines crossing a set of 
+   * The user of this class has to decide from its input set
+   * of segments and the shape used whether a linear-time algorithm
+   * is possible or not. If yes (e.g. preimage of straight lines crossing a set of
    * vertical segments of increasing x-coordinate) the algorithm of O'Rourke
    * will return the right output.
    *
@@ -101,7 +101,7 @@ namespace DGtal
     typedef typename Shape::Point Vector;
     //container of points
     typedef std::list<Point> Container;
-    
+
 
   private:
 
@@ -113,24 +113,24 @@ namespace DGtal
 
     //Predicates used to decide whether the preimage
     //has to be updated or not
-    typedef functors::Point2ShapePredicate<Shape,false,true> 
-      PHullBackQHullFrontPred; 
-    typedef functors::Point2ShapePredicate<Shape,true,true> 
-      QHullBackPHullFrontPred; 
-    typedef functors::Point2ShapePredicate<Shape,true,true> 
-      PHullFrontQHullBackPred; 
-    typedef functors::Point2ShapePredicate<Shape,false,true> 
-      QHullFrontPHullBackPred; 
+    typedef functors::Point2ShapePredicate<Shape,false,true>
+      PHullBackQHullFrontPred;
+    typedef functors::Point2ShapePredicate<Shape,true,true>
+      QHullBackPHullFrontPred;
+    typedef functors::Point2ShapePredicate<Shape,true,true>
+      PHullFrontQHullBackPred;
+    typedef functors::Point2ShapePredicate<Shape,false,true>
+      QHullFrontPHullBackPred;
     //Predicates used to update the hulls
-    typedef functors::Point2ShapePredicate<Shape,true,false> 
-      FrontPHullUpdatePred; 
-    typedef functors::Point2ShapePredicate<Shape,false,false> 
-      FrontQHullUpdatePred; 
-    typedef functors::Point2ShapePredicate<Shape,false,false> 
-      BackPHullUpdatePred; 
-    typedef functors::Point2ShapePredicate<Shape,true,false> 
-      BackQHullUpdatePred; 
-    
+    typedef functors::Point2ShapePredicate<Shape,true,false>
+      FrontPHullUpdatePred;
+    typedef functors::Point2ShapePredicate<Shape,false,false>
+      FrontQHullUpdatePred;
+    typedef functors::Point2ShapePredicate<Shape,false,false>
+      BackPHullUpdatePred;
+    typedef functors::Point2ShapePredicate<Shape,true,false>
+      BackQHullUpdatePred;
+
 
 
     // ----------------------- Standard services ------------------------------
@@ -166,8 +166,8 @@ namespace DGtal
     *  Equality operator
     * @param other the object to compare with.
     * @return 'true' if the points of @a myPHull
-    * match to those of @a other.myPHull and if 
-    * the points of @a myQHull match to those of 
+    * match to those of @a other.myPHull and if
+    * the points of @a myQHull match to those of
     * @a other.myQHull, 'false' otherwise.
     *
     * NB: linear in the size of @a myPHull and @a myQHull
@@ -258,10 +258,10 @@ namespace DGtal
      * 'true' otherwise.
      */
     bool canBeAddedAtTheBack(const Point & aP, const Point & aQ);
-    
+
     /**
-     * Updates the current preimage with 
-     * the constraints involved by the two 
+     * Updates the current preimage with
+     * the constraints involved by the two
      * end points of a new segment
      * (adding to the front with respect to a clockwise-oriented scan)
      *
@@ -270,14 +270,14 @@ namespace DGtal
      * @param aP  the end point of the new straight segment expected to lie in the interior of the separating shapes
      * @param aQ  the end point of the new straight segment expected to lie in the exterior of the separating shapes
      *
-     * @return 'false' if the updated preimage is empty, 
+     * @return 'false' if the updated preimage is empty,
      * 'true' otherwise.
      */
     bool addFront(const Point & aP, const Point & aQ);
 
     /**
-     * Updates the current preimage with 
-     * the constraints involved by the two 
+     * Updates the current preimage with
+     * the constraints involved by the two
      * end points of a new segment
      * (adding to the back with respect to a clockwise-oriented scan)
      *
@@ -286,7 +286,7 @@ namespace DGtal
      * @param aP  the end point of the new straight segment expected to lie in the interior of the separating shapes
      * @param aQ  the end point of the new straight segment expected to lie in the exterior of the separating shapes
      *
-     * @return 'false' if the updated preimage is empty, 
+     * @return 'false' if the updated preimage is empty,
      * 'true' otherwise.
      */
     bool addBack(const Point & aP, const Point & aQ);
@@ -305,7 +305,7 @@ namespace DGtal
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid() const;
-  
+
     /**
      * @return first upper leaning point.
      */
@@ -325,7 +325,7 @@ namespace DGtal
      * @return last lower leaning point.
      */
     Point Ll() const;
-    
+
     /**
      * Get the parameters of one separating straight line
      * @param alpha  (returned) y-component of the normal
@@ -333,7 +333,7 @@ namespace DGtal
      * @param gamma  (returned) intercept
      */
     void getSeparatingStraightLine(double& alpha, double& beta, double& gamma) const;
-    
+
     /**
      * @return the shape used to separate the input points.
      */
@@ -341,7 +341,7 @@ namespace DGtal
     {
       return myShape;
     };
-    
+
     /**
      * @return the lower part of the preimage.
      */
@@ -349,7 +349,7 @@ namespace DGtal
     {
       return myPHull;
     };
-    
+
     /**
      * @return the upper part of the preimage.
      */
@@ -364,22 +364,22 @@ namespace DGtal
      * @return the dyn. alloc. default style for this object.
      */
     //DrawableWithBoard2D* defaultStyle( std::string mode="" ) const;
-    
+
     /**
      * @return the style name used for drawing this object.
      */
     std::string className() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     /**
      * Shape used to separate the input points
      */
     Shape myShape;
-  
+
     //lists of the vertices of the preimage
     /**
      * Lower part of the preimage
@@ -406,14 +406,14 @@ namespace DGtal
      * @param aPoint  a new vertex of the preimage,
      * @param aContainer  the STL-like container to be updated,
      * @param anIterator  an iterator to its front (resp. back)
-     * @param anEndIterator  an iterator pointing after its back 
-     * (resp. before its front). 
+     * @param anEndIterator  an iterator pointing after its back
+     * (resp. before its front).
      *
      * @tparam Iterator  the type of Iterator (either Container::iterator or Container::reverse_iterator)
      * @tparam Predicate  the type of Predicate
      */
     template <typename Iterator, typename Predicate>
-    void update(const Point & aPoint, 
+    void update(const Point & aPoint,
                 Container & aContainer,
                 Iterator & anIterator,
                 const Iterator & anEndIterator);

@@ -15,4 +15,3 @@ if ( DGTAL_WITH_POLYSCOPE_VIEWER )
      DGtal_add_example(${FILE})
    endforeach()
 endif()
-

@@ -19,7 +19,7 @@
 /**
  * @file FMMPointFunctors.h
  *
- * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr ) 
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
  * France
  *
@@ -65,22 +65,22 @@ namespace DGtal
   /**
    * Description of template class 'L2FirstOrderLocalDistance' <p>
    * \brief Aim: Class for the computation of the Euclidean distance
-   * at some point p, from the available distance values of some points 
+   * at some point p, from the available distance values of some points
    * lying in the 1-neighborhood of p (ie. points at a L1-distance to p
-   * equal to 1). 
+   * equal to 1).
    *
-   * The computed value is such that the upwind gradient of the 
-   * distance map is one, ie. it is the minimum solution \f$ \Phi \f$ 
+   * The computed value is such that the upwind gradient of the
+   * distance map is one, ie. it is the minimum solution \f$ \Phi \f$
    * over all quadrants, verifying the following quadratic equation:
    * \f$ \sum_{i = 1 \ldots d } ( \Phi - \Phi_i )^2 = 1 \f$
    * where \f$ \Phi_i \f$ is the distance value of the point preceeding
-   * or following p along the \f$ i \f$ axis. 
+   * or following p along the \f$ i \f$ axis.
    *
    * @note This class deals with positive or negative distance values
    * (0 is arbitrarily considered as a positive value, ie. starting with
-   * a seed of null value, you must get positive values). 
+   * a seed of null value, you must get positive values).
    * However, the behavior is undefined when there are both positive
-   * and negative distance values in the neighborhood of p. 
+   * and negative distance values in the neighborhood of p.
    *
    * It is a model of CPointFunctor.
    *
@@ -101,30 +101,30 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( concepts::CImage<TImage> ));
     typedef TImage Image;
     typedef typename Image::Point Point;
-    typedef typename Image::Value Value; 
+    typedef typename Image::Value Value;
 
     /// set
     BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TSet> ));
     typedef TSet Set;
     BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TSet::Point >::value ));
 
-  private: 
+  private:
 
-    typedef std::vector<Value> Values; 
-  
+    typedef std::vector<Value> Values;
+
     // ----------------------- Data -------------------------------------
-  public: 
+  public:
     /// Aliasing pointer on the underlying image
-    Image* myImgPtr; 
+    Image* myImgPtr;
     /// Aliasing pointer on the underlying set
-    Set* mySetPtr; 
+    Set* mySetPtr;
 
 
     // ----------------------- Interface --------------------------------------
   public:
 
     /**
-     * Constructor from an image and a set. 
+     * Constructor from an image and a set.
      * NB: only pointers are stored
      *
      * @param aImg any distance map
@@ -143,16 +143,16 @@ namespace DGtal
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    L2FirstOrderLocalDistance & operator= ( const L2FirstOrderLocalDistance & other); 
+    L2FirstOrderLocalDistance & operator= ( const L2FirstOrderLocalDistance & other);
 
     /**
      * Destructor.
      * Does nothing.
      */
-    ~L2FirstOrderLocalDistance(); 
+    ~L2FirstOrderLocalDistance();
 
-    /** 
-     * Euclidean distance computation at @a aPoint , 
+    /**
+     * Euclidean distance computation at @a aPoint ,
      * from the available distance values
      * of the 1-neighbors of @a aPoint  .
      *
@@ -171,51 +171,51 @@ namespace DGtal
 
     // ----------------------- Internals -------------------------------------
 
-  private: 
+  private:
 
     /**
-     * Returns an approximation of the Euclidean distance 
+     * Returns an approximation of the Euclidean distance
      * at some point, knowing the distance of its neighbors
-     * 
+     *
      * @param aValueList  the distance of (some of) the neighbors
      * @return the computed distance.
      */
-    Value compute(Values& aValueList) const; 
+    Value compute(Values& aValueList) const;
 
 
     /**
-     * Returns the squared euclidean norm of the gradient 
+     * Returns the squared euclidean norm of the gradient
      * of the distance map
-     * 
+     *
      * @param aValue  the distance value of the point where the gradient is computed
      * @param aValueList  the distance value of (some of) the neighbors
      *
      * @return the computed gradient norm.
      */
     Value gradientNorm(const Value& aValue, const Values& aValueList) const;
-  }; 
+  };
 
   /////////////////////////////////////////////////////////////////////////////
   // template class L2SecondOrderLocalDistance
   /**
    * Description of template class 'L2SecondOrderLocalDistance' <p>
    * \brief Aim: Class for the computation of the Euclidean distance
-   * at some point p, from the available distance values of some points 
+   * at some point p, from the available distance values of some points
    * lying in the neighborhood of p, such that only one of their
-   * coordinate differ from the coordinates of p by at most two. 
+   * coordinate differ from the coordinates of p by at most two.
    *
    * Like L2FirstOrderLocalDistance, the computed value is such that
-   * the upwind gradient of the distance map is one, but instead of 
-   * using first-order accurate forward and backward differences, 
-   * L2SecondOrderLocalDistance uses second-order accurate forward 
+   * the upwind gradient of the distance map is one, but instead of
+   * using first-order accurate forward and backward differences,
+   * L2SecondOrderLocalDistance uses second-order accurate forward
    * and backward difference whenever there are enough points whose
-   * distance values are known in order to evaluate these differences. 
+   * distance values are known in order to evaluate these differences.
    *
    * @note This class deals with positive or negative distance values
    * (0 is arbitrarily considered as a positive value, ie. starting with
-   * a seed of null value, you must get positive values). 
+   * a seed of null value, you must get positive values).
    * However, the behavior is undefined when there are both positive
-   * and negative distance values in the neighborhood of p. 
+   * and negative distance values in the neighborhood of p.
    *
    * It is a model of CPointFunctor.
    *
@@ -236,31 +236,31 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( concepts::CImage<TImage> ));
     typedef TImage Image;
     typedef typename Image::Point Point;
-    typedef typename Image::Value Value; 
+    typedef typename Image::Value Value;
 
     /// set
     BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TSet> ));
     typedef TSet Set;
     BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TSet::Point >::value ));
 
-  private: 
+  private:
 
-    typedef std::pair<double, Value> CoeffValue; 
-    typedef std::vector<CoeffValue> List; 
-  
+    typedef std::pair<double, Value> CoeffValue;
+    typedef std::vector<CoeffValue> List;
+
     // ----------------------- Data -------------------------------------
-  public: 
+  public:
     /// Aliasing pointer on the underlying image
-    Image* myImgPtr; 
+    Image* myImgPtr;
     /// Aliasing pointer on the underlying set
-    Set* mySetPtr; 
+    Set* mySetPtr;
 
 
     // ----------------------- Interface --------------------------------------
   public:
 
     /**
-     * Constructor from an image and a set. 
+     * Constructor from an image and a set.
      * NB: only pointers are stored
      *
      * @param aImg any distance map
@@ -279,16 +279,16 @@ namespace DGtal
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    L2SecondOrderLocalDistance & operator= ( const L2SecondOrderLocalDistance & other); 
+    L2SecondOrderLocalDistance & operator= ( const L2SecondOrderLocalDistance & other);
 
     /**
      * Destructor.
      * Does nothing.
      */
-    ~L2SecondOrderLocalDistance(); 
+    ~L2SecondOrderLocalDistance();
 
-    /** 
-     * Euclidean distance computation at @a aPoint , 
+    /**
+     * Euclidean distance computation at @a aPoint ,
      * from the available distance values
      * of the 1-neighbors of @a aPoint  .
      *
@@ -307,29 +307,29 @@ namespace DGtal
 
     // ----------------------- Internals -------------------------------------
 
-  private: 
+  private:
 
     /**
-     * Returns an approximation of the Euclidean distance 
+     * Returns an approximation of the Euclidean distance
      * at some point, knowing the distance of its neighbors
-     * 
+     *
      * @param aList  the distance of (some of) the neighbors
      * @return the computed distance.
      */
-    Value compute(List& aList) const; 
+    Value compute(List& aList) const;
 
 
     /**
-     * Returns the combination of two distance values 
+     * Returns the combination of two distance values
      * for the second-order accurate difference
-     * 
+     *
      * @param aValue1 first value
      * @param aValue2 second value
      *
      * @return the resulting value.
      */
     Value getValue(const Value& aValue1, const Value& aValue2) const;
-  }; 
+  };
 
 
   /////////////////////////////////////////////////////////////////////////////
@@ -337,14 +337,14 @@ namespace DGtal
   /**
    * Description of template class 'LInfLocalDistance' <p>
    * \brief Aim: Class for the computation of the LInf-distance
-   * at some point p, from the available distance values of some points 
+   * at some point p, from the available distance values of some points
    * lying in the 1-neighborhood of p (ie. points at a L1-distance to p
-   * equal to 1). 
+   * equal to 1).
    *
    * If there is only one available distance value v in the 1-neighborhood of p,
-   * the computed value is merely incremented or decremented. 
+   * the computed value is merely incremented or decremented.
    * Otherwise, it is the maximum over all
-   * the available distance value in the 1-neighborhood of p. 
+   * the available distance value in the 1-neighborhood of p.
    *
    * It is a model of CPointFunctor.
    *
@@ -364,30 +364,30 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( concepts::CImage<TImage> ));
     typedef TImage Image;
     typedef typename Image::Point Point;
-    typedef typename Image::Value Value; 
+    typedef typename Image::Value Value;
 
     /// set
     BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TSet> ));
     typedef TSet Set;
     BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TSet::Point >::value ));
 
-  private: 
+  private:
 
-    typedef std::vector<Value> Values; 
+    typedef std::vector<Value> Values;
 
     // ----------------------- Data -------------------------------------
-  public: 
+  public:
     /// Aliasing pointer on the underlying image
-    Image* myImgPtr; 
+    Image* myImgPtr;
     /// Aliasing pointer on the underlying set
-    Set* mySetPtr; 
+    Set* mySetPtr;
 
 
     // ----------------------- Interface --------------------------------------
   public:
 
     /**
-     * Constructor from an image and a set. 
+     * Constructor from an image and a set.
      * NB: only pointers are stored
      *
      * @param aImg any distance map
@@ -406,17 +406,17 @@ namespace DGtal
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    LInfLocalDistance & operator= ( const LInfLocalDistance & other); 
+    LInfLocalDistance & operator= ( const LInfLocalDistance & other);
 
     /**
      * Destructor.
      * Does nothing.
      */
-    ~LInfLocalDistance(); 
+    ~LInfLocalDistance();
 
 
-    /** 
-     * LInf-distance computation at @a aPoint , 
+    /**
+     * LInf-distance computation at @a aPoint ,
      * from the available distance values
      * of the 1-neighbors of @a aPoint .
      *
@@ -435,31 +435,31 @@ namespace DGtal
 
     // ----------------------- Internals -------------------------------------
 
-  private: 
+  private:
 
     /**
-     * Returns the LInf-distance at some point, 
+     * Returns the LInf-distance at some point,
      * knowing the distance of its neighbors
-     * 
+     *
      * @param aValueList  the distance of (some of) the neighbors
      * @return the computed distance.
      */
-    Value compute(Values& aValueList) const; 
+    Value compute(Values& aValueList) const;
 
-  }; 
+  };
 
   /////////////////////////////////////////////////////////////////////////////
   // template class L1LocalDistance
   /**
    * Description of template class 'L1LocalDistance' <p>
    * \brief Aim: Class for the computation of the L1-distance
-   * at some point p, from the available distance values of some points 
+   * at some point p, from the available distance values of some points
    * lying in the 1-neighborhood of p (ie. points at a L1-distance to p
-   * equal to 1). 
+   * equal to 1).
    *
    * The computed value is merely the minimum over all
-   * the available distance values in the 1-neighborhood of p, 
-   * plus one.  
+   * the available distance values in the 1-neighborhood of p,
+   * plus one.
    *
    * It is a model of CPointFunctor.
    *
@@ -479,29 +479,29 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( concepts::CImage<TImage> ));
     typedef TImage Image;
     typedef typename Image::Point Point;
-    typedef typename Image::Value Value; 
+    typedef typename Image::Value Value;
 
     /// set
     BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TSet> ));
     typedef TSet Set;
     BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TSet::Point >::value ));
 
-  private: 
+  private:
 
-    typedef std::vector<Value> Values; 
+    typedef std::vector<Value> Values;
 
     // ----------------------- Data -------------------------------------
-  public: 
+  public:
     /// Aliasing pointer on the underlying image
-    Image* myImgPtr; 
+    Image* myImgPtr;
     /// Aliasing pointer on the underlying set
-    Set* mySetPtr; 
+    Set* mySetPtr;
 
     // ----------------------- Interface --------------------------------------
   public:
 
     /**
-     * Constructor from an image and a set. 
+     * Constructor from an image and a set.
      * NB: only pointers are stored
      *
      * @param aImg any distance map
@@ -520,16 +520,16 @@ namespace DGtal
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    L1LocalDistance & operator= ( const L1LocalDistance & other); 
+    L1LocalDistance & operator= ( const L1LocalDistance & other);
 
     /**
      * Destructor.
      * Does nothing.
      */
-    ~L1LocalDistance(); 
+    ~L1LocalDistance();
 
-    /** 
-     * L1-distance computation at @a aPoint , 
+    /**
+     * L1-distance computation at @a aPoint ,
      * from the available distance values
      * of the 1-neighbors of @a aPoint .
      *
@@ -547,18 +547,18 @@ namespace DGtal
 
     // ----------------------- Internals -------------------------------------
 
-  private: 
+  private:
 
     /**
-     * Returns the L1-distance at some point, 
+     * Returns the L1-distance at some point,
      * knowing the distance of its neighbors
-     * 
+     *
      * @param aValueList  the distance of (some of) the neighbors
      * @return the computed distance.
      */
-    Value compute(Values& aValueList) const; 
+    Value compute(Values& aValueList) const;
 
-  }; 
+  };
 
 
   /////////////////////////////////////////////////////////////////////////////
@@ -566,18 +566,18 @@ namespace DGtal
   /**
    * Description of template class 'L2FirstOrderLocalDistanceFromCells' <p>
    * \brief Aim: Class for the computation of the Euclidean distance
-   * at some point p, from the available distance values in the neighborhood of p. 
+   * at some point p, from the available distance values in the neighborhood of p.
    * Contrary to L2FirstOrderLocalDistance, the distance values are not available
-   * from the points adjacent to p but instead from the (d-1)-cells lying between p 
-   * and these points.   
+   * from the points adjacent to p but instead from the (d-1)-cells lying between p
+   * and these points.
    *
    * @note The stored values are expected to be the distance of the interface
-   * to the points directly incident to the cells and must be between 0 and 1. 
+   * to the points directly incident to the cells and must be between 0 and 1.
    *
    * @tparam TKSpace a model of cellular grid
    * @tparam TMap a model of associative container used for the mapping cells-value
-   * @tparam isIndirect a bool equal to 'false' if the tested points are expected to be 
-   * directly incident to the cells (default) and 'true' otherwise 
+   * @tparam isIndirect a bool equal to 'false' if the tested points are expected to be
+   * directly incident to the cells (default) and 'true' otherwise
    *
    * @see initFromBelsRange FMM
    */
@@ -591,29 +591,29 @@ namespace DGtal
 
     /// map
     typedef TMap Map;
-    typedef typename Map::mapped_type Value; 
+    typedef typename Map::mapped_type Value;
 
     /// cellular grid
-    typedef TKSpace KSpace; 
-    typedef typename KSpace::Point Point; 
-    typedef typename KSpace::Cell Cell; 
+    typedef TKSpace KSpace;
+    typedef typename KSpace::Point Point;
+    typedef typename KSpace::Cell Cell;
 
-  private: 
+  private:
 
-    typedef std::vector<Value> Values; 
-  
+    typedef std::vector<Value> Values;
+
     // ----------------------- Data -------------------------------------
-  public: 
+  public:
     /// Aliasing pointer on the underlying cellular grid
-    const KSpace* myKSpace; 
+    const KSpace* myKSpace;
     /// Aliasing pointer on the underlying mapping
-    Map* myMap; 
+    Map* myMap;
 
     // ----------------------- Interface --------------------------------------
   public:
 
     /**
-     * Constructor from a space and a map. 
+     * Constructor from a space and a map.
      * NB: only pointers are stored
      *
      * @param aK   a space.
@@ -632,18 +632,18 @@ namespace DGtal
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    L2FirstOrderLocalDistanceFromCells & operator= ( const L2FirstOrderLocalDistanceFromCells & other); 
+    L2FirstOrderLocalDistanceFromCells & operator= ( const L2FirstOrderLocalDistanceFromCells & other);
 
     /**
      * Destructor.
      * Does nothing.
      */
-    ~L2FirstOrderLocalDistanceFromCells(); 
+    ~L2FirstOrderLocalDistanceFromCells();
 
-    /** 
-     * Euclidean distance computation at @a aPoint , 
+    /**
+     * Euclidean distance computation at @a aPoint ,
      * from the available distance values
-     * of the adjacent cells. 
+     * of the adjacent cells.
      *
      * @param aPoint the point for which the distance is computed
      *
@@ -660,19 +660,19 @@ namespace DGtal
 
     // ----------------------- Internals -------------------------------------
 
-  private: 
+  private:
 
     /**
-     * Returns an approximation of the Euclidean distance 
+     * Returns an approximation of the Euclidean distance
      * at some point, knowing the distance of its adjacent cells
      * contained in @a aValueList
-     * 
+     *
      * @param aValueList  the distance of (some of) the neighbors
      * @return the computed distance.
      */
-    Value compute(Values& aValueList) const; 
+    Value compute(Values& aValueList) const;
 
-  }; 
+  };
 
 
   /////////////////////////////////////////////////////////////////////////////
@@ -681,15 +681,15 @@ namespace DGtal
    * Description of template class 'SpeedExtrapolator' <p>
    * \brief Aim: Class for the computation of the a speed value
    * at some point p, from the available distance values and speed
-   * values of some points lying in the 1-neighborhood of p 
-   * (ie. points at a L1-distance to p equal to 1) in order to 
-   * extrapolate a speed field in the normal direction to the interface. 
+   * values of some points lying in the 1-neighborhood of p
+   * (ie. points at a L1-distance to p equal to 1) in order to
+   * extrapolate a speed field in the normal direction to the interface.
    *
    * The computed value is such that the dot product of the gradients
-   * of the speed function and of the distance function is zero, ie. 
-   * \f$ \nabla S .  \nabla \Phi = 0 \f$. 
+   * of the speed function and of the distance function is zero, ie.
+   * \f$ \nabla S .  \nabla \Phi = 0 \f$.
    *
-   * @note see [Adalsteinsson and Sethian, Fast Construction of 
+   * @note see [Adalsteinsson and Sethian, Fast Construction of
    * Extension Velocities in Level Set Methods, J. Comput. Phys. 148, 2-22, 1999]
    *
    * It is a model of CPointFunctor.
@@ -716,29 +716,29 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( concepts::CPointFunctor<TSpeedFunctor> ));
     typedef TSpeedFunctor SpeedFunctor;
     BOOST_STATIC_ASSERT(( boost::is_same< Point, typename SpeedFunctor::Point >::value ));
-    typedef typename SpeedFunctor::Value Value; 
+    typedef typename SpeedFunctor::Value Value;
 
     /// set
     BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TSet> ));
     typedef TSet Set;
     BOOST_STATIC_ASSERT(( boost::is_same< Point, typename TSet::Point >::value ));
-  
+
     // ----------------------- Data -------------------------------------
-  public: 
+  public:
     /// Aliasing pointer on the underlying image of distance values
-    const DistanceImage* myDistImgPtr; 
-    /// Aliasing pointer on the underlying set of points 
+    const DistanceImage* myDistImgPtr;
+    /// Aliasing pointer on the underlying set of points
     /// whose distance value is known
-    const Set* mySetPtr; 
+    const Set* mySetPtr;
     /// Aliasing pointer on the underlying image of speed values
-    SpeedFunctor* mySpeedFuncPtr; 
+    SpeedFunctor* mySpeedFuncPtr;
 
 
     // ----------------------- Interface --------------------------------------
   public:
 
     /**
-     * Constructor from images and set. 
+     * Constructor from images and set.
      * NB: only pointers are stored
      *
      * @param aDistImg any distance map
@@ -758,16 +758,16 @@ namespace DGtal
      * @param other the object to copy.
      * @return a reference on 'this'.
      */
-    SpeedExtrapolator & operator= ( const SpeedExtrapolator & other); 
+    SpeedExtrapolator & operator= ( const SpeedExtrapolator & other);
 
     /**
      * Destructor.
      * Does nothing.
      */
-    ~SpeedExtrapolator(); 
+    ~SpeedExtrapolator();
 
-    /** 
-     * Speed value computation at @a aPoint , 
+    /**
+     * Speed value computation at @a aPoint ,
      * from the available distance/speed values
      * of the 1-neighbors of @a aPoint  .
      *
@@ -779,7 +779,7 @@ namespace DGtal
     Value operator() (const Point& aPoint);
 
 
-  }; 
+  };
 
 
 } // namespace DGtal

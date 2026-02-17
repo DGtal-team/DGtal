@@ -51,18 +51,18 @@ TEST_CASE("Hash functions on DGtal::Point")
   Z3i::Point q(10,0,0);
   Z3i::Point p_copy(0,0,0);
   std::hash<Z3i::Point> myhashcpp11;
-  
+
   SECTION("Identity test")
     {
       REQUIRE( myhashcpp11(p) == myhashcpp11(p_copy) );
     }
 
-  
+
   SECTION("Difference test")
     {
       REQUIRE( myhashcpp11(p) != myhashcpp11(q) );
     }
-    
+
   SECTION("Higher dimension identity test")
     {
       typedef PointVector<26,int> Point26;
@@ -71,7 +71,7 @@ TEST_CASE("Hash functions on DGtal::Point")
         rr=Point26::diagonal(13);
 
       std::hash<Point26> myhash26cpp11;
-      
+
       REQUIRE( myhash26cpp11(pp) == myhash26cpp11(qq) );
       REQUIRE( myhash26cpp11(pp) != myhash26cpp11(rr) );
     }

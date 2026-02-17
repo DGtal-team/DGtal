@@ -61,7 +61,7 @@ namespace DGtal
    * Description of template class 'ArrayImageAdapter' <p>
    * It is an empty class that is specialized for HyperRectDomain (see @ref DGtal::ArrayImageAdapter< TArrayIterator, HyperRectDomain< TSpace > >).
    *
-   * @tparam TArrayIterator Type of a random-access iterator over the datas (can be a T* pointer).
+   * @tparam TArrayIterator Type of a random-access iterator over the data (can be a T* pointer).
    * @tparam TDomain  Type of the domain (must be an HyperRectDomain).
    */
   template <
@@ -102,7 +102,7 @@ namespace DGtal
    * @warning The array must be column-major ordered (but row-major order could be later accepted via template parameter, if needed ?)
    * @warning The domain must be an HyperRectDomain.
    *
-   * @tparam TArrayIterator Type of a random-access iterator over the datas (can be a T* pointer).
+   * @tparam TArrayIterator Type of a random-access iterator over the data (can be a T* pointer).
    * @tparam TSpace Type of the space associated to the HyperRectDomain (auto-deduced from TDomain template, see ArrayImageAdapter).
    *
    * @see makeArrayImageAdapterFromIterator
@@ -157,7 +157,7 @@ namespace DGtal
 
       /** Constructor from iterator, full domain and viewable domain.
        *
-       * @param anArrayIterator   A random-access iterator on the datas.
+       * @param anArrayIterator   A random-access iterator on the data.
        * @param aFullDomain       The domain span by the given iterator.
        * @param aViewDomain       The viewable domain of this image.
        */
@@ -177,7 +177,7 @@ namespace DGtal
        *
        * The viewable domain is then the full domain.
        *
-       * @param anArrayIterator   A random-access iterator on the datas.
+       * @param anArrayIterator   A random-access iterator on the data.
        * @param aFullDomain       The domain span by the given iterator.
        */
       ArrayImageAdapter( ArrayIterator anArrayIterator, Domain const& aFullDomain )
@@ -366,7 +366,7 @@ namespace DGtal
           return true;
         }
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
     private:
       ArrayIterator myArrayIterator; ///< Pointer to the allocated memory.
       Domain myFullDomain;  ///< Definition (full) domain.
@@ -452,7 +452,7 @@ namespace DGtal
 
   /** Returns an ArrayImageAdapter from an iterator, a full domain and a viewable domain.
    *
-   * @param anArrayIterator   A random-access iterator on the datas.
+   * @param anArrayIterator   A random-access iterator on the data.
    * @param aFullDomain       The domain span by the given iterator.
    * @param aViewDomain       The viewable domain of this image.
    * @return an ArrayImageAdapter instance.
@@ -471,7 +471,7 @@ namespace DGtal
    *
    * The viewable domain will be the same as the full domain.
    *
-   * @param anArrayIterator   A random-access iterator on the datas.
+   * @param anArrayIterator   A random-access iterator on the data.
    * @param aFullDomain       The domain span by the given iterator.
    * @return an ArrayImageAdapter instance.
    */
@@ -536,4 +536,3 @@ namespace DGtal
 
 #undef ArrayImageAdapter_RECURSES
 #endif // else defined(ArrayImageAdapter_RECURSES)
-

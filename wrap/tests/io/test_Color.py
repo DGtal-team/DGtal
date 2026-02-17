@@ -71,5 +71,3 @@ def test_Color_buffer():
     color_from_np_array = Color(np_color)
     print("color_from_np_array: ", color_from_np_array)
     assert color_from_np_array == color
-
-

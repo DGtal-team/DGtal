@@ -103,12 +103,12 @@ public:
         // check const methods.
         checkConstConstraints();
     }
-    
+
     void checkConstConstraints() const
     {
     }
-    
-    // ------------------------- Private Datas --------------------------------
+
+    // ------------------------- Private Data --------------------------------
 private:
     T myT; // do not require T to be default constructible.
     ImageContainer * myIC;

@@ -59,7 +59,7 @@ namespace DGtal
        @tparam T the type that should be a model of this predicate
        @tparam TElement the type of an element of the predicate domain.
 
-       #  Refinement of 
+       #  Refinement of
 
        - CUnaryFunctor
 
@@ -96,7 +96,7 @@ namespace DGtal
     public:
       typedef TElement Element;
 
-      // ------------------------- Private Datas --------------------------------
+      // ------------------------- Private Data --------------------------------
     private:
       T myPred;
       Element myElement;

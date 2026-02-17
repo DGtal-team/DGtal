@@ -50,7 +50,7 @@ namespace DGtal
     /////////////////////////////////////////////////////////////////////////////
     // class CSTLAssociativeContainer
     /**
-       DescriptionDescription of \b concept '\b CSTLAssociativeContainer' 
+       DescriptionDescription of \b concept '\b CSTLAssociativeContainer'
        @ingroup Concepts
 
        \brief Aim: Defines the concept describing an Associative
@@ -64,7 +64,7 @@ namespace DGtal
        a consequence, boost::unordered_set does not satisfy the concept.
 
 
-       # Refinement of 
+       # Refinement of
        - boost::ForwardContainer
        - boost::DefaultConstructible
 
@@ -75,7 +75,7 @@ namespace DGtal
        - iterator: the iterator type
        - const_iterator: a const iterator type
        - size_type: a size type
- 
+
 
        # Notation:
 
@@ -83,13 +83,13 @@ namespace DGtal
        - val an object of type value_type
        - key and object of type key_type
        - p, q two instances of type iterator
- 
-       For a complete desccription of this concept, please check https://www.sgi.com/tech/stl/AssociativeContainer.html.
+
+       For a complete description of this concept, please check https://www.sgi.com/tech/stl/AssociativeContainer.html.
 
        # Invariants
 
        # Models
-      
+
        std::set, std::unordered_set (c++11), boost::unordered_set.
 
 
@@ -127,7 +127,7 @@ namespace DGtal
         n = cc.count(key);
         cr = cc.equal_range(key);
       }
-    
+
 
     private:
       T x;
@@ -138,7 +138,7 @@ namespace DGtal
       size_type n;
       std::pair<iterator,iterator> r;
       std::pair<const_iterator,const_iterator> cr;
-    
+
     }; // end of concept CSTLAssociativeContainer
   } // namespace concept
 } // namespace DGtal

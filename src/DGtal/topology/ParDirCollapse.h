@@ -167,7 +167,7 @@ private:
     bool completeFreepair ( CellMapConstIterator F, Cell& G, int orient, int dir );
 
     /**
-     * Check if a given face of dimension n is included in a face of dimmension n + 1.
+     * Check if a given face of dimension n is included in a face of dimension n + 1.
      * @param F -- cell of dimension smaller than KSpace::dimension.
      * @return true if a face is not included in any other and false otherwise.
      */
@@ -206,14 +206,14 @@ private:
     ParDirCollapse & operator= ( const ParDirCollapse & other );
 
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
 private:
 
     /// Reference to Khalimsky space in which a given complex is embedded.
     const KSpace& K;
     /// Pointer to complex.
     CC * complex;
-    // ------------------------- Public Datas --------------------------------
+    // ------------------------- Public Data --------------------------------
 public:
     bool verbose = true;
 

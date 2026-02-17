@@ -1,7 +1,7 @@
 # Locate cairo
 # This module defines
 # CAIRO_INCLUDE_DIRS, where to find the headers
-# CAIRO_LIBRAIRIES cairo libraires
+# CAIRO_LIBRAIRIES cairo libraries
 #
 
 

@@ -114,7 +114,7 @@ void myCallback()
     // Only authorize selection on the input surface and the reconstruction
     auto surf = polyscope::getSurfaceMesh("digital surface");
     goodSelection = goodSelection || (selectedSurface == surf);
-    const auto nv = selectedSurface->nVertices(); 
+    const auto nv = selectedSurface->nVertices();
     // Validate that it its a face index
     if ( goodSelection && idx < nv )
       {
@@ -130,7 +130,7 @@ void myCallback()
         picksource( vertex_idx );
       }
   }
-  
+
   ImGui::SliderFloat("Lambda parameter", &Lambda, 0.0, 1.0);
   ImGui::SliderFloat("dt", &dt, 0.,4.);
   ImGui::Checkbox("Use mixed Neumann+Dirichlet heat solution", &Mixed);
@@ -139,7 +139,7 @@ void myCallback()
     precompute();
     isPrecomputed=true;
   }
-  
+
   if(ImGui::Button("Compute geodesic"))
   {
     if (!isPrecomputed)
@@ -167,14 +167,14 @@ int main()
   auto primalSurface= SH3::makePrimalSurfaceMesh(surface);
   auto surfels      = SH3::getSurfelRange( surface, params );
   auto normals      = SHG3::getNormalVectors( shape, K, surfels, params );
-  
+
   //Need to convert the faces
   std::vector<std::vector<SH3::SurfaceMesh::Vertex>> faces;
   std::vector<RealPoint> positions;
-  
+
   for(auto face= 0 ; face < primalSurface->nbFaces(); ++face)
     faces.push_back(primalSurface->incidentVertices( face ));
-  
+
   //Recasting to vector of vertices
   positions = primalSurface->positions();
 
@@ -185,7 +185,7 @@ int main()
   surfmesh.setFaceNormals( normals.cbegin(), normals.cend() );
   std::cout << surfmesh << std::endl;
   std::cout<<"number of non-manifold Edges = " << surfmesh.computeNonManifoldEdges().size()<<std::endl;
-  
+
   // Initialize polyscope
   polyscope::init();
 

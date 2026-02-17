@@ -41,17 +41,17 @@
 // ----------------------- Standard services ------------------------------
 namespace DGtal{
 
-  template<typename Space>  
+  template<typename Space>
   const typename Space::Dimension LinearAlgebra<Space>::dimension = Space::dimension;
 
   template<typename Space>
   inline
-  typename LinearAlgebra<Space>::Integer 
+  typename LinearAlgebra<Space>::Integer
   LinearAlgebra<Space>::determinant(const Point &a, const Point &b)
   {
     if (dimension == 2)
       return a[0]*b[1]-a[1]*b[0];
-    
+
     FATAL_ERROR(!"Determinant not yet implemented");
     return 0;
   }

@@ -51,7 +51,7 @@ namespace DGtal {
                                  const Functor & aFunctor)
   {
     DGtal::IOException dgtalio;
-    
+
     std::ofstream out;
     typename I::Domain domain = aImage.domain();
     const typename I::Domain::Point &upBound = domain.upperBound();
@@ -59,15 +59,15 @@ namespace DGtal {
     typename I::Domain::Point p = I::Domain::Point::diagonal(1);
     typename I::Domain::Vector size = (upBound - lowBound) + p;
     typename I::Domain::Vector center = lowBound + ((upBound - lowBound)/2);
-    
+
     typename I::Value val;
-    
+
     try
     {
       std::stringstream header;
       std::stringstream main;
       out.open(filename.c_str(), std::ios::out | std::ios::binary);
-      
+
       //Vol format
       header << "Center-X: " << center[0] <<std::endl;
       header << "Center-Y: " << center[1] <<std::endl;
@@ -83,9 +83,9 @@ namespace DGtal {
         header << "Version: 3"<<std::endl;
       else
         header << "Version: 2"<<std::endl;
-      
+
       header << "."<<std::endl;
-      
+
       //We scan the domain
       for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
           it!=itend;
@@ -94,7 +94,7 @@ namespace DGtal {
         val = aImage( (*it) );
         main.put( aFunctor(val) );
       }
-     
+
       if (compressed)
       {
         boost::iostreams::filtering_streambuf<boost::iostreams::input> out_compressed;
@@ -121,5 +121,5 @@ namespace DGtal {
     }
     return true;
   }
-  
+
 }//namespace

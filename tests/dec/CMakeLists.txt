@@ -1,5 +1,5 @@
 set(DGTAL_TESTS_SRC
-    testDiscreteExteriorCalculus    
+    testDiscreteExteriorCalculus
     testEmbedding
     testHeatLaplace
     testPolygonalCalculus
@@ -21,4 +21,3 @@ if(WITH_EIGEN)
       DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
   endforeach()
 endif()
-

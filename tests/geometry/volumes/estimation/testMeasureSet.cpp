@@ -47,7 +47,7 @@ using namespace DGtal;
 
 bool testConcept()
 {
-  
+
   return true;
 }
 
@@ -67,26 +67,26 @@ bool testMeasure()
   Z3i::Point c(32,32,32);
   Z3i::Domain domain(a,b);
   Z3i::DigitalSet set(domain);
-  
+
   Shapes<Z3i::Domain>::euclideanShaper( set,
                                         ImplicitBall<Z3i::Space>( c, 10));
-  
+
   Measure< Z3i::DigitalSet> measure;
 
   trace.info() << "Input set= "<<set<<std::endl;
 
   trace.info()<<measure<<std::endl;
 
-  
+
   measure.init(10, set);
   trace.info() << "Volume (h=10) "<<measure.eval()<<std::endl;
   measure.init(100, set);
   trace.info() << "Volume (h=100) "<<measure.eval()<<std::endl;
-  
+
   trace.info()<<measure<<std::endl;
 
   trace.endBlock();
-  
+
   return true;
 }
 

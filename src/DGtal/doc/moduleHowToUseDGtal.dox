@@ -10,7 +10,7 @@
  * This file is part of the DGtal library.
  */
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  * Do not forget to add an entry in src/DGtal/base/Config.h.in !
  */
@@ -29,7 +29,7 @@ and making sure that the dependencies are correct.
 
 We recommend to use the @em cmake system  since using
 a simple command, all dependencies used to build your installed
-DGtal version will be associated and linked to your project. 
+DGtal version will be associated and linked to your project.
 
 
 Let us consider the following helloworld project with the C++ file
@@ -40,10 +40,10 @@ Let us consider the following helloworld project with the C++ file
 
 int main(int argc, char** argv)
 {
-  
+
   DGtal::trace.info() << "Helloworld from DGtal ";
   DGtal::trace.emphase() << "(version "<< DGtal_VERSION << ")"<< std::endl;
-  
+
   return 0;
 }
 @endcode
@@ -71,7 +71,7 @@ files in /usr/local/share/DGtal/CMake/".
 The most important file in this folder is @em DGtalConfig.cmake which
 contains everything you need. Just copy (or better, link) this file in
 your project source directory. Then, to link helloworld to DGtal, you just have to update the
-CMakeLists.txt such that: 
+CMakeLists.txt such that:
 
 @code
 PROJECT(Helloworld)

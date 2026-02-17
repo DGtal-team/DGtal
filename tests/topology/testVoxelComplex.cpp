@@ -275,7 +275,7 @@ TEST_CASE_METHOD(Fixture_complex_diamond, "Neighbors from Object and KSpace",
                 std::set<FixtureComplex::Cell> voxel_set;
                 for (auto &&p : pointel_set)
                     vc.spelsFromCell(voxel_set, p);
-                SECTION("Gets desired full adjancency for voxels") {
+                SECTION("Gets desired full adjacency for voxels") {
                     CHECK(voxel_set.size() == expected_num_adjacent_voxels);
                 }
                 auto clique = vc.Kneighborhood(cell);
@@ -394,7 +394,7 @@ TEST_CASE_METHOD(Fixture_complex_diamond, "Cliques Masks K_1", "[clique]") {
         auto &is_critical = k1p.first;
         CHECK(is_critical == true);
         auto &k1_clique = k1p.second;
-        // numer of voxels in clique
+        // number of voxels in clique
         CHECK(k1_clique.nbCells(3) == 3);
     }
 } // test
@@ -417,7 +417,7 @@ TEST_CASE_METHOD(Fixture_complex_diamond, "Cliques Masks K_0", "[clique]") {
         auto &is_critical = k0_mask.first;
         CHECK(is_critical == false);
         auto &k0_clique = k0_mask.second;
-        // numer of voxels in clique
+        // number of voxels in clique
         CHECK(k0_clique.nbCells(3) == 1);
     }
 } // test
@@ -982,7 +982,7 @@ TEST_CASE_METHOD(Fixture_X, "X Thin",
     boost::ignore_unused_variable_warning(ks);
     bool verbose = true;
     SECTION(
-        "persistence value of 1 is equivalent to the assymetric algorithm") {
+        "persistence value of 1 is equivalent to the asymmetric algorithm") {
         auto vc_new = persistenceAsymetricThinningScheme<FixtureComplex>(
             vc, selectFirst<FixtureComplex>, skelEnd<FixtureComplex>, 1,
             verbose);

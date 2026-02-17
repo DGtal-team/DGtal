@@ -50,7 +50,7 @@ namespace DGtal
   /**
   * DGtal Assert function.
   *
-  * ASSERT(expr) and ASSERT_MSG(expr, message) are defined and expr is avaluated only when NDEBUG isn't defined.
+  * ASSERT(expr) and ASSERT_MSG(expr, message) are defined and expr is evaluated only when NDEBUG isn't defined.
   * FATAL_ERROR(expr) and FATAL_ERROR_MSG(expr, message) are always defined.
   *
   **/

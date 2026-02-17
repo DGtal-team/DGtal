@@ -56,7 +56,7 @@ SCENARIO( "LagrangeInterpolation< int64_t > unit tests", "[lagrange_interpolatio
     std::vector< Ring > X = { 1, 2, 3 };
     std::vector< Ring > Y;
     for ( auto x : X ) Y.push_back( P1( x ) );
-    LInterp L1( X );    
+    LInterp L1( X );
     CAPTURE( L1 );
     THEN( "Its Lagrange polynomial is itself" ) {
       auto Lag1 = L1.polynomial( Y );
@@ -69,18 +69,18 @@ SCENARIO( "LagrangeInterpolation< int64_t > unit tests", "[lagrange_interpolatio
     std::vector< Ring > X = { -1, 1, 2, 3 };
     std::vector< Ring > Y;
     for ( auto x : X ) Y.push_back( P2( x ) );
-    LInterp L2( X );    
+    LInterp L2( X );
     CAPTURE( L2 );
     THEN( "Its Lagrange polynomial is itself" ) {
       auto Lag2 = L2.polynomial( Y );
       REQUIRE( Lag2 == P2 * L2.denominator() );
     }
   }
-  
+
   GIVEN( "3 interpolation points (0,1), (1,3), (2,6)" ) {
     std::vector< Ring > X = { 0, 1, 2 };
     std::vector< Ring > Y = { 1, 3, 6 };
-    LInterp L3( X );    
+    LInterp L3( X );
     CAPTURE( L3 );
     THEN( "Its Lagrange polynomial is 1/2*(2+3x+x^2)" ) {
       auto Lag3 = L3.polynomial( Y );
@@ -92,7 +92,7 @@ SCENARIO( "LagrangeInterpolation< int64_t > unit tests", "[lagrange_interpolatio
   GIVEN( "3 interpolation points (0,1), (1,7), (2,20)" ) {
     std::vector< Ring > X = { 0, 1, 2 };
     std::vector< Ring > Y = { 1, 7, 20 };
-    LInterp L4( X );    
+    LInterp L4( X );
     CAPTURE( L4 );
     THEN( "Its Lagrange polynomial is 1/2*(2+5x+7x^2)" ) {
       auto Lag4 = L4.polynomial( Y );

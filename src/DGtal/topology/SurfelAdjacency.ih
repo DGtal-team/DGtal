@@ -47,7 +47,7 @@ DGtal::SurfelAdjacency<dim>::
 //-----------------------------------------------------------------------------
 template <DGtal::Dimension dim>
 inline
-DGtal::SurfelAdjacency<dim>::  
+DGtal::SurfelAdjacency<dim>::
 SurfelAdjacency( bool int2ext )
   : myInt2Ext()
 {
@@ -56,11 +56,11 @@ SurfelAdjacency( bool int2ext )
     for ( DGtal::Dimension i = 0; i < dim; ++i )
       myInt2Ext[ offset++ ] = int2ext;
 }
-  
+
 //-----------------------------------------------------------------------------
 template <DGtal::Dimension dim>
 inline
-DGtal::SurfelAdjacency<dim>::  
+DGtal::SurfelAdjacency<dim>::
 SurfelAdjacency ( const SurfelAdjacency & other )
   : myInt2Ext( other.myInt2Ext )
 {
@@ -69,7 +69,7 @@ SurfelAdjacency ( const SurfelAdjacency & other )
 template <DGtal::Dimension dim>
 inline
 DGtal::SurfelAdjacency<dim> &
-DGtal::SurfelAdjacency<dim>::  
+DGtal::SurfelAdjacency<dim>::
 operator= ( const SurfelAdjacency & other )
 {
   if ( this != &other )
@@ -79,8 +79,8 @@ operator= ( const SurfelAdjacency & other )
 //-----------------------------------------------------------------------------
 template <DGtal::Dimension dim>
 inline
-void 
-DGtal::SurfelAdjacency<dim>::  
+void
+DGtal::SurfelAdjacency<dim>::
 setAdjacency( DGtal::Dimension i, DGtal::Dimension j, bool int2ext )
 {
   myInt2Ext[ i * dim + j ] = int2ext;
@@ -89,8 +89,8 @@ setAdjacency( DGtal::Dimension i, DGtal::Dimension j, bool int2ext )
 //-----------------------------------------------------------------------------
 template <DGtal::Dimension dim>
 inline
-bool 
-DGtal::SurfelAdjacency<dim>::  
+bool
+DGtal::SurfelAdjacency<dim>::
 getAdjacency( DGtal::Dimension i, DGtal::Dimension j ) const
 {
   return myInt2Ext[ i * dim + j ];
@@ -99,7 +99,7 @@ getAdjacency( DGtal::Dimension i, DGtal::Dimension j ) const
 template <DGtal::Dimension dim>
 inline
 void
-DGtal::SurfelAdjacency<dim>::  
+DGtal::SurfelAdjacency<dim>::
 selfDisplay ( std::ostream & out ) const
 {
     out << "[SurfelAdjacency]";
@@ -107,8 +107,8 @@ selfDisplay ( std::ostream & out ) const
 //-----------------------------------------------------------------------------
 template <DGtal::Dimension dim>
 inline
-bool 
-DGtal::SurfelAdjacency<dim>::  
+bool
+DGtal::SurfelAdjacency<dim>::
 isValid() const
 {
     return true;
@@ -137,5 +137,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

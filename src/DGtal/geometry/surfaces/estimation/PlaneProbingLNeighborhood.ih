@@ -47,7 +47,7 @@ PlaneProbingLNeighborhood(Predicate const& aPredicate, Point const& aQ, Triangle
     : DGtal::PlaneProbingRNeighborhood<TPredicate>(aPredicate, aQ, aM)
 {
   for (int k = 0; k < 3; k++) {
-    myGrids.push_back(closestInGrid(k)); 
+    myGrids.push_back(closestInGrid(k));
   }
 }
 
@@ -69,7 +69,7 @@ DGtal::PlaneProbingLNeighborhood<TPredicate>::hexagonState ()
   for (int k = 0; k < 3; k++) {
     updateGrid(k);
   }
-  
+
   std::array<bool, 6> state({ false, false, false, false, false, false });
   for (int k = 0; k < 3; k++) {
     state[2*k] = myGrids[k].myPair.first;
@@ -86,23 +86,23 @@ typename DGtal::PlaneProbingLNeighborhood<TPredicate>::UpdateOperation
 DGtal::PlaneProbingLNeighborhood<TPredicate>::
 closestCandidate ()
 {
-  
+
   std::vector<GridPoint> validGridPoints;
   for (int k = 0; k < 3; k++) {
-    GridPoint gp = myGrids[k].myGridPoint; 
+    GridPoint gp = myGrids[k].myGridPoint;
     if (gp.isValid())
-      validGridPoints.push_back(gp); 
+      validGridPoints.push_back(gp);
   }
 
   if (validGridPoints.size() == 1) {
-    
+
     return getOperationFromGridPoint(validGridPoints[0]);
-    
+
   } else {
     // One should call hexagonState before closestCandidate, and check the return value
     // to ensure that there is at least one point in the plane in the H-neighbhorhood
     ASSERT(validGridPoints.size() == 2);
-    
+
     if (this->isSmallest(this->relativePoint(validGridPoints[0]),
 			 this->relativePoint(validGridPoints[1]))) {
       return getOperationFromGridPoint(validGridPoints[1]);
@@ -110,7 +110,7 @@ closestCandidate ()
       return getOperationFromGridPoint(validGridPoints[0]);
     }
   }
-  
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -123,9 +123,9 @@ typename DGtal::PlaneProbingLNeighborhood<TPredicate>::ClosestGridPoint
 DGtal::PlaneProbingLNeighborhood<TPredicate>::
 closestInGrid (const Index& aIdx) const
 {
-  std::vector<GridPoint> candidates; 
-  
-  Index k = aIdx; 
+  std::vector<GridPoint> candidates;
+
+  Index k = aIdx;
   GridPoint y1(1,0,k); //y1 = vk + m1
   GridPoint y2(0,1,k); //y2 = vk + m2
 
@@ -133,14 +133,14 @@ closestInGrid (const Index& aIdx) const
     if (this->myPredicate(this->absolutePoint(y2))) {
       //at least 2 candidates
       if (this->isSmallest(this->relativePoint(y1), this->relativePoint(y2))) {
-	candidates.push_back(y2); 
+	candidates.push_back(y2);
       } else {
 	candidates.push_back(y1);
       }
-      
+
       ASSERT(candidates.size() == 1);
       candidatesInGrid(y1, y2, std::back_inserter(candidates));
-      GridPoint closest = this->closestPointInList(candidates); 
+      GridPoint closest = this->closestPointInList(candidates);
       return ClosestGridPoint( closest, true, true );
 
     } else {
@@ -169,7 +169,7 @@ candidatesInGrid (const GridPoint& y1, const GridPoint& y2,
   using DGtal::detail::squaredNorm;
 
   ASSERT( (this->myPredicate(this->absolutePoint(y1)) &&
-	   (this->myPredicate(this->absolutePoint(y2)))) ); 
+	   (this->myPredicate(this->absolutePoint(y2)))) );
 
   Integer a = direction(y1).dot(direction(y2));
   if (a < 0) {
@@ -183,37 +183,37 @@ candidatesInGrid (const GridPoint& y1, const GridPoint& y2,
       GridPoint u = y1;
       GridPoint w = y2;
       if (a1 < 0) {
-	std::swap(u, w); 
+	std::swap(u, w);
       }
-      ASSERT(squaredNorm(direction(u)) > squaredNorm(direction(w))); 
-      
+      ASSERT(squaredNorm(direction(u)) > squaredNorm(direction(w)));
+
       Integer gamma = (-a)/squaredNorm(direction(w));
       GridPoint w2 = u + w*gamma;
       GridPoint w2Next = u + w*(gamma+1);
-    
+
       if (direction(w2).dot(direction(w2Next)) < 0) {
 
       	if (this->myPredicate(this->absolutePoint(w2))) {
-      	  candidatesInGrid(w, w2, out); 
+      	  candidatesInGrid(w, w2, out);
       	} else {
       	  //we look for a closest point on the ray u +cw, c<gamma
       	  GridPointOnProbingRay gr = closestOnBoundedRayLogWithPredicate(GridPointOnProbingRay(u,w.direction()),gamma);
 	  ASSERT( gr == closestOnBoundedRayLinearWithPredicate(GridPointOnProbingRay(u,w.direction()),gamma) );
-      	  *out++ = gr.gridPoint(); 
+      	  *out++ = gr.gridPoint();
       	}
       } else {
       	//excepted the first one, the other angles along
       	// the ray are all acute (or right),
       	ASSERT( direction(w2).dot(direction(w2Next)) >= 0 );
-      	ASSERT( direction(w).dot(direction(w2Next)) >= 0 ); 
+      	ASSERT( direction(w).dot(direction(w2Next)) >= 0 );
 
-	//whatever w2Next is in plane or not, 
+	//whatever w2Next is in plane or not,
 	//we look for a closest point on the ray u +cw, c<=gamma+1
 	GridPointOnProbingRay gr = closestOnBoundedRayLogWithPredicate(GridPointOnProbingRay(u,w.direction()),(gamma+2));
-	ASSERT( gr == closestOnBoundedRayLinearWithPredicate(GridPointOnProbingRay(u,w.direction()),(gamma+2)) ); 
-	*out++ = gr.gridPoint(); 
+	ASSERT( gr == closestOnBoundedRayLinearWithPredicate(GridPointOnProbingRay(u,w.direction()),(gamma+2)) );
+	*out++ = gr.gridPoint();
       }
-      
+
     } else { //a1 and a2 are both acute (or right),
       //only y has yet to be considered (in addition to y1, y2)
       //(because the angle between y1 and y2 is obtuse)
@@ -272,7 +272,7 @@ DGtal::PlaneProbingLNeighborhood<TPredicate>::closestOnBoundedRayLinearWithPredi
 {
   ASSERT(this->myPredicate(this->absolutePoint(aRay)));
 
-  Integer counter = 0; 
+  Integer counter = 0;
   GridPointOnProbingRay previousX = aRay, currentX = previousX.next(1);
   while (this->myPredicate(this->absolutePoint(currentX)) &&
 	 this->isSmallest(this->relativePoint(previousX), this->relativePoint(currentX)) &&
@@ -294,7 +294,7 @@ DGtal::PlaneProbingLNeighborhood<TPredicate>::
 getOperationFromGridPoint (GridPoint const& aP) const
 {
   auto k = aP.k();
-  auto d = aP.direction(); 
+  auto d = aP.direction();
   return  { { k, (k+1)%3, (k+2)%3 }, //permutation
 	    { 1, -d.first, -d.second } //coefficients
   };
@@ -308,24 +308,24 @@ DGtal::PlaneProbingLNeighborhood<TPredicate>::
 updateGrid (const Index& aIdx)
 {
   //Let r1 and r2 be the two rays bound to the vertex of index 'aIdx'
-  PointOnProbingRay r1 = PointOnProbingRay({aIdx, (aIdx+1)%3, (aIdx+2)%3}); 
-  PointOnProbingRay r2 = PointOnProbingRay({aIdx, (aIdx+2)%3, (aIdx+1)%3}); 
+  PointOnProbingRay r1 = PointOnProbingRay({aIdx, (aIdx+1)%3, (aIdx+2)%3});
+  PointOnProbingRay r2 = PointOnProbingRay({aIdx, (aIdx+2)%3, (aIdx+1)%3});
   //Check: do they are in the allowed rays?
   if (this->isNeighbor(r1)) {
     if (this->isNeighbor(r2)) {
-      //if both, 
+      //if both,
       myGrids[aIdx] = closestInGrid(aIdx);
     } else {
       //if only r1,
-      myGrids[aIdx] = ClosestGridPoint( GridPoint(1, 0, aIdx), true, false );       
+      myGrids[aIdx] = ClosestGridPoint( GridPoint(1, 0, aIdx), true, false );
     }
   } else {
     if (this->isNeighbor(r2)) {
       //if only r2,
-      myGrids[aIdx] = ClosestGridPoint( GridPoint(0, 1, aIdx), false, true );       
+      myGrids[aIdx] = ClosestGridPoint( GridPoint(0, 1, aIdx), false, true );
     } else {
       //if none of them, no candidate
-      myGrids[aIdx] = ClosestGridPoint( GridPoint(0, 0, aIdx), false, false ); 
+      myGrids[aIdx] = ClosestGridPoint( GridPoint(0, 0, aIdx), false, false );
     }
   }
 }
@@ -337,7 +337,7 @@ typename DGtal::PlaneProbingLNeighborhood<TPredicate>::Point
 DGtal::PlaneProbingLNeighborhood<TPredicate>::
 direction (GridPoint const& aP) const
 {
-  return aP.directionVector(this->myM);  
+  return aP.directionVector(this->myM);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -382,5 +382,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

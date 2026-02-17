@@ -62,8 +62,8 @@ namespace DGtal
   typedef std::uint32_t uint32_t;
   ///unsigned 64-bit integer.
   typedef std::uint64_t uint64_t;
-  
-  ///signed 8-bit integer.  
+
+  ///signed 8-bit integer.
   typedef std::int8_t int8_t;
   ///signed 16-bit integer.
   typedef std::int16_t int16_t;
@@ -71,7 +71,7 @@ namespace DGtal
   typedef std::int32_t int32_t;
   ///signed 94-bit integer.
   typedef std::int64_t int64_t;
-  
+
   typedef boost::multiprecision::number<boost::multiprecision::cpp_int_backend<>, boost::multiprecision::et_off> BigInteger;
 } // namespace DGtal
 

@@ -125,7 +125,7 @@ namespace DGtal
     typename TSegmentation::SegmentComputerIterator DSS = dssSegments->begin();
     typename TSegmentation::SegmentComputerIterator lastDSS = dssSegments->end();
     Value tangent, partial, prev;
-  
+
     for ( ; DSS != lastDSS; ++DSS )
     {
       if ( myDSSFilter ( *DSS ) )

@@ -261,7 +261,7 @@ exportFile( const std::string & filename,
     return STBWriter< TContainer, TFunctor >::exportPNG( filename, anImage, aFunctor );
     else if (extension == "jpg")
     return STBWriter< TContainer, TFunctor >::exportJPG( filename, anImage, aFunctor );
-    
+
     else if ( extension == "raw" )
     {
       return RawWriter< TContainer, TFunctor >::template exportRaw<DGtal::Color>( filename, anImage, aFunctor );
@@ -271,7 +271,7 @@ exportFile( const std::string & filename,
       trace.error() << "Extension " << extension<< " in 2D, not yet implemented in DGtal GenericWriter." << std::endl;
       throw dgtalio;
     }
-    
+
     return false;
 }
 

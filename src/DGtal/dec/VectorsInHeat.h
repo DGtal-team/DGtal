@@ -125,7 +125,7 @@ public:
     /// heat diffusion and @a lambda parameter for the polygonal calculus,
     /// which guarantee definiteness for positive @a lambda.
     /// @param dt timestep
-    /// @param lambda 
+    /// @param lambda
     ///
     /// @param boundary_with_mixed_solution when 'true' and when the
     /// surface has boundaries, mix two solutions of the heat
@@ -198,7 +198,7 @@ public:
       myScalarSource		= Vector::Zero(myCalculus->nbVertices());
       myDiracSource		= Vector::Zero(myCalculus->nbVertices());
     }
-  
+
     /**
      * @returns the source points vector.
      **/

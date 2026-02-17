@@ -965,12 +965,12 @@ TEST_CASE("3D test interior/exterior voxels to a digital surface")
     auto voxel2 = K.exteriorVoxel(surfel);
     REQUIRE(!set(voxel2));
   }
-  
-  
+
+
 }
 
 TEST_CASE("with BigInteger")
 {
   KhalimskySpaceND<3,BigInteger> K( {0,0,0}, {1000,1000,1000}, true );
-  REQUIRE(true); 
+  REQUIRE(true);
 }

@@ -46,7 +46,7 @@ namespace DGtal
   // template class IntegralIntervals
   /**
      Description of template class 'IntegralIntervals' <p> \brief Aim:
- 
+
      A class that represents a set of integers using intervals.  For
      instance the set X={-3,-2,0,1,2,4,7,8} is represented as the
      sorted vector ((-3,-2),(0,2),(4,4),(7,8)).
@@ -54,7 +54,7 @@ namespace DGtal
      Inserting -1 into X induced the sorted vector ((-3,2),(4,4),(7,8)).
 
      @tparam TInteger any model of concepts::CBoundedNumber, for instance int, long, etc
-     
+
      @note Useful to represent points of (especially convex) lattice
      polytopes or points of digital sets.
   */
@@ -71,8 +71,8 @@ namespace DGtal
     using Size      = std::size_t;
     using CIterator = typename Container::iterator;
     using IntegerRange = std::vector< Integer >;
-    
-    /// Default Constructor 
+
+    /// Default Constructor
     IntegralIntervals() = default;
 
     /// Copy constructor
@@ -92,7 +92,7 @@ namespace DGtal
     /// @param other any other object.
     /// @return a reference to this object.
     Self& operator=( Self&& other ) = default;
-    
+
     /// Constructor from range
     /// @tparam InputIterator the type of forward iterator on a range of integer values.
     /// @param it,itE the range of integer values.
@@ -139,13 +139,13 @@ namespace DGtal
     {
       return myData.capacity();
     }
-    
+
     /// @return 'true' if the set of integers is convex, i.e. empty or one interval.
     bool isConvex() const
     {
       return myData.size() <= 1;
     }
-    
+
     /// @return the set of integers
     std::set<Integer> integerSet() const
     {
@@ -164,7 +164,7 @@ namespace DGtal
           S.push_back( x );
       return S;
     }
-      
+
     /// @param x any integer
     /// @return the number of times the element \a x is in the set (either 0 or 1).
     Size count( Integer x ) const
@@ -195,14 +195,14 @@ namespace DGtal
     {
       insert( Interval( i, i ) );
     }
-    
+
     /// Inserts the interval of integers into the sequence
     /// @param f,l  any valid interval (f <= l)
     void insert( Integer f, Integer l )
     {
       insert( Interval( f, l ) );
     }
-    
+
     /// Inserts the interval of integers into the sequence
     /// @param I any valid interval (I.first <= I.second)
     void insert( const Interval& I )
@@ -251,7 +251,7 @@ namespace DGtal
     {
       erase( Interval( f, l ) );
     }
-    
+
     /// Erases the interval of integers from the sequence
     /// @param I any valid interval (I.first <= I.second)
     void erase( const Interval& I )
@@ -304,7 +304,7 @@ namespace DGtal
         insert( I );
       return *this;
     }
-    
+
     /// Subtract set \a other from this object.
     /// @param other any intervals
     /// @return a reference to this object
@@ -420,7 +420,7 @@ namespace DGtal
       C.erase( last, C.end() );
       return C;
     }
-    
+
     /// @param other any other integral set represented by intervals
     /// @return 'true' iff this integer set includes the integer set \a other.
     bool includes( const Self& other ) const
@@ -449,7 +449,7 @@ namespace DGtal
         }
       return true;
     }
-    
+
     // ----------------------- Interface --------------------------------------
 public:
 
@@ -477,10 +477,10 @@ public:
         }
       return true;
     }
-    
+
     // ------------------- protected services -------------------------------
   protected:
-    
+
     /// At the given iterator position the current interval may
     /// overlap with the following ones. Merge them.
     /// @param it any position
@@ -508,7 +508,7 @@ public:
     /// @return the iterator on the interval which is not before x,
     /// i.e. the interval containing x or, if it does not exist, the
     /// interval after.
-    CIterator lowerBound( Integer x ) 
+    CIterator lowerBound( Integer x )
     {
       // std::cout << "(lowerbound for " << x << ")" << std::endl;
       if ( empty() ) return myData.end();
@@ -531,10 +531,10 @@ public:
       // std::cout << "(not found, return " << i <<  ")" << std::endl;
       return myData.begin() + i;
     }
-    
+
     // ------------------- protected data -------------------------------
   protected:
-    
+
     /// The sorted sequence of integral intervals
     Container myData;
   };
@@ -552,7 +552,7 @@ public:
     object.selfDisplay( out );
     return out;
   }
-  
+
 } // namespace DGtal
 
 

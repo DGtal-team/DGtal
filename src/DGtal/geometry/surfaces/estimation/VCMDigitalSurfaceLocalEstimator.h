@@ -77,7 +77,7 @@ namespace DGtal
    * Quantity which chooses what is the returned estimation. Any
    * VCMGeometricFunctors::VCMNormalVectorFunctor, ... is ok.
    */
-  template <typename TDigitalSurfaceContainer, typename TSeparableMetric, 
+  template <typename TDigitalSurfaceContainer, typename TSeparableMetric,
             typename TKernelFunction, typename TVCMGeometricFunctor>
   class VCMDigitalSurfaceLocalEstimator
   {
@@ -199,7 +199,7 @@ namespace DGtal
      * @param[in] itb iterator after the last surfel of the surface.
      */
     template <typename SurfelConstIterator>
-    void init( const Scalar _h, 
+    void init( const Scalar _h,
                SurfelConstIterator itb,
                SurfelConstIterator ite );
 
@@ -224,7 +224,7 @@ namespace DGtal
                          OutputIterator result ) const;
 
     /**
-       @return the gridstep. 
+       @return the gridstep.
        @pre must be called after init
     */
     Scalar h() const;
@@ -244,7 +244,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
     /// A (possibly) shared object storing the digital surface.
     CountedConstPtrOrConstPtr<Surface> mySurface;
@@ -257,7 +257,7 @@ namespace DGtal
     /// The gridstep
     Scalar myH;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------
@@ -277,11 +277,11 @@ namespace DGtal
    * @param object the object of class 'VCMDigitalSurfaceLocalEstimator' to write.
    * @return the output stream after the writing.
    */
-  template <typename TDigitalSurfaceContainer, typename TSeparableMetric, 
+  template <typename TDigitalSurfaceContainer, typename TSeparableMetric,
             typename TKernelFunction, typename TVCMGeometricFunctor>
   std::ostream&
-  operator<< ( std::ostream & out, 
-               const VCMDigitalSurfaceLocalEstimator< TDigitalSurfaceContainer, TSeparableMetric, 
+  operator<< ( std::ostream & out,
+               const VCMDigitalSurfaceLocalEstimator< TDigitalSurfaceContainer, TSeparableMetric,
                                                  TKernelFunction, TVCMGeometricFunctor > & object );
 
 } // namespace DGtal

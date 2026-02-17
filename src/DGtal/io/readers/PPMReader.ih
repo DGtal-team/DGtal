@@ -51,15 +51,15 @@
 
 template <typename TImageContainer, typename TFunctor>
 inline
-TImageContainer 
+TImageContainer
 DGtal::PPMReader<TImageContainer, TFunctor>::importPPM(const std::string & aFilename,
-						       const TFunctor &aFunctor, 
+						       const TFunctor &aFunctor,
 						       bool topbotomOrder )
 {
   std::ifstream infile;
   DGtal::IOException dgtalio;
   BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2));
-  try 
+  try
     {
       infile.open (aFilename.c_str(), std::ifstream::in | std::ifstream::binary);
     }
@@ -92,41 +92,41 @@ DGtal::PPMReader<TImageContainer, TFunctor>::importPPM(const std::string & aFile
 	{
 	  trace.error() << "PPMReader : Invalid format in " << aFilename << std::endl;
 	  throw dgtalio;
-	} 
+	}
     }
   while ( str[ 0 ] == '#' || str=="");
   std::istringstream str_in( str );
   unsigned int w, h;
   str_in >> w >> h;
-  
-   
+
+
   typename TImageContainer::Point firstPoint;
   typename TImageContainer::Point lastPoint;
-      
+
   firstPoint = TImageContainer::Point::zero;
   lastPoint[0] = w-1;
   lastPoint[1] = h-1;
-  
+
   typename TImageContainer::Domain domain(firstPoint,lastPoint);
   TImageContainer image(domain);
 
   getline( infile, str );
   std::istringstream str2_in( str );
   unsigned int max_value;
-  str2_in >> max_value;  
+  str2_in >> max_value;
 
   if ( ! infile.good() )
     {
       trace.error() << "PPMReader : Invalid format in " << aFilename << std::endl;
       throw dgtalio;
-    } 
-  
+    }
+
   unsigned int nb_read = 0;
   if(!isASCIImode)
     infile >> std::noskipws;
   else
     infile >> std::skipws;
-  
+
   for(unsigned int y=0; y <h; y++)
     for(unsigned int x=0; x <w; x++)
       {
@@ -136,14 +136,14 @@ DGtal::PPMReader<TImageContainer, TFunctor>::importPPM(const std::string & aFile
 	  }else{
 	    pt[0]=x; pt[1]=y;
 	  }
-	  
-	  
+
+
 	  if(!isASCIImode)
 	    {
-	      unsigned char r,g,b; 
+	      unsigned char r,g,b;
 	      infile >> r; infile >> g; infile >> b;
 	      if ( infile.good() )
-		{ 
+		{
 		  Color aColor(r,g,b);
 		  nb_read+=3;
 		  image.setValue( pt, aFunctor(aColor) );
@@ -151,7 +151,7 @@ DGtal::PPMReader<TImageContainer, TFunctor>::importPPM(const std::string & aFile
 	    }
 	  else
 	    {
-	      int r,g,b; 
+	      int r,g,b;
 	      infile >> r; infile >> g; infile >> b;
 	      if ( infile.good() )
 		{
@@ -174,5 +174,3 @@ DGtal::PPMReader<TImageContainer, TFunctor>::importPPM(const std::string & aFile
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

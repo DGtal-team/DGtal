@@ -15,13 +15,13 @@
  **/
 
 #pragma once
-/** 
+/**
  * @file TraceWriterTerm.h
  * @author David Coeurjolly (\c david.coeurjolly@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  *
  * @date 2010/02/17
- * 
+ *
  * Header file for module TraceWriterTerm.cpp
  *
  * This file is part of the DGtal library.
@@ -46,34 +46,34 @@
 #include "DGtal/base/Config.h"
 //////////////////////////////////////////////////////////////////////////////
 
-namespace DGtal 
+namespace DGtal
 {
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // class TraceWriterTerm
-  /** 
+  /**
    * Description of class 'TraceWriterTerm' <p>
    * Aim: @brief Implements trace prefix for color terminals
    *
    * \todo Detect if the terminal has color capabilities
-   * 
+   *
    * @see testTrace.cpp
    */
   // ----------------------- Standard services ------------------------------
   class TraceWriterTerm: public TraceWriter
   {
   public:
-     
+
     /**
      * Constructor.
-     * @param aoutputStream the current output Stream 
+     * @param aoutputStream the current output Stream
      *
      */
     TraceWriterTerm(std::ostream &aoutputStream=std::cerr) : TraceWriter(aoutputStream) {};
-    
+
 
     /**
-     * Destructor. 
+     * Destructor.
      */
     ~TraceWriterTerm() {};
 
@@ -92,13 +92,13 @@ namespace DGtal
      */
     bool isValid() const;
 
-    
+
     /**
      * Create a Wrarning Prefix
      *
      * @return the prefix
      */
-    std::string  prefixWarning() 
+    std::string  prefixWarning()
     {
 #if ( !defined(DGTAL_NO_ESCAPED_CHAR_IN_TRACE) && (defined(UNIX)||defined(unix)||defined(linux)) )
       return "\033[0m\033[35m";
@@ -106,12 +106,12 @@ namespace DGtal
       return "";
 #endif
     }
-    
+
     /**
      * Create an Info Prefix
      * @return the prefix
      */
-    std::string  prefixInfo()  
+    std::string  prefixInfo()
     {
 #if ( !defined(DGTAL_NO_ESCAPED_CHAR_IN_TRACE) && (defined(UNIX)||defined(unix)||defined(linux)) )
       return "\033[0m";
@@ -124,7 +124,7 @@ namespace DGtal
      * Create an Error Prefix
      * @return the prefix
      */
-    std::string  prefixError() 
+    std::string  prefixError()
     {
 #if ( !defined(DGTAL_NO_ESCAPED_CHAR_IN_TRACE) && (defined(UNIX)||defined(unix)||defined(linux)) )
       return "\033[0m\033[31m[ERR]";
@@ -132,12 +132,12 @@ namespace DGtal
       return "";
 #endif
     }
-    
+
     /**
      * Create an Emphase Prefix
      * @return the prefix
      */
-    std::string  prefixEmphase() 
+    std::string  prefixEmphase()
     {
 #if ( !defined(DGTAL_NO_ESCAPED_CHAR_IN_TRACE) && (defined(UNIX)||defined(unix)||defined(linux)) )
       return "\033[0m\033[1m";
@@ -150,7 +150,7 @@ namespace DGtal
      * Create a Reset postfix
      * @return the postfix
      */
-    std::string  postfixReset() 
+    std::string  postfixReset()
     {
 #if ( !defined(DGTAL_NO_ESCAPED_CHAR_IN_TRACE) && (defined(UNIX)||defined(unix)||defined(linux)) )
       return "\033[0m";
@@ -158,7 +158,7 @@ namespace DGtal
       return "";
 #endif
     }
-   
+
   private:
 
     /**
@@ -175,7 +175,7 @@ namespace DGtal
      * Forbidden by default.
      */
     TraceWriterTerm & operator=( const TraceWriterTerm & other );
- 
+
   }; // end of class TraceWriterTerm
 
 
@@ -188,7 +188,7 @@ namespace DGtal
   std::ostream&
   operator<<( std::ostream & out, const TraceWriterTerm & object );
 
-  
+
 } // namespace DGtal
 
 

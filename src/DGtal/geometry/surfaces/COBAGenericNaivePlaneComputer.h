@@ -105,7 +105,7 @@ namespace DGtal
    typedef SpaceND<3,int> Z3;
    typedef COBAGenericNaivePlaneComputer< Z3, int64_t > NaivePlaneComputer;
    NaivePlaneComputer plane;
-   plane.init( 100, 1, 1 ); // diameter is 100, width is 1/1 => naive 
+   plane.init( 100, 1, 1 ); // diameter is 100, width is 1/1 => naive
    plane.extend( Point( 10, 0, 0 ) ); // return 'true'
    plane.extend( Point( 0, 8, 0 ) );  // return 'true'
    plane.extend( Point( 0, 0, 6 ) );  // return 'true'
@@ -116,7 +116,7 @@ namespace DGtal
    * Model of boost::DefaultConstructible, boost::CopyConstructible,
    * boost::Assignable, boost::ForwardContainer, concepts::CAdditivePrimitiveComputer, concepts::CPointPredicate.
    */
-  template < typename TSpace, 
+  template < typename TSpace,
              typename TInternalInteger >
   class COBAGenericNaivePlaneComputer
   {
@@ -211,8 +211,8 @@ namespace DGtal
      * the plane is defined as the rational number \a widthNumerator /
      * \a widthDenominator (default is 1/1, i.e. naive plane).
      */
-    void init( InternalInteger diameter, 
-               InternalInteger widthNumerator = NumberTraits< InternalInteger >::ONE, 
+    void init( InternalInteger diameter,
+               InternalInteger widthNumerator = NumberTraits< InternalInteger >::ONE,
                InternalInteger widthDenominator = NumberTraits< InternalInteger >::ONE );
 
     /**
@@ -367,7 +367,7 @@ namespace DGtal
      * @tparam Vector3D any type T such that T.operator[](int i)
      * returns a reference to a double. i ranges in 0,1,2.
      *
-     * @param [in,out] normal (updates) the current normal vector 
+     * @param [in,out] normal (updates) the current normal vector
      */
     template <typename Vector3D>
     void getNormal( Vector3D & normal ) const;
@@ -376,7 +376,7 @@ namespace DGtal
      * @tparam Vector3D any type T such that T.operator[](int i)
      * returns a reference to a double. i ranges in 0,1,2.
      *
-     * @param normal (updates) the current unit normal vector 
+     * @param normal (updates) the current unit normal vector
      */
     template <typename Vector3D>
     void getUnitNormal( Vector3D & normal ) const;
@@ -421,7 +421,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     std::vector<Dimension> myAxes; /**< The list of active plane axes. Starts with {0,1,2}. At least one. */
     COBAComputer myComputers[ 3 ]; /**< The three COBA plane computers. */

@@ -46,11 +46,11 @@ bool
 DGtal::functions::
 checkOnePoint(const ArithmeticalDSS<TCoordinate,TInteger,adjacency>& aDSS)
 {
-  ASSERT(aDSS.front()==aDSS.back()); 
+  ASSERT(aDSS.front()==aDSS.back());
 
-  //Vector type redefinition 
+  //Vector type redefinition
   typedef typename ArithmeticalDSS<TCoordinate,TInteger,adjacency>::Vector V;
- 
+
   return ( (aDSS.a()==NumberTraits<TCoordinate>::ZERO)
 	   &&(aDSS.b()==NumberTraits<TCoordinate>::ZERO)
 	   &&(aDSS.mu()==NumberTraits<TInteger>::ZERO)
@@ -61,7 +61,7 @@ checkOnePoint(const ArithmeticalDSS<TCoordinate,TInteger,adjacency>& aDSS)
 	   &&(aDSS.Ll()==aDSS.front())
 	   &&(aDSS.shift()==V(NumberTraits<TCoordinate>::ZERO,NumberTraits<TCoordinate>::ZERO))
 	   &&(aDSS.steps().first==V(NumberTraits<TCoordinate>::ZERO,NumberTraits<TCoordinate>::ZERO))
-	   &&(aDSS.steps().second==V(NumberTraits<TCoordinate>::ZERO,NumberTraits<TCoordinate>::ZERO)) ); 
+	   &&(aDSS.steps().second==V(NumberTraits<TCoordinate>::ZERO,NumberTraits<TCoordinate>::ZERO)) );
 }
 
 //-----------------------------------------------------------------------------
@@ -71,27 +71,27 @@ bool
 DGtal::functions::
 checkPointsRemainder(const ArithmeticalDSS<TCoordinate,TInteger,adjacency>& aDSS)
 {
-  ASSERT(aDSS.front()!=aDSS.back()); 
+  ASSERT(aDSS.front()!=aDSS.back());
 
   //'true' if valid, 'false' otherwise
-  bool isValid; 
+  bool isValid;
 
-  if (aDSS.remainder(aDSS.Uf()) != aDSS.mu()) 
+  if (aDSS.remainder(aDSS.Uf()) != aDSS.mu())
     isValid = false;
-  else if (aDSS.remainder(aDSS.Ul()) != aDSS.mu()) 
+  else if (aDSS.remainder(aDSS.Ul()) != aDSS.mu())
     isValid = false;
-  else if (aDSS.remainder(aDSS.Lf()) != aDSS.mu()+aDSS.omega()-1) 
-    { isValid = false; std::cout << aDSS.remainder(aDSS.Lf()) << " " << aDSS.mu()+aDSS.omega()-1 << std::endl;} 
-  else if (aDSS.remainder(aDSS.Ll()) != aDSS.mu()+aDSS.omega()-1) 
+  else if (aDSS.remainder(aDSS.Lf()) != aDSS.mu()+aDSS.omega()-1)
+    { isValid = false; std::cout << aDSS.remainder(aDSS.Lf()) << " " << aDSS.mu()+aDSS.omega()-1 << std::endl;}
+  else if (aDSS.remainder(aDSS.Ll()) != aDSS.mu()+aDSS.omega()-1)
     { isValid = false; std::cout << aDSS.remainder(aDSS.Ll()) << " " << aDSS.mu()+aDSS.omega()-1 << std::endl;}
   else if (aDSS.isInDSL(aDSS.front()))
     isValid = true;
   else if (aDSS.isInDSL(aDSS.back()))
-    isValid = true; 
-  else 
+    isValid = true;
+  else
     isValid = false;
 
-  return isValid; 
+  return isValid;
 }
 
 //-----------------------------------------------------------------------------
@@ -101,35 +101,35 @@ bool
 DGtal::functions::
 checkPointsPosition(const ArithmeticalDSS<TCoordinate,TInteger,adjacency>& aDSS)
 {
-  ASSERT(aDSS.front()!=aDSS.back()); 
+  ASSERT(aDSS.front()!=aDSS.back());
 
-  //Vector type redefinition 
+  //Vector type redefinition
   typedef typename ArithmeticalDSS<TCoordinate,TInteger,adjacency>::Vector V;
-  V v(aDSS.b(), aDSS.a()); 
+  V v(aDSS.b(), aDSS.a());
   //Length of direction vector
-  TInteger lv = aDSS.position(v); 
+  TInteger lv = aDSS.position(v);
 
   //Position of end points and leaning points
-  TInteger posBack = aDSS.position(aDSS.back()); 
-  TInteger posUf = aDSS.position(aDSS.Uf()); 
-  TInteger posLf = aDSS.position(aDSS.Lf()); 
-  TInteger posUl = aDSS.position(aDSS.Ul()); 
-  TInteger posLl = aDSS.position(aDSS.Ll()); 
-  TInteger posFront = aDSS.position(aDSS.front()); 
+  TInteger posBack = aDSS.position(aDSS.back());
+  TInteger posUf = aDSS.position(aDSS.Uf());
+  TInteger posLf = aDSS.position(aDSS.Lf());
+  TInteger posUl = aDSS.position(aDSS.Ul());
+  TInteger posLl = aDSS.position(aDSS.Ll());
+  TInteger posFront = aDSS.position(aDSS.front());
 
   bool isValid = ( ((posUf - posBack) < lv)
 		   && ((posLf - posBack) < lv)
 		   && ((posFront - posUl) < lv)
 		   && ((posFront - posLl) < lv)
 		   && ((posUl - posUf)%lv == 0)
-		   && ( ( ((posUl - posUf) >= 0) && (lv >= 0) ) 
-			|| ( ((posUl - posUf) < 0) && (lv < 0) ) ) 
+		   && ( ( ((posUl - posUf) >= 0) && (lv >= 0) )
+			|| ( ((posUl - posUf) < 0) && (lv < 0) ) )
 		   && ((posLl - posLf)%lv == 0)
-		   && ( ( ((posLl - posLf) >= 0) && (lv >= 0) ) 
-			|| ( ((posLl - posLf) < 0) && (lv < 0) ) ) 
-		   ); 
+		   && ( ( ((posLl - posLf) >= 0) && (lv >= 0) )
+			|| ( ((posLl - posLf) < 0) && (lv < 0) ) )
+		   );
 
-  return isValid; 
+  return isValid;
 }
 
 //-----------------------------------------------------------------------------
@@ -138,33 +138,31 @@ inline
 bool
 DGtal::functions::
 checkAll(const ArithmeticalDSS<TCoordinate,TInteger,adjacency>& aDSS)
-{ 
+{
   //'true' if valid, 'false' otherwise
-  bool isValid;  
+  bool isValid;
 
   //special case with one point
-  if (aDSS.front() == aDSS.back())  
+  if (aDSS.front() == aDSS.back())
     isValid = checkOnePoint(aDSS);
- 
-  //otherwise  
-  else 
+
+  //otherwise
+  else
     {
 
-      if (!aDSS.dsl().isValid()) 
-	isValid = false; 
+      if (!aDSS.dsl().isValid())
+	isValid = false;
       else if (!checkPointsRemainder(aDSS))
-	isValid = false; 
+	isValid = false;
       else if (!checkPointsPosition(aDSS))
-	isValid = false; 
-      else 
-	isValid = true; 
+	isValid = false;
+      else
+	isValid = true;
 
     }
 
-  return isValid; 
+  return isValid;
 }
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

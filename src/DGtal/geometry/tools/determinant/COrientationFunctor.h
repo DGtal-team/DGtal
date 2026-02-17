@@ -56,38 +56,38 @@ namespace DGtal
   /**
      Description of \b concept '\b COrientationFunctor' <p>
      @ingroup Concepts
-     @brief Aim: This concept gathers models implementing an 
-     orientation test of \f$ k+1 \f$ points in a space of dimension \f$ n \f$. 
+     @brief Aim: This concept gathers models implementing an
+     orientation test of \f$ k+1 \f$ points in a space of dimension \f$ n \f$.
 
      The orientation of \f$ k+1 \f$ points \f$ (p_1, \ldots, p_{k+1}) \f$
-     is given by the sign of the algebraic distance between \f$ p_{k+1} \f$ 
-     and an algebraic variety, chosen such that it is uniquely defined 
-     by the first \f$ k \f$ points \f$ (p_1, \ldots, p_{k}) \f$. 
+     is given by the sign of the algebraic distance between \f$ p_{k+1} \f$
+     and an algebraic variety, chosen such that it is uniquely defined
+     by the first \f$ k \f$ points \f$ (p_1, \ldots, p_{k}) \f$.
 
-     These \f$ k+1 \f$ points are provided in two steps so that this concept 
-     is a refinement of CPointFunctor: 
-     - First, we set the first \f$ k \f$ points by a method 'init'. 
+     These \f$ k+1 \f$ points are provided in two steps so that this concept
+     is a refinement of CPointFunctor:
+     - First, we set the first \f$ k \f$ points by a method 'init'.
      - Then, we look at the position of the \f$ k+1 \f$ -th point with respect
-     to the first \f$ k \f$ ones: the parenthesis operator takes an input point and 
-     returns a signed value.  
+     to the first \f$ k \f$ ones: the parenthesis operator takes an input point and
+     returns a signed value.
 
-     The returned value, which is a model of CSignedNumber, is guaranteed to be: 
+     The returned value, which is a model of CSignedNumber, is guaranteed to be:
      - zero if the \f$ k+1 \f$ points belong to the same algebraic variety.
-     - strictly negative if  \f$ k+1 \f$ -th point belongs to the interior of 
-     the algebraic variety defined by the first \f$ k \f$ points.  
-     - strictly positive if  \f$ k+1 \f$ -th point belongs to the exterior of 
-     the algebraic variety defined by the first \f$ k \f$ points.  
-     
+     - strictly negative if  \f$ k+1 \f$ -th point belongs to the interior of
+     the algebraic variety defined by the first \f$ k \f$ points.
+     - strictly positive if  \f$ k+1 \f$ -th point belongs to the exterior of
+     the algebraic variety defined by the first \f$ k \f$ points.
+
      # Refinement of CPointFunctor
 
      # Associated types
-     As a refinement of CPointFunctor, it has the following nested types: 
+     As a refinement of CPointFunctor, it has the following nested types:
      - Point type of input points
      - Value type of the result, at least a model of CSignedNumbe
-     
-     In addition it has the following inner types: 
+
+     In addition it has the following inner types:
      - PointArray a model of static array of k points
-     - Size type used for representing the size of the array 
+     - Size type used for representing the size of the array
 
      # Notation
      - \e X : A type that is a model of COrientationFunctor
@@ -101,7 +101,7 @@ namespace DGtal
      | Name            | Expression | Type requirements       | Return type | Precondition | Semantics                           | Post condition | Complexity      |
      |-----------------|------------|-------------------------|-------------|--------------|-------------------------------------|----------------|-----------------|
      | array dimension | X::size    |                         | SizeArray   |              | size of the array, equal to k       |                |                 |
-     | initialization  | x.init(a)  | a is of type PointArray | void        |              | implicitely set the algebraic curve |                | model-dependent |
+     | initialization  | x.init(a)  | a is of type PointArray | void        |              | implicitly set the algebraic curve |                | model-dependent |
 
 
      # Models
@@ -116,19 +116,19 @@ namespace DGtal
   public:
 
     BOOST_CONCEPT_ASSERT(( concepts::CSignedNumber< typename T::Value > ));
-    
-    typedef typename T::PointArray PointArray; 
-    typedef typename T::SizeArray SizeArray; 
+
+    typedef typename T::PointArray PointArray;
+    typedef typename T::SizeArray SizeArray;
 
     BOOST_CONCEPT_USAGE( COrientationFunctor )
     {
-      concepts::ConceptUtils::sameType( myS, T::size ); 
+      concepts::ConceptUtils::sameType( myS, T::size );
       myX.init( myA );
     }
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
-    T myX; 
-    PointArray myA; 
+    T myX;
+    PointArray myA;
     SizeArray myS;
 
   }; // end of concept COrientationFunctor

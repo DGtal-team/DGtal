@@ -40,11 +40,11 @@
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// Implementation of inline 
+// Implementation of inline
 
 
 inline
-DGtal::MultiStatistics::MultiStatistics( const unsigned int size, 
+DGtal::MultiStatistics::MultiStatistics( const unsigned int size,
                                          const bool storeSamples )
 {
   mySamples = 0;
@@ -84,7 +84,7 @@ DGtal::MultiStatistics::read( std::istream & in, MultiStatistics & samples,
   getline( in, str );
   while ( in.good() )
     {
-      if ( ( str != "" ) 
+      if ( ( str != "" )
 	   && ( str[ 0 ] != '#' ) )
 	{
           std::istringstream in_str( str );
@@ -125,7 +125,7 @@ DGtal::MultiStatistics::samples( const unsigned int k ) const
 
 
 inline
-double 
+double
 DGtal::MultiStatistics::mean( const unsigned int k ) const
 {
   ASSERT(myIsTerminate);
@@ -135,7 +135,7 @@ DGtal::MultiStatistics::mean( const unsigned int k ) const
 
 
 inline
-double 
+double
 DGtal::MultiStatistics::variance( const unsigned int k ) const
 {
   ASSERT(myIsTerminate);
@@ -145,7 +145,7 @@ DGtal::MultiStatistics::variance( const unsigned int k ) const
 
 
 inline
-double 
+double
 DGtal::MultiStatistics::unbiasedVariance( const unsigned int k ) const
 {
   ASSERT(myIsTerminate);
@@ -154,7 +154,7 @@ DGtal::MultiStatistics::unbiasedVariance( const unsigned int k ) const
 
 
 inline
-double 
+double
 DGtal::MultiStatistics::max( const unsigned int k ) const
 {
   return myMax[ k ];
@@ -171,14 +171,14 @@ DGtal::MultiStatistics::maxIndice( const unsigned int k ) const
 
 
 inline
-double 
+double
 DGtal::MultiStatistics::min( const unsigned int k ) const
 {
   return myMin[ k ];
 }
 
 inline
-unsigned int 
+unsigned int
 DGtal::MultiStatistics::minIndice( const unsigned int k ) const
 {
   return myIndiceMin[ k ];
@@ -192,7 +192,7 @@ DGtal::MultiStatistics::value( const unsigned int k, const unsigned int i ) cons
 {
   if ( myStoreSamples ) {
     ASSERT( ( k < myNb )
-		       && ( myValues != 0 ) 
+		       && ( myValues != 0 )
 		       && ( i < mySamples[ k ] ) );
     return myValues[ k ][ i ];
   }
@@ -200,7 +200,7 @@ DGtal::MultiStatistics::value( const unsigned int k, const unsigned int i ) cons
 }
 
 
-inline 
+inline
 void
 DGtal::MultiStatistics::addValue( unsigned int k, double v )
 {
@@ -214,7 +214,7 @@ DGtal::MultiStatistics::addValue( unsigned int k, double v )
       myMin[ k ] = v;
       myIndiceMax[k]=0;
       myIndiceMin[k]=0;
-      
+
     }
   else if ( v > myMax[ k ] ){
     myMax[ k ] = v;
@@ -242,7 +242,7 @@ DGtal::MultiStatistics::addValues( const unsigned int k, Iter b, Iter e )
 
 
 
-void 
+void
 DGtal::MultiStatistics::terminate()
 {
   for ( unsigned int k = 0; k < myNb; ++k )
@@ -260,7 +260,7 @@ DGtal::MultiStatistics::terminate()
 }
 
 
-void 
+void
 DGtal::MultiStatistics::init( unsigned int size, bool storeSamples )
 {
   erase();
@@ -285,7 +285,7 @@ DGtal::MultiStatistics::init( unsigned int size, bool storeSamples )
 
 
 
-void 
+void
 DGtal::MultiStatistics::clear()
 {
   if ( myNb == 0 ) return;
@@ -300,7 +300,7 @@ DGtal::MultiStatistics::clear()
       myMin[ i ] = 0.0;
       myIndiceMin[ i ] = 0;
       myIndiceMax[ i ] = 0;
-      
+
       if ( myStoreSamples ) {
 	myValues[ i ].clear();
 	myValues[ i ].reserve( 128 );
@@ -311,8 +311,8 @@ DGtal::MultiStatistics::clear()
 
 
 
-void 
-DGtal::MultiStatistics::erase() 
+void
+DGtal::MultiStatistics::erase()
 {
   if ( mySamples != 0 ) delete[] mySamples;
   if ( myExp != 0 ) delete[] myExp;
@@ -334,9 +334,9 @@ DGtal::MultiStatistics::erase()
   myMin = 0;
   myMax = 0;
   myIndiceMin = 0;
-  myIndiceMax = 0;  
+  myIndiceMax = 0;
   myValues = 0;
- 
+
   myStoreSamples = false;
 }
 
@@ -347,7 +347,7 @@ DGtal::MultiStatistics::covariance( const unsigned int x, const unsigned int y,
                                     const unsigned int s, unsigned int e ) const
 {
   ASSERT( ( x < myNb ) && ( y < myNb ) && ( x != y )
-		     && myStoreSamples 
+		     && myStoreSamples
 		     && ( samples( x ) == samples( y ) ) );
   unsigned int size = samples( x );
   double coVariance = 0.0;
@@ -371,11 +371,11 @@ DGtal::MultiStatistics::covariance( const unsigned int x, const unsigned int y,
 
 
 
-std::pair<double,double> 
+std::pair<double,double>
 DGtal::MultiStatistics::linearRegression( const unsigned int x, const unsigned int y ) const
 {
   ASSERT( ( x < myNb ) && ( y < myNb ) && ( x != y )
-		     && myStoreSamples 
+		     && myStoreSamples
 		     && ( samples( x ) == samples( y ) ) );
 
   double cov = covariance( x, y );
@@ -387,11 +387,11 @@ DGtal::MultiStatistics::linearRegression( const unsigned int x, const unsigned i
 
 
 double
-DGtal::MultiStatistics::median( unsigned int k ) 
+DGtal::MultiStatistics::median( unsigned int k )
 {
   ASSERT( myStoreSamples );
-  
-  nth_element( myValues[ k ].begin(), myValues[ k ].begin()+(myValues[k].size()/2), 
+
+  nth_element( myValues[ k ].begin(), myValues[ k ].begin()+(myValues[k].size()/2),
 	       myValues[ k ].end());
   return *(myValues[ k ].begin()+(myValues[k].size()/2));
 }
@@ -404,7 +404,7 @@ DGtal::MultiStatistics::median( unsigned int k )
 
 
 
-void 
+void
 DGtal::MultiStatistics::selfDisplay( std::ostream& out ) const
 {
   out << "[Statistics] nb=" << nb() << std::endl;
@@ -445,5 +445,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

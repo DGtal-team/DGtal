@@ -58,10 +58,10 @@ Description of \b concept '\b CMetricSpace' <p>
 @ingroup Concepts
 @brief Aim: defines the concept of metric spaces.
 
-Models of metric spaces must satsify metric space conditions as
-described in @ref moduleMetrics. For short, models must have a 
+Models of metric spaces must satisfy metric space conditions as
+described in @ref moduleMetrics. For short, models must have a
 @e Point inner type and a distance @a Value type.
- 
+
 In addition, CMetricSpace models should implement a distance function
 (operator ()) on points satisfying the metric conditions:
  - d(x,y) >= 0
@@ -69,15 +69,15 @@ In addition, CMetricSpace models should implement a distance function
  - d(x,y) == d(y,x) (symmetry)
  - d(x,y) <= d(x,z) + d(z,y) (triangle inequality)
 
-Two additional methods must be implemented: 
+Two additional methods must be implemented:
 - @e rawDistance(x,y) method provides internal distance representation
 between two points. For example, a convenient way to have an exact
-representation of hte Euclidean metric is to consider its square which
+representation of the Euclidean metric is to consider its square which
 can be represented error free on a CInteger type for example. In this
 case, the rawDistance method returns the square of the Euclidean
 distance between the two points in an exact way as soon as the
 internal @a RawValue type is error free and can represents sum of
-squares of Point::Coordiante values.
+squares of Point::Coordinate values.
 - @e closest(a,x,y) decides which point between x and y is closest to
    a. This method is required for performance purposes.
 
@@ -147,7 +147,7 @@ public:
     ConceptUtils::sameType( myRawValue, myX.rawDistance( myPoint , myPoint2 ) );
     ConceptUtils::sameType( myClosest, myX.closest( myPoint , myPoint2,myPoint3 ) );
  }
-  // ------------------------- Private Datas --------------------------------
+  // ------------------------- Private Data --------------------------------
 private:
   T myX; // do not require T to be default constructible.
   Point myPoint, myPoint2, myPoint3;

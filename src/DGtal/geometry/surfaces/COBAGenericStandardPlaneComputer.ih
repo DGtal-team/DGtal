@@ -127,7 +127,7 @@ template <typename TSpace, typename TInternalInteger>
 inline
 void
 DGtal::COBAGenericStandardPlaneComputer<TSpace, TInternalInteger>::
-init( InternalInteger diameter, 
+init( InternalInteger diameter,
       InternalInteger widthNumerator,
       InternalInteger widthDenominator )
 {
@@ -219,10 +219,10 @@ inline
 bool
 DGtal::COBAGenericStandardPlaneComputer<TSpace, TInternalInteger>::
 extendAsIs( const Point & p )
-{ 
+{
   ASSERT( isValid() );
   unsigned int nbok = 0;
-  for ( OrthantConstIterator it = myOrthants.begin(), itE = myOrthants.end(); 
+  for ( OrthantConstIterator it = myOrthants.begin(), itE = myOrthants.end();
         it != itE; ++it )
     {
       nbok += myComputers[ *it ].operator()( t( *it )( p ) ) ? 1 : 0;
@@ -231,10 +231,10 @@ extendAsIs( const Point & p )
     {
       for ( OrthantIterator it = myOrthants.begin(); it != myOrthants.end(); )
         // cannot put end() in variable, since end() moves when
-        // modifiying a vector.
+        // modifying a vector.
         {
           bool ok = myComputers[ *it ].extendAsIs( t( *it )( p ) );
-          if ( ! ok ) 
+          if ( ! ok )
             it = myOrthants.erase( it );
           else
             ++it;
@@ -254,7 +254,7 @@ extend( const Point & p )
   ASSERT( isValid() );
   unsigned int nbok = 0;
   _orthantsToErase.clear();
-  for ( OrthantConstIterator orthIt = myOrthants.begin(), orthItE = myOrthants.end(); 
+  for ( OrthantConstIterator orthIt = myOrthants.begin(), orthItE = myOrthants.end();
         orthIt != orthItE; ++orthIt )
     {
       Point Tp = t( *orthIt )( p );
@@ -283,7 +283,7 @@ isExtendable( const Point & p ) const
 {
   ASSERT( isValid() );
   unsigned int nbok = 0;
-  for ( OrthantConstIterator it = myOrthants.begin(), itE = myOrthants.end(); 
+  for ( OrthantConstIterator it = myOrthants.begin(), itE = myOrthants.end();
         it != itE; ++it )
     {
       nbok += myComputers[ *it ].isExtendable( t( *it )( p ) ) ? 1 : 0;
@@ -302,12 +302,12 @@ extend( TInputIterator it, TInputIterator itE )
   typedef boost::transform_iterator<Transform,TInputIterator,Point,Point> TransformedInputIterator;
   unsigned int nbok = 0;
   _orthantsToErase.clear();
-  for ( OrthantConstIterator orthIt = myOrthants.begin(), orthItE = myOrthants.end(); 
+  for ( OrthantConstIterator orthIt = myOrthants.begin(), orthItE = myOrthants.end();
         orthIt != orthItE; ++orthIt )
     {
       Dimension orthant = *orthIt;
-      TransformedInputIterator transIt ( it,  t( orthant ) ); 
-      TransformedInputIterator transItE( itE, t( orthant ) ); 
+      TransformedInputIterator transIt ( it,  t( orthant ) );
+      TransformedInputIterator transItE( itE, t( orthant ) );
       bool ok = myComputers[ orthant ].extend( transIt, transItE );
       if ( ! ok ) _orthantsToErase.push_back( orthant );
       else ++nbok;
@@ -337,12 +337,12 @@ isExtendable( TInputIterator it, TInputIterator itE ) const
   typedef boost::transform_iterator<Transform,TInputIterator,Point,Point>
     TransformedInputIterator;
   unsigned int nbok = 0;
-  for ( OrthantConstIterator orthIt = myOrthants.begin(), orthItE = myOrthants.end(); 
+  for ( OrthantConstIterator orthIt = myOrthants.begin(), orthItE = myOrthants.end();
         orthIt != orthItE; ++orthIt )
     {
       Dimension orthant = *orthIt;
-      TransformedInputIterator transIt ( it,  t( orthant ) ); 
-      TransformedInputIterator transItE( itE, t( orthant ) ); 
+      TransformedInputIterator transIt ( it,  t( orthant ) );
+      TransformedInputIterator transItE( itE, t( orthant ) );
       nbok += myComputers[ orthant ].isExtendable( transIt, transItE ) ? 1 : 0;
     }
   return nbok != 0;
@@ -440,8 +440,8 @@ template <typename TSpace, typename TInternalInteger>
 inline
 void
 DGtal::COBAGenericStandardPlaneComputer<TSpace, TInternalInteger>::
-getCharacteristics( IntegerVector3 & n, 
-                    InternalInteger & imin, InternalInteger & imax, 
+getCharacteristics( IntegerVector3 & n,
+                    InternalInteger & imin, InternalInteger & imax,
                     Point & p_min, Point & p_max ) const
 {
   // This rather complex method is necessary to guarantee that there
@@ -457,11 +457,11 @@ getCharacteristics( IntegerVector3 & n,
     ( ( n[ 0 ] * InternalInteger( p_min[ 0 ] ) )
       + ( n[ 1 ] * InternalInteger( p_min[ 1 ] ) )
       + ( n[ 2 ] * InternalInteger( p_min[ 2 ] ) ) );
-  imax = 
-    ( ( n[ 0 ] * InternalInteger( p_max[ 0 ] ) ) 
-      + ( n[ 1 ] * InternalInteger( p_max[ 1 ] ) ) 
+  imax =
+    ( ( n[ 0 ] * InternalInteger( p_max[ 0 ] ) )
+      + ( n[ 1 ] * InternalInteger( p_max[ 1 ] ) )
       + ( n[ 2 ] * InternalInteger( p_max[ 2 ] ) ) );
-  if ( imax < imin ) 
+  if ( imax < imin )
     {
       std::swap( imin, imax );
       std::swap( p_min, p_max );
@@ -481,10 +481,10 @@ void
 DGtal::COBAGenericStandardPlaneComputer<TSpace, TInternalInteger>::selfDisplay ( std::ostream & out ) const
 {
   out << "[COBAGenericStandardPlaneComputer";
-  for ( OrthantConstIterator orthIt = myOrthants.begin(), orthItE = myOrthants.end(); 
+  for ( OrthantConstIterator orthIt = myOrthants.begin(), orthItE = myOrthants.end();
         orthIt != orthItE; ++orthIt )
     out << " " << myComputers[ *orthIt ];
-  out << " ]"; 
+  out << " ]";
 }
 
 /**
@@ -531,7 +531,7 @@ invT( Dimension orthant )
 template <typename TSpace, typename TInternalInteger>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		  const COBAGenericStandardPlaneComputer<TSpace, TInternalInteger> & object )
 {
   object.selfDisplay( out );
@@ -540,5 +540,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

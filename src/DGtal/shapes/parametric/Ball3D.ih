@@ -80,7 +80,7 @@ DGtal::Ball3D<T>::parameter( const RealPoint & pp ) const
 {
   const RealPoint p( pp - myCenter );
   AngularCoordinates angle;
-  
+
   angle.first = atan2( p[1], p[0] );
   const double tmp = std::min( std::abs(p[2]), 1. );
   const double pn = p.norm();
@@ -88,7 +88,7 @@ DGtal::Ball3D<T>::parameter( const RealPoint & pp ) const
 
   angle.first = ( angle.first < 0. ) ? angle.first + BALL3D_2_PI : angle.first;
   angle.second = ( angle.second < 0. ) ? angle.second + M_PI : angle.second;
-  
+
   return angle;
 }
 

@@ -194,7 +194,7 @@ SCENARIO( "BoundedLatticePolytope< Z3 > unit tests", "[lattice_polytope][3d]" )
     Point c( 0, 5, 10 );
     Point d( 6, 4, 8 );
     Polytope P { a, b, c, d };
-    
+
     THEN( "It satisfies #In(P) == #Int(P) + #Bd(P)" ) {
       auto     nb = P.count();
       auto nb_int = P.countInterior();

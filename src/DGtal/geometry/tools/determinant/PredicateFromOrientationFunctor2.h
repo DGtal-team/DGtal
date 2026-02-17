@@ -55,49 +55,49 @@ namespace DGtal
   // template class PredicateFromOrientationFunctor2
   /**
    * Description of template class 'PredicateFromOrientationFunctor2' <p>
-   * \brief Aim: Small adapter to models of COrientationFunctor2. 
-   * It is a model of concepts::CPointPredicate. It is also a ternary predicate on points, 
-   * useful for basic geometric tasks such as convex hull computation. 
+   * \brief Aim: Small adapter to models of COrientationFunctor2.
+   * It is a model of concepts::CPointPredicate. It is also a ternary predicate on points,
+   * useful for basic geometric tasks such as convex hull computation.
    *
-   * Once a orientation functor is defined, you can adapt it as follows: 
+   * Once a orientation functor is defined, you can adapt it as follows:
    * @snippet geometry/tools/determinant/exampleInHalfPlane.cpp PredicateDefinition
    *
-   * The test can be done in one or two separate steps as follows: 
+   * The test can be done in one or two separate steps as follows:
    * @snippet geometry/tools/determinant/exampleInHalfPlane.cpp FunctorInitialization
    * @snippet geometry/tools/determinant/exampleInHalfPlane.cpp PredicateUsage
    *
    * The default behavior is to return 'true' for strictly positive functor values.
-   * You can however custom this behavior with the last two template parameters. 
+   * You can however custom this behavior with the last two template parameters.
    *
    * @tparam TOrientationFunctor a model of COrientationFunctor2
-   * @tparam acceptNeg bool equal to 'true' to get a predicate returning 'true' 
-   * for strictly negative values of the functor, but equal to 'false' to get a predicate 
-   * returning 'true' for strictly positive values (default). 
-   * @tparam acceptZero bool equal to 'true' to get a predicate returning 'true' 
-   * for null values, but equal to 'false' for strictly positive or negative 
-   * values (default).  
+   * @tparam acceptNeg bool equal to 'true' to get a predicate returning 'true'
+   * for strictly negative values of the functor, but equal to 'false' to get a predicate
+   * returning 'true' for strictly positive values (default).
+   * @tparam acceptZero bool equal to 'true' to get a predicate returning 'true'
+   * for null values, but equal to 'false' for strictly positive or negative
+   * values (default).
    */
   template <typename TOrientationFunctor, bool acceptNeg = false, bool acceptZero = false >
   class PredicateFromOrientationFunctor2
   {
     // ----------------------- Types ------------------------------------------
-  public: 
+  public:
     /**
      * Type of the adapter orientation functor
      */
-    typedef TOrientationFunctor Functor; 
-    BOOST_CONCEPT_ASSERT(( concepts::COrientationFunctor2<Functor> )); 
-    
+    typedef TOrientationFunctor Functor;
+    BOOST_CONCEPT_ASSERT(( concepts::COrientationFunctor2<Functor> ));
+
     /**
      * Type of input points
      */
-    typedef typename Functor::Point Point; 
+    typedef typename Functor::Point Point;
 
     /**
      * Type of the thresholder, which compares the result
      * of the functor to zero
      */
-    typedef functors::Thresholder<typename Functor::Value, acceptNeg, acceptZero> MyThresholder; 
+    typedef functors::Thresholder<typename Functor::Value, acceptNeg, acceptZero> MyThresholder;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -118,7 +118,7 @@ namespace DGtal
     /**
      * Unary parenthesis operator
      * @param aPoint any point
-     * @return return value of the thresholder 
+     * @return return value of the thresholder
      * applied on the underlying unary functor
      */
     bool operator()( const Point& aPoint ) const;
@@ -128,7 +128,7 @@ namespace DGtal
      * @param aPoint1 first point
      * @param aPoint2 second point
      * @param aPoint3 third point
-     * @return return value of the thresholder 
+     * @return return value of the thresholder
      * applied on the underlying orientation functor
      */
     bool operator()(const Point& aPoint1, const Point& aPoint2, const Point& aPoint3 ) const;
@@ -148,18 +148,18 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     /**
-     * a pointer to an orientation functor 
+     * a pointer to an orientation functor
      */
-    Functor* const myFunctorPtr; 
+    Functor* const myFunctorPtr;
 
     /**
      * object that thresholds the result of the functor
      */
-    const MyThresholder myThresholder; 
+    const MyThresholder myThresholder;
 
 
   }; // end of class PredicateFromOrientationFunctor2

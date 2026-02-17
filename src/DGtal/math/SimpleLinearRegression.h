@@ -75,12 +75,12 @@ namespace DGtal
 
     // ----------------------- Standard services ------------------------------
   public:
-    
+
     /**
      * Destructor.
      */
     ~SimpleLinearRegression();
-    
+
     /**
      * Constructor.
      * The object is empty (and invalid for regression).
@@ -91,7 +91,7 @@ namespace DGtal
     SimpleLinearRegression( double eps_zero = 1e-8 );
 
     /**
-     * Clear all datas.
+     * Clear all data.
      */
     void clear();
 
@@ -172,19 +172,19 @@ namespace DGtal
                                                 const double a ) const;
 
 
-    /** 
+    /**
      * Set the epsilon zero value, value below which the absolute
      * value of the determinant is considered null.
      *
      * @param aEpsilonZero the epsilon zero value.
-     */    
+     */
     void setEpsilonZero(const double aEpsilonZero)
     {
       myEpsilonZero = aEpsilonZero;
     }
 
-    /** 
-     * 
+    /**
+     *
      * @return the epsilon zero value.
      */
     double epsilonZero() const
@@ -192,8 +192,8 @@ namespace DGtal
       return myEpsilonZero;
     }
 
-    /** 
-     * 
+    /**
+     *
      * @return the number of samples.
      */
     double size() const
@@ -216,7 +216,7 @@ namespace DGtal
     bool isValid() const;
 
 
-    // ------------------------- Datas ----------------------------------------
+    // ------------------------- Data ----------------------------------------
 
   private:
 
@@ -228,10 +228,10 @@ namespace DGtal
 
     ///Ordinate values of sample points
     std::vector<double> myY;
-    
+
     ///Abscissa values of sample points
     std::vector<double> myX;
-    
+
     ///Linear regression line parameters [0] is the intercept and [1]
     ///the slope.
     double myB[ 2 ];

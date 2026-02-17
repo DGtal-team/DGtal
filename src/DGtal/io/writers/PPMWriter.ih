@@ -62,10 +62,10 @@ namespace DGtal {
     out << "#DGtal PNM Writer"<<std::endl<<std::endl;
     out << size[0]<<" "<< size[1]<<std::endl;
     out << "255" <<std::endl;
-    
+
     if(!topbotomOrder)
       {
-	//We scan the domain instead of the image becaus we cannot
+	//We scan the domain instead of the image because we cannot
 	//trust the image container Iterator
 	for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
 	    it!=itend;
@@ -79,37 +79,37 @@ namespace DGtal {
     else
       {
 	typename I::Domain::Point ptUpper=  domain.upperBound();
-	
+
 	for(typename HyperRectDomain<typename I::Domain::Space>::ConstSubRange::ConstReverseIterator itY = domain.subRange(1, ptUpper).rbegin(),
 	      itYend=domain.subRange(1, ptUpper).rend();  itY!=itYend; ++itY)
-	  {    
+	  {
 	    typename I::Domain::Point ptUpperY=  *itY;
-	    
-	    for(typename HyperRectDomain<typename I::Domain::Space>::ConstSubRange::ConstIterator it = domain.subRange(0, ptUpperY).begin(), 
+
+	    for(typename HyperRectDomain<typename I::Domain::Space>::ConstSubRange::ConstIterator it = domain.subRange(0, ptUpperY).begin(),
 		  itend=domain.subRange(0, ptUpperY).end();
 		it!=itend;
 		++it)
 	      {
 		val = aImage( (*it) );
 		col = aFunctor( val );
-		out << (int)col.red()<<" "<<(int)col.green()<<" "<<(int)col.blue()<<" ";	    
+		out << (int)col.red()<<" "<<(int)col.green()<<" "<<(int)col.blue()<<" ";
 	      }
 	  }
       }
-    
-    out.close(); 
-  
-    ///@todo catch IOerror excpetion
+
+    out.close();
+
+    ///@todo catch IOerror exception
     return true;
   }
-  
+
   template<typename I,typename C>
 bool
 PPMWriter<I,C>::exportPPM3D(const std::string & filename, const I & aImage,
 			    const Functor&aFunctor)
 {
   BOOST_STATIC_ASSERT(I::Domain::dimension == 3);
-  
+
   std::ofstream out;
   typename I::Domain domain(aImage.lowerBound(), aImage.upperBound());
   typename I::Domain::Point p = I::Domain::Point::diagonal(1);
@@ -117,29 +117,29 @@ PPMWriter<I,C>::exportPPM3D(const std::string & filename, const I & aImage,
 
   typename I::Value val;
   DGtal::Color col;
-  
+
   out.open(filename.c_str(), std::ios::out | std::ios::binary);
-  
+
   //PPM format
   out << "P3-3D"<<std::endl;
   out << "#DGtal PNM Writer"<<std::endl<<std::endl;
   out << size[0]<<" "<< size[1]<<" "<< size[2]<<std::endl;
   out << "255" <<std::endl;
-  
-  //We scan the domain instead of the image becaus we cannot
+
+  //We scan the domain instead of the image because we cannot
   //trust the image container Iterator
   for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
       it!=itend;
       ++it)
     {
-      
+
       val = aImage( (*it) );
       col = aFunctor( val );
       out << (int)col.red()<<" "<<(int)col.green()<<" "<<(int)col.blue()<<" ";  }
-  
-  out.close(); 
-  
-  ///@todo catch IOerror excpetion
+
+  out.close();
+
+  ///@todo catch IOerror exception
   return true;
 }
 

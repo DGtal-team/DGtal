@@ -146,7 +146,7 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::operator= (
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 typename DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::Self
-DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::getSelf() const 
+DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::getSelf() const
 {
   return Self();
 }
@@ -154,7 +154,7 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::getSelf() const
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 typename DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::Reverse
-DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::getReverse() const 
+DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::getReverse() const
 {
   return Reverse();
 }
@@ -162,7 +162,7 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::getReverse() const
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
-DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::isInDSS ( const Point3d & point) const 
+DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::isInDSS ( const Point3d & point) const
 {
   char test = 0;
   if ( myXYalgo.isInDSS ( myProjXY ( point ) ) ) test++;
@@ -174,7 +174,7 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::isInDSS ( const Poin
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
-DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::isInDSS ( const ConstIterator & it) const 
+DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::isInDSS ( const ConstIterator & it) const
 {
   char test = 0;
   if ( myXYalgo.isInDSS ( myProjXY ( *it ) ) ) test++;
@@ -338,14 +338,14 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>
   auto lenXY = std::distance ( myXYalgo.begin(), myXYalgo.end() );
   auto lenXZ = std::distance ( myXZalgo.begin(), myXZalgo.end() );
   auto lenYZ = std::distance ( myYZalgo.begin(), myYZalgo.end() );
-  if ( lenXY > lenYZ && lenXZ > lenYZ ) 
+  if ( lenXY > lenYZ && lenXZ > lenYZ )
   { //XY-plane, XZ-plane
-    
+
     Integer a1 = myXYalgo.b();
     Integer b1 = myXYalgo.a();
     Integer a2 = myXZalgo.b();
     Integer c1 = myXZalgo.a();
-    
+
     if ( c1 == 0 || ( a1 == 0 && a2 == 0 ) )
       direction = Point3d ( a1, b1, c1 );
     else
@@ -357,26 +357,26 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>
 	direction = Point3d ( a1 * a2 , a2 * b1 , a1 * c1 );
       }
     }
-    
+
     Integer mu1 = myXYalgo.mu();
     Integer mu2 = myXZalgo.mu();
     intercept[0] = std::make_pair ( 0, 1 ); intercept[1] = std::make_pair ( -mu1, a1 ); intercept[2] = std::make_pair ( -mu2, a2 );
-    
+
     Integer omega1 = myXYalgo.omega()-1;
     Integer omega2 = myXZalgo.omega()-1;
     thickness[0] = std::make_pair ( 0, 1 ); thickness[1] = std::make_pair ( -omega1, a1 ); thickness[2] = std::make_pair ( -omega2, a2 );
-    
+
   }
-  else 
+  else
   {
-    if ( lenYZ > lenXZ && lenXY > lenXZ ) 
+    if ( lenYZ > lenXZ && lenXY > lenXZ )
     { //XY-plane, YZ-plane
-      
+
       Integer a1 = myXYalgo.b();
       Integer b1 = myXYalgo.a();
       Integer b2 = myYZalgo.b();
       Integer c2 = myYZalgo.a();
-      
+
       if ( a1 == 0 || ( b2 == 0 && b1 == 0 ) )
 	direction = Point3d ( a1, b2, c2 );
       else
@@ -388,23 +388,23 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>
 	  direction = Point3d ( b2 * a1 , b1 * b2 , b1 * c2 );
 	}
       }
-      
+
       Integer mu1 = myXYalgo.mu();
       Integer mu2 = myYZalgo.mu();
       intercept[0] = std::make_pair ( mu1, b1 ); intercept[1] = std::make_pair ( 0, 1 ); intercept[2] = std::make_pair ( -mu2, b2 );
-      
+
       Integer omega1 = myXYalgo.omega()-1;
       Integer omega2 = myYZalgo.omega()-1;
       thickness[0] = std::make_pair ( omega1, b1 ); thickness[1] = std::make_pair ( 0, 1 ); thickness[2] = std::make_pair ( -omega2, b2 );
-      
-    } 
-    else 
+
+    }
+    else
     { //YZ-plane, XZ-plane
       Integer b2 = myYZalgo.b();
       Integer c2 = myYZalgo.a();
       Integer a2 = myXZalgo.b();
       Integer c1 = myXZalgo.a();
-      
+
       if ( a2 == 0 || ( c2 == 0 && c1 == 0 ) )
 	direction = Point3d ( a2, b2, c2 );
       else
@@ -416,11 +416,11 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>
 	  direction = Point3d ( c2 * a2, c1 * b2, c1 * c2 );
 	}
       }
-      
+
       Integer mu1 = myYZalgo.mu();
       Integer mu2 = myXZalgo.mu();
       intercept[0] = std::make_pair ( mu2, c1 ); intercept[1] = std::make_pair ( mu1, c2 ); intercept[2] = std::make_pair ( 0, 1 );
-      
+
       Integer omega1 = myYZalgo.omega()-1;
       Integer omega2 = myXZalgo.omega()-1;
       thickness[0] = std::make_pair ( omega2, c1 ); thickness[1] = std::make_pair ( omega1, c2 ); thickness[2] = std::make_pair ( 0, 1);
@@ -476,9 +476,9 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::validArithmeticalDSS
   auto lenXZ = std::distance ( myXZalgo.begin(), myXZalgo.end() );
   auto lenYZ = std::distance ( myYZalgo.begin(), myYZalgo.end() );
   if ( i == 0 && ( lenYZ >= lenXZ || lenYZ >= lenXY ) )
-    return true; 
+    return true;
   else if ( i == 1 && ( lenXZ >= lenXY || lenXZ >= lenYZ ) )
-    return true; 
+    return true;
   else if ( i == 2 && ( lenXY >= lenXZ || lenXY >= lenYZ ) )
   return true;
   return false;
@@ -516,5 +516,3 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::selfDisplay ( std::o
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

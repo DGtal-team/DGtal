@@ -72,8 +72,8 @@ namespace DGtal
        |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
        |rbegin         |\e x.rbegin()  |                     |ReverseIterator |               |           |                |            |
        |rend           |\e x.rend()    |                     |ReverseIterator |               |           |                |            |
-       |rbegin         |\e x.rbegin() const |                |ConstReverseIterator |               |           |                |            | 
-       |rend         |\e x.rend() const |                |ConstReverseIterator |               |           |                |            |                 
+       |rbegin         |\e x.rbegin() const |                |ConstReverseIterator |               |           |                |            |
+       |rend         |\e x.rend() const |                |ConstReverseIterator |               |           |                |            |
 
        # Invariants
 
@@ -91,20 +91,20 @@ namespace DGtal
       // ----------------------- Concept checks ------------------------------
     public:
       typedef typename T::ReverseIterator ReverseIterator;
-    
+
       BOOST_CONCEPT_ASSERT(( boost_concepts::SinglePassIteratorConcept<ReverseIterator> ));
-    
+
       BOOST_CONCEPT_USAGE(CBidirectionalRange)
       {
         concepts::ConceptUtils::sameType( it, i.rbegin() );
         concepts::ConceptUtils::sameType( it, i.rend() );
       };
-    
+
     private:
       T i;
       ReverseIterator it;
     }; // end of concept CBidirectionalRange
-  
+
   } // namespace concepts
 
 } // namespace DGtal

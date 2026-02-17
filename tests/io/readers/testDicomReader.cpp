@@ -78,10 +78,10 @@ getFirstDicomSerieFileNames(const std::string &path)
   NamesGeneratorType::Pointer nameGenerator = NamesGeneratorType::New();
   nameGenerator->SetUseSeriesDetails( true );
   nameGenerator->SetDirectory( path );
-  
+
   typedef itk::GDCMSeriesFileNames::SeriesUIDContainerType SeriesIdContainer;
   const SeriesIdContainer & seriesUID = nameGenerator->GetSeriesUIDs();
-  
+
   if (! seriesUID.empty() )
   {
     return nameGenerator->GetFileNames( *(seriesUID.begin()) );
@@ -129,7 +129,7 @@ bool testSpatialInformation()
   reader->SetFileNames( fileNames );
 
   reader->Update();
-  
+
   typename ItkImage::Pointer itk = reader->GetOutput();
 
   const bool ok1 = ( dgtal_itk->GetSpacing() == itk->GetSpacing() );
@@ -149,7 +149,7 @@ bool testIOException()
     Image3D image = DicomReader< Image3D >::importDicom( filename );
   }
   catch(exception& e) {
-    trace.info() << "Exception catched. Message : " << e.what()<<endl;
+    trace.info() << "Exception caught. Message : " << e.what()<<endl;
     return true;
   }
 

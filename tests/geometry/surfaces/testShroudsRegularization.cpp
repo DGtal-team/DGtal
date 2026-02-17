@@ -49,7 +49,7 @@ TEST_CASE( "Testing ShroudsRegularization" )
   typedef Shortcuts<Z3i::KSpace>         SH3;
   typedef SH3::ExplicitSurfaceContainer  Container;
   typedef ShroudsRegularization< Container >::Regularization RegType;
-  
+
   auto params = SH3::defaultParameters();
   params( "polynomial", "goursat" )( "gridstep", 1)("verbose", 0);
   auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
@@ -57,7 +57,7 @@ TEST_CASE( "Testing ShroudsRegularization" )
   auto K               = SH3::getKSpace( params );
   auto surface         = SH3::makeDigitalSurface( digitized_shape, K, params );
   //! [ShroudsRegInit]
-  
+
   //! [ShroudsRegUsage]
   auto idxsurface     = SH3::makeIdxDigitalSurface( surface, params );
   ShroudsRegularization< Container > shrouds_reg( idxsurface );
@@ -67,7 +67,7 @@ TEST_CASE( "Testing ShroudsRegularization" )
     auto polySurf = SH3::makeDualPolygonalSurface( idxsurface );
     SH3::saveOBJ( polySurf, "goursat-shrouds-init.obj" );
   }
-  
+
   //! [ShroudsRegK2]
   double          loo = 0.0;
   double           l2 = 0.0;
@@ -76,7 +76,7 @@ TEST_CASE( "Testing ShroudsRegularization" )
 						0.5, 0.0001, 100 );
   double energyRegK2  = shrouds_reg.energy    ( RegType::SQUARED_CURVATURE );
   //! [ShroudsRegK2]
-  
+
   REQUIRE( loo < 0.1 );
   REQUIRE( l2 <= loo );
   REQUIRE( energyRegK2 < energyInitK2 );
@@ -93,7 +93,7 @@ TEST_CASE( "Testing ShroudsRegularization" )
   }
 
   //! [ShroudsRegArea]
-  shrouds_reg.init();  
+  shrouds_reg.init();
   double energyInitArea= shrouds_reg.energy    ( RegType::AREA );
   std::tie( loo, l2 )  = shrouds_reg.regularize( RegType::AREA,
 						 0.5, 0.0001, 100 );
@@ -101,9 +101,9 @@ TEST_CASE( "Testing ShroudsRegularization" )
   //! [ShroudsRegArea]
 
   REQUIRE( energyRegArea < energyInitArea );
-  
+
   //! [ShroudsRegSnake]
-  shrouds_reg.init();  
+  shrouds_reg.init();
   double energyInitSnk= shrouds_reg.energy    ( RegType::SNAKE );
   std::tie( loo, l2 ) = shrouds_reg.regularize( RegType::SNAKE,
 						0.5, 0.0001, 100 );

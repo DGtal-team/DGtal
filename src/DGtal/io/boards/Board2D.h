@@ -87,22 +87,22 @@ namespace DGtal
 
     // ----------------------- Standard services ------------------------------
   public:
-    
+
     /**
      * Destructor.
      */
     ~Board2D();
-    
-    /** 
+
+    /**
      * Constructs a new board and sets the background color, if any.
-     * 
+     *
      * @param aBackgroundColor A color for the drawing's background.
      */
     Board2D( const Color & aBackgroundColor = Color::None );
 
-    /** 
+    /**
      * Copy constructor.
-     * 
+     *
      * @param other The object to be copied.
      */
     Board2D( const Board2D & other );
@@ -150,7 +150,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Public Datas ------------------------------
+    // ------------------------- Public Data ------------------------------
   public:
     /**
      * For instance, may associate a new style object T1 to the class
@@ -173,7 +173,7 @@ namespace DGtal
      * concept CDrawableWithBoard2D.
      */
     ModeMapping myModes;
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
   }; // end of class Board2D
@@ -191,7 +191,7 @@ namespace DGtal
   /**
    * Base class specifying the methods for classes which intend to
    * modify a Board2D stream.
-   * @todo merge DrawableWithBoard2D and DrawWithBoardModifier 
+   * @todo merge DrawableWithBoard2D and DrawWithBoardModifier
    */
   struct DrawWithBoardModifier {
     std::string className() const
@@ -204,7 +204,7 @@ namespace DGtal
       return 0;
     }*/
 
-    /*virtual void setStyle( Board2D &  ) const 
+    /*virtual void setStyle( Board2D &  ) const
     {}*/
   };
 
@@ -254,12 +254,12 @@ namespace DGtal
     SetMode( std::string classname, std::string mode )
       : myClassname( classname ), myMode( mode )
     {}
-    
+
     /*void setStyle( Board2D & board ) const
     {
       board.myModes[ myClassname ] = myMode;
     }*/
-    
+
     std::string myClassname;
     std::string myMode;
   };
@@ -290,7 +290,7 @@ namespace DGtal
       const Color & fillColor )
       : myPenColor( penColor ), myFillColor( fillColor )
     {}
-    
+
     virtual void setStyle( Board2D & aboard) const
     {
       aboard.setFillColor( myFillColor);
@@ -321,7 +321,7 @@ namespace DGtal
     CustomPenColor( const Color & penColor )
       : myPenColor( penColor )
     {}
-    
+
     virtual void setStyle( Board2D & aboard) const
     {
       aboard.setPenColor( myPenColor );
@@ -351,7 +351,7 @@ namespace DGtal
     CustomFillColor( const Color & fillColor )
       : myFillColor( fillColor )
     {}
-    
+
     virtual void setStyle( Board2D & aboard) const
     {
       aboard.setFillColor( myFillColor );
@@ -390,7 +390,7 @@ namespace DGtal
      * @param lineStyle specifies the drawing line style (SolidStyle,
      *      DashStyle, DotStyle, DashDotStyle, DashDotDotStyle,
      *      DashDotDotDotStyle )
-     *  
+     *
      * @param lineCap specifies the drawing line cap (ButtCap,
      * RoundCap, SquareCap )
      *
@@ -404,10 +404,10 @@ namespace DGtal
          Board2D::Shape::LineCap lineCap = Board2D::Shape::ButtCap,
          Board2D::Shape::LineJoin lineJoin = Board2D::Shape::MiterJoin )
       : myPenColor( penColor ), myFillColor( fillColor ),
-  myLineWidth( lineWidth ), 
+  myLineWidth( lineWidth ),
   myLineStyle( lineStyle ), myLineCap ( lineCap ), myLineJoin( lineJoin )
     {}
-    
+
     virtual void setStyle( Board2D & aboard) const
     {
       aboard.setPenColor( myPenColor );

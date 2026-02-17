@@ -59,7 +59,7 @@ Domain l=[PointVector] {-95, -135, -68} u=[PointVector] {6114, 4743, 6186}
 
 <table>
 <tr>
-<td> 
+<td>
 \image html exampleQuickHull3D-bunny-input.jpg "Coarse model of Stanford bunny"
 </td><td>
 \image html exampleQuickHull3D-bunny-both.jpg "Its convex hull with a precision 100"
@@ -125,7 +125,6 @@ int main( int argc, char* argv[] )
   ConvexCellComplex< RealPoint > cvx_complex;
   bool ok3 = Helper::computeConvexHullCellComplex( cvx_complex, points, precision );
   trace.info() << cvx_complex << std::endl;
-  
+
   return ( ok && ok2 && ok3 ) ? 0 : 1;
-} 
-  
+}

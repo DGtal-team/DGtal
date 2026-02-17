@@ -148,10 +148,10 @@ eval (SurfelConstIterator it)
       myProbingAlgorithm = nullptr;
 
       return normal;
-      
+
     } else {
       // If we have found no way to properly initialize the plane-probing estimator,
-      // we return the initial frame normal, i.e. the trivial normal of the surfel.  
+      // we return the initial frame normal, i.e. the trivial normal of the surfel.
       return initialFrame.normal;
     }
 }
@@ -287,7 +287,7 @@ probingFrameWithPreEstimation (ProbingFrame const& aInitialFrame, RealPoint cons
     }
 
     // No frame that matches the pre-estimation found,
-    return std::make_pair(false, aInitialFrame); 
+    return std::make_pair(false, aInitialFrame);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -354,5 +354,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

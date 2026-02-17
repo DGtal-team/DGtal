@@ -233,7 +233,7 @@ bool testIterators()
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
@@ -292,14 +292,14 @@ bool test_range_constRange()
       }
       else
       {
-        cout << "!ok -> " << to_vector[i] << ", "; 
+        cout << "!ok -> " << to_vector[i] << ", ";
         nb++;
       }
     }
     cout << endl;
-    
+
     cout << endl;
-    
+
     // reading values
     std::copy( r.begin(Z2i::Point(7,7)), r.end(), std::ostream_iterator<int>(cout,", ") );
     cout << endl;
@@ -316,7 +316,7 @@ bool test_range_constRange()
       }
       else
       {
-        cout << "!ok -> " << to_vector2[i] << ", "; 
+        cout << "!ok -> " << to_vector2[i] << ", ";
         nb++;
       }
     }

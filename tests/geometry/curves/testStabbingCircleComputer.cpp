@@ -70,7 +70,7 @@ template<typename TP, typename TI>
 struct MyBallPredicate
 {
   typedef TP Point;
-  typedef TI Integer; 
+  typedef TI Integer;
   MyBallPredicate(const Integer& aR) : myRad(aR) {};
   bool operator()(const Point &aP) const { return aP.dot(aP) <= myRad*myRad; };
   Integer myRad;
@@ -81,13 +81,13 @@ void ballGenerator(const TKSpace& aKSpace, GridCurve<TKSpace>& aGC, const Intege
 {
 
   // Types
-  typedef TKSpace KSpace;  
+  typedef TKSpace KSpace;
   typedef typename KSpace::SCell SCell;
   typedef typename KSpace::Space Space;
   typedef typename Space::Point Point;
-  
+
   MyBallPredicate<Point,Integer> predicate(aR);
-  try 
+  try
     {
       // Extracts shape boundary
       SurfelAdjacency<KSpace::dimension> SAdj( true );
@@ -99,11 +99,11 @@ void ballGenerator(const TKSpace& aKSpace, GridCurve<TKSpace>& aGC, const Intege
       if (aFlagIsCW)
 	{
 	  points2.assign( points.rbegin(), points.rend() );
-	  aGC.initFromPointsVector(points2); 
-	} 
-      else 
+	  aGC.initFromPointsVector(points2);
+	}
+      else
 	{
-	  aGC.initFromPointsVector(points); 
+	  aGC.initFromPointsVector(points);
 	}
     }
   catch ( InputException& e )
@@ -119,9 +119,9 @@ void ballGenerator(const TKSpace& aKSpace, GridCurve<TKSpace>& aGC, const Intege
 
 void testStabbingCircleComputerConceptChecking()
 {
-   typedef std::pair<PointVector<2,int>, PointVector<2,int> > Pair; 
-   typedef std::vector<Pair>::const_iterator ConstIterator; 
-   typedef StabbingCircleComputer<ConstIterator> GeomDSS; 
+   typedef std::pair<PointVector<2,int>, PointVector<2,int> > Pair;
+   typedef std::vector<Pair>::const_iterator ConstIterator;
+   typedef StabbingCircleComputer<ConstIterator> GeomDSS;
    BOOST_CONCEPT_ASSERT(( concepts::CDrawableWithBoard2D<GeomDSS> ));
    BOOST_CONCEPT_ASSERT(( concepts::CBidirectionalSegmentComputer<GeomDSS> ));
 }
@@ -139,28 +139,28 @@ bool drawingTestStabbingCircleComputer(const TCurve& curve, const string& suffix
   {
     typedef typename Range::ConstIterator ConstIterator; //iterator
     StabbingCircleComputer<ConstIterator> s;
-    longestSegment(s,r.begin(),r.end()); 
+    longestSegment(s,r.begin(),r.end());
 
-    Board2D board; 
-    board << r << s; 
-    std::stringstream ss; 
-    ss << "StabbingCircleComputerDrawingTest" << suffix << ".eps"; 
-    board.saveEPS(ss.str().c_str()); 
+    Board2D board;
+    board << r << s;
+    std::stringstream ss;
+    ss << "StabbingCircleComputerDrawingTest" << suffix << ".eps";
+    board.saveEPS(ss.str().c_str());
   }
 
   {
     typedef typename Range::ConstReverseIterator ConstReverseIterator; //iterator
     StabbingCircleComputer<ConstReverseIterator> s;
-    longestSegment(s,r.rbegin(),r.rend()); 
+    longestSegment(s,r.rbegin(),r.rend());
 
     Board2D board;
-    board << r << s;       
-    std::stringstream ss; 
-    ss << "StabbingCircleComputerDrawingTest" << suffix << "2.eps"; 
-    board.saveEPS(ss.str().c_str()); 
+    board << r << s;
+    std::stringstream ss;
+    ss << "StabbingCircleComputerDrawingTest" << suffix << "2.eps";
+    board.saveEPS(ss.str().c_str());
   }
-    
-  return true; 
+
+  return true;
 }
 
 /**
@@ -176,78 +176,78 @@ bool testStabbingCircleComputer(const TCurve& curve)
 
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
-  trace.beginBlock ( "Constructors, copy, assignement" );
+
+  trace.beginBlock ( "Constructors, copy, assignment" );
   {
     Range r = curve.getIncidentPointsRange(); //range
 
     StabbingCircleComputer<ConstIterator> s1, s2, s3;
-    longestSegment(s2, r.begin(), r.end()); 
-    longestSegment(s3, r.begin()+1, r.end()); 
-    StabbingCircleComputer<ConstIterator> s4(s2); 
+    longestSegment(s2, r.begin(), r.end());
+    longestSegment(s3, r.begin()+1, r.end());
+    StabbingCircleComputer<ConstIterator> s4(s2);
     StabbingCircleComputer<ConstIterator> s5(s3);
-    s3 = s1; 
-    
-    trace.info() << s1.isValid() << s1 << endl; 
-    trace.info() << s2.isValid() << s2 << endl; 
-    trace.info() << s3.isValid() << s3 << endl; 
-    trace.info() << s4.isValid() << s4 << endl; 
-    trace.info() << s5.isValid() << s5 << endl; 
+    s3 = s1;
+
+    trace.info() << s1.isValid() << s1 << endl;
+    trace.info() << s2.isValid() << s2 << endl;
+    trace.info() << s3.isValid() << s3 << endl;
+    trace.info() << s4.isValid() << s4 << endl;
+    trace.info() << s5.isValid() << s5 << endl;
 
     bool myFlag = (!s1.isValid())&&(!s3.isValid())
     &&(s2.isValid())&&(s4.isValid())&&(s5.isValid())
     &&(s2 == s4)&&(s2 != s5)&&(s2 != s1)
     &&(s3 != s5)&&(s1 == s3);
 
-    nbok += myFlag ? 1 : 0; 
+    nbok += myFlag ? 1 : 0;
     nb++;
   }
   trace.endBlock();
-    
-  
+
+
   trace.beginBlock ( "Extension operations" );
   {
     Range r = curve.getIncidentPointsRange(); //range
 
     StabbingCircleComputer<ConstIterator> s, t;
 
-    trace.info() << "forward extension " << endl; 
-    
-    ConstIterator itBegin (r.begin()); 
-    ConstIterator itEnd (r.end()); 
+    trace.info() << "forward extension " << endl;
+
+    ConstIterator itBegin (r.begin());
+    ConstIterator itEnd (r.end());
 
     s.init( itBegin );
     while ( (s.end() != itEnd) && (s.isExtendableFront()) && (s.extendFront()) ) {}
-    trace.info() << s << endl; 
+    trace.info() << s << endl;
 
     ConstIterator itLast (s.end()); --itLast;
-      
-    t.init( itLast ); 
+
+    t.init( itLast );
     while ( (t.begin() != itBegin) && (t.extendBack()) ) {}
-    trace.info() << t << endl; 
-    
-    trace.info() << "backward extension " << endl; 
-      
-    typename StabbingCircleComputer<ConstIterator>::Reverse rs = s.getReverse(); 
-    ConstReverseIterator ritBegin ( s.end() ); 
-    ConstReverseIterator ritEnd ( itBegin ); 
-      
+    trace.info() << t << endl;
+
+    trace.info() << "backward extension " << endl;
+
+    typename StabbingCircleComputer<ConstIterator>::Reverse rs = s.getReverse();
+    ConstReverseIterator ritBegin ( s.end() );
+    ConstReverseIterator ritEnd ( itBegin );
+
     rs.init( ritBegin );
     while ( (rs.end() != ritEnd) && (rs.isExtendableFront()) && (rs.extendFront()) ) {}
-    trace.info() << rs << endl; 
-    
-    ConstReverseIterator ritLast (rs.end()); --ritLast;
-      
-    typename StabbingCircleComputer<ConstIterator>::Reverse rt = t.getReverse(); 
-    rt.init( ritLast ); 
-    while ( (rt.begin() != ritBegin) && (rt.extendBack()) ) {}
-    trace.info() << rt << endl; 
-    
-    trace.info() << "comparison... " << endl; 
-    bool myFlag = (s == t)
-                      &&(rs == rt); 
+    trace.info() << rs << endl;
 
-    nbok += myFlag ? 1 : 0; 
+    ConstReverseIterator ritLast (rs.end()); --ritLast;
+
+    typename StabbingCircleComputer<ConstIterator>::Reverse rt = t.getReverse();
+    rt.init( ritLast );
+    while ( (rt.begin() != ritBegin) && (rt.extendBack()) ) {}
+    trace.info() << rt << endl;
+
+    trace.info() << "comparison... " << endl;
+    bool myFlag = (s == t)
+                      &&(rs == rt);
+
+    nbok += myFlag ? 1 : 0;
     nb++;
   }
   trace.endBlock();
@@ -257,54 +257,54 @@ bool testStabbingCircleComputer(const TCurve& curve)
 }
 
 /**
- * Recogition of randomly generated digital circles
+ * Recognition of randomly generated digital circles
  */
 bool testRecognition()
 {
   typedef KhalimskySpaceND<2,int64_t> KSpace;
   //Note: int64_t is enough for radii less than 200
-  typedef KSpace::Space Space;  
+  typedef KSpace::Space Space;
   typedef Space::Point Point;
-  
+
   unsigned int nbok = 0;
   unsigned int nb = 0;
 
   trace.beginBlock ( "Recognition" );
   bool flag=true;
-    
+
   for (unsigned int i = 1; i < 200 && flag; ++i)
   {
-    int radius = i; 
-    KSpace kspace( Point::diagonal(-2*radius), Point::diagonal(2*radius), true ); 
-    GridCurve<KSpace> c(kspace); 
-    ballGenerator<KSpace>( kspace, c, radius, ((i%2)==0) ); 
+    int radius = i;
+    KSpace kspace( Point::diagonal(-2*radius), Point::diagonal(2*radius), true );
+    GridCurve<KSpace> c(kspace);
+    ballGenerator<KSpace>( kspace, c, radius, ((i%2)==0) );
     trace.info() << " #ball c(0,0) r=" << radius
-		 << " cw=" << ((i%2)==0) << endl; 
-    
+		 << " cw=" << ((i%2)==0) << endl;
+
     //range
-    typedef GridCurve<KSpace>::IncidentPointsRange Range; 
+    typedef GridCurve<KSpace>::IncidentPointsRange Range;
     Range r = c.getIncidentPointsRange();
-    
+
     //recognition
     typedef Range::ConstIterator ConstIterator; //iterator
     StabbingCircleComputer<ConstIterator> s;
-    longestSegment(s,r.begin(),r.end()); 
+    longestSegment(s,r.begin(),r.end());
 
     if (s.end() != r.end())
     {
       trace.info()<< "Complete circle not recognized"<<std::endl;
       flag=false;
     }
-    
+
     //checking if the circle is separating
     typedef CircleFrom3Points<KSpace::Point> Circle;
     typedef functors::Point2ShapePredicate<Circle,false,true> FirstInCirclePred;
     typedef functors::Point2ShapePredicate<Circle,true,true>  SecondInCirclePred;
     for (ConstIterator it = s.begin(); ((it != s.end()) && flag) ; ++it)
     {
-      FirstInCirclePred p1( s.getSeparatingCircle() ); 
-      SecondInCirclePred p2( s.getSeparatingCircle() ); 
-      flag = ( p1(it->first)&&p2(it->second) ); 
+      FirstInCirclePred p1( s.getSeparatingCircle() );
+      SecondInCirclePred p2( s.getSeparatingCircle() );
+      flag = ( p1(it->first)&&p2(it->second) );
       if (!flag)
       {
         trace.info() << s.getSeparatingCircle() << " "
@@ -312,14 +312,14 @@ bool testRecognition()
 		     << it->second << std::endl;
       }
     }
-   
+
     //conclusion
-    nbok += flag ? 1 : 0; 
+    nbok += flag ? 1 : 0;
     nb++;
   }
 
   trace.endBlock();
-  
+
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   return nbok == nb;
 }
@@ -333,38 +333,38 @@ bool testSegmentation(const TCurve& curve)
 
   typedef typename TCurve::IncidentPointsRange Range; //range
   Range r = curve.getIncidentPointsRange(); //range
-  
+
   typedef typename Range::ConstIterator ConstIterator; //iterator
   typedef StabbingCircleComputer<ConstIterator> SegmentComputer; //segment computer
-  
+
   unsigned int nbok = 0;
-  unsigned int nb = 0;  
+  unsigned int nb = 0;
 
   trace.beginBlock ( "Greedy segmentation" );
   {
     typedef GreedySegmentation<SegmentComputer> Segmentation;
     Segmentation theSegmentation( r.begin(), r.end(), SegmentComputer() );
-    
-    Board2D board; 
-    board << r; 
-      
+
+    Board2D board;
+    board << r;
+
     typename Segmentation::SegmentComputerIterator it = theSegmentation.begin();
     typename Segmentation::SegmentComputerIterator itEnd = theSegmentation.end();
-    unsigned int n = 0; 
-    unsigned int suml = 0; 
+    unsigned int n = 0;
+    unsigned int suml = 0;
     for ( ; it != itEnd; ++it, ++n) {
       board << SetMode(SegmentComputer().className(), "Sector")
-                << (*it); 
+                << (*it);
       for (ConstIterator i = it->begin(); i != it->end(); ++i)
-        suml += 1; 
+        suml += 1;
     }
-    
-    board.saveSVG("StabbingCircleComputerGreedySegmentationTest.svg", Board2D::BoundingBox, 5000 ); 
+
+    board.saveSVG("StabbingCircleComputerGreedySegmentationTest.svg", Board2D::BoundingBox, 5000 );
 
     trace.info() << r.size() << ";" << n << ";" << suml << endl;
     //comparison with the results given by another program
-    bool flag = ((r.size()==85)&&(n==6)&&(suml==90)&&((r.size()+n-1)==suml)); 
-    nbok += flag ? 1 : 0; 
+    bool flag = ((r.size()==85)&&(n==6)&&(suml==90)&&((r.size()+n-1)==suml));
+    nbok += flag ? 1 : 0;
     nb++;
   }
   trace.endBlock();
@@ -373,31 +373,31 @@ bool testSegmentation(const TCurve& curve)
   {
     typedef SaturatedSegmentation<SegmentComputer> Segmentation;
     Segmentation theSegmentation( r.begin(), r.end(), SegmentComputer() );
-    theSegmentation.setMode("Last"); 
-    
-    Board2D board; 
-    board << curve; 
-    
+    theSegmentation.setMode("Last");
+
+    Board2D board;
+    board << curve;
+
     typename Segmentation::SegmentComputerIterator it = theSegmentation.begin();
     typename Segmentation::SegmentComputerIterator itEnd = theSegmentation.end();
-    unsigned int n = 0; 
-    unsigned int suml = 0; 
+    unsigned int n = 0;
+    unsigned int suml = 0;
     for ( ; it != itEnd; ++it, ++n) {
       board << SetMode(SegmentComputer().className(), "Annulus")
-                << (*it); 
+                << (*it);
       for (ConstIterator i = it->begin(); i != it->end(); ++i)
-        suml += 1; 
+        suml += 1;
     }
-    
-    board.saveSVG("StabbingCircleComputerSaturatedSegmentationTest.svg", Board2D::BoundingBox, 5000 ); 
+
+    board.saveSVG("StabbingCircleComputerSaturatedSegmentationTest.svg", Board2D::BoundingBox, 5000 );
 
     trace.info() << r.size() << ";" << n << ";" << suml << endl;
     //comparison with the results given by another program
-    nbok += ((r.size()==85)&&(n==20)&&(suml==326)) ? 1 : 0; 
+    nbok += ((r.size()==85)&&(n==20)&&(suml==326)) ? 1 : 0;
     nb++;
   }
   trace.endBlock();
-  
+
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   return (nbok == nb);
 }
@@ -412,41 +412,41 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  bool res; 
-  
+  bool res;
+
   {//concept checking
     testStabbingCircleComputerConceptChecking();
   }
-  
+
   {//basic operations
     typedef KhalimskySpaceND<2,int> KSpace;
-    typedef KSpace::Space::Point Point; 
-    KSpace kspace(Point::diagonal(-10),Point::diagonal(10),true); 
-    GridCurve<KSpace> c, rc; 
-    ballGenerator(kspace,c,6,false); 
-    ballGenerator(kspace,rc,6,true); 
+    typedef KSpace::Space::Point Point;
+    KSpace kspace(Point::diagonal(-10),Point::diagonal(10),true);
+    GridCurve<KSpace> c, rc;
+    ballGenerator(kspace,c,6,false);
+    ballGenerator(kspace,rc,6,true);
 
     res = testStabbingCircleComputer(c)
   && drawingTestStabbingCircleComputer(c, "CCW")
-  && drawingTestStabbingCircleComputer(rc, "CW"); 
+  && drawingTestStabbingCircleComputer(rc, "CW");
   }
-  
+
   {//recognition
     res = res && testRecognition();
   }
-  
+
   {//segmentations
     std::string filename = testPath + "samples/sinus2D4.dat";
     ifstream instream; // input stream
     instream.open (filename.c_str(), ifstream::in);
-    
-    typedef KhalimskySpaceND<2,int> KSpace; 
+
+    typedef KhalimskySpaceND<2,int> KSpace;
     GridCurve<KSpace> c; //grid curve
     c.initFromVectorStream(instream);
-    
-    res = res && testSegmentation(c); 
+
+    res = res && testSegmentation(c);
   }
-  
+
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

@@ -60,92 +60,92 @@ template <typename Coordinate>
 bool testCircleFrom3Points()
 {
 
-  trace.beginBlock("Simple test for CircleFrom3Points"); 
-  
-  typedef PointVector<2,Coordinate> Point; 
-  CircleFrom3Points<Point> c; 
-  Point o(0,0); 
+  trace.beginBlock("Simple test for CircleFrom3Points");
+
+  typedef PointVector<2,Coordinate> Point;
+  CircleFrom3Points<Point> c;
+  Point o(0,0);
 
   {
-    c.init( Point(0,1), Point(150,18), Point(250,-48) ); 
+    c.init( Point(0,1), Point(150,18), Point(250,-48) );
     trace.info() << c << endl;
     trace.info() << o << " is at distance " << c.signedDistance(o) << endl;
-    if (c.signedDistance(o) != -4026300) return false; 
+    if (c.signedDistance(o) != -4026300) return false;
   }
   {
-    c.init( Point(0,1), Point(150,18), Point(100,48) ); 
+    c.init( Point(0,1), Point(150,18), Point(100,48) );
     trace.info() << c << endl;
     trace.info() << o << " is at distance " << c.signedDistance(o) << endl;
-    if (c.signedDistance(o) != 442200) return false; 
+    if (c.signedDistance(o) != 442200) return false;
   }
   {
-    c.init( Point(8,4), Point(9,3), Point(10,0) ); 
+    c.init( Point(8,4), Point(9,3), Point(10,0) );
     trace.info() << c << endl;
     trace.info() << o << " is at distance " << c.signedDistance(o) << endl;
     if (c.signedDistance(o) != 0) return false;
-    double cx, cy, r; 
-    c.getParameters(cx, cy, r); 
+    double cx, cy, r;
+    c.getParameters(cx, cy, r);
     if ( (cx != 5.0)||(cy != 0.0) )
     {
       trace.emphase() << "error in returned center" << endl;
       trace.info() << "(" << cx << "," << cy << ") " << endl;
       trace.info() << "instead of (5,0)" << endl;
-      return false; 
-    } 
+      return false;
+    }
   }
   {
-    c.init( Point(0,0), Point(150,20), Point(15,2) ); 
+    c.init( Point(0,0), Point(150,20), Point(15,2) );
     trace.info() << c << endl;
     trace.info() << o << " is at distance " << c.signedDistance(o) << endl;
-    if (c.signedDistance(o) != 0) return false; 
+    if (c.signedDistance(o) != 0) return false;
   }
 
-  Board2D board; 
-  board << SetMode(o.className(), "Grid") << o; 
+  Board2D board;
+  board << SetMode(o.className(), "Grid") << o;
   {
-    c.init( Point(8,4), Point(9,3), Point(10,0) ); 
+    c.init( Point(8,4), Point(9,3), Point(10,0) );
     trace.info() << "arc drawing" << endl;
-    
+
     board << SetMode( c.className(), "Arc" );
     Display2DFactory::draw(board, c, Point(5,10), Point(8,4));
-    
+
     board << SetMode( c.className(), "Sector" );
     Display2DFactory::draw(board, c, Point(9,3), Point(10,0) );
-    
+
     board << SetMode( c.className(), "Annulus" );
     Display2DFactory::draw(board, c, Point(5,-10), Point(2,-4) );
-    
+
     board.saveEPS("arcDisplay.eps");
   }
 
 
-  trace.endBlock(); 
-  
-  return true; 
+  trace.endBlock();
+
+  return true;
 }
 
 template <typename Coordinate>
 bool testCircleFrom2Points()
 {
 
-  trace.beginBlock("Simple test for CircleFrom2Points"); 
-  
-  typedef PointVector<2,Coordinate> Point; 
+  trace.beginBlock("Simple test for CircleFrom2Points");
+
+  typedef PointVector<2,Coordinate> Point;
   Point o(0,0);
-  Point pole(0,1); 
-  CircleFrom2Points<Point> c( pole ); 
+  Point pole(0,1);
+  CircleFrom2Points<Point> c( pole );
 
   {
-    c.init( Point(15,2), Point(10,5) ); 
+    c.init( Point(15,2), Point(10,5) );
     trace.info() << c << endl;
     trace.info() << o << " is at distance " << c.signedDistance(o) << endl;
-    if (c.signedDistance(o) != 470) return false; 
+    if (c.signedDistance(o) != 470) return false;
 
   }
 
-  trace.endBlock(); 
-  
-  return true; 
+  trace.endBlock();
+
+  return true;
 }
 
 
@@ -165,12 +165,12 @@ int main( int argc, char** argv )
   && testCircleFrom3Points<double>()
   && testCircleFrom3Points<BigInteger>()
   && testCircleFrom2Points<int>()
-; 
+;
 
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
-  
+
   return res ? 0 : 1;
 }
 //                                                                           //

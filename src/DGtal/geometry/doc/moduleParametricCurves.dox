@@ -4,7 +4,7 @@
  * Laboratoire d'Informatique Gaspard-Monge - LIGM, France
  *
  * @date 2018/08/15
- * 
+ *
  * Documentation file for 3D parametric curves module
  *
  * This file is part of the DGtal library.
@@ -59,42 +59,42 @@ Simplified pseudo-code:
 @code
 //Create a raw digitization
  while t in  [t_{min}, t_{tmax}]  do
-  point = [ \gamma(t)]       // [.] stands for a rounding function 
+  point = [ \gamma(t)]       // [.] stands for a rounding function
   weights[point] = weights[point] + 1
   if not  buffer.hasElement(point) then
     buffer.push_back(point)
   t = t + step
 digital_curve.push_back(buffer[0])
- //Refine the digitization by keeping only the most meaningful points i.e., points of high coverage of   \gamma 
+ //Refine the digitization by keeping only the most meaningful points i.e., points of high coverage of   \gamma
   for i = 1 while  i < size(buffer) do
     for  j = i + 1  and  k = 0  while   j < size(buffer) and  k < K_{NEXT}  do
      if is26Connected(digital_curve.back(), buffer[j]) and weights[buffer[j]]  >  weights[buffer[i]] then
-       i = j  
-      k = 0  
+       i = j
+      k = 0
      else
-       k = k + 1 
-       j = j + 1 
+       k = k + 1
+       j = j + 1
   digital_curve.push_back(buffer[i])
-  i = i + 1 
+  i = i + 1
  //Due to the weights fluctuations or curve behaviour we can still have points that should be removed to ensure 26-connectivity.
   for  i = 0  while  i < size(buffer) do
-     tmp = i + 1  
+     tmp = i + 1
     for  j = i + 1  and  k = 0  while   j < size(buffer) and  k < K_{NEXT}  do
       if is26Connected(digital_curve[i], digital_curve[j]) then
-       tmp = j  
-       k = 0  
+       tmp = j
+       k = 0
      else
-        k = k + 1 
-      j = j + 1 
+        k = k + 1
+      j = j + 1
     digital_curve.erase(i + 1, tmp)
-     i = tmp + 1 
+     i = tmp + 1
  @endcode
 
 In the implemented version the buffer has size three times the value of \f$ K_{NEXT} \f$, and each
 time the buffer is flushed a part of the digital curve is created (see the two first nested loops in the code
 above). Also, the implemented version can treat closed curves and collect useful metadata.
 
-\subsection metData Additional Information
+\subsection metadata Additional Information
 
 The digitization implemented in NaiveParametricCurveDigitizer3D can collect, for each point of
 the output digital curve, information like
@@ -226,6 +226,3 @@ exampleParamCurve3dDigitizationTransformationDecorator.cpp, exampleTrofoliKnot.c
 */
 
 }
-
-
-

@@ -1,11 +1,11 @@
 
-/* 
+/*
  * Useful to avoid writing DGtal:: in front of every class.
  */
 namespace DGtal {
 
 /*!
-   
+
 @page moduleCOBANaivePlaneRecognition Detailed explanation of COBA plane recognition algorithm
 
 @writers Jacques-Olivier Lachaud
@@ -49,7 +49,7 @@ variables \f$ (N_x,N_y) \f$. Given a set of points \f$ (\vec{P}_i)
 \f$, it computes (or maintains in the incremental form) the 2D space
 of solutions induced by these points. More precisely, each point
 induces two linear constraints \f$ \mu \le \vec{N} \cdot \vec{P}_i \f$
-and \f$ \vec{N} \cdot \vec{P}_i < \mu + \epsilon \f$. 
+and \f$ \vec{N} \cdot \vec{P}_i < \mu + \epsilon \f$.
 
 Instead of keeping this problem in \f$ R^2 \f$, the problem is cast in
 \f$ (hZ)^2 \f$, where the parameter \a h is the sampling step and is
@@ -93,7 +93,7 @@ The main class is COBANaivePlaneComputer. It is templated by the digital space
 \a TSpace, an arbitrary model of CSpace with dimension equal to 3, and
 by the internal integer type \a TInternalInteger, which should be an
 integral type with big enough precision to perform computations in the
-subsampled \f$ Z^2 \f$. 
+subsampled \f$ Z^2 \f$.
 
 The most important inner types are (most of the others are
 redefinitions so that this object is a model of
@@ -113,8 +113,8 @@ boost::ForwardContainer):
 
 You may instantiate a COBANaivePlaneComputer as follows:
 
-@code 
-#include "DGtal/geometry/surfaces/COBANaivePlaneComputer.h" 
+@code
+#include "DGtal/geometry/surfaces/COBANaivePlaneComputer.h"
 ...
 using namespace Z3i;               // digital space is Z3
 ...
@@ -203,7 +203,7 @@ complexity of this algorithm that depends only on the number of points
 \a N. Indeed, the determinant factor on the complexity is the number
 of times \a k that the plane parameters are updated. Another factor is
 the number of vertices \a v of the current convex set of
-solutions. 
+solutions.
 
 - The parameter \a k depends on the order of added point. It is
   related to the depth of bidimensional continued fraction of the
@@ -224,7 +224,7 @@ Putting everything together gives some \f$ O(N \log N +
 k(v+N+\log(D))\log^2(D)) \f$. Neglecting \a v gives \f$ O( N (\log N +
 k \log^3 D ) ) \f$.
 
-We have runned the following benchmark to estimate the average speed
+We have run the following benchmark to estimate the average speed
 of COBA algorithm. For each experiment, 1000 naive planes were
 randomly chosen. Then, for an input diameter \a D, \a N points are
 randomly chosen in the parallelepiped D x D x D, such that they belong
@@ -282,12 +282,12 @@ are favored axes when iterating (vertices are not randomly picked up),
 this technique has indeed the drawback of favoring "slice planes",
 which are not very useful.
 
-@note \b Exercice 1. Randomize the greedy plane recognition. The
+@note \b Exercise 1. Randomize the greedy plane recognition. The
 simplest approach is first to put all vertices into a vector, then
 suffle it with STL algorithms. And then iterate over this shuffled
 set.
 
-@note \b Exercice 2. Enhance the polyhedrization by selecting first
+@note \b Exercise 2. Enhance the polyhedrization by selecting first
 the vertices that induces the biggest planes. This is much slower than
 above, but will give nicer results. For each vertex, computes its best
 plane by breadth-first traversal. Stores the obtained size (or better
@@ -295,14 +295,14 @@ moments). Do that for each vertex independently. Put them in a
 priority queue, the first to be popped should be the ones with the
 biggest size. The remaining of the algorithm is unchanged.
 
-\section moduleCOBANaivePlaneRecognition_sec6 What if you do not know the main axis beforehands ?
+\section moduleCOBANaivePlaneRecognition_sec6 What if you do not know the main axis beforehand ?
 
 In this case, you should use the class COBAGenericNaivePlaneComputer. You use
 it similarly to COBANaivePlaneComputer, but you do not need to specify a main
 axis when calling COBAGenericNaivePlaneComputer::init().
 
-@code 
-#include "DGtal/geometry/surfaces/COBAGenericNaivePlaneComputer.h" 
+@code
+#include "DGtal/geometry/surfaces/COBAGenericNaivePlaneComputer.h"
 ...
 using namespace Z3i;            // digital space is Z3
 ...

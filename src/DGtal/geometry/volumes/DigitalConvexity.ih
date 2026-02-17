@@ -286,7 +286,7 @@ makeCellCover( const RationalPolytope& P,
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
-typename DGtal::DigitalConvexity<TKSpace>::LatticePolytope 
+typename DGtal::DigitalConvexity<TKSpace>::LatticePolytope
 DGtal::DigitalConvexity<TKSpace>::
 makePolytope( const PointRange& X, bool make_minkowski_summable ) const
 {
@@ -380,7 +380,7 @@ isFullyConvexFast( const PointRange& Z  ) const
   LatticeSet C_Z( Z.cbegin(), Z.cend(), 0 );
   const auto nb_cells = C_Z.starOfPoints().size();
   const auto s = sizeStarCvxH( Z );
-  return s == (Integer)nb_cells; 
+  return s == (Integer)nb_cells;
 }
 
 //-----------------------------------------------------------------------------
@@ -580,13 +580,13 @@ CoverPolytope( const TPolytope& P, Dimension axis ) const
   // Convert points to Khalimsky coordinates and insert them in LatticeSet.
   LS = LatticeSet( axis );
   for ( const auto& p : V    ) LS.insert( Point( 2*p[0]  , 2*p[1]  , 2*p[2]   ) );
-  for ( const auto& p : V0   ) LS.insert( Point( 2*p[0]-1, 2*p[1]  , 2*p[2]   ) );      
-  for ( const auto& p : V1   ) LS.insert( Point( 2*p[0]  , 2*p[1]-1, 2*p[2]   ) );      
-  for ( const auto& p : V2   ) LS.insert( Point( 2*p[0]  , 2*p[1]  , 2*p[2]-1 ) );      
-  for ( const auto& p : V01  ) LS.insert( Point( 2*p[0]-1, 2*p[1]-1, 2*p[2]   ) );      
-  for ( const auto& p : V02  ) LS.insert( Point( 2*p[0]-1, 2*p[1]  , 2*p[2]-1 ) );      
-  for ( const auto& p : V12  ) LS.insert( Point( 2*p[0]  , 2*p[1]-1, 2*p[2]-1 ) );      
-  for ( const auto& p : V012 ) LS.insert( Point( 2*p[0]-1, 2*p[1]-1, 2*p[2]-1 ) );      
+  for ( const auto& p : V0   ) LS.insert( Point( 2*p[0]-1, 2*p[1]  , 2*p[2]   ) );
+  for ( const auto& p : V1   ) LS.insert( Point( 2*p[0]  , 2*p[1]-1, 2*p[2]   ) );
+  for ( const auto& p : V2   ) LS.insert( Point( 2*p[0]  , 2*p[1]  , 2*p[2]-1 ) );
+  for ( const auto& p : V01  ) LS.insert( Point( 2*p[0]-1, 2*p[1]-1, 2*p[2]   ) );
+  for ( const auto& p : V02  ) LS.insert( Point( 2*p[0]-1, 2*p[1]  , 2*p[2]-1 ) );
+  for ( const auto& p : V12  ) LS.insert( Point( 2*p[0]  , 2*p[1]-1, 2*p[2]-1 ) );
+  for ( const auto& p : V012 ) LS.insert( Point( 2*p[0]-1, 2*p[1]-1, 2*p[2]-1 ) );
   return LS;
 }
 
@@ -622,7 +622,7 @@ CoverCvxH( const Point& a, const Point& b, const Point& c,
 template <typename TKSpace>
 typename  DGtal::DigitalConvexity<TKSpace>::LatticeSet
 DGtal::DigitalConvexity<TKSpace>::
-CoverCvxH( const Point& a, const Point& b, 
+CoverCvxH( const Point& a, const Point& b,
 	  Dimension axis ) const
 {
   LatticeSet LS;
@@ -682,7 +682,7 @@ sizeStarCvxH( const PointRange& X ) const
   Counter C( P );
   const Dimension a = C.longestAxis();
   auto cellP = C.getLatticeCells( a );
-  
+
   // Counts the number of cells
   Integer nb = 0;
   for ( const auto& value : cellP )
@@ -696,7 +696,7 @@ sizeStarCvxH( const PointRange& X ) const
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
-typename DGtal::DigitalConvexity<TKSpace>::PointRange 
+typename DGtal::DigitalConvexity<TKSpace>::PointRange
 DGtal::DigitalConvexity<TKSpace>::
 Extr( const PointRange& C ) const
 {
@@ -724,7 +724,7 @@ Extr( const PointRange& C ) const
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
-typename DGtal::DigitalConvexity<TKSpace>::PointRange 
+typename DGtal::DigitalConvexity<TKSpace>::PointRange
 DGtal::DigitalConvexity<TKSpace>::
 Extr( const LatticeSet& C ) const
 {
@@ -740,7 +740,7 @@ Skel( const LatticeSet& C ) const
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
-typename DGtal::DigitalConvexity<TKSpace>::PointRange 
+typename DGtal::DigitalConvexity<TKSpace>::PointRange
 DGtal::DigitalConvexity<TKSpace>::
 ExtrSkel( const LatticeSet& C ) const
 {
@@ -749,7 +749,7 @@ ExtrSkel( const LatticeSet& C ) const
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
-typename DGtal::DigitalConvexity<TKSpace>::PointRange 
+typename DGtal::DigitalConvexity<TKSpace>::PointRange
 DGtal::DigitalConvexity<TKSpace>::
 FC_direct( const PointRange& Z ) const
 {
@@ -874,7 +874,7 @@ FC_direct( const PointRange& Z ) const
           eraseInterval( Interval{ x-1,x-1} , W );
           eraseInterval( Interval{ x+1,x+1} , W );
         }
-    }  
+    }
   // Erase empty stacks
   for ( auto it = skelP.begin(), itE = skelP.end(); it != itE; )
     {
@@ -903,7 +903,7 @@ FC_direct( const PointRange& Z ) const
 }
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
-typename DGtal::DigitalConvexity<TKSpace>::PointRange 
+typename DGtal::DigitalConvexity<TKSpace>::PointRange
 DGtal::DigitalConvexity<TKSpace>::
 FC_LatticeSet( const PointRange& Z ) const
 {
@@ -914,7 +914,7 @@ FC_LatticeSet( const PointRange& Z ) const
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
-typename DGtal::DigitalConvexity<TKSpace>::PointRange 
+typename DGtal::DigitalConvexity<TKSpace>::PointRange
 DGtal::DigitalConvexity<TKSpace>::
 FC( const PointRange& Z, EnvelopeAlgorithm algo ) const
 {
@@ -928,7 +928,7 @@ FC( const PointRange& Z, EnvelopeAlgorithm algo ) const
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
-typename DGtal::DigitalConvexity<TKSpace>::PointRange 
+typename DGtal::DigitalConvexity<TKSpace>::PointRange
 DGtal::DigitalConvexity<TKSpace>::
 envelope( const PointRange& Z, EnvelopeAlgorithm algo ) const
 {
@@ -947,7 +947,7 @@ envelope( const PointRange& Z, EnvelopeAlgorithm algo ) const
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
-typename DGtal::DigitalConvexity<TKSpace>::PointRange 
+typename DGtal::DigitalConvexity<TKSpace>::PointRange
 DGtal::DigitalConvexity<TKSpace>::
 relativeEnvelope( const PointRange& Z, const PointRange& Y,
                   EnvelopeAlgorithm algo ) const
@@ -959,7 +959,7 @@ relativeEnvelope( const PointRange& Z, const PointRange& Y,
     std::set_intersection( In.cbegin(), In.cend(),
                            Y.cbegin(), Y.cend(),
                            std::back_inserter( Out ) );
-    In = FC( Out, algo ); 
+    In = FC( Out, algo );
     if ( In.size() == Out.size() ) return Out;
     myDepthLastFCE++;
   }
@@ -969,7 +969,7 @@ relativeEnvelope( const PointRange& Z, const PointRange& Y,
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 template <typename Predicate>
-typename DGtal::DigitalConvexity<TKSpace>::PointRange 
+typename DGtal::DigitalConvexity<TKSpace>::PointRange
 DGtal::DigitalConvexity<TKSpace>::
 relativeEnvelope( const PointRange& Z, const Predicate& PredY,
                   EnvelopeAlgorithm algo ) const
@@ -978,7 +978,7 @@ relativeEnvelope( const PointRange& Z, const Predicate& PredY,
   auto In = Z;
   while (true) {
     auto Out = filter( In, PredY );
-    In = FC( Out, algo ); 
+    In = FC( Out, algo );
     if ( In.size() == Out.size() ) return In;
     myDepthLastFCE++;
   }
@@ -1133,7 +1133,7 @@ isFullyCovered( const Point& a, const Point& b,
   if ( a != b ) L_ab.insert( 2*b );
   // LatticeSet Star_ab = L_ab.starOfCells();
   return cells.includes( L_ab );
-  
+
   // ASSERT( dimension == 3 );
   // const auto SCab = CoverCvxH( a, b, cells.axis() );
   // return cells.includes( SCab );
@@ -1271,7 +1271,7 @@ isFullySubconvex( const RationalPolytope& P, const CellGeometry& C ) const
 
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
-void 
+void
 DGtal::DigitalConvexity<TKSpace>::
 eraseInterval( Interval I, std::vector< Interval > & V )
 {
@@ -1285,7 +1285,7 @@ eraseInterval( Interval I, std::vector< Interval > & V )
       //       a ----------  b
       // a' ...............  a'
       //     b' ................. b'
-      
+
       // a' ..................... b' => a'..a-1       b+1 b'
       Interval K1( J.first, I.first - 1 );
       Interval K2( I.second + 1, J.second );
@@ -1315,7 +1315,7 @@ eraseInterval( Interval I, std::vector< Interval > & V )
 //-----------------------------------------------------------------------------
 template <typename TKSpace>
 template <typename Predicate>
-typename DGtal::DigitalConvexity<TKSpace>::PointRange 
+typename DGtal::DigitalConvexity<TKSpace>::PointRange
 DGtal::DigitalConvexity<TKSpace>::
 filter( const PointRange& E, const Predicate& Pred )
 {

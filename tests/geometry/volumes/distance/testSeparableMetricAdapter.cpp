@@ -47,8 +47,8 @@ struct D34 {
   typedef Z2i::Point Point;
   typedef Z2i::Vector Vector;
   typedef double Value;
-  
-  
+
+
 };
 
 
@@ -58,22 +58,22 @@ struct D34 {
 
 bool testSeparableMetricAdapter()
 {
-  trace.beginBlock ( "Testing Type instanciation ..." );
-  
+  trace.beginBlock ( "Testing Type instantiation ..." );
+
   //Distance type
   typedef ExactPredicateLpSeparableMetric<Z2i::Space, 2> Distance;
   Distance l2;
   typedef SeparableMetricAdapter<Distance> AdaptedDistance;
-  
+
   AdaptedDistance myMetric(l2);
-  
+
   Z2i::Point a(0,0);
   Z2i::Point b(14,123);
   trace.info() << "Two point distance= "<<myMetric(a,b)<<std::endl;
-  
-  
+
+
   trace.endBlock();
-  
+
   return true;
 }
 
@@ -83,88 +83,88 @@ bool testMetrics()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing separable metrics l_2 ..." );
-  
+
   Z2i::Point a( 0,0), b(5, 0), bb(5,-10), bbb(5,5),c(10,0), d(3,3);
   Z2i::Point starting( 0, 5), endpoint(10,5);
-  
+
   typedef ExactPredicateLpSeparableMetric<Z2i::Space, 2> Distance;
   Distance l2;
   typedef SeparableMetricAdapter<Distance> AdaptedDistance;
   AdaptedDistance metric(l2);
-  
-  
+
+
   trace.info()<< "a= "<<a<<std::endl;
   trace.info()<< "b= "<<b<<std::endl;
   trace.info()<< "bb= "<<bb<<std::endl;
   trace.info()<< "bbb= "<<bbb<<std::endl;
   trace.info()<< "c= "<<c<<std::endl;
-  
+
   trace.info() << "distance between a and bb = "<< metric(a,bb)<< std::endl;
-  
-  
+
+
   DGtal::Closest closest  =metric.closest(a,d,c);
   nbok += (closest == ClosestFIRST) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
   << "closest(a,d,c) returns d" << std::endl;
-  
+
   bool hidden  =metric.hiddenBy(a,b,c,starting,endpoint,0);
   nbok += (!hidden) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
   << "(a,b,c) returns false" << std::endl;
-  
+
   hidden  =metric.hiddenBy(a,bb,c,starting,endpoint,0);
   nbok += (hidden) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
   << "(a,bb,c) returns true" << std::endl;
-  
+
   hidden  =metric.hiddenBy(a,bbb,c,starting,endpoint,0);
   nbok += (!hidden) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
   << "(a,bbb,c) returns false" << std::endl;
-  
+
   trace.endBlock();
-  
+
   trace.beginBlock ( "Testing separable metrics l_3 ..." );
-  
-  
+
+
   typedef ExactPredicateLpSeparableMetric<Z2i::Space, 3> Distance3;
   Distance3 l3;
   typedef SeparableMetricAdapter<Distance3> AdaptedDistance3;
   AdaptedDistance3 metric3(l3);
-  
+
   trace.info()<< "a= "<<a<<std::endl;
   trace.info()<< "b= "<<b<<std::endl;
   trace.info()<< "bb= "<<bb<<std::endl;
   trace.info()<< "bbb= "<<bbb<<std::endl;
   trace.info()<< "c= "<<c<<std::endl;
-  
-  
+
+
   hidden  =metric3.hiddenBy(a,b,c,starting,endpoint,0);
   nbok += (!hidden) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
   << "(a,b,c) returns false" << std::endl;
-  
+
   hidden  =metric3.hiddenBy(a,bb,c,starting,endpoint,0);
   nbok += (hidden) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
   << "(a,bb,c) returns true" << std::endl;
-  
+
   hidden  =metric3.hiddenBy(a,bbb,c,starting,endpoint,0);
   nbok += (!hidden) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
   << "(a,bbb,c) returns false" << std::endl;
-  
+
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
@@ -173,12 +173,12 @@ bool testVoronoiMap(const Metric &aMetric, string filename)
 {
   typedef SeparableMetricAdapter<Metric> Adapted;
   Adapted adapted(aMetric);
-  
+
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Checking VoronoiMap ..." );
-  
+
   Z2i::Point a(-10,-10);
   Z2i::Point b(10,10);
   Z2i::Domain domain(a,b);
@@ -187,8 +187,8 @@ bool testVoronoiMap(const Metric &aMetric, string filename)
       it != itend;
       ++it)
     mySet.insertNew( *it );
-  
-  
+
+
   Z2i::DigitalSet sites(domain);
   sites.insertNew( Z2i::Point(0,-6));
   sites.insertNew( Z2i::Point(6,0));
@@ -199,11 +199,11 @@ bool testVoronoiMap(const Metric &aMetric, string filename)
 
   typedef VoronoiMap<Z2i::Space, Z2i::DigitalSet, Metric> VoroExact;
   typedef VoronoiMap<Z2i::Space, Z2i::DigitalSet, Adapted> VoroAdapted;
-  
+
   VoroExact voroExact(domain, mySet,aMetric);
   VoroAdapted voroAdapted(domain, mySet, adapted);
-  
-  
+
+
   trace.info()<<"Exporting o SVG"<<std::endl;
   Board2D board;
   for(typename VoroExact::OutputImage::Domain::ConstIterator it = voroExact.domain().begin(),
@@ -217,7 +217,7 @@ bool testVoronoiMap(const Metric &aMetric, string filename)
   }
   string out = filename + "-exact.svg";
   board.saveSVG(out.c_str());
-  
+
   board.clear();
   for(typename VoroAdapted::OutputImage::Domain::ConstIterator it = voroAdapted.domain().begin(),
       itend = voroAdapted.domain().end();
@@ -230,8 +230,8 @@ bool testVoronoiMap(const Metric &aMetric, string filename)
   }
   out = filename + "-adapted.svg";
   board.saveSVG(out.c_str());
-  
-  
+
+
   //Checking Values
   for(typename VoroExact::OutputImage::Domain::ConstIterator it = voroExact.domain().begin(),
       itend = voroExact.domain().end();
@@ -245,7 +245,7 @@ bool testVoronoiMap(const Metric &aMetric, string filename)
   trace.info() << "(" << nbok << "/" << nb << ") "
   << "Voronoi diagram is valid !" << std::endl;
   trace.endBlock();
- 
+
   return nbok == nb;
 }
 
@@ -259,13 +259,13 @@ int main( int argc, char** argv )
   for ( int i = 0; i < argc; ++i )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
-  
+
   bool res = testSeparableMetricAdapter() &&
              testMetrics() &&
   testVoronoiMap(Z2i::l2Metric,"voronoiadapted-l2") && // && ... other tests
   testVoronoiMap(Z2i::l1Metric,"voronoiadapted-l1") && // && ... other tests
   testVoronoiMap(InexactPredicateLpSeparableMetric<Z2i::Space>(3.444),"voronoiadapted-l3.444"); // && ... other tests
-  
+
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();
   return res ? 0 : 1;

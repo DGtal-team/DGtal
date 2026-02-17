@@ -142,7 +142,7 @@ bool testMeshReader()
                    a3DMesh4.getFaceColor(5) == DGtal::Color::Purple;
   nbok += importOK6 ? 1 : 0;
 
-  
+
   trace.info() << "(" << nbok << "/" << nb << ") "
     << "true == true" << std::endl;
   trace.endBlock();

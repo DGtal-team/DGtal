@@ -79,11 +79,11 @@ namespace DGtal
      @tparam TValue an arbitrary model of CCommutativeRing
    */
   template < typename TRealPoint, typename TRealVector, typename TValue >
-  struct SurfaceMeshMeasure 
+  struct SurfaceMeshMeasure
   {
     // ------------------------- Public Types ------------------------------
   public:
-    
+
     typedef TRealPoint                     RealPoint;
     typedef TRealVector                    RealVector;
     typedef TValue                         Value;
@@ -149,9 +149,9 @@ namespace DGtal
       return ( dim == 0 ) ? vertex_measures
         : ( (dim == 1 ) ? edge_measures : face_measures );
     }
-    
+
     /// @}
-    
+
     // ------------------------- Measure services ------------------------------
   public:
     /// @name Measure services
@@ -191,14 +191,14 @@ namespace DGtal
           return m;
         }
     }
-      
+
     /// @param v any vertex index.
     /// @return its measure.
     Value vertexMeasure( Vertex v ) const
     {
       return v < vertex_measures.size() ? vertex_measures[ v ] : Value();
     }
-    
+
     /// @param vertices any range of (valid) vertex indices.
     /// @return its measure.
     Value vertexMeasure( const Vertices& vertices ) const
@@ -218,7 +218,7 @@ namespace DGtal
       for ( auto&& v : wvertices )  m += vertex_measures[ v.first ] * v.second;
       return m;
     }
-    
+
     /// @param e any edge index.
     /// @return its measure.
     Value edgeMeasure( Edge e ) const
@@ -245,7 +245,7 @@ namespace DGtal
       for ( auto&& e : wedges )  m += edge_measures[ e.first ] * e.second;
       return m;
     }
-    
+
     /// @param f any face index.
     /// @return its measure.
     Value faceMeasure( Face f ) const
@@ -272,10 +272,10 @@ namespace DGtal
       for ( auto&& v : wfaces )  m += face_measures[ v.first ] * v.second;
       return m;
     }
-    
+
     /// @}
-    
-    // ------------------------- Public Datas ------------------------------
+
+    // ------------------------- Public Data ------------------------------
   public:
     /// Stores the scalar curvature measure per indexed vertex element.
     Values vertex_measures;
@@ -284,7 +284,7 @@ namespace DGtal
     /// Stores the scalar curvature measure per indexed face element.
     Values face_measures;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
     /// A pointer to the mesh over which computations are done.
     const SurfaceMesh* myMeshPtr;
@@ -292,7 +292,7 @@ namespace DGtal
     Value myZero;
   };
 
-  
+
 } // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////

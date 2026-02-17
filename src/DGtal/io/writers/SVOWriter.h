@@ -30,10 +30,10 @@
 #include <boost/endian/conversion.hpp>
 #include "DGtal/kernel/sets/DigitalSetByOctree.h"
 
-namespace DGtal 
+namespace DGtal
 {
   /**
-   * @brief Helper class to write an octree to a file using SVO file format. 
+   * @brief Helper class to write an octree to a file using SVO file format.
    *
    *  @ref moduleIO
    *
@@ -41,7 +41,7 @@ namespace DGtal
    *  @see SVOReader
    */
   template<class Space> // Left here for coherence with SVOReader which can not infere Space.
-  class SVOWriter 
+  class SVOWriter
   {
     public:
       /**

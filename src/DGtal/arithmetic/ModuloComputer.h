@@ -55,7 +55,7 @@ namespace DGtal
    * Description of template class 'ModuloComputer' <p>
    *
    * \brief implements basic functions on modular arithmetic.
-   * 
+   *
    * @tparam TInteger type of integer.
    *
    * Example:
@@ -78,7 +78,7 @@ namespace DGtal
   template <typename TInteger>
   class ModuloComputer
   {
-  public:    
+  public:
     typedef TInteger Integer;
     typedef typename NumberTraits<Integer>::ParamType IntegerParamType;
 
@@ -86,13 +86,13 @@ namespace DGtal
     typedef typename NumberTraits<UnsignedInteger>::ParamType UnsignedIntegerParamType;
 
     BOOST_CONCEPT_ASSERT((concepts::CInteger<Integer>));
-    
+
     /**
      * Initializes the modulo computer with the value [m].
      * @param m any non-zero integer.
      */
     ModuloComputer( UnsignedIntegerParamType m );
-    
+
     /**
      * Increment the value [i] modulo.
      * @param i any value between 0 and [k] (excluded).
@@ -123,7 +123,7 @@ namespace DGtal
      * NB: O ( i/k ) operation.
      */
     UnsignedInteger cast( IntegerParamType i ) const;
-    
+
     /**
      * Less comparator modulo. Be careful, modulo comparisons have no
      * sense when the absolute difference of the values are around k / 2.
@@ -139,10 +139,10 @@ namespace DGtal
      *
      * @param j any value between 0 and [k] (excluded).
      * @param i any value between 0 and [k] (excluded).
-     * @return the value j - i, always positive. 
+     * @return the value j - i, always positive.
      */
     UnsignedInteger posDiff( UnsignedIntegerParamType j, UnsignedIntegerParamType i ) const;
-    
+
   public:
     /**
      * Writes/Displays the object on an output stream.
@@ -156,7 +156,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     /**
      * Modulo of all computations.
@@ -203,13 +203,13 @@ namespace DGtal
   */
   template <typename T>
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
          const ModuloComputer<T> & object )
   {
     object.selfDisplay( out );
     return out;
   }
-  
+
 } // namespace DGtal
 
 

@@ -11,19 +11,19 @@
 * This file is part of the DGtal library.
 */
 
-/* 
+/*
 * Useful to avoid writing DGtal:: in front of every class.
 * Do not forget to add an entry in src/DGtal/base/Config.h.in !
 */
 namespace DGtal {
 //----------------------------------------
 /*!
-@page moduleMesh Manipulating Simple Mesh 
+@page moduleMesh Manipulating Simple Mesh
 @author Bertrand Kerautret
 
 [TOC]
 
-\section sectmoduleMesh1 Simple Mesh Class 
+\section sectmoduleMesh1 Simple Mesh Class
 
 
 The aim of this class is to handle basic simple mesh mainly for
@@ -33,35 +33,35 @@ specific colors to display faces. It also provides several static
 tools to generate simple shapes like tubular objects or the 3d surface
 from height map.
 
-The mesh object stores explicitly the vertices and each face is represented as a list of vertex indices.       
+The mesh object stores explicitly the vertices and each face is represented as a list of vertex indices.
 
 \subsection subsect2moduleMesh Mesh Construction
 
 To construct a Mesh object you need first to include the associated
 header file:
 
-@snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseInclude 
+@snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseInclude
 
 
 Then the mesh construction is very simple, for instance you start
  constructing an empty mesh input and specify if you want to store or
 not the vertex colors in the mesh:
 
-@snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseMeshConstructor 
+@snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseMeshConstructor
 
 Then you can add some vertices mesh:
 
-@snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseMeshAddingPoints 
+@snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseMeshAddingPoints
 
 
 and add  some triangular/quad faces from the vertex indices:
 
-@snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseMeshAddingBasicFaces 
+@snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseMeshAddingBasicFaces
 
 
 You can also insert some polygonal faces by defining a vector containing the vertices of the face:
 
-@snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseMeshAddingPolygonalFaces 
+@snippet examples/shapes/mesh3DConstructionAndVisualisation.cpp MeshUseMeshAddingPolygonalFaces
 
 An example of mesh construction is given here:  mesh3DConstructionAndVisualisation.cpp and will produce the following faces:
 
@@ -94,7 +94,7 @@ The mesh import is also simple:
 
 
 
-\section sectmoduleMesh2 Generating Basic Mesh 
+\section sectmoduleMesh2 Generating Basic Mesh
 
 
 The Mesh class also provides some methods to generate shape mesh

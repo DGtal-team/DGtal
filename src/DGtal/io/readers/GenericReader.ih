@@ -67,8 +67,8 @@ inline
 TContainer
 DGtal::GenericReader<TContainer, 3, TValue>::
 import( const std::string & filename,
-        unsigned int x, 
-        unsigned int y, 
+        unsigned int x,
+        unsigned int y,
         unsigned int z
       )
 {
@@ -91,7 +91,7 @@ import( const std::string & filename,
 #ifdef  DGTAL_WITH_ITK
     else if (std::find(ITK_IO_IMAGE_EXT.begin(), ITK_IO_IMAGE_EXT.end(), extension) != ITK_IO_IMAGE_EXT.end() )
     {
-      
+
       return ITKReader<TContainer>::importITK( filename );
     }
 #endif

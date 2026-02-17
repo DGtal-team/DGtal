@@ -3,8 +3,8 @@
  * @file   Rect.cpp
  * @author Sebastien Fourey <http://www.greyc.ensicaen.fr/~seb>
  * @date   Sat Aug 18 2007
- * 
- * @brief  
+ *
+ * @brief
  */
 /*
  * \@copyright This File is part of the Board library which is
@@ -57,7 +57,7 @@ operator&&( const Rect & rectA, const Rect & rectB )
 std::ostream &
 operator<<( std::ostream & out, const LibBoard::Rect & rect )
 {
-  out << "Rect(" 
+  out << "Rect("
       << rect.left << "," << rect.top
       << "+" << rect.width << "x" << rect.height << ")";
   return out;

@@ -105,7 +105,7 @@ namespace DGtal
                     return new DGtal::PlaneProbingLNeighborhood<TPredicate>(aPredicate, aQ, aM);
                 }
         };
-      
+
     } // namespace detail
 } // namespace DGtal
 
@@ -386,7 +386,7 @@ DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::isUnimodular() const
             return false;
         }
     }
-    return true; 
+    return true;
 }
 
 // ------------------------------------------------------------------------
@@ -417,7 +417,7 @@ inline
 bool
 DGtal::PlaneProbingTetrahedronEstimator<TPredicate, mode>::isProjectedInside () const
 {
-  return isProjectedInside(vertices()); 
+  return isProjectedInside(vertices());
 }
 
 
@@ -436,5 +436,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

@@ -67,7 +67,7 @@ namespace DGtal {
   * function, etc. This concept has refinements specifying some
   * cases.
   *
-  *  # Refinement of 
+  *  # Refinement of
   *  - boost::DefaultConstructible,  boost::CopyConstructible, boost::Assignable
   *
   *  # Associated types
@@ -117,7 +117,7 @@ namespace DGtal {
     BOOST_CONCEPT_USAGE( CSurfelLocalEstimator )
     {
       //init method
-      myX.init( myH, myItb, myIte ); 
+      myX.init( myH, myItb, myIte );
 
       ConceptUtils::sameType( myQ, myX.eval( myItb ) );
       ConceptUtils::sameType( myIto, myX.eval( myItb, myIte, myIto ) );
@@ -128,18 +128,18 @@ namespace DGtal {
       ConceptUtils::sameType( myH, myX.h() );
     }
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     T myX;
-    
-    double myH; 
+
+    double myH;
     Quantity myQ;
     boost::iterator_archetype<Surfel,
 			      boost::iterator_archetypes::readable_iterator_t,
-			      boost::forward_traversal_tag > myItb, myIte; 
+			      boost::forward_traversal_tag > myItb, myIte;
     boost::iterator_archetype<Quantity,
 			      boost::iterator_archetypes::writable_iterator_t,
-			      boost::incrementable_traversal_tag > myIto; 
+			      boost::incrementable_traversal_tag > myIto;
 
     // ------------------------- Internals ------------------------------------
   private:

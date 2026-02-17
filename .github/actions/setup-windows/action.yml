@@ -11,7 +11,7 @@ runs:
   steps:
      - name: Set up Python ${{ inputs.python-version }}
        uses: actions/setup-python@v5
-       with: 
+       with:
           python-version: ${{ inputs.python-version }}
           architecture: x64
 

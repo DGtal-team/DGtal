@@ -62,7 +62,7 @@ int main() {
     PolyscopeViewer viewer;
     //! [ExampleViewer3DQuantitiesStream]
     // Option 1: stream operator (Scell_1_2d in viewer)
-    //   Most usefull when adding single quantity, otherwise
+    //   Most useful when adding single quantity, otherwise
     //   it should be nested.
     viewer << WithQuantity(
         WithQuantity(
@@ -70,16 +70,16 @@ int main() {
             surfels, "Mean Curv", mean_curvs
             ),
           "Gauss Curve", gauss_curvs
-          ), 
+          ),
         "Normal", normals
         );
     //! [ExampleViewer3DQuantitiesStream]
-    
+
     //! [ExampleViewer3DQuantitiesAddQuantity]
     // Option 2: draw first then add quantities (Surfels 1 in viewer)
     //  This requires to obtain or set object name
-    std::string objectName = "Surfels 1"; 
-    viewer.draw(surfels, objectName); // Draws the object independantly
+    std::string objectName = "Surfels 1";
+    viewer.draw(surfels, objectName); // Draws the object independently
     viewer.addQuantity(objectName, "Mean Curv", mean_curvs);
     viewer.addQuantity(objectName, "Gauss Curv", gauss_curvs);
     viewer.addQuantity(objectName, "Normal", normals);
@@ -92,7 +92,7 @@ int main() {
     //! [ExampleViewer3DQuantitiesLoop]
     std::string objectName2 = "Surfels 3";
     viewer.newVolumetricList(objectName2); // Signed cells are drawn as volumetric meshes
-    viewer.allowReuseList = true; // Allows for automatic groupping
+    viewer.allowReuseList = true; // Allows for automatic grouping
 
     auto surfIt = surfels.begin();
     auto mcurveIt = mean_curvs.begin();
@@ -110,4 +110,3 @@ int main() {
     viewer.show();
     return 0;
  }
-

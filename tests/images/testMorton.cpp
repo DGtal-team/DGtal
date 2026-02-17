@@ -50,12 +50,12 @@ bool testMorton()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing Morton codes ..." );
-  
+
   typedef PointVector<2,DGtal::int32_t> Point;
   typedef DGtal::uint64_t HashKey;
-  
+
   Point p(0,0), pbis;
   HashKey h, h2;
   HashKey children[4];
@@ -63,16 +63,16 @@ bool testMorton()
   Morton<HashKey,Point> morton;
 
   trace.info() << endl;
-  
+
   morton.interleaveBits( p , h );
   trace.info() << p << h << " = "<< Bits::bitString( h )<<endl;
   trace.info() << "Key (level2)= "<< Bits::bitString(  h2=morton.keyFromCoordinates( 2, p ))<<endl;
-  nbok += (h == 0) ? 1 : 0; 
+  nbok += (h == 0) ? 1 : 0;
   nb++;
 
   morton.coordinatesFromKey( h2 , pbis);
   trace.info() << "Point from code= "<<pbis<<endl;
-  nbok += (p == pbis) ? 1 : 0; 
+  nbok += (p == pbis) ? 1 : 0;
   nb++;
 
   trace.info()<<endl;
@@ -81,12 +81,12 @@ bool testMorton()
   morton.interleaveBits( p2 , h );
   trace.info() << p2<<" "<< h << " = "<< Bits::bitString( h )<<endl;
   trace.info() << "Key (level2)= "<< Bits::bitString(  h2 = morton.keyFromCoordinates( 2, p2 ))<<endl;
-   nbok += (h == 14) ? 1 : 0; 
+   nbok += (h == 14) ? 1 : 0;
   nb++;
 
   morton.coordinatesFromKey( h2 , pbis);
   trace.info() << "Point from code= "<<pbis<<endl;
-  nbok += (p2 == pbis) ? 1 : 0; 
+  nbok += (p2 == pbis) ? 1 : 0;
   nb++;
 
   trace.beginBlock("Testing children...");
@@ -109,14 +109,14 @@ bool testMorton()
   trace.endBlock();
   if (sum == 345)
     trace.info() << "Compiler trick"<<endl;
-  
+
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
   trace.endBlock();
-  
+
   trace.warning() << "Log2(64)=" <<LOG2<64>::VALUE<<endl;
   trace.warning() << "Log2(1)=" <<LOG2<sizeof(int)>::VALUE<<endl;
- 
+
   return nbok == nb;
 }
 

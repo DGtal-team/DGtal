@@ -174,7 +174,7 @@ int main( int /*argc*/, char** /*argv*/ )
 
   /* Output bitset tables to files,
    * for using with NeighborhoodConfigurations.h interface.
-   * These tables can be accesed from NeighborhoodTables.h header.
+   * These tables can be accessed from NeighborhoodTables.h header.
    */
   using ConfigMapBit = std::bitset<256> ; // 2^8
   ConfigMapBit bit_table8_4;

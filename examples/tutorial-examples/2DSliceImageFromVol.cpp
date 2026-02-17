@@ -19,7 +19,7 @@
  * @ingroup Examples
  * @author Bertrand Kerautret (\c bertrand.kerautret@loria.fr )
  * LORIA (CNRS, UMR 7503), University of Lorraine, France
- * 
+ *
  *
  * @date 2016/05/09
  *
@@ -48,7 +48,7 @@ using namespace Z2i;
 
 int main(int argc, char ** argv)
 {
-    
+
   typedef ImageContainerBySTLVector<Z2i::Domain, unsigned char>  Image2D;
   typedef ImageContainerBySTLVector<Z3i::Domain, unsigned char>  Image3D;
 
@@ -58,30 +58,30 @@ int main(int argc, char ** argv)
       trace.error() << std::endl;
       return 1;
     }
-  std::string filename(argv[1]);  
+  std::string filename(argv[1]);
   std::string outputFileName = "sliceImage.pgm";
 
   unsigned int numSlice = atoi(argv[2]);
 
   trace.beginBlock("Loading file");
   Image3D  image3d = GenericReader< Image3D >::import ( filename );
-  
-   
-  functors::Identity id;  
+
+
+  functors::Identity id;
   typedef ConstImageAdapter<Image3D, Image2D::Domain, functors::Projector<Z3i::Space>,
                             Image3D::Value,  functors::Identity >  SliceImageAdapter;
   functors::Projector<Z2i::Space >  proj(2);
   Z2i::Domain domain2D(proj(image3d.domain().lowerBound()),
                               proj(image3d.domain().upperBound()));
 
-  DGtal::functors::Projector<Z3i::Space> aSliceFunctor(numSlice); 
+  DGtal::functors::Projector<Z3i::Space> aSliceFunctor(numSlice);
   aSliceFunctor.initAddOneDim(2);
   SliceImageAdapter sliceImageZ(image3d, domain2D, aSliceFunctor, id);
-  
+
   trace.endBlock();
 
   trace.beginBlock("Exporting...");
-  sliceImageZ >> outputFileName; 
+  sliceImageZ >> outputFileName;
   trace.endBlock();
   return 0;
 }

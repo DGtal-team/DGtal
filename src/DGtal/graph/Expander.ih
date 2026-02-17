@@ -62,7 +62,7 @@ DGtal::Expander<TObject>
     myObject( object ),
     myObjectDomain( myObject.pointSet() ),
     myObjectAdjacency( myObjectDomain, myObject.adjacency() ),
-    myCore( myEmbeddingDomain ), 
+    myCore( myEmbeddingDomain ),
     myLayer( myEmbeddingDomain ),
     myDistance( 0 ), myFinished( false ),
     myNotInCorePred( myCore )
@@ -93,12 +93,12 @@ DGtal::Expander<TObject>
     myObject( object ),
     myObjectDomain( myObject.pointSet() ),
     myObjectAdjacency( myObjectDomain, myObject.adjacency() ),
-    myCore( myEmbeddingDomain ), 
+    myCore( myEmbeddingDomain ),
     myLayer( myEmbeddingDomain ),
     myDistance( 0 ), myFinished( false ),
     myNotInCorePred( myCore )
 {
-  myCore.insertNew( b, e );  
+  myCore.insertNew( b, e );
   computeNextLayer( myCore );
 }
 
@@ -120,7 +120,7 @@ DGtal::Expander<TObject>::finished() const
  */
 template <typename TObject>
 inline
-typename DGtal::Expander<TObject>::Size 
+typename DGtal::Expander<TObject>::Size
 DGtal::Expander<TObject>::distance() const
 {
   return myDistance;
@@ -180,13 +180,13 @@ DGtal::Expander<TObject>
   typedef std::insert_iterator< SetContainer > Inserter;
   SetContainer newLayer;
   Inserter inserter( newLayer, newLayer.begin() );
-  
+
   // const ObjectDomainPredicate & objectPred = myObjectDomain.predicate();
-  typedef typename ObjectDomain::Predicate ObjectDomainPredicate; 
-  typedef functors::BinaryPointPredicate< ObjectDomainPredicate, 
+  typedef typename ObjectDomain::Predicate ObjectDomainPredicate;
+  typedef functors::BinaryPointPredicate< ObjectDomainPredicate,
     NotInCoreDomainPredicate > Predicate;
 
-  Predicate cPred( myObjectDomain.predicate(), 
+  Predicate cPred( myObjectDomain.predicate(),
                    myNotInCorePred,
                    functors::andBF2 );
   // Computes the 1-neighborhood of the core.
@@ -203,7 +203,7 @@ DGtal::Expander<TObject>
       // std::cerr << std::endl;
       // v.clear();
     }
-  // std::cerr << "Core.size=" << myCore.size() 
+  // std::cerr << "Core.size=" << myCore.size()
   //       << " prevLayer.size=" << src.size()
   //       << " nextLayer.size=" << newLayer.size()
   //       << std::endl;
@@ -280,7 +280,7 @@ inline
 void
 DGtal::Expander<TObject>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[Expander layer=" << myDistance 
+  out << "[Expander layer=" << myDistance
       << " layer.size=" << myLayer.size()
       << " finished=" << myFinished
       << " ]";
@@ -306,7 +306,7 @@ DGtal::Expander<TObject>::isValid() const
 template <typename TObject>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
       const Expander<TObject> & object )
 {
   object.selfDisplay( out );
@@ -315,5 +315,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

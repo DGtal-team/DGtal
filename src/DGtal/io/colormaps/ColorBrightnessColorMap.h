@@ -19,7 +19,7 @@
 /**
  * @file ColorBrightnessColorMap.h
  * @author Sebastien Fourey (\c Sebastien.Fourey@greyc.ensicaen.fr )
- * Groupe de Recherche en Informatique, Image, Automatique et Instrumentation de Caen - GREYC (CNRS, UMR 6072), ENSICAEN, France
+ * GREYC (CNRS, UMR 6072), ENSICAEN, France
  *
  * @date 2010/07/19
  *
@@ -61,7 +61,7 @@ namespace DGtal
    * Description of template class 'ColorBrightnessColorMap' <p>
    * \brief Aim: This class template may be used to (linearly) convert scalar
    * values in a given range into a color with given lightness.
-   * 
+   *
    * The ColorBrightnessColorMap can be used either as a functor object
    * (the value range is given at the object's construction, together with the
    * reference color) which converts a value into a LibBoard::Color structure,
@@ -89,18 +89,18 @@ namespace DGtal
   class ColorBrightnessColorMap
   {
   public:
-    
+
     typedef PValue Value;
 
     // ----------------------- Standard services ------------------------------
   public:
 
-    /** 
+    /**
      * Constructor.
-     * 
+     *
      * @param min The lower bound of the value range.
      * @param max The upper bound of the value range.
-     * @param color The color associated with the upper bound. 
+     * @param color The color associated with the upper bound.
      */
     ColorBrightnessColorMap( const PValue & min,
            const PValue & max,
@@ -108,16 +108,16 @@ namespace DGtal
            = Color( DGTAL_RED_COMPONENT( PDefaultColor ),
             DGTAL_GREEN_COMPONENT( PDefaultColor ),
             DGTAL_BLUE_COMPONENT( PDefaultColor ) ) );
-    
-    /** 
+
+    /**
      * Computes the color associated with a value in a given range.
-     * 
+     *
      * @param value A value within the value range.
-     * @return A color whose brightness linearly depends on the 
+     * @return A color whose brightness linearly depends on the
      * position of [value] within the current range.
      */
     Color operator()( const PValue & value ) const;
-      
+
     /**
      * Destructor.
      */
@@ -151,14 +151,14 @@ namespace DGtal
      */
     bool isValid() const;
 
-    /** 
+    /**
      * Returns the lower bound of the value range.
      *
      * @return The lower bound of the value range.
      */
     const PValue & min() const;
 
-    /** 
+    /**
      * Returns the upper bound of the value range.
      *
      * @return The upper bound of the value range.
@@ -168,25 +168,25 @@ namespace DGtal
     // ----------------------- Static methods ---------------------------------
 
 
-    /** 
+    /**
      * Computes the color associated with a value in a given range.
-     * 
-     * @param color The color associated with the upper bound. 
-     * @param min The lower bound of the value range.  
+     *
+     * @param color The color associated with the upper bound.
+     * @param min The lower bound of the value range.
      * @param max The upper bound of the value range.
      * @param value A value within the value range.
-     * @return A color whose brightness linearly depends on the 
-     * position of [value] within the range [min]..[max]. 
+     * @return A color whose brightness linearly depends on the
+     * position of [value] within the range [min]..[max].
      */
     static Color getColor( const Color color,
              const PValue & min,
              const PValue & max,
              const PValue & value );
-    
-    // ------------------------- Protected Datas ------------------------------
+
+    // ------------------------- Protected Data ------------------------------
   private:
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------
@@ -195,7 +195,7 @@ namespace DGtal
     PValue myMin;    /**< The lower bound of the value range.  */
     PValue myMax;            /**< The lower bound of the value range.  */
     Color myColor;  /**< The color of the upper bound value. */
-    
+
     /**
      * Constructor.
      * Forbidden by default (protected to avoid g++ warnings).
@@ -219,7 +219,7 @@ namespace DGtal
   template <typename PValue, int PDefaultColor>
   std::ostream&
   operator<< ( std::ostream & out, const ColorBrightnessColorMap<PValue,PDefaultColor> & object );
-  
+
 } // namespace DGtal
 
 

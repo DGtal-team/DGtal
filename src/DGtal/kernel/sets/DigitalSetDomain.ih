@@ -67,7 +67,7 @@ DGtal::DigitalSetDomain<TDigitalSet>
 //------------------------------------------------------------------------------
 template <typename TDigitalSet>
 inline
-typename DGtal::DigitalSetDomain<TDigitalSet>::ConstIterator 
+typename DGtal::DigitalSetDomain<TDigitalSet>::ConstIterator
 DGtal::DigitalSetDomain<TDigitalSet>
 ::begin(const Point &aPoint) const
 {
@@ -76,7 +76,7 @@ DGtal::DigitalSetDomain<TDigitalSet>
 //------------------------------------------------------------------------------
 template <typename TDigitalSet>
 inline
-typename DGtal::DigitalSetDomain<TDigitalSet>::ConstIterator 
+typename DGtal::DigitalSetDomain<TDigitalSet>::ConstIterator
 DGtal::DigitalSetDomain<TDigitalSet>
 ::begin() const
 {
@@ -85,7 +85,7 @@ DGtal::DigitalSetDomain<TDigitalSet>
 //------------------------------------------------------------------------------
 template <typename TDigitalSet>
 inline
-typename DGtal::DigitalSetDomain<TDigitalSet>::ConstIterator 
+typename DGtal::DigitalSetDomain<TDigitalSet>::ConstIterator
 DGtal::DigitalSetDomain<TDigitalSet>
 ::end() const
 {
@@ -159,7 +159,7 @@ DGtal::DigitalSetDomain<TDigitalSet>::isValid() const
 template <typename TDigitalSet>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
       const DigitalSetDomain<TDigitalSet> & object )
 {
   object.selfDisplay( out );
@@ -168,5 +168,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

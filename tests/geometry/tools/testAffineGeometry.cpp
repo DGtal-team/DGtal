@@ -47,15 +47,15 @@ std::mt19937 g(rd());
 std::uniform_real_distribution<double> uniform(-1.0, 1.0);
 
 template <typename RealPoint>
-void perturbate( RealPoint& x, double perturbation )
+void perturb( RealPoint& x, double perturbation )
 {
   for ( auto& c : x ) c += uniform( g ) * perturbation;
 }
 
 template <typename RealPoint>
-void perturbate( std::vector< RealPoint >& X, double perturbation )
+void perturb( std::vector< RealPoint >& X, double perturbation )
 {
-  for ( auto& x : X ) perturbate( x, perturbation );
+  for ( auto& x : X ) perturb( x, perturbation );
 }
 
 template < typename Point >
@@ -132,7 +132,7 @@ makeRandomRealPointsFromDirVectors( int nb, const vector< Point>& V )
 
 SCENARIO( "AffineGeometry< Point2i > unit tests", "[affine_subset][2i]" )
 {
-  typedef SpaceND< 2, int >                Space;      
+  typedef SpaceND< 2, int >                Space;
   typedef Space::Point                     Point;
   typedef AffineGeometry< Point >            Affine;
   GIVEN( "Given X = { (0,0), (-4,-1), (16,4), (-3,5), (7,3), (5, -2) } of affine dimension 2" ) {
@@ -158,7 +158,7 @@ SCENARIO( "AffineGeometry< Point2i > unit tests", "[affine_subset][2i]" )
 
 SCENARIO( "AffineGeometry< Point2d > unit tests", "[affine_subset][2d]" )
 {
-  typedef SpaceND< 2, int >                Space;      
+  typedef SpaceND< 2, int >                Space;
   typedef Space::RealPoint                 Point;
   typedef AffineGeometry< Point >            Affine;
   GIVEN( "Given X = { (0,0), (-4,-1), (16,4), (-3,5), (7,3), (5, -2) } of affine dimension 2" ) {
@@ -183,7 +183,7 @@ SCENARIO( "AffineGeometry< Point2d > unit tests", "[affine_subset][2d]" )
   GIVEN( "Given a perturbated X = { (0,0), (-4,-1), (16,4), (-3,5), (7,3), (5, -2) } of affine dimension 2 by U[-1e-4,1e-4]" ) {
     std::vector<Point> X
       = { Point(0,0), Point(-4,-1), Point(16,4), Point(-3,5), Point(7,3), Point(5, -2) };
-    perturbate( X, 1e-4 );
+    perturb( X, 1e-4 );
     auto I = Affine::affineSubset( X, 1e-12 );
     THEN( "It has an affine basis of 3 points [0,1,x]" ) {
       CAPTURE( I );
@@ -193,7 +193,7 @@ SCENARIO( "AffineGeometry< Point2d > unit tests", "[affine_subset][2d]" )
   GIVEN( "Given a perturbated X = { (0,0), (-4,-1), (-8,-2), (8,2), (16,4), (200,50) } of affine dimension 1 by U[-1e-4,1e-4]" ) {
     std::vector<Point> X
       = { Point(0,0), Point(-4,-1), Point(-8,-2), Point(8,2), Point(16,4), Point(200,50) };
-    perturbate( X, 1e-4 );
+    perturb( X, 1e-4 );
     auto I = Affine::affineSubset( X, 1e-12 );
     THEN( "It has an affine basis of 3 points [0,1,x]" ) {
       CAPTURE( I );
@@ -203,7 +203,7 @@ SCENARIO( "AffineGeometry< Point2d > unit tests", "[affine_subset][2d]" )
   GIVEN( "Given a perturbated X = { (0,0), (-4,-1), (-8,-2), (8,2), (16,4), (200,50) } of affine dimension 1 by U[-1e-11,1e-11]" ) {
     std::vector<Point> X
       = { Point(0,0), Point(-4,-1), Point(-8,-2), Point(8,2), Point(16,4), Point(200,50) };
-    perturbate( X, 1e-11 );
+    perturb( X, 1e-11 );
     auto I = Affine::affineSubset( X, 1e-7 );
     THEN( "It has an affine basis of 2 points [0,1] if tolerance is 1e-7" ) {
       CAPTURE( X );
@@ -215,7 +215,7 @@ SCENARIO( "AffineGeometry< Point2d > unit tests", "[affine_subset][2d]" )
 
 SCENARIO( "AffineGeometry< Point2i > orthogonal tests", "[orthogonal_vector][2i]" )
 {
-  typedef SpaceND< 2, int >                Space;      
+  typedef SpaceND< 2, int >                Space;
   typedef Space::Point                     Point;
   typedef AffineGeometry< Point >          Affine;
   GIVEN( "Given basis B = { (7,3) } " ) {
@@ -239,7 +239,7 @@ SCENARIO( "AffineGeometry< Point2i > orthogonal tests", "[orthogonal_vector][2i]
 
 SCENARIO( "AffineGeometry< Point3i > unit tests", "[affine_subset][3i]" )
 {
-  typedef SpaceND< 3, int >                Space;      
+  typedef SpaceND< 3, int >                Space;
   typedef Space::Point                     Point;
   typedef AffineGeometry< Point >            Affine;
   GIVEN( "Given X = { (1, 0, 0), (2, 1, 0), (3, 1, 1), (3, 2, 0), (5, 2, 2), (4, 2, 1)} of affine dimension 2" ) {
@@ -296,7 +296,7 @@ SCENARIO( "AffineGeometry< Point3i > unit tests", "[affine_subset][3i]" )
 
 SCENARIO( "AffineGeometry< Point3i > orthogonal tests", "[orthogonal_vector][3i]" )
 {
-  typedef SpaceND< 3, int >                Space;      
+  typedef SpaceND< 3, int >                Space;
   typedef Space::Point                     Point;
   typedef AffineGeometry< Point >          Affine;
   GIVEN( "Given basis B = { (7,3,1), (2,-5,1) } " ) {
@@ -349,7 +349,7 @@ SCENARIO( "AffineGeometry< Point3i > orthogonal tests", "[orthogonal_vector][3i]
 
 SCENARIO( "AffineGeometry< Point4i > unit tests", "[affine_subset][4i]" )
 {
-  typedef SpaceND< 4, int >                Space;      
+  typedef SpaceND< 4, int >                Space;
   typedef Space::Point                     Point;
   GIVEN( "Given X a set of randomly generated points by adding linear combinations of 1 lattice vectors" ) {
     std::vector< Point > V = { Point{ 3, 1, 0, 2 } };
@@ -418,7 +418,7 @@ SCENARIO( "AffineGeometry< Point4d > unit tests", "[affine_subset][4d]" )
 {
   // NB: 1e-10 in tolerance is ok for these examples.
   // max norm of rejected vectors are 2e-12.
-  typedef SpaceND< 4, int >                Space;      
+  typedef SpaceND< 4, int >                Space;
   typedef Space::RealPoint                 Point;
   GIVEN( "Given X a set of randomly generated points by adding linear combinations of 1 lattice vectors" ) {
     std::vector< Point > V = { Point{ 3, 1, 0, 2 } };
@@ -484,7 +484,7 @@ SCENARIO( "AffineGeometry< Point4d > unit tests", "[affine_subset][4d]" )
 
 SCENARIO( "AffineGeometry< Point4i > orthogonal tests", "[orthogonal_vector][4i]" )
 {
-  typedef SpaceND< 4, int >                Space;      
+  typedef SpaceND< 4, int >                Space;
   typedef Space::Point                     Point;
   typedef AffineGeometry< Point >          Affine;
   GIVEN( "Given basis B = { (7,3,1,0), (2,-5,1,2), (-1,2,2,-3) } " ) {
@@ -579,4 +579,3 @@ SCENARIO( "AffineGeometry< Z3 > orthogonality", "[affine_geom][3d]" )
     }
   }
 }
-

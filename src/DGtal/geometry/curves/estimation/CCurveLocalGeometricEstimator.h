@@ -55,15 +55,15 @@ namespace DGtal
     /**
        Description of \b concept '\b CCurveLocalGeometricEstimator' <p>
        @ingroup Concepts
-       @brief Aim: This concept describes an object that can process 
-       a range so as to return one estimated quantity for each element 
-       of the range (or a given subrange). 
+       @brief Aim: This concept describes an object that can process
+       a range so as to return one estimated quantity for each element
+       of the range (or a given subrange).
 
-       # Refinement of 
+       # Refinement of
        - boost::DefaultConstructible
 
        # Associated types
-       - ConstIterator 
+       - ConstIterator
        - Quantity
 
        # Notation
@@ -72,7 +72,7 @@ namespace DGtal
        - \e h : double
        - \e itb, ite, it : objects of type ConstIterator
        - \e ito : an instance of a model of output iterator having Quantity as value type
- 
+
        # Definitions
 
        # Valid expressions and semantics
@@ -80,8 +80,8 @@ namespace DGtal
        | Name           | Expression                    |   | Return type                  | Precondition | Semantics                                 |   | Complexity      |
        |----------------|-------------------------------|---|------------------------------|--------------|-------------------------------------------|---|-----------------|
        | Initialization | x.init( h, itb, ite )         |   | void                         | h > 0        | Grid step and range initialization        |   | constant        |
-       | Evaluation     | x.eval( it )                  |   | Quantity                     |              | Estimation of the quantity at \e it       |   | model dependant |
-       | Evaluation     | ito = x.eval( itb, ite, ito ) |   | a model of output iterator   |              | Estimation for each element of [itb, ite) |   | model dependant |
+       | Evaluation     | x.eval( it )                  |   | Quantity                     |              | Estimation of the quantity at \e it       |   | model dependent |
+       | Evaluation     | ito = x.eval( itb, ite, ito ) |   | a model of output iterator   |              | Estimation for each element of [itb, ite) |   | model dependent |
 
        # Invariants
 
@@ -115,16 +115,16 @@ namespace DGtal
         concepts::ConceptUtils::sameType( myIto, myX.eval( myItb, myIte, myIto ) );
       }
 
-      // ------------------------- Private Datas --------------------------------
+      // ------------------------- Private Data --------------------------------
     private:
       T myX;
-    
-      double myH; 
-      ConstIterator myItb, myIte; 
+
+      double myH;
+      ConstIterator myItb, myIte;
       Quantity myQ;
       boost::iterator_archetype<Quantity,
                                 boost::iterator_archetypes::writable_iterator_t,
-                                boost::incrementable_traversal_tag > myIto; 
+                                boost::incrementable_traversal_tag > myIto;
 
       // ------------------------- Internals ------------------------------------
     private:

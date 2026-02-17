@@ -103,7 +103,7 @@ namespace DGtal
     typedef typename RealVector::Component Component;
     typedef Component Scalar;
 
-    
+
     // ----------------------- Standard services ------------------------------
   public:
 
@@ -122,7 +122,7 @@ namespace DGtal
        @param mu the minimal value of N.X
        @param N the normal to the plane
        @param nu the width of the strip.
-     
+
        Note that the equation is normalized so that the normal is a
        unit vector.
      */
@@ -157,14 +157,14 @@ namespace DGtal
     /**
        Same as \ref ParallelStrip::width().
        @return the width of the strip, i.e. the parameter \f$\nu\f$
-       such that \f$N \cdot X \le \mu + \nu\f$. 
+       such that \f$N \cdot X \le \mu + \nu\f$.
     */
     Scalar nu() const;
 
     /**
        Same as nu().
        @return the width of the strip, i.e. the parameter \f$\nu\f$
-       such that \f$N \cdot X \le \mu + \nu\f$. 
+       such that \f$N \cdot X \le \mu + \nu\f$.
     */
     Scalar width() const;
 
@@ -197,7 +197,7 @@ namespace DGtal
        If N is the unit normal to the current plane, then \f$ \mu \le
        N \cdot X\f$ and \f$N \cdot X \le \mu + \nu\f$ are the two
        half-planes defining it.
-       
+
        @param mu the lower bound (corresponding to the unit vector).
        @param mu_plus_nu the upper bound (corresponding to the unit vector).
      */
@@ -240,7 +240,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
     /// The minimal scalar value \f$\mu\f$ of the strip.
     Scalar myMu;
@@ -249,7 +249,7 @@ namespace DGtal
     /// The width \f$\nu\f$ of the strip.
     Scalar myNu;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------
@@ -269,7 +269,7 @@ namespace DGtal
    */
   template <typename TSpace, bool muIncluded, bool muPlusNuIncluded>
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
                const ParallelStrip<TSpace,muIncluded,muPlusNuIncluded> & object );
 
 } // namespace DGtal

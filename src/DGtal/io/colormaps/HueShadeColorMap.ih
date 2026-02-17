@@ -17,7 +17,7 @@
 /**
  * @file HueShadeColorMap.ih
  * @author Sebastien Fourey (\c Sebastien.Fourey@greyc.ensicaen.fr )
- * Groupe de Recherche en Informatique, Image, Automatique et Instrumentation de Caen - GREYC (CNRS, UMR 6072), ENSICAEN, France
+ * GREYC (CNRS, UMR 6072), ENSICAEN, France
  *
  * @date 2010/07/19
  *
@@ -47,7 +47,7 @@ DGtal::HueShadeColorMap<Value,DefaultCycles>::HueShadeColorMap
   const unsigned int cycles )
   : myMin( amin ), myMax( amax ), myCycles( cycles )
 {
-  ASSERT_MSG(myMin < myMax, "Max should be strictly greather than Min in a colormap.");
+  ASSERT_MSG(myMin < myMax, "Max should be strictly greater than Min in a colormap.");
 }
 
 
@@ -56,8 +56,8 @@ inline
 DGtal::HueShadeColorMap<Value,DefaultCycles>::HueShadeColorMap
 ( const HueShadeColorMap<Value,DefaultCycles> & other )
   : myMin( other.myMin ), myMax( other.myMax ), myCycles( other.myCycles )
-{ 
-  ASSERT_MSG(myMin < myMax, "Max should be strictly greather than Min in a colormap.");
+{
+  ASSERT_MSG(myMin < myMax, "Max should be strictly greater than Min in a colormap.");
 }
 
 template <typename Value, int DefaultCycles>
@@ -74,7 +74,7 @@ DGtal::HueShadeColorMap<Value,DefaultCycles>::operator=
   if ( &other != this ) {
     myMin = other.myMin;
     myMax = other.myMax;
-    ASSERT_MSG(myMin < myMax, "Max should be strictly greather than Min in a colormap.");
+    ASSERT_MSG(myMin < myMax, "Max should be strictly greater than Min in a colormap.");
     myCycles = other.myCycles;
   }
   return *this;
@@ -126,7 +126,7 @@ inline
 void
 DGtal::HueShadeColorMap<Value,DefaultCycles>::selfDisplay ( std::ostream & out ) const
 {
-  out << "[HueShadeColorMap " 
+  out << "[HueShadeColorMap "
       << " min=" << myMin
       << " max=" << myMax
       << " cycles=" << myCycles
@@ -154,7 +154,7 @@ DGtal::HueShadeColorMap<Value,DefaultCycles>::getColor
   const Value & max,
   const Value & value )
 {
-  ASSERT_MSG(min < max, "Max should be strictly greather than Min in a colormap.");
+  ASSERT_MSG(min < max, "Max should be strictly greater than Min in a colormap.");
   const double scale = ( value - min ) / static_cast<double>( max - min );
   const double hue = 360 * ( scale * cycles - floor(scale * cycles));
   double red, green, blue;
@@ -170,7 +170,7 @@ DGtal::HueShadeColorMap<Value,DefaultCycles>::getColor
 template <typename Value, int DefaultCycles>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
       const HueShadeColorMap<Value,DefaultCycles> & object )
 {
   object.selfDisplay( out );
@@ -183,6 +183,3 @@ DGtal::operator<< ( std::ostream & out,
 
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - private :
-
-
-

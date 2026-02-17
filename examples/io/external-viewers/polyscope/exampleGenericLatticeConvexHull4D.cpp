@@ -64,7 +64,7 @@ polyscope::PointCloud   *psVertices[4];
 polyscope::PointCloud   *psBoundary0[4];
 polyscope::CurveNetwork *psBoundary1[4];
 polyscope::SurfaceMesh  *psBoundary2[4];
-polyscope::Group        *group[4]; 
+polyscope::Group        *group[4];
 
 std::random_device rd;
 std::mt19937 g(rd());
@@ -126,7 +126,7 @@ int main( int argc, char* argv[] )
   typedef Space::Point                       Point4;
 
   std::cout << "Usage: " << argv[ 0 ] << " [R=30] [N=30] [D=2]\n";
-  std::cout << "Computes the convex hull of N 4D points within a ball of radius R, these points belonging to a lattice of chosen dimension 0<=D<=3. The output is projected along the 4 canonic projections onto 3D space. You cannot choose D=4 since we cannot diplay the result in 3D.\n";
+  std::cout << "Computes the convex hull of N 4D points within a ball of radius R, these points belonging to a lattice of chosen dimension 0<=D<=3. The output is projected along the 4 canonic projections onto 3D space. You cannot choose D=4 since we cannot display the result in 3D.\n";
   double radius = argc > 1 ? atof( argv[ 1 ] ) : 30.0;
   int    nb     = argc > 2 ? atoi( argv[ 2 ] ) : 30;
   int    adim   = argc > 3 ? atoi( argv[ 3 ] ) : 2;
@@ -144,7 +144,7 @@ int main( int argc, char* argv[] )
                                              radius,
                                              int( round( radius+0.5 ) ),
                                              adim );
-  
+
   // Compute convex hull
   QHull hull;
   bool ok = hull.compute( X );
@@ -186,8 +186,8 @@ int main( int argc, char* argv[] )
           psBoundary2[k]->addToGroup( proj[k] ); // add by name
         }
     }
-  
+
   polyscope::show();
   return EXIT_SUCCESS;
-  
+
 }

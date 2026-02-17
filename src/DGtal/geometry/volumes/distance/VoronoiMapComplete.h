@@ -68,7 +68,7 @@ namespace DGtal
    * \brief Aim: Implementation of the linear in time Voronoi map
    * construction.
 
-   * The algorithm uses a seperable process to construct Voronoi maps
+   * The algorithm uses a separable process to construct Voronoi maps
    * which has been described in @cite Maurer2003PAMI @cite dcoeurjo_these.
    * Along periodic dimensions, the algorithm is adapted following @cite Coeurjo2008,
    * and uses the co-cyclic site approach from @cite Couprie2007.
@@ -89,7 +89,7 @@ namespace DGtal
    * we obviously have a memory overhead when there are equi-distant points, but a slight computational
    * one too to access sites from the container (std::set<Point> per grid point).
    *
-   * See @ref moduleVolumetric documnetation page.
+   * See @ref moduleVolumetric documentation page.
    *
    * By default, the domain is considered non-periodic but per-dimension
    * periodicity can be specified in the constructor.
@@ -148,7 +148,7 @@ namespace DGtal
     //ImageContainer::Domain::Space must match with TSpace
     BOOST_STATIC_ASSERT ((boost::is_same< TSpace,
                           typename TImageContainer::Domain::Space >::value ));
-    
+
     //ImageContainer value type must be  std::vector<TSpace::Vector>
     BOOST_STATIC_ASSERT ((boost::is_same< std::set<typename TSpace::Vector>,
                           typename TImageContainer::Value >::value ));

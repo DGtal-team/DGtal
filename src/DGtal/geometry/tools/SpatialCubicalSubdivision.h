@@ -63,7 +63,7 @@ namespace DGtal
 
      Bins are characterized by one Point and are organized as a
      rectangular domain with lowest bin at coordinates (0,...,0).
-     
+
      @tparam TSpace the digital space, a model of CSpace.
 
      Model of CopyConstructible
@@ -98,7 +98,7 @@ namespace DGtal
 
     /**
        Constructor from rectangular domain given by lowest and uppermost point.
-       
+
        @param lo the lowest point of the domain of interest.
        @param up the uppermost point of the domain of interest.
        @param size the edge size of each cubical bin (an integer >= 2 ).
@@ -153,7 +153,7 @@ namespace DGtal
     /**
        Pushes back in \a pts all the points in the bin domain [\a
        bin_lo, \a bin_up] which satisfy the predicate \a pred.
-       
+
        @tparam PointPredicate the type of a point predicate.
        @param[out] pts the vector where points are pushed back for output.
        @param bin_lo the lowest bin of the bin domain.
@@ -161,18 +161,18 @@ namespace DGtal
        @param pred an arbitrary predicate on point.
     */
     template <typename PointPredicate>
-    void getPoints( std::vector<Point> & pts, 
+    void getPoints( std::vector<Point> & pts,
                     Point bin_lo, Point bin_up, const PointPredicate & pred ) const;
 
     /**
        Pushs back in \a pts all the points in the bin domain [\a
        bin_lo, \a bin_up].
-       
+
        @param[out] pts the vector where points are pushed back for output.
        @param bin_lo the lowest bin of the bin domain.
        @param bin_up the uppermost bin of the bin domain.
     */
-    void getPoints( std::vector<Point> & pts, 
+    void getPoints( std::vector<Point> & pts,
                     Point bin_lo, Point bin_up ) const;
 
     // ----------------------- Interface --------------------------------------
@@ -190,9 +190,9 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
-    
+
     /// the rectangular domain representing the useful points of the space.
     Domain myDomain;
     /// the edge size of each bin.
@@ -200,7 +200,7 @@ namespace DGtal
     /// the image that associates to each bin its dyn. allocated
     /// vector of points. If 0, no point is stored in this bin.
     StorageArray myArray;
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     /// a precomputed point to improve performance of uppermost() method.
     Point myDiag;

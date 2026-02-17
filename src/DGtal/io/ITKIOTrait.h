@@ -43,12 +43,12 @@
 namespace DGtal
 {
   /**
-   * ITK images extensions handled by GenericReader and GenericWriter 
+   * ITK images extensions handled by GenericReader and GenericWriter
    **/
   [[maybe_unused]] const auto ITK_IO_IMAGE_EXT = {"nii", "gz" ,"mha", "mhd", "tiff", "nrrd",
                                                   "tif", "pic", "mnc"};
-  
-  
+
+
   /////////////////////////////////////////////////////////////////////////////
   // class ITKIOTrait
   /**

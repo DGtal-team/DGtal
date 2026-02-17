@@ -68,13 +68,13 @@ namespace DGtal
    *
    * For the later case, this predicate is useful to get the surfel
    * (an iterator on a surfel) of a digital surface intersected by the
-   * ray using for instance: 
+   * ray using for instance:
    *
    * @code
    *   Surface::ConstIterator it = std::find_if(surface.begin(), surface.end(), rayPredicateInstance);
    * @endcode
    *
-   * @tparam TPoint type of points.  
+   * @tparam TPoint type of points.
    *
    */
   template <typename TPoint>
@@ -86,34 +86,34 @@ namespace DGtal
 
     ///Type of point
     typedef TPoint Point;
-    
+
     ///Type of vector
     typedef TPoint Vector;
-    
+
     ///Type of point coordinates
     typedef typename TPoint::Component Component;
 
-    /** 
+    /**
      * Constructor from a ray
-     * 
+     *
      * @pre dest vector must be not null.
-     * 
-     * @param origin Origin of the ray 
+     *
+     * @param origin Origin of the ray
      * @param dest vector to represent the direction of the ray
-     * 
-     */    
-    RayIntersectionPredicate( const Point &origin, 
+     *
+     */
+    RayIntersectionPredicate( const Point &origin,
                               const Vector &dest)
-      : myOrigin(origin), myDest(dest) 
+      : myOrigin(origin), myDest(dest)
     {
-      ASSERT_MSG( dest.norm1() != NumberTraits<typename Point::UnsignedComponent>::ZERO, 
-                  "Direction must be non-null vector"); 
+      ASSERT_MSG( dest.norm1() != NumberTraits<typename Point::UnsignedComponent>::ZERO,
+                  "Direction must be non-null vector");
     }
 
-    /** 
+    /**
      * Ray-Triangle intersection predicate (no back-face culling test,
      * i.e., the order of vertices does not matter).
-     * 
+     *
      * @pre the triangle must be non-degenerate.
      *
      * @param v1 first vertex of the triangle
@@ -122,37 +122,37 @@ namespace DGtal
      *
      * @return  true if the ray intersects the closed triangle (v1,v2,v3)
      */
-    bool operator()(const Point &v1, 
+    bool operator()(const Point &v1,
                     const Point &v2,
                     const Point &v3) const
     {
-      
+
       ASSERT((v1 != v2 ) && (v1 != v3) && (v2 != v3));
 
       Point e1, e2;  //Edge1, Edge2
       Point P, Q, T;
       Component det, u, v;
- 
+
       //Find vectors for two edges sharing V1
       e1 = v2 - v1;
       e2 = v3 - v1;
 
       //Begin calculating determinant - also used to calculate u parameter
       P = myDest.crossProduct( e2 );
-      
+
       //if determinant is near zero, ray lies in plane of triangle
       det = e1.dot( P );
-      if(det == NumberTraits<Component>::ZERO) 
+      if(det == NumberTraits<Component>::ZERO)
         {
           return false;
         }
-      
+
       //calculate distance from V1 to ray origin
       T =  myOrigin -  v1;
-      
+
       //Calculate u parameter and test bound
-      u = T.dot( P );  //* inv_det;
-      
+      u = T.dot( P );  // *inv_det;
+
       if (det >  NumberTraits<Component>::ZERO)
         {
           if ((u < NumberTraits<Component>::ZERO) ||
@@ -169,43 +169,43 @@ namespace DGtal
               return false;
             }
         }
- 
-      //Prepare to test v parameter
+
+            //Prepare to test v parameter
       Q = T.crossProduct( e1 );
-      
-      //Calculate V parameter and test bound
-      v = myDest.dot( Q ); 
-      
-      //The intersection lies outside of the triangle
+
+            //Calculate V parameter and test bound
+      v = myDest.dot( Q );
+
+            //The intersection lies outside of the triangle
       if (det >  NumberTraits<Component>::ZERO)
         {
           if ((v < NumberTraits<Component>::ZERO)  ||
-              ((u+v) > det)) 
+              ((u+v) > det))
             {
               return false;
-            }       
+            }
         }
       else
         {
           if ((v > NumberTraits<Component>::ZERO)  ||
-              ((u+v) < det)) 
+              ((u+v) < det))
             {
               return false;
-            }       
+            }
         }
 
-      //distance to triangle must be positive
+            //distance to triangle must be positive
       Component t = e2.dot( Q ) ;
       if (t*det < NumberTraits<Component>::ZERO)
         return false;
-       
+
       return true;
     }
 
-    /** 
+      /**
      * Ray-Quad intersection predicate
      * (calls two ray-triangle intersections).
-     * 
+     *
      * @param v1 first vertex of the quad
      * @param v2 second vertex of the quad
      * @param v3 third vertex of the quad
@@ -214,7 +214,7 @@ namespace DGtal
      * @return  true if the ray intersects the
      * quad (v1,v2,v3,v4)
      */
-    bool operator()(const Point &v1, 
+    bool operator()(const Point &v1,
                     const Point &v2,
                     const Point &v3,
                     const Point &v4) const
@@ -223,13 +223,13 @@ namespace DGtal
               this->operator()(v1,v4,v3) );
     }
 
-    /** 
+    /**
      * Ray-Surfel intersection predicate
      * (calls two ray-triangle intersections).
-     * 
+     *
      * @warning Ray intersection is performed in KhalimskySpace
      * coordinate system. The type @a Point of the
-     * RayIntersectionPredicate class must be the same as the 
+     * RayIntersectionPredicate class must be the same as the
      * @a Surfel::Point type.
      *
      * @param aSurfel a Khalimsky surfel
@@ -245,12 +245,12 @@ namespace DGtal
       Component y1,y2,y3,y4;
       Component z1,z2,z3,z4;
       Component ONE = NumberTraits<Component>::ONE;
-      
+
       Point baseQuadCenter =  aPreSurfel.coordinates;
-      
+
       bool yodd = ( NumberTraits<Component>::castToInt64_t(aPreSurfel.coordinates[ 1 ]) & 1 );
-      bool zodd = ( NumberTraits<Component>::castToInt64_t(aPreSurfel.coordinates[ 2 ]) & 1 ); 
-      
+      bool zodd = ( NumberTraits<Component>::castToInt64_t(aPreSurfel.coordinates[ 2 ]) & 1 );
+
       if(!zodd)
         {
           //zsurfel
@@ -276,14 +276,14 @@ namespace DGtal
           x4= baseQuadCenter[0]; y4= baseQuadCenter[1]-ONE; z4= baseQuadCenter[2]+ONE;
         }
       return this->operator()(Point(x1, y1, z1), Point(x2 ,y2, z2),
-                              Point(x3, y3, z3), Point(x4, y4, z4)); 
+                              Point(x3, y3, z3), Point(x4, y4, z4));
     }
-    
-    Point myOrigin;
-    Point myDest;    
-  }; 
 
- 
+    Point myOrigin;
+    Point myDest;
+  };
+
+
 
 } // namespace DGtal
 

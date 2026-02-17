@@ -77,11 +77,11 @@ namespace DGtal {
   private:
     typedef LambdaMST2D < Segmentation2D, LambdaFunctor > TEstimator;
     typedef functors::Projector < SpaceND < 2, int > > Projector2d;
-    
+
     // ----------------------- Standard services ------------------------------
   public:
     LambdaMST3DBy2DEstimator();
-    
+
     /**
      * Initialisation.
      * @param itB begin iterator
@@ -89,13 +89,13 @@ namespace DGtal {
      * @param axis the main axis of the functional 3D curve
      */
     void init ( Iterator3D itB, Iterator3D itE, MAIN_AXIS axis );
-    
+
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid ( ) const;
-    
+
     /**
      * @param point to calculate A and B for it
      * @return A and B
@@ -116,12 +116,12 @@ namespace DGtal {
 
     // ------------------------- Internals ------------------------------------
   protected:
-    
+
     RealVector2D Estimate2DTangent ( TCurve2D::const_iterator itb, TCurve2D::const_iterator ite, const Point2D & point );
     template < typename OutputIterator >
     OutputIterator Estimate2DTangent ( TCurve2D::const_iterator itb, TCurve2D::const_iterator ite, OutputIterator result );
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     Iterator3D myBegin;
     Iterator3D myEnd;
@@ -131,8 +131,8 @@ namespace DGtal {
     /// projectors
     Projector2d myProjXY, myProjXZ, myProjYZ;
   }; // end of class LambdaMST3DBy2DEstimator
-  
-  
+
+
   class TangentFromDSS3DBy2DFunctor
   {
   public:
@@ -140,25 +140,25 @@ namespace DGtal {
     typedef PointVector<3, double> Vector3D;
     typedef PointVector<2, double> Vector2D;
     enum MAIN_AXIS {X = 0, Y = 1, Z = 2};
-    
+
     // ----------------------- Interface --------------------------------------
     Vector3D operator() ( MAIN_AXIS mainAxis, const Vector2D & v0, const Vector2D & v1 ) const;
   };
-  
+
   //-------------------------------------------------------------------------------------------
-  
+
   // Template class LambdaMST3D
   /**
    * \brief Aim: Simplify creation of Lambda MST tangent estimator.
    *
    */
-  template < 
+  template <
   typename Iterator3D, typename LambdaFunctor = functors::Lambda64Function, int CONNECTIVITY = 8 >
   class LambdaMST3DBy2D:
   public LambdaMST3DBy2DEstimator < Iterator3D, TangentFromDSS3DBy2DFunctor, LambdaFunctor, CONNECTIVITY >
   {
     typedef LambdaMST3DBy2DEstimator < Iterator3D, TangentFromDSS3DBy2DFunctor, LambdaFunctor, CONNECTIVITY > Super;
-    
+
   public:
     /**
      * Default Constructor.
