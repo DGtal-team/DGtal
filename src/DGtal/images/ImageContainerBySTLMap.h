@@ -162,7 +162,7 @@ namespace DGtal
     ImageContainerBySTLMap(const ImageContainerBySTLMap& other);
 
     /**
-     * Assignement operator
+     * Assignment operator
      *
      * @param other the object to copy.
      * @return this

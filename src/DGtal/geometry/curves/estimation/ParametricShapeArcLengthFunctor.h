@@ -141,7 +141,7 @@ namespace DGtal
       return myShape.arclength( 0,2*M_PI, nbSamples );
     }
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     ///Reference of the implicit shape.

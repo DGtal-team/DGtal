@@ -30,7 +30,7 @@
 
 /**
  * \example io/boards/dgtalBoard2D-2-sets.cpp
- * 
+ *
  * This simple example shows also some basic usage of a Board2D
  * to export graphical representations of dgtal objects (here, a
  * digital set and a digital object). Note also the use of different
@@ -74,7 +74,7 @@ int main( )
   board.saveSVG( "dgtalBoard2D-2-sets-1.svg");
   board.saveEPS( "dgtalBoard2D-2-sets-1.eps");
   board.saveTikZ( "dgtalBoard2D-2-sets-1.tikz");
-  
+
 #ifdef DGTAL_WITH_CAIRO
   board.saveCairo("dgtalBoard2D-2-sets-1-cairo.pdf", Board2D::CairoPDF);
   board.saveCairo("dgtalBoard2D-2-sets-1-cairo.png", Board2D::CairoPNG);
@@ -92,7 +92,7 @@ int main( )
   board.saveSVG( "dgtalBoard2D-2-sets-2.svg");
   board.saveEPS( "dgtalBoard2D-2-sets-2.eps");
   board.saveTikZ( "dgtalBoard2D-2-sets-2.tikz");
- 
+
 #ifdef DGTAL_WITH_CAIRO
   board.saveCairo("dgtalBoard2D-2-sets-2-cairo.pdf", Board2D::CairoPDF);
   board.saveCairo("dgtalBoard2D-2-sets-2-cairo.png", Board2D::CairoPNG);

@@ -271,11 +271,11 @@ namespace DGtal
       H5Sclose(dataspace);
       H5Fclose(file);
     }
-    
+
   private:
-    
+
     ImageFactoryFromHDF5( const ImageFactoryFromHDF5 & other );
-    
+
     ImageFactoryFromHDF5 & operator=( const ImageFactoryFromHDF5 & other );
 
     // ----------------------- Interface --------------------------------------
@@ -323,7 +323,7 @@ namespace DGtal
     OutputImage * requestImage(const Domain &aDomain) // time consuming
     {
       DGtal::IOException dgtalio;
-      
+
       const int ddim = Domain::dimension;
 
       // --
@@ -435,7 +435,7 @@ namespace DGtal
     void flushImage(OutputImage* outputImage)
     {
       DGtal::IOException dgtalio;
-      
+
       const int ddim = Domain::dimension;
 
       // --
@@ -545,14 +545,14 @@ namespace DGtal
       delete outputImage;
     }
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
     /**
      * Default constructor.
      */
     //ImageFactoryFromHDF5() {}
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   protected:
 
     /// Alias on the image domain

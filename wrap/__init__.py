@@ -357,7 +357,7 @@ def DigitalTopology(foreground, background,
     ----------
     foreground: str or dgtal.MetricAdjacency
         A valid dgtal.MetricAdjacency or a string
-        represeting it.
+        representing it.
 
         foreground = dgtal.topology.Adj8()
         foreground = dgtal.MetricAdjacency(dim=2, max_norm=2)
@@ -365,7 +365,7 @@ def DigitalTopology(foreground, background,
         foreground = "8"
     background: str or dgtal.MetricAdjacency
         A valid dgtal.MetricAdjacency or a string
-        represeting it.
+        representing it.
 
         background = dgtal.topology.Adj4()
         background = dgtal.MetricAdjacency(dim=2, max_norm=1)
@@ -482,7 +482,7 @@ def ImageContainer(dtype, domain=None, data=None, lower_bound_ijk=None):
         A Domain 2D or 3D. It will copied in the container.
         Required if data is not provided.
     data: numpy.array [Optional]
-        The dimension of the container will be infered from the data.
+        The dimension of the container will be inferred from the data.
         Required if domain is not provided.
     lower_bound_ijk: dgtal.Point [Optional - only used if data is provided]
         Set the lower_bound of the domain when data is provided (defaults to the zero point)

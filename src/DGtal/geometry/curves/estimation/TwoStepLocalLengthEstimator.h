@@ -135,7 +135,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     ///Weights

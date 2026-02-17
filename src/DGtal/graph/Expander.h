@@ -109,7 +109,7 @@ namespace DGtal
     typedef DigitalSetDomain<DigitalSet> ObjectDomain;
     typedef DigitalSetDomain<DigitalSet> CoreDomain;
     typedef DomainAdjacency< ObjectDomain, ForegroundAdjacency> ObjectAdjacency;
-    typedef typename CoreDomain::Predicate InCoreDomainPredicate; 
+    typedef typename CoreDomain::Predicate InCoreDomainPredicate;
     typedef functors::NotPointPredicate< InCoreDomainPredicate > NotInCoreDomainPredicate;
 
     // ----------------------- Standard services ------------------------------
@@ -203,9 +203,9 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     /**
@@ -250,7 +250,7 @@ namespace DGtal
     bool myFinished;
 
     /**
-     * Predicate ensuring the not-in-core expansion. 
+     * Predicate ensuring the not-in-core expansion.
      */
     NotInCoreDomainPredicate myNotInCorePred;
 

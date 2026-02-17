@@ -90,7 +90,7 @@ namespace DGtal
    * @tparam dim static constant of type DGtal::Dimension that
    * specifies the static  dimension of the space and thus the number
    * of elements  of the Point or Vector.
-   * @tparam TEuclideanRing speficies the number type assoicated to an
+   * @tparam TEuclideanRing specifies the number type associated to an
    * Euclidean domain (or Euclidean ring) algebraic structure
    * (commutative unitary ring with no zero divisors and with a division
    * operator but not necessarily an inverse for the multiplication
@@ -312,7 +312,7 @@ namespace DGtal
                PointVector<ptDim, RightEuclideanRing, RightContainer> const& rhs );
 
   /////////////////////////////////////////////////////////////////////////////
-  // Binary arithmetics operators between two PointVectors
+  // Binary arithmetic operators between two PointVectors
 
   /** @brief Addition operator between two Points/Vectors.
    *
@@ -367,7 +367,7 @@ namespace DGtal
       -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
 
   /////////////////////////////////////////////////////////////////////////////
-  // Binary arithmetics operators between a PointVector and a scalar
+  // Binary arithmetic operators between a PointVector and a scalar
 
   /** @brief Addition operator between a Point/Vector and a scalar.
    *
@@ -408,7 +408,7 @@ namespace DGtal
               RightScalar const& rhs )
       -> decltype( DGtal::constructFromArithmeticConversion(lhs, rhs) );
 
-  /** @brief Substraction operator between a scalar and a Point/Vector.
+  /** @brief Subtraction operator between a scalar and a Point/Vector.
    *
    * @return a point/vector with best component type accordingly to
    *   the C++ conversion rules in arithmetic operations context.
@@ -759,7 +759,7 @@ namespace DGtal
     explicit
     PointVector( const PointVector<dim,OtherComponent,OtherCont> & other );
 
-    /** @brief Assignement Operator
+    /** @brief Assignment Operator
      *
      * @param pv the object to copy.
      * @return a reference on 'this'.
@@ -1466,7 +1466,7 @@ namespace DGtal
     Component min() const;
 
     /**
-     * Return the iterator on the component with maximim value of a
+     * Return the iterator on the component with maximum value of a
      * point/vector.
      *
      * @return an iterator.
@@ -1535,7 +1535,7 @@ namespace DGtal
      * Compute the normalization of a given vector (*this) and return
      * a unitary vector on double.
      *
-     * @return a unitary vector with double as coordiante type.
+     * @return a unitary vector with double as coordinate type.
      * @advanced the point container is forced to std::array<double,dim>
      */
     PointVector<dim, double, std::array<double,dim> > getNormalized() const;

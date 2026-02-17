@@ -91,76 +91,76 @@ bool testGenericWriter()
     }
   }
 
-  
+
   trace.beginBlock ( "Testing block ..." );
-  std::string filenameImage1 = testPath + "samples/cat10.pgm3d";    
-  trace.info() << "Reading 3D image  ... ";  
-  Image3D anImportedImage1 = DGtal::GenericReader<Image3D>::import(filenameImage1);  
+  std::string filenameImage1 = testPath + "samples/cat10.pgm3d";
+  trace.info() << "Reading 3D image  ... ";
+  Image3D anImportedImage1 = DGtal::GenericReader<Image3D>::import(filenameImage1);
   trace.info() <<"[done]"  << std::endl;
-  trace.info() << "Testing writing PGM3D ... ";  
+  trace.info() << "Testing writing PGM3D ... ";
   bool ok1 = anImportedImage1>> "testGenericWriter.pgm3d";
   trace.info() <<"[done]"  << std::endl;
-  
+
   bool okh5 = true;
 #ifdef  DGTAL_WITH_HDF5
   trace.info() << "Testing writing HDF5 3D ... ";
   okh5 = anImportedImage1 >> "testGenericWriter.h5";
   trace.info() <<"[done]"  << std::endl;
-  trace.info() << "Testing writing HDF5 3D (bis) ... ";  
+  trace.info() << "Testing writing HDF5 3D (bis) ... ";
   okh5 = okh5 && DGtal::GenericWriter<Image3D>::exportFile("testGenericWriter_bis.h5", anImportedImage1, "/UInt8Array3D");
   trace.info() <<"[done]"  << std::endl;
 #endif
-  
-  trace.info() << "Testing writing vol ... ";  
+
+  trace.info() << "Testing writing vol ... ";
   bool ok2 = anImportedImage1 >> "testGenericWriter.vol";
   trace.info() <<"[done]"  << std::endl;
-  trace.info() << "Testing writing longvol ... ";  
+  trace.info() << "Testing writing longvol ... ";
   bool ok2bis = an64bitsImage3D >> "testGenericWriter.longvol";
   trace.info() <<"[done]"  << std::endl;
-  trace.info() << "Testing writing raw ... ";  
+  trace.info() << "Testing writing raw ... ";
   bool ok3 = anImportedImage1 >>"testGenericWriter.raw";
   trace.info() <<"[done]"  << std::endl;
-  trace.info() << "Testing writing raw (bis) ... ";  
+  trace.info() << "Testing writing raw (bis) ... ";
   bool ok3bis = DGtal::GenericWriter<Image3D>::exportFile( "testGenericWriter.raw", anImportedImage1);
   trace.info() <<"[done]"  << std::endl;
   bool okITK= true;
-#ifdef  DGTAL_WITH_ITK  
+#ifdef  DGTAL_WITH_ITK
   for (auto ext: ITK_IO_IMAGE_EXT){
-    trace.info() << "Testing writing ITK (" << ext << ") ... ";  
+    trace.info() << "Testing writing ITK (" << ext << ") ... ";
     if( ext != std::string("gz") )
     {
       okITK &= anImportedImage1 >> (std::string("testGenericWriter.") + ext);
     }
     trace.info() <<"[done]"  << std::endl;
   }
-  trace.info() << "Testing writing ITK (.nii.gz) ... ";  
+  trace.info() << "Testing writing ITK (.nii.gz) ... ";
   okITK &= anImportedImage1 >> "testGenericWriter.nii.gz";
   trace.info() <<"[done]"  << std::endl;
-#endif  
+#endif
 
-  std::string filenameImage2 = testPath + "samples/contourS.pgm";    
+  std::string filenameImage2 = testPath + "samples/contourS.pgm";
 
-  trace.info() << "Reading 2D image  ... ";  
-  Image2D anImportedImage2 = DGtal::GenericReader<Image2D>::import(filenameImage2);  
-  trace.info() <<"[done]"  << std::endl; 
-  trace.info() << "Testing writing pgm ... ";  
+  trace.info() << "Reading 2D image  ... ";
+  Image2D anImportedImage2 = DGtal::GenericReader<Image2D>::import(filenameImage2);
+  trace.info() <<"[done]"  << std::endl;
+  trace.info() << "Testing writing pgm ... ";
   bool ok4 = anImportedImage2 >> "testGenericWriter.pgm";
   trace.info() <<"[done]"  << std::endl;
-  trace.info() << "Testing writing raw ... ";  
+  trace.info() << "Testing writing raw ... ";
   bool ok5 = anImportedImage2 >> "testGenericWriter.raw";
   bool ok6 = DGtal::GenericWriter<Image3D32bits>::exportFile( "testGenericWriter32bits3D.raw", an32bitsImage3D);
   bool ok7 = DGtal::GenericWriter<Image2D32bits>::exportFile( "testGenericWriter32bits2D.raw", an32bitsImage2D);
   trace.info() <<"[done]"  << std::endl;
-  trace.info() << "Testing writing color image writer ... ";  
+  trace.info() << "Testing writing color image writer ... ";
   bool ok8 = DGtal::GenericWriter<Image2DColor>::exportFile( "testGenericWriterColorImage.ppm", anColorImage2D);
   ok8 = ok8 &&  DGtal::GenericWriter<Image2DColor>::exportFile( "testGenericWriterColorImage.png", anColorImage2D);
   trace.info() <<"[done]"  << std::endl;
-  nbok += ((ok1 && okh5 && ok2 & ok2bis && ok3 && ok3bis && ok4 && ok5 && ok6 && ok7 && ok8 && okITK) ? 1 : 0); 
+  nbok += ((ok1 && okh5 && ok2 & ok2bis && ok3 && ok3bis && ok4 && ok5 && ok6 && ok7 && ok8 && okITK) ? 1 : 0);
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
 	       << "true == true" << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 

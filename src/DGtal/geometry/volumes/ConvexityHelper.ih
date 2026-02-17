@@ -85,7 +85,7 @@ computeDegeneratedLatticePolytope
       trace.error() << "[ConvexityHelper::computeDegeneratedLatticePolytope]"
                     << " Weird error: found initial full dimensional simplex" << std::endl;
       return LatticePolytope();
-    }  
+    }
   if ( basis.size() == 0 )
     { // Polytope is degenerated to one point (nD)
       PointRange X = { ref };
@@ -96,7 +96,7 @@ computeDegeneratedLatticePolytope
       // Find the two extremal points.
       std::vector< InternalInteger > alpha( input_points.size() );
       for ( std::size_t i = 0; i < input_points.size(); i++ )
-        alpha[ i ] = basis[ 0 ].dot( input_points[ i ] - ref );      
+        alpha[ i ] = basis[ 0 ].dot( input_points[ i ] - ref );
       Index a = 0, b = 0;
       for ( std::size_t i = 1; i < input_points.size(); i++ )
         {
@@ -119,7 +119,7 @@ computeDegeneratedLatticePolytope
   // Compute an orthogonal vector to the basis
   Affine::completeBasis( basis, true );
   InternalPoint n = basis.back(); // used to compute the two half-spaces that sandwich the polytope
-  
+
   // Compute domain
   Point l = input_points[ 0 ];
   Point u = input_points[ 0 ];
@@ -133,7 +133,7 @@ computeDegeneratedLatticePolytope
   // We could use `ref + n` but it induces bigger integers.
   // Now the set of input points should be full dimensional.
   input_points.push_back( ref + e );
-  
+
   // Compute convex hull
   ConvexHull hull;
   hull.setInput( input_points, false );
@@ -212,7 +212,7 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::compute3DTriangle
       PHS.emplace_back(  w, w.dot( c ) );
     }
   else
-    { // Compute additionnal constraints on edges so that the
+    { // Compute additional constraints on edges so that the
       // Minkowski sum with axis-aligned edges is valid.
       for ( Integer d = -1; d <= 1; d += 2 )
 	for ( Dimension k = 0; k < dim; k++ )
@@ -276,7 +276,7 @@ computeDegeneratedTriangle
   for ( Dimension k = 0; k < dim; k++ )
     {
       const auto lk = low [ k ];
-      const auto hk = high[ k ];      
+      const auto hk = high[ k ];
       if ( ( a[ k ] != lk ) && ( a[ k ] != hk ) ) return computeSegment( b, c );
       if ( ( b[ k ] != lk ) && ( b[ k ] != hk ) ) return computeSegment( a, c );
       if ( ( c[ k ] != lk ) && ( c[ k ] != hk ) ) return computeSegment( a, b );
@@ -307,15 +307,15 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeOpenSegment
   // Initialize polytope
   std::vector< PolytopeHalfSpace >   PHS;
   PHS.reserve( 4*dim );
-  // Compute additionnal constraints on domain boundary to make it open.
+  // Compute additional constraints on domain boundary to make it open.
   for ( Dimension k = 0; k < dim; k++ )
     {
       const Vector bp = Vector::base( k,  1 );
       PHS.emplace_back( bp, high[ k ] );
       const Vector bn = Vector::base( k, -1 );
       PHS.emplace_back( bn, -low[ k ] );
-    }      
-  // Compute additionnal constraints on edges so that the
+    }
+  // Compute additional constraints on edges so that the
   // Minkowski sum with axis-aligned edges is valid.
   for ( Integer d = -1; d <= 1; d += 2 )
     for ( Dimension k = 0; k < dim; k++ )
@@ -356,10 +356,10 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeSegment
   bool  degenerate  = ( ab == Vector::zero );
   // Initialize polytope
   std::vector< PolytopeHalfSpace >   PHS;
-  if ( degenerate ) 
+  if ( degenerate )
     return LatticePolytope( Domain( low, high ), PHS.cbegin(), PHS.cend(), true, false );
   PHS.reserve( 2*dim );
-  // Compute additionnal constraints on edges so that the
+  // Compute additional constraints on edges so that the
   // Minkowski sum with axis-aligned edges is valid.
   for ( Integer d = -1; d <= 1; d += 2 )
     for ( Dimension k = 0; k < dim; k++ )
@@ -397,7 +397,7 @@ computeDegeneratedConvexHullVertices
       trace.error() << "[ConvexityHelper::computeDegeneratedLatticePolytope]"
                     << " Weird error: found initial full dimensional simplex" << std::endl;
       return PointRange();
-    }  
+    }
   if ( basis.size() == 0 )
     { // Polytope is degenerated to one point (nD)
       PointRange X = { ref };
@@ -408,7 +408,7 @@ computeDegeneratedConvexHullVertices
       // Find the two extremal points.
       std::vector< Integer > alpha( input_points.size() );
       for ( std::size_t i = 0; i < input_points.size(); i++ )
-        alpha[ i ] = basis[ 0 ].dot( input_points[ i ] - ref );      
+        alpha[ i ] = basis[ 0 ].dot( input_points[ i ] - ref );
       Index a = 0, b = 0;
       for ( std::size_t i = 1; i < input_points.size(); i++ )
         {
@@ -451,7 +451,7 @@ computeDegeneratedConvexHullVertices
   //   if ( alignment > 1e-8 ) break;
   //   i++;
   // }
-  // if ( i == input_points.size() ) 
+  // if ( i == input_points.size() )
   //   { // 1-dimensional
   //     Index a = 0, b = 0;
   //     for ( i = 1; i < input_points.size(); i++ )
@@ -557,7 +557,7 @@ computeDegeneratedConvexHullVertices
         X[ j ] = X.back();
         break;
       }
-  X.resize( nX - 1 ); 
+  X.resize( nX - 1 );
   return X;
 }
 
@@ -618,8 +618,8 @@ computeLatticePolytope
     {
       // Compute ridge vertices to add edge constraints.
       PointRange positions;
-      std::vector< IndexRange > facet_vertices; 
-      std::vector< IndexRange > ridge_vertices; 
+      std::vector< IndexRange > facet_vertices;
+      std::vector< IndexRange > ridge_vertices;
       std::map< Ridge, Index > ridge2index;
       hull.getVertexPositions( positions );
       computeFacetAndRidgeVertices( hull, facet_vertices,
@@ -639,10 +639,10 @@ computeLatticePolytope
           ::crossProduct( U, V ); // parallel to E
         ASSERT( E.dot( UxV ) != 0 && "Invalid E / UxV" );
         if ( E.dot( UxV ) <= 0 ) E = -E; // force correct orientation
-        const auto  E1 = 
+        const auto  E1 =
           detail::BoundedLatticePolytopeSpecializer< dimension, Integer>
           ::crossProduct( U, E ); // edge on facet 1
-        const auto  E2 = 
+        const auto  E2 =
           detail::BoundedLatticePolytopeSpecializer< dimension, Integer>
           ::crossProduct( E, V ); // edge on facet 2
         ASSERT( E1.dot( U ) == 0 && "Invalid E1 / U" );
@@ -651,8 +651,8 @@ computeLatticePolytope
         ASSERT( E2.dot( U ) <  0 && "Invalid E1 / U" );
         for ( Dimension k = 0; k < dimension; ++k ) {
           const auto W = U[ k ] * V - V[ k ] * U;
-          const auto nn1 = W.dot( E1 ); 
-          const auto nn2 = W.dot( E2 ); 
+          const auto nn1 = W.dot( E1 );
+          const auto nn2 = W.dot( E2 );
           if ( nn1 > 0 && nn2 > 0 ) {
             PHS.emplace_back( -W, -W.dot( P0 ) );
             ASSERT( E1.dot(-W ) < 0 && "Invalid E1 /-W" );
@@ -806,13 +806,13 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeDelaunayCellCom
   typedef QuickHull< LatticeDelaunayKernel >   Delaunay;
   typedef typename Delaunay::Ridge             Ridge;
   typedef typename ConvexCellComplex< Point >::FaceRange FaceRange;
-  
+
   Delaunay del;
   del.setInput( input_points, remove_duplicates );
   bool ok = del.computeConvexHull( Delaunay::Status::VerticesCompleted );
   cell_complex.clear();
   if ( ! ok ) return false;
-  
+
   // Build complex, as many maximal cells as convex hull facets.
   // convex hull facet -> cell of complex
   // convex hull ridge -> face of complex
@@ -827,7 +827,7 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeDelaunayCellCom
   cell_complex.true_face_cell .resize( nb_r, cell_complex.infiniteCell() );
   cell_complex.false_face_cell.resize( nb_r, cell_complex.infiniteCell() );
   cell_complex.true_face_vertices.resize( nb_r );
-  for ( Index cur_f = 0; cur_f < del.nbFiniteFacets(); ++cur_f ) { 
+  for ( Index cur_f = 0; cur_f < del.nbFiniteFacets(); ++cur_f ) {
     const auto& facet = del.facets[ cur_f ];
     FaceRange current_faces;
     for ( auto neigh_f : facet.neighbors ) {
@@ -854,7 +854,7 @@ template < int dim, typename TInteger, typename TInternalInteger >
 typename DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::RationalPolytope
 DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeRationalPolytope
 ( const std::vector< RealPoint >& input_points,
-  Integer denominator, 
+  Integer denominator,
   bool remove_duplicates,
   bool make_minkowski_summable )
 {
@@ -905,8 +905,8 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeRationalPolytop
     {
       // Compute ridge vertices to add edge constraints.
       PointRange positions;
-      std::vector< IndexRange > facet_vertices; 
-      std::vector< IndexRange > ridge_vertices; 
+      std::vector< IndexRange > facet_vertices;
+      std::vector< IndexRange > ridge_vertices;
       std::map< Ridge, Index > ridge2index;
       hull.getVertexPositions( positions );
       computeFacetAndRidgeVertices( hull, facet_vertices,
@@ -926,10 +926,10 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeRationalPolytop
           ::crossProduct( U, V ); // parallel to E
         ASSERT( E.dot( UxV ) != 0 && "Invalid E / UxV" );
         if ( E.dot( UxV ) <= 0 ) E = -E; // force correct orientation
-        const auto  E1 = 
+        const auto  E1 =
           detail::BoundedRationalPolytopeSpecializer< dimension, Integer>
           ::crossProduct( U, E ); // edge on facet 1
-        const auto  E2 = 
+        const auto  E2 =
           detail::BoundedRationalPolytopeSpecializer< dimension, Integer>
           ::crossProduct( E, V ); // edge on facet 2
         ASSERT( E1.dot( U ) == 0 && "Invalid E1 / U" );
@@ -938,8 +938,8 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeRationalPolytop
         ASSERT( E2.dot( U ) <  0 && "Invalid E1 / U" );
         for ( Dimension k = 0; k < dimension; ++k ) {
           const auto W = U[ k ] * V - V[ k ] * U;
-          const auto nn1 = W.dot( E1 ); 
-          const auto nn2 = W.dot( E2 ); 
+          const auto nn1 = W.dot( E1 );
+          const auto nn2 = W.dot( E2 );
           if ( nn1 > 0 && nn2 > 0 ) {
             PHS.emplace_back( -W, -W.dot( P0 ) );
             ASSERT( E1.dot(-W ) < 0 && "Invalid E1 /-W" );
@@ -1062,13 +1062,13 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeDelaunayCellCom
   typedef QuickHull< RealDelaunayKernel >      Delaunay;
   typedef typename Delaunay::Ridge             Ridge;
   typedef typename ConvexCellComplex< RealPoint >::FaceRange FaceRange;
-  
+
   Delaunay del( precision );
   del.setInput( input_points, remove_duplicates );
   bool ok = del.computeConvexHull( Delaunay::Status::VerticesCompleted );
   cell_complex.clear();
   if ( ! ok ) return false;
-  
+
   // Build complex, as many maximal cells as convex hull facets.
   // convex hull facet -> cell of complex
   // convex hull ridge -> face of complex
@@ -1083,7 +1083,7 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeDelaunayCellCom
   cell_complex.true_face_cell .resize( nb_r, cell_complex.infiniteCell() );
   cell_complex.false_face_cell.resize( nb_r, cell_complex.infiniteCell() );
   cell_complex.true_face_vertices.resize( nb_r );
-  for ( Index cur_f = 0; cur_f < del.nbFiniteFacets(); ++cur_f ) { 
+  for ( Index cur_f = 0; cur_f < del.nbFiniteFacets(); ++cur_f ) {
     const auto& facet = del.facets[ cur_f ];
     FaceRange current_faces;
     for ( auto neigh_f : facet.neighbors ) {
@@ -1119,7 +1119,7 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeFacetAndRidgeVe
 
   ASSERT( hull.status() >= QHull::Status::VerticesCompleted
           && hull.status() <= QHull::Status::AllCompleted );
-  
+
   // Get cell vertices and sort them
   bool ok_fv = hull.getFacetVertices( cell_vertices );
   if ( ! ok_fv )
@@ -1131,11 +1131,11 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeFacetAndRidgeVe
   for ( auto& vtcs : sorted_cell_vertices )
     std::sort( vtcs.begin(), vtcs.end() );
   cell_vertices.resize( hull.nbFiniteFacets() );
-  
+
   // Count ridges/faces and compute their vertices
   Index  nb_r = 0;
   face_vertices.clear();
-  for ( Index cur_f = 0; cur_f < hull.nbFiniteFacets(); ++cur_f )  { 
+  for ( Index cur_f = 0; cur_f < hull.nbFiniteFacets(); ++cur_f )  {
     const auto& facet = hull.facets[ cur_f ];
     for ( auto neigh_f : facet.neighbors ) {
       const Ridge r { std::min( cur_f, neigh_f ), std::max( cur_f, neigh_f ) };
@@ -1145,7 +1145,7 @@ DGtal::ConvexityHelper< dim, TInteger, TInternalInteger>::computeFacetAndRidgeVe
         std::set_intersection( sorted_cell_vertices[ cur_f ].cbegin(),
                                sorted_cell_vertices[ cur_f ].cend(),
                                sorted_cell_vertices[ neigh_f ].cbegin(),
-                               sorted_cell_vertices[ neigh_f ].cend(), 
+                               sorted_cell_vertices[ neigh_f ].cend(),
                                std::back_inserter( result ) );
         face_vertices.push_back( result );
         r2f[ r ] = nb_r++;

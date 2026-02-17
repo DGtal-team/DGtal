@@ -54,9 +54,9 @@ namespace DGtal
     /**
        Description of \b concept '\b CSegmentFactory' <p>
        @ingroup Concepts
-       @brief Aim: Defines the concept describing a segment 
+       @brief Aim: Defines the concept describing a segment
        ie. a valid and not empty subrange, which can construct
-       instances of its own type or of derived type. 
+       instances of its own type or of derived type.
 
        # Refinement of CSegment
 
@@ -103,10 +103,10 @@ namespace DGtal
         concepts::ConceptUtils::sameType( myT, myT.getSelf() );
         concepts::ConceptUtils::sameType( myRT, myT.getReverse() );
       }
-      // ------------------------- Private Datas --------------------------------
+      // ------------------------- Private Data --------------------------------
     private:
       T myT; // only if T is default constructible.
-      Reverse myRT; 
+      Reverse myRT;
 
       // ------------------------- Internals ------------------------------------
     private:

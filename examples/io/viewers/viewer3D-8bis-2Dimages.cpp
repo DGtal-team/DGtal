@@ -64,7 +64,7 @@ int main()
   polyscope::options::programName = "examples/io/viewers: viewer3D-8bis-2Dimages";
   PolyscopeViewer viewer;
 
-  
+
 
   std::string inputFilename = examplesPath + "samples/lobster.vol";
   Image3D imageVol = VolReader<Image3D>::importVol(inputFilename);
@@ -85,7 +85,7 @@ int main()
   unsigned int pos=0;
   for (double alpha = 0; alpha< 1.54; alpha+= 0.01){
     //! [ExampleViewer3D2DImagesExtractImagesNonSliceExtract]
-    // Extracting images from 3D embeder
+    // Extracting images from 3D embedder
     DGtal::functors::Point2DEmbedderIn3D<DGtal::Z3i::Domain >  embedder(imageVol.domain(),
                                                                         ptCenter+DGtal::Z3i::Point(static_cast<int>(200.0*cos(alpha)),
 												   static_cast<int>(100.0*sin(alpha))),
@@ -109,5 +109,3 @@ int main()
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

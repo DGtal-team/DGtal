@@ -105,7 +105,7 @@ public:
     {
       ConceptUtils::sameType( myGMap, myX.gradientMap() );
     }
-  // ------------------------- Private Datas --------------------------------
+  // ------------------------- Private Data --------------------------------
 private:
   T myX; // do not require T to be default constructible.
   GradientMap myGMap;

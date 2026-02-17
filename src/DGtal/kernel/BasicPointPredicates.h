@@ -261,10 +261,10 @@ namespace DGtal {
    * Aim: The predicate returns true when the given binary functor
    * returns true for the two PointPredicates given at construction.
    *
-   * Note that this class is specialized for DGtal::AndBoolFct2 and 
+   * Note that this class is specialized for DGtal::AndBoolFct2 and
    * DGtal::OrBoolFct2 in order to guarantee that the second computation
    * is not performed when the first point predicate return false (resp. true)
-   * with DGtal::AndBoolFct2 (resp. DGtal::OrBoolFct2). 
+   * with DGtal::AndBoolFct2 (resp. DGtal::OrBoolFct2).
    *
    * @tparam TPointPredicate1 the left predicate type.
    * @tparam TPointPredicate2 the right predicate type.

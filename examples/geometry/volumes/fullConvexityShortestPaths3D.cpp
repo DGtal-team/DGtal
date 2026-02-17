@@ -30,9 +30,9 @@
 
 /**
    This example shows how to use tangency to compute shortest paths on 3D digital objects
-   
+
    @see \ref dgtal_dconvexityapp_sec2
-   
+
    For instance, you may call it on object "cube+sphere" as
 
 \verbatim
@@ -115,14 +115,14 @@ int main( int argc, char** argv )
   auto   params  = SH3::defaultParameters();
   params( "thresholdMin", m )( "thresholdMax", M );
   params( "surfaceComponents" , "All" );
-  
+
   // Domain creation from two bounding points.
   trace.info() << "Building set or importing vol ... ";
   KSpace K;
   auto bimage = SH3::makeBinaryImage( fn, params );
   K = SH3::getKSpace( bimage );
   trace.info() << "  [Done]" << std::endl;
-  
+
   // Compute surface
   const auto surface = SH3::makeDigitalSurface( bimage, K, params );
 
@@ -147,7 +147,7 @@ int main( int argc, char** argv )
         }
       else
         surfel2idx[ s ] = it->second;
-    } 
+    }
   trace.info() << "Shape has " << points.size() << " interior boundary points"
                << std::endl;
 
@@ -165,7 +165,7 @@ int main( int argc, char** argv )
 
       viewerCore.show();
     }
-  
+
   // Get selected surfel/point
   const auto s0 = surfels[ selected_surfels[ 0 ] ];
   Dimension  k0 = K.sOrthDir( s0 );
@@ -216,7 +216,7 @@ int main( int argc, char** argv )
       }
 
     // JOL: Left if you wish to display it as a surface, and to display paths.
-    
+
     for ( auto && s : surfels )
       {
         const double d_s = SP.distance( surfel2idx[ s ] );
@@ -256,7 +256,7 @@ int main( int argc, char** argv )
           auto c1 = SP1.pathToSource( p1_ );
           std::copy(c0.rbegin(), c0.rend(), std::back_inserter(Q));
           Q.pop_back();
-          std::copy(c1.begin(), c1.end(), std::back_inserter(Q)); 
+          std::copy(c1.begin(), c1.end(), std::back_inserter(Q));
           break;
         }
     }
@@ -330,9 +330,8 @@ int main( int argc, char** argv )
       }
     viewerCore.show();
   }
-  
+
   return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-

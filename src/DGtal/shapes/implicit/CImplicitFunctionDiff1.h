@@ -57,30 +57,30 @@ Description of \b concept '\b CImplicitFunctionDiff1' <p>
 
 @brief Aim: Describes a 1-differentiable function of the form
      f(x), where x is some real point in the given space, and f(x) is
-     some value. 
+     some value.
 
  # Refinement of CImplicitFunction
-      
- # Associated types    
+
+ # Associated types
      - RealPoint: the type for the domain
      - RealVector: the type for a vector in the domain
      - Value: the type for the range
 
  # Notation
      - \c X : A type that is a model of CImplicitFunctionDiff1
-     - \c f : objet of type X
-     - \c a : objet of type RealPoint
-    
+     - \c f : object of type X
+     - \c a : object of type RealPoint
+
  # Definitions
-    
+
  # Valid expressions and
 
 | Name          | Expression | Type requirements   | Return type | Precondition     | Semantics | Post condition | Complexity |
 |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
-| gradient operator | \c gradient( \c a ) |        | RealVector  |                  |Evaluates the gradient of the function \c f at point \c a | | |  
-      
+| gradient operator | \c gradient( \c a ) |        | RealVector  |                  |Evaluates the gradient of the function \c f at point \c a | | |
+
  # Invariants
-    
+
  # Models
       ImplicitPolynomial3Shape
 
@@ -88,7 +88,7 @@ Description of \b concept '\b CImplicitFunctionDiff1' <p>
 
 @tparam T the type that should be a model of CImplicitFunctionDiff1.
    */
-  template <typename T> 
+  template <typename T>
   struct CImplicitFunctionDiff1 : CImplicitFunction<T>
   {
     // ----------------------- Concept checks ------------------------------
@@ -108,12 +108,12 @@ Description of \b concept '\b CImplicitFunctionDiff1' <p>
       // something of type B
       ConceptUtils::sameType( myB, myX.gradient( myA ) );
     }
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     T myX; // do not require T to be default constructible.
     RealPoint myA;
     RealVector myB;
-    
+
   }; // end of concept CImplicitFunctionDiff1
   }
 } // namespace DGtal

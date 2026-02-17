@@ -220,7 +220,7 @@ public:
     Value operator()(const Point & aPoint) const
     {
         ASSERT(this->domain().isInside(aPoint));
-	
+
 	typename TImageContainer::Point point = myFD->operator()(aPoint);
 	if (myImagePtr->domain().isInside(point))
 	  return myFV->operator()(myImagePtr->operator()(point));
@@ -228,7 +228,7 @@ public:
 	  return defaultValue;
     }
 
-    
+
     /////////////////// API //////////////////
 
     /**
@@ -261,17 +261,17 @@ public:
     {
         return myImagePtr;
     }
-    
+
     /**
-     * Allows to define a default value returned when point 
-     * transformed by domain functor does not belongs to 
+     * Allows to define a default value returned when point
+     * transformed by domain functor does not belongs to
      * image domain.
      */
     void setDefaultValue ( Value aValue )
     {
       defaultValue = aValue;
     }
-    
+
     Value getDefaultValue () const
     {
       return defaultValue;
@@ -280,7 +280,7 @@ public:
     /**
      * Allows to recover the corresponding point in the source domain.
      * @param aPoint from the adapted domain
-     * @return the point in the source domain  
+     * @return the point in the source domain
      */
 
    typename TImageContainer::Point sourceDomainPoint (const Point &aPoint) const
@@ -288,9 +288,9 @@ public:
       return  myFD->operator()(aPoint);
     }
 
-  
 
-    // ------------------------- Protected Datas ------------------------------
+
+    // ------------------------- Protected Data ------------------------------
 private:
     /**
      * Default constructor.
@@ -301,7 +301,7 @@ private:
 #endif
     }
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
 protected:
 
     /// Alias on the image container
@@ -321,7 +321,7 @@ protected:
      * Aliasing pointer on the underlying Value functor
      */
     const TFunctorV* myFV;
-    
+
     /**
      *  Default value returned when point transformed by image functor does not belongs to image.
      *  Initial value is 0.

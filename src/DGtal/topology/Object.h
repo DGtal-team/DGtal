@@ -66,7 +66,7 @@
 namespace boost
 {
   /**
-     This is the kind of boost graph that an Object (@see DGtal::Object) can mimick.
+     This is the kind of boost graph that an Object (@see DGtal::Object) can mimic.
   */
   struct Object_graph_traversal_category
     : public virtual adjacency_graph_tag,
@@ -285,7 +285,7 @@ namespace DGtal
      * Get the occupancy configuration of the neighborhood of a point. The neighborhood only depends on the dimension, not the topology of the object (3x3 cube for 3D point, 2x2 square for 2D).
      * @param center point of the neighborhood. It doesn't matter if center belongs or not to \b input_object.
      *
-     * @param mapZeroNeighborhoodToMask maping each point of the neighborhood of point Zero to a NeighborhoodConfiguration.
+     * @param mapZeroNeighborhoodToMask mapping each point of the neighborhood of point Zero to a NeighborhoodConfiguration.
      * @see myNeighborConfigurationMap
      * @see mapPointToBitMask
      *
@@ -612,7 +612,7 @@ objects[ 0 ].writeComponents( it ); // it points in same container as this.
      *
      * @param v point to check simplicity.
      * @param input_table external look up table containing the configuration of neighbors which are simple. @see functions::loadTable
-     * @param mapZeroNeighborhoodToMask maping each point of the neighborhood of point Zero to a NeighborhoodConfiguration.
+     * @param mapZeroNeighborhoodToMask mapping each point of the neighborhood of point Zero to a NeighborhoodConfiguration.
      *
      * @return true if the point is simple according to precalculated table.
      *
@@ -639,9 +639,9 @@ objects[ 0 ].writeComponents( it ); // it points in same container as this.
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     /**

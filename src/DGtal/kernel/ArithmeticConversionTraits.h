@@ -44,7 +44,7 @@
 
 namespace DGtal
 {
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // template class ArithmeticConversionTraits
   /**
@@ -92,7 +92,7 @@ namespace DGtal
   struct ArithmeticConversionTraits
   {
   };
-  
+
   /** @brief Specialization in order to remove const specifiers and references from given types
    *
    * @see ArithmeticConversionTraits
@@ -107,8 +107,8 @@ namespace DGtal
   typename std::remove_cv< typename std::remove_reference<U>::type >::type >
   {
   };
-  
-  
+
+
   /** @brief Specialization for (fundamental) arithmetic types.
    *
    * Resulting type is deduced from usual arithmetic conversion using
@@ -122,7 +122,7 @@ namespace DGtal
   {
     using type = typename std::common_type<T, U>::type; //! Arithmetic operation result type.
   };
-  
+
   /** @brief Result type of arithmetic binary operators between two given types.
    *
    * @tparam T      First operand type.
@@ -132,7 +132,7 @@ namespace DGtal
    */
   template <typename T, typename U>
   using ArithmeticConversionType = typename ArithmeticConversionTraits<T, U>::type;
-  
+
   /** @brief Helper to determine if an arithmetic operation between two given
    *      types has a valid result type (ie is valid).
    *
@@ -145,7 +145,7 @@ namespace DGtal
   : std::false_type
   {
   };
-  
+
   /** @brief Specialization when arithmetic operation between the two given
    *      type is valid.
    *
@@ -160,8 +160,8 @@ namespace DGtal
   : std::true_type
   {
   };
-  
-  
+
+
   /** @brief Call constructor for the result type of an arithmetic operation.
    *
    * @tparam LHS    First operand type.
@@ -179,7 +179,7 @@ namespace DGtal
   {
     boost::ignore_unused_variable_warning(lhs);
     boost::ignore_unused_variable_warning(rhs);
-    
+
     return ArithmeticConversionType<LHS, RHS>( std::forward<Args>(args)... );
   }
 
@@ -192,7 +192,7 @@ namespace DGtal
   {
     using type = BigInteger;
   };
-  
+
   /** @brief Specialization when second operand is a  BigInteger.
    *
    * @see ArithmeticConversionTraits
@@ -202,7 +202,7 @@ namespace DGtal
   {
     using type = BigInteger;
   };
-  
+
   /** @brief Specialization when both operands are  BigInteger.
    *
    *

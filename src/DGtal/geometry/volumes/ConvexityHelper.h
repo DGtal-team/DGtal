@@ -125,7 +125,7 @@ namespace DGtal
     };
 
     }  // namespace detail
-  
+
   /////////////////////////////////////////////////////////////////////////////
   // template class ConvexityHelper
   /**
@@ -135,7 +135,7 @@ namespace DGtal
      complex representing a Delaunay complex.
 
      @tparam dim the dimension of the space where points and further objects live.
-     
+
      @tparam TInteger the integral type used to define the digital
      space, a model of concepts::CInteger. It sets the coordinate type
      of input lattice points as well as output integral convex hulls
@@ -145,7 +145,7 @@ namespace DGtal
      internal computations of above/below plane tests, a model of
      concepts::CInteger. Must be at least as precise as
      TCoordinateInteger.
-     
+
      @see \ref moduleQuickHull
   */
   template < int dim,
@@ -157,7 +157,7 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInteger> ));
     // Integer must be a model of the concept CInteger.
     BOOST_CONCEPT_ASSERT(( concepts::CInteger<TInternalInteger> ));
-    
+
     static const Dimension dimension = dim;
 
     typedef TInteger                         Integer;
@@ -189,8 +189,8 @@ namespace DGtal
 
     // todo
     // static
-    // std::tuple< IndexRange, std::vector< IndexRange >, PointRange, Dimension >  
-    
+    // std::tuple< IndexRange, std::vector< IndexRange >, PointRange, Dimension >
+
     /// Computes and returns a halfspace representation of the tightiest lattice
     /// polytope enclosing all the given input lattice points.
     ///
@@ -229,9 +229,9 @@ namespace DGtal
     static
     PointRange
     computeConvexHullVertices( const PointRange& input_points,
-                               bool remove_duplicates = true );    
+                               bool remove_duplicates = true );
 
-    
+
     /// Computes a surface mesh representation of the boundary of the
     /// convex hull of the given lattice points.
     ///
@@ -418,7 +418,7 @@ namespace DGtal
     LatticePolytope
     compute3DOpenTriangle( const Point& a, const Point& b, const Point& c,
 			   bool make_minkowski_summable = false );
-    
+
     /// Computes the lattice polytope enclosing a degenerated
     /// triangle. The points must be aligned (or non distinct).
     ///
@@ -432,11 +432,11 @@ namespace DGtal
     LatticePolytope
     computeDegeneratedTriangle( const Point& a, const Point& b, const Point& c );
 
-    
+
     /// Computes the lattice polytope enclosing a segment.
     ///
-    /// @param a any point 
-    /// @param b any point 
+    /// @param a any point
+    /// @param b any point
     ///
     /// @return the tightiest bounded lattice polytope
     /// (i.e. H-representation) including the closed segment
@@ -449,8 +449,8 @@ namespace DGtal
 
     /// Computes the lattice polytope enclosing an open segment.
     ///
-    /// @param a any point 
-    /// @param b any point 
+    /// @param a any point
+    /// @param b any point
     ///
     /// @return the tightiest bounded lattice polytope
     /// (i.e. H-representation) including the open segment
@@ -460,9 +460,9 @@ namespace DGtal
     static
     LatticePolytope
     computeOpenSegment( const Point& a, const Point& b );
-    
+
     /// @}
-    
+
     // ----------------- lattice Delaunay services -------------------------
   public:
     /// @name Lattice Delaunay services
@@ -489,14 +489,14 @@ namespace DGtal
     computeDelaunayCellComplex( ConvexCellComplex< Point >& cell_complex,
                                 const PointRange& input_points,
                                 bool remove_duplicates = true );
-    
+
     /// @}
 
     // ----------------- rational convex hull services -------------------------
   public:
     /// @name Rational convex hull services
     /// @{
-    
+
     /// Computes and returns a halfspace representation of the tightiest rational
     /// polytope enclosing all the given input real points.
     ///
@@ -521,7 +521,7 @@ namespace DGtal
     static
     RationalPolytope
     computeRationalPolytope( const std::vector< RealPoint >& input_points,
-                             Integer denominator, 
+                             Integer denominator,
                              bool remove_duplicates = true,
                              bool make_minkowski_summable = false );
 
@@ -612,7 +612,7 @@ namespace DGtal
                                   const std::vector< RealPoint >& input_points,
                                   double precision = 1024.0,
                                   bool remove_duplicates = true );
-    
+
     /// @}
 
 
@@ -648,9 +648,9 @@ namespace DGtal
                                 const std::vector< RealPoint >& input_points,
                                 double precision = 1024.0,
                                 bool remove_duplicates = true );
-    
+
     /// @}
-    
+
     // ----------------- utility services -------------------------
   public:
     /// @name Utility services
@@ -668,7 +668,7 @@ namespace DGtal
     ///
     /// @param[out] face_vertices the vector giving for each face the
     /// indices of its vertices.
-    /// 
+    ///
     /// @pre `hull.status() >= Status::VerticesCompleted` and
     /// `hull.status() <= Status::AllCompleted`
     template < typename QHull >
@@ -680,10 +680,10 @@ namespace DGtal
                                   std::vector< IndexRange >& face_vertices );
 
     /// @}
-    
+
   }; // class ConvexityHelper
 
-  
+
 } // namespace DGtal
 
 ///////////////////////////////////////////////////////////////////////////////

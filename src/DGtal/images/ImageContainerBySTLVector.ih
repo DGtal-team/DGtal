@@ -188,6 +188,3 @@ DGtal::ImageContainerBySTLVector<Domain, T>::linearized(const Point &aPoint) con
 {
   return DGtal::Linearizer<Domain, ColMajorStorage>::getIndex( aPoint, myDomain.lowerBound(), myExtent );
 }
-
-
-

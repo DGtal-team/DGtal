@@ -49,7 +49,7 @@ bool testVoronoiCovarianceMeasure()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   using namespace DGtal;
   using namespace DGtal::Z3i; // gets Space, Point, Domain
   trace.beginBlock ( "testVoronoiCovarianceMeasure" );
@@ -84,7 +84,7 @@ bool testVoronoiCovarianceMeasure()
     }
   double avg_dist = ( sum_dist / d.size() );
   trace.info() << "Average distance is " << avg_dist << std::endl;
-  nbok += ( 9 <= avg_dist && avg_dist <= 11 ) ? 1 : 0; 
+  nbok += ( 9 <= avg_dist && avg_dist <= 11 ) ? 1 : 0;
   nb++;
   trace.info() << "(" << nbok << "/" << nb << ") "
                << "9 <= " << avg_dist << " <= 11 " << std::endl;
@@ -102,7 +102,7 @@ bool testVoronoiCovarianceMeasure()
   trace.info() << "- vcm_r.row(1) = " << vcm_r.row( 1 ) << std::endl;
   trace.info() << "- vcm_r.row(2) = " << vcm_r.row( 2 ) << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 

@@ -93,7 +93,7 @@ example, in dimension 2, partial digital Voronoi maps of dimension one are
 first computed in each row independently. Then such partial Voronoi
 maps are updated using independent processes along the columns,
 leading to a valid Voronoi map of dimension 2. In an algorithmic point
-of view, the 1D processes used for both columns and rows are 
+of view, the 1D processes used for both columns and rows are
 the same. In higher dimensions, the other dimensions are processed
 similarly.
 
@@ -214,7 +214,7 @@ the complete Voronoi map with all co-cyclic points. More precisely if
 a grid point is equidistant to two sites, the two sites are reported
 in the VoronoiComplete map .
 
-This extension of the separable approach has been described in @cite Couprie2007 
+This extension of the separable approach has been described in @cite Couprie2007
 
 The overall algorithm is roughly the same
 (separable decomposition, each grid point is processed a constant
@@ -230,7 +230,7 @@ output image is an image of `std::set<Point>` instead of an image of
 `Point`. As we rely on `std::set` as a per pixel container, and if
 @f$f@f$ denotes the number of co-cyclic sites at a point, the extra
 factor is in @f$ O(f \log f) @f$ (as insertion is expected to be done
-in logarithmic time for `std::set`). 
+in logarithmic time for `std::set`).
 
 
 @note Beside the extra computational cost due to the processing of
@@ -246,7 +246,7 @@ larger domains.
 
 @note Associative containers with O(1) amortized insertion like
 `std::unordered_set` lead to higher construction time without a clear
-improvment on the overall performances.
+improvement on the overall performances.
 
 The VoronoiMapComplete class can also be applied on toroidal domains
 (see @ref toricVol).
@@ -369,7 +369,7 @@ We consider the following distance transformation objects:
 The following results illustrate both distance transformation and
 Voronoi maps. For the VoronoiMap results, points may be attached to
 sites exterior to the initial domain. In fact such sites correspond to
-toric replicas of existing sites within the domain. 
+toric replicas of existing sites within the domain.
 
 <center>
 <table>

@@ -59,7 +59,7 @@ namespace concepts
    @ingroup Concepts
    @brief Aim: Defines the concept describing a read/write image,
    having an output iterator.
-   
+
 # Refinement of
 
   CTrivialImage and CConstImage
@@ -68,17 +68,17 @@ namespace concepts
 - the same as CTrivialImage
 - the same as CConstImage
 - \a Range : type of the Range
- 
- 
+
+
  # Notation
   - \a X : A type that is a model of CImage
   - \a x : Object of type X
   - \a aPoint : Object of type Point
   - \a aValue : Object of type Value
- 
- 
+
+
  # Definitions
- 
+
  # Valid expressions and semantics
 
 
@@ -87,15 +87,15 @@ namespace concepts
 | get range                           | x.range()                          |                      | Range                 |                                    | Returns a range on the image values                   |                |            |
 
 
- 
+
 # Invariants
 
 # Models
   ImageContainerBySTLVector, ImageContainerBySTLMap, ImageContainerByITKImage, ImageContainerByHashTree
- 
+
 
 # Notes
- 
+
  */
 
 template <typename I>

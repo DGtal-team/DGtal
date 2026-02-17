@@ -50,9 +50,9 @@ using namespace DGtal;
 // Functions for testing the functions devoted to convex hull computations.
 ///////////////////////////////////////////////////////////////////////////////
 /**
- * Function that checks whether two ranges are equal up to circular shifts or not. 
- * For example, (1, 2, 3) and (2, 3, 1) are equal, 
- * but (1, 2, 3) and (2, 1, 3) are not equal. 
+ * Function that checks whether two ranges are equal up to circular shifts or not.
+ * For example, (1, 2, 3) and (2, 3, 1) are equal,
+ * but (1, 2, 3) and (2, 1, 3) are not equal.
  *
  * @param first1 begin iterator of the first range
  * @param last1 end iterator of the first range
@@ -63,33 +63,33 @@ using namespace DGtal;
  * @return 'true' if the two ranges are equal, 'false' otherwise
  */
 template <typename ForwardIterator>
-bool circularlyEqual(const ForwardIterator& first1, const ForwardIterator& last1, 
+bool circularlyEqual(const ForwardIterator& first1, const ForwardIterator& last1,
 		     const ForwardIterator& first2, const ForwardIterator& last2 )
 {
-  ASSERT( first2 != last2 ); 
+  ASSERT( first2 != last2 );
 
   //find a element of the first range equal to the first element of the second range
   ForwardIterator start1 = find( first1, last1, *first2 );
   if (start1 == last1)
-    return false; 
+    return false;
   else
     {
       bool areEqual = true; //true if the two ranges are equal up to circular shifts
       //check whether the two ranges are equal or not
-      Circulator<ForwardIterator> c1(start1, first1, last1); 
-      Circulator<ForwardIterator> cEnd1 = c1; 
-      Circulator<ForwardIterator> c2(first2, first2, last2); 
+      Circulator<ForwardIterator> c1(start1, first1, last1);
+      Circulator<ForwardIterator> cEnd1 = c1;
+      Circulator<ForwardIterator> c2(first2, first2, last2);
       do
 	{
 	  if (*c1 != *c2)
-	    areEqual = false; 
+	    areEqual = false;
 	  else
 	    {
-	      ++c1; 
-	      ++c2; 
+	      ++c1;
+	      ++c2;
 	    }
-	} while ( (c1 != cEnd1) && (areEqual) ); 
-      return areEqual; 
+	} while ( (c1 != cEnd1) && (areEqual) );
+      return areEqual;
 
     }
 }
@@ -97,7 +97,7 @@ bool circularlyEqual(const ForwardIterator& first1, const ForwardIterator& last1
 
 /**
  * Testing functions that computes the convex hull of a range of points
- * @return 'true' if passed. 
+ * @return 'true' if passed.
  */
 bool testConvexHull2D()
 {
@@ -105,21 +105,21 @@ bool testConvexHull2D()
   unsigned int nb = 0;
 
   typedef PointVector<2,DGtal::int32_t> Point;
-  
+
   trace.beginBlock ( "One simple test..." );
 
-  vector<Point> data, g, res; 
+  vector<Point> data, g, res;
   //data
   data.push_back( Point(2,0) );
-  data.push_back( Point(4,0) ); 
+  data.push_back( Point(4,0) );
   data.push_back( Point(0,3) );
-  data.push_back( Point(0,-4) ); 
+  data.push_back( Point(0,-4) );
   data.push_back( Point(3,4) );
-  data.push_back( Point(5,0) ); 
+  data.push_back( Point(5,0) );
   data.push_back( Point(4,3) );
-  data.push_back( Point(0,5) ); 
+  data.push_back( Point(0,5) );
   data.push_back( Point(-3,-4) );
-  data.push_back( Point(-5,0) ); 
+  data.push_back( Point(-5,0) );
   data.push_back( Point(-4,-3) );
   data.push_back( Point(0,-5) );
   data.push_back( Point(3,-4) );
@@ -127,13 +127,13 @@ bool testConvexHull2D()
   data.push_back( Point(-3,4) );
   data.push_back( Point(-4,3) );
   //ground truth
-  g.push_back( Point(5,0) ); 
+  g.push_back( Point(5,0) );
   g.push_back( Point(4,3) );
   g.push_back( Point(3,4) );
-  g.push_back( Point(0,5) ); 
+  g.push_back( Point(0,5) );
   g.push_back( Point(-3,4) );
   g.push_back( Point(-4,3) );
-  g.push_back( Point(-5,0) ); 
+  g.push_back( Point(-5,0) );
   g.push_back( Point(-4,-3) );
   g.push_back( Point(-3,-4) );
   g.push_back( Point(0,-5) );
@@ -141,59 +141,59 @@ bool testConvexHull2D()
   g.push_back( Point(4,-3) );
 
   //geometric predicate
-  typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::int64_t> Functor;  
-  Functor functor; 
-  typedef PredicateFromOrientationFunctor2<Functor> Predicate; 
-  Predicate predicate( functor ); 
+  typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::int64_t> Functor;
+  Functor functor;
+  typedef PredicateFromOrientationFunctor2<Functor> Predicate;
+  Predicate predicate( functor );
 
   //namespace
-  using namespace functions::Hull2D; 
+  using namespace functions::Hull2D;
 
   //andrew algorithm
-  trace.info() << " andrew algorithm " << std::endl; 
-  andrewConvexHullAlgorithm( data.begin(), data.end(), back_inserter( res ), predicate );   
+  trace.info() << " andrew algorithm " << std::endl;
+  andrewConvexHullAlgorithm( data.begin(), data.end(), back_inserter( res ), predicate );
 
-  copy(res.begin(), res.end(), ostream_iterator<Point>( cout, " " ) ); 
-  cout << endl; 
+  copy(res.begin(), res.end(), ostream_iterator<Point>( cout, " " ) );
+  cout << endl;
 
-  if ( (res.size() == g.size()) && 
+  if ( (res.size() == g.size()) &&
 	(circularlyEqual(res.begin(), res.end(), g.begin(), g.end())) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   //graham algorithm
-  res.clear(); 
+  res.clear();
   trace.info() << " graham algorithm " << std::endl;
-  functors::PolarPointComparatorBy2x2DetComputer<Point> comparator;  
+  functors::PolarPointComparatorBy2x2DetComputer<Point> comparator;
   grahamConvexHullAlgorithm( data.begin(), data.end(), back_inserter( res ), predicate, comparator );
 
-  copy(res.begin(), res.end(), ostream_iterator<Point>( cout, " " ) ); 
-  cout << endl; 
+  copy(res.begin(), res.end(), ostream_iterator<Point>( cout, " " ) );
+  cout << endl;
 
-  if ( (res.size() == g.size()) && 
+  if ( (res.size() == g.size()) &&
 	(circularlyEqual(res.begin(), res.end(), g.begin(), g.end())) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   //melkman algorithm
-  res.clear(); 
+  res.clear();
   trace.info() << " melkman algorithm " << std::endl;
-  sort( data.begin(), data.end() ); 
+  sort( data.begin(), data.end() );
   melkmanConvexHullAlgorithm( data.begin(), data.end(), back_inserter( res ), functor );
 
-  copy(res.begin(), res.end(), ostream_iterator<Point>( cout, " " ) ); 
-  cout << endl; 
+  copy(res.begin(), res.end(), ostream_iterator<Point>( cout, " " ) );
+  cout << endl;
 
-  if ( (res.size() == g.size()) && 
+  if ( (res.size() == g.size()) &&
 	(circularlyEqual(res.begin(), res.end(), g.begin(), g.end())) )
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   // melkman on line construction of  convex hull:
   trace.info() << "on line convex hull construction" << std::endl;
-  DGtal::MelkmanConvexHull<Point, Functor> ch; 
+  DGtal::MelkmanConvexHull<Point, Functor> ch;
   for(vector<Point>::const_iterator it = data.begin(); it != data.end(); it++)
     {
       ch.add(*it);
@@ -211,7 +211,7 @@ bool testConvexHull2D()
     nbok++;
   nb++;
 
-  trace.info() << "(" << nbok << "/" << nb << ") " << endl;  
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   // test copy and [] operator on convex hull:
   trace.info() << "test copy and [] operator on convex hull:" << std::endl;
   DGtal::MelkmanConvexHull<Point, Functor> ch2 = ch;
@@ -223,63 +223,63 @@ bool testConvexHull2D()
    if(res.size() == cvSize2 && ch[0] == ch2[0])
     nbok++;
   nb++;
-  trace.info() << "(" << nbok << "/" << nb << ") " << endl;  
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
   trace.endBlock();
 
 
   trace.beginBlock ( "Random Tests..." );
-  vector<Point> randomData, res1, res2; 
-  const int numberOfPoints = 1000; 
-  const int numberOfTries = 50; 
-  
+  vector<Point> randomData, res1, res2;
+  const int numberOfPoints = 1000;
+  const int numberOfTries = 50;
+
   for (int i = 0; ( (i < numberOfTries)&&(nbok == nb) ); i++)
     {
       //new data
-      randomData.clear(); 
-      res1.clear(); 
-      res2.clear(); 
+      randomData.clear();
+      res1.clear();
+      res2.clear();
       for (int j = 0; j < numberOfPoints; j++)
-	  randomData.push_back( Point(rand()%256, rand()%256) ); 
+	  randomData.push_back( Point(rand()%256, rand()%256) );
       //computation
-      andrewConvexHullAlgorithm( randomData.begin(), randomData.end(), back_inserter( res1 ), predicate );   
+      andrewConvexHullAlgorithm( randomData.begin(), randomData.end(), back_inserter( res1 ), predicate );
       grahamConvexHullAlgorithm( randomData.begin(), randomData.end(), back_inserter( res2 ), predicate, comparator );
       //comparison
-      if ( (res1.size() == res2.size()) && 
+      if ( (res1.size() == res2.size()) &&
 	   (circularlyEqual(res1.begin(), res1.end(), res2.begin(), res2.end())) )
-	nbok++; 
-      nb++; 
+	nbok++;
+      nb++;
       trace.info() << "(" << nbok << "/" << nb << ") " << endl;
       //another computation
-      res2.clear(); 
-      sort( randomData.begin(), randomData.end() ); 
-      melkmanConvexHullAlgorithm( randomData.begin(), randomData.end(), back_inserter( res2 ), functor );   
+      res2.clear();
+      sort( randomData.begin(), randomData.end() );
+      melkmanConvexHullAlgorithm( randomData.begin(), randomData.end(), back_inserter( res2 ), functor );
       //comparison
-      if ( (res1.size() == res2.size()) && 
+      if ( (res1.size() == res2.size()) &&
 	   (circularlyEqual(res1.begin(), res1.end(), res2.begin(), res2.end())) )
-	nbok++; 
-      nb++; 
+	nbok++;
+      nb++;
       trace.info() << "(" << nbok << "/" << nb << ") " << endl;
     }
 
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
 
 /**
  * Testing functions that computes the convex hull thickness.
- * @return 'true' if passed. 
+ * @return 'true' if passed.
  */
 bool testConvexHullCompThickness()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
   typedef PointVector<2,DGtal::int32_t> Point;
-  typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::int32_t> Functor;  
-  
+  typedef InHalfPlaneBySimple3x3Matrix<Point, DGtal::int32_t> Functor;
+
   trace.beginBlock ( "One simple test..." );
-  DGtal::MelkmanConvexHull<Point, Functor> ch; 
+  DGtal::MelkmanConvexHull<Point, Functor> ch;
   ch.add(Point(0,0));
   ch.add(Point(11,1));
   ch.add(Point(12,3));
@@ -289,18 +289,18 @@ bool testConvexHullCompThickness()
   ch.add(Point(1,4));
 
   Point antipodalP, antipodalQ, antipodalS;
-  double thicknessE = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
-                                                                     DGtal::functions::Hull2D::EuclideanThickness, 
+  double thicknessE = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(),
+                                                                     DGtal::functions::Hull2D::EuclideanThickness,
                                                                      antipodalP,
                                                                      antipodalQ,
                                                                      antipodalS);
-  double thicknessHV = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
+  double thicknessHV = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(),
                                                                       DGtal::functions::Hull2D::HorizontalVerticalThickness,
                                                                       antipodalP, antipodalQ, antipodalS);
-  double thicknessHVb = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(), 
+  double thicknessHVb = DGtal::functions::Hull2D::computeHullThickness(ch.begin(), ch.end(),
                                             DGtal::functions::Hull2D::HorizontalVerticalThickness);
-  
-  
+
+
   Board2D aBoard;
   for(DGtal::MelkmanConvexHull<Point, Functor>::ConstIterator it = ch.begin(); it != ch.end(); it++){
     if(it != ch.end()-1)
@@ -310,13 +310,13 @@ bool testConvexHullCompThickness()
     }
     aBoard << *it;
   }
-  
+
   aBoard.setPenColor(DGtal::Color::Red);
   aBoard.drawCircle( antipodalS[0], antipodalS[1], 1.0) ;
   aBoard.setPenColor(DGtal::Color::Blue);
   aBoard.drawCircle(antipodalP[0], antipodalP[1], 1.0);
   aBoard.drawCircle(antipodalQ[0], antipodalQ[1], 1.0);
-  
+
   aBoard.drawLine(antipodalP[0], antipodalP[1], antipodalQ[0], antipodalQ[1]);
   double awaitedThHV = DGtal::functions::Hull2D::getThicknessAntipodalPair(Point(0,0), Point(11,1), Point(2,6), DGtal::functions::Hull2D::HorizontalVerticalThickness );
   double awaitedThE = DGtal::functions::Hull2D::getThicknessAntipodalPair(Point(0,0), Point(11,1), Point(2,6), DGtal::functions::Hull2D::EuclideanThickness );
@@ -326,7 +326,7 @@ bool testConvexHullCompThickness()
   trace.info() << "Expected Euclidean Thickness  = " << awaitedThE << std::endl;
   aBoard.saveEPS("testConvexHull2D_Thickness.eps");
 
-  // testing tickness after changing begin points.
+  // testing thickness after changing begin points.
    std::vector<Z2i::RealPoint> hull {
     {804.56832227024199, -68.471176393526704},
     {804.96020257363512, -69.494933490400683},
@@ -353,7 +353,7 @@ bool testConvexHullCompThickness()
    trace.info() << "Thickness (before change init point)  = " << th << std::endl;
    trace.info() << "Thickness (after change init point) = " << th2 << std::endl;
    trace.info() << "Thickness (after change init point) = " << th3 << std::endl;
-    
+
    nbok += thicknessHV == awaitedThHV && thicknessE == awaitedThE &&
            thicknessHVb == thicknessHV && abs(th - th2) < 0.000001 &&
            th - 0.604414 < 0.000001 && abs(th - th3) < 0.000001 ;

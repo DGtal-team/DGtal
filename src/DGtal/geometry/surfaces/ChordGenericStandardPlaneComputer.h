@@ -485,7 +485,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     std::vector<Dimension> myOrthants; /**< The list of active plane orthants. Starts with {0:++,1:+-,2:-+,3:--}. */
     ChordComputer myComputers[ 4 ];    /**< The four Chord plane computers. */

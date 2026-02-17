@@ -31,7 +31,7 @@
 /**
  * \image html  example3dMeshConstruction.png  "Simple example of 3D mesh construction."
  *  \image latex example3dMeshConstruction.png  "Simple example of 3D mesh construction."  width=5cm
- * 
+ *
  *   \example shapes/mesh3DConstructionAndVisualisation.cpp
  */
 
@@ -107,4 +107,3 @@ int main()
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-

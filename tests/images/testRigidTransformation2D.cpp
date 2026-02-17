@@ -72,7 +72,7 @@ private:
   DomainTrans domainForwardTrans;
 public:
   // Setup part
-  testRigidTransformation2D() : 
+  testRigidTransformation2D() :
   binary ( Domain ( Point ( 0,0 ), Point ( 10, 10 ) ) ),
   gray ( PGMReader<Image>::importPGM ( testPath + "samples/church-small.pgm" ) ),
   forwardTrans ( Point ( 5, 5 ), M_PI_4, RealVector( 3, -3 ) ),
@@ -83,11 +83,11 @@ public:
       binary.setValue ( Point ( 3,4 ), 255 );
       binary.setValue ( Point ( 4,3 ), 255 );
       binary.setValue ( Point ( 4,4 ), 255 );
-      
+
       binary >> "binary.pgm";
-      gray >> "gray.pgm"; 
+      gray >> "gray.pgm";
     }
-    
+
     bool forwardTransformationBinary ()
     {
       Bounds bounds = domainForwardTrans ( binary.domain() );
@@ -100,7 +100,7 @@ public:
       transformed >> "binary_after_forward.pgm";
       return true;
     }
-    
+
     bool backwardTransformationBinary ()
     {
       Bounds bounds = domainForwardTrans ( binary.domain() );
@@ -109,7 +109,7 @@ public:
       adapter >> "binary_after_backward.pgm";
       return true;
     }
-    
+
     bool backwardTransformationGray ()
     {
       Bounds bounds = domainForwardTrans ( gray.domain() );
@@ -118,7 +118,7 @@ public:
       adapter >> "gray_after_backward.pgm";
       return true;
     }
-    
+
     bool forwardTransformationGray ()
     {
       Bounds bounds = domainForwardTrans ( gray.domain() );

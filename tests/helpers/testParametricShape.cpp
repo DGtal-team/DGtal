@@ -57,13 +57,13 @@ bool testParametricShape()
   Z2i::Point cc(32,32);
 
   Board2D board;
-  
+
   Z2i::Domain domain(a,b);
   Z2i::DigitalSet set(domain);
-  
+
   Shapes<Z2i::Domain>::euclideanShaper( set,
                                         Ball2D<Z2i::Space>( cc, 10));
-  
+
   Z2i::Point lower,upper;
   set.computeBoundingBox(lower,upper);
 

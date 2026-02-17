@@ -39,7 +39,7 @@
 //------------------------------------------------------------------------------
 template <typename TM>
 inline
-typename DGtal::SeparableMetricAdapter<TM>::Abscissa 
+typename DGtal::SeparableMetricAdapter<TM>::Abscissa
 DGtal::SeparableMetricAdapter<TM>::binarySearchHidden(const Point &u,
                                                       const Point &v,
                                                       const typename Point::UnsignedComponent dim,
@@ -57,24 +57,24 @@ DGtal::SeparableMetricAdapter<TM>::binarySearchHidden(const Point &u,
     else
       return lower[dim];
   }
-  
+
   Point mid = lower;
   mid[dim] = (lower[dim] + upper[dim])/2;
-  
+
   Value duUpdated = myMetric->operator()(u, mid);
   Value dvUpdated = myMetric->operator()(v, mid);
-  
+
   //Recursive call
   if ( duUpdated < dvUpdated)
     return binarySearchHidden(u,v,dim,mid,upper);
   else
     return binarySearchHidden(u,v,dim,lower,mid);
-  
+
 }
 //------------------------------------------------------------------------------
 template <typename TM>
 inline
-bool 
+bool
 DGtal::SeparableMetricAdapter<TM>::hiddenBy(const Point &u,
                                             const Point &v,
                                             const Point &w,
@@ -90,7 +90,7 @@ DGtal::SeparableMetricAdapter<TM>::hiddenBy(const Point &u,
   du = myMetric->operator()(u, startingPoint);
   dv = myMetric->operator()(v, startingPoint);
   dw = myMetric->operator()(w, startingPoint);
-  
+
   //Precondition of binarySearchHidden is true
   if (du < dv )
     {
@@ -102,19 +102,19 @@ DGtal::SeparableMetricAdapter<TM>::hiddenBy(const Point &u,
         }
 
       if (dw > dv)
-        return true; 
+        return true;
       else
         {
-          //check if uv + 1 is stricly in W
+          //check if uv + 1 is strictly in W
           //first, optimisation
           if (uv == endPoint[dim]) return true;
-          
+
           //distances at uv+1
           Point p = startingPoint;
           p[dim] = uv + 1;
           ddv = myMetric->operator()(v, p);
           ddw = myMetric->operator()(w, p);
-          
+
           if (ddw < ddv)
             return true;
           else
@@ -141,7 +141,7 @@ DGtal::SeparableMetricAdapter<TM>::selfDisplay ( std::ostream & out ) const
 template <typename TM>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
                     const SeparableMetricAdapter<TM> & object )
 {
   object.selfDisplay( out );

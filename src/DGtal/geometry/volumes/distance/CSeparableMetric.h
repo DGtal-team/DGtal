@@ -54,21 +54,21 @@ namespace concepts
 /**
 Description of \b concept '\b CSeparableMetric' <p>
 @ingroup Concepts
-@brief Aim: defines the concept of separable metrics. 
+@brief Aim: defines the concept of separable metrics.
 
-Separable metrics are metrics satsifying the monotonicity
+Separable metrics are metrics satisfying the monotonicity
 property. More formally, in dimension 2, consider two points @f$
 p(x,y)@f$, @f$q(x',y')@f$ with @f$x<x@f$. Let @f$r( x'',0)@f$ be a
 point on the x-axis such that @f$d(p,r) = d(q,r)@f$ and @f$ s(u,0)@f$
-be another point on the x-axis. A metric @f$ d@f$ is @e monotonic if 
-    
+be another point on the x-axis. A metric @f$ d@f$ is @e monotonic if
+
 @f[     u < x'' \implies d(p,s) \leq d(q,s) @f]
 and
 @f[    u > x'' \implies d(p,s) \geq d(q,s) @f]
 
- 
 
-# Refinement of 
+
+# Refinement of
   - concepts::CMetricSpace.
 
 # Associated types
@@ -113,13 +113,13 @@ public:
         // something of type B
       ConceptUtils::sameType( myBool, myX.hiddenBy(u,v,w,start,end,dim) );
     }
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
 private:
   T myX; // do not require T to be default constructible.
   Point u,v,w,start,end;
   bool myBool;
   DGtal::Dimension dim;
-  
+
     // ------------------------- Internals ------------------------------------
 private:
 

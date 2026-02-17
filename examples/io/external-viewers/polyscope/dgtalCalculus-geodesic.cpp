@@ -82,7 +82,7 @@ bool useProjectedCalculus = true; //Use estimated normal vectors to set up te em
 
 void precompute()
 {
-  
+
   if (!useProjectedCalculus)
     calculus = new PolyCalculus(surfmesh);
   else
@@ -94,14 +94,14 @@ void precompute()
     iinormals = SHG3::getIINormalVectors(binary_image, surfels,params2);
     trace.info()<<iinormals.size()<<std::endl;
     psMesh->addFaceVectorQuantity("II normals", iinormals);
-    
+
     calculus = new PolyCalculus(surfmesh);
     functors::EmbedderFromNormalVectors<Z3i::RealPoint, Z3i::RealVector> embedderFromNormals(iinormals,surfmesh);
     calculus->setEmbedder( embedderFromNormals );
   }
-  
+
   heat = new GeodesicsInHeat<PolyCalculus>(calculus);
-  
+
   if (!skipReg)
   {
     calculusReg = new PolyCalculus(surfmeshReg);
@@ -163,8 +163,8 @@ void myCallback()
   ImGui::Checkbox("Skip regularization", &skipReg);
   ImGui::Checkbox("Using projection", &useProjectedCalculus);
   ImGui::InputInt("Index of the first source vertex", &sourceVertexId);
-  
-  
+
+
   if(ImGui::Button("Precomputation (required if you change parameters)"))
   {
     precompute();
@@ -189,7 +189,7 @@ void myCallback()
     }
     clearSources();
   }
-  
+
   if(ImGui::Button("Compute geodesic"))
   {
     if (!isPrecomputed)
@@ -211,14 +211,14 @@ int main()
   auto K               = SH3::getKSpace( binary_image, params );
   surface              = SH3::makeDigitalSurface( binary_image, K, params );
   auto primalSurface   = SH3::makePrimalSurfaceMesh(surface);
-  
+
   //Need to convert the faces
   std::vector<std::vector<SH3::SurfaceMesh::Vertex>> faces;
   std::vector<RealPoint> positions;
-  
+
   for(auto face= 0 ; face < primalSurface->nbFaces(); ++face)
     faces.push_back(primalSurface->incidentVertices( face ));
-  
+
   //Recasting to vector of vertices
   positions = primalSurface->positions();
 
@@ -228,7 +228,7 @@ int main()
                       faces.end());
   std::cout << surfmesh << std::endl;
   std::cout<<"number of non-manifold Edges = " << surfmesh.computeNonManifoldEdges().size()<<std::endl;
-  
+
   //Construction of a regularized surface
   DigitalSurfaceRegularization<SH3::DigitalSurface> regul(surface);
   regul.init();
@@ -240,7 +240,7 @@ int main()
                       regularizedPosition.end(),
                       faces.begin(),
                       faces.end());
-  
+
   // Initialize polyscope
   polyscope::init();
 

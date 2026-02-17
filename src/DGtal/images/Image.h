@@ -55,7 +55,7 @@ namespace DGtal
   // Template class Image
   /**
    * Description of template class 'Image' <p>
-   * \brief Aim: implements association bewteen points lying in a
+   * \brief Aim: implements association between points lying in a
    * digital domain and values.
    *
    * This class is a lightweight proxy on ImageContainers (models of
@@ -278,9 +278,9 @@ trace.warning() << "Image copy Ctor  "<<std::endl;
       return myImagePointer;
     }
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   protected:
 
     /// Owning smart pointer on the image container

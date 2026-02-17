@@ -103,7 +103,7 @@ except the last one. In this sense, a fraction is a sequence
  - \e p, \e q : object of type \e Integer
  - \e m, \e n1, \e n2 : objects of type \e Quotient
  - \e quots : an object of type \c std::vector<Quotient>
- - \e pair : a object of \c std::pair<Quotient,Quotient>, here (m,k+1)  
+ - \e pair : a object of \c std::pair<Quotient,Quotient>, here (m,k+1)
 
 # Definitions
 
@@ -158,7 +158,7 @@ except the last one. In this sense, a fraction is a sequence
 @tparam T the type that should be a model of CPositiveIrreducibleFraction.
 */
 template <typename T>
-struct CPositiveIrreducibleFraction 
+struct CPositiveIrreducibleFraction
   : boost::CopyConstructible<T>, boost::DefaultConstructible<T>, boost::Assignable<T>, CBackInsertable<T>, CConstSinglePassRange<T>
 
 {
@@ -213,7 +213,7 @@ public:
     concepts::ConceptUtils::sameType( myIterator, myX.begin() );
     concepts::ConceptUtils::sameType( myIterator, myX.end() );
   }
-  // ------------------------- Private Datas --------------------------------
+  // ------------------------- Private Data --------------------------------
 private:
   T myX; // do not require T to be default constructible.
   T myY; // do not require T to be default constructible.
@@ -223,9 +223,9 @@ private:
   bool myBool;
   mutable Quotient myN1;
   mutable Quotient myN2;
-  mutable T myF1; 
-  mutable T myF2; 
-  mutable std::vector<Quotient> myQuots; 
+  mutable T myF1;
+  mutable T myF2;
+  mutable std::vector<Quotient> myQuots;
   std::pair<Quotient,Quotient> myValue;
   ConstIterator myIterator;
   // ------------------------- Internals ------------------------------------

@@ -77,5 +77,3 @@ DGtal::functors::SurfelSetPredicate<TSurfelSet, TSurfel>
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

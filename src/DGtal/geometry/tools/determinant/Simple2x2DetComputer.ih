@@ -40,10 +40,10 @@
 template <typename TI, typename TO>
 inline
 DGtal::Simple2x2DetComputer<TI,TO>::Simple2x2DetComputer()
-  : myA (NumberTraits<ResultInteger>::ZERO),  
-    myB (NumberTraits<ResultInteger>::ZERO), 
-    myAY (NumberTraits<ResultInteger>::ZERO),  
-    myBX (NumberTraits<ResultInteger>::ZERO)  
+  : myA (NumberTraits<ResultInteger>::ZERO),
+    myB (NumberTraits<ResultInteger>::ZERO),
+    myAY (NumberTraits<ResultInteger>::ZERO),
+    myBX (NumberTraits<ResultInteger>::ZERO)
 {
 }
 
@@ -51,27 +51,27 @@ DGtal::Simple2x2DetComputer<TI,TO>::Simple2x2DetComputer()
 template <typename TI, typename TO>
 inline
 DGtal::Simple2x2DetComputer<TI,TO>::Simple2x2DetComputer(const DGtal::Simple2x2DetComputer<TI,TO>& aOther)
-  : myA (aOther.myA),  
-    myB (aOther.myB), 
-    myAY (aOther.myAY),  
-    myBX (aOther.myBX)  
+  : myA (aOther.myA),
+    myB (aOther.myB),
+    myAY (aOther.myAY),
+    myBX (aOther.myBX)
 {
 }
 
 // ---------------------------------------------------------------------------
 template <typename TI, typename TO>
 inline
-DGtal::Simple2x2DetComputer<TI,TO>& 
+DGtal::Simple2x2DetComputer<TI,TO>&
 DGtal::Simple2x2DetComputer<TI,TO>::operator=(const DGtal::Simple2x2DetComputer<TI,TO>& aOther)
 {
   if (this != &aOther)
     {
-      myA = aOther.myA; 
-      myB = aOther.myB; 
-      myAY = aOther.myAY; 
-      myBX = aOther.myBX; 
+      myA = aOther.myA;
+      myB = aOther.myB;
+      myAY = aOther.myAY;
+      myBX = aOther.myBX;
     }
-  return *this; 
+  return *this;
 }
 
 // ---------------------------------------------------------------------------
@@ -84,10 +84,10 @@ DGtal::Simple2x2DetComputer<TI,TO>::~Simple2x2DetComputer()
 // ---------------------------------------------------------------------------
 template <typename TI, typename TO>
 inline
-void 
+void
 DGtal::Simple2x2DetComputer<TI,TO>::init(const ArgumentInteger& aA, const ArgumentInteger& aB)
 {
-  myA = static_cast<ResultInteger>(aA); 
+  myA = static_cast<ResultInteger>(aA);
   myB = static_cast<ResultInteger>(aB);
 }
 
@@ -98,19 +98,19 @@ typename DGtal::Simple2x2DetComputer<TI,TO>::ResultInteger
 DGtal::Simple2x2DetComputer<TI,TO>::operator()(const ArgumentInteger& aX, const ArgumentInteger& aY) const
 {
   myAY = myA * static_cast<ResultInteger>(aY);
-  myBX = myB * static_cast<ResultInteger>(aX);  
-  return myAY - myBX; 
+  myBX = myB * static_cast<ResultInteger>(aX);
+  return myAY - myBX;
 }
 
 // ---------------------------------------------------------------------------
 template <typename TI, typename TO>
 inline
 typename DGtal::Simple2x2DetComputer<TI,TO>::ResultInteger
-DGtal::Simple2x2DetComputer<TI,TO>::operator()(const ArgumentInteger& aA, const ArgumentInteger& aB, 
+DGtal::Simple2x2DetComputer<TI,TO>::operator()(const ArgumentInteger& aA, const ArgumentInteger& aB,
 					       const ArgumentInteger& aX, const ArgumentInteger& aY)
 {
-  init(aA,aB); 
-  return operator()(aX, aY); 
+  init(aA,aB);
+  return operator()(aX, aY);
 }
 
 // ---------------------------------------------------------------------------
@@ -139,7 +139,7 @@ DGtal::Simple2x2DetComputer<TI,TO>::isValid() const
 template <typename TI, typename TO>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
 		    const Simple2x2DetComputer<TI,TO> & object )
 {
   object.selfDisplay( out );
@@ -148,5 +148,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

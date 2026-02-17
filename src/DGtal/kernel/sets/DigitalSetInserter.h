@@ -54,10 +54,10 @@ namespace DGtal
   // template class DigitalSetInserter
   /**
    * Description of template class 'DigitalSetInserter' <p>
-   * \brief Aim: this output iterator class is designed to 
+   * \brief Aim: this output iterator class is designed to
    * allow algorithms to insert points in the digital set.
-   * Using the assignment operator, even when dereferenced, 
-   * causes the digital set to insert a point. 
+   * Using the assignment operator, even when dereferenced,
+   * causes the digital set to insert a point.
    *
    * @tparam TDigitalSet any model of CDigitalSet
    */
@@ -65,7 +65,7 @@ namespace DGtal
   class DigitalSetInserter
 {
 
-    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TDigitalSet> )); 
+    BOOST_CONCEPT_ASSERT(( concepts::CDigitalSet<TDigitalSet> ));
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -75,7 +75,7 @@ namespace DGtal
     using difference_type = void;
     using pointer = void;
     using reference = void;
-    
+
     /**
      * Constructor.
      * @param aSet any digital set
@@ -113,7 +113,7 @@ namespace DGtal
     { return *this; }
 
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     /**
      * Aliasing pointer on the underlying set

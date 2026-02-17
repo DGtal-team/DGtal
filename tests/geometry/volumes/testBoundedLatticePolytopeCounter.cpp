@@ -88,7 +88,7 @@ SCENARIO( "BoundedLatticePolytope< Z3 > unit tests", "[lattice_polytope][3d]" )
   typedef Space::Point                     Point;
   typedef BoundedLatticePolytope< Space >  Polytope;
   typedef BoundedLatticePolytopeCounter< Space > Counter;
-  
+
   GIVEN( "A closed arbitrary simplex P at (0,0,0), (6,3,0), (0,5,-10), (-6,4,8)" ) {
     Point a( 0, 0, 0 );
     Point b( 6, 3, 0 );

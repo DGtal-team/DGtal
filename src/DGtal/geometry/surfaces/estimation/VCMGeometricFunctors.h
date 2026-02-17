@@ -49,7 +49,7 @@ namespace DGtal {
   namespace functors {
 
     /**
-     * Description of template class 'VCMNormalVectorFunctor' <p> 
+     * Description of template class 'VCMNormalVectorFunctor' <p>
      * \brief Aim: A functor Surfel -> Quantity that returns the outer normal
      * vector at given surfel.
      *
@@ -64,7 +64,7 @@ namespace DGtal {
       typedef typename RealVector::Component Scalar;
       typedef Surfel Argument;
       typedef RealVector Quantity;
-      
+
       /**
        * Constructor. A VCM may also be attached at construction.
        *
@@ -72,9 +72,9 @@ namespace DGtal {
        * information. The alias can be secured if some counted
        * pointer is handed.
        */
-      VCMNormalVectorFunctor( ConstAlias<VCMOnDigitalSurface> aVCMOnDigitalSurface = 0 ) 
+      VCMNormalVectorFunctor( ConstAlias<VCMOnDigitalSurface> aVCMOnDigitalSurface = 0 )
         : myVCMOnDigitalSurface( aVCMOnDigitalSurface ) {}
-      
+
       /**
        * Attach a VCM on a digital surface.
        *
@@ -107,10 +107,10 @@ namespace DGtal {
       /// The shape of interest.
       CountedConstPtrOrConstPtr<VCMOnDigitalSurface> myVCMOnDigitalSurface;
     };
-    
+
 
    /**
-     * Description of template class 'VCMAbsoluteCurvatureFunctor' <p> 
+     * Description of template class 'VCMAbsoluteCurvatureFunctor' <p>
      * \brief Aim: A functor Surfel -> Quantity that returns the absolute curvature at
      * given surfel. This class has meaning only in 2D.
      *
@@ -125,7 +125,7 @@ namespace DGtal {
       typedef typename RealVector::Component Scalar;
       typedef Surfel Argument;
       typedef Scalar Quantity;
-      
+
       /**
        * Constructor. A VCM may also be attached at construction.
        *
@@ -133,12 +133,12 @@ namespace DGtal {
        * information. The alias can be secured if some counted
        * pointer is handed.
        */
-      VCMAbsoluteCurvatureFunctor( ConstAlias<VCMOnDigitalSurface> aVCMOnDigitalSurface = 0 ) 
-        : myVCMOnDigitalSurface( aVCMOnDigitalSurface ) 
+      VCMAbsoluteCurvatureFunctor( ConstAlias<VCMOnDigitalSurface> aVCMOnDigitalSurface = 0 )
+        : myVCMOnDigitalSurface( aVCMOnDigitalSurface )
       {
         BOOST_STATIC_ASSERT(( KSpace::dimension == 2 ));
       }
-      
+
       /**
        * Attach a VCM on a digital surface.
        *
@@ -178,7 +178,7 @@ namespace DGtal {
 
    /**
      * Description of template class
-     * 'VCMFirstPrincipalAbsoluteCurvatureFunctor' <p> 
+     * 'VCMFirstPrincipalAbsoluteCurvatureFunctor' <p>
      * \brief Aim: A functor Surfel -> Quantity that returns the first principal absolute curvature
      * (greatest curvature) at given surfel. This class has meaning
      * only in 3D.
@@ -194,7 +194,7 @@ namespace DGtal {
       typedef typename RealVector::Component Scalar;
       typedef Surfel Argument;
       typedef Scalar Quantity;
-      
+
       /**
        * Constructor. A VCM may also be attached at construction.
        *
@@ -202,12 +202,12 @@ namespace DGtal {
        * information. The alias can be secured if some counted
        * pointer is handed.
        */
-      VCMFirstPrincipalAbsoluteCurvatureFunctor( ConstAlias<VCMOnDigitalSurface> aVCMOnDigitalSurface = 0 ) 
-        : myVCMOnDigitalSurface( aVCMOnDigitalSurface ) 
+      VCMFirstPrincipalAbsoluteCurvatureFunctor( ConstAlias<VCMOnDigitalSurface> aVCMOnDigitalSurface = 0 )
+        : myVCMOnDigitalSurface( aVCMOnDigitalSurface )
       {
         BOOST_STATIC_ASSERT(( KSpace::dimension == 3 ));
       }
-      
+
       /**
        * Attach a VCM on a digital surface.
        *
@@ -233,7 +233,7 @@ namespace DGtal {
         RealVector lambda;
         bool ok = myVCMOnDigitalSurface->getChiVCMEigenvalues( lambda, s );
         ASSERT( ok ); boost::ignore_unused_variable_warning( ok );
-        
+
         // The last eigenvalue l2 is approximately the mixed "area" 2pi R^3 r^2 / 3
         // The greatest principal curvature is related to the second eigenvalue l1.
         // k1^2 = 4*l1 / (l2*r^2)
@@ -247,7 +247,7 @@ namespace DGtal {
 
    /**
      * Description of template class
-     * 'VCMSecondPrincipalAbsoluteCurvatureFunctor' <p> 
+     * 'VCMSecondPrincipalAbsoluteCurvatureFunctor' <p>
      * \brief Aim: A functor Surfel -> Quantity that returns the second principal absolute curvature
      * (smallest curvature) at given surfel. This class has meaning
      * only in 3D.
@@ -263,7 +263,7 @@ namespace DGtal {
       typedef typename RealVector::Component Scalar;
       typedef Surfel Argument;
       typedef Scalar Quantity;
-      
+
       /**
        * Constructor. A VCM may also be attached at construction.
        *
@@ -271,12 +271,12 @@ namespace DGtal {
        * information. The alias can be secured if some counted
        * pointer is handed.
        */
-      VCMSecondPrincipalAbsoluteCurvatureFunctor( ConstAlias<VCMOnDigitalSurface> aVCMOnDigitalSurface = 0 ) 
-        : myVCMOnDigitalSurface( aVCMOnDigitalSurface ) 
+      VCMSecondPrincipalAbsoluteCurvatureFunctor( ConstAlias<VCMOnDigitalSurface> aVCMOnDigitalSurface = 0 )
+        : myVCMOnDigitalSurface( aVCMOnDigitalSurface )
       {
         BOOST_STATIC_ASSERT(( KSpace::dimension == 3 ));
       }
-      
+
       /**
        * Attach a VCM on a digital surface.
        *
@@ -302,7 +302,7 @@ namespace DGtal {
         RealVector lambda;
         bool ok = myVCMOnDigitalSurface->getChiVCMEigenvalues( lambda, s );
         ASSERT( ok ); boost::ignore_unused_variable_warning( ok );
-        
+
         // The last eigenvalue l2 is approximately the mixed "area" 2pi R^3 r^2 / 3
         // The smallest principal curvature is related to the first eigenvalue l0.
         // k2^2 = 4*l0 / (l2*r^2)
@@ -316,7 +316,7 @@ namespace DGtal {
 
 
    /**
-     * Description of template class 'VCMMeanAbsoluteCurvatures3DFunctor' <p> 
+     * Description of template class 'VCMMeanAbsoluteCurvatures3DFunctor' <p>
      * \brief Aim: A functor Surfel -> Quantity that returns the mean of absolute curvatures at
      * given surfel: (abs(k1)+abs(k2))/2. This class has meaning only in 3D.
      *
@@ -331,7 +331,7 @@ namespace DGtal {
       typedef typename RealVector::Component Scalar;
       typedef Surfel Argument;
       typedef Scalar Quantity;
-      
+
       /**
        * Constructor. A VCM may also be attached at construction.
        *
@@ -339,12 +339,12 @@ namespace DGtal {
        * information. The alias can be secured if some counted
        * pointer is handed.
        */
-      VCMMeanAbsoluteCurvatures3DFunctor( ConstAlias<VCMOnDigitalSurface> aVCMOnDigitalSurface = 0 ) 
-        : myVCMOnDigitalSurface( aVCMOnDigitalSurface ) 
+      VCMMeanAbsoluteCurvatures3DFunctor( ConstAlias<VCMOnDigitalSurface> aVCMOnDigitalSurface = 0 )
+        : myVCMOnDigitalSurface( aVCMOnDigitalSurface )
       {
         BOOST_STATIC_ASSERT(( KSpace::dimension == 3 ));
       }
-      
+
       /**
        * Attach a VCM on a digital surface.
        *

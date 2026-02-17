@@ -74,7 +74,7 @@ namespace DGtal {
   {
     BOOST_CONCEPT_ASSERT
     (( concepts::CDigitalSurfaceContainer< TDigitalSurfaceContainer > ) );
-    
+
   public:
     typedef TDigitalSurfaceContainer           Container;
     typedef ShroudsRegularization< Container > Self;
@@ -94,17 +94,17 @@ namespace DGtal {
 
     /// The enum class specifying the possible shrouds regularization.
     enum class Regularization { AREA, SNAKE, SQUARED_CURVATURE };
-    
+
     // ----------------------- Standard services ------------------------------
   public:
     /// @name Standard services (construction, initialization)
     /// @{
-    
+
     /// Default constructor. The object is not valid.
     ShroudsRegularization()
       : myPtrIdxSurface( nullptr ), myPtrK( nullptr )
     {}
-    
+
     /// Constructor from (closed) \a surface.
     /// Also calls methods \ref precomputeTopology and \ref init.
     /// @param surface a counted pointer on an indexed digital surface.
@@ -121,7 +121,7 @@ namespace DGtal {
 
     /// Prepares the shroud for optimization. Must be called before
     /// any call to \ref regularize, \ref oneStepAreaMinimization,
-    /// \ref oneStepSnakeMinimization, 
+    /// \ref oneStepSnakeMinimization,
     /// \ref oneStepSquaredCurvatureMinimization.
     ///
     /// @note Complexity is linear in the number of surfels of \a surface.
@@ -168,22 +168,22 @@ namespace DGtal {
     {
       return std::make_tuple( myEpsilon, myAlpha, myBeta );
     }
-    
+
     /// @}
-    
+
     // ----------------------- Accessor services ------------------------------
   public:
     /// @name Accessor services
     /// @{
-    
+
     /// @param v any valid vertex.
-    /// @param t some adjustement parameter
+    /// @param t some adjustment parameter
     /// @return the position of vertex v for this parameter t.
     RealPoint position( const Vertex v, const double t ) const
     {
       return (1-t) * myInsV[ v ] + t * myOutV[ v ];
     }
-    
+
     /// @param v any valid vertex.
     /// @return its position.
     RealPoint position( const Vertex v ) const
@@ -191,7 +191,7 @@ namespace DGtal {
       const auto t = myT[ v ];
       return (1-t) * myInsV[ v ] + t * myOutV[ v ];
     }
-    
+
     /// @return the vector of vertex positions
     RealPoints positions() const
     {
@@ -209,10 +209,10 @@ namespace DGtal {
     {
       return myOrthDir[ v ];
     }
-    
+
     /// Useful to navigate tangentially along a slice.
     /// @param v_i a pair (vertex,tangent direction)
-    /// @return the next vertex and associated tangent direction along the slice. 
+    /// @return the next vertex and associated tangent direction along the slice.
     std::pair<Vertex,Dimension> next( const std::pair<Vertex,Dimension> & v_i ) const
     {
       const Vertex    vn = myNext[ v_i.second ][ v_i.first ];
@@ -223,7 +223,7 @@ namespace DGtal {
 
     /// Useful to navigate tangentially along a slice.
     /// @param v_i a pair (vertex,tangent direction)
-    /// @return the previous vertex and associated tangent direction along the slice. 
+    /// @return the previous vertex and associated tangent direction along the slice.
     std::pair<Vertex,Dimension> prev( const std::pair<Vertex,Dimension> &v_i ) const
     {
       const Vertex    vp = myPrev[ v_i.second ][ v_i.first ];
@@ -231,7 +231,7 @@ namespace DGtal {
 	? myOrthDir[ v_i.first ] : v_i.second;
       return std::make_pair( vp, ip );
     }
-    
+
     /// @}
 
     // ----------------------- Geometric services ------------------------------
@@ -264,7 +264,7 @@ namespace DGtal {
       const Scalar dip = myPrevD[ v_i.second ][ v_i.first ];
       return 1.0 / (din + dip);
     }
-    
+
     /// @param v_i a pair (vertex,tangent direction)
     /// @return the coefficients for centered second-order finite difference.
     /// @note We have y''_i ~= c2<0> * y_{i+1} - c2<1> * y_{i} + c2<2> * y_{i-1}
@@ -276,7 +276,7 @@ namespace DGtal {
 			      2.0 / ( din * dip ),
 			      2.0 / ( dip * ( din + dip ) ) );
     }
-    
+
     /// @}
 
     // -------------------------- regularization services ----------------------------
@@ -354,7 +354,7 @@ namespace DGtal {
     /// @return the current energy associated to the area
     /// regularization process.
     double energyArea();
-    
+
     /// Smooths the shape according to the minimization of area.
     ///
     /// @param randomization if greater than 0.0 add some perturbation to
@@ -370,7 +370,7 @@ namespace DGtal {
     /// energy (like snakes).
     ///
     /// \f[
-    /// E^{snk}(C) = \int_C \alpha (x'(s)^2 + y'(s)^2) + \beta (x''(s)^2 + y''(s)^2) ds, 
+    /// E^{snk}(C) = \int_C \alpha (x'(s)^2 + y'(s)^2) + \beta (x''(s)^2 + y''(s)^2) ds,
     /// \f]
     ///
     /// for \f$ C=(x(s),y(s)) \f$ and boundary constraints.
@@ -423,7 +423,7 @@ namespace DGtal {
     /// conditions.  At each position (we omit parameter \a s for making
     /// things more readable):
     ///
-    /// \f[ 24*x'^3*x''^3*y' 
+    /// \f[ 24*x'^3*x''^3*y'
     /// + x'''*( - 13*x'^4*x''*y' - 14*x'^2*x''*y'^3 - x''*y'^5 )
     /// + y'''*( 8*x'^5*x'' + 4*x'^3*x''*y'^2 - 4*x'*x''*y'^4 )
     /// + x''''*( x'^5*y' + 2*x'^3*y'^3 + x'*y'^5 )
@@ -466,12 +466,12 @@ namespace DGtal {
     void enforceBounds();
 
     /// @}
-    
+
     // -------------------------- internal methods ------------------------------
   protected:
     /// @name Internal methods
     /// @{
-    
+
     /// This method precomputes the neighbors of each vertex along each
     /// crossing curves. Must be called at shroud initialization.
     void precomputeTopology()
@@ -520,14 +520,14 @@ namespace DGtal {
 		  prev = next++;
 		  vp   = vn;
 		}
-	      while ( prev != start );	    
+	      while ( prev != start );
 	      delete tracker;
 	    }
 	}
     }
 
     /// @}
-    
+
     // -------------------------- data ---------------------------------
   private:
 
@@ -558,17 +558,17 @@ namespace DGtal {
     std::vector<Dimension>             myOrthDir;
     /// for each vertex, its successor on the slice of given axis direction.
     std::vector<Vertex>                myNext[ 3 ];
-    /// for each vertex, its predessor on the slice of given axis direction.
+    /// for each vertex, its predecessor on the slice of given axis direction.
     std::vector<Vertex>                myPrev[ 3 ];
     /// for each vertex, the estimated distance to its successor on
     /// the slice of given axis direction.
     Scalars                            myNextD[ 3 ];
-    /// for each vertex, the estimated distance to its predessor on
+    /// for each vertex, the estimated distance to its predecessor on
     /// the slice of given axis direction.
     Scalars                            myPrevD[ 3 ];
-    
+
   }; // end of class ShroudsRegularization
-  
+
   /// Helper function for constructing a ShroudsRegularization from a
   /// (closed) \a surface.
   ///
@@ -581,7 +581,7 @@ namespace DGtal {
   ///
   /// @note Complexity is linear in the number of surfels of \a surface.
   /// @see testShroudsRegularization.cpp
-  template < typename TDigitalSurfaceContainer > 
+  template < typename TDigitalSurfaceContainer >
   ShroudsRegularization<TDigitalSurfaceContainer>
   makeShroudsRegularization
   ( CountedPtr< IndexedDigitalSurface< TDigitalSurfaceContainer > > surface,
@@ -589,7 +589,7 @@ namespace DGtal {
   {
     return ShroudsRegularization<TDigitalSurfaceContainer>( surface, eps );
   }
-  
+
 } // namespace surfaces
 
 

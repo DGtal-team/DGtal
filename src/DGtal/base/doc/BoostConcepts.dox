@@ -20,7 +20,7 @@
    More generally, you may also want to look at
    - the STL main page: http://www.sgi.com/tech/stl/index.html
    - the BOOST concept check main page http://www.boost.org/libs/concept_check/concept_check.htm
-   - the BOOST iterator library main page http://www.boost.org/doc/libs/1_52_0/libs/iterator/doc/index.html 
+   - the BOOST iterator library main page http://www.boost.org/doc/libs/1_52_0/libs/iterator/doc/index.html
 
 */
 namespace boost_concepts {
@@ -55,4 +55,3 @@ namespace boost_concepts {
   template <typename Iterator, typename ConstIterator>
   struct InteroperableIteratorConcept{};
 }
-

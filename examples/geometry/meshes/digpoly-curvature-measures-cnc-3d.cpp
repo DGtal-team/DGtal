@@ -182,7 +182,7 @@ int main( int argc, char* argv[] )
   //! [curvature-measures-Typedefs]
   std::string  poly = argv[ 1 ]; // polynomial
   const double    B = argc > 2 ? atof( argv[ 2 ] ) : 1.0; // max ||_oo bbox
-  const double    h = argc > 3 ? atof( argv[ 3 ] ) : 1.0; // gridstep  
+  const double    h = argc > 3 ? atof( argv[ 3 ] ) : 1.0; // gridstep
   const double    R = argc > 4 ? atof( argv[ 4 ] ) : 2.0; // radius of measuring ball
   std::string  mode = argc > 5 ? argv[ 5 ] : "Const"; // either Const or Interp
   bool interpolated = mode == "Interp";
@@ -194,14 +194,14 @@ int main( int argc, char* argv[] )
   // Read polynomial and build digital surface
   auto params = SH::defaultParameters() | SHG::defaultParameters();
   params( "t-ring", 3 )( "surfaceTraversal", "Default" );
-  params( "polynomial", poly )( "gridstep", h ); 
+  params( "polynomial", poly )( "gridstep", h );
   params( "minAABB", -B )( "maxAABB", B );
   params( "offset", 3.0 );
   auto shape       = SH::makeImplicitShape3D( params );
   auto K           = SH::getKSpace( params );
   auto dshape      = SH::makeDigitizedImplicitShape3D( shape, params );
   auto bimage      = SH::makeBinaryImage( dshape, params );
-  if ( bimage == nullptr ) 
+  if ( bimage == nullptr )
     {
       trace.error() <<  "Unable to read polynomial <"
                     << poly.c_str() << ">" << std::endl;
@@ -221,11 +221,11 @@ int main( int argc, char* argv[] )
   auto pointels = SH::getPointelRange( c2i, surface );
   auto vertices = SH::RealPoints( pointels.size() );
   std::transform( pointels.cbegin(), pointels.cend(), vertices.begin(),
-                  [&] (const SH::Cell& c) { return h * embedder( c ); } ); 
+                  [&] (const SH::Cell& c) { return h * embedder( c ); } );
   for ( auto&& surfel : *surface )
     {
       const auto primal_surfel_vtcs = SH::getPointelRange( K, surfel );
-      SM::Vertices face;	      
+      SM::Vertices face;
       for ( auto&& primal_vtx : primal_surfel_vtcs )
         face.push_back( c2i[ primal_vtx ] );
       faces.push_back( face );
@@ -243,7 +243,7 @@ int main( int argc, char* argv[] )
   //! [curvature-measures-CNC]
   // Builds a CorrectedNormalCurrentComputer object onto the SurfaceMesh object
   CNC cnc( smesh );
-  // Estimates normal vectors using Convolved Trivial Normal estimator 
+  // Estimates normal vectors using Convolved Trivial Normal estimator
   auto face_normals = SHG::getCTrivialNormalVectors( surface, surfels, params );
   // Set corrected face normals => Corrected Normal Current with
   // constant per face corrected vector field.

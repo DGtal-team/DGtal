@@ -430,7 +430,7 @@ public:
     ConceptUtils::sameType( myP1, myX.exteriorVoxel( mySCell) );
 
 }
-  // ------------------------- Private Datas --------------------------------
+  // ------------------------- Private Data --------------------------------
 private:
   T myX; // do not require T to be default constructible.
   Integer myInteger;

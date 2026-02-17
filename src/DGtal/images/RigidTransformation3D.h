@@ -132,7 +132,7 @@ public:
         return functor ( p );
     }
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
 protected:
     RealVector axis;
     RealPoint origin;
@@ -218,7 +218,7 @@ public:
         return functor ( p );
     }
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
 private:
     RealVector axis;
     RealPoint origin;
@@ -301,7 +301,7 @@ public:
         return bounds;
     }
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
 protected:
     const TRigidTransformFunctor & transform;
 };

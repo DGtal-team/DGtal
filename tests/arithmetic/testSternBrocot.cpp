@@ -96,7 +96,7 @@ bool testReducedFraction()
   SB::display( trace.info(), f1 );
   trace.info() << std::endl;
   ++nb; nbok += ok ? 1 : 0;
-  trace.info() << "(" << nbok << "/" << nb << ") " 
+  trace.info() << "(" << nbok << "/" << nb << ") "
                << " cfrac"
                << std::endl;
   unsigned int depth = (unsigned int)cf1.size();
@@ -108,7 +108,7 @@ bool testReducedFraction()
       cf1.resize( depth - k );
       ok = equalCFrac<Quotient>( cf1, cf1_red );
       ++nb; nbok += ok ? 1 : 0;
-      trace.info() << "(" << nbok << "/" << nb << ") " 
+      trace.info() << "(" << nbok << "/" << nb << ") "
                    << "reduced(" << k << ")=";
       SB::display( trace.info(), fr );
       std::cerr << std::endl;
@@ -140,7 +140,7 @@ bool testInitFraction()
   trace.info() << std::endl;
   nbok += ( ( p == f1.p() ) && ( q == f1.q() ) ) ? 1 : 0;
   ++nb;
-  trace.info() << "(" << nbok << "/" << nb << ") " 
+  trace.info() << "(" << nbok << "/" << nb << ") "
                << "( ( p == f1.p() ) && ( q == f1.q() ) )"
                << std::endl;
   trace.info() << "- nbFractions = " << SB::instance().nbFractions << std::endl;
@@ -348,7 +348,7 @@ bool testPattern()
   trace.info() << "(" << nbok << "/" << nb << ") covering middle Subpatterns." << endl;
   trace.endBlock();
 
-  
+
   // GREATEST INCLUDED SUBPATTERN
   // ODD PATTERN
   trace.beginBlock ( "Testing block: greatest included subpatterns of ODD pattern." );
@@ -552,7 +552,7 @@ bool testPattern()
                << " L(0)=" << pat_even.L( 0 )
                << " U(1)=" << pat_even.U( 1 )
                << " L(1)=" << pat_even.L( 1 ) << endl;
-                                        
+
   return nbok == nb;
 }
 
@@ -586,12 +586,12 @@ bool testStandardDSLQ0()
       Point P = D2.lowestY( x );
       ++nb; nbok += D2( P ) && ( ! D2( P - Vector2I(0,1) ) ) ? 1 : 0;
       trace.info() << "(" << nbok << "/" << nb << ") "
-                   << "D2(P) && ! D2(P-y) P=" << P << " r(P)=" << D2.r( P ) 
+                   << "D2(P) && ! D2(P-y) P=" << P << " r(P)=" << D2.r( P )
                    << endl;
       P = D2.uppermostY( x );
       ++nb; nbok += D2( P ) && ( ! D2( P + Vector2I(0,1) ) ) ? 1 : 0;
       trace.info() << "(" << nbok << "/" << nb << ") "
-                   << "D2(P) && ! D2(P+y) P=" << P << " r(P)=" << D2.r( P ) 
+                   << "D2(P) && ! D2(P+y) P=" << P << " r(P)=" << D2.r( P )
                    << endl;
     }
   for ( Integer y = -5; y < 30; ++y )
@@ -599,12 +599,12 @@ bool testStandardDSLQ0()
       Point P = D2.lowestX( y );
       ++nb; nbok += D2( P ) && ( ! D2( P - Vector2I(1,0) ) ) ? 1 : 0;
       trace.info() << "(" << nbok << "/" << nb << ") "
-                   << "D2(P) && ! D2(P-x) P=" << P << " r(P)=" << D2.r( P ) 
+                   << "D2(P) && ! D2(P-x) P=" << P << " r(P)=" << D2.r( P )
                    << endl;
       P = D2.uppermostX( y );
       ++nb; nbok += D2( P ) && ( ! D2( P + Vector2I(1,0) ) ) ? 1 : 0;
       trace.info() << "(" << nbok << "/" << nb << ") "
-                   << "D2(P) && ! D2(P+x) P=" << P << " r(P)=" << D2.r( P ) 
+                   << "D2(P) && ! D2(P+x) P=" << P << " r(P)=" << D2.r( P )
                    << endl;
     }
 
@@ -613,8 +613,8 @@ bool testStandardDSLQ0()
 
 template <typename DSL>
 bool checkSubStandardDSLQ0( const DSL & D,
-                            const typename DSL::Point & A, 
-                            const typename DSL::Point & B ) 
+                            const typename DSL::Point & A,
+                            const typename DSL::Point & B )
 {
   typedef typename DSL::Integer Integer;
   typedef typename DSL::ConstIterator ConstIterator;
@@ -627,9 +627,9 @@ bool checkSubStandardDSLQ0( const DSL & D,
   dss.init( it );
   while ( ( dss.end() != it_end )
           && ( dss.extendFront() ) ) {}
-  bool ok = S.a() == dss.a() 
-    &&  S.b() == dss.b() 
-    &&  S.mu() == dss.mu(); 
+  bool ok = S.a() == dss.a()
+    &&  S.b() == dss.b()
+    &&  S.mu() == dss.mu();
   if ( ! ok )
     {
       trace.info() << "-------------------------------------------------------"
@@ -737,7 +737,7 @@ bool testContinuedFraction()
   Fraction f;
   std::vector<Quotient> quotients;
   std::vector<Quotient> qcfrac;
-  std::back_insert_iterator< Fraction > itout = 
+  std::back_insert_iterator< Fraction > itout =
     std::back_inserter( f );
   unsigned int size = ( rand() % 20 ) + 10;
   for ( unsigned int i = 0; i < size; ++i )
@@ -753,7 +753,7 @@ bool testContinuedFraction()
     qcfrac.push_back( (*it).first );
   // f.getCFrac( qcfrac );
   bool ok = equalCFrac( quotients, qcfrac );
-  
+
   trace.info() << ( ok ? "(OK)" : "(ERR)" );
   for ( unsigned int i = 0; i < quotients.size(); ++i )
     std::cerr << " " << quotients[ i ];
@@ -773,7 +773,7 @@ bool testContinuedFractions()
   trace.beginBlock ( "Testing block: continued fraction." );
   for ( unsigned int i = 0; i < nbtests; ++i )
     {
-      ++nb; nbok += testContinuedFraction<SB>() ? 1 : 0; 
+      ++nb; nbok += testContinuedFraction<SB>() ? 1 : 0;
       trace.info() << "(" << nbok << "/" << nb << ")"
                    << " continued fractions." << std::endl;
     }
@@ -785,16 +785,16 @@ bool testContinuedFractions()
    Bug report of I. Sivignon.
 */
 template <typename SB>
-bool 
+bool
 testAncestors()
 {
-  typedef typename SB::Fraction Fraction; 
+  typedef typename SB::Fraction Fraction;
   typedef StandardDSLQ0<Fraction> DSL;
   typedef typename DSL::Point Point;
 
-  // Instanciation d'un DSL
+  // Instantiation d'un DSL
   DSL D(1077,1495,6081);
-  
+
   // Definition du sous-segment [AB] et calcul des caractéristiques
   Point A(3,-3);
   Point B(4,-2);
@@ -815,13 +815,13 @@ testSimplestFractionInBetween()
   Fraction f,g;
   unsigned int nb = 0;
   unsigned int nbok = 0;
-  
+
   trace.beginBlock("Testing block: simplest fraction between two fractions");
   // When the two fractions are not ancestors of one other
   f = Fraction(1,5); g = Fraction(3,4);
   ++nb; nbok += f.simplestFractionInBetween(g) == Fraction(1,2) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
-  
+
   f = Fraction(4,7); g = Fraction(5,7);
   ++nb; nbok += f.simplestFractionInBetween(g) == Fraction(2,3) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
@@ -833,7 +833,7 @@ testSimplestFractionInBetween()
   f = Fraction(11,7); g = Fraction(7,4);
   ++nb; nbok += f.simplestFractionInBetween(g) == Fraction(5,3) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
-  
+
   f = Fraction(8,13); g = Fraction(7,11);
   ++nb; nbok += f.simplestFractionInBetween(g) == Fraction(5,8) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
@@ -842,7 +842,7 @@ testSimplestFractionInBetween()
   f = Fraction(2,5); g = Fraction(4,9);
   ++nb; nbok += f.simplestFractionInBetween(g) == Fraction(3,7) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
-  
+
   f = Fraction(2,3); g = Fraction(8,11);
   ++nb; nbok += f.simplestFractionInBetween(g) == Fraction(5,7) ? 1 : 0;
   trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;

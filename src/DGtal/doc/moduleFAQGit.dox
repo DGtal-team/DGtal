@@ -292,8 +292,8 @@ To cleanup your stack: "git stash clear"
 
 \subsection ssCom2 git Tracking Branches
 
-Tracking branches are directely associated to a remote branch. On
-tracked branch you can directely apply push and pull with no other
+Tracking branches are directly associated to a remote branch. On
+tracked branch you can directly apply push and pull with no other
 argument. After a clone the resulting origin branch is a tracking branch.
 
 @code
@@ -393,7 +393,7 @@ all your local commits)
 
 \section sectGIT5 Resolving GIT conflict (uncommon)
 
-Even it is very rare, conflit can appear when you try to apply a pull:
+Even it is very rare, conflict can appear when you try to apply a pull:
 
 @code
 >git pull upstream main

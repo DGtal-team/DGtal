@@ -536,7 +536,7 @@ SCENARIO( "HalfEdgeDataStructure flips", "[halfedge][flips]" ){
     }
     THEN( "Vertex 3 has 2,0,1 as neighbors after flip" ) {
       VertexIndexRange nv = mesh.neighboringVertices( 3 );
-      VertexIndexRange expected = { 1, 0, 2 }; 
+      VertexIndexRange expected = { 1, 0, 2 };
       REQUIRE( nv.size()  ==  3 );
       REQUIRE( std::equal( nv.begin(), nv.end(), expected.begin() ) );
     }
@@ -575,7 +575,7 @@ SCENARIO( "HalfEdgeDataStructure flips", "[halfedge][flips]" ){
     }
     THEN( "Vertex 3 has 1,2 as neighbors after flip" ) {
       VertexIndexRange nv = mesh.neighboringVertices( 3 );
-      VertexIndexRange expected = { 1, 2 }; 
+      VertexIndexRange expected = { 1, 2 };
       REQUIRE( nv.size()  ==  2 );
       REQUIRE( std::equal( nv.begin(), nv.end(), expected.begin() ) );
     }

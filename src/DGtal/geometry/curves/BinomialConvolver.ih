@@ -55,7 +55,7 @@ DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
 //-----------------------------------------------------------------------------
 template <typename TConstIteratorOnPoints, typename TValue>
 inline
-void 
+void
 DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
 ::setSize( unsigned int n )
 {
@@ -88,10 +88,10 @@ DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
 //-----------------------------------------------------------------------------
 template <typename TConstIteratorOnPoints, typename TValue>
 inline
-void 
+void
 DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
-::init( const double h, 
-  const ConstIteratorOnPoints& itb, 
+::init( const double h,
+  const ConstIteratorOnPoints& itb,
   const ConstIteratorOnPoints& ite,
   const bool isClosed )
 {
@@ -113,7 +113,7 @@ DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
 /*      myX[ size ] = it->operator[]( 0 );
       myY[ size ] = it->operator[]( 1 );*/
 // TRIS ConstIterator may have no -> operator
-      Point p(*it); 
+      Point p(*it);
       myX[ aSize ] = p[0];
       myY[ aSize ] = p[1];
     }
@@ -125,11 +125,11 @@ DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
   myDDX = myDX * Signal<double>::Delta();
   myDDY = myDY * Signal<double>::Delta();
 }
-     
+
 //-----------------------------------------------------------------------------
 template <typename TConstIteratorOnPoints, typename TValue>
 inline
-std::pair<TValue,TValue> 
+std::pair<TValue,TValue>
 DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
 ::x( int i ) const
 {
@@ -138,7 +138,7 @@ DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
 //-----------------------------------------------------------------------------
 template <typename TConstIteratorOnPoints, typename TValue>
 inline
-std::pair<TValue,TValue> 
+std::pair<TValue,TValue>
 DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
 ::dx( int i ) const
 {
@@ -147,7 +147,7 @@ DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
 //-----------------------------------------------------------------------------
 template <typename TConstIteratorOnPoints, typename TValue>
 inline
-std::pair<TValue,TValue> 
+std::pair<TValue,TValue>
 DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
 ::d2x( int i ) const
 {
@@ -156,7 +156,7 @@ DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
 //-----------------------------------------------------------------------------
 template <typename TConstIteratorOnPoints, typename TValue>
 inline
-std::pair<TValue,TValue> 
+std::pair<TValue,TValue>
 DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
 ::tangent( int i ) const
 {
@@ -187,11 +187,11 @@ template <typename TConstIteratorOnPoints, typename TValue>
 inline
 unsigned int
 DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
-::suggestedSize( const double h, 
-     const ConstIteratorOnPoints& itb, 
+::suggestedSize( const double h,
+     const ConstIteratorOnPoints& itb,
      const ConstIteratorOnPoints& ite )
 {
-  Point p(*itb); 
+  Point p(*itb);
   TValue xmin = p[ 0 ];
   TValue ymin = p[ 1 ];
   TValue xmax = p[ 0 ];
@@ -201,7 +201,7 @@ DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
 /*      TValue x = it->operator[]( 0 );
       TValue y = it->operator[]( 1 );*/
 // TRIS ConstIterator may have no -> operator
-      Point pp(*it); 
+      Point pp(*it);
       TValue x = pp[0];
       TValue y = pp[1];
       if ( x < xmin ) xmin = x;
@@ -209,11 +209,11 @@ DGtal::BinomialConvolver<TConstIteratorOnPoints,TValue>
       if ( y < ymin ) ymin = y;
       if ( y > ymax ) ymax = y;
     }
-  TValue diameter = ( xmax - xmin ) > ( ymax - ymin ) 
+  TValue diameter = ( xmax - xmin ) > ( ymax - ymin )
     ? ( xmax - xmin )
     : ( ymax - ymin );
-//  return (unsigned int) ceil( 0.5 / pow( h / diameter, 4.0/3.0 ) ); 
-//TRIS  (diameter*h is the diameter of the shape) 
+//  return (unsigned int) ceil( 0.5 / pow( h / diameter, 4.0/3.0 ) );
+//TRIS  (diameter*h is the diameter of the shape)
     return (unsigned int) ceil( diameter / pow( h, 1.0/3.0 ) );
 }
 
@@ -255,7 +255,7 @@ DGtal::TangentFromBinomialConvolverFunctor<TBinomialConvolver,TRealPoint>
         const ConstIteratorOnPoints & it ) const
 {
   int index = bc.index( it );
-  std::pair<SignalValue,SignalValue> v = bc.tangent( index ); 
+  std::pair<SignalValue,SignalValue> v = bc.tangent( index );
   return RealPoint( v.first, v.second );
 }
 
@@ -270,7 +270,7 @@ DGtal::CurvatureFromBinomialConvolverFunctor<TBinomialConvolver,TReal>
         const ConstIteratorOnPoints & it ) const
 {
   int index = bc.index( it );
-  Value v = bc.curvature( index ); 
+  Value v = bc.curvature( index );
   return v;
 }
 
@@ -290,8 +290,8 @@ template <typename TBinomialConvolver, typename TBinomialConvolverFunctor>
 inline
 void
 DGtal::BinomialConvolverEstimator<TBinomialConvolver,TBinomialConvolverFunctor>
-::init( const double h, 
-  const ConstIterator & itb, 
+::init( const double h,
+  const ConstIterator & itb,
   const ConstIterator & ite,
   const bool isClosed )
 {
@@ -308,22 +308,22 @@ DGtal::BinomialConvolverEstimator<TBinomialConvolver,TBinomialConvolverFunctor>
 ::eval( const ConstIterator& it )
 {
   return myFunctor( myBC, it );
-}    
+}
 //-----------------------------------------------------------------------------
 template <typename TBinomialConvolver, typename TBinomialConvolverFunctor>
 template <typename OutputIterator>
 inline
 OutputIterator
 DGtal::BinomialConvolverEstimator<TBinomialConvolver,TBinomialConvolverFunctor>
-::eval( const ConstIterator& itb, 
-  const ConstIterator& ite, 
+::eval( const ConstIterator& itb,
+  const ConstIterator& ite,
   OutputIterator result )
 {
   for ( ConstIterator it = itb; it != ite; ++it )
     *result++ = eval( it );
   return result;
 }
-  
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
@@ -331,8 +331,8 @@ DGtal::BinomialConvolverEstimator<TBinomialConvolver,TBinomialConvolverFunctor>
 template <typename TConstIteratorOnPoints, typename TValue>
 inline
 std::ostream&
-DGtal::operator<< 
-( std::ostream & out, 
+DGtal::operator<<
+( std::ostream & out,
   const BinomialConvolver<TConstIteratorOnPoints,TValue> & object )
 {
   object.selfDisplay( out );
@@ -341,5 +341,3 @@ DGtal::operator<<
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

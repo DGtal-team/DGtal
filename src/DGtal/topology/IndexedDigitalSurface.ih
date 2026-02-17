@@ -174,12 +174,12 @@ DGtal::IndexedDigitalSurface<TDigitalSurfaceContainer>::degree( const Vertex & v
   ASSERT( isValid() );
   return myHEDS.nbNeighboringVertices( v );
 }
-    
+
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer>
 template <typename OutputIterator>
 inline
-void  
+void
 DGtal::IndexedDigitalSurface<TDigitalSurfaceContainer>::writeNeighbors
 ( OutputIterator &it, const Vertex & v ) const
 {
@@ -189,12 +189,12 @@ DGtal::IndexedDigitalSurface<TDigitalSurfaceContainer>::writeNeighbors
   myHEDS.getNeighboringVertices( v, neighbors );
   for ( Vertex nv : neighbors ) *it++ = nv;
 }
-    
+
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer>
 template <typename OutputIterator, typename VertexPredicate>
 inline
-void  
+void
 DGtal::IndexedDigitalSurface<TDigitalSurfaceContainer>::writeNeighbors
 ( OutputIterator &it, const Vertex & v, const VertexPredicate & pred) const
 {
@@ -330,7 +330,7 @@ DGtal::IndexedDigitalSurface<TDigitalSurfaceContainer>::facesAroundArc( const Ar
 //-----------------------------------------------------------------------------
 template <typename TDigitalSurfaceContainer>
 inline
-typename DGtal::IndexedDigitalSurface<TDigitalSurfaceContainer>::VertexRange 
+typename DGtal::IndexedDigitalSurface<TDigitalSurfaceContainer>::VertexRange
 DGtal::IndexedDigitalSurface<TDigitalSurfaceContainer>::verticesAroundFace( const Face & f ) const
 {
   VertexRange result;
@@ -455,7 +455,7 @@ DGtal::IndexedDigitalSurface<TDigitalSurfaceContainer>::isValid() const
 template <typename TDigitalSurfaceContainer>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
                     const IndexedDigitalSurface<TDigitalSurfaceContainer> & object )
 {
   object.selfDisplay( out );
@@ -464,5 +464,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

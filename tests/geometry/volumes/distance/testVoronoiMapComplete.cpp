@@ -128,7 +128,7 @@ TEST_CASE( "Testing VoronoiMapComplete 2D" )
       brut_force_vmap->operator()( point );
       CompleteVMap::Value class_set = vmap( point );
 
-      // Cheking that all voronoi sites from the brut force set are in the
+      // Checking that all voronoi sites from the brut force set are in the
       // algorithm set
       for ( Point voronoi_point : brut_force_set )
       {
@@ -136,7 +136,7 @@ TEST_CASE( "Testing VoronoiMapComplete 2D" )
                             voronoi_point ) != class_set.end() );
       }
 
-      // Cheking that all voronoi sites from the algorithm set are in the brut
+      // Checking that all voronoi sites from the algorithm set are in the brut
       // force set
       for ( Point voronoi_point : class_set )
       {
@@ -171,13 +171,13 @@ TEST_CASE( "Testing VoronoiMapComplete 2D" )
       brutForceVoronoiMap->operator()( point );
       CompleteVMap::Value class_set = _vmap( point );
 
-      // Cheking that all voronoi sites from the brut force set are in the
+      // Checking that all voronoi sites from the brut force set are in the
       // algorithm set
       for ( Point voronoi_point : brut_force_set )
         REQUIRE( std::find( class_set.begin(), class_set.end(),
                             voronoi_point ) != class_set.end() );
 
-      // Cheking that all voronoi sites from the algorithm set are in the brut
+      // Checking that all voronoi sites from the algorithm set are in the brut
       // force set
       for ( Point voronoi_point : class_set )
         REQUIRE( std::find( brut_force_set.begin(), brut_force_set.end(),

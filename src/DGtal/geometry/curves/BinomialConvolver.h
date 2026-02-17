@@ -198,7 +198,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
     unsigned int myN;
     double myH;
@@ -218,7 +218,7 @@ namespace DGtal
     // Stores the mapping Iterator => Index.
     std::map<ConstIteratorOnPoints,int> myMapIt2Idx;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------

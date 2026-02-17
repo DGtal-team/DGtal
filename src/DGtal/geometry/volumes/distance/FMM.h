@@ -68,14 +68,14 @@ namespace DGtal
   // template class PointValueCompare
   /**
    * Description of template class 'PointValueCompare' <p>
-   * \brief Aim: Small binary predicate to order candidates points 
-   * according to their (absolute) distance value. 
+   * \brief Aim: Small binary predicate to order candidates points
+   * according to their (absolute) distance value.
    *
    * @tparam T model of pair Point-Value
    */
     template<typename T>
     class PointValueCompare {
-    public: 
+    public:
       /**
        * Comparison function
        *
@@ -86,14 +86,14 @@ namespace DGtal
        */
       bool operator()(const T& a, const T& b) const
       {
-	if ( std::abs(a.second) == std::abs(b.second) ) 
+	if ( std::abs(a.second) == std::abs(b.second) )
 	  { //point comparison
-	    return (a.first < b.first); 
+	    return (a.first < b.first);
 	  }
 	else //distance comparison
 	  //(in absolute value in order to deal with
-	  //signed distance values) 
-	  return ( std::abs(a.second) < std::abs(b.second) ); 
+	  //signed distance values)
+	  return ( std::abs(a.second) < std::abs(b.second) );
       }
     };
   }
@@ -104,48 +104,48 @@ namespace DGtal
    * Description of template class 'FMM' <p>
    * \brief Aim: Fast Marching Method (FMM) for nd distance transforms.
    *
-   * In this approach, a signed distance function is computed at 
-   * each digital point by marching out from an initial set of points, 
+   * In this approach, a signed distance function is computed at
+   * each digital point by marching out from an initial set of points,
    * for which the values of the signed distance are known. This set
-   * is an initialization of the so-called @e accepted @e point @e set. 
+   * is an initialization of the so-called @e accepted @e point @e set.
    * Each digital point adjacent to one of the accepted points is
-   * put into the so-called @e candidate @e point @e set. 
-   * A tentative value is computed for its signed distance, using 
-   * only the values of the accepted points lying in its neighborhood. 
-   * This task is delegated to an instance of a point functor, 
-   * which is defined as L2FirstOrderLocalDistance by default. 
+   * put into the so-called @e candidate @e point @e set.
+   * A tentative value is computed for its signed distance, using
+   * only the values of the accepted points lying in its neighborhood.
+   * This task is delegated to an instance of a point functor,
+   * which is defined as L2FirstOrderLocalDistance by default.
    * However, you are free to use L2SecondOrderLocalDistance, which provides
-   * more accurate distance values, L1LocalDistance and 
-   * LInfLocalDistance for other norms. 
+   * more accurate distance values, L1LocalDistance and
+   * LInfLocalDistance for other norms.
    *
    * Then the point of smallest tentative value is added to the set of
-   * accepted points. The tentative values of the candidates adjacent 
+   * accepted points. The tentative values of the candidates adjacent
    * to the newly added point are updated using the distance value
    * of the newly added point. The search of the point of smallest
-   * tentative value is accelerated using a STL set of pairs (point, 
-   * tentative value).  
+   * tentative value is accelerated using a STL set of pairs (point,
+   * tentative value).
    *
    * @tparam TImage  any model of CImage
    * @tparam TSet  any model of CDigitalSet
-   * @tparam TPointPredicate  any model of concepts::CPointPredicate, 
-   * used to bound the computation within a domain 
+   * @tparam TPointPredicate  any model of concepts::CPointPredicate,
+   * used to bound the computation within a domain
    * @tparam TPointFunctor  any model of CPointFunctor,
    * used to compute the new distance value
    *
-   * You can define the FMM type as follows: 
+   * You can define the FMM type as follows:
    @snippet geometry/volumes/distance/exampleFMM3D.cpp FMMSimpleTypeDef3D
    *
-   * You can construct and initialize the external data structures as follows: 
+   * You can construct and initialize the external data structures as follows:
    @snippet geometry/volumes/distance/exampleFMM3D.cpp FMMSimpleInit3D
    *
-   * Then, the algorithm is ran as follows: 
+   * Then, the algorithm is ran as follows:
    @snippet geometry/volumes/distance/exampleFMM3D.cpp FMMUsage3D
    *
    * @see exampleFMM2D.cpp
    * @see exampleFMM3D.cpp
    * @see testFMM.cpp
    */
-  template <typename TImage, typename TSet, typename TPointPredicate, 
+  template <typename TImage, typename TSet, typename TPointPredicate,
 	    typename TPointFunctor = L2FirstOrderLocalDistance<TImage,TSet> >
   class FMM
   {
@@ -160,9 +160,9 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( concepts::CPointPredicate<TPointPredicate> ));
     BOOST_CONCEPT_ASSERT(( concepts::CPointFunctor<TPointFunctor> ));
 
-    typedef TImage Image; 
-    typedef TSet AcceptedPointSet; 
-    typedef TPointPredicate PointPredicate; 
+    typedef TImage Image;
+    typedef TSet AcceptedPointSet;
+    typedef TPointPredicate PointPredicate;
 
     //points
     typedef typename Image::Point Point;
@@ -171,80 +171,80 @@ namespace DGtal
 
     //dimension
     typedef typename Point::Dimension Dimension;
-    static const Dimension dimension; 
+    static const Dimension dimension;
 
     //distance
-    typedef TPointFunctor PointFunctor; 
-    typedef typename PointFunctor::Value Value; 
+    typedef TPointFunctor PointFunctor;
+    typedef typename PointFunctor::Value Value;
 
 
-  private: 
+  private:
 
     //intern data types
-    typedef std::pair<Point, Value> PointValue; 
+    typedef std::pair<Point, Value> PointValue;
     typedef std::set<PointValue,
-		     detail::PointValueCompare<PointValue> > CandidatePointSet; 
+		     detail::PointValueCompare<PointValue> > CandidatePointSet;
     typedef DGtal::uint64_t Area;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
-    
+
     /**
      * Reference on the image
      */
-    Image& myImage; 
+    Image& myImage;
 
     /**
      * Reference on the set of accepted points
      */
-    AcceptedPointSet& myAcceptedPoints; 
+    AcceptedPointSet& myAcceptedPoints;
 
     /**
      * Set of candidate points
      */
-    CandidatePointSet myCandidatePoints; 
+    CandidatePointSet myCandidatePoints;
 
     /**
-     * Pointer on the point functor used to deduce 
+     * Pointer on the point functor used to deduce
      * the distance of a new point
      * from the distance of its neighbors
      */
-    PointFunctor* myPointFunctorPtr; 
+    PointFunctor* myPointFunctorPtr;
 
     /**
      * 'true' if @a myPointFunctorPtr is an owning pointer
      * (default case), 'false' if it is an aliasing pointer
      * on a point functor given at construction
      */
-    const bool myFlagIsOwning; 
+    const bool myFlagIsOwning;
 
     /**
-     * Constant reference on a point predicate that returns 
-     * 'true' inside the domain 
+     * Constant reference on a point predicate that returns
+     * 'true' inside the domain
      * where the distance transform is performed
      */
-    const PointPredicate& myPointPredicate; 
+    const PointPredicate& myPointPredicate;
 
     /**
-     * Area threshold (in number of accepted points) 
+     * Area threshold (in number of accepted points)
      * above which the propagation stops
      */
-    Area myAreaThreshold; 
+    Area myAreaThreshold;
 
     /**
      * Value threshold above which the propagation stops
      */
-    Value myValueThreshold; 
+    Value myValueThreshold;
 
     /**
      * Min value
      */
-    Value myMinValue; 
+    Value myMinValue;
 
     /**
      * Max value
      */
-    Value myMaxValue; 
+    Value myMaxValue;
 
 
     // ----------------------- Standard services ------------------------------
@@ -257,58 +257,58 @@ namespace DGtal
      */
     FMM(Image& aImg, AcceptedPointSet& aSet,
         ConstAlias<PointPredicate> aPointPredicate);
-    
-    /**
-     * Constructor.
-     *
-     * @see init
-     */
-    FMM(Image& aImg, AcceptedPointSet& aSet, 
-        ConstAlias<PointPredicate> aPointPredicate, 
-        const Area& aAreaThreshold, const Value& aValueThreshold);
-    
+
     /**
      * Constructor.
      *
      * @see init
      */
     FMM(Image& aImg, AcceptedPointSet& aSet,
-        ConstAlias<PointPredicate> aPointPredicate, 
-        PointFunctor& aPointFunctor );
-    
+        ConstAlias<PointPredicate> aPointPredicate,
+        const Area& aAreaThreshold, const Value& aValueThreshold);
+
     /**
      * Constructor.
      *
      * @see init
      */
-    FMM(Image& aImg, AcceptedPointSet& aSet, 
-        ConstAlias<PointPredicate> aPointPredicate, 
+    FMM(Image& aImg, AcceptedPointSet& aSet,
+        ConstAlias<PointPredicate> aPointPredicate,
+        PointFunctor& aPointFunctor );
+
+    /**
+     * Constructor.
+     *
+     * @see init
+     */
+    FMM(Image& aImg, AcceptedPointSet& aSet,
+        ConstAlias<PointPredicate> aPointPredicate,
         const Area& aAreaThreshold, const Value& aValueThreshold,
         PointFunctor& aPointFunctor );
-    
+
     /**
      * Destructor.
      */
     ~FMM();
 
-  
+
     // ----------------------- Interface --------------------------------------
   public:
-    
-    /** 
+
+    /**
      * Computation of the signed distance function by marching out
-     * from the initial set of accepted points. 
-     * While it is possible, the candidate of min distance is 
-     * inserted into the set of accepted points. 
+     * from the initial set of accepted points.
+     * While it is possible, the candidate of min distance is
+     * inserted into the set of accepted points.
      *
      * @see computeOneStep
      */
     void compute();
- 
-    /** 
-     * Inserts the candidate of min distance into the set 
-     * of accepted points if it is possible and then 
-     * updates the distance values associated to the candidate points. 
+
+    /**
+     * Inserts the candidate of min distance into the set
+     * of accepted points if it is possible and then
+     * updates the distance values associated to the candidate points.
      *
      * @param aPoint inserted point (if inserted)
      * @param aValue its distance value (if inserted)
@@ -320,22 +320,22 @@ namespace DGtal
      */
     bool computeOneStep(Point& aPoint, Value& aValue);
 
-    /** 
-     * Minimal distance value in the set of accepted points. 
+    /**
+     * Minimal distance value in the set of accepted points.
      *
      * @return minimal distance value.
      */
     Value min() const;
 
-    /** 
-     * Maximal distance value in the set of accepted points. 
+    /**
+     * Maximal distance value in the set of accepted points.
      *
      * @return maximal distance value
      */
     Value max() const;
 
-    /** 
-     * Computes the minimal distance value in the set of accepted points. 
+    /**
+     * Computes the minimal distance value in the set of accepted points.
      *
      * NB: in O(n log n) where n is the size of the set
      *
@@ -343,8 +343,8 @@ namespace DGtal
      */
     Value getMin() const;
 
-    /** 
-     * Computes the maximal distance value in the set of accepted points. 
+    /**
+     * Computes the maximal distance value in the set of accepted points.
      *
      * NB: in O(n log n) where n is the size of the set
      *
@@ -368,8 +368,8 @@ namespace DGtal
 
 
     /**
-     * Initialize @a aImg and @a aSet from the points of the range [@a itb , @a ite ) 
-     * Assign a distance equal to @a aValue  
+     * Initialize @a aImg and @a aSet from the points of the range [@a itb , @a ite )
+     * Assign a distance equal to @a aValue
      *
      * @param itb begin iterator (on points)
      * @param ite end iterator (on points)
@@ -378,16 +378,16 @@ namespace DGtal
      * @param aValue distance default value
      */
     template <typename TIteratorOnPoints>
-    static void initFromPointsRange(const TIteratorOnPoints& itb, const TIteratorOnPoints& ite, 
-				Image& aImg, AcceptedPointSet& aSet, 
+    static void initFromPointsRange(const TIteratorOnPoints& itb, const TIteratorOnPoints& ite,
+				Image& aImg, AcceptedPointSet& aSet,
 				const Value& aValue);
 
     /**
-     * Initialize @a aImg and @a aSet from the points 
-     * incident to the signed cells of the range [@a itb , @a ite ) 
-     * Assign to the inner points a distance equal to - @a aValue 
-     * if @a aFlagIsPositive is 'true' (default) but @a aValue otherwise, 
-     * and conversely for the outer points.  
+     * Initialize @a aImg and @a aSet from the points
+     * incident to the signed cells of the range [@a itb , @a ite )
+     * Assign to the inner points a distance equal to - @a aValue
+     * if @a aFlagIsPositive is 'true' (default) but @a aValue otherwise,
+     * and conversely for the outer points.
      *
      * @param aK a Khalimsky space in which the signed cells live.
      * @param itb begin iterator (on signed cells)
@@ -398,21 +398,21 @@ namespace DGtal
      * @param aFlagIsPositive The flag controlling the \a aValue sign assigned to inner points.
      */
     template <typename KSpace, typename TIteratorOnBels>
-    static void initFromBelsRange(const KSpace& aK, 
-				  const TIteratorOnBels& itb, const TIteratorOnBels& ite, 
-				  Image& aImg, AcceptedPointSet& aSet, 
-				  const Value& aValue, 
+    static void initFromBelsRange(const KSpace& aK,
+				  const TIteratorOnBels& itb, const TIteratorOnBels& ite,
+				  Image& aImg, AcceptedPointSet& aSet,
+				  const Value& aValue,
 				  bool aFlagIsPositive = true);
 
     /**
-     * Initialize @a aImg and @a aSet from the points 
-     * incident to the signed cells of the range [@a itb , @a ite ). 
-     * If @a aFlagIsPositive is 'true' (default), assign to the 
-     * inner points a negative distance interpolated from 
-     * the distance values of the neighbors given by the function @a aF 
-     * and assign to the outer points a positive distance interpolated 
-     * from the distance values of the neighbors given by the function @a aF. 
-     * Swap the signs if @a aFlagIsPositive is 'false'. 
+     * Initialize @a aImg and @a aSet from the points
+     * incident to the signed cells of the range [@a itb , @a ite ).
+     * If @a aFlagIsPositive is 'true' (default), assign to the
+     * inner points a negative distance interpolated from
+     * the distance values of the neighbors given by the function @a aF
+     * and assign to the outer points a positive distance interpolated
+     * from the distance values of the neighbors given by the function @a aF.
+     * Swap the signs if @a aFlagIsPositive is 'false'.
      *
      * @param aK a Khalimsky space in which the signed cells live.
      * @param itb begin iterator (on signed cells)
@@ -423,19 +423,19 @@ namespace DGtal
      * @param aFlagIsPositive The flag controlling the \a aValue sign assigned to inner points.
      */
     template <typename KSpace, typename TIteratorOnBels, typename TImplicitFunction>
-    static void initFromBelsRange(const KSpace& aK, 
+    static void initFromBelsRange(const KSpace& aK,
 				  const TIteratorOnBels& itb, const TIteratorOnBels& ite,
-				  const TImplicitFunction& aF, 
-				  Image& aImg, AcceptedPointSet& aSet, 
+				  const TImplicitFunction& aF,
+				  Image& aImg, AcceptedPointSet& aSet,
 				  bool aFlagIsPositive = true);
 
 
     /**
-     * Initialize @a aImg and @a aSet from the inner and outer points 
-     * of the range [@a itb , @a ite ) of pairs of points.  
-     * Assign to the inner points a distance equal to - @a aValue 
-     * if @a aFlagIsPositive is 'true' (default) but @a aValue otherwise, 
-     * and conversely for the outer points.  
+     * Initialize @a aImg and @a aSet from the inner and outer points
+     * of the range [@a itb , @a ite ) of pairs of points.
+     * Assign to the inner points a distance equal to - @a aValue
+     * if @a aFlagIsPositive is 'true' (default) but @a aValue otherwise,
+     * and conversely for the outer points.
      *
      * @param itb begin iterator (on points)
      * @param ite end iterator (on points)
@@ -445,9 +445,9 @@ namespace DGtal
      * @param aFlagIsPositive The flag controlling the \a aValue sign assigned to inner points.
      */
     template <typename TIteratorOnPairs>
-    static void initFromIncidentPointsRange(const TIteratorOnPairs& itb, const TIteratorOnPairs& ite, 
-				   Image& aImg, AcceptedPointSet& aSet, 
-				   const Value& aValue, 
+    static void initFromIncidentPointsRange(const TIteratorOnPairs& itb, const TIteratorOnPairs& ite,
+				   Image& aImg, AcceptedPointSet& aSet,
+				   const Value& aValue,
 				   bool aFlagIsPositive = true);
 
   private:
@@ -470,15 +470,15 @@ namespace DGtal
     // ------------------------- Internals ------------------------------------
   private:
 
-    /** 
+    /**
      * Initialize the set of candidate points
      */
     void init();
-    
-    /** 
-     * Inserts the candidate of min distance into the set 
+
+    /**
+     * Inserts the candidate of min distance into the set
      * of accepted points and updates the distance values
-     * of the candidate points. 
+     * of the candidate points.
      *
      * @param aPoint inserted point (if true)
      * @param aValue distance value of the inserted point (if true)
@@ -488,7 +488,7 @@ namespace DGtal
      */
     bool addNewAcceptedPoint(Point& aPoint, Value& aValue);
 
-    /** 
+    /**
      * Updates the distance values of the neighbors of @a aPoint
      * belonging to the set of accepted points
      *
@@ -496,12 +496,12 @@ namespace DGtal
      */
     void update(const Point& aPoint);
 
-    /** 
-     * Tests a new point as a candidate. 
-     * If it is not yet accepted 
-     * and if the point predicate returns 'true', 
-     * computes its distance and inserts it 
-     * into the set of candidate points. 
+    /**
+     * Tests a new point as a candidate.
+     * If it is not yet accepted
+     * and if the point predicate returns 'true',
+     * computes its distance and inserts it
+     * into the set of candidate points.
      *
      * @param aPoint any point
      *

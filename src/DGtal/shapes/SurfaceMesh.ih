@@ -231,7 +231,7 @@ getMaxWeights( Index v ) const
 {
   Scalars        weights;
   const auto & neighbors = myNeighborVertices[ v ];
-  const RealPoint      x = myPositions[ v ]; 
+  const RealPoint      x = myPositions[ v ];
   for ( auto idx_f : myIncidentFaces[ v ] )
     {
       // Find adjacent vertices to v
@@ -265,7 +265,7 @@ getMaxWeights( Index v ) const
 //-----------------------------------------------------------------------------
 template <typename TRealPoint, typename TRealVector>
 template <typename AnyRing>
-std::vector<AnyRing> 
+std::vector<AnyRing>
 DGtal::SurfaceMesh<TRealPoint, TRealVector>::
 computeFaceValuesFromVertexValues( const std::vector<AnyRing>& vvalues ) const
 {
@@ -280,10 +280,10 @@ computeFaceValuesFromVertexValues( const std::vector<AnyRing>& vvalues ) const
     }
   return fvalues;
 }
-    
+
 template <typename TRealPoint, typename TRealVector>
 template <typename AnyRing>
-std::vector<AnyRing> 
+std::vector<AnyRing>
 DGtal::SurfaceMesh<TRealPoint, TRealVector>::
 computeVertexValuesFromFaceValues( const std::vector<AnyRing>& fvalues ) const
 {
@@ -342,7 +342,7 @@ computeVertexUnitVectorsFromFaceUnitVectors
 
 //-----------------------------------------------------------------------------
 template <typename TRealPoint, typename TRealVector>
-typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::Edge 
+typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::Edge
 DGtal::SurfaceMesh<TRealPoint, TRealVector>::
 makeEdge( Vertex i, Vertex j ) const
 {
@@ -463,7 +463,7 @@ faceArea( Index f ) const
 
 //-----------------------------------------------------------------------------
 template <typename TRealPoint, typename TRealVector>
-typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::WeightedFaces 
+typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::WeightedFaces
 DGtal::SurfaceMesh<TRealPoint, TRealVector>::
 computeFacesInclusionsInBall( Scalar r, Index f ) const
 {
@@ -472,7 +472,7 @@ computeFacesInclusionsInBall( Scalar r, Index f ) const
 
 //-----------------------------------------------------------------------------
 template <typename TRealPoint, typename TRealVector>
-typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::WeightedFaces 
+typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::WeightedFaces
 DGtal::SurfaceMesh<TRealPoint, TRealVector>::
 computeFacesInclusionsInBall( Scalar r, Index f, RealPoint p ) const
 {
@@ -511,7 +511,7 @@ template <typename TRealPoint, typename TRealVector>
 std::tuple
 < typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::Vertices,
   typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::WeightedEdges,
-  typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::WeightedFaces > 
+  typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::WeightedFaces >
 DGtal::SurfaceMesh<TRealPoint, TRealVector>::
 computeCellsInclusionsInBall( Scalar r, Index f ) const
 {
@@ -523,7 +523,7 @@ template <typename TRealPoint, typename TRealVector>
 std::tuple
 < typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::Vertices,
   typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::WeightedEdges,
-  typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::WeightedFaces > 
+  typename DGtal::SurfaceMesh<TRealPoint, TRealVector>::WeightedFaces >
 DGtal::SurfaceMesh<TRealPoint, TRealVector>::
 computeCellsInclusionsInBall( Scalar r, Index f, RealPoint p ) const
 {
@@ -564,7 +564,7 @@ computeCellsInclusionsInBall( Scalar r, Index f, RealPoint p ) const
               const Vertex vn = inc_v[ (i+1) % inc_v.size() ];
               if ( vertexInclusionRatio( p, r, vi ) > 0.0 )
                 set_v.insert( vi );
-              if ( vn < vi ) continue; // edges are ordered pairs 
+              if ( vn < vi ) continue; // edges are ordered pairs
               const Edge e_ij = makeEdge( vi, vn );
               if ( e_ij >= nbEdges() ) {
                 trace.error() << "bad edge " << vi << " " << vn << std::endl;
@@ -695,7 +695,7 @@ computeNeighbors()
   // For each vertex, computes its neighboring vertices
   for ( Index idx_v = 0; idx_v < nbVertices(); ++idx_v )
     myNeighborVertices[ idx_v ] = Vertices( tmp[ idx_v ].cbegin(), tmp[ idx_v ].cend() );
-  
+
   // For each face, computes its neighboring faces
   Index idx_f = 0;
   for ( auto incident_vertices : allIncidentVertices() )
@@ -753,7 +753,7 @@ computeEdges()
     }
   const Size nbe = edges.size();
   myVertexPairEdge.clear();
-  myEdgeVertices.resize  ( nbe );  
+  myEdgeVertices.resize  ( nbe );
   myEdgeFaces.resize     ( nbe );
   myEdgeRightFaces.resize( nbe );
   myEdgeLeftFaces.resize ( nbe );
@@ -843,7 +843,7 @@ computeNonManifoldEdges() const
   Edges edges;
   for ( Index e = 0; e < myEdgeFaces.size(); ++e )
     {
-      if ( myEdgeFaces[ e ].size() >= 3 ) 
+      if ( myEdgeFaces[ e ].size() >= 3 )
         edges.push_back( e );
     }
   return edges;
@@ -862,12 +862,12 @@ isFlippable( const Edge e ) const
   /// the quad are not already neighbors.
 
   // edge is (i,j) with i<j
-  
+
   // (1) the edge must be bordered by two faces, one on its left, one on its right.
   const Faces& rfaces = edgeRightFaces( e );
   if ( rfaces.size() != 1 ) return false; //< not one face to the right
   const Faces& lfaces = edgeLeftFaces ( e );
-  if ( lfaces.size() != 1 ) return false; //< not one face to the left 
+  if ( lfaces.size() != 1 ) return false; //< not one face to the left
 
   // (2) both faces must be triangles
   const Face      rf   = rfaces.front();  //< some `(..., j, i, ... )` since faces are ccw.
@@ -883,7 +883,7 @@ isFlippable( const Edge e ) const
   const auto    ir = ( rvtx[ 0 ] == i ) ? 0 : ( ( rvtx[ 1 ] == i ) ? 1 : 2 );
   const auto    il = ( lvtx[ 0 ] == i ) ? 0 : ( ( lvtx[ 1 ] == i ) ? 1 : 2 );
   const Vertex   k = rvtx[ (ir + 1) % 3 ]; // right triangle is (j,i,k)
-  const Vertex   l = lvtx[ (il + 2) % 3 ]; // left  triangle is (i,j,l). 
+  const Vertex   l = lvtx[ (il + 2) % 3 ]; // left  triangle is (i,j,l).
   if ( ! ( k != i && k != j && l != i && l != j && k != l ) )
     {
       /// May happen if we have identical triangles (i,j,k) and (j,i,k)
@@ -937,7 +937,7 @@ flip( const Edge e, bool recompute_face_normals )
         /     \             /  |  \
        /   lf  \           /   |   \
       /         \         /    |    \
-     i --- e --- j  ==>  i  lf e  rf j    if k < l otherwise rf and lf are swapped     
+     i --- e --- j  ==>  i  lf e  rf j    if k < l otherwise rf and lf are swapped
       \         /         \    |    /
        \   rf  /           \   |   /
         \     /             \  |  /
@@ -945,7 +945,7 @@ flip( const Edge e, bool recompute_face_normals )
           \ /                 \|/
            k                   k
   */
-  
+
   // (1) We must collect all information: right and left face, vertices k and l
   const Face  rf    = edgeRightFaces( e ).front();  //< some `(..., j, i, ... )` since faces are ccw.
   const Face  lf    = edgeLeftFaces ( e ).front();  //< some `(..., i, j, ... )` since faces are ccw.
@@ -984,11 +984,11 @@ flip( const Edge e, bool recompute_face_normals )
       myEdgeVertices  [ e  ] = kl;
       myVertexPairEdge[ kl ] = e;
       removeIndex ( myIncidentFaces[ i ], rf );
-      removeIndex ( myIncidentFaces[ j ], lf );      
+      removeIndex ( myIncidentFaces[ j ], lf );
       addIndex    ( myIncidentFaces[ k ], lf );
       addIndex    ( myIncidentFaces[ l ], rf );
       removeIndex ( myNeighborVertices[ i ], j );
-      removeIndex ( myNeighborVertices[ j ], i );      
+      removeIndex ( myNeighborVertices[ j ], i );
       addIndex    ( myNeighborVertices[ k ], l );
       addIndex    ( myNeighborVertices[ l ], k );
       // No need to update myEdgeFaces, myEdgeRightFaces and myEdgeLeftFaces for edge e.
@@ -1003,7 +1003,7 @@ flip( const Edge e, bool recompute_face_normals )
       replaceIndex( myEdgeFaces[ e_jl ], lf, rf );
       if ( e_jl_left ) myEdgeLeftFaces [ e_jl ][ 0 ] = rf;
       else             myEdgeRightFaces[ e_jl ][ 0 ] = rf;
-      // nothing to change for e_li (lf is still the incident face)      
+      // nothing to change for e_li (lf is still the incident face)
       // vertex normals are not updated.
       // face normals are recomputed if asked for.
       if ( recompute_face_normals )
@@ -1036,11 +1036,11 @@ flip( const Edge e, bool recompute_face_normals )
       myEdgeVertices  [ e  ] = lk;
       myVertexPairEdge[ lk ] = e;
       removeIndex ( myIncidentFaces[ i ], lf );
-      removeIndex ( myIncidentFaces[ j ], rf );      
+      removeIndex ( myIncidentFaces[ j ], rf );
       addIndex    ( myIncidentFaces[ k ], lf );
       addIndex    ( myIncidentFaces[ l ], rf );
       removeIndex ( myNeighborVertices[ i ], j );
-      removeIndex ( myNeighborVertices[ j ], i );      
+      removeIndex ( myNeighborVertices[ j ], i );
       addIndex    ( myNeighborVertices[ k ], l );
       addIndex    ( myNeighborVertices[ l ], k );
       // No need to update myEdgeFaces, myEdgeRightFaces and myEdgeLeftFaces for edge e.
@@ -1055,7 +1055,7 @@ flip( const Edge e, bool recompute_face_normals )
       replaceIndex( myEdgeFaces[ e_li ], lf, rf );
       if ( e_li_left ) myEdgeLeftFaces [ e_li ][ 0 ] = rf;
       else             myEdgeRightFaces[ e_li ][ 0 ] = rf;
-      // nothing to change for e_ik (rf is still the incident face)      
+      // nothing to change for e_ik (rf is still the incident face)
       // vertex normals are not updated.
       // face normals are recomputed if asked for.
       if ( recompute_face_normals )
@@ -1072,7 +1072,7 @@ flip( const Edge e, bool recompute_face_normals )
 //-----------------------------------------------------------------------------
 template <typename TRealPoint, typename TRealVector>
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
                     const SurfaceMesh<TRealPoint, TRealVector> & object )
 {
   object.selfDisplay( out );

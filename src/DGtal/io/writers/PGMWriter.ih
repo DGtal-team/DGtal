@@ -54,7 +54,7 @@ PGMWriter<I,C>::exportPGM(const std::string & filename, const I & aImage,
   typename I::Domain::Vector size =  (domain.upperBound() - domain.lowerBound()) + p;
 
   out.open(filename.c_str(), std::ios::out | std::ios::binary);
-  
+
   //PPM format
   if(saveASCII){
     out << "P2"<<std::endl;
@@ -65,9 +65,9 @@ PGMWriter<I,C>::exportPGM(const std::string & filename, const I & aImage,
   out << "#DGtal PNM Writer"<<std::endl;
   out << size[0]<<" "<< size[1]<<std::endl;
   out << "255" <<std::endl;
-  
+
   if(!topbotomOrder){
-    //We scan the domain instead of the image becaus we cannot
+    //We scan the domain instead of the image because we cannot
     //trust the image container Iterator
     for(typename I::Domain::ConstIterator it = domain.begin(), itend=domain.end();
 	it!=itend;
@@ -83,11 +83,11 @@ PGMWriter<I,C>::exportPGM(const std::string & filename, const I & aImage,
       }
   }else{
     typename I::Domain::Point ptUpper=  domain.upperBound();
-    
+
     for(typename HyperRectDomain<typename I::Domain::Space>::ConstSubRange::ConstReverseIterator itY = domain.subRange(1, ptUpper).rbegin(), itYend=domain.subRange(1, ptUpper).rend();  itY!=itYend; ++itY)
-      {    
+      {
 	typename I::Domain::Point ptUpperY=  *itY;
-	
+
 	for(typename HyperRectDomain<typename I::Domain::Space>::ConstSubRange::ConstIterator it = domain.subRange(0, ptUpperY).begin(), itend=domain.subRange(0, ptUpperY).end();
 	    it!=itend;
 	    ++it)
@@ -98,14 +98,14 @@ PGMWriter<I,C>::exportPGM(const std::string & filename, const I & aImage,
 	  }else{
 	      out << ((char) aFunctor(val));
 	    }
-	    
+
 	  }
       }
   }
-  
-  out.close(); 
 
-  ///@todo catch IOerror excpetion
+  out.close();
+
+  ///@todo catch IOerror exception
   return true;
 }
 
@@ -127,9 +127,9 @@ PGMWriter<I,C>::exportPGM3D(const std::string & filename, const I & aImage,
 
   Color col;
   out.open(filename.c_str(), std::ios::out | std::ios::binary);
-  
+
   std::string extension = filename.substr(filename.find_last_of(".") + 1);
-  
+
   //PPM format
   if(saveASCII){
     out <<( (extension=="pgm")? "P2": "P2-3D" )<< std::endl;
@@ -150,15 +150,15 @@ PGMWriter<I,C>::exportPGM3D(const std::string & filename, const I & aImage,
       val = aImage( (*it) );
       if(saveASCII){
 	out << ((int) aFunctor( val ))<<" ";
-      }else{	
+      }else{
 	out << ((char)((int) aFunctor(val)));
       }
 
     }
-  
-  out.close(); 
 
-  ///@todo catch IOerror excpetion
+  out.close();
+
+  ///@todo catch IOerror exception
   return true;
 }
 

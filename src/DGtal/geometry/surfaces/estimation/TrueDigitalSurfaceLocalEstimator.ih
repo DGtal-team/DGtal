@@ -98,7 +98,7 @@ h() const
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TShape, typename TGeometricFunctor>
 inline
-void 
+void
 DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
 attach( ConstAlias<Shape> aShape )
 {
@@ -108,12 +108,12 @@ attach( ConstAlias<Shape> aShape )
 //-----------------------------------------------------------------------------
 template <typename TKSpace, typename TShape, typename TGeometricFunctor>
 inline
-void 
+void
 DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
-setParams(  ConstAlias<KSpace> ks, 
+setParams(  ConstAlias<KSpace> ks,
             Clone<GeometricFunctor> fct,
-            const int maxIter, 
-            const Scalar accuracy, 
+            const int maxIter,
+            const Scalar accuracy,
             const Scalar gamma )
 {
   myKSpace = ks;
@@ -128,7 +128,7 @@ setParams(  ConstAlias<KSpace> ks,
 template <typename TKSpace, typename TShape, typename TGeometricFunctor>
 template <typename SurfelConstIterator>
 inline
-void 
+void
 DGtal::TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor>::
 init( const Scalar _h,
       SurfelConstIterator /* itb */,
@@ -175,7 +175,7 @@ embed( Surfel surfel ) const
   ASSERT( isValid() );
   RealPoint p = myEmbedder( surfel );
   p *= myH;
-  return ( myMaxIter > 0 ) 
+  return ( myMaxIter > 0 )
     ? myShape->nearestPoint( p, myAccuracy, myMaxIter, myGamma )
     : p;
 }
@@ -220,7 +220,7 @@ isValid() const
 template <typename TKSpace, typename TShape, typename TGeometricFunctor>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
                     const TrueDigitalSurfaceLocalEstimator<TKSpace, TShape, TGeometricFunctor> & object )
 {
   object.selfDisplay( out );
@@ -229,5 +229,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

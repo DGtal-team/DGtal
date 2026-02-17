@@ -53,7 +53,7 @@ DGtal::MLPLengthEstimator<T>::eval(const ConstIterator& itb,
   if ( isEmpty(itb,ite) )
     return val;
 
-  FaithfulPolygon fp( itb, ite ); 
+  FaithfulPolygon fp( itb, ite );
   std::vector<Point> points(fp.size());
   fp.copyMLP( points.begin() );
 
@@ -64,12 +64,12 @@ DGtal::MLPLengthEstimator<T>::eval(const ConstIterator& itb,
 
   for ( ; j != end; ++i, ++j )
   {
-    Vector v( *j - *i ); 
+    Vector v( *j - *i );
     val += v.norm(Vector::L_2);
   }
   if ( IsCirculator<ConstIterator>::value )
   {
-    Vector v( points.front() - *i ); 
+    Vector v( points.front() - *i );
     val += v.norm(Vector::L_2);
   }
 
@@ -87,7 +87,7 @@ void
 DGtal::MLPLengthEstimator<T>::selfDisplay ( std::ostream & out ) const
 {
   out << "[MLPLengthEstimator]";
-  if (isValid()) 
+  if (isValid())
     out <<" initialized";
   else
     out<< " not initialized";
@@ -110,7 +110,7 @@ DGtal::MLPLengthEstimator<T>::isValid() const
 template <typename T>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
       const MLPLengthEstimator<T> & object )
 {
   object.selfDisplay( out );
@@ -119,5 +119,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

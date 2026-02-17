@@ -30,7 +30,7 @@
  * This file is part of the DGtal library.
  */
 
-/** 
+/**
  * Simple selection of a surfel (with shift + left click) with the
  * Polyscope Viewer proposed by DGtal. You may associates \a names
  * (i.e. integers) to surfels or to group of surfels. You may associate
@@ -70,8 +70,8 @@ typedef KSpace::SCell SCell;
 //
 struct MyCallback : public Callback {
   void OnClick(
-      const std::string& name, size_t index, 
-      const DisplayData<MyViewer::RealPoint>& data, 
+      const std::string& name, size_t index,
+      const DisplayData<MyViewer::RealPoint>& data,
       void* polyscopeStructure
   ) {
     ((void) index); ((void) data); ((void) polyscopeStructure);
@@ -91,7 +91,7 @@ int main()
   Point v1 = Z3i::Point(10, 10,10);
   Point v2 = Z3i::Point(9, 9, 9);
   Point v3 = Z3i::Point(11, 11,11);
-  
+
   MyViewer viewer( K );
   viewer.setCallback(new MyCallback);
   Z3i::SCell surfel1 = K.sCell( Point( 1, 1, 2 ), KSpace::POS );
@@ -101,7 +101,7 @@ int main()
   viewer.draw(surfel1, "Surfel 1");
   viewer.draw(surfel2, "Surfel 2");
   viewer << Point(0, 0, 1) << Point(1, 1, 2);
- 
+
   viewer.show();
   return 0;
 }

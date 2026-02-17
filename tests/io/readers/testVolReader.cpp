@@ -58,41 +58,41 @@ bool testVolReader()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing VolReader ..." );
 
   typedef SpaceND<3> Space4Type;
   typedef HyperRectDomain<Space4Type> TDomain;
-  
+
   //Default image selector = STLVector
   typedef ImageSelector<TDomain, unsigned char>::Type Image;
-  
-  
+
+
   std::string filename = testPath + "samples/cat10.vol";
   Image image = VolReader<Image>::importVol( filename );
-  
+
   trace.info() << image <<endl;
-  
+
   unsigned int nbval=0;
   for(Image::ConstIterator it=image.begin(), itend=image.end();
       it != itend;   ++it)
     if ( (*it) != 0)
       nbval++;
-  
+
   trace.info() << "Number of points with (val!=0)  = "<<nbval<<endl;
 
-  nbok += ( nbval == 8043)  ? 1 : 0; 
+  nbok += ( nbval == 8043)  ? 1 : 0;
   nb++;
 
   VolWriter<Image>::exportVol("catenoid-export.vol",image);
 
-  nbok += ( true )  ? 1 : 0; 
+  nbok += ( true )  ? 1 : 0;
   nb++;
 
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
@@ -105,16 +105,16 @@ bool testIOException()
 {
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
+
   trace.beginBlock ( "Testing VolReader ..." );
 
   typedef SpaceND<3> Space4Type;
   typedef HyperRectDomain<Space4Type> TDomain;
-  
+
   //Default image selector = STLVector
   typedef ImageSelector<TDomain, unsigned char>::Type Image;
-  
-  
+
+
   std::string filename = testPath + "samples/null.vol";
   try
     {
@@ -122,18 +122,18 @@ bool testIOException()
     }
   catch(exception& e)
     {
-      trace.info() << "Exception catched. Message : "<< e.what()<<endl;
+      trace.info() << "Exception caught. Message : "<< e.what()<<endl;
     }
-  
-  
- 
-  nbok += ( true )  ? 1 : 0; 
+
+
+
+  nbok += ( true )  ? 1 : 0;
   nb++;
 
   trace.info() << "(" << nbok << "/" << nb << ") "
          << "true == true" << std::endl;
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
@@ -144,7 +144,7 @@ bool testConsistence()
   typedef SpaceND<3> Space4Type;
   typedef HyperRectDomain<Space4Type> TDomain;
   typedef TDomain::Point Point;
-  
+
   //Default image selector = STLVector
   typedef ImageSelector<TDomain, unsigned char>::Type Image;
   TDomain domain(Point(-17,-14,-13), Point(5,7,11));
@@ -152,17 +152,17 @@ bool testConsistence()
   trace.info() << image.domain() <<endl;
 
   VolWriter<Image>::exportVol("testConsistence.vol",image);
-  
+
   trace.endBlock();
 
   trace.beginBlock ( "Testing VolReader ..." );
 
   Image image2 = VolReader<Image>::importVol( "testConsistence.vol" );
-  
+
   trace.info() << image2.domain() <<endl;
   trace.endBlock();
 
-  if( image.domain().lowerBound() != image2.domain().lowerBound() 
+  if( image.domain().lowerBound() != image2.domain().lowerBound()
     || image.domain().upperBound() != image2.domain().upperBound() )
   {
     return false;
@@ -177,7 +177,7 @@ int main( int argc, char** argv )
 {
   int aaaaa = 21/2;
   std::cout << aaaaa << std::endl;
-  
+
   trace.beginBlock ( "Testing class VolReader" );
   trace.info() << "Args:";
   for ( int i = 0; i < argc; ++i )

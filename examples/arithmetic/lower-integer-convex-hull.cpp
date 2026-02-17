@@ -28,7 +28,7 @@ Number of boundary points = 55
 $ let x=130; while test $x -ge -130; do echo "--- $x ---"; ./examples/arithmetic/lower-integer-convex-hull -5 8 $x; let z=x+130; y=`printf "%03d" $z`; convert -resize 300x300 -background white -layers flatten lower-integer-convex-hull-cut.eps lower-integer-convex-hull-$y.gif; let x=x-2; done
 ...
 $ convert -delay 20 -loop 0 lower-integer-convex-hull-*.gif lower-animation.gif
-$ animate lower-animation.gif 
+$ animate lower-animation.gif
 @endverbatim
 
 @image html lower-integer-convex-hull-cut-2.png "Square of side 20 cut by the half-plane -5x+8y <= 41"
@@ -85,8 +85,8 @@ int main( int argc, char** argv )
   cip.push_front( Point( 10, -10 ) );
   Domain domain = cip.boundingBoxDomain();
   Board2D board;
-  board << domain 
-        << CustomStyle( cip.className(), 
+  board << domain
+        << CustomStyle( cip.className(),
                         new CustomColors( Color::Red, Color::None ) )
         << cip;
   board.saveEPS( "lower-integer-convex-hull.eps" );
@@ -103,12 +103,12 @@ int main( int argc, char** argv )
   cip.cut( hs );
   DigitalSet aSet( domain );
   Shapes<Domain>::makeSetFromPointPredicate( aSet, hs );
-  board << domain 
-        << CustomStyle( aSet.className(), 
+  board << domain
+        << CustomStyle( aSet.className(),
                         new CustomColors( Color::Green, Color::Green ) )
         << SetMode( Point().className(), "Grid" )
         << aSet
-        << CustomStyle( cip.className(), 
+        << CustomStyle( cip.className(),
                         new CustomColors( Color::Red, Color::None ) )
         << cip;
   board.saveEPS( "lower-integer-convex-hull-cut.eps" );
@@ -122,4 +122,3 @@ int main( int argc, char** argv )
   //! [lower-integer-convex-hull-stats]
   return 0;
 }
-

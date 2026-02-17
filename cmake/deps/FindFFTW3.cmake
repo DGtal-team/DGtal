@@ -1,7 +1,7 @@
-# Try to find the FFTW3 librairies
+# Try to find the FFTW3 libraries
 #  FFTW3_FOUND        - True if FFTW3 is found for at least one precision.
 #  FFTW3_FLOAT_FOUND  - True if FFTW3 is found for float precision.
-#  FFTW3_DOUBLE_FOUND - True if FFTW3 is found for double precicion.
+#  FFTW3_DOUBLE_FOUND - True if FFTW3 is found for double precision.
 #  FFTW3_LONG_FOUND   - True if FFTW3 is found for long double precision.
 #  FFTW3_INCLUDE_DIR  - The FFTW3 include directory.
 #  FFTW3_LIBRARIES    - FFTW3 libraries.

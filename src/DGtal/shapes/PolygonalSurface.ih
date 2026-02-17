@@ -66,7 +66,7 @@ DGtal::PolygonalSurface<TPoint>::build()
                     << " s1=" << myPositions.size()
                     << " s2=" << myHEDS.nbVertices() << std::endl;
     isHEDSValid = false;
-  } 
+  }
   return isHEDSValid;
 }
 
@@ -80,7 +80,7 @@ DGtal::PolygonalSurface<TPoint>::clear()
   myHEDS.clear();
   myPositions.clear();
   myPolygonalFaces.clear();
-  
+
 }
 //-----------------------------------------------------------------------------
 template <typename TPoint>
@@ -170,12 +170,12 @@ DGtal::PolygonalSurface<TPoint>::degree( const Vertex & v ) const
   ASSERT( isValid() );
   return myHEDS.nbNeighboringVertices( v );
 }
-    
+
 //-----------------------------------------------------------------------------
 template <typename TPoint>
 template <typename OutputIterator>
 inline
-void  
+void
 DGtal::PolygonalSurface<TPoint>::writeNeighbors
 ( OutputIterator &it, const Vertex & v ) const
 {
@@ -185,12 +185,12 @@ DGtal::PolygonalSurface<TPoint>::writeNeighbors
   myHEDS.getNeighboringVertices( v, neighbors );
   for ( Vertex nv : neighbors ) *it++ = nv;
 }
-    
+
 //-----------------------------------------------------------------------------
 template <typename TPoint>
 template <typename OutputIterator, typename VertexPredicate>
 inline
-void  
+void
 DGtal::PolygonalSurface<TPoint>::writeNeighbors
 ( OutputIterator &it, const Vertex & v, const VertexPredicate & pred) const
 {
@@ -326,7 +326,7 @@ DGtal::PolygonalSurface<TPoint>::facesAroundArc( const Arc & a ) const
 //-----------------------------------------------------------------------------
 template <typename TPoint>
 inline
-typename DGtal::PolygonalSurface<TPoint>::VertexRange 
+typename DGtal::PolygonalSurface<TPoint>::VertexRange
 DGtal::PolygonalSurface<TPoint>::verticesAroundFace( const Face & f ) const
 {
   VertexRange result;
@@ -346,7 +346,7 @@ DGtal::PolygonalSurface<TPoint>::verticesAroundFace( const Face & f ) const
 //-----------------------------------------------------------------------------
 template <typename TPoint>
 inline
-typename DGtal::PolygonalSurface<TPoint>::ArcRange 
+typename DGtal::PolygonalSurface<TPoint>::ArcRange
 DGtal::PolygonalSurface<TPoint>::arcsAroundFace( const Face & f ) const
 {
   ArcRange result;
@@ -471,7 +471,7 @@ DGtal::PolygonalSurface<TPoint>::isValid() const
 template <typename TPoint>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
                     const PolygonalSurface<TPoint> & object )
 {
   object.selfDisplay( out );
@@ -480,5 +480,3 @@ DGtal::operator<< ( std::ostream & out,
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

@@ -25,7 +25,7 @@
  *
  * This file is part of the DGtal library.
  */
- 
+
  ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
 #include "DGtal/base/Common.h"
@@ -57,9 +57,9 @@ void testBreadthFirstPropagation()
   typedef Z2i::Domain Domain;
   typedef Z2i::DigitalSet DigitalSet;
   typedef Z2i::Object4_8 Object;
-  
+
   BOOST_CONCEPT_ASSERT(( CUndirectedSimpleGraph<Z2i::Object4_8> ));
-  
+
   Point p1( -41, -36 );
   Point p2( 18, 18 );
   Domain domain( p1, p2 );
@@ -69,7 +69,7 @@ void testBreadthFirstPropagation()
   Point c4( -10, -20 );
   Point c5( 12, -1 );
   DigitalSet shape_set( domain );
-  
+
   Shapes<Domain>::addNorm2Ball( shape_set, c1, 9 );
   Shapes<Domain>::addNorm1Ball( shape_set, c2, 9 );
   Shapes<Domain>::addNorm1Ball( shape_set, c3, 10 );
@@ -77,33 +77,33 @@ void testBreadthFirstPropagation()
   Shapes<Domain>::addNorm1Ball( shape_set, c5, 4 );
 
   Object obj(Z2i::dt4_8, shape_set);
-  
-  
+
+
   GradientColorMap<int> cmap_grad( 0, 52);
   cmap_grad.addColor( Color( 0, 0, 255 ) );
   cmap_grad.addColor( Color( 0, 255, 0 ) );
   cmap_grad.addColor( Color( 255, 0, 0 ) );
-  
+
   Board2D board;
   board << SetMode( domain.className(), "Paving" )
         << domain
         << SetMode( p1.className(), "Paving" );
-  
+
   Image image = ImageFromSet<Image>::create(shape_set, 1);
-  
+
   typedef BreadthFirstVisitor<Object, set<Point> > Visitor;
   BOOST_CONCEPT_ASSERT(( CGraphVisitor< Visitor > ));
   Visitor bfv (obj, c1);
-  
-  
+
+
   while( !bfv.finished() )
   {
     image.setValue(bfv.current().first, bfv.current().second);
     bfv.expand();
   }
-  
+
   string specificStyle = p1.className() + "/Paving";
-  
+
   for ( DigitalSet::ConstIterator it = shape_set.begin();
         it != shape_set.end();
         ++it )
@@ -133,7 +133,7 @@ void testBreadthFirstPropagation()
             }
         }
     }
-  
+
   board.saveEPS("testBreadthFirstPropagation.eps");
 }
 
@@ -142,7 +142,3 @@ int main( int /*argc*/, char** /*argv*/ )
   testBreadthFirstPropagation();
   return 0;
 }
-
-
-
-

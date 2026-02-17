@@ -60,7 +60,7 @@ associated MTL file.
 </td></tr>
 </table>
 
-@note Interpolated corected curvature measures can provide consistent results even on on bad sampling of smooth surfaces. A well known example is the Schwarz lantern. You may try the following line:
+@note Interpolated corrected curvature measures can provide consistent results even on on bad sampling of smooth surfaces. A well known example is the Schwarz lantern. You may try the following line:
 
 \verbatim
 ./examples/geometry/meshes/curvature-measures-icnc-3d lantern 20 20 0.5

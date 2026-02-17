@@ -100,25 +100,25 @@ struct PGMReader
   public:
 
     typedef TImageContainer ImageContainer;
-    typedef typename TImageContainer::Value Value;    
+    typedef typename TImageContainer::Value Value;
     typedef typename TImageContainer::Domain::Vector Vector;
 
     typedef TFunctor Functor;
-    
+
     enum MagicNumber {P1,P2,P3,P4,P5,P6};
 
-    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, unsigned char, Value > )) ;    
+    BOOST_CONCEPT_ASSERT((  concepts::CUnaryFunctor<TFunctor, unsigned char, Value > )) ;
 
-    
 
-    BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2) || 
+
+    BOOST_STATIC_ASSERT( (ImageContainer::Domain::dimension == 2) ||
                          (ImageContainer::Domain::dimension == 3));
 
-    /** 
-     * Main method to import a Pgm (8bits) into an instance of the 
+    /**
+     * Main method to import a Pgm (8bits) into an instance of the
      * template parameter ImageContainer.
-     * 
-     * @param aFilename the file name to import.  
+     *
+     * @param aFilename the file name to import.
      * @param aFunctor the functor used to import and cast the source
      * image values into the type of the image container value (by
      * default set to functors::Cast < TImageContainer::Value > .
@@ -129,17 +129,17 @@ struct PGMReader
      * coordinate will be the top left of the image (not usual).
      * @return an instance of the ImageContainer.
      */
-    static  ImageContainer importPGM(const std::string & aFilename, 
-                                     const Functor & aFunctor =  Functor(), 
+    static  ImageContainer importPGM(const std::string & aFilename,
+                                     const Functor & aFunctor =  Functor(),
 				     bool topbotomOrder = true);
 
 
-   
 
-    /** 
-     * Main method to import a Pgm3D (8bits) into an instance of the 
+
+    /**
+     * Main method to import a Pgm3D (8bits) into an instance of the
      * template parameter ImageContainer.
-     * 
+     *
      * @param aFilename the file name to import.
      * @param aFunctor the functor used to import and cast the source
      * image values into the type of the image container value (by
@@ -149,9 +149,9 @@ struct PGMReader
      */
     static ImageContainer importPGM3D(const std::string & aFilename,
 				      const Functor & aFunctor =  Functor());
-    
-    
-    
+
+
+
  }; // end of class  PGMReader
 
 

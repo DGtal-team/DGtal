@@ -602,7 +602,7 @@ getFirstPointsOfHull
   // initialize vector directionVector (not definitive)
   _DV = hs1.tangent();
 
-  //compute the intersection of ray (inPt, _DV) with constraint C2
+  //compute the intersection of ray (input, _DV) with constraint C2
   _ic.getCoefficientIntersection( _fl, _ce,
                                   inPt, _DV, hs2.N, hs2.c );
 
@@ -612,7 +612,7 @@ getFirstPointsOfHull
   _ic.getDotProduct( _a, inPt, hs2.N );
   // if ( ( _a > hs2.c ) && ( _fl == NumberTraits<Integer>::ZERO ) )
   //   {
-  //     inPt += _DV * _ce;
+  //     input += _DV * _ce;
   //     _DV.neg();
   //   }
   // else if ( ( ( _a <= hs2.c ) && ( _fl >= NumberTraits<Integer>::ZERO ) )

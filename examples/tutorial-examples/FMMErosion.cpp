@@ -69,63 +69,63 @@ int main( int argc, char** argv )
     trace.info() << " " << argv[ i ];
   trace.info() << endl;
 
-  DGtal::trace.beginBlock("image reading..."); 
+  DGtal::trace.beginBlock("image reading...");
 
   //! [FMMErosionImageReading]
-  string imageFileName = examplesPath + "samples/cat10.vol"; 
-  trace.info() << imageFileName <<std::endl; 
-  typedef ImageContainerBySTLVector<Domain, bool> BinaryImage; 
+  string imageFileName = examplesPath + "samples/cat10.vol";
+  trace.info() << imageFileName <<std::endl;
+  typedef ImageContainerBySTLVector<Domain, bool> BinaryImage;
   BinaryImage binaryImage = VolReader<BinaryImage>::importVol( imageFileName);
   //! [FMMErosionImageReading]
 
-  DGtal::trace.endBlock(); 
+  DGtal::trace.endBlock();
 
-  DGtal::trace.beginBlock("Search for a bel..."); 
+  DGtal::trace.beginBlock("Search for a bel...");
 
   //space and starting bel
   //! [FMMErosionStartingBel]
   KSpace ks;
-  Domain domain = binaryImage.domain(); 
-  ks.init( domain.lowerBound(), domain.upperBound(), true ); 
+  Domain domain = binaryImage.domain();
+  ks.init( domain.lowerBound(), domain.upperBound(), true );
   KSpace::SCell bel;
 
-  try { 
+  try {
     //getting a bel
     bel = Surfaces<KSpace>::findABel( ks, binaryImage, (unsigned int)domain.size() );
     trace.info() << "starting bel: " << bel << std::endl;
- 
+
   } catch (DGtal::InputException& i) {
-    trace.emphase() << "starting bel not found" << std::endl; 
-    return 0; 
+    trace.emphase() << "starting bel not found" << std::endl;
+    return 0;
   }
   //! [FMMErosionStartingBel]
 
-  DGtal::trace.endBlock(); 
+  DGtal::trace.endBlock();
 
-  DGtal::trace.beginBlock("Implicit frontier..."); 
+  DGtal::trace.beginBlock("Implicit frontier...");
 
-  //implicit frontier 
+  //implicit frontier
   //! [FMMErosionTracking]
   typedef functors::FrontierPredicate<KSpace, BinaryImage> SurfelPredicate;
   typedef LightExplicitDigitalSurface<KSpace, SurfelPredicate> Frontier;
   functors::SCellToIncidentPoints<KSpace> toIncidentPoints( ks );
-  std::pair<Point,Point> bpair = toIncidentPoints( bel );    
-  SurfelPredicate surfelPredicate( ks, binaryImage, 
-				   binaryImage( bpair.first ), 
-				   binaryImage( bpair.second ) );  
-  Frontier frontier( ks, surfelPredicate, 
-		     SurfelAdjacency<KSpace::dimension>( true ), bel ); 
+  std::pair<Point,Point> bpair = toIncidentPoints( bel );
+  SurfelPredicate surfelPredicate( ks, binaryImage,
+				   binaryImage( bpair.first ),
+				   binaryImage( bpair.second ) );
+  Frontier frontier( ks, surfelPredicate,
+		     SurfelAdjacency<KSpace::dimension>( true ), bel );
   //! [FMMErosionTracking]
 
   DGtal::trace.endBlock();
 
-  const double maximalDistance = 3.0; 
+  const double maximalDistance = 3.0;
 
-  DGtal::trace.beginBlock("FMM..."); 
+  DGtal::trace.beginBlock("FMM...");
 
   //! [FMMErosionFMMTypes]
-  typedef ImageContainerBySTLMap<Domain,double> DistanceImage; 
-  typedef DigitalSetFromMap<DistanceImage> AcceptedPointSet; 
+  typedef ImageContainerBySTLMap<Domain,double> DistanceImage;
+  typedef DigitalSetFromMap<DistanceImage> AcceptedPointSet;
   typedef FMM<DistanceImage, AcceptedPointSet, BinaryImage > FMM;
   //! [FMMErosionFMMTypes]
 
@@ -133,45 +133,45 @@ int main( int argc, char** argv )
   DistanceImage imageDistance( domain, 0.0 );
   AcceptedPointSet pointSet( imageDistance );
   functors::SCellToInnerPoint<KSpace> toInnerPoint( ks );
-  for (Frontier::SurfelConstIterator it = frontier.begin(), itEnd = frontier.end(); 
-       it != itEnd; ++it) 
+  for (Frontier::SurfelConstIterator it = frontier.begin(), itEnd = frontier.end();
+       it != itEnd; ++it)
     {
-      pointSet.insert( toInnerPoint(*it) ); 
-      imageDistance.setValue( toInnerPoint(*it), 0.5 ); 
+      pointSet.insert( toInnerPoint(*it) );
+      imageDistance.setValue( toInnerPoint(*it), 0.5 );
     }
   //! [FMMErosionFMMInit]
 
   //! [FMMErosionFMM]
   FMM fmm( imageDistance, pointSet, binaryImage,
 	   domain.size(), maximalDistance );
-  fmm.compute(); 
-  trace.info() << fmm << std::endl;  
+  fmm.compute();
+  trace.info() << fmm << std::endl;
   //! [FMMErosionFMM]
 
   DGtal::trace.endBlock();
 
-  DGtal::trace.beginBlock("Erosion"); 
+  DGtal::trace.beginBlock("Erosion");
   trace.info() << "Erosion of radius: " << maximalDistance << std::endl;
 
   //! [FMMErosionErosion]
-  for (AcceptedPointSet::ConstIterator it = pointSet.begin(), itEnd = pointSet.end(); 
-       it != itEnd; ++it) 
+  for (AcceptedPointSet::ConstIterator it = pointSet.begin(), itEnd = pointSet.end();
+       it != itEnd; ++it)
     {
-      binaryImage.setValue(*it, 0); 
+      binaryImage.setValue(*it, 0);
     }
   //! [FMMErosionErosion]
 
   DGtal::trace.endBlock();
 
-  DGtal::trace.beginBlock("image writing..."); 
+  DGtal::trace.beginBlock("image writing...");
 
   //! [FMMErosionImageWriting]
-  string outputFileName = "eroded.vol"; 
-  trace.info() << "to " << outputFileName << std::endl; 
+  string outputFileName = "eroded.vol";
+  trace.info() << "to " << outputFileName << std::endl;
   VolWriter<BinaryImage,functors::Cast<unsigned char> >::exportVol(outputFileName, binaryImage);
   //! [FMMErosionImageWriting]
 
-  DGtal::trace.endBlock(); 
+  DGtal::trace.endBlock();
 
 
   trace.endBlock();

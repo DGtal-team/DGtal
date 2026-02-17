@@ -76,17 +76,17 @@ DGtal::ExactPredicateLpPowerSeparableMetric<T,p,P>::powerDistance (const Point &
 template <typename T, DGtal::uint32_t p,  typename P>
 inline
 DGtal::Closest
-DGtal::ExactPredicateLpPowerSeparableMetric<T,p,P>::closestPower (const Point &origin, 
-								  const Point &first,  
+DGtal::ExactPredicateLpPowerSeparableMetric<T,p,P>::closestPower (const Point &origin,
+								  const Point &first,
 								  const Weight &wf,
 								  const Point &second,
 								  const Weight &ws) const
 {
   Promoted a,b;
-      
+
   a = exactDistanceRepresentation(origin, first) - wf;
   b = exactDistanceRepresentation(origin, second) - ws;
-  
+
   if (a<b)
     return ClosestFIRST;
   else
@@ -98,18 +98,18 @@ DGtal::ExactPredicateLpPowerSeparableMetric<T,p,P>::closestPower (const Point &o
 //------------------------------------------------------------------------------
 template <typename T, DGtal::uint32_t p,  typename P>
 inline
-typename DGtal::ExactPredicateLpPowerSeparableMetric<T,p,P>::Abscissa 
-DGtal::ExactPredicateLpPowerSeparableMetric<T,p,P>::binarySearchHidden(const Abscissa &udim, 
+typename DGtal::ExactPredicateLpPowerSeparableMetric<T,p,P>::Abscissa
+DGtal::ExactPredicateLpPowerSeparableMetric<T,p,P>::binarySearchHidden(const Abscissa &udim,
 								       const Abscissa &vdim,
 								       const Promoted &nu,
 								       const Promoted &nv,
 								       const Abscissa &lower,
 								       const Abscissa &upper) const
-{   
+{
   ASSERT(  (nu +  functions::power( static_cast<Promoted>(abs( udim - lower)),  p)) <
            (nv +  functions::power( static_cast<Promoted>(abs( vdim - lower)), p)));
-  
-  //Recurrence stop 
+
+  //Recurrence stop
   if ( (upper - lower) <= NumberTraits<Abscissa>::ONE)
     {
       //testing upper
@@ -120,11 +120,11 @@ DGtal::ExactPredicateLpPowerSeparableMetric<T,p,P>::binarySearchHidden(const Abs
       else
         return lower;
     }
-  
+
   Abscissa mid = (lower + upper)/2;
   Promoted nuUpdated = nu +  functions::power( static_cast<Promoted>(abs( udim - mid )), p);
   Promoted nvUpdated = nv +  functions::power( static_cast<Promoted>(abs( vdim - mid )), p);
-      
+
   //Recursive call
   if ( nuUpdated < nvUpdated)
     return binarySearchHidden(udim,vdim,nu,nv,mid,upper);
@@ -134,12 +134,12 @@ DGtal::ExactPredicateLpPowerSeparableMetric<T,p,P>::binarySearchHidden(const Abs
 //------------------------------------------------------------------------------
 template <typename T, DGtal::uint32_t p ,  typename P>
 inline
-bool 
-DGtal::ExactPredicateLpPowerSeparableMetric<T,p,P>::hiddenByPower(const Point &u, 
+bool
+DGtal::ExactPredicateLpPowerSeparableMetric<T,p,P>::hiddenByPower(const Point &u,
 								  const Weight &wu,
 								  const Point &v,
 								  const Weight &wv,
-								  const Point &w, 
+								  const Point &w,
 								  const Weight &ww,
 								  const Point &startingPoint,
 								  const Point &endPoint,
@@ -148,7 +148,7 @@ DGtal::ExactPredicateLpPowerSeparableMetric<T,p,P>::hiddenByPower(const Point &u
   //Interval bound for the binary search
   Abscissa lower = startingPoint[dim];
   Abscissa upper = endPoint[dim];
-      
+
   //Partial norm computation
   // (sum_{i!=dim}  |u_i-v_i|^p
   Promoted nu = -wu;
@@ -161,11 +161,11 @@ DGtal::ExactPredicateLpPowerSeparableMetric<T,p,P>::hiddenByPower(const Point &u
         nv += functions::power ( static_cast<Promoted>(abs(v[i] - startingPoint[i] )) , p);
         nw += functions::power ( static_cast<Promoted>(abs(w[i] - startingPoint[i] )) , p);
       }
- 
+
   //Abscissa of voronoi edges
   Abscissa uv,vw;
   Promoted dv,dw,du,ddv,ddw;
-   
+
   //checking distances to lower bound
   du = nu + functions::power( static_cast<Promoted>(abs( u[dim] - lower)), p);
   dv = nv + functions::power( static_cast<Promoted>(abs( v[dim] - lower)), p);
@@ -182,14 +182,14 @@ DGtal::ExactPredicateLpPowerSeparableMetric<T,p,P>::hiddenByPower(const Point &u
         }
 
       if (dw > dv)
-        return true; 
+        return true;
       else
         {
-          //check if uv + 1 is stricly in W
-       
+          //check if uv + 1 is strictly in W
+
           //first, optimisation
           if (uv == upper) return true;
-          
+
           //distances at uv+1
           ddv = nv + functions::power( static_cast<Promoted>(abs( v[dim] - uv -1)), p);
           ddw = nw + functions::power( static_cast<Promoted>(abs( w[dim] - uv -1)), p);
@@ -227,7 +227,7 @@ DGtal::ExactPredicateLpPowerSeparableMetric<T,p,P>::isValid() const
 template <typename T, DGtal::uint32_t p,  typename P>
 inline
 std::ostream&
-DGtal::operator<< ( std::ostream & out, 
+DGtal::operator<< ( std::ostream & out,
                     const ExactPredicateLpPowerSeparableMetric<T,p,P> & object )
 {
   object.selfDisplay( out );
@@ -279,15 +279,15 @@ DGtal::ExactPredicateLpPowerSeparableMetric<T,2,P>::powerDistance (const Point &
 template <typename T,  typename P>
 inline
 DGtal::Closest
-DGtal::ExactPredicateLpPowerSeparableMetric<T,2,P>::closestPower (const Point &origin, 
-								  const Point &first, 
+DGtal::ExactPredicateLpPowerSeparableMetric<T,2,P>::closestPower (const Point &origin,
+								  const Point &first,
 								  const Weight &wF,
 								  const Point &second,
 								  const Weight &wS) const
 {
   Promoted a=NumberTraits<Promoted>::ZERO,
     b=NumberTraits<Promoted>::ZERO;
-      
+
   a = exactDistanceRepresentation(origin,first)  - wF;
   b = exactDistanceRepresentation(origin,second) - wS;
 
@@ -302,12 +302,12 @@ DGtal::ExactPredicateLpPowerSeparableMetric<T,2,P>::closestPower (const Point &o
 //------------------------------------------------------------------------------
 template <typename T,   typename P>
 inline
-bool 
-DGtal::ExactPredicateLpPowerSeparableMetric<T,2,P>::hiddenByPower(const Point &u, 
+bool
+DGtal::ExactPredicateLpPowerSeparableMetric<T,2,P>::hiddenByPower(const Point &u,
 								  const Weight &wu,
 								  const Point &v,
 								  const Weight &wv,
-								  const Point &w, 
+								  const Point &w,
 								  const Weight &ww,
 								  const Point &startingPoint,
 								  const Point &/*endPoint*/,
@@ -317,8 +317,8 @@ DGtal::ExactPredicateLpPowerSeparableMetric<T,2,P>::hiddenByPower(const Point &u
 
   a = v[dim] - u[dim];
   b = w[dim] - v[dim];
-  c = a + b;  
-  
+  c = a + b;
+
   Promoted d2_v= -wv,
     d2_u= -wu,
     d2_w= -ww;
@@ -330,8 +330,8 @@ DGtal::ExactPredicateLpPowerSeparableMetric<T,2,P>::hiddenByPower(const Point &u
         d2_v += static_cast<Promoted>(v[i] - startingPoint[i] ) *static_cast<Promoted>(v[i] - startingPoint[i] );
         d2_w += static_cast<Promoted>(w[i] - startingPoint[i] ) *static_cast<Promoted>(w[i] - startingPoint[i] );
       }
- 
-  return (c * d2_v -  b*d2_u - a*d2_w - a*b*c) > 0 ;       
+
+  return (c * d2_v -  b*d2_u - a*d2_w - a*b*c) > 0 ;
 }
 //------------------------------------------------------------------------------
 template <typename T,   typename P>

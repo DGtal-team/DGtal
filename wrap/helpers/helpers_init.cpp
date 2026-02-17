@@ -19,7 +19,7 @@
  *
  * @date 2025/05/11
  *
- * Initializer code for helpers python binding submodule 
+ * Initializer code for helpers python binding submodule
  *
  * This file is part of the DGtal library.
  */

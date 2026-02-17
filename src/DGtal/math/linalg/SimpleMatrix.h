@@ -217,7 +217,7 @@ namespace DGtal
      * @param i2 any row
      */
     void swapRows( const DGtal::Dimension i1, const DGtal::Dimension i2 );
-    
+
     // ----------------------- SimpleMatrix computations ------------------------------
 
 
@@ -261,18 +261,18 @@ namespace DGtal
 
 
     /**
-     * Substract between the matrix 'this' and @a aMatrix.
+     * Subtract between the matrix 'this' and @a aMatrix.
      *
-     * @param aMatrix the matrix to substract to self.
+     * @param aMatrix the matrix to subtract to self.
      *
      * @return the difference matrix
      */
     Self  operator-(const Self & aMatrix) const;
 
     /**
-     * Substract and assignment between the matrix 'this' and @a aMatrix.
+     * Subtract and assignment between the matrix 'this' and @a aMatrix.
      *
-     * @param aMatrix the matrix to substract to self.
+     * @param aMatrix the matrix to subtract to self.
      *
      * @return a reference to the result
      */
@@ -419,11 +419,11 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
 
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     ///Matrix values containers.
@@ -432,7 +432,7 @@ namespace DGtal
     ///Static computation of cofactor coefficients
     /// @todo should be static
     std::array< Component, M*N>  myCofactorCoefs;
-    
+
     // ------------------------- Hidden services ------------------------------
   protected:
 
@@ -459,7 +459,7 @@ namespace DGtal
   template <typename TComponent, DGtal::Dimension TM, DGtal::Dimension TN>
   SimpleMatrix<TComponent, TM, TN>
   operator* ( const TComponent& scalar, const SimpleMatrix<TComponent, TM, TN>& matrix);
-  
+
 } // namespace DGtal
 
 

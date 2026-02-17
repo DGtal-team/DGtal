@@ -29,7 +29,7 @@
 
 /**
  * Shared implementation between KhalimskyPreCell and SignedKhalimskyPreCell.
- * They differ in contructors and extra sign member in SignedKhalimskyPreCell.
+ * They differ in constructors and extra sign member in SignedKhalimskyPreCell.
  *
  * @return the respective py:class_ of the type.
  */
@@ -131,7 +131,7 @@ point: dgtal.Point
             throw py::type_error("Format mismatch (Python: " + info.format + " C++: " + py::format_descriptor<TTInteger>::format() + ")");
 
         if(info.shape[0] != TTPoint::dimension)
-            throw py::type_error("Shape missmatch (Python: " + std::to_string(info.shape[0]) + " C++: " + std::to_string(TTPoint::dimension) + ")");
+            throw py::type_error("Shape mismatch (Python: " + std::to_string(info.shape[0]) + " C++: " + std::to_string(TTPoint::dimension) + ")");
 
         TTInteger *p = static_cast<TTInteger*>(info.ptr);
         return TT(TTPoint(p));
@@ -255,7 +255,7 @@ Example of usage:
 
     import dgtal
     KPreSpace = dgtal.topology.KPreSpace3D
-    space = KPreSpace() # instantiation not required, but allowd (all methods are static)
+    space = KPreSpace() # instantiation not required, but allowed (all methods are static)
     space = KPreSpace
     a_point = space.TPoint(10,10,10)
     space.uCell(kpoint=a_point)
@@ -801,7 +801,7 @@ dim: Int
 
 Return
 ------
-    Cell with coordinate [dim] incremeneted.
+    Cell with coordinate [dim] incremented.
 )", py::arg("cell"), py::arg("dim"));
 
     py_class.def_static("uIsMax", &TT::uIsMax,
@@ -859,7 +859,7 @@ dim: Int
 
 Return
 ------
-    Cell with coordinate [dim] decremeneted.
+    Cell with coordinate [dim] decremented.
 )", py::arg("cell"), py::arg("dim"));
 
     py_class.def_static("uIsMin", &TT::uIsMin,
@@ -895,7 +895,7 @@ Return
 )", py::arg("cell"), py::arg("dim"), py::arg("x"));
 
     py_class.def_static("uGetSub", &TT::uGetSub,
-R"(Return the same element as [cell] except for the coordinate [dim] decremeneted by x.
+R"(Return the same element as [cell] except for the coordinate [dim] decremented by x.
 
 Parameters
 ----------
@@ -908,7 +908,7 @@ x: Int
 
 Return
 ------
-    Cell with coordinate [dim] decremeneted with x
+    Cell with coordinate [dim] decremented with x
 )", py::arg("cell"), py::arg("dim"), py::arg("x"));
 
     py_class.def_static("uTranslation", &TT::uTranslation,
@@ -984,7 +984,7 @@ upper: Cell
 
 Return
 ------
-    True if [cell] is still withing the bounds, false if the scanning is finished.
+    True if [cell] is still within the bounds, false if the scanning is finished.
 
 )", py::arg("cell"), py::arg("lower"), py::arg("upper"));
 
@@ -1002,7 +1002,7 @@ dim: Int
 
 Return
 ------
-    SCell with coordinate [dim] incremeneted.
+    SCell with coordinate [dim] incremented.
 )", py::arg("cell"), py::arg("dim"));
 
     py_class.def_static("sIsMax", &TT::sIsMax,
@@ -1062,7 +1062,7 @@ dim: Int
 
 Return
 ------
-    SCell with coordinate [dim] decremeneted.
+    SCell with coordinate [dim] decremented.
 )", py::arg("cell"), py::arg("dim"));
 
     py_class.def_static("sIsMin", &TT::sIsMin,
@@ -1098,7 +1098,7 @@ Return
 )", py::arg("cell"), py::arg("dim"), py::arg("x"));
 
     py_class.def_static("sGetSub", &TT::sGetSub,
-R"(Return the same element as [cell] except for the coordinate [dim] decremeneted by x.
+R"(Return the same element as [cell] except for the coordinate [dim] decremented by x.
 
 Parameters
 ----------
@@ -1111,7 +1111,7 @@ x: Int
 
 Return
 ------
-    SCell with coordinate [dim] decremeneted with x
+    SCell with coordinate [dim] decremented with x
 )", py::arg("cell"), py::arg("dim"), py::arg("x"));
 
     py_class.def_static("sTranslation", &TT::sTranslation,
@@ -1187,7 +1187,7 @@ upper: SCell
 
 Return
 ------
-    True if [cell] is still withing the bounds, false if the scanning is finished.
+    True if [cell] is still within the bounds, false if the scanning is finished.
 
 )", py::arg("cell"), py::arg("lower"), py::arg("upper"));
 

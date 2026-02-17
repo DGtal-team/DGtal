@@ -222,7 +222,7 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelize(DigitalSet &outputSet,
   DigitalSet rawEmpty{outputSet.domain()};
   typedef typename Mesh<MeshPoint>::Index Index;
   typedef std::vector<Index> MeshFace;
-  
+
 #ifdef DGTAL_WITH_OPENMP
 #pragma omp parallel for schedule(dynamic)
 #endif

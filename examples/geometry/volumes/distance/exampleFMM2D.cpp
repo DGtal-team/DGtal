@@ -21,7 +21,7 @@
  * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
  * @date 2012/02/23
  *
- * @brief Computation of a distance field from a given point  
+ * @brief Computation of a distance field from a given point
  *
  * This file is part of the DGtal library.
  */
@@ -86,40 +86,40 @@ using namespace DGtal;
  * @tparam TImage a model of CImage
  */
 template< typename TImage >
-void draw( const TImage aImg, const double& aMaxValue, std::string aBasename) 
+void draw( const TImage aImg, const double& aMaxValue, std::string aBasename)
 {
-  typedef typename TImage::Domain::ConstIterator ConstIteratorOnPoints; 
-  typedef typename TImage::Domain::Point Point; 
+  typedef typename TImage::Domain::ConstIterator ConstIteratorOnPoints;
+  typedef typename TImage::Domain::Point Point;
   HueShadeColorMap<double, 2> colorMap(0,aMaxValue);
 
-  Board2D b; 
+  Board2D b;
   b.setUnit ( LibBoard::Board::UCentimeter );
- 
+
   for (ConstIteratorOnPoints it = aImg.domain().begin(), itEnd = aImg.domain().end();
        it != itEnd; ++it)
     {
-      Point p = *it; 
+      Point p = *it;
       b << CustomStyle( p.className(), new CustomFillColor( colorMap( aImg(p) ) ) );
       b << p;
     }
 
   {
-    std::stringstream s; 
-    s << aBasename << ".eps"; 
+    std::stringstream s;
+    s << aBasename << ".eps";
     b.saveEPS(s.str().c_str());
   }
   #ifdef DGTAL_WITH_CAIRO
   {
-    std::stringstream s; 
-    s << aBasename << ".png"; 
+    std::stringstream s;
+    s << aBasename << ".png";
     b.saveCairo(s.str().c_str(), Board2D::CairoPNG);
   }
   #endif
-} 
+}
 
 //////////////////////////////////////////////////////////////////////////////
 /**
- * @brief We use FMM to compute a distance field from a given point. 
+ * @brief We use FMM to compute a distance field from a given point.
  */
 void example()
 {
@@ -128,43 +128,43 @@ void example()
 
   //Typedefs
   //! [FMMSimpleTypeDef]
-  typedef ImageContainerBySTLMap<Z2i::Domain,double> DistanceImage; 
-  typedef DigitalSetFromMap<DistanceImage> AcceptedPointSet; 
+  typedef ImageContainerBySTLMap<Z2i::Domain,double> DistanceImage;
+  typedef DigitalSetFromMap<DistanceImage> AcceptedPointSet;
   typedef Z2i::Domain::Predicate DomainPredicate;
   typedef FMM<DistanceImage, AcceptedPointSet, DomainPredicate> FMM;
   //! [FMMSimpleTypeDef]
 
   //Constructions
-  int size = 25; 
+  int size = 25;
   //! [FMMSimpleExternalData]
-  Z2i::Domain domain(Z2i::Point::diagonal(-size), 
-		     Z2i::Point::diagonal(size) ); 
-  DistanceImage distanceImage( domain ); 
+  Z2i::Domain domain(Z2i::Point::diagonal(-size),
+		     Z2i::Point::diagonal(size) );
+  DistanceImage distanceImage( domain );
   AcceptedPointSet set( distanceImage );
   //! [FMMSimpleExternalData]
 
   //! [FMMSimpleInit]
-  Z2i::Point origin = Z2i::Point::diagonal(0); 
-  set.insert( origin ); 
-  distanceImage.setValue( origin, 0.0 ); 
+  Z2i::Point origin = Z2i::Point::diagonal(0);
+  set.insert( origin );
+  distanceImage.setValue( origin, 0.0 );
   //! [FMMSimpleInit]
 
   //! [FMMSimpleCtor]
-  FMM fmm( distanceImage, set, domain.predicate() ); 
+  FMM fmm( distanceImage, set, domain.predicate() );
   //! [FMMSimpleCtor]
 
   trace.info() << "Init: " << fmm << std::endl;
 
   //! [FMMSimpleComputation]
-  fmm.compute(); 
+  fmm.compute();
   //! [FMMSimpleComputation]
 
   trace.info() << "End: " << fmm << std::endl;
 
   //display - you should see concentric circles
-  //around the center point. 
-  std::stringstream s; 
-  s << "DTbyFMM-" << size; 
+  //around the center point.
+  std::stringstream s;
+  s << "DTbyFMM-" << size;
   draw(distanceImage, fmm.max(), s.str());
 
   trace.endBlock();
@@ -187,7 +187,7 @@ int main ( int argc, char** argv )
   trace.info() << endl;
 
   //computation
-  example(); 
+  example();
 
   trace.endBlock();
   return 1;

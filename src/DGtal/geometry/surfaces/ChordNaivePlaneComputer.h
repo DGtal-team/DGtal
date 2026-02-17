@@ -527,7 +527,7 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     Dimension z;               /**< the main axis used in all subsequent computations. */
     Dimension x,y;             /**< the two other axes used in all subsequent computations. */

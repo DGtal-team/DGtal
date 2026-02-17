@@ -50,20 +50,20 @@ DGtal::SternBrocot<TInteger, TQuotient>::singleton = 0;
 // ----------------------- Standard services ------------------------------
 
 ///////////////////////////////////////////////////////////////////////////////
-// DGtal::SternBrocot<TInteger, TQuotient>::Node 
+// DGtal::SternBrocot<TInteger, TQuotient>::Node
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TQuotient>
 inline
 DGtal::SternBrocot<TInteger, TQuotient>::Node::
-Node( Integer p1, Integer q1, Quotient u1, Quotient k1, 
-      Node* ascendant_left1, Node* ascendant_right1, 
+Node( Integer p1, Integer q1, Quotient u1, Quotient k1,
+      Node* ascendant_left1, Node* ascendant_right1,
       Node* descendant_left1, Node* descendant_right1,
       Node* inverse1 )
-  : p( p1 ), q( q1 ), u( u1 ), k( k1 ), 
+  : p( p1 ), q( q1 ), u( u1 ), k( k1 ),
     ascendantLeft( ascendant_left1 ),
-    ascendantRight( ascendant_right1 ), 
+    ascendantRight( ascendant_right1 ),
     descendantLeft( descendant_left1 ),
-    descendantRight( descendant_right1 ), 
+    descendantRight( descendant_right1 ),
     inverse( inverse1 )
 {
   // std::cerr << "(" << p1 << "/" << q1 << "," << u1 << "," << k1 << ")";
@@ -111,7 +111,7 @@ operator=( const Self & other )
 //-----------------------------------------------------------------------------
 template <typename TInteger, typename TQuotient>
 inline
-bool 
+bool
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
 null() const
 {
@@ -230,7 +230,7 @@ left() const
   if ( myNode->descendantLeft == 0 )
     {
       Node* pleft = myNode->ascendantLeft;
-      Node* n = new Node( p() + pleft->p, 
+      Node* n = new Node( p() + pleft->p,
 			  q() + pleft->q,
 			  odd() ? u() + 1 : (Quotient) 2,
 			  odd() ? k() : k() + 1,
@@ -322,7 +322,7 @@ DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
 previousPartial() const
 {
   return Fraction( odd() ? myNode->ascendantLeft : myNode->ascendantRight );
-  // return Fraction( odd() 
+  // return Fraction( odd()
   // 		     ? myNode->ascendantLeft->descendantRight
   // 		     : myNode->ascendantRight->descendantLeft );
 }
@@ -355,7 +355,7 @@ reduced( Quotient i ) const
   ASSERT( ( ((Quotient)0) <= i ) && ( i <= ( k()+((Quotient)2) ) ) );
   Node* n = this->myNode;
 
-  bool bleft = ( n->k & NumberTraits<Quotient>::ONE ) 
+  bool bleft = ( n->k & NumberTraits<Quotient>::ONE )
     != NumberTraits<Quotient>::ZERO;
   while ( i-- > NumberTraits<Quotient>::ZERO )
     {
@@ -389,7 +389,7 @@ pushBack( const std::pair<Quotient, Quotient> & quotient )
   //       std::cerr << " " << quots[ i ];
   //   }
   // else std::cerr << "[";
-  // std::cerr << "] + " << "(" << quotient.first 
+  // std::cerr << "] + " << "(" << quotient.first
   //           << "," << quotient.second << ")";
   if ( null() )
     {
@@ -442,7 +442,7 @@ template <typename TInteger, typename TQuotient>
 inline
 void
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
-getSplitBerstel( Fraction & f1, Quotient & nb1, 
+getSplitBerstel( Fraction & f1, Quotient & nb1,
 		 Fraction & f2, Quotient & nb2 ) const
 {
   if ( odd() )
@@ -477,7 +477,7 @@ getCFrac( std::vector<Quotient> & quotients ) const
     {
       ASSERT( n->k >= NumberTraits<Quotient>::ZERO );
       n = bleft ? n->ascendantLeft : n->ascendantRight;
-      quotients[ (unsigned int)i ] = 
+      quotients[ (unsigned int)i ] =
         ( i == NumberTraits<Quotient>::castToInt64_t( n->k ) ) ? n->u : 1;
       --i;
       bleft = ! bleft;
@@ -521,27 +521,27 @@ typename DGtal::SternBrocot<TInteger, TQuotient>::Fraction
 DGtal::SternBrocot<TInteger, TQuotient>::Fraction::
 simplestFractionInBetween(const Fraction & other) const
 {
-  Fraction f(*this);  
-  Fraction g(other); 
+  Fraction f(*this);
+  Fraction g(other);
   Fraction res;
-  
+
   if(f>g)
     {
       res = f; f = g; g = res;
     }
   res = Fraction();
-   
+
   int i = 0;
-  
+
   Value uf, ug;
   ConstIterator itf=f.begin(), itg=g.begin();
-  
+
   DGtal::functors::Abs<TInteger> absComputer;
 
   if(absComputer(f.p()*g.q()-f.q()*g.p())==NumberTraits<TInteger>::ONE)
     return  f.median(g);
-  
-  itf = f.begin(); itg = g.begin(); 
+
+  itf = f.begin(); itg = g.begin();
   uf = *itf; ug = *itg;
   while(uf.first == ug.first && i != f.k() && i != g.k())
     {
@@ -551,7 +551,7 @@ simplestFractionInBetween(const Fraction & other) const
       uf = *itf;
       ug = *itg;
     }
-    
+
   if(uf.first==ug.first)
     {
       if(i == f.k())
@@ -560,7 +560,7 @@ simplestFractionInBetween(const Fraction & other) const
 	  i++;
 	  itg++;
 	  ug = *itg;
-	  res.push_back(std::make_pair(ug.first+1,i)); 
+	  res.push_back(std::make_pair(ug.first+1,i));
 	}
       else
 	{
@@ -568,7 +568,7 @@ simplestFractionInBetween(const Fraction & other) const
 	  i++;
 	  itf++;
 	  uf = *itf;
-	  res.push_back(std::make_pair(uf.first+1,i)); 
+	  res.push_back(std::make_pair(uf.first+1,i));
 	}
     }
   else
@@ -628,9 +628,9 @@ simplestFractionInBetween(const Fraction & other) const
 		  }
 		else
 		  res.push_back(std::make_pair(uf.first+1,i));
-	      
+
 	    }
-    } 
+    }
 
   return res;
 }
@@ -646,7 +646,7 @@ selfDisplay( std::ostream & out ) const
   if ( this->null() ) out << "[Fraction null]";
   else
     {
-      out << "[Fraction f=" << this->p() 
+      out << "[Fraction f=" << this->p()
           << "/" << this->q()
           << " u=" << this->u()
           << " k=" << this->k()
@@ -746,13 +746,13 @@ DGtal::SternBrocot<TInteger, TQuotient>::oneOverZero()
 template <typename TInteger, typename TQuotient>
 inline
 void
-DGtal::SternBrocot<TInteger, TQuotient>::display( std::ostream & out, 
+DGtal::SternBrocot<TInteger, TQuotient>::display( std::ostream & out,
                                               const Fraction & f )
 {
   if ( f.null() ) out << "[Fraction null]";
   else
     {
-      out << "[Fraction f=" << f.p() 
+      out << "[Fraction f=" << f.p()
           << "/" << f.q()
           << " u=" << f.u()
           << " k=" << f.k()
@@ -800,14 +800,14 @@ DGtal::SternBrocot<TInteger, TQuotient>::fraction
       q /= g;
     }
   // special case 1/0
-  if ( ( p == NumberTraits<Integer>::ONE ) 
+  if ( ( p == NumberTraits<Integer>::ONE )
        && ( q == NumberTraits<Integer>::ZERO ) ) return oneOverZero();
   // other positive fractions
   while ( ! ancestor.equals( p, q ) )
     {
       ASSERT( ( p + q ) >= ( ancestor.p() + ancestor.q() )
               && "[ImaGene::SternBrocot::fraction] bad ancestor." );
-      ancestor = ancestor.lessThan( p, q ) 
+      ancestor = ancestor.lessThan( p, q )
 	? ancestor.right()
 	: ancestor.left();
     }
@@ -822,7 +822,7 @@ DGtal::SternBrocot<TInteger, TQuotient>::fraction
 // template <typename TInteger, typename TQuotient>
 // inline
 // std::ostream&
-// DGtal::operator<< ( std::ostream & out, 
+// DGtal::operator<< ( std::ostream & out,
 //                     const typename SternBrocot<TInteger, TQuotient>::Fraction & object )
 // {
 //   typedef SternBrocot<TInteger,TQuotient> SB;
@@ -832,5 +832,3 @@ DGtal::SternBrocot<TInteger, TQuotient>::fraction
 
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

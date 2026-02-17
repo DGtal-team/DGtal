@@ -59,7 +59,7 @@ bool testFLF( const OrderedAlphabet & alphabet,
   unsigned int nb;
   unsigned int s = 0;
   unsigned int e = (unsigned int)w1.size();
-  do 
+  do
     {
       alphabet.firstLyndonFactor( len, nb, w1, s, e );
       s1 << "(" << w1.substr( s, len ) << ")^" << nb;
@@ -86,14 +86,14 @@ bool testFLF( const OrderedAlphabet & alphabet,
  * @return 'true' if the test was ok, 'false' otherwise.
  */
 bool testDuvalPP( const OrderedAlphabet & alphabet,
-                  const string & output, 
+                  const string & output,
                   const string & input)
 {
   OrderedAlphabet::size_t len;
   OrderedAlphabet::size_t nb;
   bool christoffel = alphabet.duvalPP( len, nb, input, 0, (DGtal::OrderedAlphabet::index_t)input.size() );
   stringstream s1;
-  if ( christoffel ) 
+  if ( christoffel )
     s1 << "C(" << input.substr( 0, len ) << ")^" << nb;
   else s1 << "NC(" << len << ")";
 
@@ -125,7 +125,7 @@ bool testDuvalPPMod( const OrderedAlphabet & alphabet,
   OrderedAlphabet::size_t nb;
   bool christoffel = alphabet.duvalPPMod( len, nb, input, s, s );
   stringstream s1;
-  if ( christoffel ) 
+  if ( christoffel )
     {
       s1 << "C(";
       for ( unsigned int i = 0; i < len; ++i )
@@ -177,7 +177,7 @@ bool testOrderedAlphabet()
   if ( testDuvalPPMod( A, a1, w1, 19 ) ) nb_ok++;
   else                                   nb_ko++;
 
-  trace.info() << "Tests passed: " << nb_ok << "/" 
+  trace.info() << "Tests passed: " << nb_ok << "/"
                << ( nb_ok + nb_ko ) << endl;
 
   return !nb_ko;

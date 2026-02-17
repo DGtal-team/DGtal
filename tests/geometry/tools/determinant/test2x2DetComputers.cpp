@@ -48,107 +48,107 @@ using namespace DGtal;
 
 /**
  * Function that compares the result returned by @a aComputer
- * with a ground truth in each quadrant. 
+ * with a ground truth in each quadrant.
  * @param aComputer any determinant computer
  * @tparam DetComputer a model of CIncremental2x2DetComputer
  */
 template<typename DetComputer>
 bool simpleTest2x2DetComputer(DetComputer aComputer)
 {
-  BOOST_CONCEPT_ASSERT(( C2x2DetComputer<DetComputer> )); 
-  typedef typename DetComputer::Integer Integer; 
-  typedef typename DetComputer::Value Value; 
+  BOOST_CONCEPT_ASSERT(( C2x2DetComputer<DetComputer> ));
+  typedef typename DetComputer::Integer Integer;
+  typedef typename DetComputer::Value Value;
 
   unsigned int nbok = 0;
   unsigned int nb = 0;
-  
-  trace.beginBlock ( "Testing block ..." );
-  trace.info() << aComputer << endl; 
 
-  Integer a = 5; 
-  Integer b = 2; 
+  trace.beginBlock ( "Testing block ..." );
+  trace.info() << aComputer << endl;
+
+  Integer a = 5;
+  Integer b = 2;
 
 
   //first quadrant
-  aComputer.init(a,b); 
+  aComputer.init(a,b);
   if (aComputer(2,1) == NumberTraits<Value>::ONE)
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   if (aComputer(3,1) == -NumberTraits<Value>::ONE)
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   if (aComputer(5,2) == NumberTraits<Value>::ZERO)
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   //second quadrant
-  aComputer.init(-a,b); 
+  aComputer.init(-a,b);
   if (aComputer(2,-1) == NumberTraits<Value>::ONE)
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   if (aComputer(3,-1) == -NumberTraits<Value>::ONE)
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   if (aComputer(5,-2) == NumberTraits<Value>::ZERO)
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   //third quadrant
-  aComputer.init(-a,-b); 
+  aComputer.init(-a,-b);
   if (aComputer(-2,-1) == NumberTraits<Value>::ONE)
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   if (aComputer(-3,-1) == -NumberTraits<Value>::ONE)
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   if (aComputer(-5,-2) == NumberTraits<Value>::ZERO)
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   //fourth quadrant
-  aComputer.init(a,-b); 
+  aComputer.init(a,-b);
   if (aComputer(-2,1) == NumberTraits<Value>::ONE)
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   if (aComputer(-3,1) == -NumberTraits<Value>::ONE)
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   if (aComputer(-5,2) == NumberTraits<Value>::ZERO)
-    nbok++; 
-  nb++; 
+    nbok++;
+  nb++;
   trace.info() << "(" << nbok << "/" << nb << ") " << endl;
 
   trace.endBlock();
-  
+
   return nbok == nb;
 }
 
 /**
- * Function that retuns 'true' if @a x1 and @a x2
- * have the same sign: 
+ * Function that returns 'true' if @a x1 and @a x2
+ * have the same sign:
  * - both strictly positive
  * - both strictly negative
  * - both null
- * and 'false' otherwise. 
+ * and 'false' otherwise.
  *
  * @param x1 a first integer
  * @param x2 a second integer
@@ -161,82 +161,82 @@ bool hasTheSameSign(I1 x1, I2 x2)
   if (x1 == NumberTraits<I1>::ZERO)
     {
       if (x2 == NumberTraits<I2>::ZERO)
-	return true; 
+	return true;
       else
-	return false; 
+	return false;
     }
   else if (x1 > NumberTraits<I1>::ZERO)
     {
       if (x2 > NumberTraits<I2>::ZERO)
-	return true; 
+	return true;
       else
-	return false; 
+	return false;
     }
   else //if (x1 < NumberTraits<I1>::ZERO)
     {
       if (x2 < NumberTraits<I2>::ZERO)
-	return true; 
+	return true;
       else
-	return false; 
+	return false;
     }
 }
 
 DGtal::int32_t randomBelow2exp15 ()
 {
-  return static_cast<DGtal::int32_t>(rand() % 32768); 
+  return static_cast<DGtal::int32_t>(rand() % 32768);
 }
 DGtal::int32_t adHocRandom ()
 {
-  DGtal::int32_t x = randomBelow2exp15() + 
-    32768 * ( randomBelow2exp15() ); 
+  DGtal::int32_t x = randomBelow2exp15() +
+    32768 * ( randomBelow2exp15() );
     return ((rand() % 2) ? x : -x);
 }
 
 /**
  * Function that compares the result returned by @a aComputer
- * against the result returned by Simple2x2DetComputer 
- * using integers on 32 and 64 bits for various matrices 
- * whose entries are random integers whose absolute value is 
- * less than 2^32. 
+ * against the result returned by Simple2x2DetComputer
+ * using integers on 32 and 64 bits for various matrices
+ * whose entries are random integers whose absolute value is
+ * less than 2^32.
  * @param aComputer a determinant computer to test
  * @tparam DetComputer a model of CIncremental2x2DetComputer
  */
 template<typename DetComputer>
 bool randomTest2x2DetComputer(DetComputer aComputer)
 {
-  BOOST_CONCEPT_ASSERT(( C2x2DetComputer<DetComputer> )); 
+  BOOST_CONCEPT_ASSERT(( C2x2DetComputer<DetComputer> ));
 
-  typedef Simple2x2DetComputer<DGtal::int32_t, DGtal::int64_t> TrueComputer; 
-  TrueComputer trueComputer; 
+  typedef Simple2x2DetComputer<DGtal::int32_t, DGtal::int64_t> TrueComputer;
+  TrueComputer trueComputer;
 
   trace.beginBlock ( "Testing block ..." );
-  trace.info() << trueComputer << " vs " << aComputer << endl; 
+  trace.info() << trueComputer << " vs " << aComputer << endl;
 
-  bool isOk = true; 
+  bool isOk = true;
 
-  DGtal::int32_t a, b, x, y; 
+  DGtal::int32_t a, b, x, y;
 
-  const int n = 10000; 
+  const int n = 10000;
   for (int i = 0; ( (i < n)&&(isOk) ); ++i)
     {
-      a = adHocRandom(); 
-      b = adHocRandom(); 
+      a = adHocRandom();
+      b = adHocRandom();
       x = adHocRandom();
-      y = adHocRandom(); 
-      trueComputer.init(a, b); 
+      y = adHocRandom();
+      trueComputer.init(a, b);
       aComputer.init(a, b);
-      TrueComputer::Value trueRes = trueComputer(x,y);  
+      TrueComputer::Value trueRes = trueComputer(x,y);
       typename DetComputer::Value res = aComputer(x,y);
-      // trace.info() << a << "." << y << " - " 
+      // trace.info() << a << "." << y << " - "
       // 		   << b << " " << x << " => "
-      // 		   << trueRes << " / " << res << endl; 
+      // 		   << trueRes << " / " << res << endl;
       if ( !hasTheSameSign( trueRes, res ) )
-	isOk = false; 
+	isOk = false;
     }
 
   trace.endBlock();
 
-  return isOk; 
+  return isOk;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -251,9 +251,9 @@ int main( int argc, char** argv )
   trace.info() << endl;
 
   bool res = true;
- 
-  
-  res = res 
+
+
+  res = res
     && simpleTest2x2DetComputer( Simple2x2DetComputer<DGtal::int16_t, DGtal::int32_t>() )
     && simpleTest2x2DetComputer( Simple2x2DetComputer<DGtal::int32_t, DGtal::int64_t>() )
     && simpleTest2x2DetComputer( Simple2x2DetComputer<DGtal::int32_t, DGtal::BigInteger>() )
@@ -270,7 +270,7 @@ int main( int argc, char** argv )
     && randomTest2x2DetComputer( SimpleIncremental2x2DetComputer<DGtal::int32_t, DGtal::BigInteger>() )
     && randomTest2x2DetComputer( AvnaimEtAl2x2DetSignComputer<DGtal::int32_t>() )
     && randomTest2x2DetComputer( Filtered2x2DetComputer<AvnaimEtAl2x2DetSignComputer<double> >() )
-    ;   
+    ;
 
   trace.emphase() << ( res ? "Passed." : "Error." ) << endl;
   trace.endBlock();

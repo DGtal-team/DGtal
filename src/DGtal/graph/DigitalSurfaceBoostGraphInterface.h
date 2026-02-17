@@ -81,7 +81,7 @@ namespace boost
      DGtal::ExplicitDigitalSurface. This \b is \b not the case of containers
      DGtal::LightImplicitDigitalSurface and DGtal::LightExplicitDigitalSurface.
 
-     
+
      @tparam TDigitalSurfaceContainer the container chosen for the
      digital surface. Should work with DGtal::DigitalSetBoundary,
      DGtal::SetOfSurfels, DGtal::ExplicitDigitalSurface,
@@ -90,7 +90,7 @@ namespace boost
      since their vertex iterator is not multipass.
   */
   template < class TDigitalSurfaceContainer >
-  struct graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > > 
+  struct graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >
   {
     /// the adapted DGtal graph class.
     typedef DGtal::DigitalSurface< TDigitalSurfaceContainer > Adapted;
@@ -130,8 +130,8 @@ namespace boost
      *  @return the invalid vertex for that kind of graph (default Vertex( 0 )).
      */
     static
-    inline 
-    vertex_descriptor null_vertex() 
+    inline
+    vertex_descriptor null_vertex()
     {
       return vertex_descriptor( 0 );
     }
@@ -139,15 +139,15 @@ namespace boost
     /**
        Iterator for visiting adjacent vertices.  We use an iterator
        facade to create a STL-compliant iterator with as little effort
-       as possible. 
+       as possible.
 
        \note The difficulty is that DGtal graphs do not provide
        iterators for visiting edges or adjacent vertices, but merely
        provide a method that outputs them. Therefore, this iterator \b
        shares the container of adjacent vertices (a std::vector) with
        other (potentially) iterators, through a DGtal::CountedPtr. When the
-       last iterator pointing in this structure is desallocated, the
-       container is automatically desallocated. This is for instance
+       last iterator pointing in this structure is deallocated, the
+       container is automatically deallocated. This is for instance
        used by function \ref boost::adjacent_vertices, which returns a pair
        of adjacency_iterator, both points on the same
        container. Another problem is that the user may have called
@@ -169,7 +169,7 @@ namespace boost
        vp1 (.first or .second) and vp2 (.first or .second) \b are
        comparable, using value comparison and out-of-range check.
     */
-    class adjacency_iterator 
+    class adjacency_iterator
       : public iterator_facade< adjacency_iterator,
                                 Vertex,
                                 bidirectional_traversal_tag,
@@ -177,7 +177,7 @@ namespace boost
     {
     public:
       inline
-      adjacency_iterator() 
+      adjacency_iterator()
         : myIterator(), myVertices( 0 ) {}
       inline
       adjacency_iterator( typename AdjacentVertexContainer::const_iterator it,
@@ -185,10 +185,10 @@ namespace boost
         : myIterator( it ), myVertices( vertices ) {}
     private:
       inline
-      const Vertex & dereference() const 
+      const Vertex & dereference() const
       {
         ASSERT( myIterator != myVertices->end() );
-        return *myIterator; 
+        return *myIterator;
       }
 
       inline
@@ -197,7 +197,7 @@ namespace boost
         bool thisAtEnd = ( myIterator == myVertices->end() );
         bool otherAtEnd = ( other.myIterator == other.myVertices->end() );
         if ( thisAtEnd || otherAtEnd ) return thisAtEnd && otherAtEnd;
-        else return *myIterator == *other.myIterator; 
+        else return *myIterator == *other.myIterator;
       }
 
       inline
@@ -213,20 +213,20 @@ namespace boost
       DGtal::CountedPtr< AdjacentVertexContainer > myVertices;
 
       friend class iterator_core_access;
-    }; // end class adjacency_iterator 
+    }; // end class adjacency_iterator
 
     /**
        Iterator for visiting out edges.  We use an iterator
        facade to create a STL-compliant iterator with as little effort
-       as possible. 
+       as possible.
 
        \note The difficulty is that DGtal graphs do not provide
        iterators for visiting edges or adjacent vertices, but merely
        provide a method that outputs them. Therefore, this iterator \b
        shares the container of out edges (a std::vector) with other
        (potentially) iterators, through a DGtal::CountedPtr. When the last
-       iterator pointing in this structure is desallocated, the
-       container is automatically desallocated. This is for instance
+       iterator pointing in this structure is deallocated, the
+       container is automatically deallocated. This is for instance
        used by function \ref boost::out_edges, which returns a pair of
        out_edge_iterator, both points on the same container. Another
        problem is that the user may have called twice \ref boost::out_edges
@@ -248,7 +248,7 @@ namespace boost
        vp1 (.first or .second) and vp2 (.first or .second) \b are
        comparable, using value comparison and out-of-range check.
     */
-    class out_edge_iterator 
+    class out_edge_iterator
       : public iterator_facade< out_edge_iterator,
                                 Arc,
                                 bidirectional_traversal_tag,
@@ -256,7 +256,7 @@ namespace boost
     {
     public:
       inline
-      out_edge_iterator() 
+      out_edge_iterator()
         : myIterator(), myOutEdges( 0 ) {}
       inline
       out_edge_iterator( typename OutEdgeContainer::const_iterator it,
@@ -265,9 +265,9 @@ namespace boost
     private:
       inline
       const Arc & dereference() const
-      { 
+      {
         ASSERT( myIterator != myOutEdges->end() );
-        return *myIterator; 
+        return *myIterator;
       }
 
       inline
@@ -276,7 +276,7 @@ namespace boost
         bool thisAtEnd = ( myIterator == myOutEdges->end() );
         bool otherAtEnd = ( other.myIterator == other.myOutEdges->end() );
         if ( thisAtEnd || otherAtEnd ) return thisAtEnd && otherAtEnd;
-        else return *myIterator == *other.myIterator; 
+        else return *myIterator == *other.myIterator;
       }
 
       inline
@@ -297,7 +297,7 @@ namespace boost
     /**
        Iterator for visiting all edges of the graph.  We use an iterator
        facade to create a STL-compliant iterator with as little effort
-       as possible. 
+       as possible.
 
        \note The difficulty is that DGtal graphs do not provide
        iterators for visiting edges or adjacent vertices, but merely
@@ -326,7 +326,7 @@ namespace boost
        vp1 (.first or .second) and vp2 (.first or .second) \b are
        comparable, using value comparison and out-of-range check.
     */
-    class edge_iterator 
+    class edge_iterator
       : public iterator_facade< edge_iterator,
                                 Arc,
                                 forward_traversal_tag,
@@ -353,15 +353,15 @@ namespace boost
 
   /**
      Defines the property map traits for any kind of digital surface.
-     
+
      @tparam TDigitalSurfaceContainer the container chosen for the
-     digital surface. 
+     digital surface.
   */
   // template < class TDigitalSurfaceContainer, typename TPropertyTag >
   // struct property_map< DGtal::DigitalSurface< TDigitalSurfaceContainer >, TPropertyTag >
   // {
-    
-  // }; 
+
+  // };
 
 
   /////////////////////////////////////////////////////////////////////////////
@@ -373,7 +373,7 @@ namespace boost
      @return the vertex s.
   */
   template < class TDigitalSurfaceContainer >
-  inline 
+  inline
   typename graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::vertex_descriptor
   source( typename graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::edge_descriptor edge,
           const DGtal::DigitalSurface< TDigitalSurfaceContainer > & digSurf )
@@ -386,14 +386,14 @@ namespace boost
      @return the vertex t.
   */
   template < class TDigitalSurfaceContainer >
-  inline 
+  inline
   typename graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::vertex_descriptor
   target( typename graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::edge_descriptor edge,
           const DGtal::DigitalSurface< TDigitalSurfaceContainer > & digSurf )
   {
     return digSurf.head( edge );
   }
-  
+
   /**
      @param digSurf a valid digital surface.
      @return a pair< vertex_iterator, vertex_iterator > that
@@ -402,7 +402,7 @@ namespace boost
   template < class TDigitalSurfaceContainer >
   std::pair<
     typename graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::vertex_iterator,
-    typename graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::vertex_iterator 
+    typename graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::vertex_iterator
     >
   vertices( const DGtal::DigitalSurface< TDigitalSurfaceContainer > & digSurf );
 
@@ -411,13 +411,13 @@ namespace boost
      @return the number of vertices of \a digSurf.
   */
   template < class TDigitalSurfaceContainer >
-  inline 
+  inline
   typename graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::vertices_size_type
   num_vertices( const DGtal::DigitalSurface< TDigitalSurfaceContainer > & digSurf )
   {
     return digSurf.size();
   }
-  
+
   /**
      @param u a vertex belonging to \a digSurf.
      @param digSurf a valid digital surface.
@@ -426,10 +426,10 @@ namespace boost
      u.
   */
   template < class TDigitalSurfaceContainer >
-  inline 
+  inline
   std::pair<
     typename graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::adjacency_iterator,
-    typename graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::adjacency_iterator 
+    typename graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::adjacency_iterator
     >
   adjacent_vertices( typename graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::vertex_descriptor u,
                      const DGtal::DigitalSurface< TDigitalSurfaceContainer > & digSurf )
@@ -455,10 +455,10 @@ namespace boost
      out edge is a tuple (u,t) of vertices, where t != u.
   */
   template < class TDigitalSurfaceContainer >
-  inline 
+  inline
   std::pair<
     typename graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::out_edge_iterator,
-    typename graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::out_edge_iterator 
+    typename graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::out_edge_iterator
     >
   out_edges( typename graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::vertex_descriptor u,
              const DGtal::DigitalSurface< TDigitalSurfaceContainer > & digSurf )
@@ -480,7 +480,7 @@ namespace boost
      a tuple (u,t) of vertices, where t != u.
   */
   template < class TDigitalSurfaceContainer >
-  inline 
+  inline
   typename graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::degree_size_type
   out_degree( typename graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::vertex_descriptor u,
               const DGtal::DigitalSurface< TDigitalSurfaceContainer > & digSurf )
@@ -495,10 +495,10 @@ namespace boost
      out edge is a tuple (u,t) of vertices, where t != u.
   */
   template < class TDigitalSurfaceContainer >
-  inline 
+  inline
   std::pair<
     typename graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::edge_iterator,
-    typename graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::edge_iterator 
+    typename graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::edge_iterator
     >
   edges( const DGtal::DigitalSurface< TDigitalSurfaceContainer > & digSurf )
   {
@@ -513,7 +513,7 @@ namespace boost
      @return the number of vertices of \a digSurf.
   */
   template < class TDigitalSurfaceContainer >
-  inline 
+  inline
   typename graph_traits< DGtal::DigitalSurface< TDigitalSurfaceContainer > >::edges_size_type
   num_edges( const DGtal::DigitalSurface< TDigitalSurfaceContainer > & digSurf )
   {
@@ -523,12 +523,12 @@ namespace boost
       edges_size_type;
     edges_size_type nbEdges = 0;
     for ( std::pair< edge_iterator, edge_iterator > ve = boost::edges( digSurf );
-          ve.first != ve.second; ++ve.first ) 
+          ve.first != ve.second; ++ve.first )
       ++nbEdges;
     return nbEdges;
   }
 
-  
+
 } // namespace Boost
 
 

@@ -2,10 +2,10 @@
 # D. Coeurjolly
 
 
- 
+
 digraph G {
   rankdir=BT;
-  
+
   subgraph cluster_0 {
     style=filled;
     color=lightgrey;
@@ -23,7 +23,7 @@ digraph G {
     CPointPredicate;
 
     CDomain;
-	
+
     CDigitalSet;
     label = "Kernel";
   }
@@ -49,11 +49,11 @@ digraph G {
     node [style=filled,color=white];
 
     CConstImage -> CPointFunctor;
-    CImage -> CConstImage; 
+    CImage -> CConstImage;
 
     label="Images";
   }
-	
+
   subgraph cluster_3 {
     style=filled;
     color=lightgrey;
@@ -63,18 +63,18 @@ digraph G {
     CEuclideanBoundedShape;
     CEuclideanOrientedShape;
     CImplicitFunctionDiff1 -> CImplicitFunction;
-	  
+
     label="Shapes";
   }
-	
+
   subgraph cluster_4 {
     style=filled;
     color=lightgrey;
     node [style=filled,color=white];
-          
+
     CDigitalSurfaceContainer -> boost_CopyConstructible;
     CDigitalSurfaceTracker -> boost_CopyConstructible;
-    CDomainAdjacency -> CAdjacency ; 
+    CDomainAdjacency -> CAdjacency ;
     CUndirectedSimpleGraph -> CSinglePassConstRange;
     CUndirectedSimpleGraph -> CUndirectedSimpleLocalGraph;
 
@@ -84,9 +84,9 @@ digraph G {
     style=filled;
     color=lightgrey;
     node [style=filled,color=white];
-               
-    CForwardSegmentComputer -> CTrivialSegmentComputer -> CSegment; 
-    CBidirectionalSegmentComputer -> CForwardSegmentComputer; 
+
+    CForwardSegmentComputer -> CTrivialSegmentComputer -> CSegment;
+    CBidirectionalSegmentComputer -> CForwardSegmentComputer;
     CDynamicSegmentComputer-> CForwardSegmentComputer;
     CDynamicBidirectionalSegmentComputer->          CDynamicSegmentComputer;
     CDynamicBidirectionalSegmentComputer->          CBidirectionalSegmentComputer;
@@ -94,7 +94,7 @@ digraph G {
     CSeparableMetric;
     label="Geometry";
   }
-	
+
     CPointFunctor -> CLabel [label="use",style=dashed];
     CConstImage -> CDomain [label="use",style=dashed];
     CDomain -> CSpace [label="use",style=dashed];
@@ -103,7 +103,7 @@ digraph G {
 
   CConstSinglePassRange -> boost_SinglePassIteratorConcept [label="use",style=dashed];
   CSinglePassRange -> boost_SinglePassIteratorConcept [label="use",style=dashed] ;
- 
+
   CDigitalSet -> boost_CopyConstructible;
   CSegment ->  boost_CopyConstructible ;
 
@@ -117,7 +117,7 @@ digraph G {
   CCommutativeRing -> boost_Assignable;
   CPointFunctor -> boost_Assignable;
   CPointPredicate -> boost_Assignable;
-  
+
   boost_BirectionalIterator;
 
   CQuantity -> boost_LessThanComparable;

@@ -55,39 +55,39 @@ using namespace DGtal;
 int main()
 {
   trace.beginBlock ( "Example range" );
-  
-  typedef SpaceND<3> TSpace;  
+
+  typedef SpaceND<3> TSpace;
   TSpace::Point a(1, 1, 1);
   TSpace::Point b(5, 5, 5);
   HyperRectDomain<TSpace> domain(a,b);
 
   std::vector<TSpace::Dimension> v(2); v[0]=2; v[1]=1;
   TSpace::Point c(3,1,1);
-  for( HyperRectDomain<TSpace>::ConstSubRange::ConstReverseIterator 
+  for( HyperRectDomain<TSpace>::ConstSubRange::ConstReverseIterator
    it = domain.subRange(v, c).rbegin(), itend =  domain.subRange(v, c).rend();
-       it != itend; 
+       it != itend;
        ++it)
     trace.info() << "Processing point"<< (*it) << endl;
 
   trace.endBlock();
 
   trace.beginBlock ( "Example range with CPP11 initializer list" );
-  
-  for( HyperRectDomain<TSpace>::ConstSubRange::ConstReverseIterator 
+
+  for( HyperRectDomain<TSpace>::ConstSubRange::ConstReverseIterator
    it = domain.subRange({2,1}, c).rbegin(), itend =  domain.subRange({2,1}, c).rend();
-       it != itend; 
+       it != itend;
        ++it)
     trace.info() << "Processing point"<< (*it) << endl;
-  
+
   trace.endBlock();
 
 
   HyperRectDomain<TSpace> domain2;
   domain2=domain;
 
-  for( HyperRectDomain<TSpace>::ConstSubRange::ConstReverseIterator 
+  for( HyperRectDomain<TSpace>::ConstSubRange::ConstReverseIterator
    it = domain.subRange({2,1}, c).rbegin(), itend =  domain.subRange({2,1}, c).rend();
-       it != itend; 
+       it != itend;
        ++it)
     trace.info() << "Processing point"<< (*it) << endl;
 

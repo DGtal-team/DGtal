@@ -330,7 +330,7 @@ namespace DGtal
 			Size &posPhi,
 			Size &posTheta) const;
 
-    
+
     /**
      * Copy constructor.
      * @param other the object to clone.
@@ -364,14 +364,14 @@ namespace DGtal
         myTotal = other.myTotal;
         myBinNumber = other.myBinNumber;
         myMaxBinPhi = other.myMaxBinPhi;
-        myMaxBinTheta = other.myMaxBinTheta; 
+        myMaxBinTheta = other.myMaxBinTheta;
       }
       return *this;
     }
-    
 
-    
-    // ------------------------- Private Datas --------------------------------
+
+
+    // ------------------------- Private Data --------------------------------
   private:
 
     ///Number of slices in the phi direction

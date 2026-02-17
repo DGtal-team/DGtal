@@ -110,7 +110,7 @@ details.
   coordinates. Any valid cell has then \e digital coordinates
   in-between \e p1 and \e p2 (included).
 - when it is default constructed, it is bounded by points \e -p and \e p
- (\e p is model dependant)
+ (\e p is model dependent)
 - \b adjacent cells to some cell \e c are cells, lying within the space
   bounds, with the same topology as \e c but whose one of their
   digital coordinates differs by one. They are often called 1-adjacent.
@@ -200,7 +200,7 @@ public:
     ConceptUtils::sameType( myInteger, myX.sDistanceToMin( mySCell, myDim ) );
 
 }
-  // ------------------------- Private Datas --------------------------------
+  // ------------------------- Private Data --------------------------------
 private:
   T myX; // do not require T to be default constructible.
   typename CPreCellularGridSpaceND<T>::Integer myInteger;

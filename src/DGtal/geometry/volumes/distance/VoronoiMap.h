@@ -67,7 +67,7 @@ namespace DGtal
    * \brief Aim: Implementation of the linear in time Voronoi map
    * construction.
 
-   * The algorithm uses a seperable process to construct Voronoi maps
+   * The algorithm uses a separable process to construct Voronoi maps
    * which has been described in @cite Maurer2003PAMI @cite dcoeurjo_these.
    * Along periodic dimensions, the algorithm is adapted following @cite Coeurjo2008.
    *

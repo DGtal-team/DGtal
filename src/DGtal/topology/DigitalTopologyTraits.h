@@ -53,16 +53,16 @@ namespace DGtal
   /**
      Description of template class 'DigitalTopologyTraits' <p>
      \brief Aim: the traits classes for DigitalTopology types.
-     
+
      @tparam TForegroundAdjacency any model of CAdjacency.
      @tparam TBackgroundAdjacency any model of CAdjacency.
      @tparam dim the dimension of the embedding digital space.
-     
+
      The traits are specialized for the classical (4,8) and (8,4)
      adjacencies in 2D and (6,18), (6,26), (26,6) and (18,6)
      adjacencies in 3D, following the works of Bertrand and
      Couprie (@cite Bertrand2007a). They specify for GEODESIC_NEIGHBORHOOD_SIZE:
-     
+
      - 2 for (4,8) and (8,4) -> ok
      - 1 for (6,26) (previously set to 2 by @cite Bertrand2007a)
      - 2 for (6,18) (previously set to 3 by @cite Bertrand2007a)
@@ -139,7 +139,7 @@ namespace DGtal
   {
     // ----------------------- Specific traits ------------------------------
   public:
-    static const Dimension GEODESIC_NEIGHBORHOOD_SIZE = 3; // JOL: 2 does not work 
+    static const Dimension GEODESIC_NEIGHBORHOOD_SIZE = 3; // JOL: 2 does not work
   };
 
   /**
@@ -152,7 +152,7 @@ namespace DGtal
   {
     // ----------------------- Specific traits ------------------------------
   public:
-    static const Dimension GEODESIC_NEIGHBORHOOD_SIZE = 2; // JOL: 1 does not work 
+    static const Dimension GEODESIC_NEIGHBORHOOD_SIZE = 2; // JOL: 1 does not work
   };
 
 

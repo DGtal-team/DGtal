@@ -172,7 +172,7 @@ namespace DGtal
                    const unsigned char aGreenValue,
                    const unsigned char aBlueValue,
                    const unsigned char aAlphaValue = 255);
-    
+
     /**
      * Set the color parameter from an unsigned integer coding each canal.
      *
@@ -183,8 +183,8 @@ namespace DGtal
      *
      */
     Color& setRGBA( DGtal::uint32_t aRGBA );
-    
-    
+
+
     /// Set the color from HSV values
     /// @param h hue
     /// @param s saturation
@@ -204,7 +204,7 @@ namespace DGtal
       Color::RGBtoHSV(h,s,v, this->red(), this->green(), this->blue());
       return {h,s,v};
     }
-    
+
     /**
      * @return the unsigned integer ( DGtal::uint32_t ) coding  each
      * R, G, B canal on 8 bits starting from least significant bit.
@@ -219,8 +219,8 @@ namespace DGtal
 
     DGtal::uint32_t getRGBA() const;
 
-    
-    
+
+
 
     bool valid() const;
 
@@ -258,7 +258,7 @@ namespace DGtal
 
 
     /**
-     * Addition operator with assignement.
+     * Addition operator with assignment.
      *
      * @note returned components are clamped to [0,255] interval.
      *
@@ -300,12 +300,12 @@ namespace DGtal
     }
 
     /**
-     * Substraction operator with assignement.
+     * Subtraction operator with assignment.
      *
      * @note returned components are clamped to [0,255] interval.
      *
      *
-     * @param v is the Point that gets substracted to  *this.
+     * @param v is the Point that gets subtracted to  *this.
      * @return a reference on 'this'.
      */
     Color & operator-= ( const Color & v )
@@ -320,7 +320,7 @@ namespace DGtal
     }
 
     /**
-     * Substraction operator.
+     * Subtraction operator.
      *
      * @note returned components are clamped to [0,255] interval.
      *
@@ -385,7 +385,7 @@ namespace DGtal
     }
 
     /**
-     * Assignement Operator
+     * Assignment Operator
      *
      * @param pv the object to copy.
      * @return a reference on 'this'.
@@ -434,10 +434,10 @@ namespace DGtal
     static const Color Navy;
     static const Color Aqua;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     unsigned char myRed;      /**< The red component. */
     unsigned char myGreen;    /**< The green component. */
@@ -460,14 +460,14 @@ namespace DGtal
     {
       return static_cast<unsigned char>(std::max( std::min(value, 255.0), 0.0));
     }
-    
+
 
     // ----------------------- Static methods ---------------------------------
-  public: 
-    /** 
+  public:
+    /**
      * Converts a color from the HSV (Hue,Saturation,Value) space to the RGB
      * space.
-     * 
+     *
      * @param r The red component (out).
      * @param g The green component (out).
      * @param b The blue component (out).
@@ -478,9 +478,9 @@ namespace DGtal
     static void HSVtoRGB(double &r, double &g, double &b,
        double h, const double s, const double v);
 
-    /** 
+    /**
      * Converts a color from the RGB space to the HSV (Hue,Saturation,Value) space.
-     * 
+     *
      * @param h (out) The hue of the color in [0..360)
      * @param s (out) The saturation of the color in [0..1].
      * @param v (out) The value of the color in [0..1].

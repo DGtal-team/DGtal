@@ -53,7 +53,7 @@ namespace DGtal
   /**
      Description of template class 'GraphVisitorRange' <p>
      \brief Aim: Transforms a graph visitor into a single pass input range.
-   
+
      @code
   typedef DepthFirstVisitor<Graph, std::set<Vertex> > DFSVisitor;
   typedef GraphVisitorRange<DFSVisitor> VisitorRange;
@@ -114,7 +114,7 @@ namespace DGtal
        @todo Complete boost::iterator_traversal<> accordingly.
      */
     template <typename TAccessor>
-    struct GenericConstIterator 
+    struct GenericConstIterator
     {
       typedef GenericConstIterator<TAccessor> Self;
       typedef TAccessor Accessor;
@@ -122,7 +122,7 @@ namespace DGtal
       // stl iterator types.
       typedef std::input_iterator_tag iterator_category;
       typedef typename Accessor::value value_type;
-      typedef std::ptrdiff_t difference_type; 
+      typedef std::ptrdiff_t difference_type;
       typedef typename Accessor::pointer pointer;
       typedef typename Accessor::reference reference;
 
@@ -130,13 +130,13 @@ namespace DGtal
       CountedPtr< GraphVisitor > myVisitor;
 
       inline
-      GenericConstIterator() 
+      GenericConstIterator()
         : myVisitor( 0 ) {}
       inline
-      GenericConstIterator( CountedPtr<GraphVisitor> ptrV ) 
+      GenericConstIterator( CountedPtr<GraphVisitor> ptrV )
         : myVisitor( ptrV ) {}
       inline
-      GenericConstIterator( const Self & other ) 
+      GenericConstIterator( const Self & other )
         : myVisitor( other.myVisitor ) {}
 
       inline
@@ -159,7 +159,7 @@ namespace DGtal
       inline
       pointer
       operator->() const
-      { 
+      {
         ASSERT( ( myVisitor.get() != 0 )
                 && "DGtal::GraphVisitorRange<>::GenericConstIterator<>::operator->(): you cannot dereferenced a null visitor (i.e. end()).");
         return & Accessor::get( operator*() );
@@ -181,7 +181,7 @@ namespace DGtal
         myVisitor->expand();
 	return __tmp;
       }
-      
+
       inline
       bool operator==( const Self & other ) const
       {
@@ -229,7 +229,7 @@ namespace DGtal
     GraphVisitorRange( GraphVisitor* visitorPtr );
 
     /**
-       The value of the iterator has type Vertex. 
+       The value of the iterator has type Vertex.
        @return a single pass input iterator pointing on the first element of the graph traversal induced by the given visitor.
 
        NB: if you have already called begin() or beginNode(), it will raise an assertion.
@@ -237,7 +237,7 @@ namespace DGtal
     ConstIterator begin() const;
 
     /**
-       The value of the iterator has type Vertex. 
+       The value of the iterator has type Vertex.
        @return a single pass input iterator pointing after the last element of the graph traversal induced by the given visitor.
     */
     ConstIterator end() const;
@@ -271,9 +271,9 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   private:
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     /// A smart pointer on a graph visitor.

@@ -276,10 +276,10 @@ namespace DGtal
     template < typename SurfelConstIterator >
     RealPoint getPreEstimation (SurfelConstIterator it) const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     InternalProbingAlgorithm* myProbingAlgorithm = nullptr; /**< A pointer on the probing algorithm, instantiated in eval. */
     Scalar myH; /**< The gridstep. */
@@ -309,8 +309,8 @@ namespace DGtal
      *
      * @param aInitialFrame an initial probing frame.
      * @param aPreEstimation a pre-estimation vector.
-     * @return a pair (false, aInitialFrame) if no frame was found, 
-     * a pair (true, newFrame) if a frame 'newFrame' was found. 
+     * @return a pair (false, aInitialFrame) if no frame was found,
+     * a pair (true, newFrame) if a frame 'newFrame' was found.
      */
     std::pair<bool, ProbingFrame> probingFrameWithPreEstimation (ProbingFrame const& aInitialFrame, RealPoint const& aPreEstimation) const;
 

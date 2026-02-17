@@ -140,10 +140,10 @@ codes:
 * ```DGtal::experimental::``` contains classes and features that have a "beta" status.
 * ```DGtal::Z2i::``` and ```DGtal::Z3i::``` are user-oriented
   namespaces that contain predefined types for digital geometry in
-  dimension 2 and 3 (respectivelly) using an arithmetical kernel based
+  dimension 2 and 3 (respectively) using an arithmetical kernel based
   on ```DGtal::int32_t```.
 * ```DGtal::deprecated::``` contains deprecated classes  and functions.
-* ```DGtal::detail::``` contains some internal classes and funcitons.
+* ```DGtal::detail::``` contains some internal classes and functions.
 
 
 ## Coding style

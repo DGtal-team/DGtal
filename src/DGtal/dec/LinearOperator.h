@@ -143,7 +143,7 @@ template <typename TCalculus, Order order_in, Duality duality_in, Order order_ou
      */
     bool isValid() const;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
     // ------------------------- Hidden services ------------------------------
@@ -184,7 +184,7 @@ template <typename TCalculus, Order order_in, Duality duality_in, Order order_ou
             const LinearOperator<Calculus, order_in, duality_in, order_out, duality_out>& linear_operator_b);
 
   /**
-   * Overloads 'operator-' for substracting objects of class 'LinearOperator'.
+   * Overloads 'operator-' for subtracting objects of class 'LinearOperator'.
    * @param linear_operator_a left operant
    * @param linear_operator_b right operant
    * @return linear_operator_a - linear_operator_b.

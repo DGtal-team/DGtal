@@ -63,10 +63,10 @@ namespace DGtal
     Description of template class 'DigitalSetBySTLVector' <p> \brief
     Aim: Realizes the concept CDigitalSet by using the STL container
     std::vector.
-   
+
     It thus describes a modifiable set of points within the given
     domain [Domain].
-   
+
     @tparam TDomain a realization of the concept CDomain.
     @see CDigitalSet,CDomain
 
@@ -74,7 +74,7 @@ namespace DGtal
     only aliased. The problem was related to returning sets with a
     locally constructed domain. With CountedPtr, you are sure that the
     domain remains valid during the lifetime of your set.
- 
+
    */
   template <typename TDomain>
   class DigitalSetBySTLVector
@@ -141,7 +141,7 @@ namespace DGtal
      * @return 'true' iff the set is empty (no element).
      */
     bool empty() const;
-     
+
     /**
      * Adds point [p] to this set.
      *
@@ -192,7 +192,7 @@ namespace DGtal
 
     /**
      * Removes point [p] from the set.
-     * 
+     *
      * @param p the point to remove.
      * @return the number of removed elements (0 or 1).
      */
@@ -200,7 +200,7 @@ namespace DGtal
 
     /**
      * Removes the point pointed by [it] from the set.
-     * 
+     *
      * @param it an iterator on this set.
      * @pre it should point on a valid element ( it != end() ).
      * Note: generally faster than giving just the point.
@@ -279,7 +279,7 @@ namespace DGtal
 
     // ----------------------- Other Set services -----------------------------
   public:
-    
+
     /**
      * Computes the complement in the domain of this set
      * @param ito an output iterator
@@ -294,8 +294,8 @@ namespace DGtal
      *
      * @param other_set defines the set whose complement is assigned to 'this'.
      */
-    void assignFromComplement( const DigitalSetBySTLVector<Domain> & other_set ); 
-    
+    void assignFromComplement( const DigitalSetBySTLVector<Domain> & other_set );
+
     /**
      * Computes the bounding box of this set.
      *
@@ -321,9 +321,9 @@ namespace DGtal
      */
     bool isValid() const;
 
-    // ------------------------- Protected Datas ------------------------------
+    // ------------------------- Protected Data ------------------------------
   protected:
-    
+
     /**
      * The associated domain. The pointed domain may be changed but it
      * remains valid during the lifetime of the set.
@@ -335,7 +335,7 @@ namespace DGtal
      */
     std::vector<Point> myVector;
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
 
 
@@ -374,7 +374,7 @@ namespace DGtal
    */
   template <typename Domain>
   std::ostream&
-  operator<< ( std::ostream & out, 
+  operator<< ( std::ostream & out,
          const DigitalSetBySTLVector<Domain> & object );
 
 } // namespace DGtal

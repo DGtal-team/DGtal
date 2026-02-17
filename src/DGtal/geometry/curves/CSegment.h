@@ -75,7 +75,7 @@ namespace DGtal
        |---------------|------------|---------------------|-------------|------------------|-----------|----------------|------------|
        |begin method   | x.begin()  |                     | ConstIterator|                 | provides an iterator on the first element of the segment| | O(1)|
        |end method     | x.end()    |                     | ConstIterator|                 |past-the-end value | | O(1) |
-     
+
 
        # Invariants#
        The range [x.begin(),x.end()) is valid (x.end() is reachable from x.begin())
@@ -85,14 +85,14 @@ namespace DGtal
 
        # Notes#
 
-       A class of segments @f$ \Sigma_P @f$ is a set of segments 
-       such that for each segment of the set, 
-       a given predicate @f$ P @f$ is true: 
+       A class of segments @f$ \Sigma_P @f$ is a set of segments
+       such that for each segment of the set,
+       a given predicate @f$ P @f$ is true:
        @f$ \forall s \in \Sigma_P,  P(s) = \textrm{true} @f$.
 
        Segment computers, which refines CSegment, are segment
-       that can control their own extension so that a given 
-       predicate remains true. 
+       that can control their own extension so that a given
+       predicate remains true.
 
 
        @tparam T the type that should be a model of CSegment.
@@ -111,9 +111,9 @@ namespace DGtal
       BOOST_CONCEPT_USAGE( CSegment )
       {
         concepts::ConceptUtils::sameType( it, myX.begin() );
-        concepts::ConceptUtils::sameType( it, myX.end() );      
+        concepts::ConceptUtils::sameType( it, myX.end() );
       }
-      // ------------------------- Private Datas --------------------------------
+      // ------------------------- Private Data --------------------------------
     private:
       T myX; // only if T is default constructible.
       ConstIterator it;

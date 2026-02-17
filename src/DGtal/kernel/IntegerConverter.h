@@ -50,9 +50,9 @@
 #include "DGtal/kernel/PointVector.h"
 
 namespace DGtal
-{   
+{
   /// ------------- INTEGER/POINT CONVERSION SERVICES --------------------
-    
+
   /// Allows seamless conversion of integral types and lattice
   /// points, while checking for errors when going from a more
   /// precise to a less precise type.
@@ -72,7 +72,7 @@ namespace DGtal
 
     /// @param i any integer
     /// @return the same integer
-    static Integer cast( Integer i ) 
+    static Integer cast( Integer i )
     {
       return i;
     }
@@ -104,7 +104,7 @@ namespace DGtal
 
     /// @param i any integer
     /// @return the same integer
-    static DGtal::int32_t cast( DGtal::int32_t i ) 
+    static DGtal::int32_t cast( DGtal::int32_t i )
     {
       return i;
     }
@@ -122,7 +122,7 @@ namespace DGtal
 
     /// @param i any integer
     /// @return the same integer
-    static DGtal::int32_t cast( DGtal::int64_t i ) 
+    static DGtal::int32_t cast( DGtal::int64_t i )
     {
       DGtal::int32_t r = DGtal::int32_t( i );
       if ( DGtal::int64_t( r ) != i )
@@ -144,10 +144,10 @@ namespace DGtal
         q[ i ] = cast( p[ i ] );
       return q;
     }
-      
+
     /// @param i any integer
     /// @return the same integer
-    static DGtal::int32_t cast( DGtal::BigInteger i ) 
+    static DGtal::int32_t cast( DGtal::BigInteger i )
     {
       auto r = NumberTraits<DGtal::BigInteger>::castToInt64_t(i);
       if ( DGtal::BigInteger( r ) != i )
@@ -170,7 +170,7 @@ namespace DGtal
       return q;
     }
   };
-    
+
 
   /// Allows seamless conversion of integral types and lattice
   /// points, while checking for errors when going from a more
@@ -187,7 +187,7 @@ namespace DGtal
 
     /// @param i any integer
     /// @return the same integer
-    static DGtal::int64_t cast( DGtal::int32_t i ) 
+    static DGtal::int64_t cast( DGtal::int32_t i )
     {
       return i;
     }
@@ -208,7 +208,7 @@ namespace DGtal
 
     /// @param i any integer
     /// @return the same integer
-    static DGtal::int64_t cast( DGtal::int64_t i ) 
+    static DGtal::int64_t cast( DGtal::int64_t i )
     {
       return i;
     }
@@ -223,10 +223,10 @@ namespace DGtal
     {
       return p;
     }
-      
+
     /// @param i any integer
     /// @return the same integer
-    static DGtal::int64_t cast( DGtal::BigInteger i ) 
+    static DGtal::int64_t cast( DGtal::BigInteger i )
     {
       DGtal::int64_t r = NumberTraits<DGtal::BigInteger>::castToInt64_t(i);
       DGtal::BigInteger tmp(r);
@@ -250,7 +250,7 @@ namespace DGtal
       return q;
     }
   };
-    
+
   /// Allows seamless conversion of integral types and lattice
   /// points, while checking for errors when going from a more
   /// precise to a less precise type.
@@ -266,7 +266,7 @@ namespace DGtal
 
     /// @param i any integer
     /// @return the same integer
-    static DGtal::BigInteger cast( DGtal::int32_t i ) 
+    static DGtal::BigInteger cast( DGtal::int32_t i )
     {
       return DGtal::BigInteger( i );
     }
@@ -287,7 +287,7 @@ namespace DGtal
 
     /// @param i any integer
     /// @return the same integer
-    static DGtal::BigInteger cast( DGtal::int64_t i ) 
+    static DGtal::BigInteger cast( DGtal::int64_t i )
     {
       DGtal::BigInteger tmp = i;
       return tmp;
@@ -306,10 +306,10 @@ namespace DGtal
         q[ i ] = cast( p[ i ] );
       return q;
     }
-      
+
     /// @param i any integer
     /// @return the same integer
-    static DGtal::BigInteger cast( DGtal::BigInteger i ) 
+    static DGtal::BigInteger cast( DGtal::BigInteger i )
     {
       return i;
     }
@@ -324,9 +324,9 @@ namespace DGtal
     {
       return p;
     }
-      
+
   };
-      
+
 } // namespace DGtal {
 
 #endif // !defined IntegerConverter_h

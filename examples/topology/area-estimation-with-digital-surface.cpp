@@ -27,7 +27,7 @@
  * This file is part of the DGtal library.
  */
 
-/** 
+/**
  * Computing the area of a sphere with a digital surface. First
  * normals are estimated by averaging the trivial normals in a
  * k-neighborhood of each surfel. Then both the corrected area (scalar
@@ -125,7 +125,7 @@ int main( int argc, char** argv )
       v2n[ v ] = normal.getNormalized();
     }
   trace.endBlock();
-  
+
   trace.beginBlock( "Estimating area" );
   const double area_true = 4.0 * M_PI * R * R;
   double   area_averaged = 0.0;

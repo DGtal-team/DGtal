@@ -57,23 +57,23 @@ namespace DGtal {
   Description of \b concept '\b CPointPredicate' <p>
   @ingroup Concepts
   \brief Aim: Defines a predicate on a point.
-  
+
   Associates booleans to points.
-  
+
   # Refinement of
   CPredicate
-  
-  
+
+
   # Associated types
   - Point : specifies the type for an element of the domain (inner
   type).
-  
+
   # Models
   - basic models: ConstantPointPredicate, TruePointPredicate, FalsePointPredicate, IsUpperPointPredicate, IsLowerPointPredicate, IsWithinPointPredicate
   - complex predicate constructor: BinaryPointPredicate
   - others: DomainPredicate, SetPredicate, IntervalForegroundPredicate, SimpleThresholdForegroundPredicate
   - all models of CDigitalSet are models of CPointPredicate: DigitalSetBySTLVector, DigitalSetBySTLMap, DigitalSetFromMap
-  
+
   # Notes
   */
   template <typename T>
@@ -85,7 +85,7 @@ namespace DGtal {
 
     BOOST_CONCEPT_ASSERT(( CUnaryFunctor<T,Point,bool> ));
 
-    // ------------------------- Private Datas --------------------------------
+    // ------------------------- Private Data --------------------------------
   private:
     // ------------------------- Internals ------------------------------------
   private:

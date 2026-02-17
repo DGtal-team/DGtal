@@ -19,31 +19,31 @@ namespace DGtal {
     @dot
     digraph GGeom   {
     rankdir=BT;
-  
+
     subgraph cluster_ext {
     rank = same;
     style=invis;
 
-   
+
     }
     subgraph cluster_concepts_1 {
     style=filled;
     color=lightgrey;
     node [style=filled,color=white];
-               
+
     CEuclideanOrientedShape [ URL="\ref concepts::CEuclideanOrientedShape" ];
     CEuclideanBoundedShape [ URL="\ref concepts::CEuclideanBoundedShape" ];
     CDigitalOrientedShape [ URL="\ref concepts::CDigitalOrientedShape" ];
     CDigitalBoundedShape [ URL="\ref concepts::CDigitalBoundedShape" ];
-   
+
     CImplicitFunction [ URL="\ref concepts::CImplicitFunction" ];
     CImplicitFunctionDiff1 [ URL="\ref concepts::CImplicitFunctionDiff1" ];
-    
+
     CImplicitFunctionDiff1 -> CImplicitFunction;
 
     label="Shapes (main concepts)";
     }
- 
+
 
     subgraph cluster_models {
     style=filled;
@@ -82,6 +82,6 @@ namespace DGtal {
     }
     @enddot
 
- 
+
   */
 }

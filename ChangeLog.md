@@ -10,6 +10,7 @@
 
 - *Documentation*
   - Many typos fixed in documentation using Github Copilot. (David Coeurjolly, [#1829](https://github.com/DGtal-team/DGtal/pull/1829))
+  - Global spellcheck and pre-commit. (David Coeurjolly, [#1837](https://github.com/DGtal-team/DGtal/pull/1837))
 
 ## BugFixes
 
@@ -52,7 +53,7 @@ git remote set-head origin -a
 
 - *Python*
   - Build backend upgraded to scikit-build-core (Bastien Doignies, [#1804](https://github.com/DGtal-team/DGtal/pull/1804))
-  - New CI for pypi deployement with cibuildwheel (Bastien Doignies, [#1804](https://github.com/DGtal-team/DGtal/pull/1804))
+  - New CI for pypi deployment with cibuildwheel (Bastien Doignies, [#1804](https://github.com/DGtal-team/DGtal/pull/1804))
 
 - *Documentation*
   - Refactoring of the volumetric examples in the Shortcuts (David Coeurjolly, [#1807](https://github.com/DGtal-team/DGtal/pull/1807))
@@ -60,7 +61,7 @@ git remote set-head origin -a
 
 ## Bug fixes
 
-- *Arithmetics*
+- *Arithmetic*
   - Fix `testLightSternBrocot` issue on windows with the `rand()` function (Jacques-Olivier Lachaud, [#1801](https://github.com/DGtal-team/DGtal/pull/1801))
 
 - *Geometry*
@@ -104,7 +105,7 @@ git remote set-head origin -a
 - *IO*
   - New Polyscope-based 3D viewer (Bastien Doignies, [#1775](https://github.com/DGtal-team/DGtal/pull/1775))
   - Remove old QGLViewer and Qt dependency (Bastien Doignies, [#1775](https://github.com/DGtal-team/DGtal/pull/1775))
-  - Add reading material indices  (aka indicies to [MTL](https://fr.wikipedia.org/wiki/Material_Template_Library) entries) in SurfaceMeshReader::readOBJ
+  - Add reading material indices  (aka indices to [MTL](https://fr.wikipedia.org/wiki/Material_Template_Library) entries) in SurfaceMeshReader::readOBJ
     (Jacques-Olivier Lachaud, [#1788](https://github.com/DGtal-team/DGtal/pull/1788))
 
 - *Python*
@@ -674,7 +675,7 @@ git remote set-head origin -a
     ```
     If you have cloned a fork of `DGtal-team/DGtal` (*i.e.* the `origin`
     remote correspond to your fork and not the DGtal-team one), Fetch
-    the DGtal-team remote (nammed `DGtal` here):
+    the DGtal-team remote (named `DGtal` here):
     ```
     git fetch DGtal
     git reset --hard DGtal/master
@@ -1066,7 +1067,7 @@ git remote set-head origin -a
     (Boris Mansencal, [#1384](https://github.com/DGtal-team/DGtal/pull/1384))
   - Fix compilation with Visual Studio (15.9.5) and some io tests
     (Boris Mansencal, [#1380](https://github.com/DGtal-team/DGtal/pull/1380))
-  - Fixing & updating Travis: documentation deployement and DGtalTools job
+  - Fixing & updating Travis: documentation deployment and DGtalTools job
     (Roland Denis, [#1383](https://github.com/DGtal-team/DGtal/pull/1383))
   - Various warnings fixed on Xcode (David Coeurjolly,
     [#1389](https://github.com/DGtal-team/DGtal/pull/1389))
@@ -1080,7 +1081,7 @@ git remote set-head origin -a
 - *Kernel*
  - Fixing issue #1341 about unwanted conversions between PointVector with
     different component types (like from double to int) by making explicit
-    the default conversion constructor and checking type compatiblity when
+    the default conversion constructor and checking type compatibility when
     using operators.
     (Roland Denis, [#1345](https://github.com/DGtal-team/DGtal/pull/1345))
  - Fixing issue #1387 about the wrong result of PointVector::crossProduct
@@ -1262,7 +1263,7 @@ git remote set-head origin -a
     [#1245](https://github.com/DGtal-team/DGtal/pull/1245))
 
 - *Arithmetic Package*
- - Fix SternBrocot and variants static instanciations. (Jacques-Olivier Lachaud
+ - Fix SternBrocot and variants static instantiations. (Jacques-Olivier Lachaud
    [#1293](https://github.com/DGtal-team/DGtal/pull/1293))
 
 - *Topology Package*
@@ -1423,7 +1424,7 @@ git remote set-head origin -a
 
 - *IO Package*
   - Viewer3D: improvement of the viewer state record by saving the rendering
-   mode. A new setter was also added to desable/enable double face rendering.
+   mode. A new setter was also added to disable/enable double face rendering.
    (Bertrand Kerautret [#1166](https://github.com/DGtal-team/DGtal/pull/1162))
   - Viewer3D: add a mode to display ball primitive with OpenGL point instead of
    quadrangulated mesh.
@@ -1593,7 +1594,7 @@ git remote set-head origin -a
 - *Configuration*
   - Types and classes in helper namespaces ```Z2i``` and ```Z3i``` for
    ```StdDefs.h``` header (2D and 3D digital geometry with
-   computations on 32bit integers) are now explicitly instanciated in
+   computations on 32bit integers) are now explicitly instantiated in
    the compiled library. This reduces compilation time when such types
    are used. (David Coeurjolly,
    [#1117](https://github.com/DGtal-team/DGtal/pull/1117))
@@ -1648,7 +1649,7 @@ git remote set-head origin -a
   - Fixing boost include path issue when building tools using DGtal and
    its cmake DGtalConfig.cmake. (David Coeurjolly,
    [#1059](https://github.com/DGtal-team/DGtal/pull/1059))
-  - Fixing parenthese warnings in Catch. Waiting for an official fix.
+  - Fixing parentheses warnings in Catch. Waiting for an official fix.
    (Roland Denis, [#1069](https://github.com/DGtal-team/DGtal/pull/1069))
   - Fix constness in selfDisplay and operator<<.  (Pierre Gueth
    [#1082](https://github.com/DGtal-team/DGtal/pull/1082))
@@ -1837,7 +1838,7 @@ git remote set-head origin -a
    separation of all code generating the GL lists. (Bertrand Kerautret)
   ([#945](https://github.com/DGtal-team/DGtal/pull/945))
   - Operators added to perform computations on Color objects (addition,
-   substraction scaling...). Color is now CopyConstructible and
+   subtraction scaling...). Color is now CopyConstructible and
    Assignable (David Coeurjolly
    [#940](https://github.com/DGtal-team/DGtal/pull/940))
   - Improvement of memory footprint of DGtal::Color (David Coeurjolly,
@@ -1853,7 +1854,7 @@ git remote set-head origin -a
    (Bertrand Kerautret, [#1016](https://github.com/DGtal-team/DGtal/pull/1016))
   - Viewer3D: Shift-L / L key binding added to save and restore camera settings.
    (Bertrand Kerautret, [#1024](https://github.com/DGtal-team/DGtal/pull/1024))
-  - Viewer3D:  change the chronological order to diplay primitives (in the draw
+  - Viewer3D:  change the chronological order to display primitives (in the draw
    function) in order to see see textured image primitives through the
    transparency of other 3D primitives. (Bertrand Kerautret,
    [#1041](https://github.com/DGtal-team/DGtal/pull/1041))
@@ -1918,7 +1919,7 @@ git remote set-head origin -a
   - New travis configuration file to enable new travis Docker based
    container system (David Coeurjolly,
    [#1030](https://github.com/DGtal-team/DGtal/pull/1030))
-  - Various fixes of compiler warnings due to unused paramters (David
+  - Various fixes of compiler warnings due to unused parameters (David
    Coeurjolly, Roland Denis,
    [#1034](https://github.com/DGtal-team/DGtal/pull/1030))
 
@@ -1935,7 +1936,7 @@ git remote set-head origin -a
 
 
 - *Geometry Package*
-  - Fix bug occuring in the computation of the Faithful Polygon (class FP)
+  - Fix bug occurring in the computation of the Faithful Polygon (class FP)
    in the closed case, ie. with circulators.
    (Tristan Roussillon, [#939](https://github.com/DGtal-team/DGtal/pull/939))
   - Fixing DSS based length estimator on open curves. (David
@@ -1955,7 +1956,7 @@ git remote set-head origin -a
    [#970](https://github.com/DGtal-team/DGtal/pull/970))
 
 - *IO Package*
-  - Performance improvement of color managment in Display3D, Board3D
+  - Performance improvement of color management in Display3D, Board3D
    and Viewer3D: no more "createNew...List" when setting a new
    color. (David Coeurjolly,
    [#958](https://github.com/DGtal-team/DGtal/pull/958))
@@ -2097,7 +2098,7 @@ git remote set-head origin -a
     namespace (David Coeurjolly,
     [#863](https://github.com/DGtal-team/DGtal/pull/863))
 
-- *For developpers*
+- *For developers*
      - Google Benchmark can be enabled to allow micro-benchmarking in
          some DGtal unit tests (https://github.com/google/benchmark)
          (David Coeurjolly,
@@ -2248,7 +2249,7 @@ git remote set-head origin -a
     CowPtr, CountedPtrOrPtr and CountedConstPtrOrConstPtr are now used
     in conjunction with the previous classes.
 
-  - Few improvments in Clock and Trace base classes.
+  - Few improvements in Clock and Trace base classes.
 
 *Kernel Package*
 
@@ -2357,7 +2358,7 @@ git remote set-head origin -a
   - New reader: HDF5 file with 2D image dataset(s) (8-bit with palette and
     24-bit truecolor with INTERLACE_PIXEL).
   - New GenericReader and Generic Writer for both 2D, 3D and ND images.
-  - Adding a Table Reader to extract objets given in a specific column from a
+  - Adding a Table Reader to extract objects given in a specific column from a
     text file.
   - Adding missing PPM Reader.
   - Adding missing DICOM reader (with ITK library)
@@ -2442,7 +2443,7 @@ git remote set-head origin -a
     implementation, which uses 2D lattice polytopes.
   - Fréchet segment computer added to compute bounded simplifications of
     digital curves for instance.
-  - Complete rewritting of volumetric tools by separable processes:
+  - Complete rewriting of volumetric tools by separable processes:
     new generic algorithms (VoronoiMap, PowerMap) and metric
     concepts hierarchy (l_2, l_p, ...p) to efficiently compute
     DistanceTransformation, ReverseDistanceTransformation and
@@ -2530,7 +2531,7 @@ like to focus on a couple of new cool features:
    graph
 
  - Creation of high-level classes to represent several kinds of
-   digital surfaces. Surfaces are n-1 dimensional objetcs and may be
+   digital surfaces. Surfaces are n-1 dimensional objects and may be
    open or closed. There are several models of digital surface
    containers: boundary of a set of points, explicit set of surfels,
    boundary of a digital object defined by a predicate, frontier
@@ -2671,7 +2672,7 @@ DGtal release 0.3.0.
 New features:
 
   User-guide added (based on doxygen system)
-  Kernel: new concepts and controls to enhance the Interger type management,
+  Kernel: new concepts and controls to enhance the Integer type management,
       new iterators (Range/SubRange) on HyperRectDomains.
   Topology: interpixel model added (cells, boundary tracking mechanisms,…)
   Geometry 2D: 2D curve primitive decomposition, tangential cover,
@@ -2755,7 +2756,7 @@ Known problems:
   * Trace/Clock: minor edit and bug report
 
 2010-01-05 dcoeurjo
-  * Trace can be initialized on diffrent output stream (e.g. std::cerr or a file
+  * Trace can be initialized on different output stream (e.g. std::cerr or a file
     stream)
   * test_trace: update to test the new API
 
@@ -2763,7 +2764,7 @@ Known problems:
   * Clock: no more static variables and methods (in order to have several
      running clocks)
   * Trace: new interface and the endBlock displays and returns the
-     ellapsed time within the block
+     elapsed time within the block
 
 2009-12-28 dcoeurjo
   * Trace: a new class to trace out messages to the standard output. Four type

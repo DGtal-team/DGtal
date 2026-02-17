@@ -96,7 +96,7 @@ int main( int argc, char* argv[] )
     {
       const auto nb2 = P.countByScanning();
       slow_nb      += nb2;
-      slow_counts.push_back( nb2 ); 
+      slow_counts.push_back( nb2 );
     }
   double t2 = DGtal::trace.endBlock();
   // Count interior points (fast method)
@@ -117,5 +117,4 @@ int main( int argc, char* argv[] )
   DGtal::trace.info() << "Fast method computed " << fast_nb
                       << " points in " << t3 << " ms." << std::endl;
   return 0;
-} 
-  
+}
