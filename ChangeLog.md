@@ -13,7 +13,7 @@
   - Global spellcheck and pre-commit. (David Coeurjolly, [#1837](https://github.com/DGtal-team/DGtal/pull/1837))
 
 - *IO*
-  - Upgrading the polyscope backend to 2.6.0 (David Coeurjolly, [#18xx](https://github.com/DGtal-team/DGtal/pull/18xx)
+  - Upgrading the polyscope backend to 2.6.0 (David Coeurjolly, [#1839](https://github.com/DGtal-team/DGtal/pull/1839))
 
 ## BugFixes
 
