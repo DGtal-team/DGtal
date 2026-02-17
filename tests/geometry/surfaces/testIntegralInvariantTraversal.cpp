@@ -129,6 +129,7 @@ int main()
   trace.info()<<"BF strategy = "<< std::count_if(distbf.begin(), distbf.end(), [](double a){ return a-0.000001 <= sqrt(2.0)/2.0;})<< std::endl;
   trace.info()<<"DF strategy = "<< std::count_if(distdf.begin(), distdf.end(), [](double a){ return a-0.000001 <= sqrt(2.0)/2.0;})<< std::endl;
 
+
   viewer.show();
 }
 
