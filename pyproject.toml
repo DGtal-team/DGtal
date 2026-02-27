@@ -62,7 +62,7 @@ cmake.args = [
 [tool.cibuildwheel]
 # Necessary to see build output from the actual compilation
 build-verbosity = 1
-build = "cp14-*"
+build = "cp314-*"
 
 [tool.cibuildwheel.windows]
 # CIBuildWheel uses a 64 bit compiler on windows
