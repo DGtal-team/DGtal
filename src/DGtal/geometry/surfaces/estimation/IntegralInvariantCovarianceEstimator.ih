@@ -187,8 +187,7 @@ template <typename SurfelConstIterator>
 inline
 void
 DGtal::IntegralInvariantCovarianceEstimator<TKSpace, TPointPredicate, TCovarianceMatrixFunctor>::
-init
-( const double _h, SurfelConstIterator /* itb */, SurfelConstIterator /* ite */ )
+init ( const double _h, SurfelConstIterator /* itb */, SurfelConstIterator /* ite */ )
 {
   ASSERT( ( _h > 0.0 )
           && "[DGtal::IntegralInvariantCovarianceEstimator:init] Gridstep parameter h must be positive." );
