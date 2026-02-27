@@ -69,7 +69,7 @@ jobs:
         pattern: cibw-wheels-*
         merge-multiple: true
 
-    - name: publish distribution 📦 to testpypi
-      uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        verbose: true
+#   - name: publish distribution 📦 to testpypi
+#     uses: pypa/gh-action-pypi-publish@release/v1
+#     with:
+#        verbose: true
