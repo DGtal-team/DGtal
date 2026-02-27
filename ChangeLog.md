@@ -20,6 +20,9 @@
 - *Build*
   - Fixing old `DEBUG_VERBOSE` to `DGTAL_DEBUG_VERBOSE` (David Coeurjolly,  [#1834](https://github.com/DGtal-team/DGtal/pull/1834))
 
+- *Geometry*
+  - In DigitalSurfaceConvolver (eg. when using the Integral Invariant estimators), an bug existed when the shapoe domain does not contain the point (0,0,0). This PR fixes it using KCoords to represent the Kernel origin instead of a Spel which requires a valid KSpace (David Coeurjolly, [#1840](https://github.com/DGtal-team/DGtal/pull/1840))
+
 # DGtal 2.1.0
 
 ## New features
