@@ -27,14 +27,12 @@ function(cleanup_target target include_paths)
     $<INSTALL_INTERFACE:${DGTAL_INSTALL_DEPS_DESTINATION}/${target}>
   )
 
-  if (NOT ${include_paths})
-    foreach(path ${include_paths})
-      target_include_directories(${target}
-        INTERFACE
-          $<INSTALL_INTERFACE:${DGTAL_INSTALL_DEPS_DESTINATION}/${target}/${path}>
-      )
-    endforeach()
-  endif()
+  foreach(path ${include_paths})
+    target_include_directories(${target}
+      INTERFACE
+        $<INSTALL_INTERFACE:${DGTAL_INSTALL_DEPS_DESTINATION}/${target}/${path}>
+    )
+  endforeach()
 
   install(TARGETS ${target} EXPORT ${target}Targets)
   export(TARGETS ${target}
@@ -51,7 +49,7 @@ endfunction()
 
 # Polyscope dependencies
 # Only imgui have a different structure...
-cleanup_target(imgui "imgui/imgui")
+cleanup_target(imgui "imgui/imgui;imgui/implot;imgui/ImGuizmo")
 cleanup_target(glfw "")
 cleanup_target(glad "")
 cleanup_target(stb "")
