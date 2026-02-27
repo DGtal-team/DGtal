@@ -41,12 +41,10 @@ function(cleanup_target target include_paths)
   )
 
   foreach(path ${include_paths})
-    if (EXISTS ${path})
       target_include_directories(${target}
         INTERFACE
           $<INSTALL_INTERFACE:${DGTAL_INSTALL_DEPS_DESTINATION}/${target}/${path}>
       )
-    endif()
   endforeach()
 
   install(TARGETS ${target} EXPORT ${target}Targets)
