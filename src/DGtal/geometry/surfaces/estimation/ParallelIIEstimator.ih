@@ -1,0 +1,158 @@
+
+
+namespace DGtal 
+{
+  template<class TEstimator, typename TSplitter> 
+  template<class... Args>
+  ParallelIIEstimator<TEstimator, TSplitter>::
+  ParallelIIEstimator(int32_t nbThread, Args&&... args) 
+  { 
+      if (nbThread <= 0)
+        nbThread = std::max(1, omp_get_num_threads());
+
+      // Note: We can not use std::vector constructor or resize
+      // because it will copy the estimator but it can have shared 
+      // state...
+      // We rather build a new one in a loop by calling the constructor
+      // implictely with emplace_back
+      myEstimators.reserve(nbThread);
+      for (int i = 0; i < nbThread; ++i)
+        myEstimators.emplace_back(std::forward<Args>(args)...);
+  }
+
+  template<class TEstimator, typename TSplitter> 
+  void ParallelIIEstimator<TEstimator, TSplitter>::clear()
+  {
+    for (auto& estim : myEstimators)
+      estim.clear();
+  }
+
+  template<class TEstimator, typename TSplitter> 
+  typename ParallelIIEstimator<TEstimator, TSplitter>::Scalar
+  ParallelIIEstimator<TEstimator, TSplitter>::h() const { return myEstimators[0].h(); }
+
+  template<class TEstimator, typename TSplitter> 
+  void ParallelIIEstimator<TEstimator, TSplitter>::attach(
+      ConstAlias<KSpace> K, 
+      ConstAlias<PointPredicate> pp)
+  {
+    clear();
+
+    myKSpace = K;
+    myPointPredicate = pp;
+  }
+
+  template<class TEstimator, typename TSplitter> 
+  void ParallelIIEstimator<TEstimator, TSplitter>::setParams(double dRadius) 
+  {
+    myRadius = dRadius;
+  }
+
+  template<class TEstimator, typename TSplitter> 
+  bool ParallelIIEstimator<TEstimator, TSplitter>::isValid() const
+  {
+    bool valid = true;
+    for (const auto& estim : myEstimators)
+      valid = valid && estim.isValid();
+
+    return valid;
+  }
+
+  template<class TEstimator, typename TSplitter> 
+  template<typename ItA, typename ItB>
+  void ParallelIIEstimator<TEstimator, TSplitter>::init(double h_, ItA, ItB)
+  {
+    myH = h_;
+  }
+  
+  template<class TEstimator, typename TSplitter> 
+  template<typename It>
+  typename ParallelIIEstimator<TEstimator, TSplitter>::Quantity
+  ParallelIIEstimator<TEstimator, TSplitter>::eval(It it)
+  {
+    // TODO: Initialize properly the estimator (attaching shape, ...)
+    if (!myEstimators[0].isValid())
+    {
+      auto ite = it; ite++;
+      myEstimators[0].init(myH, it, ite);
+    }
+
+    return {
+      .location = *it, 
+      .value = myEstimators[0].eval(it)
+    };
+  }
+
+  template<class TEstimator, typename TSplitter> 
+  template<typename It, typename Oit>
+  Oit ParallelIIEstimator<TEstimator, TSplitter>::eval(It itb, It ite, Oit rslt)
+  {
+    std::vector<SplitInfo<Domain>> domains = mySplitter(
+       Domain(myKSpace->lowerBound(), myKSpace->upperBound()),
+       myEstimators.size() 
+    );
+    std::vector<std::vector<Quantity>> quantities(domains.size());
+    
+    #pragma omp parallel for 
+    for (uint32_t i = 0; i < domains.size(); ++i)
+    {
+      quantities[i].reserve(domains[i].hintVoxelCount);
+
+      KSpace localSpace;
+      localSpace.init(
+          domains[i].domain.lowerBound(), 
+          domains[i].domain.upperBound(), 
+          true
+      );
+      
+      try {
+        // It is possible that the surface does not intersect the subdomain, in this case
+        // findABel throws an error.
+        // TODO: Forward this to another class in case the user can build the surface faster 
+        auto start = Surfaces<KSpace>::findABel(localSpace, *myPointPredicate, 1000 /* TODO */);
+        Boundary boundary(localSpace, *myPointPredicate, SurfelAdjacency<KSpace::dimension>(true), start);
+        Surface surface(boundary);
+
+        auto& estim = myEstimators[i];
+
+        // Sets params 
+        estim.attach(localSpace, *myPointPredicate);
+        estim.setParams(myRadius);
+
+        // VisitorRange is a single pass iterator. We have to make copy everytime it is iterated
+        // NOTE: For now, rangeInit is not necessary as current II estimator do not really loop
+        //       over the range. However, this is probably the intention behind the parameters.
+        VisitorRange rangeInit(new Visitor(surface, *surface.begin()));
+        estim.init(myH, rangeInit.begin(), rangeInit.end());
+        
+        // Evaluate the results
+        VisitorRange rangeEval(new Visitor(surface, *surface.begin()));
+        estim.eval(rangeEval.begin(), rangeEval.end(), std::back_inserter(quantities[i]));
+
+        // The underlying convolver won't give any access to current location...
+        VisitorRange rangeLoc(new Visitor(surface, *surface.begin()));
+        uint32_t j = 0;
+        for (auto it = rangeInit.begin(); it != rangeInit.end(); ++it) 
+          quantities[i][j++].location = *it;
+      } catch (...) {
+        continue;
+      }
+    }
+
+    // Merge results
+    for (uint32_t i = 0; i < quantities.size(); ++i)
+      for (uint32_t j = 0; j < quantities[i].size(); ++j)
+        *rslt++ = quantities[i][j];
+
+    return rslt;
+  } 
+
+  template<class TEstimator, typename TSplitter> 
+  void
+  ParallelIIEstimator<TEstimator, TSplitter>::selfDisplay( std::ostream & out ) const
+  {
+    out << "[ParallelIIEstimator Estim=";
+    myEstimators[0].selfDisplay(out);
+    out << "]";
+  }
+}
