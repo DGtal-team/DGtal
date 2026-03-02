@@ -532,7 +532,7 @@ namespace DGtal {
 
       // Some shortcuts for clearer code
 
-      std::string newCubeList(const std::string& name)       { return newList(name, 8); }
+      std::string newCubeList(const std::string& name)       { return newList(name, 1); }
       std::string newBallList(const std::string& name)       { return newList(name, 1); }
       std::string newLineList(const std::string& name)       { return newList(name, 2); }
       std::string newQuadList(const std::string& name)       { return newList(name, 4); }
@@ -740,8 +740,8 @@ namespace DGtal {
       bool allowReuseList = false;
 
       std::vector<ClippingPlane> planes;
-      // Leave access to the user for thin modifications
       std::map<std::string, DisplayData<RealPoint>> data;
+      // Leave access to the user for thin modifications
 
     protected:
       KSpace myKSpace;

@@ -75,7 +75,7 @@ namespace DGtal {
           center + 0.5 * size * T( 1, 0,  1),
           center + 0.5 * size * T( 1, 0, -1)
         };
-      case 2: // Normal in z direction
+      case 2: // Normal in z directionDisplay3
       default:
         return {
           center + 0.5 * size * T(-1, -1, 0),
@@ -296,15 +296,8 @@ namespace DGtal {
 
   template <typename Space, typename KSpace>
   std::string Display3D<Space, KSpace>::draw(const RealPoint& rp, const std::string& uname) {
-    std::string name = myCurrentName;
-
-    if (currentStyle.mode & DisplayStyle::BALLS) {
-      name = createOrReuseBallList(uname);
-      myCurrentData->vertices.push_back(rp);
-    } else {
-      name = createOrReuseCubeList(uname);
-      drawutils::insertCubeVertices(myCurrentData->vertices, rp, myCurrentData->style.width);
-    }
+    std::string name = createOrReuseList(uname, 1);
+    myCurrentData->vertices.push_back(rp);
     return name;
   }
 
@@ -541,9 +534,31 @@ namespace DGtal {
           myCurrentData->vertices.push_back(rp2);
         }
       }
-    }
-    else
-    {
+    } else if (currentStyle.mode == DisplayStyle::DEFAULT) {
+      name = newQuadList(uname);
+      
+      const Point lb = domain.lowerBound();
+      const Point ub = domain.upperBound() + Point(1, 1, 1);
+
+      const RealPoint a = RealPoint(lb[0], lb[1], lb[2]);
+      const RealPoint b = RealPoint(ub[0], lb[1], lb[2]);
+      const RealPoint c = RealPoint(ub[0], ub[1], lb[2]);
+      const RealPoint d = RealPoint(lb[0], ub[1], lb[2]);
+
+      const RealPoint e = RealPoint(lb[0], lb[1], ub[2]);
+      const RealPoint f = RealPoint(ub[0], lb[1], ub[2]);
+      const RealPoint g = RealPoint(ub[0], ub[1], ub[2]);
+      const RealPoint h = RealPoint(lb[0], ub[1], ub[2]);
+      
+      myCurrentData->vertices = {
+        a, b, c, d, b, c, g, f,
+        d, c, g, h, a, d, h, e, 
+        a, b, f, e, e, f, g, h
+      };
+
+      data[name].style.useDefaultColors=false;
+      data[name].style.color.alpha(64);
+    } else {
       name = drawGenericRange(domain, uname);
       if (!(currentStyle.mode & DisplayStyle::BALLS))
       {
@@ -894,7 +909,7 @@ namespace DGtal {
         rp = myEmbedder.embed(Z3i::Point((*it)[0], (*it)[1], 0));
       }
       myCurrentData->scalarQuantities[QuantityScale::CELL]["value"].push_back(image(*it));
-      drawutils::insertCubeVertices(myCurrentData->vertices, rp, myCurrentData->style.width);
+      myCurrentData->vertices.push_back(rp);
     }
     return name;
   }
@@ -921,7 +936,7 @@ namespace DGtal {
         rp = myEmbedder.embed(image.sourceDomainPoint(Z2i::Point((*it)[0], (*it)[1])));
       }
       myCurrentData->scalarQuantities[QuantityScale::CELL]["value"].push_back(image(*it));
-      drawutils::insertCubeVertices(myCurrentData->vertices, rp, myCurrentData->style.width);
+      myCurrentData->vertices.push_back(rp);
     }
     return name;
   }
@@ -994,7 +1009,7 @@ namespace DGtal {
       break;
       case 3: {
         name = createOrReuseCubeList(uname);
-        drawutils::insertCubeVertices(myCurrentData->vertices, rp, myCurrentData->style.width);
+        myCurrentData->vertices.push_back(rp);
       };
       break;
     };

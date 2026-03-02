@@ -14,6 +14,9 @@
 
 - *IO*
   - Upgrading the polyscope backend to 2.6.1 (David Coeurjolly, [#1839](https://github.com/DGtal-team/DGtal/pull/1839))
+  - Voxels are now rendered using polyscope SparseVolumeGrid (Bastien DOIGNIES, [#1843](https://github.com/DGtal-team/DGtal/pull/1843))
+  - Domains are now rendered with 6 quads by default (Bastien DOIGNIES, [#1843](https://github.com/DGtal-team/DGtal/pull/1843))
+
 
 ## BugFixes
 
