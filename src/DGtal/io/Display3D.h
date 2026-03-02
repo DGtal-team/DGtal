@@ -533,20 +533,29 @@ namespace DGtal {
       // Some shortcuts for clearer code
 
       std::string newCubeList(const std::string& name)       { return newList(name, 1); }
-      std::string newBallList(const std::string& name)       { return newList(name, 1); }
       std::string newLineList(const std::string& name)       { return newList(name, 2); }
       std::string newQuadList(const std::string& name)       { return newList(name, 4); }
       std::string newPolygonList(const std::string& name)    { return newList(name, 0); }
       std::string newTriangleList(const std::string& name)   { return newList(name, 3); }
       std::string newVolumetricList(const std::string& name) { return newList(name, 8); }
 
-      std::string createOrReuseCubeList(const std::string& name)       { return createOrReuseList(name, 8); }
-      std::string createOrReuseBallList(const std::string& name)       { return createOrReuseList(name, 1); }
+      std::string newBallList(const std::string& name) { 
+        auto n = newList(name, 1); 
+        myCurrentData.style.mode |=  DisplayStyle::BALLS; 
+        return n; 
+      }
+
+      std::string createOrReuseCubeList(const std::string& name)       { return createOrReuseList(name, 1); }
       std::string createOrReuseLineList(const std::string& name)       { return createOrReuseList(name, 2); }
       std::string createOrReuseQuadList(const std::string& name)       { return createOrReuseList(name, 4); }
       std::string createOrReusePolygonList(const std::string& name)    { return createOrReuseList(name, 0); }
       std::string createOrReuseTriangleList(const std::string& name)   { return createOrReuseList(name, 3); }
       std::string createOrReuseVolumetricList(const std::string& name) { return createOrReuseList(name, 8); }
+      std::string createOrReuseBallList(const std::string& name) { 
+        auto n = createOrReuseList(name, 1);
+        myCurrentData.style.mode |=  DisplayStyle::BALLS; 
+        return n;
+      }
 
     public: // Draw commands
 
@@ -740,8 +749,8 @@ namespace DGtal {
       bool allowReuseList = false;
 
       std::vector<ClippingPlane> planes;
-      std::map<std::string, DisplayData<RealPoint>> data;
       // Leave access to the user for thin modifications
+      std::map<std::string, DisplayData<RealPoint>> data;
 
     protected:
       KSpace myKSpace;
