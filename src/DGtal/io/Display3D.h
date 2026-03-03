@@ -541,7 +541,7 @@ namespace DGtal {
 
       std::string newBallList(const std::string& name) { 
         auto n = newList(name, 1); 
-        myCurrentData.style.mode |=  DisplayStyle::BALLS; 
+        myCurrentData->style.mode |=  DisplayStyle::BALLS; 
         return n; 
       }
 
@@ -553,7 +553,7 @@ namespace DGtal {
       std::string createOrReuseVolumetricList(const std::string& name) { return createOrReuseList(name, 8); }
       std::string createOrReuseBallList(const std::string& name) { 
         auto n = createOrReuseList(name, 1);
-        myCurrentData.style.mode |=  DisplayStyle::BALLS; 
+        myCurrentData->style.mode |=  DisplayStyle::BALLS; 
         return n;
       }
 
