@@ -1,4 +1,4 @@
-
+#include <ranges>
 
 namespace DGtal 
 {
@@ -87,62 +87,51 @@ namespace DGtal
   template<typename It, typename Oit>
   Oit ParallelIIEstimator<TEstimator, TSplitter>::eval(It itb, It ite, Oit rslt)
   {
-    std::vector<SplitInfo<Domain>> domains = mySplitter(
-       Domain(myKSpace->lowerBound(), myKSpace->upperBound()),
-       myEstimators.size() 
-    );
-    std::vector<std::vector<Quantity>> quantities(domains.size());
-    
-    #pragma omp parallel for 
-    for (uint32_t i = 0; i < domains.size(); ++i)
+    Domain mainDomain(myKSpace->lowerBound(), myKSpace->upperBound());
+    std::vector<SplitInfo<Domain>> domains = mySplitter(mainDomain, myEstimators.size());
+
+    // use std::map to keep insertion order so no lookup is needed afterward
+    std::map<Surfel, EstimatorQuantity> result;
+    std::vector<std::vector<std::pair<const Surfel, EstimatorQuantity>*>> resultLocation(domains.size());
+    for (auto it = itb; it != ite; it++) 
     {
-      quantities[i].reserve(domains[i].hintVoxelCount);
-
-      KSpace localSpace;
-      localSpace.init(
-          domains[i].domain.lowerBound(), 
-          domains[i].domain.upperBound(), 
-          true
-      );
+      result[*it] = 0.;
       
-      try {
-        // It is possible that the surface does not intersect the subdomain, in this case
-        // findABel throws an error.
-        // TODO: Forward this to another class in case the user can build the surface faster 
-        auto start = Surfaces<KSpace>::findABel(localSpace, *myPointPredicate, 1000 /* TODO */);
-        Boundary boundary(localSpace, *myPointPredicate, SurfelAdjacency<KSpace::dimension>(true), start);
-        Surface surface(boundary);
-
-        auto& estim = myEstimators[i];
-
-        // Sets params 
-        estim.attach(localSpace, *myPointPredicate);
-        estim.setParams(myRadius);
-
-        // VisitorRange is a single pass iterator. We have to make copy everytime it is iterated
-        // NOTE: For now, rangeInit is not necessary as current II estimator do not really loop
-        //       over the range. However, this is probably the intention behind the parameters.
-        VisitorRange rangeInit(new Visitor(surface, *surface.begin()));
-        estim.init(myH, rangeInit.begin(), rangeInit.end());
-        
-        // Evaluate the results
-        VisitorRange rangeEval(new Visitor(surface, *surface.begin()));
-        estim.eval(rangeEval.begin(), rangeEval.end(), std::back_inserter(quantities[i]));
-
-        // The underlying convolver won't give any access to current location...
-        VisitorRange rangeLoc(new Visitor(surface, *surface.begin()));
-        uint32_t j = 0;
-        for (auto it = rangeInit.begin(); it != rangeInit.end(); ++it) 
-          quantities[i][j++].location = *it;
-      } catch (...) {
-        continue;
+      for (unsigned int j = 0; j < domains.size(); ++j)
+      {
+        // Should be true for only one of the domain
+        if (domains[j].domain.isInside(myKSpace->interiorVoxel(*it)))
+        {
+          resultLocation[j].push_back(&(*result.find(*it)));
+          break;
+        }
       }
     }
 
-    // Merge results
-    for (uint32_t i = 0; i < quantities.size(); ++i)
-      for (uint32_t j = 0; j < quantities[i].size(); ++j)
-        *rslt++ = quantities[i][j];
+    #pragma omp parallel for 
+    for (uint32_t i = 0; i < domains.size(); ++i)
+    {
+      auto surfels = resultLocation[i] | std::views::transform([](const auto& kv) -> const Surfel&
+      {
+        return kv->first; 
+      });
+      auto values = resultLocation[i] | std::views::transform([&](auto& kv) -> EstimatorQuantity& 
+      {
+        return kv->second;
+      });
+           
+      auto& estim = myEstimators[i];
+
+      estim.attach(*myKSpace, *myPointPredicate);
+      estim.setParams(myRadius);
+
+      estim.init(myH, surfels.begin(), surfels.end());
+      estim.eval(surfels.begin(), surfels.end(), values.begin());
+    }
+    
+    // Fuse result into the iterator 
+    for (const auto& it : result) 
+      *++rslt = it.second;
 
     return rslt;
   } 

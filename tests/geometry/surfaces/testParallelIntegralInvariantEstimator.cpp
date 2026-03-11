@@ -108,7 +108,7 @@ bool testCurvature2dP ( double h, double delta )
   MyIICurvatureFunctor curvatureFunctor;
   curvatureFunctor.init( h, re );
 
-  MyIICurvatureEstimatorA curvatureEstimator( 1, curvatureFunctor );
+  MyIICurvatureEstimatorA curvatureEstimator( 9, curvatureFunctor );
   curvatureEstimator.attach( K, dshape );
   curvatureEstimator.setParams( re/h );
   curvatureEstimator.init( h, ibegin, iend );
@@ -137,7 +137,7 @@ bool testCurvature2dP ( double h, double delta )
 
   for ( unsigned int i = 0; i < rsize; ++i )
   {
-    mean += results[ i ].value;
+    mean += results[ i ];
   }
   mean /= rsize;
 

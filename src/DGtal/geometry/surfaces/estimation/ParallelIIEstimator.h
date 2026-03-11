@@ -49,6 +49,7 @@ namespace DGtal
     using Surfel = typename KSpace::Surfel;
     using SurfelSet = typename KSpace::SurfelSet;
     using EstimatorQuantity = typename TEstimator::Quantity;
+    using Quantity = EstimatorQuantity;
     
     // Building the surface
     using Boundary = LightImplicitDigitalSurface<KSpace, PointPredicate>;
@@ -56,25 +57,7 @@ namespace DGtal
     using Visitor = DepthFirstVisitor<Surface>;
     using VisitorRange = GraphVisitorRange<Visitor>;
   
-    /**
-     * @brief The default quantity for this estimator 
-     *
-     * As the computation is parallel, the order is not
-     * preserved. Hence, we need some structure to know
-     * which result comes from which location;
-     */ 
-    struct Quantity
-    {
-      Surfel location; //< Location of the result
-      EstimatorQuantity value; //< Result of the computation
-      
-      Quantity(EstimatorQuantity q) {
-        // This constructor is needed because the underlying
-        // estimator returns result as just an "EstimatorQuantity".
-        value = q;
-      };
-    };
-    
+   
     /**
      * @brief Constructor
      *
