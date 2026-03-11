@@ -95,11 +95,14 @@ namespace DGtal
     std::vector<std::vector<std::pair<const Surfel, EstimatorQuantity>*>> resultLocation(domains.size());
     for (auto it = itb; it != ite; it++) 
     {
-      result[*it] = 0.;
-      
+      result[*it] = 0.; // Safe, it will be overwritten (if domain really is a partition of the domain)
+                      
+      // [23.2.4 Associative containers]: insersion does not invalidate pointer 
       for (unsigned int j = 0; j < domains.size(); ++j)
       {
-        // Should be true for only one of the domain
+        // Should be true for only one of the domain. The break ensure
+        // each surfel belongs to one and only one domain, meaning there
+        // will be no concurrent write afterward
         if (domains[j].domain.isInside(myKSpace->interiorVoxel(*it)))
         {
           resultLocation[j].push_back(&(*result.find(*it)));
@@ -107,8 +110,8 @@ namespace DGtal
         }
       }
     }
-
-    #pragma omp parallel for 
+   
+    #pragma omp parallel for
     for (uint32_t i = 0; i < domains.size(); ++i)
     {
       auto surfels = resultLocation[i] | std::views::transform([](const auto& kv) -> const Surfel&

@@ -108,7 +108,7 @@ bool testCurvature2dP ( double h, double delta )
   MyIICurvatureFunctor curvatureFunctor;
   curvatureFunctor.init( h, re );
 
-  MyIICurvatureEstimatorA curvatureEstimator( 9, curvatureFunctor );
+  MyIICurvatureEstimatorA curvatureEstimator( 4, curvatureFunctor );
   curvatureEstimator.attach( K, dshape );
   curvatureEstimator.setParams( re/h );
   curvatureEstimator.init( h, ibegin, iend );
@@ -176,7 +176,6 @@ bool testCurvature2d ( double h, double delta )
 
   typedef functors::IICurvatureFunctor<Z2i::Space> MyIICurvatureFunctor;
   typedef IntegralInvariantVolumeEstimator< Z2i::KSpace, DigitalShape, MyIICurvatureFunctor > MyIICurvatureEstimator;
-  typedef EvenDomainSplitter<HyperRectDomain<Z2i::Space>> Splitter;
   typedef MyIICurvatureFunctor::Value Value;
 
   double re = 10;
