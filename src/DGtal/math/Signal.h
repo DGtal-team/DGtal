@@ -141,7 +141,7 @@ namespace DGtal
      * Default value.
      * @return the default value.
      */
-    const Value& default() const;
+    const Value& defaultValue() const;
   };
 
 

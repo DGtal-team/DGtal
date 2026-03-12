@@ -204,7 +204,7 @@ DGtal::SignalData<TValue>::operator=
 template <typename TValue>
 inline
 const TValue &
-DGtal::SignalData<TValue>::default() const
+DGtal::SignalData<TValue>::defaultValue() const
 {
   ASSERT( data != 0 );
   return data[ size ];
@@ -462,7 +462,7 @@ DGtal::Signal<TValue>::operator*( const Signal<TValue>& G )
 
   unsigned int aSize = Fd.periodic ? Fd.size : Fd.size + Gd.size - 1;
   int zero = Fd.periodic ? Fd.zero : Fd.zero + Gd.zero;
-  Signal<TValue> FG( aSize, zero, Fd.periodic, Fd.default() );
+  Signal<TValue> FG( aSize, zero, Fd.periodic, Fd.defaultValue() );
   SignalData<TValue>& FGd = *FG.m_data;
 
   if ( Fd.periodic )
