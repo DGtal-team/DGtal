@@ -56,7 +56,7 @@ namespace DGtal {
    * @tparam TSpace model of CSpace
    * @tparam TSegmentation tangential cover obtained by a segmentation of a 2D digital curve by maximal straight segments
    * @tparam Functor model of CLMSTTangentFrom2DSS
-   * @tparam DSSFilter a functor used for filtering out DSSes which do not fullfil a given condition e.g., they are too short
+   * @tparam DSSFilter a functor used for filtering out DSSes which do not fulfil a given condition e.g., they are too short
    */
   template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
   class LambdaMST3DEstimator
@@ -202,7 +202,7 @@ namespace DGtal {
    * \brief Aim: Simplify creation of Lambda MST tangent estimator.
    * @tparam DSSSegmentationComputer tangential cover obtained by segmentation of a 2D digital curve by maximal straight segments
    * @tparam LambdaFunction Lambda functor @see FunctorsLambdaMST.h
-   * @tparam DSSFilter a functor used for filtering out DSSes which do not fullfil a given condition e.g., they are too short
+   * @tparam DSSFilter a functor used for filtering out DSSes which do not fulfil a given condition e.g., they are too short
    */
   template < typename DSSSegmentationComputer, typename LambdaFunction = functors::Lambda64Function,
              typename DSSFilter = DSSMuteFilter < typename DSSSegmentationComputer::SegmentComputer > >

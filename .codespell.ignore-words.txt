@@ -14,3 +14,9 @@ myDatas
 Aline
 myE
 TRing
+Groupe
+aLine
+myE
+aNormal
+pres
+Aline
