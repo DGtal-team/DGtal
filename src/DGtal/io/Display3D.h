@@ -539,10 +539,10 @@ namespace DGtal {
       std::string newTriangleList(const std::string& name)   { return newList(name, 3); }
       std::string newVolumetricList(const std::string& name) { return newList(name, 8); }
 
-      std::string newBallList(const std::string& name) { 
-        auto n = newList(name, 1); 
-        myCurrentData->style.mode |=  DisplayStyle::BALLS; 
-        return n; 
+      std::string newBallList(const std::string& name) {
+        auto n = newList(name, 1);
+        myCurrentData->style.mode |=  DisplayStyle::BALLS;
+        return n;
       }
 
       std::string createOrReuseCubeList(const std::string& name)       { return createOrReuseList(name, 1); }
@@ -551,9 +551,9 @@ namespace DGtal {
       std::string createOrReusePolygonList(const std::string& name)    { return createOrReuseList(name, 0); }
       std::string createOrReuseTriangleList(const std::string& name)   { return createOrReuseList(name, 3); }
       std::string createOrReuseVolumetricList(const std::string& name) { return createOrReuseList(name, 8); }
-      std::string createOrReuseBallList(const std::string& name) { 
+      std::string createOrReuseBallList(const std::string& name) {
         auto n = createOrReuseList(name, 1);
-        myCurrentData->style.mode |=  DisplayStyle::BALLS; 
+        myCurrentData->style.mode |=  DisplayStyle::BALLS;
         return n;
       }
 
@@ -609,7 +609,7 @@ namespace DGtal {
       // @brief Draws an unsigned KCell
       std::string draw(const KCell& cell, const std::string& name = "KCell_{i}_{d}d");
 
-      // @brief Draws a singed KCell
+      // @brief Draws a signed KCell
       std::string draw(const SCell& cell, const std::string& name = "SCell_{i}_{d}d");
 
       // @brief Draws a Domain

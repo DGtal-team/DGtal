@@ -536,7 +536,7 @@ namespace DGtal {
       }
     } else if (currentStyle.mode == DisplayStyle::DEFAULT) {
       name = newQuadList(uname);
-      
+
       const Point lb = domain.lowerBound();
       const Point ub = domain.upperBound() + Point(1, 1, 1);
 
@@ -549,10 +549,10 @@ namespace DGtal {
       const RealPoint f = RealPoint(ub[0], lb[1], ub[2]);
       const RealPoint g = RealPoint(ub[0], ub[1], ub[2]);
       const RealPoint h = RealPoint(lb[0], ub[1], ub[2]);
-      
+
       myCurrentData->vertices = {
         a, b, c, d, b, c, g, f,
-        d, c, g, h, a, d, h, e, 
+        d, c, g, h, a, d, h, e,
         a, b, f, e, e, f, g, h
       };
 
@@ -905,7 +905,7 @@ namespace DGtal {
       if constexpr (dim == 3) {
         rp = myEmbedder.embed(*it);
       } else {
-        // We accept to draw theses 2D image, do ask to parametrize to also the myEmbedder...
+        // We accept to draw these 2D image, do ask to parametrize to also the myEmbedder...
         rp = myEmbedder.embed(Z3i::Point((*it)[0], (*it)[1], 0));
       }
       myCurrentData->scalarQuantities[QuantityScale::CELL]["value"].push_back(image(*it));
@@ -932,7 +932,7 @@ namespace DGtal {
       if constexpr (dim == 3) {
         rp = myEmbedder.embed(*it);
       } else {
-        // We accept to draw theses 2D image, do ask to parametrize to also the myEmbedder...
+        // We accept to draw these 2D image, do ask to parametrize to also the myEmbedder...
         rp = myEmbedder.embed(image.sourceDomainPoint(Z2i::Point((*it)[0], (*it)[1])));
       }
       myCurrentData->scalarQuantities[QuantityScale::CELL]["value"].push_back(image(*it));

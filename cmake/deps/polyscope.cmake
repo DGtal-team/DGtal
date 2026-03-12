@@ -22,7 +22,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG_OLD}")
 function(cleanup_target target include_paths)
   get_property(target_include_dir TARGET ${target} PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
   set_target_properties(${target} PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "")
-  
+
   # For some reason, BUILD_INTERFACE is fucked up with list of paths given by imgui...
   # For some other reason, some imgui includes path do not exist when this function is called
   foreach(path ${target_include_dir})

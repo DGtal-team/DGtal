@@ -12,3 +12,5 @@ acount
 astroid
 myDatas
 Aline
+myE
+TRing
