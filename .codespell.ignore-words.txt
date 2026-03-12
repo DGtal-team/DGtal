@@ -12,3 +12,10 @@ acount
 astroid
 myDatas
 Aline
+TRing
+Groupe
+aLine
+myE
+aNormal
+pres
+Aline

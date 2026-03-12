@@ -73,7 +73,7 @@ namespace DGtal
    * distance map is one, ie. it is the minimum solution \f$ \Phi \f$
    * over all quadrants, verifying the following quadratic equation:
    * \f$ \sum_{i = 1 \ldots d } ( \Phi - \Phi_i )^2 = 1 \f$
-   * where \f$ \Phi_i \f$ is the distance value of the point preceeding
+   * where \f$ \Phi_i \f$ is the distance value of the point preceding
    * or following p along the \f$ i \f$ axis.
    *
    * @note This class deals with positive or negative distance values

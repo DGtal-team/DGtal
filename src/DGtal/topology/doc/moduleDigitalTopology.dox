@@ -78,7 +78,7 @@ namespace DGtal {
    4-connected digital close curve (of more than 4 points) splits the
    digital space into two 8-connected background components (digital
    Jordan theorem). The same is true if you choose the 8-adjacency
-   relation for the object, the 4-adjacency should be choosed for the
+   relation for the object, the 4-adjacency should be chosen for the
    background. This is called the <b>digital Jordan theorem</b>
    (Rosenfeld).
 
