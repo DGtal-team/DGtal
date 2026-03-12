@@ -389,7 +389,7 @@ namespace DGtal
 
     /// Tells if a given point range \a X is digitally 0-convex,
     /// i.e. \f$ \mathrm{Cvxh}(X) \cap \mathbb{Z}^d = X \f$. It works
-    /// for arbitrary set of points in arbitrary dimenion.
+    /// for arbitrary set of points in arbitrary dimension.
     ///
     /// @param X any range of \b pairwise \b distinct points
     ///
@@ -400,7 +400,7 @@ namespace DGtal
     /// convex. The test uses the morphological characterization of
     /// full convexity. It is slightly slower than testing full
     /// convexity on simplices, but it works for arbitrary set of
-    /// points in arbitrary dimenion.
+    /// points in arbitrary dimension.
     ///
     /// @param X any range of \b pairwise \b distinct points
     ///
@@ -414,7 +414,7 @@ namespace DGtal
     /// convex. The test uses the morphological characterization of
     /// full convexity and a fast way to compute lattice points within
     /// a polytope. It works for arbitrary set of points in arbitrary
-    /// dimenion.
+    /// dimension.
     ///
     /// @param X any range of \b pairwise \b distinct points
     /// @return 'true' iff \a X is fully digitally convex.
@@ -1075,7 +1075,7 @@ namespace DGtal
     /// in I are not part of V anymore.
     ///
     /// @param[in] I is a closed interval
-    /// @param[inout] V is a sorted list of closed intervals
+    /// @param[in,out] V is a sorted list of closed intervals
     static void eraseInterval( Interval I, std::vector< Interval > & V );
 
     /// Filters the points of \a E and outputs only the ones that

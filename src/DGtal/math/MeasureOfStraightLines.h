@@ -63,7 +63,7 @@ namespace DGtal
    *   title = { {M}easure of {S}traight {L}lines and its {A}applications in {D}igital {G}eometry},
    *   author = {{C}oeurjolly, {D}avid and {S}ivignon, {I}sabelle},
    *   booktitle = {13th {I}nternational {W}orkshop on {C}ombinatorial {I}mage {A}nalysis 13th {I}nternational {W}orkshop on {C}ombinatorial {I}mage {A}nalysis },
-   *   publisher = {{R}esearch {P}publishing {S}ervices },
+   *   publisher = {Research Publishing Services },
    *   pages = {1-12 },
    *   address = {{C}ancun {M}exique },
    *   audience = {internationale },

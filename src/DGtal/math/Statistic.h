@@ -216,7 +216,7 @@ namespace DGtal
      * Computes the median value of the statistics and switch to mode
      * which does not save the statistics samples (@ref
      * myStoreSamples = false). Useful only if the values are stored
-     * (specified in the the constructor) else it doest nothing.
+     * (specified in the the constructor) else it does nothing.
      *
      * @see median, Statistic, myStoreSamples
      */
@@ -296,7 +296,7 @@ namespace DGtal
     /**
      * Tells if terminate was called. Useful to return median value
      * even if the m_values are no more stored (possible after
-     * serialisation which doest store the values.).
+     * serialisation which does not store the values.).
      *
      */
     bool myIsTerminated;

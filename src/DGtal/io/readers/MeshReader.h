@@ -150,7 +150,7 @@ public:
                                 typename DGtal::Mesh<TPoint>::Index > &indices );
 
 
-  /// Reads an input material file associated ot an OBJ file format and outputs the
+  /// Reads an input material file associated to an OBJ file format and outputs the
   /// corresponding materials as a map assiating name and diffuse color.
   ///
   /// @param[in,out] input the input stream where the OBJ file is read.

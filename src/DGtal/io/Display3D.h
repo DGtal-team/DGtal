@@ -600,7 +600,7 @@ namespace DGtal {
       // @brief Draws an unsigned KCell
       std::string draw(const KCell& cell, const std::string& name = "KCell_{i}_{d}d");
 
-      // @brief Draws a singed KCell
+      // @brief Draws a signed KCell
       std::string draw(const SCell& cell, const std::string& name = "SCell_{i}_{d}d");
 
       // @brief Draws a Domain

@@ -129,7 +129,7 @@ namespace DGtal
     /**
      * \brief finds the eigenvalues and eigenvectors of a symmetric
      * tridiagonal matrix by the QL method.  The eigenvectors of a
-     * full symmetric matric can also be found if tridiagonalize() has
+     * full symmetric matrix can also be found if tridiagonalize() has
      * been used to reduce this full matrix to tridiagonal form.
      *
      * This is derived from the Algol procedures tred2 and tql2 by Bowdler, Martin, Reinsch

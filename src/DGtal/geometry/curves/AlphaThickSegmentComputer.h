@@ -485,7 +485,7 @@ public:
 
 
   /**
-   * @return the total number of points beeing recognized through in the segment construction.
+   * @return the total number of points being recognized through in the segment construction.
    **/
   unsigned int getNumberSegmentPoints() const;
 
@@ -503,8 +503,8 @@ public:
 
   /**
    * Computes the segment bounding box according to two extremity points (\a aFirstPt, \a aLastPt).
-   * @param[in] aFirstPt the first extrem point.
-   * @param[in] aLastPt the last extrem point.
+   * @param[in] aFirstPt the first extreme point.
+   * @param[in] aLastPt the last extreme point.
    * @param[out] pt1LongestSegment1 the first point of one of the longest segment.
    * @param[out] pt2LongestSegment1 the second point of one of the longest segment.
    * @param[out] pt3LongestSegment2 the first point of one of the second longest segment.
@@ -669,13 +669,13 @@ protected:
 
   /**
    * From an point iterator (\a itBegin and \a itEnd) it computes the
-   * two extrem points (\a aFirstExtrPt and \a aLastExtrPt) defined
+   * two extreme points (\a aFirstExtrPt and \a aLastExtrPt) defined
    * according to the direction of the current segment.
    *
    * @param[in] itBegin the start iterator of the input points.
    * @param[in] itEnd the end iterator of the input points.
-   * @param[out] aFirstExtrPt the first extrem point.
-   * @param[out] aLastExtrPt the last extrem point.
+   * @param[out] aFirstExtrPt the first extreme point.
+   * @param[out] aLastExtrPt the last extreme point.
    *
    **/
   template<typename TConstIteratorG>

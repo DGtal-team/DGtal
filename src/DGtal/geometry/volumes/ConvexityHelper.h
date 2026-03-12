@@ -339,7 +339,7 @@ namespace DGtal
     ///
     /// @note This function works for dimension no greater than 3.
     ///
-    /// @param[inout] input_points a range of distinct points, which
+    /// @param[in,out] input_points a range of distinct points, which
     /// may be changed by the method. More precisely a point may be
     /// added (in 3D) to complete the set of points so that it forms a
     /// full dimensional polytope.
@@ -361,7 +361,7 @@ namespace DGtal
     ///
     /// @note This function works for dimension no greater than 3.
     ///
-    /// @param[inout] input_points a range of distinct points, which
+    /// @param[in,out] input_points a range of distinct points, which
     /// may be changed by the method. More precisely a point may be
     /// added (in 3D) to complete the set of points so that it forms a
     /// full dimensional polytope.

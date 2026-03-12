@@ -352,7 +352,7 @@ namespace DGtal
      * Sets the value of an element in the container, creating it if
      * necessary. In order to keep the tree's coherence this method
      * may add and remove several other nodes in the tree so
-     * performances strongly depend on wether or not and how much the
+     * performances strongly depend on whether or not and how much the
      * tree's structure needs to be modified.  For efficiency no check
      * is performed on the key
      * @param key The key
@@ -364,7 +364,7 @@ namespace DGtal
      * Sets the value of an element in the container, creating it if
      * necessary. In order to keep the tree's coherence this method
      * may add and remove several other nodes in the tree so
-     * performances strongly depend on wether or not and how much the
+     * performances strongly depend on whether or not and how much the
      * tree's structure needs to be modified.  For efficiency no check
      * is performed on the coordinates
      * @param aPoint The point

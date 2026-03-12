@@ -79,7 +79,7 @@ namespace DGtal
    *  @endcode
    *
    * @see testTableReader.cpp
-   * @tparam TQuantity the type fo the integer to be read.
+   * @tparam TQuantity the type of the integer to be read.
    **/
 
   template <typename TQuantity>
