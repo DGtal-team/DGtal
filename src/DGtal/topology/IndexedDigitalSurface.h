@@ -267,7 +267,7 @@ namespace DGtal
     /// container. Pass a CountedPtr or any variant if you wish to
     /// secure its aliasing.
     ///
-    /// @return true if everything went allright, false if it was not
+    /// @return true if everything went alright, false if it was not
     /// possible to build a consistent data structure (e.g., butterfly
     /// neighborhoods).
     bool build( ConstAlias< DigitalSurfaceContainer > surfContainer );

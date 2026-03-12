@@ -84,7 +84,7 @@ namespace DGtal
      *
      * @param filename name of the output file
      * @param aImage the image to export
-     * @param compressed boolean to decide wether the vol must be compressed or not
+     * @param compressed boolean to decide whether the vol must be compressed or not
      * @param aFunctor functor used to cast image values
      * @return true if no errors occur.
      */

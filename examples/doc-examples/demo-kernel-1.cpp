@@ -28,7 +28,7 @@
 
 /**
  * Example of DGtal kernel and export with Board2D.
- *  \image html exampleDemoKernel-1.png "Display 2D points in its domain and export woth Board2D."
+ *  \image html exampleDemoKernel-1.png "Display 2D points in its domain and export with Board2D."
  *  \example doc-examples/demo-kernel-1.cpp
  */
 

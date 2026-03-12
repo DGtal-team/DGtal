@@ -238,7 +238,7 @@ bool DGtal::OneBalancedWordComputer<TConstIterator,TInteger>::extendFront()
     myNextAfter            = myPatternBegin;
 
   } else if ( isUL( myNextAfter ) && ( letterRead == getSmallLetter() ) ) {
-    //In this case thw whole main pattern is modified! Not only complexified.
+    //In this case the whole main pattern is modified! Not only complexified.
     Size myOldLeftPatternLength = myLeftPatternLength;
     Size myOldSuffixLength = suffixLength();
     myNbRepeat = 1;

@@ -1291,7 +1291,7 @@ Board::saveTikZ( std::ostream &out, double pageWidth, double pageHeight, double 
  *  <li>Scalable Vector Graphics files (SVG).
  * </ul>
  *
- * The main class of the library is the #LibBoard#Board class. It is intented to be as simple as possible
+ * The main class of the library is the #LibBoard#Board class. It is intended to be as simple as possible
  * so that it can be used quickly in programs to generate the kind of figure one would rather
  * not draw by hand, but which can be easily drawn by a computer (C++) program.
  *
