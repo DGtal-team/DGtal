@@ -12,6 +12,7 @@ acount
 astroid
 myDatas
 Aline
+myE
 TRing
 Groupe
 aLine
