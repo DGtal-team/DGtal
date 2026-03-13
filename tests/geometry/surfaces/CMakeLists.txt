@@ -28,6 +28,10 @@ foreach(FILE ${TESTS_SURFACES_SRC})
   DGtal_add_test(${FILE})
 endforeach()
 
+if (DGTAL_WITH_OPENMP)
+  DGtal_add_test(testParallelIntegralInvariantEstimator)
+endif()
+
 
 if (   DGTAL_WITH_CGAL )
   set(CGAL_TESTS_SRC

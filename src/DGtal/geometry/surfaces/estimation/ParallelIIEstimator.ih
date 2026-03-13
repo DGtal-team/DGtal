@@ -1,0 +1,150 @@
+#include <ranges>
+
+namespace DGtal 
+{
+  template<class TEstimator, typename TSplitter> 
+  template<class... Args>
+  ParallelIIEstimator<TEstimator, TSplitter>::
+  ParallelIIEstimator(int32_t nbThread, Args&&... args) 
+  { 
+      if (nbThread <= 0)
+        nbThread = std::max(1, omp_get_num_threads());
+
+      // Note: We can not use std::vector constructor or resize
+      // because it will copy the estimator but it can have shared 
+      // state...
+      // We rather build a new one in a loop by calling the constructor
+      // implictely with emplace_back
+      myEstimators.reserve(nbThread);
+      for (int i = 0; i < nbThread; ++i)
+        myEstimators.emplace_back(std::forward<Args>(args)...);
+  }
+
+  template<class TEstimator, typename TSplitter> 
+  void ParallelIIEstimator<TEstimator, TSplitter>::clear()
+  {
+    for (auto& estim : myEstimators)
+      estim.clear();
+  }
+
+  template<class TEstimator, typename TSplitter> 
+  typename ParallelIIEstimator<TEstimator, TSplitter>::Scalar
+  ParallelIIEstimator<TEstimator, TSplitter>::h() const { return myEstimators[0].h(); }
+
+  template<class TEstimator, typename TSplitter> 
+  void ParallelIIEstimator<TEstimator, TSplitter>::attach(
+      ConstAlias<KSpace> K, 
+      ConstAlias<PointPredicate> pp)
+  {
+    clear();
+
+    myKSpace = K;
+    myPointPredicate = pp;
+  }
+
+  template<class TEstimator, typename TSplitter> 
+  void ParallelIIEstimator<TEstimator, TSplitter>::setParams(double dRadius) 
+  {
+    myRadius = dRadius;
+  }
+
+  template<class TEstimator, typename TSplitter> 
+  bool ParallelIIEstimator<TEstimator, TSplitter>::isValid() const
+  {
+    bool valid = true;
+    for (const auto& estim : myEstimators)
+      valid = valid && estim.isValid();
+
+    return valid;
+  }
+
+  template<class TEstimator, typename TSplitter> 
+  template<typename ItA, typename ItB>
+  void ParallelIIEstimator<TEstimator, TSplitter>::init(double h_, ItA, ItB)
+  {
+    myH = h_;
+  }
+  
+  template<class TEstimator, typename TSplitter> 
+  template<typename It>
+  typename ParallelIIEstimator<TEstimator, TSplitter>::Quantity
+  ParallelIIEstimator<TEstimator, TSplitter>::eval(It it)
+  {
+    // TODO: Initialize properly the estimator (attaching shape, ...)
+    if (!myEstimators[0].isValid())
+    {
+      auto ite = it; ite++;
+      myEstimators[0].init(myH, it, ite);
+    }
+
+    return {
+      .location = *it, 
+      .value = myEstimators[0].eval(it)
+    };
+  }
+
+  template<class TEstimator, typename TSplitter> 
+  template<typename It, typename Oit>
+  Oit ParallelIIEstimator<TEstimator, TSplitter>::eval(It itb, It ite, Oit rslt)
+  {
+    Domain mainDomain(myKSpace->lowerBound(), myKSpace->upperBound());
+    std::vector<SplitInfo<Domain>> domains = mySplitter(mainDomain, myEstimators.size());
+
+    // use std::map to keep insertion order so no lookup is needed afterward
+    std::map<Surfel, EstimatorQuantity> result;
+    std::vector<std::vector<std::pair<const Surfel, EstimatorQuantity>*>> resultLocation(domains.size());
+    for (auto it = itb; it != ite; it++) 
+    {
+      result[*it] = 0.; // Safe, it will be overwritten (if domain really is a partition of the domain)
+                      
+      // [23.2.4 Associative containers]: insersion does not invalidate pointer 
+      for (unsigned int j = 0; j < domains.size(); ++j)
+      {
+        // Should be true for only one of the domain. The break ensure
+        // each surfel belongs to one and only one domain, meaning there
+        // will be no concurrent write afterward
+        if (domains[j].domain.isInside(myKSpace->interiorVoxel(*it)))
+        {
+          resultLocation[j].push_back(&(*result.find(*it)));
+          break;
+        }
+      }
+    }
+   
+    #pragma omp parallel for
+    for (uint32_t i = 0; i < domains.size(); ++i)
+    {
+      auto surfels = resultLocation[i] | std::views::transform([](const auto& kv) -> const Surfel&
+      {
+        return kv->first; 
+      });
+      auto values = resultLocation[i] | std::views::transform([&](auto& kv) -> EstimatorQuantity& 
+      {
+        return kv->second;
+      });
+           
+      auto& estim = myEstimators[i];
+
+      estim.attach(*myKSpace, *myPointPredicate);
+      estim.setParams(myRadius);
+
+      estim.init(myH, surfels.begin(), surfels.end());
+      estim.eval(surfels.begin(), surfels.end(), values.begin());
+    }
+    
+    // Fuse result into the iterator 
+    for (const auto& it : result) 
+      *++rslt = it.second;
+
+    return rslt;
+  } 
+
+  template<class TEstimator, typename TSplitter> 
+  void
+  ParallelIIEstimator<TEstimator, TSplitter>::selfDisplay( std::ostream & out ) const
+  {
+    out << "[ParallelIIEstimator Estim=";
+    myEstimators[0].selfDisplay(out);
+    out << "]";
+  }
+}
