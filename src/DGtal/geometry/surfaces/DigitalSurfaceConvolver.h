@@ -408,7 +408,7 @@ private:
   const DigitalKernel * myKernel; ///< Two choice to iterate over the full kernel. See init() for more information.
   const PairIterators * myKernelMask; ///< Two choice to iterate over the full kernel. See init() for more information.
 
-  Spel myKernelSpelOrigin; ///< Copy of the origin cell of the kernel.
+  KSpace::Point myKernelKCoordsOrigin; ///< Copy of the origin cell of the kernel.
 
   // ------------------------- Hidden services ------------------------------
 
@@ -775,7 +775,7 @@ private:
   const DigitalKernel * myKernel; ///< Two choice to iterate over the full kernel. See init() for more information.
   const PairIterators * myKernelMask; ///< Two choice to iterate over the full kernel. See init() for more information.
 
-  Spel myKernelSpelOrigin; ///< Copy of the origin cell of the kernel.
+  KSpace::Point myKernelKCoordsOrigin; ///< Copy of the origin cell of the kernel.
 
   // ------------------------- Hidden services ------------------------------
 
@@ -1145,7 +1145,7 @@ private:
   const DigitalKernel * myKernel; ///< Two choice to iterate over the full kernel. See init() for more information.
   const PairIterators * myKernelMask; ///< Two choice to iterate over the full kernel. See init() for more information.
 
-  Spel myKernelSpelOrigin; ///< Copy of the origin cell of the kernel.
+  KSpace::Point myKernelKCoordsOrigin; ///< Copy of the origin cell of the kernel.
 
   // ------------------------- Hidden services ------------------------------
 

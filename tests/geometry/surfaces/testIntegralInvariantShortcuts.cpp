@@ -82,7 +82,30 @@ TEST_CASE( "Testing IntegralInvariant Shortcuts API" )
   SECTION("Testing that mean/Gaussian/tensor curvature shortucut values match")
   {
     for(std::size_t i = 0; i < G.size(); ++i)
-     REQUIRE( Kcurv[i] == Approx( G[i] ) );
+      REQUIRE( Kcurv[i] == Approx( G[i] ) );
+  }
+
+  SECTION("Testing on shifted domains")
+  {
+    auto SHIFT=512;
+    auto domain = binary_image->domain();
+    Z3i::Domain shifted(domain.lowerBound() + Z3i::Point::diagonal(SHIFT), domain.upperBound() + Z3i::Point::diagonal(SHIFT) );
+
+    SH3::KSpace Ks;
+    Ks.init( shifted.lowerBound(), shifted.upperBound(), true );
+
+    CountedPtr<SH3::BinaryImage>  binary_image_shifted(new SH3::BinaryImage(shifted));
+    for(auto p : binary_image->domain())
+      binary_image_shifted->setValue(p+Z3i::Point::diagonal(SHIFT), binary_image->operator()(p));
+
+    auto surfaceShifted  = SH3::makeLightDigitalSurface( binary_image_shifted, Ks, params );
+    auto surfelsShifted  = SH3::getSurfelRange( surfaceShifted, params );
+    trace.info() << "Nb surfels= " << surfels.size() << " "<<shifted<<" "<<Ks<<std::endl;
+
+    //Computing some differential quantities
+    auto KcurvShifted     = SHG3::getIIGaussianCurvatures( binary_image_shifted, surfelsShifted, params);
+
+
   }
 }
 

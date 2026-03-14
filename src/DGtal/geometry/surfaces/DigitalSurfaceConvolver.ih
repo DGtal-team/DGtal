@@ -77,7 +77,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
     myMasks( other.myMasks ),
     myKernel( other.myKernel ),
     myKernelMask( other.myKernelMask ),
-    myKernelSpelOrigin( other.myKernelSpelOrigin )
+    myKernelKCoordsOrigin( other.myKernelKCoordsOrigin )
 {
 }
 
@@ -89,7 +89,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
   ConstAlias< PairIterators > fullKernel,
   ConstAlias< std::vector< PairIterators > > masks )
 {
-  myKernelSpelOrigin = myKSpace.sSpel( pOrigin );
+  KhalimskySpaceND<dimension, typename KSpace::Integer> preK;
+  myKernelKCoordsOrigin = preK.sKCoords(preK.sSpel( pOrigin ));
   myKernelMask = &fullKernel;
   myMasks = &masks;
 
@@ -107,7 +108,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, d
   ConstAlias< DigitalKernel > fullKernel,
   ConstAlias< std::vector< PairIterators > > masks )
 {
-  myKernelSpelOrigin = myKSpace.sSpel( pOrigin );
+  KhalimskySpaceND<dimension, typename KSpace::Integer> preK;
+  myKernelKCoordsOrigin = preK.sKCoords(preK.sSpel( pOrigin ));
   myKernel = &fullKernel;
   myMasks = &masks;
 
@@ -589,7 +591,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
     myMasks( other.myMasks ),
     myKernel( other.myKernel ),
     myKernelMask( other.myKernelMask ),
-    myKernelSpelOrigin( other.myKernelSpelOrigin )
+    myKernelKCoordsOrigin( other.myKernelKCoordsOrigin )
 {
 }
 
@@ -601,7 +603,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   ConstAlias< PairIterators > fullKernel,
   ConstAlias< std::vector< PairIterators > > masks )
 {
-  myKernelSpelOrigin = myKSpace.sSpel( pOrigin );
+  KhalimskySpaceND<2,typename KSpace::Integer> preK;
+  myKernelKCoordsOrigin = preK.sKCoords(preK.sSpel( pOrigin ));
   myKernelMask = &fullKernel;
   myMasks = &masks;
 
@@ -619,7 +622,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   ConstAlias< DigitalKernel > fullKernel,
   ConstAlias< std::vector< PairIterators > > masks )
 {
-  myKernelSpelOrigin = myKSpace.sSpel( pOrigin );
+  KhalimskySpaceND<2,typename KSpace::Integer> preK;
+  myKernelKCoordsOrigin = preK.sKCoords(preK.sSpel( pOrigin ));
   myKernel = &fullKernel;
   myMasks = &masks;
 
@@ -1048,7 +1052,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   {
     DGtal::Dimension kDim = myKSpace.sOrthDir( *it );
     currentInnerSpel = myKSpace.sDirectIncident( *it, kDim ); /// Spel on the border, but inside the shape
-    shiftInnerSpel = myKSpace.sKCoords( currentInnerSpel ) - myKSpace.sKCoords( myKernelSpelOrigin );
+    shiftInnerSpel = myKSpace.sKCoords( currentInnerSpel ) - myKernelKCoordsOrigin;
 
     /// Check if we can use previous results
     if( useLastResults )
@@ -1213,7 +1217,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   {
     DGtal::Dimension kDim = myKSpace.sOrthDir( *it );
     currentOuterSpel = myKSpace.sIndirectIncident( *it, kDim );
-    shiftOuterSpel = myKSpace.sKCoords( currentOuterSpel ) - myKSpace.sKCoords( myKernelSpelOrigin );
+    shiftOuterSpel = myKSpace.sKCoords( currentOuterSpel ) - myKernelKCoordsOrigin;
 
     ASSERT( currentInnerSpel != currentOuterSpel );
 
@@ -1338,7 +1342,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   {
     DGtal::Dimension kDim = myKSpace.sOrthDir( *it );
     currentInnerSpel = myKSpace.sDirectIncident( *it, kDim ); /// Spel on the border, but inside the shape
-    shiftInnerSpel = myKSpace.sKCoords( currentInnerSpel ) - myKSpace.sKCoords( myKernelSpelOrigin );
+    shiftInnerSpel = myKSpace.sKCoords( currentInnerSpel ) - myKernelKCoordsOrigin;
 
     /// Check if we can use previous results
     if( useLastResults )
@@ -1502,7 +1506,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
   {
     DGtal::Dimension kDim = myKSpace.sOrthDir( *it );
     currentOuterSpel = myKSpace.sIndirectIncident( *it, kDim );
-    shiftOuterSpel = myKSpace.sKCoords( currentOuterSpel ) - myKSpace.sKCoords( myKernelSpelOrigin );
+    shiftOuterSpel = myKSpace.sKCoords( currentOuterSpel ) - myKernelKCoordsOrigin;
 
     ASSERT( currentInnerSpel != currentOuterSpel );
 
@@ -1620,7 +1624,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
     myMasks( other.myMasks ),
     myKernel( other.myKernel ),
     myKernelMask( other.myKernelMask ),
-    myKernelSpelOrigin( other.myKernelSpelOrigin )
+    myKernelKCoordsOrigin( other.myKernelKCoordsOrigin )
 {
 }
 
@@ -1632,7 +1636,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
   ConstAlias< PairIterators > fullKernel,
   ConstAlias< std::vector< PairIterators > > masks )
 {
-  myKernelSpelOrigin = myKSpace.sSpel( pOrigin );
+  KhalimskySpaceND<3,typename KSpace::Integer> preK;
+  myKernelKCoordsOrigin = preK.sKCoords(preK.sSpel( pOrigin ));
   myKernelMask = &fullKernel;
   myMasks = &masks;
 
@@ -1650,10 +1655,10 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
   ConstAlias< DigitalKernel > fullKernel,
   ConstAlias< std::vector< PairIterators > > masks )
 {
-  myKernelSpelOrigin = myKSpace.sSpel( pOrigin );
+  KhalimskySpaceND<3,typename KSpace::Integer> preK;
+  myKernelKCoordsOrigin = preK.sKCoords(preK.sSpel( pOrigin ));
   myKernel = &fullKernel;
   myMasks = &masks;
-
   ASSERT ( myMasks->size () == 27 );
 
   isInitFullMasks = false;
@@ -2099,7 +2104,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
   {
     DGtal::Dimension kDim = myKSpace.sOrthDir( *it );
     currentInnerSpel = myKSpace.sDirectIncident( *it, kDim ); /// Spel on the border, but inside the shape
-    shiftInnerSpel = myKSpace.sKCoords( currentInnerSpel ) - myKSpace.sKCoords( myKernelSpelOrigin );
+    shiftInnerSpel = myKSpace.sKCoords( currentInnerSpel ) - myKernelKCoordsOrigin;
 
     /// Check if we can use previous results
     if( useLastResults )
@@ -2269,7 +2274,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
   {
     DGtal::Dimension kDim = myKSpace.sOrthDir( *it );
     currentOuterSpel = myKSpace.sIndirectIncident( *it, kDim );
-    shiftOuterSpel = myKSpace.sKCoords( currentOuterSpel ) - myKSpace.sKCoords( myKernelSpelOrigin );
+    shiftOuterSpel = myKSpace.sKCoords( currentOuterSpel ) - myKernelKCoordsOrigin;
 
     ASSERT( currentInnerSpel != currentOuterSpel );
 
@@ -2399,7 +2404,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
   {
     DGtal::Dimension kDim = myKSpace.sOrthDir( *it );
     currentInnerSpel = myKSpace.sDirectIncident( *it, kDim ); /// Spel on the border, but inside the shape
-    shiftInnerSpel = myKSpace.sKCoords( currentInnerSpel ) - myKSpace.sKCoords( myKernelSpelOrigin );
+    shiftInnerSpel = myKSpace.sKCoords( currentInnerSpel ) - myKernelKCoordsOrigin;
 
     /// Check if we can use previous results
     if( useLastResults )
@@ -2569,7 +2574,7 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
   {
     DGtal::Dimension kDim = myKSpace.sOrthDir( *it );
     currentOuterSpel = myKSpace.sIndirectIncident( *it, kDim );
-    shiftOuterSpel = myKSpace.sKCoords( currentOuterSpel ) - myKSpace.sKCoords( myKernelSpelOrigin );
+    shiftOuterSpel = myKSpace.sKCoords( currentOuterSpel ) - myKernelKCoordsOrigin;
 
     ASSERT( currentInnerSpel != currentOuterSpel );
 
