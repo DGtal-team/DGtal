@@ -61,7 +61,7 @@ typedef FreemanChain<int> Contour;
 
 
 /**
- * Test exted and retract function on a complex chape
+ * Test extend and retract function on a complex chape
  */
 bool testOneBalancedWordComputer()
 {

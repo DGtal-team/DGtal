@@ -232,7 +232,7 @@ namespace DGtal
     /// Builds the half-edge data structure from the given triangles
     /// and vertices. After that, the surface is valid.
     ///
-    /// @return true if everything went allright, false if it was not
+    /// @return true if everything went alright, false if it was not
     /// possible to build a consistent data structure (e.g., butterfly
     /// neighborhoods).
     bool build();

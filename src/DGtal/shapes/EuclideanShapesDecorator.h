@@ -56,7 +56,7 @@ namespace DGtal
    * Description of template class 'EuclideanShapesCSG' <p>
    * \brief Aim: Constructive Solid Geometry (CSG) between models of CEuclideanBoundedShape and CEuclideanOrientedShape
    * Use CSG operation (union, intersection, minus) from a shape of Type ShapeA with one (or more) shapes of Type ShapeB.
-   * Can combine differents operations.
+   * Can combine different operations.
    * Limitations: Since we don't have a class derived by all shapes, operations can be done by only one type of shapes.
    * Use CSG of CSG to go beyond this limitation.
    *
@@ -150,7 +150,7 @@ namespace DGtal
     }
 
     /**
-      * Union between a shape (ShapeA, gived at construction) and b (ShapeB). If an operation was already set, the
+      * Union between a shape (ShapeA, given at construction) and b (ShapeB). If an operation was already set, the
       * union will be between the CSG shape and b (ShapeB).
       *
       * @param[in] b a ShapeB, model of CEuclideanBoundedShape and CEuclideanOrientedShape

@@ -600,7 +600,7 @@ namespace DGtal
 
     /**
      * @param aPoint any point of the DSL
-     * @pre aPoint sould belongs to the DSL
+     * @pre aPoint should belongs to the DSL
      * @return begin reverse iterator,
      * which points to @a aPoint
      */
@@ -608,7 +608,7 @@ namespace DGtal
 
     /**
      * @param aPoint any point of the DSL
-     * @pre aPoint sould belongs to the DSL
+     * @pre aPoint should belongs to the DSL
      * @return end iterator,
      * which points to the point located before @a aPoint
      */

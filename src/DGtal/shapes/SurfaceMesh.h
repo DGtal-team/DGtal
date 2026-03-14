@@ -528,7 +528,7 @@ namespace DGtal
             }
           if (!ok)
           {
-            //all neighboors are visited
+            //all neighbors are visited
             for (auto other : adjacent[current])
               if (other == first)
               {
@@ -1004,7 +1004,7 @@ namespace DGtal
   protected:
 
     /// Removes the index \a i from the vector \a v.
-    /// @param[inout] v a vector of indices
+    /// @param[in,out] v a vector of indices
     /// @param[in] i an index
     void removeIndex( std::vector< Index >& v, Index i )
     {
@@ -1023,7 +1023,7 @@ namespace DGtal
     }
 
     /// Replaces the index \a i with the index \a ri in the vector \a v.
-    /// @param[inout] v a vector of indices
+    /// @param[in,out] v a vector of indices
     /// @param[in] i an index
     /// @param[in] ri an index
     void replaceIndex( std::vector< Index >& v, Index i, Index ri )
@@ -1042,7 +1042,7 @@ namespace DGtal
     }
 
     /// Adds the index \a i to the vector \a v.
-    /// @param[inout] v a vector of indices
+    /// @param[in,out] v a vector of indices
     /// @param[in] i an index
     void addIndex( std::vector< Index >& v, Index i )
     {

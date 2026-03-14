@@ -486,13 +486,13 @@ namespace DGtal
       return current;
     }
 
-    /// @param[inout] localX as output, the set of points of the
+    /// @param[in,out] localX as output, the set of points of the
     /// neighborhood belonging to the shape
     ///
     /// @param[in] with_center if 'true' adds the center point.
     void getLocalX( std::vector< Point >& localX, bool with_center ) const;
 
-    /// @param[inout] localCompX as output, the set of points of the
+    /// @param[in,out] localCompX as output, the set of points of the
     /// neighborhood not belonging to the shape
     ///
     /// @param[in] with_center if 'true' adds the center point.

@@ -513,7 +513,7 @@ namespace DGtal
       /**
        * Removes the first point of the DSS (at back).
        * NB : Unlike the ArithmeticalDSSComputer, a OneBalancedWordComputer must
-       * containt at least two points since it is defined by a letter in
+       * contain at least two points since it is defined by a letter in
        * a Freeman Chain code.
        * @return 'true' if the first point is removed, 'false' otherwise.
        */
@@ -522,7 +522,7 @@ namespace DGtal
       /**
        * Removes the last point of the DSS (at front).
        * NB : Unlike the ArithmeticalDSSComputer, a OneBalancedWordComputer must
-       * containt at least two points since it is defined by a letter in
+       * contain at least two points since it is defined by a letter in
        * a Freeman Chain code.
        * @return 'true' if the last point is removed, 'false' otherwise.
        */
