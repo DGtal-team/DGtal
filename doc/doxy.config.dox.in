@@ -1908,8 +1908,6 @@ MATHJAX_FORMAT         = HTML-CSS
 
 MATHJAX_RELPATH        = https://cdn.jsdelivr.net/npm/mathjax@4
 
-# https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/MathJax.js?config=TeX-MML-AM_CHTML
-
 # The MATHJAX_EXTENSIONS tag can be used to specify one or more MathJax
 # extension names that should be enabled during MathJax rendering. For example
 # for MathJax version 2 (see https://docs.mathjax.org/en/v2.7/tex.html):
@@ -1926,8 +1924,8 @@ MATHJAX_RELPATH        = https://cdn.jsdelivr.net/npm/mathjax@4
 # -textmacros)
 # This tag requires that the tag USE_MATHJAX is set to YES.
 
-MATHJAX_EXTENSIONS     = TeX/AMSmath \
-                         TeX/AMSsymbols
+#MATHJAX_EXTENSIONS     = TeX/AMSmath \
+#                         TeX/AMSsymbols
 
 # The MATHJAX_CODEFILE tag can be used to specify a file with JavaScript pieces
 # of code that will be used on startup of the MathJax code. See the Mathjax site
