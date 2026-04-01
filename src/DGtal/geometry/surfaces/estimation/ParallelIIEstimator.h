@@ -25,7 +25,7 @@ namespace DGtal
   /**
    * @brief Run an Integral Invariant estimator in parallel
    *
-   * This class is meant as an almost perfect replacement of 
+   * This class is meant as an almost perfect replacement of
    * other IIEstimator. The only difference is the constructor
    * which needs the number of threads.
    *
@@ -35,7 +35,7 @@ namespace DGtal
    * @tparam TEstimator The model of Estimator
    * @tparam TSplitter The function to split the domain
    */
-  template<class TEstimator, typename TSplitter> 
+  template<class TEstimator, typename TSplitter>
   class ParallelIIEstimator
   {
   public:
@@ -50,14 +50,14 @@ namespace DGtal
     using SurfelSet = typename KSpace::SurfelSet;
     using EstimatorQuantity = typename TEstimator::Quantity;
     using Quantity = EstimatorQuantity;
-    
+
     // Building the surface
     using Boundary = LightImplicitDigitalSurface<KSpace, PointPredicate>;
     using Surface = DigitalSurface<Boundary>;
     using Visitor = DepthFirstVisitor<Surface>;
     using VisitorRange = GraphVisitorRange<Visitor>;
-  
-   
+
+
     /**
      * @brief Constructor
      *
@@ -67,8 +67,8 @@ namespace DGtal
      * @param args Constructor arguments to underlying estimators
      */
     template<typename... Args>
-    ParallelIIEstimator(int32_t nbThread, Args&&... args); 
-   
+    ParallelIIEstimator(int32_t nbThread, Args&&... args);
+
     /**
      * Clears the object. It is now invalid.
      */
@@ -84,7 +84,7 @@ namespace DGtal
      * @param aPointPredicate the shape of interest. The alias can be secured
      * if a some counted pointer is handed.
     */
-    void attach(ConstAlias<KSpace> K, 
+    void attach(ConstAlias<KSpace> K,
                 ConstAlias<PointPredicate> pp);
 
     /**
@@ -98,7 +98,7 @@ namespace DGtal
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
-     */ 
+     */
      bool isValid() const;
 
     /**

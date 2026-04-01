@@ -100,7 +100,7 @@ bool testCurvature2dP ( double h, double delta )
   trace.endBlock();
 
   trace.beginBlock( "Curvature estimator initialisation ...");
-  
+
   VisitorRange range( new Visitor( surf, *surf.begin() ));
   VisitorConstIterator ibegin = range.begin();
   VisitorConstIterator iend = range.end();
@@ -190,10 +190,10 @@ bool testCurvature2d ( double h, double delta )
   dshape.init( Z2i::RealPoint( -20.0, -20.0 ), Z2i::RealPoint( 20.0, 20.0 ), h );
 
   Z2i::KSpace K;
-  
+
   if ( !K.init( dshape.getLowerBound(), dshape.getUpperBound(), true ) )
   {
-    trace.error() << "Problem with Khalimsky space" << std::endl; 
+    trace.error() << "Problem with Khalimsky space" << std::endl;
     return false;
   }
 
@@ -204,7 +204,7 @@ bool testCurvature2d ( double h, double delta )
   trace.endBlock();
 
   trace.beginBlock( "Curvature estimator initialisation ...");
-  
+
   VisitorRange range( new Visitor( surf, *surf.begin() ));
   VisitorConstIterator ibegin = range.begin();
   VisitorConstIterator iend = range.end();
