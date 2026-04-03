@@ -70,7 +70,7 @@ bool testCurvature2dP ( double h, double delta )
 
   typedef functors::IICurvatureFunctor<Z2i::Space> MyIICurvatureFunctor;
   typedef IntegralInvariantVolumeEstimator< Z2i::KSpace, DigitalShape, MyIICurvatureFunctor > MyIICurvatureEstimator;
-  typedef EvenDomainSplitter<HyperRectDomain<Z2i::Space>> Splitter;
+  typedef RegularDomainSplitter<HyperRectDomain<Z2i::Space>> Splitter;
   typedef ParallelIIEstimator<MyIICurvatureEstimator, Splitter> MyIICurvatureEstimatorA;
   // typedef MyIICurvatureFunctor::Value Value;
   typedef MyIICurvatureEstimatorA::Quantity Value;

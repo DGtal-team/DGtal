@@ -15,19 +15,22 @@ namespace DGtal
   struct SplitInfo
   {
 
-      Domain domain; //< The actual split domain
-      uint32_t hintVoxelCount = 0; //< An expected guess for the number of voxel
+    Domain domain; //< The actual split domain
+    uint32_t hintVoxelCount = 0; //< An expected guess for the number of voxel
   };
 
-  // TODO: CDomainSplitter concept ?
   /**
    * @brief Splits a domain evenly along all dimensions
    *
    * @tparam The model of domain to split
    */
   template<typename Domain>
-  struct EvenDomainSplitter
+  struct RegularDomainSplitter
   {
+
+    //Output spllitted domain type
+    typedef std::vector<SplitInfo<Domain>> SplitDomainsInfo;
+
     /**
      * @brief Splits a domain
      *
@@ -35,9 +38,9 @@ namespace DGtal
      * even subdomains.
      *
      * @param d The domain to split
-     * @param splitHint The wanted number of splits
+     * @param splitHint The targeted number of splits
      */
-    std::vector<SplitInfo<Domain>> operator()(const Domain& d, uint32_t splitHint) const
+    SplitDomainsInfo operator()(const Domain& d, uint32_t splitHint) const
     {
       // Find best match possible for even splitting
       const uint32_t splitCount = std::floor(std::log(splitHint) / std::log(Domain::dimension));
@@ -47,7 +50,7 @@ namespace DGtal
         return { SplitInfo{d, 0} };
 
       auto splitSize = (d.upperBound() - d.lowerBound()) / (int32_t)splitCount;
-      std::vector<SplitInfo<Domain>> result;
+      SplitDomainsInfo result;
       result.reserve(totalSplits);
 
       for (uint32_t i = 0; i < totalSplits; ++i)
@@ -56,9 +59,9 @@ namespace DGtal
         auto idx = i;
         for (uint32_t j = 0; j < Domain::dimension; ++j)
         {
-            auto k = idx % splitCount;
-            start[j] += k * splitSize[j] + k; // +k ensure no overlap between domains
-            idx /= splitCount;
+          auto k = idx % splitCount;
+          start[j] += k * splitSize[j] + k; // +k ensure no overlap between domains
+          idx /= splitCount;
         }
 
         // Make correction to ensure it remains within the domain
@@ -72,4 +75,51 @@ namespace DGtal
       return result;
     };
   };
+
+
+  /**
+   * @brief Splits a domain along one of the domain grid axis
+   *
+   * @tparam The model of domain to split
+   */
+  template<typename Domain>
+  struct AxisDomainSplitter
+  {
+
+    //Output spllitted domain type
+    typedef std::vector<SplitInfo<Domain>> SplitDomainsInfo;
+
+    /**
+     * @brief Regularly splits a domain along on axis
+     *
+    *
+     * @param d The domain to split
+     * @param splitHint The targeted number of splits
+     * @param dim the split axis
+     */
+    SplitDomainsInfo operator()(const Domain& d, uint32_t splitHint, typename Domain::Dimension dim) const
+    {
+      SplitDomainsInfo result;
+      result.reserve(splitHint);
+      typename Domain::Point extent = d.upperBound() - d.lowerBound();
+
+      auto width = extent[dim] / splitHint;
+      typename Domain::Point shift = Domain::Point::zero();
+      shift[dim] = width;
+
+      typename Domain::Point start = d.lowerBound();
+      typename Domain::Point end = start;
+      end[dim] += width;
+
+      for(auto i = 0; i <  splitHint; ++i)
+      {
+        result.emplace_back(Domain(start, end), 0);
+        start += shift;
+        end += shift;
+      }
+
+      return result;
+    };
+  };
+
 }
