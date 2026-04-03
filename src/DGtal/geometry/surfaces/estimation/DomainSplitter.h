@@ -37,7 +37,8 @@ namespace DGtal
      * @param d The domain to split
      * @param splitHint The wanted number of splits
      */
-    std::vector<SplitInfo<Domain>> operator()(const Domain& d, uint32_t splitHint) const {
+    std::vector<SplitInfo<Domain>> operator()(const Domain& d, uint32_t splitHint) const
+    {
       // Find best match possible for even splitting
       const uint32_t splitCount = std::floor(std::log(splitHint) / std::log(Domain::dimension));
       const uint32_t totalSplits = std::pow(splitCount, Domain::dimension);

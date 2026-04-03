@@ -17,6 +17,10 @@
 #include <DGtal/geometry/surfaces/estimation/DomainSplitter.h>
 #include <DGtal/topology/helpers/Surfaces.h>
 
+#ifndef DGTAL_WITH_OPENMP
+#error You need to have activated OpenMP (DGTAL_WITH_OPENMP) to include this file.
+#endif
+
 // We require openmp for this estimator, even though it could run without
 #include <omp.h>
 

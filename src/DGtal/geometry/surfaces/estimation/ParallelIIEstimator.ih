@@ -12,7 +12,7 @@ namespace DGtal
 
       // Note: We can not use std::vector constructor or resize
       // because it will copy the estimator but it can have shared
-      // state...
+      // state.
       // We rather build a new one in a loop by calling the constructor
       // implictely with emplace_back
       myEstimators.reserve(nbThread);
