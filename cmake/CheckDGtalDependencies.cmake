@@ -61,3 +61,17 @@ if (TARGET Eigen3::Eigen)
   set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3::Eigen)
   target_link_libraries(DGtal PUBLIC Eigen3::Eigen)
 endif()
+
+
+# -----------------------------------------------------------------------------
+# Fetching mathjax for the documentation and fix doc target
+# -----------------------------------------------------------------------------
+include(mathjax)
+message(STATUS "Export mathjax path: ${mathjax_SOURCE_DIR}")
+add_custom_command(TARGET doc POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory
+        ${CMAKE_BINARY_DIR}/html/MathJax-4.1.1
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${mathjax_SOURCE_DIR}
+        ${CMAKE_BINARY_DIR}/html/MathJax-4.1.1
+)
