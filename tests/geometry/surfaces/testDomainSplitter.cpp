@@ -63,7 +63,6 @@ TEST_CASE( "Domain Regular Grid Splitter tests" )
   for(auto i=0; i< output.size(); ++i)
   {
     viewer << cmap(i);
-    trace.info()<<cmap(i)<<std::endl;
     viewer << output[i].domain;
   }
   viewer.show();
@@ -89,7 +88,6 @@ TEST_CASE( "Domain Axis Splitter tests" )
   for(auto i=0; i< output.size(); ++i)
   {
     viewer << cmap(i);
-    trace.info()<<cmap(i)<<std::endl;
     viewer << output[i].domain;
   }
   viewer.show();
