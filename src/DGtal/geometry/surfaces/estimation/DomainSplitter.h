@@ -1,5 +1,6 @@
 #pragma once
 
+#include "DGtal/kernel/domains/CDomain.h"
 #include <vector>
 
 namespace DGtal
@@ -14,6 +15,7 @@ namespace DGtal
   template<typename Domain>
   struct SplitInfo
   {
+    BOOST_CONCEPT_ASSERT(( concepts::CDomain< Domain > ));
 
     Domain domain; //< The actual split domain
     uint32_t hintVoxelCount = 0; //< An expected guess for the number of voxel
@@ -27,6 +29,7 @@ namespace DGtal
   template<typename Domain>
   struct RegularDomainSplitter
   {
+    BOOST_CONCEPT_ASSERT(( concepts::CDomain< Domain > ));
 
     //Output spllitted domain type
     typedef std::vector<SplitInfo<Domain>> SplitDomainsInfo;
@@ -78,7 +81,7 @@ namespace DGtal
 
 
   /**
-   * @brief Splits a domain along one of the domain grid axis
+   * @brief Splits a domain along one of the domain grid axis.
    *
    * @tparam The model of domain to split
    */
@@ -86,36 +89,43 @@ namespace DGtal
   struct AxisDomainSplitter
   {
 
+    BOOST_CONCEPT_ASSERT(( concepts::CDomain< Domain > ));
+
     //Output spllitted domain type
     typedef std::vector<SplitInfo<Domain>> SplitDomainsInfo;
 
     /**
-     * @brief Regularly splits a domain along on axis
+     * @brief Regularly splits a domain along one axis
      *
-    *
      * @param d The domain to split
-     * @param splitHint The targeted number of splits
+     * @param splitHint The targeted number of splits (clamped to the width of the domain)
      * @param dim the split axis
      */
     SplitDomainsInfo operator()(const Domain& d, uint32_t splitHint, typename Domain::Dimension dim) const
     {
       SplitDomainsInfo result;
-      result.reserve(splitHint);
-      typename Domain::Point extent = d.upperBound() - d.lowerBound();
+      if (splitHint == 0)
+        return result;
 
-      auto width = extent[dim] / splitHint;
-      typename Domain::Point shift = Domain::Point::zero();
-      shift[dim] = width;
+      auto lower = d.lowerBound();
+      auto upper = d.upperBound();
+      auto length = upper[dim] - lower[dim] + 1;
+      uint32_t splitCount = splitHint;
+      if (splitCount > length)
+        splitCount = length;
 
-      typename Domain::Point start = d.lowerBound();
-      typename Domain::Point end = start;
-      end[dim] += width;
+      result.reserve(splitCount);
+      auto base = length / splitCount;
+      auto rem = length % splitCount;
 
-      for(auto i = 0; i <  splitHint; ++i)
+      auto start = lower;
+      for (uint32_t i = 0; i < splitCount; ++i)
       {
+        auto size = base + (i < rem ? 1 : 0);
+        auto end = upper;
+        end[dim] = start[dim] + size - 1;
         result.emplace_back(Domain(start, end), 0);
-        start += shift;
-        end += shift;
+        start[dim] = end[dim] + 1;
       }
 
       return result;

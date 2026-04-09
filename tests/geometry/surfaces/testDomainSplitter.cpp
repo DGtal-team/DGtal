@@ -69,3 +69,43 @@ TEST_CASE( "Domain Regular Grid Splitter tests" )
   viewer.show();
 #endif
 }
+
+TEST_CASE( "Domain Axis Splitter tests" )
+{
+  Domain domain(Point(0,0,0), Point(16,32,64));
+
+  AxisDomainSplitter<Domain> splitter;
+
+  AxisDomainSplitter<Domain>::SplitDomainsInfo output = splitter(domain,3,0);
+  REQUIRE( output.size() == 3);
+
+  trace.info() << "Original domain: "<<domain<<std::endl;
+  for(auto d: output)
+    trace.info()<< "   subdomain: "<<d.domain<<std::endl;
+
+#ifdef DGTAL_WITH_POLYSCOPE_VIEWER
+  PolyscopeViewer viewer;
+  HueShadeColorMap<unsigned int> cmap(0,(unsigned int)output.size());
+  for(auto i=0; i< output.size(); ++i)
+  {
+    viewer << cmap(i);
+    trace.info()<<cmap(i)<<std::endl;
+    viewer << output[i].domain;
+  }
+  viewer.show();
+#endif
+}
+
+TEST_CASE( "Domain Axis Splitter tests (another direction)" )
+{
+  Domain domain(Point(10,10,10), Point(16,32,64));
+
+  AxisDomainSplitter<Domain> splitter;
+
+  AxisDomainSplitter<Domain>::SplitDomainsInfo output = splitter(domain,2,1);
+  REQUIRE( output.size() == 2);
+
+  trace.info() << "Original domain: "<<domain<<std::endl;
+  for(auto d: output)
+    trace.info()<< "   subdomain: "<<d.domain<<std::endl;
+}
