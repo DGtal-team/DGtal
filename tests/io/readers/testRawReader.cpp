@@ -142,7 +142,7 @@ void generateRefImage( Image & anImage, typename Image::Value aSeed )
     }
 }
 
-/** Checks reading a previously writed file.
+/** Checks reading a previously written file.
  * @tparam  N  Dimension of the image.
  * @tparam  T  Value type.
  * @tparam  RawIO Class with writer and reader, templated by the image type.

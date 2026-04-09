@@ -64,6 +64,7 @@ if (@POLYSCOPE_FOUND_DGTAL@) #if POLYSCOPE_FOUND_DGTAL
   find_dependency(stb REQUIRED)
   find_dependency(nlohmann_json REQUIRED)
   find_dependency(MarchingCube REQUIRED)
+  find_dependency(IconFontCppHeaders REQUIRED)
   find_dependency(polyscope REQUIRED
     @POLYSCOPE_HINTS@
     )

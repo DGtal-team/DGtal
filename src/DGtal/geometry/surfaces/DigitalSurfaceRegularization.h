@@ -450,7 +450,7 @@ namespace DGtal
     ///Normals
     Normals myNormals;
 
-    ///Gradient of the energy w.r.t. vertex positons
+    ///Gradient of the energy w.r.t. vertex positions
     Positions myGradient;
 
 
@@ -458,7 +458,7 @@ namespace DGtal
     // ---------------------------------------------------------------
     ///Internal members to store precomputed topological information
 
-    ///Gradient of the quad alignment w.r.t. vertex positons
+    ///Gradient of the quad alignment w.r.t. vertex positions
     Positions myGradientAlign;
 
     ///Instance of the KSpace
@@ -479,7 +479,7 @@ namespace DGtal
     std::vector< SH3::Cell > myAlignPointels;
     ///Number of adjacent edges to pointels
     std::vector<unsigned char> myNumberAdjEdgesToPointel;
-    ///Indices of cells foor the Fairness term
+    ///Indices of cells for the Fairness term
     std::vector< SH3::Idx > myFairnessPointelsIdx;
     ///Number of adjacent faces to given vertex
     std::vector< unsigned char > myNbAdjacent;

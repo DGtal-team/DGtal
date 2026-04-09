@@ -126,7 +126,7 @@ namespace DGtal
   /// @note In opposition with CGAL `3D convex hull` package, or with
   /// the arbitrary dimensional `dD Triangulation` package, this
   /// algorithm does not build a simplicial convex hull. Facets may not
-  /// be trangles or simplices in higher dimensions.
+  /// be triangles or simplices in higher dimensions.
   ///
   /// @note This version is generally more than twice faster than CGAL
   /// convex_hull_3 for the usual CGAL kernels Cartesian and
@@ -933,10 +933,10 @@ namespace DGtal
 
 
     /// Process top facet in queue Q as in Quickhull algorithm, and
-    /// updates the queue accordingly (top facet poped, new facets
+    /// updates the queue accordingly (top facet popped, new facets
     /// pushed).
     ///
-    /// @param[inout] Q a queue of facet index to process. which is
+    /// @param[in,out] Q a queue of facet index to process. which is
     /// updated by the method.
     ///
     /// @return 'true' if there is still work to do, 'false' when finished

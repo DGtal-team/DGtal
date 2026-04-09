@@ -203,6 +203,28 @@ namespace DGtal {
   }
 
   template <typename Space, typename KSpace>
+  void PolyscopeViewer<Space, KSpace>::registerSparseVolumeGrid(const std::string& name, const DisplayData<typename Space::RealPoint>& ddata) {
+    using namespace drawutils;
+    const glm::vec3 origin = {0., 0., 0.};
+    const glm::vec3 width  = {1., 1., 1.};
+
+    polyscope::SparseVolumeGrid* grid = polyscope::registerSparseVolumeGrid(name, origin, width, ddata.vertices);
+
+    setGeneralProperties(grid, ddata);
+    if (!ddata.style.useDefaultColors) {
+      grid->setColor(toglm(ddata.style.color));
+    }
+
+    for (const auto& [pname, vals] : ddata.scalarQuantities[QuantityScale::CELL]) {
+      grid->addCellScalarQuantity(pname, vals)->setEnabled(true);
+    }
+
+    for (const auto& [pname, vals] : ddata.colorQuantities[QuantityScale::CELL]) {
+      grid->addCellColorQuantity(pname, toglm(vals))->setEnabled(true);
+    }
+  }
+
+  template <typename Space, typename KSpace>
   void PolyscopeViewer<Space, KSpace>::registerVolumeMesh(const std::string& name, const DisplayData<typename Space::RealPoint>& ddata) {
     using namespace drawutils;
 
@@ -253,7 +275,12 @@ namespace DGtal {
       if (vertices.size() == 0) continue;
 
       switch(ddata.elementSize) {
-        case 1: registerPointCloud(name, ddata); break;
+        case 1: {
+          if (ddata.style.mode & DisplayStyle::BALLS) registerPointCloud(name, ddata);
+          else registerSparseVolumeGrid(name, ddata);
+
+          break;
+        }
         case 2: registerLineNetwork(name, ddata); break;
         case 0:
         case 3:

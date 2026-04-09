@@ -78,7 +78,7 @@ int sourceVertexId=0;
 float radiusII = 3.0;
 
 bool skipReg = true; //Global flag to enable/disable the regularization example.
-bool useProjectedCalculus = true; //Use estimated normal vectors to set up te embedding
+bool useProjectedCalculus = true; //Use estimated normal vectors to set up the embedding
 
 void precompute()
 {

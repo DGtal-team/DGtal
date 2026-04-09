@@ -191,9 +191,9 @@ def test_function_members(Self):
     cleared.clear()
     assert cleared == ps.zero
 
-    reseted = copy.deepcopy(ps)
-    reseted.reset()
-    assert reseted == ps.zero
+    reset = copy.deepcopy(ps)
+    reset.reset()
+    assert reset == ps.zero
 
 
 @pytest.mark.parametrize("Self", [

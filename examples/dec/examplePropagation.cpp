@@ -140,16 +140,16 @@ void propa_2d()
         //! [time_low_pass]
         const Calculus::Scalar lambda_cutoff = 4.5;
         const Calculus::Scalar angular_frequency_cutoff = 2*M_PI * cc / lambda_cutoff;
-        int cutted = 0;
+        int cut = 0;
         for (int kk=0; kk<initial_projections.rows(); kk++)
         {
             const Calculus::Scalar angular_frequency = angular_frequencies(kk);
             if (angular_frequency < angular_frequency_cutoff) continue;
             initial_projections(kk) = 0;
-            cutted ++;
+            cut ++;
         }
         //! [time_low_pass]
-        trace.info() << "cutted = " << cutted << "/" << initial_projections.rows() << endl;
+        trace.info() << "cut = " << cut << "/" << initial_projections.rows() << endl;
 
         {
             const Eigen::VectorXcd wave = eigen_vectors * initial_projections;

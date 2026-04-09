@@ -30,7 +30,7 @@
 /**
 \example tutorial-examples/freemanChainFromImage.cpp
 * A simple example to show how to extract the set of boundary contours obtained from the image level set.
-* This programm outputs this image:
+* This program outputs this image:
 *   @image html fcExtraction.png
 *
 */

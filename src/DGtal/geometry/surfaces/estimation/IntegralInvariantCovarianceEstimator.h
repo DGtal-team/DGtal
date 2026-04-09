@@ -143,7 +143,7 @@ public:
   /// transforms it into a functor Point -> unsigned int (0 or 1).
   typedef functors::PointFunctorFromPointPredicateAndDomain< PointPredicate, Domain, unsigned int > ShapePointFunctor;
   /// Adapts the a functor Point -> unsigned int (0 or 1) to a functor Cell ->
-  /// unsigned int (0 ot 1), where Cell is a spel. Needed by DigitalSurfaceConvolver.
+  /// unsigned int (0 to 1), where Cell is a spel. Needed by DigitalSurfaceConvolver.
   typedef FunctorOnCells< ShapePointFunctor, KSpace > ShapeSpelFunctor;
 
 

@@ -33,6 +33,7 @@
 
 #include "polyscope/polyscope.h"
 
+#include "polyscope/sparse_volume_grid.h"
 #include "polyscope/curve_network.h"
 #include "polyscope/surface_mesh.h"
 #include "polyscope/volume_mesh.h"
@@ -100,6 +101,7 @@ namespace DGtal {
       void registerLineNetwork(const std::string& n, const DisplayData<typename Space::RealPoint>& d);
       void registerSurfaceMesh(const std::string& n, const DisplayData<typename Space::RealPoint>& d);
       void registerVolumeMesh (const std::string& n, const DisplayData<typename Space::RealPoint>& d);
+      void registerSparseVolumeGrid(const std::string& n, const DisplayData<typename Space::RealPoint>& d);
 
       // @brief Global callback handling UI, click and callback calls
       void polyscopeCallback();

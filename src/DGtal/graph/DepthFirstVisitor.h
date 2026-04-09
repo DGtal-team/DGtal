@@ -194,14 +194,14 @@ namespace DGtal
     void ignore();
 
     /**
-       Goes to the next vertex and taked into account the current
+       Goes to the next vertex and taken into account the current
        vertex for determining the future vsited vertices.
        NB: valid only if not 'finished()'.
      */
     void expand();
 
     /**
-       Goes to the next vertex and taked into account the current
+       Goes to the next vertex and taken into account the current
        vertex for determining the future visited vertices.
 
        @tparam VertexPredicate a type that satisfies CPredicate on Vertex.

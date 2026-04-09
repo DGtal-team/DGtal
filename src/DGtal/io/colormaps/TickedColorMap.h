@@ -233,7 +233,7 @@ namespace DGtal
   /**
    * Overloads 'operator<<' for displaying objects of class 'TickedColorMap'.
    * @param out the output stream where the object is written.
-   * @param object te output stream after the writing.
+   * @param object the output stream after the writing.
    */
   template <typename TValue, typename CMAP >
   std::ostream&

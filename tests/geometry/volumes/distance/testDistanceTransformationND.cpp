@@ -75,7 +75,7 @@ bool testDistanceTransformND()
   Domain domain(a,b);
   Image image(domain);
 
-  //We create an object image with a signle background point (set to 0)
+  //We create an object image with a single background point (set to 0)
   for (Image::Iterator it=image.begin(),itend=image.end(); it!=itend; ++it)
     *it = 128;
   image.setValue( c , 0 );

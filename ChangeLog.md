@@ -12,13 +12,25 @@
   - Many typos fixed in documentation using Github Copilot. (David Coeurjolly, [#1829](https://github.com/DGtal-team/DGtal/pull/1829))
   - Global spellcheck and pre-commit. (David Coeurjolly, [#1837](https://github.com/DGtal-team/DGtal/pull/1837))
 
+- *IO*
+  - Upgrading the polyscope backend to 2.6.1 (David Coeurjolly, [#1839](https://github.com/DGtal-team/DGtal/pull/1839))
+  - Voxels are now rendered using polyscope SparseVolumeGrid (Bastien DOIGNIES, [#1843](https://github.com/DGtal-team/DGtal/pull/1843))
+  - Domains are now rendered with 6 quads by default (Bastien DOIGNIES, [#1843](https://github.com/DGtal-team/DGtal/pull/1843))
+
+
 ## BugFixes
+
+- *Project*
+  - Fixing typos and adding a new github action for pre-commit check (David Coeurjolly,  [#1844](https://github.com/DGtal-team/DGtal/pull/1844))
 
 - *IO*
   - Fixing typo in the 3d viewer documentation (David Coeurjolly, [#1831](https://github.com/DGtal-team/DGtal/pull/1831))
 
 - *Build*
   - Fixing old `DEBUG_VERBOSE` to `DGTAL_DEBUG_VERBOSE` (David Coeurjolly,  [#1834](https://github.com/DGtal-team/DGtal/pull/1834))
+
+- *Geometry*
+  - In DigitalSurfaceConvolver (eg. when using the Integral Invariant estimators), a bug existed when the shape domain does not contain the point (0,0,0). This PR fixes it using KCoords to represent the Kernel origin instead of a Spel which requires a valid KSpace (David Coeurjolly, [#1840](https://github.com/DGtal-team/DGtal/pull/1840))
 
 # DGtal 2.1.0
 

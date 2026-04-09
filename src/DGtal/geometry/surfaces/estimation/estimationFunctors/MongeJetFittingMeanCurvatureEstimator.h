@@ -69,7 +69,7 @@ namespace DGtal
    * \brief Aim: Estimates Mean curvature using CGAL Jet Fitting and
    * Monge Form.
    *
-   * Be carefull, this functor uses a polynomial surface fitting from
+   * Be careful, this functor uses a polynomial surface fitting from
    * point set. Curvature information is given from Monge basis which
    * could be up to the orientation of the normal vector. Hence, if
    * the estimated normal @f$ n @f$ is such that @f$ n\cdot n_0>0@f$ with

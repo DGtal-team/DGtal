@@ -65,7 +65,7 @@ Represent any dynamic or static sized matrix having sparse representation.
 
 # Notation
  - \c SparseMatrix : A type that is a model of CSparseMatrix
- - \e ti, \e te : Instances of type that is a model of boost::InputIterator<Triplet>
+ - \e ti, \e tij : Instances of type that is a model of boost::InputIterator<Triplet>
 
 # Definitions
 
@@ -73,7 +73,7 @@ Represent any dynamic or static sized matrix having sparse representation.
 
 | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
 |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-| Fill from triplets      | \a x.setFromTriplets(ti,te)           |                   |           |              |           |                |            |
+| Fill from triplets      | \a x.setFromTriplets(ti,tj)           |                   |           |              |           |                |            |
 
 # Invariants
 
@@ -96,13 +96,13 @@ public:
 
     BOOST_CONCEPT_USAGE( CSparseMatrix )
     {
-        z.setFromTriplets(ti, te);
+        z.setFromTriplets(ti, tj);
     }
 
     // ------------------------- Private Data --------------------------------
 private:
     T z;
-    TripletInterator ti, te;
+    TripletInterator ti, tj;
 
     // ------------------------- Internals ------------------------------------
 private:

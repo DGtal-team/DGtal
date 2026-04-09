@@ -546,7 +546,7 @@ namespace DGtal
        * @param mu DSL mu parameter
        * @param n order of the Farey Fan
        * @param [out] flagRayFound pointer on a boolean, used to check whether localizeRay
-       * should be called ot not
+       * should be called or not
        * @return an integer
        */
       Integer smartFirstDichotomy(Integer fp, Integer fq, Integer gp, Integer gq,
@@ -577,7 +577,7 @@ namespace DGtal
        * @param beta DSL intercept
        * @param n order of the Farey Fan
        * @param [out] flagRayFound pointer on a boolean, used to check whether localizeRay
-       * should be called ot not
+       * should be called or not
        * @return an integer
        */
       Integer smartFirstDichotomy(Integer fp, Integer fq, Integer gp, Integer gq,

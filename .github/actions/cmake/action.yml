@@ -64,6 +64,10 @@ runs:
       run: |
         cmake -E make_directory $DGTAL_BUILD_PATH
 
+    - name: "Run the pre-commit hooks (Linux only)"
+      if: ${{ runner.os == 'Linux' }}
+      uses: pre-commit/action@v3.0.1
+
     - name: Install additional dependencies (windows)
       if: ${{ runner.os == 'Windows' }}
       shell: bash

@@ -338,7 +338,7 @@ namespace DGtal
 
 
     /**
-     * Used to temporaly store values in statistics in order to be
+     * Used to temporary store values in statistics in order to be
      * able to access to the median value. By default the value is set
      * to false and the median is not available.
      * @see setStoreStats
