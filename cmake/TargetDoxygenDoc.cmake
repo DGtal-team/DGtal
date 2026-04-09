@@ -83,7 +83,12 @@ if (DOXYGEN_FOUND)
   ADD_CUSTOM_TARGET(doc-all ${DOXYGEN_EXECUTABLE} ${DOXY_CONFIG})
   ADD_DEPENDENCIES(doc-all doc-Board)
 
-
+  add_custom_command(TARGET doc POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory
+        ${CMAKE_BINARY_DIR}/html/MathJax-4.1.1
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${mathjax_SOURCE_DIR}
+        ${CMAKE_BINARY_DIR}/html/MathJax-4.1.1)
 #  ADD_CUSTOM_TARGET(doc)
 
   # create a windows help .chm file using hhc.exe

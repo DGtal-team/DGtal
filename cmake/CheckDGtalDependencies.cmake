@@ -64,14 +64,6 @@ endif()
 
 
 # -----------------------------------------------------------------------------
-# Fetching mathjax for the documentation and fix doc target
+# Fetching mathjax for the documentation
 # -----------------------------------------------------------------------------
 include(mathjax)
-message(STATUS "Export mathjax path: ${mathjax_SOURCE_DIR}")
-add_custom_command(TARGET doc POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E make_directory
-        ${CMAKE_BINARY_DIR}/html/MathJax-4.1.1
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        ${mathjax_SOURCE_DIR}
-        ${CMAKE_BINARY_DIR}/html/MathJax-4.1.1
-)
