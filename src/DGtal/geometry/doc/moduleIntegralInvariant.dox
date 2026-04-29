@@ -201,4 +201,15 @@ Here is some results in 2d and 3d :
 
 */
 
+\section II_sectParallel Parallel Integral Invariant estimator
+
+Every Integral Invariant Estimator can run in parallel in DGtal, provided the library is compiled with OpenMP support.
+The interface for computation and parameter setting is the same as for every other integral invariant estimator and can
+be used as a drop-in replacement in most cases.
+
+The key idea behind the parallel execution is to first split the surface domain into subdomains, and then run convolutions concurrently
+on each of these smaller domains. The method for splitting the domain can be specified within the template parameters. Currently,
+DGtal provides RegularDomainSplitter, which splits the outer domain regularly, and AxisDomainSplitter, which splits domains along a
+specified dimension. See kernel/domains/DomainSplitter.h for more information and the expected interface. 
+
 }

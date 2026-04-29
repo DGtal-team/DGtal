@@ -30,6 +30,7 @@
 
 ///////////////////////////////////////////////////////////////////////////////
 #include <iostream>
+#include <type_traits>
 #include "DGtal/base/Common.h"
 
 /// Shape
@@ -46,7 +47,7 @@
 #include "DGtal/geometry/surfaces/estimation/IIGeometricFunctors.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantVolumeEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/ParallelIIEstimator.h"
-#include "DGtal/geometry/surfaces/estimation/DomainSplitter.h"
+#include "DGtal/kernel/domains/DomainSplitter.h"
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -67,13 +68,18 @@ bool testCurvature2dP ( double h, double delta )
   typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
   typedef GraphVisitorRange< Visitor > VisitorRange;
   typedef VisitorRange::ConstIterator VisitorConstIterator;
-
+  
   typedef functors::IICurvatureFunctor<Z2i::Space> MyIICurvatureFunctor;
   typedef IntegralInvariantVolumeEstimator< Z2i::KSpace, DigitalShape, MyIICurvatureFunctor > MyIICurvatureEstimator;
+
+  //! [exampleParallelII-type]
   typedef RegularDomainSplitter<HyperRectDomain<Z2i::Space>> Splitter;
-  typedef ParallelIIEstimator<MyIICurvatureEstimator, Splitter> MyIICurvatureEstimatorA;
-  // typedef MyIICurvatureFunctor::Value Value;
-  typedef MyIICurvatureEstimatorA::Quantity Value;
+  typedef ParallelIIEstimator<MyIICurvatureEstimator, Splitter> MyIICurvatureEstimatorP;
+  //! [exampleParallelII-type]
+
+  typedef MyIICurvatureEstimator::Quantity Value;
+
+  static_assert(std::is_same_v<typename MyIICurvatureEstimator::Quantity, typename MyIICurvatureEstimatorP::Quantity>);
 
   double re = 10;
   double radius = 15;
@@ -101,173 +107,72 @@ bool testCurvature2dP ( double h, double delta )
 
   trace.beginBlock( "Curvature estimator initialisation ...");
 
+  // Visitor ranges are typically unique and single pass. We need
+  // to create one for each estimator in this case
   VisitorRange range( new Visitor( surf, *surf.begin() ));
   VisitorConstIterator ibegin = range.begin();
   VisitorConstIterator iend = range.end();
+  // Parallel iterations
+  VisitorRange rangeP( new Visitor( surf, *surf.begin() ));
+  VisitorConstIterator ibeginP = rangeP.begin();
+  VisitorConstIterator iendP = rangeP.end();
 
   MyIICurvatureFunctor curvatureFunctor;
   curvatureFunctor.init( h, re );
 
-  MyIICurvatureEstimatorA curvatureEstimator( 4, curvatureFunctor );
+  //! [exampleParallelII-construction]
+  MyIICurvatureEstimator  curvatureEstimator (    curvatureFunctor);
   curvatureEstimator.attach( K, dshape );
   curvatureEstimator.setParams( re/h );
   curvatureEstimator.init( h, ibegin, iend );
 
+  // Parallel version expects a number of thread as first argument. 
+  // Subsequent arguments are forwared to underlying estimator
+  // init / setParams and init (and eval) remains the same.
+
+  MyIICurvatureEstimatorP curvatureEstimatorP( 4, curvatureFunctor );
+  curvatureEstimatorP.attach( K, dshape );
+  curvatureEstimatorP.setParams( re/h );
+  curvatureEstimatorP.init( h, ibeginP, iendP );
+  //! [exampleParallelII-construction]
+  
   trace.endBlock();
 
   trace.beginBlock( "Curvature estimator evaluation ...");
 
-  std::vector< Value > results;
-  std::back_insert_iterator< std::vector< Value > > resultsIt( results );
-  curvatureEstimator.eval( ibegin, iend, resultsIt );
+  std::vector< Value > results, resultsP;
+  std::back_insert_iterator< std::vector< Value > > resultsIt ( results  );
+  std::back_insert_iterator< std::vector< Value > > resultsItP( resultsP );
 
+  curvatureEstimator .eval( ibegin , iend , resultsIt  );
+  curvatureEstimatorP.eval( ibeginP, iendP, resultsItP );
+  
   trace.endBlock();
 
   trace.beginBlock ( "Comparing results of integral invariant 2D curvature ..." );
-
-  double mean = 0.0;
-  double rsize = static_cast<double>(results.size());
-
-  if( rsize == 0 )
+  
+  unsigned int rsize  = results.size();
+  unsigned int rsizeP = resultsP.size();
+  
+  if (rsize != rsizeP)
   {
-    trace.error() << "ERROR: surface is empty" << std::endl;
+    trace.error() << "Size mismatch between parallel and non-parallel versions: " << rsize << " / " << rsizeP;
     trace.endBlock();
     return false;
   }
-
+    
   for ( unsigned int i = 0; i < rsize; ++i )
   {
-    mean += results[ i ];
-  }
-  mean /= rsize;
-
-  if( mean != mean ) //NaN
-  {
-    trace.error() << "ERROR: result is NaN" << std::endl;
-    trace.endBlock();
-    return false;
-  }
-
-  double v = std::abs ( realValue - mean );
-
-  trace.warning() << "True value: " << realValue << std::endl;
-  trace.warning() << "Mean value: " << mean << std::endl;
-  trace.warning() << "Count value: " << rsize << std::endl;
-  trace.warning() << "Delta: " << delta << " |true - mean|: " << v << std::endl;
-
-  if( v > delta )
-  {
-    trace.endBlock();
-    return false;
+    if (std::abs(results[i] - resultsP[i]) >= 1e-2)
+    {
+      trace.error() << "Result mismatch between parallel and non-parallel versions at voxel " << i << ": " << results[i] << " / " << resultsP[i] << "\n";
+      trace.endBlock();
+      return false;
+    }
   }
   trace.endBlock();
   return true;
 }
-
-bool testCurvature2d ( double h, double delta )
-{
-  typedef ImplicitBall<Z2i::Space> ImplicitShape;
-  typedef GaussDigitizer<Z2i::Space, ImplicitShape> DigitalShape;
-  typedef LightImplicitDigitalSurface<Z2i::KSpace,DigitalShape> Boundary;
-  typedef DigitalSurface< Boundary > MyDigitalSurface;
-  typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
-  typedef GraphVisitorRange< Visitor > VisitorRange;
-  typedef VisitorRange::ConstIterator VisitorConstIterator;
-
-  typedef functors::IICurvatureFunctor<Z2i::Space> MyIICurvatureFunctor;
-  typedef IntegralInvariantVolumeEstimator< Z2i::KSpace, DigitalShape, MyIICurvatureFunctor > MyIICurvatureEstimator;
-  typedef MyIICurvatureFunctor::Value Value;
-
-  double re = 10;
-  double radius = 15;
-  double realValue = 1.0/radius;
-
-  trace.beginBlock( "Shape initialisation ..." );
-
-  ImplicitShape ishape( Z2i::RealPoint( 0, 0 ), radius );
-  DigitalShape dshape;
-  dshape.attach( ishape );
-  dshape.init( Z2i::RealPoint( -20.0, -20.0 ), Z2i::RealPoint( 20.0, 20.0 ), h );
-
-  Z2i::KSpace K;
-
-  if ( !K.init( dshape.getLowerBound(), dshape.getUpperBound(), true ) )
-  {
-    trace.error() << "Problem with Khalimsky space" << std::endl;
-    return false;
-  }
-
-  Z2i::KSpace::Surfel bel = Surfaces<Z2i::KSpace>::findABel( K, dshape, 10000 );
-  Boundary boundary( K, dshape, SurfelAdjacency<Z2i::KSpace::dimension>( true ), bel );
-  MyDigitalSurface surf ( boundary );
-
-  trace.endBlock();
-
-  trace.beginBlock( "Curvature estimator initialisation ...");
-
-  VisitorRange range( new Visitor( surf, *surf.begin() ));
-  VisitorConstIterator ibegin = range.begin();
-  VisitorConstIterator iend = range.end();
-
-  MyIICurvatureFunctor curvatureFunctor;
-  curvatureFunctor.init( h, re );
-
-  MyIICurvatureEstimator curvatureEstimator( curvatureFunctor );
-  curvatureEstimator.attach( K, dshape );
-  curvatureEstimator.setParams( re/h );
-  curvatureEstimator.init( h, ibegin, iend );
-  std::cout << curvatureEstimator << std::endl;
-
-  trace.endBlock();
-
-  trace.beginBlock( "Curvature estimator evaluation ...");
-
-  std::vector< Value > results;
-  std::back_insert_iterator< std::vector< Value > > resultsIt( results );
-  curvatureEstimator.eval( ibegin, iend, resultsIt );
-
-  trace.endBlock();
-
-  trace.beginBlock ( "Comparing results of integral invariant 2D curvature ..." );
-
-  double mean = 0.0;
-  double rsize = static_cast<double>(results.size());
-
-  if( rsize == 0 )
-  {
-    trace.error() << "ERROR: surface is empty" << std::endl;
-    trace.endBlock();
-    return false;
-  }
-
-  for ( unsigned int i = 0; i < rsize; ++i )
-  {
-    mean += results[ i ];
-  }
-  mean /= rsize;
-
-  if( mean != mean ) //NaN
-  {
-    trace.error() << "ERROR: result is NaN" << std::endl;
-    trace.endBlock();
-    return false;
-  }
-
-  double v = std::abs ( realValue - mean );
-
-  trace.warning() << "True value: " << realValue << std::endl;
-  trace.warning() << "Mean value: " << mean << std::endl;
-  trace.warning() << "Count value: " << rsize << std::endl;
-  trace.warning() << "Delta: " << delta << " |true - mean|: " << v << std::endl;
-  if( v > delta )
-  {
-    trace.endBlock();
-    return false;
-  }
-  trace.endBlock();
-  return true;
-}
-
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
@@ -275,7 +180,7 @@ int main( int /*argc*/, char** /*argv*/ )
 {
     trace.beginBlock ( "Testing class ParrallelIIEstimator with IntegralInvariantVolumeEstimator in 2d" );
 
-    bool res = testCurvature2d( 0.05, 0.002 ) && testCurvature2dP(0.05, 0.002) ;
+    bool res = testCurvature2dP( 0.05, 0.002 );
     trace.emphase() << ( res ? "Passed." : "Error." ) << std::endl;
     trace.endBlock();
     return res ? 0 : 1;
