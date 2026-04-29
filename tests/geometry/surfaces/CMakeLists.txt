@@ -15,7 +15,6 @@ set(TESTS_SURFACES_SRC
   testSphericalHoughNormalVectorEstimator
   testDigitalSurfaceRegularization
   testShroudsRegularization
-  testDomainSplitter
   )
 
 foreach(FILE ${TESTS_SURFACES_SRC})

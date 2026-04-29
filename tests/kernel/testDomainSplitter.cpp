@@ -32,7 +32,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtalCatch.h"
 
-#include "DGtal/geometry/surfaces/estimation/DomainSplitter.h"
+#include "DGtal/kernel/domains/DomainSplitter.h"
 
 #ifdef DGTAL_WITH_POLYSCOPE_VIEWER
 #include "DGtal/io/colormaps/HueShadeColorMap.h"

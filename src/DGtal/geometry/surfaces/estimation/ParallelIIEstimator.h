@@ -14,7 +14,7 @@
  *
  **/
 
-#include <DGtal/geometry/surfaces/estimation/DomainSplitter.h>
+#include <DGtal/kernel/domains/DomainSplitter.h>
 #include <DGtal/topology/helpers/Surfaces.h>
 
 #ifndef DGTAL_WITH_OPENMP
