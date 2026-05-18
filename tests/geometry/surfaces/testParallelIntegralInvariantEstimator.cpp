@@ -68,7 +68,7 @@ bool testCurvature2dP ( double h, double delta )
   typedef DepthFirstVisitor< MyDigitalSurface > Visitor;
   typedef GraphVisitorRange< Visitor > VisitorRange;
   typedef VisitorRange::ConstIterator VisitorConstIterator;
-  
+
   typedef functors::IICurvatureFunctor<Z2i::Space> MyIICurvatureFunctor;
   typedef IntegralInvariantVolumeEstimator< Z2i::KSpace, DigitalShape, MyIICurvatureFunctor > MyIICurvatureEstimator;
 
@@ -126,8 +126,8 @@ bool testCurvature2dP ( double h, double delta )
   curvatureEstimator.setParams( re/h );
   curvatureEstimator.init( h, ibegin, iend );
 
-  // Parallel version expects a number of thread as first argument. 
-  // Subsequent arguments are forwared to underlying estimator
+  // Parallel version expects a number of thread as first argument.
+  // Subsequent arguments are forwarded to underlying estimator
   // init / setParams and init (and eval) remains the same.
 
   MyIICurvatureEstimatorP curvatureEstimatorP( 4, curvatureFunctor );
@@ -135,7 +135,7 @@ bool testCurvature2dP ( double h, double delta )
   curvatureEstimatorP.setParams( re/h );
   curvatureEstimatorP.init( h, ibeginP, iendP );
   //! [exampleParallelII-construction]
-  
+
   trace.endBlock();
 
   trace.beginBlock( "Curvature estimator evaluation ...");
@@ -146,21 +146,21 @@ bool testCurvature2dP ( double h, double delta )
 
   curvatureEstimator .eval( ibegin , iend , resultsIt  );
   curvatureEstimatorP.eval( ibeginP, iendP, resultsItP );
-  
+
   trace.endBlock();
 
   trace.beginBlock ( "Comparing results of integral invariant 2D curvature ..." );
-  
+
   unsigned int rsize  = results.size();
   unsigned int rsizeP = resultsP.size();
-  
+
   if (rsize != rsizeP)
   {
     trace.error() << "Size mismatch between parallel and non-parallel versions: " << rsize << " / " << rsizeP;
     trace.endBlock();
     return false;
   }
-    
+
   for ( unsigned int i = 0; i < rsize; ++i )
   {
     if (std::abs(results[i] - resultsP[i]) >= 1e-2)
