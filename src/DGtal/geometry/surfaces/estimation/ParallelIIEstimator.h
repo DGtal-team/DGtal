@@ -14,6 +14,18 @@
  *
  **/
 
+/**
+ * @file ParallelEstimator.h
+ * @author Bastien Doignies
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), INSA-Lyon, France
+ *
+ * @date 2026/05/01
+ *
+ * Header file for module ParallelEstimator.ih
+ *
+ * This file is part of the DGtal library.
+ */
+
 #include <DGtal/kernel/domains/DomainSplitter.h>
 #include <DGtal/topology/helpers/Surfaces.h>
 
