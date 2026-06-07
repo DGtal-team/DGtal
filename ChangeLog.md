@@ -11,7 +11,7 @@
 - *Documentation*
   - Many typos fixed in documentation using Github Copilot. (David Coeurjolly, [#1829](https://github.com/DGtal-team/DGtal/pull/1829))
   - Global spellcheck and pre-commit. (David Coeurjolly, [#1837](https://github.com/DGtal-team/DGtal/pull/1837))
-  - Upgrade of the doxygen configuration to use MathJax 4. Fixes issue #1845 (David Coeurjolly, [#1846](https://github.com/DGtal-team/DGtal/pull/1846))
+  - Upgrade of the doxygen configuration to use MathJax 3. Fixes issue #1845 (David Coeurjolly, [#1846](https://github.com/DGtal-team/DGtal/pull/1846))
 
 - *IO*
   - Upgrading the polyscope backend to 2.6.1 (David Coeurjolly, [#1839](https://github.com/DGtal-team/DGtal/pull/1839))
