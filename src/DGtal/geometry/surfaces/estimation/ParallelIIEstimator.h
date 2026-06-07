@@ -101,7 +101,7 @@ namespace DGtal
      * if a some counted pointer is handed.
     */
     void attach(ConstAlias<KSpace> K,
-                ConstAlias<PointPredicate> pp);
+                ConstAlias<PointPredicate> aPointPredicate);
 
     /**
      * Set specific parameters: the radius of the ball.
@@ -121,12 +121,12 @@ namespace DGtal
      * Model of CDigitalSurfaceLocalEstimator. Initialisation.
      *
      * @tparam SurfelConstIterator any model of forward readable iterator on Surfel.
-     * @param[in] _h grid size (must be >0).
+     * @param[in] h_ grid size (must be >0).
      * @param[in] ite iterator on the first surfel of the surface.
      * @param[in] itb iterator after the last surfel of the surface.
      */
     template<typename ItA, typename ItB>
-    void init(double h_, ItA, ItB);
+    void init(double h_, ItA ite, ItB itb);
 
     /**
      * -- Estimation --
@@ -144,6 +144,7 @@ namespace DGtal
      */
     template<typename It>
     Quantity eval(It it);
+
     /**
      * -- Estimation --
      *
@@ -165,7 +166,7 @@ namespace DGtal
      * @return the updated output iterator after all outputs.
      */
     template<typename It, typename Oit>
-    Oit eval(It itb, It ite, Oit rslt);
+    Oit eval(It itb, It ite, Oit result);
 
     /**
      * Writes/Displays the object on an output stream.
