@@ -59,7 +59,7 @@ using namespace DGtal;
 // Functions for testing class IntegralInvariantVolumeEstimator and IIGeometricFunctor.
 ///////////////////////////////////////////////////////////////////////////////
 
-bool testCurvature2dP ( double h, double delta )
+bool testCurvature2dP ( double h )
 {
   typedef ImplicitBall<Z2i::Space> ImplicitShape;
   typedef GaussDigitizer<Z2i::Space, ImplicitShape> DigitalShape;
@@ -180,7 +180,7 @@ int main( int /*argc*/, char** /*argv*/ )
 {
     trace.beginBlock ( "Testing class ParrallelIIEstimator with IntegralInvariantVolumeEstimator in 2d" );
 
-    bool res = testCurvature2dP( 0.05, 0.002 );
+    bool res = testCurvature2dP( 0.05 );
     trace.emphase() << ( res ? "Passed." : "Error." ) << std::endl;
     trace.endBlock();
     return res ? 0 : 1;
