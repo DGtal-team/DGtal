@@ -35,9 +35,11 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/domains/DomainSplitter.h"
 
+#ifdef DGTAL_TESTS_WITH_VIEWER
 #ifdef DGTAL_WITH_POLYSCOPE_VIEWER
 #include "DGtal/io/colormaps/HueShadeColorMap.h"
 #include "DGtal/io/viewers/PolyscopeViewer.h"
+#endif
 #endif
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -47,51 +49,55 @@ using namespace Z3i;
 
 TEST_CASE( "Domain Regular Grid Splitter tests" )
 {
-  Domain domain(Point(0,0,0), Point(16,32,64));
+    Domain domain(Point(0,0,0), Point(16,32,64));
 
-  RegularDomainSplitter<Domain> splitter;
+    RegularDomainSplitter<Domain> splitter;
 
-  RegularDomainSplitter<Domain>::SplitDomainsInfo output = splitter(domain,12);
-  REQUIRE( output.size() <= 12);
+    RegularDomainSplitter<Domain>::SplitDomainsInfo output = splitter(domain,12);
+    REQUIRE( output.size() <= 12);
 
-  trace.info() << "Original domain: "<<domain<<std::endl;
-  for(auto d: output)
-    trace.info()<< "   subdomain: "<<d.domain<<std::endl;
+    trace.info() << "Original domain: "<<domain<<std::endl;
+    for(auto d: output)
+        trace.info()<< "   subdomain: "<<d.domain<<std::endl;
 
+#ifdef DGTAL_TESTS_WITH_VIEWER
 #ifdef DGTAL_WITH_POLYSCOPE_VIEWER
-  PolyscopeViewer viewer;
-  HueShadeColorMap<unsigned int> cmap(0,(unsigned int)output.size());
-  for(auto i=0; i< output.size(); ++i)
-  {
-    viewer << cmap(i);
-    viewer << output[i].domain;
-  }
-  viewer.show();
+    PolyscopeViewer viewer;
+    HueShadeColorMap<unsigned int> cmap(0,(unsigned int)output.size());
+    for(auto i=0; i< output.size(); ++i)
+    {
+        viewer << cmap(i);
+        viewer << output[i].domain;
+    }
+    viewer.show();
+#endif
 #endif
 }
 
 TEST_CASE( "Domain Axis Splitter tests" )
 {
-  Domain domain(Point(0,0,0), Point(16,32,64));
+    Domain domain(Point(0,0,0), Point(16,32,64));
 
-  AxisDomainSplitter<Domain> splitter;
+    AxisDomainSplitter<Domain> splitter;
 
-  AxisDomainSplitter<Domain>::SplitDomainsInfo output = splitter(domain,3,0);
-  REQUIRE( output.size() == 3);
+    AxisDomainSplitter<Domain>::SplitDomainsInfo output = splitter(domain,3,0);
+    REQUIRE( output.size() == 3);
 
-  trace.info() << "Original domain: "<<domain<<std::endl;
-  for(auto d: output)
-    trace.info()<< "   subdomain: "<<d.domain<<std::endl;
+    trace.info() << "Original domain: "<<domain<<std::endl;
+    for(auto d: output)
+        trace.info()<< "   subdomain: "<<d.domain<<std::endl;
 
+#ifdef DGTAL_TESTS_WITH_VIEWER
 #ifdef DGTAL_WITH_POLYSCOPE_VIEWER
-  PolyscopeViewer viewer;
-  HueShadeColorMap<unsigned int> cmap(0,(unsigned int)output.size());
-  for(auto i=0; i< output.size(); ++i)
-  {
-    viewer << cmap(i);
-    viewer << output[i].domain;
-  }
-  viewer.show();
+    PolyscopeViewer viewer;
+    HueShadeColorMap<unsigned int> cmap(0,(unsigned int)output.size());
+    for(auto i=0; i< output.size(); ++i)
+    {
+        viewer << cmap(i);
+        viewer << output[i].domain;
+    }
+    viewer.show();
+#endif
 #endif
 }
 
