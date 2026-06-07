@@ -83,7 +83,6 @@ bool testCurvature2dP ( double h )
 
   double re = 10;
   double radius = 15;
-  double realValue = 1.0/radius;
 
   trace.beginBlock( "[PARALLEL] Shape initialisation ..." );
 
