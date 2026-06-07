@@ -201,9 +201,9 @@ Here is some results in 2d and 3d :
 
 */
 
-\section II_sectParallel Parallel Integral Invariant estimator
+\section II_sectParallel Parallel Integral Invariant estimators
 
-Every Integral Invariant Estimator can run in parallel in DGtal, provided the library is compiled with OpenMP support.
+Each Integral Invariant estimator can run in parallel in DGtal, provided the library is compiled with OpenMP support (`DGTAL_WITH_OPENMP` option).
 The interface for computation and parameter setting is the same as for every other integral invariant estimator and can
 be used as a drop-in replacement in most cases.
 
