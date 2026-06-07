@@ -57,10 +57,10 @@ if (DOXYGEN_FOUND)
   add_custom_target(dox ${DOXYGEN_EXECUTABLE} ${DOXY_CONFIG_DOX})
   add_custom_command(TARGET dox POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E make_directory
-        ${CMAKE_BINARY_DIR}/html/MathJax-4.1.1
+        ${CMAKE_BINARY_DIR}/html/MathJax-3.2.2
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         ${mathjax_SOURCE_DIR}
-        ${CMAKE_BINARY_DIR}/html/MathJax-4.1.1)
+        ${CMAKE_BINARY_DIR}/html/MathJax-3.2.2)
 
   # create a windows help .chm file using hhc.exe
   # HTMLHelp DLL must be in path!

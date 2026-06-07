@@ -9,7 +9,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "-w")
 
 CPMAddPackage(
   NAME mathjax
-  GIT_TAG 4.1.1
+  GIT_TAG 3.2.2
   DOWNLOAD_ONLY TRUE
   GITHUB_REPOSITORY "mathjax/MathJax"
 )
