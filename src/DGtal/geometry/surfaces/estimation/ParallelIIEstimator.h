@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file ParallelEstimator.h
+ * @file
  * @author Bastien Doignies
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), INSA-Lyon, France
  *
