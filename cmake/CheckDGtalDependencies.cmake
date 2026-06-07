@@ -62,8 +62,3 @@ if (TARGET Eigen3::Eigen)
   target_link_libraries(DGtal PUBLIC Eigen3::Eigen)
 endif()
 
-
-# -----------------------------------------------------------------------------
-# Fetching mathjax for the documentation
-# -----------------------------------------------------------------------------
-include(mathjax)

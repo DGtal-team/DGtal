@@ -4,6 +4,7 @@ find_package(Doxygen)
 
 
 if (DOXYGEN_FOUND)
+  include(mathjax)
 
   # click+jump in Emacs and Visual Studio (for doxy.config) (jw)
   if    (CMAKE_BUILD_TOOL MATCHES "(msdev|devenv)")
@@ -54,7 +55,7 @@ if (DOXYGEN_FOUND)
 
 
   add_custom_target(dox ${DOXYGEN_EXECUTABLE} ${DOXY_CONFIG_DOX})
-  add_custom_command(TARGET doc POST_BUILD
+  add_custom_command(TARGET dox POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E make_directory
         ${CMAKE_BINARY_DIR}/html/MathJax-4.1.1
     COMMAND ${CMAKE_COMMAND} -E copy_directory

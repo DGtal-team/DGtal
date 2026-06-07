@@ -1,6 +1,7 @@
 FIND_PACKAGE(Doxygen)
 
 if (DOXYGEN_FOUND)
+  include(mathjax)
 
   # click+jump in Emacs and Visual Studio (for doxy.config) (jw)
   if    (CMAKE_BUILD_TOOL MATCHES "(msdev|devenv)")
