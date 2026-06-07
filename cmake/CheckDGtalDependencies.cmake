@@ -61,4 +61,3 @@ if (TARGET Eigen3::Eigen)
   set(DGtalLibDependencies ${DGtalLibDependencies} Eigen3::Eigen)
   target_link_libraries(DGtal PUBLIC Eigen3::Eigen)
 endif()
-
