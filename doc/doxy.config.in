@@ -1912,7 +1912,7 @@ MATHJAX_FORMAT         = HTML-CSS
 # - in case of MathJax version 4: https://cdn.jsdelivr.net/npm/mathjax@4
 # This tag requires that the tag USE_MATHJAX is set to YES.
 
-MATHJAX_RELPATH = "MathJax-4.1.1"
+MATHJAX_RELPATH = "MathJax-4.1.1/tex-chtml.js"
 
 # The MATHJAX_EXTENSIONS tag can be used to specify one or more MathJax
 # extension names that should be enabled during MathJax rendering. For example
