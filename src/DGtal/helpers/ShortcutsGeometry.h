@@ -51,6 +51,10 @@
 #include "DGtal/geometry/surfaces/estimation/IIGeometricFunctors.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantVolumeEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantCovarianceEstimator.h"
+#ifdef DGTAL_WITH_OPENMP
+#include "DGtal/geometry/surfaces/estimation/ParallelIIEstimator.h"
+#include "DGtal/kernel/domains/DomainSplitter.h"
+#endif
 #include "DGtal/geometry/meshes/CorrectedNormalCurrentComputer.h"
 
 #include "DGtal/dec/DiscreteExteriorCalculusFactory.h"
@@ -975,6 +979,10 @@ namespace DGtal
       ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
       ///   - kernel          [ "hat"]: the kernel integration function chi_r, either "hat" or "ball". )
       ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
+      ///   - ii-thread-number[     1]: number of threads for II curvature estimators;
+      ///                                 1 keeps the sequential estimator, any other
+      ///                                 value requests the parallel estimator when
+      ///                                 OpenMP support is available.
       ///   - surfelEmbedding [     0]: the surfel -> point embedding for VCM estimator: 0: Pointels, 1: InnerSpel, 2: OuterSpel.
       ///   - unit_u [0]: Use unit normals for (CNC) curvature computations.
       static Parameters parametersGeometryEstimation()
@@ -986,6 +994,7 @@ namespace DGtal
           ( "R-radius",       10.0 )
           ( "r-radius",        3.0 )
           ( "alpha",          0.33 )
+          ( "ii-thread-number", 1 )
           ( "surfelEmbedding",   0 )
           ( "unit_u"         ,   0 );
       }
@@ -1307,6 +1316,10 @@ namespace DGtal
       ///   - verbose         [     1]: verbose trace mode 0: silent, 1: verbose.
       ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
       ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
+      ///   - ii-thread-number[     1]: number of threads for II curvature estimators;
+      ///                                 1 keeps the sequential estimator, any other
+      ///                                 value requests the parallel estimator when
+      ///                                 OpenMP support is available.
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
       ///
       /// @return the vector containing the estimated mean curvatures, in the
@@ -1338,6 +1351,10 @@ namespace DGtal
       ///   - verbose         [     1]: verbose trace mode 0: silent, 1: verbose.
       ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
       ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
+      ///   - ii-thread-number[     1]: number of threads for II curvature estimators;
+      ///                                 1 keeps the sequential estimator, any other
+      ///                                 value requests the parallel estimator when
+      ///                                 OpenMP support is available.
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
       ///   - minAABB         [ -10.0]: the min value of the AABB bounding box (domain)
       ///   - maxAABB         [  10.0]: the max value of the AABB bounding box (domain)
@@ -1377,6 +1394,10 @@ namespace DGtal
       ///   - verbose         [     1]: verbose trace mode 0: silent, 1: verbose.
       ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
       ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
+      ///   - ii-thread-number[     1]: number of threads for II curvature estimators;
+      ///                                 1 keeps the sequential estimator, any other
+      ///                                 value requests the parallel estimator when
+      ///                                 OpenMP support is available.
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
       ///
       /// @return the vector containing the estimated mean curvatures, in the
@@ -1396,28 +1417,8 @@ namespace DGtal
           typedef functors::IIMeanCurvature3DFunctor<Space> IIMeanCurvFunctor;
           typedef IntegralInvariantVolumeEstimator
             <KSpace, TPointPredicate, IIMeanCurvFunctor>    IIMeanCurvEstimator;
-
-          Scalars  mc_estimations;
-          int      verbose = params[ "verbose"   ].as<int>();
-          Scalar   h       = params[ "gridstep"  ].as<Scalar>();
-          Scalar   r       = params[ "r-radius"  ].as<Scalar>();
-          Scalar   alpha   = params[ "alpha"     ].as<Scalar>();
-          if ( alpha != 1.0 ) r *= pow( h, alpha-1.0 );
-          if ( verbose > 0 )
-            {
-              trace.info() << "- II mean curvature alpha=" << alpha << std::endl;
-              trace.info() << "- II mean curvature r=" << (r*h)  << " (continuous) "
-                           << r << " (discrete)" << std::endl;
-            }
-          IIMeanCurvFunctor   functor;
-          functor.init( h, r*h );
-          IIMeanCurvEstimator ii_estimator( functor );
-          ii_estimator.attach( K, shape );
-          ii_estimator.setParams( r );
-          ii_estimator.init( h, surfels.begin(), surfels.end() );
-          ii_estimator.eval( surfels.begin(), surfels.end(),
-                             std::back_inserter( mc_estimations ) );
-          return mc_estimations;
+          return getIICurvatureEstimation<IIMeanCurvEstimator, IIMeanCurvFunctor>
+            ( "mean curvature", shape, K, surfels, params );
         }
 
       /// Given a digital shape \a bimage, a sequence of \a surfels,
@@ -1431,6 +1432,10 @@ namespace DGtal
       ///   - verbose         [     1]: verbose trace mode 0: silent, 1: verbose.
       ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
       ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
+      ///   - ii-thread-number[     1]: number of threads for II curvature estimators;
+      ///                                 1 keeps the sequential estimator, any other
+      ///                                 value requests the parallel estimator when
+      ///                                 OpenMP support is available.
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
       ///
       /// @return the vector containing the estimated Gaussian curvatures, in the
@@ -1462,6 +1467,10 @@ namespace DGtal
       ///   - verbose         [     1]: verbose trace mode 0: silent, 1: verbose.
       ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
       ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
+      ///   - ii-thread-number[     1]: number of threads for II curvature estimators;
+      ///                                 1 keeps the sequential estimator, any other
+      ///                                 value requests the parallel estimator when
+      ///                                 OpenMP support is available.
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
       ///   - minAABB         [ -10.0]: the min value of the AABB bounding box (domain)
       ///   - maxAABB         [  10.0]: the max value of the AABB bounding box (domain)
@@ -1520,28 +1529,8 @@ namespace DGtal
           typedef functors::IIGaussianCurvature3DFunctor<Space> IIGaussianCurvFunctor;
           typedef IntegralInvariantCovarianceEstimator
             <KSpace, TPointPredicate, IIGaussianCurvFunctor>    IIGaussianCurvEstimator;
-
-          Scalars  mc_estimations;
-          int      verbose = params[ "verbose"   ].as<int>();
-          Scalar   h       = params[ "gridstep"  ].as<Scalar>();
-          Scalar   r       = params[ "r-radius"  ].as<Scalar>();
-          Scalar   alpha   = params[ "alpha"     ].as<Scalar>();
-          if ( alpha != 1.0 ) r *= pow( h, alpha-1.0 );
-          if ( verbose > 0 )
-            {
-              trace.info() << "- II Gaussian curvature alpha=" << alpha << std::endl;
-              trace.info() << "- II Gaussian curvature r=" << (r*h)  << " (continuous) "
-                           << r << " (discrete)" << std::endl;
-            }
-          IIGaussianCurvFunctor   functor;
-          functor.init( h, r*h );
-          IIGaussianCurvEstimator ii_estimator( functor );
-          ii_estimator.attach( K, shape );
-          ii_estimator.setParams( r );
-          ii_estimator.init( h, surfels.begin(), surfels.end() );
-          ii_estimator.eval( surfels.begin(), surfels.end(),
-                             std::back_inserter( mc_estimations ) );
-          return mc_estimations;
+          return getIICurvatureEstimation<IIGaussianCurvEstimator, IIGaussianCurvFunctor>
+            ( "Gaussian curvature", shape, K, surfels, params );
         }
 
       /// Given a digital shape \a bimage, a sequence of \a surfels,
@@ -1556,6 +1545,10 @@ namespace DGtal
       ///   - verbose         [     1]: verbose trace mode 0: silent, 1: verbose.
       ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
       ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
+      ///   - ii-thread-number[     1]: number of threads for II curvature estimators;
+      ///                                 1 keeps the sequential estimator, any other
+      ///                                 value requests the parallel estimator when
+      ///                                 OpenMP support is available.
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
       ///
       /// @return the vector containing the estimated Gaussian curvatures, in the
@@ -1588,6 +1581,10 @@ namespace DGtal
       ///   - verbose         [     1]: verbose trace mode 0: silent, 1: verbose.
       ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
       ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
+      ///   - ii-thread-number[     1]: number of threads for II curvature estimators;
+      ///                                 1 keeps the sequential estimator, any other
+      ///                                 value requests the parallel estimator when
+      ///                                 OpenMP support is available.
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
       ///   - minAABB         [ -10.0]: the min value of the AABB bounding box (domain)
       ///   - maxAABB         [  10.0]: the max value of the AABB bounding box (domain)
@@ -1627,6 +1624,10 @@ namespace DGtal
       ///   - verbose         [     1]: verbose trace mode 0: silent, 1: verbose.
       ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).;
       ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
+      ///   - ii-thread-number[     1]: number of threads for II curvature estimators;
+      ///                                 1 keeps the sequential estimator, any other
+      ///                                 value requests the parallel estimator when
+      ///                                 OpenMP support is available.
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
       ///
       /// @return the vector containing the estimated principal curvatures and directions,
@@ -1644,29 +1645,9 @@ namespace DGtal
                                             | parametersKSpace() )
       {
         typedef functors::IIPrincipalCurvaturesAndDirectionsFunctor<Space> IICurvFunctor;
-        typedef IntegralInvariantCovarianceEstimator<KSpace, TPointPredicate, IICurvFunctor>    IICurvEstimator;
-
-        CurvatureTensorQuantities  mc_estimations;
-        int      verbose = params[ "verbose"   ].as<int>();
-        Scalar   h       = params[ "gridstep"  ].as<Scalar>();
-        Scalar   r       = params[ "r-radius"  ].as<Scalar>();
-        Scalar   alpha   = params[ "alpha"     ].as<Scalar>();
-        if ( alpha != 1.0 ) r *= pow( h, alpha-1.0 );
-        if ( verbose > 0 )
-        {
-          trace.info() << "- II principal curvatures and directions alpha=" << alpha << std::endl;
-          trace.info() << "- II principal curvatures and directions r=" << (r*h)  << " (continuous) "
-          << r << " (discrete)" << std::endl;
-        }
-        IICurvFunctor   functor;
-        functor.init( h, r*h );
-        IICurvEstimator ii_estimator( functor );
-        ii_estimator.attach( K, shape );
-        ii_estimator.setParams( r );
-        ii_estimator.init( h, surfels.begin(), surfels.end() );
-        ii_estimator.eval( surfels.begin(), surfels.end(),
-                          std::back_inserter( mc_estimations ) );
-        return mc_estimations;
+        typedef IntegralInvariantCovarianceEstimator<KSpace, TPointPredicate, IICurvFunctor> IICurvEstimator;
+        return getIICurvatureEstimation<IICurvEstimator, IICurvFunctor>
+          ( "principal curvatures and directions", shape, K, surfels, params );
       }
 
       /// @}
@@ -2477,6 +2458,63 @@ namespace DGtal
 
       // ------------------------- Private Data --------------------------------
     private:
+
+      template <typename TEstimator, typename TFunctor, typename TPointPredicate>
+      static std::vector<typename TEstimator::Quantity>
+      getIICurvatureEstimation( const char*                description,
+                                const TPointPredicate&     shape,
+                                const KSpace&              K,
+                                const SurfelRange&         surfels,
+                                const Parameters&          params )
+      {
+        using Quantities = std::vector<typename TEstimator::Quantity>;
+        Quantities estimations;
+        int      verbose          = params[ "verbose"          ].as<int>();
+        int      ii_thread_number = params[ "ii-thread-number" ].as<int>();
+        Scalar   h                = params[ "gridstep"         ].as<Scalar>();
+        Scalar   r                = params[ "r-radius"         ].as<Scalar>();
+        Scalar   alpha            = params[ "alpha"            ].as<Scalar>();
+        if ( alpha != 1.0 ) r *= pow( h, alpha-1.0 );
+        if ( verbose > 0 )
+          {
+            trace.info() << "- II " << description << " alpha=" << alpha << std::endl;
+            trace.info() << "- II " << description << " r=" << (r*h)  << " (continuous) "
+                         << r << " (discrete)" << std::endl;
+          }
+        TFunctor functor;
+        functor.init( h, r*h );
+#ifdef DGTAL_WITH_OPENMP
+        if ( ii_thread_number != 1 )
+          {
+            if ( verbose > 0 )
+              trace.info() << "- II " << description
+                           << " uses ParallelIIEstimator with thread request="
+                           << ii_thread_number << std::endl;
+            typedef RegularDomainSplitter<Domain>                         Splitter;
+            typedef ParallelIIEstimator<TEstimator, Splitter>            ParallelEstimator;
+            ParallelEstimator ii_estimator( ii_thread_number, functor );
+            ii_estimator.attach( K, shape );
+            ii_estimator.setParams( r );
+            ii_estimator.init( h, surfels.begin(), surfels.end() );
+            ii_estimator.eval( surfels.begin(), surfels.end(),
+                               std::back_inserter( estimations ) );
+            return estimations;
+          }
+#else
+        if ( ( ii_thread_number != 1 ) && ( verbose > 0 ) )
+          trace.warning() << "- II " << description
+                          << " requested parallel execution but DGtal was built without OpenMP; "
+                          << "falling back to the sequential estimator."
+                          << std::endl;
+#endif
+        TEstimator ii_estimator( functor );
+        ii_estimator.attach( K, shape );
+        ii_estimator.setParams( r );
+        ii_estimator.init( h, surfels.begin(), surfels.end() );
+        ii_estimator.eval( surfels.begin(), surfels.end(),
+                           std::back_inserter( estimations ) );
+        return estimations;
+      }
 
       // ------------------------- Hidden services ------------------------------
     protected:
