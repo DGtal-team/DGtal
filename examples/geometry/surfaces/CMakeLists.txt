@@ -22,6 +22,7 @@ if (  DGTAL_WITH_POLYSCOPE_VIEWER )
     dvcm-3d
     examplePlaneProbingSurfaceLocalEstimator
     exampleMaximalSegmentSliceEstimation
+    parallelIIShortcuts
    )
   foreach(FILE ${DGTAL_EXAMPLES_POLYSCOPE_SRC})
       DGtal_add_example(${FILE})

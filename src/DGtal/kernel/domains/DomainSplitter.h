@@ -125,9 +125,9 @@ namespace DGtal
      *
      * @param d The domain to split
      * @param splitHint The targeted number of splits (clamped to the width of the domain)
-     * @param dim the split axis
+     * @param dim the split axis (default: 0)
      */
-    SplitDomainsInfo operator()(const Domain& d, uint32_t splitHint, typename Domain::Dimension dim) const
+    SplitDomainsInfo operator()(const Domain& d, uint32_t splitHint, typename Domain::Dimension dim = 0) const
     {
       SplitDomainsInfo result;
       if (splitHint == 0)

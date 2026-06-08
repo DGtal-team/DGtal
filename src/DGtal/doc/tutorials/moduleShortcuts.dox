@@ -158,6 +158,7 @@ parameter `ii-thread-number` to a value different from `1` before
 calling `ShortcutsGeometry::getIIMeanCurvatures`,
 `ShortcutsGeometry::getIIGaussianCurvatures`, or
 `ShortcutsGeometry::getIIPrincipalCurvaturesAndDirections`.
+By default, an AxisDomainSplitter is used along the first dimension.
 
 \snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_1_6s
 

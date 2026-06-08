@@ -2490,7 +2490,7 @@ namespace DGtal
               trace.info() << "- II " << description
                            << " uses ParallelIIEstimator with thread request="
                            << ii_thread_number << std::endl;
-            typedef RegularDomainSplitter<Domain>                         Splitter;
+            typedef AxisDomainSplitter<Domain>                           Splitter;
             typedef ParallelIIEstimator<TEstimator, Splitter>            ParallelEstimator;
             ParallelEstimator ii_estimator( ii_thread_number, functor );
             ii_estimator.attach( K, shape );
