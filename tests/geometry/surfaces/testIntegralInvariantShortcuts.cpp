@@ -71,12 +71,14 @@ TEST_CASE( "Testing IntegralInvariant Shortcuts API" )
   auto Hcurv     = SHG3::getIIMeanCurvatures( binary_image, surfels, params );
   auto Tcurv     = SHG3::getIIPrincipalCurvaturesAndDirections(binary_image, surfels, params);
   auto Kcurv     = SHG3::getIIGaussianCurvatures( binary_image, surfels, params);
+  auto Ncurv     = SHG3::getIINormalVectors( binary_image, surfels, params );
 
   auto params_parallel = params;
   params_parallel( "ii-thread-number", 4 );
   auto HcurvParallel = SHG3::getIIMeanCurvatures( binary_image, surfels, params_parallel );
   auto TcurvParallel = SHG3::getIIPrincipalCurvaturesAndDirections( binary_image, surfels, params_parallel );
   auto KcurvParallel = SHG3::getIIGaussianCurvatures( binary_image, surfels, params_parallel );
+  auto NcurvParallel = SHG3::getIINormalVectors( binary_image, surfels, params_parallel );
 
   std::vector<double> k1,k2,G;
   for(auto &result: Tcurv)
@@ -109,6 +111,15 @@ TEST_CASE( "Testing IntegralInvariant Shortcuts API" )
       REQUIRE( std::get<0>( TcurvParallel[ i ] ) == Approx( std::get<0>( Tcurv[ i ] ) ) );
       REQUIRE( std::get<1>( TcurvParallel[ i ] ) == Approx( std::get<1>( Tcurv[ i ] ) ) );
     }
+  }
+
+  SECTION("Testing that requesting the parallel II shortcut preserves normal vectors")
+  {
+    REQUIRE( NcurvParallel.size() == Ncurv.size() );
+
+    for ( std::size_t i = 0; i < Ncurv.size(); ++i )
+      for ( std::size_t d = 0; d < 3; ++d )
+        REQUIRE( NcurvParallel[ i ][ d ] == Approx( Ncurv[ i ][ d ] ) );
   }
 
   SECTION("Testing on shifted domains")

@@ -155,7 +155,8 @@ This example requires ShortcutsGeometry. It shows how to use the integral invari
 The same shortcut methods may also use the parallel integral invariant
 estimator when DGtal is built with OpenMP support (`DGTAL_WITH_OPENMP` option). To request it, set
 parameter `ii-thread-number` to a value different from `1` before
-calling `ShortcutsGeometry::getIIMeanCurvatures`,
+calling `ShortcutsGeometry::getIINormalVectors`,
+`ShortcutsGeometry::getIIMeanCurvatures`,
 `ShortcutsGeometry::getIIGaussianCurvatures`, or
 `ShortcutsGeometry::getIIPrincipalCurvaturesAndDirections`.
 By default, an AxisDomainSplitter is used along the first dimension.
@@ -560,7 +561,7 @@ Shortcuts::Point is Z3i::KSpace::Point.
   - ShortcutsGeometry::getTrivialNormalVectors: returns the trivial (Trivial) normal vectors to the given surfel range
   - ShortcutsGeometry::getCTrivialNormalVectors: returns the convolved trivial (CTrivial) normal vectors to the given surfel range
   - ShortcutsGeometry::getVCMNormalVectors: returns the Voronoi Covariance Measure (VCM) normal vectors to the given surfel range
-  - ShortcutsGeometry::getIINormalVectors: returns the Integral Invariant (II) normal vectors to the given surfel range (embedded in a binary image or a digitized implicit shape)
+  - ShortcutsGeometry::getIINormalVectors: returns the Integral Invariant (II) normal vectors to the given surfel range (embedded in a binary image or a digitized implicit shape), optionally through the parallel II estimator when `ii-thread-number != 1` (when `DGTAL_WITH_OPENMP` has been set to true).
   - ShortcutsGeometry::getIIMeanCurvatures: returns the Integral Invariant (II) mean curvatures onto the given surfel range (embedded in a binary image or a digitized implicit shape), optionally through the parallel II estimator when `ii-thread-number != 1` (when `DGTAL_WITH_OPENMP` has been set to true).
   - ShortcutsGeometry::getIIGaussianCurvatures: returns the Integral Invariant (II) Gaussian curvatures onto the given surfel range (embedded in a binary image or a digitized implicit shape), optionally through the parallel II estimator when `ii-thread-number != 1` (when `DGTAL_WITH_OPENMP` has been set to true).
   - ShortcutsGeometry::getIIPrincipalCurvaturesAndDirections: returns the Integral Invariant (II) principal curvatures values and directions for the given surfel range (embedded in a binary image or a digitized implicit shape), optionally through the parallel II estimator when `ii-thread-number != 1` (when `DGTAL_WITH_OPENMP` has been set to true).

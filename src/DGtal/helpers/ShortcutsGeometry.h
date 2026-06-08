@@ -979,7 +979,7 @@ namespace DGtal
       ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
       ///   - kernel          [ "hat"]: the kernel integration function chi_r, either "hat" or "ball". )
       ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
-      ///   - ii-thread-number[     1]: number of threads for II curvature estimators;
+      ///   - ii-thread-number[     1]: number of threads for II estimators;
       ///                                 1 keeps the sequential estimator, any other
       ///                                 value requests the parallel estimator when
       ///                                 OpenMP support is available.
@@ -1179,6 +1179,10 @@ namespace DGtal
       ///   - verbose         [     1]: verbose trace mode 0: silent, 1: verbose.
       ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
       ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
+      ///   - ii-thread-number[     1]: number of threads for II estimators;
+      ///                                 1 keeps the sequential estimator, any other
+      ///                                 value requests the parallel estimator when
+      ///                                 OpenMP support is available.
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
       ///
       /// @return the vector containing the estimated normals, in the
@@ -1214,6 +1218,10 @@ namespace DGtal
       ///   - verbose         [     1]: verbose trace mode 0: silent, 1: verbose.
       ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
       ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
+      ///   - ii-thread-number[     1]: number of threads for II estimators;
+      ///                                 1 keeps the sequential estimator, any other
+      ///                                 value requests the parallel estimator when
+      ///                                 OpenMP support is available.
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
       ///   - minAABB         [ -10.0]: the min value of the AABB bounding box (domain)
       ///   - maxAABB         [  10.0]: the max value of the AABB bounding box (domain)
@@ -1255,6 +1263,10 @@ namespace DGtal
       ///   - verbose         [     1]: verbose trace mode 0: silent, 1: verbose.
       ///   - r-radius        [   3.0]: the constant for kernel radius parameter r in r(h)=r h^alpha (VCM,II,Trivial).
       ///   - alpha           [  0.33]: the parameter alpha in r(h)=r h^alpha (VCM, II)."
+      ///   - ii-thread-number[     1]: number of threads for II estimators;
+      ///                                 1 keeps the sequential estimator, any other
+      ///                                 value requests the parallel estimator when
+      ///                                 OpenMP support is available.
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
       ///
       /// @return the vector containing the estimated normals, in the
@@ -1280,10 +1292,11 @@ namespace DGtal
             <KSpace, TPointPredicate, IINormalFunctor>          IINormalEstimator;
 
           RealVectors n_estimations;
-          int        verbose = params[ "verbose"   ].as<int>();
-          Scalar     h       = params[ "gridstep"  ].as<Scalar>();
-          Scalar     r       = params[ "r-radius"  ].as<Scalar>();
-          Scalar     alpha   = params[ "alpha"     ].as<Scalar>();
+          int        verbose          = params[ "verbose"          ].as<int>();
+          int        ii_thread_number = params[ "ii-thread-number" ].as<int>();
+          Scalar     h                = params[ "gridstep"         ].as<Scalar>();
+          Scalar     r                = params[ "r-radius"         ].as<Scalar>();
+          Scalar     alpha            = params[ "alpha"            ].as<Scalar>();
           if ( alpha != 1.0 ) r *= pow( h, alpha-1.0 );
           if ( verbose > 0 )
             {
@@ -1293,12 +1306,38 @@ namespace DGtal
             }
           IINormalFunctor     functor;
           functor.init( h, r*h );
-          IINormalEstimator   ii_estimator( functor );
-          ii_estimator.attach( K, shape );
-          ii_estimator.setParams( r );
-          ii_estimator.init( h, surfels.begin(), surfels.end() );
-          ii_estimator.eval( surfels.begin(), surfels.end(),
-                             std::back_inserter( n_estimations ) );
+          bool use_parallel = false;
+#ifdef DGTAL_WITH_OPENMP
+          if ( ii_thread_number != 1 )
+            {
+              use_parallel = true;
+              if ( verbose > 0 )
+                trace.info() << "- II normal uses ParallelIIEstimator with thread request="
+                             << ii_thread_number << std::endl;
+              typedef AxisDomainSplitter<Domain>                Splitter;
+              typedef ParallelIIEstimator<IINormalEstimator, Splitter> ParallelEstimator;
+              ParallelEstimator ii_estimator( ii_thread_number, functor );
+              ii_estimator.attach( K, shape );
+              ii_estimator.setParams( r );
+              ii_estimator.init( h, surfels.begin(), surfels.end() );
+              ii_estimator.eval( surfels.begin(), surfels.end(),
+                                 std::back_inserter( n_estimations ) );
+            }
+#else
+          if ( ( ii_thread_number != 1 ) && ( verbose > 0 ) )
+            trace.warning() << "- II normal requested parallel execution but DGtal was built without OpenMP; "
+                            << "falling back to the sequential estimator."
+                            << std::endl;
+#endif
+          if ( ! use_parallel )
+            {
+              IINormalEstimator ii_estimator( functor );
+              ii_estimator.attach( K, shape );
+              ii_estimator.setParams( r );
+              ii_estimator.init( h, surfels.begin(), surfels.end() );
+              ii_estimator.eval( surfels.begin(), surfels.end(),
+                                 std::back_inserter( n_estimations ) );
+            }
           const RealVectors n_trivial = getTrivialNormalVectors( K, surfels );
           orientVectors( n_estimations, n_trivial );
           return n_estimations;
