@@ -165,6 +165,45 @@ getCotangentPoints( const Point& a,
 //-----------------------------------------------------------------------------
 template < typename TKSpace >
 std::vector< typename DGtal::TangencyComputer<TKSpace>::Index >
+DGtal::TangencyComputer<TKSpace>::
+getCotangentPoints( const Point& a, double max_discrete_distance ) const
+{
+  // Breadth-first traversal from a
+  std::vector< Index > R; // result
+  std::set   < Index > V; // visited or in queue
+  std::queue < Index > Q; // queue for breadth-first traversal
+  ASSERT( myPt2Index.find( a ) != myPt2Index.cend() );
+  const auto idx_a = myPt2Index.find( a )->second;
+  Q.push  ( idx_a );
+  V.insert( idx_a );
+  const double d2 = max_discrete_distance * max_discrete_distance;
+  while ( ! Q.empty() )
+    {
+      const auto j = Q.front();
+      const auto p = myX[ j ];
+      Q.pop();
+      for ( auto && v : myN ) {
+        const Point q = p + v;
+        if ( (q - a).squaredNorm() > d2 ) continue; // too far away
+        const auto it = myPt2Index.find( q );
+        if ( it == myPt2Index.cend() ) continue; // not in X
+        const auto next = it->second;
+        if ( V.count( next ) ) continue; // already visited
+        if ( arePointsCotangent( a, q ) )
+          {
+            R.push_back( next );
+            V.insert( next );
+            Q.push  ( next );
+          }
+      }
+    }
+  return R;
+}
+
+
+//-----------------------------------------------------------------------------
+template < typename TKSpace >
+std::vector< typename DGtal::TangencyComputer<TKSpace>::Index >
 DGtal::TangencyComputer<TKSpace>::ShortestPaths::
 getCotangentPoints( Index idx_a ) const
 {

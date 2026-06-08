@@ -131,3 +131,66 @@ SCENARIO( "TangencyComputer::ShortestPaths 3D tests", "[shortest_paths][3d][tang
       REQUIRE( last_distance_opt*h >= last_distance*h );
     }
 }
+
+SCENARIO( "TangencyComputer 3D tests", "[3d][tangency]" )
+{
+  typedef Z3i::Space          Space;
+  typedef Z3i::KSpace         KSpace;
+  typedef Shortcuts< KSpace > SH3;
+  typedef Space::Point        Point;
+  typedef std::size_t         Index;
+
+  SECTION( "Computing shortest paths on a 3D unit sphere digitized at gridstep 0.125" )
+    {
+      // Make digital sphere
+      const double h = 0.125;
+      auto   params  = SH3::defaultParameters();
+      params( "polynomial", "sphere1" )( "gridstep",  h );
+      params( "minAABB", -2)( "maxAABB", 2)( "offset", 1.0 )( "closed", 1 );
+      auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
+      auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
+      auto K            = SH3::getKSpace( params );
+      auto binary_image = SH3::makeBinaryImage(digitized_shape,
+                                               SH3::Domain(K.lowerBound(),K.upperBound()),
+                                               params );
+      auto surface = SH3::makeDigitalSurface( binary_image, K, params );
+      std::vector< Point >    lattice_points;
+      auto pointels = SH3::getPointelRange( surface );
+      for ( auto p : pointels ) lattice_points.push_back( K.uCoords( p ) );
+      // Find lowest and uppest point.
+      const Index nb = lattice_points.size();
+      Index   lowest = 0;
+      Index   uppest = 0;
+      for ( Index i = 1; i < nb; i++ )
+        {
+          if ( lattice_points[ i ] < lattice_points[ lowest ] ) lowest = i;
+          if ( lattice_points[ uppest ] < lattice_points[ i ] ) uppest = i;
+        }
+      // Compute shortest paths
+      typedef TangencyComputer< KSpace >::Index _Index;
+      TangencyComputer< KSpace > TC( K );
+      TC.init( lattice_points.cbegin(), lattice_points.cend() );
+      const Point a = TC.point( lowest );
+      std::vector< Index > V1 = TC.getCotangentPoints( a, 5.0 );
+      std::vector< Index > V2 = TC.getCotangentPoints( a, 10.0 );
+      std::vector< Index > V3 = TC.getCotangentPoints( a, 15.0 );
+      std::sort( V1.begin(), V1.end() );
+      std::sort( V2.begin(), V2.end() );
+      std::sort( V3.begin(), V3.end() );
+      REQUIRE( 0 < V1.size() );
+      REQUIRE( V1.size() < V2.size() );
+      REQUIRE( V2.size() <= V3.size() );
+      REQUIRE( V3.size() < pointels.size()/2 );
+      REQUIRE( std::includes( V2.begin(), V2.end(), V1.begin(), V1.end() ) );
+      REQUIRE( std::includes( V3.begin(), V3.end(), V2.begin(), V2.end() ) );
+      double    md1 = 0.0;
+      double    md2 = 0.0;
+      double    md3 = 0.0;
+      for ( auto i : V1 ) md1 = std::max( md1, (TC.point( i ) - a).norm() );
+      for ( auto i : V2 ) md2 = std::max( md2, (TC.point( i ) - a).norm() );
+      for ( auto i : V3 ) md3 = std::max( md3, (TC.point( i ) - a).norm() );
+      REQUIRE( md1 <= 5.0 );
+      REQUIRE( md2 <= 10.0 );
+      REQUIRE( md3 <= 15.0 );
+    }
+}
