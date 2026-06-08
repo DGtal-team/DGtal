@@ -213,7 +213,7 @@ DGtal provides RegularDomainSplitter, which splits the outer domain regularly, a
 specified dimension. See kernel/domains/DomainSplitter.h for more information and the expected interface.
 
 
-A complete example is detailed in geometry/surfaces/parallelIIShortucts.cpp using the DGtal Shortcuts. For example, using this setting:
+A complete example is detailed in parallelIIShortcuts.cpp using the DGtal Shortcuts. For example, using this setting:
 
 @snippet geometry/surfaces/parallelIIShortcuts.cpp Parallel-instantiation
 
