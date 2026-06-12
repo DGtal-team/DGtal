@@ -42,8 +42,9 @@ namespace DGtal
    * @brief Run an Integral Invariant estimator in parallel
    *
    * This class is meant as an almost perfect replacement of
-   * other IIEstimator. The only difference is the constructor
-   * which needs the number of threads.
+   * other IIEstimator. The only difference is the constructor,
+   * which needs both a domain splitter instance and the number
+   * of threads.
    *
    * TODO: Value to control output (ie. value + loc, just value or ordered value)
    * TODO: Surface construction on subdomain fonctor ?
@@ -79,11 +80,12 @@ namespace DGtal
      *
      * @tparam Args The estimator constructor arguments
      *
-     * @param nbThread The number of thread to run in parallel. -1 means as many as possible
-     * @param args Constructor arguments to underlying estimators
-     */
+    * @param splitter The domain splitter instance used to partition the domain.
+    * @param nbThread The number of thread to run in parallel. -1 means as many as possible
+    * @param args Constructor arguments to underlying estimators
+    */
     template<typename... Args>
-    ParallelIIEstimator(int32_t nbThread, Args&&... args);
+    ParallelIIEstimator(Splitter splitter, int32_t nbThread, Args&&... args);
 
     /**
      * Clears the object. It is now invalid.

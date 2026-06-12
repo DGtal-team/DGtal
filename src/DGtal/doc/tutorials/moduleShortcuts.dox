@@ -159,7 +159,8 @@ calling `ShortcutsGeometry::getIINormalVectors`,
 `ShortcutsGeometry::getIIMeanCurvatures`,
 `ShortcutsGeometry::getIIGaussianCurvatures`, or
 `ShortcutsGeometry::getIIPrincipalCurvaturesAndDirections`.
-By default, an AxisDomainSplitter is used along the first dimension.
+The main axis of the default `AxisDomainSplitter` can be selected with
+parameter `ii-split-axis` (default value `0`).
 
 \snippet examples/tutorial-examples/shortcuts-geometry.cpp dgtal_shortcuts_ssec2_1_6s
 

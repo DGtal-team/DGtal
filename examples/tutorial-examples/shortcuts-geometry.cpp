@@ -58,7 +58,7 @@ int main( int /* argc */, char** /* argv */ )
     auto params    = SH3::defaultParameters() | SHG3::defaultParameters();
     params( "colormap", "Tics" );
     // To request the parallel II estimator when DGtal is built with OpenMP:
-    // params( "ii-thread-number", 4 );
+    // params( "ii-thread-number", 4 )( "ii-split-axis", 1 );
     auto bimage    = SH3::makeBinaryImage( examplesPath + "samples/Al.100.vol", params );
     auto K         = SH3::getKSpace( bimage, params );
     auto surface   = SH3::makeDigitalSurface( bimage, K, params );

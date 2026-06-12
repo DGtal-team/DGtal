@@ -54,40 +54,59 @@ typedef ShortcutsGeometry<Z3i::KSpace> SHG3;
 int main()
 {
 
-  //! [Parallel-instantiation]
-  auto params = SH3::defaultParameters() | SHG3::defaultParameters();
-  params( "polynomial", "goursat" )( "gridstep", 0.125 );
-  auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
-  auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
-  auto K         = SH3::getKSpace( params );
-  auto surface   = SH3::makeDigitalSurface( digitized_shape, K, params );
-  auto surfels   = SH3::getSurfelRange( surface, params );
-  //! [Parallel-instantiation]
+    //! [Parallel-instantiation]
+    auto params = SH3::defaultParameters() | SHG3::defaultParameters();
+    params( "polynomial", "goursat" )( "gridstep", 0.125 );
+    auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
+    auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
+    auto K         = SH3::getKSpace( params );
+    auto surface   = SH3::makeDigitalSurface( digitized_shape, K, params );
+    auto surfels   = SH3::getSurfelRange( surface, params );
+    //! [Parallel-instantiation]
 
-  //! [Parallel-run]
-  trace.info()<< "Input vol domain: "<< digitized_shape->getDomain() << std::endl;
-  //Sequential
-  trace.beginBlock("Single thread");
-  auto curv      = SHG3::getIIMeanCurvatures( digitized_shape, surfels, params );
-  trace.endBlock();
+    //! [Parallel-run]
+    trace.info()<< "Input vol domain: "<< digitized_shape->getDomain() << std::endl;
+    //Sequential
+    trace.beginBlock("Single thread");
+    auto curv      = SHG3::getIIMeanCurvatures( digitized_shape, surfels, params );
+    trace.endBlock();
 
-  //Parallel
-  trace.beginBlock("4 threads");
-  auto curv_par4  = SHG3::getIIMeanCurvatures( digitized_shape, surfels, params( "ii-thread-number", 4 ) );
-  trace.endBlock();
+    //Parallel
+    trace.beginBlock("4 threads on default axis");
+    auto curv_par4  = SHG3::getIIMeanCurvatures( digitized_shape, surfels,
+                                                params( "ii-thread-number", 4 ));
+    trace.endBlock();
 
-  //Parallel
-  trace.beginBlock("8 threads");
-  auto curv_par8  = SHG3::getIIMeanCurvatures( digitized_shape, surfels, params( "ii-thread-number", 8 ) );
-  trace.endBlock();
+    //Parallel
+    trace.beginBlock("8 threads on axis 0");
+    auto curv_par80 = SHG3::getIIMeanCurvatures( digitized_shape, surfels,
+                                                params( "ii-thread-number", 8 )
+                                                ( "ii-split-axis", 0 ) );
+    trace.endBlock();
 
-  //Parallel
-  trace.beginBlock("16 threads");
-  auto curv_par16  = SHG3::getIIMeanCurvatures( digitized_shape, surfels, params( "ii-thread-number", 16 ) );
-  trace.endBlock();
-  //! [Parallel-run]
+    //Parallel
+    trace.beginBlock("8 threads on axis 1");
+    auto curv_par81  = SHG3::getIIMeanCurvatures( digitized_shape, surfels,
+                                                params( "ii-thread-number", 8 )
+                                                ( "ii-split-axis", 1 ) );
+    trace.endBlock();
 
-  return 0;
+    //Parallel
+    trace.beginBlock("8 threads on axis 2");
+    auto curv_par82  = SHG3::getIIMeanCurvatures( digitized_shape, surfels,
+                                                params( "ii-thread-number", 8 )
+                                                ( "ii-split-axis", 2 ) );
+    trace.endBlock();
+
+    //Parallel
+    trace.beginBlock("16 threads on axis 2");
+    auto curv_par16  = SHG3::getIIMeanCurvatures( digitized_shape, surfels,
+                                                 params( "ii-thread-number", 16 )
+                                                 ( "ii-split-axis", 2 ) );
+    trace.endBlock();
+    //! [Parallel-run]
+
+    return 0;
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////

@@ -119,6 +119,30 @@ namespace DGtal
 
     //Output spllitted domain type
     typedef std::vector<SplitInfo<Domain>> SplitDomainsInfo;
+    typedef typename Domain::Dimension     Dimension;
+
+    /// The axis used for the default split operator.
+    Dimension axis;
+
+    /**
+     * @brief Constructor
+     *
+     * @param dim the split axis (default: 0)
+     */
+    explicit AxisDomainSplitter( Dimension dim = 0 )
+      : axis( dim )
+    {}
+
+    /**
+     * @brief Regularly splits a domain along one axis
+     *
+     * @param d The domain to split
+     * @param splitHint The targeted number of splits (clamped to the width of the domain)
+     */
+    SplitDomainsInfo operator()( const Domain& d, uint32_t splitHint ) const
+    {
+      return (*this)( d, splitHint, axis );
+    }
 
     /**
      * @brief Regularly splits a domain along one axis
@@ -127,7 +151,7 @@ namespace DGtal
      * @param splitHint The targeted number of splits (clamped to the width of the domain)
      * @param dim the split axis (default: 0)
      */
-    SplitDomainsInfo operator()(const Domain& d, uint32_t splitHint, typename Domain::Dimension dim = 0) const
+    SplitDomainsInfo operator()(const Domain& d, uint32_t splitHint, Dimension dim) const
     {
       SplitDomainsInfo result;
       if (splitHint == 0)

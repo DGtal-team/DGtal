@@ -125,11 +125,10 @@ bool testCurvature2dP ( double h )
   curvatureEstimator.setParams( re/h );
   curvatureEstimator.init( h, ibegin, iend );
 
-  // Parallel version expects a number of thread as first argument.
-  // Subsequent arguments are forwarded to underlying estimator
-  // init / setParams and init (and eval) remains the same.
-
-  MyIICurvatureEstimatorP curvatureEstimatorP( 4, curvatureFunctor );
+  // Parallel version expects a domain splitter instance and a number of
+  // threads. Subsequent arguments are forwarded to the underlying estimator.
+  Splitter splitter;
+  MyIICurvatureEstimatorP curvatureEstimatorP( splitter, 4, curvatureFunctor );
   curvatureEstimatorP.attach( K, dshape );
   curvatureEstimatorP.setParams( re/h );
   curvatureEstimatorP.init( h, ibeginP, iendP );

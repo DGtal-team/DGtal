@@ -36,7 +36,8 @@ namespace DGtal
   template<class TEstimator, typename TSplitter>
   template<class... Args>
   ParallelIIEstimator<TEstimator, TSplitter>::
-  ParallelIIEstimator(int32_t nbThread, Args&&... args)
+  ParallelIIEstimator(Splitter splitter, int32_t nbThread, Args&&... args)
+    : mySplitter(std::move(splitter))
   {
       if (nbThread <= 0)
         nbThread = std::max(1, omp_get_max_threads());

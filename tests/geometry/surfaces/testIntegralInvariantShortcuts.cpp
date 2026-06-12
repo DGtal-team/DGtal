@@ -74,7 +74,7 @@ TEST_CASE( "Testing IntegralInvariant Shortcuts API" )
   auto Ncurv     = SHG3::getIINormalVectors( binary_image, surfels, params );
 
   auto params_parallel = params;
-  params_parallel( "ii-thread-number", 4 );
+  params_parallel( "ii-thread-number", 4 )( "ii-split-axis", 2 );
   auto HcurvParallel = SHG3::getIIMeanCurvatures( binary_image, surfels, params_parallel );
   auto TcurvParallel = SHG3::getIIPrincipalCurvaturesAndDirections( binary_image, surfels, params_parallel );
   auto KcurvParallel = SHG3::getIIGaussianCurvatures( binary_image, surfels, params_parallel );
@@ -120,6 +120,17 @@ TEST_CASE( "Testing IntegralInvariant Shortcuts API" )
     for ( std::size_t i = 0; i < Ncurv.size(); ++i )
       for ( std::size_t d = 0; d < 3; ++d )
         REQUIRE( NcurvParallel[ i ][ d ] == Approx( Ncurv[ i ][ d ] ) );
+  }
+
+  SECTION("Testing that ii-split-axis accepts out-of-range values by clamping to a valid axis")
+  {
+    auto params_parallel_clamped = params;
+    params_parallel_clamped( "ii-thread-number", 4 )( "ii-split-axis", 9 );
+    auto HcurvParallelClamped = SHG3::getIIMeanCurvatures( binary_image, surfels, params_parallel_clamped );
+
+    REQUIRE( HcurvParallelClamped.size() == Hcurv.size() );
+    for ( std::size_t i = 0; i < Hcurv.size(); ++i )
+      REQUIRE( HcurvParallelClamped[ i ] == Approx( Hcurv[ i ] ) );
   }
 
   SECTION("Testing on shifted domains")

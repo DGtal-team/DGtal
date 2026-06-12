@@ -983,6 +983,8 @@ namespace DGtal
       ///                                 1 keeps the sequential estimator, any other
       ///                                 value requests the parallel estimator when
       ///                                 OpenMP support is available.
+      ///   - ii-split-axis   [     0]: main axis used by AxisDomainSplitter
+      ///                                 for parallel II estimators.
       ///   - surfelEmbedding [     0]: the surfel -> point embedding for VCM estimator: 0: Pointels, 1: InnerSpel, 2: OuterSpel.
       ///   - unit_u [0]: Use unit normals for (CNC) curvature computations.
       static Parameters parametersGeometryEstimation()
@@ -995,6 +997,7 @@ namespace DGtal
           ( "r-radius",        3.0 )
           ( "alpha",          0.33 )
           ( "ii-thread-number", 1 )
+          ( "ii-split-axis",    0 )
           ( "surfelEmbedding",   0 )
           ( "unit_u"         ,   0 );
       }
@@ -1183,6 +1186,8 @@ namespace DGtal
       ///                                 1 keeps the sequential estimator, any other
       ///                                 value requests the parallel estimator when
       ///                                 OpenMP support is available.
+      ///   - ii-split-axis   [     0]: main axis used by AxisDomainSplitter
+      ///                                 for parallel II estimators.
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
       ///
       /// @return the vector containing the estimated normals, in the
@@ -1222,6 +1227,8 @@ namespace DGtal
       ///                                 1 keeps the sequential estimator, any other
       ///                                 value requests the parallel estimator when
       ///                                 OpenMP support is available.
+      ///   - ii-split-axis   [     0]: main axis used by AxisDomainSplitter
+      ///                                 for parallel II estimators.
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
       ///   - minAABB         [ -10.0]: the min value of the AABB bounding box (domain)
       ///   - maxAABB         [  10.0]: the max value of the AABB bounding box (domain)
@@ -1267,6 +1274,8 @@ namespace DGtal
       ///                                 1 keeps the sequential estimator, any other
       ///                                 value requests the parallel estimator when
       ///                                 OpenMP support is available.
+      ///   - ii-split-axis   [     0]: main axis used by AxisDomainSplitter
+      ///                                 for parallel II estimators.
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
       ///
       /// @return the vector containing the estimated normals, in the
@@ -1294,6 +1303,7 @@ namespace DGtal
           RealVectors n_estimations;
           int        verbose          = params[ "verbose"          ].as<int>();
           int        ii_thread_number = params[ "ii-thread-number" ].as<int>();
+          auto       ii_split_axis    = getIIParallelSplitAxis( params );
           Scalar     h                = params[ "gridstep"         ].as<Scalar>();
           Scalar     r                = params[ "r-radius"         ].as<Scalar>();
           Scalar     alpha            = params[ "alpha"            ].as<Scalar>();
@@ -1313,10 +1323,12 @@ namespace DGtal
               use_parallel = true;
               if ( verbose > 0 )
                 trace.info() << "- II normal uses ParallelIIEstimator with thread request="
-                             << ii_thread_number << std::endl;
+                             << ii_thread_number << " and split axis="
+                             << ii_split_axis << std::endl;
               typedef AxisDomainSplitter<Domain>                Splitter;
               typedef ParallelIIEstimator<IINormalEstimator, Splitter> ParallelEstimator;
-              ParallelEstimator ii_estimator( ii_thread_number, functor );
+              Splitter splitter( ii_split_axis );
+              ParallelEstimator ii_estimator( splitter, ii_thread_number, functor );
               ii_estimator.attach( K, shape );
               ii_estimator.setParams( r );
               ii_estimator.init( h, surfels.begin(), surfels.end() );
@@ -1359,6 +1371,8 @@ namespace DGtal
       ///                                 1 keeps the sequential estimator, any other
       ///                                 value requests the parallel estimator when
       ///                                 OpenMP support is available.
+      ///   - ii-split-axis   [     0]: main axis used by AxisDomainSplitter
+      ///                                 for parallel II estimators.
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
       ///
       /// @return the vector containing the estimated mean curvatures, in the
@@ -1394,6 +1408,8 @@ namespace DGtal
       ///                                 1 keeps the sequential estimator, any other
       ///                                 value requests the parallel estimator when
       ///                                 OpenMP support is available.
+      ///   - ii-split-axis   [     0]: main axis used by AxisDomainSplitter
+      ///                                 for parallel II estimators.
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
       ///   - minAABB         [ -10.0]: the min value of the AABB bounding box (domain)
       ///   - maxAABB         [  10.0]: the max value of the AABB bounding box (domain)
@@ -1437,6 +1453,8 @@ namespace DGtal
       ///                                 1 keeps the sequential estimator, any other
       ///                                 value requests the parallel estimator when
       ///                                 OpenMP support is available.
+      ///   - ii-split-axis   [     0]: main axis used by AxisDomainSplitter
+      ///                                 for parallel II estimators.
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
       ///
       /// @return the vector containing the estimated mean curvatures, in the
@@ -1475,6 +1493,8 @@ namespace DGtal
       ///                                 1 keeps the sequential estimator, any other
       ///                                 value requests the parallel estimator when
       ///                                 OpenMP support is available.
+      ///   - ii-split-axis   [     0]: main axis used by AxisDomainSplitter
+      ///                                 for parallel II estimators.
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
       ///
       /// @return the vector containing the estimated Gaussian curvatures, in the
@@ -1510,6 +1530,8 @@ namespace DGtal
       ///                                 1 keeps the sequential estimator, any other
       ///                                 value requests the parallel estimator when
       ///                                 OpenMP support is available.
+      ///   - ii-split-axis   [     0]: main axis used by AxisDomainSplitter
+      ///                                 for parallel II estimators.
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
       ///   - minAABB         [ -10.0]: the min value of the AABB bounding box (domain)
       ///   - maxAABB         [  10.0]: the max value of the AABB bounding box (domain)
@@ -1588,6 +1610,8 @@ namespace DGtal
       ///                                 1 keeps the sequential estimator, any other
       ///                                 value requests the parallel estimator when
       ///                                 OpenMP support is available.
+      ///   - ii-split-axis   [     0]: main axis used by AxisDomainSplitter
+      ///                                 for parallel II estimators.
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
       ///
       /// @return the vector containing the estimated Gaussian curvatures, in the
@@ -1624,6 +1648,8 @@ namespace DGtal
       ///                                 1 keeps the sequential estimator, any other
       ///                                 value requests the parallel estimator when
       ///                                 OpenMP support is available.
+      ///   - ii-split-axis   [     0]: main axis used by AxisDomainSplitter
+      ///                                 for parallel II estimators.
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
       ///   - minAABB         [ -10.0]: the min value of the AABB bounding box (domain)
       ///   - maxAABB         [  10.0]: the max value of the AABB bounding box (domain)
@@ -1667,6 +1693,8 @@ namespace DGtal
       ///                                 1 keeps the sequential estimator, any other
       ///                                 value requests the parallel estimator when
       ///                                 OpenMP support is available.
+      ///   - ii-split-axis   [     0]: main axis used by AxisDomainSplitter
+      ///                                 for parallel II estimators.
       ///   - gridstep        [   1.0]: the digitization gridstep (often denoted by h).
       ///
       /// @return the vector containing the estimated principal curvatures and directions,
@@ -2510,6 +2538,7 @@ namespace DGtal
         Quantities estimations;
         int      verbose          = params[ "verbose"          ].as<int>();
         int      ii_thread_number = params[ "ii-thread-number" ].as<int>();
+        auto     ii_split_axis    = getIIParallelSplitAxis( params );
         Scalar   h                = params[ "gridstep"         ].as<Scalar>();
         Scalar   r                = params[ "r-radius"         ].as<Scalar>();
         Scalar   alpha            = params[ "alpha"            ].as<Scalar>();
@@ -2528,10 +2557,12 @@ namespace DGtal
             if ( verbose > 0 )
               trace.info() << "- II " << description
                            << " uses ParallelIIEstimator with thread request="
-                           << ii_thread_number << std::endl;
+                         << ii_thread_number << " and split axis="
+                         << ii_split_axis << std::endl;
             typedef AxisDomainSplitter<Domain>                           Splitter;
             typedef ParallelIIEstimator<TEstimator, Splitter>            ParallelEstimator;
-            ParallelEstimator ii_estimator( ii_thread_number, functor );
+            Splitter splitter( ii_split_axis );
+            ParallelEstimator ii_estimator( splitter, ii_thread_number, functor );
             ii_estimator.attach( K, shape );
             ii_estimator.setParams( r );
             ii_estimator.init( h, surfels.begin(), surfels.end() );
@@ -2560,6 +2591,16 @@ namespace DGtal
 
       // ------------------------- Internals ------------------------------------
     private:
+
+      static typename Domain::Dimension
+      getIIParallelSplitAxis( const Parameters& params )
+      {
+        const auto requested_axis = params[ "ii-split-axis" ].as<int>();
+        if ( requested_axis <= 0 ) return 0;
+        if ( requested_axis >= static_cast<int>( Domain::dimension ) )
+          return static_cast<typename Domain::Dimension>( Domain::dimension - 1 );
+        return static_cast<typename Domain::Dimension>( requested_axis );
+      }
 
     }; // end of class ShortcutsGeometry
 
