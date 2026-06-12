@@ -259,5 +259,12 @@ New Block [16 threads on axis 2]
   - II mean curvature uses ParallelIIEstimator with thread request=16 and split axis=2
 EndBlock [16 threads on axis 2] (4717 ms)
 ```
+
+For 8 threads with splits aloing the 0-axis, we obtain:
+
+@image html parallelsplit.png "Parallel computation of integral invariants (8-threads)"
+
+
+
 */
 }

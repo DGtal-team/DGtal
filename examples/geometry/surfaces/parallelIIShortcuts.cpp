@@ -38,9 +38,11 @@
 #include "DGtal/helpers/ShortcutsGeometry.h"
 
 
+#ifdef DGTAL_WITH_POLYSCOPE_VIEWER
 // Visualization
 #include "DGtal/io/viewers/PolyscopeViewer.h"
 #include "DGtal/io/colormaps/GradientColorMap.h"
+#endif
 
 ///////////////////////////////////////////////////////////////////////////////
 
@@ -79,21 +81,21 @@ int main()
 
     //Parallel
     trace.beginBlock("8 threads on axis 0");
-    auto curv_par80 = SHG3::getIIMeanCurvatures( digitized_shape, surfels,
+    auto curv_par8_0 = SHG3::getIIMeanCurvatures( digitized_shape, surfels,
                                                 params( "ii-thread-number", 8 )
                                                 ( "ii-split-axis", 0 ) );
     trace.endBlock();
 
     //Parallel
     trace.beginBlock("8 threads on axis 1");
-    auto curv_par81  = SHG3::getIIMeanCurvatures( digitized_shape, surfels,
+    auto curv_par8_1  = SHG3::getIIMeanCurvatures( digitized_shape, surfels,
                                                 params( "ii-thread-number", 8 )
                                                 ( "ii-split-axis", 1 ) );
     trace.endBlock();
 
     //Parallel
     trace.beginBlock("8 threads on axis 2");
-    auto curv_par82  = SHG3::getIIMeanCurvatures( digitized_shape, surfels,
+    auto curv_par8_2  = SHG3::getIIMeanCurvatures( digitized_shape, surfels,
                                                 params( "ii-thread-number", 8 )
                                                 ( "ii-split-axis", 2 ) );
     trace.endBlock();
@@ -105,6 +107,24 @@ int main()
                                                  ( "ii-split-axis", 2 ) );
     trace.endBlock();
     //! [Parallel-run]
+
+#ifdef DGTAL_WITH_POLYSCOPE_VIEWER
+    PolyscopeViewer viewer;
+
+    std::string objectName = "Surfels";
+    viewer.draw(surfels, objectName); // Draws the object independently
+    viewer.addQuantity(objectName, "Mean curvature", curv_par8_0);
+
+    AxisDomainSplitter<Z3i::Domain> splitter(0);
+    AxisDomainSplitter<Z3i::Domain>::SplitDomainsInfo splits = splitter(digitized_shape->getDomain(), 8);
+    HueShadeColorMap<unsigned int> cmap(0,(unsigned int)splits.size());
+    for(auto i=0; i< splits.size(); ++i)
+    {
+        viewer << cmap(i);
+        viewer << splits[i].domain;
+    }
+    viewer.show();
+#endif
 
     return 0;
 }
