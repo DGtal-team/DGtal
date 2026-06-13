@@ -36,6 +36,11 @@ void init_dgtal_helpers(py::module& m) {
 
     auto m_helpers = m.def_submodule("helpers", "Submodule for DGtal helpers");
     m_helpers.attr("SAMPLES_PATH") = py::str(std::string(DGTAL_PATH) + "/examples/samples/");
+#ifdef DGTAL_WITH_OPENMP
+    m_helpers.attr("DGTAL_WITH_OPENMP") = py::bool_(true);
+#else
+    m_helpers.attr("DGTAL_WITH_OPENMP") = py::bool_(false);
+#endif
 
     // Bind parameter class
     py::class_<Parameters>(m_helpers, "Parameters")
@@ -49,6 +54,14 @@ void init_dgtal_helpers(py::module& m) {
       .def("set", [](Parameters& params, const std::string& name, std::string value) {
             return params(name, ParameterValue(value));
         }, py::return_value_policy::reference)
+       .def("count", &Parameters::count)
+       .def("__contains__", [](const Parameters& params, const std::string& name) {
+            return params.count(name);
+        })
+       .def("__or__", [](const Parameters& lhs, const Parameters& rhs) {
+            return lhs | rhs;
+        })
+       .def("isValid", &Parameters::isValid)
        .def("__str__", [](const Parameters& params) {
             std::stringstream ss;
             params.selfDisplay(ss);
