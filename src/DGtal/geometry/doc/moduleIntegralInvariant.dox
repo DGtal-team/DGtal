@@ -24,7 +24,7 @@ namespace DGtal {
 
 [TOC]
 
-@author Jérémy Levallois
+@author Jérémy Levallois, David Coeurjolly
 
 \section II_sectOverview Overview
 
@@ -199,6 +199,72 @@ Here is some results in 2d and 3d :
 @image html Bunny_128_mean.png "Mean curvature mapped on a Stanford bunny (credit is given to the Stanford Computer Graphics Laboratory https://graphics.stanford.edu/data/3Dscanrep/)"
 @image html Bunny_64_k1.png "First principal curvature direction mapped on a Stanford bunny (credit is given to the Stanford Computer Graphics Laboratory https://graphics.stanford.edu/data/3Dscanrep/)"
 
-*/
 
+
+\section II_sectParallel Parallel Integral Invariant estimators
+
+Each Integral Invariant estimator can run in parallel in DGtal, provided the library is compiled with OpenMP support (`DGTAL_WITH_OPENMP` option).
+The interface for computation and parameter setting is the same as for every other integral invariant estimator and can
+be used as a drop-in replacement in most cases.
+
+The key idea behind the parallel execution is to first split the surface domain into subdomains, and then run convolutions concurrently
+on each of these smaller domains. The splitter type is still specified in the template parameters, while the configured splitter
+instance is now passed to the `ParallelIIEstimator` constructor together with the requested thread count. Currently,
+DGtal provides RegularDomainSplitter, which splits the outer domain regularly, and AxisDomainSplitter, which splits domains along a
+specified dimension. See kernel/domains/DomainSplitter.h for more information and the expected interface.
+
+At the low-level API, a typical construction is:
+
+@snippet tests/geometry/surfaces/testParallelIntegralInvariantEstimator.cpp exampleParallelII-construction
+
+
+A complete example is detailed in parallelIIShortcuts.cpp using the DGtal Shortcuts (see @ref moduleShortcuts). For example, using this setting:
+
+@snippet geometry/surfaces/parallelIIShortcuts.cpp Parallel-instantiation
+
+Parallel Integral Invariant curvature estimation can be obtained using:
+
+@snippet geometry/surfaces/parallelIIShortcuts.cpp Parallel-run
+
+On an Apple M1 (8 cores), the output shows a speed-up up to 8 threads as expected:
+```
+Input vol domain: [HyperRectDomain] = [(-85, -85, -85)]x[(85, 85, 85)]
+New Block [Single thread]
+  - II mean curvature alpha=0.33
+  - II mean curvature r=1.51043 (continuous) 12.0835 (discrete)
+EndBlock [Single thread] (25956.2 ms)
+New Block [4 threads on default axis]
+  - II mean curvature alpha=0.33
+  - II mean curvature r=1.51043 (continuous) 12.0835 (discrete)
+  - II mean curvature uses ParallelIIEstimator with thread request=4 and split axis=0
+EndBlock [4 threads on default axis] (8295.22 ms)
+New Block [8 threads on axis 0]
+  - II mean curvature alpha=0.33
+  - II mean curvature r=1.51043 (continuous) 12.0835 (discrete)
+  - II mean curvature uses ParallelIIEstimator with thread request=8 and split axis=0
+EndBlock [8 threads on axis 0] (7084.68 ms)
+New Block [8 threads on axis 1]
+  - II mean curvature alpha=0.33
+  - II mean curvature r=1.51043 (continuous) 12.0835 (discrete)
+  - II mean curvature uses ParallelIIEstimator with thread request=8 and split axis=1
+EndBlock [8 threads on axis 1] (6740.38 ms)
+New Block [8 threads on axis 2]
+  - II mean curvature alpha=0.33
+  - II mean curvature r=1.51043 (continuous) 12.0835 (discrete)
+  - II mean curvature uses ParallelIIEstimator with thread request=8 and split axis=2
+EndBlock [8 threads on axis 2] (4311.78 ms)
+New Block [16 threads on axis 2]
+  - II mean curvature alpha=0.33
+  - II mean curvature r=1.51043 (continuous) 12.0835 (discrete)
+  - II mean curvature uses ParallelIIEstimator with thread request=16 and split axis=2
+EndBlock [16 threads on axis 2] (4717 ms)
+```
+
+For 8 threads with splits aloing the 0-axis, we obtain:
+
+@image html parallelsplit.png "Parallel computation of integral invariants (8-threads)"
+
+
+
+*/
 }

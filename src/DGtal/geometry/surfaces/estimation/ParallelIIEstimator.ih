@@ -1,0 +1,181 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file ParallelIIEstimator.ih
+ * @author Bastien Doignies
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), INSA-Lyon, France
+ *
+ * @date 2026/05/01
+ *
+ * Header file for module ParallelEstimator.ih
+ *
+ * This file is part of the DGtal library.
+ */
+
+
+#include <deque>
+#include <optional>
+#include <ranges>
+
+namespace DGtal
+{
+  template<class TEstimator, typename TSplitter>
+  template<class... Args>
+  ParallelIIEstimator<TEstimator, TSplitter>::
+  ParallelIIEstimator(Splitter splitter, int32_t nbThread, Args&&... args)
+    : mySplitter(std::move(splitter))
+  {
+      if (nbThread <= 0)
+        nbThread = std::max(1, omp_get_max_threads());
+
+      // Note: We can not use std::vector constructor or resize
+      // because it will copy the estimator but it can have shared
+      // state.
+      // We rather build a new one in a loop by calling the constructor
+      // implictely with emplace_back
+      myEstimators.reserve(nbThread);
+      for (int i = 0; i < nbThread; ++i)
+        myEstimators.emplace_back(std::forward<Args>(args)...);
+  }
+
+  template<class TEstimator, typename TSplitter>
+  void ParallelIIEstimator<TEstimator, TSplitter>::clear()
+  {
+    for (auto& estim : myEstimators)
+      estim.clear();
+  }
+
+  template<class TEstimator, typename TSplitter>
+  typename ParallelIIEstimator<TEstimator, TSplitter>::Scalar
+  ParallelIIEstimator<TEstimator, TSplitter>::h() const { return myEstimators[0].h(); }
+
+  template<class TEstimator, typename TSplitter>
+  void ParallelIIEstimator<TEstimator, TSplitter>::attach(
+      ConstAlias<KSpace> K,
+      ConstAlias<PointPredicate> pp)
+  {
+    clear();
+
+    myKSpace = K;
+    myPointPredicate = pp;
+  }
+
+  template<class TEstimator, typename TSplitter>
+  void ParallelIIEstimator<TEstimator, TSplitter>::setParams(double dRadius)
+  {
+    myRadius = dRadius;
+  }
+
+  template<class TEstimator, typename TSplitter>
+  bool ParallelIIEstimator<TEstimator, TSplitter>::isValid() const
+  {
+    bool valid = true;
+    for (const auto& estim : myEstimators)
+      valid = valid && estim.isValid();
+
+    return valid;
+  }
+
+  template<class TEstimator, typename TSplitter>
+  template<typename ItA, typename ItB>
+  void ParallelIIEstimator<TEstimator, TSplitter>::init(double h_, ItA, ItB)
+  {
+    myH = h_;
+  }
+
+  template<class TEstimator, typename TSplitter>
+  template<typename It>
+  typename ParallelIIEstimator<TEstimator, TSplitter>::Quantity
+  ParallelIIEstimator<TEstimator, TSplitter>::eval(It it)
+  {
+    // TODO: Initialize properly the estimator (attaching shape, ...)
+    if (!myEstimators[0].isValid())
+    {
+      auto ite = it; ite++;
+      myEstimators[0].init(myH, it, ite);
+    }
+
+    return {
+      .location = *it,
+      .value = myEstimators[0].eval(it)
+    };
+  }
+
+  template<class TEstimator, typename TSplitter>
+  template<typename It, typename Oit>
+  Oit ParallelIIEstimator<TEstimator, TSplitter>::eval(It itb, It ite, Oit rslt)
+  {
+    Domain mainDomain(myKSpace->lowerBound(), myKSpace->upperBound());
+    std::vector<SplitInfo<Domain>> domains = mySplitter(mainDomain, myEstimators.size());
+
+    using Result = std::pair<Surfel, std::optional<EstimatorQuantity>>;
+    std::deque<Result> result;
+    std::vector<std::vector<Result*>> resultLocation(domains.size());
+    for ( auto it = itb; it != ite; ++it )
+    {
+      result.push_back( { *it, std::nullopt } );
+      Result* current = &result.back();
+
+      for (unsigned int j = 0; j < domains.size(); ++j)
+      {
+        // Should be true for only one of the domain. The break ensure
+        // each surfel belongs to one and only one domain, meaning there
+        // will be no concurrent write afterward
+        if (domains[j].domain.isInside(myKSpace->interiorVoxel(*it)))
+        {
+          resultLocation[j].push_back( current );
+          break;
+        }
+      }
+    }
+
+    #pragma omp parallel for
+    for (uint32_t i = 0; i < domains.size(); ++i)
+    {
+      auto surfels = resultLocation[i] | std::views::transform([](const auto* kv) -> const Surfel&
+      {
+        return kv->first;
+      });
+      auto values = resultLocation[i] | std::views::transform([](auto* kv) -> std::optional<EstimatorQuantity>&
+      {
+        return kv->second;
+      });
+
+      auto& estim = myEstimators[i];
+
+      estim.attach(*myKSpace, *myPointPredicate);
+      estim.setParams(myRadius);
+
+      estim.init(myH, surfels.begin(), surfels.end());
+      estim.eval(surfels.begin(), surfels.end(), values.begin());
+    }
+
+    for ( const auto& entry : result )
+      *rslt++ = *( entry.second );
+
+    return rslt;
+  }
+
+  template<class TEstimator, typename TSplitter>
+  void
+  ParallelIIEstimator<TEstimator, TSplitter>::selfDisplay( std::ostream & out ) const
+  {
+    out << "[ParallelIIEstimator Estim=";
+    myEstimators[0].selfDisplay(out);
+    out << "]";
+  }
+}

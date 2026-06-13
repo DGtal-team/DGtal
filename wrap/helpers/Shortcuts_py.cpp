@@ -211,6 +211,9 @@ void bind_shortcuts(py::module& m_helpers) {
     m.def("defaultParameters", []() {
             return SH3::defaultParameters() | SHG3::defaultParameters();
         });
+    m.def("parametersGeometryEstimation", []() {
+            return SHG3::parametersGeometryEstimation();
+        });
 
     // Note: We use lambda because default parameters or partial specialization results
     // in multiple overloads that are not disambiguated with py::overload_cast...
@@ -372,6 +375,16 @@ void bind_shortcuts(py::module& m_helpers) {
         CountedPtr<SH3::DigitizedImplicitShape3D> im, const SH3::SurfelRange& range,
         const Parameters& params) {
             return SHG3::getIINormalVectors(im, range, params);
+        });
+    mg.def("getIIPrincipalCurvaturesAndDirections", [](
+        CountedPtr<SH3::BinaryImage> im, const SH3::SurfelRange& range,
+        const Parameters& params) {
+            return SHG3::getIIPrincipalCurvaturesAndDirections(im, range, params);
+        });
+    mg.def("getIIPrincipalCurvaturesAndDirections", [](
+        CountedPtr<SH3::DigitizedImplicitShape3D> im, const SH3::SurfelRange& range,
+        const Parameters& params) {
+            return SHG3::getIIPrincipalCurvaturesAndDirections(im, range, params);
         });
     mg.def("getPositions", [](
         CountedPtr<SH3::ImplicitShape3D> shape, const SH3::KSpace& K,

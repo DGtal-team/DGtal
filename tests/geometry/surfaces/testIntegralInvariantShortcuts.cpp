@@ -68,8 +68,17 @@ TEST_CASE( "Testing IntegralInvariant Shortcuts API" )
   params("r-radius", 3.0);
 
   //We compute the curvature tensor, the mean and the Gaussian curvature
+  auto Hcurv     = SHG3::getIIMeanCurvatures( binary_image, surfels, params );
   auto Tcurv     = SHG3::getIIPrincipalCurvaturesAndDirections(binary_image, surfels, params);
   auto Kcurv     = SHG3::getIIGaussianCurvatures( binary_image, surfels, params);
+  auto Ncurv     = SHG3::getIINormalVectors( binary_image, surfels, params );
+
+  auto params_parallel = params;
+  params_parallel( "ii-thread-number", 4 )( "ii-split-axis", 2 );
+  auto HcurvParallel = SHG3::getIIMeanCurvatures( binary_image, surfels, params_parallel );
+  auto TcurvParallel = SHG3::getIIPrincipalCurvaturesAndDirections( binary_image, surfels, params_parallel );
+  auto KcurvParallel = SHG3::getIIGaussianCurvatures( binary_image, surfels, params_parallel );
+  auto NcurvParallel = SHG3::getIINormalVectors( binary_image, surfels, params_parallel );
 
   std::vector<double> k1,k2,G;
   for(auto &result: Tcurv)
@@ -83,6 +92,45 @@ TEST_CASE( "Testing IntegralInvariant Shortcuts API" )
   {
     for(std::size_t i = 0; i < G.size(); ++i)
       REQUIRE( Kcurv[i] == Approx( G[i] ) );
+  }
+
+  SECTION("Testing that requesting the parallel II shortcut preserves curvature values")
+  {
+    REQUIRE( HcurvParallel.size() == Hcurv.size() );
+    REQUIRE( KcurvParallel.size() == Kcurv.size() );
+    REQUIRE( TcurvParallel.size() == Tcurv.size() );
+
+    for ( std::size_t i = 0; i < Hcurv.size(); ++i )
+      REQUIRE( HcurvParallel[ i ] == Approx( Hcurv[ i ] ) );
+
+    for ( std::size_t i = 0; i < Kcurv.size(); ++i )
+      REQUIRE( KcurvParallel[ i ] == Approx( Kcurv[ i ] ) );
+
+    for ( std::size_t i = 0; i < Tcurv.size(); ++i )
+    {
+      REQUIRE( std::get<0>( TcurvParallel[ i ] ) == Approx( std::get<0>( Tcurv[ i ] ) ) );
+      REQUIRE( std::get<1>( TcurvParallel[ i ] ) == Approx( std::get<1>( Tcurv[ i ] ) ) );
+    }
+  }
+
+  SECTION("Testing that requesting the parallel II shortcut preserves normal vectors")
+  {
+    REQUIRE( NcurvParallel.size() == Ncurv.size() );
+
+    for ( std::size_t i = 0; i < Ncurv.size(); ++i )
+      for ( std::size_t d = 0; d < 3; ++d )
+        REQUIRE( NcurvParallel[ i ][ d ] == Approx( Ncurv[ i ][ d ] ) );
+  }
+
+  SECTION("Testing that ii-split-axis accepts out-of-range values by clamping to a valid axis")
+  {
+    auto params_parallel_clamped = params;
+    params_parallel_clamped( "ii-thread-number", 4 )( "ii-split-axis", 9 );
+    auto HcurvParallelClamped = SHG3::getIIMeanCurvatures( binary_image, surfels, params_parallel_clamped );
+
+    REQUIRE( HcurvParallelClamped.size() == Hcurv.size() );
+    for ( std::size_t i = 0; i < Hcurv.size(); ++i )
+      REQUIRE( HcurvParallelClamped[ i ] == Approx( Hcurv[ i ] ) );
   }
 
   SECTION("Testing on shifted domains")
