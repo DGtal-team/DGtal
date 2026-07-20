@@ -260,7 +260,7 @@ New Block [16 threads on axis 2]
 EndBlock [16 threads on axis 2] (4717 ms)
 ```
 
-For 8 threads with splits aloing the 0-axis, we obtain:
+For 8 threads with splits along the 0-axis, we obtain:
 
 @image html parallelsplit.jpg "Parallel computation of integral invariants (8-threads)"
 
