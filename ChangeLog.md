@@ -23,6 +23,7 @@
 
 - *Project*
   - Fixing typos and adding a new github action for pre-commit check (David Coeurjolly,  [#1844](https://github.com/DGtal-team/DGtal/pull/1844))
+  - Upgrading google benchmark to 1.9.5 to remove warnings on macOS (David Coeurjolly,  [#1848](https://github.com/DGtal-team/DGtal/pull/1848))
 
 - *IO*
   - Fixing typo in the 3d viewer documentation (David Coeurjolly, [#1831](https://github.com/DGtal-team/DGtal/pull/1831))
