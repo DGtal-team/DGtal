@@ -205,7 +205,7 @@ operator+=( DifferenceType n )
 	  break;
 	}
       myIdx -= myNbDatas;
-      myDatas = myNext->data;
+      myDatas = myNext->allData;
       myNbDatas = M;
       myNext = myNext->next;
     }
@@ -735,7 +735,7 @@ blockAt( size_t idx ) const
 {
   ASSERT( idx < size() );
   if ( idx < N )
-    return myFirstBlock.data[ idx ];
+    return myFirstBlock.allData[ idx ];
   else if ( ( idx == N ) && ( size() == N+1 ) )
     return myFirstBlock.data.lastData;
   const __AnyBlock* ptr = myFirstBlock.data.nextBlock;
@@ -746,7 +746,7 @@ blockAt( size_t idx ) const
       ptr = ptr->next;
     }
   ASSERT( ptr != 0 );
-  return ptr->data[ idx ];
+  return ptr->allData[ idx ];
 }
 //-----------------------------------------------------------------------------
 template <typename TData, unsigned int L, typename TWord, unsigned int N, unsigned int M>

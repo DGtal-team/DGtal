@@ -35,6 +35,9 @@
 - *Geometry*
   - In DigitalSurfaceConvolver (eg. when using the Integral Invariant estimators), a bug existed when the shape domain does not contain the point (0,0,0). This PR fixes it using KCoords to represent the Kernel origin instead of a Spel which requires a valid KSpace (David Coeurjolly, [#1840](https://github.com/DGtal-team/DGtal/pull/1840))
 
+- *Base*
+  - Fixing issue raised when building testLabelledMap-benchmark (David Coeurjolly, [#1847](https://github.com/DGtal-team/DGtal/pull/1847))
+
 # DGtal 2.1.0
 
 ## New features
