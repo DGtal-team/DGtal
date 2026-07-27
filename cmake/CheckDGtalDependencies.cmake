@@ -48,7 +48,7 @@ if (DGTAL_BUILD_TESTS OR DGTAL_BUILD_BENCHMARKS)
   list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/contrib)
   include(CTest)
 
-  message(STATUS "    Google benchmark (v1.6.1)")
+  message(STATUS "    Google benchmark")
   include(googlebenchmark)
 endif()
 

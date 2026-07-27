@@ -26,12 +26,14 @@
 
 - *Project*
   - Fixing typos and adding a new github action for pre-commit check (David Coeurjolly,  [#1844](https://github.com/DGtal-team/DGtal/pull/1844))
+  - Upgrading google benchmark to 1.9.5 to remove warnings on macOS (David Coeurjolly,  [#1848](https://github.com/DGtal-team/DGtal/pull/1848))
 
 - *IO*
   - Fixing typo in the 3d viewer documentation (David Coeurjolly, [#1831](https://github.com/DGtal-team/DGtal/pull/1831))
 
 - *Build*
   - Fixing old `DEBUG_VERBOSE` to `DGTAL_DEBUG_VERBOSE` (David Coeurjolly,  [#1834](https://github.com/DGtal-team/DGtal/pull/1834))
+  - Upgrading Conan version to 2.31.1 in the github actions (David Coeurjolly,  [#1849](https://github.com/DGtal-team/DGtal/pull/1849))
 
 - *Geometry*
   - In DigitalSurfaceConvolver (eg. when using the Integral Invariant estimators), a bug existed when the shape domain does not contain the point (0,0,0). This PR fixes it using KCoords to represent the Kernel origin instead of a Spel which requires a valid KSpace (David Coeurjolly, [#1840](https://github.com/DGtal-team/DGtal/pull/1840))
