@@ -39,7 +39,10 @@
 #define ShortcutsGeometry_h
 
 //////////////////////////////////////////////////////////////////////////////
+#include <cmath>
+#include <numeric>
 #include "DGtal/helpers/Shortcuts.h"
+#include "DGtal/kernel/LatticeSetByIntervals.h"
 #include "DGtal/kernel/BasicPointPredicates.h"
 #include "DGtal/geometry/volumes/distance/LpMetric.h"
 #include "DGtal/geometry/volumes/distance/ExactPredicateLpSeparableMetric.h"
@@ -110,8 +113,18 @@ namespace DGtal
       typedef typename RealVector::Component           Scalar;
       /// An (hyper-)rectangular domain.
       typedef HyperRectDomain<Space>                   Domain;
+      /// Lattice set represented by intervals.
+      typedef LatticeSetByIntervals<Space>             LatticeSet;
       /// The type for 8-bits gray-scale elements.
       typedef unsigned char                            GrayScale;
+      /// Integer vector used by the visibility computation.
+      typedef typename Space::Vector                   IntegerVector;
+      /// Range of integer vectors.
+      typedef std::vector< IntegerVector >             IntegerVectors;
+      /// Interval used by the visibility computation.
+      typedef typename LatticeSet::Interval            Interval;
+      /// Range of intervals used by the visibility computation.
+      typedef typename LatticeSet::Intervals           Intervals;
 
       // ----------------------- Shortcut types --------------------------------------
     public:
@@ -220,8 +233,10 @@ namespace DGtal
       {
         return parametersShapeGeometry()
           | parametersGeometryEstimation()
+          | parametersVisibilityComputation()
           | parametersATApproximation()
-          | parametersVoronoiMap();
+          | parametersVoronoiMap()
+          | parametersVisibilityNormals();
       }
 
       /// @return the parameters and their default values which are used
@@ -1001,6 +1016,356 @@ namespace DGtal
           ( "surfelEmbedding",   0 )
           ( "unit_u"         ,   0 );
       }
+
+      /// @return the parameters and their default values which are used
+      /// to compute a visibility relation on pointels.
+      ///   - verbose                [         1]: verbose trace mode 0: silent, 1: verbose.
+      ///   - radius                 [        -1]: visibility radius, or -1 to infer from gridstep.
+      ///   - nStar                  [         1]: number of star-based cover dilations.
+      ///   - gridstep               [       1.0]: digitization gridstep used for automatic radius.
+      static Parameters parametersVisibilityComputation()
+      {
+        return Parameters
+          ( "verbose",             1 )
+          ( "radius",             -1 )
+          ( "nStar",               1 )
+          ( "gridstep",          1.0 );
+      }
+
+      /// Small container storing a visibility relation between pointels
+      /// and primitive segment directions.
+      class Visibility
+      {
+      public:
+        Dimension mainAxis{};
+        std::vector< bool > visibles;
+        std::size_t vectorsSize{};
+        std::size_t pointsSize{};
+        std::map< Point, std::size_t > pointIdxs;
+        std::map< IntegerVector, std::size_t > vectorIdxs;
+
+        Visibility() = default;
+
+        Visibility( Dimension axis,
+                    const IntegerVectors& vectors,
+                    const std::vector< Point >& points )
+        {
+          reset( axis, vectors, points );
+        }
+
+        std::size_t getVectorIdx( const IntegerVector& v ) const
+        {
+          const auto it = vectorIdxs.find( v );
+          if ( it != vectorIdxs.end() ) return it->second;
+          return vectorsSize;
+        }
+
+        std::size_t getPointIdx( const Point& p ) const
+        {
+          const auto it = pointIdxs.find( p );
+          if ( it != pointIdxs.end() ) return it->second;
+          return pointsSize;
+        }
+
+        bool isVisible( const Point& p1, const Point& p2 ) const
+        {
+          if ( p1 == p2 ) return true;
+          if ( !isPointLowerThan( p1, p2 ) ) return isVisible( p2, p1 );
+          IntegerVector v = p2 - p1;
+          v = normalizeVector( v );
+          const auto vIdx = getVectorIdx( v );
+          if ( vIdx == vectorsSize ) return false;
+          for ( IntegerVector p = p1; p != p2; p += v )
+          {
+            const auto pointIdx = getPointIdx( p );
+            if ( pointIdx == pointsSize ) return false;
+            if ( !visibles[ vIdx * pointsSize + pointIdx ] ) return false;
+          }
+          return true;
+        }
+
+        void setVisible( const Point& p1, const Point& p2 )
+        {
+          if ( p1 == p2 ) return;
+          if ( !isPointLowerThan( p1, p2 ) )
+          {
+            setVisible( p2, p1 );
+            return;
+          }
+          IntegerVector v = p2 - p1;
+          v = normalizeVector( v );
+          const auto vIdx = getVectorIdx( v );
+          if ( vIdx == vectorsSize ) return;
+          for ( IntegerVector p = p1; p != p2; p += v )
+          {
+            const auto pointIdx = getPointIdx( p );
+            if ( pointIdx == pointsSize ) continue;
+            visibles[ vIdx * pointsSize + pointIdx ] = true;
+          }
+        }
+
+        void set( const Point& offset,
+                  const Intervals& value,
+                  const std::size_t vectorIdx )
+        {
+          Point p = offset / 2;
+          for ( const auto& interval : value.data() )
+          {
+            for ( Integer i = interval.first / 2; i <= interval.second / 2; ++i )
+            {
+              p[ mainAxis ] = i;
+              const auto pointIdx = getPointIdx( p );
+              if ( pointIdx == pointsSize ) continue;
+              visibles[ vectorIdx * pointsSize + pointIdx ] = true;
+            }
+          }
+        }
+
+        bool empty() const
+        {
+          return std::all_of( visibles.cbegin(), visibles.cend(),
+                              [] ( bool v ) { return !v; } );
+        }
+
+        void reset( Dimension axis,
+                    const IntegerVectors& vectors,
+                    const std::vector< Point >& points )
+        {
+          mainAxis = axis;
+          vectorsSize = vectors.size();
+          pointsSize = points.size();
+          visibles = std::vector< bool >( vectorsSize * pointsSize, false );
+          pointIdxs.clear();
+          vectorIdxs.clear();
+          for ( std::size_t i = 0; i < pointsSize; ++i )
+            pointIdxs[ points[ i ] ] = i;
+          for ( std::size_t i = 0; i < vectorsSize; ++i )
+            vectorIdxs[ vectors[ i ] ] = i;
+        }
+      };
+
+      /// Computes the visibility relation on a pointel range.
+      static Visibility
+      getVisibility( const std::vector< Point >& pointels,
+                     const Parameters& params = parametersVisibilityComputation() )
+      {
+#if defined(DGTAL_WITH_OPENMP) && !defined(WIN32)
+        return getVisibilityOpenMP( pointels, params );
+#else
+        return getVisibilityNoOpenMP( pointels, params );
+#endif
+      }
+
+      /// Computes the visibility relation on a pointel range without OpenMP.
+      static Visibility
+      getVisibilityNoOpenMP( const std::vector< Point >& pointels,
+                             const Parameters& params = parametersVisibilityComputation() )
+      {
+        const int verbose = params[ "verbose" ].as<int>();
+        const int nStar   = params[ "nStar"   ].as<int>();
+        const int radius  = resolveVisibilityRadius( params );
+        ASSERT( nStar >= 1 );
+        if ( verbose > 0 ) trace.info() << "- Visibility radius=" << radius << std::endl;
+        const IntegerVectors vectors = getVisibilityVectors( radius );
+        const Dimension axis = getLargeAxis( pointels );
+        const LatticeSet latticeStart = getNStarOfShape( pointels, nStar, axis );
+        const auto figLattices = extractLatticeIntervals( latticeStart );
+        const std::vector< Point > figLatticePoints = getLatticePointsFromFigure( figLattices, axis );
+        const std::vector< Dimension > orthDims = getOrthogonalDimensions( axis );
+        const auto bounds = getPointBounds( pointels );
+        Visibility vis( axis, vectors, figLatticePoints );
+        for ( std::size_t segmentIdx = 0; segmentIdx < vectors.size(); ++segmentIdx )
+          processVisibilitySegment( vis, segmentIdx, vectors[ segmentIdx ], figLattices,
+                                    bounds.first, bounds.second, orthDims );
+        return vis;
+      }
+
+#if defined(DGTAL_WITH_OPENMP) && !defined(WIN32)
+      /// Computes the visibility relation on a pointel range with OpenMP.
+      static Visibility
+      getVisibilityOpenMP( const std::vector< Point >& pointels,
+                           const Parameters& params = parametersVisibilityComputation() )
+      {
+        const int verbose = params[ "verbose" ].as<int>();
+        const int nStar   = params[ "nStar"   ].as<int>();
+        const int radius  = resolveVisibilityRadius( params );
+        ASSERT( nStar >= 1 );
+        if ( verbose > 0 ) trace.info() << "- Visibility radius=" << radius << std::endl;
+        const IntegerVectors vectors = getVisibilityVectors( radius );
+        const Dimension axis = getLargeAxis( pointels );
+        const LatticeSet latticeStart = getNStarOfShape( pointels, nStar, axis );
+        const auto figLattices = extractLatticeIntervals( latticeStart );
+        const std::vector< Point > figLatticePoints = getLatticePointsFromFigure( figLattices, axis );
+        const std::vector< Dimension > orthDims = getOrthogonalDimensions( axis );
+        const auto bounds = getPointBounds( pointels );
+        Visibility vis( axis, vectors, figLatticePoints );
+#pragma omp parallel for schedule(dynamic)
+        for ( std::ptrdiff_t segmentIdx = 0; segmentIdx < static_cast<std::ptrdiff_t>( vectors.size() ); ++segmentIdx )
+          processVisibilitySegment( vis, static_cast<std::size_t>( segmentIdx ),
+                                    vectors[ static_cast<std::size_t>( segmentIdx ) ], figLattices,
+                                    bounds.first, bounds.second, orthDims );
+        return vis;
+      }
+#endif
+
+      /// @return the parameters and their default values which are used
+      /// to estimate visibility-based normals on pointel sets.
+      ///   - verbose                [         1]: verbose trace mode 0: silent, 1: verbose.
+      ///   - sigma                  [       1.0]: sigma parameter for kernel weighting.
+      ///   - neighborhood-radius    [       2.0]: neighborhood radius in pointel coordinates.
+      ///   - auto-limiter           [         1]: filters far visible points using average distance.
+      ///   - auto-limiter-ratio     [       1.0]: ratio parameter used by the auto-limiter.
+      ///   - visibility-center      ["centroid"]: center choice, either "centroid" or "itself".
+      ///   - visibility-kernel      ["gaussian"]: kernel choice, either "gaussian", "ring" or "none".
+      static Parameters parametersVisibilityNormals()
+      {
+        return Parameters
+          ( "verbose",             1 )
+          ( "sigma",             1.0 )
+          ( "neighborhood-radius", 2.0 )
+          ( "auto-limiter",        1 )
+          ( "auto-limiter-ratio", 1.0 )
+          ( "visibility-center", "centroid" )
+          ( "visibility-kernel", "gaussian" );
+      }
+
+      /// Computes visibility-based normals on a pointel range with an
+      /// automatic OpenMP dispatch when available in DGtal.
+      ///
+      /// @tparam TVisibilityPredicate any type callable as
+      ///         bool(const Point&, const Point&) and returning true when
+      ///         two pointels are mutually visible.
+      ///
+      /// @param[in] pointels the sequence of pointels.
+      /// @param[in] isVisible the visibility predicate.
+      /// @param[in] params the parameters:
+      ///   - verbose                [         1]: verbose trace mode 0: silent, 1: verbose.
+      ///   - sigma                  [       1.0]: sigma parameter for kernel weighting.
+      ///   - neighborhood-radius    [       2.0]: neighborhood radius in pointel coordinates.
+      ///   - auto-limiter           [         1]: filters far visible points using average distance.
+      ///   - auto-limiter-ratio     [       1.0]: ratio parameter used by the auto-limiter.
+      ///   - visibility-center      ["centroid"]: center choice, either "centroid" or "itself".
+      ///   - visibility-kernel      ["gaussian"]: kernel choice, either "gaussian", "ring" or "none".
+      ///
+      /// @return the vector containing the estimated normals, in the
+      /// same order as \a pointels.
+      template <typename TVisibilityPredicate>
+      static RealVectors
+      getVisibilityNormalVectors( const std::vector<Point>& pointels,
+                                  const TVisibilityPredicate& isVisible,
+                                  const Parameters& params = parametersVisibilityNormals() )
+      {
+#if defined(DGTAL_WITH_OPENMP) && !defined(WIN32)
+        return getVisibilityNormalVectorsOpenMP( pointels, isVisible, params );
+#else
+        return getVisibilityNormalVectorsNoOpenMP( pointels, isVisible, params );
+#endif
+      }
+
+      /// Computes visibility-based normals using a precomputed visibility relation.
+      static RealVectors
+      getNormalVisibility( const std::vector< Point >& pointels,
+                           const Visibility& visibility,
+                           const Parameters& params = parametersVisibilityNormals() )
+      {
+        return getVisibilityNormalVectors
+          ( pointels,
+            [ &visibility ]( const Point& p1, const Point& p2 ) { return visibility.isVisible( p1, p2 ); },
+            params );
+      }
+
+      /// Computes visibility-based normals by first computing visibility.
+      static RealVectors
+      getNormalVisibility( const std::vector< Point >& pointels,
+                           const Parameters& visibilityParams,
+                           const Parameters& normalParams = parametersVisibilityNormals() )
+      {
+        const auto visibility = getVisibility( pointels, visibilityParams );
+        return getNormalVisibility( pointels, visibility, normalParams );
+      }
+
+      /// Computes visibility-based normals by first computing visibility.
+      static RealVectors
+      getNormalVisibility( const std::vector< Point >& pointels,
+                           const Parameters& params = parametersVisibilityNormals() )
+      {
+        return getNormalVisibility( pointels, parametersVisibilityComputation(), params );
+      }
+
+      /// Computes visibility-based normals on a pointel range without OpenMP.
+      template <typename TVisibilityPredicate>
+      static RealVectors
+      getVisibilityNormalVectorsNoOpenMP( const std::vector<Point>& pointels,
+                                          const TVisibilityPredicate& isVisible,
+                                          const Parameters& params = parametersVisibilityNormals() )
+      {
+        const int verbose              = params[ "verbose"             ].as<int>();
+        const Scalar sigma             = params[ "sigma"               ].as<Scalar>();
+        const Scalar neighborhood      = params[ "neighborhood-radius" ].as<Scalar>();
+        const bool   autoLimiter       = params[ "auto-limiter"        ].as<int>() != 0;
+        const Scalar autoLimiterRatio  = params[ "auto-limiter-ratio"  ].as<Scalar>();
+        const std::string centerName   = params[ "visibility-center"   ].as<std::string>();
+        const std::string kernelName   = params[ "visibility-kernel"   ].as<std::string>();
+        const auto centerChoice        = visibilityCenterFromString( centerName );
+        const auto kernelChoice        = visibilityKernelFromString( kernelName );
+        const Scalar neighborhood2     = neighborhood * neighborhood;
+        const Scalar minus2SigmaSquare = -2.0 * sigma * sigma;
+
+        ASSERT( sigma > 0.0 );
+        ASSERT( neighborhood >= 0.0 );
+        ASSERT( autoLimiterRatio > 0.0 );
+        if ( verbose > 0 )
+        {
+          trace.info() << "- Visibility normal sigma=" << sigma << std::endl;
+          trace.info() << "- Visibility normal neighborhood radius=" << neighborhood << std::endl;
+        }
+
+        RealVectors normals( pointels.size(), RealVector::zero );
+        for ( std::size_t pidx = 0; pidx < pointels.size(); ++pidx )
+          normals[ pidx ] = visibilityNormalAt
+            ( pointels, pidx, isVisible, neighborhood2, autoLimiter, autoLimiterRatio,
+              centerChoice, kernelChoice, minus2SigmaSquare );
+        return normals;
+      }
+
+#if defined(DGTAL_WITH_OPENMP) && !defined(WIN32)
+      /// Computes visibility-based normals on a pointel range with OpenMP.
+      template <typename TVisibilityPredicate>
+      static RealVectors
+      getVisibilityNormalVectorsOpenMP( const std::vector<Point>& pointels,
+                                        const TVisibilityPredicate& isVisible,
+                                        const Parameters& params = parametersVisibilityNormals() )
+      {
+        const int verbose              = params[ "verbose"             ].as<int>();
+        const Scalar sigma             = params[ "sigma"               ].as<Scalar>();
+        const Scalar neighborhood      = params[ "neighborhood-radius" ].as<Scalar>();
+        const bool   autoLimiter       = params[ "auto-limiter"        ].as<int>() != 0;
+        const Scalar autoLimiterRatio  = params[ "auto-limiter-ratio"  ].as<Scalar>();
+        const std::string centerName   = params[ "visibility-center"   ].as<std::string>();
+        const std::string kernelName   = params[ "visibility-kernel"   ].as<std::string>();
+        const auto centerChoice        = visibilityCenterFromString( centerName );
+        const auto kernelChoice        = visibilityKernelFromString( kernelName );
+        const Scalar neighborhood2     = neighborhood * neighborhood;
+        const Scalar minus2SigmaSquare = -2.0 * sigma * sigma;
+
+        ASSERT( sigma > 0.0 );
+        ASSERT( neighborhood >= 0.0 );
+        ASSERT( autoLimiterRatio > 0.0 );
+        if ( verbose > 0 )
+        {
+          trace.info() << "- Visibility normal sigma=" << sigma << std::endl;
+          trace.info() << "- Visibility normal neighborhood radius=" << neighborhood << std::endl;
+        }
+
+        RealVectors normals( pointels.size(), RealVector::zero );
+#pragma omp parallel for schedule(dynamic)
+        for ( std::ptrdiff_t pidx = 0; pidx < static_cast<std::ptrdiff_t>( pointels.size() ); ++pidx )
+          normals[ pidx ] = visibilityNormalAt
+            ( pointels, static_cast<std::size_t>( pidx ), isVisible, neighborhood2,
+              autoLimiter, autoLimiterRatio, centerChoice, kernelChoice, minus2SigmaSquare );
+        return normals;
+      }
+#endif
 
       /// Given a digital space \a K and a vector of \a surfels,
       /// returns the trivial normals at the specified surfels, in the
@@ -2525,6 +2890,511 @@ namespace DGtal
 
       // ------------------------- Private Data --------------------------------
     private:
+
+      static bool
+      isPointLowerThan( const Point& p1, const Point& p2 )
+      {
+        for ( Dimension d = 0; d < Space::dimension; ++d )
+        {
+          if ( p1[ d ] < p2[ d ] ) return true;
+          if ( p1[ d ] > p2[ d ] ) return false;
+        }
+        return false;
+      }
+
+      static IntegerVector
+      normalizeVector( IntegerVector v )
+      {
+        const Integer g = primitiveVectorDivisor( v );
+        if ( g > 1 ) v /= g;
+        return v;
+      }
+
+      static Dimension
+      getLargeAxis( const std::vector< Point >& pointels )
+      {
+        if ( pointels.empty() ) return 0;
+        Point pmin = pointels.front();
+        Point pmax = pointels.front();
+        for ( const auto& p : pointels )
+          for ( Dimension d = 0; d < Space::dimension; ++d )
+          {
+            if ( p[ d ] < pmin[ d ] ) pmin[ d ] = p[ d ];
+            if ( p[ d ] > pmax[ d ] ) pmax[ d ] = p[ d ];
+          }
+        Dimension axis = 0;
+        Integer best = pmax[ 0 ] - pmin[ 0 ];
+        for ( Dimension d = 1; d < Space::dimension; ++d )
+        {
+          const Integer span = pmax[ d ] - pmin[ d ];
+          if ( span > best )
+          {
+            best = span;
+            axis = d;
+          }
+        }
+        return axis;
+      }
+
+      static IntegerVectors
+      getVisibilityVectors( int radius )
+      {
+        IntegerVectors vectors;
+        IntegerVector candidate = IntegerVector::zero;
+        appendVisibilityVectors( vectors, candidate, 0, radius );
+        return vectors;
+      }
+
+      static int
+      resolveVisibilityRadius( const Parameters& params )
+      {
+        const int radius = params[ "radius" ].as<int>();
+        if ( radius != -1 ) return radius;
+        const Scalar gridstep = params[ "gridstep" ].as<Scalar>();
+        ASSERT( gridstep > 0.0 );
+        const Scalar sigma = 1.0 / std::sqrt( gridstep );
+        return 2 * static_cast<int>( sigma );
+      }
+
+      static std::pair< Point, Point >
+      getPointBounds( const std::vector< Point >& pointels )
+      {
+        if ( pointels.empty() ) return { Point::zero, Point::zero };
+        Point pmin = pointels.front();
+        Point pmax = pointels.front();
+        for ( const auto& p : pointels )
+          for ( Dimension d = 0; d < Space::dimension; ++d )
+          {
+            if ( p[ d ] < pmin[ d ] ) pmin[ d ] = p[ d ];
+            if ( p[ d ] > pmax[ d ] ) pmax[ d ] = p[ d ];
+          }
+        return { pmin, pmax };
+      }
+
+      static std::vector< Dimension >
+      getOrthogonalDimensions( Dimension axis )
+      {
+        std::vector< Dimension > dims;
+        dims.reserve( Space::dimension > 0 ? Space::dimension - 1 : 0 );
+        for ( Dimension d = 0; d < Space::dimension; ++d )
+          if ( d != axis ) dims.push_back( d );
+        return dims;
+      }
+
+      static Intervals
+      checkInterval( const Interval& toCheck,
+                     const Intervals& figIntervals )
+      {
+        Intervals result;
+        result.data().reserve( figIntervals.size() );
+        const Integer toCheckSize = toCheck.second - toCheck.first;
+        for ( const auto& interval : figIntervals.data() )
+          if ( interval.second - interval.first >= toCheckSize )
+            result.data().emplace_back( interval.first - toCheck.first,
+                                        interval.second - toCheck.second );
+        return result;
+      }
+
+      static Intervals
+      intersectIntervals( const Intervals& l1, const Intervals& l2 )
+      {
+        if ( l1.empty() || l2.empty() ) return Intervals();
+        Intervals result;
+        result.data().reserve( l1.size() + l2.size() - 1 );
+        std::size_t k1 = 0;
+        std::size_t k2 = 0;
+        const auto& d1 = l1.data();
+        const auto& d2 = l2.data();
+        while ( k1 < d1.size() && k2 < d2.size() )
+        {
+          const auto& i1 = d1[ k1 ];
+          const auto& i2 = d2[ k2 ];
+          const Integer i = std::max( i1.first,  i2.first  );
+          const Integer j = std::min( i1.second, i2.second );
+          if ( i <= j ) result.data().emplace_back( i, j );
+          if ( i1.second <= i2.second ) ++k1;
+          if ( i1.second >= i2.second ) ++k2;
+        }
+        return result;
+      }
+
+      static Intervals
+      matchVector( Intervals current,
+                   const Intervals& vectorIntervals,
+                   const Intervals& figIntervals )
+      {
+        for ( const auto& vInterval : vectorIntervals.data() )
+        {
+          current = intersectIntervals( current, checkInterval( vInterval, figIntervals ) );
+          if ( current.empty() ) break;
+        }
+        return current;
+      }
+
+      static LatticeSet
+      getLatticeVector( const IntegerVector& segment, Dimension axis )
+      {
+        LatticeSet lattice( axis );
+        lattice.insert( Point::zero );
+        for ( Dimension k = 0; k < Space::dimension; ++k )
+        {
+          const Integer n = std::abs( segment[ k ] );
+          const Integer s = segment[ k ] >= 0 ? 1 : -1;
+          if ( n == 0 ) continue;
+          Point kc = Point::zero;
+          for ( Integer i = 1; i < n; ++i )
+          {
+            for ( Dimension j = 0; j < Space::dimension; ++j )
+            {
+              if ( j == k ) kc[ k ] = 2 * s * i;
+              else
+              {
+                const Integer v = segment[ j ];
+                const Integer q = ( v * i ) / n;
+                const Integer r = ( v * i ) % n;
+                kc[ j ] = 2 * q;
+                if ( r < 0 )      kc[ j ] -= 1;
+                else if ( r > 0 ) kc[ j ] += 1;
+              }
+            }
+            lattice.insert( kc );
+          }
+        }
+        if ( !isZeroVector( segment ) )
+        {
+          Point p = Point::zero;
+          for ( Dimension d = 0; d < Space::dimension; ++d ) p[ d ] = 2 * segment[ d ];
+          lattice.insert( p );
+        }
+        return lattice.starOfCells();
+      }
+
+      static LatticeSet
+      getCoverOfShape( const LatticeSet& shapeLattice )
+      {
+        LatticeSet result = shapeLattice;
+        const Dimension axis = shapeLattice.axis();
+        const std::vector< Dimension > orthDims = getOrthogonalDimensions( axis );
+        for ( const auto& pV : shapeLattice.data() )
+        {
+          typename Intervals::Container dilated;
+          dilated.reserve( pV.second.size() );
+          for ( const auto& interval : pV.second.data() )
+            dilated.emplace_back( interval.first - 2, interval.second + 2 );
+          typename Intervals::Container merged;
+          merged.reserve( dilated.size() );
+          for ( const auto& interval : dilated )
+            if ( merged.empty() || merged.back().second + 1 < interval.first )
+              merged.push_back( interval );
+            else
+              merged.back().second = interval.second;
+          Intervals dilatedIntervals;
+          dilatedIntervals.data() = merged;
+          std::vector< Integer > delta( orthDims.size(), 0 );
+          appendShapeCoverNeighbors( result, pV.first, dilatedIntervals, orthDims, 0, delta );
+        }
+        return result;
+      }
+
+      static LatticeSet
+      getNStarOfShape( const std::vector< Point >& pointels,
+                       int nStar,
+                       Dimension axis )
+      {
+        LatticeSet shapeLattice( pointels.cbegin(), pointels.cend(), axis );
+        shapeLattice = shapeLattice.starOfPoints();
+        for ( int i = 1; i < nStar; ++i ) shapeLattice = getCoverOfShape( shapeLattice );
+        return shapeLattice;
+      }
+
+      static typename LatticeSet::Container
+      extractLatticeIntervals( const LatticeSet& lattice )
+      {
+        typename LatticeSet::Container result;
+        for ( const auto& p : lattice.data() )
+          result[ p.first ] = p.second;
+        return result;
+      }
+
+      static std::vector< Point >
+      getLatticePointsFromFigure( const typename LatticeSet::Container& figLattices,
+                                  Dimension axis )
+      {
+        std::vector< Point > points;
+        const std::vector< Dimension > orthDims = getOrthogonalDimensions( axis );
+        points.reserve( figLattices.size() );
+        for ( const auto& p : figLattices )
+        {
+          bool evenOrthogonalCoords = true;
+          for ( const auto d : orthDims )
+            if ( p.first[ d ] % 2 != 0 )
+            {
+              evenOrthogonalCoords = false;
+              break;
+            }
+          if ( !evenOrthogonalCoords ) continue;
+          for ( const auto& interval : p.second.data() )
+            for ( Integer i = interval.first + 1; i <= interval.second; i += 2 )
+            {
+              Point q = p.first / 2;
+              q[ axis ] = i / 2;
+              points.push_back( q );
+            }
+        }
+        return points;
+      }
+
+      static void
+      processVisibilitySegment( Visibility& vis,
+                                std::size_t segmentIdx,
+                                const IntegerVector& segment,
+                                const typename LatticeSet::Container& figLattices,
+                                const Point& pmin,
+                                const Point& pmax,
+                                const std::vector< Dimension >& orthDims )
+      {
+        const auto latticeVector = extractLatticeIntervals( getLatticeVector( segment, vis.mainAxis ) );
+        std::vector< Integer > minT( orthDims.size() );
+        std::vector< Integer > maxT( orthDims.size() );
+        for ( std::size_t i = 0; i < orthDims.size(); ++i )
+        {
+          const Dimension d = orthDims[ i ];
+          minT[ i ] = pmin[ d ] - std::min( Integer( 0 ), segment[ d ] );
+          maxT[ i ] = pmax[ d ] + Integer( 1 ) - std::max( Integer( 0 ), segment[ d ] );
+        }
+        std::vector< Integer > shifts( orthDims.size(), 0 );
+        processVisibilityShifts( vis, segmentIdx, latticeVector, figLattices, pmin, pmax,
+                                 orthDims, minT, maxT, shifts, 0 );
+      }
+
+      static void
+      appendShapeCoverNeighbors( LatticeSet& result,
+                                 const Point& p,
+                                 const Intervals& dilatedIntervals,
+                                 const std::vector< Dimension >& orthDims,
+                                 std::size_t dimIdx,
+                                 std::vector< Integer >& delta )
+      {
+        if ( dimIdx == orthDims.size() )
+        {
+          Point q = p;
+          for ( std::size_t i = 0; i < orthDims.size(); ++i )
+            q[ orthDims[ i ] ] += delta[ i ];
+          result.at( q ) = result.at( q ).set_union( dilatedIntervals );
+          return;
+        }
+        for ( Integer d = -2; d <= 2; ++d )
+        {
+          delta[ dimIdx ] = d;
+          appendShapeCoverNeighbors( result, p, dilatedIntervals, orthDims, dimIdx + 1, delta );
+        }
+      }
+
+      static void
+      processVisibilityShifts( Visibility& vis,
+                               std::size_t segmentIdx,
+                               const typename LatticeSet::Container& latticeVector,
+                               const typename LatticeSet::Container& figLattices,
+                               const Point& pmin,
+                               const Point& pmax,
+                               const std::vector< Dimension >& orthDims,
+                               const std::vector< Integer >& minT,
+                               const std::vector< Integer >& maxT,
+                               std::vector< Integer >& shifts,
+                               std::size_t dimIdx )
+      {
+        if ( dimIdx == orthDims.size() )
+        {
+          Point pInterest = Point::zero;
+          for ( std::size_t i = 0; i < orthDims.size(); ++i )
+            pInterest[ orthDims[ i ] ] = 2 * shifts[ i ];
+          Intervals eligibles;
+          eligibles.insert( Interval( 2 * pmin[ vis.mainAxis ] - 1,
+                                      2 * pmax[ vis.mainAxis ] + 1 ) );
+          for ( const auto& cInfo : latticeVector )
+          {
+            const auto it = figLattices.find( pInterest + cInfo.first );
+            if ( it == figLattices.end() )
+            {
+              eligibles.clear();
+              break;
+            }
+            eligibles = matchVector( eligibles, cInfo.second, it->second );
+            if ( eligibles.empty() ) break;
+          }
+          if ( !eligibles.empty() ) vis.set( pInterest, eligibles, segmentIdx );
+          return;
+        }
+        for ( Integer t = minT[ dimIdx ]; t < maxT[ dimIdx ]; ++t )
+        {
+          shifts[ dimIdx ] = t;
+          processVisibilityShifts( vis, segmentIdx, latticeVector, figLattices, pmin, pmax,
+                                   orthDims, minT, maxT, shifts, dimIdx + 1 );
+        }
+      }
+
+      enum class VisibilityKernel
+      {
+        Gaussian,
+        Ring,
+        None
+      };
+
+      enum class VisibilityCenter
+      {
+        Centroid,
+        Itself
+      };
+
+      static VisibilityKernel
+      visibilityKernelFromString( const std::string& kernel )
+      {
+        if ( kernel == "gaussian" ) return VisibilityKernel::Gaussian;
+        if ( kernel == "ring" )     return VisibilityKernel::Ring;
+        if ( kernel == "none" )     return VisibilityKernel::None;
+        return VisibilityKernel::Gaussian;
+      }
+
+      static VisibilityCenter
+      visibilityCenterFromString( const std::string& center )
+      {
+        if ( center == "itself" ) return VisibilityCenter::Itself;
+        return VisibilityCenter::Centroid;
+      }
+
+      static Scalar
+      visibilityWeight( const Scalar squaredDistance,
+                        const VisibilityKernel kernelChoice,
+                        const Scalar minus2SigmaSquare )
+      {
+        if ( kernelChoice == VisibilityKernel::None ) return 1.0;
+        const Scalar g = std::exp( squaredDistance / minus2SigmaSquare );
+        if ( kernelChoice == VisibilityKernel::Gaussian ) return g;
+        return -g * std::sqrt( squaredDistance ) / minus2SigmaSquare;
+      }
+
+      template <typename TVisibilityPredicate>
+      static RealVector
+      visibilityNormalAt( const std::vector<Point>& pointels,
+                          const std::size_t pidx,
+                          const TVisibilityPredicate& isVisible,
+                          const Scalar neighborhood2,
+                          const bool autoLimiter,
+                          const Scalar autoLimiterRatio,
+                          const VisibilityCenter centerChoice,
+                          const VisibilityKernel kernelChoice,
+                          const Scalar minus2SigmaSquare )
+      {
+        const Point pointel = pointels[ pidx ];
+        std::vector<Point> visibles;
+        visibles.reserve( 64 );
+        for ( const auto& q : pointels )
+        {
+          const Scalar d2 = static_cast<Scalar>(( pointel - q ).squaredNorm());
+          if ( d2 <= neighborhood2 && isVisible( pointel, q ) ) visibles.push_back( q );
+        }
+        if ( autoLimiter && !visibles.empty() )
+        {
+          Scalar avgDist = 0.0;
+          for ( const auto& q : visibles )
+            avgDist += std::sqrt( static_cast<Scalar>(( pointel - q ).squaredNorm()) );
+          avgDist /= static_cast<Scalar>( visibles.size() ) / autoLimiterRatio;
+          std::vector<Point> filtered;
+          filtered.reserve( visibles.size() );
+          for ( const auto& q : visibles )
+            if ( std::sqrt( static_cast<Scalar>(( pointel - q ).squaredNorm()) ) <= avgDist )
+              filtered.push_back( q );
+          visibles.swap( filtered );
+        }
+        if ( visibles.empty() ) return RealVector::zero;
+
+        RealPoint centroid = RealPoint::zero;
+        if ( centerChoice == VisibilityCenter::Itself )
+          centroid = pointel;
+        else
+        {
+          Scalar totalW = 0.0;
+          for ( const auto& q : visibles )
+          {
+            const Scalar d2 = static_cast<Scalar>(( pointel - q ).squaredNorm());
+            const Scalar w  = visibilityWeight( d2, kernelChoice, minus2SigmaSquare );
+            centroid += w * q;
+            totalW   += w;
+          }
+          if ( totalW > 0.0 ) centroid /= totalW;
+          else                centroid  = pointel;
+        }
+
+        typedef Eigen::Matrix< double, Space::dimension, Space::dimension > CovarianceMatrix;
+        CovarianceMatrix cov = CovarianceMatrix::Zero();
+        for ( const auto& q : visibles )
+        {
+          const RealVector d  = q - centroid;
+          const Scalar d2     = static_cast<Scalar>(( q - pointel ).squaredNorm());
+          const Scalar w      = visibilityWeight( d2, kernelChoice, minus2SigmaSquare );
+          for ( Dimension i = 0; i < Space::dimension; ++i )
+            for ( Dimension j = 0; j < Space::dimension; ++j )
+              cov( i, j ) += d[ i ] * d[ j ] * w;
+        }
+        cov /= static_cast<double>( visibles.size() );
+        Eigen::SelfAdjointEigenSolver<CovarianceMatrix> solver( cov );
+        if ( solver.info() != Eigen::Success ) return RealVector::zero;
+        RealVector n = RealVector::zero;
+        for ( Dimension d = 0; d < Space::dimension; ++d )
+          n[ d ] = static_cast<Scalar>( solver.eigenvectors().col( 0 )[ d ] );
+        const Scalar nrm = n.norm();
+        if ( nrm > 0.0 ) n /= nrm;
+        return n;
+      }
+
+      static Integer
+      primitiveVectorDivisor( const IntegerVector& v )
+      {
+        Integer g = 0;
+        for ( Dimension d = 0; d < Space::dimension; ++d )
+          g = std::gcd( g, std::abs( v[ d ] ) );
+        return g;
+      }
+
+      static bool
+      hasPositiveFirstNonZeroCoordinate( const IntegerVector& v )
+      {
+        for ( Dimension d = 0; d < Space::dimension; ++d )
+        {
+          if ( v[ d ] > 0 ) return true;
+          if ( v[ d ] < 0 ) return false;
+        }
+        return false;
+      }
+
+      static bool
+      isZeroVector( const IntegerVector& v )
+      {
+        for ( Dimension d = 0; d < Space::dimension; ++d )
+          if ( v[ d ] != 0 ) return false;
+        return true;
+      }
+
+      static void
+      appendVisibilityVectors( IntegerVectors& vectors,
+                               IntegerVector& candidate,
+                               Dimension d,
+                               int radius )
+      {
+        if ( d == Space::dimension )
+        {
+          if ( isZeroVector( candidate ) ) return;
+          if ( !hasPositiveFirstNonZeroCoordinate( candidate ) ) return;
+          if ( primitiveVectorDivisor( candidate ) != 1 ) return;
+          vectors.push_back( candidate );
+          return;
+        }
+        for ( Integer c = radius; c >= -radius; --c )
+        {
+          candidate[ d ] = c;
+          appendVisibilityVectors( vectors, candidate, d + 1, radius );
+        }
+      }
 
       template <typename TEstimator, typename TFunctor, typename TPointPredicate>
       static std::vector<typename TEstimator::Quantity>
