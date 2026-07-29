@@ -3073,9 +3073,10 @@ namespace DGtal
       getCoverOfShape( const LatticeSet& shapeLattice )
       {
         LatticeSet result = shapeLattice;
+        LatticeSet shapeCopy = shapeLattice;
         const Dimension axis = shapeLattice.axis();
         const std::vector< Dimension > orthDims = getOrthogonalDimensions( axis );
-        for ( const auto& pV : shapeLattice.data() )
+        for ( const auto& pV : shapeCopy.data() )
         {
           typename Intervals::Container dilated;
           dilated.reserve( pV.second.size() );
@@ -3111,7 +3112,8 @@ namespace DGtal
       extractLatticeIntervals( const LatticeSet& lattice )
       {
         typename LatticeSet::Container result;
-        for ( const auto& p : lattice.data() )
+        LatticeSet latticeCopy = lattice;
+        for ( const auto& p : latticeCopy.data() )
           result[ p.first ] = p.second;
         return result;
       }
