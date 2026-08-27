@@ -1,0 +1,58 @@
+/**
+ * @file moduleVisibilityLattice.dox
+ * @author Romain Negro (\c romain.negro@univ-smb.fr )
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2026/08/27
+ *
+ * Documentation file for feature VisibilityLattice.
+ *
+ * This file is part of the DGtal library.
+ */
+
+namespace DGtal {
+/*!
+@page moduleVisibilityLattice Visibility lattice estimation
+@writers Romain Negro
+
+[TOC]
+
+Part of the \ref packageGeometry.
+
+\section moduleVisibilityLattice_sec1 Purpose
+
+This module provides visibility-based geometric estimators on pointel sets
+through lattice matching. It computes:
+
+- a visibility relation between pointels and primitive directions;
+- normal vectors from this visibility relation, using weighted local covariance.
+
+The main implementation is:
+
+- VisibilityLatticeEstimator.
+
+\section moduleVisibilityLattice_sec2 Main API
+
+For a given space \c TSpace:
+
+- VisibilityLatticeEstimator<TSpace>::getVisibility computes the visibility relation;
+- VisibilityLatticeEstimator<TSpace>::getNormalVisibility computes normals from a precomputed visibility;
+- VisibilityLatticeEstimator<TSpace>::getVisibilityNormalVectors computes normals from a custom visibility predicate.
+
+Kernel and center policies are available through:
+
+- VisibilityLatticeEstimator<TSpace>::VisibilityKernel;
+- VisibilityLatticeEstimator<TSpace>::VisibilityCenter.
+
+\section moduleVisibilityLattice_sec3 Example
+
+See \ref geometry/meshes/visibility-lattice-normals.cpp for a full example that:
+
+- extracts pointels from a digitized 3D implicit shape;
+- computes visibility with VisibilityLatticeEstimator;
+- estimates and exports visibility-based normals.
+
+@see geometry/meshes/visibility-lattice-normals.cpp
+*/
+}

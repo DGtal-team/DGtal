@@ -10,6 +10,7 @@ set(DGTAL_EXAMPLES_SRC
         vol-curvature-measures-icnc-XY-3d
         digpoly-curvature-measures-cnc-3d
         digpoly-curvature-measures-cnc-XY-3d
+        visibility-lattice-normals
 )
 
 foreach(FILE ${DGTAL_EXAMPLES_SRC})
