@@ -1,16 +1,9 @@
-set(TESTS_SRC
-  testArithmeticalDSSComputerOnSurfels
+set(TESTS_SURFACES_SRC
+   testArithmeticalDSSComputerOnSurfels
   testChordGenericStandardPlaneComputer
   testDigitalPlanePredicate
   testPlaneProbingTetrahedronEstimator
   testPlaneProbingParallelepipedEstimator
-  )
-
-foreach(FILE ${TESTS_SRC})
-  DGtal_add_test(${FILE})
-endforeach()
-
-set(TESTS_SURFACES_SRC
   testIntegralInvariantShortcuts
   testNormalVectorEstimatorEmbedder
   testIntegralInvariantVolumeEstimator
@@ -28,8 +21,12 @@ foreach(FILE ${TESTS_SURFACES_SRC})
   DGtal_add_test(${FILE})
 endforeach()
 
+if ( DGTAL_WITH_OPENMP )
+  DGtal_add_test(testParallelIntegralInvariantEstimator)
+endif()
 
-if (   DGTAL_WITH_CGAL )
+
+if ( DGTAL_WITH_CGAL )
   set(CGAL_TESTS_SRC
     testMonge )
   foreach(FILE ${CGAL_TESTS_SRC})
@@ -38,7 +35,7 @@ if (   DGTAL_WITH_CGAL )
 endif()
 
 
-if (  DGTAL_WITH_POLYSCOPE_VIEWER )
+if ( DGTAL_WITH_POLYSCOPE_VIEWER )
   set(POLYSCOPE_VIEWER_TESTS_SRC
     testLocalConvolutionNormalVectorEstimator
     testTensorVotingViewer)
@@ -47,8 +44,6 @@ if (  DGTAL_WITH_POLYSCOPE_VIEWER )
     DGtal_add_test(${FILE} ONLY_ADD_EXECUTABLE)
   endforeach()
 endif()
-
-
 
 if ( DGTAL_WITH_PONCA )
     set(PONCA_TESTS_SRC
