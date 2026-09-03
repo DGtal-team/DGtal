@@ -46,9 +46,6 @@ namespace DGtal
    * which needs both a domain splitter instance and the number
    * of threads.
    *
-   * TODO: Value to control output (ie. value + loc, just value or ordered value)
-   * TODO: Surface construction on subdomain fonctor ?
-   *
    * @tparam TEstimator The model of Estimator
    * @tparam TSplitter The function to split the domain
    */
@@ -100,7 +97,7 @@ namespace DGtal
      *
      * @param[in] K the cellular grid space in which the shape is defined.
      * @param aPointPredicate the shape of interest. The alias can be secured
-     * if a some counted pointer is handed.
+     * if  some counted pointer is handed.
     */
     void attach(ConstAlias<KSpace> K,
                 ConstAlias<PointPredicate> aPointPredicate);

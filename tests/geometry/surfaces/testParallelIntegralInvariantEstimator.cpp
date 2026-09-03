@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file testIntegralInvariantVolumeEstimator.cpp
+ * @file testParallelIntegralInvariantEstimator.cpp
  * @ingroup Tests
  * @author Bastien DOIGNIES (\c bastien.doignies@liris.cnrs.fr )
  * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), INSA-Lyon, France
@@ -149,8 +149,8 @@ bool testCurvature2dP ( double h )
 
   trace.beginBlock ( "Comparing results of integral invariant 2D curvature ..." );
 
-  unsigned int rsize  = results.size();
-  unsigned int rsizeP = resultsP.size();
+  auto rsize  = results.size();
+  auto rsizeP = resultsP.size();
 
   if (rsize != rsizeP)
   {
@@ -161,9 +161,9 @@ bool testCurvature2dP ( double h )
 
   for ( unsigned int i = 0; i < rsize; ++i )
   {
-    if (std::abs(results[i] - resultsP[i]) >= 1e-2)
+    if (std::abs(results[i] - resultsP[i]) >= 1e-6)
     {
-      trace.error() << "Result mismatch between parallel and non-parallel versions at voxel " << i << ": " << results[i] << " / " << resultsP[i] << "\n";
+      trace.error() << "Result mismatch between parallel and non-parallel versions at linel " << i << ": " << results[i] << " / " << resultsP[i] << "\n";
       trace.endBlock();
       return false;
     }

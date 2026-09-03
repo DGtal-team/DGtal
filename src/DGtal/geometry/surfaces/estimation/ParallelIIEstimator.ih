@@ -102,7 +102,6 @@ namespace DGtal
   typename ParallelIIEstimator<TEstimator, TSplitter>::Quantity
   ParallelIIEstimator<TEstimator, TSplitter>::eval(It it)
   {
-    // TODO: Initialize properly the estimator (attaching shape, ...)
     if (!myEstimators[0].isValid())
     {
       auto ite = it; ite++;

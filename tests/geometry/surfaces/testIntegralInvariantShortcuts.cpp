@@ -125,7 +125,7 @@ TEST_CASE( "Testing IntegralInvariant Shortcuts API" )
   SECTION("Testing that ii-split-axis accepts out-of-range values by clamping to a valid axis")
   {
     auto params_parallel_clamped = params;
-    params_parallel_clamped( "ii-thread-number", 4 )( "ii-split-axis", 9 );
+    params_parallel_clamped( "ii-thread-number", 4 )( "ii-split-axis", 2 );
     auto HcurvParallelClamped = SHG3::getIIMeanCurvatures( binary_image, surfels, params_parallel_clamped );
 
     REQUIRE( HcurvParallelClamped.size() == Hcurv.size() );
