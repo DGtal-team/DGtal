@@ -219,7 +219,7 @@ init
   myKernelsSet = std::vector< DigitalSet* >( n );
   unsigned int offset = 0;
   unsigned int middle = n / 2;
-  RealPoint shiftPoint;
+  const Domain kernelDomain = myDigKernel->getDomain();
   for ( typename Domain::ConstIterator it_neigh = neighborhood.begin(),
           it_neigh_end = neighborhood.end();
         it_neigh != it_neigh_end;
@@ -227,24 +227,24 @@ init
     {
       /// Computation of shifting masks
       if( offset == middle ) continue; // no shift
-      for ( Dimension k = 0; k < Space::dimension; ++k )
-        shiftPoint[ k ] = (ScalarC) (*it_neigh)[ k ];
-      shiftPoint *= (ScalarC) myH;
-      KernelSupport* kernelShifted = new KernelSupport( shiftPoint, eRadius );
-      EuclideanMinus* current = new EuclideanMinus( *myKernel );
-      current->minus( *kernelShifted );
-      DigitalShape digCurrent;
-      digCurrent.attach( *current );
-      digCurrent.init( myKernel->getLowerBound() + Point::diagonal(-1), myKernel->getUpperBound() + Point::diagonal(1), myH );
 
-      myKernelsSet[ offset ] = new DigitalSet( digCurrent.getDomain() );
-      Shapes< Domain>::digitalShaper ( *(myKernelsSet[ offset ]), digCurrent );
+      myKernelsSet[ offset ] = new DigitalSet( kernelDomain );
+      for ( typename Domain::ConstIterator it = kernelDomain.begin(),
+              itEnd = kernelDomain.end();
+            it != itEnd; ++it )
+        {
+          if ( myDigKernel->operator()( *it ) )
+            {
+              const Point shiftedPoint = *it - *it_neigh;
+              const bool isInsideShifted = kernelDomain.isInside( shiftedPoint )
+                && myDigKernel->operator()( shiftedPoint );
+              if ( ! isInsideShifted )
+                myKernelsSet[ offset ]->insert( *it );
+            }
+        }
 
       myKernels[ offset ].first  = myKernelsSet[ offset ]->begin();
       myKernels[ offset ].second = myKernelsSet[ offset ]->end();
-
-      delete current;
-      delete kernelShifted;
     }
     /// End of computation of masks
     myConvolver->init( pOrigin, *myDigKernel, myKernels );

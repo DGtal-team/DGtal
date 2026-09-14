@@ -75,8 +75,8 @@ bool testCurvature2dP ( double h )
   typedef IntegralInvariantVolumeEstimator< Z2i::KSpace, DigitalShape, MyIICurvatureFunctor > MyIICurvatureEstimator;
 
   //! [exampleParallelII-type]
-  typedef AxisDomainSplitter<Z2i::Domain> Splitter;
-  //typedef RegularDomainSplitter<HyperRectDomain<Z2i::Space>> Splitter;
+  //typedef AxisDomainSplitter<Z2i::Domain> Splitter;
+  typedef RegularDomainSplitter<HyperRectDomain<Z2i::Space>> Splitter;
   typedef ParallelIIEstimator<MyIICurvatureEstimator, Splitter> MyIICurvatureEstimatorP;
   //! [exampleParallelII-type]
 
