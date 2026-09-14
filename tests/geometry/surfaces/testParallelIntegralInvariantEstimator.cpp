@@ -50,6 +50,8 @@
 #include "DGtal/kernel/domains/DomainSplitter.h"
 
 
+/// Debugging
+#include "DGtal/io/boards/Board2D.h"
 ///////////////////////////////////////////////////////////////////////////////
 
 
@@ -73,7 +75,8 @@ bool testCurvature2dP ( double h )
   typedef IntegralInvariantVolumeEstimator< Z2i::KSpace, DigitalShape, MyIICurvatureFunctor > MyIICurvatureEstimator;
 
   //! [exampleParallelII-type]
-  typedef RegularDomainSplitter<HyperRectDomain<Z2i::Space>> Splitter;
+  typedef AxisDomainSplitter<Z2i::Domain> Splitter;
+  //typedef RegularDomainSplitter<HyperRectDomain<Z2i::Space>> Splitter;
   typedef ParallelIIEstimator<MyIICurvatureEstimator, Splitter> MyIICurvatureEstimatorP;
   //! [exampleParallelII-type]
 
@@ -101,6 +104,8 @@ bool testCurvature2dP ( double h )
   Z2i::KSpace::Surfel bel = Surfaces<Z2i::KSpace>::findABel( K, dshape, 10000 );
   Boundary boundary( K, dshape, SurfelAdjacency<Z2i::KSpace::dimension>( true ), bel );
   MyDigitalSurface surf ( boundary );
+
+
 
   trace.endBlock();
 
@@ -148,6 +153,20 @@ bool testCurvature2dP ( double h )
   trace.endBlock();
 
   trace.beginBlock ( "Comparing results of integral invariant 2D curvature ..." );
+  // Debugging
+  Board2D board;
+  board << dshape.getDomain();
+  for(auto p: dshape.getDomain())
+    if (dshape(p))
+      board << p;
+  board.saveSVG("debugging-para.svg");
+
+  trace.info() << dshape.getDomain() << std::endl;
+  trace.info() << "Splits: "<<std::endl;
+  auto splits = splitter(dshape.getDomain(), 4);
+  for(const auto &sd: splits)
+    trace.info() << sd.domain << std::endl;
+
 
   auto rsize  = results.size();
   auto rsizeP = resultsP.size();
@@ -178,7 +197,7 @@ int main( int /*argc*/, char** /*argv*/ )
 {
     trace.beginBlock ( "Testing class ParrallelIIEstimator with IntegralInvariantVolumeEstimator in 2d" );
 
-    bool res = testCurvature2dP( 0.05 );
+    bool res = testCurvature2dP( 0.4 );
     trace.emphase() << ( res ? "Passed." : "Error." ) << std::endl;
     trace.endBlock();
     return res ? 0 : 1;

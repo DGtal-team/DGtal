@@ -231,8 +231,8 @@ init
         shiftPoint[ k ] = (ScalarC) (*it_neigh)[ k ];
       shiftPoint *= (ScalarC) myH;
       KernelSupport* kernelShifted = new KernelSupport( shiftPoint, eRadius );
-      EuclideanMinus* current = new EuclideanMinus( myKernel );
-      current->minus( kernelShifted );
+      EuclideanMinus* current = new EuclideanMinus( *myKernel );
+      current->minus( *kernelShifted );
       DigitalShape digCurrent;
       digCurrent.attach( *current );
       digCurrent.init( myKernel->getLowerBound() + Point::diagonal(-1), myKernel->getUpperBound() + Point::diagonal(1), myH );
@@ -272,7 +272,8 @@ DGtal::IntegralInvariantVolumeEstimator<TKSpace, TPointPredicate, TVolumeFunctor
   SurfelConstIterator ite,
   OutputIterator result ) const
 {
-  myConvolver->eval( itb, ite, result, myFct );
+  for ( SurfelConstIterator it = itb; it != ite; ++it )
+    *result++ = eval( it );
   return result;
 }
 
