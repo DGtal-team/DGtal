@@ -197,7 +197,6 @@ init
   ASSERT( ( myConvolver != 0 )
           && "[DGtal::IntegralInvariantVolumeEstimator:init] Shape of interest must have been initialized with a call to 'attach'." );
 
-  typedef typename RealPoint::Component ScalarC;
   // Clear stuff
   for( unsigned int i = 0; i < myKernelsSet.size(); ++i )
     if ( myKernelsSet[ i ] != 0 ) delete myKernelsSet[ i ];
