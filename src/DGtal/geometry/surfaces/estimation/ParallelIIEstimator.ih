@@ -163,8 +163,11 @@ namespace DGtal
       estim.eval(surfels.begin(), surfels.end(), values.begin());
     }
 
-    for ( const auto& entry : result )
-      *rslt++ = *( entry.second );
+    for (const auto& entry : result)
+    {
+      assert(entry.second.has_value());
+      *rslt++ = *entry.second;
+    }
 
     return rslt;
   }
