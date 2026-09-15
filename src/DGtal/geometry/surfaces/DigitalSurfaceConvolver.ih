@@ -1063,14 +1063,13 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
           {
             m = lastInnerSum;
             innerSum = m;
-
             bComputed = true;
           }
         else if( currentInnerSpel == lastOuterSpel )
           {
             m = lastOuterSum;
-            outerSum = m;
-
+            innerSum = m;
+            lastInnerSum = m;
             bComputed = true;
           }
         else
@@ -1359,7 +1358,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 2
         else if(  currentInnerSpel == lastOuterSpel )
           {
             memcpy( m, lastOuterMoments, nbMoments * sizeof( Quantity ));
-            computeCovarianceMatrix( m, outerMatrix );
+            computeCovarianceMatrix( m, innerMatrix );
+            memcpy( lastInnerMoments, m, nbMoments * sizeof( Quantity ));
 
             bComputed = true;
           }
@@ -2121,7 +2121,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
         else if( currentInnerSpel == lastOuterSpel )
           {
             m = lastOuterSum;
-            outerSum = m;
+            innerSum = m;
+            lastInnerSum = m;
 
             bComputed = true;
           }
@@ -2421,7 +2422,8 @@ DGtal::DigitalSurfaceConvolver< Functor, KernelFunctor, KSpace, DigitalKernel, 3
         else if(  currentInnerSpel == lastOuterSpel )
           {
             memcpy( m, lastOuterMoments, nbMoments * sizeof( Quantity ));
-            computeCovarianceMatrix( m, outerMatrix );
+            computeCovarianceMatrix( m, innerMatrix );
+            memcpy( lastInnerMoments, m, nbMoments * sizeof( Quantity ));
 
             bComputed = true;
           }

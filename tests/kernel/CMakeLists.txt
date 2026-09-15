@@ -18,6 +18,7 @@ set(DGTAL_TESTS_SRC_KERNEL
    testLatticeSetByIntervals
    testDGtalBigInteger
    testDigitalSetByOctree
+   testDomainSplitter
    )
 
 

@@ -11,6 +11,6 @@ set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "Enabling googletest in benchmark")
 
 CPMAddPackage(
   NAME benchmark
-  VERSION 1.6.1
+  VERSION 1.9.5
   GITHUB_REPOSITORY google/benchmark
 )

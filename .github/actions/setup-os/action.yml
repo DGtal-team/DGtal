@@ -23,6 +23,6 @@ runs:
 
     - name: "Setup Windows"
       if: ${{ runner.os == 'Windows'}}
-      uses: DGtal-team/DGtal/.github/actions/setup-windows@main
+      uses: ./.github/actions/setup-windows
       with:
         python-version: ${{ inputs.python-version }}
