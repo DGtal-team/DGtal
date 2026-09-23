@@ -130,6 +130,68 @@ SCENARIO( "TangencyComputer::ShortestPaths 3D tests", "[shortest_paths][3d][tang
       // AND_THEN( "This distance is greater or equal to the exacts shortest path" )
       REQUIRE( last_distance_opt*h >= last_distance*h );
     }
+
+  SECTION( "Computing different shortest paths on a 3D unit sphere digitized at gridstep 0.125" )
+    {
+      // Make digital sphere
+      const double h = 0.125;
+      auto   params  = SH3::defaultParameters();
+      params( "polynomial", "sphere1" )( "gridstep",  h );
+      params( "minAABB", -2)( "maxAABB", 2)( "offset", 1.0 )( "closed", 1 );
+      auto implicit_shape  = SH3::makeImplicitShape3D  ( params );
+      auto digitized_shape = SH3::makeDigitizedImplicitShape3D( implicit_shape, params );
+      auto K            = SH3::getKSpace( params );
+      auto binary_image = SH3::makeBinaryImage(digitized_shape,
+                                               SH3::Domain(K.lowerBound(),K.upperBound()),
+                                               params );
+      auto surface = SH3::makeDigitalSurface( binary_image, K, params );
+      std::vector< Point >    lattice_points;
+      auto pointels = SH3::getPointelRange( surface );
+      for ( auto p : pointels ) lattice_points.push_back( K.uCoords( p ) );
+      // Find lowest and uppest point.
+      const Index nb = lattice_points.size();
+      Index   lowest = 0;
+      Index   uppest = 0;
+      for ( Index i = 1; i < nb; i++ )
+        {
+          if ( lattice_points[ i ] < lattice_points[ lowest ] ) lowest = i;
+          if ( lattice_points[ uppest ] < lattice_points[ i ] ) uppest = i;
+        }
+      // Compute shortest paths
+      typedef TangencyComputer< KSpace >::Index _Index;
+      TangencyComputer< KSpace > TC( K );
+      TC.init( lattice_points.cbegin(), lattice_points.cend() );
+      auto SP = TC.makeShortestPaths( sqrt(3.0) );
+
+      const double max_discrete_distance = 5.0;
+      const int step = lattice_points.size() / 8;
+      std::size_t sum_nb_visited = 0;
+      std::size_t min_nb_visited = 100000;
+      std::size_t max_nb_visited = 0;
+      int n              = 0;
+      for ( auto i = 0; i < lattice_points.size(); i += step, n += 1 )
+        {
+          SP.init( i );
+          std::vector< std::size_t > visited;
+          while ( ! SP.finished() )
+            {
+              auto last          = std::get<0>( SP.current() );
+              auto last_distance = std::get<2>( SP.current() );
+              visited.push_back( last );
+              if ( last_distance >= max_discrete_distance ) break;
+              SP.expand();
+            }
+          SP.clearVisited( visited );
+          sum_nb_visited += visited.size();
+          min_nb_visited  = std::min( min_nb_visited, visited.size() );
+          max_nb_visited  = std::max( max_nb_visited, visited.size() );
+        }
+      double average = sum_nb_visited / (double) n;
+      // Shortest paths from sources on a digital sphere should be of
+      // approximately the same cardinal.
+      REQUIRE( ( average - min_nb_visited ) / average < 0.2 );
+      REQUIRE( ( max_nb_visited - average ) / average < 0.2 );
+    }
 }
 
 SCENARIO( "TangencyComputer 3D tests", "[3d][tangency]" )
