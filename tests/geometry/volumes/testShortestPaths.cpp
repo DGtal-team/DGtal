@@ -167,7 +167,6 @@ SCENARIO( "TangencyComputer 3D tests", "[3d][tangency]" )
           if ( lattice_points[ uppest ] < lattice_points[ i ] ) uppest = i;
         }
       // Compute shortest paths
-      typedef TangencyComputer< KSpace >::Index _Index;
       TangencyComputer< KSpace > TC( K );
       TC.init( lattice_points.cbegin(), lattice_points.cend() );
       const Point a = TC.point( lowest );
