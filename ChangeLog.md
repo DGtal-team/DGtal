@@ -9,6 +9,9 @@
 - *Geometry*
   - New multithread version of Integral Invariant estimators using a DomainSplitter. A new parameter has been added in the II shortcuts to enable multithreading when OpenMP has been activated --DGTAL_WITH_OPENMP flag-- (Bastien Doignies, David Coeurjolly, [#1842](https://github.com/DGtal-team/DGtal/pull/1842))
 
+
+
+
 ## Changes
 
 - *Documentation*
@@ -20,6 +23,9 @@
   - Upgrading the polyscope backend to 2.6.1 (David Coeurjolly, [#1839](https://github.com/DGtal-team/DGtal/pull/1839))
   - Voxels are now rendered using polyscope SparseVolumeGrid (Bastien DOIGNIES, [#1843](https://github.com/DGtal-team/DGtal/pull/1843))
   - Domains are now rendered with 6 quads by default (Bastien DOIGNIES, [#1843](https://github.com/DGtal-team/DGtal/pull/1843))
+
+- *Geometry*
+  - Add a new method TangencyComputer::getCotangentPoints to compute visible points up to some distance, and a new method TangencyComputer::ShortestPaths::clearVisited to speed-up multiple shortest path computations (Jacques-Olivier Lachaud, [#1833](https://github.com/DGtal-team/DGtal/pull/1833))
 
 
 ## BugFixes
