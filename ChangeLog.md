@@ -29,6 +29,7 @@
 ## BugFixes
 
 - *Project*
+  - Run all non-blacklisted tests for PR titles containing `[rel]` by setting `DGTAL_TEST_THRESHOLD=100`, and rerun CI when PR titles are edited (David Coeurjolly,[#1850](https://github.com/DGtal-team/DGtal/pull/1850)).
   - Fixing typos and adding a new github action for pre-commit check (David Coeurjolly,  [#1844](https://github.com/DGtal-team/DGtal/pull/1844))
   - Upgrading google benchmark to 1.9.5 to remove warnings on macOS (David Coeurjolly,  [#1848](https://github.com/DGtal-team/DGtal/pull/1848))
 

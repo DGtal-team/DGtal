@@ -96,6 +96,12 @@ runs:
         echo "DGTAL_CMAKE_CONFIG=-DCMAKE_TOOLCHAIN_FILE='conan_toolchain.cmake' -DDGTAL_BUILD_TESTS=true -DDGTAL_BUILD_EXAMPLES=true" >> "$GITHUB_ENV"
         echo "DGTAL_TEST_THRESHOLD=100" >> "$GITHUB_ENV"
 
+    - name: "Run all tests for release PRs"
+      if: ${{ github.event_name == 'pull_request' && inputs.config-name == 'PR' && contains(github.event.pull_request.title, '[rel]') }}
+      shell: bash
+      run: |
+        echo "DGTAL_TEST_THRESHOLD=100" >> "$GITHUB_ENV"
+
     # Only a single step outputs variables
     - name: "Set CMake output"
       id: "cmake-output"
