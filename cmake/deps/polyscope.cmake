@@ -20,6 +20,15 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG_OLD}")
 # instead. It also provide the necessary install and exports.
 
 function(cleanup_target target include_paths)
+  if (NOT TARGET "${target}")
+    return()
+  endif()
+
+  get_target_property(is_imported "${target}" IMPORTED)
+  if (is_imported)
+    return()
+  endif()
+
   get_property(target_include_dir TARGET ${target} PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
   set_target_properties(${target} PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "")
 
