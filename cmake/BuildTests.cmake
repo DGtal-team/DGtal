@@ -11,7 +11,7 @@ message(STATUS "----------------------------------------------------------------
 if (DGTAL_BUILD_BENCHMARKS)
   message(STATUS "Build benchmarks ENABLED")
 else()
-  message(STATUS "Build benchmarks DISABLED (you can activate the examples with '-DDGTAL_BUILD_BENCHMARK=ON' cmake option)")
+  message(STATUS "Build benchmarks DISABLED (you can activate the examples with '-DDGTAL_BUILD_BENCHMARKS=ON' cmake option)")
 endif()
 
 message(STATUS "-------------------------------------------------------------------------------")

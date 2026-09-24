@@ -2,29 +2,27 @@
 
 ## New features
 
+- *Geometry*
+  - New multithread version of Integral Invariant estimators using a DomainSplitter. A new parameter has been added in the II shortcuts to enable multithreading when OpenMP has been activated --DGTAL_WITH_OPENMP flag-- (Bastien Doignies, David Coeurjolly, [#1842](https://github.com/DGtal-team/DGtal/pull/1842))
+
 - *Project*
   - pre-commit hooks have been activated for sanity checks on files before running the git commit (David Coeurjolly,  [#1835](https://github.com/DGtal-team/DGtal/pull/1835))
   - Add pre-commit setup instructions to contributing documentation (David Coeurjolly, [#1836](https://github.com/DGtal-team/DGtal/pull/1836))
 
-- *Geometry*
-  - New multithread version of Integral Invariant estimators using a DomainSplitter. A new parameter has been added in the II shortcuts to enable multithreading when OpenMP has been activated --DGTAL_WITH_OPENMP flag-- (Bastien Doignies, David Coeurjolly, [#1842](https://github.com/DGtal-team/DGtal/pull/1842))
-
-
 ## Changes
 
-- *Documentation*
-  - Many typos fixed in documentation using Github Copilot. (David Coeurjolly, [#1829](https://github.com/DGtal-team/DGtal/pull/1829))
-  - Global spellcheck and pre-commit. (David Coeurjolly, [#1837](https://github.com/DGtal-team/DGtal/pull/1837))
-  - Upgrade of the doxygen configuration to use MathJax 3. Fixes issue #1845 (David Coeurjolly, [#1846](https://github.com/DGtal-team/DGtal/pull/1846))
+- *Geometry*
+  - Add a new method TangencyComputer::getCotangentPoints to compute visible points up to some distance, and a new method TangencyComputer::ShortestPaths::clearVisited to speed-up multiple shortest path computations (Jacques-Olivier Lachaud, [#1833](https://github.com/DGtal-team/DGtal/pull/1833))
 
 - *IO*
   - Upgrading the polyscope backend to 2.6.1 (David Coeurjolly, [#1839](https://github.com/DGtal-team/DGtal/pull/1839))
   - Voxels are now rendered using polyscope SparseVolumeGrid (Bastien DOIGNIES, [#1843](https://github.com/DGtal-team/DGtal/pull/1843))
   - Domains are now rendered with 6 quads by default (Bastien DOIGNIES, [#1843](https://github.com/DGtal-team/DGtal/pull/1843))
 
-- *Geometry*
-  - Add a new method TangencyComputer::getCotangentPoints to compute visible points up to some distance, and a new method TangencyComputer::ShortestPaths::clearVisited to speed-up multiple shortest path computations (Jacques-Olivier Lachaud, [#1833](https://github.com/DGtal-team/DGtal/pull/1833))
-
+- *Documentation*
+  - Many typos fixed in documentation using Github Copilot. (David Coeurjolly, [#1829](https://github.com/DGtal-team/DGtal/pull/1829))
+  - Global spellcheck and pre-commit. (David Coeurjolly, [#1837](https://github.com/DGtal-team/DGtal/pull/1837))
+  - Upgrade of the doxygen configuration to use MathJax 3. Fixes issue #1845 (David Coeurjolly, [#1846](https://github.com/DGtal-team/DGtal/pull/1846))
 
 ## BugFixes
 
