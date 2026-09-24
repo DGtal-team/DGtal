@@ -1,4 +1,4 @@
-# DGtal 2.1.1-dev
+# DGtal 2.2
 
 ## New features
 
@@ -8,8 +8,6 @@
 
 - *Geometry*
   - New multithread version of Integral Invariant estimators using a DomainSplitter. A new parameter has been added in the II shortcuts to enable multithreading when OpenMP has been activated --DGTAL_WITH_OPENMP flag-- (Bastien Doignies, David Coeurjolly, [#1842](https://github.com/DGtal-team/DGtal/pull/1842))
-
-
 
 
 ## Changes
