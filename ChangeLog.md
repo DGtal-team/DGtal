@@ -34,15 +34,17 @@
 - *IO*
   - Fixing typo in the 3d viewer documentation (David Coeurjolly, [#1831](https://github.com/DGtal-team/DGtal/pull/1831))
 
-- *Build*
-  - Standardize developer options under the `DGTAL_DEV_` prefix across code, CMake, CI, tests, and documentation. Merge `DGTAL_VERBOSE` and `DGTAL_DEBUG_VERBOSE` (temporarily named `DGTAL_DEV_DEBUG_VERBOSE`) into `DGTAL_DEV_VERBOSE`, enabling both progress messages and developer diagnostics. Rename `DGTAL_NO_ADD_STBIMAGE_IMPLEMENT`, `DGTAL_NO_ESCAPED_CHAR_IN_TRACE`, `DGTAL_WARNING_AS_ERROR`, `DGTAL_ENABLE_TARGET_INSTALL`, `DGTAL_REMOVE_UNINSTALL`, and `DGTAL_COLOR_WITH_ALPHA_ARITH` with the same prefix. Align the corresponding preprocessor macros, including the legacy `DEBUG_VERBOSE`, `VERBOSE`, and `COLOR_WITH_ALPHA_ARITH` (David Coeurjolly, [#1850](https://github.com/DGtal-team/DGtal/pull/1850)).
-  - Upgrading Conan version to 2.31.1 in the github actions (David Coeurjolly,  [#1849](https://github.com/DGtal-team/DGtal/pull/1849))
-
 - *Geometry*
   - In DigitalSurfaceConvolver (eg. when using the Integral Invariant estimators), a bug existed when the shape domain does not contain the point (0,0,0). This PR fixes it using KCoords to represent the Kernel origin instead of a Spel which requires a valid KSpace (David Coeurjolly, [#1840](https://github.com/DGtal-team/DGtal/pull/1840))
 
 - *Base*
   - Fixing issue raised when building testLabelledMap-benchmark (David Coeurjolly, [#1847](https://github.com/DGtal-team/DGtal/pull/1847))
+
+- *Build*
+  - Standardize developer options under the `DGTAL_DEV_` prefix across code, CMake, CI, tests, and documentation. Merge `DGTAL_VERBOSE` and `DGTAL_DEBUG_VERBOSE` (temporarily named `DGTAL_DEV_DEBUG_VERBOSE`) into `DGTAL_DEV_VERBOSE`, enabling both progress messages and developer diagnostics. Rename `DGTAL_NO_ADD_STBIMAGE_IMPLEMENT`, `DGTAL_NO_ESCAPED_CHAR_IN_TRACE`, `DGTAL_WARNING_AS_ERROR`, `DGTAL_ENABLE_TARGET_INSTALL`, `DGTAL_REMOVE_UNINSTALL`, and `DGTAL_COLOR_WITH_ALPHA_ARITH` with the same prefix. Align the corresponding preprocessor macros, including the legacy `DEBUG_VERBOSE`, `VERBOSE`, and `COLOR_WITH_ALPHA_ARITH` (David Coeurjolly, [#1850](https://github.com/DGtal-team/DGtal/pull/1850)).
+  - Upgrading Conan version to 2.31.1 in the github actions (David Coeurjolly,  [#1849](https://github.com/DGtal-team/DGtal/pull/1849))
+  - Adding PONCA tests to the github actions (David Coeurjolly,  [#1850](https://github.com/DGtal-team/DGtal/pull/1850))
+
 
 # DGtal 2.1.0
 
