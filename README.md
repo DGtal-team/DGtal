@@ -54,6 +54,7 @@ cd /home/digital/git/DGtal/build/examples
 
 More Information
 ================
+test
 
 * Project homepage http://dgtal.org
 * Related DGtalTools project: http://dgtal.org/dgtaltools, [DGtalTools](https://github.com/DGtal-team/DGtalTools), [DGtalTools-contrib](https://github.com/DGtal-team/DGtalTools-contrib)
