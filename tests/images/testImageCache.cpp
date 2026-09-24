@@ -33,7 +33,7 @@
 #include "DGtal/helpers/StdDefs.h"
 #include "DGtal/images/ImageContainerBySTLVector.h"
 
-//#define DGTAL_DEBUG_VERBOSE
+//#define DGTAL_DEV_VERBOSE
 
 #include "DGtal/images/ImageFactoryFromImage.h"
 #include "DGtal/images/ImageCache.h"

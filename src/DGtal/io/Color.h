@@ -67,7 +67,7 @@ namespace DGtal
    *
    * @brief Structure representing an RGB triple with alpha component.
    *
-   * @note if compilation flag COLOR_WITH_ALPHA_ARITH is set, then the
+   * @note if compilation flag DGTAL_DEV_COLOR_WITH_ALPHA_ARITH is set, then the
    * arithmetical operations on colors also consider the
    * alpha-channel. Otherwise, the alpha channel is not changed when
    * summing up to colors for instance.
@@ -270,7 +270,7 @@ namespace DGtal
       this->myRed = clamp((int)this->myRed + (int)v.myRed);
       this->myBlue =  clamp((int)this->myBlue + (int)v.myBlue);
       this->myGreen =  clamp((int)this->myGreen + (int)v.myGreen);
-#ifdef COLOR_WITH_ALPHA_ARITH
+#ifdef DGTAL_DEV_COLOR_WITH_ALPHA_ARITH
       this->myAlpha =  clamp((int)this->myAlpha + (int)v.myAlpha);
 #endif
       return *this;
@@ -291,7 +291,7 @@ namespace DGtal
       c.myRed = clamp((int)this->myRed + (int)v.myRed);
       c.myBlue =clamp((int)this->myBlue + (int)v.myBlue);
       c.myGreen = clamp((int)this->myGreen + (int)v.myGreen);
-#ifdef COLOR_WITH_ALPHA_ARITH
+#ifdef DGTAL_DEV_COLOR_WITH_ALPHA_ARITH
       c.myAlpha = clamp((int)this->myAlpha + (int)v.myAlpha);
 #else
       c.myAlpha = this->myAlpha ;
@@ -313,7 +313,7 @@ namespace DGtal
       this->myRed = clamp((int)this->myRed - (int)v.myRed);
       this->myBlue = clamp((int)this->myBlue - (int)v.myBlue);
       this->myGreen = clamp((int)this->myGreen - (int)v.myGreen);
-#ifdef COLOR_WITH_ALPHA_ARITH
+#ifdef DGTAL_DEV_COLOR_WITH_ALPHA_ARITH
       this->myAlpha = clamp((int)this->myAlpha - (int)v.myAlpha);
 #endif
       return *this;
@@ -333,7 +333,7 @@ namespace DGtal
       c.myRed = clamp((int)this->myRed - (int)v.myRed);
       c.myBlue = clamp((int)this->myBlue - (int)v.myBlue);
       c.myGreen = clamp((int)this->myGreen - (int)v.myGreen);
-#ifdef COLOR_WITH_ALPHA_ARITH
+#ifdef DGTAL_DEV_COLOR_WITH_ALPHA_ARITH
       c.myAlpha = clamp((int)this->myAlpha - (int)v.myAlpha);
 #else
       c.myAlpha = this->myAlpha ;
@@ -356,7 +356,7 @@ namespace DGtal
       this->myRed = clamp((double)this->myRed*coeff);
       this->myBlue = clamp((double)this->myBlue*coeff);
       this->myGreen = clamp((double)this->myGreen*coeff);
-#ifdef COLOR_WITH_ALPHA_ARITH
+#ifdef DGTAL_DEV_COLOR_WITH_ALPHA_ARITH
       this->myAlpha =  clamp((double)this->myAlpha*coeff);
 #endif
       return *this;
@@ -376,7 +376,7 @@ namespace DGtal
       c.myRed = clamp((double)this->myRed*coeff);
       c.myBlue = clamp((double)this->myBlue*coeff);
       c.myGreen = clamp((double)this->myGreen*coeff);
-#ifdef COLOR_WITH_ALPHA_ARITH
+#ifdef DGTAL_DEV_COLOR_WITH_ALPHA_ARITH
       c.myAlpha =  clamp((double)this->myAlpha*coeff);
 #else
       c.myAlpha  = this->myAlpha;

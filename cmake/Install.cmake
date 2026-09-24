@@ -9,8 +9,8 @@ include(CMakePackageConfigHelpers)
 # that can be passed to CMake worked.
 # We therefore add a mechanism to disable install/export targets (note that
 # other file might be required) that resolves the problem, although this is quite ugly...
-option(DGTAL_ENABLE_TARGET_INSTALL "Enable DGtal file installation" ON)
-if (${DGTAL_ENABLE_TARGET_INSTALL})
+option(DGTAL_DEV_ENABLE_TARGET_INSTALL "Enable DGtal file installation" ON)
+if (${DGTAL_DEV_ENABLE_TARGET_INSTALL})
   #------------------------------------------------------------------------------
   # DGtal Configuration file for the install target
   #------------------------------------------------------------------------------

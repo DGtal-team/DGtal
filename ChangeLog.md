@@ -35,7 +35,7 @@
   - Fixing typo in the 3d viewer documentation (David Coeurjolly, [#1831](https://github.com/DGtal-team/DGtal/pull/1831))
 
 - *Build*
-  - Fixing old `DEBUG_VERBOSE` to `DGTAL_DEBUG_VERBOSE` (David Coeurjolly,  [#1834](https://github.com/DGtal-team/DGtal/pull/1834))
+  - Standardize developer options under the `DGTAL_DEV_` prefix across code, CMake, CI, tests, and documentation. Merge `DGTAL_VERBOSE` and `DGTAL_DEBUG_VERBOSE` (temporarily named `DGTAL_DEV_DEBUG_VERBOSE`) into `DGTAL_DEV_VERBOSE`, enabling both progress messages and developer diagnostics. Rename `DGTAL_NO_ADD_STBIMAGE_IMPLEMENT`, `DGTAL_NO_ESCAPED_CHAR_IN_TRACE`, `DGTAL_WARNING_AS_ERROR`, `DGTAL_ENABLE_TARGET_INSTALL`, `DGTAL_REMOVE_UNINSTALL`, and `DGTAL_COLOR_WITH_ALPHA_ARITH` with the same prefix. Align the corresponding preprocessor macros, including the legacy `DEBUG_VERBOSE`, `VERBOSE`, and `COLOR_WITH_ALPHA_ARITH` (David Coeurjolly, [#1850](https://github.com/DGtal-team/DGtal/pull/1850)).
   - Upgrading Conan version to 2.31.1 in the github actions (David Coeurjolly,  [#1849](https://github.com/DGtal-team/DGtal/pull/1849))
 
 - *Geometry*
@@ -192,7 +192,7 @@ git remote set-head origin -a
 - *General*
   - Upgrade of polyscope version in examples from 1.2.0 to 2.3.0 (David Coeurjolly, [#1743](https://github.com/DGtal-team/DGtal/pull/1743))
   - Fixing cmake CGAL 6.0 breaking change. (David Coeurjolly, [#1745](https://github.com/DGtal-team/DGtal/pull/1745))
-  - Adding a new `DGTAL_REMOVE_UNINSTALL` cmake option to disable the `uninstall` target. (David Coeurjolly, [#1746](https://github.com/DGtal-team/DGtal/pull/1746)
+  - Adding a new `DGTAL_DEV_REMOVE_UNINSTALL` cmake option to disable the `uninstall` target. (David Coeurjolly, [#1746](https://github.com/DGtal-team/DGtal/pull/1746)
   - Using the `dcoeurjo/GeometryProcessing-cmake-recipes` openmp recipe to detect openmp (David Coeurjolly, [#1750](https://github.com/DGtal-team/DGtal/pull/1750))
 
 ## Bug fixes

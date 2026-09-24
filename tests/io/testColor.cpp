@@ -97,7 +97,7 @@ bool testColor()
   Color a(0,0,0,64);
   Color aa(0,0,0,32);
   Color c = a+aa;
-#ifdef COLOR_WITH_ALPHA_ARITH
+#ifdef DGTAL_DEV_COLOR_WITH_ALPHA_ARITH
   trace.info() << " a+aa = "<< a+aa<<std::endl;
   nbok += (c == Color(0,0,0,96)) ? 1 : 0;
   nb++;
