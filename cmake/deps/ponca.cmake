@@ -4,7 +4,7 @@ endif()
 
 CPMAddPackage(
   NAME ponca
-  VERSION 1.3
+  VERSION 1.4
   GITHUB_REPOSITORY "poncateam/ponca"
   SYSTEM TRUE
 )
@@ -22,7 +22,6 @@ install(EXPORT PoncaFitting DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/boost NAME
 export(TARGETS
     Ponca
     Fitting
-    Eigen3_Eigen
     NAMESPACE Ponca::
     FILE PoncaTargets.cmake
 )
