@@ -128,6 +128,7 @@ set(_find_cmake_files
   "${PROJECT_SOURCE_DIR}/cmake/deps/FindCairo.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/deps/FindFFTW3.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/deps/libigl.cmake"
+  "${PROJECT_SOURCE_DIR}/cmake/deps/ponca.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/deps/openmp.cmake"
   "${PROJECT_SOURCE_DIR}/cmake/CPM.cmake"
 )
