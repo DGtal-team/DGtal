@@ -33,7 +33,7 @@ endif()
 
 #### Optional dependencies  ####
 
-if (@PONCA_FOUND_DGTAL@)
+if (@DGTAL_WITH_PONCA@)
   include(ponca)
   set(DGTAL_WITH_PONCA 1)
   set(DGtalLibDependencies ${DGtalLibDependencies} Ponca::Ponca)
