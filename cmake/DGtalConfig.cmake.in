@@ -33,6 +33,12 @@ endif()
 
 #### Optional dependencies  ####
 
+if (@DGTAL_WITH_PONCA@)
+  include(ponca)
+  set(DGTAL_WITH_PONCA 1)
+  set(DGtalLibDependencies ${DGtalLibDependencies} Ponca::Ponca)
+endif()
+
 if(@ITK_FOUND_DGTAL@) #if ITK_FOUND_DGTAL
   set (DGTAL_WITH_ITK 1)
   find_dependency(ITK REQUIRED

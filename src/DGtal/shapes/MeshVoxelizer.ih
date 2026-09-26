@@ -228,7 +228,7 @@ DGtal::MeshVoxelizer<TDigitalSet, Separation>::voxelize(DigitalSet &outputSet,
 #endif
   for(int i = 0; i < (int)aMesh.nbFaces(); i++)
   {
-    DigitalSet currentSet{rawEmpty};
+    DigitalSet currentSet{rawEmpty.domain()};
     MeshFace currentFace = aMesh.getFace(i);
     for(size_t j=0; j + 2 < currentFace.size(); ++j)
     {

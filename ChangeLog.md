@@ -1,51 +1,51 @@
-# DGtal 2.1.1-dev
+# DGtal 2.2
 
 ## New features
+
+- *Geometry*
+  - New multithread version of Integral Invariant estimators using a DomainSplitter. A new parameter has been added in the II shortcuts to enable multithreading when OpenMP has been activated --DGTAL_WITH_OPENMP flag-- (Bastien Doignies, David Coeurjolly, [#1842](https://github.com/DGtal-team/DGtal/pull/1842))
 
 - *Project*
   - pre-commit hooks have been activated for sanity checks on files before running the git commit (David Coeurjolly,  [#1835](https://github.com/DGtal-team/DGtal/pull/1835))
   - Add pre-commit setup instructions to contributing documentation (David Coeurjolly, [#1836](https://github.com/DGtal-team/DGtal/pull/1836))
 
-- *Geometry*
-  - New multithread version of Integral Invariant estimators using a DomainSplitter. A new parameter has been added in the II shortcuts to enable multithreading when OpenMP has been activated --DGTAL_WITH_OPENMP flag-- (Bastien Doignies, David Coeurjolly, [#1842](https://github.com/DGtal-team/DGtal/pull/1842))
-
-
-
-
 ## Changes
 
-- *Documentation*
-  - Many typos fixed in documentation using Github Copilot. (David Coeurjolly, [#1829](https://github.com/DGtal-team/DGtal/pull/1829))
-  - Global spellcheck and pre-commit. (David Coeurjolly, [#1837](https://github.com/DGtal-team/DGtal/pull/1837))
-  - Upgrade of the doxygen configuration to use MathJax 3. Fixes issue #1845 (David Coeurjolly, [#1846](https://github.com/DGtal-team/DGtal/pull/1846))
+- *Geometry*
+  - Add a new method TangencyComputer::getCotangentPoints to compute visible points up to some distance, and a new method TangencyComputer::ShortestPaths::clearVisited to speed-up multiple shortest path computations (Jacques-Olivier Lachaud, [#1833](https://github.com/DGtal-team/DGtal/pull/1833))
+  - Bump of the PONCA version from 1.3 to 1.4 (David Coeurjolly, [#1850](https://github.com/DGtal-team/DGtal/pull/1850))
 
 - *IO*
   - Upgrading the polyscope backend to 2.6.1 (David Coeurjolly, [#1839](https://github.com/DGtal-team/DGtal/pull/1839))
   - Voxels are now rendered using polyscope SparseVolumeGrid (Bastien DOIGNIES, [#1843](https://github.com/DGtal-team/DGtal/pull/1843))
   - Domains are now rendered with 6 quads by default (Bastien DOIGNIES, [#1843](https://github.com/DGtal-team/DGtal/pull/1843))
 
-- *Geometry*
-  - Add a new method TangencyComputer::getCotangentPoints to compute visible points up to some distance, and a new method TangencyComputer::ShortestPaths::clearVisited to speed-up multiple shortest path computations (Jacques-Olivier Lachaud, [#1833](https://github.com/DGtal-team/DGtal/pull/1833))
-
+- *Documentation*
+  - Many typos fixed in documentation using Github Copilot. (David Coeurjolly, [#1829](https://github.com/DGtal-team/DGtal/pull/1829))
+  - Global spellcheck and pre-commit. (David Coeurjolly, [#1837](https://github.com/DGtal-team/DGtal/pull/1837))
+  - Upgrade of the doxygen configuration to use MathJax 3. Fixes issue #1845 (David Coeurjolly, [#1846](https://github.com/DGtal-team/DGtal/pull/1846))
 
 ## BugFixes
 
 - *Project*
+  - Run all non-blacklisted tests for PR titles containing `[rel]` by setting `DGTAL_TEST_THRESHOLD=100`, and rerun CI when PR titles are edited (David Coeurjolly,[#1850](https://github.com/DGtal-team/DGtal/pull/1850)).
   - Fixing typos and adding a new github action for pre-commit check (David Coeurjolly,  [#1844](https://github.com/DGtal-team/DGtal/pull/1844))
   - Upgrading google benchmark to 1.9.5 to remove warnings on macOS (David Coeurjolly,  [#1848](https://github.com/DGtal-team/DGtal/pull/1848))
 
 - *IO*
   - Fixing typo in the 3d viewer documentation (David Coeurjolly, [#1831](https://github.com/DGtal-team/DGtal/pull/1831))
 
-- *Build*
-  - Fixing old `DEBUG_VERBOSE` to `DGTAL_DEBUG_VERBOSE` (David Coeurjolly,  [#1834](https://github.com/DGtal-team/DGtal/pull/1834))
-  - Upgrading Conan version to 2.31.1 in the github actions (David Coeurjolly,  [#1849](https://github.com/DGtal-team/DGtal/pull/1849))
-
 - *Geometry*
   - In DigitalSurfaceConvolver (eg. when using the Integral Invariant estimators), a bug existed when the shape domain does not contain the point (0,0,0). This PR fixes it using KCoords to represent the Kernel origin instead of a Spel which requires a valid KSpace (David Coeurjolly, [#1840](https://github.com/DGtal-team/DGtal/pull/1840))
 
 - *Base*
   - Fixing issue raised when building testLabelledMap-benchmark (David Coeurjolly, [#1847](https://github.com/DGtal-team/DGtal/pull/1847))
+
+- *Build*
+  - Standardize developer options under the `DGTAL_DEV_` prefix across code, CMake, CI, tests, and documentation. Merge `DGTAL_VERBOSE` and `DGTAL_DEBUG_VERBOSE` (temporarily named `DGTAL_DEV_DEBUG_VERBOSE`) into `DGTAL_DEV_VERBOSE`, enabling both progress messages and developer diagnostics. Rename `DGTAL_NO_ADD_STBIMAGE_IMPLEMENT`, `DGTAL_NO_ESCAPED_CHAR_IN_TRACE`, `DGTAL_WARNING_AS_ERROR`, `DGTAL_ENABLE_TARGET_INSTALL`, `DGTAL_REMOVE_UNINSTALL`, and `DGTAL_COLOR_WITH_ALPHA_ARITH` with the same prefix. Align the corresponding preprocessor macros, including the legacy `DEBUG_VERBOSE`, `VERBOSE`, and `COLOR_WITH_ALPHA_ARITH` (David Coeurjolly, [#1850](https://github.com/DGtal-team/DGtal/pull/1850)).
+  - Upgrading Conan version to 2.31.1 in the github actions (David Coeurjolly,  [#1849](https://github.com/DGtal-team/DGtal/pull/1849))
+  - Adding PONCA tests to the github actions (David Coeurjolly,  [#1850](https://github.com/DGtal-team/DGtal/pull/1850))
+
 
 # DGtal 2.1.0
 
@@ -195,7 +195,7 @@ git remote set-head origin -a
 - *General*
   - Upgrade of polyscope version in examples from 1.2.0 to 2.3.0 (David Coeurjolly, [#1743](https://github.com/DGtal-team/DGtal/pull/1743))
   - Fixing cmake CGAL 6.0 breaking change. (David Coeurjolly, [#1745](https://github.com/DGtal-team/DGtal/pull/1745))
-  - Adding a new `DGTAL_REMOVE_UNINSTALL` cmake option to disable the `uninstall` target. (David Coeurjolly, [#1746](https://github.com/DGtal-team/DGtal/pull/1746)
+  - Adding a new `DGTAL_DEV_REMOVE_UNINSTALL` cmake option to disable the `uninstall` target. (David Coeurjolly, [#1746](https://github.com/DGtal-team/DGtal/pull/1746)
   - Using the `dcoeurjo/GeometryProcessing-cmake-recipes` openmp recipe to detect openmp (David Coeurjolly, [#1750](https://github.com/DGtal-team/DGtal/pull/1750))
 
 ## Bug fixes

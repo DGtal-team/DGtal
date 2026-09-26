@@ -146,7 +146,7 @@ public:
             myImagePtr(&anImage), mySubDomainPtr(&aDomain), myFD(&aFD), myFV(&aFV), myFVm1(&aFVm1)
     {
       defaultValue = 0;
-#ifdef DGTAL_DEBUG_VERBOSE
+#ifdef DGTAL_DEV_VERBOSE
         trace.warning() << "ImageAdapter Ctor fromRef " << std::endl;
 #endif
     }
@@ -164,7 +164,7 @@ public:
     */
     ImageAdapter & operator= ( const ImageAdapter & other )
     {
-#ifdef DGTAL_DEBUG_VERBOSE
+#ifdef DGTAL_DEV_VERBOSE
         trace.warning() << "ImageAdapter assignment " << std::endl;
 #endif
         if (&other != this)
@@ -315,7 +315,7 @@ private:
      * Default constructor.
      */
     ImageAdapter() {
-#ifdef DGTAL_DEBUG_VERBOSE
+#ifdef DGTAL_DEV_VERBOSE
         trace.warning() << "ImageAdapter Ctor default " << std::endl;
 #endif
     }

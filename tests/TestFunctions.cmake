@@ -7,7 +7,7 @@ function(DGtal_add_test test_file) #optional_avoid_add_test
     target_link_libraries(${test_file} PRIVATE DGtal Catch2::Catch2 ${DGtalLibDependencies} benchmark::benchmark DGtalCatch)
     target_include_directories(${test_file} PRIVATE ${PROJECT_SOURCE_DIR}/tests/)
     target_include_directories(${test_file} PRIVATE ${PROJECT_BINARY_DIR}/tests/)
-    if(DGTAL_WARNING_AS_ERROR)
+    if(DGTAL_DEV_WARNING_AS_ERROR)
       target_compile_options(${test_file} PRIVATE
         $<$<CONFIG:Debug>:
         -Wall

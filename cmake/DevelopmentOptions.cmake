@@ -1,22 +1,15 @@
-set(VERBOSE_DGTAL 0)
-set(DGTAL_DEBUG_VERBOSE_DGTAL 0)
-set(COLOR_WITH_ALPHA_ARITH_DGTAL 0)
+set(DGTAL_DEV_VERBOSE_DGTAL 0)
+set(DGTAL_DEV_COLOR_WITH_ALPHA_ARITH_DGTAL 0)
 
-if (DGTAL_DEBUG_VERBOSE)
-  set(DGTAL_DEBUG_VERBOSE_DGTAL 1)
-  target_compile_definitions(DGtal PUBLIC -DDGTAL_DEBUG_VERBOSE)
-  message(STATUS "Debug verbose mode activated")
-endif()
-
-if (DGTAL_VERBOSE)
-  set(VERBOSE_DGTAL 1)
-  target_compile_definitions(DGtal PUBLIC -DVERBOSE)
+if (DGTAL_DEV_VERBOSE)
+  set(DGTAL_DEV_VERBOSE_DGTAL 1)
+  target_compile_definitions(DGtal PUBLIC -DDGTAL_DEV_VERBOSE)
   message(STATUS "Verbose mode activated")
 endif()
 
-if(DGTAL_COLOR_WITH_ALPHA_ARITH)
-  set(COLOR_WITH_ALPHA_ARITH_DGTAL 1)
-  target_compile_definitions(DGtal PUBLIC -DCOLOR_WITH_ALPHA_ARITH)
+if(DGTAL_DEV_COLOR_WITH_ALPHA_ARITH)
+  set(DGTAL_DEV_COLOR_WITH_ALPHA_ARITH_DGTAL 1)
+  target_compile_definitions(DGtal PUBLIC -DDGTAL_DEV_COLOR_WITH_ALPHA_ARITH)
 endif()
 
 # -----------------------------------------------------------------------------
@@ -45,8 +38,8 @@ CPMAddPackage(
 # -----------------------------------------------------------------------------
 # Debug specific options
 # -----------------------------------------------------------------------------
-option(DGTAL_WARNING_AS_ERROR "Transform compiler warnings as errors (in Debug build type)." OFF)
-if (DGTAL_WARNING_AS_ERROR)
+option(DGTAL_DEV_WARNING_AS_ERROR "Transform compiler warnings as errors (in Debug build type)." OFF)
+if (DGTAL_DEV_WARNING_AS_ERROR)
 target_compile_options(DGtal PRIVATE
   $<$<CONFIG:Debug>:
     -Wall

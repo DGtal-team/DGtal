@@ -531,7 +531,7 @@ namespace functors
         }
       else
         {
-#ifdef DGTAL_DEBUG_VERBOSE
+#ifdef DGTAL_DEV_VERBOSE
           trace.warning() << "Warning pt outside the 3D domain " << pt << std::endl;
 #endif
           return  myDefaultPoint;

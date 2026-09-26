@@ -4,9 +4,11 @@ endif()
 
 CPMAddPackage(
   NAME ponca
-  VERSION 1.3
+  VERSION 1.4
   GITHUB_REPOSITORY "poncateam/ponca"
   SYSTEM TRUE
+  OPTIONS
+    "PONCA_CONFIGURE_TESTS OFF"
 )
 
 # Create a custom target because Fitting collides with boost::Fitting...
@@ -22,7 +24,6 @@ install(EXPORT PoncaFitting DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/boost NAME
 export(TARGETS
     Ponca
     Fitting
-    Eigen3_Eigen
     NAMESPACE Ponca::
     FILE PoncaTargets.cmake
 )

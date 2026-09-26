@@ -76,7 +76,7 @@ template <typename S, typename P, typename TSep, typename TImage>
 inline void DGtal::VoronoiMapComplete<S, P, TSep, TImage>::computeOtherSteps(
 const Dimension dim ) const
 {
-#ifdef VERBOSE
+#ifdef DGTAL_DEV_VERBOSE
   std::string title =  "VoronoiMapComplete dimension " + std::to_string( dim );
   trace.beginBlock( title );
 #endif
@@ -110,7 +110,7 @@ const Dimension dim ) const
     computeOtherStep1D( pt, dim );
 #endif
 
-#ifdef VERBOSE
+#ifdef DGTAL_DEV_VERBOSE
   trace.endBlock();
 #endif
 }
