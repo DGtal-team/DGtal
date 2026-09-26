@@ -7,6 +7,8 @@ CPMAddPackage(
   VERSION 1.4
   GITHUB_REPOSITORY "poncateam/ponca"
   SYSTEM TRUE
+  OPTIONS
+    "PONCA_CONFIGURE_TESTS OFF"
 )
 
 # Create a custom target because Fitting collides with boost::Fitting...
