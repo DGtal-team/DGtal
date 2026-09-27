@@ -37,13 +37,6 @@
 #include "DGtal/helpers/Shortcuts.h"
 #include "DGtal/helpers/ShortcutsGeometry.h"
 
-
-#ifdef DGTAL_WITH_POLYSCOPE_VIEWER
-// Visualization
-#include "DGtal/io/viewers/PolyscopeViewer.h"
-#include "DGtal/io/colormaps/GradientColorMap.h"
-#endif
-
 ///////////////////////////////////////////////////////////////////////////////
 
 using namespace DGtal;
@@ -107,24 +100,6 @@ int main()
                                                  ( "ii-split-axis", 2 ) );
     trace.endBlock();
     //! [Parallel-run]
-
-#ifdef DGTAL_WITH_POLYSCOPE_VIEWER
-    PolyscopeViewer viewer;
-
-    std::string objectName = "Surfels";
-    viewer.draw(surfels, objectName); // Draws the object independently
-    viewer.addQuantity(objectName, "Mean curvature", curv_par8_0);
-
-    AxisDomainSplitter<Z3i::Domain> splitter(0);
-    AxisDomainSplitter<Z3i::Domain>::SplitDomainsInfo splits = splitter(digitized_shape->getDomain(), 8);
-    HueShadeColorMap<unsigned int> cmap(0,(unsigned int)splits.size());
-    for(auto i=0; i< splits.size(); ++i)
-    {
-        viewer << cmap(i);
-        viewer << splits[i].domain;
-    }
-    viewer.show();
-#endif
 
     return 0;
 }
