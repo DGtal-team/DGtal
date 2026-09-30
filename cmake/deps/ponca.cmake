@@ -2,6 +2,7 @@ if (TARGET ponca)
   return()
 endif()
 
+include(CPM)
 CPMAddPackage(
   NAME ponca
   VERSION 1.4
