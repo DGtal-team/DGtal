@@ -12,7 +12,7 @@
 ## Changes
 
 - *Geometry*
-  - Add a new method TangencyComputer::getCotangentPoints to compute visible points up to some distance, and a new method TangencyComputer::ShortestPaths::clearVisited to speed-up multiple shortest path computations (Jacques-Olivier Lachaud, [#1833](https://github.com/DGtal-team/DGtal/pull/1833))
+  - Add a new method `TangencyComputer::getCotangentPoints` to compute visible points up to some distance, and a new method `TangencyComputer::ShortestPaths::clearVisited` to speed-up multiple shortest path computations (Jacques-Olivier Lachaud, [#1833](https://github.com/DGtal-team/DGtal/pull/1833))
   - Bump of the PONCA version from 1.3 to 1.4 (David Coeurjolly, [#1850](https://github.com/DGtal-team/DGtal/pull/1850))
   - Adding an additional example of the parallel version of the Integral Invariant estimators (David Coeurjolly, [#1850](https://github.com/DGtal-team/DGtal/pull/1850))
 
