@@ -4,7 +4,7 @@ endif()
 
 include(CPM)
 CPMAddPackage(
-  NAME ponca
+  NAME Ponca
   VERSION 1.4
   GITHUB_REPOSITORY "poncateam/ponca"
   SYSTEM TRUE
