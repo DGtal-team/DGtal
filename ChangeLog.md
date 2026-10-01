@@ -6,8 +6,8 @@
   - New multithread version of Integral Invariant estimators using a DomainSplitter. A new parameter has been added in the II shortcuts to enable multithreading when OpenMP has been activated --`DGTAL_WITH_OPENMP` flag-- (Bastien Doignies, David Coeurjolly, [#1842](https://github.com/DGtal-team/DGtal/pull/1842))
 
 - *Project*
-  - pre-commit hooks have been activated for sanity checks on files before running the git commit (David Coeurjolly,  [#1835](https://github.com/DGtal-team/DGtal/pull/1835))
-  - Add pre-commit setup instructions to contributing documentation (David Coeurjolly, [#1836](https://github.com/DGtal-team/DGtal/pull/1836))
+  - (DEV) pre-commit hooks have been activated for sanity checks on files before running the git commit (David Coeurjolly,  [#1835](https://github.com/DGtal-team/DGtal/pull/1835))
+  - (DEV) Add pre-commit setup instructions to contributing documentation (David Coeurjolly, [#1836](https://github.com/DGtal-team/DGtal/pull/1836))
 
 ## Changes
 
@@ -23,14 +23,14 @@
 
 - *Documentation*
   - Many typos fixed in documentation using Github Copilot. (David Coeurjolly, [#1829](https://github.com/DGtal-team/DGtal/pull/1829))
-  - Global spellcheck and pre-commit. (David Coeurjolly, [#1837](https://github.com/DGtal-team/DGtal/pull/1837))
-  - Upgrade of the doxygen configuration to use MathJax 3. Fixes issue #1845 (David Coeurjolly, [#1846](https://github.com/DGtal-team/DGtal/pull/1846))
+  - (DEV) Global spellcheck and pre-commit. (David Coeurjolly, [#1837](https://github.com/DGtal-team/DGtal/pull/1837))
+  - (DEV) Upgrade of the doxygen configuration to use MathJax 3. Fixes issue #1845 (David Coeurjolly, [#1846](https://github.com/DGtal-team/DGtal/pull/1846))
 
 ## BugFixes
 
 - *Project*
   - Run all non-blacklisted tests for PR titles containing `[rel]` by setting `DGTAL_TEST_THRESHOLD=100`, and rerun CI when PR titles are edited (David Coeurjolly,[#1850](https://github.com/DGtal-team/DGtal/pull/1850)).
-  - Fixing typos and adding a new github action for pre-commit check (David Coeurjolly,  [#1844](https://github.com/DGtal-team/DGtal/pull/1844))
+  - (DEV) Fixing typos and adding a new github action for pre-commit check (David Coeurjolly,  [#1844](https://github.com/DGtal-team/DGtal/pull/1844))
   - Upgrading google benchmark to 1.9.5 to remove warnings on macOS (David Coeurjolly,  [#1848](https://github.com/DGtal-team/DGtal/pull/1848))
 
 - *IO*
