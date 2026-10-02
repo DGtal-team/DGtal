@@ -1,3 +1,10 @@
+# DGtal 2.2.1 (beta)
+
+## BugFixes
+
+- *Project*
+  - (DEV) During the `make install`, only necessary boost files are now copied (David Coeurjolly,  [#1851]())
+
 # DGtal 2.2
 
 ## New features
