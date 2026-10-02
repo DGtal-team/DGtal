@@ -8,7 +8,7 @@ function(DGtal_add_benchmark test_file)
     list(APPEND DGTAL_benchmark_exe_list ${test_file})
     set(DGTAL_benchmark_exe_list ${DGtal_benchmark_exe_list} CACHE STRING "" FORCE)
 
-    if(DGTAL_WARNING_AS_ERROR)
+    if(DGTAL_DEV_WARNING_AS_ERROR)
       target_compile_options(${test_file} PRIVATE
         $<$<CONFIG:Debug>:
         -Wall

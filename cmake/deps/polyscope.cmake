@@ -20,6 +20,15 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG_OLD}")
 # instead. It also provide the necessary install and exports.
 
 function(cleanup_target target include_paths)
+  if (NOT TARGET "${target}")
+    return()
+  endif()
+
+  get_target_property(is_imported "${target}" IMPORTED)
+  if (is_imported)
+    return()
+  endif()
+
   get_property(target_include_dir TARGET ${target} PROPERTY INTERFACE_INCLUDE_DIRECTORIES)
   set_target_properties(${target} PROPERTIES INTERFACE_INCLUDE_DIRECTORIES "")
 
@@ -66,9 +75,9 @@ cleanup_target(imgui "imgui/imgui;imgui/implot;imgui/ImGuizmo")
 cleanup_target(glfw "")
 cleanup_target(glad "")
 cleanup_target(stb "")
+cleanup_target(nlohmann_json "")
 cleanup_target(glm "")
 cleanup_target(glm-header-only "")
-cleanup_target(nlohmann_json "")
 cleanup_target(MarchingCube "")
 cleanup_target(IconFontCppHeaders "")
 cleanup_target(polyscope "")

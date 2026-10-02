@@ -140,13 +140,28 @@ Beside these options, user can also specify these options:
 - \e DGTAL_BUILD_EXAMPLES (ON/OFF): to build DGtal examples (default: OFF)
 - \e DGTAL_BUILD_TESTS (ON/OFF): to build the test suite (default: OFF)
 
-- \e VERBOSE (ON/OFF): to define the \e VERBOSE variable
- (default: OFF). If set to ON, verbose
- messages are traced out.
+- \e DGTAL_DEV_VERBOSE (ON/OFF): define the \e DGTAL_DEV_VERBOSE macro
+ to enable both general progress messages and developer debug diagnostics
+ (default: OFF). This option applies to all build types.
 
-- \e DGTAL_DEBUG_VERBOSE (ON/OFF): to define the \e DGTAL_DEBUG_VERBOSE variable
- (default: OFF). If set to ON, verbose
-debug messages are traced out.
+- \e DGTAL_DEV_NO_ADD_STBIMAGE_IMPLEMENT (ON/OFF): omit the STB image reader
+ and writer implementations to avoid duplicate definitions (default: OFF).
+ When enabled, the application must provide the STB implementations.
+
+- \e DGTAL_DEV_NO_ESCAPED_CHAR_IN_TRACE (ON/OFF): disable terminal color and
+ font escape sequences in trace output (default: OFF).
+
+- \e DGTAL_DEV_WARNING_AS_ERROR (ON/OFF): treat compiler warnings as errors
+ in Debug builds (default: OFF).
+
+- \e DGTAL_DEV_ENABLE_TARGET_INSTALL (ON/OFF): enable DGtal file installation
+ and target exports (default: ON).
+
+- \e DGTAL_DEV_REMOVE_UNINSTALL (ON/OFF): remove the DGtal uninstall target
+ (default: OFF).
+
+- \e DGTAL_DEV_COLOR_WITH_ALPHA_ARITH (ON/OFF): include the alpha channel in
+ color arithmetic operations (default: OFF).
 
 
 - \e  DGTAL_BUILD_SHARED_LIBS (ON/OFF): to build the lib as a shared library (default: OFF) but \b must be \b OFF actually on \b Windows

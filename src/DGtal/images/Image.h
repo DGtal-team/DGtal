@@ -97,7 +97,7 @@ namespace DGtal
      * Default constructor.
      */
     Image() {
-#ifdef DGTAL_DEBUG_VERBOSE
+#ifdef DGTAL_DEV_VERBOSE
 trace.warning() << "Image Ctor default "<<std::endl;
 #endif
 
@@ -110,7 +110,7 @@ trace.warning() << "Image Ctor default "<<std::endl;
     Image(ImageContainer *anImageContainer):
       myImagePointer(anImageContainer)
     {
-#ifdef DGTAL_DEBUG_VERBOSE
+#ifdef DGTAL_DEV_VERBOSE
     trace.warning() << "Image Ctor fromPointer "<<std::endl;
 #endif
     }
@@ -123,7 +123,7 @@ trace.warning() << "Image Ctor default "<<std::endl;
     Image(const CowPtr<ImageContainer> &anImageContainerCowPointer):
       myImagePointer(anImageContainerCowPointer)
     {
-      #ifdef DGTAL_DEBUG_VERBOSE
+      #ifdef DGTAL_DEV_VERBOSE
 trace.warning() << "Image Ctor fromCow  "<<std::endl;
 #endif
     }
@@ -136,7 +136,7 @@ trace.warning() << "Image Ctor fromCow  "<<std::endl;
    Image(const ImageContainer &other):
       myImagePointer(new ImageContainer(other) )
       {
-#ifdef DGTAL_DEBUG_VERBOSE
+#ifdef DGTAL_DEV_VERBOSE
 trace.warning() << "Image Ctor fromConstRef "<<std::endl;
 #endif
       }
@@ -150,7 +150,7 @@ trace.warning() << "Image Ctor fromConstRef "<<std::endl;
    Image(const Image &other):
       myImagePointer(other.myImagePointer )
       {
-          #ifdef DGTAL_DEBUG_VERBOSE
+          #ifdef DGTAL_DEV_VERBOSE
 trace.warning() << "Image copy Ctor  "<<std::endl;
 #endif
       }
@@ -162,7 +162,7 @@ trace.warning() << "Image copy Ctor  "<<std::endl;
      */
     Image & operator= ( const Image & other )
     {
-      #ifdef DGTAL_DEBUG_VERBOSE
+      #ifdef DGTAL_DEV_VERBOSE
  trace.warning() << "Image assignment "<<std::endl;
 #endif
       if (&other != this)

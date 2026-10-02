@@ -159,12 +159,9 @@ namespace DGtal
                              const double h,
                              const double radius,
                              ConstAlias<NormalVectorEstimatorCache> anEstimator):
-        myEmbedder(&anEmbedder), myH(h), myNormalEsitmatorCache(&anEstimator)
+        myEmbedder(&anEmbedder), myH(h),  myRadius(radius), myNormalEsitmatorCache(&anEstimator)
       {
-        //From Mellado's example
         myFit = new Fit();
-        myWeightFunction = new WeightFunc(radius);
-        myFit->setWeightFunc(*myWeightFunction);
       }
 
 
@@ -173,7 +170,6 @@ namespace DGtal
        */
       ~SphereFittingEstimator( )
       {
-        delete myWeightFunction;
         delete myFit ;
       }
 
@@ -203,12 +199,13 @@ namespace DGtal
         if (myFirstPoint)
           {
             myFirstPoint = false;
-            myFit->init(pp);
+            myFit->setWeightFunc({pp, myRadius});
+            myFit->init();
           }
         else
           myFit->addNeighbor(point);
 
-#ifdef DGTAL_DEBUG_VERBOSE
+#ifdef DGTAL_DEV_VERBOSE
         trace.info() <<"#";
 #endif
       }
@@ -222,7 +219,7 @@ namespace DGtal
       {
         myFit->finalize();
 
-#ifdef DGTAL_DEBUG_VERBOSE
+#ifdef DGTAL_DEV_VERBOSE
         trace.info() <<std::endl;
 
         //Test if the fitting ended without errors
@@ -268,7 +265,6 @@ namespace DGtal
         delete myFit;
         myFit = new Fit();
         myFirstPoint = true;
-        myFit->setWeightFunc(*myWeightFunction);
      }
 
 
@@ -283,14 +279,14 @@ namespace DGtal
       ///Grid step
       double myH;
 
+      ///Radius
+      double myRadius;
+
       ///Boolean for initial point
       bool myFirstPoint;
 
       ///NormalVectorCache
       const NormalVectorEstimatorCache *myNormalEsitmatorCache;
-
-      ///const WeightFunction
-      const  WeightFunc *myWeightFunction;
 
     }; // end of class SphereFittingEstimator
   }

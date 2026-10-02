@@ -70,7 +70,7 @@ inline
 void
 DGtal::VoronoiMap<S,P, TSep, TImage>::computeOtherSteps ( const Dimension dim ) const
 {
-#ifdef VERBOSE
+#ifdef DGTAL_DEV_VERBOSE
   std::string title = "VoronoiMap dimension " +  std::to_string( dim ) ;
   trace.beginBlock ( title );
 #endif
@@ -104,7 +104,7 @@ DGtal::VoronoiMap<S,P, TSep, TImage>::computeOtherSteps ( const Dimension dim ) 
     computeOtherStep1D ( pt, dim);
 #endif
 
-#ifdef VERBOSE
+#ifdef DGTAL_DEV_VERBOSE
   trace.endBlock();
 #endif
 }

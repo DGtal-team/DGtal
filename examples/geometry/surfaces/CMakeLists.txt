@@ -5,6 +5,8 @@ set(DGTAL_EXAMPLES_SRC
     dvcm-2d-curvature
     examplePlaneProbingTetrahedronEstimator
     examplePlaneProbingParallelepipedEstimator
+    parallelIIShortcuts
+
 )
 
 foreach(FILE ${DGTAL_EXAMPLES_SRC})
@@ -22,7 +24,7 @@ if (  DGTAL_WITH_POLYSCOPE_VIEWER )
     dvcm-3d
     examplePlaneProbingSurfaceLocalEstimator
     exampleMaximalSegmentSliceEstimation
-    parallelIIShortcuts
+    parallelIIShortcuts-viewer
    )
   foreach(FILE ${DGTAL_EXAMPLES_POLYSCOPE_SRC})
       DGtal_add_example(${FILE})

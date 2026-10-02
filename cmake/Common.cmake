@@ -88,8 +88,8 @@ include(GNUInstallDirs)
 set(DGTAL_INSTALL_CMAKE_DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/DGtal")
 set(DGTAL_INSTALL_DEPS_DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}/DGtal/3rdParties")
 
-option(DGTAL_REMOVE_UNINSTALL "Remove DGtal uninstall target." OFF)
-if (NOT DGTAL_REMOVE_UNINSTALL)
+option(DGTAL_DEV_REMOVE_UNINSTALL "Remove DGtal uninstall target." OFF)
+if (NOT DGTAL_DEV_REMOVE_UNINSTALL)
 configure_file(
   ${CMAKE_CURRENT_SOURCE_DIR}/cmake/TargetUninstall.cmake.in
   ${CMAKE_CURRENT_BINARY_DIR}/TargetUninstall.cmake
@@ -107,13 +107,12 @@ else()
   option(DGTAL_BUILD_SHARED_LIBS "Build shared libraries." OFF)
 endif()
 
-option(DGTAL_DEBUG_VERBOSE "Verbose debug messages." OFF)
-option(DGTAL_VERBOSE "Verbose messages." OFF)
-option(DGTAL_COLOR_WITH_ALPHA_ARITH "Consider alpha channel in color arithmetical operations." OFF)
-option(DGTAL_NO_ESCAPED_CHAR_IN_TRACE "Avoid printing special color and font weight terminal escaped char in program output." OFF)
+option(DGTAL_DEV_VERBOSE "Verbose progress and developer debug messages." OFF)
+option(DGTAL_DEV_COLOR_WITH_ALPHA_ARITH "Consider alpha channel in color arithmetical operations." OFF)
+option(DGTAL_DEV_NO_ESCAPED_CHAR_IN_TRACE "Avoid printing special color and font weight terminal escaped char in program output." OFF)
 option(DGTAL_CONFIG_HINTS "Provide HINTS to find_dependency in DGtalConfig.cmake. Projects consuming DGtal does not have to provide FOO_DIR to their project, where FOO is a DGtal dependency. Recommended to turn it off when deploying." ON)
 mark_as_advanced(DGTAL_CONFIG_HINTS)
-option(DGTAL_NO_ADD_STBIMAGE_IMPLEMENT "To avoid duplicated linking errors (like LNK2005 in MSVC)" OFF)
+option(DGTAL_DEV_NO_ADD_STBIMAGE_IMPLEMENT "To avoid duplicated linking errors (like LNK2005 in MSVC)" OFF)
 
 #------------------------------------------------------------------------------
 # Some directories and files should also be cleaned when invoking 'make clean'

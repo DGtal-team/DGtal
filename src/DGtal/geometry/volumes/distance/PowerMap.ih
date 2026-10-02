@@ -30,7 +30,7 @@
 //////////////////////////////////////////////////////////////////////////////
 #include <cstdlib>
 
-#ifdef VERBOSE
+#ifdef DGTAL_DEV_VERBOSE
 #include <boost/lexical_cast.hpp>
 #endif
 
@@ -78,7 +78,7 @@ inline
 void
 DGtal::PowerMap<W, Sep,Im>::computeOtherSteps ( const Dimension dim ) const
 {
-#ifdef VERBOSE
+#ifdef DGTAL_DEV_VERBOSE
   std::string title = "Powermap dimension " +  boost::lexical_cast<std::string>( dim ) ;
   trace.beginBlock ( title );
 #endif
@@ -113,7 +113,7 @@ DGtal::PowerMap<W, Sep,Im>::computeOtherSteps ( const Dimension dim ) const
     computeOtherStep1D ( pt, dim);
 #endif
 
-#ifdef VERBOSE
+#ifdef DGTAL_DEV_VERBOSE
   trace.endBlock();
 #endif
 }

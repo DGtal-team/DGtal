@@ -35,14 +35,14 @@ runs:
       if: ${{ runner.os == 'Linux' && inputs.config-name == 'default' }}
       shell: bash
       run: |
-        echo "DGTAL_CMAKE_CONFIG=-DDGTAL_WITH_CGAL=true -DDGTAL_WITH_LIBIGL=true -DDGTAL_WITH_FFTW3=true -DDGTAL_WITH_HDF5=true -DDGTAL_WITH_OPENMP=true  -DDGTAL_WITH_POLYSCOPE_VIEWER=true  -DDGTAL_WITH_CAIRO=true -DDGTAL_WITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true -DDGTAL_WARNING_AS_ERROR=ON -G Ninja" >> "$GITHUB_ENV"
+        echo "DGTAL_CMAKE_CONFIG=-DDGTAL_WITH_PONCA=true -DDGTAL_WITH_CGAL=true -DDGTAL_WITH_LIBIGL=true -DDGTAL_WITH_FFTW3=true -DDGTAL_WITH_HDF5=true -DDGTAL_WITH_OPENMP=true  -DDGTAL_WITH_POLYSCOPE_VIEWER=true  -DDGTAL_WITH_CAIRO=true -DDGTAL_WITH_ITK=true  -DDGTAL_DEV_WARNING_AS_ERROR=ON -G Ninja" >> "$GITHUB_ENV"
         echo "DGTAL_TEST_THRESHOLD=0" >> "$GITHUB_ENV"
 
     - name: "Default MacOS"
       if: ${{ runner.os == 'macOS' && inputs.config-name == 'default' }}
       shell: bash
       run: |
-        echo "DGTAL_CMAKE_CONFIG=-DDGTAL_WITH_CGAL=true" >> "$GITHUB_ENV"
+        echo "DGTAL_CMAKE_CONFIG=-DDGTAL_WITH_PONCA=true -DDGTAL_WITH_CGAL=true" >> "$GITHUB_ENV"
         echo "DGTAL_TEST_THRESHOLD=0" >> "$GITHUB_ENV"
 
     - name: "Default Windows"
@@ -57,7 +57,7 @@ runs:
       if: ${{ runner.os == 'Linux' && inputs.config-name == 'PR' }}
       shell: bash
       run: |
-        echo "DGTAL_CMAKE_CONFIG=-DDGTAL_BUILD_TESTS=true -DDGTAL_BUILD_EXAMPLES=true -DUSE_CCACHE=NO -DDGTAL_WITH_CGAL=true -DDGTAL_WITH_LIBIGL=true -DDGTAL_WITH_FFTW3=true -DDGTAL_WITH_HDF5=true -DDGTAL_WITH_OPENMP=true  -DDGTAL_WITH_POLYSCOPE_VIEWER=true  -DDGTAL_WITH_CAIRO=true -DDGTAL_WITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true -DDGTAL_WARNING_AS_ERROR=ON -G Ninja" >> "$GITHUB_ENV"
+        echo "DGTAL_CMAKE_CONFIG=-DDGTAL_BUILD_TESTS=true -DDGTAL_BUILD_EXAMPLES=true -DUSE_CCACHE=NO -DDGTAL_WITH_CGAL=true -DDGTAL_WITH_LIBIGL=true -DDGTAL_WITH_FFTW3=true -DDGTAL_WITH_HDF5=true -DDGTAL_WITH_OPENMP=true  -DDGTAL_WITH_POLYSCOPE_VIEWER=true  -DDGTAL_WITH_CAIRO=true -DDGTAL_WITH_ITK=true -DDGTAL_WITH_PONCA=true  -DDGTAL_DEV_WARNING_AS_ERROR=ON -G Ninja" >> "$GITHUB_ENV"
         echo "DGTAL_TEST_THRESHOLD=10" >> "$GITHUB_ENV"
 
     - name: "PR MacOS"
@@ -79,7 +79,7 @@ runs:
       if: ${{ runner.os == 'Linux' && inputs.config-name == 'main' }}
       shell: bash
       run: |
-        echo "DGTAL_CMAKE_CONFIG=-DDGTAL_BUILD_TESTS=true -DDGTAL_BUILD_EXAMPLES=true -DUSE_CCACHE=NO -DDGTAL_WITH_CGAL=true -DDGTAL_WITH_LIBIGL=true -DDGTAL_WITH_FFTW3=true -DDGTAL_WITH_HDF5=true -DDGTAL_WITH_OPENMP=true  -DDGTAL_WITH_POLYSCOPE_VIEWER=true  -DDGTAL_WITH_CAIRO=true -DDGTAL_WITH_ITK=true -DDGTAL_ENABLE_FLOATING_POINT_EXCEPTIONS=true -DDGTAL_WARNING_AS_ERROR=ON -G Ninja" >> "$GITHUB_ENV"
+        echo "DGTAL_CMAKE_CONFIG=-DDGTAL_BUILD_TESTS=true -DDGTAL_BUILD_EXAMPLES=true -DUSE_CCACHE=NO -DDGTAL_WITH_PONCA=true -DDGTAL_WITH_CGAL=true -DDGTAL_WITH_LIBIGL=true -DDGTAL_WITH_FFTW3=true -DDGTAL_WITH_HDF5=true -DDGTAL_WITH_OPENMP=true  -DDGTAL_WITH_POLYSCOPE_VIEWER=true  -DDGTAL_WITH_CAIRO=true -DDGTAL_WITH_ITK=true  -DDGTAL_DEV_WARNING_AS_ERROR=ON -G Ninja" >> "$GITHUB_ENV"
         echo "DGTAL_TEST_THRESHOLD=100" >> "$GITHUB_ENV"
 
     - name: "Main MacOS"
@@ -94,6 +94,12 @@ runs:
       shell: bash
       run: |
         echo "DGTAL_CMAKE_CONFIG=-DCMAKE_TOOLCHAIN_FILE='conan_toolchain.cmake' -DDGTAL_BUILD_TESTS=true -DDGTAL_BUILD_EXAMPLES=true" >> "$GITHUB_ENV"
+        echo "DGTAL_TEST_THRESHOLD=100" >> "$GITHUB_ENV"
+
+    - name: "Run all tests for release PRs"
+      if: ${{ github.event_name == 'pull_request' && inputs.config-name == 'PR' && contains(github.event.pull_request.title, '[rel]') }}
+      shell: bash
+      run: |
         echo "DGTAL_TEST_THRESHOLD=100" >> "$GITHUB_ENV"
 
     # Only a single step outputs variables

@@ -100,7 +100,7 @@ namespace DGtal
      */
     std::string  prefixWarning()
     {
-#if ( !defined(DGTAL_NO_ESCAPED_CHAR_IN_TRACE) && (defined(UNIX)||defined(unix)||defined(linux)) )
+#if ( !defined(DGTAL_DEV_NO_ESCAPED_CHAR_IN_TRACE) && (defined(UNIX)||defined(unix)||defined(linux)) )
       return "\033[0m\033[35m";
 #else
       return "";
@@ -113,7 +113,7 @@ namespace DGtal
      */
     std::string  prefixInfo()
     {
-#if ( !defined(DGTAL_NO_ESCAPED_CHAR_IN_TRACE) && (defined(UNIX)||defined(unix)||defined(linux)) )
+#if ( !defined(DGTAL_DEV_NO_ESCAPED_CHAR_IN_TRACE) && (defined(UNIX)||defined(unix)||defined(linux)) )
       return "\033[0m";
 #else
       return "";
@@ -126,7 +126,7 @@ namespace DGtal
      */
     std::string  prefixError()
     {
-#if ( !defined(DGTAL_NO_ESCAPED_CHAR_IN_TRACE) && (defined(UNIX)||defined(unix)||defined(linux)) )
+#if ( !defined(DGTAL_DEV_NO_ESCAPED_CHAR_IN_TRACE) && (defined(UNIX)||defined(unix)||defined(linux)) )
       return "\033[0m\033[31m[ERR]";
 #else
       return "";
@@ -139,7 +139,7 @@ namespace DGtal
      */
     std::string  prefixEmphase()
     {
-#if ( !defined(DGTAL_NO_ESCAPED_CHAR_IN_TRACE) && (defined(UNIX)||defined(unix)||defined(linux)) )
+#if ( !defined(DGTAL_DEV_NO_ESCAPED_CHAR_IN_TRACE) && (defined(UNIX)||defined(unix)||defined(linux)) )
       return "\033[0m\033[1m";
 #else
       return "";
@@ -152,7 +152,7 @@ namespace DGtal
      */
     std::string  postfixReset()
     {
-#if ( !defined(DGTAL_NO_ESCAPED_CHAR_IN_TRACE) && (defined(UNIX)||defined(unix)||defined(linux)) )
+#if ( !defined(DGTAL_DEV_NO_ESCAPED_CHAR_IN_TRACE) && (defined(UNIX)||defined(unix)||defined(linux)) )
       return "\033[0m";
 #else
       return "";
