@@ -43,6 +43,7 @@ set(BOOST_INCLUDE_LIBRARIES
     endian
     exception
     foreach
+    format
     function
     function_types
     functional
@@ -201,7 +202,6 @@ add_library(boost INTERFACE)
 
 add_library(Boost::boost ALIAS boost)
 set(boost_export_list )
-set(boost_dirs)
 
 foreach (name ${BOOST_INCLUDE_LIBRARIES})
     target_link_libraries(boost
@@ -209,8 +209,9 @@ foreach (name ${BOOST_INCLUDE_LIBRARIES})
         Boost::${name}
     )
 
-    if (EXISTS ${Boost_SOURCE_DIR}/libs/${name})
-        list(APPEND boost_dirs "${Boost_SOURCE_DIR}/libs/${name}")
+    if (IS_DIRECTORY "${Boost_SOURCE_DIR}/libs/${name}/include")
+        install(DIRECTORY "${Boost_SOURCE_DIR}/libs/${name}/include/"
+            DESTINATION "${DGTAL_INSTALL_DEPS_DESTINATION}/boost/${name}/include")
         target_include_directories(boost
             INTERFACE
               $<INSTALL_INTERFACE:${DGTAL_INSTALL_DEPS_DESTINATION}/boost/${name}/include>
@@ -221,18 +222,19 @@ endforeach()
 
 # numeric_conversion seems to be named 'numeric'...
 # Also, 'numeric' has sublibraries, hence no include folder directly
-if (EXISTS ${Boost_SOURCE_DIR}/libs/numeric)
-    list(APPEND boost_dirs "${Boost_SOURCE_DIR}/libs/numeric")
+if (IS_DIRECTORY "${Boost_SOURCE_DIR}/libs/numeric/conversion/include")
+    install(DIRECTORY "${Boost_SOURCE_DIR}/libs/numeric/conversion/include/"
+        DESTINATION "${DGTAL_INSTALL_DEPS_DESTINATION}/boost/numeric/conversion/include")
     target_include_directories(boost
         INTERFACE
           $<INSTALL_INTERFACE:${DGTAL_INSTALL_DEPS_DESTINATION}/boost/numeric/conversion/include>
     )
 endif()
 
-# Install boost files when installing library
+# Install compiled Boost libraries and CMake metadata; only public include trees
+# are copied above, so library sources, documentation and tests are not installed.
 install(TARGETS boost ${boost_export_list} EXPORT boost)
 install(EXPORT boost FILE BoostConfig.cmake DESTINATION ${DGTAL_INSTALL_CMAKE_DESTINATION} NAMESPACE Boost::)
-install(DIRECTORY ${boost_dirs} DESTINATION ${DGTAL_INSTALL_DEPS_DESTINATION}/boost)
 
 # Export target Boost::headers
 export(TARGETS
