@@ -1,8 +1,4 @@
-"""Display L1 and L2 distances to the bunny's background on a sparse volume grid.
-
-Run with: python distanceTransform.py
-Requires DGtal's binary-image makeL1VoronoiMap/makeL2VoronoiMap overloads,
-NumPy, and Polyscope. Distances are in voxel units and zero on background.
+"""Compute and display the L1 and L2 distance transforms of a vol object.
 """
 
 from pathlib import Path
