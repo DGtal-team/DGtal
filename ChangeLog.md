@@ -1,3 +1,8 @@
+
+- *Python*
+  - New python example,  `distanceTransform.py`, computing L1 and L2 distance transforms of a vol file (David Coeurjolly, [xxx](yyy)).
+
+
 # DGtal 2.2
 
 ## New features
@@ -20,9 +25,6 @@
   - Upgrading the polyscope backend to 2.6.1 (David Coeurjolly, [#1839](https://github.com/DGtal-team/DGtal/pull/1839))
   - Voxels are now rendered using polyscope SparseVolumeGrid (Bastien DOIGNIES, [#1843](https://github.com/DGtal-team/DGtal/pull/1843))
   - Domains are now rendered with 6 quads by default (Bastien DOIGNIES, [#1843](https://github.com/DGtal-team/DGtal/pull/1843))
-
-- *Python*
-  - Add `distanceTransform.py`, a Python example computing L1 and L2 distances to the bunny's background and visualizing them on a Polyscope sparse volume grid (David Coeurjolly).
 
 - *Documentation*
   - Many typos fixed in documentation using Github Copilot. (David Coeurjolly, [#1829](https://github.com/DGtal-team/DGtal/pull/1829))
