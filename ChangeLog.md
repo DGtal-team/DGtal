@@ -1,6 +1,6 @@
 
 - *Python*
-  - New python example,  `distanceTransform.py`, computing L1 and L2 distance transforms of a vol file (David Coeurjolly, [xxx](yyy)).
+  - New python example,  `distanceTransform.py`, computing L1 and L2 distance transforms of a vol file (David Coeurjolly, [#1856](https://github.com/DGtal-team/DGtal/pull/1856)).
 
 
 # DGtal 2.2
