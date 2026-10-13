@@ -78,6 +78,8 @@ import dgtal
 
 @section code_example_python Examples
 
+In this section, we provide some examples of usage of the python binding. For more examples, please refer to the `examples/python-examples/` folder in the DGtal source code.
+
 @subsection topology_example Topology example (Euler characteristics)
 
 @code{.py}
