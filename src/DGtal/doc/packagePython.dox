@@ -33,10 +33,11 @@
 namespace DGtal {
 //----------------------------------------
 /*!
-@page packagePython DGtal python binding
+@page packagePython DGtal Python binding
 
 
 @managers David Coeurjolly
+@writers Bastien Doignies, Pablo Hernandez-Cerdan, David Coeurjolly
 @since 1.2
 
 [TOC]
@@ -52,21 +53,12 @@ pip install dgtal
 
 @section install_and_build Installing and building the library
 
-For most use case, it is sufficient to install the library from its pypy repository.
-
+For most use case, it is sufficient to install the library from its pypi repository using the `pip install dgtal`.
+If it fails, it is also possible to build from sources. In short, in the build folder:
 @code
-pip install dgtal
-@endcode
-
-If it fails, it is also possible to build from sources. See []. In short:
-
-@code
-git clone
-cd DGtal && mkdir build && cd build
 cmake .. -DDGTAL_WRAP_PYTHON=ON
 @endcode
-
-Which build the necessary shared library and copy the few plain python code; which may
+which build the necessary shared library and copy the few plain python code; which may
 need to be further installed depending on your installation.
 
 To import the module and access its functionalities:
@@ -75,6 +67,12 @@ To import the module and access its functionalities:
 import dgtal
 ....
 @endcode
+
+@note The current Python package is only a partial binding of the C++ library. The strategy is twofold:
+* A bottom-up approach: some fundamental classes  has been ported (Domain, Point, SpaceND, Object, Topology, Adjacency, Images ...).
+* A top-down one: high-level functions from the @ref Shortcut package are available for fast geometry processing of voxel sets and surfaces.
+
+
 
 @section code_example_python Examples
 

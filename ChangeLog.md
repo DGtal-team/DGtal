@@ -11,6 +11,10 @@
 - *Project*
   - (DEV) During the `make install`, only necessary boost files are now copied (David Coeurjolly,  [#1854](https://github.com/DGtal-team/DGtal/pull/1854))
 
+- *Doc*
+  - `A` class renamed to avoid extra doxygen links in DOX (David Coeurjolly, [#1856](https://github.com/DGtal-team/DGtal/pull/1856))
+
+
 # DGtal 2.2
 
 ## New features
