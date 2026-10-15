@@ -1,5 +1,6 @@
 
 - *Python*
+  - Add quantities with one randomized value per site to display the L1 and L2 Voronoi diagrams in `distanceTransform.py`.
   - New python example,  `distanceTransform.py`, computing L1 and L2 distance transforms of a vol file (David Coeurjolly, [#1856](https://github.com/DGtal-team/DGtal/pull/1856)).
 
 

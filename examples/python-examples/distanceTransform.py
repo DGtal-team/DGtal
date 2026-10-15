@@ -1,4 +1,4 @@
-"""Compute and display the L1 and L2 distance transforms of a vol object.
+"""Display the L1 and L2 distance transforms and Voronoi diagrams of a vol object.
 """
 
 from pathlib import Path
@@ -22,14 +22,26 @@ print("L2 distance at", p, "=", dt_l2.distanceToClosestSite(p))
 
 # Keep only nonzero distances, so background voxels do not occupy the grid.
 occupied_cells, l1, l2 = [], [], []
+voronoi_l1, voronoi_l2 = [], []
+site_ids = {}
 for p in bunny.domain:
     distance = dt_l1.distanceToClosestSite(p)
     if distance > 0:
         occupied_cells.append((p[0], p[1], p[2]))
         l1.append(distance)
         l2.append(dt_l2.distanceToClosestSite(p))
+        # Despite its name, directionToClosestSite returns site coordinates.
+        # Give each site a unique ID, shared by both metrics.
+        for vmap, values in ((dt_l1, voronoi_l1), (dt_l2, voronoi_l2)):
+            site = vmap.directionToClosestSite(p)
+            key = (site[0], site[1], site[2])
+            values.append(site_ids.setdefault(key, len(site_ids)))
 occupied_cells = np.asarray(occupied_cells, dtype=np.int32)
 l1, l2 = np.asarray(l1), np.asarray(l2)
+# Shuffle unique site values reproducibly, using the same mapping for L1 and L2.
+site_values = np.random.default_rng(42).permutation(len(site_ids))
+voronoi_l1 = site_values[np.asarray(voronoi_l1, dtype=np.intp)]
+voronoi_l2 = site_values[np.asarray(voronoi_l2, dtype=np.intp)]
 
 ps.init()
 # The origin is a cell corner: offset it to center voxels at integer coordinates.
@@ -47,4 +59,9 @@ grid.add_scalar_quantity("L2 distance to background", l2, defined_on="cells",
                          isolines_enabled=True, isoline_period=2.0,
                          isoline_period_relative=False,
                          vminmax=value_range, enabled=True)
+# Cells with the same ID belong to the same Voronoi region.
+grid.add_scalar_quantity("L1 Voronoi site ID", voronoi_l1,
+                         defined_on="cells", enabled=False)
+grid.add_scalar_quantity("L2 Voronoi site ID", voronoi_l2,
+                         defined_on="cells", enabled=False)
 ps.show()
