@@ -89,6 +89,7 @@ int main()
   // Initialization of tangential cover
   Segmentation segmenter ( contour.begin(), contour.end(), SegmentComputer() );
   lmst.attach ( segmenter );
+  lmst.init ( contour.begin(), contour.end() );
   //! [LambdaMST3DTangential]
 
   //! [LambdaMST3DTSetupTheFilter]
@@ -96,12 +97,14 @@ int main()
   //! [LambdaMST3DTSetupTheFilter]
 
   //! [LambdaMST3DPoint]
-  for ( ConstIterator it = contour.begin(); it != contour.end(); ++it )
-    lmst.eval ( *it );
+  // A point is given by its position along the curve, not by its coordinates:
+  // a curve may visit the same lattice point twice.
+  ConstIterator it = contour.begin() + 5;
+  std::vector < RealVector > oneTangent;
+  lmst.eval ( it, it + 1, std::back_inserter ( oneTangent ) );
   //! [LambdaMST3DPoint]
 
   //! [LambdaMST3DFast]
-    lmst.init ( contour.begin(), contour.end() );
     std::vector < RealVector > tangent;
     lmst.eval < std::back_insert_iterator< std::vector < RealVector > > > ( contour.begin(), contour.end(), std::back_insert_iterator< vector < RealVector > > ( tangent ) );
   //! [LambdaMST3DFast]
