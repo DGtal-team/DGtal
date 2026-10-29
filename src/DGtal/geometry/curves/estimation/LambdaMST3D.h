@@ -74,7 +74,7 @@ namespace DGtal {
   template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
   class LambdaMST3DEstimator
   {
-  public: 
+  public:
     //Checking concepts
     BOOST_CONCEPT_ASSERT(( concepts::CSpace < TSpace > ));
     BOOST_STATIC_ASSERT(( TSpace::dimension == 3 ));
@@ -95,30 +95,30 @@ namespace DGtal {
     typedef typename TSpace::RealVector RealVector;
     /// Type of 3d real point
     typedef typename TSpace::Point Point;
-    
+
     // ----------------------- Standard services ------------------------------
   public:
     //! Default constructor.
     LambdaMST3DEstimator ( );
-    
+
     /**
      * Initialization.
      * @param itb begin iterator
      * @param ite end iterator
      */
     void init ( ConstIterator itb, ConstIterator ite );
-    
+
     /**
      * @param segmentComputer - DSS segmentation algorithm
      */
     void attach ( Alias<TSegmentation> segmentComputer );
-    
+
     /**
      * Checks the validity/consistency of the object.
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid ( ) const;
-    
+
     /**
      * Tangent directions of the points in [itb, ite), one per curve position.
      *
@@ -163,7 +163,7 @@ namespace DGtal {
      * @return the positions, in increasing order
      */
     const std::vector< std::size_t > & uncoveredPoints ( ) const;
-    
+
     // ------------------------- Internals ------------------------------------
   protected:
 
@@ -225,9 +225,9 @@ namespace DGtal {
     std::vector< std::size_t > myUncovered;
 
   }; // end of class LambdaMST3DEstimator
-  
+
   //-------------------------------------------------------------------------------------------
-  
+
   // Template class LambdaMST3D
   /**
    * \brief Aim: Simplify creation of Lambda MST tangent estimator.
@@ -241,11 +241,11 @@ namespace DGtal {
   public LambdaMST3DEstimator<Z3i::Space, DSSSegmentationComputer,
     TangentFromDSS3DFunctor< typename DSSSegmentationComputer::SegmentComputer, LambdaFunction >, DSSFilter >
     {
-      typedef 
+      typedef
       LambdaMST3DEstimator<Z3i::Space, DSSSegmentationComputer,
       TangentFromDSS3DFunctor< typename DSSSegmentationComputer::SegmentComputer, LambdaFunction >, DSSFilter > Super;
-      
-    public: 
+
+    public:
       /**
        * Default Constructor.
        */

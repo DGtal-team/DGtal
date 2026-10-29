@@ -531,5 +531,3 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::selfDisplay ( std::o
 }
 //                                                                           //
 ///////////////////////////////////////////////////////////////////////////////
-
-

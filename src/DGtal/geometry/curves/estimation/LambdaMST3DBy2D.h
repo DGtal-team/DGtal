@@ -87,11 +87,11 @@ namespace DGtal {
     // (see Estimate2DTangent).
     typedef TangentFromDSS2DFunctor < SegmentComputer2D, LambdaFunctor > Value2DFunctor;
     typedef typename Value2DFunctor::Value Value2D;
-    
+
     // ----------------------- Standard services ------------------------------
   public:
     LambdaMST3DBy2DEstimator();
-    
+
     /**
      * Initialisation.
      *
@@ -136,7 +136,7 @@ namespace DGtal {
      * @return 'true' if the object is valid, 'false' otherwise.
      */
     bool isValid ( ) const;
-    
+
     /**
      * Tangent directions of the points in [itb, ite), one per curve position.
      *
@@ -157,7 +157,7 @@ namespace DGtal {
 
     // ------------------------- Internals ------------------------------------
   protected:
-    
+
     // [ctxb, ctxe): the projected context, segmented as a whole.
     // [coreb, coree): the sub-range of it whose points get a tangent.
     template < typename OutputIterator >
@@ -186,8 +186,8 @@ namespace DGtal {
     /// projectors of the first and second projection for myAxis
     Projector2d myProj1, myProj2;
   }; // end of class LambdaMST3DBy2DEstimator
-  
-  
+
+
   class TangentFromDSS3DBy2DFunctor
   {
   public:
@@ -195,13 +195,13 @@ namespace DGtal {
     typedef PointVector<3, double> Vector3D;
     typedef PointVector<2, double> Vector2D;
     enum MAIN_AXIS {X = 0, Y = 1, Z = 2};
-    
+
     // ----------------------- Interface --------------------------------------
     Vector3D operator() ( MAIN_AXIS mainAxis, const Vector2D & v0, const Vector2D & v1 ) const;
   };
-  
+
   //-------------------------------------------------------------------------------------------
-  
+
   // Template class LambdaMST3DBy2D
   /**
    * \brief Aim: Simplify creation of the 3D Lambda MST tangent estimator by 2D projections.
@@ -209,13 +209,13 @@ namespace DGtal {
    * @tparam LambdaFunctor lambda function, see FunctorsLambdaMST.h
    * @tparam CONNECTIVITY connectivity of the projected 2D curves
    */
-  template < 
+  template <
   typename Iterator3D, typename LambdaFunctor = functors::Lambda64Function, int CONNECTIVITY = 8 >
   class LambdaMST3DBy2D:
   public LambdaMST3DBy2DEstimator < Iterator3D, TangentFromDSS3DBy2DFunctor, LambdaFunctor, CONNECTIVITY >
   {
     typedef LambdaMST3DBy2DEstimator < Iterator3D, TangentFromDSS3DBy2DFunctor, LambdaFunctor, CONNECTIVITY > Super;
-    
+
   public:
     /**
      * Default Constructor.
