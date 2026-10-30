@@ -1,11 +1,31 @@
 # DGtal 2.2.1 (beta)
 
+## New features
+
+- *Geometry*
+  - New `LambdaMSTAxisLabeller`: cuts a 3D digital curve into parts functional along one axis, so that `LambdaMST3DBy2D` can be used along a whole curve (`evalByRuns`), and computes the length threshold of `DSSLengthLessEqualFilter` for `LambdaMST3D`, for the whole curve and for each part (Kacper Pluta, [#1857](https://github.com/DGtal-team/DGtal/pull/1857))
+  - `LambdaMST3D::uncoveredPoints()` reports the points left with an empty pencil (Kacper Pluta, [#1857](https://github.com/DGtal-team/DGtal/pull/1857))
+  - `Naive3DDSSComputer::mainAxis()` provides the main axis of a 3D DSS (Kacper Pluta, [#1857](https://github.com/DGtal-team/DGtal/pull/1857))
+
+## Changes
+
+- *Geometry*
+  - Lambda-MST estimators (`LambdaMST2D`, `LambdaMST3D`, `LambdaMST3DBy2D`) identify points by their position along the curve, not by their coordinates: a curve visiting the same lattice point twice gets one estimate per visit. The range `eval` gives complete pencils at both ends of any sub-range. The single-point `eval(const Point &)` is removed; evaluate `[it, it + 1)` instead (Kacper Pluta, [#1857](https://github.com/DGtal-team/DGtal/pull/1857))
+  - `CLMSTDSSFilter` now describes which maximal segments enter a pencil (`operator()` and `reach()`, replacing `admissibility()` and `position()`); `DSSMuteFilter` and `DSSLengthLessEqualFilter` are updated accordingly (Kacper Pluta, [#1857](https://github.com/DGtal-team/DGtal/pull/1857))
+  - `LambdaMST3D`: the orphan treatment is removed. A segment removed by the filter still counts for points up to `reach()` points beyond its ends, with eccentricity (d + L + 1)/(d + L + 2) (Kacper Pluta, [#1857](https://github.com/DGtal-team/DGtal/pull/1857))
+  - `TangentFromDSS3DFunctor` takes the eccentricity as (numerator, denominator) instead of (index of the point, length of the segment) (Kacper Pluta, [#1857](https://github.com/DGtal-team/DGtal/pull/1857))
+  - `LambdaMST3DBy2D`: new `init` with a wider context over which the projections are segmented; the given ranges must be functional along the main axis; tangents are oriented along the traversal and `TangentFromDSS3DBy2DFunctor` returns unit vectors (Kacper Pluta, [#1857](https://github.com/DGtal-team/DGtal/pull/1857))
+
 ## BugFixes
 
+- *Geometry*
+  - `LambdaMST2D::eval` on a sub-range no longer writes outside its result for maximal segments that extend beyond the sub-range (Kacper Pluta, [#1857](https://github.com/DGtal-team/DGtal/pull/1857))
+  - `Naive3DDSSComputer::extendFront` no longer extends the 2D DSSs of the projections beyond the recognized 3D range (Kacper Pluta, [#1857](https://github.com/DGtal-team/DGtal/pull/1857))
 - *Project*
   - (DEV) During the `make install`, only necessary boost files are now copied (David Coeurjolly,  [#1854](https://github.com/DGtal-team/DGtal/pull/1854))
   - Fix small windows compilation issue.
   (Bertrand Kerautret,  [#1858](https://github.com/DGtal-team/DGtal/pull/1858))
+
 
 # DGtal 2.2
 

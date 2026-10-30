@@ -56,7 +56,29 @@ namespace DGtal
     /**
      * Description of \b concept '\b CLMSTDSSFilter' <p>
      * @ingroup Concepts
-     * @brief Aim: Defines the concept describing a functor which filters DSSes for L-MST calculations.
+     * @brief Aim: Defines the concept describing a functor which decides which maximal
+     * segments (DSSes) enter the pencil of a point in L-MST calculations.
+     *
+     * The pencil of a point is the set of maximal segments whose directions
+     * are averaged, with lambda weights, into the tangent at that point. In
+     * the plain lambda-MST it is the set of maximal segments that contain the
+     * point. A filter changes that set in two ways, and a model answers one
+     * question for each:
+     *
+     * - operator()(dss): is the segment left out of every pencil (typically
+     *   because it is too short to carry a reliable direction)?
+     * - reach(dss): up to how many points beyond either end of the segment,
+     *   counted along the curve, does a kept segment still enter the pencil
+     *   of points it does not contain? 0 means it enters only the pencils of
+     *   the points it contains, which gives back the plain lambda-MST.
+     *
+     * With a positive reach, a point that lies d points before the first or
+     * after the last point of a kept segment of L + 1 points receives that
+     * segment with eccentricity (d + L + 1) / (d + L + 2): the further away,
+     * the closer to 1, so the lower its lambda weight. Removing short segments
+     * can leave a point with no containing segment; the reach is what keeps
+     * its pencil non-empty. The eccentricities themselves are computed by the
+     * estimator, not by the model.
      *
      * # Refinement of boost::DefaultConstructible<T>, boost::CopyConstructible<T>, boost::Assignable<T>
      *
@@ -73,7 +95,8 @@ namespace DGtal
      *
      * | Name  | Expression | Type requirements | Return type   | Precondition | Semantics | Post condition | Complexity |
      * |-------|------------|-------------------|---------------|--------------|-----------|----------------|------------|
-     * | operator()|x()     |(const TDSS &)|bool|              | Checks if a DSS fulfills a given condition. | |model dependent|
+     * | operator()|x()     |(const TDSS &)|bool|              | true if the DSS is left out of every pencil (e.g. it is too short). | |model dependent|
+     * | reach     |x.reach()|(const TDSS &)|double|            | geodesic distance, in points, up to which a kept DSS enters the pencil of a point it does not cover; 0 for covering points only. | non-negative |model dependent|
      *
      * # Invariants
      *
@@ -96,21 +119,18 @@ namespace DGtal
       BOOST_CONCEPT_USAGE(CLMSTDSSFilter)
       {
          ConceptUtils::sameType( c, x.operator()( dss ) );
-         ConceptUtils::sameType( c, x.admissibility ( dss, p ) );
-         ConceptUtils::sameType( i, x.position ( dss, p ) );
+         ConceptUtils::sameType( r, x.reach ( dss ) );
       }
       void checkConstConstraints() const
       {
          ConceptUtils::sameType( c, x.operator()( dss ) );
-         ConceptUtils::sameType( c, x.admissibility ( dss, p ) );
-         ConceptUtils::sameType( i, x.position ( dss, p ) );
+         ConceptUtils::sameType( r, x.reach ( dss ) );
       }
       // ------------------------- Private Data --------------------------------
     private:
       bool c;
-      long int i;
+      double r;
       T x;
-      typename T::Point p;
       TDSS dss;
     }; // end of concept CLMSTDSSFilter
 

@@ -82,12 +82,14 @@ int main()
 
   lmst.init ( contour.cbegin ( ), contour.cend ( ), LambdaMST3DBy2D < ConstIterator >::MAIN_AXIS::X ) ;
   //! [LambdaMST3DBy2DPoint]
-  for ( const auto & p : contour )
-    trace.info ( ) << lmst.eval ( p ) << std::endl;
+  // A point is given by its position along the curve, not by its coordinates.
+  ConstIterator it = contour.cbegin ( ) + 5;
+  vector < RealVector > oneTangent;
+  lmst.eval ( it, it + 1, back_insert_iterator < vector < RealVector > > ( oneTangent ) );
+  trace.info ( ) << oneTangent.front ( ) << std::endl;
   //! [LambdaMST3DBy2DPoint]
 
   //! [LambdaMST3DBy2DRange]
-  lmst.init ( contour.cbegin ( ), contour.cend ( ), LambdaMST3DBy2D < ConstIterator >::MAIN_AXIS::X );
   vector < RealVector > tangent;
   lmst.eval ( contour.cbegin ( ), contour.cend ( ), back_insert_iterator < vector < RealVector > > ( tangent ) );
   //! [LambdaMST3DBy2DRange]

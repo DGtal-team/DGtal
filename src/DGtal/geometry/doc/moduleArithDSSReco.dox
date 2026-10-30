@@ -516,16 +516,25 @@ implemented in FunctorsLambdaMST.h
 We need also to generate a tangential cover:
 @snippet geometry/curves/estimation/exampleLMST2D.cpp LambdaMST2DTangential
 
-Finally, we can estimate tangent direction point-by-point:
+Tangent directions are computed for a range of points, given by iterators.
+A single point is given by its position along the curve, as the range
+[it, it + 1); its coordinates would not be enough, since a digital curve may
+visit the same lattice point twice:
 @snippet geometry/curves/estimation/exampleLMST2D.cpp LambdaMST2DPoint
 
-or when we want to calculate tangent directions for a range of points better
-choice is to do this in following way:
+Computing the tangent directions of a whole range at once is faster than
+evaluating its points one by one:
 @snippet geometry/curves/estimation/exampleLMST2D.cpp LambdaMST2DFast
+
+In both cases the tangential cover must be computed on the range given to
+init(); the maximal segments that cover the evaluated points are then never cut
+at the ends of the evaluated range.
 
 
 Note that the 3D extension provides a similar interface, but also allows for filtration of DSSes. In the below example,
-each DSS of length lower equal 7 is not taken into account during the estimation:
+DSSLengthLessEqualFilter removes every DSS with fewer than 7 points from the estimation, and lets each remaining DSS
+contribute, with a weight that decreases with the distance, to the points up to 7 points beyond its ends, so that no
+point is left without a DSS:
 
 @snippet geometry/curves/estimation/exampleLMST3D.cpp LambdaMST3DHeader
 
@@ -539,17 +548,15 @@ each DSS of length lower equal 7 is not taken into account during the estimation
 
 @snippet geometry/curves/estimation/exampleLMST3D.cpp LambdaMST3DFast
 
-Notice that both LambdaMST2D and LambdaMST3D are models of CCurveLocalGeometricEstimator.
-
 Both examples are in exampleLMST2D.cpp and exampleLMST3D.cpp
 
 
-Moreover, there exists a version of LamdaMST3D that uses only 2D projections of the 3D curve (see LambdaMST3DBy2D.h).
-This version detects maximal axes during segmentation of the 2D projections, and then the 3D tangent is
-reconstructed from two 2D tangents that were computed for valid 2D projections. This version does not provide meaningful
-information in the curve's regions that do not have unique main axis i.e., there exist points such that at least two DSSes
-passing thru the points have different main axes. Note that, this version has only a research value, and for any
-application LambdaMST3D should be used.
+Moreover, there exists a version of LambdaMST3D that uses only 2D projections of the 3D curve (see LambdaMST3DBy2D.h).
+The curve must be functional along the main axis given to init(): the 3D tangent is reconstructed from the 2D
+tangents of the curve's projections onto the two coordinate planes containing that axis. A wider context may be given
+to init(), so that the maximal segments of the projections are not cut at the ends of the evaluated range. This
+version does not provide meaningful information in the curve's regions that do not have a unique main axis, i.e.
+where at least two DSSes passing through a point have different main axes.
 
 Note that this 3D by 2D tangent estimator provides a similar interface to the two other versions:
 
@@ -562,6 +569,26 @@ Note that this 3D by 2D tangent estimator provides a similar interface to the tw
 @snippet geometry/curves/estimation/exampleLMST3DBy2D.cpp LambdaMST3DBy2DRange
 
 See exampleLMST3DBy2D.cpp
+
+A general 3D digital curve changes main axis along the way. LambdaMSTAxisLabeller cuts it into runs functional along
+one axis, the main axis of a point being that of the longest 3D maximal segment covering it, and gives each run a
+context: the largest range around it that is still functional along its axis. It also computes the threshold of
+DSSLengthLessEqualFilter: l / 2, l being the number of points of the shortest 2D maximal segment of the projections of
+the runs.
+
+@snippet geometry/curves/estimation/exampleLMSTAxisLabeller.cpp LMSTAxisLabellerHeader
+
+@snippet geometry/curves/estimation/exampleLMSTAxisLabeller.cpp LMSTAxisLabellerInit
+
+The tangents of LambdaMST3DBy2D at every point of the curve are then computed run by run:
+
+@snippet geometry/curves/estimation/exampleLMSTAxisLabeller.cpp LMSTAxisLabellerBy2D
+
+and the threshold is given to the filtered LambdaMST3D:
+
+@snippet geometry/curves/estimation/exampleLMSTAxisLabeller.cpp LMSTAxisLabellerFiltered
+
+See exampleLMSTAxisLabeller.cpp
 
 */
 
