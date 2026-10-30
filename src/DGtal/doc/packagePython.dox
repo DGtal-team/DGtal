@@ -70,7 +70,7 @@ import dgtal
 
 @note The current Python package is only a partial binding of the C++ library. The strategy is twofold:
 * A bottom-up approach: some fundamental classes  has been ported (Domain, Point, SpaceND, Object, Topology, Adjacency, Images ...).
-* A top-down one: high-level functions from the @ref Shortcut package are available for fast geometry processing of voxel sets and surfaces.
+* A top-down one: high-level functions from the @ref Shortcuts package are available for fast geometry processing of voxel sets and surfaces.
 
 
 
