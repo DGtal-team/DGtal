@@ -9,7 +9,7 @@
 
 - *build*
   - Add an option to use local boost version instead CMP.
-  (Bertrand Kerautret,  [#1859](https://github.com/DGtal-team/DGtal/pull/1859))
+  (Bertrand Kerautret,  [#1860](https://github.com/DGtal-team/DGtal/pull/1860))
 
 
 # DGtal 2.2
