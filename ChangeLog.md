@@ -7,6 +7,11 @@
   - Fix small windows compilation issue.
   (Bertrand Kerautret,  [#1858](https://github.com/DGtal-team/DGtal/pull/1858))
 
+- *build*
+  - Add an option to use local boost version instead CMP.
+  (Bertrand Kerautret,  [#1859](https://github.com/DGtal-team/DGtal/pull/1859))
+
+
 # DGtal 2.2
 
 ## New features
