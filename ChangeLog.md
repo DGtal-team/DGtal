@@ -4,6 +4,8 @@
 
 - *Project*
   - (DEV) During the `make install`, only necessary boost files are now copied (David Coeurjolly,  [#1854](https://github.com/DGtal-team/DGtal/pull/1854))
+  - Fix small windows compilation issue.
+  (Bertrand Kerautret,  [#1858](https://github.com/DGtal-team/DGtal/pull/1858))
 
 # DGtal 2.2
 
