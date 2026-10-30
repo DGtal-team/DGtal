@@ -7,7 +7,7 @@
   - Fix small windows compilation issue.
   (Bertrand Kerautret,  [#1858](https://github.com/DGtal-team/DGtal/pull/1858))
   - Fix docker compilation issue.
-  (Bertrand Kerautret,  [#1860](https://github.com/DGtal-team/DGtal/pull/1860))
+  (Bertrand Kerautret,  [#1861](https://github.com/DGtal-team/DGtal/pull/1861))
 
 
 # DGtal 2.2
