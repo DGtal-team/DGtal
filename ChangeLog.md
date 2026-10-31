@@ -8,7 +8,7 @@
   (Bertrand Kerautret,  [#1858](https://github.com/DGtal-team/DGtal/pull/1858))
 
 - *build*
-  - Add an option to use local boost version instead CMP.
+  - Add an option to use local boost version instead of fetching it with CPM.
   (Bertrand Kerautret,  [#1860](https://github.com/DGtal-team/DGtal/pull/1860))
 
 
