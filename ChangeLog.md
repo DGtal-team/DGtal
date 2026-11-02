@@ -7,6 +7,8 @@
   - Fix small windows compilation issue.
   (Bertrand Kerautret,  [#1858](https://github.com/DGtal-team/DGtal/pull/1858))
 
+- *Geometry*
+  - Fixing a missing include in `parallelIIShortcuts-viewer` example (David Coeurjolly, issue #1859, [#1862](https://github.com/DGtal-team/DGtal/pull/1862))
 # DGtal 2.2
 
 ## New features
