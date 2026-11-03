@@ -9,42 +9,13 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 
 
-###Update
-RUN apt-get update && apt-get install -y curl
-
-##### Basics
-RUN apt install -y build-essential
-#### Install Git
-RUN apt install -y git
-#### Install G++
-RUN apt install g++
+###Update and needed package
+RUN apt-get update && apt-get install -y build-essential cmake libgl-dev  libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev  m4 imagemagick git curl zlib1g-dev  bash  clang  binutils wget libcairo2-dev
 
 
-#### gl libraries
-RUN apt -y update --fix-missing
-#RUN apt -y install libx11-dev
-RUN apt -y install mesa-common-dev libglm-dev mesa-utils
 
 
-### Install cmake
-RUN apt -y install cmake
-###Install boost
-RUN apt -y  install  libboost-dev
 
-### Install optional deps
-RUN apt -y install libmagick++-dev
-
-RUN apt -y install graphicsmagick*
-
-RUN apt -y install doxygen
-
-RUN apt -y install libcgal-dev
-
-#RUN apt-get -y install libinsighttoolkit5-dev
-
-#RUN apt -y install libqglviewer-dev-qt5
-
-#RUN  apt -y install libfftw3-dev
 
 #### User to install
 RUN groupadd -g 1000 digital
@@ -62,6 +33,6 @@ RUN mkdir /home/digital/git/DGtal
 #### clone git and install
 RUN git clone https://github.com/DGtal-team/DGtal.git /home/digital/git/DGtal
 
-#RUN mkdir /home/digital/git/DGtal/build
+RUN mkdir /home/digital/git/DGtal/build
 
-RUN cd /home/digital/git/DGtal/build &&  cmake .. -DDGTAL_WITH_FFTW3=true - DDGTAL_WITH_CGAL=true  -DDGTAL_WITH_ITK=true -DDGTAL_WITH_OPENMP=true  -DDGTAL_WITH_CAIRO=true -DDGTAL_WITH_POLYSCOPE_VIEWER=true -DDGTAL_WITH_MAGICK=true && make install
+RUN cd /home/digital/git/DGtal/build &&  cmake ..  -DDGTAL_WITH_CAIRO=true -DDGTAL_WITH_POLYSCOPE_VIEWER=true && make install
