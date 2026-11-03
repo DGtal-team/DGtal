@@ -57,49 +57,37 @@ namespace DGtal
   }
 
   template < typename TSpace, typename TSegmentation, typename Functor >
-  inline
-  typename TSpace::RealVector
-  LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::eval ( const Point & p )
-  {
-    assert ( dssSegments != 0 );
-    typename TSegmentation::SegmentComputerIterator DSS = dssSegments->begin();
-    typename TSegmentation::SegmentComputerIterator lastDSS = dssSegments->end();
-    Value tangent, partial;
-    for ( ; DSS != lastDSS; ++DSS )
-    {
-      if ( DSS->isInDSS ( p ) )
-      {
-        size_t pos = std::distance ( DSS.begin(), std::find ( DSS.begin(), DSS.end(), p ) ) + 1;
-        size_t dssLen = std::distance ( DSS.begin(), DSS.end() ) + 1;
-        SegmentComputer comp ( *DSS );
-        partial = myFunctor ( comp, pos, dssLen );
-        tangent += partial;
-      }
-    }
-    if ( tangent.second != 0. )
-      return tangent.first / tangent.second;
-    else
-      return tangent.first;
-  }
-
-  template < typename TSpace, typename TSegmentation, typename Functor >
   template <typename OutputIterator>
   inline
   OutputIterator
   LambdaMST2DEstimator< TSpace, TSegmentation, Functor >::eval ( ConstIterator itb, ConstIterator ite,
                                                                  OutputIterator result )
   {
-    assert ( ( myBegin != myEnd ) && isValid ( ) && std::distance ( myBegin, itb ) >= 0 && std::distance ( myEnd, ite ) <= 0 && ( itb != ite ) );
-    dssSegments->setSubRange ( itb, ite );
+    assert ( ( myBegin != myEnd ) && isValid ( ) && myBegin <= itb && ite <= myEnd && itb < ite );
+    // One accumulator per curve position in [itb, ite), not per point value:
+    // a curve may visit the same lattice point twice, and each visit has its
+    // own pencil. All maximal segments of the attached segmentation are
+    // walked, so the pencils of the first and last points of [itb, ite) are
+    // complete; a segment may extend beyond either end of [itb, ite), and
+    // only adds to the positions it covers inside it.
     std::vector < Value > outValues ( std::distance ( itb, ite ) );
     typename TSegmentation::SegmentComputerIterator DSS = dssSegments->begin();
     typename TSegmentation::SegmentComputerIterator lastDSS = dssSegments->end();
     for ( ; DSS != lastDSS; ++DSS )
     {
-      size_t dssLen = std::distance ( DSS.begin(), DSS.end() );
+      const ConstIterator segBegin = DSS.begin();
+      const ConstIterator segEnd = DSS.end();
+      if ( segEnd <= itb )
+        continue;           // ends before the range
+      if ( ite <= segBegin )
+        break;              // segments come in increasing order of their first point
+      const size_t dssLen = std::distance ( segBegin, segEnd );
+      const ConstIterator first = ( segBegin < itb ) ? itb : segBegin;
+      const ConstIterator last = ( ite < segEnd ) ? ite : segEnd;
       SegmentComputer comp ( *DSS );
-      for ( unsigned int i = 0; i < dssLen; i++ )
-        outValues[ std::distance ( itb, DSS.begin() ) + i ] += myFunctor ( comp, i + 1, dssLen + 1 );
+      for ( ConstIterator pit = first; pit != last; ++pit )
+        outValues[ std::distance ( itb, pit ) ] +=
+          myFunctor ( comp, std::distance ( segBegin, pit ) + 1, dssLen + 1 );
     }
     accumulate ( outValues, result );
     return result;

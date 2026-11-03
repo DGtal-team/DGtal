@@ -50,6 +50,28 @@ using namespace Z2i;
 // Functions for testing class LambdaMST2D.
 ///////////////////////////////////////////////////////////////////////////////
 
+/**
+ * Each point evaluated alone, on [it, it + 1), must get exactly the value it
+ * gets when the whole range is evaluated: the pencils are complete at the
+ * ends of any sub-range.
+ */
+template < typename LMST, typename Range >
+bool positionsMatchWholeRange ( LMST & lmst, const Range & curve )
+{
+  std::vector < RealVector > all;
+  lmst.eval ( curve.begin(), curve.end(), std::back_inserter ( all ) );
+  if ( all.size() != curve.size() )
+    return false;
+  for ( auto it = curve.begin(); it != curve.end(); ++it )
+  {
+    std::vector < RealVector > one;
+    lmst.eval ( it, it + 1, std::back_inserter ( one ) );
+    if ( one.size() != 1 || ( one[0] - all[ it - curve.begin() ] ).norm() > 1e-12 )
+      return false;
+  }
+  return true;
+}
+
 class testLambdaMST2D
 {
   typedef vector < Point > Range;
@@ -75,9 +97,38 @@ public:
     Segmentation segmenter ( curve.begin(), curve.end(), SegmentComputer() );
     LambdaMST2D < Segmentation > lmst64;
     lmst64.attach ( segmenter );
-    for ( ConstIterator it = curve.begin(); it != curve.end(); ++it )
-      lmst64.eval ( *it );
-    return true;
+    lmst64.init ( curve.begin(), curve.end() );
+    return positionsMatchWholeRange ( lmst64, curve );
+  }
+
+  /**
+   * A curve that visits the lattice point (6, 0) twice, first going right,
+   * then going down: each visit must get its own estimate.
+   */
+  bool lambda64RepeatedPoint ()
+  {
+    Range loop;
+    for ( int x = 0; x <= 10; ++x ) loop.push_back ( Point ( x, 0 ) );
+    for ( int y = 1; y <= 4; ++y ) loop.push_back ( Point ( 10 + y / 2, y ) );
+    for ( int x = 11; x >= 7; --x ) loop.push_back ( Point ( x, 5 ) );
+    for ( int y = 4; y >= 1; --y ) loop.push_back ( Point ( 6 + ( y > 2 ), y ) );
+    for ( int y = 0; y >= -4; --y ) loop.push_back ( Point ( 6, y ) );
+    const std::size_t first = 6, second = 24; // the two positions of (6, 0)
+    if ( loop[ first ] != Point ( 6, 0 ) || loop[ second ] != Point ( 6, 0 ) )
+      return false;
+
+    Segmentation segmenter ( loop.begin(), loop.end(), SegmentComputer() );
+    LambdaMST2D < Segmentation > lmst64;
+    lmst64.attach ( segmenter );
+    lmst64.init ( loop.begin(), loop.end() );
+    std::vector < RealVector > all;
+    lmst64.eval ( loop.begin(), loop.end(), std::back_inserter ( all ) );
+    trace.info() << "(6, 0) first visit: " << all[ first ]
+                 << ", second visit: " << all[ second ] << std::endl;
+    // Going right on a horizontal run, then going down on a vertical one.
+    return positionsMatchWholeRange ( lmst64, loop )
+        && ( all[ first ] - RealVector ( 1., 0. ) ).norm() < 1e-12
+        && all[ second ][ 1 ] < -0.9;
   }
   bool lambda64()
   {
@@ -102,6 +153,9 @@ int main( int , char**  )
     trace.beginBlock ( "Testing LambdaMST2D" );
         trace.beginBlock ( "Testing point only calculation" );
           res &= testLMST.lambda64ByPoint();
+        trace.endBlock();
+        trace.beginBlock ( "Testing a curve visiting a lattice point twice" );
+          res &= testLMST.lambda64RepeatedPoint();
         trace.endBlock();
         trace.beginBlock ( "Testing calculation for whole curve" );
            res &= testLMST.lambda64();

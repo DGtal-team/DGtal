@@ -32,6 +32,7 @@
 #include <fstream>
 #include <vector>
 #include <iterator>
+#include <cmath>
 #include "DGtalCatch.h"
 #include "DGtal/base/Common.h"
 #include "DGtal/helpers/StdDefs.h"
@@ -66,12 +67,28 @@ TEST_CASE( "LambdaMST3DBy2D test" )
     contour.push_back ( Point ( 9, 25, 27 ) );
     contour.push_back ( Point ( 8, 25, 28 ) );
 
-    lmst.init ( contour.cbegin ( ), contour.cend ( ), LambdaMST3DBy2D < ConstIterator >::MAIN_AXIS::X ) ;
-    lmst.eval ( contour.front ( ) );
-
     lmst.init ( contour.cbegin ( ), contour.cend ( ), LambdaMST3DBy2D < ConstIterator >::MAIN_AXIS::X );
     vector < RealVector > tangent;
     lmst.eval ( contour.cbegin ( ), contour.cend ( ), back_insert_iterator < vector < RealVector > > ( tangent ) );
+    REQUIRE ( tangent.size ( ) == contour.size ( ) );
+
+    SECTION( "The curve is a digital straight line: every tangent is its direction, oriented along the traversal" )
+    {
+      const RealVector expected ( -1. / std::sqrt ( 2. ), 0., 1. / std::sqrt ( 2. ) );
+      for ( const RealVector & t : tangent )
+        REQUIRE ( ( t - expected ).norm ( ) < 1e-12 );
+    }
+
+    SECTION( "Each point evaluated alone gets the value of the whole-curve evaluation" )
+    {
+      for ( auto it = contour.cbegin ( ); it != contour.cend ( ); ++it )
+      {
+        vector < RealVector > one;
+        lmst.eval ( it, it + 1, back_insert_iterator < vector < RealVector > > ( one ) );
+        REQUIRE ( one.size ( ) == 1 );
+        REQUIRE ( ( one[ 0 ] - tangent[ it - contour.cbegin ( ) ] ).norm ( ) < 1e-12 );
+      }
+    }
 }
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -7,6 +7,7 @@ set(DGTAL_TESTS_SRC
   testLambdaMST2D
   testLambdaMST3D
   testLambdaMST3DBy2D
+  testLambdaMSTAxisLabeller
   )
 
 foreach(FILE ${DGTAL_TESTS_SRC})

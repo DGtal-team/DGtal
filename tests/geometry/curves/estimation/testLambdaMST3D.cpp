@@ -52,6 +52,28 @@ using namespace functors;
 // Functions for testing class LambdaMST3D.
 ///////////////////////////////////////////////////////////////////////////////
 
+/**
+ * Each point evaluated alone, on [it, it + 1), must get exactly the value it
+ * gets when the whole range is evaluated: the pencils are complete at the
+ * ends of any sub-range.
+ */
+template < typename LMST, typename Range >
+bool positionsMatchWholeRange ( LMST & lmst, const Range & curve )
+{
+  std::vector < RealVector > all;
+  lmst.eval ( curve.begin(), curve.end(), std::back_inserter ( all ) );
+  if ( all.size() != curve.size() )
+    return false;
+  for ( auto it = curve.begin(); it != curve.end(); ++it )
+  {
+    std::vector < RealVector > one;
+    lmst.eval ( it, it + 1, std::back_inserter ( one ) );
+    if ( one.size() != 1 || ( one[0] - all[ it - curve.begin() ] ).norm() > 1e-12 )
+      return false;
+  }
+  return true;
+}
+
 class testLambdaMST3D
 {
   typedef DGtal::Z3i::Point Point;
@@ -84,9 +106,7 @@ public:
     LambdaMST3D < Segmentation > lmst64;
     lmst64.attach ( segmenter );
     lmst64.init ( curve.begin(), curve.end() );
-    for ( ConstIterator it = curve.begin(); it != curve.end(); ++it )
-      lmst64.eval ( *it );
-    return true;
+    return positionsMatchWholeRange ( lmst64, curve );
   }
   bool lambda64()
   {
@@ -106,9 +126,7 @@ public:
       lmst64.attach ( segmenter );
       lmst64.getDSSFilter ( ).init ( 1 );
       lmst64.init ( curve.begin(), curve.end() );
-      for ( ConstIterator it = curve.begin(); it != curve.end(); ++it )
-          lmst64.eval ( *it );
-      return true;
+      return positionsMatchWholeRange ( lmst64, curve );
   }
 
   bool lambdaSinByPoint ()
@@ -117,9 +135,7 @@ public:
      LambdaMST3D < Segmentation, LambdaSinFromPiFunction > lmst;
      lmst.attach ( segmenter );
      lmst.init ( curve.begin(), curve.end() );
-     for ( ConstIterator it = curve.begin(); it != curve.end(); ++it )
-         lmst.eval ( *it );
-     return true;
+     return positionsMatchWholeRange ( lmst, curve );
  }
 
   bool lambdaSin()
@@ -139,9 +155,7 @@ public:
       LambdaMST3D < Segmentation, LambdaExponentialFunction > lmst;
       lmst.attach ( segmenter );
       lmst.init ( curve.begin(), curve.end() );
-      for ( ConstIterator it = curve.begin(); it != curve.end(); ++it )
-          lmst.eval ( *it );
-      return true;
+      return positionsMatchWholeRange ( lmst, curve );
   }
 
   bool lambdaExp()
@@ -165,7 +179,7 @@ int main( int , char**  )
     bool res = true;
     testLambdaMST3D testLMST;
     trace.beginBlock ( "Testing LambdaMST3D" );
-        trace.beginBlock ( "Testing point only calculation" );
+        trace.beginBlock ( "Testing single-position evaluation against the whole curve" );
           res &= testLMST.lambda64ByPoint();
           res &= testLMST.lambda64Filtered();
           res &= testLMST.lambdaSinByPoint();

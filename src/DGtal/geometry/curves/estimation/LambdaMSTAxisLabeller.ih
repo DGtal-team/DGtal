@@ -1,0 +1,340 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file LambdaMSTAxisLabeller.ih
+ * @author Kacper Pluta (\c kacper.pluta@esiee.fr )
+ * Laboratoire d'Informatique Gaspard-Monge - LIGM, France
+ *
+ * @date 2026/10/28
+ *
+ * Implementation of inline methods defined in LambdaMSTAxisLabeller.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+#include <limits>
+
+namespace DGtal
+{
+  template < typename TIterator, typename TInteger, int connectivity >
+  inline
+  LambdaMSTAxisLabeller< TIterator, TInteger, connectivity >::LambdaMSTAxisLabeller ( )
+    : myBegin ( ), myEnd ( ), myAxes ( ), myRuns ( ), myShortest ( 0 )
+  {}
+
+  template < typename TIterator, typename TInteger, int connectivity >
+  inline
+  void
+  LambdaMSTAxisLabeller< TIterator, TInteger, connectivity >::init ( ConstIterator itb, ConstIterator ite )
+  {
+    myBegin = itb;
+    myEnd = ite;
+    myAxes.clear ( );
+    myRuns.clear ( );
+    myShortest = 0;
+    if ( ! isValid ( ) )
+      return;
+    computeAxes ( );
+    computeRuns ( );
+    computeShortest2DDSSLength ( );
+  }
+
+  template < typename TIterator, typename TInteger, int connectivity >
+  inline
+  bool
+  LambdaMSTAxisLabeller< TIterator, TInteger, connectivity >::isValid ( ) const
+  {
+    return myBegin != myEnd;
+  }
+
+  template < typename TIterator, typename TInteger, int connectivity >
+  inline
+  const std::vector< Dimension > &
+  LambdaMSTAxisLabeller< TIterator, TInteger, connectivity >::axes ( ) const
+  {
+    return myAxes;
+  }
+
+  template < typename TIterator, typename TInteger, int connectivity >
+  inline
+  const std::vector< typename LambdaMSTAxisLabeller< TIterator, TInteger, connectivity >::Run > &
+  LambdaMSTAxisLabeller< TIterator, TInteger, connectivity >::runs ( ) const
+  {
+    return myRuns;
+  }
+
+  template < typename TIterator, typename TInteger, int connectivity >
+  inline
+  unsigned int
+  LambdaMSTAxisLabeller< TIterator, TInteger, connectivity >::shortest2DDSSLength ( ) const
+  {
+    return myShortest;
+  }
+
+  template < typename TIterator, typename TInteger, int connectivity >
+  template < typename TEstimator, typename OutputIterator >
+  inline
+  OutputIterator
+  LambdaMSTAxisLabeller< TIterator, TInteger, connectivity >::evalByRuns ( TEstimator & estimator,
+                                                                           OutputIterator result ) const
+  {
+    for ( const Run & run : myRuns )
+    {
+      estimator.init ( run.begin, run.end, run.contextBegin, run.contextEnd,
+                       static_cast< typename TEstimator::MAIN_AXIS > ( run.axis ) );
+      result = estimator.eval ( run.begin, run.end, result );
+    }
+    return result;
+  }
+
+  // Each maximal segment votes for the points it covers with its main axis
+  // and its number of points; a point takes the axis of its longest segment.
+  // Strictly longer wins, so on a tie a point keeps the segment met first,
+  // which is the one starting earlier along the curve. Votes are indexed by
+  // position: a curve may visit the same lattice point twice.
+  template < typename TIterator, typename TInteger, int connectivity >
+  inline
+  void
+  LambdaMSTAxisLabeller< TIterator, TInteger, connectivity >::computeAxes ( )
+  {
+    const std::size_t n = (std::size_t) std::distance ( myBegin, myEnd );
+    std::vector< std::size_t > best ( n, 0 );
+    myAxes.assign ( n, 0 );
+
+    Segmentation3D segmentation ( myBegin, myEnd, SegmentComputer3D ( ) );
+    for ( typename Segmentation3D::SegmentComputerIterator idss = segmentation.begin ( );
+          idss != segmentation.end ( ); ++idss )
+    {
+      const Dimension axis = ( *idss ).mainAxis ( );
+      const std::size_t len = (std::size_t) std::distance ( idss.begin ( ), idss.end ( ) );
+      for ( ConstIterator it = idss.begin ( ); it != idss.end ( ); ++it )
+      {
+        const std::size_t pos = (std::size_t) std::distance ( myBegin, it );
+        if ( len > best[ pos ] )
+        {
+          best[ pos ] = len;
+          myAxes[ pos ] = axis;
+        }
+      }
+    }
+  }
+
+  template < typename TIterator, typename TInteger, int connectivity >
+  inline
+  void
+  LambdaMSTAxisLabeller< TIterator, TInteger, connectivity >::computeRuns ( )
+  {
+    // Maximal runs of one axis, each cut where the curve is not functional
+    // along it: sharing an axis does not make consecutive points functional
+    // along it.
+    std::size_t first = 0;
+    const std::size_t n = myAxes.size ( );
+    while ( first < n )
+    {
+      std::size_t last = first + 1;
+      while ( last < n && myAxes[ last ] == myAxes[ first ] )
+        ++last;
+      appendFunctionalSubRanges ( myBegin + first, myBegin + last, myAxes[ first ] );
+      first = last;
+    }
+    for ( Run & run : myRuns )
+      functionalPart ( run.begin, run.end, run.axis, run.contextBegin, run.contextEnd );
+  }
+
+  // The curve is functional along 'axis' on a range where every step changes
+  // the coordinate along 'axis' by the same +1 or -1. A step by 0 (or by more
+  // than 1) ends a subrange, and so does a change of sign, where the curve
+  // turns back along the axis.
+  template < typename TIterator, typename TInteger, int connectivity >
+  inline
+  void
+  LambdaMSTAxisLabeller< TIterator, TInteger, connectivity >::appendFunctionalSubRanges ( ConstIterator runBegin,
+                                                                                         ConstIterator runEnd,
+                                                                                         Dimension axis )
+  {
+    if ( runBegin == runEnd )
+      return;
+
+    Run run;
+    run.axis = axis;
+    run.shortest2DDSSLength = 0;
+    run.begin = runBegin;
+    ConstIterator it = runBegin;
+    ConstIterator next = it + 1;
+    TInteger current = 0;
+    bool haveStep = false;
+    while ( next != runEnd )
+    {
+      const TInteger step = (TInteger) ( (*next)[ axis ] - (*it)[ axis ] );
+      if ( step != 1 && step != -1 )
+      {
+        run.end = next;
+        myRuns.push_back ( run );
+        run.begin = next;
+        haveStep = false;
+      }
+      else if ( ! haveStep )
+      {
+        current = step;
+        haveStep = true;
+      }
+      else if ( step != current )
+      {
+        run.end = next;
+        myRuns.push_back ( run );
+        run.begin = next;
+        current = step;
+      }
+      it = next;
+      ++next;
+    }
+    run.end = runEnd;
+    myRuns.push_back ( run );
+  }
+
+  template < typename TIterator, typename TInteger, int connectivity >
+  inline
+  void
+  LambdaMSTAxisLabeller< TIterator, TInteger, connectivity >::functionalPart ( ConstIterator runBegin,
+                                                                              ConstIterator runEnd,
+                                                                              Dimension axis,
+                                                                              ConstIterator & partBegin,
+                                                                              ConstIterator & partEnd ) const
+  {
+    partBegin = runBegin;
+    partEnd = runEnd;
+    if ( runBegin == runEnd )
+      return;
+
+    // The direction of the run's steps along its axis. A one-point run does
+    // not fix one by itself: the step it shares with its next point is used,
+    // and failing that the step from its previous point (the maximal segment
+    // that gave the point its axis may end at the point, the curve then
+    // leaving along another axis).
+    TInteger step = 0;
+    const ConstIterator second = runBegin + 1;
+    const bool onePoint = ( second == runEnd );
+    if ( second != myEnd )
+      step = (TInteger) ( (*second)[ axis ] - (*runBegin)[ axis ] );
+    if ( onePoint && step != 1 && step != -1 && runBegin != myBegin )
+      step = (TInteger) ( (*runBegin)[ axis ] - (*( runBegin - 1 ))[ axis ] );
+    if ( step != 1 && step != -1 )
+      return;
+
+    // A range that is not functional along the axis is returned unchanged.
+    for ( ConstIterator it = runBegin, next = second; next != runEnd; it = next, ++next )
+      if ( (TInteger) ( (*next)[ axis ] - (*it)[ axis ] ) != step )
+        return;
+
+    while ( partBegin != myBegin
+            && (TInteger) ( (*partBegin)[ axis ] - (*( partBegin - 1 ))[ axis ] ) == step )
+      --partBegin;
+    while ( partEnd != myEnd
+            && (TInteger) ( (*partEnd)[ axis ] - (*( partEnd - 1 ))[ axis ] ) == step )
+      ++partEnd;
+  }
+
+  // For every run, both projections of its context are segmented as a whole;
+  // the 2D maximal segments meeting the run's own points count. A one-point
+  // segment is the whole projection of a one-point context and has no length
+  // to offer, so only segments of at least two points count.
+  template < typename TIterator, typename TInteger, int connectivity >
+  inline
+  void
+  LambdaMSTAxisLabeller< TIterator, TInteger, connectivity >::computeShortest2DDSSLength ( )
+  {
+    const unsigned int none = std::numeric_limits< unsigned int >::max ( );
+    unsigned int shortest = none;
+    for ( Run & run : myRuns )
+    {
+      unsigned int runShortest = none;
+      Projector2d p1, p2;
+      axisProjectors ( run.axis, p1, p2 );
+      Curve2d proj[ 2 ];
+      for ( ConstIterator it = run.contextBegin; it != run.contextEnd; ++it )
+      {
+        proj[ 0 ].push_back ( p1 ( *it ) );
+        proj[ 1 ].push_back ( p2 ( *it ) );
+      }
+      const std::size_t offset = (std::size_t) std::distance ( run.contextBegin, run.begin );
+      const std::size_t size = (std::size_t) std::distance ( run.begin, run.end );
+      for ( const Curve2d & curve : proj )
+      {
+        const typename Curve2d::const_iterator coreBegin = curve.cbegin ( ) + offset;
+        const typename Curve2d::const_iterator coreEnd = coreBegin + size;
+        Segmentation2D segmentation ( curve.cbegin ( ), curve.cend ( ), SegmentComputer2D ( ) );
+        for ( typename Segmentation2D::SegmentComputerIterator iseg = segmentation.begin ( );
+              iseg != segmentation.end ( ); ++iseg )
+        {
+          const SegmentComputer2D & segment = *iseg;
+          if ( segment.end ( ) <= coreBegin || segment.begin ( ) >= coreEnd )
+            continue;
+          const unsigned int length = (unsigned int) std::distance ( segment.begin ( ), segment.end ( ) );
+          if ( length >= 2 && length < runShortest )
+            runShortest = length;
+        }
+      }
+      run.shortest2DDSSLength = ( runShortest == none ) ? 0 : runShortest;
+      if ( runShortest < shortest )
+        shortest = runShortest;
+    }
+    myShortest = ( shortest == none ) ? 0 : shortest;
+  }
+
+  template < typename TIterator, typename TInteger, int connectivity >
+  inline
+  void
+  LambdaMSTAxisLabeller< TIterator, TInteger, connectivity >::axisProjectors ( Dimension axis,
+                                                                              Projector2d & p1,
+                                                                              Projector2d & p2 )
+  {
+    const Dimension xy[ 2 ] = { 0, 1 }, xz[ 2 ] = { 0, 2 }, yz[ 2 ] = { 1, 2 };
+    if ( axis == 0 )
+    {
+      p1.init ( xy + 0, xy + 2 );
+      p2.init ( xz + 0, xz + 2 );
+    }
+    else if ( axis == 1 )
+    {
+      p1.init ( xy + 0, xy + 2 );
+      p2.init ( yz + 0, yz + 2 );
+    }
+    else
+    {
+      p1.init ( xz + 0, xz + 2 );
+      p2.init ( yz + 0, yz + 2 );
+    }
+  }
+
+  template < typename TIterator, typename TInteger, int connectivity >
+  inline
+  void
+  LambdaMSTAxisLabeller< TIterator, TInteger, connectivity >::selfDisplay ( std::ostream & out ) const
+  {
+    out << "[LambdaMSTAxisLabeller] " << myAxes.size ( ) << " points, " << myRuns.size ( )
+        << " runs, shortest 2D maximal segment: " << myShortest << " points";
+  }
+
+  template < typename TIterator, typename TInteger, int connectivity >
+  inline
+  std::ostream &
+  operator<< ( std::ostream & out, const LambdaMSTAxisLabeller< TIterator, TInteger, connectivity > & object )
+  {
+    object.selfDisplay ( out );
+    return out;
+  }
+} // namespace DGtal

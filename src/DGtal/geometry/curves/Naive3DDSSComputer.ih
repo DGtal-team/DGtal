@@ -52,7 +52,7 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::Naive3DDSSComputer()
   myProjXY.init(v1.begin(),v1.end());
   myProjXZ.init(v2.begin(),v2.end());
   myProjYZ.init(v3.begin(),v3.end());
-  blockXY = blockXZ = blockYZ = false;
+  myValidXY = myValidXZ = myValidYZ = true;
 }
 
 /**
@@ -96,7 +96,7 @@ void DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::init ( const Co
   myXZalgo.init(XZit);
   IteratorAdapter YZit(it,myProjYZ);
   myYZalgo.init(YZit);
-  blockXY = blockXZ = blockYZ = false;
+  myValidXY = myValidXZ = myValidYZ = true;
 }
 
 /**
@@ -110,11 +110,9 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::Naive3DDSSComputer (
                                           const Naive3DDSSComputer<TIterator,TInteger,connectivity> & other ) :
   myProjXY(other.myProjXY), myProjXZ(other.myProjXZ), myProjYZ(other.myProjYZ),
   myXYalgo(other.myXYalgo), myXZalgo(other.myXZalgo), myYZalgo(other.myYZalgo),
+  myValidXY(other.myValidXY), myValidXZ(other.myValidXZ), myValidYZ(other.myValidYZ),
   myBegin(other.myBegin), myEnd(other.myEnd)
 {
-    blockXY = other.blockXY;
-    blockXZ = other.blockXZ;
-    blockYZ = other.blockYZ;
 }
 
 /**
@@ -137,9 +135,9 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::operator= (
   myYZalgo = other.myYZalgo;
   myBegin = other.myBegin;
   myEnd = other.myEnd;
-  blockXY = other.blockXY;
-  blockXZ = other.blockXZ;
-  blockYZ = other.blockYZ;
+  myValidXY = other.myValidXY;
+  myValidXZ = other.myValidXZ;
+  myValidYZ = other.myValidYZ;
   return *this;
 }
 
@@ -165,10 +163,10 @@ bool
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::isInDSS ( const Point3d & point) const
 {
   char test = 0;
-  if ( myXYalgo.isInDSS ( myProjXY ( point ) ) ) test++;
-  if ( myXZalgo.isInDSS ( myProjXZ ( point ) ) ) test++;
-  if ( myYZalgo.isInDSS ( myProjYZ ( point ) ) ) test++;
-  return test >= 2 ? true : false;
+  if ( myValidXY && myXYalgo.isInDSS ( myProjXY ( point ) ) ) test++;
+  if ( myValidXZ && myXZalgo.isInDSS ( myProjXZ ( point ) ) ) test++;
+  if ( myValidYZ && myYZalgo.isInDSS ( myProjYZ ( point ) ) ) test++;
+  return test >= 2;
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
@@ -176,11 +174,7 @@ inline
 bool
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::isInDSS ( const ConstIterator & it) const
 {
-  char test = 0;
-  if ( myXYalgo.isInDSS ( myProjXY ( *it ) ) ) test++;
-  if ( myXZalgo.isInDSS ( myProjXZ ( *it ) ) ) test++;
-  if ( myYZalgo.isInDSS ( myProjYZ ( *it ) ) ) test++;
-  return test >= 2 ? true : false;
+  return isInDSS ( *it );
 }
 
 /**
@@ -223,9 +217,15 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::operator!=(
  * Tests whether the union between a point
  * (add to the front of the DSS
  * with respect to the scan orientation)
- * and a DSS is a DSS.
+ * and a DSS is a DSS, i.e., whether at least two projections
+ * of the extended range are bijective 2d-DSSs.
  * Computes the parameters of the new DSS
  * with the added point if true.
+ *
+ * A projection that rejects the point while the 3d-DSS is extended
+ * is marked as not valid until the next init(): any further extension
+ * still contains the point it rejected. If the 3d-DSS is not extended,
+ * nothing is modified.
  * @return 'true' if the union is a DSS, 'false' otherwise.
  */
 template <typename TIterator, typename TInteger, int connectivity>
@@ -233,49 +233,49 @@ inline
 bool
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::extendFront()
 {
-    if ( !isExtendableFront() ) return false;
+  const bool xy = isExtendableFront ( myXYalgo, myProjXY, myValidXY );
+  const bool xz = isExtendableFront ( myXZalgo, myProjXZ, myValidXZ );
+  const bool yz = isExtendableFront ( myYZalgo, myProjYZ, myValidYZ );
+  if ( xy + xz + yz < 2 )
+    return false;
 
-    char test = 0;
-    if ( extendFront ( myXYalgo, blockXY ) ) test++;
-    if ( extendFront ( myXZalgo, blockXZ ) ) test++;
-    if ( extendFront ( myYZalgo, blockYZ ) ) test++;
-    if ( test >= 2 )
-    {
-        myEnd++;
-        return true;
-    }
-
-    /**
-    * Ensure that the last segment is maximal in 2D,
-    * so that the corresponding 3D segment results from
-    * the intersection of two maximal 2D segments.
-    */
-    while (extendFront ( myXYalgo, blockXY ) );
-    while (extendFront ( myXZalgo, blockXZ ) );
-    while (extendFront ( myYZalgo, blockYZ ) );
-
-    return test == 1;
+  extendFront ( myXYalgo, myValidXY, xy );
+  extendFront ( myXZalgo, myValidXZ, xz );
+  extendFront ( myYZalgo, myValidYZ, yz );
+  ++myEnd;
+  return true;
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
 inline
 bool
-DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::extendFront ( ArithmeticalDSSComputer2d & DSS2D, bool & blocked )
+DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::isExtendableFront ( ArithmeticalDSSComputer2d & DSS2D,
+                                                                                 const Projector2d & aProjector,
+                                                                                 bool isValid2D )
 {
-  if ( DSS2D.isExtendableFront() && !blocked )
-  {
-    Point2d p = DSS2D.front();
+  if ( ! isValid2D )
+    return false;
+  // A valid 2d-DSS covers exactly [myBegin, myEnd): its next point is the
+  // projection of *myEnd. Two successive 3d points with the same projection
+  // make the projection non-bijective.
+  if ( aProjector ( *myEnd ) == DSS2D.front() )
+    return false;
+  return DSS2D.isExtendableFront();
+}
+
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+void
+DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::extendFront ( ArithmeticalDSSComputer2d & DSS2D,
+                                                                           bool & isValid2D,
+                                                                           bool accepted )
+{
+  if ( ! isValid2D )
+    return;
+  if ( accepted )
     DSS2D.extendFront();
-    if ( DSS2D.front() != p )
-      return true;
-    else
-    {
-      DSS2D.retractFront();
-      blocked = true;
-      return false;
-    }
-  }
-  return false;
+  else
+    isValid2D = false;
 }
 
 /** Tests whether the 3D DSS can be extended at the front.
@@ -287,11 +287,33 @@ inline
 bool
 DGtal::Naive3DDSSComputer<TIterator, TInteger,connectivity>::isExtendableFront()
 {
-    char test = 0;
-    if ( myXYalgo.isExtendableFront() && !blockXY ) test++;
-    if ( myXZalgo.isExtendableFront() && !blockXZ ) test++;
-    if ( myYZalgo.isExtendableFront() && !blockYZ ) test++;
-    return test >= 2;
+  char test = 0;
+  if ( isExtendableFront ( myXYalgo, myProjXY, myValidXY ) ) test++;
+  if ( isExtendableFront ( myXZalgo, myProjXZ, myValidXZ ) ) test++;
+  if ( isExtendableFront ( myYZalgo, myProjYZ, myValidYZ ) ) test++;
+  return test >= 2;
+}
+
+template <typename TIterator, typename TInteger, int connectivity>
+inline
+DGtal::Dimension
+DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::mainAxis() const
+{
+  if ( myValidXY && myValidXZ && ! myValidYZ ) return 0;
+  if ( myValidXY && myValidYZ && ! myValidXZ ) return 1;
+  if ( myValidXZ && myValidYZ && ! myValidXY ) return 2;
+
+  // All three projections are valid, so each covers [myBegin, myEnd): the
+  // extent along x and y is read from the XY projection, along z from the
+  // XZ one. The axis of largest extent is returned.
+  const Point2d xyExtent = myXYalgo.front() - myXYalgo.back();
+  const Point2d xzExtent = myXZalgo.front() - myXZalgo.back();
+  const Vector3d extent ( xyExtent[ 0 ], xyExtent[ 1 ], xzExtent[ 1 ] );
+  Dimension axis = 0;
+  for ( Dimension i = 1; i < 3; ++i )
+    if ( std::abs ( extent[ i ] ) > std::abs ( extent[ axis ] ) )
+      axis = i;
+  return axis;
 }
 
 template <typename TIterator, typename TInteger, int connectivity>
@@ -335,10 +357,8 @@ void
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>
 ::getParameters ( Point3d& direction, PointR3d& intercept, PointR3d& thickness ) const
 {
-  auto lenXY = std::distance ( myXYalgo.begin(), myXYalgo.end() );
-  auto lenXZ = std::distance ( myXZalgo.begin(), myXZalgo.end() );
-  auto lenYZ = std::distance ( myYZalgo.begin(), myYZalgo.end() );
-  if ( lenXY > lenYZ && lenXZ > lenYZ )
+  const Dimension axis = mainAxis();
+  if ( axis == 0 )
   { //XY-plane, XZ-plane
 
     Integer a1 = myXYalgo.b();
@@ -369,7 +389,7 @@ DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>
   }
   else
   {
-    if ( lenYZ > lenXZ && lenXY > lenXZ )
+    if ( axis == 1 )
     { //XY-plane, YZ-plane
 
       Integer a1 = myXYalgo.b();
@@ -472,16 +492,11 @@ bool
 DGtal::Naive3DDSSComputer<TIterator,TInteger,connectivity>::validArithmeticalDSS2d( Dimension i ) const
 {
   ASSERT( i < 3 );
-  auto lenXY = std::distance ( myXYalgo.begin(), myXYalgo.end() );
-  auto lenXZ = std::distance ( myXZalgo.begin(), myXZalgo.end() );
-  auto lenYZ = std::distance ( myYZalgo.begin(), myYZalgo.end() );
-  if ( i == 0 && ( lenYZ >= lenXZ || lenYZ >= lenXY ) )
-    return true;
-  else if ( i == 1 && ( lenXZ >= lenXY || lenXZ >= lenYZ ) )
-    return true;
-  else if ( i == 2 && ( lenXY >= lenXZ || lenXY >= lenYZ ) )
-  return true;
-  return false;
+  switch ( i ) {
+  case 0: return myValidYZ;
+  case 1: return myValidXZ;
+  default: return myValidXY;
+  }
 }
 
 /**

@@ -40,9 +40,8 @@
 #include <iterator>
 #include <cmath>
 #include <vector>
-#include <map>
-#include <DGtal/base/Common.h>
-#include <DGtal/helpers/StdDefs.h>
+#include "DGtal/base/Common.h"
+#include "DGtal/helpers/StdDefs.h"
 #include "DGtal/kernel/CSpace.h"
 #include "DGtal/kernel/PointVector.h"
 #include "DGtal/geometry/curves/estimation/FunctorsLambdaMST.h"
@@ -52,11 +51,25 @@
 
 namespace DGtal {
   /**
-   * Aim: Implement 3D Lambda MST tangent estimators. This class is a model of CCurveLocalGeometricEstimator.
+   * Aim: Implement 3D Lambda MST tangent estimators.
+   *
+   * The tangent at a point is the lambda-weighted average of the directions
+   * of the maximal segments in its pencil. Points are identified by their
+   * position along the curve, never by their coordinates, so a curve that
+   * visits the same lattice point twice gets one estimate per visit.
+   *
    * @tparam TSpace model of CSpace
-   * @tparam TSegmentation tangential cover obtained by a segmentation of a 2D digital curve by maximal straight segments
-   * @tparam Functor model of CLMSTTangentFrom2DSS
-   * @tparam DSSFilter a functor used for filtering out DSSes which do not fulfil a given condition e.g., they are too short
+   * @tparam TSegmentation tangential cover obtained by a segmentation of a
+   * 3D digital curve by maximal straight segments
+   * @tparam Functor model of CLMSTTangentFromDSS
+   * @tparam DSSFilter decides which maximal segments enter a point's pencil,
+   * the set of segments whose directions are averaged into its tangent (see
+   * CLMSTDSSFilter): operator()(dss) is true for a segment that is too short
+   * to enter any pencil, and reach() is how far, in points along the curve,
+   * a kept segment may lie from a point it does not contain and still enter
+   * its pencil. DSSMuteFilter (no segment removed, reach 0) gives the plain
+   * 3D lambda-MST; DSSLengthLessEqualFilter(T) removes segments shorter than
+   * T points and lets the others reach T points beyond their ends.
    */
   template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
   class LambdaMST3DEstimator
@@ -76,7 +89,7 @@ namespace DGtal {
     typedef typename TSegmentation::SegmentComputer SegmentComputer;
     /// Type of iterator, at least readable and forward
     typedef typename SegmentComputer::ConstIterator ConstIterator;
-    /// Type returned by model of CLMSTTangentFrom2DSS
+    /// Type returned by model of CLMSTTangentFromDSS
     typedef typename Functor::Value Value;
     /// Type of 3d real vector
     typedef typename TSpace::RealVector RealVector;
@@ -107,20 +120,18 @@ namespace DGtal {
     bool isValid ( ) const;
 
     /**
-     * For ranges of points the second version of this method is faster
-     * than iterating over this version.
+     * Tangent directions of the points in [itb, ite), one per curve position.
      *
-     * NOTE THAT ONLY THIS VERSION ALLOWS FOR DSS FILTRATION!
+     * The segmentation must be attached over the same range [myBegin, myEnd)
+     * given to init(). Its maximal segments are maximal in that whole range,
+     * so a segment is never cut at itb or ite: it contributes to every point
+     * of [itb, ite) whose pencil it enters, and the pencils are complete at
+     * both ends of the range. A point is identified by its position, so the
+     * estimate for a single point at position it is eval(it, it + 1, ...).
      *
-     * @param p a point of the underlying curve
-     * @return tangent direction
-     */
-    RealVector eval ( const Point & p );
-
-    /**
+     * @pre ConstIterator is random access and myBegin <= itb < ite <= myEnd.
+     *
      * @tparam OutputIterator writable iterator.
-     * More efficient way to compute tangent directions for all points of a curve.
-     *
      * @param itb begin iterator
      * @param ite end iterator
      * @param result writable iterator over a container which stores estimated tangent directions.
@@ -134,50 +145,64 @@ namespace DGtal {
      */
     DSSFilter & getDSSFilter ( );
 
+    /**
+     * Positions, in the last eval(), of the points that received no
+     * contribution from any segment, and therefore a zero tangent.
+     *
+     * This can only happen with a filter that removes segments: a point gets
+     * no contribution when no kept segment contains it or reaches it. With
+     * DSSLengthLessEqualFilter(l / 2), l being the number of points of the
+     * shortest 2D maximal segment of the curve's projections onto the two
+     * coordinate planes containing its main axis, it cannot happen on a curve
+     * that is monotone along that axis. With DSSMuteFilter the list is always
+     * empty.
+     *
+     * Positions are counted from the @a itb passed to eval(), and the list is
+     * cleared by every call to eval().
+     *
+     * @return the positions, in increasing order
+     */
+    const std::vector< std::size_t > & uncoveredPoints ( ) const;
+
     // ------------------------- Internals ------------------------------------
   protected:
 
-      typedef typename std::vector<SegmentComputer >::const_iterator OrphanDSSIterator;
 
     /**
      * @brief Accumulate partial results obtained for each point.
-     * In 3D it can happen that DSSs' direction vectors over same point are opposite.
-     * To avoid this problem we measure angle between segments' direction vectors and if this angle
-     * is bigger than \f$\pi/2\f$, then one of the vectors is reversed.
-     * Finally, tangent direction is estimated and stored.
+     *
+     * Every contribution is already oriented along its own segment (last
+     * point minus first), so the contributions at a point are summed as they
+     * are and the tangent is their weighted mean.
+     *
+     * outValues is indexed by curve position (one list per point, in the
+     * order the covering DSSes were visited), not by point value: keying on
+     * coordinates would merge the contributions of two different positions
+     * that share the same lattice point.
      *
      * @tparam OutputIterator writable iterator.
-     * @param outValues partial results for each point
-     * @param itb begin iterator
-     * @param ite end iterator
+     * @param outValues per-position vote lists
      * @param result writable iterator over a container which stores estimated tangent directions.
      */
     template <typename OutputIterator>
-    void accumulate ( std::multimap < Point, Value > & outValues, ConstIterator itb, ConstIterator ite, OutputIterator & result );
+    void accumulate ( std::vector< std::vector< Value > > & outValues, OutputIterator & result );
 
     /**
-     * @brief Use the DSS filter defined conditions to ensure estimation over not covered points - orphans.
-     *
-     * @param begin begin iterator
-     * @param end end iterator
-     * @param p a point of the underlying curve
-     * @return estimated tangent
+     * The contributions of one maximal segment to the points of [itb, ite)
+     * whose pencil it enters, the points it contains, and the points within
+     * the filter's reach of one of its ends, appended to outValues.
      */
-    Value treatOrphan(OrphanDSSIterator begin, OrphanDSSIterator end, const Point &p);
-    template < typename DSSesIterator, typename OrphanIterator >
-
-    void treatOrphans(DSSesIterator begin, DSSesIterator end, OrphanIterator obegin, OrphanIterator oend,
-                       std::multimap<Point, Value> &outValues);
-
+    void contribute ( const SegmentComputer & dss, ConstIterator itb, ConstIterator ite,
+                      std::vector< std::vector< Value > > & outValues ) const;
 
     // ------------------------- Private Data --------------------------------
   private:
     /**
-     * Iterator which corresponds to the beginning of a valid range - [myBegin, myEnd)
+     * Iterator which corresponds to the beginning of a valid range: [myBegin, myEnd)
      */
     ConstIterator myBegin;
     /**
-     * Iterator which corresponds to the end of a valid range - [myBegin, myEnd)
+     * Iterator which corresponds to the end of a valid range: [myBegin, myEnd)
      */
     ConstIterator myEnd;
     /**
@@ -193,16 +218,22 @@ namespace DGtal {
 
     DSSFilter myDSSFilter;
 
-  }; // end of class LambdaTangentFromDSSEstimator
+    /**
+     * Positions, relative to the last eval()'s itb, of the points no DSS
+     * ended up contributing to. See uncoveredPoints().
+     */
+    std::vector< std::size_t > myUncovered;
+
+  }; // end of class LambdaMST3DEstimator
 
   //-------------------------------------------------------------------------------------------
 
   // Template class LambdaMST3D
   /**
    * \brief Aim: Simplify creation of Lambda MST tangent estimator.
-   * @tparam DSSSegmentationComputer tangential cover obtained by segmentation of a 2D digital curve by maximal straight segments
+   * @tparam DSSSegmentationComputer tangential cover obtained by segmentation of a 3D digital curve by maximal straight segments
    * @tparam LambdaFunction Lambda functor @see FunctorsLambdaMST.h
-   * @tparam DSSFilter a functor used for filtering out DSSes which do not fulfil a given condition e.g., they are too short
+   * @tparam DSSFilter which maximal segments enter a point's pencil: DSSMuteFilter (default, plain 3D lambda-MST) or DSSLengthLessEqualFilter (short segments removed, the others reaching beyond their ends)
    */
   template < typename DSSSegmentationComputer, typename LambdaFunction = functors::Lambda64Function,
              typename DSSFilter = DSSMuteFilter < typename DSSSegmentationComputer::SegmentComputer > >

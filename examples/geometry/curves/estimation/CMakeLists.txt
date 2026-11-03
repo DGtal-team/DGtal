@@ -3,6 +3,7 @@ set(DGTAL_EXAMPLES_SRC
   exampleLMST2D
   exampleLMST3D
   exampleLMST3DBy2D
+  exampleLMSTAxisLabeller
 )
 
 

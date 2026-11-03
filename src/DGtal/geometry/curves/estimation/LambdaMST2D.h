@@ -48,10 +48,10 @@
 
 namespace DGtal {
   /**
-   * Aim: Implementation of Lambda MST tangent estimators. This class is a model of CCurveLocalGeometricEstimator.
+   * Aim: Implementation of Lambda MST tangent estimators.
    * @tparam TSpace model of CSpace
    * @tparam TSegmentation tangential cover obtained by a segmentation of a 2D digital curve by maximal straight segments
-   * @tparam Functor model of CLMSTTangentFrom2DSS
+   * @tparam Functor model of CLMSTTangentFromDSS
    */
   template < typename TSpace, typename TSegmentation, typename Functor >
   class LambdaMST2DEstimator
@@ -69,11 +69,11 @@ namespace DGtal {
     typedef typename TSegmentation::SegmentComputer SegmentComputer;
     /// Type of iterator, at least readable and forward
     typedef typename SegmentComputer::ConstIterator ConstIterator;
-    /// Type returned by model of CLMSTTangentFrom2DSS
+    /// Type returned by model of CLMSTTangentFromDSS
     typedef typename Functor::Value Value;
-    /// Type of 3d real vector
+    /// Type of 3D real vector
     typedef typename TSpace::RealVector RealVector;
-    /// Type of 3d real point
+    /// Type of 3D real point
     typedef typename TSpace::Point Point;
 
     // ----------------------- Interface --------------------------------------
@@ -90,19 +90,26 @@ namespace DGtal {
 
     /**
      * Attach tangential cover computer.
-     * @param SegmentComputer - DSS segmentation algorithm
+     * @param SegmentComputer DSS segmentation algorithm
      */
     void attach ( Alias<TSegmentation> SegmentComputer );
 
     /**
-     * @param p a point of the underlying curve
-     * @return tangent direction
-     */
-    RealVector eval ( const Point & p );
-
-    /**
+     * Tangent directions of the points in [itb, ite), one per curve position.
+     *
+     * Points are identified by their position along the curve, never by
+     * their coordinates: a digital curve may visit the same lattice point
+     * twice, and each visit gets its own pencil and its own estimate. The
+     * estimate for a single point at position it is eval(it, it + 1, ...).
+     *
+     * The segmentation must be attached over the same range [myBegin, myEnd)
+     * given to init(). Every maximal segment that meets [itb, ite) contributes
+     * to the points it covers in that range, so the pencils are complete at
+     * both ends of the range; segments are not cut at itb or ite.
+     *
+     * @pre ConstIterator is random access and myBegin <= itb < ite <= myEnd.
+     *
      * @tparam OutputIterator writable iterator.
-     * More efficient way to compute tangent directions for all points of a curve.
      * @param itb begin iterator
      * @param ite end iterator
      * @param result writable iterator over a container which stores estimated tangent directions.
@@ -135,11 +142,11 @@ namespace DGtal {
   private:
 
     /**
-     * Iterator which corresponds to the beginning of a valid range - [myBegin, myEnd)
+     * Iterator which corresponds to the beginning of a valid range: [myBegin, myEnd)
      */
     ConstIterator myBegin;
     /**
-     * Iterator which corresponds to the end of a valid range - [myBegin, myEnd)
+     * Iterator which corresponds to the end of a valid range: [myBegin, myEnd)
      */
     ConstIterator myEnd;
     /**

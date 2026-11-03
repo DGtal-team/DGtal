@@ -24,12 +24,40 @@
  * This file is part of the DGtal library.
  */
 
+#include <cmath>
+
 namespace DGtal
 {
 
+  namespace detail
+  {
+    /**
+     * Orients a maximal segment's contribution along the segment's own
+     * traversal.
+     *
+     * getParameters() returns a direction without a canonical sign, so the
+     * weighted sum below only means something once every direction is
+     * oriented the same way along the curve. The segment's own chord,
+     * its last point minus its first, is the local, well defined choice:
+     * it does not depend on the order in which segments are visited.
+     */
+    template < typename TSegmentComputer, typename TValue >
+    void orientAlongSegment ( const TSegmentComputer & dss, TValue & value )
+    {
+      auto last = dss.end ( );
+      --last;
+      const auto chord = *last - *dss.begin ( );
+      double dot = 0.;
+      for ( Dimension i = 0; i < 3; ++i )
+        dot += value.first[ i ] * (double) chord[ i ];
+      if ( dot < 0. )
+        value.first = -value.first;
+    }
+  } // namespace detail
+
   template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
   inline
-  LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::LambdaMST3DEstimator() : myBegin(), myEnd(), dssSegments ( 0 ), myFunctor() {}
+  LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::LambdaMST3DEstimator() : myBegin(), myEnd(), dssSegments ( 0 ), myFunctor(), myUncovered() {}
 
 
   template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
@@ -68,99 +96,89 @@ namespace DGtal
 
   template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
   inline
-  typename LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::Value
-  LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::treatOrphan ( OrphanDSSIterator begin, OrphanDSSIterator end,
-                                                                                     const Point & p )
+  const std::vector< std::size_t > &
+  LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::uncoveredPoints ( ) const
   {
-    Value tangent, prev, partial;
-    for ( auto it = begin ; it != end; ++it )
-    {
-      // the returned type is signed but dssLen should never be negative
-      const auto dssLen = std::distance ( it->begin(), it->end() ) + 1;
-      prev = partial;
-      const auto pos = myDSSFilter. position ( *it, p );
-      partial = myFunctor ( *it, pos, dssLen );
-      if ( prev.first.cosineSimilarity ( partial.first ) > M_PI_2 )
-        partial.first = -partial.first;
-      tangent += partial;
-    }
-    return tangent;
+    return myUncovered;
   }
 
-
+  // What one maximal segment adds to the points it influences.
+  //
+  // The tangent at a point is a weighted average of the directions of the
+  // maximal segments in its pencil. Each segment's weight is lambda(e),
+  // where e in (0, 1) is the point's eccentricity in that segment: small
+  // near the segment's first point, 1/2 at its middle, close to 1 at its
+  // last point. lambda vanishes at 0 and 1 and peaks at 1/2, so a segment
+  // counts most at the points near its middle and little near its ends.
+  //
+  // Let the segment have L + 1 points, the first at curve position m.
+  //
+  // - A point x it contains, at index k = x - m in the segment (0 <= k <= L),
+  //   gets eccentricity (k + 1) / (L + 2). The +1 and +2 keep e strictly
+  //   inside (0, 1), so even the end points of a segment receive some weight.
+  // - If the filter has a positive reach, a point outside the segment, d
+  //   points before its first or after its last point (0 < d <= reach),
+  //   gets eccentricity (d + L + 1) / (d + L + 2): the segment is treated as
+  //   if it were extended up to that point, so e is above every eccentricity
+  //   inside the segment and tends to 1, weight tending to 0, with d.
+  //
+  // Both are passed to the functor as a pair of integers (numerator,
+  // denominator), so no rounding happens before lambda is evaluated. Every
+  // distance is a number of points along the curve. Each contribution is oriented
+  // along the segment's own traversal (last point minus first) before it is
+  // stored, so that all directions averaged at a point point the same way.
   template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
-  template < typename DSSesIterator, typename OrphanIterator >
   inline
   void
-  LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::treatOrphans ( DSSesIterator begin,
-                                                                                    DSSesIterator end,
-                                                                                    OrphanIterator obegin,
-                                                                                    OrphanIterator oend,
-                                                                                    std::multimap < Point, Value > & outValues )
+  LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::contribute ( const SegmentComputer & dss,
+                                                                                   ConstIterator itb, ConstIterator ite,
+                                                                                   std::vector< std::vector< Value > > & outValues ) const
   {
-    for ( auto DSS = begin; DSS != end; ++DSS )
+    const long L = (long) std::distance ( dss.begin ( ), dss.end ( ) ) - 1; // L + 1 points
+    const double reachOf = myDSSFilter.reach ( dss );
+    const long reach = (long) std::floor ( reachOf );
+
+    // The points that may receive a contribution: [begin - reach, end + reach)
+    // clipped to the reported range (the segment lies inside [myBegin, myEnd)).
+    ConstIterator first = dss.begin ( );
+    for ( long k = 0; k < reach && first != myBegin; ++k )
+      --first;
+
+    ConstIterator last = dss.end ( );
+    for ( long k = 0; k < reach && last != myEnd; ++k )
+      ++last;
+
+    if ( first < itb )
+      first = itb;
+
+    if ( last > ite )
+      last = ite;
+
+    for ( ConstIterator pit = first; pit < last; ++pit )
     {
-      for ( auto orphan = obegin; orphan != oend; ++orphan )
+      Value partial;
+      if ( pit < dss.begin ( ) || pit >= dss.end ( ) )
       {
-        if ( ! DSS->isInDSS ( *orphan ) && myDSSFilter.admissibility ( *DSS, *orphan ) )
-        {
-          // the returned type is signed but dssLen should never be negative
-          const auto dssLen = std::distance ( DSS->begin ( ), DSS->end ( ) ) + 1;
-          const auto pos = myDSSFilter. position ( *DSS, *orphan );
-          outValues.insert ( std::make_pair ( *orphan,  myFunctor ( *DSS, pos, dssLen ) ) );
-        }
+        const long d = ( pit < dss.begin ( ) ) ? (long) std::distance ( pit, dss.begin ( ) )
+                                               : (long) std::distance ( dss.end ( ), pit ) + 1;
+        if ( (double) d > reachOf )
+          continue;
+
+        partial = myFunctor ( dss, (unsigned int)( d + L + 1 ), (unsigned int)( d + L + 2 ) );
       }
+      else
+        partial = myFunctor ( dss, (unsigned int)( std::distance ( dss.begin ( ), pit ) + 1 ), (unsigned int)( L + 2 ) );
+
+      detail::orientAlongSegment ( dss, partial );
+      outValues[ (std::size_t) std::distance ( itb, pit ) ].push_back ( partial );
     }
   }
 
-
-  template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
-  inline
-  typename LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::RealVector
-  LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::eval( const Point & p )
-  {
-    assert ( isValid() );
-    std::vector < SegmentComputer > admissibleDSS;
-    bool isOrphan = true;
-    typename TSegmentation::SegmentComputerIterator DSS = dssSegments->begin();
-    typename TSegmentation::SegmentComputerIterator lastDSS = dssSegments->end();
-    Value tangent, partial, prev;
-
-    for ( ; DSS != lastDSS; ++DSS )
-    {
-      if ( myDSSFilter ( *DSS ) )
-        continue;
-
-      // collect DSSes that may need to be required to ensure coverage if the only covering DSS was filtered out
-      if ( isOrphan && ! DSS->isInDSS ( p ) && myDSSFilter.admissibility ( *DSS, p ) )
-        admissibleDSS.push_back ( *DSS );
-
-      if ( DSS->isInDSS ( p ) )
-      {
-        // the returned type is signed but dssLen should never be negative
-        const auto dssLen = std::distance ( DSS.begin(), DSS.end() ) + 1;
-        prev = partial;
-        // the returned type is signed but pos should never be negative
-        const auto  pos = std::distance ( DSS.begin(), std::find ( DSS.begin ( ), DSS.end ( ), p ) ) + 1;
-        partial = myFunctor ( *DSS, pos, dssLen );
-        if ( partial.first.norm() > 0. && prev.first.norm() > 0. && prev.first.cosineSimilarity ( partial.first ) > M_PI_2 )
-	      partial.first = -partial.first;
-        tangent += partial;
-        isOrphan = false;
-      }
-    }
-
-    if ( isOrphan && admissibleDSS.size ( ) > 0 )
-      tangent = treatOrphan ( admissibleDSS.cbegin ( ), admissibleDSS.cend ( ), p );
-    else if ( isOrphan && admissibleDSS.size ( ) == 0 )
-      throw std::runtime_error ( "The DSS filter is not well constructed! The point is not DSS covered!" );
-
-    if ( tangent.second != 0. )
-      return tangent.first / tangent.second;
-    else
-      return tangent.first;
-  }
-
+  // dssSegments must be attached over the same range [myBegin, myEnd) that
+  // init() was given. Its maximal segments are then maximal in that range,
+  // not in [itb, ite): a segment is never cut at itb or ite. A segment that
+  // extends beyond [itb, ite) contributes to the points of [itb, ite) it
+  // covers or reaches; points outside [itb, ite) get no entry in outValues.
   template < typename TSpace, typename TSegmentation, typename Functor, typename DSSFilter >
   template < typename OutputIterator >
   inline
@@ -169,37 +187,39 @@ namespace DGtal
                                                                             OutputIterator result )
   {
     assert ( myBegin != myEnd && isValid() && myBegin <= itb && ite <= myEnd && itb != ite );
-    std::multimap < Point, Value > outValues;
-    dssSegments->setSubRange ( itb, ite );
+
+    const std::size_t coreLen = (std::size_t) std::distance ( itb, ite );
+
+    // One list of contributions per curve position, not per point value: a
+    // digital curve may visit the same lattice point twice, and keying on
+    // the coordinate would merge the estimates of two different positions.
+    std::vector< std::vector< Value > > outValues ( coreLen );
     typename TSegmentation::SegmentComputerIterator DSS = dssSegments->begin();
     typename TSegmentation::SegmentComputerIterator lastDSS = dssSegments->end();
-    std::vector< Point > orphans;
 
     for(; DSS != lastDSS; ++DSS)
     {
-      // coolect potential orphans
-      if ( myDSSFilter ( *DSS ) )
-      {
-        for ( const auto & point : *DSS )
-          if ( std::find ( orphans.cbegin (  ), orphans.cend ( ), point ) == orphans.cend ( ) )
-            orphans.push_back ( point );
-        continue;
-      }
+      const SegmentComputer & dss = *DSS;
 
-      auto dssLen = std::distance ( DSS.begin(), DSS.end() );
-      for ( unsigned int indexOfPointInDSS = 0; indexOfPointInDSS < dssLen; indexOfPointInDSS++ )
-      {
-        outValues.insert ( std::make_pair ( *(DSS.begin ( ) + indexOfPointInDSS),
-                           myFunctor ( *DSS, indexOfPointInDSS + 1, dssLen + 1 ) ) );
-        // if a point is covered then it is not an orphan
-        auto orphan = std::find ( orphans.begin ( ), orphans.end ( ), *(DSS.begin ( ) + indexOfPointInDSS) );
-        if ( orphan != orphans.end ( ) )
-          orphans.erase ( orphan );
-      }
+      // A segment the filter rejects (too short) enters no pencil at all.
+      if ( myDSSFilter ( dss ) )
+        continue;
+
+      // Only core points ([itb,ite)) get an entry -- points the segment
+      // grew into within the context are never looked up/reported.
+      contribute ( dss, itb, ite, outValues );
     }
-    if ( ! orphans.empty ( ) )
-      treatOrphans ( dssSegments->begin ( ),  dssSegments->end ( ), orphans.cbegin ( ), orphans.cend ( ), outValues );
-    accumulate< OutputIterator >( outValues, itb, ite, result );
+
+    // A point whose pencil is empty (possible only if the filter removed
+    // every segment near it) still gets a value from accumulate(), to keep
+    // one estimate per point, but that value is an all-zero vector. Record
+    // its position so the caller can report or exclude it.
+    myUncovered.clear ( );
+    for ( std::size_t pos = 0; pos < outValues.size ( ); ++pos )
+      if ( outValues[ pos ].empty ( ) )
+        myUncovered.push_back ( pos );
+
+    accumulate< OutputIterator >( outValues, result );
     return result;
   }
 
@@ -207,30 +227,18 @@ namespace DGtal
   template <typename OutputIterator>
   inline
   void
-  LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::accumulate ( std::multimap < Point, Value > & outValues,
-                                                                       ConstIterator itb, ConstIterator ite,
+  LambdaMST3DEstimator< TSpace, TSegmentation, Functor, DSSFilter >::accumulate ( std::vector< std::vector< Value > > & outValues,
                                                                        OutputIterator & result )
   {
-    Value prev = outValues.lower_bound( *itb )->second;
-    Value accum_prev = outValues.lower_bound( *itb )->second;
-    for ( ConstIterator itt = itb; itt != ite; ++itt )
+    // Every contribution was already oriented along its own segment's
+    // traversal (detail::orientAlongSegment), so they are all consistent
+    // with the direction the curve is travelled in and can simply be summed.
+    for ( std::size_t pos = 0; pos < outValues.size ( ); ++pos )
     {
-      typename std::multimap< Point, Value >::const_iterator it  = outValues.lower_bound ( *itt );
-      typename std::multimap< Point, Value >::const_iterator it2 = outValues.upper_bound ( *itt );
       Value tangent;
-      for (; it != it2; it++ )
-      {
-        Value partial = it->second;
-        if ( partial.first.norm() > 0. && prev.first.norm() > 0. && prev.first.cosineSimilarity ( partial.first ) > M_PI_2 )
-	      partial.first = -partial.first;
-        prev = partial;
-        tangent += partial;
-      }
-      outValues.erase ( *itt );
-      // avoid tangent flapping
-      if ( accum_prev.first.norm() > 0. && tangent.first.norm() > 0. && accum_prev.first.cosineSimilarity ( tangent.first ) > M_PI_2 )
-        tangent.first = -tangent.first;
-      accum_prev = tangent;
+      for ( const Value & raw : outValues[ pos ] )
+        tangent += raw;
+
       if ( tangent.second != 0 )
         *result++ = ( tangent.first / tangent.second );
       else

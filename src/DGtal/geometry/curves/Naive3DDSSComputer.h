@@ -68,27 +68,39 @@ namespace DGtal
 /////////////////////////////////////////////////////////////////////////////
 // class Naive3DDSSComputer
 /**
- * \brief Aim: This class is a wrapper around ArithmeticalDSSComputer that is devoted
- * to the dynamic recognition of digital straight segments in 2D (DSS), along any
- * sequence of digital points.
+ * \brief Aim: This class is a wrapper around ArithmeticalDSSComputer that is
+ * devoted to the dynamic recognition of digital straight segments in 3D
+ * (DSS), along any sequence of digital points.
  *
- * Naive3DDSSComputer projects 3d curve onto three orthogonal planes. Then each projection
- * is segmented while using ArithmeticalDSSComputer, as long as at least two such segmentations
- * along projected curves are valid. By valid we understand, there is no---at least---two 3d points which
- * have same projection onto one of the orthogonal 2d planes.
+ * Naive3DDSSComputer projects the 3d curve onto the three coordinate planes
+ * and recognizes a 2d-DSS on each projection with ArithmeticalDSSComputer.
+ * A projection is valid if it is bijective (no two points of the 3d range
+ * have the same projection) and a 2d-DSS. A 3d range is a 3d-DSS iff at
+ * least two of its projections are valid.
  *
- * @tparam TIterator type of iterator on 3d digital points,
- * readable and forward.
+ * Invariant: each valid 2d-DSS covers exactly the projection of the 3d range
+ * [begin(), end()). A projection that rejects a point taken by the 3d-DSS
+ * stays not valid until the next init(), since any larger range contains the
+ * point it rejected.
+ *
+ * The recognized range changes only through init() and extendFront(): there
+ * is no extendBack() and no retraction. Segments are recognized backwards
+ * with the Reverse type, as SaturatedSegmentation does.
+ *
+ * Precondition, as for ArithmeticalDSSComputer: extendFront() and
+ * isExtendableFront() read the point at end(), so they must not be called
+ * when end() is the end of the scanned range.
+ *
+ * @tparam TIterator type of iterator on 3d digital points, readable and
+ * forward.
  * @tparam TInteger type of integers used for the computation of remainders,
  * which is a model of CInteger.
- * @tparam connectivity of the projected DSS
- * (simply 4-connected) curve or 8 for naive (simply 8-connected) curve (default).
- * Corresponds to adjacency of 2d projections (see above). Notice that choosing 8-adjacency for
- * each 2d projection onto orthogonal planes means that 3d curve is 26-connected. While 4-adjacency
- * means that 3d curve is 6-connected.
+ * @tparam connectivity adjacency of the 2d projections: 8 (default) for
+ * naive, simply 8-connected projections, i.e. a 26-connected 3d curve; 4 for
+ * standard, simply 4-connected projections, i.e. a 6-connected 3d curve.
  *
- * This class is a model of CForwardSegmentComputer.
- * It is also default constructible, copy constructible, assignable and equality comparable.
+ * This class is a model of CForwardSegmentComputer. It is also default
+ * constructible, copy constructible, assignable and equality comparable.
  *
  * @see exampleNaive3DDSSComputer.cpp
  */
@@ -222,7 +234,6 @@ class Naive3DDSSComputer
      */
     bool extendFront();
 
-
     /**
      * Tests whether the 3d DSS can be extended at the front.
      *
@@ -291,9 +302,17 @@ class Naive3DDSSComputer
        i = 0 -> YZ-plane
        i = 1 -> XZ-plane
        i = 2 -> XY-plane
-       @return true if given 2D DSS along orthogonal axis is valid
+       @return 'true' if the projection of [begin(), end()) onto the plane
+       orthogonal to the \a i-th axis is valid: bijective and a 2d-DSS.
      */
     bool validArithmeticalDSS2d ( Dimension i ) const;
+
+    /**
+     * @return the main axis of the DSS (0: x, 1: y, 2: z), i.e. the axis
+     * shared by the two valid projections. When all three projections are
+     * valid, the axis along which the DSS has the largest extent.
+     */
+    Dimension mainAxis() const;
 
 
     // ------------------ Display ------------------------------------------
@@ -313,16 +332,27 @@ class Naive3DDSSComputer
     // ------------------------- Hidden services ------------------------------
   private:
     /**
-     * Tests whether the current 2d-DSS can be extended at the front.
-     * Computes the parameters of the extended 2d-DSS if yes
-     * and adds the point to the current 2d-DSS in this case.
-     * Used internally to simplify extendFront().
+     * Tests whether a valid 2d-DSS accepts the 3d point at end(), i.e.,
+     * whether the projection of [begin(), end()] is still bijective and a
+     * 2d-DSS. Nothing is modified.
+     * Used internally to simplify extendFront() and isExtendableFront().
      * @param DSS2D reference to 2d-DSSComputer
-     * @param blocked reference to status of DSS2D
-     * updated if DSS2D cannot be extended at the front.
+     * @param aProjector projector onto the plane of DSS2D
+     * @param isValid2D validity of DSS2D
      * @return 'true' if yes, 'false' otherwise.
      */
-    bool extendFront ( ArithmeticalDSSComputer2d & DSS2D, bool & blocked );
+    bool isExtendableFront ( ArithmeticalDSSComputer2d & DSS2D, const Projector2d & aProjector,
+                             bool isValid2D );
+
+    /**
+     * Applies to a 2d-DSS the decision taken for the 3d-DSS at the front:
+     * extends it if it accepted the point, marks it as not valid otherwise.
+     * Does nothing on a 2d-DSS which is already not valid.
+     * @param DSS2D reference to 2d-DSSComputer
+     * @param isValid2D validity of DSS2D, updated
+     * @param accepted result of isExtendableFront ( DSS2D, ... )
+     */
+    void extendFront ( ArithmeticalDSSComputer2d & DSS2D, bool & isValid2D, bool accepted );
 
     // ------------------------- Protected Data ------------------------------
   protected:
@@ -342,11 +372,11 @@ class Naive3DDSSComputer
     ArithmeticalDSSComputer2d myYZalgo;
 
     /**
-     * Used internally to store information which 2d-arithemticalDSS
-     * should not be any more extended. This happened when two successive 3D points
-     * have same projections onto respective 2d plane.
+     * Validity of the 2d-arithmeticalDSS of each plane: 'true' iff the
+     * projection of the 3d range [myBegin, myEnd) onto this plane is
+     * bijective and a 2d-DSS. Once 'false', stays 'false' until init().
      */
-    bool blockXY, blockXZ, blockYZ;
+    bool myValidXY, myValidXZ, myValidYZ;
 
     /// begin and end iterators
     ConstIterator myBegin, myEnd;
