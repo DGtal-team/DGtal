@@ -10,6 +10,8 @@
   (Bertrand Kerautret,  [#1861](https://github.com/DGtal-team/DGtal/pull/1861))
 
 
+- *Geometry*
+  - Fixing a missing include in `parallelIIShortcuts-viewer` example (David Coeurjolly, issue #1859, [#1862](https://github.com/DGtal-team/DGtal/pull/1862))
 # DGtal 2.2
 
 ## New features
