@@ -1,5 +1,11 @@
 # DGtal 2.2.1 (beta)
 
+## Changes
+
+- *Python*
+  - Add quantities with one randomized value per site to display the L1 and L2 Voronoi diagrams in `distanceTransform.py`.
+  - New python example,  `distanceTransform.py`, computing L1 and L2 distance transforms of a vol file (David Coeurjolly, [#1856](https://github.com/DGtal-team/DGtal/pull/1856)).
+
 ## BugFixes
 
 - *Project*
@@ -16,6 +22,10 @@
   (Bertrand Kerautret,  [#1860](https://github.com/DGtal-team/DGtal/pull/1860))
 - *Geometry*
   - Fixing a missing include in `parallelIIShortcuts-viewer` example (David Coeurjolly, issue #1859, [#1862](https://github.com/DGtal-team/DGtal/pull/1862))
+
+- *Doc*
+  - `A` class renamed to avoid extra doxygen links in DOX (David Coeurjolly, [#1856](https://github.com/DGtal-team/DGtal/pull/1856))
+
 
 # DGtal 2.2
 

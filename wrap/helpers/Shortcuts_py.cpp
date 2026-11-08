@@ -108,7 +108,10 @@ void define_types(py::module& m) {
     py::class_<SH3::IdxRange>(m, "IdxRange");
 
     // Containers
-    py::class_<CountedPtr<SH3::BinaryImage>>(m, "__PtrBinaryImage");
+    py::class_<CountedPtr<SH3::BinaryImage>>(m, "__PtrBinaryImage")
+        .def_property_readonly("domain", [](const CountedPtr<SH3::BinaryImage>& image) {
+            return image->domain();
+        }, "The domain of the binary image.");
     py::class_<CountedPtr<SH3::GrayScaleImage>>(m, "__PtrGrayScaleImage");
     py::class_<CountedPtr<SH3::LightDigitalSurface>>(m, "__PtrLightDigitalSurface")
         .def("__len__", [](const CountedPtr<SH3::LightDigitalSurface>& surf) {
@@ -445,6 +448,24 @@ void bind_shortcuts(py::module& m_helpers) {
 }
 
 void bind_voronoimap(py::module& mg) {
+    mg.def("makeL1VoronoiMap", [](const CountedPtr<SH3::BinaryImage>& image, const Parameters& params) {
+            std::vector<SH3::Point> background;
+            for (const auto& p : image->domain())
+                if (!(*image)(p)) background.push_back(p);
+            if (background.empty())
+                throw std::invalid_argument("The binary image must contain background voxels");
+            return SHG3::getDistanceTransformation<1>(image->domain(), background, params);
+        }, py::arg("image"), py::arg("params"),
+        "Compute Manhattan distance to the background of a binary image.");
+    mg.def("makeL2VoronoiMap", [](const CountedPtr<SH3::BinaryImage>& image, const Parameters& params) {
+            std::vector<SH3::Point> background;
+            for (const auto& p : image->domain())
+                if (!(*image)(p)) background.push_back(p);
+            if (background.empty())
+                throw std::invalid_argument("The binary image must contain background voxels");
+            return SHG3::getDistanceTransformation<2>(image->domain(), background, params);
+        }, py::arg("image"), py::arg("params"),
+        "Compute Euclidean distance to the background of a binary image.");
     mg.def("makeL1VoronoiMap", [](const SH3::Domain& d, const std::vector<SHG3::Point>& points, const Parameters& params) {
             return SHG3::getDistanceTransformation<1>(d, points, params);
         });

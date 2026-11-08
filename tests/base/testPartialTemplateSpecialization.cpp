@@ -40,17 +40,17 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 template< typename TC, typename TD >
-class A
+class _A
 {
 public:
-	typedef TC C;
+	typedef TC _C;
 
-  A( const C& c );
+  _A( const _C& c );
 };
 
 template< typename TC, typename TD >
 inline
-A< TC, TD >::A( const C& c )
+_A< TC, TD >::_A( const _C& c )
 {
   boost::ignore_unused_variable_warning( c );
   std::cout << "Generic" << std::endl;
@@ -59,18 +59,18 @@ A< TC, TD >::A( const C& c )
 
 
 template< typename TC > //int specialization
-class B : public A< TC, int >
+class _B : public _A< TC, int >
 {
 public:
-    typedef A< TC, int > Super;
-	typedef typename Super::C C; //Compile en rajoutant cette ligne (et en changeant les appels à Super::C par C)
+    typedef _A< TC, int > Super;
+	typedef typename Super::_C _C; //Compile en rajoutant cette ligne (et en changeant les appels à Super::C par C)
 
-	B( const C& c );
+	_B( const _C& c );
 };
 
 template <typename TC>
 inline
-B<TC>::B( const C& c) : Super(c)
+_B<TC>::_B( const _C& c) : Super(c)
 {
   std::cout << "Specialized" << std::endl;
 }
@@ -79,7 +79,7 @@ B<TC>::B( const C& c) : Super(c)
 
 int main( int /*argc*/, char** /*argv*/ )
 {
-  B<int> a(1);
+  _B<int> a(1);
 
   return 0;
 }

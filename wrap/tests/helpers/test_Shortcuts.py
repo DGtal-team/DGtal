@@ -2,6 +2,29 @@ import pytest
 
 from dgtal import SH3
 from dgtal import helpers
+from dgtal import kernel
+
+
+@pytest.mark.parametrize("metric, expected", [(1, 3), (2, 3 ** 0.5)])
+def test_distance_transform_of_binary_image(metric, expected):
+    # At the center, the nearest background voxel is the missing corner:
+    # Euclidean distance sqrt(3), rather than L1 distance 3 or squared L2 3.
+    points = [kernel.Point3D(x, y, z)
+              for x in range(3) for y in range(3) for z in range(3)
+              if (x, y, z) != (0, 0, 0)]
+    image = SH3.makeBinaryImage(points)
+    make_map = getattr(SH3, f"makeL{metric}VoronoiMap")
+    dt = make_map(image, SH3.defaultParameters())
+    assert dt.distanceToClosestSite(kernel.Point3D(0, 0, 0)) == 0
+    assert dt.distanceToClosestSite(kernel.Point3D(1, 0, 0)) == 1
+    assert dt.distanceToClosestSite(kernel.Point3D(1, 1, 1)) == pytest.approx(expected)
+
+
+@pytest.mark.parametrize("metric", [1, 2])
+def test_distance_transform_requires_background(metric):
+    image = SH3.makeBinaryImage([kernel.Point3D(0, 0, 0)])
+    with pytest.raises(ValueError, match="background voxels"):
+        getattr(SH3, f"makeL{metric}VoronoiMap")(image, SH3.defaultParameters())
 
 
 def _make_surface_data():
