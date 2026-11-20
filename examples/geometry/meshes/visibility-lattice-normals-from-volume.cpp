@@ -1,3 +1,47 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU Lesser General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file geometry/meshes/visibility-lattice-normals-from-volume.cpp
+ * @ingroup Examples
+ * @author Romain Negro (\c romain.negro@univ-smb.fr )
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2026/11/20
+ *
+ * Computes visibility-based normals from a binary 3D volume and writes one
+ * row per pointel: position (x, y, z) followed by the normal (nx, ny, nz).
+ * Positions are expressed in physical units using the selected grid step.
+ *
+ * Usage:
+ * \verbatim
+ * ./examples/geometry/meshes/visibility-lattice-normals-from-volume input.vol output.txt [gridstep [radius [sigma]]]
+ * \endverbatim
+ *
+ * Defaults: gridstep is 1, radius is inferred from gridstep, and sigma is
+ * 1/sqrt(gridstep). The neighborhood radius is 2*sigma.
+ *
+ * This file is part of the DGtal library.
+ *
+ * @see \ref moduleVisibilityLattice
+ * @see geometry/meshes/visibility-lattice-normals-goursat.cpp
+ * @example geometry/meshes/visibility-lattice-normals-from-volume.cpp
+ */
+
 #include <algorithm>
 #include <cmath>
 #include <cstdlib>

@@ -15,7 +15,7 @@
  **/
 
 /**
- * @file geometry/meshes/visibility-lattice-normals.cpp
+ * @file geometry/meshes/visibility-lattice-normals-goursat.cpp
  * @ingroup Examples
  * @author Romain Negro (\c romain.negro@univ-smb.fr )
  * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
@@ -23,23 +23,24 @@
  *
  * @date 2026/08/27
  *
- * An example file named visibility-lattice-normals.
+ * Standalone Goursat-shape example for visibility-based normal estimation.
  *
  * This file is part of the DGtal library.
  */
 
 /**
    Computes visibility-based normals with VisibilityLatticeEstimator
-   from pointels extracted on a digitized implicit 3D shape.
+   from pointels extracted on a digitized implicit Goursat shape.
 
 \verbatim
-./examples/geometry/meshes/visibility-lattice-normals [gridstep]
+./examples/geometry/meshes/visibility-lattice-normals-goursat [gridstep]
 \endverbatim
 
 It outputs `goursat-visibility-lattice-normals.obj`.
 
 @see \ref moduleVisibilityLattice
-@example geometry/meshes/visibility-lattice-normals.cpp
+@see geometry/meshes/visibility-lattice-normals-from-volume.cpp
+@example geometry/meshes/visibility-lattice-normals-goursat.cpp
  */
 
 #include <algorithm>

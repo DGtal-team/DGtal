@@ -100,12 +100,21 @@ Kernel and center choices are available through:
 
 \section moduleVisibilityLattice_sec4 Example
 
-The full example \ref geometry/meshes/visibility-lattice-normals.cpp shows how to:
+The \ref geometry/meshes/visibility-lattice-normals-goursat.cpp example
+demonstrates the estimator on a digitized implicit Goursat shape and exports
+an OBJ vector field. The
+\ref geometry/meshes/visibility-lattice-normals-from-volume.cpp example
+instead reads a binary volume and writes point positions and normals as
+six-column text rows.
 
-- extract pointels from a digitized 3D implicit shape;
+Both examples:
+
+- extract pointels from a 3D digital surface, generated from a Goursat shape
+  or read from a volume;
 - compute visibility with VisibilityLatticeEstimator;
 - estimate and export visibility-based normals.
 
-@see geometry/meshes/visibility-lattice-normals.cpp
+@see geometry/meshes/visibility-lattice-normals-goursat.cpp
+@see geometry/meshes/visibility-lattice-normals-from-volume.cpp
 */
 }
