@@ -85,16 +85,13 @@ namespace DGtal
    * (preferably of category 'random_access_iterator_tag').
    * @tparam TInteger the type of scalars used for the coordinates of the
    * points (satisfying CInteger)
-   * @tparam TCategory category of segment computer, i.e. ForwardSegmentComputer
-   * (default), BidirectionalSegmentComputer, DynamicSegmentComputer or
-   * DynamicBidirectionalSegmentComputer, used by the functions of
+   * @tparam TCategory category of segment computer, i.e. ForwardSegmentComputer,
+   * BidirectionalSegmentComputer, DynamicSegmentComputer or
+   * DynamicBidirectionalSegmentComputer (default), used by the functions of
    * SegmentComputerHelpers.h (and thus by the segmentation algorithms) to
    * select the algorithm. All the methods are available whatever the chosen
    * category; choosing a lower category is useful to compare the algorithms
    * (e.g. their running time).
-   * @note ForwardSegmentComputer is the default category because the
-   * algorithms dedicated to the other categories do not give the expected
-   * results yet in all cases (see testSegmentComputerCategories.cpp).
    * @warning The algorithms dedicated to ForwardSegmentComputer and
    * DynamicSegmentComputer scan the codes backward through the Reverse type,
    * whereas Reverse is here the same type as Self (reading a word backward
@@ -103,7 +100,7 @@ namespace DGtal
 
 
   template <typename TConstIterator, typename TInteger,
-            typename TCategory = ForwardSegmentComputer>
+            typename TCategory = DynamicBidirectionalSegmentComputer>
     class OneBalancedWordComputer
   {
     static_assert( isSegmentComputerCategoryCompatible<TCategory, DynamicBidirectionalSegmentComputer>,

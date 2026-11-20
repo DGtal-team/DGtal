@@ -74,16 +74,13 @@ namespace DGtal
    * which is a model of CInteger.
    * @tparam adjacency an unsigned integer equal to 4 for standard
    * (simply 4-connected) DSS or 8 for naive (simply 8-connected) DSS (default).
-   * @tparam TCategory category of segment computer, i.e. ForwardSegmentComputer
-   * (default), BidirectionalSegmentComputer, DynamicSegmentComputer or
-   * DynamicBidirectionalSegmentComputer, used by the functions
+   * @tparam TCategory category of segment computer, i.e. ForwardSegmentComputer,
+   * BidirectionalSegmentComputer, DynamicSegmentComputer or
+   * DynamicBidirectionalSegmentComputer (default), used by the functions
    * of SegmentComputerHelpers.h (and thus by the segmentation algorithms)
    * to select the algorithm. All the methods are available whatever
    * the chosen category; choosing a lower category is useful to compare
    * the algorithms (e.g. their running time).
-   * @note ForwardSegmentComputer is the default category because the
-   * algorithms dedicated to the other categories do not give the expected
-   * results yet in all cases (see testSegmentComputerCategories.cpp).
    *
    * This class is a model of CDynamicBidirectionalSegmentComputer.
    * It is also default constructible, copy constructible, assignable and equality comparable.
@@ -94,7 +91,7 @@ namespace DGtal
   template <typename TIterator,
     typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate,
     unsigned short adjacency = 8,
-    typename TCategory = ForwardSegmentComputer>
+    typename TCategory = DynamicBidirectionalSegmentComputer>
   class ArithmeticalDSSComputer
   {
     static_assert( isSegmentComputerCategoryCompatible<TCategory, DynamicBidirectionalSegmentComputer>,
@@ -479,7 +476,7 @@ namespace DGtal
    */
   template <typename TIterator,
             typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate,
-            typename TCategory = ForwardSegmentComputer>
+            typename TCategory = DynamicBidirectionalSegmentComputer>
   using StandardDSS4Computer = ArithmeticalDSSComputer<TIterator, TInteger, 4, TCategory>;
 
   /**
@@ -505,7 +502,7 @@ namespace DGtal
    */
   template <typename TIterator,
             typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate,
-            typename TCategory = ForwardSegmentComputer>
+            typename TCategory = DynamicBidirectionalSegmentComputer>
   using NaiveDSS8Computer = ArithmeticalDSSComputer<TIterator, TInteger, 8, TCategory>;
 
 } // namespace DGtal

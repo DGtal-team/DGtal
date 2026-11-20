@@ -56,6 +56,10 @@
 #include "DGtal/io/boards/Board2D.h"
 #include "DGtal/io/boards/CDrawableWithBoard2D.h"
 
+#include "DGtal/helpers/StdDefs.h"
+#include "DGtal/geometry/curves/FreemanChain.h"
+#include <fstream>
+#include <type_traits>
 #include "ConfigTest.h"
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -257,6 +261,99 @@ bool testStabbingCircleComputer(const TCurve& curve)
 }
 
 /**
+ * Extension operations with extendBack, on an iterator or a circulator.
+ * For each element i of a range of n elements:
+ * - the longest segment s starting at i, computed by forward extensions,
+ *   must be equal to the segment computed by backward extensions from the
+ *   last element of s, bounded by the length of s;
+ * - the longest segment u ending at i, computed by backward extensions,
+ *   must be equal to the segment computed by forward extensions from the
+ *   first element of u, bounded by the length of u.
+ * The length of the segments is bounded by n (whole range for a circulator).
+ *
+ * @param itb begin iterator (or circulator) of the range
+ * @param ite end iterator (or circulator) of the range
+ * @param n number of elements of the range
+ * @tparam SC type of segment computer
+ * @tparam I type of iterator or circulator
+ */
+template <typename SC, typename I>
+bool testBackwardExtension(const I& itb, const I& ite, unsigned int n)
+{
+  const bool isCirculator =
+    std::is_same_v<typename IteratorCirculatorTraits<I>::Type, CirculatorType>;
+  (void) ite;
+
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+
+  I i( itb );
+  for (unsigned int k = 0; k < n; ++k, ++i)
+  {
+    //forward extensions, then backward extensions
+    unsigned int limit = isCirculator ? n : n-k;
+    SC s; s.init( i );
+    unsigned int ms = 1;
+    while ( (ms < limit) && (s.extendFront()) ) ++ms;
+    I last( s.end() ); --last;
+    SC t; t.init( last );
+    unsigned int mt = 1;
+    while ( (mt < ms) && (t.extendBack()) ) ++mt;
+    bool flag1 = (mt == ms) && (t.begin() == s.begin()) && (t.end() == s.end()) && (s == t);
+
+    //backward extensions, then forward extensions
+    limit = isCirculator ? n : k+1;
+    SC u; u.init( i );
+    unsigned int mu = 1;
+    while ( (mu < limit) && (u.extendBack()) ) ++mu;
+    SC v; v.init( u.begin() );
+    unsigned int mv = 1;
+    while ( (mv < mu) && (v.extendFront()) ) ++mv;
+    bool flag2 = (mv == mu) && (v.begin() == u.begin()) && (v.end() == u.end()) && (u == v);
+
+    if ( !flag1 )
+      trace.info() << "element " << k << ": " << ms << " forward extensions, but "
+                   << mt << " backward extensions" << std::endl;
+    if ( !flag2 )
+      trace.info() << "element " << k << ": " << mu << " backward extensions, but "
+                   << mv << " forward extensions" << std::endl;
+    nbok += (flag1 && flag2) ? 1 : 0;
+    nb++;
+  }
+
+  trace.info() << "(" << nbok << "/" << nb << ") " << endl;
+  return nbok == nb;
+}
+
+/**
+ * Extension operations with extendBack on a curve,
+ * with iterators and, if the curve is closed, with circulators.
+ */
+template <typename TCurve>
+bool testBackwardExtension(const TCurve& curve, const std::string& name, bool isClosed)
+{
+  typedef typename TCurve::IncidentPointsRange Range; //range
+  typedef typename Range::ConstIterator ConstIterator; //iterator
+  typedef typename Range::ConstCirculator ConstCirculator; //circulator
+
+  Range r = curve.getIncidentPointsRange();
+  unsigned int n = r.size();
+  bool res = true;
+
+  trace.beginBlock ( "Extension operations with extendBack (" + name + ", iterators)" );
+  res = res && testBackwardExtension<StabbingCircleComputer<ConstIterator> >( r.begin(), r.end(), n );
+  trace.endBlock();
+
+  if ( ! isClosed ) return res;
+
+  trace.beginBlock ( "Extension operations with extendBack (" + name + ", circulators)" );
+  res = res && testBackwardExtension<StabbingCircleComputer<ConstCirculator> >( r.c(), r.c(), n );
+  trace.endBlock();
+
+  return res;
+}
+
+/**
  * Recognition of randomly generated digital circles
  */
 bool testRecognition()
@@ -433,6 +530,38 @@ int main( int argc, char** argv )
 
   {//recognition
     res = res && testRecognition();
+  }
+
+  {//extension operations with extendBack on a digital circle
+    typedef KhalimskySpaceND<2,int> KSpace;
+    typedef KSpace::Space::Point Point;
+    KSpace kspace(Point::diagonal(-10),Point::diagonal(10),true);
+    GridCurve<KSpace> c;
+    ballGenerator(kspace,c,6,false);
+
+    res = res && testBackwardExtension( c, "ball of radius 6", true );
+  }
+  {//extension operations with extendBack on an open curve
+    std::string filename = testPath + "samples/manche.fc";
+    std::fstream fst( filename.c_str(), std::ios::in );
+    FreemanChain<int> fc( fst );
+    std::vector<Z2i::Point> points( fc.begin(), fc.end() );
+    Z2i::Curve c;
+    c.initFromPointsVector( points );
+
+    res = res && testBackwardExtension( c, "manche.fc", false );
+  }
+
+  {//extension operations with extendBack on a closed curve
+    std::string filename = testPath + "samples/contourS.fc";
+    std::fstream fst( filename.c_str(), std::ios::in );
+    FreemanChain<int> fc( fst );
+    std::vector<Z2i::Point> points( fc.begin(), fc.end() );
+    points.pop_back(); //the last point is equal to the first one
+    Z2i::Curve c;
+    c.initFromPointsVector( points );
+
+    res = res && testBackwardExtension( c, "contourS.fc", true );
   }
 
   {//segmentations
