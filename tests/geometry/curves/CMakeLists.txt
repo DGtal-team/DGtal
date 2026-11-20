@@ -5,6 +5,7 @@ set(DGTAL_TESTS_SRC
   testFreemanChain
   testSegmentation
   testSegmentComputerCategories
+  testSegmentComputerHelpers
   testFP
   testGridCurve
   testCombinDSS

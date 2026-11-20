@@ -360,7 +360,7 @@ See @ref moduleBoard2D and @ref moduleArithDSSReco for the drawing mechanism.
 As seen above, the code can be different if an iterator or a circulator is used
 as the nested ConstIterator type. Moreover, some tasks can be made faster for a
 given kind of segment computer than for another kind of segment computer.
-That's why many generic functions are provided in the file DGtal/geometry/curves/SegmentComputerUtils.h:
+That's why many generic functions are provided in the file DGtal/geometry/curves/SegmentComputerHelpers.h:
 
 - maximalExtension, oppositeEndMaximalExtension, maximalSymmetricExtension,
 - maximalRetraction, oppositeEndMaximalRetraction,

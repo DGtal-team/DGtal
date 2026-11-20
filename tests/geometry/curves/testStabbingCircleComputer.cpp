@@ -48,7 +48,7 @@
 
 #include "DGtal/geometry/curves/StabbingCircleComputer.h"
 
-#include "DGtal/geometry/curves/SegmentComputerUtils.h"
+#include "DGtal/geometry/curves/SegmentComputerHelpers.h"
 #include "DGtal/geometry/curves/GreedySegmentation.h"
 #include "DGtal/geometry/curves/SaturatedSegmentation.h"
 

@@ -44,7 +44,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CowPtr.h"
 #include "DGtal/base/ConceptUtils.h"
-#include "DGtal/geometry/curves/SegmentComputerUtils.h"
+#include "DGtal/geometry/curves/SegmentComputerHelpers.h"
 
 #include "DGtal/geometry/curves/StabbingLineComputer.h"
 #include "DGtal/shapes/fromPoints/CircleFrom2Points.h"
@@ -108,7 +108,7 @@ namespace DGtal
    * @tparam TConstIterator ConstIterator type on STL pairs of 2D points
    * @tparam TCategory category of segment computer, i.e. ForwardSegmentComputer
    * (default) or BidirectionalSegmentComputer, used by the functions of
-   * SegmentComputerUtils.h (and thus by the segmentation algorithms) to
+   * SegmentComputerHelpers.h (and thus by the segmentation algorithms) to
    * select the algorithm. All the methods are available whatever the chosen
    * category; choosing a lower category is useful to compare the algorithms
    * (e.g. their running time).

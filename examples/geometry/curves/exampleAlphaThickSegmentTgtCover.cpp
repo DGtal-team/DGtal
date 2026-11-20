@@ -51,7 +51,7 @@
 #include "DGtal/base/Circulator.h"
 //! [SaturatedAlphaThickCoverHeader]
 //! [SaturatedAlphaThickCoverHeaderSingle]
-#include "DGtal/geometry/curves/SegmentComputerUtils.h"
+#include "DGtal/geometry/curves/SegmentComputerHelpers.h"
 //! [SaturatedAlphaThickCoverHeaderSingle]
 
 

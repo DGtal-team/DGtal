@@ -52,7 +52,7 @@
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/base/ReverseIterator.h"
 #include "DGtal/geometry/curves/ArithmeticalDSS.h"
-#include "DGtal/geometry/curves/SegmentComputerUtils.h"
+#include "DGtal/geometry/curves/SegmentComputerHelpers.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -77,7 +77,7 @@ namespace DGtal
    * @tparam TCategory category of segment computer, i.e. ForwardSegmentComputer
    * (default), BidirectionalSegmentComputer, DynamicSegmentComputer or
    * DynamicBidirectionalSegmentComputer, used by the functions
-   * of SegmentComputerUtils.h (and thus by the segmentation algorithms)
+   * of SegmentComputerHelpers.h (and thus by the segmentation algorithms)
    * to select the algorithm. All the methods are available whatever
    * the chosen category; choosing a lower category is useful to compare
    * the algorithms (e.g. their running time).

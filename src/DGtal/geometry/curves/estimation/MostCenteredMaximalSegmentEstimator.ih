@@ -112,7 +112,7 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
   if ( (itb == ite) && (first.intersectPrevious() && last.intersectNext() ) )
     {//if first and last segment intersect (whole range)
      //last segment
-      ConstIterator itEnd = getMiddleIterator( first->begin(), last->end() );//(floor)
+      ConstIterator itEnd = subRangeMiddle( first->begin(), last->end() );//(floor)
       ++itEnd; //(ceil)
       mySCEstimator.attach( *last );
       result = mySCEstimator.eval( itCurrent, itEnd, result );
@@ -179,7 +179,7 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
       //main loop
       while (nextSegIt != segItEnd)
       {
-        ConstIterator itEnd = getMiddleIterator( nextSegIt->begin(), segIt->end() );//(floor)
+        ConstIterator itEnd = subRangeMiddle( nextSegIt->begin(), segIt->end() );//(floor)
         ++itEnd;//(ceil)
 
         mySCEstimator.attach( *segIt );

@@ -43,7 +43,7 @@
 #include <iostream>
 #include "DGtal/base/Common.h"
 
-#include "DGtal/geometry/curves/SegmentComputerUtils.h"
+#include "DGtal/geometry/curves/SegmentComputerHelpers.h"
 #include "DGtal/geometry/curves/CForwardSegmentComputer.h"
 
 //////////////////////////////////////////////////////////////////////////////

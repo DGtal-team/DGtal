@@ -163,7 +163,7 @@ bool testFromDCA(
     TangentFromDCAEstimator<DCAComputer> f;
     f.attach(dca);
     typedef typename TangentFromDCAEstimator<DCAComputer>::Quantity Quantity;
-    typename DCAComputer::ConstIterator it = DGtal::getMiddleIterator(itb, ite);
+    typename DCAComputer::ConstIterator it = DGtal::subRangeMiddle(itb, ite);
     Quantity q1 = f.eval( it );
     trace.info() << "Tangent: " << q1 << " == [PointVector] {1, 0} " << std::endl;
     nbok += (std::abs(q1[0]-1.0) < epsilon)
@@ -175,7 +175,7 @@ bool testFromDCA(
   { //position
     DistanceFromDCAEstimator<DCAComputer> f;
     typedef typename DistanceFromDCAEstimator<DCAComputer>::Quantity Quantity;
-    typename DCAComputer::ConstIterator it = DGtal::getMiddleIterator(itb, ite);
+    typename DCAComputer::ConstIterator it = DGtal::subRangeMiddle(itb, ite);
     f.init(1.0, itb, ite);
     f.attach(dca);
     Quantity q1 = f.eval( it );

@@ -43,7 +43,7 @@
 
 #include "DGtal/geometry/curves/FreemanChain.h"
 #include "DGtal/geometry/curves/GridCurve.h"
-#include "DGtal/geometry/curves/SegmentComputerUtils.h"
+#include "DGtal/geometry/curves/SegmentComputerHelpers.h"
 #include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
 #include "DGtal/geometry/curves/OneBalancedWordComputer.h"
 #include "DGtal/geometry/curves/StabbingLineComputer.h"
@@ -192,11 +192,7 @@ void checkMaximalSegments (TIterator const& itb, TIterator const& ite)
 }
 
 //////////////////////////////////////////////////////////////
-// Hidden test case (tag [.diagnostic]), which compares the saturated
-// segmentations to a brute-force computation of the maximal segments.
-// It currently fails for the bidirectional categories of
-// OneBalancedWordComputer, StabbingLineComputer and StabbingCircleComputer.
-TEMPLATE_TEST_CASE("Saturated segmentations return the maximal segments", "[.diagnostic]",
+TEMPLATE_TEST_CASE("Saturated segmentations return the maximal segments", "",
                    ForwardSegmentComputer, BidirectionalSegmentComputer,
                    DynamicSegmentComputer, DynamicBidirectionalSegmentComputer)
 {
@@ -309,10 +305,7 @@ TEMPLATE_TEST_CASE("Segmentations with ArithmeticalDSSComputer do not depend on 
 }
 
 //////////////////////////////////////////////////////////////
-// Hidden test case (tag [.knownbug]): the algorithms of SegmentComputerUtils.h
-// dedicated to bidirectional segment computers do not give the expected
-// results yet for this segment computer.
-TEST_CASE("Segmentations with OneBalancedWordComputer do not depend on the category", "[.knownbug]")
+TEST_CASE("Segmentations with OneBalancedWordComputer do not depend on the category")
 {
   Contour contour = readContour("manche.fc");
   std::string const& codes = contour.chain;
@@ -334,10 +327,7 @@ TEST_CASE("Segmentations with OneBalancedWordComputer do not depend on the categ
 }
 
 //////////////////////////////////////////////////////////////
-// Hidden test case (tag [.knownbug]): the algorithms of SegmentComputerUtils.h
-// dedicated to bidirectional segment computers do not give the expected
-// results yet for this segment computer.
-TEST_CASE("Segmentations with StabbingLineComputer and StabbingCircleComputer do not depend on the category", "[.knownbug]")
+TEST_CASE("Segmentations with StabbingLineComputer and StabbingCircleComputer do not depend on the category (open curves)")
 {
   Contour contour = readContour("manche.fc");
   std::vector<Point> points( contour.begin(), contour.end() );
@@ -346,7 +336,6 @@ TEST_CASE("Segmentations with StabbingLineComputer and StabbingCircleComputer do
   REQUIRE( curve.initFromPointsVector(points) );
   auto range = curve.getIncidentPointsRange();
   using Iterator = decltype(range)::ConstIterator;
-  using Circulator = decltype(range)::ConstCirculator;
 
   SECTION("Open curve, StabbingLineComputer")
   {
@@ -355,18 +344,35 @@ TEST_CASE("Segmentations with StabbingLineComputer and StabbingCircleComputer do
       ( range.begin(), range.end() );
   }
 
-  SECTION("Closed curve, StabbingLineComputer")
-  {
-    checkSameSegmentations<StabbingLineComputer<Circulator, BidirectionalSegmentComputer>,
-                           StabbingLineComputer<Circulator, ForwardSegmentComputer> >
-      ( range.c(), range.c() );
-  }
-
   SECTION("Open curve, StabbingCircleComputer")
   {
     checkSameSegmentations<StabbingCircleComputer<Iterator, BidirectionalSegmentComputer>,
                            StabbingCircleComputer<Iterator, ForwardSegmentComputer> >
       ( range.begin(), range.end() );
+  }
+}
+
+// Hidden test case (tag [.knownbug]): on closed curves, the bidirectional
+// algorithms do not give the same segmentations as the forward ones with
+// StabbingLineComputer and StabbingCircleComputer (the latter does not even
+// terminate), whereas all the functions of SegmentComputerHelpers.h pass
+// the tests of testSegmentComputerHelpers.cpp: the bug is likely in the
+// backward extension of these segment computers on circulators.
+TEST_CASE("Segmentations with StabbingLineComputer and StabbingCircleComputer do not depend on the category (closed curves)", "[.knownbug]")
+{
+  Contour contour = readContour("manche.fc");
+  std::vector<Point> points( contour.begin(), contour.end() );
+  points.pop_back(); // the last point is equal to the first one
+  Z2i::Curve curve;
+  REQUIRE( curve.initFromPointsVector(points) );
+  auto range = curve.getIncidentPointsRange();
+  using Circulator = decltype(range)::ConstCirculator;
+
+  SECTION("Closed curve, StabbingLineComputer")
+  {
+    checkSameSegmentations<StabbingLineComputer<Circulator, BidirectionalSegmentComputer>,
+                           StabbingLineComputer<Circulator, ForwardSegmentComputer> >
+      ( range.c(), range.c() );
   }
 
   SECTION("Closed curve, StabbingCircleComputer")

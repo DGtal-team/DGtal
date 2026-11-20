@@ -51,7 +51,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 
-#include "DGtal/geometry/curves/SegmentComputerUtils.h"
+#include "DGtal/geometry/curves/SegmentComputerHelpers.h"
 
 
 #define PRECISION 0.00000001
