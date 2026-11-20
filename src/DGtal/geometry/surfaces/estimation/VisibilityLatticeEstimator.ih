@@ -702,27 +702,27 @@ visibilityNormalAt( const std::vector<Point>& pointels,
                     Scalar minus2SigmaSquare )
 {
   const Point pointel = pointels[ pidx ];
-  std::vector<Point> visibles;
-  visibles.reserve( 64 );
+  std::vector<Point> visiblePoints;
+  visiblePoints.reserve( 64 );
   for ( const auto& q : pointels )
   {
     const Scalar d2 = static_cast<Scalar>(( pointel - q ).squaredNorm());
-    if ( d2 <= neighborhood2 && isVisible( pointel, q ) ) visibles.push_back( q );
+    if ( d2 <= neighborhood2 && isVisible( pointel, q ) ) visiblePoints.push_back( q );
   }
-  if ( autoLimiter && !visibles.empty() )
+  if ( autoLimiter && !visiblePoints.empty() )
   {
     Scalar avgDist = 0.0;
-    for ( const auto& q : visibles )
+    for ( const auto& q : visiblePoints )
       avgDist += std::sqrt( static_cast<Scalar>(( pointel - q ).squaredNorm()) );
-    avgDist /= static_cast<Scalar>( visibles.size() ) / autoLimiterRatio;
+    avgDist /= static_cast<Scalar>( visiblePoints.size() ) / autoLimiterRatio;
     std::vector<Point> filtered;
-    filtered.reserve( visibles.size() );
-    for ( const auto& q : visibles )
+    filtered.reserve( visiblePoints.size() );
+    for ( const auto& q : visiblePoints )
       if ( std::sqrt( static_cast<Scalar>(( pointel - q ).squaredNorm()) ) <= avgDist )
         filtered.push_back( q );
-    visibles.swap( filtered );
+    visiblePoints.swap( filtered );
   }
-  if ( visibles.empty() ) return RealVector::zero;
+  if ( visiblePoints.empty() ) return RealVector::zero;
 
   RealPoint centroid = RealPoint::zero;
   if ( centerChoice == VisibilityCenter::Itself )
@@ -730,7 +730,7 @@ visibilityNormalAt( const std::vector<Point>& pointels,
   else
   {
     Scalar totalW = 0.0;
-    for ( const auto& q : visibles )
+    for ( const auto& q : visiblePoints )
     {
       const Scalar d2 = static_cast<Scalar>(( pointel - q ).squaredNorm());
       const Scalar w  = visibilityWeight( d2, kernelChoice, minus2SigmaSquare );
@@ -743,7 +743,7 @@ visibilityNormalAt( const std::vector<Point>& pointels,
 
   typedef Eigen::Matrix< double, Space::dimension, Space::dimension > CovarianceMatrix;
   CovarianceMatrix cov = CovarianceMatrix::Zero();
-  for ( const auto& q : visibles )
+  for ( const auto& q : visiblePoints )
   {
     const RealVector d  = q - centroid;
     const Scalar d2     = static_cast<Scalar>(( q - pointel ).squaredNorm());
@@ -752,7 +752,7 @@ visibilityNormalAt( const std::vector<Point>& pointels,
       for ( Dimension j = 0; j < Space::dimension; ++j )
         cov( i, j ) += d[ i ] * d[ j ] * w;
   }
-  cov /= static_cast<double>( visibles.size() );
+  cov /= static_cast<double>( visiblePoints.size() );
   Eigen::SelfAdjointEigenSolver<CovarianceMatrix> solver( cov );
   if ( solver.info() != Eigen::Success ) return RealVector::zero;
   RealVector n = RealVector::zero;

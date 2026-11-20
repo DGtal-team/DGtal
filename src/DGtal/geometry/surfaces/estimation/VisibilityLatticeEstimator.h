@@ -83,7 +83,7 @@ namespace DGtal
     {
     public:
       Dimension mainAxis{};
-      std::vector< bool > visibles;
+      std::vector< bool > visibleMask;
       std::size_t vectorsSize{};
       std::size_t pointsSize{};
       std::map< Point, std::size_t > pointIdxs;
@@ -124,7 +124,7 @@ namespace DGtal
         {
           const auto pointIdx = getPointIdx( p );
           if ( pointIdx == pointsSize ) return false;
-          if ( !visibles[ vIdx * pointsSize + pointIdx ] ) return false;
+          if ( !visibleMask[ vIdx * pointsSize + pointIdx ] ) return false;
         }
         return true;
       }
@@ -145,7 +145,7 @@ namespace DGtal
         {
           const auto pointIdx = getPointIdx( p );
           if ( pointIdx == pointsSize ) continue;
-          visibles[ vIdx * pointsSize + pointIdx ] = true;
+          visibleMask[ vIdx * pointsSize + pointIdx ] = true;
         }
       }
 
@@ -161,14 +161,14 @@ namespace DGtal
             p[ mainAxis ] = i;
             const auto pointIdx = getPointIdx( p );
             if ( pointIdx == pointsSize ) continue;
-            visibles[ vectorIdx * pointsSize + pointIdx ] = true;
+            visibleMask[ vectorIdx * pointsSize + pointIdx ] = true;
           }
         }
       }
 
       bool empty() const
       {
-        return std::all_of( visibles.cbegin(), visibles.cend(),
+        return std::all_of( visibleMask.cbegin(), visibleMask.cend(),
                             [] ( bool v ) { return !v; } );
       }
 
@@ -179,7 +179,7 @@ namespace DGtal
         mainAxis = axis;
         vectorsSize = vectors.size();
         pointsSize = points.size();
-        visibles = std::vector< bool >( vectorsSize * pointsSize, false );
+        visibleMask = std::vector< bool >( vectorsSize * pointsSize, false );
         pointIdxs.clear();
         vectorIdxs.clear();
         for ( std::size_t i = 0; i < pointsSize; ++i )
