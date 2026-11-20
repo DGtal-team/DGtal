@@ -1,5 +1,10 @@
 # DGtal 2.2.1 (beta)
 
+## New features
+
+- *Geometry*
+  - Add `VisibilityLatticeEstimator` for exact visibility computation on digitized shapes and visibility-based normal estimation, with shortcuts, examples, documentation, and tests ([#1863](https://github.com/DGtal-team/DGtal/pull/1863)).
+
 ## BugFixes
 
 - *Project*
