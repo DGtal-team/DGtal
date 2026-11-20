@@ -1,0 +1,120 @@
+/**
+ * @file moduleVisibilityLattice.dox
+ * @author Romain Negro (\c romain.negro@univ-smb.fr )
+ * @author Jacques-Olivier Lachaud (\c jacques-olivier.lachaud@univ-savoie.fr )
+ * Laboratory of Mathematics (CNRS, UMR 5127), University of Savoie, France
+ *
+ * @date 2026/11/20
+ *
+ * Documentation file for feature VisibilityLattice.
+ *
+ * This file is part of the DGtal library.
+ */
+
+namespace DGtal {
+/*!
+@page moduleVisibilityLattice Visibility lattice estimation
+@writers Romain Negro
+
+[TOC]
+
+Part of the \ref packageGeometry.
+
+\section moduleVisibilityLattice_sec1 Purpose
+
+This module provides visibility-based geometric estimators on pointel sets
+through lattice matching. It computes:
+
+- a visibility relation between pointels and primitive directions;
+- normal vectors from this visibility relation, using weighted local covariance.
+
+The method is described in the DGMM 2025 proceedings
+@cite NegroLachaudDGMM2025 and in its convergence-focused JMIV article
+@cite NegroLachaudJMIV2026. The latter is part of the
+<a href="https://link.springer.com/journal/10851/volumes-and-issues/68-5">
+JMIV special issue, volume 68, issue 5</a>.
+
+\section moduleVisibilityLattice_sec1_visibility What visibility means
+
+Let @f$X@f$ be a digital shape and @f$p,q@f$ two of its pointels. They are
+visible in @f$X@f$ when the cells touched by the segment @f$[p,q]@f$ all
+belong to the cubical star of @f$X@f$. In other words, the segment can follow
+the boundary's immediate digital neighborhood, but cannot cut across a gap
+or pass through the interior of a salient feature. Visibility is not
+necessarily connected: visible pointels from a given point may be separated
+in the digital adjacency graph.
+
+The estimator computes visibility exactly up to a requested radius. It
+represents the cubical star as a lattice map: for each projection onto the
+chosen main axis, the occupied lattice coordinates are stored as ordered
+integer intervals. For each primitive direction whose infinity norm is at
+most the radius, translated intervals are intersected to determine all visible
+segments. This interval matching does not rely on traversing a connected
+visible neighborhood and works in arbitrary dimension.
+
+\section moduleVisibilityLattice_sec2_normals Visibility-based normal estimation
+
+For a pointel @f$p@f$, the normal estimator considers only pointels visible
+from @f$p@f$ and within the selected neighborhood radius. A Gaussian weight
+with scale @f$\\sigma@f$ can down-weight distant pointels; other available
+kernel choices are \c Ring and \c None. The weighted centroid of the
+neighborhood (or @f$p@f$ itself) is used as the covariance center. The
+estimated normal direction is the eigenvector associated with the smallest
+eigenvalue of the weighted covariance matrix.
+
+Restricting the neighborhood by visibility helps retain sharp features and
+gaps that an ordinary Euclidean neighborhood can mix together. On digitized
+smooth shapes, the article reports convergence behavior as the grid is
+refined; the JMIV article develops the corresponding convergence analysis.
+The eigenvector's sign is not oriented by this API, so applications that need
+oriented normals must orient the returned vectors separately.
+
+\section moduleVisibilityLattice_sec3 API and parameters
+
+The main implementation is:
+
+- VisibilityLatticeEstimator.
+
+\subsection moduleVisibilityLattice_sec3_api Main API
+
+For a given space \c TSpace:
+
+- VisibilityLatticeEstimator<TSpace>::getVisibility computes the visibility relation;
+- VisibilityLatticeEstimator<TSpace>::getNormalVisibility computes normals from a precomputed visibility;
+- VisibilityLatticeEstimator<TSpace>::getVisibilityNormalVectors computes normals from a custom visibility predicate.
+
+The corresponding \ref ShortcutsGeometry convenience methods also accept
+DGtal \c Parameters objects. The visibility computation is controlled by
+\c radius (maximum primitive-direction infinity norm), \c nStar (number of star-cover
+dilations), and \c gridstep (used to infer a radius when \c radius is \c -1).
+Normal estimation uses \c sigma for the weighting kernel,
+\c neighborhood-radius for the spatial cutoff, \c auto-limiter and
+\c auto-limiter-ratio to trim distant visible pointels, and
+\c visibility-center and \c visibility-kernel for the center and weight
+policies.
+
+Kernel and center choices are available through:
+
+- VisibilityLatticeEstimator<TSpace>::VisibilityKernel;
+- VisibilityLatticeEstimator<TSpace>::VisibilityCenter.
+
+\section moduleVisibilityLattice_sec4 Example
+
+The \ref geometry/meshes/visibility-lattice-normals-goursat.cpp example
+demonstrates the estimator on a digitized implicit Goursat shape and exports
+an OBJ vector field. The
+\ref geometry/meshes/visibility-lattice-normals-from-volume.cpp example
+instead reads a binary volume and writes point positions and normals as
+six-column text rows.
+
+Both examples:
+
+- extract pointels from a 3D digital surface, generated from a Goursat shape
+  or read from a volume;
+- compute visibility with VisibilityLatticeEstimator;
+- estimate and export visibility-based normals.
+
+@see geometry/meshes/visibility-lattice-normals-goursat.cpp
+@see geometry/meshes/visibility-lattice-normals-from-volume.cpp
+*/
+}

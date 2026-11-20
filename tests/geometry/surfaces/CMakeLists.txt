@@ -13,6 +13,7 @@ set(TESTS_SURFACES_SRC
   testTensorVoting
   testEstimatorCache
   testSphericalHoughNormalVectorEstimator
+  testVisibilityLatticeEstimator
   testDigitalSurfaceRegularization
   testShroudsRegularization
   )

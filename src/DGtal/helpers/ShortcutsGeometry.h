@@ -39,6 +39,8 @@
 #define ShortcutsGeometry_h
 
 //////////////////////////////////////////////////////////////////////////////
+#include <cmath>
+#include <numeric>
 #include "DGtal/helpers/Shortcuts.h"
 #include "DGtal/kernel/BasicPointPredicates.h"
 #include "DGtal/geometry/volumes/distance/LpMetric.h"
@@ -51,6 +53,7 @@
 #include "DGtal/geometry/surfaces/estimation/IIGeometricFunctors.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantVolumeEstimator.h"
 #include "DGtal/geometry/surfaces/estimation/IntegralInvariantCovarianceEstimator.h"
+#include "DGtal/geometry/surfaces/estimation/VisibilityLatticeEstimator.h"
 #ifdef DGTAL_WITH_OPENMP
 #include "DGtal/geometry/surfaces/estimation/ParallelIIEstimator.h"
 #include "DGtal/kernel/domains/DomainSplitter.h"
@@ -112,6 +115,8 @@ namespace DGtal
       typedef HyperRectDomain<Space>                   Domain;
       /// The type for 8-bits gray-scale elements.
       typedef unsigned char                            GrayScale;
+      /// Visibility lattice estimator.
+      typedef VisibilityLatticeEstimator<Space>         VisibilityEstimator;
 
       // ----------------------- Shortcut types --------------------------------------
     public:
@@ -220,8 +225,10 @@ namespace DGtal
       {
         return parametersShapeGeometry()
           | parametersGeometryEstimation()
+          | parametersVisibilityComputation()
           | parametersATApproximation()
-          | parametersVoronoiMap();
+          | parametersVoronoiMap()
+          | parametersVisibilityNormals();
       }
 
       /// @return the parameters and their default values which are used
@@ -1001,6 +1008,191 @@ namespace DGtal
           ( "surfelEmbedding",   0 )
           ( "unit_u"         ,   0 );
       }
+
+      /// @return the parameters and their default values which are used
+      /// to compute a visibility relation on pointels.
+      ///   - verbose                [         1]: verbose trace mode 0: silent, 1: verbose.
+      ///   - radius                 [        -1]: visibility radius, or -1 to infer from gridstep.
+      ///   - nStar                  [         1]: number of star-based cover dilations.
+      ///   - gridstep               [       1.0]: digitization gridstep used for automatic radius.
+      static Parameters parametersVisibilityComputation()
+      {
+        return Parameters
+          ( "verbose",             1 )
+          ( "radius",             -1 )
+          ( "nStar",               1 )
+          ( "gridstep",          1.0 );
+      }
+
+      /// Small container storing a visibility relation between pointels
+      /// and primitive segment directions.
+      typedef typename VisibilityEstimator::Visibility Visibility;
+
+      /// Computes the visibility relation on a pointel range.
+      static Visibility
+      getVisibility( const std::vector< Point >& pointels,
+                     const Parameters& params = parametersVisibilityComputation() )
+      {
+#if defined(DGTAL_WITH_OPENMP) && !defined(WIN32)
+        return getVisibilityOpenMP( pointels, params );
+#else
+        return getVisibilityNoOpenMP( pointels, params );
+#endif
+      }
+
+      /// Computes the visibility relation on a pointel range without OpenMP.
+      static Visibility
+      getVisibilityNoOpenMP( const std::vector< Point >& pointels,
+                             const Parameters& params = parametersVisibilityComputation() )
+      {
+        const int verbose = params[ "verbose" ].as<int>();
+        const int nStar   = params[ "nStar"   ].as<int>();
+        const int radius  = VisibilityEstimator::resolveVisibilityRadius(
+          params[ "radius" ].as<int>(), params[ "gridstep" ].as<Scalar>() );
+        return VisibilityEstimator::getVisibilityNoOpenMP( pointels, nStar, radius, verbose );
+      }
+
+#if defined(DGTAL_WITH_OPENMP) && !defined(WIN32)
+      /// Computes the visibility relation on a pointel range with OpenMP.
+      static Visibility
+      getVisibilityOpenMP( const std::vector< Point >& pointels,
+                           const Parameters& params = parametersVisibilityComputation() )
+      {
+        const int verbose = params[ "verbose" ].as<int>();
+        const int nStar   = params[ "nStar"   ].as<int>();
+        const int radius  = VisibilityEstimator::resolveVisibilityRadius(
+          params[ "radius" ].as<int>(), params[ "gridstep" ].as<Scalar>() );
+        return VisibilityEstimator::getVisibilityOpenMP( pointels, nStar, radius, verbose );
+      }
+#endif
+
+      /// @return the parameters and their default values which are used
+      /// to estimate visibility-based normals on pointel sets.
+      ///   - verbose                [         1]: verbose trace mode 0: silent, 1: verbose.
+      ///   - sigma                  [       1.0]: sigma parameter for kernel weighting.
+      ///   - neighborhood-radius    [       2.0]: neighborhood radius in pointel coordinates.
+      ///   - auto-limiter           [         1]: filters far visible points using average distance.
+      ///   - auto-limiter-ratio     [       1.0]: ratio parameter used by the auto-limiter.
+      ///   - visibility-center      ["centroid"]: center choice, either "centroid" or "itself".
+      ///   - visibility-kernel      ["gaussian"]: kernel choice, either "gaussian", "ring" or "none".
+      static Parameters parametersVisibilityNormals()
+      {
+        return Parameters
+          ( "verbose",             1 )
+          ( "sigma",             1.0 )
+          ( "neighborhood-radius", 2.0 )
+          ( "auto-limiter",        1 )
+          ( "auto-limiter-ratio", 1.0 )
+          ( "visibility-center", "centroid" )
+          ( "visibility-kernel", "gaussian" );
+      }
+
+      /// Computes visibility-based normals on a pointel range with an
+      /// automatic OpenMP dispatch when available in DGtal.
+      ///
+      /// @tparam TVisibilityPredicate any type callable as
+      ///         bool(const Point&, const Point&) and returning true when
+      ///         two pointels are mutually visible.
+      ///
+      /// @param[in] pointels the sequence of pointels.
+      /// @param[in] isVisible the visibility predicate.
+      /// @param[in] params the parameters:
+      ///   - verbose                [         1]: verbose trace mode 0: silent, 1: verbose.
+      ///   - sigma                  [       1.0]: sigma parameter for kernel weighting.
+      ///   - neighborhood-radius    [       2.0]: neighborhood radius in pointel coordinates.
+      ///   - auto-limiter           [         1]: filters far visible points using average distance.
+      ///   - auto-limiter-ratio     [       1.0]: ratio parameter used by the auto-limiter.
+      ///   - visibility-center      ["centroid"]: center choice, either "centroid" or "itself".
+      ///   - visibility-kernel      ["gaussian"]: kernel choice, either "gaussian", "ring" or "none".
+      ///
+      /// @return the vector containing the estimated normals, in the
+      /// same order as \a pointels.
+      template <typename TVisibilityPredicate>
+      static RealVectors
+      getVisibilityNormalVectors( const std::vector<Point>& pointels,
+                                  const TVisibilityPredicate& isVisible,
+                                  const Parameters& params = parametersVisibilityNormals() )
+      {
+#if defined(DGTAL_WITH_OPENMP) && !defined(WIN32)
+        return getVisibilityNormalVectorsOpenMP( pointels, isVisible, params );
+#else
+        return getVisibilityNormalVectorsNoOpenMP( pointels, isVisible, params );
+#endif
+      }
+
+      /// Computes visibility-based normals using a precomputed visibility relation.
+      static RealVectors
+      getNormalVisibility( const std::vector< Point >& pointels,
+                           const Visibility& visibility,
+                           const Parameters& params = parametersVisibilityNormals() )
+      {
+        return getVisibilityNormalVectors
+          ( pointels,
+            [ &visibility ]( const Point& p1, const Point& p2 ) { return visibility.isVisible( p1, p2 ); },
+            params );
+      }
+
+      /// Computes visibility-based normals by first computing visibility.
+      static RealVectors
+      getNormalVisibility( const std::vector< Point >& pointels,
+                           const Parameters& visibilityParams,
+                           const Parameters& normalParams = parametersVisibilityNormals() )
+      {
+        const auto visibility = getVisibility( pointels, visibilityParams );
+        return getNormalVisibility( pointels, visibility, normalParams );
+      }
+
+      /// Computes visibility-based normals by first computing visibility.
+      static RealVectors
+      getNormalVisibility( const std::vector< Point >& pointels,
+                           const Parameters& params = parametersVisibilityNormals() )
+      {
+        return getNormalVisibility( pointels, parametersVisibilityComputation(), params );
+      }
+
+      /// Computes visibility-based normals on a pointel range without OpenMP.
+      template <typename TVisibilityPredicate>
+      static RealVectors
+      getVisibilityNormalVectorsNoOpenMP( const std::vector<Point>& pointels,
+                                          const TVisibilityPredicate& isVisible,
+                                          const Parameters& params = parametersVisibilityNormals() )
+      {
+        const int verbose              = params[ "verbose"             ].as<int>();
+        const Scalar sigma             = params[ "sigma"               ].as<Scalar>();
+        const Scalar neighborhood      = params[ "neighborhood-radius" ].as<Scalar>();
+        const bool   autoLimiter       = params[ "auto-limiter"        ].as<int>() != 0;
+        const Scalar autoLimiterRatio  = params[ "auto-limiter-ratio"  ].as<Scalar>();
+        const std::string centerName   = params[ "visibility-center"   ].as<std::string>();
+        const std::string kernelName   = params[ "visibility-kernel"   ].as<std::string>();
+        const auto centerChoice = VisibilityEstimator::visibilityCenterFromString( centerName );
+        const auto kernelChoice = VisibilityEstimator::visibilityKernelFromString( kernelName );
+        return VisibilityEstimator::getVisibilityNormalVectorsNoOpenMP(
+          pointels, isVisible, sigma, neighborhood, autoLimiter, autoLimiterRatio,
+          centerChoice, kernelChoice, verbose );
+      }
+
+#if defined(DGTAL_WITH_OPENMP) && !defined(WIN32)
+      /// Computes visibility-based normals on a pointel range with OpenMP.
+      template <typename TVisibilityPredicate>
+      static RealVectors
+      getVisibilityNormalVectorsOpenMP( const std::vector<Point>& pointels,
+                                        const TVisibilityPredicate& isVisible,
+                                        const Parameters& params = parametersVisibilityNormals() )
+      {
+        const int verbose              = params[ "verbose"             ].as<int>();
+        const Scalar sigma             = params[ "sigma"               ].as<Scalar>();
+        const Scalar neighborhood      = params[ "neighborhood-radius" ].as<Scalar>();
+        const bool   autoLimiter       = params[ "auto-limiter"        ].as<int>() != 0;
+        const Scalar autoLimiterRatio  = params[ "auto-limiter-ratio"  ].as<Scalar>();
+        const std::string centerName   = params[ "visibility-center"   ].as<std::string>();
+        const std::string kernelName   = params[ "visibility-kernel"   ].as<std::string>();
+        const auto centerChoice = VisibilityEstimator::visibilityCenterFromString( centerName );
+        const auto kernelChoice = VisibilityEstimator::visibilityKernelFromString( kernelName );
+        return VisibilityEstimator::getVisibilityNormalVectorsOpenMP(
+          pointels, isVisible, sigma, neighborhood, autoLimiter, autoLimiterRatio,
+          centerChoice, kernelChoice, verbose );
+      }
+#endif
 
       /// Given a digital space \a K and a vector of \a surfels,
       /// returns the trivial normals at the specified surfels, in the
