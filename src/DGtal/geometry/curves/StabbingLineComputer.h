@@ -85,19 +85,36 @@ namespace DGtal
    * @snippet geometry/curves/exampleStabbingLineComputer.cpp StabbingLineComputerUsage
    *
    * @tparam TConstIterator ConstIterator type on STL pairs of 2D points
+   * @tparam TCategory category of segment computer, i.e. ForwardSegmentComputer
+   * (default) or BidirectionalSegmentComputer, used by the functions of
+   * SegmentComputerUtils.h (and thus by the segmentation algorithms) to
+   * select the algorithm. All the methods are available whatever the chosen
+   * category; choosing a lower category is useful to compare the algorithms
+   * (e.g. their running time).
+   * @note ForwardSegmentComputer is the default category because the
+   * algorithms dedicated to the other categories do not give the expected
+   * results yet in all cases (see testSegmentComputerCategories.cpp).
   *
    * @see testStabbingLineComputer.cpp  exampleStabbingLineComputer.cpp  Preimage2D ArithmeticalDSSComputer
    */
-  template <typename TConstIterator>
+  template <typename TConstIterator,
+            typename TCategory = ForwardSegmentComputer>
   class StabbingLineComputer
   {
+    static_assert( isSegmentComputerCategoryCompatible<TCategory, BidirectionalSegmentComputer>,
+                   "TCategory must be ForwardSegmentComputer or BidirectionalSegmentComputer" );
 
   public:
 
     //required types
     typedef TConstIterator ConstIterator;
-    typedef StabbingLineComputer<ConstIterator> Self;
-    typedef StabbingLineComputer<ReverseIterator<ConstIterator> > Reverse;
+    typedef StabbingLineComputer<ConstIterator,TCategory> Self;
+    typedef StabbingLineComputer<ReverseIterator<ConstIterator>,TCategory> Reverse;
+
+    /**
+     * Category of segment computer, see SegmentComputerTraits
+     */
+    typedef TCategory SegmentComputerCategory;
 
     //point type
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Pair;
@@ -388,9 +405,9 @@ namespace DGtal
    * @param object the object of class 'StabbingLineComputer' to write.
    * @return the output stream after the writing.
    */
-  template <typename TConstIterator>
+  template <typename TConstIterator, typename TCategory>
   std::ostream&
-  operator<< ( std::ostream & out, const StabbingLineComputer<TConstIterator> & object );
+  operator<< ( std::ostream & out, const StabbingLineComputer<TConstIterator,TCategory> & object );
 
 } // namespace DGtal
 

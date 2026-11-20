@@ -52,6 +52,7 @@
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/base/ReverseIterator.h"
 #include "DGtal/geometry/curves/ArithmeticalDSS.h"
+#include "DGtal/geometry/curves/SegmentComputerUtils.h"
 //////////////////////////////////////////////////////////////////////////////
 
 
@@ -73,6 +74,16 @@ namespace DGtal
    * which is a model of CInteger.
    * @tparam adjacency an unsigned integer equal to 4 for standard
    * (simply 4-connected) DSS or 8 for naive (simply 8-connected) DSS (default).
+   * @tparam TCategory category of segment computer, i.e. ForwardSegmentComputer
+   * (default), BidirectionalSegmentComputer, DynamicSegmentComputer or
+   * DynamicBidirectionalSegmentComputer, used by the functions
+   * of SegmentComputerUtils.h (and thus by the segmentation algorithms)
+   * to select the algorithm. All the methods are available whatever
+   * the chosen category; choosing a lower category is useful to compare
+   * the algorithms (e.g. their running time).
+   * @note ForwardSegmentComputer is the default category because the
+   * algorithms dedicated to the other categories do not give the expected
+   * results yet in all cases (see testSegmentComputerCategories.cpp).
    *
    * This class is a model of CDynamicBidirectionalSegmentComputer.
    * It is also default constructible, copy constructible, assignable and equality comparable.
@@ -82,9 +93,12 @@ namespace DGtal
    */
   template <typename TIterator,
     typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate,
-    unsigned short adjacency = 8>
+    unsigned short adjacency = 8,
+    typename TCategory = ForwardSegmentComputer>
   class ArithmeticalDSSComputer
   {
+    static_assert( isSegmentComputerCategoryCompatible<TCategory, DynamicBidirectionalSegmentComputer>,
+                   "TCategory must be a segment computer category" );
 
     // ----------------------- inner types ------------------------------
   public:
@@ -131,8 +145,13 @@ namespace DGtal
      */
     typedef Point Vector;
 
-    typedef ArithmeticalDSSComputer<ConstIterator,TInteger,adjacency> Self;
-    typedef ArithmeticalDSSComputer<ReverseIterator<ConstIterator>,TInteger,adjacency> Reverse;
+    typedef ArithmeticalDSSComputer<ConstIterator,TInteger,adjacency,TCategory> Self;
+    typedef ArithmeticalDSSComputer<ReverseIterator<ConstIterator>,TInteger,adjacency,TCategory> Reverse;
+
+    /**
+     * Category of segment computer, see SegmentComputerTraits
+     */
+    typedef TCategory SegmentComputerCategory;
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -416,9 +435,9 @@ namespace DGtal
  * @param object the object of class 'ArithmeticalDSSComputer' to write.
  * @return the output stream after the writing.
  */
-template <typename TIterator, typename TInteger, unsigned short adjacency>
+template <typename TIterator, typename TInteger, unsigned short adjacency, typename TCategory>
 std::ostream&
-operator<< ( std::ostream & out,  const ArithmeticalDSSComputer<TIterator,TInteger,adjacency> & object )
+operator<< ( std::ostream & out,  const ArithmeticalDSSComputer<TIterator,TInteger,adjacency,TCategory> & object )
 {
   object.selfDisplay( out);
   return out;
@@ -450,6 +469,7 @@ namespace DGtal
    * at least readable and forward.
    * @tparam TInteger type of integers used for the computation of remainders,
    * which is a model of CInteger.
+   * @tparam TCategory category of segment computer (see ArithmeticalDSSComputer).
    *
    * This alias is a model of CDynamicBidirectionalSegmentComputer.
    * It is also default constructible, copy constructible, assignable and equality comparable.
@@ -458,8 +478,9 @@ namespace DGtal
    * @see exampleArithmeticalDSSComputer.cpp exampleArithmeticalDSS.cpp
    */
   template <typename TIterator,
-            typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate>
-  using StandardDSS4Computer = ArithmeticalDSSComputer<TIterator, TInteger, 4>;
+            typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate,
+            typename TCategory = ForwardSegmentComputer>
+  using StandardDSS4Computer = ArithmeticalDSSComputer<TIterator, TInteger, 4, TCategory>;
 
   /**
    * \brief Aim: This is an alias to ArithmeticalDSS that is devoted
@@ -474,6 +495,7 @@ namespace DGtal
    * at least readable and forward.
    * @tparam TInteger type of integers used for the computation of remainders,
    * which is a model of CInteger.
+   * @tparam TCategory category of segment computer (see ArithmeticalDSSComputer).
    *
    * This alias is a model of CDynamicBidirectionalSegmentComputer.
    * It is also default constructible, copy constructible, assignable and equality comparable.
@@ -482,8 +504,9 @@ namespace DGtal
    * @see exampleArithmeticalDSSComputer.cpp exampleArithmeticalDSS.cpp
    */
   template <typename TIterator,
-            typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate>
-  using NaiveDSS8Computer = ArithmeticalDSSComputer<TIterator, TInteger, 8>;
+            typename TInteger = typename IteratorCirculatorTraits<TIterator>::Value::Coordinate,
+            typename TCategory = ForwardSegmentComputer>
+  using NaiveDSS8Computer = ArithmeticalDSSComputer<TIterator, TInteger, 8, TCategory>;
 
 } // namespace DGtal
 

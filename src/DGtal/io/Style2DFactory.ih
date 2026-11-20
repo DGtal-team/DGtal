@@ -644,9 +644,9 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::ArithmeticalDSS<TCoordinat
 // ArithmeticalDSS
 
 // ArithmeticalDSSComputer
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, typename TInteger, int connectivity, typename TCategory>
 inline
-DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity> & /*a*/, std::string mode = "" )
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity,TCategory> & /*a*/, std::string mode = "" )
 {
   if ( ( mode == "" ) || ( mode == "BoundingBox" ) )
     return new DGtal::DefaultDrawStyleBB_ArithmeticalDSSComputer;
@@ -724,7 +724,7 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::DigitalSetBySTLVector<Doma
 
 
 // FP
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, typename TInteger, int connectivity, typename TCategory>
 inline
 DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::FP<TIterator,TInteger,connectivity> & /*fp*/,
                                          std::string mode = "" )
@@ -750,9 +750,9 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::FreemanChain<TInteger> & /
 
 
 // StabbingLineComputer
-template <typename TConstIterator>
+template <typename TConstIterator, typename TCategory>
 inline
-DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::StabbingLineComputer<TConstIterator> & /*g*/,
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::StabbingLineComputer<TConstIterator,TCategory> & /*g*/,
                                          std::string mode = "" )
 {
   boost::ignore_unused_variable_warning(mode);
@@ -761,9 +761,9 @@ DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::StabbingLineComputer<TCons
 // StabbingLineComputer
 
 // StabbingCircleComputer
-template <typename TConstIterator>
+template <typename TConstIterator, typename TCategory>
 inline
-DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::StabbingCircleComputer<TConstIterator> & /*g*/,
+DGtal::DrawableWithBoard2D* defaultStyle(const DGtal::StabbingCircleComputer<TConstIterator,TCategory> & /*g*/,
            std::string mode = "" )
 {
   boost::ignore_unused_variable_warning(mode);

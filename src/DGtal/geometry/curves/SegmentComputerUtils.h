@@ -42,6 +42,7 @@
 #define SegmentComputerUtils_h
 
 
+#include <type_traits>
 #include "DGtal/base/Circulator.h"
 
 namespace DGtal
@@ -49,10 +50,44 @@ namespace DGtal
 
 ////////////////////////////////////////////
 // Categories
+/**
+ * Tags describing the capabilities of a segment computer that the
+ * functions of this file may exploit. They form a hierarchy, like
+ * standard iterator tags: a tag is convertible to any tag requiring
+ * fewer capabilities.
+ *
+ * - ForwardSegmentComputer: model of CForwardSegmentComputer
+ * - BidirectionalSegmentComputer: model of CBidirectionalSegmentComputer
+ * - DynamicSegmentComputer: model of CDynamicSegmentComputer
+ * - DynamicBidirectionalSegmentComputer: model of CDynamicBidirectionalSegmentComputer
+ */
    struct ForwardSegmentComputer{};
-   struct BidirectionalSegmentComputer{};
-   struct DynamicSegmentComputer{};
-   struct DynamicBidirectionalSegmentComputer{};
+   struct BidirectionalSegmentComputer : virtual ForwardSegmentComputer {};
+   struct DynamicSegmentComputer : virtual ForwardSegmentComputer {};
+   struct DynamicBidirectionalSegmentComputer
+     : BidirectionalSegmentComputer, DynamicSegmentComputer {};
+
+/**
+ * True if a segment computer whose capabilities are described by
+ * @a TMaxCategory may be used as a segment computer of category
+ * @a TCategory, i.e. if @a TCategory does not require more capabilities
+ * than @a TMaxCategory.
+ *
+ * Segment computers that can be used with several categories take the
+ * chosen category as a template parameter and check it with this
+ * constant, e.g.:
+ * @code
+ * static_assert( isSegmentComputerCategoryCompatible<TCategory, DynamicBidirectionalSegmentComputer>,
+ *                "TCategory exceeds the capabilities of this segment computer" );
+ * @endcode
+ *
+ * @tparam TCategory the chosen category
+ * @tparam TMaxCategory the category describing all the capabilities
+ */
+template <typename TCategory, typename TMaxCategory>
+inline constexpr bool isSegmentComputerCategoryCompatible =
+  std::is_base_of_v<ForwardSegmentComputer, TCategory> &&
+  std::is_base_of_v<TCategory, TMaxCategory>;
 
 
 /////////////////////////////////////////////////////////////////////////////
@@ -61,7 +96,13 @@ namespace DGtal
  * \brief Aim:
  *  Provides the category of the segment computer
  * {ForwardSegmentComputer,BidirectionalSegmentComputer,
- * DynamicSegmentComputer, DynamicBidirectionalSegmentComputer}
+ * DynamicSegmentComputer, DynamicBidirectionalSegmentComputer},
+ * which is used by the functions of this file to select the
+ * most suitable algorithm.
+ *
+ * The category is the nested type `SC::SegmentComputerCategory`
+ * if it exists, ForwardSegmentComputer otherwise. It may also be
+ * set by specializing this class.
  *
  * @tparam SC any segment computer
  */
@@ -70,8 +111,13 @@ namespace DGtal
 template <typename SC>
 struct SegmentComputerTraits {
     typedef  ForwardSegmentComputer Category;
-//    typedef DynamicBidirectionalSegmentComputer Category;
-//    typedef BidirectionalSegmentComputer Category;
+};
+
+//segment computers declaring their category
+template <typename SC>
+  requires requires { typename SC::SegmentComputerCategory; }
+struct SegmentComputerTraits<SC> {
+    typedef typename SC::SegmentComputerCategory Category;
 };
 
 
@@ -834,15 +880,13 @@ void nextMaximalSegment(SC& s,
   //rectract
   maximalRetraction(s, end);
 
-  //intersection test
-  ConstIterator i( s.begin() ); ++i;
-  //if the intersection between the two
-  // consecutive maximal segments is empty
-  if ( i == s.end() ) {
-    if ( isNotEmpty<ConstIterator>(i, end) ) {
-      ++i;
-      s.init(i);
-    }
+  //if the intersection between the two consecutive maximal segments is
+  //empty, i.e. if s has been retracted to a single element that cannot
+  //be extended, the next maximal segment begins at s.end()
+  if ( isNotEmpty<ConstIterator>(s.end(), end)
+       && ( ! s.isExtendableFront() ) ) {
+    ConstIterator i( s.end() );
+    s.init(i);
   }
 
   //extend
@@ -935,15 +979,13 @@ void previousMaximalSegment(SC& s,
   //rectract
   oppositeEndMaximalRetraction(s, begin);
 
-  //intersection test
-  ConstIterator i( s.end() ); --i;
-  //if the intersection between the two
-  // consecutive maximal segments is empty
-  if ( i == s.begin() ) {
-    if ( isNotEmpty<ConstIterator>(i, begin) ) {
-      --i;
-      s.init(i);
-    }
+  //if the intersection between the two consecutive maximal segments is
+  //empty, i.e. if s has been retracted to a single element that cannot
+  //be extended, the previous maximal segment ends at s.begin()
+  if ( isNotEmpty<ConstIterator>(s.begin(), begin)
+       && ( ! s.isExtendableBack() ) ) {
+    ConstIterator i( s.begin() ); --i;
+    s.init(i);
   }
 
   //extend

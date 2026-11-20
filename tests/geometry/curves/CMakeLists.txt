@@ -4,6 +4,7 @@ set(DGTAL_TESTS_SRC
   testArithDSS3d
   testFreemanChain
   testSegmentation
+  testSegmentComputerCategories
   testFP
   testGridCurve
   testCombinDSS
