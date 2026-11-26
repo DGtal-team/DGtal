@@ -1,0 +1,167 @@
+/**
+ * @file modulePrimitiveBasedEstimators.dox
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2026/11/26
+ *
+ * Documentation file for feature modulePrimitiveBasedEstimators
+ *
+ * This file is part of the DGtal library.
+ */
+
+/*
+ * Useful to avoid writing DGtal:: in front of every class.
+ * Do not forget to add an entry in src/DGtal/base/Config.h.in !
+ */
+namespace DGtal {
+//----------------------------------------
+/*!
+@page modulePrimitiveBasedEstimators Estimators based on maximal segments
+@writers Tristan Roussillon
+
+[TOC]
+
+Part of the \ref packageGeometry.
+
+This part of the manual describes how to estimate local geometric
+quantities (tangent or normal vectors, curvature...) along a digital curve
+from the maximal segments of a given primitive (digital straight segments,
+digital circular arcs...).
+
+\section modulePrimitiveBasedEstimators-Overview Overview
+
+The estimation relies on three kinds of objects:
+
+- a segment computer (see \ref moduleGridCurveAnalysis), which recognizes
+  the segments of a given primitive along a range of elements (points or
+  steps of a digital curve), e.g. ArithmeticalDSSComputer (digital
+  straight segments on points), StabbingLineComputer (straight segments
+  on steps, i.e. pairs of inner and outer points), StabbingCircleComputer
+  (digital circular arcs, DCAs, on steps);
+
+- a segment computer estimator (model of CSegmentComputerEstimator), which
+  estimates a quantity at an element from one segment, e.g.
+  TangentFromDSSEstimator, TangentAngleFromDSSEstimator,
+  CurvatureFromDSSEstimator, CurvatureFromDSSLengthEstimator,
+  NormalFromDCAEstimator, TangentFromDCAEstimator, CurvatureFromDCAEstimator
+  (see SegmentComputerEstimators.h);
+
+- an estimator (model of CCurveLocalGeometricEstimator), which combines
+  the maximal segments passing through each element of the curve, computed
+  by a saturated segmentation (SaturatedSegmentation):
+  MostCenteredMaximalSegmentEstimator or LambdaMaximalSegmentEstimator.
+
+Both estimators are used in the same way: they are constructed from a
+segment computer and a segment computer estimator, initialized with the
+whole range of elements (iterators for an open curve, circulators for a
+closed curve), and then evaluated either at one element or on a subrange:
+
+@code
+typedef ArithmeticalDSSComputer<ConstIterator, int, 4> SegmentComputer;
+typedef TangentFromDSSEstimator<SegmentComputer> SCEstimator;
+typedef LambdaMaximalSegmentEstimator<SegmentComputer, SCEstimator> Estimator;
+
+Estimator estimator( SegmentComputer(), SCEstimator() );
+estimator.init( itb, ite );
+// estimation at one element
+auto tangent = estimator.eval( it, h );
+// estimation on a (sub)range
+std::vector<Estimator::Quantity> tangents;
+estimator.eval( itb, ite, std::back_inserter( tangents ), h );
+@endcode
+
+The evaluation on a (sub)range is faster than the evaluation at each
+element, since the maximal segments are computed only once.
+
+\section modulePrimitiveBasedEstimators-MostCentered Most centered maximal segment estimator
+
+MostCenteredMaximalSegmentEstimator assigns to each element the quantity
+estimated from one maximal segment passing through it, which is called
+the most centered maximal segment (see mostCenteredMaximalSegment).
+It is not exactly the most centered one, but the maximal segment
+containing the tangent at this element defined by Feschet and Tougne
+\cite FeschetTougneDGCI1999 (definition 3): the symmetric tangent at an
+element \f$ i \f$ is the segment \f$ [i-k, i+k] \f$ such that
+\f$ [i-k-1, i+k+1] \f$ is not a segment, and it is extended as much as
+possible at the front, then at the back. Since several maximal segments
+may contain the symmetric tangent, the one with the largest index is
+chosen.
+
+\section modulePrimitiveBasedEstimators-Lambda Lambda-maximal segment estimator
+
+LambdaMaximalSegmentEstimator assigns to each element a combination of
+the quantities estimated from all the maximal segments passing through it
+(\f$\lambda\f$-MST estimator \cite LachaudIVC2007). Let \f$ M_i \f$ be
+the maximal segments passing through an element \f$ k \f$,
+\f$ q_i(k) \f$ the quantity estimated at \f$ k \f$ from \f$ M_i \f$, and
+\f$ e_i(k) \f$ the eccentricity of \f$ k \f$ in \f$ M_i \f$, i.e. its
+relative position between the extremities of \f$ M_i \f$. The estimated
+quantity at \f$ k \f$ is
+\f[ \frac{\sum_i \lambda(e_i(k)) q_i(k)}{\sum_i \lambda(e_i(k))}, \f]
+where \f$ \lambda \f$ is a mapping from \f$ [0,1] \f$ to \f$ \mathbb{R}^+ \f$
+with \f$ \lambda(0) = \lambda(1) = 0 \f$ and \f$ \lambda > 0 \f$ elsewhere,
+e.g. functors::Lambda64Function (default), functors::LambdaSinFromPiFunction,
+functors::LambdaExponentialFunction or functors::LambdaTriangleFunction
+(see FunctorsLambdaMST.h).
+
+The eccentricity of an element only depends on its index in the segment
+and on the number of elements of the segment. It is given by a functor,
+which depends on the nature of the elements:
+- functors::PointEccentricity (default) if the elements are points, as in
+  \cite LachaudIVC2007 (e.g. the points of a GridCurve, used by
+  ArithmeticalDSSComputer): the element of index \f$ i \f$ in a segment of
+  \f$ n \f$ elements has eccentricity \f$ i/(n-1) \f$;
+- functors::StepEccentricity if the elements are steps (e.g. the pairs of
+  inner and outer points of a GridCurve, used by StabbingLineComputer and
+  StabbingCircleComputer): the element of index \f$ i \f$ in a segment of
+  \f$ n \f$ elements has eccentricity \f$ (i + 1/2)/n \f$.
+
+@code
+typedef StabbingCircleComputer<ConstCirculator> SegmentComputer;
+typedef LambdaMaximalSegmentEstimator<SegmentComputer, SCEstimator,
+  functors::LambdaTriangleFunction, functors::StepEccentricity> Estimator;
+@endcode
+
+Since the estimated quantities are averaged, they must form a vector space
+(e.g. the unit vectors of TangentFromDSSEstimator) and be consistently
+oriented along the curve. For instance, the normal vectors of
+NormalFromDCAEstimator point toward the center of the separating circle,
+i.e. toward the inside of the curve on its convex parts but toward the
+outside on its concave parts: they must be reoriented, otherwise they
+cancel out around the inflexion points (see the benchmark below).
+
+@note LambdaMST2D is another implementation of the \f$\lambda\f$-MST
+estimator, which takes a segmentation and evaluates the tangent at a given
+point.
+
+\section modulePrimitiveBasedEstimators-Benchmark Comparison
+
+The benchmark normalEstimators-benchmark.cpp studies the multigrid
+convergence and the running times of both estimators for the normal
+vectors computed from maximal DSSs (ArithmeticalDSSComputer, on points),
+from the maximal segments of StabbingLineComputer (on steps) and from the
+maximal DCAs of StabbingCircleComputer (on steps), along the boundaries of
+a digitized ellipse and of a digitized flower, for grid steps \f$ h \f$
+from 1 to 0.0005. The error is the angle between the estimated and the true
+normal directions.
+
+All the estimators converge. The mean angular error of the estimators
+based on straight segments decreases roughly as \f$ h^{2/3} \f$, and their
+maximal error roughly as \f$ h^{1/3} \f$, whereas the errors of the
+estimators based on circular arcs decrease faster (roughly as \f$ h \f$
+for the mean error). The \f$\lambda\f$-MST estimators are 1.5 to 2.5 times
+more accurate than the most centered ones, for a running time 1.4 to 3
+times longer. The estimators based on circular arcs are the most accurate
+ones, but they are about 20 to 60 times slower than the estimators based on
+DSSs.
+
+\image html normals-convergence-ellipse.png "Mean angular error (radian) of the normal estimators along the boundary of a digitized ellipse as a function of the grid step h." width=70%
+\image html normals-max-error-ellipse.png "Maximal angular error (radian) of the normal estimators along the boundary of a digitized ellipse as a function of the grid step h." width=70%
+\image html normals-convergence-flower.png "Mean angular error (radian) of the normal estimators along the boundary of a digitized flower as a function of the grid step h." width=70%
+\image html normals-max-error-flower.png "Maximal angular error (radian) of the normal estimators along the boundary of a digitized flower as a function of the grid step h." width=70%
+\image html normals-timings.png "Running times (ms) of the normal estimators along the boundary of a digitized flower as a function of the number of points." width=70%
+
+*/
+
+}

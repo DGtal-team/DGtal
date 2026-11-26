@@ -601,6 +601,10 @@ whereas the bidirectional algorithms are about 1.5 times faster.
 
 \image html timings-saturated-segmentation.png "Running times (ms) of the saturated segmentation of the boundary of digital disks into maximal standard DSSs, as a function of the number of points of the boundary, for the different categories of ArithmeticalDSSComputer." width=70%
 
+The maximal segments retrieved by a saturated segmentation may be used
+to estimate local geometric quantities along a digital curve: see
+\ref modulePrimitiveBasedEstimators.
+
 
 
 */
