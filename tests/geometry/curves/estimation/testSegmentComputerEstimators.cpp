@@ -38,6 +38,11 @@
 #include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
 #include "DGtal/geometry/curves/StabbingCircleComputer.h"
 #include "DGtal/geometry/curves/estimation/SegmentComputerEstimators.h"
+#include "DGtal/geometry/curves/FreemanChain.h"
+#include "DGtal/geometry/curves/GridCurve.h"
+#include "DGtal/geometry/curves/SaturatedSegmentation.h"
+#include "DGtal/topology/KhalimskySpaceND.h"
+#include <fstream>
 
 #include "DGtal/io/boards/Board2D.h"
 
@@ -201,6 +206,116 @@ bool testFromDCA(
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
 
+/**
+ * Checks that the normal vectors estimated from the maximal DCAs of a
+ * closed non-convex curve (contourS.fc) always point toward the outside,
+ * i.e. from the inner point toward the outer point of each step.
+ */
+bool testNormalFromDCAOrientation()
+{
+  trace.beginBlock ( "Orientation of the normal and tangent vectors of DCAs" );
+
+  typedef KhalimskySpaceND<2,int> KSpace;
+  typedef KSpace::Point Point;
+  std::fstream fst( (testPath + "samples/contourS.fc").c_str(), std::ios::in );
+  FreemanChain<int> fc( fst );
+  std::vector<Point> points( fc.begin(), fc.end() );
+  points.pop_back(); //the last point is equal to the first one
+  GridCurve<KSpace> curve;
+  curve.initFromPointsVector( points );
+  typedef GridCurve<KSpace>::IncidentPointsRange Range;
+  Range r = curve.getIncidentPointsRange();
+  typedef Range::ConstCirculator ConstCirculator;
+  typedef StabbingCircleComputer<ConstCirculator> DCAComputer;
+  typedef NormalFromDCAEstimator<DCAComputer> Normal;
+  typedef TangentFromDCAEstimator<DCAComputer> Tangent;
+
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  ConstCirculator c = r.c();
+  SaturatedSegmentation<DCAComputer> segmentation( c, c, DCAComputer() );
+  bool hasConvexPart = false, hasConcavePart = false;
+  for (auto seg = segmentation.begin(); seg != segmentation.end(); ++seg)
+    {
+      Normal f;
+      f.attach( *seg );
+      Tangent ft;
+      ft.attach( *seg );
+      ConstCirculator it = seg->begin();
+      Normal::Quantity previous;
+      do
+        {
+          auto pair = *it;
+          Normal::Quantity n = f.eval( it );
+          (void) previous;
+          Normal::Quantity d( pair.second[0] - pair.first[0],
+                              pair.second[1] - pair.first[1] );
+          //the normal vector may be orthogonal to the pair of points
+          //if the separating shape passes through both points
+          bool ok = ( n.dot( d ) >= -1e-9 );
+          if ( ! ok )
+            trace.info() << "  wrong orientation: straight " << seg->isStraight()
+                         << " convex " << seg->isConvex() << " n " << n << " d " << d << std::endl;
+          nbok += ok ? 1 : 0;
+          nb++;
+          //orientation consistent with the previous normal vector of the segment
+          if ( it != seg->begin() )
+            {
+              bool consistent = ( n.dot( previous ) > 0 );
+              if ( ! consistent )
+                trace.info() << "  inconsistent orientation: straight " << seg->isStraight()
+                             << " n " << n << " previous " << previous << std::endl;
+              nbok += consistent ? 1 : 0;
+              nb++;
+            }
+          previous = n;
+          //tangent vector: orthogonal to the normal vector and oriented
+          //along the sequence of pairs (toward the next pair)
+          Tangent::Quantity t = ft.eval( it );
+          nbok += ( std::abs( t.dot( n ) ) < 1e-9 ) ? 1 : 0;
+          nb++;
+          ConstCirculator next( it ); ++next;
+          if ( next != seg->end() )
+            {
+              auto pair2 = *next;
+              Normal::Quantity e( (pair2.first[0]+pair2.second[0]) - (pair.first[0]+pair.second[0]),
+                                  (pair2.first[1]+pair2.second[1]) - (pair.first[1]+pair.second[1]) );
+              bool forward = ( t.dot( e ) > 0 );
+              if ( ! forward )
+                trace.info() << "  tangent not forward: t " << t << " e " << e << std::endl;
+              nbok += forward ? 1 : 0;
+              nb++;
+            }
+          ++it;
+        } while ( it != seg->end() );
+      if ( ! seg->isStraight() )
+        {
+          //the inner points are closer to the center of the separating
+          //circle than the outer points for a convex part, farther for a
+          //concave part
+          double c0, c1, rad;
+          seg->getSeparatingCircle().getParameters( c0, c1, rad );
+          double s = 0.0;
+          ConstCirculator it2 = seg->begin();
+          do
+            {
+              auto pair = *it2;
+              s += ( (pair.second[0]-c0)*(pair.second[0]-c0) + (pair.second[1]-c1)*(pair.second[1]-c1) )
+                - ( (pair.first[0]-c0)*(pair.first[0]-c0) + (pair.first[1]-c1)*(pair.first[1]-c1) );
+              ++it2;
+            } while ( it2 != seg->end() );
+          if ( s > 0 ) hasConvexPart = true; else hasConcavePart = true;
+          nbok += ( (s > 0) == seg->isConvex() ) ? 1 : 0;
+          nb++;
+        }
+    }
+  trace.info() << "(" << nbok << "/" << nb << ") normal vectors toward the outside, "
+               << "convex parts: " << hasConvexPart << ", concave parts: " << hasConcavePart
+               << std::endl;
+  trace.endBlock();
+  return ( nbok == nb ) && hasConvexPart && hasConcavePart;
+}
+
 int main( int argc, char** argv )
 {
   trace.beginBlock ( "Testing segment computer functors" );
@@ -283,6 +398,7 @@ int main( int argc, char** argv )
 
     res = res && testFromDCA<DCA>(curve.begin(), curve.end())
       && testFromDCA<DCA>(curve.begin()+2, curve.begin()+12);
+    res = res && testNormalFromDCAOrientation();
   }
 
   //----------------------------------------------------------

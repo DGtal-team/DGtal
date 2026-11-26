@@ -70,9 +70,8 @@
    - the lambda-maximal segment estimator (LambdaMaximalSegmentEstimator,
      with the lambda function functors::Lambda64Function and the
      eccentricity functors::PointEccentricity for the points or
-     functors::StepEccentricity for the steps). The normal vectors of the
-     DCAs are oriented toward the inner points (see OrientedNormalFromDCA),
-     so that they can be averaged (see also \ref modulePrimitiveBasedEstimators).
+     functors::StepEccentricity for the steps; see also
+     \ref modulePrimitiveBasedEstimators).
 
 \verbatim
 normalEstimators-benchmark
@@ -141,28 +140,6 @@ struct NormalFromStabbingLine
   }
 };
 
-/**
- * Unit normal vector of the separating circle of a DCA at a given step,
- * oriented toward the inner point of the step. The normal vectors given
- * by NormalFromDCAEstimator point toward the center of the separating
- * circle, i.e. toward the inside of the curve on convex parts and toward
- * the outside on concave parts: they must be consistently oriented before
- * being averaged by LambdaMaximalSegmentEstimator.
- */
-struct OrientedNormalFromDCA
-{
-  typedef RealVector Value;
-  template <typename DCA>
-  Value operator() (const typename DCA::ConstIterator& it, const DCA& aDCA) const
-  {
-    Value n = DGtal::detail::NormalVectorFromDCA()( it, aDCA );
-    auto pair = *it;
-    if ( n.dot( RealVector( pair.first ) - RealVector( pair.second ) ) < 0.0 )
-      n = -n;
-    return n;
-  }
-};
-
 template <typename DSSComputer>
 using NormalFromDSSEstimator =
   DGtal::detail::PosIndepScaleIndepSCEstimator<DSSComputer, NormalFromDSS>;
@@ -170,10 +147,6 @@ using NormalFromDSSEstimator =
 template <typename StabbingLineComputer>
 using NormalFromStabbingLineEstimator =
   DGtal::detail::PosIndepScaleIndepSCEstimator<StabbingLineComputer, NormalFromStabbingLine>;
-
-template <typename DCAComputer>
-using OrientedNormalFromDCAEstimator =
-  DGtal::detail::PosDepScaleIndepSCEstimator<DCAComputer, OrientedNormalFromDCA>;
 
 ///////////////////////////////////////////////////////////////////////////////
 // Measures
@@ -285,7 +258,7 @@ std::vector<Measure> measures(const Shape& shape, double h, std::size_t& nbPoint
   typedef NormalFromDSSEstimator<DSSComputer> DSSNormal;
   typedef NormalFromDSSEstimator<ArrowDSSComputer> ArrowDSSNormal;
   typedef NormalFromStabbingLineEstimator<LineComputer> LineNormal;
-  typedef OrientedNormalFromDCAEstimator<CircleComputer> CircleNormal;
+  typedef NormalFromDCAEstimator<CircleComputer> CircleNormal;
 
   std::vector<Measure> res;
   {

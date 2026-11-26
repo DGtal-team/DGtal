@@ -835,7 +835,20 @@ namespace DGtal
       /**
        * Operator()
        *
-       * @return normal at @e it
+       * @return the unit normal vector at @e it, oriented toward the
+       * outside, i.e. from the inner point toward the outer point of
+       * the pair of points pointed by @e it. For a DCA that is not
+       * straight, it is the unit vector of the straight line passing
+       * through the center of the separating circle and the middle of
+       * the pair of points: it points away from the center on convex
+       * parts (the center lies on the side of the inner points) and
+       * toward the center on concave parts (the center lies on the side
+       * of the outer points), see StabbingCircleComputer::isConvex().
+       * For a straight DCA, it is the unit normal vector of the
+       * separating straight line, oriented from the inner point toward
+       * the outer point (or, if the straight line passes through both
+       * points, from the inner point toward the outer point of another
+       * pair of the segment).
        *
        * @param it position where the estimation has to be done
        * @param aDCA an instance of segment computer
@@ -853,33 +866,61 @@ namespace DGtal
         typedef typename DCA::Point Point;
         typedef typename Point::Coordinate Coordinate;
 
+        //inner and outer points
+        Pair pair = *it;
+        Point i = pair.first;
+        Point o = pair.second;
+        double d0 = NumberTraits<Coordinate>::castToDouble(o[0]-i[0]);
+        double d1 = NumberTraits<Coordinate>::castToDouble(o[1]-i[1]);
+
+        double v0, v1;
         if ( !aDCA.isStraight() )
         {
           //separating circle center
           double c0, c1, r;
           aDCA.getSeparatingCircle().getParameters(c0, c1, r);
-          //point
-          Pair pair = *it;
-          Point i = pair.first;
-          Point o = pair.second;
+          //middle point
           double m0 = NumberTraits<Coordinate>::castToDouble(i[0]+o[0]) / 2.0;
           double m1 = NumberTraits<Coordinate>::castToDouble(i[1]+o[1]) / 2.0;
-          //normal vector
-          double v0 = m0 - c0;
-          double v1 = m1 - c1;
-          //norm
-          double n = std::sqrt(v0*v0 + v1*v1);
-          return Value( v0/n, v1/n );
+          //normal vector, oriented toward the outside: away from the
+          //center on convex parts, toward the center on concave parts
+          if ( aDCA.isConvex() )
+          {
+            v0 = m0 - c0;
+            v1 = m1 - c1;
+          }
+          else
+          {
+            v0 = c0 - m0;
+            v1 = c1 - m1;
+          }
         }
   	    else
         {
-          //separating straight line and normal vector
-          double a, b, c;
-          aDCA.getStabbingLineComputerPtr()->getParameters(a, b, c);
-          //norm
-          double n = std::sqrt(a*a + b*b);
-          return Value( a/n, b/n );
+          //separating straight line and normal vector,
+          //oriented from the inner point toward the outer point
+          double c;
+          aDCA.getStabbingLineComputerPtr()->getParameters(v0, v1, c);
+          double s = v0*d0 + v1*d1;
+          //if the straight line passes through both points of the pair
+          //(degenerate case), the first other pair of the segment that
+          //is not degenerate is used
+          for (typename DCA::ConstIterator it2 = aDCA.begin();
+               (s == 0.0) && (it2 != aDCA.end()); ++it2)
+          {
+            Pair pair2 = *it2;
+            s = v0 * NumberTraits<Coordinate>::castToDouble(pair2.second[0]-pair2.first[0])
+              + v1 * NumberTraits<Coordinate>::castToDouble(pair2.second[1]-pair2.first[1]);
+          }
+          if ( s < 0.0 )
+          {
+            v0 = -v0;
+            v1 = -v1;
+          }
         }
+        //norm
+        double n = std::sqrt(v0*v0 + v1*v1);
+        return Value( v0/n, v1/n );
       }
     };
 
@@ -895,7 +936,13 @@ namespace DGtal
       /**
        * Operator()
        *
-       * @return tangent at @e it
+       * @return the unit tangent vector at @e it, i.e. the unit normal
+       * vector given by NormalVectorFromDCA rotated by a right angle,
+       * oriented along the direction of the sequence of pairs of points
+       * (from @e it toward the following pair of the segment, or from
+       * the previous pair toward @e it for the last pair). If the
+       * segment has only one pair, the tangent vector is oriented such
+       * that the inner point is on its left.
        *
        * @param it position where the estimation has to be done
        * @param aDCA an instance of segment computer
@@ -911,9 +958,36 @@ namespace DGtal
       Value operator() (const typename DCA::ConstIterator& it,
 			const DCA& aDCA) const
       {
+        typedef typename DCA::ConstIterator ConstIterator;
+        typedef typename DCA::Pair Pair;
+        typedef typename DCA::Point Point;
+        typedef typename Point::Coordinate Coordinate;
+
+        //normal vector (toward the outside) rotated by a right angle,
+        //such that the inner points are on the left
         NormalVectorFromDCA f;
         Value normal = f(it, aDCA);
-        return Value( normal[1], normal[0] );
+        Value tangent( -normal[1], normal[0] );
+
+        //direction of the sequence of pairs at it
+        ConstIterator first( it ), second( it );
+        ++second;
+        if ( second == aDCA.end() )
+        { //last pair: previous pair and it
+          second = it;
+          if ( first == aDCA.begin() )
+            return tangent; //only one pair
+          --first;
+        }
+        Pair p1 = *first;
+        Pair p2 = *second;
+        double e0 = NumberTraits<Coordinate>::castToDouble(
+          (p2.first[0]+p2.second[0]) - (p1.first[0]+p1.second[0]) );
+        double e1 = NumberTraits<Coordinate>::castToDouble(
+          (p2.first[1]+p2.second[1]) - (p1.first[1]+p1.second[1]) );
+        if ( tangent[0]*e0 + tangent[1]*e1 < 0.0 )
+          tangent = -tangent;
+        return tangent;
       }
     };
 
@@ -1128,6 +1202,8 @@ namespace DGtal
    * Description of class 'NormalFromDCAEstimator' <p> Aim:
    * estimates the (normalized) normal vector at some position from a DCA
    * recognized by a segment computer, basically geometricDCA.
+   * The normal vector is oriented toward the outside, i.e. from the
+   * inner points toward the outer points (see detail::NormalVectorFromDCA).
    *
    * @tparam DCAComputer a model of segment computer
    * devoted the DCA recognition
@@ -1158,6 +1234,9 @@ namespace DGtal
    * Description of class 'TangentFromDCAEstimator' <p> Aim:
    * estimates the (normalized) tangent vector at some position from a DCA
    * recognized by a segment computer, basically geometricDCA.
+   * The tangent vector is orthogonal to the normal vector given by
+   * NormalFromDCAEstimator and oriented along the sequence of pairs of
+   * points (see detail::TangentVectorFromDCA).
    *
    * @tparam DCAComputer a model of segment computer
    * devoted the DCA recognition

@@ -127,11 +127,12 @@ typedef LambdaMaximalSegmentEstimator<SegmentComputer, SCEstimator,
 
 Since the estimated quantities are averaged, they must form a vector space
 (e.g. the unit vectors of TangentFromDSSEstimator) and be consistently
-oriented along the curve. For instance, the normal vectors of
-NormalFromDCAEstimator point toward the center of the separating circle,
-i.e. toward the inside of the curve on its convex parts but toward the
-outside on its concave parts: they must be reoriented, otherwise they
-cancel out around the inflexion points (see the benchmark below).
+oriented along the curve, otherwise opposite vectors cancel out. For
+instance, the normal vectors of NormalFromDCAEstimator always point toward
+the outside of the curve, i.e. from the inner points toward the outer
+points of the steps, whatever the convexity of the DCAs (the normal vector
+of a DCA points away from the center of its separating circle on convex
+parts but toward it on concave parts).
 
 @note LambdaMST2D is another implementation of the \f$\lambda\f$-MST
 estimator, which takes a segmentation and evaluates the tangent at a given

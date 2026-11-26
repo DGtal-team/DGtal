@@ -42,7 +42,7 @@ template <typename TConstIterator, typename TCategory>
 inline
 DGtal::StabbingCircleComputer<TConstIterator,TCategory>::StabbingCircleComputer()
  :myBegin(), myEnd(), mySegPtr(new StabbingLineComputer<ConstIterator>()),
-  myCircle(), myFlagIsInit(false)
+  myCircle(), myFlagIsInit(false), myFlagIsConvex(true)
 {
 }
 
@@ -50,7 +50,8 @@ template <typename TConstIterator, typename TCategory>
 inline
 DGtal::StabbingCircleComputer<TConstIterator,TCategory>::StabbingCircleComputer( const Self& other )
  :myBegin(other.myBegin), myEnd(other.myEnd), mySegPtr(other.mySegPtr),
-  myCircle(other.myCircle), myFlagIsInit(other.myFlagIsInit)
+  myCircle(other.myCircle), myFlagIsInit(other.myFlagIsInit),
+  myFlagIsConvex(other.myFlagIsConvex)
 {
 }
 
@@ -66,6 +67,7 @@ DGtal::StabbingCircleComputer<TConstIterator,TCategory>::operator= ( const Self&
       mySegPtr = other.mySegPtr;
       myCircle = other.myCircle;
       myFlagIsInit = other.myFlagIsInit;
+      myFlagIsConvex = other.myFlagIsConvex;
     }
   return *this;
 }
@@ -190,6 +192,14 @@ bool
 DGtal::StabbingCircleComputer<TConstIterator,TCategory>::isStraight() const
 {
   return !myFlagIsInit;
+}
+
+template <typename TConstIterator, typename TCategory>
+inline
+bool
+DGtal::StabbingCircleComputer<TConstIterator,TCategory>::isConvex() const
+{
+  return myFlagIsConvex;
 }
 
 template <typename TConstIterator, typename TCategory>
@@ -405,6 +415,7 @@ DGtal::StabbingCircleComputer<TConstIterator,TCategory>::extendFront()
 		{
 		  myCircle.init(Qf,Pl,aQ);
 		  myFlagIsInit = true;
+		  myFlagIsConvex = true;
 		  isOK = true;
 		}
 	    }
@@ -415,6 +426,7 @@ DGtal::StabbingCircleComputer<TConstIterator,TCategory>::extendFront()
 		{
 		  myCircle.init(Pf,Ql,aP);
 		  myFlagIsInit = true;
+		  myFlagIsConvex = false;
 		  isOK = true;
 		}
 	    }
@@ -563,6 +575,7 @@ DGtal::StabbingCircleComputer<TConstIterator,TCategory>::extendBack()
 		{
 		  myCircle.init(aQ,Qf,Pl);
 		  myFlagIsInit = true;
+		  myFlagIsConvex = true;
 		  isOK = true;
 		}
 	    }
@@ -573,6 +586,7 @@ DGtal::StabbingCircleComputer<TConstIterator,TCategory>::extendBack()
 		{
 		  myCircle.init(aP,Pf,Ql);
 		  myFlagIsInit = true;
+		  myFlagIsConvex = false;
 		  isOK = true;
 		}
 	    }

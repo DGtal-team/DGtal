@@ -236,6 +236,15 @@ namespace DGtal
     bool isStraight() const;
 
     /**
+     * @return boolean equal to 'true' if the segment is a convex part
+     * of the curve, i.e. if the inner points are on the side of the
+     * center of the separating circle, and 'false' if it is a concave
+     * part, i.e. if the outer points are on the side of the center
+     * (meaningless if the segment is straight).
+     */
+    bool isConvex() const;
+
+    /**
      * @return a cow pointer on the StabbingLineComputer used
      * during the initialization step.
      * @see isStraight
@@ -322,6 +331,12 @@ namespace DGtal
      * 'false' otherwise.
      */
     bool myFlagIsInit;
+    /**
+     * Flag equal to 'true' if the segment is a convex part
+     * of the curve, 'false' if it is a concave part
+     * (meaningless if the segment is straight).
+     */
+    bool myFlagIsConvex;
 
     // ------------------------- Hidden services ------------------------------
   protected:

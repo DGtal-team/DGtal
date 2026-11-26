@@ -148,11 +148,9 @@ namespace DGtal
    * and integer), and that averaging angles (as for
    * TangentAngleFromDSSEstimator) is valid only if they do not cross the
    * discontinuity of the angles. Moreover, the quantities must be
-   * consistently oriented along the curve: for instance, the normal vectors
-   * of NormalFromDCAEstimator point toward the center of the separating
-   * circle, i.e. toward the inside of the curve on its convex parts but
-   * toward the outside on its concave parts, so that they cancel out
-   * around inflexion points if they are not reoriented.
+   * consistently oriented along the curve (e.g. the normal vectors of
+   * NormalFromDCAEstimator, which always point toward the outside):
+   * otherwise, opposite vectors cancel out.
    *
    * Here is a basic example of tangent estimation:
    * @code
