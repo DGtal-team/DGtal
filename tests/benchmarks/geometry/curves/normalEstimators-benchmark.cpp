@@ -45,6 +45,7 @@
 #include "DGtal/shapes/parametric/Flower2D.h"
 #include "DGtal/geometry/curves/GridCurve.h"
 #include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
+#include "DGtal/geometry/curves/ArithmeticalDSSComputerOnArrows.h"
 #include "DGtal/geometry/curves/StabbingLineComputer.h"
 #include "DGtal/geometry/curves/StabbingCircleComputer.h"
 #include "DGtal/geometry/curves/estimation/SegmentComputerEstimators.h"
@@ -55,8 +56,10 @@
    This benchmark studies the multigrid convergence and the running
    times of normal estimators based on maximal segments along the boundary
    of digitized shapes: a convex shape (an ellipse) and a non-convex
-   shape (a flower). Three kinds of maximal segments are compared:
+   shape (a flower). Four kinds of maximal segments are compared:
    - maximal DSSs (ArithmeticalDSSComputer), on the points of the curve;
+   - maximal DSSs (ArithmeticalDSSComputerOnArrows), on the steps of the
+     curve (arrows);
    - maximal segments of StabbingLineComputer, on the steps of the curve
      (pairs of inner and outer points);
    - maximal segments of StabbingCircleComputer (DCA), on the steps of the
@@ -224,7 +227,7 @@ Measure measure(Estimator& estimator, const Circulator& c, double h,
 
 /**
  * Digitizes a shape with a grid step h, tracks its boundary, estimates
- * the normals with the six estimators and returns their measures.
+ * the normals with the eight estimators and returns their measures.
  *
  * @param shape a parametric shape
  * @param h the grid step
@@ -250,8 +253,10 @@ std::vector<Measure> measures(const Shape& shape, double h, std::size_t& nbPoint
   // points and steps of the curve, and true normals
   typedef GridCurve<KSpace>::PointsRange PointsRange;
   typedef GridCurve<KSpace>::IncidentPointsRange StepsRange;
+  typedef GridCurve<KSpace>::ArrowsRange ArrowsRange;
   PointsRange points = curve.getPointsRange();
   StepsRange steps = curve.getIncidentPointsRange();
+  ArrowsRange arrows = curve.getArrowsRange();
   nbPoints = points.size();
 
   auto trueNormal = [&shape] (const RealPoint& p)
@@ -270,11 +275,15 @@ std::vector<Measure> measures(const Shape& shape, double h, std::size_t& nbPoint
   typedef StepsRange::ConstCirculator StepCirculator;
   PointCirculator pc = points.c();
   StepCirculator sc = steps.c();
+  typedef ArrowsRange::ConstCirculator ArrowCirculator;
+  ArrowCirculator ac = arrows.c();
 
   typedef ArithmeticalDSSComputer<PointCirculator, int, 4> DSSComputer;
   typedef StabbingLineComputer<StepCirculator> LineComputer;
   typedef StabbingCircleComputer<StepCirculator> CircleComputer;
+  typedef ArithmeticalDSSComputerOnArrows<ArrowCirculator, int> ArrowDSSComputer;
   typedef NormalFromDSSEstimator<DSSComputer> DSSNormal;
+  typedef NormalFromDSSEstimator<ArrowDSSComputer> ArrowDSSNormal;
   typedef NormalFromStabbingLineEstimator<LineComputer> LineNormal;
   typedef OrientedNormalFromDCAEstimator<CircleComputer> CircleNormal;
 
@@ -286,6 +295,15 @@ std::vector<Measure> measures(const Shape& shape, double h, std::size_t& nbPoint
   {
     LambdaMaximalSegmentEstimator<DSSComputer, DSSNormal> e{ DSSComputer(), DSSNormal() };
     res.push_back( measure( e, pc, h, pointNormals ) );
+  }
+  {
+    MostCenteredMaximalSegmentEstimator<ArrowDSSComputer, ArrowDSSNormal> e{ ArrowDSSComputer(), ArrowDSSNormal() };
+    res.push_back( measure( e, ac, h, stepNormals ) );
+  }
+  {
+    LambdaMaximalSegmentEstimator<ArrowDSSComputer, ArrowDSSNormal,
+      functors::Lambda64Function, functors::StepEccentricity> e{ ArrowDSSComputer(), ArrowDSSNormal() };
+    res.push_back( measure( e, ac, h, stepNormals ) );
   }
   {
     MostCenteredMaximalSegmentEstimator<LineComputer, LineNormal> e{ LineComputer(), LineNormal() };
@@ -322,6 +340,7 @@ void convergence(const Shape& shape, const std::string& name,
   header << "# " << name << std::endl
          << "# h nbPoints";
   for (std::string e : { "DSS-MostCentered", "DSS-LambdaMST",
+                         "DSSOnArrows-MostCentered", "DSSOnArrows-LambdaMST",
                          "StabbingLine-MostCentered", "StabbingLine-LambdaMST",
                          "StabbingCircle-MostCentered", "StabbingCircle-LambdaMST" })
     header << " " << e << "(mean,max,ms)";
@@ -344,57 +363,67 @@ void convergence(const Shape& shape, const std::string& name,
 /*
   Display results using gnuplot
 
-  set terminal pngcairo size 800,560 font "Helvetica,12"
+  set terminal pngcairo size 800,600 font "Helvetica,12"
   set logscale xy
   set grid
   set format x "10^{%L}"
   set format y "10^{%L}"
-  set key bottom right
+  set key bottom right font ",10"
   set xlabel "grid step h"
   set ylabel "mean angular error (radian)"
   set output "normals-convergence-ellipse.png"
   plot "normals-convergence-ellipse.txt" using 1:3 title "DSS-MostCentered" w lp pt 5 dt 1 lc rgb "#1f77b4" lw 2, \
        "normals-convergence-ellipse.txt" using 1:6 title "DSS-LambdaMST" w lp pt 5 dt 2 lc rgb "#1f77b4" lw 2, \
-       "normals-convergence-ellipse.txt" using 1:9 title "StabbingLine-MostCentered" w lp pt 7 dt 1 lc rgb "#2ca02c" lw 2, \
-       "normals-convergence-ellipse.txt" using 1:12 title "StabbingLine-LambdaMST" w lp pt 7 dt 2 lc rgb "#2ca02c" lw 2, \
-       "normals-convergence-ellipse.txt" using 1:15 title "StabbingCircle-MostCentered" w lp pt 9 dt 1 lc rgb "#d62728" lw 2, \
-       "normals-convergence-ellipse.txt" using 1:18 title "StabbingCircle-LambdaMST" w lp pt 9 dt 2 lc rgb "#d62728" lw 2, \
+       "normals-convergence-ellipse.txt" using 1:9 title "DSSOnArrows-MostCentered" w lp pt 9 dt 1 lc rgb "#ff7f0e" lw 2, \
+       "normals-convergence-ellipse.txt" using 1:12 title "DSSOnArrows-LambdaMST" w lp pt 9 dt 2 lc rgb "#ff7f0e" lw 2, \
+       "normals-convergence-ellipse.txt" using 1:15 title "StabbingLine-MostCentered" w lp pt 7 dt 1 lc rgb "#2ca02c" lw 2, \
+       "normals-convergence-ellipse.txt" using 1:18 title "StabbingLine-LambdaMST" w lp pt 7 dt 2 lc rgb "#2ca02c" lw 2, \
+       "normals-convergence-ellipse.txt" using 1:21 title "StabbingCircle-MostCentered" w lp pt 11 dt 1 lc rgb "#d62728" lw 2, \
+       "normals-convergence-ellipse.txt" using 1:24 title "StabbingCircle-LambdaMST" w lp pt 11 dt 2 lc rgb "#d62728" lw 2, \
        0.08*x**(2./3.) title "h^{2/3}" w l lw 1 lc rgb "black", 0.03*x title "h" w l lw 1 dt 3 lc rgb "black"
   set output "normals-convergence-flower.png"
   plot "normals-convergence-flower.txt" using 1:3 title "DSS-MostCentered" w lp pt 5 dt 1 lc rgb "#1f77b4" lw 2, \
        "normals-convergence-flower.txt" using 1:6 title "DSS-LambdaMST" w lp pt 5 dt 2 lc rgb "#1f77b4" lw 2, \
-       "normals-convergence-flower.txt" using 1:9 title "StabbingLine-MostCentered" w lp pt 7 dt 1 lc rgb "#2ca02c" lw 2, \
-       "normals-convergence-flower.txt" using 1:12 title "StabbingLine-LambdaMST" w lp pt 7 dt 2 lc rgb "#2ca02c" lw 2, \
-       "normals-convergence-flower.txt" using 1:15 title "StabbingCircle-MostCentered" w lp pt 9 dt 1 lc rgb "#d62728" lw 2, \
-       "normals-convergence-flower.txt" using 1:18 title "StabbingCircle-LambdaMST" w lp pt 9 dt 2 lc rgb "#d62728" lw 2, \
+       "normals-convergence-flower.txt" using 1:9 title "DSSOnArrows-MostCentered" w lp pt 9 dt 1 lc rgb "#ff7f0e" lw 2, \
+       "normals-convergence-flower.txt" using 1:12 title "DSSOnArrows-LambdaMST" w lp pt 9 dt 2 lc rgb "#ff7f0e" lw 2, \
+       "normals-convergence-flower.txt" using 1:15 title "StabbingLine-MostCentered" w lp pt 7 dt 1 lc rgb "#2ca02c" lw 2, \
+       "normals-convergence-flower.txt" using 1:18 title "StabbingLine-LambdaMST" w lp pt 7 dt 2 lc rgb "#2ca02c" lw 2, \
+       "normals-convergence-flower.txt" using 1:21 title "StabbingCircle-MostCentered" w lp pt 11 dt 1 lc rgb "#d62728" lw 2, \
+       "normals-convergence-flower.txt" using 1:24 title "StabbingCircle-LambdaMST" w lp pt 11 dt 2 lc rgb "#d62728" lw 2, \
        0.12*x**(2./3.) title "h^{2/3}" w l lw 1 lc rgb "black", 0.04*x title "h" w l lw 1 dt 3 lc rgb "black"
   set ylabel "maximal angular error (radian)"
   set output "normals-max-error-ellipse.png"
   plot "normals-convergence-ellipse.txt" using 1:4 title "DSS-MostCentered" w lp pt 5 dt 1 lc rgb "#1f77b4" lw 2, \
        "normals-convergence-ellipse.txt" using 1:7 title "DSS-LambdaMST" w lp pt 5 dt 2 lc rgb "#1f77b4" lw 2, \
-       "normals-convergence-ellipse.txt" using 1:10 title "StabbingLine-MostCentered" w lp pt 7 dt 1 lc rgb "#2ca02c" lw 2, \
-       "normals-convergence-ellipse.txt" using 1:13 title "StabbingLine-LambdaMST" w lp pt 7 dt 2 lc rgb "#2ca02c" lw 2, \
-       "normals-convergence-ellipse.txt" using 1:16 title "StabbingCircle-MostCentered" w lp pt 9 dt 1 lc rgb "#d62728" lw 2, \
-       "normals-convergence-ellipse.txt" using 1:19 title "StabbingCircle-LambdaMST" w lp pt 9 dt 2 lc rgb "#d62728" lw 2, \
+       "normals-convergence-ellipse.txt" using 1:10 title "DSSOnArrows-MostCentered" w lp pt 9 dt 1 lc rgb "#ff7f0e" lw 2, \
+       "normals-convergence-ellipse.txt" using 1:13 title "DSSOnArrows-LambdaMST" w lp pt 9 dt 2 lc rgb "#ff7f0e" lw 2, \
+       "normals-convergence-ellipse.txt" using 1:16 title "StabbingLine-MostCentered" w lp pt 7 dt 1 lc rgb "#2ca02c" lw 2, \
+       "normals-convergence-ellipse.txt" using 1:19 title "StabbingLine-LambdaMST" w lp pt 7 dt 2 lc rgb "#2ca02c" lw 2, \
+       "normals-convergence-ellipse.txt" using 1:22 title "StabbingCircle-MostCentered" w lp pt 11 dt 1 lc rgb "#d62728" lw 2, \
+       "normals-convergence-ellipse.txt" using 1:25 title "StabbingCircle-LambdaMST" w lp pt 11 dt 2 lc rgb "#d62728" lw 2, \
        0.3*x**(1./3.) title "h^{1/3}" w l lw 1 lc rgb "black", 0.1*x**(2./3.) title "h^{2/3}" w l lw 1 dt 3 lc rgb "black"
   set output "normals-max-error-flower.png"
   plot "normals-convergence-flower.txt" using 1:4 title "DSS-MostCentered" w lp pt 5 dt 1 lc rgb "#1f77b4" lw 2, \
        "normals-convergence-flower.txt" using 1:7 title "DSS-LambdaMST" w lp pt 5 dt 2 lc rgb "#1f77b4" lw 2, \
-       "normals-convergence-flower.txt" using 1:10 title "StabbingLine-MostCentered" w lp pt 7 dt 1 lc rgb "#2ca02c" lw 2, \
-       "normals-convergence-flower.txt" using 1:13 title "StabbingLine-LambdaMST" w lp pt 7 dt 2 lc rgb "#2ca02c" lw 2, \
-       "normals-convergence-flower.txt" using 1:16 title "StabbingCircle-MostCentered" w lp pt 9 dt 1 lc rgb "#d62728" lw 2, \
-       "normals-convergence-flower.txt" using 1:19 title "StabbingCircle-LambdaMST" w lp pt 9 dt 2 lc rgb "#d62728" lw 2, \
+       "normals-convergence-flower.txt" using 1:10 title "DSSOnArrows-MostCentered" w lp pt 9 dt 1 lc rgb "#ff7f0e" lw 2, \
+       "normals-convergence-flower.txt" using 1:13 title "DSSOnArrows-LambdaMST" w lp pt 9 dt 2 lc rgb "#ff7f0e" lw 2, \
+       "normals-convergence-flower.txt" using 1:16 title "StabbingLine-MostCentered" w lp pt 7 dt 1 lc rgb "#2ca02c" lw 2, \
+       "normals-convergence-flower.txt" using 1:19 title "StabbingLine-LambdaMST" w lp pt 7 dt 2 lc rgb "#2ca02c" lw 2, \
+       "normals-convergence-flower.txt" using 1:22 title "StabbingCircle-MostCentered" w lp pt 11 dt 1 lc rgb "#d62728" lw 2, \
+       "normals-convergence-flower.txt" using 1:25 title "StabbingCircle-LambdaMST" w lp pt 11 dt 2 lc rgb "#d62728" lw 2, \
        0.5*x**(1./3.) title "h^{1/3}" w l lw 1 lc rgb "black", 0.2*x**(2./3.) title "h^{2/3}" w l lw 1 dt 3 lc rgb "black"
-  set key top left
+  set key top left font ",10"
   set xlabel "number of points"
   set ylabel "time (ms)"
   set output "normals-timings.png"
   plot "normals-convergence-flower.txt" using 2:5 title "DSS-MostCentered" w lp pt 5 dt 1 lc rgb "#1f77b4" lw 2, \
        "normals-convergence-flower.txt" using 2:8 title "DSS-LambdaMST" w lp pt 5 dt 2 lc rgb "#1f77b4" lw 2, \
-       "normals-convergence-flower.txt" using 2:11 title "StabbingLine-MostCentered" w lp pt 7 dt 1 lc rgb "#2ca02c" lw 2, \
-       "normals-convergence-flower.txt" using 2:14 title "StabbingLine-LambdaMST" w lp pt 7 dt 2 lc rgb "#2ca02c" lw 2, \
-       "normals-convergence-flower.txt" using 2:17 title "StabbingCircle-MostCentered" w lp pt 9 dt 1 lc rgb "#d62728" lw 2, \
-       "normals-convergence-flower.txt" using 2:20 title "StabbingCircle-LambdaMST" w lp pt 9 dt 2 lc rgb "#d62728" lw 2
+       "normals-convergence-flower.txt" using 2:11 title "DSSOnArrows-MostCentered" w lp pt 9 dt 1 lc rgb "#ff7f0e" lw 2, \
+       "normals-convergence-flower.txt" using 2:14 title "DSSOnArrows-LambdaMST" w lp pt 9 dt 2 lc rgb "#ff7f0e" lw 2, \
+       "normals-convergence-flower.txt" using 2:17 title "StabbingLine-MostCentered" w lp pt 7 dt 1 lc rgb "#2ca02c" lw 2, \
+       "normals-convergence-flower.txt" using 2:20 title "StabbingLine-LambdaMST" w lp pt 7 dt 2 lc rgb "#2ca02c" lw 2, \
+       "normals-convergence-flower.txt" using 2:23 title "StabbingCircle-MostCentered" w lp pt 11 dt 1 lc rgb "#d62728" lw 2, \
+       "normals-convergence-flower.txt" using 2:26 title "StabbingCircle-LambdaMST" w lp pt 11 dt 2 lc rgb "#d62728" lw 2
 */
 
 int main()

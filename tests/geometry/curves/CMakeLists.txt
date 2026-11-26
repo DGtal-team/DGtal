@@ -16,6 +16,7 @@ set(DGTAL_TESTS_SRC
   testArithmeticalDSS
   testArithmeticalDSLKernel
   testArithmeticalDSSComputer
+  testArithmeticalDSSComputerOnArrows
   testArithmeticalDSL
   testDSLSubsegment
   testArithDSSIterator
