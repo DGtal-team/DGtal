@@ -99,6 +99,19 @@ namespace functors
           return 2.0 / ( std::exp ( 15.0 * ( x - 0.5 ) ) + std::exp ( -15.0 * ( x - 0.5 ) ) );
       }
   };
+
+  /**
+   * Triangle Lambda functor \cite LachaudIVC2007, with a peak at 1/2.
+   * \f$ 1 - |2x - 1| \f$
+   *
+   */
+  struct LambdaTriangleFunction
+  {
+      double operator() (double x) const
+      {
+          return 1.0 - std::abs ( 2.0 * x - 1.0 );
+      }
+  };
 }
 
 /**

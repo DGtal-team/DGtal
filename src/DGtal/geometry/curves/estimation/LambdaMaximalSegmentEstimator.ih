@@ -1,0 +1,223 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file LambdaMaximalSegmentEstimator.ih
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2026/11/26
+ *
+ * Implementation of inline methods defined in LambdaMaximalSegmentEstimator.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+//////////////////////////////////////////////////////////////////////////////
+#include <type_traits>
+//////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+// ------------------------------------------------------------------------
+template <typename TSegmentComputer, typename TSCEstimator,
+          typename TLambdaFunction, typename TEccentricity>
+inline
+DGtal::LambdaMaximalSegmentEstimator<TSegmentComputer,TSCEstimator,TLambdaFunction,TEccentricity>
+::LambdaMaximalSegmentEstimator(const SegmentComputer& aSegmentComputer,
+                                const SCEstimator& aSCEstimator,
+                                const LambdaFunction& aLambdaFunction,
+                                const Eccentricity& anEccentricity)
+  : myBegin(), myEnd(),
+    mySC(aSegmentComputer), mySCEstimator(aSCEstimator),
+    myLambda(aLambdaFunction), myEccentricity(anEccentricity),
+    mySize(0)
+{}
+
+// ------------------------------------------------------------------------
+template <typename TSegmentComputer, typename TSCEstimator,
+          typename TLambdaFunction, typename TEccentricity>
+inline
+void
+DGtal::LambdaMaximalSegmentEstimator<TSegmentComputer,TSCEstimator,TLambdaFunction,TEccentricity>
+::init(const ConstIterator& itb, const ConstIterator& ite)
+{
+  myBegin = itb;
+  myEnd = ite;
+
+  //number of elements of a closed range (whole turn)
+  typedef typename IteratorCirculatorTraits<ConstIterator>::Type Type;
+  mySize = 0;
+  if ( std::is_same<Type, CirculatorType>::value && isNotEmpty(myBegin, myEnd) )
+    {
+      ConstIterator it( myBegin );
+      do {
+        ++mySize;
+        ++it;
+      } while ( it != myBegin );
+    }
+}
+
+// ------------------------------------------------------------------------
+template <typename TSegmentComputer, typename TSCEstimator,
+          typename TLambdaFunction, typename TEccentricity>
+inline
+bool
+DGtal::LambdaMaximalSegmentEstimator<TSegmentComputer,TSCEstimator,TLambdaFunction,TEccentricity>
+::isValid() const
+{
+  return isNotEmpty(myBegin, myEnd);
+}
+
+// ------------------------------------------------------------------------
+template <typename TSegmentComputer, typename TSCEstimator,
+          typename TLambdaFunction, typename TEccentricity>
+template <typename OutputIterator>
+inline
+OutputIterator
+DGtal::LambdaMaximalSegmentEstimator<TSegmentComputer,TSCEstimator,TLambdaFunction,TEccentricity>
+::eval(const ConstIterator& itb, const ConstIterator& ite,
+       OutputIterator result, const double h)
+{
+  ASSERT( isValid() );
+
+  if ( ! isNotEmpty(itb, ite) )
+    return result;
+
+  typedef typename IteratorCirculatorTraits<ConstIterator>::Type Type;
+  const bool isClosed = std::is_same<Type, CirculatorType>::value;
+
+  mySCEstimator.init( h, myBegin, myEnd );
+
+  //number of elements of the subrange
+  //(do-while loop to deal with a whole closed range, for which itb == ite)
+  std::size_t nbElements = 0;
+  {
+    ConstIterator it( itb );
+    do {
+      ++nbElements;
+      ++it;
+    } while ( it != ite );
+  }
+  const long N = (long) nbElements;
+  const long n = (long) mySize;
+
+  //for each element of the subrange: sums of the weights, of the weighted
+  //quantities, and of the quantities, and number of maximal segments
+  std::vector<double> weights( nbElements, 0.0 );
+  std::vector<Quantity> weightedSums( nbElements, Quantity() );
+  std::vector<Quantity> sums( nbElements, Quantity() );
+  std::vector<std::size_t> counts( nbElements, 0 );
+
+  //first maximal segment passing through itb
+  firstMaximalSegment( mySC, itb, myBegin, myEnd );
+  const ConstIterator firstBegin( mySC.begin() );
+  const ConstIterator firstEnd( mySC.end() );
+
+  //position of the begin of the current maximal segment with respect
+  //to itb (non-positive for the first maximal segment)
+  long pos = 0;
+  for (ConstIterator it( mySC.begin() ); it != itb; ++it)
+    --pos;
+
+  while ( true )
+    {
+      //number of elements of the current maximal segment
+      //(do-while loop to deal with a segment covering a whole closed range)
+      std::size_t length = 0;
+      {
+        ConstIterator it( mySC.begin() );
+        do {
+          ++length;
+          ++it;
+        } while ( it != mySC.end() );
+      }
+
+      //contribution of the current maximal segment to its elements
+      //that belong to the subrange
+      mySCEstimator.attach( mySC );
+      ConstIterator it( mySC.begin() );
+      for (std::size_t idx = 0; idx < length; ++idx, ++it)
+        {
+          long p = pos + (long) idx;
+          if ( isClosed )
+            p = ( (p % n) + n ) % n;
+          if ( (p >= 0) && (p < N) )
+            {
+              const Quantity q = mySCEstimator.eval( it );
+              const double w = myLambda( myEccentricity( idx, length ) );
+              weights[p] += w;
+              weightedSums[p] += w * q;
+              sums[p] += q;
+              ++counts[p];
+            }
+        }
+
+      //no next maximal segment at the end of an open range
+      if ( ( ! isClosed ) && ( mySC.end() == myEnd ) )
+        break;
+
+      //next maximal segment
+      const ConstIterator previousBegin( mySC.begin() );
+      nextMaximalSegment( mySC, myEnd );
+
+      //stop after a whole turn of a closed range
+      if ( isClosed && (mySC.begin() == firstBegin) && (mySC.end() == firstEnd) )
+        break;
+
+      //stop if the next maximal segment begins after the subrange
+      for (ConstIterator it2( previousBegin ); it2 != mySC.begin(); ++it2)
+        ++pos;
+      if ( pos >= N )
+        break;
+    }
+
+  //estimated quantities
+  for (std::size_t i = 0; i < nbElements; ++i)
+    {
+      ASSERT( counts[i] > 0 );
+      if ( weights[i] > 0.0 )
+        *result++ = ( 1.0 / weights[i] ) * weightedSums[i];
+      else //null weights: unweighted mean
+        *result++ = ( 1.0 / double( counts[i] ) ) * sums[i];
+    }
+
+  return result;
+}
+
+// ------------------------------------------------------------------------
+template <typename TSegmentComputer, typename TSCEstimator,
+          typename TLambdaFunction, typename TEccentricity>
+inline
+typename DGtal::LambdaMaximalSegmentEstimator<TSegmentComputer,TSCEstimator,TLambdaFunction,TEccentricity>::Quantity
+DGtal::LambdaMaximalSegmentEstimator<TSegmentComputer,TSCEstimator,TLambdaFunction,TEccentricity>
+::eval(const ConstIterator& it, const double h)
+{
+  ASSERT( isValid() );
+
+  ConstIterator ite( it );
+  ++ite;
+  std::vector<Quantity> res;
+  res.reserve( 1 );
+  eval( it, ite, std::back_inserter( res ), h );
+  ASSERT( res.size() == 1 );
+  return res.front();
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////

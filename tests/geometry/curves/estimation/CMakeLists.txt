@@ -4,6 +4,7 @@ set(DGTAL_TESTS_SRC
   testEstimatorComparator
   testSegmentComputerEstimators
   testMostCenteredMSEstimator
+  testLambdaMaximalSegmentEstimator
   testLambdaMST2D
   testLambdaMST3D
   testLambdaMST3DBy2D
