@@ -285,6 +285,46 @@ struct BruteForce
     return res;
   }
 
+  /// true if the l elements starting at index b form a segment
+  bool isSegment(int b, int l) const
+  {
+    Sequence v;
+    for (int k = 0; k < l; ++k) v.push_back( at(b+k) );
+    return TPredicate()(v);
+  }
+
+  /**
+   * Symmetric tangent at i (Definition 2 of Feschet and Tougne, 1999):
+   * the segment [i-k, i+k] such that [i-k-1, i+k+1] is not a segment
+   * (or exceeds the range).
+   */
+  Segment symmetricTangent(int i) const
+  {
+    int k = 0;
+    while ( ( closed ? (2*k+3 <= n) : ( (i-k-1 >= 0) && (i+k+1 < n) ) )
+            && isSegment(i-k-1, 2*k+3) )
+      ++k;
+    return { i-k, 2*k+1 };
+  }
+
+  /**
+   * Index in maximalSegments of the maximal segment containing the
+   * tangent at i (Definition 3 of Feschet and Tougne, 1999): the symmetric
+   * tangent at i is first extended forward as much as possible, then
+   * backward as much as possible.
+   */
+  int mostCentered(int i) const
+  {
+    Segment t = symmetricTangent(i);
+    int b = t.begin, e = t.begin + t.size; //[b,e)
+    while ( ( closed ? (e-b < n) : (e < n) ) && isSegment(b, e-b+1) ) ++e;
+    while ( ( closed ? (e-b < n) : (b > 0) ) && isSegment(b-1, e-b+1) ) --b;
+    Segment res{ closed ? ( (b % n) + n ) % n : b, e-b };
+    for (int k = 0; k < (int) maximalSegments.size(); ++k)
+      if ( maximalSegments[k] == res ) return k;
+    return -1;
+  }
+
   /// index in maximalSegments of the last maximal segment containing i
   int last(int i) const
   {
@@ -366,6 +406,7 @@ std::string toString(Sequence const& v, bool closed)
 // Checks
 ///////////////////////////////////////////////////////////////////////////////
 
+
 /**
  * Checks all the functions of SegmentComputerHelpers.h on a sequence.
  */
@@ -432,13 +473,9 @@ void checkFunctions(Sequence const& v)
         CHECK( (int) s.size() == n );
       else
       {
-        //a maximal segment containing i, between the first and the last ones
-        Segment res = segment(s, r);
-        auto it = std::find( bf.maximalSegments.begin(), bf.maximalSegments.end(), res );
-        CHECK( it != bf.maximalSegments.end() );
-        CHECK( bf.position(i, res) >= 0 );
-        CHECK( bf.position(i, res) <= bf.position(i, bf.maximalSegments[ bf.first(i) ]) );
-        CHECK( bf.position(i, res) >= bf.position(i, bf.maximalSegments[ bf.last(i) ]) );
+        //the maximal segment containing the tangent at i
+        //(definition 3 of Feschet and Tougne, 1999)
+        CHECK( segment(s, r) == bf.maximalSegments[ bf.mostCentered(i) ] );
       }
     }
   }
@@ -534,6 +571,17 @@ TEST_CASE("Brute force computation of maximal segments")
     REQUIRE( bf.maximalSegments == std::vector<Segment>{ { 0, 3 }, { 1, 3 }, { 2, 3 }, { 3, 3 } } );
     REQUIRE( bf.first(3) == 1 );
     REQUIRE( bf.last(3) == 3 );
+  }
+  SECTION("Tangent (Feschet and Tougne, 1999)")
+  {
+    BruteForce<Monotone> bf( { 1, 1, 2, 2, 2, 1, 1, 3, 3, 0, 0, 0, 5 }, false );
+    //maximal segments: [0,5), [2,7), [5,9), [7,12), [9,13)
+    REQUIRE( bf.symmetricTangent(6) == Segment{ 5, 3 } );
+    REQUIRE( bf.maximalSegments[ bf.mostCentered(6) ] == Segment{ 5, 4 } );
+    REQUIRE( bf.symmetricTangent(3) == Segment{ 2, 3 } );
+    REQUIRE( bf.maximalSegments[ bf.mostCentered(3) ] == Segment{ 2, 5 } );
+    REQUIRE( bf.symmetricTangent(0) == Segment{ 0, 1 } );
+    REQUIRE( bf.maximalSegments[ bf.mostCentered(0) ] == Segment{ 0, 5 } );
   }
   SECTION("Whole closed range")
   {

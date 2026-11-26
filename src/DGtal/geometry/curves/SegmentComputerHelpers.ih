@@ -345,8 +345,10 @@ DGtal::mostCenteredMaximalSegment(SC& s,
 
   firstMaximalSegment( s, i, begin, end, DGtal::ForwardSegmentComputer() );
 
- //get the next maximal segment while i is not at the middle of
- //the current maximal segment.
+ //get the next maximal segment while i is not before the first element
+ //whose tangent (definition 3 of Feschet and Tougne, 1999) contains
+ //s.end(), i.e. the middle of [newBegin, s.end()), where newBegin is
+ //the begin of the next maximal segment.
 
   ConstIterator k( s.begin() );
   while ( k != i ) {
@@ -362,13 +364,13 @@ DGtal::mostCenteredMaximalSegment(SC& s,
       ConstIterator newBegin = r.end().base();
       ASSERT( newBegin != s.begin() );
 
-      while ( ( k != subRangeMiddle(newBegin, s.end() ) )
-            &&( k != i ) ) {
+      const ConstIterator m( subRangeMiddle(newBegin, s.end()) );
+      while ( ( k != m ) && ( k != i ) ) {
         ++k;
       }
-      if ( k != i ) {
+      if ( k == m ) {
 
-        //get the next maximal segment
+        //i is not before the middle: get the next maximal segment
         longestSegment(s, newBegin, end);
 
       }

@@ -64,6 +64,14 @@ namespace DGtal
    * element of a (sub)range a quantity estimated from the most centered
    * maximal segment passing through this element.
    *
+   * The most centered maximal segment passing through an element is not
+   * exactly the most centered one, but the maximal segment containing
+   * the tangent at this element defined by Feschet and Tougne
+   * (see mostCenteredMaximalSegment in SegmentComputerHelpers.h):
+   * F. Feschet and L. Tougne, Optimal Time Computation of the Tangent
+   * of a Discrete Curve: Application to the Curvature, DGCI 1999,
+   * LNCS 1568, pp. 31-40.
+   *
    Here is a basic example of curvature estimation:
    - 1. Construct an instance from a segment computer and a segment computer estimator
    @snippet geometry/curves/estimation/exampleCurvature.cpp MostCenteredConstruction

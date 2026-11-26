@@ -139,6 +139,9 @@ namespace DGtal
    * However, in order to include the most centered maximal segment
    * passing through the last element in a subpart, you should use the
    * "MostCentered++" mode.
+   * Note that the most centered maximal segment is defined as in
+   * mostCenteredMaximalSegment (SegmentComputerHelpers.h), after
+   * Feschet and Tougne (1999).
    *
    * In order to set a mode (before getting a SegmentComputerIterator),
    * use the setMode() method as follow:

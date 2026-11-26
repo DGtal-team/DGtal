@@ -189,7 +189,15 @@ bool maximalSymmetricExtension(SC& s,
 
 /**
  * Calls alternatively s.extendFront() and s.extendBack()
- * while it is possible
+ * while it is possible, beginning with s.extendFront().
+ *
+ * If s is initialized with a single element, the extensions are
+ * symmetric around this element as long as they are possible on both
+ * sides (symmetric tangent, definition 2 of Feschet and Tougne, 1999,
+ * see mostCenteredMaximalSegment). Since the extension at the front
+ * is tried first, the resulting segment is this symmetric tangent,
+ * possibly extended by one element at the front.
+ *
  * @param s any instance of (bidirectional)segment computer
  * @param begin begin iterator of a range
  * @param end end iterator of a range
@@ -336,6 +344,13 @@ void firstMaximalSegment(SC& s,
 
 /**
  * Computes the most centered maximal segment passing through i
+ * (see the function without category below for the definition).
+ *
+ * This version goes through the maximal segments containing i,
+ * beginning with the first one, until i is not before the middle
+ * of the intersection with the next maximal segment (as in the
+ * algorithm of Feschet and Tougne, 1999).
+ *
  * @param s any instance of segment computer
  * @param i any ConstIterator
  * @param begin any begin ConstIterator bounding a range
@@ -351,6 +366,12 @@ void mostCenteredMaximalSegment(SC& s,
 
 /**
  * Computes the most centered maximal segment passing through i
+ * (see the function without category below for the definition).
+ *
+ * This version follows the definition: the symmetric tangent at i is
+ * computed by maximalSymmetricExtension, then extended at the front and
+ * at the back.
+ *
  * @param s any instance of segment computer
  * @param i any ConstIterator
  * @param begin any begin ConstIterator bounding a range
@@ -397,7 +418,28 @@ void mostCenteredMaximalSegment(SC& s,
   DGtal::DynamicBidirectionalSegmentComputer);
 
 /**
- * Computes the most centered maximal segment passing through i
+ * Computes the most centered maximal segment passing through i.
+ *
+ * It is not exactly the most centered one, but the maximal segment
+ * containing the tangent at i defined by Feschet and Tougne
+ * (definition 3 of the paper below, where the extension is first
+ * tried on the right):
+ * - the symmetric tangent at i is the segment [i-k, i+k] such that
+ *   [i-k-1, i+k+1] is not a segment (or exceeds the range);
+ * - the tangent at i is the symmetric tangent extended as much as
+ *   possible at the front, then at the back if the extension at the
+ *   front is not possible.
+ *
+ * Several maximal segments may contain the symmetric tangent; since the
+ * extension is first tried at the front, the one with the largest index
+ * (i.e. the last one) is returned. The returned segment is the maximal
+ * segment obtained by extending the tangent as much as possible at the
+ * front, then at the back.
+ *
+ * F. Feschet and L. Tougne, Optimal Time Computation of the Tangent
+ * of a Discrete Curve: Application to the Curvature, DGCI 1999,
+ * LNCS 1568, pp. 31-40.
+ *
  * @param s any instance of segment computer
  * @param i any ConstIterator
  * @param begin any begin ConstIterator bounding a range
