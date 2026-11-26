@@ -588,6 +588,19 @@ also retracted @f$ l @f$ times).
 Moreover, note that @f$ \Sigma_{1 \leq i \leq n} L_i @f$ may be equal to
 @f$ O(l) @f$ (for instance for DSSs).
 
+The category of a segment computer, and thus the algorithms used by the
+saturated segmentation, may be chosen with a template parameter
+(see for instance ArithmeticalDSSComputer), in order to compare their
+running times. The benchmark
+saturatedSegmentation-benchmark.cpp compares the running times of the
+saturated segmentation of the boundary of digital disks into maximal
+standard DSSs for the different categories of ArithmeticalDSSComputer.
+The running times are linear in the number of points in all cases, but
+the dynamic algorithms are about 4 times faster than the forward ones,
+whereas the bidirectional algorithms are about 1.5 times faster.
+
+\image html timings-saturated-segmentation.png "Running times (ms) of the saturated segmentation of the boundary of digital disks into maximal standard DSSs, as a function of the number of points of the boundary, for the different categories of ArithmeticalDSSComputer." width=70%
+
 
 
 */
