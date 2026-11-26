@@ -124,7 +124,7 @@ struct NormalFromDSS
 };
 
 /**
- * Unit normal vector of the straight line alpha.x + beta.y = gamma
+ * Unit normal vector of the straight line alpha.x + beta.y + gamma = 0
  * separating the inner and outer points of a StabbingLineComputer,
  * i.e. the unit vector of direction (alpha, beta).
  */

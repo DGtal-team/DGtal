@@ -231,7 +231,13 @@ namespace DGtal
     bool isClockwiseOriented() const;
 
     /**
-     * Get the parameters of one separating straight line
+     * Get the parameters of one separating straight line, of equation
+     * alpha.x + beta.y + gamma = 0, which is the bisector of the two
+     * straight lines of the preimage of extreme slopes, i.e. a straight
+     * line in the middle of the preimage (see
+     * Preimage2D::getSeparatingStraightLine). Contrary to the direction
+     * (b,a) of a DSS (see ArithmeticalDSSComputer), it is generally not
+     * parallel to the straight lines passing through the leaning points.
      * @param alpha  (returned) x-component of the normal
      * @param beta  (returned) y-component of the normal
      * @param gamma  (returned) intercept

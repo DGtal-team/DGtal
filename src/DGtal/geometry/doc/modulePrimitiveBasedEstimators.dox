@@ -162,11 +162,25 @@ DSSs.
 The estimators based on maximal DSSs give the same errors whether the
 elements are the points or the steps of the curve. The \f$\lambda\f$-MST
 estimator based on StabbingLineComputer is however more accurate than the
-one based on DSSs: the maximal segments of StabbingLineComputer, which
-separate the inner and outer points, are generally longer than the
-maximal DSSs of the same curve and do not have the same extremities, and
-even for the same range of steps, the straight line returned by
-StabbingLineComputer is not parallel to the leaning lines of the DSS.
+one based on DSSs, because the segments are not the same.
+A sequence of steps is a segment of StabbingLineComputer if there is a
+straight line separating the inner and outer pixel centers of its steps,
+the pixel centers lying on the straight line being allowed on both sides
+(the preimage computed by Preimage2D is closed). A sequence of steps is a
+standard DSS (ArithmeticalDSSComputerOnArrows) if and only if the same
+holds, but with the pixel centers lying on the straight line allowed on
+one side only (\f$ \mu \leq ax - by < \mu + \omega \f$). The segments of
+StabbingLineComputer thus form a larger class: since the straight lines
+passing through pixel centers are very frequent on a grid, its maximal
+segments are generally longer and more numerous than the maximal DSSs of
+the same curve, and do not have the same extremities. Moreover, the
+straight lines used to estimate the normal vectors are not defined in the
+same way: the normal vector of a DSS is orthogonal to its leaning lines,
+of direction \f$ (b,a) \f$, whereas the straight line returned by
+StabbingLineComputer::getParameters is the bisector of the two straight
+lines of the preimage of extreme slopes, i.e. a straight line in the middle
+of the preimage (see Preimage2D::getSeparatingStraightLine). Even for the
+same range of steps, the two normal vectors thus differ slightly.
 
 \image html normals-convergence-ellipse.png "Mean angular error (radian) of the normal estimators along the boundary of a digitized ellipse as a function of the grid step h." width=70%
 \image html normals-max-error-ellipse.png "Maximal angular error (radian) of the normal estimators along the boundary of a digitized ellipse as a function of the grid step h." width=70%

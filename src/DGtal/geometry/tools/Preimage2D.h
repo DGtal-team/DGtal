@@ -70,6 +70,11 @@ namespace DGtal
    * points Pi and the points Qi are assumed to lie in either
    * side of the shape.
    *
+   * The preimage is closed: a shape passing through some points Pi
+   * or Qi belongs to the preimage, i.e. the segments [PiQi] are
+   * considered as closed segments (see StabbingLineComputer, whose class
+   * of segments is thus larger than the class of standard DSSs).
+   *
    * The user of this class has to decide from its input set
    * of segments and the shape used whether a linear-time algorithm
    * is possible or not. If yes (e.g. preimage of straight lines crossing a set of
@@ -327,9 +332,15 @@ namespace DGtal
     Point Ll() const;
 
     /**
-     * Get the parameters of one separating straight line
-     * @param alpha  (returned) y-component of the normal
-     * @param beta  (returned) x-component of the normal
+     * Get the parameters of one separating straight line, of equation
+     * alpha.x + beta.y + gamma = 0. This straight line is the bisector
+     * of the two straight lines of the preimage of extreme slopes, i.e.
+     * (Uf,Ll) and (Ul,Lf), passing through their intersection point
+     * (or one of them if they are parallel): it is a straight line in the
+     * middle of the preimage, which is generally not parallel to the
+     * straight lines passing through the leaning points.
+     * @param alpha  (returned) x-component of the normal
+     * @param beta  (returned) y-component of the normal
      * @param gamma  (returned) intercept
      */
     void getSeparatingStraightLine(double& alpha, double& beta, double& gamma) const;
