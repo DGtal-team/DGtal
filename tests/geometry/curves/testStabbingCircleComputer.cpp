@@ -470,7 +470,7 @@ bool testSegmentation(const TCurve& curve)
   {
     typedef SaturatedSegmentation<SegmentComputer> Segmentation;
     Segmentation theSegmentation( r.begin(), r.end(), SegmentComputer() );
-    theSegmentation.setMode("Last");
+    theSegmentation.setMode(Segmentation::Mode::Last);
 
     Board2D board;
     board << curve;

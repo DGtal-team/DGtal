@@ -41,7 +41,9 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <string>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/Exceptions.h"
 #include "DGtal/geometry/curves/SegmentComputerHelpers.h"
 #include "DGtal/geometry/curves/CForwardSegmentComputer.h"
 
@@ -126,21 +128,23 @@ namespace DGtal
    * Moreover, a part of a digital curve may be processed either
    * as an independent (open) digital curve or as a part whose
    * segmentation at the ends depends of the underlying digital
-   * curve. That's why 3 processing modes are available:
-   * - "Truncate" (default), the extension of the last segment
+   * curve. That's why 3 processing modes are available (see Mode):
+   * - Mode::Truncate (default), the extension of the last segment
    *  (and the segmentation) stops just before endIt.
-   * - "Truncate+1", the last segment is extended to endIt too
+   * - Mode::TruncatePlusOne, the last segment is extended to endIt too
    * if it is possible, provided that endIt != curve.end().
-   * - "DoNotTruncate", the last segment is extended as far as
+   * - Mode::DoNotTruncate, the last segment is extended as far as
    * possible, provided that curve.end() is not reached.
    *
    *
-   * In order to set a mode (before getting a SegmentComputerIterator),
+   * In order to set a mode (before getting a SegmentComputerIterator,
+   * and after setSubRange(), which sets the default mode),
    * use the setMode() method as follow:
    * @code
-  theSegmentation.setMode("DoNotTruncate");
+  theSegmentation.setMode(Segmentation::Mode::DoNotTruncate);
    * @endcode
-   * Note that the default mode will be used for any unknown modes.
+   * For backward compatibility, the modes may also be given by the
+   * strings "Truncate", "Truncate+1" and "DoNotTruncate".
    *
    * @see testSegmentation.cpp
    */
@@ -154,6 +158,18 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( concepts::CForwardSegmentComputer<TSegmentComputer> ) );
     typedef TSegmentComputer SegmentComputer;
     typedef typename SegmentComputer::ConstIterator ConstIterator;
+
+    /**
+     * Processing modes, which define the extension of the last segment
+     * of the segmentation of a subrange [itb, ite) (see setSubRange()):
+     * - Truncate (default), the extension of the last segment stops
+     *   just before ite;
+     * - TruncatePlusOne, the last segment is extended to ite too if it is
+     *   possible, provided that ite is not the end of the whole range;
+     * - DoNotTruncate, the last segment is extended as far as possible,
+     *   provided that the end of the whole range is not reached.
+     */
+    enum class Mode { Truncate, TruncatePlusOne, DoNotTruncate };
 
     // ----------------------- Standard services ------------------------------
   public:
@@ -406,9 +422,19 @@ namespace DGtal
 
 
     /**
-     * Set processing mode
+     * Set processing mode.
+     * NB: setSubRange() sets the default mode.
+     * @param aMode one of the available modes (see Mode),
+     * Mode::Truncate being the default one.
+     */
+    void setMode(Mode aMode);
+
+    /**
+     * Set processing mode (for backward compatibility).
+     * NB: setSubRange() sets the default mode.
      * @param aMode one of the 3 available modes :
      * "Truncate" (default), "Truncate+1", "DoNotTruncate".
+     * @throw InputException if @a aMode is not one of these modes.
      */
     void setMode(const std::string& aMode);
 
@@ -469,9 +495,9 @@ namespace DGtal
     ConstIterator myStop;
 
     /**
-     * Mode: either "Truncate" (default), "Truncate+1", or "DoNotTruncate".
+     * Processing mode (Mode::Truncate by default)
      */
-    std::string myMode;
+    Mode myMode;
 
     /**
      * the segment computer.

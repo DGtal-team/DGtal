@@ -161,11 +161,11 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
   seg.setSubRange(itb, ite);
   if ((myBegin != itb) || (myEnd != ite))
   { //if subrange
-    seg.setMode("MostCentered++");
+    seg.setMode(Segmentation::Mode::MostCenteredPlusPlus);
   }
   else
   {//whole range
-    seg.setMode("MostCentered");
+    seg.setMode(Segmentation::Mode::MostCentered);
   }
 
   SegmentIterator segItBegin = seg.begin();

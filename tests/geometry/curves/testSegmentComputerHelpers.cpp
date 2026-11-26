@@ -526,6 +526,34 @@ std::string toString(Sequence const& v, bool closed)
 // Checks
 ///////////////////////////////////////////////////////////////////////////////
 
+/**
+ * Modes of SaturatedSegmentation, with their names, which are used
+ * by the brute-force computations (the three simple modes first).
+ */
+template <typename TSC>
+std::vector<std::pair<std::string, typename SaturatedSegmentation<TSC>::Mode> >
+saturatedModes()
+{
+  using Mode = typename SaturatedSegmentation<TSC>::Mode;
+  return { { "First", Mode::First }, { "MostCentered", Mode::MostCentered },
+           { "Last", Mode::Last }, { "First++", Mode::FirstPlusPlus },
+           { "MostCentered++", Mode::MostCenteredPlusPlus },
+           { "Last++", Mode::LastPlusPlus } };
+}
+
+/**
+ * Modes of GreedySegmentation, with their names, which are used
+ * by the brute-force computations.
+ */
+template <typename TSC>
+std::vector<std::pair<std::string, typename GreedySegmentation<TSC>::Mode> >
+greedyModes()
+{
+  using Mode = typename GreedySegmentation<TSC>::Mode;
+  return { { "Truncate", Mode::Truncate }, { "Truncate+1", Mode::TruncatePlusOne },
+           { "DoNotTruncate", Mode::DoNotTruncate } };
+}
+
 
 /**
  * Checks all the functions of SegmentComputerHelpers.h on a sequence.
@@ -628,9 +656,10 @@ void checkFunctions(Sequence const& v)
 
   {
     INFO( "SaturatedSegmentation" );
-    for (std::string mode : { "First", "MostCentered", "Last" })
+    for (auto const& [name, mode] : saturatedModes<SC>())
     {
-      INFO( "mode " << mode );
+      if ( name.find("++") != std::string::npos ) continue;
+      INFO( "mode " << name );
       SaturatedSegmentation<SC> segmentation( r.begin(), r.end(), SC() );
       segmentation.setMode(mode);
       std::vector<Segment> res;
@@ -755,35 +784,34 @@ void checkSegmentations(Sequence const& v)
   {
     INFO( "SaturatedSegmentation" );
     for (auto [s, t] : subranges)
-      for (std::string mode : { "First", "MostCentered", "Last",
-                                "First++", "MostCentered++", "Last++" })
+      for (auto const& [name, mode] : saturatedModes<SC>())
       {
         const bool whole = ( r.closed ? (t == s+n) : ( (s == 0) && (t == n) ) );
         //the "++" modes are not tested for a whole closed range
-        if ( ( mode.find("++") != std::string::npos ) && r.closed && whole )
+        if ( ( name.find("++") != std::string::npos ) && r.closed && whole )
           continue;
-        INFO( "subrange [" << s << ", " << t << "), mode " << mode
-              << ( bf.sameChosenSegment(s, t, mode) ? " (same chosen segment)" : "" ) );
+        INFO( "subrange [" << s << ", " << t << "), mode " << name
+              << ( bf.sameChosenSegment(s, t, name) ? " (same chosen segment)" : "" ) );
         SaturatedSegmentation<SC> segmentation( r.begin(), r.end(), SC() );
         if ( ! whole || r.closed ) segmentation.setSubRange( r.at(s), r.at(t) );
         segmentation.setMode(mode);
-        CHECK( segments(segmentation) == bf.saturated(s, t, mode) );
+        CHECK( segments(segmentation) == bf.saturated(s, t, name) );
       }
   }
 
   {
     INFO( "GreedySegmentation" );
     for (auto [s, t] : subranges)
-      for (std::string mode : { "Truncate", "Truncate+1", "DoNotTruncate" })
+      for (auto const& [name, mode] : greedyModes<SC>())
       {
         const bool whole = ( r.closed ? (t == s+n) : ( (s == 0) && (t == n) ) );
         //no extension beyond the whole closed range
-        if ( r.closed && whole && (mode != "Truncate") ) continue;
-        INFO( "subrange [" << s << ", " << t << "), mode " << mode );
+        if ( r.closed && whole && (name != "Truncate") ) continue;
+        INFO( "subrange [" << s << ", " << t << "), mode " << name );
         GreedySegmentation<SC> segmentation( r.begin(), r.end(), SC() );
         if ( ! whole || r.closed ) segmentation.setSubRange( r.at(s), r.at(t) );
         segmentation.setMode(mode);
-        CHECK( segments(segmentation) == bf.greedy(s, t, mode) );
+        CHECK( segments(segmentation) == bf.greedy(s, t, name) );
       }
   }
 
@@ -936,6 +964,55 @@ TEMPLATE_TEST_CASE("Segmentations and most centered maximal segment estimator", 
   SECTION("Subsequences of amplitude at most 3")
   {
     checkSegmentationsOnAllSequences<BoundedAmplitude<3>, TestType>();
+  }
+}
+
+TEST_CASE("Modes of the segmentations given as strings")
+{
+  using SC = DummySegmentComputer<Iterator, BoundedAmplitude<1>, DynamicBidirectionalSegmentComputer>;
+  const Sequence v = sequences[3];
+  Range<Iterator> r{ v };
+  const int n = (int) v.size();
+  auto segments = [&](auto const& segmentation)
+  {
+    std::vector<Segment> res;
+    for (auto it = segmentation.begin(); it != segmentation.end(); ++it)
+      res.push_back( segment(*it, r) );
+    return res;
+  };
+
+  SECTION("SaturatedSegmentation")
+  {
+    for (auto const& [name, mode] : saturatedModes<SC>())
+    {
+      INFO( "mode " << name );
+      SaturatedSegmentation<SC> s1( r.begin(), r.end(), SC() ), s2( r.begin(), r.end(), SC() );
+      s1.setSubRange( r.at(2), r.at(n-3) );
+      s2.setSubRange( r.at(2), r.at(n-3) );
+      s1.setMode(mode);
+      s2.setMode(name);
+      CHECK( segments(s1) == segments(s2) );
+    }
+    SaturatedSegmentation<SC> segmentation( r.begin(), r.end(), SC() );
+    CHECK_THROWS_AS( segmentation.setMode("Unknown"), InputException );
+    CHECK_THROWS_AS( segmentation.setMode("Truncate"), InputException );
+  }
+
+  SECTION("GreedySegmentation")
+  {
+    for (auto const& [name, mode] : greedyModes<SC>())
+    {
+      INFO( "mode " << name );
+      GreedySegmentation<SC> s1( r.begin(), r.end(), SC() ), s2( r.begin(), r.end(), SC() );
+      s1.setSubRange( r.at(2), r.at(n-3) );
+      s2.setSubRange( r.at(2), r.at(n-3) );
+      s1.setMode(mode);
+      s2.setMode(name);
+      CHECK( segments(s1) == segments(s2) );
+    }
+    GreedySegmentation<SC> segmentation( r.begin(), r.end(), SC() );
+    CHECK_THROWS_AS( segmentation.setMode("Unknown"), InputException );
+    CHECK_THROWS_AS( segmentation.setMode("First"), InputException );
   }
 }
 

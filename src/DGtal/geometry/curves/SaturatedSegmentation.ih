@@ -103,14 +103,19 @@ inline
 void
 DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::chooseMaximalSegment(SegmentComputer& s, const ConstIterator& it) const
 {
-  if ( (myS->myMode == "First") || (myS->myMode == "First++") ) {
+  switch (myS->myMode) {
+  case Mode::First:
+  case Mode::FirstPlusPlus:
     DGtal::firstMaximalSegment(s, it, myS->myBegin, myS->myEnd);
-  }
-  else if ( (myS->myMode == "Last") || (myS->myMode == "Last++") ) {
+    break;
+  case Mode::Last:
+  case Mode::LastPlusPlus:
     DGtal::lastMaximalSegment(s, it, myS->myBegin, myS->myEnd);
-  }
-  else { // (myS->myMode == "MostCentered") or (myS->myMode == "MostCentered++")
+    break;
+  case Mode::MostCentered:
+  case Mode::MostCenteredPlusPlus:
     DGtal::mostCenteredMaximalSegment(s, it, myS->myBegin, myS->myEnd);
+    break;
   }
 }
 
@@ -148,8 +153,8 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SegmentComputerIterator::initLas
 
   bool isEmpty = false;
 
-  const bool isPlusMode = (myS->myMode == "MostCentered++")
-    || (myS->myMode == "First++") || (myS->myMode == "Last++");
+  const bool isPlusMode = (myS->myMode == Mode::MostCenteredPlusPlus)
+    || (myS->myMode == Mode::FirstPlusPlus) || (myS->myMode == Mode::LastPlusPlus);
 
   ConstIterator i(myS->myStop);
 
@@ -443,7 +448,7 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::SaturatedSegmentation
    myEnd(ite),
    myStart(itb),
    myStop(ite),
-   myMode("MostCentered"),
+   myMode(Mode::MostCentered),
    mySegmentComputer(aSegmentComputer)
 {
 }
@@ -457,7 +462,16 @@ DGtal::SaturatedSegmentation<TSegmentComputer>::setSubRange
 {
   myStart = itb;
   myStop = ite;
-  myMode = "MostCentered";
+  myMode = Mode::MostCentered;
+}
+
+  template <typename TSegmentComputer>
+inline
+void
+DGtal::SaturatedSegmentation<TSegmentComputer>::setMode
+(Mode aMode)
+{
+  myMode = aMode;
 }
 
   template <typename TSegmentComputer>
@@ -466,13 +480,22 @@ void
 DGtal::SaturatedSegmentation<TSegmentComputer>::setMode
 (const std::string& aMode)
 {
-  if ( (aMode == "First") || (aMode == "Last") || (aMode == "MostCentered")
-      || (aMode == "First++") || (aMode == "Last++") || (aMode == "MostCentered++") )
-    myMode = aMode;
+  if (aMode == "First")
+    myMode = Mode::First;
+  else if (aMode == "MostCentered")
+    myMode = Mode::MostCentered;
+  else if (aMode == "Last")
+    myMode = Mode::Last;
+  else if (aMode == "First++")
+    myMode = Mode::FirstPlusPlus;
+  else if (aMode == "MostCentered++")
+    myMode = Mode::MostCenteredPlusPlus;
+  else if (aMode == "Last++")
+    myMode = Mode::LastPlusPlus;
   else
     {
-      std::cerr << "[DGtal::SaturatedSegmentation<TSegmentComputer>::setMode(const std::string& aMode)]"
-		<< " ERROR. Unknown mode." << std::endl;
+      trace.error() << "[DGtal::SaturatedSegmentation<TSegmentComputer>::setMode(const std::string& aMode)]"
+                    << " Unknown mode: " << aMode << std::endl;
       throw InputException();
     }
 }

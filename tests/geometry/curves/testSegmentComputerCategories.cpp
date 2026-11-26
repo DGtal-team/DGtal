@@ -34,6 +34,7 @@
 #include <string>
 #include <vector>
 #include <utility>
+#include <tuple>
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Circulator.h"
@@ -127,13 +128,19 @@ void checkSameSegmentations (TIterator const& itb, TIterator const& ite)
     REQUIRE( same );
   }
 
-  for (std::string mode : { "First", "MostCentered", "Last" })
+  using Mode = typename SaturatedSegmentation<TSC>::Mode;
+  using RefMode = typename SaturatedSegmentation<TRefSC>::Mode;
+  const std::vector<std::tuple<std::string, Mode, RefMode> > modes = {
+    { "First", Mode::First, RefMode::First },
+    { "MostCentered", Mode::MostCentered, RefMode::MostCentered },
+    { "Last", Mode::Last, RefMode::Last } };
+  for (auto const& [name, mode, refMode] : modes)
   {
-    INFO( "saturated segmentation, mode " << mode );
+    INFO( "saturated segmentation, mode " << name );
     SaturatedSegmentation<TSC> seg( itb, ite, TSC() );
     seg.setMode(mode);
     SaturatedSegmentation<TRefSC> ref( itb, ite, TRefSC() );
-    ref.setMode(mode);
+    ref.setMode(refMode);
     auto res = extremities(seg);
     auto expected = extremities(ref);
     REQUIRE( res.size() > 1 );
@@ -179,9 +186,14 @@ void checkMaximalSegments (TIterator const& itb, TIterator const& ite)
 {
   auto expected = bruteForceMaximalSegments<TSC>(itb, ite);
   REQUIRE( expected.size() > 1 );
-  for (std::string mode : { "First", "MostCentered", "Last" })
+  using Mode = typename SaturatedSegmentation<TSC>::Mode;
+  const std::vector<std::pair<std::string, Mode> > modes = {
+    { "First", Mode::First },
+    { "MostCentered", Mode::MostCentered },
+    { "Last", Mode::Last } };
+  for (auto const& [name, mode] : modes)
   {
-    INFO( "saturated segmentation, mode " << mode );
+    INFO( "saturated segmentation, mode " << name );
     SaturatedSegmentation<TSC> seg( itb, ite, TSC() );
     seg.setMode(mode);
     auto res = extremities(seg);

@@ -480,19 +480,22 @@ Moreover, a part of a digital curve may be processed either
 as an independent (open) digital curve or as a part whose
 segmentation at the ends depends of the underlying digital
 curve. That's why 3 processing modes are available:
-- "Truncate" (default), the extension of the last segment
+- Mode::Truncate (default), the extension of the last segment
   (and the segmentation) stops just before endIt.
-- "Truncate+1", the last segment is extended to endIt too
+- Mode::TruncatePlusOne, the last segment is extended to endIt too
   if it is possible, provided that endIt != curve.end().
-- "DoNotTruncate", the last segment is extended as far as
+- Mode::DoNotTruncate, the last segment is extended as far as
   possible, provided that curve.end() is not reached.
 
-In order to set a mode (before getting a SegmentComputerIterator),
+In order to set a mode (before getting a SegmentComputerIterator,
+and after setSubRange(), which sets the default mode),
 use the setMode() method as follow:
 @code
-theSegmentation.setMode("DoNotTruncate");
+theSegmentation.setMode(Segmentation::Mode::DoNotTruncate);
 @endcode
-Note that the default mode will be used for any unknown modes.
+For backward compatibility, the modes may also be given by the strings
+"Truncate", "Truncate+1" and "DoNotTruncate" (an InputException is
+thrown for any other string).
 
 The complexity of the greedy segmentation algorithm relies on the
 complexity of the extendFront() method of the segment computer. If it
@@ -542,21 +545,26 @@ for an example of how to use maximal DSSs to decompose a digital curve
    * element of the range, one maximal segment must be chosen
    * as the first (resp. last) retrieved maximal segments.
    * Several processing modes are therefore available:
-   * - "First",
-   * - "MostCentered" (default),
-   * - "Last",
+   * - Mode::First and Mode::FirstPlusPlus,
+   * - Mode::MostCentered (default) and Mode::MostCenteredPlusPlus,
+   * - Mode::Last and Mode::LastPlusPlus.
    *
-   * The mode i indicates that the segmentation begins with
-   * the i-th maximal segment passing through the first element
-   * and ends with the i maximal segment passing through the
-   * last element.
+   * The mode XXX indicates that the segmentation begins with
+   * the XXX maximal segment passing through the first element
+   * and ends with the XXX maximal segment passing through the
+   * element following the range, which is excluded in the simple
+   * modes and included in the PlusPlus modes
+   * (see SaturatedSegmentation for details).
    *
-   * In order to set a mode (before getting a SegmentComputerIterator),
+   * In order to set a mode (before getting a SegmentComputerIterator,
+   * and after setSubRange(), which sets the default mode),
    * use the setMode() method as follow:
    * @code
-  theSegmentation.setMode("First");
+  theSegmentation.setMode(Segmentation::Mode::First);
    * @endcode
-   * Note that the default mode will be used for any unknown modes.
+   * For backward compatibility, the modes may also be given by the
+   * strings "First", "MostCentered", "Last", "First++", "MostCentered++"
+   * and "Last++" (an InputException is thrown for any other string).
 
 
 The complexity of the saturated segmentation algorithm relies on the
