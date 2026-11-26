@@ -189,6 +189,42 @@ same range of steps, the two normal vectors thus differ slightly.
 \image html normals-max-error-flower.png "Maximal angular error (radian) of the normal estimators along the boundary of a digitized flower as a function of the grid step h." width=70%
 \image html normals-timings.png "Running times (ms) of the normal estimators along the boundary of a digitized flower as a function of the number of points." width=70%
 
+\subsection modulePrimitiveBasedEstimators-Length Length estimation
+
+The length of a curve may be estimated by integration of the estimated
+normal vectors: each step of the curve, of length \f$ h \f$, contributes
+\f$ h |n \cdot u| \f$, where \f$ n \f$ is the estimated unit normal vector
+at the step and \f$ u \f$ the trivial normal vector of the step (for the
+estimators on points, the normal vector at a step is the normalized sum of
+the normal vectors at its two points). The benchmark compares the length
+estimated from each of the normal estimators with the length of the
+boundary of the shape. The relative error decreases roughly as \f$ h \f$
+(or faster) for all the normal estimators, more quickly for the
+\f$\lambda\f$-MST estimators than for the most centered ones, and much more
+quickly for the estimators based on circular arcs (about \f$ 10^{-7} \f$
+for \f$ h = 0.0005 \f$).
+
+\image html length-convergence-ellipse.png "Relative error of the length of the boundary of a digitized ellipse, estimated by integration of the normal vectors, as a function of the grid step h." width=70%
+\image html length-convergence-flower.png "Relative error of the length of the boundary of a digitized flower, estimated by integration of the normal vectors, as a function of the grid step h." width=70%
+
+\subsection modulePrimitiveBasedEstimators-Curvature Curvature estimation
+
+The curvature may be estimated from the maximal segments of
+StabbingCircleComputer with CurvatureFromDCAEstimator. Its absolute value
+is the inverse of the radius of the separating circle, and its sign depends
+on the convexity of the DCA (see StabbingCircleComputer::isConvex()) and on
+the orientation of the scanning, given as a template parameter: for a curve
+scanned in a counter-clockwise orientation, the curvature is positive on
+convex parts and negative on concave parts. The benchmark
+compares the curvature estimated with both estimators with the true
+curvature of the shape. The mean absolute error decreases roughly as
+\f$ h^{1/2} \f$, slightly faster for the \f$\lambda\f$-MST estimator,
+whereas the maximal absolute error decreases slowly, especially along the
+non-convex shape.
+
+\image html curvature-convergence-ellipse.png "Mean and maximal absolute errors of the curvature estimated from DCAs along the boundary of a digitized ellipse as a function of the grid step h." width=70%
+\image html curvature-convergence-flower.png "Mean and maximal absolute errors of the curvature estimated from DCAs along the boundary of a digitized flower as a function of the grid step h." width=70%
+
 */
 
 }

@@ -149,7 +149,9 @@ bool testFromDCA(
   int nb = 0;
   int nbok = 0;
 
-  { //curvature
+  { //curvature: the curve of the test is a convex part scanned in a
+    //clockwise orientation (the inner points are on the right),
+    //so that its curvature is negative
     CurvatureFromDCAEstimator<DCAComputer,false> f;
     f.init(1.0, itb, ite);
     f.attach(dca);
@@ -158,7 +160,7 @@ bool testFromDCA(
     double q2 = f.eval(itb);
     trace.info() << "Curvature (h=1): " << q1 << std::endl;
     trace.info() << "Curvature (h=0.1): " << q2 << std::endl;
-    nbok += ((q1 >= 0)&&(q1 < 1)&&(q2 >= 0)&&(q2 < 10)
+    nbok += ((q1 <= 0)&&(q1 > -1)&&(q2 <= 0)&&(q2 > -10)
 	     &&(std::abs(q2-(10*q1)) < epsilon))?1:0;
     nb++;
     trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
@@ -229,6 +231,17 @@ bool testNormalFromDCAOrientation()
   typedef StabbingCircleComputer<ConstCirculator> DCAComputer;
   typedef NormalFromDCAEstimator<DCAComputer> Normal;
   typedef TangentFromDCAEstimator<DCAComputer> Tangent;
+  typedef CurvatureFromDCAEstimator<DCAComputer, true> CCWCurvature;
+  typedef CurvatureFromDCAEstimator<DCAComputer, false> CWCurvature;
+
+  //orientation of the curve (sign of its area)
+  double area = 0.0;
+  for (std::size_t i = 0; i < points.size(); ++i)
+    {
+      Point p = points[i], q = points[(i+1) % points.size()];
+      area += double( p[0] ) * q[1] - double( q[0] ) * p[1];
+    }
+  const bool isCCW = ( area > 0.0 );
 
   unsigned int nbok = 0;
   unsigned int nb = 0;
@@ -305,6 +318,20 @@ bool testNormalFromDCAOrientation()
               ++it2;
             } while ( it2 != seg->end() );
           if ( s > 0 ) hasConvexPart = true; else hasConcavePart = true;
+          //sign of the curvature: positive on convex parts and negative on
+          //concave parts, given the orientation of the scanning
+          CCWCurvature fccw; fccw.init( 1.0, seg->begin(), seg->end() ); fccw.attach( *seg );
+          CWCurvature fcw; fcw.init( 1.0, seg->begin(), seg->end() ); fcw.attach( *seg );
+          double k = isCCW ? fccw.eval( seg->begin() ) : fcw.eval( seg->begin() );
+          bool goodSign = ( (k > 0) == seg->isConvex() ) && ( k != 0 );
+          if ( ! goodSign )
+            trace.info() << "  wrong curvature sign: " << k << " convex " << seg->isConvex() << std::endl;
+          nbok += goodSign ? 1 : 0;
+          nb++;
+          //opposite sign for the opposite orientation
+          double k2 = isCCW ? fcw.eval( seg->begin() ) : fccw.eval( seg->begin() );
+          nbok += ( std::abs( k + k2 ) < 1e-12 ) ? 1 : 0;
+          nb++;
           nbok += ( (s > 0) == seg->isConvex() ) ? 1 : 0;
           nb++;
         }

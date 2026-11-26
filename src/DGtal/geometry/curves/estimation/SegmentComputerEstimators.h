@@ -772,6 +772,14 @@ namespace DGtal
      * computes the curvature from a geometricDCA
      * at a given grid step.
      *
+     * The absolute value of the curvature is the inverse of the radius
+     * of the separating circle (divided by the grid step). Its sign
+     * depends on the convexity of the DCA (see
+     * StabbingCircleComputer::isConvex()) and on the orientation of the
+     * scanning: positive for a convex part (resp. concave part) scanned
+     * in a counter-clockwise (resp. clockwise) orientation, negative
+     * otherwise.
+     *
      * @tparam isCCW boolean equal to 'true'
      * for a scanning in a counter-clockwise (CCW)
      * orientation, 'false' otherwise.
@@ -804,24 +812,18 @@ namespace DGtal
         if ( aDCA.isStraight() )
           return 0.0;
         else
-          return ( aDCA.getSeparatingCircle().getCurvature() / aH );
+        {
+          //radius of the separating circle
+          //(the sign of its curvature depends on the order of the
+          //three points defining it, which is not the order of the curve)
+          double c0, c1, r;
+          aDCA.getSeparatingCircle().getParameters(c0, c1, r);
+          const double k = 1.0 / ( r * aH );
+          return ( aDCA.isConvex() == isCCW ) ? k : -k;
+        }
       }
     };
-    template<>
-    struct CurvatureFromDCA<false>
-    {
-    public:
-      typedef double Value;
 
-      template<typename DCA>
-      Value operator() (const DCA& aDCA, const Value& aH = 1.0) const
-      {
-        if ( aDCA.isStraight() )
-          return 0.0;
-        else
-          return - ( aDCA.getSeparatingCircle().getCurvature() / aH );
-      }
-    };
     /**
      * Description of class 'NormalVectorFromDCA' <p> Aim:
      * estimates the normal at a given position from a geometricDCA.

@@ -253,6 +253,10 @@ namespace DGtal
 
     /**
      * @return a separating circle.
+     * NB: the sign of the curvature of this circle (Circle::getCurvature())
+     * is not meaningful, because the three points defining the circle are
+     * not given in the order of the curve; use isConvex() to know whether
+     * the segment is a convex or concave part (see also CurvatureFromDCAEstimator).
      */
     Circle getSeparatingCircle() const;
 
