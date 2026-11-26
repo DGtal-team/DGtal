@@ -139,6 +139,15 @@ namespace DGtal
    * However, in order to include the most centered maximal segment
    * passing through the last element in a subpart, you should use the
    * "MostCentered++" mode.
+   * If the maximal segment chosen for the first element of a (sub)range
+   * is also chosen for the element following the range (and thus contains
+   * the whole range), the segmentation is empty in the simple "XXX" modes
+   * (because this maximal segment is both the first one and the excluded
+   * last one), whereas it is the only maximal segment of the segmentation
+   * in the "XXX++" modes. This way, the segmentations of consecutive
+   * subranges in a simple mode never retrieve the same maximal segment
+   * twice.
+   *
    * Note that the most centered maximal segment is defined as in
    * mostCenteredMaximalSegment (SegmentComputerHelpers.h), after
    * Feschet and Tougne (1999).
@@ -234,6 +243,13 @@ namespace DGtal
        * FALSE otherwise
        */
       bool  myFlagIsLast;
+
+      /**
+       * A flag equal to TRUE if the last maximal segment is equal to the
+       * first one, but must be retrieved again after a whole turn of a
+       * circular range, FALSE otherwise
+       */
+      bool  myFlagIsLastAfterTurn;
 
 
 
@@ -388,8 +404,28 @@ namespace DGtal
 
       /**
        * Computes the last maximal segment of the segmentation.
+       * @return 'true' if the segmentation is empty, i.e. if, in a simple
+       * mode, the maximal segment chosen for the first element of the
+       * range is also chosen for the element following the range,
+       * 'false' otherwise.
        */
-      void initLastMaximalSegment();
+      bool initLastMaximalSegment();
+
+      /**
+       * Computes, according to the mode, the first, most centered or last
+       * maximal segment passing through @a it.
+       * @param s the segment computer used for the computation
+       * @param it an element of the range
+       */
+      void chooseMaximalSegment(SegmentComputer& s, const ConstIterator& it) const;
+
+      /**
+       * @param it1 an element of the current segment
+       * @param it2 an element of the current segment
+       * @return 'true' if @a it1 is met strictly before @a it2 when the
+       * current segment is scanned from its begin, 'false' otherwise.
+       */
+      bool isBefore(const ConstIterator& it1, const ConstIterator& it2) const;
 
     };
 

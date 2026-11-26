@@ -94,8 +94,11 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
 	       SegmentIterator& /*first*/, SegmentIterator& last,
 	       OutputIterator result, IteratorType )
 {
-  mySCEstimator.attach( *last );
-  result = mySCEstimator.eval( itCurrent, ite, result );
+  if (itCurrent != ite)
+    {
+      mySCEstimator.attach( *last );
+      result = mySCEstimator.eval( itCurrent, ite, result );
+    }
   return result;
 }
 
@@ -109,14 +112,19 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
 	       SegmentIterator& first, SegmentIterator& last,
 	       OutputIterator result, CirculatorType )
 {
-  if ( (itb == ite) && (first.intersectPrevious() && last.intersectNext() ) )
-    {//if first and last segment intersect (whole range)
-     //last segment
+  if (itb == ite)
+    {//whole range: the last segment, then the first one
+     //(that may intersect the last one or not)
       //first element whose tangent contains last->end()
       //(definition 3 of Feschet and Tougne, 1999)
       ConstIterator itEnd = subRangeMiddle( first->begin(), last->end() );
-      mySCEstimator.attach( *last );
-      result = mySCEstimator.eval( itCurrent, itEnd, result );
+      //last segment (nb: an evaluation on [itCurrent, itCurrent)
+      //would be an evaluation on the whole range)
+      if (itCurrent != itEnd)
+        {
+          mySCEstimator.attach( *last );
+          result = mySCEstimator.eval( itCurrent, itEnd, result );
+        }
       itCurrent = itEnd;
       if (itCurrent != ite)
 	{
@@ -127,8 +135,11 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
     }
   else
     { //(sub range)
-      mySCEstimator.attach( *last );
-      result = mySCEstimator.eval( itCurrent, ite, result );
+      if (itCurrent != ite)
+        {
+          mySCEstimator.attach( *last );
+          result = mySCEstimator.eval( itCurrent, ite, result );
+        }
     }
   return result;
 }
@@ -176,6 +187,8 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
     {
       //strictly more than one maximal segment
       ConstIterator itCurrent = itb;
+      //whole circular range
+      const bool isWhole = (itb == ite);
 
       //main loop
       while (nextSegIt != segItEnd)
@@ -185,7 +198,20 @@ DGtal::MostCenteredMaximalSegmentEstimator<SegmentComputer,SCEstimator>
         ConstIterator itEnd = subRangeMiddle( nextSegIt->begin(), segIt->end() );
 
         mySCEstimator.attach( *segIt );
-        result = mySCEstimator.eval( itCurrent, itEnd, result );
+
+        //if the end of the subrange is reached before itEnd
+        //(ite in ]itCurrent, itEnd]), the evaluation stops at ite
+        bool isEndReached = false;
+        if ( ! isWhole )
+          for (ConstIterator it = itCurrent; (it != itEnd) && ( ! isEndReached ); )
+            isEndReached = ( ++it == ite );
+        if ( isEndReached )
+          return mySCEstimator.eval( itCurrent, ite, result );
+
+        //nb: an evaluation on [itCurrent, itCurrent) would be
+        //an evaluation on a whole circular range
+        if (itCurrent != itEnd)
+          result = mySCEstimator.eval( itCurrent, itEnd, result );
 
         itCurrent = itEnd;
         segIt = nextSegIt;

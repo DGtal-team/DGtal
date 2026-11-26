@@ -38,6 +38,7 @@
 #include <vector>
 #include <algorithm>
 #include <iterator>
+#include <stdexcept>
 
 #include "DGtal/base/Common.h"
 #include "DGtal/base/Circulator.h"
@@ -45,6 +46,8 @@
 #include "DGtal/base/IteratorCirculatorTraits.h"
 #include "DGtal/geometry/curves/SegmentComputerHelpers.h"
 #include "DGtal/geometry/curves/SaturatedSegmentation.h"
+#include "DGtal/geometry/curves/GreedySegmentation.h"
+#include "DGtal/geometry/curves/estimation/MostCenteredMaximalSegmentEstimator.h"
 #include "DGtalCatch.h"
 
 using namespace std;
@@ -201,6 +204,8 @@ struct Segment
   int begin;
   int size;
   bool operator==(const Segment& other) const = default;
+  bool operator<(const Segment& other) const
+  { return (begin < other.begin) || ( (begin == other.begin) && (size < other.size) ); }
 };
 
 std::ostream& operator<<(std::ostream& out, const Segment& s)
@@ -325,6 +330,117 @@ struct BruteForce
     return -1;
   }
 
+  /// index in maximalSegments of the maximal segment chosen for i in a given mode
+  int chosen(int i, std::string const& mode) const
+  {
+    if ( mode.rfind("First", 0) == 0 ) return first(i);
+    if ( mode.rfind("Last", 0) == 0 ) return last(i);
+    return mostCentered(i);
+  }
+
+  /**
+   * True if the maximal segment chosen for s is also chosen for t
+   * and contains [s, t].
+   */
+  bool sameChosenSegment(int s, int t, std::string const& mode) const
+  {
+    int k = chosen(s, mode);
+    return ( chosen(t % n, mode) == k )
+      && ( position(t % n, maximalSegments[k]) > position(s, maximalSegments[k]) );
+  }
+
+  /**
+   * Expected saturated segmentation of the subrange [s, t) in a given mode.
+   * For a closed range, t may be greater than n (t = s+n for the whole range).
+   * The first maximal segment is the one chosen for s; the last one is the
+   * one chosen for t (included in the "++" modes only), or the one chosen
+   * for the last element of an open range ending at n. If the same maximal
+   * segment is chosen for s and t (and contains [s, t]), the segmentation
+   * is empty in the simple modes, and reduced to this segment in the "++"
+   * modes.
+   */
+  std::vector<Segment> saturated(int s, int t, std::string const& mode) const
+  {
+    const int m = (int) maximalSegments.size();
+    const bool plus = ( mode.find("++") != std::string::npos );
+    int kFirst = chosen(s, mode);
+    int kLast;
+    if ( ! closed && t == n )
+      kLast = chosen(n-1, mode);
+    else
+      kLast = plus ? chosen(t, mode) : chosen(t, mode) - 1;
+    //if the same maximal segment is chosen for s and t,
+    //it is the only one of the segmentation
+    const bool wholeClosed = closed && (t == s+n);
+    const bool endOfOpen = ( ! closed ) && (t == n);
+    std::vector<Segment> res;
+    //a closed range going round: the last maximal segment, equal to
+    //the first one, is retrieved again after a whole turn
+    const bool turn = closed && plus && ! wholeClosed
+      && ( chosen(t % n, mode) == kFirst ) && ! sameChosenSegment(s, t, mode);
+    if ( ! wholeClosed && ! endOfOpen && sameChosenSegment(s, t, mode) )
+    { //this maximal segment is both the first one and the (excluded) last one
+      if ( plus ) res.push_back( maximalSegments[kFirst] );
+      return res;
+    }
+    if ( closed )
+    {
+      kLast = ( kLast + m ) % m;
+      for (int k = kFirst; ; k = (k+1) % m)
+      {
+        res.push_back( maximalSegments[k] );
+        if ( (k == kLast) && ( ! turn || res.size() > 1 ) ) break;
+      }
+    }
+    else
+      for (int k = kFirst; k <= kLast; ++k)
+        res.push_back( maximalSegments[k] );
+    return res;
+  }
+
+  /**
+   * Expected greedy segmentation of the subrange [s, t) in a given mode
+   * ("Truncate", "Truncate+1" or "DoNotTruncate"). For a closed range,
+   * t may be greater than n (t = s+n for the whole range).
+   * Each segment is the longest segment starting at a given element,
+   * bounded by t; the next segment starts at the last element of the
+   * previous one if these two elements form a segment, at the following
+   * element otherwise.
+   */
+  std::vector<Segment> greedy(int s, int t, std::string const& mode) const
+  {
+    std::vector<Segment> res;
+    int pos = s;
+    while ( true )
+    {
+      int e = pos+1;
+      while ( (e < t) && isSegment(pos, e-pos+1) ) ++e;
+      if ( e == t )
+      { //last segment
+        if ( closed || (t < n) )
+        {
+          if ( mode == "Truncate+1" )
+          {
+            if ( isSegment(pos, e-pos+1) ) ++e;
+          }
+          else if ( mode == "DoNotTruncate" )
+          { //extension until the end of the (closed) range
+            while ( isSegment(pos, e-pos+1) )
+            {
+              ++e;
+              if ( closed ? (e % n == 0) : (e == n) ) break;
+            }
+          }
+        }
+        res.push_back( { closed ? pos % n : pos, e-pos } );
+        break;
+      }
+      res.push_back( { closed ? pos % n : pos, e-pos } );
+      pos = isSegment(e-1, 2) ? e-1 : e;
+    }
+    return res;
+  }
+
   /// index in maximalSegments of the last maximal segment containing i
   int last(int i) const
   {
@@ -367,7 +483,11 @@ struct Range<Circular>
   Sequence const& v;
   Circular begin() const { return Circular( v.cbegin(), v.cbegin(), v.cend() ); }
   Circular end() const { return begin(); }
-  Circular at(int i) const { return Circular( v.cbegin() + i, v.cbegin(), v.cend() ); }
+  Circular at(int i) const
+  {
+    const int n = (int) v.size();
+    return Circular( v.cbegin() + ( ((i % n) + n) % n ), v.cbegin(), v.cend() );
+  }
   int index(Circular const& it) const { return (int) (it.base() - v.cbegin()); }
 };
 
@@ -528,6 +648,180 @@ void checkFunctions(Sequence const& v)
   }
 }
 
+/**
+ * Segment computer estimator that returns, for each element, the
+ * segment to which it is attached, as a pair (index of the first
+ * element, number of elements).
+ */
+template <typename TSC, typename TIterator>
+struct SegmentEstimator
+{
+  using SegmentComputer = TSC;
+  using ConstIterator = typename TSC::ConstIterator;
+  using Quantity = Segment;
+
+  SegmentEstimator() : myRange(nullptr) {}
+  SegmentEstimator(Range<TIterator> const& r) : myRange(&r) {}
+
+  void init(const double, const ConstIterator&, const ConstIterator&) {}
+  void attach(const SegmentComputer& sc) { mySC = sc; }
+  bool isValid() const { return myRange != nullptr; }
+
+  Quantity eval(const ConstIterator&) const
+  {
+    return Segment{ myRange->index( mySC.begin() ), (int) mySC.size() };
+  }
+
+  template <typename OutputIterator>
+  OutputIterator eval(const ConstIterator& itb, const ConstIterator& ite,
+                      OutputIterator result) const
+  {
+    // do-while loop to deal with the case of a whole circular range,
+    // as in the estimators of SegmentComputerEstimators.h
+    if ( isNotEmpty(itb, ite) )
+    {
+      ConstIterator it = itb;
+      do
+      {
+        *result++ = eval(it);
+        ++it;
+      } while (it != ite);
+    }
+    return result;
+  }
+
+  Range<TIterator> const* myRange;
+  SegmentComputer mySC;
+};
+
+/**
+ * Output iterator appending values to a vector, which throws an
+ * exception when more than a given number of values are written,
+ * so that an estimator that does not stop is detected.
+ */
+template <typename T>
+struct BoundedBackInserter
+{
+  using iterator_category = std::output_iterator_tag;
+  using value_type = void;
+  using difference_type = std::ptrdiff_t;
+  using pointer = void;
+  using reference = void;
+
+  std::vector<T>* v;
+  std::size_t max;
+  BoundedBackInserter& operator=(const T& x)
+  {
+    if ( v->size() >= max ) throw std::runtime_error("too many values");
+    v->push_back(x);
+    return *this;
+  }
+  BoundedBackInserter& operator*() { return *this; }
+  BoundedBackInserter& operator++() { return *this; }
+  BoundedBackInserter operator++(int) { return *this; }
+};
+
+/**
+ * Checks GreedySegmentation, SaturatedSegmentation (on subranges, in all
+ * modes) and MostCenteredMaximalSegmentEstimator on a sequence.
+ */
+template <typename TIterator, typename TPredicate, typename TCategory>
+void checkSegmentations(Sequence const& v)
+{
+  using SC = DummySegmentComputer<TIterator, TPredicate, TCategory>;
+  Range<TIterator> r{ v };
+  BruteForce<TPredicate> bf( v, r.closed );
+  const int n = (int) v.size();
+  const int m = (int) bf.maximalSegments.size();
+  INFO( toString(v, r.closed) << ", " << TPredicate::name() );
+  if ( bf.wholeRange ) return;
+
+  //subranges [s, t): all of them for an open range, those of
+  //length 1 to n (whole range) for a closed range
+  std::vector<std::pair<int,int> > subranges;
+  for (int s = 0; s < n; ++s)
+    for (int t = s+1; t <= ( r.closed ? s+n : n ); ++t)
+      subranges.push_back( { s, t } );
+
+  auto segments = [&](auto const& segmentation)
+  {
+    std::vector<Segment> res;
+    for (auto it = segmentation.begin();
+         (it != segmentation.end()) && ((int) res.size() <= 2*n+2); ++it)
+      res.push_back( segment(*it, r) );
+    return res;
+  };
+
+  {
+    INFO( "SaturatedSegmentation" );
+    for (auto [s, t] : subranges)
+      for (std::string mode : { "First", "MostCentered", "Last",
+                                "First++", "MostCentered++", "Last++" })
+      {
+        const bool whole = ( r.closed ? (t == s+n) : ( (s == 0) && (t == n) ) );
+        //the "++" modes are not tested for a whole closed range
+        if ( ( mode.find("++") != std::string::npos ) && r.closed && whole )
+          continue;
+        INFO( "subrange [" << s << ", " << t << "), mode " << mode
+              << ( bf.sameChosenSegment(s, t, mode) ? " (same chosen segment)" : "" ) );
+        SaturatedSegmentation<SC> segmentation( r.begin(), r.end(), SC() );
+        if ( ! whole || r.closed ) segmentation.setSubRange( r.at(s), r.at(t) );
+        segmentation.setMode(mode);
+        CHECK( segments(segmentation) == bf.saturated(s, t, mode) );
+      }
+  }
+
+  {
+    INFO( "GreedySegmentation" );
+    for (auto [s, t] : subranges)
+      for (std::string mode : { "Truncate", "Truncate+1", "DoNotTruncate" })
+      {
+        const bool whole = ( r.closed ? (t == s+n) : ( (s == 0) && (t == n) ) );
+        //no extension beyond the whole closed range
+        if ( r.closed && whole && (mode != "Truncate") ) continue;
+        INFO( "subrange [" << s << ", " << t << "), mode " << mode );
+        GreedySegmentation<SC> segmentation( r.begin(), r.end(), SC() );
+        if ( ! whole || r.closed ) segmentation.setSubRange( r.at(s), r.at(t) );
+        segmentation.setMode(mode);
+        CHECK( segments(segmentation) == bf.greedy(s, t, mode) );
+      }
+  }
+
+  {
+    INFO( "MostCenteredMaximalSegmentEstimator" );
+    using Estimator = MostCenteredMaximalSegmentEstimator<SC, SegmentEstimator<SC, TIterator> >;
+    auto expected = [&](int i) { return bf.maximalSegments[ bf.mostCentered(i) ]; };
+    Estimator e{ SC(), SegmentEstimator<SC, TIterator>( r ) };
+    e.init( r.begin(), r.end() );
+
+    //evaluation at each element
+    for (int i = 0; i < n; ++i)
+    {
+      INFO( "evaluation at " << i );
+      CHECK( e.eval( r.at(i) ) == expected(i) );
+    }
+
+    //evaluation on subranges
+    for (auto [s, t] : subranges)
+    {
+      INFO( "evaluation on [" << s << ", " << t << ")" );
+      const bool whole = ( r.closed ? (t == s+n) : ( (s == 0) && (t == n) ) );
+      std::vector<Segment> res, exp;
+      if ( whole && r.closed )
+      { //the whole closed range can only be given by r.begin(), r.end()
+        if ( s != 0 ) continue;
+        CHECK_NOTHROW( e.eval( r.begin(), r.end(), BoundedBackInserter<Segment>{ &res, (std::size_t) 2*n } ) );
+      }
+      else
+        CHECK_NOTHROW( e.eval( r.at(s), r.at(t), BoundedBackInserter<Segment>{ &res, (std::size_t) 2*n } ) );
+      for (int i = s; i < t; ++i)
+        exp.push_back( expected( ((i % n) + n) % n ) );
+      CHECK( res == exp );
+    }
+  }
+  (void) m;
+}
+
 /// Sequences used in the tests
 const std::vector<Sequence> sequences = {
   { 3, 4, 5, 5, 5, 4, 3 },
@@ -548,6 +842,17 @@ void checkAllSequences()
   {
     checkFunctions<Iterator, TPredicate, TCategory>( v );
     checkFunctions<Circular, TPredicate, TCategory>( v );
+  }
+}
+
+/// Checks the segmentations and the estimator on all the sequences, open and closed
+template <typename TPredicate, typename TCategory>
+void checkSegmentationsOnAllSequences()
+{
+  for (Sequence const& v : sequences)
+  {
+    checkSegmentations<Iterator, TPredicate, TCategory>( v );
+    checkSegmentations<Circular, TPredicate, TCategory>( v );
   }
 }
 
@@ -609,6 +914,28 @@ TEMPLATE_TEST_CASE("Functions of SegmentComputerHelpers.h", "",
   SECTION("Subsequences of amplitude at most 3")
   {
     checkAllSequences<BoundedAmplitude<3>, TestType>();
+  }
+}
+
+TEMPLATE_TEST_CASE("Segmentations and most centered maximal segment estimator", "",
+                   ForwardSegmentComputer, BidirectionalSegmentComputer,
+                   DynamicSegmentComputer, DynamicBidirectionalSegmentComputer)
+{
+  SECTION("Monotone subsequences")
+  {
+    checkSegmentationsOnAllSequences<Monotone, TestType>();
+  }
+  SECTION("Subsequences of constant values")
+  {
+    checkSegmentationsOnAllSequences<BoundedAmplitude<0>, TestType>();
+  }
+  SECTION("Subsequences of amplitude at most 1")
+  {
+    checkSegmentationsOnAllSequences<BoundedAmplitude<1>, TestType>();
+  }
+  SECTION("Subsequences of amplitude at most 3")
+  {
+    checkSegmentationsOnAllSequences<BoundedAmplitude<3>, TestType>();
   }
 }
 
