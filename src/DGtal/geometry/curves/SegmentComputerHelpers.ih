@@ -1,0 +1,684 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file SegmentComputerHelpers.ih
+ * @author Tristan Roussillon (\c
+ * tristan.roussillon@liris.cnrs.fr ) Laboratoire d'InfoRmatique en
+ * Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS,
+ * France
+ *
+ * @date 2011/07/25
+ *
+ * Implementation of inline functions defined in SegmentComputerHelpers.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline functions.
+///////////////////////////////////////////////////////////////////////////////
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::maximalExtension(SC& s, const typename SC::ConstIterator& end, IteratorType )
+{
+  //stop if s.end() == end
+  while ( (s.end() != end)
+       && (s.extendFront()) ) {}
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::maximalExtension(SC& s, const typename SC::ConstIterator& /*end*/, CirculatorType )
+{
+  //stop if the segment is the whole range
+  const typename SC::ConstIterator newEnd( s.begin() );
+  while ( (s.end() != newEnd)
+       && (s.extendFront()) ) {}
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::maximalExtension(SC& s, const typename SC::ConstIterator& end)
+{
+  typedef typename IteratorCirculatorTraits<typename SC::ConstIterator>::Type Type;
+  maximalExtension( s, end, Type() );
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::oppositeEndMaximalExtension(SC& s, const typename SC::ConstIterator& begin, IteratorType )
+{
+  //stop if s.begin() == begin
+  while ( (s.begin() != begin)
+       && (s.extendBack()) ) {}
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::oppositeEndMaximalExtension(SC& s, const typename SC::ConstIterator& begin, CirculatorType )
+{
+  boost::ignore_unused_variable_warning( begin );
+  //stop if the segment is the whole range
+  const typename SC::ConstIterator newBegin( s.end() );
+  while ( (s.begin() != newBegin)
+       && (s.extendBack()) ) {}
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::oppositeEndMaximalExtension(SC& s, const typename SC::ConstIterator& begin)
+{
+  typedef typename IteratorCirculatorTraits<typename SC::ConstIterator>::Type Type;
+  oppositeEndMaximalExtension( s, begin, Type() );
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+bool
+DGtal::maximalSymmetricExtension(SC& s,
+  const typename SC::ConstIterator& begin,
+  const typename SC::ConstIterator& end,
+  IteratorType )
+{
+
+  bool flagOk = true;
+  bool flagForward = true;
+  //while the extension is possible
+  //at the front and (then) at the back
+  while (flagOk)  {
+    if (flagForward) {
+      flagForward = false;
+      if ( s.end() != end ) flagOk = s.extendFront();
+      else flagOk = false;
+    } else {
+      flagForward = true;
+      if ( s.begin() != begin ) flagOk = s.extendBack();
+      else flagOk = false;
+    }
+  }
+  //flagForward is false iff the last (failed) extension was at the front
+  return !flagForward;
+
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+bool
+DGtal::maximalSymmetricExtension(SC& s,
+                               const typename SC::ConstIterator& begin,
+                               const typename SC::ConstIterator& end,
+                               CirculatorType )
+{
+  boost::ignore_unused_variable_warning( begin );
+  boost::ignore_unused_variable_warning( end );
+
+  bool flagOk = true;
+  bool flagForward = true;
+  //while the extensions are possible and
+  //the segment does not correspond to the whole range
+  while ( (flagOk) && ( s.end() != s.begin() ) )  {
+    if (flagForward) {
+      flagForward = false;
+      flagOk = s.extendFront();
+    } else {
+      flagForward = true;
+      flagOk = s.extendBack();
+    }
+  }
+  return !flagForward;
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+bool
+DGtal::maximalSymmetricExtension(SC& s,
+  const typename SC::ConstIterator& begin,
+  const typename SC::ConstIterator& end)
+{
+
+  typedef typename IteratorCirculatorTraits<typename SC::ConstIterator>::Type Type;
+  return maximalSymmetricExtension( s, begin, end, Type() );
+
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::maximalRetraction(SC& s, const typename SC::ConstIterator& end)
+{
+  if ( isNotEmpty<typename SC::ConstIterator>(s.end(),end) ) {
+    while ( (! s.isExtendableFront() )
+          &&(s.retractBack() ) )  {}
+  } else {
+    while ( s.retractBack() ) {}
+  }
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::oppositeEndMaximalRetraction(SC& s, const typename SC::ConstIterator& begin)
+{
+  if ( isNotEmpty<typename SC::ConstIterator>(s.begin(),begin) ) {
+    while ( (! s.isExtendableBack() )
+          &&(s.retractFront() ) ) {}
+  } else {
+    while ( s.retractFront() ) {}
+  }
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::longestSegment(SC& s,
+                   const typename SC::ConstIterator& i,
+                   const typename SC::ConstIterator& end,
+                   IteratorType )
+{
+  if (i != end) {
+    s.init(i);
+    maximalExtension(s, end, IteratorType() );
+  }
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::longestSegment(SC& s,
+                   const typename SC::ConstIterator& i,
+                   const typename SC::ConstIterator& end,
+                   CirculatorType )
+{
+  s.init(i);
+  maximalExtension(s, end, CirculatorType() );
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::longestSegment(SC& s,
+                   const typename SC::ConstIterator& i,
+                   const typename SC::ConstIterator& end)
+{
+  typedef typename IteratorCirculatorTraits<typename SC::ConstIterator>::Type Type;
+  longestSegment( s, i, end, Type() );
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::firstMaximalSegment(SC& s,
+  const typename SC::ConstIterator& i,
+  const typename SC::ConstIterator& begin,
+  const typename SC::ConstIterator& end,
+  DGtal::ForwardSegmentComputer )
+{
+
+  typedef typename SC::ConstIterator ConstIterator;
+  typedef typename SC::Reverse ReverseSegmentComputer;
+  typedef typename ReverseSegmentComputer::ConstIterator ConstReverseIterator;
+
+  if ( isNotEmpty<ConstIterator>(i,end) ) {
+
+    //backward extension
+    ConstIterator it( i ); ++it;
+    ConstReverseIterator rit( it );
+    ConstReverseIterator rend( begin );
+    ReverseSegmentComputer r( s.getReverse() );
+    longestSegment(r, rit, rend);
+
+    //forward extension
+    ConstIterator it2( r.end().base() );
+    longestSegment(s, it2, end);
+
+  }
+
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::firstMaximalSegment(SC& s,
+  const typename SC::ConstIterator& i,
+  const typename SC::ConstIterator& begin,
+  const typename SC::ConstIterator& end,
+  DGtal::BidirectionalSegmentComputer)
+{
+  s.init(i);
+
+  oppositeEndMaximalExtension(s, begin);
+  maximalExtension(s, end);
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::firstMaximalSegment(SC& s,
+  const typename SC::ConstIterator& i,
+  const typename SC::ConstIterator& begin,
+  const typename SC::ConstIterator& end,
+  DGtal::DynamicSegmentComputer)
+{
+  firstMaximalSegment(s,i,begin,end,DGtal::ForwardSegmentComputer() );
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::firstMaximalSegment(SC& s,
+  const typename SC::ConstIterator& i,
+  const typename SC::ConstIterator& begin,
+  const typename SC::ConstIterator& end,
+  DGtal::DynamicBidirectionalSegmentComputer)
+{
+  firstMaximalSegment(s,i,begin,end,DGtal::BidirectionalSegmentComputer() );
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::firstMaximalSegment(SC& s,
+  const typename SC::ConstIterator& i,
+  const typename SC::ConstIterator& begin,
+  const typename SC::ConstIterator& end )
+{
+  firstMaximalSegment<SC>(s, i, begin, end,
+typename DGtal::SegmentComputerTraits<SC>::Category() );
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::mostCenteredMaximalSegment(SC& s,
+  const typename SC::ConstIterator& i,
+  const typename SC::ConstIterator& begin,
+  const typename SC::ConstIterator& end,
+  DGtal::ForwardSegmentComputer )
+{
+
+  typedef typename SC::ConstIterator ConstIterator;
+  typedef typename SC::Reverse ReverseSegmentComputer;
+  typedef typename ReverseSegmentComputer::ConstIterator ConstReverseIterator;
+
+ //get the first maximal segment passing through i
+
+  firstMaximalSegment( s, i, begin, end, DGtal::ForwardSegmentComputer() );
+
+ //get the next maximal segment while i is not before the first element
+ //whose tangent (definition 3 of Feschet and Tougne, 1999) contains
+ //s.end(), i.e. the middle of [newBegin, s.end()), where newBegin is
+ //the begin of the next maximal segment.
+
+  ConstIterator k( s.begin() );
+  while ( k != i ) {
+
+    if ( isNotEmpty<ConstIterator>(s.end(),end) ) {
+
+      //backward extension
+      ConstIterator it( s.end() ); ++it;
+      ConstReverseIterator rit( it );
+      ConstReverseIterator rend( s.begin() );
+      ReverseSegmentComputer r( s.getReverse() );
+      longestSegment(r, rit, rend);
+      ConstIterator newBegin = r.end().base();
+      ASSERT( newBegin != s.begin() );
+
+      const ConstIterator m( subRangeMiddle(newBegin, s.end()) );
+      while ( ( k != m ) && ( k != i ) ) {
+        ++k;
+      }
+      if ( k == m ) {
+
+        //i is not before the middle: get the next maximal segment
+        longestSegment(s, newBegin, end);
+
+      }
+
+    } else {
+      k = i;
+    }
+  }
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::mostCenteredMaximalSegment(SC& s,
+  const typename SC::ConstIterator& i,
+  const typename SC::ConstIterator& begin,
+  const typename SC::ConstIterator& end,
+  DGtal::BidirectionalSegmentComputer)
+{
+
+  if ( (isNotEmpty(i,end)) || (isNotEmpty(i,begin)) ) {
+
+    s.init(i);
+
+    //symmetric extension
+    if ( (isNotEmpty(i,end)) && (isNotEmpty(i,begin)) ) {
+      maximalSymmetricExtension(s, begin, end);
+    }
+
+  //forward extension
+  maximalExtension(s, end);
+
+  //backward extension
+  oppositeEndMaximalExtension(s, begin);
+
+  }
+
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::mostCenteredMaximalSegment(SC& s,
+  const typename SC::ConstIterator& i,
+  const typename SC::ConstIterator& begin,
+  const typename SC::ConstIterator& end,
+  DGtal::DynamicSegmentComputer)
+{
+  mostCenteredMaximalSegment(s,i,begin,end,DGtal::ForwardSegmentComputer() );
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::mostCenteredMaximalSegment(SC& s,
+  const typename SC::ConstIterator& i,
+  const typename SC::ConstIterator& begin,
+  const typename SC::ConstIterator& end,
+  DGtal::DynamicBidirectionalSegmentComputer)
+{
+  mostCenteredMaximalSegment(s,i,begin,end,DGtal::BidirectionalSegmentComputer() );
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::mostCenteredMaximalSegment(SC& s,
+  const typename SC::ConstIterator& i,
+  const typename SC::ConstIterator& begin,
+  const typename SC::ConstIterator& end )
+{
+   mostCenteredMaximalSegment<SC>(s, i, begin, end,
+typename DGtal::SegmentComputerTraits<SC>::Category() );
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::lastMaximalSegment(SC& s,
+  const typename SC::ConstIterator& i,
+  const typename SC::ConstIterator& begin,
+  const typename SC::ConstIterator& end,
+  DGtal::ForwardSegmentComputer )
+{
+
+  typedef typename SC::ConstIterator ConstIterator;
+  typedef typename SC::Reverse ReverseSegmentComputer;
+  typedef typename ReverseSegmentComputer::ConstIterator ConstReverseIterator;
+
+  //forward extension
+  ConstIterator j( i );
+  longestSegment(s, j, end);
+
+  //backward extension
+  ConstIterator it( s.end() );
+  ConstReverseIterator rit( it );
+  ConstReverseIterator rend( begin );
+  ReverseSegmentComputer r( s.getReverse() );
+  longestSegment(r, rit, rend);
+
+  //forward extension
+  ConstIterator it2( r.end().base() );
+  longestSegment(s, it2, end);
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::lastMaximalSegment(SC& s,
+  const typename SC::ConstIterator& i,
+  const typename SC::ConstIterator& begin,
+  const typename SC::ConstIterator& end,
+  BidirectionalSegmentComputer)
+{
+  s.init(i);
+
+  maximalExtension(s, end);
+  oppositeEndMaximalExtension(s, begin);
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::lastMaximalSegment(SC& s,
+  const typename SC::ConstIterator& i,
+  const typename SC::ConstIterator& begin,
+  const typename SC::ConstIterator& end,
+  DGtal::DynamicSegmentComputer)
+{
+  lastMaximalSegment(s,i,begin,end,DGtal::ForwardSegmentComputer() );
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::lastMaximalSegment(SC& s,
+  const typename SC::ConstIterator& i,
+  const typename SC::ConstIterator& begin,
+  const typename SC::ConstIterator& end,
+  DGtal::DynamicBidirectionalSegmentComputer)
+{
+  lastMaximalSegment(s,i,begin,end,DGtal::BidirectionalSegmentComputer() );
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::lastMaximalSegment(SC& s,
+  const typename SC::ConstIterator& i,
+  const typename SC::ConstIterator& begin,
+  const typename SC::ConstIterator& end )
+{
+   lastMaximalSegment<SC>(s, i, begin, end,
+typename DGtal::SegmentComputerTraits<SC>::Category() );
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::nextMaximalSegment(SC& s,
+  const typename SC::ConstIterator& end,
+  DGtal::ForwardSegmentComputer )
+{
+  firstMaximalSegment(s, s.end(), s.begin(), end, ForwardSegmentComputer() );
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::nextMaximalSegment(SC& s,
+  const typename SC::ConstIterator& end,
+  DGtal::BidirectionalSegmentComputer)
+{
+  firstMaximalSegment(s, s.end(), s.begin(), end, DGtal::BidirectionalSegmentComputer() );
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::nextMaximalSegment(SC& s,
+  const typename SC::ConstIterator& end,
+  DGtal::DynamicSegmentComputer)
+{
+  typedef typename SC::ConstIterator ConstIterator;
+
+  //rectract
+  maximalRetraction(s, end);
+
+  //if the intersection between the two consecutive maximal segments is
+  //empty, i.e. if s has been retracted to a single element that cannot
+  //be extended, the next maximal segment begins at s.end()
+  if ( isNotEmpty<ConstIterator>(s.end(), end)
+       && ( ! s.isExtendableFront() ) ) {
+    ConstIterator i( s.end() );
+    s.init(i);
+  }
+
+  //extend
+  maximalExtension(s, end);
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::nextMaximalSegment(SC& s,
+  const typename SC::ConstIterator& end,
+  DGtal::DynamicBidirectionalSegmentComputer)
+{
+  nextMaximalSegment(s, end, DGtal::DynamicSegmentComputer() );
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::nextMaximalSegment(SC& s,
+  const typename SC::ConstIterator& end )
+{
+   nextMaximalSegment<SC>(s, end,
+typename DGtal::SegmentComputerTraits<SC>::Category() );
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::previousMaximalSegment(SC& s,
+  const typename SC::ConstIterator& begin,
+  DGtal::ForwardSegmentComputer )
+{
+  if ( isNotEmpty<typename SC::ConstIterator>(s.begin(),begin) )
+    lastMaximalSegment(s, --s.begin(), begin, s.end(), DGtal::ForwardSegmentComputer() );
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::previousMaximalSegment(SC& s,
+  const typename SC::ConstIterator& begin,
+  DGtal::BidirectionalSegmentComputer)
+{
+  if ( isNotEmpty<typename SC::ConstIterator>(s.begin(),begin) )
+    lastMaximalSegment(s, --s.begin(), begin, s.end(), DGtal::BidirectionalSegmentComputer() );
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::previousMaximalSegment(SC& s,
+  const typename SC::ConstIterator& begin,
+  DGtal::DynamicSegmentComputer)
+{
+
+  typedef typename SC::ConstIterator ConstIterator;
+
+  //rectract
+  oppositeEndMaximalRetraction(s, begin);
+
+  //if the intersection between the two consecutive maximal segments is
+  //empty, i.e. if s has been retracted to a single element that cannot
+  //be extended, the previous maximal segment ends at s.begin()
+  if ( isNotEmpty<ConstIterator>(s.begin(), begin)
+       && ( ! s.isExtendableBack() ) ) {
+    ConstIterator i( s.begin() ); --i;
+    s.init(i);
+  }
+
+  //extend
+  oppositeEndMaximalExtension(s, begin);
+
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::previousMaximalSegment(SC& s,
+  const typename SC::ConstIterator& begin,
+  DGtal::DynamicBidirectionalSegmentComputer)
+{
+  previousMaximalSegment(s, begin, DGtal::DynamicSegmentComputer() );
+}
+
+//-----------------------------------------------------------------------------
+template <typename SC>
+inline
+void
+DGtal::previousMaximalSegment(SC& s,
+  const typename SC::ConstIterator& begin )
+{
+  previousMaximalSegment(s, begin,
+typename DGtal::SegmentComputerTraits<SC>::Category() );
+}
+
+//                                                                           //
+///////////////////////////////////////////////////////////////////////////////

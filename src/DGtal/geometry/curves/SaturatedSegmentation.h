@@ -41,9 +41,11 @@
 //////////////////////////////////////////////////////////////////////////////
 // Inclusions
 #include <iostream>
+#include <string>
 #include "DGtal/base/Common.h"
+#include "DGtal/base/Exceptions.h"
 
-#include "DGtal/geometry/curves/SegmentComputerUtils.h"
+#include "DGtal/geometry/curves/SegmentComputerHelpers.h"
 #include "DGtal/geometry/curves/CForwardSegmentComputer.h"
 
 //////////////////////////////////////////////////////////////////////////////
@@ -118,33 +120,51 @@ namespace DGtal
    * maximal segments that pass through the first (resp. last)
    * element of the range, one maximal segment must be chosen
    * as the first (resp. last) retrieved maximal segments.
-   * Several processing modes are therefore available:
-   * - "First" and "First++"
-   * - "MostCentered" (default) and "MostCentered++"
-   * - "Last" and "Last++"
+   * Several processing modes are therefore available (see Mode):
+   * - Mode::First and Mode::FirstPlusPlus
+   * - Mode::MostCentered (default) and Mode::MostCenteredPlusPlus
+   * - Mode::Last and Mode::LastPlusPlus
    *
-   * The mode i indicates that the segmentation begins with
-   * the i maximal segment passing through the first element
-   * and ends with the i maximal segment passing through
-   * the last element. The last retrieved segment of the segmentation
-   * is not included in the simple "XXX" modes, but is included
-   * in the "XXX++" modes.
+   * The mode XXX indicates that the segmentation begins with
+   * the XXX maximal segment passing through the first element
+   * of the range and ends with the XXX maximal segment passing through
+   * the element following the range (or through the last element
+   * if the range ends at the end of a linear range). This last
+   * maximal segment is not included in the simple XXX modes,
+   * but is included in the XXXPlusPlus modes.
    *
-   * For instance, in the default mode "MostCentered", the
+   * For instance, in the default mode Mode::MostCentered, the
    * segmentation begins with the most centered maximal segment
    * passing through the first element and ends (without including it)
-   * with the most centered maximal segment passing through the last
-   * element. This mode is basically used to process a whole circular
-   * structure so that the first maximal segment is not retrieved twice.
-   * However, in order to include the most centered maximal segment
-   * passing through the last element in a subpart, you should use the
-   * "MostCentered++" mode.
+   * with the most centered maximal segment passing through the element
+   * following the range. This mode is basically used to process a whole
+   * circular structure so that the first maximal segment is not retrieved
+   * twice, or consecutive subranges so that no maximal segment is
+   * retrieved twice. However, in order to include the most centered
+   * maximal segment passing through the element following a subrange,
+   * you should use the Mode::MostCenteredPlusPlus mode.
+   * If the maximal segment chosen for the first element of a (sub)range
+   * is also chosen for the element following the range (and thus contains
+   * the whole range), the segmentation is empty in the simple XXX modes
+   * (because this maximal segment is both the first one and the excluded
+   * last one), whereas it is the only maximal segment of the segmentation
+   * in the XXXPlusPlus modes. This way, the segmentations of consecutive
+   * subranges in a simple mode never retrieve the same maximal segment
+   * twice.
    *
-   * In order to set a mode (before getting a SegmentComputerIterator),
+   * Note that the most centered maximal segment is defined as in
+   * mostCenteredMaximalSegment() (SegmentComputerHelpers.h), after
+   * Feschet and Tougne \cite FeschetTougneDGCI1999.
+   *
+   * In order to set a mode (before getting a SegmentComputerIterator,
+   * and after setSubRange(), which sets the default mode),
    * use the setMode() method as follow:
    * @code
-  theSegmentation.setMode("First");
+  theSegmentation.setMode(Segmentation::Mode::First);
    * @endcode
+   * For backward compatibility, the modes may also be given by the
+   * strings "First", "MostCentered", "Last", "First++", "MostCentered++"
+   * and "Last++".
    *
    * @see testSegmentation.cpp
    */
@@ -158,6 +178,17 @@ namespace DGtal
     BOOST_CONCEPT_ASSERT(( concepts::CForwardSegmentComputer<TSegmentComputer> ));
     typedef TSegmentComputer SegmentComputer;
     typedef typename SegmentComputer::ConstIterator ConstIterator;
+
+    /**
+     * Processing modes, which define the first and the last maximal
+     * segments of the segmentation of a (sub)range (see the class
+     * description): the first (resp. last) one is the first, most centered
+     * or last maximal segment passing through the first element of the
+     * range (resp. the element following the range), the last one being
+     * excluded in the simple modes and included in the PlusPlus modes.
+     */
+    enum class Mode { First, MostCentered, Last,
+                      FirstPlusPlus, MostCenteredPlusPlus, LastPlusPlus };
 
   private:
 
@@ -231,6 +262,13 @@ namespace DGtal
        * FALSE otherwise
        */
       bool  myFlagIsLast;
+
+      /**
+       * A flag equal to TRUE if the last maximal segment is equal to the
+       * first one, but must be retrieved again after a whole turn of a
+       * circular range, FALSE otherwise
+       */
+      bool  myFlagIsLastAfterTurn;
 
 
 
@@ -385,8 +423,28 @@ namespace DGtal
 
       /**
        * Computes the last maximal segment of the segmentation.
+       * @return 'true' if the segmentation is empty, i.e. if, in a simple
+       * mode, the maximal segment chosen for the first element of the
+       * range is also chosen for the element following the range,
+       * 'false' otherwise.
        */
-      void initLastMaximalSegment();
+      bool initLastMaximalSegment();
+
+      /**
+       * Computes, according to the mode, the first, most centered or last
+       * maximal segment passing through @a it.
+       * @param s the segment computer used for the computation
+       * @param it an element of the range
+       */
+      void chooseMaximalSegment(SegmentComputer& s, const ConstIterator& it) const;
+
+      /**
+       * @param it1 an element of the current segment
+       * @param it2 an element of the current segment
+       * @return 'true' if @a it1 is met strictly before @a it2 when the
+       * current segment is scanned from its begin, 'false' otherwise.
+       */
+      bool isBefore(const ConstIterator& it1, const ConstIterator& it2) const;
 
     };
 
@@ -427,9 +485,19 @@ namespace DGtal
 
 
     /**
-     * Set processing mode
-     * @param aMode one of the 3 available modes :
-     * "Truncate" (default), "Truncate+1", "DoNotTruncate".
+     * Set processing mode.
+     * NB: setSubRange() sets the default mode.
+     * @param aMode one of the available modes (see Mode),
+     * Mode::MostCentered being the default one.
+     */
+    void setMode(Mode aMode);
+
+    /**
+     * Set processing mode (for backward compatibility).
+     * NB: setSubRange() sets the default mode.
+     * @param aMode one of the 6 available modes : "First", "MostCentered"
+     * (default), "Last", "First++", "MostCentered++", "Last++".
+     * @throw InputException if @a aMode is not one of these modes.
      */
     void setMode(const std::string& aMode);
 
@@ -490,9 +558,9 @@ namespace DGtal
     ConstIterator myStop;
 
     /**
-     * Mode: either "First", "MostCentered" (default), "Last"
+     * Processing mode (Mode::MostCentered by default)
      */
-    std::string myMode;
+    Mode myMode;
 
     /**
      * the segment computer.

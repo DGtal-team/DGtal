@@ -36,8 +36,14 @@
 
 
 #include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
+#include "DGtal/geometry/curves/StabbingLineComputer.h"
 #include "DGtal/geometry/curves/StabbingCircleComputer.h"
 #include "DGtal/geometry/curves/estimation/SegmentComputerEstimators.h"
+#include "DGtal/geometry/curves/FreemanChain.h"
+#include "DGtal/geometry/curves/GridCurve.h"
+#include "DGtal/geometry/curves/SaturatedSegmentation.h"
+#include "DGtal/topology/KhalimskySpaceND.h"
+#include <fstream>
 
 #include "DGtal/io/boards/Board2D.h"
 
@@ -144,7 +150,9 @@ bool testFromDCA(
   int nb = 0;
   int nbok = 0;
 
-  { //curvature
+  { //curvature: the curve of the test is a convex part scanned in a
+    //clockwise orientation (the inner points are on the right),
+    //so that its curvature is negative
     CurvatureFromDCAEstimator<DCAComputer,false> f;
     f.init(1.0, itb, ite);
     f.attach(dca);
@@ -153,7 +161,7 @@ bool testFromDCA(
     double q2 = f.eval(itb);
     trace.info() << "Curvature (h=1): " << q1 << std::endl;
     trace.info() << "Curvature (h=0.1): " << q2 << std::endl;
-    nbok += ((q1 >= 0)&&(q1 < 1)&&(q2 >= 0)&&(q2 < 10)
+    nbok += ((q1 <= 0)&&(q1 > -1)&&(q2 <= 0)&&(q2 > -10)
 	     &&(std::abs(q2-(10*q1)) < epsilon))?1:0;
     nb++;
     trace.info() << "(" << nbok << "/" << nb << ")" << std::endl;
@@ -163,7 +171,7 @@ bool testFromDCA(
     TangentFromDCAEstimator<DCAComputer> f;
     f.attach(dca);
     typedef typename TangentFromDCAEstimator<DCAComputer>::Quantity Quantity;
-    typename DCAComputer::ConstIterator it = DGtal::getMiddleIterator(itb, ite);
+    typename DCAComputer::ConstIterator it = DGtal::subRangeMiddle(itb, ite);
     Quantity q1 = f.eval( it );
     trace.info() << "Tangent: " << q1 << " == [PointVector] {1, 0} " << std::endl;
     nbok += (std::abs(q1[0]-1.0) < epsilon)
@@ -175,7 +183,7 @@ bool testFromDCA(
   { //position
     DistanceFromDCAEstimator<DCAComputer> f;
     typedef typename DistanceFromDCAEstimator<DCAComputer>::Quantity Quantity;
-    typename DCAComputer::ConstIterator it = DGtal::getMiddleIterator(itb, ite);
+    typename DCAComputer::ConstIterator it = DGtal::subRangeMiddle(itb, ite);
     f.init(1.0, itb, ite);
     f.attach(dca);
     Quantity q1 = f.eval( it );
@@ -200,6 +208,219 @@ bool testFromDCA(
 
 ///////////////////////////////////////////////////////////////////////////////
 // Standard services - public :
+
+/**
+ * Checks that the normal vectors estimated from the maximal DCAs of a
+ * closed non-convex curve (contourS.fc) always point toward the outside,
+ * i.e. from the inner point toward the outer point of each step.
+ */
+bool testNormalFromDCAOrientation()
+{
+  trace.beginBlock ( "Orientation of the normal and tangent vectors of DCAs" );
+
+  typedef KhalimskySpaceND<2,int> KSpace;
+  typedef KSpace::Point Point;
+  std::fstream fst( (testPath + "samples/contourS.fc").c_str(), std::ios::in );
+  FreemanChain<int> fc( fst );
+  std::vector<Point> points( fc.begin(), fc.end() );
+  points.pop_back(); //the last point is equal to the first one
+  GridCurve<KSpace> curve;
+  curve.initFromPointsVector( points );
+  typedef GridCurve<KSpace>::IncidentPointsRange Range;
+  Range r = curve.getIncidentPointsRange();
+  typedef Range::ConstCirculator ConstCirculator;
+  typedef StabbingCircleComputer<ConstCirculator> DCAComputer;
+  typedef NormalFromDCAEstimator<DCAComputer> Normal;
+  typedef TangentFromDCAEstimator<DCAComputer> Tangent;
+  typedef CurvatureFromDCAEstimator<DCAComputer, true> CCWCurvature;
+  typedef CurvatureFromDCAEstimator<DCAComputer, false> CWCurvature;
+
+  //orientation of the curve (sign of its area)
+  double area = 0.0;
+  for (std::size_t i = 0; i < points.size(); ++i)
+    {
+      Point p = points[i], q = points[(i+1) % points.size()];
+      area += double( p[0] ) * q[1] - double( q[0] ) * p[1];
+    }
+  const bool isCCW = ( area > 0.0 );
+
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  ConstCirculator c = r.c();
+  SaturatedSegmentation<DCAComputer> segmentation( c, c, DCAComputer() );
+  bool hasConvexPart = false, hasConcavePart = false;
+  for (auto seg = segmentation.begin(); seg != segmentation.end(); ++seg)
+    {
+      Normal f;
+      f.attach( *seg );
+      Tangent ft;
+      ft.attach( *seg );
+      ConstCirculator it = seg->begin();
+      Normal::Quantity previous;
+      do
+        {
+          auto pair = *it;
+          Normal::Quantity n = f.eval( it );
+          (void) previous;
+          Normal::Quantity d( pair.second[0] - pair.first[0],
+                              pair.second[1] - pair.first[1] );
+          //the normal vector may be orthogonal to the pair of points
+          //if the separating shape passes through both points
+          bool ok = ( n.dot( d ) >= -1e-9 );
+          if ( ! ok )
+            trace.info() << "  wrong orientation: straight " << seg->isStraight()
+                         << " convex " << seg->isConvex() << " n " << n << " d " << d << std::endl;
+          nbok += ok ? 1 : 0;
+          nb++;
+          //orientation consistent with the previous normal vector of the segment
+          if ( it != seg->begin() )
+            {
+              bool consistent = ( n.dot( previous ) > 0 );
+              if ( ! consistent )
+                trace.info() << "  inconsistent orientation: straight " << seg->isStraight()
+                             << " n " << n << " previous " << previous << std::endl;
+              nbok += consistent ? 1 : 0;
+              nb++;
+            }
+          previous = n;
+          //tangent vector: orthogonal to the normal vector and oriented
+          //along the sequence of pairs (toward the next pair)
+          Tangent::Quantity t = ft.eval( it );
+          nbok += ( std::abs( t.dot( n ) ) < 1e-9 ) ? 1 : 0;
+          nb++;
+          ConstCirculator next( it ); ++next;
+          if ( next != seg->end() )
+            {
+              auto pair2 = *next;
+              Normal::Quantity e( (pair2.first[0]+pair2.second[0]) - (pair.first[0]+pair.second[0]),
+                                  (pair2.first[1]+pair2.second[1]) - (pair.first[1]+pair.second[1]) );
+              bool forward = ( t.dot( e ) > 0 );
+              if ( ! forward )
+                trace.info() << "  tangent not forward: t " << t << " e " << e << std::endl;
+              nbok += forward ? 1 : 0;
+              nb++;
+            }
+          ++it;
+        } while ( it != seg->end() );
+      if ( ! seg->isStraight() )
+        {
+          //the inner points are closer to the center of the separating
+          //circle than the outer points for a convex part, farther for a
+          //concave part
+          double c0, c1, rad;
+          seg->getSeparatingCircle().getParameters( c0, c1, rad );
+          double s = 0.0;
+          ConstCirculator it2 = seg->begin();
+          do
+            {
+              auto pair = *it2;
+              s += ( (pair.second[0]-c0)*(pair.second[0]-c0) + (pair.second[1]-c1)*(pair.second[1]-c1) )
+                - ( (pair.first[0]-c0)*(pair.first[0]-c0) + (pair.first[1]-c1)*(pair.first[1]-c1) );
+              ++it2;
+            } while ( it2 != seg->end() );
+          if ( s > 0 ) hasConvexPart = true; else hasConcavePart = true;
+          //sign of the curvature: positive on convex parts and negative on
+          //concave parts, given the orientation of the scanning
+          CCWCurvature fccw; fccw.init( 1.0, seg->begin(), seg->end() ); fccw.attach( *seg );
+          CWCurvature fcw; fcw.init( 1.0, seg->begin(), seg->end() ); fcw.attach( *seg );
+          double k = isCCW ? fccw.eval( seg->begin() ) : fcw.eval( seg->begin() );
+          bool goodSign = ( (k > 0) == seg->isConvex() ) && ( k != 0 );
+          if ( ! goodSign )
+            trace.info() << "  wrong curvature sign: " << k << " convex " << seg->isConvex() << std::endl;
+          nbok += goodSign ? 1 : 0;
+          nb++;
+          //opposite sign for the opposite orientation
+          double k2 = isCCW ? fcw.eval( seg->begin() ) : fccw.eval( seg->begin() );
+          nbok += ( std::abs( k + k2 ) < 1e-12 ) ? 1 : 0;
+          nb++;
+          nbok += ( (s > 0) == seg->isConvex() ) ? 1 : 0;
+          nb++;
+        }
+    }
+  trace.info() << "(" << nbok << "/" << nb << ") normal vectors toward the outside, "
+               << "convex parts: " << hasConvexPart << ", concave parts: " << hasConcavePart
+               << std::endl;
+  trace.endBlock();
+  return ( nbok == nb ) && hasConvexPart && hasConcavePart;
+}
+
+/**
+ * Normal vectors of the maximal segments of StabbingLineComputer along a
+ * closed non-convex curve: they must be unit vectors orthogonal to the
+ * separating straight line, oriented from the inner points toward the
+ * outer points, and consistently oriented from a maximal segment to the
+ * next one (which overlap).
+ */
+bool testNormalFromStabbingLine()
+{
+  trace.beginBlock ( "Normal vectors of the segments of StabbingLineComputer" );
+
+  typedef KhalimskySpaceND<2,int> KSpace;
+  typedef KSpace::Point Point;
+  std::fstream fst( (testPath + "samples/contourS.fc").c_str(), std::ios::in );
+  FreemanChain<int> fc( fst );
+  std::vector<Point> points( fc.begin(), fc.end() );
+  points.pop_back(); //the last point is equal to the first one
+  GridCurve<KSpace> curve;
+  curve.initFromPointsVector( points );
+  typedef GridCurve<KSpace>::IncidentPointsRange Range;
+  Range r = curve.getIncidentPointsRange();
+  typedef Range::ConstCirculator ConstCirculator;
+  typedef StabbingLineComputer<ConstCirculator> LineComputer;
+  typedef NormalFromStabbingLineEstimator<LineComputer> Normal;
+
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  ConstCirculator c = r.c();
+  SaturatedSegmentation<LineComputer> segmentation( c, c, LineComputer() );
+  Normal::Quantity first, previous;
+  bool isFirst = true;
+  for (auto seg = segmentation.begin(); seg != segmentation.end(); ++seg)
+    {
+      Normal f;
+      f.init( 1.0, seg->begin(), seg->end() );
+      f.attach( *seg );
+      Normal::Quantity n = f.eval( seg->begin() );
+      //unit vector of direction (alpha, beta), up to its orientation
+      double alpha, beta, gamma;
+      seg->getParameters( alpha, beta, gamma );
+      nbok += ( std::abs( n.norm() - 1.0 ) < 1e-9 ) ? 1 : 0;
+      nb++;
+      nbok += ( std::abs( n[0]*beta - n[1]*alpha ) < 1e-9 ) ? 1 : 0;
+      nb++;
+      //from the inner points toward the outer points
+      bool outside = true, strictly = false;
+      ConstCirculator it = seg->begin();
+      do
+        {
+          auto pair = *it;
+          double s = n[0] * ( pair.second[0] - pair.first[0] )
+            + n[1] * ( pair.second[1] - pair.first[1] );
+          outside = outside && ( s >= -1e-9 );
+          strictly = strictly || ( s > 1e-9 );
+          ++it;
+        } while ( it != seg->end() );
+      if ( ! ( outside && strictly ) )
+        trace.info() << "  wrong orientation: n " << n << std::endl;
+      nbok += ( outside && strictly ) ? 1 : 0;
+      nb++;
+      //consistent with the normal vector of the previous maximal segment
+      if ( ! isFirst )
+        {
+          nbok += ( n.dot( previous ) > 0 ) ? 1 : 0;
+          nb++;
+        }
+      else
+        first = n;
+      isFirst = false;
+      previous = n;
+    }
+  nbok += ( previous.dot( first ) > 0 ) ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") normal vectors" << std::endl;
+  trace.endBlock();
+  return ( nbok == nb ) && ( nb > 10 );
+}
 
 int main( int argc, char** argv )
 {
@@ -283,6 +504,8 @@ int main( int argc, char** argv )
 
     res = res && testFromDCA<DCA>(curve.begin(), curve.end())
       && testFromDCA<DCA>(curve.begin()+2, curve.begin()+12);
+    res = res && testNormalFromDCAOrientation();
+    res = res && testNormalFromStabbingLine();
   }
 
   //----------------------------------------------------------

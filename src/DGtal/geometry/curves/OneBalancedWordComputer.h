@@ -26,7 +26,7 @@
  *
  * Header file for module OneBalancedWordComputer.cpp
  *
- * This class is a model of the concept CDynamicBidirectionalSegmentComputer.
+ * This class is a model of the concept concepts::CDynamicBidirectionalSegmentComputer.
  *
  * This file is part of the DGtal library.
  *
@@ -53,6 +53,7 @@
 #include "DGtal/kernel/CInteger.h"
 #include "DGtal/arithmetic/IntegerComputer.h"
 #include "DGtal/geometry/curves/ArithmeticalDSL.h"
+#include "DGtal/geometry/curves/SegmentComputerHelpers.h"
 //////////////////////////////////////////////////////////////////////////////
 
 namespace DGtal
@@ -78,18 +79,32 @@ namespace DGtal
    * to one of the axes , in this case the DSS is called 'trivial', and
    * when the DSS has only one upper leaning point.
    *
-   * This class is a model of the concept CBidirectionalSegmentComputer.
+   * This class is a model of the concept concepts::CDynamicBidirectionalSegmentComputer.
    *
    * @tparam TConstIterator the type of iterator used to read the input codes
    * (preferably of category 'random_access_iterator_tag').
    * @tparam TInteger the type of scalars used for the coordinates of the
-   * points (satisfying CInteger)
+   * points (satisfying concepts::CInteger)
+   * @tparam TCategory category of segment computer, i.e. ForwardSegmentComputer,
+   * BidirectionalSegmentComputer, DynamicSegmentComputer or
+   * DynamicBidirectionalSegmentComputer (default), used by the functions of
+   * SegmentComputerHelpers.h (and thus by the segmentation algorithms) to
+   * select the algorithm. All the methods are available whatever the chosen
+   * category; choosing a lower category is useful to compare the algorithms
+   * (e.g. their running time).
+   * @warning The algorithms dedicated to ForwardSegmentComputer and
+   * DynamicSegmentComputer scan the codes backward through the Reverse type,
+   * whereas Reverse is here the same type as Self (reading a word backward
+   * does not code the same path).
    */
 
 
-  template <typename TConstIterator, typename TInteger>
+  template <typename TConstIterator, typename TInteger,
+            typename TCategory = DynamicBidirectionalSegmentComputer>
     class OneBalancedWordComputer
   {
+    static_assert( isSegmentComputerCategoryCompatible<TCategory, DynamicBidirectionalSegmentComputer>,
+                   "TCategory must be a segment computer category" );
 
     // ----------------------- Types ------------------------------
     public :
@@ -100,8 +115,13 @@ namespace DGtal
 
       //Required types
       typedef FreemanChain<TInteger> FreemanChainCode;
-      typedef OneBalancedWordComputer<ConstIterator, Integer> Self;
-      typedef OneBalancedWordComputer<ConstIterator, Integer> Reverse;
+      typedef OneBalancedWordComputer<ConstIterator, Integer, TCategory> Self;
+      typedef OneBalancedWordComputer<ConstIterator, Integer, TCategory> Reverse;
+
+      /**
+       * Category of segment computer, see SegmentComputerTraits
+       */
+      typedef TCategory SegmentComputerCategory;
 
       //2D points and 2D vectors
       typedef DGtal::PointVector<2,Integer> Point;
@@ -939,10 +959,10 @@ namespace DGtal
    * @param object the object of class 'OneBalancedWord' to write.
    * @return the output stream after the writing.
    */
-  template < typename TConstIterator, typename TInteger >
+  template < typename TConstIterator, typename TInteger, typename TCategory >
   std::ostream&
   operator<< ( std::ostream & out,
-	       const OneBalancedWordComputer<TConstIterator, TInteger> & object );
+	       const OneBalancedWordComputer<TConstIterator, TInteger, TCategory> & object );
 
 
 } // namespace DGtal

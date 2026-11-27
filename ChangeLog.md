@@ -1,5 +1,29 @@
 # DGtal 2.2.1 (beta)
 
+## New features
+
+- *Geometry*
+  - New `LambdaMaximalSegmentEstimator`, a λ-MST estimator that averages the quantities estimated from all the maximal segments passing through an element, weighted by a lambda function of its eccentricity; open and closed curves, whole ranges and subranges; eccentricity of points (`PointEccentricity`) or of steps (`StepEccentricity`); new `LambdaTriangleFunction` (Tristan Roussillon, [#1864](https://github.com/DGtal-team/DGtal/pull/1864))
+  - New `ArithmeticalDSSComputerOnArrows`, which recognizes standard DSSs along a sequence of arrows (pairs point-vector), e.g. the steps of a grid curve (Tristan Roussillon, [#1864](https://github.com/DGtal-team/DGtal/pull/1864))
+  - Segment computers (`ArithmeticalDSSComputer`, `OneBalancedWordComputer`, `StabbingLineComputer`, `StabbingCircleComputer`, `ArithmeticalDSSComputerOnArrows`) take a `TCategory` template parameter selecting the algorithms used to compute maximal segments (forward, bidirectional, dynamic, dynamic bidirectional); the highest available category is used by default (Tristan Roussillon, [#1864](https://github.com/DGtal-team/DGtal/pull/1864))
+  - New `NormalFromStabbingLineEstimator`, which estimates the normal vector, oriented toward the outside, from the straight line of a segment of `StabbingLineComputer` (Tristan Roussillon, [#1864](https://github.com/DGtal-team/DGtal/pull/1864))
+  - `StabbingCircleComputer::isConvex()` tells whether a DCA is a convex or a concave part of the curve (Tristan Roussillon, [#1864](https://github.com/DGtal-team/DGtal/pull/1864))
+
+## Changes
+
+- *Geometry*
+  - `SegmentComputerUtils.h` is renamed `SegmentComputerHelpers.h` (declarations) and `SegmentComputerHelpers.ih` (definitions); `SegmentComputerUtils.h` and `getMiddleIterator` are deprecated (use `subRangeMiddle`) (Tristan Roussillon, [#1864](https://github.com/DGtal-team/DGtal/pull/1864))
+  - `GreedySegmentation::Mode` and `SaturatedSegmentation::Mode` enums replace the strings; `setMode(const std::string&)` is kept but throws an `InputException` for an unknown string (`GreedySegmentation` used to silently take the default mode) (Tristan Roussillon, [#1864](https://github.com/DGtal-team/DGtal/pull/1864))
+  - The most centered maximal segment follows the definition of the tangent of Feschet and Tougne (DGCI 1999): at the middle of the intersection of two consecutive maximal segments, the next one is now chosen by `mostCenteredMaximalSegment`, `SaturatedSegmentation` and `MostCenteredMaximalSegmentEstimator` (Tristan Roussillon, [#1864](https://github.com/DGtal-team/DGtal/pull/1864))
+  - The normal vectors of `NormalFromDCAEstimator` always point toward the outside of the curve (they used to point away from the center of the separating circle, also on concave parts), and the tangent vectors of `TangentFromDCAEstimator` are oriented along the curve (Tristan Roussillon, [#1864](https://github.com/DGtal-team/DGtal/pull/1864))
+
+- *Documentation*
+  - New documentation page `modulePrimitiveBasedEstimators` presenting the estimators based on maximal segments, with a comparison of their multigrid convergence (normals, length, curvature) and running times (Tristan Roussillon, [#1864](https://github.com/DGtal-team/DGtal/pull/1864))
+  - Document the closed preimage of `Preimage2D` and `StabbingLineComputer` and the straight line they return (bisector of the extreme straight lines) (Tristan Roussillon, [#1864](https://github.com/DGtal-team/DGtal/pull/1864))
+
+- *Benchmarks*
+  - New benchmarks `saturatedSegmentation-benchmark` (running times per segment computer category) and `normalEstimators-benchmark` (multigrid convergence of estimators based on maximal segments); the geometry benchmarks are built again (Tristan Roussillon, [#1864](https://github.com/DGtal-team/DGtal/pull/1864))
+
 ## BugFixes
 
 - *Project*
@@ -16,6 +40,9 @@
   (Bertrand Kerautret,  [#1860](https://github.com/DGtal-team/DGtal/pull/1860))
 - *Geometry*
   - Fixing a missing include in `parallelIIShortcuts-viewer` example (David Coeurjolly, issue #1859, [#1862](https://github.com/DGtal-team/DGtal/pull/1862))
+  - Fix the functions of `SegmentComputerHelpers.h` (previously `SegmentComputerUtils.h`): the dynamic `nextMaximalSegment` and `previousMaximalSegment` skipped an element, extensions on iterators could go beyond the range bounds, and extensions on circulators could go beyond a whole turn (Tristan Roussillon, [#1864](https://github.com/DGtal-team/DGtal/pull/1864))
+  - Fix `SaturatedSegmentation` and `MostCenteredMaximalSegmentEstimator` on subranges: no more endless iteration, evaluation stopped at the end of the subrange, empty ranges `[it, it)` no longer evaluated as whole circular ranges; in the simple modes, the segmentation of a subrange contained in a single chosen maximal segment is now empty (Tristan Roussillon, [#1864](https://github.com/DGtal-team/DGtal/pull/1864))
+  - Fix the sign of the curvature of `CurvatureFromDCAEstimator`, which was the opposite of the documented one, and of the tangent vectors of `TangentFromDCAEstimator`, which were not orthogonal to the normal vectors (Tristan Roussillon, [#1864](https://github.com/DGtal-team/DGtal/pull/1864))
 
 # DGtal 2.2
 

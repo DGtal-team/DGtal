@@ -151,16 +151,16 @@ template <typename TCoordinate, typename TInteger, unsigned short adjacency>
 
 
 // ArithmeticalDSSComputer
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, typename TInteger, int connectivity, typename TCategory>
   static void drawAsBoundingBox( DGtal::Board2D & aBoard,
-			  const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity> & );
+			  const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity,TCategory> & );
 
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, typename TInteger, int connectivity, typename TCategory>
   static void drawAsDigitalPoints( DGtal::Board2D & aBoard,
-			    const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity> & );
+			    const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity,TCategory> & );
 
-template <typename TIterator, typename TInteger, int connectivity>
-static void draw( DGtal::Board2D & board, const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity> & );
+template <typename TIterator, typename TInteger, int connectivity, typename TCategory>
+static void draw( DGtal::Board2D & board, const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity,TCategory> & );
 // ArithmeticalDSSComputer
 
 
@@ -222,10 +222,10 @@ static void draw( DGtal::Board2D & board, const DGtal::DigitalSetBySTLVector<Dom
 
 
 // FP
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, typename TInteger, int connectivity, typename TCategory>
   static void drawAsPolygon( DGtal::Board2D & aBoard, const DGtal::FP<TIterator,TInteger,connectivity> & );
 
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, typename TInteger, int connectivity, typename TCategory>
   static void draw( DGtal::Board2D & board, const DGtal::FP<TIterator,TInteger,connectivity> & );
 // FP
 
@@ -243,13 +243,13 @@ static void draw( DGtal::Board2D & aBoard, const DGtal::FreemanChain<TInteger> &
 
 
 // StabbingLineComputer
-template <typename TConstIterator>
-static void draw(DGtal::Board2D & aBoard, const DGtal::StabbingLineComputer<TConstIterator> & );
+template <typename TConstIterator, typename TCategory>
+static void draw(DGtal::Board2D & aBoard, const DGtal::StabbingLineComputer<TConstIterator,TCategory> & );
 // StabbingLineComputer
 
 // StabbingCircleComputer
-template <typename TConstIterator>
-static void draw(DGtal::Board2D & aBoard, const DGtal::StabbingCircleComputer<TConstIterator> & );
+template <typename TConstIterator, typename TCategory>
+static void draw(DGtal::Board2D & aBoard, const DGtal::StabbingCircleComputer<TConstIterator,TCategory> & );
 // StabbingCircleComputer
 
 

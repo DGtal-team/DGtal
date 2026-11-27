@@ -51,7 +51,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 
-#include "DGtal/geometry/curves/SegmentComputerUtils.h"
+#include "DGtal/geometry/curves/SegmentComputerHelpers.h"
 
 
 #define PRECISION 0.00000001
@@ -65,11 +65,7 @@ namespace DGtal
    * Description of class 'FrechetShortcut' <p>
    * @brief Aim:
    * On-line computation Computation of the longest shortcut according to the Fréchet
-   * distance for a given error. See related article:
-   *       Sivignon, I., (2011). A Near-Linear Time Guaranteed Algorithm
-   *       for Digital Curve Simplification under the Fréchet
-   *       Distance. DGCI 2011. Retrieved from
-   *       http://link.springer.com/chapter/10.1007/978-3-642-19867-0_28
+   * distance for a given error. See related article \cite sivignon2011.
    *
    *
 
@@ -92,7 +88,7 @@ namespace DGtal
    curves from a first point given by myBegin, while updating the values
    @f$ w(i,j) @f$ and @f$ b(i,j) @f$ on the fly.
 
-   * This class is a model of the concept CForwardSegmentComputer
+   * This class is a model of the concept concepts::CForwardSegmentComputer
    *
    * It should be used with the Curve object (defined in StdDefs.h) and
    *its PointsRange as follows:

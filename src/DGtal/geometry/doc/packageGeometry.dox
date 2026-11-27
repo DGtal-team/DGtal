@@ -67,7 +67,7 @@ of arbitrary dimension, by the means of separable and incremental distance trans
  - Chord algorithm for plane recognition (Jacques-Olivier Lachaud, Yan Gerard, Isabelle Debled-Rennesson, Paul Zimmermann) --- documentation coming soon ---
 
 - Geometric estimators
-  - DSS / DCA / .. based estimators      --- documentation coming soon but have a look to models of CSegmentComputerEstimator ---
+  - \subpage modulePrimitiveBasedEstimators (Tristan Roussillon)
   - \subpage moduleIntegralInvariant <!--Integral invariant curvature estimator 2D/3D--> (Jérémy Levallois, David Coeurjolly, Jacques-Olivier Lachaud)
   - \subpage LocalEstimatorsFromSurfel (David Coeurjolly)
   - \subpage moduleVCM (Louis Cuel, Jacques-Olivier Lachaud, Quentin Mérigot, Boris Thibert)

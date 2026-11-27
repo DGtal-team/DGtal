@@ -360,7 +360,7 @@ See @ref moduleBoard2D and @ref moduleArithDSSReco for the drawing mechanism.
 As seen above, the code can be different if an iterator or a circulator is used
 as the nested ConstIterator type. Moreover, some tasks can be made faster for a
 given kind of segment computer than for another kind of segment computer.
-That's why many generic functions are provided in the file DGtal/geometry/curves/SegmentComputerUtils.h:
+That's why many generic functions are provided in the file DGtal/geometry/curves/SegmentComputerHelpers.h:
 
 - maximalExtension, oppositeEndMaximalExtension, maximalSymmetricExtension,
 - maximalRetraction, oppositeEndMaximalRetraction,
@@ -480,19 +480,22 @@ Moreover, a part of a digital curve may be processed either
 as an independent (open) digital curve or as a part whose
 segmentation at the ends depends of the underlying digital
 curve. That's why 3 processing modes are available:
-- "Truncate" (default), the extension of the last segment
+- Mode::Truncate (default), the extension of the last segment
   (and the segmentation) stops just before endIt.
-- "Truncate+1", the last segment is extended to endIt too
+- Mode::TruncatePlusOne, the last segment is extended to endIt too
   if it is possible, provided that endIt != curve.end().
-- "DoNotTruncate", the last segment is extended as far as
+- Mode::DoNotTruncate, the last segment is extended as far as
   possible, provided that curve.end() is not reached.
 
-In order to set a mode (before getting a SegmentComputerIterator),
+In order to set a mode (before getting a SegmentComputerIterator,
+and after setSubRange(), which sets the default mode),
 use the setMode() method as follow:
 @code
-theSegmentation.setMode("DoNotTruncate");
+theSegmentation.setMode(Segmentation::Mode::DoNotTruncate);
 @endcode
-Note that the default mode will be used for any unknown modes.
+For backward compatibility, the modes may also be given by the strings
+"Truncate", "Truncate+1" and "DoNotTruncate" (an InputException is
+thrown for any other string).
 
 The complexity of the greedy segmentation algorithm relies on the
 complexity of the extendFront() method of the segment computer. If it
@@ -542,21 +545,26 @@ for an example of how to use maximal DSSs to decompose a digital curve
    * element of the range, one maximal segment must be chosen
    * as the first (resp. last) retrieved maximal segments.
    * Several processing modes are therefore available:
-   * - "First",
-   * - "MostCentered" (default),
-   * - "Last",
+   * - Mode::First and Mode::FirstPlusPlus,
+   * - Mode::MostCentered (default) and Mode::MostCenteredPlusPlus,
+   * - Mode::Last and Mode::LastPlusPlus.
    *
-   * The mode i indicates that the segmentation begins with
-   * the i-th maximal segment passing through the first element
-   * and ends with the i maximal segment passing through the
-   * last element.
+   * The mode XXX indicates that the segmentation begins with
+   * the XXX maximal segment passing through the first element
+   * and ends with the XXX maximal segment passing through the
+   * element following the range, which is excluded in the simple
+   * modes and included in the PlusPlus modes
+   * (see SaturatedSegmentation for details).
    *
-   * In order to set a mode (before getting a SegmentComputerIterator),
+   * In order to set a mode (before getting a SegmentComputerIterator,
+   * and after setSubRange(), which sets the default mode),
    * use the setMode() method as follow:
    * @code
-  theSegmentation.setMode("First");
+  theSegmentation.setMode(Segmentation::Mode::First);
    * @endcode
-   * Note that the default mode will be used for any unknown modes.
+   * For backward compatibility, the modes may also be given by the
+   * strings "First", "MostCentered", "Last", "First++", "MostCentered++"
+   * and "Last++" (an InputException is thrown for any other string).
 
 
 The complexity of the saturated segmentation algorithm relies on the
@@ -579,6 +587,23 @@ also retracted @f$ l @f$ times).
 
 Moreover, note that @f$ \Sigma_{1 \leq i \leq n} L_i @f$ may be equal to
 @f$ O(l) @f$ (for instance for DSSs).
+
+The category of a segment computer, and thus the algorithms used by the
+saturated segmentation, may be chosen with a template parameter
+(see for instance ArithmeticalDSSComputer), in order to compare their
+running times. The benchmark
+saturatedSegmentation-benchmark.cpp compares the running times of the
+saturated segmentation of the boundary of digital disks into maximal
+standard DSSs for the different categories of ArithmeticalDSSComputer.
+The running times are linear in the number of points in all cases, but
+the dynamic algorithms are about 4 times faster than the forward ones,
+whereas the bidirectional algorithms are about 1.5 times faster.
+
+\image html timings-saturated-segmentation.png "Running times (ms) of the saturated segmentation of the boundary of digital disks into maximal standard DSSs, as a function of the number of points of the boundary, for the different categories of ArithmeticalDSSComputer." width=70%
+
+The maximal segments retrieved by a saturated segmentation may be used
+to estimate local geometric quantities along a digital curve: see
+\ref modulePrimitiveBasedEstimators.
 
 
 

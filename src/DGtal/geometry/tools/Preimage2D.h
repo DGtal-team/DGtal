@@ -56,10 +56,7 @@ namespace DGtal
   /**
    * @brief Aim: Computes the preimage of the 2D Euclidean shapes
    * crossing a sequence of n straight segments in O(n),
-   * with the algorithm of O'Rourke (1981).
-   *
-   * @note Joseph O'Rourke, An on-line algorithm for fitting straight lines between data ranges,
-  Communications of the ACM, Volume 24, Issue 9, September 1981, 574--578.
+   * with the algorithm of O'Rourke \cite ORourkeCACM1981.
    *
    * For all i from 0 to n, the straight
    * segment i is described by its two end points Pi and Qi.
@@ -69,6 +66,11 @@ namespace DGtal
    * circles passing through a given point). Consequently, the
    * points Pi and the points Qi are assumed to lie in either
    * side of the shape.
+   *
+   * The preimage is closed: a shape passing through some points Pi
+   * or Qi belongs to the preimage, i.e. the segments [PiQi] are
+   * considered as closed segments (see StabbingLineComputer, whose class
+   * of segments is thus larger than the class of standard DSSs).
    *
    * The user of this class has to decide from its input set
    * of segments and the shape used whether a linear-time algorithm
@@ -327,9 +329,15 @@ namespace DGtal
     Point Ll() const;
 
     /**
-     * Get the parameters of one separating straight line
-     * @param alpha  (returned) y-component of the normal
-     * @param beta  (returned) x-component of the normal
+     * Get the parameters of one separating straight line, of equation
+     * alpha.x + beta.y + gamma = 0. This straight line is the bisector
+     * of the two straight lines of the preimage of extreme slopes, i.e.
+     * (Uf,Ll) and (Ul,Lf), passing through their intersection point
+     * (or one of them if they are parallel): it is a straight line in the
+     * middle of the preimage, which is generally not parallel to the
+     * straight lines passing through the leaning points.
+     * @param alpha  (returned) x-component of the normal
+     * @param beta  (returned) y-component of the normal
      * @param gamma  (returned) intercept
      */
     void getSeparatingStraightLine(double& alpha, double& beta, double& gamma) const;

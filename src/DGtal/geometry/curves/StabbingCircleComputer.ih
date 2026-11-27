@@ -38,26 +38,27 @@
 ///////////////////////////////////////////////////////////////////////////////
 // ----------------------- Standard services ------------------------------
 
-template <typename TConstIterator>
+template <typename TConstIterator, typename TCategory>
 inline
-DGtal::StabbingCircleComputer<TConstIterator>::StabbingCircleComputer()
+DGtal::StabbingCircleComputer<TConstIterator,TCategory>::StabbingCircleComputer()
  :myBegin(), myEnd(), mySegPtr(new StabbingLineComputer<ConstIterator>()),
-  myCircle(), myFlagIsInit(false)
+  myCircle(), myFlagIsInit(false), myFlagIsConvex(true)
 {
 }
 
-template <typename TConstIterator>
+template <typename TConstIterator, typename TCategory>
 inline
-DGtal::StabbingCircleComputer<TConstIterator>::StabbingCircleComputer( const Self& other )
+DGtal::StabbingCircleComputer<TConstIterator,TCategory>::StabbingCircleComputer( const Self& other )
  :myBegin(other.myBegin), myEnd(other.myEnd), mySegPtr(other.mySegPtr),
-  myCircle(other.myCircle), myFlagIsInit(other.myFlagIsInit)
+  myCircle(other.myCircle), myFlagIsInit(other.myFlagIsInit),
+  myFlagIsConvex(other.myFlagIsConvex)
 {
 }
 
-template <typename TConstIterator>
+template <typename TConstIterator, typename TCategory>
 inline
-typename DGtal::StabbingCircleComputer<TConstIterator>::Self&
-DGtal::StabbingCircleComputer<TConstIterator>::operator= ( const Self& other )
+typename DGtal::StabbingCircleComputer<TConstIterator,TCategory>::Self&
+DGtal::StabbingCircleComputer<TConstIterator,TCategory>::operator= ( const Self& other )
 {
   if ( this != &other )
     {
@@ -66,20 +67,21 @@ DGtal::StabbingCircleComputer<TConstIterator>::operator= ( const Self& other )
       mySegPtr = other.mySegPtr;
       myCircle = other.myCircle;
       myFlagIsInit = other.myFlagIsInit;
+      myFlagIsConvex = other.myFlagIsConvex;
     }
   return *this;
 }
 
-template <typename TConstIterator>
+template <typename TConstIterator, typename TCategory>
 inline
-DGtal::StabbingCircleComputer<TConstIterator>::~StabbingCircleComputer()
+DGtal::StabbingCircleComputer<TConstIterator,TCategory>::~StabbingCircleComputer()
 {
 }
 
-template <typename TConstIterator>
+template <typename TConstIterator, typename TCategory>
 inline
 bool
-DGtal::StabbingCircleComputer<TConstIterator>::operator==( const Self& other ) const
+DGtal::StabbingCircleComputer<TConstIterator,TCategory>::operator==( const Self& other ) const
 {
   if (isValid()&&other.isValid())
     {
@@ -123,27 +125,27 @@ DGtal::StabbingCircleComputer<TConstIterator>::operator==( const Self& other ) c
     }
 }
 
-template <typename TConstIterator>
+template <typename TConstIterator, typename TCategory>
 inline
 bool
-DGtal::StabbingCircleComputer<TConstIterator>::operator!=( const Self& other ) const
+DGtal::StabbingCircleComputer<TConstIterator,TCategory>::operator!=( const Self& other ) const
 {
   return !(*this == other);
 }
 
-template <typename TConstIterator>
+template <typename TConstIterator, typename TCategory>
 inline
-typename DGtal::StabbingCircleComputer<TConstIterator>::Reverse
-DGtal::StabbingCircleComputer<TConstIterator>::getReverse() const
+typename DGtal::StabbingCircleComputer<TConstIterator,TCategory>::Reverse
+DGtal::StabbingCircleComputer<TConstIterator,TCategory>::getReverse() const
 {
   return Reverse();
 }
 
 
-template <typename TConstIterator>
+template <typename TConstIterator, typename TCategory>
 inline
-typename DGtal::StabbingCircleComputer<TConstIterator>::Self
-DGtal::StabbingCircleComputer<TConstIterator>::getSelf() const
+typename DGtal::StabbingCircleComputer<TConstIterator,TCategory>::Self
+DGtal::StabbingCircleComputer<TConstIterator,TCategory>::getSelf() const
 {
   return Self();
 }
@@ -153,10 +155,10 @@ DGtal::StabbingCircleComputer<TConstIterator>::getSelf() const
 ///////////////////////////////////////////////////////////////////////////////
 // Interface - public :
 
-template <typename TConstIterator>
+template <typename TConstIterator, typename TCategory>
 inline
 bool
-DGtal::StabbingCircleComputer<TConstIterator>::isValid() const
+DGtal::StabbingCircleComputer<TConstIterator,TCategory>::isValid() const
 {
   if ( mySegPtr.get() != 0 )
     {
@@ -168,42 +170,50 @@ DGtal::StabbingCircleComputer<TConstIterator>::isValid() const
     }
 }
 
-template <typename TConstIterator>
+template <typename TConstIterator, typename TCategory>
 inline
-typename DGtal::StabbingCircleComputer<TConstIterator>::ConstIterator
-DGtal::StabbingCircleComputer<TConstIterator>::begin() const
+typename DGtal::StabbingCircleComputer<TConstIterator,TCategory>::ConstIterator
+DGtal::StabbingCircleComputer<TConstIterator,TCategory>::begin() const
 {
   return myBegin;
 }
 
-template <typename TConstIterator>
+template <typename TConstIterator, typename TCategory>
 inline
-typename DGtal::StabbingCircleComputer<TConstIterator>::ConstIterator
-DGtal::StabbingCircleComputer<TConstIterator>::end() const
+typename DGtal::StabbingCircleComputer<TConstIterator,TCategory>::ConstIterator
+DGtal::StabbingCircleComputer<TConstIterator,TCategory>::end() const
 {
   return myEnd;
 }
 
-template <typename TConstIterator>
+template <typename TConstIterator, typename TCategory>
 inline
 bool
-DGtal::StabbingCircleComputer<TConstIterator>::isStraight() const
+DGtal::StabbingCircleComputer<TConstIterator,TCategory>::isStraight() const
 {
   return !myFlagIsInit;
 }
 
-template <typename TConstIterator>
+template <typename TConstIterator, typename TCategory>
 inline
-typename DGtal::StabbingCircleComputer<TConstIterator>::StabbingLineComputerPtr
-DGtal::StabbingCircleComputer<TConstIterator>::getStabbingLineComputerPtr() const
+bool
+DGtal::StabbingCircleComputer<TConstIterator,TCategory>::isConvex() const
+{
+  return myFlagIsConvex;
+}
+
+template <typename TConstIterator, typename TCategory>
+inline
+typename DGtal::StabbingCircleComputer<TConstIterator,TCategory>::StabbingLineComputerPtr
+DGtal::StabbingCircleComputer<TConstIterator,TCategory>::getStabbingLineComputerPtr() const
 {
   return mySegPtr;
 }
 
-template <typename TConstIterator>
+template <typename TConstIterator, typename TCategory>
 inline
-typename DGtal::StabbingCircleComputer<TConstIterator>::Circle
-DGtal::StabbingCircleComputer<TConstIterator>::getSeparatingCircle() const
+typename DGtal::StabbingCircleComputer<TConstIterator,TCategory>::Circle
+DGtal::StabbingCircleComputer<TConstIterator,TCategory>::getSeparatingCircle() const
 {
   return myCircle;
 }
@@ -211,11 +221,11 @@ DGtal::StabbingCircleComputer<TConstIterator>::getSeparatingCircle() const
 ///////////////////////////////////////////////////////////////////////////////
 // Growth operations                                                        //
 
-template <typename TConstIterator>
+template <typename TConstIterator, typename TCategory>
 template <typename TIterator>
 inline
 bool
-DGtal::StabbingCircleComputer<TConstIterator>::isCircularlySeparable(
+DGtal::StabbingCircleComputer<TConstIterator,TCategory>::isCircularlySeparable(
 							     const TIterator& itb, const TIterator& ite,
 							     const Point& aPole,
 							     Point& Pf, Point& Pl, Point& Qf, Point& Ql)
@@ -267,10 +277,10 @@ DGtal::StabbingCircleComputer<TConstIterator>::isCircularlySeparable(
     } else return false;
 }
 
-template <typename TConstIterator>
+template <typename TConstIterator, typename TCategory>
 inline
 void
-DGtal::StabbingCircleComputer<TConstIterator>::init(const ConstIterator& anIt)
+DGtal::StabbingCircleComputer<TConstIterator,TCategory>::init(const ConstIterator& anIt)
 {
   myFlagIsInit = false;
 
@@ -287,10 +297,10 @@ DGtal::StabbingCircleComputer<TConstIterator>::init(const ConstIterator& anIt)
   myCircle = Circle(aPair.first, aPair.first, aPair.first);
 }
 
-template <typename TConstIterator>
+template <typename TConstIterator, typename TCategory>
 inline
 bool
-DGtal::StabbingCircleComputer<TConstIterator>::isExtendableFront()
+DGtal::StabbingCircleComputer<TConstIterator,TCategory>::isExtendableFront()
 {
   ASSERT( mySegPtr.get() != 0 );
   Pair aPair( *myEnd );
@@ -321,7 +331,7 @@ DGtal::StabbingCircleComputer<TConstIterator>::isExtendableFront()
 	      if (isCircularlySeparable(myBegin,myEnd,aQ,Pf,Pl,Qf,Ql))
 		isOK = true;
 	    }
-	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::isExtendableFront(): impossible case") );
+	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator,TCategory>::isExtendableFront(): impossible case") );
 	}
 
     } else
@@ -341,17 +351,17 @@ DGtal::StabbingCircleComputer<TConstIterator>::isExtendableFront()
 	      if (isCircularlySeparable(myBegin,myEnd,aP,Pf,Pl,Qf,Ql))
 		isOK = true;
 	    }
-	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::isExtendableFront(): impossible case") );
+	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator,TCategory>::isExtendableFront(): impossible case") );
 	}
     }
 
   return isOK;
 }
 
-template <typename TConstIterator>
+template <typename TConstIterator, typename TCategory>
 inline
 bool
-DGtal::StabbingCircleComputer<TConstIterator>::extendFront()
+DGtal::StabbingCircleComputer<TConstIterator,TCategory>::extendFront()
 {
   ASSERT( mySegPtr.get() != 0 );
   Pair aPair( *myEnd );
@@ -388,7 +398,7 @@ DGtal::StabbingCircleComputer<TConstIterator>::extendFront()
 		  isOK = true;
 		}
 	    }
-	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::extendFront(): impossible case") );
+	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator,TCategory>::extendFront(): impossible case") );
 	}
 
     } else
@@ -405,6 +415,7 @@ DGtal::StabbingCircleComputer<TConstIterator>::extendFront()
 		{
 		  myCircle.init(Qf,Pl,aQ);
 		  myFlagIsInit = true;
+		  myFlagIsConvex = true;
 		  isOK = true;
 		}
 	    }
@@ -415,10 +426,11 @@ DGtal::StabbingCircleComputer<TConstIterator>::extendFront()
 		{
 		  myCircle.init(Pf,Ql,aP);
 		  myFlagIsInit = true;
+		  myFlagIsConvex = false;
 		  isOK = true;
 		}
 	    }
-	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::extendFront(): impossible case") );
+	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator,TCategory>::extendFront(): impossible case") );
 	}
     }
 
@@ -429,10 +441,10 @@ DGtal::StabbingCircleComputer<TConstIterator>::extendFront()
     } else return false;
 }
 
-template <typename TConstIterator>
+template <typename TConstIterator, typename TCategory>
 inline
 bool
-DGtal::StabbingCircleComputer<TConstIterator>::isExtendableBack()
+DGtal::StabbingCircleComputer<TConstIterator,TCategory>::isExtendableBack()
 {
   ASSERT( mySegPtr.get() != 0 );
   ConstIterator it( myBegin );
@@ -469,7 +481,7 @@ DGtal::StabbingCircleComputer<TConstIterator>::isExtendableBack()
 	      if (isCircularlySeparable(ritb,rite,aQ,Pf,Pl,Qf,Ql))
 		isOK = true;
 	    }
-	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::extendBack(): impossible case") );
+	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator,TCategory>::extendBack(): impossible case") );
 	}
 
     } else
@@ -491,17 +503,17 @@ DGtal::StabbingCircleComputer<TConstIterator>::isExtendableBack()
 	      if (isCircularlySeparable(ritb,rite,aP,Pf,Pl,Qf,Ql))
 		isOK = true;
 	    }
-	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::extendBack(): impossible case") );
+	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator,TCategory>::extendBack(): impossible case") );
 	}
     }
 
   return isOK;
 }
 
-template <typename TConstIterator>
+template <typename TConstIterator, typename TCategory>
 inline
 bool
-DGtal::StabbingCircleComputer<TConstIterator>::extendBack()
+DGtal::StabbingCircleComputer<TConstIterator,TCategory>::extendBack()
 {
   ASSERT( mySegPtr.get() != 0 );
   ConstIterator it( myBegin );
@@ -544,7 +556,7 @@ DGtal::StabbingCircleComputer<TConstIterator>::extendBack()
 		  isOK = true;
 		}
 	    }
-	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::extendBack(): impossible case") );
+	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator,TCategory>::extendBack(): impossible case") );
 	}
 
     } else
@@ -563,6 +575,7 @@ DGtal::StabbingCircleComputer<TConstIterator>::extendBack()
 		{
 		  myCircle.init(aQ,Qf,Pl);
 		  myFlagIsInit = true;
+		  myFlagIsConvex = true;
 		  isOK = true;
 		}
 	    }
@@ -573,10 +586,11 @@ DGtal::StabbingCircleComputer<TConstIterator>::extendBack()
 		{
 		  myCircle.init(aP,Pf,Ql);
 		  myFlagIsInit = true;
+		  myFlagIsConvex = false;
 		  isOK = true;
 		}
 	    }
-	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator>::extendBack(): impossible case") );
+	  else ASSERT( false && ("DGtal::StabbingCircleComputer<TConstIterator,TCategory>::extendBack(): impossible case") );
 	}
     }
 
@@ -590,10 +604,10 @@ DGtal::StabbingCircleComputer<TConstIterator>::extendBack()
 ///////////////////////////////////////////////////////////////////////////////
 // Display :
 
-template <typename TConstIterator>
+template <typename TConstIterator, typename TCategory>
 inline
 void
-DGtal::StabbingCircleComputer<TConstIterator>::selfDisplay ( std::ostream & out ) const
+DGtal::StabbingCircleComputer<TConstIterator,TCategory>::selfDisplay ( std::ostream & out ) const
 {
   out << std::endl;
   out << "[StabbingCircleComputer]" << std::endl;
@@ -617,10 +631,10 @@ DGtal::StabbingCircleComputer<TConstIterator>::selfDisplay ( std::ostream & out 
   out << "[end of StabbingCircleComputer]" << std::endl;
 }
 
-template <typename TConstIterator>
+template <typename TConstIterator, typename TCategory>
 inline
 std::string
-DGtal::StabbingCircleComputer<TConstIterator>::className() const
+DGtal::StabbingCircleComputer<TConstIterator,TCategory>::className() const
 {
   return "StabbingCircleComputer";
 }
@@ -629,11 +643,11 @@ DGtal::StabbingCircleComputer<TConstIterator>::className() const
 ///////////////////////////////////////////////////////////////////////////////
 // Implementation of inline functions                                        //
 
-template <typename TConstIterator>
+template <typename TConstIterator, typename TCategory>
 inline
 std::ostream&
 DGtal::operator<< ( std::ostream & out,
-		    const StabbingCircleComputer<TConstIterator> & object )
+		    const StabbingCircleComputer<TConstIterator,TCategory> & object )
 {
   object.selfDisplay( out );
   return out;

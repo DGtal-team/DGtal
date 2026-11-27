@@ -44,7 +44,7 @@
 #include "DGtal/base/Common.h"
 #include "DGtal/base/CowPtr.h"
 #include "DGtal/base/ConceptUtils.h"
-#include "DGtal/geometry/curves/SegmentComputerUtils.h"
+#include "DGtal/geometry/curves/SegmentComputerHelpers.h"
 
 #include "DGtal/geometry/curves/StabbingLineComputer.h"
 #include "DGtal/shapes/fromPoints/CircleFrom2Points.h"
@@ -98,7 +98,7 @@ namespace DGtal
   that the routine is called only a few times and that the algorithm is fast.
 
    *
-   * This class is a model of the concept CBidirectionalSegmentComputer.
+   * This class is a model of the concept concepts::CBidirectionalSegmentComputer.
    *
    * It should be used with the Curve object (defined in StdDefs.h)
    * and its IncidentPointsRange as follows:
@@ -106,19 +106,33 @@ namespace DGtal
    * @snippet geometry/curves/exampleStabbingCircleComputer.cpp StabbingCircleComputerUsage
    *
    * @tparam TConstIterator ConstIterator type on STL pairs of 2D points
+   * @tparam TCategory category of segment computer, i.e. ForwardSegmentComputer
+   * or BidirectionalSegmentComputer (default), used by the functions of
+   * SegmentComputerHelpers.h (and thus by the segmentation algorithms) to
+   * select the algorithm. All the methods are available whatever the chosen
+   * category; choosing a lower category is useful to compare the algorithms
+   * (e.g. their running time).
   *
    * @see testStabbingCircleComputer.cpp  exampleStabbingCircleComputer.cpp testStabbingLineComputer.cpp  exampleStabbingLineComputer.cpp
    */
-  template <typename TConstIterator>
+  template <typename TConstIterator,
+            typename TCategory = BidirectionalSegmentComputer>
   class StabbingCircleComputer
   {
+    static_assert( isSegmentComputerCategoryCompatible<TCategory, BidirectionalSegmentComputer>,
+                   "TCategory must be ForwardSegmentComputer or BidirectionalSegmentComputer" );
 
   public:
 
     //required types
     typedef TConstIterator ConstIterator;
-    typedef StabbingCircleComputer<ConstIterator> Self;
-    typedef StabbingCircleComputer<ReverseIterator<ConstIterator> > Reverse;
+    typedef StabbingCircleComputer<ConstIterator,TCategory> Self;
+    typedef StabbingCircleComputer<ReverseIterator<ConstIterator>,TCategory> Reverse;
+
+    /**
+     * Category of segment computer, see SegmentComputerTraits
+     */
+    typedef TCategory SegmentComputerCategory;
 
     //point type
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Pair;
@@ -222,6 +236,15 @@ namespace DGtal
     bool isStraight() const;
 
     /**
+     * @return boolean equal to 'true' if the segment is a convex part
+     * of the curve, i.e. if the inner points are on the side of the
+     * center of the separating circle, and 'false' if it is a concave
+     * part, i.e. if the outer points are on the side of the center
+     * (meaningless if the segment is straight).
+     */
+    bool isConvex() const;
+
+    /**
      * @return a cow pointer on the StabbingLineComputer used
      * during the initialization step.
      * @see isStraight
@@ -230,6 +253,10 @@ namespace DGtal
 
     /**
      * @return a separating circle.
+     * NB: the sign of the curvature of this circle (Circle::getCurvature())
+     * is not meaningful, because the three points defining the circle are
+     * not given in the order of the curve; use isConvex() to know whether
+     * the segment is a convex or concave part (see also CurvatureFromDCAEstimator).
      */
     Circle getSeparatingCircle() const;
 
@@ -308,6 +335,12 @@ namespace DGtal
      * 'false' otherwise.
      */
     bool myFlagIsInit;
+    /**
+     * Flag equal to 'true' if the segment is a convex part
+     * of the curve, 'false' if it is a concave part
+     * (meaningless if the segment is straight).
+     */
+    bool myFlagIsConvex;
 
     // ------------------------- Hidden services ------------------------------
   protected:
@@ -356,9 +389,9 @@ namespace DGtal
    * @param object the object of class 'StabbingCircleComputer' to write.
    * @return the output stream after the writing.
    */
-  template <typename TConstIterator>
+  template <typename TConstIterator, typename TCategory>
   std::ostream&
-  operator<< ( std::ostream & out, const StabbingCircleComputer<TConstIterator> & object );
+  operator<< ( std::ostream & out, const StabbingCircleComputer<TConstIterator,TCategory> & object );
 
 } // namespace DGtal
 

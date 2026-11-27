@@ -46,7 +46,7 @@
 #include "DGtal/base/CowPtr.h"
 #include "DGtal/base/ConceptUtils.h"
 #include "DGtal/base/ReverseIterator.h"
-#include "DGtal/geometry/curves/SegmentComputerUtils.h"
+#include "DGtal/geometry/curves/SegmentComputerHelpers.h"
 
 #include "DGtal/geometry/tools/Preimage2D.h"
 #include "DGtal/shapes/fromPoints/StraightLineFrom2Points.h"
@@ -73,31 +73,42 @@ namespace DGtal
    *
    * The algorithm computes and maintains the preimage
    * of the whole set of separating straight lines in linear time
-   * using Preimage2D and the algorithm of O'Rourke (1981).
+   * using Preimage2D and the algorithm of O'Rourke \cite ORourkeCACM1981.
    *
-   * @note Joseph O'Rourke, An on-line algorithm for fitting straight lines between data ranges,
-  Communications of the ACM, Volume 24, Issue 9, September 1981, 574--578.
-   *
-   * This class is a model of the concept CBidirectionalSegmentComputer.
+   * This class is a model of the concept concepts::CBidirectionalSegmentComputer.
    *
    * It should be used with the Curve object (defined in StdDefs.h)
    * and its IncidentPointsRange as follows:
    * @snippet geometry/curves/exampleStabbingLineComputer.cpp StabbingLineComputerUsage
    *
    * @tparam TConstIterator ConstIterator type on STL pairs of 2D points
+   * @tparam TCategory category of segment computer, i.e. ForwardSegmentComputer
+   * or BidirectionalSegmentComputer (default), used by the functions of
+   * SegmentComputerHelpers.h (and thus by the segmentation algorithms) to
+   * select the algorithm. All the methods are available whatever the chosen
+   * category; choosing a lower category is useful to compare the algorithms
+   * (e.g. their running time).
   *
    * @see testStabbingLineComputer.cpp  exampleStabbingLineComputer.cpp  Preimage2D ArithmeticalDSSComputer
    */
-  template <typename TConstIterator>
+  template <typename TConstIterator,
+            typename TCategory = BidirectionalSegmentComputer>
   class StabbingLineComputer
   {
+    static_assert( isSegmentComputerCategoryCompatible<TCategory, BidirectionalSegmentComputer>,
+                   "TCategory must be ForwardSegmentComputer or BidirectionalSegmentComputer" );
 
   public:
 
     //required types
     typedef TConstIterator ConstIterator;
-    typedef StabbingLineComputer<ConstIterator> Self;
-    typedef StabbingLineComputer<ReverseIterator<ConstIterator> > Reverse;
+    typedef StabbingLineComputer<ConstIterator,TCategory> Self;
+    typedef StabbingLineComputer<ReverseIterator<ConstIterator>,TCategory> Reverse;
+
+    /**
+     * Category of segment computer, see SegmentComputerTraits
+     */
+    typedef TCategory SegmentComputerCategory;
 
     //point type
     typedef typename IteratorCirculatorTraits<ConstIterator>::Value Pair;
@@ -217,7 +228,13 @@ namespace DGtal
     bool isClockwiseOriented() const;
 
     /**
-     * Get the parameters of one separating straight line
+     * Get the parameters of one separating straight line, of equation
+     * alpha.x + beta.y + gamma = 0, which is the bisector of the two
+     * straight lines of the preimage of extreme slopes, i.e. a straight
+     * line in the middle of the preimage (see
+     * Preimage2D::getSeparatingStraightLine). Contrary to the direction
+     * (b,a) of a DSS (see ArithmeticalDSSComputer), it is generally not
+     * parallel to the straight lines passing through the leaning points.
      * @param alpha  (returned) x-component of the normal
      * @param beta  (returned) y-component of the normal
      * @param gamma  (returned) intercept
@@ -388,9 +405,9 @@ namespace DGtal
    * @param object the object of class 'StabbingLineComputer' to write.
    * @return the output stream after the writing.
    */
-  template <typename TConstIterator>
+  template <typename TConstIterator, typename TCategory>
   std::ostream&
-  operator<< ( std::ostream & out, const StabbingLineComputer<TConstIterator> & object );
+  operator<< ( std::ostream & out, const StabbingLineComputer<TConstIterator,TCategory> & object );
 
 } // namespace DGtal
 

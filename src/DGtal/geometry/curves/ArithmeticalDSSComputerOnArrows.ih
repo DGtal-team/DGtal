@@ -1,0 +1,318 @@
+/**
+ *  This program is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU Lesser General Public License as
+ *  published by the Free Software Foundation, either version 3 of the
+ *  License, or  (at your option) any later version.
+ *
+ *  This program is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ **/
+
+/**
+ * @file ArithmeticalDSSComputerOnArrows.ih
+ * @author Tristan Roussillon (\c tristan.roussillon@liris.cnrs.fr )
+ * Laboratoire d'InfoRmatique en Image et Systèmes d'information - LIRIS (CNRS, UMR 5205), CNRS, France
+ *
+ * @date 2016/03/25
+ *
+ * Implementation of inline methods defined in ArithmeticalDSSComputerOnArrows.h
+ *
+ * This file is part of the DGtal library.
+ */
+
+///////////////////////////////////////////////////////////////////////////////
+// IMPLEMENTATION of inline methods.
+///////////////////////////////////////////////////////////////////////////////
+
+//////////////////////////////////////////////////////////////////////////////
+#include <cstdlib>
+//////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+// Implementation of inline methods                                          //
+
+
+//-----------------------------------------------------------------------------
+template <typename TIterator, typename TInteger, bool isDirect, typename TCategory>
+inline
+DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>::
+ArithmeticalDSSComputerOnArrows()
+  : myDSS( Point(0,0) ), myBegin(), myEnd()
+{
+}
+
+
+//-----------------------------------------------------------------------------
+template <typename TIterator, typename TInteger, bool isDirect, typename TCategory>
+inline
+void DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>::
+init(const ConstIterator& it)
+{
+  myBegin = it;
+  myEnd = it;
+  ++myEnd;
+  Point p = detail::ArrowHelper<isDirect>::firstPoint(*it);
+  myDSS = DSS( p );
+  Point q = detail::ArrowHelper<isDirect>::secondPoint(*it);
+  ASSERT(myDSS.isExtendableFront( q ));
+  myDSS.extendFront( q );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TIterator, typename TInteger, bool isDirect, typename TCategory>
+inline
+DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>::
+ArithmeticalDSSComputerOnArrows ( const ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory> & other )
+  : myDSS(other.myDSS), myBegin(other.myBegin), myEnd(other.myEnd)
+{
+}
+
+//-----------------------------------------------------------------------------
+template <typename TIterator, typename TInteger, bool isDirect, typename TCategory>
+inline
+typename DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>&
+DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>::
+operator=( const ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory> & other )
+{
+  if ( this != &other )
+    {
+      myDSS = other.myDSS;
+      myBegin = other.myBegin;
+      myEnd = other.myEnd;
+    }
+  return *this;
+}
+
+//-----------------------------------------------------------------------------
+template <typename TIterator, typename TInteger, bool isDirect, typename TCategory>
+inline
+typename DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>::Reverse
+DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>
+::getReverse() const
+{
+  return Reverse();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TIterator, typename TInteger, bool isDirect, typename TCategory>
+inline
+typename DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>::Self
+DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>
+::getSelf() const
+{
+  return Self();
+}
+
+//-----------------------------------------------------------------------------
+template <typename TIterator, typename TInteger, bool isDirect, typename TCategory>
+inline
+bool
+DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>::
+operator==( const ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>& other ) const
+{
+  return ( (myBegin == other.myBegin)
+	   && (myEnd == other.myEnd)
+	   && (myDSS == other.myDSS) );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TIterator, typename TInteger, bool isDirect, typename TCategory>
+inline
+bool
+DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>::
+operator!=( const ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory> & other ) const
+{
+  return (!(*this == other));
+}
+
+//-----------------------------------------------------------------------------
+template <typename TIterator, typename TInteger, bool isDirect, typename TCategory>
+inline
+const typename DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>::Primitive&
+DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>
+::primitive() const
+{
+  return myDSS;
+}
+
+
+///////////////////////////////////////////////////////////////////////////////
+//                       Update methods                                      //
+///////////////////////////////////////////////////////////////////////////////
+//--------------------------------------------------------------------
+template <typename TIterator, typename TInteger, bool isDirect, typename TCategory>
+inline
+bool
+DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>::isExtendableFront()
+{
+  return myDSS.isExtendableFront( detail::ArrowHelper<isDirect>::secondPoint(*myEnd) );
+}
+
+//--------------------------------------------------------------------
+template <typename TIterator, typename TInteger, bool isDirect, typename TCategory>
+inline
+bool
+DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>::isExtendableBack()
+{
+  ConstIterator it = myBegin;
+  --it;
+  return myDSS.isExtendableBack( detail::ArrowHelper<isDirect>::firstPoint(*it) );
+}
+
+//-----------------------------------------------------------------------------
+template <typename TIterator, typename TInteger, bool isDirect, typename TCategory>
+inline
+bool
+DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>::extendFront()
+{
+  if (myDSS.extendFront(detail::ArrowHelper<isDirect>::secondPoint(*myEnd)))
+    {
+      ++myEnd;
+      return true;
+    }
+  else
+    return false;
+}
+
+//--------------------------------------------------------------------
+template <typename TIterator, typename TInteger, bool isDirect, typename TCategory>
+inline
+bool
+DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>::extendBack()
+{
+  ConstIterator it = myBegin;
+  --it;
+  if (myDSS.extendBack(detail::ArrowHelper<isDirect>::firstPoint(*it)))
+    {
+      myBegin = it;
+      return true;
+    }
+  else
+    return false;
+}
+
+//--------------------------------------------------------------------
+template <typename TIterator, typename TInteger, bool isDirect, typename TCategory>
+inline
+bool
+DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>::retractFront()
+{
+  //a segment has at least one arrow, i.e. two points
+  ConstIterator it( myBegin );
+  ++it;
+  if ( it == myEnd )
+    return false;
+  if (myDSS.retractFront())
+    {
+      --myEnd;
+      return true;
+    }
+  else
+    return false;
+}
+
+//--------------------------------------------------------------------
+template <typename TIterator, typename TInteger, bool isDirect, typename TCategory>
+inline
+bool
+DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>::retractBack()
+{
+  //a segment has at least one arrow, i.e. two points
+  ConstIterator it( myBegin );
+  ++it;
+  if ( it == myEnd )
+    return false;
+  if (myDSS.retractBack())
+    {
+      ++myBegin;
+      return true;
+    }
+  else
+    return false;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+//                       Accessors                                           //
+///////////////////////////////////////////////////////////////////////////////
+
+//-------------------------------------------------------------------------
+template <typename TIterator, typename TInteger, bool isDirect, typename TCategory>
+inline
+TInteger
+DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>::a() const
+{
+  return myDSS.a();
+}
+
+//-------------------------------------------------------------------------
+template <typename TIterator, typename TInteger, bool isDirect, typename TCategory>
+inline
+TInteger
+DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>::b() const
+{
+  return myDSS.b();
+}
+
+//-------------------------------------------------------------------------
+template <typename TIterator, typename TInteger, bool isDirect, typename TCategory>
+inline
+TInteger
+DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>::mu() const
+{
+  return myDSS.mu();
+}
+
+//-------------------------------------------------------------------------
+template <typename TIterator, typename TInteger, bool isDirect, typename TCategory>
+inline
+TInteger
+DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>::omega() const
+{
+  return myDSS.omega();
+}
+
+//-------------------------------------------------------------------------
+template <typename TIterator, typename TInteger, bool isDirect, typename TCategory>
+inline
+typename DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>::ConstIterator
+DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>::begin() const
+{
+  return myBegin;
+}
+
+//-------------------------------------------------------------------------
+template <typename TIterator, typename TInteger, bool isDirect, typename TCategory>
+inline
+typename DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>::ConstIterator
+DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>::end() const
+{
+  return myEnd;
+}
+
+//-----------------------------------------------------------------
+template <typename TIterator, typename TInteger, bool isDirect, typename TCategory>
+inline
+bool
+DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>::isValid() const
+{
+  return ( (myDSS.isValid())&&(isNotEmpty(myBegin,myEnd)) );
+}
+
+//-----------------------------------------------------------------
+template <typename TIterator, typename TInteger, bool isDirect, typename TCategory>
+inline
+void
+DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>::selfDisplay ( std::ostream & out) const
+{
+  out << "[ArithmeticalDSSComputerOnArrows] " << myDSS;
+}

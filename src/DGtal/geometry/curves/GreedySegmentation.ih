@@ -113,10 +113,10 @@ DGtal::GreedySegmentation<TSegmentComputer>::SegmentComputerIterator::longestSeg
 
     //last extension
     if ( isNotEmpty<ConstIterator>(myS->myStop, myS->myEnd) ) {
-      if (myS->myMode == "Truncate+1") {
+      if (myS->myMode == Mode::TruncatePlusOne) {
         mySegmentComputer.extendFront();
       }
-      if (myS->myMode == "DoNotTruncate") {
+      if (myS->myMode == Mode::DoNotTruncate) {
         while ( (mySegmentComputer.extendFront())
              && (mySegmentComputer.end() != myS->myEnd) ) {}
       }
@@ -346,7 +346,7 @@ DGtal::GreedySegmentation<TSegmentComputer>::GreedySegmentation
    myEnd(ite),
    myStart(itb),
    myStop(ite),
-   myMode("Truncate"),
+   myMode(Mode::Truncate),
    mySegmentComputer(aSegmentComputer)
 {
 }
@@ -360,7 +360,16 @@ DGtal::GreedySegmentation<TSegmentComputer>::setSubRange
 {
   myStart = itb;
   myStop = ite;
-  myMode = "Truncate";
+  myMode = Mode::Truncate;
+}
+
+  template <typename TSegmentComputer>
+inline
+void
+DGtal::GreedySegmentation<TSegmentComputer>::setMode
+(Mode aMode)
+{
+  myMode = aMode;
 }
 
   template <typename TSegmentComputer>
@@ -369,7 +378,18 @@ void
 DGtal::GreedySegmentation<TSegmentComputer>::setMode
 (const std::string& aMode)
 {
-  myMode = aMode;
+  if (aMode == "Truncate")
+    myMode = Mode::Truncate;
+  else if (aMode == "Truncate+1")
+    myMode = Mode::TruncatePlusOne;
+  else if (aMode == "DoNotTruncate")
+    myMode = Mode::DoNotTruncate;
+  else
+    {
+      trace.error() << "[DGtal::GreedySegmentation<TSegmentComputer>::setMode(const std::string& aMode)]"
+                    << " Unknown mode: " << aMode << std::endl;
+      throw InputException();
+    }
 }
 
 

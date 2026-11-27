@@ -368,10 +368,10 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
 // ArithmeticalDSS
 
 // ArithmeticalDSSComputer
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, typename TInteger, int connectivity, typename TCategory>
 inline
 void DGtal::Display2DFactory::drawAsBoundingBox( DGtal::Board2D & aBoard,
-           const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity> & a )
+           const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity,TCategory> & a )
 {
   typedef DGtal::PointVector<2,double> PointD;
 
@@ -396,10 +396,10 @@ void DGtal::Display2DFactory::drawAsBoundingBox( DGtal::Board2D & aBoard,
   aBoard.drawClosedPolyline(bb);
 }
 
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, typename TInteger, int connectivity, typename TCategory>
 inline
 void DGtal::Display2DFactory::drawAsDigitalPoints( DGtal::Board2D & aBoard,
-           const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity> & a )
+           const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity,TCategory> & a )
 {
   typedef TIterator ConstIterator;
   typedef typename IteratorCirculatorTraits<ConstIterator>::Value Point;
@@ -426,10 +426,10 @@ void DGtal::Display2DFactory::drawAsDigitalPoints( DGtal::Board2D & aBoard,
   }
 }
 
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, typename TInteger, int connectivity, typename TCategory>
 inline
 void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
-     const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity> & a )
+     const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity,TCategory> & a )
 {
   std::string mode = board.getMode( a.className() );
   if ( mode == "BoundingBox" )
@@ -442,7 +442,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
       drawAsBoundingBox( board, a );
     }
   else
-    FATAL_ERROR_MSG(false, "draw( DGtal::Board2D & board, const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity> & a ): Unknown mode "+mode);
+    FATAL_ERROR_MSG(false, "draw( DGtal::Board2D & board, const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity,TCategory> & a ): Unknown mode "+mode);
 
 }
 // ArithmeticalDSSComputer
@@ -524,7 +524,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
       drawAsBoundingBox( aBoard, anAlphaThickSegment );
     }
   else
-    FATAL_ERROR_MSG(false, "draw( DGtal::Board2D & board, const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity> & a ): Unknown mode "+mode);
+    FATAL_ERROR_MSG(false, "draw( DGtal::Board2D & board, const DGtal::ArithmeticalDSSComputer<TIterator,TInteger,connectivity,TCategory> & a ): Unknown mode "+mode);
   }
 // AlphaThickSegmentComputer
 
@@ -761,7 +761,7 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
 
 
 // FP
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, typename TInteger, int connectivity, typename TCategory>
 inline
 void DGtal::Display2DFactory::drawAsPolygon( DGtal::Board2D & aBoard,
            const DGtal::FP<TIterator,TInteger,connectivity> & fp )
@@ -793,7 +793,7 @@ void DGtal::Display2DFactory::drawAsPolygon( DGtal::Board2D & aBoard,
   aBoard.drawPolyline(polyline);
 }
 
-template <typename TIterator, typename TInteger, int connectivity>
+template <typename TIterator, typename TInteger, int connectivity, typename TCategory>
 inline
 void DGtal::Display2DFactory::draw( DGtal::Board2D & board,
            const DGtal::FP<TIterator,TInteger,connectivity> & fp )
@@ -874,10 +874,10 @@ void DGtal::Display2DFactory::draw( DGtal::Board2D & aBoard,
 
 
 // StabbingLineComputer
-template <typename TConstIterator>
+template <typename TConstIterator, typename TCategory>
 inline
 void DGtal::Display2DFactory::draw(DGtal::Board2D & aBoard,
-          const DGtal::StabbingLineComputer<TConstIterator> & g)
+          const DGtal::StabbingLineComputer<TConstIterator,TCategory> & g)
 {
   typedef TConstIterator ConstIterator;
   typedef typename IteratorCirculatorTraits<ConstIterator>::Value Pair;
@@ -915,10 +915,10 @@ void DGtal::Display2DFactory::draw(DGtal::Board2D & aBoard,
 // StabbingLineComputer
 
 // StabbingCircleComputer
-template <typename TConstIterator>
+template <typename TConstIterator, typename TCategory>
 inline
 void DGtal::Display2DFactory::draw(DGtal::Board2D & aBoard,
-          const DGtal::StabbingCircleComputer<TConstIterator> & g)
+          const DGtal::StabbingCircleComputer<TConstIterator,TCategory> & g)
 {
 
   typedef TConstIterator ConstIterator;

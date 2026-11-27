@@ -77,7 +77,7 @@ namespace DGtal
      *
      * @tparam Functor a unary functor
      *
-     * This class is a model of CSegmentComputerEstimator
+     * This class is a model of concepts::CSegmentComputerEstimator
      */
 
     template <typename TSegmentComputer, typename Functor,
@@ -209,7 +209,7 @@ namespace DGtal
      *
      * @tparam Functor a binary functor
      *
-     * This class is a model of CSegmentComputerEstimator
+     * This class is a model of concepts::CSegmentComputerEstimator
      */
 
     template <typename TSegmentComputer, typename Functor,
@@ -381,7 +381,7 @@ namespace DGtal
      *
      * @tparam Functor a binary functor
      *
-     * This class is a model of CSegmentComputerEstimator
+     * This class is a model of concepts::CSegmentComputerEstimator
      */
 
     template <typename TSegmentComputer, typename Functor,
@@ -512,7 +512,7 @@ namespace DGtal
      *
      * @tparam Functor a functor
      *
-     * This class is a model of CSegmentComputerEstimator
+     * This class is a model of concepts::CSegmentComputerEstimator
      */
 
     template <typename TSegmentComputer, typename Functor,
@@ -768,9 +768,76 @@ namespace DGtal
       }
     };
     /**
+     * Description of class 'NormalVectorFromStabbingLine' <p> Aim:
+     * computes the unit normal vector of the straight line separating
+     * the inner and outer points of a segment recognized by
+     * StabbingLineComputer.
+     */
+    struct NormalVectorFromStabbingLine
+    {
+    public:
+      typedef PointVector<2,double> Value;
+
+      /**
+       * Operator()
+       *
+       * @return the unit normal vector of the straight line
+       * \f$ \alpha x + \beta y + \gamma = 0 \f$ returned by
+       * StabbingLineComputer::getParameters (i.e. the unit vector of
+       * direction \f$ (\alpha, \beta) \f$), oriented toward the outside,
+       * i.e. from the inner point toward the outer point of the first
+       * pair of the segment that does not lie on the straight line.
+       * Since the straight line separates the inner points from the
+       * outer points, the orientation does not depend on this pair.
+       *
+       * @param aSegment an instance of StabbingLineComputer
+       *
+       * @tparam StabbingLine a model of segment computer devoted to the
+       * recognition of straight segments on pairs of inner and outer
+       * points, basically StabbingLineComputer.
+       */
+      template<typename StabbingLine>
+      Value operator() (const StabbingLine& aSegment) const
+      {
+        typedef typename StabbingLine::ConstIterator ConstIterator;
+        typedef typename StabbingLine::Pair Pair;
+        typedef typename StabbingLine::Point Point;
+        typedef typename Point::Coordinate Coordinate;
+
+        double v0, v1, c;
+        aSegment.getParameters(v0, v1, c);
+        //orientation from the inner point toward the outer point:
+        //sign of v.(o-i), which is null only if the straight line
+        //passes through both points of the pair
+        double s = 0.0;
+        for (ConstIterator it = aSegment.begin();
+             (s == 0.0) && (it != aSegment.end()); ++it)
+        {
+          Pair pair = *it;
+          s = v0 * NumberTraits<Coordinate>::castToDouble(pair.second[0]-pair.first[0])
+            + v1 * NumberTraits<Coordinate>::castToDouble(pair.second[1]-pair.first[1]);
+        }
+        if ( s < 0.0 )
+        {
+          v0 = -v0;
+          v1 = -v1;
+        }
+        double n = std::sqrt(v0*v0 + v1*v1);
+        return Value( v0/n, v1/n );
+      }
+    };
+    /**
      * Description of class 'CurvatureFromDCA' <p> Aim:
      * computes the curvature from a geometricDCA
      * at a given grid step.
+     *
+     * The absolute value of the curvature is the inverse of the radius
+     * of the separating circle (divided by the grid step). Its sign
+     * depends on the convexity of the DCA (see
+     * StabbingCircleComputer::isConvex()) and on the orientation of the
+     * scanning: positive for a convex part (resp. concave part) scanned
+     * in a counter-clockwise (resp. clockwise) orientation, negative
+     * otherwise.
      *
      * @tparam isCCW boolean equal to 'true'
      * for a scanning in a counter-clockwise (CCW)
@@ -804,24 +871,18 @@ namespace DGtal
         if ( aDCA.isStraight() )
           return 0.0;
         else
-          return ( aDCA.getSeparatingCircle().getCurvature() / aH );
+        {
+          //radius of the separating circle
+          //(the sign of its curvature depends on the order of the
+          //three points defining it, which is not the order of the curve)
+          double c0, c1, r;
+          aDCA.getSeparatingCircle().getParameters(c0, c1, r);
+          const double k = 1.0 / ( r * aH );
+          return ( aDCA.isConvex() == isCCW ) ? k : -k;
+        }
       }
     };
-    template<>
-    struct CurvatureFromDCA<false>
-    {
-    public:
-      typedef double Value;
 
-      template<typename DCA>
-      Value operator() (const DCA& aDCA, const Value& aH = 1.0) const
-      {
-        if ( aDCA.isStraight() )
-          return 0.0;
-        else
-          return - ( aDCA.getSeparatingCircle().getCurvature() / aH );
-      }
-    };
     /**
      * Description of class 'NormalVectorFromDCA' <p> Aim:
      * estimates the normal at a given position from a geometricDCA.
@@ -835,7 +896,20 @@ namespace DGtal
       /**
        * Operator()
        *
-       * @return normal at @e it
+       * @return the unit normal vector at @e it, oriented toward the
+       * outside, i.e. from the inner point toward the outer point of
+       * the pair of points pointed by @e it. For a DCA that is not
+       * straight, it is the unit vector of the straight line passing
+       * through the center of the separating circle and the middle of
+       * the pair of points: it points away from the center on convex
+       * parts (the center lies on the side of the inner points) and
+       * toward the center on concave parts (the center lies on the side
+       * of the outer points), see StabbingCircleComputer::isConvex().
+       * For a straight DCA, it is the unit normal vector of the
+       * separating straight line, oriented from the inner point toward
+       * the outer point (or, if the straight line passes through both
+       * points, from the inner point toward the outer point of another
+       * pair of the segment).
        *
        * @param it position where the estimation has to be done
        * @param aDCA an instance of segment computer
@@ -853,33 +927,61 @@ namespace DGtal
         typedef typename DCA::Point Point;
         typedef typename Point::Coordinate Coordinate;
 
+        //inner and outer points
+        Pair pair = *it;
+        Point i = pair.first;
+        Point o = pair.second;
+        double d0 = NumberTraits<Coordinate>::castToDouble(o[0]-i[0]);
+        double d1 = NumberTraits<Coordinate>::castToDouble(o[1]-i[1]);
+
+        double v0, v1;
         if ( !aDCA.isStraight() )
         {
           //separating circle center
           double c0, c1, r;
           aDCA.getSeparatingCircle().getParameters(c0, c1, r);
-          //point
-          Pair pair = *it;
-          Point i = pair.first;
-          Point o = pair.second;
+          //middle point
           double m0 = NumberTraits<Coordinate>::castToDouble(i[0]+o[0]) / 2.0;
           double m1 = NumberTraits<Coordinate>::castToDouble(i[1]+o[1]) / 2.0;
-          //normal vector
-          double v0 = m0 - c0;
-          double v1 = m1 - c1;
-          //norm
-          double n = std::sqrt(v0*v0 + v1*v1);
-          return Value( v0/n, v1/n );
+          //normal vector, oriented toward the outside: away from the
+          //center on convex parts, toward the center on concave parts
+          if ( aDCA.isConvex() )
+          {
+            v0 = m0 - c0;
+            v1 = m1 - c1;
+          }
+          else
+          {
+            v0 = c0 - m0;
+            v1 = c1 - m1;
+          }
         }
   	    else
         {
-          //separating straight line and normal vector
-          double a, b, c;
-          aDCA.getStabbingLineComputerPtr()->getParameters(a, b, c);
-          //norm
-          double n = std::sqrt(a*a + b*b);
-          return Value( a/n, b/n );
+          //separating straight line and normal vector,
+          //oriented from the inner point toward the outer point
+          double c;
+          aDCA.getStabbingLineComputerPtr()->getParameters(v0, v1, c);
+          double s = v0*d0 + v1*d1;
+          //if the straight line passes through both points of the pair
+          //(degenerate case), the first other pair of the segment that
+          //is not degenerate is used
+          for (typename DCA::ConstIterator it2 = aDCA.begin();
+               (s == 0.0) && (it2 != aDCA.end()); ++it2)
+          {
+            Pair pair2 = *it2;
+            s = v0 * NumberTraits<Coordinate>::castToDouble(pair2.second[0]-pair2.first[0])
+              + v1 * NumberTraits<Coordinate>::castToDouble(pair2.second[1]-pair2.first[1]);
+          }
+          if ( s < 0.0 )
+          {
+            v0 = -v0;
+            v1 = -v1;
+          }
         }
+        //norm
+        double n = std::sqrt(v0*v0 + v1*v1);
+        return Value( v0/n, v1/n );
       }
     };
 
@@ -895,7 +997,13 @@ namespace DGtal
       /**
        * Operator()
        *
-       * @return tangent at @e it
+       * @return the unit tangent vector at @e it, i.e. the unit normal
+       * vector given by NormalVectorFromDCA rotated by a right angle,
+       * oriented along the direction of the sequence of pairs of points
+       * (from @e it toward the following pair of the segment, or from
+       * the previous pair toward @e it for the last pair). If the
+       * segment has only one pair, the tangent vector is oriented such
+       * that the inner point is on its left.
        *
        * @param it position where the estimation has to be done
        * @param aDCA an instance of segment computer
@@ -911,9 +1019,36 @@ namespace DGtal
       Value operator() (const typename DCA::ConstIterator& it,
 			const DCA& aDCA) const
       {
+        typedef typename DCA::ConstIterator ConstIterator;
+        typedef typename DCA::Pair Pair;
+        typedef typename DCA::Point Point;
+        typedef typename Point::Coordinate Coordinate;
+
+        //normal vector (toward the outside) rotated by a right angle,
+        //such that the inner points are on the left
         NormalVectorFromDCA f;
         Value normal = f(it, aDCA);
-        return Value( normal[1], normal[0] );
+        Value tangent( -normal[1], normal[0] );
+
+        //direction of the sequence of pairs at it
+        ConstIterator first( it ), second( it );
+        ++second;
+        if ( second == aDCA.end() )
+        { //last pair: previous pair and it
+          second = it;
+          if ( first == aDCA.begin() )
+            return tangent; //only one pair
+          --first;
+        }
+        Pair p1 = *first;
+        Pair p2 = *second;
+        double e0 = NumberTraits<Coordinate>::castToDouble(
+          (p2.first[0]+p2.second[0]) - (p1.first[0]+p1.second[0]) );
+        double e1 = NumberTraits<Coordinate>::castToDouble(
+          (p2.first[1]+p2.second[1]) - (p1.first[1]+p1.second[1]) );
+        if ( tangent[0]*e0 + tangent[1]*e1 < 0.0 )
+          tangent = -tangent;
+        return tangent;
       }
     };
 
@@ -1086,6 +1221,41 @@ namespace DGtal
 
   //-------------------------------------------------------------------------------------------
   /**
+   * Description of class 'NormalFromStabbingLineEstimator' <p> Aim:
+   * estimates the (normalized) normal vector from the straight line
+   * separating the inner and outer points of a segment recognized by
+   * StabbingLineComputer. The normal vector is oriented toward the
+   * outside, i.e. from the inner points toward the outer points
+   * (see detail::NormalVectorFromStabbingLine), like the normal vectors
+   * of NormalFromDCAEstimator.
+   *
+   * @tparam StabbingLineComputer a model of segment computer devoted to
+   * the recognition of straight segments on pairs of inner and outer
+   * points, basically StabbingLineComputer
+   */
+  template <typename StabbingLineComputer>
+  class NormalFromStabbingLineEstimator:
+    public detail::PosIndepScaleIndepSCEstimator<StabbingLineComputer,
+                                                 detail::NormalVectorFromStabbingLine>
+  {
+    typedef
+    detail::PosIndepScaleIndepSCEstimator<StabbingLineComputer, detail::NormalVectorFromStabbingLine>
+    Super;
+
+  public:
+    /**
+     * Default Constructor.
+     */
+    NormalFromStabbingLineEstimator(): Super() {};
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    NormalFromStabbingLineEstimator( const NormalFromStabbingLineEstimator & other ): Super(other) {};
+  };
+
+  //-------------------------------------------------------------------------------------------
+  /**
    * Description of class 'CurvatureFromDCAEstimator' <p> Aim:
    * estimates the curvature from a DCA
    * recognized by a segment computer,
@@ -1128,6 +1298,8 @@ namespace DGtal
    * Description of class 'NormalFromDCAEstimator' <p> Aim:
    * estimates the (normalized) normal vector at some position from a DCA
    * recognized by a segment computer, basically geometricDCA.
+   * The normal vector is oriented toward the outside, i.e. from the
+   * inner points toward the outer points (see detail::NormalVectorFromDCA).
    *
    * @tparam DCAComputer a model of segment computer
    * devoted the DCA recognition
@@ -1158,6 +1330,9 @@ namespace DGtal
    * Description of class 'TangentFromDCAEstimator' <p> Aim:
    * estimates the (normalized) tangent vector at some position from a DCA
    * recognized by a segment computer, basically geometricDCA.
+   * The tangent vector is orthogonal to the normal vector given by
+   * NormalFromDCAEstimator and oriented along the sequence of pairs of
+   * points (see detail::TangentVectorFromDCA).
    *
    * @tparam DCAComputer a model of segment computer
    * devoted the DCA recognition
@@ -1225,10 +1400,7 @@ namespace DGtal
      * as follow:
      * @f$ 1/k = l*l/8 + 1/2 @f$
      *
-     * @note Adaption from
-     *  Coeurjolly, D. and Miguet, S. and Tougne, L.
-     *  "Discrete Curvature Based on Osculating Circle Estimation",
-     * Proc. IWVF, LNCS, vol 2059, pp.303-312, 2001
+     * Adapted from \cite CoeurjollyIWVF2001.
      */
     struct CurvatureFromDSSLength
     {
@@ -1253,10 +1425,7 @@ namespace DGtal
      * the length  @f$ l @f$ and the width  @f$ w @f$ of a DSS as follow:
      *  @f$ 1/k = (l*l)/(8*w) + w/2 @f$
      *
-     * @note Adaption from
-     *  Coeurjolly, D. and Miguet, S. and Tougne, L.
-     *  "Discrete Curvature Based on Osculating Circle Estimation",
-     * Proc. IWVF, LNCS, vol 2059, pp.303-312, 2001
+     * Adapted from \cite CoeurjollyIWVF2001.
      */
     struct CurvatureFromDSSLengthAndWidth
     {
@@ -1293,7 +1462,7 @@ namespace DGtal
      * @tparam Functor a model of unary functor
      * taking a DSS as input and returning a double
      *
-     * This class is a model of CSegmentComputerEstimator
+     * This class is a model of concepts::CSegmentComputerEstimator
      */
 
     template <typename DSSComputer, typename Functor = detail::CurvatureFromDSSLength >
@@ -1532,10 +1701,7 @@ namespace DGtal
    * of a DSS as follow:
    * @f$ 1/k = l*l/8 + 1/2 @f$
    *
-   * @note Adaption from
-   *  Coeurjolly, D. and Miguet, S. and Tougne, L.
-   *  "Discrete Curvature Based on Osculating Circle Estimation",
-   * Proc. IWVF, LNCS, vol 2059, pp.303-312, 2001
+   * Adapted from \cite CoeurjollyIWVF2001.
    *
    * In this approach, the DSS is viewed as the chord
    * at a distance h (the grid step) to the osculating circle.
@@ -1573,10 +1739,7 @@ namespace DGtal
    * the length  @f$ l @f$ and the width  @f$ w @f$ of a DSS as follow:
    *  @f$ 1/k = (l*l)/(8*w) + w/2 @f$
    *
-   * @note Adaption from
-   *  Coeurjolly, D. and Miguet, S. and Tougne, L.
-   *  "Discrete Curvature Based on Osculating Circle Estimation",
-   * Proc. IWVF, LNCS, vol 2059, pp.303-312, 2001
+   * Adapted from \cite CoeurjollyIWVF2001.
    *
    * @tparam DSSComputer a model of segment computer
    * devoted the DSS recognition

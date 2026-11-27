@@ -4,6 +4,8 @@ set(DGTAL_TESTS_SRC
   testArithDSS3d
   testFreemanChain
   testSegmentation
+  testSegmentComputerCategories
+  testSegmentComputerHelpers
   testFP
   testGridCurve
   testCombinDSS
@@ -14,6 +16,7 @@ set(DGTAL_TESTS_SRC
   testArithmeticalDSS
   testArithmeticalDSLKernel
   testArithmeticalDSSComputer
+  testArithmeticalDSSComputerOnArrows
   testArithmeticalDSL
   testDSLSubsegment
   testArithDSSIterator
