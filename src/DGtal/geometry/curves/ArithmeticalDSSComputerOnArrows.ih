@@ -316,4 +316,3 @@ DGtal::ArithmeticalDSSComputerOnArrows<TIterator,TInteger,isDirect,TCategory>::s
 {
   out << "[ArithmeticalDSSComputerOnArrows] " << myDSS;
 }
-

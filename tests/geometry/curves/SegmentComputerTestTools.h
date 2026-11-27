@@ -241,8 +241,8 @@ struct BruteForce
       else
       {
         int prev = (i == 0) ? n-1 : i-1;
-        int prevEnd = (i == 0) ? (prev + longest(prev) - n) : (prev + longest(prev));
-        isMaximal = ( prevEnd < i + longest(i) );
+        int prevLast = (i == 0) ? (prev + longest(prev) - n) : (prev + longest(prev));
+        isMaximal = ( prevLast < i + longest(i) );
       }
       if ( isMaximal )
         maximalSegments.push_back( { i, longest(i) } );
