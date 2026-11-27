@@ -73,12 +73,9 @@ namespace DGtal
    *
    * The algorithm computes and maintains the preimage
    * of the whole set of separating straight lines in linear time
-   * using Preimage2D and the algorithm of O'Rourke (1981).
+   * using Preimage2D and the algorithm of O'Rourke \cite ORourkeCACM1981.
    *
-   * @note Joseph O'Rourke, An on-line algorithm for fitting straight lines between data ranges,
-  Communications of the ACM, Volume 24, Issue 9, September 1981, 574--578.
-   *
-   * This class is a model of the concept CBidirectionalSegmentComputer.
+   * This class is a model of the concept concepts::CBidirectionalSegmentComputer.
    *
    * It should be used with the Curve object (defined in StdDefs.h)
    * and its IncidentPointsRange as follows:

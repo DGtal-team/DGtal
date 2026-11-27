@@ -153,8 +153,8 @@ namespace DGtal
    * twice.
    *
    * Note that the most centered maximal segment is defined as in
-   * mostCenteredMaximalSegment (SegmentComputerHelpers.h), after
-   * Feschet and Tougne (1999).
+   * mostCenteredMaximalSegment() (SegmentComputerHelpers.h), after
+   * Feschet and Tougne \cite FeschetTougneDGCI1999.
    *
    * In order to set a mode (before getting a SegmentComputerIterator,
    * and after setSubRange(), which sets the default mode),

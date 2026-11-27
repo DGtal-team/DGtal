@@ -77,7 +77,7 @@ namespace DGtal
      *
      * @tparam Functor a unary functor
      *
-     * This class is a model of CSegmentComputerEstimator
+     * This class is a model of concepts::CSegmentComputerEstimator
      */
 
     template <typename TSegmentComputer, typename Functor,
@@ -209,7 +209,7 @@ namespace DGtal
      *
      * @tparam Functor a binary functor
      *
-     * This class is a model of CSegmentComputerEstimator
+     * This class is a model of concepts::CSegmentComputerEstimator
      */
 
     template <typename TSegmentComputer, typename Functor,
@@ -381,7 +381,7 @@ namespace DGtal
      *
      * @tparam Functor a binary functor
      *
-     * This class is a model of CSegmentComputerEstimator
+     * This class is a model of concepts::CSegmentComputerEstimator
      */
 
     template <typename TSegmentComputer, typename Functor,
@@ -512,7 +512,7 @@ namespace DGtal
      *
      * @tparam Functor a functor
      *
-     * This class is a model of CSegmentComputerEstimator
+     * This class is a model of concepts::CSegmentComputerEstimator
      */
 
     template <typename TSegmentComputer, typename Functor,
@@ -1400,10 +1400,7 @@ namespace DGtal
      * as follow:
      * @f$ 1/k = l*l/8 + 1/2 @f$
      *
-     * @note Adaption from
-     *  Coeurjolly, D. and Miguet, S. and Tougne, L.
-     *  "Discrete Curvature Based on Osculating Circle Estimation",
-     * Proc. IWVF, LNCS, vol 2059, pp.303-312, 2001
+     * Adapted from \cite CoeurjollyIWVF2001.
      */
     struct CurvatureFromDSSLength
     {
@@ -1428,10 +1425,7 @@ namespace DGtal
      * the length  @f$ l @f$ and the width  @f$ w @f$ of a DSS as follow:
      *  @f$ 1/k = (l*l)/(8*w) + w/2 @f$
      *
-     * @note Adaption from
-     *  Coeurjolly, D. and Miguet, S. and Tougne, L.
-     *  "Discrete Curvature Based on Osculating Circle Estimation",
-     * Proc. IWVF, LNCS, vol 2059, pp.303-312, 2001
+     * Adapted from \cite CoeurjollyIWVF2001.
      */
     struct CurvatureFromDSSLengthAndWidth
     {
@@ -1468,7 +1462,7 @@ namespace DGtal
      * @tparam Functor a model of unary functor
      * taking a DSS as input and returning a double
      *
-     * This class is a model of CSegmentComputerEstimator
+     * This class is a model of concepts::CSegmentComputerEstimator
      */
 
     template <typename DSSComputer, typename Functor = detail::CurvatureFromDSSLength >
@@ -1707,10 +1701,7 @@ namespace DGtal
    * of a DSS as follow:
    * @f$ 1/k = l*l/8 + 1/2 @f$
    *
-   * @note Adaption from
-   *  Coeurjolly, D. and Miguet, S. and Tougne, L.
-   *  "Discrete Curvature Based on Osculating Circle Estimation",
-   * Proc. IWVF, LNCS, vol 2059, pp.303-312, 2001
+   * Adapted from \cite CoeurjollyIWVF2001.
    *
    * In this approach, the DSS is viewed as the chord
    * at a distance h (the grid step) to the osculating circle.
@@ -1748,10 +1739,7 @@ namespace DGtal
    * the length  @f$ l @f$ and the width  @f$ w @f$ of a DSS as follow:
    *  @f$ 1/k = (l*l)/(8*w) + w/2 @f$
    *
-   * @note Adaption from
-   *  Coeurjolly, D. and Miguet, S. and Tougne, L.
-   *  "Discrete Curvature Based on Osculating Circle Estimation",
-   * Proc. IWVF, LNCS, vol 2059, pp.303-312, 2001
+   * Adapted from \cite CoeurjollyIWVF2001.
    *
    * @tparam DSSComputer a model of segment computer
    * devoted the DSS recognition

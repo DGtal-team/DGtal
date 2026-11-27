@@ -71,7 +71,7 @@ namespace DGtal
    * @tparam TIterator type of iterator on 2d digital points,
    * at least readable and forward.
    * @tparam TInteger type of integers used for the computation of remainders,
-   * which is a model of CInteger.
+   * which is a model of concepts::CInteger.
    * @tparam adjacency an unsigned integer equal to 4 for standard
    * (simply 4-connected) DSS or 8 for naive (simply 8-connected) DSS (default).
    * @tparam TCategory category of segment computer, i.e. ForwardSegmentComputer,
@@ -82,7 +82,7 @@ namespace DGtal
    * the chosen category; choosing a lower category is useful to compare
    * the algorithms (e.g. their running time).
    *
-   * This class is a model of CDynamicBidirectionalSegmentComputer.
+   * This class is a model of concepts::CDynamicBidirectionalSegmentComputer.
    * It is also default constructible, copy constructible, assignable and equality comparable.
    *
    * @see ArithmeticalDSS NaiveDSS StandardDSS
@@ -465,10 +465,10 @@ namespace DGtal
    * @tparam TIterator type of iterator on 2d digital points,
    * at least readable and forward.
    * @tparam TInteger type of integers used for the computation of remainders,
-   * which is a model of CInteger.
+   * which is a model of concepts::CInteger.
    * @tparam TCategory category of segment computer (see ArithmeticalDSSComputer).
    *
-   * This alias is a model of CDynamicBidirectionalSegmentComputer.
+   * This alias is a model of concepts::CDynamicBidirectionalSegmentComputer.
    * It is also default constructible, copy constructible, assignable and equality comparable.
    *
    * @see ArithmeticalDSSComputer NaiveDSS8Computer ArithmeticalDSS
@@ -491,10 +491,10 @@ namespace DGtal
    * @tparam TIterator type of iterator on 2d digital points,
    * at least readable and forward.
    * @tparam TInteger type of integers used for the computation of remainders,
-   * which is a model of CInteger.
+   * which is a model of concepts::CInteger.
    * @tparam TCategory category of segment computer (see ArithmeticalDSSComputer).
    *
-   * This alias is a model of CDynamicBidirectionalSegmentComputer.
+   * This alias is a model of concepts::CDynamicBidirectionalSegmentComputer.
    * It is also default constructible, copy constructible, assignable and equality comparable.
    *
    * @see ArithmeticalDSSComputer StandardDSS4Computer ArithmeticalDSS

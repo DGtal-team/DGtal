@@ -106,7 +106,7 @@ namespace DGtal
   // template class LambdaMaximalSegmentEstimator
   /**
    * Description of template class 'LambdaMaximalSegmentEstimator' <p>
-   * \brief Aim: A model of CCurveLocalGeometricEstimator that assigns to
+   * \brief Aim: A model of concepts::CCurveLocalGeometricEstimator that assigns to
    * each element of a (sub)range a quantity estimated from all the maximal
    * segments passing through this element (the pencil of maximal segments),
    * weighted according to the position of the element in each of them
@@ -162,8 +162,8 @@ namespace DGtal
    e.eval( itb, ite, std::back_inserter( tangents ), h );
    * @endcode
    *
-   * @tparam TSegmentComputer at least a model of CForwardSegmentComputer
-   * @tparam TSCEstimator a model of CSegmentComputerEstimator
+   * @tparam TSegmentComputer at least a model of concepts::CForwardSegmentComputer
+   * @tparam TSCEstimator a model of concepts::CSegmentComputerEstimator
    * @tparam TLambdaFunction a functor mapping a double in [0,1] to a
    * non-negative double (e.g. functors::Lambda64Function (default),
    * functors::LambdaTriangleFunction)

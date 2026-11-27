@@ -56,10 +56,7 @@ namespace DGtal
   /**
    * @brief Aim: Computes the preimage of the 2D Euclidean shapes
    * crossing a sequence of n straight segments in O(n),
-   * with the algorithm of O'Rourke (1981).
-   *
-   * @note Joseph O'Rourke, An on-line algorithm for fitting straight lines between data ranges,
-  Communications of the ACM, Volume 24, Issue 9, September 1981, 574--578.
+   * with the algorithm of O'Rourke \cite ORourkeCACM1981.
    *
    * For all i from 0 to n, the straight
    * segment i is described by its two end points Pi and Qi.

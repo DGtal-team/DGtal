@@ -98,7 +98,7 @@ namespace DGtal
   that the routine is called only a few times and that the algorithm is fast.
 
    *
-   * This class is a model of the concept CBidirectionalSegmentComputer.
+   * This class is a model of the concept concepts::CBidirectionalSegmentComputer.
    *
    * It should be used with the Curve object (defined in StdDefs.h)
    * and its IncidentPointsRange as follows:

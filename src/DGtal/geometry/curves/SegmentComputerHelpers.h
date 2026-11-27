@@ -59,10 +59,10 @@ namespace DGtal
  * standard iterator tags: a tag is convertible to any tag requiring
  * fewer capabilities.
  *
- * - ForwardSegmentComputer: model of CForwardSegmentComputer
- * - BidirectionalSegmentComputer: model of CBidirectionalSegmentComputer
- * - DynamicSegmentComputer: model of CDynamicSegmentComputer
- * - DynamicBidirectionalSegmentComputer: model of CDynamicBidirectionalSegmentComputer
+ * - ForwardSegmentComputer: model of concepts::CForwardSegmentComputer
+ * - BidirectionalSegmentComputer: model of concepts::CBidirectionalSegmentComputer
+ * - DynamicSegmentComputer: model of concepts::CDynamicSegmentComputer
+ * - DynamicBidirectionalSegmentComputer: model of concepts::CDynamicBidirectionalSegmentComputer
  */
    struct ForwardSegmentComputer{};
    struct BidirectionalSegmentComputer : virtual ForwardSegmentComputer {};
@@ -164,7 +164,7 @@ void oppositeEndMaximalExtension(SC& s, const typename SC::ConstIterator& begin,
  * Calls s.extendBack() while possible
  * @param s any instance of (bidirectional) segment computer
  * @param begin any ConstIterator
- * @tparam SC any model of CBidirectionalSegmentComputer
+ * @tparam SC any model of concepts::CBidirectionalSegmentComputer
  */
 template <typename SC>
 void oppositeEndMaximalExtension(SC& s, const typename SC::ConstIterator& begin);
@@ -193,8 +193,8 @@ bool maximalSymmetricExtension(SC& s,
  *
  * If s is initialized with a single element, the extensions are
  * symmetric around this element as long as they are possible on both
- * sides (symmetric tangent, definition 2 of Feschet and Tougne, 1999,
- * see mostCenteredMaximalSegment). Since the extension at the front
+ * sides (symmetric tangent, definition 2 of Feschet and Tougne
+ * \cite FeschetTougneDGCI1999, see mostCenteredMaximalSegment()). Since the extension at the front
  * is tried first, the resulting segment is this symmetric tangent,
  * possibly extended by one element at the front.
  *
@@ -203,7 +203,7 @@ bool maximalSymmetricExtension(SC& s,
  * @param end end iterator of a range
  * @return 'true' if the extension at the front fails first
  * and 'false' if the extension at the back fails first
- * @tparam SC any model of CBidirectionalSegmentComputer
+ * @tparam SC any model of concepts::CBidirectionalSegmentComputer
  */
 template <typename SC>
 bool maximalSymmetricExtension(SC& s,
@@ -270,7 +270,7 @@ void longestSegment(SC& s,
  * @param i any ConstIterator
  * @param begin any begin ConstIterator bounding a range
  * @param end   any end   ConstIterator bounding a range
- * @tparam SC any model of CForwardSegmentComputer
+ * @tparam SC any model of concepts::CForwardSegmentComputer
  */
 template <typename SC>
 void firstMaximalSegment(SC& s,
@@ -285,7 +285,7 @@ void firstMaximalSegment(SC& s,
  * @param i any ConstIterator
  * @param begin any begin ConstIterator bounding a range
  * @param end   any end   ConstIterator bounding a range
- * @tparam SC any model of CBidirectionalSegmentComputer
+ * @tparam SC any model of concepts::CBidirectionalSegmentComputer
  */
 template <typename SC>
 void firstMaximalSegment(SC& s,
@@ -300,7 +300,7 @@ void firstMaximalSegment(SC& s,
  * @param i any ConstIterator
  * @param begin any begin ConstIterator bounding a range
  * @param end   any end   ConstIterator bounding a range
- * @tparam SC any model of CDynamicSegmentComputer
+ * @tparam SC any model of concepts::CDynamicSegmentComputer
  * @note calls the function dedicated to ForwardSegmentComputer
  */
 template <typename SC>
@@ -316,7 +316,7 @@ void firstMaximalSegment(SC& s,
  * @param i any ConstIterator
  * @param begin any begin ConstIterator bounding a range
  * @param end   any end   ConstIterator bounding a range
- * @tparam SC any model of CDynamicBidirectionalSegmentComputer
+ * @tparam SC any model of concepts::CDynamicBidirectionalSegmentComputer
  * @note calls the function dedicated to BidirectionalSegmentComputer
  */
 template <typename SC>
@@ -349,13 +349,13 @@ void firstMaximalSegment(SC& s,
  * This version goes through the maximal segments containing i,
  * beginning with the first one, until i is not before the middle
  * of the intersection with the next maximal segment (as in the
- * algorithm of Feschet and Tougne, 1999).
+ * algorithm of Feschet and Tougne \cite FeschetTougneDGCI1999).
  *
  * @param s any instance of segment computer
  * @param i any ConstIterator
  * @param begin any begin ConstIterator bounding a range
  * @param end   any end   ConstIterator bounding a range
- * @tparam SC any model of CForwardSegmentComputer
+ * @tparam SC any model of concepts::CForwardSegmentComputer
  */
 template <typename SC>
 void mostCenteredMaximalSegment(SC& s,
@@ -376,7 +376,7 @@ void mostCenteredMaximalSegment(SC& s,
  * @param i any ConstIterator
  * @param begin any begin ConstIterator bounding a range
  * @param end   any end   ConstIterator bounding a range
- * @tparam SC any model of CBidirectionalSegmentComputer
+ * @tparam SC any model of concepts::CBidirectionalSegmentComputer
  */
 template <typename SC>
 void mostCenteredMaximalSegment(SC& s,
@@ -391,7 +391,7 @@ void mostCenteredMaximalSegment(SC& s,
  * @param i any ConstIterator
  * @param begin any begin ConstIterator bounding a range
  * @param end   any end   ConstIterator bounding a range
- * @tparam SC any model of CDynamicSegmentComputer
+ * @tparam SC any model of concepts::CDynamicSegmentComputer
  * @note calls the function dedicated to ForwardSegmentComputer
  */
 template <typename SC>
@@ -407,7 +407,7 @@ void mostCenteredMaximalSegment(SC& s,
  * @param i any ConstIterator
  * @param begin any begin ConstIterator bounding a range
  * @param end   any end   ConstIterator bounding a range
- * @tparam SC any model of CDynamicBidirectionalSegmentComputer
+ * @tparam SC any model of concepts::CDynamicBidirectionalSegmentComputer
  * @note calls the function dedicated to BidirectionalSegmentComputer
  */
 template <typename SC>
@@ -422,8 +422,8 @@ void mostCenteredMaximalSegment(SC& s,
  *
  * It is not exactly the most centered one, but the maximal segment
  * containing the tangent at i defined by Feschet and Tougne
- * (definition 3 of the paper below, where the extension is first
- * tried on the right):
+ * \cite FeschetTougneDGCI1999 (definition 3, where the extension is
+ * first tried on the right):
  * - the symmetric tangent at i is the segment [i-k, i+k] such that
  *   [i-k-1, i+k+1] is not a segment (or exceeds the range);
  * - the tangent at i is the symmetric tangent extended as much as
@@ -435,10 +435,6 @@ void mostCenteredMaximalSegment(SC& s,
  * (i.e. the last one) is returned. The returned segment is the maximal
  * segment obtained by extending the tangent as much as possible at the
  * front, then at the back.
- *
- * F. Feschet and L. Tougne, Optimal Time Computation of the Tangent
- * of a Discrete Curve: Application to the Curvature, DGCI 1999,
- * LNCS 1568, pp. 31-40.
  *
  * @param s any instance of segment computer
  * @param i any ConstIterator
@@ -460,7 +456,7 @@ void mostCenteredMaximalSegment(SC& s,
  * @param i any ConstIterator
  * @param begin any begin ConstIterator bounding a range
  * @param end   any end   ConstIterator bounding a range
- * @tparam SC any model of CForwardSegmentComputer
+ * @tparam SC any model of concepts::CForwardSegmentComputer
  */
 template <typename SC>
 void lastMaximalSegment(SC& s,
@@ -475,7 +471,7 @@ void lastMaximalSegment(SC& s,
  * @param i any ConstIterator
  * @param begin any begin ConstIterator bounding a range
  * @param end   any end   ConstIterator bounding a range
- * @tparam SC any model of CBidirectionalSegmentComputer
+ * @tparam SC any model of concepts::CBidirectionalSegmentComputer
  */
 template <typename SC>
 void lastMaximalSegment(SC& s,
@@ -490,7 +486,7 @@ void lastMaximalSegment(SC& s,
  * @param i any ConstIterator
  * @param begin any begin ConstIterator bounding a range
  * @param end   any end   ConstIterator bounding a range
- * @tparam SC any model of CDynamicSegmentComputer
+ * @tparam SC any model of concepts::CDynamicSegmentComputer
  * @note calls the function dedicated to ForwardSegmentComputer
  */
 template <typename SC>
@@ -506,7 +502,7 @@ void lastMaximalSegment(SC& s,
  * @param i any ConstIterator
  * @param begin any begin ConstIterator bounding a range
  * @param end   any end   ConstIterator bounding a range
- * @tparam SC any model of CDynamicBidirectionalSegmentComputer
+ * @tparam SC any model of concepts::CDynamicBidirectionalSegmentComputer
  * @note calls the function dedicated to BidirectionalSegmentComputer
  */
 template <typename SC>
@@ -537,7 +533,7 @@ void lastMaximalSegment(SC& s,
  * (s is assumed to be maximal)
  * @param s any instance of segment computer
  * @param end any end ConstIterator
- * @tparam SC any model of CForwardSegmentComputer
+ * @tparam SC any model of concepts::CForwardSegmentComputer
  * @note firstMaximalSegment of s.end()
  */
 template <typename SC>
@@ -550,7 +546,7 @@ void nextMaximalSegment(SC& s,
  * (s is assumed to be maximal)
  * @param s any instance of segment computer
  * @param end end ConstIterator
- * @tparam SC any model of CBidirectionalSegmentComputer
+ * @tparam SC any model of concepts::CBidirectionalSegmentComputer
  * @note firstMaximalSegment of s.end()
  */
 template <typename SC>
@@ -563,7 +559,7 @@ void nextMaximalSegment(SC& s,
  * (s is assumed to be maximal)
  * @param s any instance of segment computer
  * @param end end ConstIterator
- * @tparam SC any model of CDynamicSegmentComputer
+ * @tparam SC any model of concepts::CDynamicSegmentComputer
  */
 template <typename SC>
 void nextMaximalSegment(SC& s,
@@ -575,7 +571,7 @@ void nextMaximalSegment(SC& s,
  * (s is assumed to be maximal)
  * @param s any instance of segment computer
  * @param end end ConstIterator
- * @tparam SC any model of CDynamicBidirectionalSegmentComputer
+ * @tparam SC any model of concepts::CDynamicBidirectionalSegmentComputer
  * @note calls the function dedicated to DynamicSegmentComputer
  */
 template <typename SC>
@@ -601,7 +597,7 @@ void nextMaximalSegment(SC& s,
  * (s is assumed to be maximal)
  * @param s any instance of segment computer
  * @param begin any begin ConstIterator
- * @tparam SC any model of CForwardSegmentComputer
+ * @tparam SC any model of concepts::CForwardSegmentComputer
  * @note lastMaximalSegment of --s.begin()
  */
 template <typename SC>
@@ -614,7 +610,7 @@ void previousMaximalSegment(SC& s,
  * (s is assumed to be maximal)
  * @param s any instance of segment computer
  * @param begin any begin ConstIterator
- * @tparam SC any model of CBidirectionalSegmentComputer
+ * @tparam SC any model of concepts::CBidirectionalSegmentComputer
  * @note lastMaximalSegment of --s.begin()
  */
 template <typename SC>
@@ -627,7 +623,7 @@ void previousMaximalSegment(SC& s,
  * (s is assumed to be maximal)
  * @param s any instance of segment computer
  * @param begin any begin ConstIterator
- * @tparam SC any model of CDynamicSegmentComputer
+ * @tparam SC any model of concepts::CDynamicSegmentComputer
  */
 template <typename SC>
 void previousMaximalSegment(SC& s,
@@ -639,7 +635,7 @@ void previousMaximalSegment(SC& s,
  * (s is assumed to be maximal)
  * @param s any instance of segment computer
  * @param begin any begin ConstIterator
- * @tparam SC any model of CDynamicBidirectionalSegmentComputer
+ * @tparam SC any model of concepts::CDynamicBidirectionalSegmentComputer
  * @note calls the function dedicated to DynamicSegmentComputer
  */
 template <typename SC>

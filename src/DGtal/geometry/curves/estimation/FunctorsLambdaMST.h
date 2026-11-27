@@ -115,7 +115,7 @@ namespace functors
 }
 
 /**
- * Description of class 'TangentFromDSS2DFunctor' -- model of CLMSTTangentFromDSS.
+ * Description of class 'TangentFromDSS2DFunctor' -- model of concepts::CLMSTTangentFromDSS.
  * Aim: Provide a functor which calculate from digital straight segment
  * its direction and eccentricity around a given point.
  * @tparam DSS digital straight segment recognition algorithm
@@ -176,7 +176,7 @@ private:
 };
 
 /**
- * Description of class 'TangentFromDSS3DFunctor' -- model of CLMSTTangentFromDSS.
+ * Description of class 'TangentFromDSS3DFunctor' -- model of concepts::CLMSTTangentFromDSS.
  * Aim: Provide a functor which calculate from digital straight segment
  * its direction and eccentricity around a given point.
  * @tparam DSS digital straight segment recognition algorithm
@@ -240,7 +240,7 @@ private:
 
 
 /**
- * Description of class 'DSSMuteFilter' -- model of CLMSTDSSFilter.
+ * Description of class 'DSSMuteFilter' -- model of concepts::CLMSTDSSFilter.
  * Aim: Provide a functor which does nothing i.e., always returns false.
  * @tparam DSS digital straight segment recognition algorithm
  */
@@ -273,7 +273,7 @@ public:
 
 
 /**
- * Description of class 'DSSLengthLessEqualFilter' -- model of CLMSTDSSFilter.
+ * Description of class 'DSSLengthLessEqualFilter' -- model of concepts::CLMSTDSSFilter.
  * Aim: Provide a functor which allow for filtering DSSes of length lower than
  * a given threshold.
  * @tparam DSS digital straight segment recognition algorithm

@@ -26,7 +26,7 @@
  *
  * Header file for module OneBalancedWordComputer.cpp
  *
- * This class is a model of the concept CDynamicBidirectionalSegmentComputer.
+ * This class is a model of the concept concepts::CDynamicBidirectionalSegmentComputer.
  *
  * This file is part of the DGtal library.
  *
@@ -79,12 +79,12 @@ namespace DGtal
    * to one of the axes , in this case the DSS is called 'trivial', and
    * when the DSS has only one upper leaning point.
    *
-   * This class is a model of the concept CDynamicBidirectionalSegmentComputer.
+   * This class is a model of the concept concepts::CDynamicBidirectionalSegmentComputer.
    *
    * @tparam TConstIterator the type of iterator used to read the input codes
    * (preferably of category 'random_access_iterator_tag').
    * @tparam TInteger the type of scalars used for the coordinates of the
-   * points (satisfying CInteger)
+   * points (satisfying concepts::CInteger)
    * @tparam TCategory category of segment computer, i.e. ForwardSegmentComputer,
    * BidirectionalSegmentComputer, DynamicSegmentComputer or
    * DynamicBidirectionalSegmentComputer (default), used by the functions of

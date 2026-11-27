@@ -77,7 +77,7 @@ namespace DGtal
    * @tparam TIterator type of iterator on arrows,
    * at least readable and forward.
    * @tparam TInteger type of integers used for the computation of remainders,
-   * which is a model of CInteger.
+   * which is a model of concepts::CInteger.
    * @tparam isDirect boolean set to 'true' for a direct orientation (the starting point of
    * an arrow is visited before its ending point), 'false' otherwise.
    * @tparam TCategory category of segment computer, i.e. ForwardSegmentComputer,
@@ -86,7 +86,7 @@ namespace DGtal
    * of SegmentComputerHelpers.h (and thus by the segmentation algorithms)
    * to select the algorithm.
    *
-   * This class is a model of CDynamicBidirectionalSegmentComputer.
+   * This class is a model of concepts::CDynamicBidirectionalSegmentComputer.
    * It is also default constructible, copy constructible, assignable and equality comparable.
    *
    * @see ArithmeticalDSSComputer

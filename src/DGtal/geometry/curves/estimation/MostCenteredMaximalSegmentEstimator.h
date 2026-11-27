@@ -60,17 +60,15 @@ namespace DGtal
   // template class MostCenteredMaximalSegmentEstimator
   /**
    * Description of template class 'MostCenteredMaximalSegmentEstimator' <p>
-   * \brief Aim: A model of CLocalCurveGeometricEstimator that assigns to each
+   * \brief Aim: A model of concepts::CCurveLocalGeometricEstimator that assigns to each
    * element of a (sub)range a quantity estimated from the most centered
    * maximal segment passing through this element.
    *
    * The most centered maximal segment passing through an element is not
    * exactly the most centered one, but the maximal segment containing
    * the tangent at this element defined by Feschet and Tougne
-   * (see mostCenteredMaximalSegment in SegmentComputerHelpers.h):
-   * F. Feschet and L. Tougne, Optimal Time Computation of the Tangent
-   * of a Discrete Curve: Application to the Curvature, DGCI 1999,
-   * LNCS 1568, pp. 31-40.
+   * \cite FeschetTougneDGCI1999 (see mostCenteredMaximalSegment() in
+   * SegmentComputerHelpers.h).
    *
    Here is a basic example of curvature estimation:
    - 1. Construct an instance from a segment computer and a segment computer estimator
@@ -80,8 +78,8 @@ namespace DGtal
    - 3. Get the estimations
    @snippet geometry/curves/estimation/exampleCurvature.cpp MostCenteredEvaluation
 
-   * @tparam SegmentComputer at least a model of CForwardSegmentComputer
-   * @tparam SCEstimator a model of CSegmentComputerEstimator
+   * @tparam SegmentComputer at least a model of concepts::CForwardSegmentComputer
+   * @tparam SCEstimator a model of concepts::CSegmentComputerEstimator
    *
    * @see testMostCenteredMSEstimator.cpp
    * @see exampleCurvature.cpp
