@@ -41,14 +41,14 @@ The estimation relies on three kinds of objects:
   segments on steps, i.e. pairs of inner and outer points),
   StabbingCircleComputer (digital circular arcs, DCAs, on steps);
 
-- a segment computer estimator (model of CSegmentComputerEstimator), which
+- a segment computer estimator (model of concepts::CSegmentComputerEstimator), which
   estimates a quantity at an element from one segment, e.g.
   TangentFromDSSEstimator, TangentAngleFromDSSEstimator,
   CurvatureFromDSSEstimator, CurvatureFromDSSLengthEstimator,
-  NormalFromDCAEstimator, TangentFromDCAEstimator, CurvatureFromDCAEstimator
+  NormalFromStabbingLineEstimator, NormalFromDCAEstimator, TangentFromDCAEstimator, CurvatureFromDCAEstimator
   (see SegmentComputerEstimators.h);
 
-- an estimator (model of CCurveLocalGeometricEstimator), which combines
+- an estimator (model of concepts::CCurveLocalGeometricEstimator), which combines
   the maximal segments passing through each element of the curve, computed
   by a saturated segmentation (SaturatedSegmentation):
   MostCenteredMaximalSegmentEstimator or LambdaMaximalSegmentEstimator.
@@ -79,7 +79,7 @@ element, since the maximal segments are computed only once.
 
 MostCenteredMaximalSegmentEstimator assigns to each element the quantity
 estimated from one maximal segment passing through it, which is called
-the most centered maximal segment (see mostCenteredMaximalSegment).
+the most centered maximal segment (see mostCenteredMaximalSegment()).
 It is not exactly the most centered one, but the maximal segment
 containing the tangent at this element defined by Feschet and Tougne
 \cite FeschetTougneDGCI1999 (definition 3): the symmetric tangent at an
@@ -142,28 +142,31 @@ point.
 
 The benchmark normalEstimators-benchmark.cpp studies the multigrid
 convergence and the running times of both estimators for the normal
-vectors computed from maximal DSSs (ArithmeticalDSSComputer on points,
-and ArithmeticalDSSComputerOnArrows on steps),
-from the maximal segments of StabbingLineComputer (on steps) and from the
-maximal DCAs of StabbingCircleComputer (on steps), along the boundaries of
-a digitized ellipse and of a digitized flower, for grid steps \f$ h \f$
-from 1 to 0.0005. The error is the angle between the estimated and the true
-normal directions.
+vectors computed, at the steps of the curve, from the maximal DSSs of
+ArithmeticalDSSComputerOnArrows, from the maximal segments of
+StabbingLineComputer and from the maximal DCAs of StabbingCircleComputer,
+along the boundaries of a digitized ellipse and of a digitized flower, for
+grid steps \f$ h \f$ from 1 to 0.0005. The normal vectors are given by
+NormalFromStabbingLineEstimator and NormalFromDCAEstimator, and by the
+tangent vectors of TangentFromDSSEstimator rotated by a right angle. The
+error is the angle between the estimated and the true normal directions.
 
-All the estimators converge. The mean angular error of the estimators
-based on straight segments decreases roughly as \f$ h^{2/3} \f$, and their
-maximal error roughly as \f$ h^{1/3} \f$, whereas the errors of the
-estimators based on circular arcs decrease faster (roughly as \f$ h \f$
-for the mean error). The \f$\lambda\f$-MST estimators are 1.5 to 2.5 times
-more accurate than the most centered ones, for a running time 1.4 to 3
-times longer. The estimators based on circular arcs are the most accurate
-ones, but they are about 20 to 60 times slower than the estimators based on
+All the estimators converge. The mean angular error of all the estimators
+is bounded by \f$ C h^{2/3} \f$ and their maximal error by
+\f$ C' h^{1/3} \f$, where the constants \f$ C \f$ and \f$ C' \f$
+(shown on the graphs) are the smallest ones bounding all the measures
+(rounded up). The errors of the estimators based on straight segments
+decrease roughly at these rates, whereas the errors of the estimators
+based on circular arcs decrease faster (roughly as \f$ h \f$ for the mean
+error). The \f$\lambda\f$-MST estimators are 1.5 to 2.5 times more
+accurate than the most centered ones, for a running time 1.1 to 2.5 times
+longer. The estimators based on circular arcs are the most accurate ones,
+but they are about 20 to 40 times slower than the estimators based on
 DSSs.
 
-The estimators based on maximal DSSs give the same errors whether the
-elements are the points or the steps of the curve. The \f$\lambda\f$-MST
-estimator based on StabbingLineComputer is however more accurate than the
-one based on DSSs, because the segments are not the same.
+The \f$\lambda\f$-MST estimator based on StabbingLineComputer is more
+accurate than the one based on DSSs, although both work on the steps of
+the curve, because the segments are not the same.
 A sequence of steps is a segment of StabbingLineComputer if there is a
 straight line separating the inner and outer pixel centers of its steps,
 the pixel centers lying on the straight line being allowed on both sides
@@ -194,12 +197,12 @@ same range of steps, the two normal vectors thus differ slightly.
 The length of a curve may be estimated by integration of the estimated
 normal vectors: each step of the curve, of length \f$ h \f$, contributes
 \f$ h |n \cdot u| \f$, where \f$ n \f$ is the estimated unit normal vector
-at the step and \f$ u \f$ the trivial normal vector of the step (for the
-estimators on points, the normal vector at a step is the normalized sum of
-the normal vectors at its two points). The benchmark compares the length
-estimated from each of the normal estimators with the length of the
-boundary of the shape. The relative error decreases roughly as \f$ h \f$
-(or faster) for all the normal estimators, more quickly for the
+at the step and \f$ u \f$ the trivial normal vector of the step. The
+benchmark compares the length estimated from each of the normal estimators
+with the length of the boundary of the shape. The relative error is
+bounded by \f$ C h \f$ for all the normal estimators (the constant
+\f$ C \f$, shown on the graphs, being the smallest one bounding all the
+measures, rounded up). It decreases more quickly for the
 \f$\lambda\f$-MST estimators than for the most centered ones, and much more
 quickly for the estimators based on circular arcs (about \f$ 10^{-7} \f$
 for \f$ h = 0.0005 \f$).
@@ -210,17 +213,22 @@ for \f$ h = 0.0005 \f$).
 \subsection modulePrimitiveBasedEstimators-Curvature Curvature estimation
 
 The curvature may be estimated from the maximal segments of
-StabbingCircleComputer with CurvatureFromDCAEstimator. Its absolute value
+StabbingCircleComputer with CurvatureFromDCAEstimator
+\cite RoussillonLachaudIWCIA2011. With MostCenteredMaximalSegmentEstimator,
+it is the MDCA (most centered digital circular arc) curvature estimator,
+whose multigrid convergence is studied in \cite SchindeleJMIV2017. Its absolute value
 is the inverse of the radius of the separating circle, and its sign depends
 on the convexity of the DCA (see StabbingCircleComputer::isConvex()) and on
 the orientation of the scanning, given as a template parameter: for a curve
 scanned in a counter-clockwise orientation, the curvature is positive on
 convex parts and negative on concave parts. The benchmark
 compares the curvature estimated with both estimators with the true
-curvature of the shape. The mean absolute error decreases roughly as
-\f$ h^{1/2} \f$, slightly faster for the \f$\lambda\f$-MST estimator,
-whereas the maximal absolute error decreases slowly, especially along the
-non-convex shape.
+curvature of the shape. All the absolute errors, mean and maximal, are
+bounded by \f$ C h^{1/3} \f$ (the constant \f$ C \f$, shown on the
+graphs, being the smallest one bounding all the measures, rounded up).
+The mean absolute error decreases faster, slightly faster for the
+\f$\lambda\f$-MST estimator, whereas the maximal absolute error is close
+to the bound, especially along the non-convex shape.
 
 \image html curvature-convergence-ellipse.png "Mean and maximal absolute errors of the curvature estimated from DCAs along the boundary of a digitized ellipse as a function of the grid step h." width=70%
 \image html curvature-convergence-flower.png "Mean and maximal absolute errors of the curvature estimated from DCAs along the boundary of a digitized flower as a function of the grid step h." width=70%

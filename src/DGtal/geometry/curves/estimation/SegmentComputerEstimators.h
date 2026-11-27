@@ -768,6 +768,65 @@ namespace DGtal
       }
     };
     /**
+     * Description of class 'NormalVectorFromStabbingLine' <p> Aim:
+     * computes the unit normal vector of the straight line separating
+     * the inner and outer points of a segment recognized by
+     * StabbingLineComputer.
+     */
+    struct NormalVectorFromStabbingLine
+    {
+    public:
+      typedef PointVector<2,double> Value;
+
+      /**
+       * Operator()
+       *
+       * @return the unit normal vector of the straight line
+       * \f$ \alpha x + \beta y + \gamma = 0 \f$ returned by
+       * StabbingLineComputer::getParameters (i.e. the unit vector of
+       * direction \f$ (\alpha, \beta) \f$), oriented toward the outside,
+       * i.e. from the inner point toward the outer point of the first
+       * pair of the segment that does not lie on the straight line.
+       * Since the straight line separates the inner points from the
+       * outer points, the orientation does not depend on this pair.
+       *
+       * @param aSegment an instance of StabbingLineComputer
+       *
+       * @tparam StabbingLine a model of segment computer devoted to the
+       * recognition of straight segments on pairs of inner and outer
+       * points, basically StabbingLineComputer.
+       */
+      template<typename StabbingLine>
+      Value operator() (const StabbingLine& aSegment) const
+      {
+        typedef typename StabbingLine::ConstIterator ConstIterator;
+        typedef typename StabbingLine::Pair Pair;
+        typedef typename StabbingLine::Point Point;
+        typedef typename Point::Coordinate Coordinate;
+
+        double v0, v1, c;
+        aSegment.getParameters(v0, v1, c);
+        //orientation from the inner point toward the outer point:
+        //sign of v.(o-i), which is null only if the straight line
+        //passes through both points of the pair
+        double s = 0.0;
+        for (ConstIterator it = aSegment.begin();
+             (s == 0.0) && (it != aSegment.end()); ++it)
+        {
+          Pair pair = *it;
+          s = v0 * NumberTraits<Coordinate>::castToDouble(pair.second[0]-pair.first[0])
+            + v1 * NumberTraits<Coordinate>::castToDouble(pair.second[1]-pair.first[1]);
+        }
+        if ( s < 0.0 )
+        {
+          v0 = -v0;
+          v1 = -v1;
+        }
+        double n = std::sqrt(v0*v0 + v1*v1);
+        return Value( v0/n, v1/n );
+      }
+    };
+    /**
      * Description of class 'CurvatureFromDCA' <p> Aim:
      * computes the curvature from a geometricDCA
      * at a given grid step.
@@ -1158,6 +1217,41 @@ namespace DGtal
      * @param other the object to clone.
      */
     TangentAngleFromDSSEstimator( const TangentAngleFromDSSEstimator & other ): Super(other) {};
+  };
+
+  //-------------------------------------------------------------------------------------------
+  /**
+   * Description of class 'NormalFromStabbingLineEstimator' <p> Aim:
+   * estimates the (normalized) normal vector from the straight line
+   * separating the inner and outer points of a segment recognized by
+   * StabbingLineComputer. The normal vector is oriented toward the
+   * outside, i.e. from the inner points toward the outer points
+   * (see detail::NormalVectorFromStabbingLine), like the normal vectors
+   * of NormalFromDCAEstimator.
+   *
+   * @tparam StabbingLineComputer a model of segment computer devoted to
+   * the recognition of straight segments on pairs of inner and outer
+   * points, basically StabbingLineComputer
+   */
+  template <typename StabbingLineComputer>
+  class NormalFromStabbingLineEstimator:
+    public detail::PosIndepScaleIndepSCEstimator<StabbingLineComputer,
+                                                 detail::NormalVectorFromStabbingLine>
+  {
+    typedef
+    detail::PosIndepScaleIndepSCEstimator<StabbingLineComputer, detail::NormalVectorFromStabbingLine>
+    Super;
+
+  public:
+    /**
+     * Default Constructor.
+     */
+    NormalFromStabbingLineEstimator(): Super() {};
+    /**
+     * Copy constructor.
+     * @param other the object to clone.
+     */
+    NormalFromStabbingLineEstimator( const NormalFromStabbingLineEstimator & other ): Super(other) {};
   };
 
   //-------------------------------------------------------------------------------------------

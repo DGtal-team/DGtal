@@ -36,6 +36,7 @@
 
 
 #include "DGtal/geometry/curves/ArithmeticalDSSComputer.h"
+#include "DGtal/geometry/curves/StabbingLineComputer.h"
 #include "DGtal/geometry/curves/StabbingCircleComputer.h"
 #include "DGtal/geometry/curves/estimation/SegmentComputerEstimators.h"
 #include "DGtal/geometry/curves/FreemanChain.h"
@@ -343,6 +344,84 @@ bool testNormalFromDCAOrientation()
   return ( nbok == nb ) && hasConvexPart && hasConcavePart;
 }
 
+/**
+ * Normal vectors of the maximal segments of StabbingLineComputer along a
+ * closed non-convex curve: they must be unit vectors orthogonal to the
+ * separating straight line, oriented from the inner points toward the
+ * outer points, and consistently oriented from a maximal segment to the
+ * next one (which overlap).
+ */
+bool testNormalFromStabbingLine()
+{
+  trace.beginBlock ( "Normal vectors of the segments of StabbingLineComputer" );
+
+  typedef KhalimskySpaceND<2,int> KSpace;
+  typedef KSpace::Point Point;
+  std::fstream fst( (testPath + "samples/contourS.fc").c_str(), std::ios::in );
+  FreemanChain<int> fc( fst );
+  std::vector<Point> points( fc.begin(), fc.end() );
+  points.pop_back(); //the last point is equal to the first one
+  GridCurve<KSpace> curve;
+  curve.initFromPointsVector( points );
+  typedef GridCurve<KSpace>::IncidentPointsRange Range;
+  Range r = curve.getIncidentPointsRange();
+  typedef Range::ConstCirculator ConstCirculator;
+  typedef StabbingLineComputer<ConstCirculator> LineComputer;
+  typedef NormalFromStabbingLineEstimator<LineComputer> Normal;
+
+  unsigned int nbok = 0;
+  unsigned int nb = 0;
+  ConstCirculator c = r.c();
+  SaturatedSegmentation<LineComputer> segmentation( c, c, LineComputer() );
+  Normal::Quantity first, previous;
+  bool isFirst = true;
+  for (auto seg = segmentation.begin(); seg != segmentation.end(); ++seg)
+    {
+      Normal f;
+      f.init( 1.0, seg->begin(), seg->end() );
+      f.attach( *seg );
+      Normal::Quantity n = f.eval( seg->begin() );
+      //unit vector of direction (alpha, beta), up to its orientation
+      double alpha, beta, gamma;
+      seg->getParameters( alpha, beta, gamma );
+      nbok += ( std::abs( n.norm() - 1.0 ) < 1e-9 ) ? 1 : 0;
+      nb++;
+      nbok += ( std::abs( n[0]*beta - n[1]*alpha ) < 1e-9 ) ? 1 : 0;
+      nb++;
+      //from the inner points toward the outer points
+      bool outside = true, strictly = false;
+      ConstCirculator it = seg->begin();
+      do
+        {
+          auto pair = *it;
+          double s = n[0] * ( pair.second[0] - pair.first[0] )
+            + n[1] * ( pair.second[1] - pair.first[1] );
+          outside = outside && ( s >= -1e-9 );
+          strictly = strictly || ( s > 1e-9 );
+          ++it;
+        } while ( it != seg->end() );
+      if ( ! ( outside && strictly ) )
+        trace.info() << "  wrong orientation: n " << n << std::endl;
+      nbok += ( outside && strictly ) ? 1 : 0;
+      nb++;
+      //consistent with the normal vector of the previous maximal segment
+      if ( ! isFirst )
+        {
+          nbok += ( n.dot( previous ) > 0 ) ? 1 : 0;
+          nb++;
+        }
+      else
+        first = n;
+      isFirst = false;
+      previous = n;
+    }
+  nbok += ( previous.dot( first ) > 0 ) ? 1 : 0;
+  nb++;
+  trace.info() << "(" << nbok << "/" << nb << ") normal vectors" << std::endl;
+  trace.endBlock();
+  return ( nbok == nb ) && ( nb > 10 );
+}
+
 int main( int argc, char** argv )
 {
   trace.beginBlock ( "Testing segment computer functors" );
@@ -426,6 +505,7 @@ int main( int argc, char** argv )
     res = res && testFromDCA<DCA>(curve.begin(), curve.end())
       && testFromDCA<DCA>(curve.begin()+2, curve.begin()+12);
     res = res && testNormalFromDCAOrientation();
+    res = res && testNormalFromStabbingLine();
   }
 
   //----------------------------------------------------------
