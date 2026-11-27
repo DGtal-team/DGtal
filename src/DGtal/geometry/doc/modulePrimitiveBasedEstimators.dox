@@ -138,11 +138,11 @@ parts but toward it on concave parts).
 estimator, which takes a segmentation and evaluates the tangent at a given
 point.
 
-\section modulePrimitiveBasedEstimators-Benchmark Comparison
+\section modulePrimitiveBasedEstimators-Normal Normal estimation
 
 The benchmark normalEstimators-benchmark.cpp studies the multigrid
-convergence and the running times of both estimators for the normal
-vectors computed, at the steps of the curve, from the maximal DSSs of
+convergence and the running times of several estimators of normal
+vectors. They are computed from the maximal DSSs of
 ArithmeticalDSSComputerOnArrows, from the maximal segments of
 StabbingLineComputer and from the maximal DCAs of StabbingCircleComputer,
 along the boundaries of a digitized ellipse and of a digitized flower, for
@@ -192,7 +192,7 @@ same range of steps, the two normal vectors thus differ slightly.
 \image html normals-max-error-flower.png "Maximal angular error (radian) of the normal estimators along the boundary of a digitized flower as a function of the grid step h." width=70%
 \image html normals-timings.png "Running times (ms) of the normal estimators along the boundary of a digitized flower as a function of the number of points." width=70%
 
-\subsection modulePrimitiveBasedEstimators-Length Length estimation
+\section modulePrimitiveBasedEstimators-Length Length estimation
 
 The length of a curve may be estimated by integration of the estimated
 normal vectors: each step of the curve, of length \f$ h \f$, contributes
@@ -210,7 +210,7 @@ for \f$ h = 0.0005 \f$).
 \image html length-convergence-ellipse.png "Relative error of the length of the boundary of a digitized ellipse, estimated by integration of the normal vectors, as a function of the grid step h." width=70%
 \image html length-convergence-flower.png "Relative error of the length of the boundary of a digitized flower, estimated by integration of the normal vectors, as a function of the grid step h." width=70%
 
-\subsection modulePrimitiveBasedEstimators-Curvature Curvature estimation
+\section modulePrimitiveBasedEstimators-Curvature Curvature estimation
 
 The curvature may be estimated from the maximal segments of
 StabbingCircleComputer with CurvatureFromDCAEstimator
